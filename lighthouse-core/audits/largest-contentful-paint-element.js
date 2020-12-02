@@ -39,10 +39,11 @@ class LargestContentfulPaintElement extends Audit {
   static audit(artifacts) {
     const lcpElement = artifacts.TraceElements
       .find(element => element.traceEventType === 'largest-contentful-paint');
+    /** @type {Array<{node: LH.Audit.Details.NodeValue}>} */
     const lcpElementDetails = [];
     if (lcpElement) {
       lcpElementDetails.push({
-        node: /** @type {LH.Audit.Details.NodeValue} */ ({
+        node: {
           type: 'node',
           lhId: lcpElement.lhId,
           path: lcpElement.devtoolsNodePath,
@@ -50,7 +51,7 @@ class LargestContentfulPaintElement extends Audit {
           nodeLabel: lcpElement.nodeLabel,
           snippet: lcpElement.snippet,
           boundingRect: lcpElement.boundingRect,
-        }),
+        },
       });
     }
 

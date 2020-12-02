@@ -123,7 +123,6 @@ class LinkElements extends Gatherer {
           devtoolsNodePath: '',
           selector: '',
           nodeLabel: '',
-          boundingRect: null,
           snippet: '',
         });
       }
