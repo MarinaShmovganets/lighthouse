@@ -799,12 +799,12 @@ class Config {
       });
 
       // De-dupe gatherers by artifact name because artifact IDs must be unique at runtime.
-      const mergedDefns = Array.from(
+      const uniqueDefns = Array.from(
         new Map(gathererDefns.map(defn => [defn.instance.name, defn])).values()
       );
-      mergedDefns.forEach(gatherer => assertValidGatherer(gatherer.instance, gatherer.path));
+      uniqueDefns.forEach(gatherer => assertValidGatherer(gatherer.instance, gatherer.path));
 
-      return Object.assign(pass, {gatherers: mergedDefns});
+      return Object.assign(pass, {gatherers: uniqueDefns});
     });
     log.timeEnd(status);
     return fullPasses;
