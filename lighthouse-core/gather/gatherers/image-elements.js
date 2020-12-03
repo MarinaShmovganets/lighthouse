@@ -16,7 +16,6 @@ const FontSize = require('./seo/font-size.js');
 
 /* global window, getElementsInDocument, Image, getNodeDetails, ShadowRoot */
 
-
 /** @param {Element} element */
 /* istanbul ignore next */
 function getClientRect(element) {
