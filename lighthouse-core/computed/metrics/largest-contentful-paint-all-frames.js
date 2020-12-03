@@ -33,7 +33,6 @@ class LargestContentfulPaintAllFrames extends ComputedMetric {
     }
 
     return {
-      // LCP established as existing, so cast
       timing: traceOfTab.timings.largestContentfulPaintAllFrames,
       timestamp: traceOfTab.timestamps.largestContentfulPaintAllFrames,
     };

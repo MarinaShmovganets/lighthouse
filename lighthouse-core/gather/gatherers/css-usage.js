@@ -46,7 +46,6 @@ class CSSUsage extends Gatherer {
     await driver.sendCommand('CSS.disable');
     await driver.sendCommand('DOM.disable');
 
-    /** @type {Map<string, LH.Artifacts.CSSStyleSheetInfo>} */
     const dedupedStylesheets = new Map(styleSheetInfo.map(sheet => {
       return [sheet.content, sheet];
     }));

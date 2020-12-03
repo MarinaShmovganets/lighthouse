@@ -31,7 +31,6 @@ class FirstMeaningfulPaint extends ComputedMetric {
     }
 
     return {
-      // FMP established as existing, so cast
       timing: traceOfTab.timings.firstMeaningfulPaint,
       timestamp: traceOfTab.timestamps.firstMeaningfulPaint,
     };
