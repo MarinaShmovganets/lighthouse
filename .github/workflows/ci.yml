@@ -17,8 +17,9 @@ jobs:
     - name: git clone
       uses: actions/checkout@v2
 
-    - run: echo "gh repo env is: $GITHUB_REPOSITORY  ... $GITHUB_EVENT_PATH"
-      
+    - run: echo "gh repo env is $GITHUB_REPOSITORY"
+    - run: echo "gh evt path is $GITHUB_EVENT_PATH"
+
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
       with:
@@ -26,6 +27,7 @@ jobs:
 
     - run: yarn --frozen-lockfile
     - run: yarn build-all
+
 
     # Run tests that require headfull Chrome.
     - run: sudo apt-get install xvfb
