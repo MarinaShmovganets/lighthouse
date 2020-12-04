@@ -83,7 +83,13 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
     const url = URL.elideDataURI(image.src);
     const actualPixels = image.naturalWidth * image.naturalHeight;
     const wastedRatio = 1 - (usedPixels / actualPixels);
-    const totalBytes = networkRecord.resourceSize;
+    // Resource size is almost always the right one to be using because of the below:
+    //     transferSize = resourceSize + headers.length
+    // HOWEVER, there are some cases where an image is compressed again over the network and transfer size
+    // is smaller (see https://github.com/GoogleChrome/lighthouse/pull/4968).
+    // Use the min of the two numbers to be safe.
+    const {resourceSize = 0, transferSize = 0} = networkRecord;
+    const totalBytes = Math.min(resourceSize, transferSize);
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
     if (!Number.isFinite(wastedRatio)) {

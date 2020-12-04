@@ -14,6 +14,7 @@ function generateRecord(resourceSizeInKb, durationInMs, url = 'https://google.co
   return {
     mimeType,
     resourceSize: resourceSizeInKb * 1024,
+    transferSize: resourceSizeInKb * 1024,
     endTime: durationInMs / 1000,
     responseReceivedTime: 0,
     url,

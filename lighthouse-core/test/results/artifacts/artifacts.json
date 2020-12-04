@@ -1224,7 +1224,7 @@
   ],
   "ImageElements": [
     {
-      "src": "http://localhost:59501/dobetterweb/lighthouse-480x318.jpg?iar1",
+      "src": "http://localhost:59523/dobetterweb/lighthouse-480x318.jpg?iar1",
       "srcset": "",
       "displayedWidth": 120,
       "displayedHeight": 15,
@@ -1263,7 +1263,7 @@
       "cssHeight": "15px"
     },
     {
-      "src": "http://localhost:59501/dobetterweb/lighthouse-480x318.jpg?iar2",
+      "src": "http://localhost:59523/dobetterweb/lighthouse-480x318.jpg?iar2",
       "srcset": "",
       "displayedWidth": 120,
       "displayedHeight": 80,
@@ -1302,7 +1302,7 @@
       "cssHeight": "80px"
     },
     {
-      "src": "http://localhost:59501/dobetterweb/lighthouse-480x318.jpg?isr1",
+      "src": "http://localhost:59523/dobetterweb/lighthouse-480x318.jpg?isr1",
       "srcset": "",
       "displayedWidth": 4800,
       "displayedHeight": 3180,
@@ -1341,7 +1341,7 @@
       "cssHeight": "3180px"
     },
     {
-      "src": "http://localhost:59501/dobetterweb/lighthouse-480x318.jpg?isr2",
+      "src": "http://localhost:59523/dobetterweb/lighthouse-480x318.jpg?isr2",
       "srcset": "",
       "displayedWidth": 120,
       "displayedHeight": 80,
@@ -1380,7 +1380,7 @@
       "cssHeight": "80px"
     },
     {
-      "src": "http://localhost:59501/dobetterweb/lighthouse-480x318.jpg?isr3",
+      "src": "http://localhost:59523/dobetterweb/lighthouse-480x318.jpg?isr3",
       "srcset": "",
       "displayedWidth": 960,
       "displayedHeight": 636,
@@ -1419,7 +1419,7 @@
       "cssHeight": "636px"
     },
     {
-      "src": "http://localhost:59501/dobetterweb/lighthouse-480x318.jpg",
+      "src": "http://localhost:59523/dobetterweb/lighthouse-480x318.jpg",
       "srcset": "lighthouse-480x318.jpg 2x",
       "displayedWidth": 960,
       "displayedHeight": 636,
@@ -1458,7 +1458,7 @@
       "cssHeight": "636px"
     },
     {
-      "src": "http://localhost:59501/dobetterweb/lighthouse-rotating.gif",
+      "src": "http://localhost:59523/dobetterweb/lighthouse-rotating.gif",
       "srcset": "",
       "displayedWidth": 811,
       "displayedHeight": 462,
@@ -1497,7 +1497,7 @@
       "cssHeight": "462px"
     },
     {
-      "src": "blob:http://localhost:59501/11869388-f199-4e19-998f-590cbabf7df1",
+      "src": "blob:http://localhost:59523/fa970ca5-9677-4095-b7f2-c3c1c910d2e1",
       "srcset": "",
       "displayedWidth": 16,
       "displayedHeight": 16,
@@ -1529,11 +1529,11 @@
         "width": 16,
         "height": 16
       },
-      "snippet": "<img src=\"blob:http://localhost:59501/11869388-f199-4e19-998f-590cbabf7df1\">",
+      "snippet": "<img src=\"blob:http://localhost:59523/fa970ca5-9677-4095-b7f2-c3c1c910d2e1\">",
       "nodeLabel": "img"
     },
     {
-      "src": "filesystem:http://localhost:59501/temporary/empty-0.4672197318975255.png",
+      "src": "filesystem:http://localhost:59523/temporary/empty-0.5504818575864221.png",
       "srcset": "",
       "displayedWidth": 16,
       "displayedHeight": 16,
@@ -1565,7 +1565,7 @@
         "width": 16,
         "height": 16
       },
-      "snippet": "<img src=\"filesystem:http://localhost:59501/temporary/empty-0.4672197318975255.png\">",
+      "snippet": "<img src=\"filesystem:http://localhost:59523/temporary/empty-0.5504818575864221.png\">",
       "nodeLabel": "img"
     }
   ],
