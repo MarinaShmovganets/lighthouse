@@ -21,9 +21,11 @@ set -euxo pipefail
 # We can always use some more history
 git -c protocol.version=2 fetch --deepen=100
 
-# If the PR is coming from a fork, we have to get the fork's history, too.
-if [[ $GITHUB_REPOSITORY != "GoogleChrome/lighthouse" ]]; then
-  git -c protocol.version=2 fetch --deepen=100 "git@github.com:$GITHUB_REPOSITORY.git"
+# Find out if the PR is coming from a fork
+base_clone_url=$(jq '.pull_request.base.repo.clone_url' $GITHUB_EVENT_PATH)
+# If it is, we need the fork's history, too.
+if [[ $base_clone_url != "GoogleChrome/lighthouse.git" ]]; then
+  git -c protocol.version=2 fetch --deepen=100 "git@github.com:$base_clone_url"
 fi
 echo "History is deepened."
 
