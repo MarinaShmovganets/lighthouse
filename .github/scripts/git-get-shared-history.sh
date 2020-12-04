@@ -20,6 +20,11 @@ set -euxo pipefail
 
 # We can always use some more history
 git -c protocol.version=2 fetch --deepen=100
+
+# If the PR is coming from a fork, we have to get the fork's history, too.
+if [[ $GITHUB_REPOSITORY != "GoogleChrome/lighthouse" ]]; then
+  git -c protocol.version=2 fetch --deepen=100 "git@github.com:$GITHUB_REPOSITORY.git"
+fi
 echo "History is deepened."
 
 if git merge-base HEAD origin/master > /dev/null; then
