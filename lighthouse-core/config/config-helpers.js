@@ -176,17 +176,17 @@ function requireAudits(audits, configDir) {
  * @throws {Error}
  */
 function resolveModule(moduleIdentifier, configDir, category) {
-  // node_modules/
+  // module in a node_modules/ that is...
   // |                                | Lighthouse globally installed | Lighthouse locally installed |
   // |--------------------------------|-------------------------------|------------------------------|
-  // | in global                      |   1.                          |   1.                         |
-  // | current working directory      |   2.                          |   1.                         |
+  // | global                         |   1.                          |   1.                         |
+  // | in current working directory   |   2.                          |   1.                         |
   // | relative to config.js file     |   5.                          |   -                          |
 
-  // path to file
+  // module given by a path that is...
   // |                                           | Lighthouse globally/locally installed |
   // |-------------------------------------------|---------------------------------------|
-  // | absolute paths                            |   1.                                  |
+  // | absolute                                  |   1.                                  |
   // | relative to the current working directory |   3.                                  |
   // | relative to the config.js file            |   4.                                  |
 
@@ -200,7 +200,7 @@ function resolveModule(moduleIdentifier, configDir, category) {
   } catch (e) {}
 
   // 2.
-  // Lighthouse globally installed, node_modules/ in current working directoriy.
+  // Lighthouse globally installed, node_modules/ in current working directory.
   // ex: lighthouse https://test.com
   //
   // working directory/
@@ -239,7 +239,7 @@ function resolveModule(moduleIdentifier, configDir, category) {
   } catch (requireError) {}
 
   // 5.
-  // Lighthouse globally installed, node_modules/ in config directoriy.
+  // Lighthouse globally installed, node_modules/ in config directory.
   // ex: lighthouse https://test.com --config-path=./config/config.js
   //
   // working directory/

@@ -36,6 +36,7 @@ describe('resolveModule', () => {
     });
 
     it('relative to the config path', () => {
+      process.cwd = jest.fn(() => path.resolve(configFixturePath, '../'));
       const pluginName = 'lighthouse-plugin-config-helper';
       const pathToPlugin = resolveModule(pluginName, configFixturePath, 'plugin');
       assert.equal(pathToPlugin, require.resolve(path.resolve(configFixturePath, pluginName)));
