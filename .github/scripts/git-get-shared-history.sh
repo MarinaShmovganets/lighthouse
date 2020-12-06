@@ -25,7 +25,7 @@ git -c protocol.version=2 fetch --deepen=100
 base_clone_url=$(jq --raw-output '.pull_request.head.repo.clone_url' $GITHUB_EVENT_PATH)
 # If it is, we need the fork's history, too.
 if [[ $base_clone_url != "GoogleChrome/lighthouse.git" ]]; then
-  git -c protocol.version=2 fetch --deepen=100 "git@github.com:$base_clone_url"
+  git -c protocol.version=2 fetch --deepen=100 "$base_clone_url"
 fi
 echo "History is deepened."
 
