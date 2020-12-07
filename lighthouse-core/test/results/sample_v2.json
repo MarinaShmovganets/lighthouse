@@ -638,7 +638,7 @@
         ],
         "items": [
           {
-            "url": "http://localhost:59523/dobetterweb/lighthouse-480x318.jpg?iar1",
+            "url": "http://localhost:64707/dobetterweb/lighthouse-480x318.jpg?iar1",
             "displayedAspectRatio": "120 x 15\n        (8.00)",
             "actualAspectRatio": "480 x 318\n        (1.51)",
             "doRatiosMatch": false
@@ -683,8 +683,8 @@
         ],
         "items": [
           {
-            "url": "http://localhost:59523/dobetterweb/lighthouse-480x318.jpg?isr1",
-            "elidedUrl": "http://localhost:59523/dobetterweb/lighthouse-480x318.jpg?isr1",
+            "url": "http://localhost:64707/dobetterweb/lighthouse-480x318.jpg?isr1",
+            "elidedUrl": "http://localhost:64707/dobetterweb/lighthouse-480x318.jpg?isr1",
             "displayedSize": "4800 x 3180",
             "actualSize": "480 x 318",
             "actualPixels": 152640,
@@ -692,8 +692,8 @@
             "expectedPixels": 61056000
           },
           {
-            "url": "http://localhost:59523/dobetterweb/lighthouse-rotating.gif",
-            "elidedUrl": "http://localhost:59523/dobetterweb/lighthouse-rotating.gif",
+            "url": "http://localhost:64707/dobetterweb/lighthouse-rotating.gif",
+            "elidedUrl": "http://localhost:64707/dobetterweb/lighthouse-rotating.gif",
             "displayedSize": "811 x 462",
             "actualSize": "811 x 462",
             "actualPixels": 374682,
@@ -2069,23 +2069,23 @@
         ],
         "items": [
           {
-            "url": "blob:http://localhost:59523/fa970ca5-9677-4095-b7f2-c3c1c910d2e1",
+            "url": "blob:http://localhost:64707/803723f3-114a-4dbd-ad67-c44f8174ef58",
             "node": {
               "type": "node",
               "path": "3,HTML,1,BODY,63,IMG",
               "selector": "body > img",
               "nodeLabel": "img",
-              "snippet": "<img src=\"blob:http://localhost:59523/fa970ca5-9677-4095-b7f2-c3c1c910d2e1\">"
+              "snippet": "<img src=\"blob:http://localhost:64707/803723f3-114a-4dbd-ad67-c44f8174ef58\">"
             }
           },
           {
-            "url": "filesystem:http://localhost:59523/temporary/empty-0.5504818575864221.png",
+            "url": "filesystem:http://localhost:64707/temporary/empty-0.4587600445763731.png",
             "node": {
               "type": "node",
               "path": "3,HTML,1,BODY,72,IMG",
               "selector": "body > img",
               "nodeLabel": "img",
-              "snippet": "<img src=\"filesystem:http://localhost:59523/temporary/empty-0.5504818575864221.png\">"
+              "snippet": "<img src=\"filesystem:http://localhost:64707/temporary/empty-0.4587600445763731.png\">"
             }
           }
         ]
