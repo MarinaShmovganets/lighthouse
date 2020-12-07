@@ -29,10 +29,7 @@ function generateSize(width, height, prefix = 'displayed') {
 }
 
 function generateImage(clientSize, naturalSize, src = 'https://google.com/logo.png') {
-  Object.assign({url: src});
-  const image = {src};
-  Object.assign(image, clientSize, naturalSize);
-  return image;
+  return {src, ...clientSize, ...naturalSize};
 }
 
 describe('Page uses responsive images', () => {
@@ -160,8 +157,8 @@ describe('Page uses responsive images', () => {
   it('ignores vectors', () => {
     const urlA = 'https://google.com/logo.svg';
     const naturalSizeA = generateSize(450, 450, 'natural');
-    // eslint-disable-next-line max-len
-    const image = {...generateImage(generateSize(10, 10), naturalSizeA, urlA), mimeType: 'image/svg+xml'};
+    const image =
+      {...generateImage(generateSize(10, 10), naturalSizeA, urlA), mimeType: 'image/svg+xml'};
     const auditResult = UsesResponsiveImagesAudit.audit_({
       ViewportDimensions: {innerWidth: 1000, innerHeight: 1000, devicePixelRatio: 1},
       ImageElements: [
@@ -211,7 +208,7 @@ describe('Page uses responsive images', () => {
     const recordA = generateRecord(100, 300, urlA);
     const urlB = 'https://google.com/logoB.png';
     const naturalSizeB = generateSize(1000, 1000, 'natural');
-    const recordB = generateRecord(10, 20, urlB); // make it small to still test passing
+    const recordB = generateRecord(10, 20, urlB); // make it small to keep test passing
     const networkRecords = [recordA, recordB];
 
     const auditResult = UsesResponsiveImagesAudit.audit_({
