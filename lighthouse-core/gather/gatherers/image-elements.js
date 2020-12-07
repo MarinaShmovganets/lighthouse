@@ -16,7 +16,6 @@ const FontSize = require('./seo/font-size.js');
 
 /* global window, getElementsInDocument, Image, getNodeDetails, ShadowRoot */
 
-
 /** @param {Element} element */
 /* istanbul ignore next */
 function getClientRect(element) {
@@ -76,9 +75,7 @@ function getHTMLImages(allElements) {
       cssComputedPosition: getPosition(element, computedStyle),
       isCss: false,
       isPicture,
-      // @ts-expect-error: loading attribute not yet added to HTMLImageElement definition.
       loading: element.loading,
-      resourceSize: 0, // this will get overwritten below
       usesObjectFit: ['cover', 'contain', 'scale-down', 'none'].includes(
         computedStyle.getPropertyValue('object-fit')
       ),
@@ -138,7 +135,6 @@ function getCSSImages(allElements) {
         style.getPropertyValue('image-rendering')
       ),
       usesSrcSetDensityDescriptor: false,
-      resourceSize: 0, // this will get overwritten below
       // @ts-expect-error - getNodeDetails put into scope via stringification
       ...getNodeDetails(element),
     });
@@ -333,13 +329,6 @@ class ImageElements extends Gatherer {
       // Pull some of our information directly off the network record.
       const networkRecord = indexedNetworkRecords[element.src] || {};
       element.mimeType = networkRecord.mimeType;
-      // Resource size is almost always the right one to be using because of the below:
-      //     transferSize = resourceSize + headers.length
-      // HOWEVER, there are some cases where an image is compressed again over the network and transfer size
-      // is smaller (see https://github.com/GoogleChrome/lighthouse/pull/4968).
-      // Use the min of the two numbers to be safe.
-      const {resourceSize = 0, transferSize = 0} = networkRecord;
-      element.resourceSize = Math.min(resourceSize, transferSize);
 
       if (!element.isInShadowDOM && !element.isCss) {
         await this.fetchSourceRules(driver, element.devtoolsNodePath, element);

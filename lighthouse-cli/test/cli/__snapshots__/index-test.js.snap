@@ -154,6 +154,9 @@ Object {
       "path": "third-party-summary",
     },
     Object {
+      "path": "third-party-facades",
+    },
+    Object {
       "path": "largest-contentful-paint-element",
     },
     Object {
@@ -173,6 +176,9 @@ Object {
     },
     Object {
       "path": "valid-source-maps",
+    },
+    Object {
+      "path": "preload-lcp-image",
     },
     Object {
       "path": "manual/pwa-cross-browser",
@@ -398,6 +404,9 @@ Object {
     },
     Object {
       "path": "dobetterweb/geolocation-on-start",
+    },
+    Object {
+      "path": "dobetterweb/inspector-issues",
     },
     Object {
       "path": "dobetterweb/no-document-write",
@@ -797,6 +806,11 @@ Object {
           "id": "valid-source-maps",
           "weight": 0,
         },
+        Object {
+          "group": "best-practices-general",
+          "id": "inspector-issues",
+          "weight": 1,
+        },
       ],
       "title": "Best Practices",
     },
@@ -939,6 +953,11 @@ Object {
           "weight": 0,
         },
         Object {
+          "group": "load-opportunities",
+          "id": "preload-lcp-image",
+          "weight": 0,
+        },
+        Object {
           "group": "diagnostics",
           "id": "total-byte-weight",
           "weight": 0,
@@ -996,6 +1015,11 @@ Object {
         Object {
           "group": "diagnostics",
           "id": "third-party-summary",
+          "weight": 0,
+        },
+        Object {
+          "group": "diagnostics",
+          "id": "third-party-facades",
           "weight": 0,
         },
         Object {

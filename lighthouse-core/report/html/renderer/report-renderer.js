@@ -209,7 +209,8 @@ class ReportRenderer {
       fullPageScreenshot,
     });
     const fullPageScreenshotStyleEl = fullPageScreenshot &&
-      ElementScreenshotRenderer.createBackgroundImageStyle(this._dom, fullPageScreenshot);
+      ElementScreenshotRenderer.createBackgroundImageStyle(
+        this._dom, fullPageScreenshot.screenshot);
 
     const categoryRenderer = new CategoryRenderer(this._dom, detailsRenderer);
     categoryRenderer.setTemplateContext(this._templateContext);
