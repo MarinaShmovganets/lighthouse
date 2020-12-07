@@ -262,8 +262,8 @@ class AutocompleteAudit extends Audit {
         failingFormsData.push({
           node: {
             type: /** @type {'node'} */ ('node'),
-            snippet: input.snippet,
-            nodeLabel: input.nodeLabel,
+            snippet: input.node.snippet,
+            nodeLabel: input.node.nodeLabel,
           },
           suggestion: suggestion,
           current: input.autocomplete.attribute,
