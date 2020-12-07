@@ -28,7 +28,7 @@ function collectAllScriptElements() {
       id: script.id || null,
       async: script.async,
       defer: script.defer,
-      source: /** @type {'head'|'body'} */ (script.closest('head') ? 'head' : 'body'),
+      source: script.closest('head') ? 'head' : 'body',
       content: script.src ? null : script.text,
       requestId: null,
       // @ts-expect-error - getNodeDetails put into scope via stringification

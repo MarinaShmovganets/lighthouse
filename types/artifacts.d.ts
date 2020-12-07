@@ -161,7 +161,7 @@ declare global {
         lhId?: string,
         devtoolsNodePath: string,
         selector: string,
-        boundingRect: Rect | null,
+        boundingRect?: Rect,
         snippet: string,
         nodeLabel: string,
       }
@@ -450,12 +450,8 @@ declare global {
          *  See https://html.spec.whatwg.org/multipage/images.html#pixel-density-descriptor
          */
         usesSrcSetDensityDescriptor: boolean;
-        /** The size of the underlying image file in bytes. 0 if the file could not be identified. */
-        resourceSize: number;
         /** Details for node in DOM for the image element */
         node: NodeDetails;
-        /** The MIME type of the underlying image file. */
-        mimeType?: string;
         /** The loading attribute of the image. */
         loading?: string;
       }

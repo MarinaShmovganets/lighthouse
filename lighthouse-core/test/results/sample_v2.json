@@ -638,7 +638,11 @@
         ],
         "items": [
           {
+<<<<<<< HEAD
             "url": "http://localhost:59630/dobetterweb/lighthouse-480x318.jpg?iar1",
+=======
+            "url": "http://localhost:64707/dobetterweb/lighthouse-480x318.jpg?iar1",
+>>>>>>> master
             "displayedAspectRatio": "120 x 15\n        (8.00)",
             "actualAspectRatio": "480 x 318\n        (1.51)",
             "doRatiosMatch": false
@@ -683,8 +687,13 @@
         ],
         "items": [
           {
+<<<<<<< HEAD
             "url": "http://localhost:59630/dobetterweb/lighthouse-480x318.jpg?isr1",
             "elidedUrl": "http://localhost:59630/dobetterweb/lighthouse-480x318.jpg?isr1",
+=======
+            "url": "http://localhost:64707/dobetterweb/lighthouse-480x318.jpg?isr1",
+            "elidedUrl": "http://localhost:64707/dobetterweb/lighthouse-480x318.jpg?isr1",
+>>>>>>> master
             "displayedSize": "4800 x 3180",
             "actualSize": "480 x 318",
             "actualPixels": 152640,
@@ -692,8 +701,13 @@
             "expectedPixels": 61056000
           },
           {
+<<<<<<< HEAD
             "url": "http://localhost:59630/dobetterweb/lighthouse-rotating.gif",
             "elidedUrl": "http://localhost:59630/dobetterweb/lighthouse-rotating.gif",
+=======
+            "url": "http://localhost:64707/dobetterweb/lighthouse-rotating.gif",
+            "elidedUrl": "http://localhost:64707/dobetterweb/lighthouse-rotating.gif",
+>>>>>>> master
             "displayedSize": "811 x 462",
             "actualSize": "811 x 462",
             "actualPixels": 374682,
@@ -1981,23 +1995,39 @@
         ],
         "items": [
           {
+<<<<<<< HEAD
             "url": "blob:http://localhost:59630/cc4ae030-c90e-4262-89ff-972ab9c96e63",
+=======
+            "url": "blob:http://localhost:64707/803723f3-114a-4dbd-ad67-c44f8174ef58",
+>>>>>>> master
             "node": {
               "type": "node",
               "path": "3,HTML,1,BODY,63,IMG",
               "selector": "body > img",
               "nodeLabel": "img",
+<<<<<<< HEAD
               "snippet": "<img src=\"blob:http://localhost:59630/cc4ae030-c90e-4262-89ff-972ab9c96e63\">"
             }
           },
           {
             "url": "filesystem:http://localhost:59630/temporary/empty-0.46322750891973685.png",
+=======
+              "snippet": "<img src=\"blob:http://localhost:64707/803723f3-114a-4dbd-ad67-c44f8174ef58\">"
+            }
+          },
+          {
+            "url": "filesystem:http://localhost:64707/temporary/empty-0.4587600445763731.png",
+>>>>>>> master
             "node": {
               "type": "node",
               "path": "3,HTML,1,BODY,72,IMG",
               "selector": "body > img",
               "nodeLabel": "img",
+<<<<<<< HEAD
               "snippet": "<img src=\"filesystem:http://localhost:59630/temporary/empty-0.46322750891973685.png\">"
+=======
+              "snippet": "<img src=\"filesystem:http://localhost:64707/temporary/empty-0.4587600445763731.png\">"
+>>>>>>> master
             }
           }
         ]
@@ -3878,9 +3908,9 @@
       "id": "uses-http2",
       "title": "Use HTTP/2",
       "description": "HTTP/2 offers many benefits over HTTP/1.1, including binary headers, multiplexing, and server push. [Learn more](https://web.dev/uses-http2/).",
-      "score": 0.41,
+      "score": 0.34,
       "scoreDisplayMode": "binary",
-      "numericValue": 1550,
+      "numericValue": 2130,
       "numericUnit": "millisecond",
       "displayValue": "15 requests not served via HTTP/2",
       "details": {
@@ -3959,7 +3989,7 @@
             "url": "http://localhost:10200/favicon.ico"
           }
         ],
-        "overallSavingsMs": 1550
+        "overallSavingsMs": 2130
       }
     },
     "uses-passive-event-listeners": {
