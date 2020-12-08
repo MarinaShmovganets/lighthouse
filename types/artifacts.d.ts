@@ -158,9 +158,10 @@ declare global {
       export type MetaElement = LH.Artifacts['MetaElements'][0];
 
       export interface NodeDetails {
+        lhId?: string,
         devtoolsNodePath: string,
         selector: string,
-        boundingRect: Rect | null,
+        boundingRect?: Rect,
         snippet: string,
         nodeLabel: string,
       }
@@ -174,10 +175,11 @@ declare global {
         id: string;
         impact: string;
         tags: Array<string>;
-        nodes: Array<NodeDetails & {
+        nodes: Array<{
           html: string;
           target: Array<string>;
           failureSummary?: string;
+          node: NodeDetails;
         }>;
         // When rules error they set these properties
         // https://github.com/dequelabs/axe-core/blob/eeff122c2de11dd690fbad0e50ba2fdb244b50e8/lib/core/base/audit.js#L684-L693
@@ -205,8 +207,8 @@ declare global {
       export interface DOMStats {
         /** The total number of elements found within the page's body. */
         totalBodyElements: number;
-        width: {max: number, pathToElement: Array<string>, snippet: string};
-        depth: {max: number, pathToElement: Array<string>, snippet: string};
+        width: NodeDetails & {max: number;};
+        depth: NodeDetails & {max: number;};
       }
 
       export interface EmbeddedContentInfo {
@@ -218,9 +220,11 @@ declare global {
         params: {name: string; value: string}[];
       }
 
-      export interface IFrameElement extends NodeDetails {
+      export interface IFrameElement {
         /** The `id` attribute of the iframe. */
         id: string,
+        /** Details for node in DOM for the iframe element */
+        node: NodeDetails,
         /** The `src` attribute of the iframe. */
         src: string,
         /** The iframe's ClientRect. @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect */
@@ -237,7 +241,7 @@ declare global {
       }
 
       /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#Attributes */
-      export interface LinkElement extends NodeDetails {
+      export interface LinkElement {
         /** The `rel` attribute of the link, normalized to lower case. @see https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types */
         rel: 'alternate'|'canonical'|'dns-prefetch'|'preconnect'|'preload'|'stylesheet'|string;
         /** The `href` attribute of the link or `null` if it was invalid in the header. */
@@ -252,17 +256,20 @@ declare global {
         crossOrigin: string | null
         /** Where the link was found, either in the DOM or in the headers of the main document */
         source: 'head'|'body'|'headers'
+        node: NodeDetails | null
       }
 
-      export interface PasswordInputsWithPreventedPaste extends NodeDetails {}
+      export interface PasswordInputsWithPreventedPaste {node: NodeDetails}
 
-      export interface ScriptElement extends NodeDetails {
+      export interface ScriptElement {
         type: string | null
         src: string | null
         /** The `id` property of the script element; null if it had no `id` or if `source` is 'network'. */
         id: string | null
         async: boolean
         defer: boolean
+        /** Details for node in DOM for the script element */
+        node: NodeDetails | null
         /** Where the script was discovered, either in the head, the body, or network records. */
         source: 'head'|'body'|'network'
         /** The content of the inline script or the network record with the matching URL, null if the script had a src and no network record could be found. */
@@ -330,7 +337,7 @@ declare global {
       }
 
       /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#Attributes */
-      export interface AnchorElement extends NodeDetails {
+      export interface AnchorElement {
         rel: string
         /** The computed href property: https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-88517319, use `rawHref` for the exact attribute value */
         href: string
@@ -340,6 +347,7 @@ declare global {
         text: string
         role: string
         target: string
+        node: NodeDetails
         onclick: string
         listeners?: Array<{
           type: Crdp.DOMDebugger.EventListener['type']
@@ -384,6 +392,7 @@ declare global {
             parentRule?: {origin: Crdp.CSS.StyleSheetOrigin, selectors: {text: string}[]};
             styleSheetId?: string;
             stylesheet?: Crdp.CSS.CSSStyleSheetHeader;
+            cssProperties?: Array<Crdp.CSS.CSSProperty>;
           }
         }>
       }
@@ -395,7 +404,7 @@ declare global {
         errors: Crdp.Page.InstallabilityError[];
       }
 
-      export interface ImageElement extends NodeDetails {
+      export interface ImageElement {
         src: string;
         /** The srcset attribute value. @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/srcset */
         srcset: string;
@@ -441,10 +450,10 @@ declare global {
          *  See https://html.spec.whatwg.org/multipage/images.html#pixel-density-descriptor
          */
         usesSrcSetDensityDescriptor: boolean;
-        /** The size of the underlying image file in bytes. 0 if the file could not be identified. */
-        resourceSize: number;
         /** The MIME type of the underlying image file. */
         mimeType?: string;
+        /** Details for node in DOM for the image element */
+        node: NodeDetails;
         /** The loading attribute of the image. */
         loading?: string;
       }
@@ -490,14 +499,16 @@ declare global {
         left: number;
       }
 
-      export interface TapTarget extends NodeDetails {
+      export interface TapTarget {
+        node: NodeDetails;
         href: string;
         clientRects: Rect[];
       }
 
-      export interface TraceElement extends NodeDetails {
+      export interface TraceElement {
         traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation';
         score?: number;
+        node: NodeDetails;
         nodeId?: number;
         animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[];
       }
@@ -512,6 +523,10 @@ declare global {
 
       export interface InspectorIssues {
         mixedContent: Crdp.Audits.MixedContentIssueDetails[];
+        sameSiteCookies: Crdp.Audits.SameSiteCookieIssueDetails[];
+        blockedByResponse: Crdp.Audits.BlockedByResponseIssueDetails[];
+        heavyAds: Crdp.Audits.HeavyAdIssueDetails[];
+        contentSecurityPolicy: Crdp.Audits.ContentSecurityPolicyIssueDetails[];
       }
 
       // Computed artifact types below.
@@ -592,6 +607,7 @@ declare global {
         firstContentfulPaint: number;
         firstMeaningfulPaint?: number;
         largestContentfulPaint?: number;
+        largestContentfulPaintAllFrames?: number;
         traceEnd: number;
         load?: number;
         domContentLoaded?: number;
@@ -620,6 +636,8 @@ declare global {
         firstMeaningfulPaintEvt?: TraceEvent;
         /** The trace event marking largestContentfulPaint, if it was found. */
         largestContentfulPaintEvt?: TraceEvent;
+        /** The trace event marking largestContentfulPaint from all frames, if it was found. */
+        largestContentfulPaintAllFramesEvt?: TraceEvent;
         /** The trace event marking loadEventEnd, if it was found. */
         loadEvt?: TraceEvent;
         /** The trace event marking domContentLoadedEventEnd, if it was found. */
@@ -648,10 +666,13 @@ declare global {
       }
 
       export interface FullPageScreenshot {
-        /** Base64 image data URL. */
-        data: string;
-        width: number;
-        height: number;
+        screenshot: {
+          /** Base64 image data URL. */
+          data: string;
+          width: number;
+          height: number;
+        };
+        nodes: Record<string, Rect>;
       }
 
       export interface TimingSummary {
@@ -661,6 +682,8 @@ declare global {
         firstMeaningfulPaintTs: number | undefined;
         largestContentfulPaint: number | undefined;
         largestContentfulPaintTs: number | undefined;
+        largestContentfulPaintAllFrames: number | undefined;
+        largestContentfulPaintAllFramesTs: number | undefined;
         firstCPUIdle: number | undefined;
         firstCPUIdleTs: number | undefined;
         interactive: number | undefined;
@@ -671,12 +694,14 @@ declare global {
         estimatedInputLatencyTs: number | undefined;
         maxPotentialFID: number | undefined;
         cumulativeLayoutShift: number | undefined;
+        cumulativeLayoutShiftAllFrames: number | undefined;
         totalBlockingTime: number;
         observedTimeOrigin: number;
         observedTimeOriginTs: number;
         observedNavigationStart: number;
         observedNavigationStartTs: number;
         observedCumulativeLayoutShift: number | undefined;
+        observedCumulativeLayoutShiftAllFrames: number | undefined;
         observedFirstPaint: number | undefined;
         observedFirstPaintTs: number | undefined;
         observedFirstContentfulPaint: number;
@@ -685,6 +710,8 @@ declare global {
         observedFirstMeaningfulPaintTs: number | undefined;
         observedLargestContentfulPaint: number | undefined;
         observedLargestContentfulPaintTs: number | undefined;
+        observedLargestContentfulPaintAllFrames: number | undefined;
+        observedLargestContentfulPaintAllFramesTs: number | undefined;
         observedTraceEnd: number | undefined;
         observedTraceEndTs: number | undefined;
         observedLoad: number | undefined;
@@ -701,11 +728,12 @@ declare global {
 
       export interface Form {
         /** If attributes is missing that means this is a formless set of elements. */
-        attributes?: NodeDetails & {
+        attributes?: {
           id: string;
           name: string;
           autocomplete: string;
         };
+        node: NodeDetails | null;
         inputs: Array<FormInput>;
         labels: Array<FormLabel>;
       }
@@ -720,15 +748,13 @@ declare global {
           attribute: string | null;
           prediction: string | null;
         }
-        nodeLabel: string;
-        snippet: string;
+        node: NodeDetails;
       }
 
       /** Attributes collected for every label element in the labels array from the forms interface */
       export interface FormLabel {
         for: string;
-        nodeLabel: string;
-        snippet: string;
+        node: NodeDetails;
       }
 
       /** Information about an event listener registered on the global object. */

@@ -16,7 +16,6 @@ const FontSize = require('./seo/font-size.js');
 
 /* global window, getElementsInDocument, Image, getNodeDetails, ShadowRoot */
 
-
 /** @param {Element} element */
 /* istanbul ignore next */
 function getClientRect(element) {
@@ -76,9 +75,7 @@ function getHTMLImages(allElements) {
       cssComputedPosition: getPosition(element, computedStyle),
       isCss: false,
       isPicture,
-      // @ts-expect-error: loading attribute not yet added to HTMLImageElement definition.
       loading: element.loading,
-      resourceSize: 0, // this will get overwritten below
       usesObjectFit: ['cover', 'contain', 'scale-down', 'none'].includes(
         computedStyle.getPropertyValue('object-fit')
       ),
@@ -89,7 +86,7 @@ function getHTMLImages(allElements) {
       // https://html.spec.whatwg.org/multipage/images.html#pixel-density-descriptor
       usesSrcSetDensityDescriptor: / \d+(\.\d+)?x/.test(element.srcset),
       // @ts-expect-error - getNodeDetails put into scope via stringification
-      ...getNodeDetails(element),
+      node: getNodeDetails(element),
     };
   });
 }
@@ -138,9 +135,8 @@ function getCSSImages(allElements) {
         style.getPropertyValue('image-rendering')
       ),
       usesSrcSetDensityDescriptor: false,
-      resourceSize: 0, // this will get overwritten below
       // @ts-expect-error - getNodeDetails put into scope via stringification
-      ...getNodeDetails(element),
+      node: getNodeDetails(element),
     });
   }
 
@@ -177,14 +173,14 @@ function determineNaturalSize(url) {
 }
 
 /**
- * @param {LH.Crdp.CSS.CSSStyle|undefined} style
+ * @param {Partial<Pick<LH.Crdp.CSS.CSSStyle, 'cssProperties'>>|undefined} rule
  * @param {string} property
  * @return {string | undefined}
  */
-function findSizeDeclaration(style, property) {
-  if (!style) return;
+function findSizeDeclaration(rule, property) {
+  if (!rule || !rule.cssProperties) return;
 
-  const definedProp = style.cssProperties.find(({name}) => name === property);
+  const definedProp = rule.cssProperties.find(({name}) => name === property);
   if (!definedProp) return;
 
   return definedProp.value;
@@ -203,8 +199,7 @@ function findMostSpecificCSSRule(matchedCSSRules, property) {
   const rule = FontSize.findMostSpecificMatchedCSSRule(matchedCSSRules, isDeclarationofInterest);
   if (!rule) return;
 
-  // @ts-expect-error style is guaranteed to exist if a rule exists
-  return findSizeDeclaration(rule.style, property);
+  return findSizeDeclaration(rule, property);
 }
 
 /**
@@ -291,9 +286,12 @@ class ImageElements extends Gatherer {
   async afterPass(passContext, loadData) {
     const driver = passContext.driver;
     const indexedNetworkRecords = loadData.networkRecords.reduce((map, record) => {
+      // An image response in newer formats is sometimes incorrectly marked as "application/octet-stream",
+      // so respect the extension too.
+      const isImage = /^image/.test(record.mimeType) || /\.(avif|webp)$/i.test(record.url);
       // The network record is only valid for size information if it finished with a successful status
-      // code that indicates a complete resource response.
-      if (/^image/.test(record.mimeType) && record.finished && record.statusCode === 200) {
+      // code that indicates a complete image response.
+      if (isImage && record.finished && record.statusCode === 200) {
         map[record.url] = record;
       }
 
@@ -331,16 +329,9 @@ class ImageElements extends Gatherer {
       // Pull some of our information directly off the network record.
       const networkRecord = indexedNetworkRecords[element.src] || {};
       element.mimeType = networkRecord.mimeType;
-      // Resource size is almost always the right one to be using because of the below:
-      //     transferSize = resourceSize + headers.length
-      // HOWEVER, there are some cases where an image is compressed again over the network and transfer size
-      // is smaller (see https://github.com/GoogleChrome/lighthouse/pull/4968).
-      // Use the min of the two numbers to be safe.
-      const {resourceSize = 0, transferSize = 0} = networkRecord;
-      element.resourceSize = Math.min(resourceSize, transferSize);
 
       if (!element.isInShadowDOM && !element.isCss) {
-        await this.fetchSourceRules(driver, element.devtoolsNodePath, element);
+        await this.fetchSourceRules(driver, element.node.devtoolsNodePath, element);
       }
       // Images within `picture` behave strangely and natural size information isn't accurate,
       // CSS images have no natural size information at all. Try to get the actual size if we can.

@@ -239,20 +239,21 @@ class GatherRunner {
 
   /**
    * Returns an error if we try to load a non-HTML page.
-   * @param {LH.Artifacts.NetworkRequest|undefined} mainRecord
+   * Expects a network request with all redirects resolved, otherwise the MIME type may be incorrect.
+   * @param {LH.Artifacts.NetworkRequest|undefined} finalRecord
    * @return {LH.LighthouseError|undefined}
    */
-  static getNonHtmlError(mainRecord) {
+  static getNonHtmlError(finalRecord) {
     // MIME types are case-insenstive but Chrome normalizes MIME types to be lowercase.
     const HTML_MIME_TYPE = 'text/html';
 
     // If we never requested a document, there's no doctype error, let other cases handle it.
-    if (!mainRecord) return undefined;
+    if (!finalRecord) return undefined;
 
     // mimeType is determined by the browser, we assume Chrome is determining mimeType correctly,
     // independently of 'Content-Type' response headers, and always sending mimeType if well-formed.
-    if (HTML_MIME_TYPE !== mainRecord.mimeType) {
-      return new LHError(LHError.errors.NOT_HTML, {mimeType: mainRecord.mimeType});
+    if (HTML_MIME_TYPE !== finalRecord.mimeType) {
+      return new LHError(LHError.errors.NOT_HTML, {mimeType: finalRecord.mimeType});
     }
     return undefined;
   }
@@ -273,9 +274,15 @@ class GatherRunner {
       mainRecord = NetworkAnalyzer.findMainDocument(networkRecords, passContext.url);
     } catch (_) {}
 
+    // MIME Type is only set on the final redirected document request. Use this for the HTML check instead of root.
+    let finalRecord;
+    if (mainRecord) {
+      finalRecord = NetworkAnalyzer.resolveRedirects(mainRecord);
+    }
+
     const networkError = GatherRunner.getNetworkError(mainRecord);
     const interstitialError = GatherRunner.getInterstitialError(mainRecord, networkRecords);
-    const nonHtmlError = GatherRunner.getNonHtmlError(mainRecord);
+    const nonHtmlError = GatherRunner.getNonHtmlError(finalRecord);
 
     // Check to see if we need to ignore the page load failure.
     // e.g. When the driver is offline, the load will fail without page offline support.
@@ -320,7 +327,7 @@ class GatherRunner {
     if (!isThrottledMethod || !isDefaultMultiplier) return;
 
     // Only warn if the device didn't meet the threshold.
-    // See https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling 
+    // See https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling
     if (baseArtifacts.BenchmarkIndex > SLOW_CPU_BENCHMARK_INDEX_THRESHOLD) return;
 
     return str_(UIStrings.warningSlowHostCpu);
@@ -417,8 +424,6 @@ class GatherRunner {
 
     for (const gathererDefn of passContext.passConfig.gatherers) {
       const gatherer = gathererDefn.instance;
-      // Abuse the passContext to pass through gatherer options
-      passContext.options = gathererDefn.options || {};
       const status = {
         msg: `Gathering setup: ${gatherer.name}`,
         id: `lh:gather:beforePass:${gatherer.name}`,
@@ -447,8 +452,6 @@ class GatherRunner {
 
     for (const gathererDefn of gatherers) {
       const gatherer = gathererDefn.instance;
-      // Abuse the passContext to pass through gatherer options
-      passContext.options = gathererDefn.options || {};
       const status = {
         msg: `Gathering in-page: ${gatherer.name}`,
         id: `lh:gather:pass:${gatherer.name}`,
@@ -492,8 +495,6 @@ class GatherRunner {
       };
       log.time(status);
 
-      // Add gatherer options to the passContext.
-      passContext.options = gathererDefn.options || {};
       const artifactPromise = Promise.resolve()
         .then(_ => gatherer.afterPass(passContext, loadData));
 
@@ -586,30 +587,17 @@ class GatherRunner {
    * @return {Promise<LH.Artifacts.InstallabilityErrors>}
    */
   static async getInstallabilityErrors(passContext) {
+    const status = {
+      msg: 'Get webapp installability errors',
+      id: 'lh:gather:getInstallabilityErrors',
+    };
+    log.time(status);
     const response =
       await passContext.driver.sendCommand('Page.getInstallabilityErrors');
 
-    let errors = response.installabilityErrors;
-    // COMPAT: Before M82, `getInstallabilityErrors` was not localized and just english
-    // error strings were returned. Convert the values we care about to the new error id format.
-    if (!errors) {
-      /** @type {string[]} */
-      // @ts-expect-error - Support older protocol data.
-      const m81StyleErrors = response.errors || [];
-      errors = m81StyleErrors.map(error => {
-        const englishErrorToErrorId = {
-          'Could not download a required icon from the manifest': 'cannot-download-icon',
-          'Downloaded icon was empty or corrupted': 'no-icon-available',
-        };
-        for (const [englishError, errorId] of Object.entries(englishErrorToErrorId)) {
-          if (error.includes(englishError)) {
-            return {errorId, errorArguments: []};
-          }
-        }
-        return {errorId: '', errorArguments: []};
-      }).filter(error => error.errorId);
-    }
+    const errors = response.installabilityErrors;
 
+    log.timeEnd(status);
     return {errors};
   }
 
@@ -620,6 +608,8 @@ class GatherRunner {
    * @param {LH.Gatherer.PassContext} passContext
    */
   static async populateBaseArtifacts(passContext) {
+    const status = {msg: 'Populate base artifacts', id: 'lh:gather:populateBaseArtifacts'};
+    log.time(status);
     const baseArtifacts = passContext.baseArtifacts;
 
     // Copy redirected URL to artifact.
@@ -654,6 +644,8 @@ class GatherRunner {
 
     const slowCpuWarning = GatherRunner.getSlowHostCpuWarning(passContext);
     if (slowCpuWarning) baseArtifacts.LighthouseRunWarnings.push(slowCpuWarning);
+
+    log.timeEnd(status);
   }
 
   /**
@@ -681,9 +673,13 @@ class GatherRunner {
    * @return {Promise<LH.Artifacts.Manifest|null>}
    */
   static async getWebAppManifest(passContext) {
+    const status = {msg: 'Get webapp manifest', id: 'lh:gather:getWebAppManifest'};
+    log.time(status);
     const response = await passContext.driver.getAppManifest();
     if (!response) return null;
-    return manifestParser(response.data, response.url, passContext.url);
+    const manifest = manifestParser(response.data, response.url, passContext.url);
+    log.timeEnd(status);
+    return manifest;
   }
 
   /**
