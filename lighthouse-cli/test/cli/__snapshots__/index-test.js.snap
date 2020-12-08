@@ -178,6 +178,9 @@ Object {
       "path": "preload-lcp-image",
     },
     Object {
+      "path": "full-page-screenshot",
+    },
+    Object {
       "path": "manual/pwa-cross-browser",
     },
     Object {
@@ -1429,6 +1432,9 @@ Object {
         },
         Object {
           "path": "source-maps",
+        },
+        Object {
+          "path": "full-page-screenshot",
         },
       ],
       "loadFailureMode": "fatal",
