@@ -2170,7 +2170,7 @@
     "aria-command-name": {
       "id": "aria-command-name",
       "title": "`button`, `link` and `menuitem` elements have an accessible name",
-      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-name/).",
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -2201,14 +2201,14 @@
     "aria-input-field-name": {
       "id": "aria-input-field-name",
       "title": "ARIA input fields have accessible names",
-      "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-input-field-name/).",
+      "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
     "aria-meter-name": {
       "id": "aria-meter-name",
       "title": "ARIA meter nodes have an accessible name",
-      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-name/).",
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -2220,7 +2220,7 @@
     "aria-progressbar-name": {
       "id": "aria-progressbar-name",
       "title": "ARIA progress bar nodes have an accessible name",
-      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-name/).",
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -2280,14 +2280,14 @@
     "aria-toggle-field-name": {
       "id": "aria-toggle-field-name",
       "title": "ARIA toggle fields have accessible names",
-      "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-name/).",
+      "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
     "aria-tooltip-name": {
       "id": "aria-tooltip-name",
       "title": "ARIA tooltips have an accessible name",
-      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-name/).",
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -2299,7 +2299,7 @@
     "aria-treeitem-name": {
       "id": "aria-treeitem-name",
       "title": "Tree items (`<div role=\"tree\">...items here...</div>`) have an accessible name",
-      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-name/).",
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
