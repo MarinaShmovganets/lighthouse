@@ -638,11 +638,7 @@
         ],
         "items": [
           {
-<<<<<<< HEAD
-            "url": "http://localhost:59630/dobetterweb/lighthouse-480x318.jpg?iar1",
-=======
             "url": "http://localhost:64707/dobetterweb/lighthouse-480x318.jpg?iar1",
->>>>>>> master
             "displayedAspectRatio": "120 x 15\n        (8.00)",
             "actualAspectRatio": "480 x 318\n        (1.51)",
             "doRatiosMatch": false
@@ -687,13 +683,8 @@
         ],
         "items": [
           {
-<<<<<<< HEAD
-            "url": "http://localhost:59630/dobetterweb/lighthouse-480x318.jpg?isr1",
-            "elidedUrl": "http://localhost:59630/dobetterweb/lighthouse-480x318.jpg?isr1",
-=======
             "url": "http://localhost:64707/dobetterweb/lighthouse-480x318.jpg?isr1",
             "elidedUrl": "http://localhost:64707/dobetterweb/lighthouse-480x318.jpg?isr1",
->>>>>>> master
             "displayedSize": "4800 x 3180",
             "actualSize": "480 x 318",
             "actualPixels": 152640,
@@ -701,13 +692,8 @@
             "expectedPixels": 61056000
           },
           {
-<<<<<<< HEAD
-            "url": "http://localhost:59630/dobetterweb/lighthouse-rotating.gif",
-            "elidedUrl": "http://localhost:59630/dobetterweb/lighthouse-rotating.gif",
-=======
             "url": "http://localhost:64707/dobetterweb/lighthouse-rotating.gif",
             "elidedUrl": "http://localhost:64707/dobetterweb/lighthouse-rotating.gif",
->>>>>>> master
             "displayedSize": "811 x 462",
             "actualSize": "811 x 462",
             "actualPixels": 374682,
@@ -1995,39 +1981,23 @@
         ],
         "items": [
           {
-<<<<<<< HEAD
-            "url": "blob:http://localhost:59630/cc4ae030-c90e-4262-89ff-972ab9c96e63",
-=======
-            "url": "blob:http://localhost:64707/803723f3-114a-4dbd-ad67-c44f8174ef58",
->>>>>>> master
+            "url": "blob:http://localhost:64707/e2131114-89a9-4702-b14f-22bb9397f8d5",
             "node": {
               "type": "node",
               "path": "3,HTML,1,BODY,63,IMG",
               "selector": "body > img",
               "nodeLabel": "img",
-<<<<<<< HEAD
-              "snippet": "<img src=\"blob:http://localhost:59630/cc4ae030-c90e-4262-89ff-972ab9c96e63\">"
+              "snippet": "<img src=\"blob:http://localhost:64707/e2131114-89a9-4702-b14f-22bb9397f8d5\">"
             }
           },
           {
-            "url": "filesystem:http://localhost:59630/temporary/empty-0.46322750891973685.png",
-=======
-              "snippet": "<img src=\"blob:http://localhost:64707/803723f3-114a-4dbd-ad67-c44f8174ef58\">"
-            }
-          },
-          {
-            "url": "filesystem:http://localhost:64707/temporary/empty-0.4587600445763731.png",
->>>>>>> master
+            "url": "filesystem:http://localhost:64707/temporary/empty-0.13866110686791577.png",
             "node": {
               "type": "node",
               "path": "3,HTML,1,BODY,72,IMG",
               "selector": "body > img",
               "nodeLabel": "img",
-<<<<<<< HEAD
-              "snippet": "<img src=\"filesystem:http://localhost:59630/temporary/empty-0.46322750891973685.png\">"
-=======
-              "snippet": "<img src=\"filesystem:http://localhost:64707/temporary/empty-0.4587600445763731.png\">"
->>>>>>> master
+              "snippet": "<img src=\"filesystem:http://localhost:64707/temporary/empty-0.13866110686791577.png\">"
             }
           }
         ]
@@ -3424,54 +3394,14 @@
       "scoreDisplayMode": "numeric",
       "numericValue": 0,
       "numericUnit": "millisecond",
-      "displayValue": "Potential savings of 49 KiB",
+      "displayValue": "",
       "warnings": [],
       "details": {
         "type": "opportunity",
-        "headings": [
-          {
-            "key": "url",
-            "valueType": "thumbnail",
-            "label": ""
-          },
-          {
-            "key": "url",
-            "valueType": "url",
-            "label": "URL"
-          },
-          {
-            "key": "totalBytes",
-            "valueType": "bytes",
-            "label": "Resource Size"
-          },
-          {
-            "key": "wastedBytes",
-            "valueType": "bytes",
-            "label": "Potential Savings"
-          }
-        ],
-        "items": [
-          {
-            "url": "http://localhost:59630/dobetterweb/lighthouse-480x318.jpg?iar1",
-            "totalBytes": 24620,
-            "wastedBytes": 22619,
-            "wastedPercent": 91.87426297169812
-          },
-          {
-            "url": "http://localhost:59630/dobetterweb/lighthouse-480x318.jpg?iar2",
-            "totalBytes": 24620,
-            "wastedBytes": 13950,
-            "wastedPercent": 56.66273584905661
-          },
-          {
-            "url": "http://localhost:59630/dobetterweb/lighthouse-480x318.jpg?isr2",
-            "totalBytes": 24620,
-            "wastedBytes": 13950,
-            "wastedPercent": 56.66273584905661
-          }
-        ],
+        "headings": [],
+        "items": [],
         "overallSavingsMs": 0,
-        "overallSavingsBytes": 50519
+        "overallSavingsBytes": 0
       }
     },
     "efficient-animated-content": {
@@ -6766,7 +6696,6 @@
         "audits[render-blocking-resources].details.headings[0].label",
         "audits[uses-webp-images].details.headings[1].label",
         "audits[uses-text-compression].details.headings[0].label",
-        "audits[uses-responsive-images].details.headings[1].label",
         "audits[geolocation-on-start].details.headings[0].text",
         "audits[no-document-write].details.headings[0].text",
         "audits[notification-on-start].details.headings[0].text",
@@ -7526,8 +7455,7 @@
       "lighthouse-core/lib/i18n/i18n.js | columnWastedBytes": [
         "audits[render-blocking-resources].details.headings[2].label",
         "audits[uses-webp-images].details.headings[3].label",
-        "audits[uses-text-compression].details.headings[2].label",
-        "audits[uses-responsive-images].details.headings[3].label"
+        "audits[uses-text-compression].details.headings[2].label"
       ],
       "lighthouse-core/audits/byte-efficiency/unminified-css.js | title": [
         "audits[unminified-css].title"
@@ -7571,17 +7499,10 @@
             "wastedBytes": 64646
           },
           "path": "audits[uses-text-compression].displayValue"
-        },
-        {
-          "values": {
-            "wastedBytes": 50519
-          },
-          "path": "audits[uses-responsive-images].displayValue"
         }
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnResourceSize": [
-        "audits[uses-webp-images].details.headings[2].label",
-        "audits[uses-responsive-images].details.headings[2].label"
+        "audits[uses-webp-images].details.headings[2].label"
       ],
       "lighthouse-core/audits/byte-efficiency/uses-optimized-images.js | title": [
         "audits[uses-optimized-images].title"
