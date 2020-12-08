@@ -25,10 +25,9 @@ All audits in the SEO category are [equally weighted](https://github.com/GoogleC
 
 <!-- node lighthouse-core/scripts/print-a11y-scoring.js -->
 
-<!-- TODO: need a commit first to update url ... -->
 The accessibility score is a weighted average. The specific weights for v7 are as follows:
 
-(go [here](https://github.com/GoogleChrome/lighthouse/blob/v6.5.0/docs/scoring.md#how-is-the-accessibility-score-calculated) for v6)
+(See the [v6 scoring explanation](https://github.com/GoogleChrome/lighthouse/blob/v6.5.0/docs/scoring.md#how-is-the-accessibility-score-calculated))
 
 | audit id | weight |
 |-|-|

@@ -173,7 +173,7 @@ declare global {
 
       export interface AxeRuleResult {
         id: string;
-        impact: string;
+        impact?: string;
         tags: Array<string>;
         nodes: Array<NodeDetails & {
           html: string;

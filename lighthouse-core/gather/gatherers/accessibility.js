@@ -66,18 +66,16 @@ async function runA11yChecks() {
     });
 
     // Ensure errors can be serialized over the protocol
-    // @ts-expect-error
-    if (result.error instanceof Error) {
+    /** @type {(Error & {mess: string, errorNode: any}) | undefined} */
+    // @ts-expect-error not on axe types
+    const error = result.error;
+    if (error instanceof Error) {
       // @ts-expect-error
       result.error = {
-        // @ts-expect-error
-        name: result.error.name,
-        // @ts-expect-error
-        message: result.error.mess,
-        // @ts-expect-error
-        stack: result.error.stack,
-        // @ts-expect-error
-        errorNode: result.error.errorNode,
+        name: error.name,
+        message: error.mess,
+        stack: error.stack,
+        errorNode: error.errorNode,
       };
     }
   };
@@ -88,10 +86,10 @@ async function runA11yChecks() {
 
   // We only need violations, and circular references are possible outside of violations
   return {
-    // @ts-expect-error
+    // @ts-expect-error value is augmented above.
     violations: axeResults.violations,
     notApplicable: axeResults.inapplicable,
-    // @ts-expect-error
+    // @ts-expect-error value is augmented above.
     incomplete: axeResults.incomplete,
     version: axeResults.testEngine.version,
   };
