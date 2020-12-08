@@ -22,11 +22,7 @@ describe('stack-packs lib', () => {
     const result = lighthouseStackPacksDep
       .filter(p => !stackPacksLib.stackPacksToInclude.find(p2 => p2.packId === p.id))
       .map(p => p.id);
-    expect(result).toMatchInlineSnapshot(`
-      Array [
-        "joomla",
-      ]
-    `);
+    expect(result).toMatchInlineSnapshot(`Array []`);
   });
 });
 
