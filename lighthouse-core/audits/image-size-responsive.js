@@ -90,15 +90,24 @@ function isCandidate(image) {
 }
 
 /**
+ * Type check to ensure that the ImageElement has natural dimensions.
+ *
  * @param {LH.Artifacts.ImageElement} image
- * @param {number} DPR
  * @return {image is LH.Artifacts.ImageElement & {naturalWidth: number, naturalHeight: number}}
+ */
+function imageHasNaturalDimensions(image) {
+  return image.naturalHeight !== undefined && image.naturalWidth !== undefined;
+}
+
+/**
+ * @param {LH.Artifacts.ImageElement & {naturalHeight: number, naturalWidth: number}} image
+ * @param {number} DPR
+ * @return {boolean}
  */
 function imageHasRightSize(image, DPR) {
   const [expectedWidth, expectedHeight] =
       allowedImageSize(image.displayedWidth, image.displayedHeight, DPR);
-  return typeof image.naturalWidth === 'number' && typeof image.naturalHeight === 'number' &&
-          image.naturalWidth >= expectedWidth && image.naturalHeight >= expectedHeight;
+  return image.naturalWidth >= expectedWidth && image.naturalHeight >= expectedHeight;
 }
 
 /**
@@ -216,20 +225,13 @@ class ImageSizeResponsive extends Audit {
   static audit(artifacts) {
     const DPR = artifacts.ViewportDimensions.devicePixelRatio;
 
-    const validImages = Array
+    const results = Array
       .from(artifacts.ImageElements)
       .filter(isCandidate)
+      .filter(imageHasNaturalDimensions)
       .filter(image => !imageHasRightSize(image, DPR))
-      .filter(image => isVisible(image.clientRect, artifacts.ViewportDimensions));
-
-    /** @type {Array<Result>} */
-    const results = [];
-    for (const image of validImages) {
-      const naturalHeight = image.naturalHeight;
-      const naturalWidth = image.naturalWidth;
-      if (!naturalWidth || !naturalHeight) continue;
-      results.push(getResult({...image, naturalHeight, naturalWidth}, DPR));
-    }
+      .filter(image => isVisible(image.clientRect, artifacts.ViewportDimensions))
+      .map(image => getResult(image, DPR));
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
