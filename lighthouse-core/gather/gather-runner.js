@@ -309,7 +309,7 @@ class GatherRunner {
    * Returns a warning if the host device appeared to be underpowered according to BenchmarkIndex.
    *
    * @param {Pick<LH.Gatherer.PassContext, 'settings'|'baseArtifacts'>} passContext
-   * @return {string | undefined}
+   * @return {LH.IcuMessage | undefined}
    */
   static getSlowHostCpuWarning(passContext) {
     const {settings, baseArtifacts} = passContext;
