@@ -16,7 +16,7 @@ then
   # Update to keep current
   git clean -fd
   git pull -f origin master
-  gclient sync
+  gclient sync --delete_unversioned_trees --reset
 
   exit 0
 fi
