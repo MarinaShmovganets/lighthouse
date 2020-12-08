@@ -14,7 +14,7 @@ then
   cd "$DEVTOOLS_PATH"
 
   # Update to keep current
-  git reset --hard
+  git clean -fd
   git pull -f origin master
   gclient sync
 
