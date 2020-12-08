@@ -60,7 +60,7 @@ async function runA11yChecks() {
   const augmentAxeNodes = result => {
     result.nodes.forEach(node => {
       // @ts-expect-error - getNodeDetails put into scope via stringification
-      Object.assign(node, getNodeDetails(node.element));
+      node.node = getNodeDetails(node.element);
       // @ts-expect-error - avoid circular JSON concerns
       node.element = node.any = node.all = node.none = undefined;
     });
