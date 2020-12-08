@@ -66,14 +66,15 @@ async function runA11yChecks() {
     });
 
     // Ensure errors can be serialized over the protocol
-    /** @type {(Error & {mess: string, errorNode: any}) | undefined} */
-    // @ts-expect-error not on axe types
+    /** @type {(Error & {message: string, errorNode: any}) | undefined} */
+    // @ts-expect-error - when rules error axe sets these properties
+    // see https://github.com/dequelabs/axe-core/blob/eeff122c2de11dd690fbad0e50ba2fdb244b50e8/lib/core/base/audit.js#L684-L693
     const error = result.error;
     if (error instanceof Error) {
       // @ts-expect-error
       result.error = {
         name: error.name,
-        message: error.mess,
+        message: error.message,
         stack: error.stack,
         errorNode: error.errorNode,
       };

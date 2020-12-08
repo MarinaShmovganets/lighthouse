@@ -181,8 +181,6 @@ declare global {
           failureSummary?: string;
           node: NodeDetails;
         }>;
-        // When rules error they set these properties
-        // https://github.com/dequelabs/axe-core/blob/eeff122c2de11dd690fbad0e50ba2fdb244b50e8/lib/core/base/audit.js#L684-L693
         error?: RuleExecutionError;
       }
 
