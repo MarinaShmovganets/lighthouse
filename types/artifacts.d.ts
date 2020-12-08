@@ -450,6 +450,8 @@ declare global {
          *  See https://html.spec.whatwg.org/multipage/images.html#pixel-density-descriptor
          */
         usesSrcSetDensityDescriptor: boolean;
+        /** The MIME type of the underlying image file. */
+        mimeType?: string;
         /** Details for node in DOM for the image element */
         node: NodeDetails;
         /** The loading attribute of the image. */
