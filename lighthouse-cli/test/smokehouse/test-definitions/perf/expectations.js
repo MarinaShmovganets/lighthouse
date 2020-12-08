@@ -380,7 +380,7 @@ module.exports = [
               {
                 product: 'YouTube Embedded Player (Video)',
                 blockingTime: 0,
-                transferSize: '651128 +/- 100000',
+                transferSize: '>100000', // Transfer size varies a lot
                 subItems: {
                   type: 'subitems',
                   items: {
