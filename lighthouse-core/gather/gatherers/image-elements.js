@@ -80,7 +80,7 @@ function getHTMLImages(allElements) {
       cssComputedImageRendering: computedStyle.getPropertyValue('image-rendering'),
       isInShadowDOM: element.getRootNode() instanceof ShadowRoot,
       // @ts-expect-error - getNodeDetails put into scope via stringification
-      ...getNodeDetails(element),
+      node: getNodeDetails(element),
     };
   });
 }
@@ -127,7 +127,7 @@ function getCSSImages(allElements) {
       cssComputedObjectFit: '',
       cssComputedImageRendering: style.getPropertyValue('image-rendering'),
       // @ts-expect-error - getNodeDetails put into scope via stringification
-      ...getNodeDetails(element),
+      node: getNodeDetails(element),
     });
   }
 
@@ -322,7 +322,7 @@ class ImageElements extends Gatherer {
       element.mimeType = networkRecord.mimeType;
 
       if (!element.isInShadowDOM && !element.isCss) {
-        await this.fetchSourceRules(driver, element.devtoolsNodePath, element);
+        await this.fetchSourceRules(driver, element.node.devtoolsNodePath, element);
       }
       // Images within `picture` behave strangely and natural size information isn't accurate,
       // CSS images have no natural size information at all. Try to get the actual size if we can.
