@@ -174,9 +174,6 @@ Computing artifact: LanternLargestContentfulPaint
 Auditing: First Meaningful Paint
 Computing artifact: FirstMeaningfulPaint
 Computing artifact: LanternFirstMeaningfulPaint
-Auditing: Page load is fast enough on mobile networks
-Computing artifact: Interactive
-Computing artifact: LanternInteractive
 Auditing: Speed Index
 Computing artifact: SpeedIndex
 Computing artifact: LanternSpeedIndex
@@ -190,6 +187,7 @@ Computing artifact: LanternEstimatedInputLatency
 Auditing: Total Blocking Time
 Computing artifact: TotalBlockingTime
 Computing artifact: LanternTotalBlockingTime
+Computing artifact: LanternInteractive
 Auditing: Max Potential First Input Delay
 Computing artifact: MaxPotentialFID
 Computing artifact: LanternMaxPotentialFID
@@ -202,6 +200,7 @@ Auditing: First CPU Idle
 Computing artifact: FirstCPUIdle
 Computing artifact: LanternFirstCPUIdle
 Auditing: Time to Interactive
+Computing artifact: Interactive
 Auditing: User Timing marks and measures
 Computing artifact: UserTimings
 Auditing: Avoid chaining critical requests
@@ -487,7 +486,6 @@ link-name: notApplicable
 link-text: pass
 list: notApplicable
 listitem: notApplicable
-load-fast-enough-for-pwa: flaky
 loads-ad-tag-over-https: notApplicable
 loads-gpt-from-official-source: notApplicable
 logical-tab-order: manual
@@ -575,6 +573,7 @@ works-offline: fail
 .lh-audit divs:
 resource-summary
 largest-contentful-paint-element
+long-tasks
 render-blocking-resources
 uses-responsive-images
 offscreen-images
@@ -607,7 +606,6 @@ third-party-facades
 layout-shift-elements
 uses-passive-event-listeners
 no-document-write
-long-tasks
 non-composited-animations
 unsized-images
 document-title
@@ -694,7 +692,6 @@ plugins
 robots-txt
 image-alt
 canonical
-load-fast-enough-for-pwa
 works-offline
 offline-start-url
 is-on-https

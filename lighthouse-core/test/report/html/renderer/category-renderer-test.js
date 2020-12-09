@@ -415,7 +415,8 @@ describe('CategoryRenderer', () => {
     it('expands warning audit group', () => {
       const category = sampleResults.categories.pwa;
       const categoryClone = JSON.parse(JSON.stringify(category));
-      categoryClone.auditRefs[0].result.warnings = ['Some warning'];
+      const failingAudit = categoryClone.auditRefs.find(ref => ref.id === 'content-width');
+      failingAudit.result.warnings = ['Some warning'];
 
       const auditDOM = renderer.render(categoryClone, sampleResults.categoryGroups);
       const warningClumpEl = auditDOM.querySelector('.lh-clump--warning');
