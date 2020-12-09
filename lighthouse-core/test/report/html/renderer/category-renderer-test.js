@@ -398,7 +398,6 @@ describe('CategoryRenderer', () => {
 
       expect(passedAudits).toMatchInlineSnapshot(`
         Array [
-          "viewport",
           "without-javascript",
         ]
       `);
@@ -418,8 +417,8 @@ describe('CategoryRenderer', () => {
       `);
       expect(warningAudits).toMatchInlineSnapshot(`
         Array [
-          "load-fast-enough-for-pwa",
           "content-width",
+          "viewport",
         ]
       `);
       expect(manualAudits).toMatchInlineSnapshot(`
@@ -429,10 +428,6 @@ describe('CategoryRenderer', () => {
           "pwa-each-page-has-url",
         ]
       `);
-      assert.equal(passedAudits.length, 2);
-      assert.equal(failedAudits.length, 10);
-      assert.equal(warningAudits.length, 2);
-      assert.equal(manualAudits.length, 3);
     });
 
     it('doesnt create a passed section if there were 0 passed', () => {
