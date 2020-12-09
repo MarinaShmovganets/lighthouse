@@ -119,6 +119,8 @@ const UIStrings = {
   pwaInstallableGroupTitle: 'Installable',
   /** Title of the "PWA Optimized" section of the web app category. Within this section are audits that check if the developer has taken advantage of features to make their web page more enjoyable and engaging for the user. */
   pwaOptimizedGroupTitle: 'PWA Optimized',
+  /** Title of the "Hidden Audits" section of the web app category. Within this section are audits that are hidden in the report. */
+  hiddenGroupTitle: 'Hidden Audits',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -424,6 +426,9 @@ const defaultConfig = {
     'best-practices-general': {
       title: str_(UIStrings.bestPracticesGeneralGroupTitle),
     },
+    'hidden': {
+      title: str_(UIStrings.hiddenGroupTitle),
+    },
   },
   categories: {
     'performance': {
@@ -613,8 +618,7 @@ const defaultConfig = {
         {id: 'works-offline', weight: 5, group: 'pwa-fast-reliable'},
         {id: 'offline-start-url', weight: 1, group: 'pwa-fast-reliable'},
         // Installable
-        {id: 'is-on-https', weight: 2, group: 'pwa-installable'},
-        {id: 'service-worker', weight: 1, group: 'pwa-installable'},
+        {id: 'service-worker', weight: 1, group: 'hidden'},
         {id: 'installable-manifest', weight: 2, group: 'pwa-installable'},
         // PWA Optimized
         {id: 'redirects-http', weight: 2, group: 'pwa-optimized'},
