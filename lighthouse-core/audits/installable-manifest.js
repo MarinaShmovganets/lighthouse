@@ -149,6 +149,7 @@ class InstallableManifest extends Audit {
     const errorArgumentsRegex = /{([^}]+)}/g;
 
     for (const err of installabilityErrors) {
+      
       let matchingString;
 
       // Filter out errorId 'in-incognito' since Lighthouse recommends incognito.
