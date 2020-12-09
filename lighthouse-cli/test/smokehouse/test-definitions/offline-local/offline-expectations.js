@@ -112,7 +112,7 @@ module.exports = [
           0: {
             // COMPAT: In m89 the `warn-not-offline-capable` error was added.
             // https://bugs.chromium.org/p/chromium/issues/detail?id=965802#c46
-            // We've seen this errorId pop up there (though it is unexpected on a SW-enabled page)
+            // We've seen this errorId pop up there: https://github.com/GoogleChrome/lighthouse/issues/11800
             // Our length and errorId assertions allows for just the no-icon-available error or both
             errorId: /(no-icon-available)|(warn-not-offline-capable)/
           }
