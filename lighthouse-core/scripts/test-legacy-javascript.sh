@@ -25,4 +25,11 @@ fi
 printf "\n\nRunning test...\n"
 cd "$LH_ROOT/lighthouse-core/scripts/legacy-javascript"
 yarn
+
+# This script will update the summary sizes file with the latest data.
 node run.js
+
+# We want to fail in CI if there are any changes.
+if [[ -n "$CI" ]]; then
+  git add summary-sizes.txt && git diff --cached --exit-code
+fi
