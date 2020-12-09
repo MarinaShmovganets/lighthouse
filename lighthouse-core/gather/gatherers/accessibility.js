@@ -49,6 +49,7 @@ async function runA11yChecks() {
       'no-autoplay-audio': {enabled: false},
       'svg-img-alt': {enabled: false},
       'audio-caption': {enabled: false},
+      'aria-treeitem-name': {enabled: true},
     },
   });
 

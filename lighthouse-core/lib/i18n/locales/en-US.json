@@ -21,10 +21,10 @@
     "message": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-command-name.js | failureTitle": {
-    "message": "`button`, `link` and `menuitem` elements do not have an accessible name."
+    "message": "`button`, `link`, and `menuitem` elements do not have accessible names."
   },
   "lighthouse-core/audits/accessibility/aria-command-name.js | title": {
-    "message": "`button`, `link` and `menuitem` elements have an accessible name"
+    "message": "`button`, `link`, and `menuitem` elements have accessible names"
   },
   "lighthouse-core/audits/accessibility/aria-hidden-body.js | description": {
     "message": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn more](https://web.dev/aria-hidden-body/)."
@@ -57,19 +57,19 @@
     "message": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-meter-name.js | failureTitle": {
-    "message": "ARIA meter nodes do not have an accessible name."
+    "message": "ARIA `meter` elements do not have accessible names."
   },
   "lighthouse-core/audits/accessibility/aria-meter-name.js | title": {
-    "message": "ARIA meter nodes have an accessible name"
+    "message": "ARIA `meter` elements have accessible names"
   },
   "lighthouse-core/audits/accessibility/aria-progressbar-name.js | description": {
     "message": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-progressbar-name.js | failureTitle": {
-    "message": "ARIA progress bar nodes do not have an accessible name."
+    "message": "ARIA `progressbar` elements do not have accessible names."
   },
   "lighthouse-core/audits/accessibility/aria-progressbar-name.js | title": {
-    "message": "ARIA progress bar nodes have an accessible name"
+    "message": "ARIA `progressbar` elements have accessible names"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
     "message": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more](https://web.dev/aria-required-attr/)."
@@ -120,19 +120,19 @@
     "message": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-tooltip-name.js | failureTitle": {
-    "message": "ARIA tooltips do not have an accessible name."
+    "message": "ARIA `tooltip` elements do not have accessible names."
   },
   "lighthouse-core/audits/accessibility/aria-tooltip-name.js | title": {
-    "message": "ARIA tooltips have an accessible name"
+    "message": "ARIA `tooltip` elements have accessible names"
   },
   "lighthouse-core/audits/accessibility/aria-treeitem-name.js | description": {
     "message": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-treeitem-name.js | failureTitle": {
-    "message": "Tree items do not have an accessible name."
+    "message": "ARIA `treeitem` elements do not have accessible names."
   },
   "lighthouse-core/audits/accessibility/aria-treeitem-name.js | title": {
-    "message": "Tree items (`<div role=\"tree\">...items here...</div>`) have an accessible name"
+    "message": "ARIA `treeitem` elements have accessible names"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
     "message": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more](https://web.dev/aria-valid-attr-value/)."

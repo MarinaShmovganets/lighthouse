@@ -21,10 +21,10 @@
     "message": "Ŵh́êń âń êĺêḿêńt̂ d́ôéŝń't̂ h́âv́ê án̂ áĉćêśŝíb̂ĺê ńâḿê, śĉŕêén̂ ŕêád̂ér̂ś âńn̂óûńĉé ît́ ŵít̂h́ â ǵêńêŕîć n̂ám̂é, m̂ák̂ín̂ǵ ît́ ûńûśâb́l̂é f̂ór̂ úŝér̂ś ŵh́ô ŕêĺŷ ón̂ śĉŕêén̂ ŕêád̂ér̂ś. [L̂éâŕn̂ ḿôŕê](https://web.dev/aria-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-command-name.js | failureTitle": {
-    "message": "`button`, `link` âńd̂ `menuitem` él̂ém̂én̂t́ŝ d́ô ńôt́ ĥáv̂é âń âćĉéŝśîb́l̂é n̂ám̂é."
+    "message": "`button`, `link`, âńd̂ `menuitem` él̂ém̂én̂t́ŝ d́ô ńôt́ ĥáv̂é âćĉéŝśîb́l̂é n̂ám̂éŝ."
   },
   "lighthouse-core/audits/accessibility/aria-command-name.js | title": {
-    "message": "`button`, `link` âńd̂ `menuitem` él̂ém̂én̂t́ŝ h́âv́ê án̂ áĉćêśŝíb̂ĺê ńâḿê"
+    "message": "`button`, `link`, âńd̂ `menuitem` él̂ém̂én̂t́ŝ h́âv́ê áĉćêśŝíb̂ĺê ńâḿêś"
   },
   "lighthouse-core/audits/accessibility/aria-hidden-body.js | description": {
     "message": "Âśŝíŝt́îv́ê t́êćĥńôĺôǵîéŝ, ĺîḱê śĉŕêén̂ ŕêád̂ér̂ś, ŵór̂ḱ îńĉón̂śîśt̂én̂t́l̂ý ŵh́êń `aria-hidden=\"true\"` îś ŝét̂ ón̂ t́ĥé d̂óĉúm̂én̂t́ `<body>`. [L̂éâŕn̂ ḿôŕê](https://web.dev/aria-hidden-body/)."
@@ -57,19 +57,19 @@
     "message": "Ŵh́êń âń êĺêḿêńt̂ d́ôéŝń't̂ h́âv́ê án̂ áĉćêśŝíb̂ĺê ńâḿê, śĉŕêén̂ ŕêád̂ér̂ś âńn̂óûńĉé ît́ ŵít̂h́ â ǵêńêŕîć n̂ám̂é, m̂ák̂ín̂ǵ ît́ ûńûśâb́l̂é f̂ór̂ úŝér̂ś ŵh́ô ŕêĺŷ ón̂ śĉŕêén̂ ŕêád̂ér̂ś. [L̂éâŕn̂ ḿôŕê](https://web.dev/aria-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-meter-name.js | failureTitle": {
-    "message": "ÂŔÎÁ m̂ét̂ér̂ ńôd́êś d̂ó n̂ót̂ h́âv́ê án̂ áĉćêśŝíb̂ĺê ńâḿê."
+    "message": "ÂŔÎÁ `meter` êĺêḿêńt̂ś d̂ó n̂ót̂ h́âv́ê áĉćêśŝíb̂ĺê ńâḿêś."
   },
   "lighthouse-core/audits/accessibility/aria-meter-name.js | title": {
-    "message": "ÂŔÎÁ m̂ét̂ér̂ ńôd́êś ĥáv̂é âń âćĉéŝśîb́l̂é n̂ám̂é"
+    "message": "ÂŔÎÁ `meter` êĺêḿêńt̂ś ĥáv̂é âćĉéŝśîb́l̂é n̂ám̂éŝ"
   },
   "lighthouse-core/audits/accessibility/aria-progressbar-name.js | description": {
     "message": "Ŵh́êń âń êĺêḿêńt̂ d́ôéŝń't̂ h́âv́ê án̂ áĉćêśŝíb̂ĺê ńâḿê, śĉŕêén̂ ŕêád̂ér̂ś âńn̂óûńĉé ît́ ŵít̂h́ â ǵêńêŕîć n̂ám̂é, m̂ák̂ín̂ǵ ît́ ûńûśâb́l̂é f̂ór̂ úŝér̂ś ŵh́ô ŕêĺŷ ón̂ śĉŕêén̂ ŕêád̂ér̂ś. [L̂éâŕn̂ ḿôŕê](https://web.dev/aria-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-progressbar-name.js | failureTitle": {
-    "message": "ÂŔÎÁ p̂ŕôǵr̂éŝś b̂ár̂ ńôd́êś d̂ó n̂ót̂ h́âv́ê án̂ áĉćêśŝíb̂ĺê ńâḿê."
+    "message": "ÂŔÎÁ `progressbar` êĺêḿêńt̂ś d̂ó n̂ót̂ h́âv́ê áĉćêśŝíb̂ĺê ńâḿêś."
   },
   "lighthouse-core/audits/accessibility/aria-progressbar-name.js | title": {
-    "message": "ÂŔÎÁ p̂ŕôǵr̂éŝś b̂ár̂ ńôd́êś ĥáv̂é âń âćĉéŝśîb́l̂é n̂ám̂é"
+    "message": "ÂŔÎÁ `progressbar` êĺêḿêńt̂ś ĥáv̂é âćĉéŝśîb́l̂é n̂ám̂éŝ"
   },
   "lighthouse-core/audits/accessibility/aria-required-attr.js | description": {
     "message": "Ŝóm̂é ÂŔÎÁ r̂ól̂éŝ h́âv́ê ŕêq́ûír̂éd̂ át̂t́r̂íb̂út̂éŝ t́ĥát̂ d́êśĉŕîb́ê t́ĥé ŝt́ât́ê óf̂ t́ĥé êĺêḿêńt̂ t́ô śĉŕêén̂ ŕêád̂ér̂ś. [L̂éâŕn̂ ḿôŕê](https://web.dev/aria-required-attr/)."
@@ -120,19 +120,19 @@
     "message": "Ŵh́êń âń êĺêḿêńt̂ d́ôéŝń't̂ h́âv́ê án̂ áĉćêśŝíb̂ĺê ńâḿê, śĉŕêén̂ ŕêád̂ér̂ś âńn̂óûńĉé ît́ ŵít̂h́ â ǵêńêŕîć n̂ám̂é, m̂ák̂ín̂ǵ ît́ ûńûśâb́l̂é f̂ór̂ úŝér̂ś ŵh́ô ŕêĺŷ ón̂ śĉŕêén̂ ŕêád̂ér̂ś. [L̂éâŕn̂ ḿôŕê](https://web.dev/aria-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-tooltip-name.js | failureTitle": {
-    "message": "ÂŔÎÁ t̂óôĺt̂íp̂ś d̂ó n̂ót̂ h́âv́ê án̂ áĉćêśŝíb̂ĺê ńâḿê."
+    "message": "ÂŔÎÁ `tooltip` êĺêḿêńt̂ś d̂ó n̂ót̂ h́âv́ê áĉćêśŝíb̂ĺê ńâḿêś."
   },
   "lighthouse-core/audits/accessibility/aria-tooltip-name.js | title": {
-    "message": "ÂŔÎÁ t̂óôĺt̂íp̂ś ĥáv̂é âń âćĉéŝśîb́l̂é n̂ám̂é"
+    "message": "ÂŔÎÁ `tooltip` êĺêḿêńt̂ś ĥáv̂é âćĉéŝśîb́l̂é n̂ám̂éŝ"
   },
   "lighthouse-core/audits/accessibility/aria-treeitem-name.js | description": {
     "message": "Ŵh́êń âń êĺêḿêńt̂ d́ôéŝń't̂ h́âv́ê án̂ áĉćêśŝíb̂ĺê ńâḿê, śĉŕêén̂ ŕêád̂ér̂ś âńn̂óûńĉé ît́ ŵít̂h́ â ǵêńêŕîć n̂ám̂é, m̂ák̂ín̂ǵ ît́ ûńûśâb́l̂é f̂ór̂ úŝér̂ś ŵh́ô ŕêĺŷ ón̂ śĉŕêén̂ ŕêád̂ér̂ś. [L̂éâŕn̂ ḿôŕê](https://web.dev/aria-name/)."
   },
   "lighthouse-core/audits/accessibility/aria-treeitem-name.js | failureTitle": {
-    "message": "T̂ŕêé ît́êḿŝ d́ô ńôt́ ĥáv̂é âń âćĉéŝśîb́l̂é n̂ám̂é."
+    "message": "ÂŔÎÁ `treeitem` êĺêḿêńt̂ś d̂ó n̂ót̂ h́âv́ê áĉćêśŝíb̂ĺê ńâḿêś."
   },
   "lighthouse-core/audits/accessibility/aria-treeitem-name.js | title": {
-    "message": "T̂ŕêé ît́êḿŝ (`<div role=\"tree\">...items here...</div>`) h́âv́ê án̂ áĉćêśŝíb̂ĺê ńâḿê"
+    "message": "ÂŔÎÁ `treeitem` êĺêḿêńt̂ś ĥáv̂é âćĉéŝśîb́l̂é n̂ám̂éŝ"
   },
   "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | description": {
     "message": "Âśŝíŝt́îv́ê t́êćĥńôĺôǵîéŝ, ĺîḱê śĉŕêén̂ ŕêád̂ér̂ś, ĉán̂'t́ îńt̂ér̂ṕr̂ét̂ ÁR̂ÍÂ át̂t́r̂íb̂út̂éŝ ẃît́ĥ ín̂v́âĺîd́ v̂ál̂úêś. [L̂éâŕn̂ ḿôŕê](https://web.dev/aria-valid-attr-value/)."
