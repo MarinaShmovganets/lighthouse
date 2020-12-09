@@ -72,6 +72,7 @@ uses-text-compression
 uses-webp-images
 
 View Trace Button Text: "View Original Trace"
-PROMISE FAILURE: TypeError: UI.Tooltip.getContent is not a function
-    at http://127.0.0.1:8000/devtools/lighthouse/lighthouse-view-trace-run.js:36:64
+View Trace Button Title: "The performance metrics above are simulated and won't match the timings found in this trace. Disable simulated throttling in "Lighthouse Settings" if you want the timings to match."
+
+Showing view: timeline
 
