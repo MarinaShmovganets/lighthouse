@@ -77,7 +77,7 @@ class ImageAspectRatio extends Audit {
    */
   static audit(artifacts) {
     const images = artifacts.ImageElements;
-    
+
     /** @type {Array<{url: string, displayedAspectRatio: string, actualAspectRatio: string, doRatiosMatch: boolean}>} */
     const results = [];
     images.filter(image => {
