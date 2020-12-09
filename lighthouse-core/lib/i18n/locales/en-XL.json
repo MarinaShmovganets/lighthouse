@@ -917,6 +917,9 @@
   "lighthouse-core/audits/installable-manifest.js | url-not-supported-for-webapk": {
     "message": "Â ÚR̂Ĺ îń t̂h́ê ḿâńîf́êśt̂ ćôńt̂áîńŝ á ûśêŕn̂ám̂é, p̂áŝśŵór̂d́, ôŕ p̂ór̂t́"
   },
+  "lighthouse-core/audits/installable-manifest.js | warn-not-offline-capable": {
+    "message": "P̂áĝé d̂óêś n̂ót̂ ẃôŕk̂ óf̂f́l̂ín̂é. T̂h́ê ṕâǵê ẃîĺl̂ ńôt́ b̂é r̂éĝár̂d́êd́\n              âś îńŝt́âĺl̂áb̂ĺê áf̂t́êŕ Ĉh́r̂óm̂é 93, ŝt́âb́l̂é r̂él̂éâśê Áûǵûśt̂ 2021."
+  },
   "lighthouse-core/audits/is-on-https.js | allowed": {
     "message": "Âĺl̂óŵéd̂"
   },

@@ -519,6 +519,7 @@
       "numericValue": 1,
       "numericUnit": "element",
       "displayValue": "1 reason",
+      "warnings": [],
       "details": {
         "type": "table",
         "headings": [

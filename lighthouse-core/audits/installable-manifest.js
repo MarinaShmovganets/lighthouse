@@ -109,6 +109,9 @@ const UIStrings = {
                 mode must be one of 'standalone', 'fulcreen', or 'minimal-ui`,
   /** Error message explaining that the web manifest's URL changed while the manifest was being downloaded by the browser. */
   'manifest-location-changed': `Manifest URL changed while the manifest was being fetched.`,
+  /** Warning message explaining that the page does not work offline. */
+  'warn-not-offline-capable': `Page does not work offline. The page will not be regarded
+              as installable after Chrome 93, stable release August 2021.`,
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -141,11 +144,12 @@ class InstallableManifest extends Audit {
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @return {Array<LH.IcuMessage | string>}
+   * @return {{i18nErrors: Array<LH.IcuMessage | string>; warnings: Array<LH.IcuMessage | string>}}
    */
   static getInstallabilityErrors(artifacts) {
     const installabilityErrors = artifacts.InstallabilityErrors.errors;
-    const errorMessages = [];
+    const i18nErrors = [];
+    const warnings = [];
     const errorArgumentsRegex = /{([^}]+)}/g;
 
     for (const err of installabilityErrors) {
@@ -154,17 +158,23 @@ class InstallableManifest extends Audit {
       // Filter out errorId 'in-incognito' since Lighthouse recommends incognito.
       if (err.errorId === 'in-incognito') continue;
 
+      if (err.errorId === 'warn-not-offline-capable') {
+        // push to warnings arr
+        warnings.push(str_(UIStrings[err.errorId]));
+        continue;
+      }
+
       try {
         // @ts-expect-error errorIds from protocol should match up against the strings dict
         matchingString = UIStrings[err.errorId];
       } catch {
         // UIStrings doesn't have a message covered for the provided errorId.
-        errorMessages.push(str_(UIStrings.noErrorId, {errorId: err.errorId}));
+        i18nErrors.push(str_(UIStrings.noErrorId, {errorId: err.errorId}));
         continue;
       }
 
       if (matchingString === undefined) {
-        errorMessages.push(str_(UIStrings.noErrorId, {errorId: err.errorId}));
+        i18nErrors.push(str_(UIStrings.noErrorId, {errorId: err.errorId}));
         continue;
       }
 
@@ -183,15 +193,15 @@ class InstallableManifest extends Audit {
         const msg = err.errorArguments.length > UIStringArguments.length ?
           ' has unexpected arguments {' + argsReceived + '}' :
           ' does not have the expected number of arguments.';
-        errorMessages.push(msg);
+        i18nErrors.push(msg);
       } else if (matchingString && value0) {
-        errorMessages.push(str_(matchingString, {value0}));
+        i18nErrors.push(str_(matchingString, {value0}));
       } else if (matchingString) {
-        errorMessages.push(str_(matchingString));
+        i18nErrors.push(str_(matchingString));
       }
     }
 
-    return errorMessages;
+    return {i18nErrors, warnings};
   }
 
   /**
@@ -202,7 +212,7 @@ class InstallableManifest extends Audit {
    */
   static async audit(artifacts, context) {
     const manifestValues = await ManifestValues.request(artifacts, context);
-    const i18nErrors = InstallableManifest.getInstallabilityErrors(artifacts);
+    const {i18nErrors, warnings} = InstallableManifest.getInstallabilityErrors(artifacts);
 
     const manifestUrl = artifacts.WebAppManifest ? artifacts.WebAppManifest.url : null;
 
@@ -236,6 +246,7 @@ class InstallableManifest extends Audit {
         numericUnit: 'element',
         displayValue: str_(UIStrings.displayValue, {itemCount: errorReasons.length}),
         details: {...Audit.makeTableDetails(headings, errorReasons), debugData},
+        warnings,
       };
     }
     return {score: 1, details: {...Audit.makeTableDetails(headings, errorReasons), debugData}};
