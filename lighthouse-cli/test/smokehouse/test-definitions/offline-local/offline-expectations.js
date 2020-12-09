@@ -107,9 +107,15 @@ module.exports = [
         },
       },
       InstallabilityErrors: {
-        errors: [
-          {errorId: 'no-icon-available'},
-        ],
+        errors: {
+          length: '>= 1',
+          0: {
+            // In m89 the `warn-not-offline-capable` error was added.
+            // We've seen this errorId pop up there (though it is unexpected on a SW-enabled page)
+            // Our length and errorId assertions allows for just the no-icon-available error or both
+            errorId: /(no-icon-available)|(warn-not-offline-capable)/
+          }
+        }
       },
     },
     lhr: {
