@@ -159,7 +159,6 @@ class InstallableManifest extends Audit {
       if (err.errorId === 'in-incognito') continue;
 
       if (err.errorId === 'warn-not-offline-capable') {
-        // push to warnings arr
         warnings.push(str_(UIStrings[err.errorId]));
         continue;
       }
