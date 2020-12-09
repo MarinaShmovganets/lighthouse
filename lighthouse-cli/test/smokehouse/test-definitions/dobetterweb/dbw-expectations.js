@@ -211,6 +211,16 @@ const expectations = [
         'errors-in-console': {
           score: 0,
           details: {
+            items: {
+              length: '6 +/- 1',
+              // COMPAT: In 89.0.4351.0 we observed one additional runtime error and it's origin is currently unknown
+              // TODO: Investigate and resolve it's presence. https://github.com/GoogleChrome/lighthouse/issues/11803
+              //     {
+              //       source: 'Runtime.exception',
+              //       description: 'TypeError: the given value is not a Promise',
+              //       url: 'http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js',
+              //     },
+            },
             // items: [
             //   {
             //     source: 'other',
@@ -243,16 +253,6 @@ const expectations = [
             //     url: 'http://localhost:10200/dobetterweb/unknown404.css?delay=200',
             //   },
             // ],
-            items: {
-              length: '6 +/- 1'
-              // COMPAT: In 89.0.4351.0 we observed one additional runtime error and it's origin is currently unknown
-              // TODO: Investigate and resolve it's presence
-              //     {
-              //       source: 'Runtime.exception',
-              //       description: 'TypeError: the given value is not a Promise',
-              //       url: 'http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js',
-              //     },
-            }
           },
         },
         'is-on-https': {
