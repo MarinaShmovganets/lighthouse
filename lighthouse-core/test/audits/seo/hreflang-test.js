@@ -25,8 +25,8 @@ describe('SEO: Document has valid hreflang code', () => {
     };
 
     const {score, details} = HreflangAudit.audit(artifacts);
-    assert.equal(details.items.length, 5);
     assert.equal(score, 0);
+    assert.equal(details.items.length, 5);
   });
 
   it('succeeds when the language code provided in hreflang via body is invalid', () => {
