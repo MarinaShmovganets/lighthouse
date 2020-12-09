@@ -389,46 +389,11 @@ describe('CategoryRenderer', () => {
       passingRefs[1].result.warnings = ['Some warning'];
 
       const elem = renderer.render(categoryClone, sampleResults.categoryGroups);
-      const getIds = selector => Array.from(elem.querySelectorAll(selector)).map(e => e.id);
+      const passedAudits = elem.querySelectorAll('.lh-clump--passed .lh-audit');
+      const failedAudits = elem.querySelectorAll('.lh-clump--failed .lh-audit');
+      const warningAudits = elem.querySelectorAll('.lh-clump--warning .lh-audit');
+      const manualAudits = elem.querySelectorAll('.lh-clump--manual .lh-audit');
 
-      const passedAudits = getIds('.lh-clump--passed .lh-audit');
-      const failedAudits = getIds('.lh-clump--failed .lh-audit');
-      const warningAudits = getIds('.lh-clump--warning .lh-audit');
-      const manualAudits = getIds('.lh-clump--manual .lh-audit');
-
-      expect(passedAudits).toMatchInlineSnapshot(`
-        Array [
-          "viewport",
-          "without-javascript",
-        ]
-      `);
-      expect(failedAudits).toMatchInlineSnapshot(`
-        Array [
-          "works-offline",
-          "offline-start-url",
-          "is-on-https",
-          "service-worker",
-          "installable-manifest",
-          "redirects-http",
-          "splash-screen",
-          "themed-omnibox",
-          "apple-touch-icon",
-          "maskable-icon",
-        ]
-      `);
-      expect(warningAudits).toMatchInlineSnapshot(`
-        Array [
-          "load-fast-enough-for-pwa",
-          "content-width",
-        ]
-      `);
-      expect(manualAudits).toMatchInlineSnapshot(`
-        Array [
-          "pwa-cross-browser",
-          "pwa-page-transitions",
-          "pwa-each-page-has-url",
-        ]
-      `);
       assert.equal(passedAudits.length, 2);
       assert.equal(failedAudits.length, 10);
       assert.equal(warningAudits.length, 2);
@@ -444,7 +409,7 @@ describe('CategoryRenderer', () => {
       const failedAudits = elem.querySelectorAll('.lh-clump--failed .lh-audit');
 
       assert.equal(passedAudits.length, 0);
-      expect(failedAudits.length).toBeGreaterThan(10);
+      assert.equal(failedAudits.length, 14);
     });
 
     it('expands warning audit group', () => {
