@@ -169,7 +169,7 @@ function assertValidGatherer(gathererInstance, gathererName) {
 function assertValidFlags(flags) {
   // @ts-expect-error Checking for removed flags
   if (flags.emulatedFormFactor || flags.internalDisableDeviceScreenEmulation) {
-    throw new Error('Invalid emulation flag. Emulation configuration changed in LH 7.0. See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md'); // eslint-disable-line max-len
+    throw new Error('Invalid emulation flag. Emulation configuration changed in LH 7.0. See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md');
   }
 }
 
@@ -179,7 +179,7 @@ function assertValidFlags(flags) {
  */
 function assertValidSettings(settings) {
   if (!settings.formFactor) {
-    throw new Error(`\`settings.formFactor\` must be defined as 'mobile' or 'desktop'. See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md`); // eslint-disable-line max-len
+    throw new Error(`\`settings.formFactor\` must be defined as 'mobile' or 'desktop'. See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md`);
   }
 
   if (settings.screenEmulation) {
