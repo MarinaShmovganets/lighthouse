@@ -355,9 +355,6 @@ const defaultConfig = {
       title: str_(UIStrings.diagnosticsGroupTitle),
       description: str_(UIStrings.diagnosticsGroupDescription),
     },
-    'pwa-fast-reliable': {
-      title: str_(UIStrings.pwaFastReliableGroupTitle),
-    },
     'pwa-installable': {
       title: str_(UIStrings.pwaInstallableGroupTitle),
     },
@@ -605,9 +602,6 @@ const defaultConfig = {
       description: str_(UIStrings.pwaCategoryDescription),
       manualDescription: str_(UIStrings.pwaCategoryManualDescription),
       auditRefs: [
-        // Fast and Reliable
-        {id: 'works-offline', weight: 5, group: 'pwa-fast-reliable'},
-        {id: 'offline-start-url', weight: 1, group: 'pwa-fast-reliable'},
         // Installable
         {id: 'is-on-https', weight: 2, group: 'pwa-installable'},
         {id: 'service-worker', weight: 1, group: 'pwa-installable'},
