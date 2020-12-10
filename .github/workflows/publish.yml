@@ -17,6 +17,7 @@ jobs:
 
       - name: Publish to npm
         run: |
+          ls /home/runner/work/_temp/.npmrc
           npm whoami
           bash $GITHUB_WORKSPACE/.github/scripts/bump-nightly-version.sh
           npm publish --tag next
