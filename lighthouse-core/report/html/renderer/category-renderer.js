@@ -224,15 +224,11 @@ class CategoryRenderer {
 
     // Add audits without a group first so they will appear first.
     const notAGroup = 'NotAGroup';
-    const hiddenGroup = 'hidden';
     grouped.set(notAGroup, []);
 
     for (const auditRef of auditRefs) {
       const groupId = auditRef.group || notAGroup;
       const groupAuditRefs = grouped.get(groupId) || [];
-
-      // Do not render audit if it is in the 'hidden' group.
-      if (groupId === hiddenGroup) continue;
 
       groupAuditRefs.push(auditRef);
       grouped.set(groupId, groupAuditRefs);
@@ -467,6 +463,9 @@ class CategoryRenderer {
 
     // Sort audits into clumps.
     for (const auditRef of category.auditRefs) {
+      // Do not render audit if it is in the 'hidden' group.
+      if (auditRef.group === 'hidden') continue;
+
       const clumpId = this._getClumpIdForAuditRef(auditRef);
       const clump = /** @type {Array<LH.ReportResult.AuditRef>} */ (clumps.get(clumpId)); // already defined
       clump.push(auditRef);

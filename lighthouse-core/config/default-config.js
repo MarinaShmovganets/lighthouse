@@ -424,6 +424,7 @@ const defaultConfig = {
     'best-practices-general': {
       title: str_(UIStrings.bestPracticesGeneralGroupTitle),
     },
+    // This group hides audits from showing on the report.fser
     'hidden': {
       title: '',
     },
@@ -616,7 +617,6 @@ const defaultConfig = {
         {id: 'works-offline', weight: 5, group: 'pwa-fast-reliable'},
         {id: 'offline-start-url', weight: 1, group: 'pwa-fast-reliable'},
         // Installable
-        {id: 'service-worker', weight: 0, group: 'hidden'},
         {id: 'installable-manifest', weight: 2, group: 'pwa-installable'},
         // PWA Optimized
         {id: 'redirects-http', weight: 2, group: 'pwa-optimized'},
@@ -631,6 +631,8 @@ const defaultConfig = {
         {id: 'pwa-cross-browser', weight: 0},
         {id: 'pwa-page-transitions', weight: 0},
         {id: 'pwa-each-page-has-url', weight: 0},
+        // Hidden audits
+        {id: 'service-worker', weight: 0, group: 'hidden'},
       ],
     },
   },

@@ -379,6 +379,27 @@ describe('CategoryRenderer', () => {
           `could not find '${selector}'`);
       });
     });
+
+    it('does not render hidden audits', () => {
+      const bestPracticeCategory = sampleResults.categories['best-practices'];
+      const originalCategoriesCount = bestPracticeCategory.auditRefs.length;
+
+      const categoryClone = JSON.parse(JSON.stringify(bestPracticeCategory));
+      let hiddenAuditsCount = 0;
+      // Hide best-practices-general audits, should result in all groups but best-practices-general to render.
+      categoryClone.auditRefs.forEach(ref => {
+        // Catch any audits that may already be hidded by default.
+        if (ref.group === 'best-practices-general' || ref.group === 'hidden') {
+          ref.group = 'hidden';
+          hiddenAuditsCount ++;
+        }
+      });
+
+      const categoryElem = renderer.render(categoryClone, sampleResults.categoryGroups);
+      const renderedElements = categoryElem.querySelectorAll('.lh-audit');
+
+      assert.equal(renderedElements.length, originalCategoriesCount - hiddenAuditsCount);
+    });
   });
 
   describe('clumping passed/failed/warning/manual', () => {

@@ -5236,11 +5236,6 @@
           "group": "pwa-fast-reliable"
         },
         {
-          "id": "service-worker",
-          "weight": 0,
-          "group": "hidden"
-        },
-        {
           "id": "installable-manifest",
           "weight": 2,
           "group": "pwa-installable"
@@ -5296,6 +5291,11 @@
         {
           "id": "pwa-each-page-has-url",
           "weight": 0
+        },
+        {
+          "id": "service-worker",
+          "weight": 0,
+          "group": "hidden"
         }
       ],
       "id": "pwa",

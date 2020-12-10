@@ -98,6 +98,27 @@ describe('PwaCategoryRenderer', () => {
     });
   });
 
+  it('does not render hidden audits', () => {
+    const pwaCategory = sampleResults.categories['pwa'];
+    const originalCategoriesCount = pwaCategory.auditRefs.length;
+
+    const categoryClone = JSON.parse(JSON.stringify(pwaCategory));
+    let hiddenAuditsCount = 0;
+    // Hide pwa-optimized audits, should result in all groups but pwa-optimized to render.
+    categoryClone.auditRefs.forEach(ref => {
+      // Catch any audits that may already be hidded by default.
+      if (ref.group === 'best-practices-general' || ref.group === 'hidden') {
+        ref.group = 'hidden';
+        hiddenAuditsCount ++;
+      }
+    });
+
+    const categoryElem = pwaRenderer.render(categoryClone, sampleResults.categoryGroups);
+    const renderedElements = categoryElem.querySelectorAll('.lh-audit');
+
+    assert.equal(renderedElements.length, originalCategoriesCount - hiddenAuditsCount);
+  });
+
   describe('badging groups', () => {
     let auditRefs;
     let groupIds;
