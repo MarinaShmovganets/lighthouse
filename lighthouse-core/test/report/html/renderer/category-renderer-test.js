@@ -168,8 +168,10 @@ describe('CategoryRenderer', () => {
     assert.ok(Number.isInteger(scoreInDom) && scoreInDom > 10, 'category score is rounded');
     assert.equal(title.textContent, category.title, 'title is set');
 
+    // Audits in 'hidden' group are not rendered.
+    const renderedAudits = category.auditRefs.filter(audit => audit.group !== 'hidden');
     const audits = categoryDOM.querySelectorAll('.lh-audit');
-    assert.equal(audits.length, category.auditRefs.length, 'renders correct number of audits');
+    assert.equal(audits.length, renderedAudits.length, 'renders correct number of audits');
 
     // No plugin categories in sampleResults.
     assert.equal(
@@ -395,7 +397,7 @@ describe('CategoryRenderer', () => {
       const manualAudits = elem.querySelectorAll('.lh-clump--manual .lh-audit');
 
       assert.equal(passedAudits.length, 1);
-      assert.equal(failedAudits.length, 10);
+      assert.equal(failedAudits.length, 8);
       assert.equal(warningAudits.length, 2);
       assert.equal(manualAudits.length, 3);
     });
@@ -409,7 +411,7 @@ describe('CategoryRenderer', () => {
       const failedAudits = elem.querySelectorAll('.lh-clump--failed .lh-audit');
 
       assert.equal(passedAudits.length, 0);
-      assert.equal(failedAudits.length, 13);
+      assert.equal(failedAudits.length, 11);
     });
 
     it('expands warning audit group', () => {

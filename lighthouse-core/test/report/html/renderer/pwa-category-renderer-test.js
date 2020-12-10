@@ -60,8 +60,7 @@ describe('PwaCategoryRenderer', () => {
     const regularAuditElements = allAuditElements.filter(el => !manualElements.includes(el));
 
     const nonManualAudits = category.auditRefs
-      .filter(audit => audit.result.scoreDisplayMode !== 'manual');
-
+      .filter(audit => audit.result.scoreDisplayMode !== 'manual' && audit.group !== 'hidden');
     assert.strictEqual(regularAuditElements.length, nonManualAudits.length);
   });
 
@@ -83,7 +82,8 @@ describe('PwaCategoryRenderer', () => {
   });
 
   it('renders the audit groups', () => {
-    const categoryGroupIds = new Set(category.auditRefs.filter(a => a.group).map(a => a.group));
+    // The hidden group isn't rendered.
+    const categoryGroupIds = new Set(category.auditRefs.filter(a => a.group && a.group !== 'hidden').map(a => a.group));
     assert.strictEqual(categoryGroupIds.size, 3); // Ensure there's something to test.
 
     const categoryElem = pwaRenderer.render(category, sampleResults.categoryGroups);
@@ -103,7 +103,6 @@ describe('PwaCategoryRenderer', () => {
     beforeEach(() => {
       auditRefs = category.auditRefs
         .filter(audit => audit.result.scoreDisplayMode !== 'manual');
-
       // Expect results to all be scorable.
       for (const auditRef of auditRefs) {
         assert.strictEqual(auditRef.result.scoreDisplayMode, 'binary');
@@ -163,8 +162,11 @@ describe('PwaCategoryRenderer', () => {
         auditRef.result.score = 1;
       }
 
+      // Hidden audits are not rendered.
+      const renderedGroups = groupIds.filter(group => group !== 'hidden');
+
       const categoryElem = pwaRenderer.render(category, sampleResults.categoryGroups);
-      assert.strictEqual(categoryElem.querySelectorAll('.lh-badged').length, groupIds.length);
+      assert.strictEqual(categoryElem.querySelectorAll('.lh-badged').length, renderedGroups.length);
 
       // Score gauge.
       const gaugeElem = categoryElem.querySelector('.lh-gauge--pwa__wrapper');
@@ -211,7 +213,10 @@ describe('PwaCategoryRenderer', () => {
       const tips = gaugeElem.title.split(', ');
       assert.strictEqual(tips.length, groupIds.length);
 
-      for (const groupId of groupIds) {
+      // Hidden audits are not rendered.
+      const renderedGroups = groupIds.filter(group => group !== 'hidden');
+
+      for (const groupId of renderedGroups) {
         const expectedCount = groupId === failingGroupId ? 0 : 1;
 
         // Individual group badges.

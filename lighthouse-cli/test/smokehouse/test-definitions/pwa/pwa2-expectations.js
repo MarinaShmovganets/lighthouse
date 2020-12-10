@@ -19,9 +19,6 @@ module.exports = [
       requestedUrl: 'https://jakearchibald.github.io/svgomg/',
       finalUrl: 'https://jakearchibald.github.io/svgomg/',
       audits: {
-        'is-on-https': {
-          score: 1,
-        },
         'redirects-http': {
         // Note: relies on JS redirect.
         // see https://github.com/GoogleChrome/lighthouse/issues/2383
@@ -87,9 +84,6 @@ module.exports = [
       requestedUrl: 'https://caltrainschedule.io/',
       finalUrl: 'https://caltrainschedule.io/',
       audits: {
-        'is-on-https': {
-          score: 1,
-        },
         'redirects-http': {
           score: 1,
         },
