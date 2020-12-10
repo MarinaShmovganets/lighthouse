@@ -1105,14 +1105,9 @@ Object {
           "weight": 1,
         },
         Object {
-          "group": "pwa-installable",
-          "id": "is-on-https",
-          "weight": 2,
-        },
-        Object {
-          "group": "pwa-installable",
+          "group": "hidden",
           "id": "service-worker",
-          "weight": 1,
+          "weight": 0,
         },
         Object {
           "group": "pwa-installable",
@@ -1310,6 +1305,9 @@ Object {
     "diagnostics": Object {
       "description": "More information about the performance of your application. These numbers don't [directly affect](https://web.dev/performance-scoring/) the Performance score.",
       "title": "Diagnostics",
+    },
+    "hidden": Object {
+      "title": "",
     },
     "load-opportunities": Object {
       "description": "These suggestions can help your page load faster. They don't [directly affect](https://web.dev/performance-scoring/) the Performance score.",
@@ -1603,6 +1601,9 @@ Object {
     "diagnostics": Object {
       "description": "More information about the performance of your application. These numbers don't [directly affect](https://web.dev/performance-scoring/) the Performance score.",
       "title": "Diagnostics",
+    },
+    "hidden": Object {
+      "title": "",
     },
     "load-opportunities": Object {
       "description": "These suggestions can help your page load faster. They don't [directly affect](https://web.dev/performance-scoring/) the Performance score.",
