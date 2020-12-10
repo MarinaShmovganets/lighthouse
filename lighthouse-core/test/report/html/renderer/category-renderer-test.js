@@ -45,9 +45,9 @@ describe('CategoryRenderer', () => {
     global.CriticalRequestChainRenderer = undefined;
   });
 
-  it('renders an audit', () => {
+  it.only('renders an audit', () => {
     const auditRef = sampleResults.categories.pwa.auditRefs
-      .find(a => a.id === 'splash-screen');
+      .find(a => a.id === 'redirects-http');
 
     const auditDOM = renderer.renderAudit(auditRef);
     assert.equal(auditDOM.nodeType, 1, 'Audit returns an element');
