@@ -13,9 +13,6 @@ Object {
       "path": "service-worker",
     },
     Object {
-      "path": "works-offline",
-    },
-    Object {
       "path": "viewport",
     },
     Object {
@@ -134,9 +131,6 @@ Object {
     },
     Object {
       "path": "metrics",
-    },
-    Object {
-      "path": "offline-start-url",
     },
     Object {
       "path": "performance-budget",
@@ -1095,16 +1089,6 @@ Object {
     "pwa": Object {
       "auditRefs": Array [
         Object {
-          "group": "pwa-fast-reliable",
-          "id": "works-offline",
-          "weight": 5,
-        },
-        Object {
-          "group": "pwa-fast-reliable",
-          "id": "offline-start-url",
-          "weight": 1,
-        },
-        Object {
           "group": "pwa-installable",
           "id": "is-on-https",
           "weight": 2,
@@ -1318,9 +1302,6 @@ Object {
     "metrics": Object {
       "title": "Metrics",
     },
-    "pwa-fast-reliable": Object {
-      "title": "Fast and reliable",
-    },
     "pwa-installable": Object {
       "title": "Installable",
     },
@@ -1452,12 +1433,6 @@ Object {
       "gatherers": Array [
         Object {
           "path": "service-worker",
-        },
-        Object {
-          "path": "offline",
-        },
-        Object {
-          "path": "start-url",
         },
       ],
       "loadFailureMode": "ignore",
@@ -1610,9 +1585,6 @@ Object {
     },
     "metrics": Object {
       "title": "Metrics",
-    },
-    "pwa-fast-reliable": Object {
-      "title": "Fast and reliable",
     },
     "pwa-installable": Object {
       "title": "Installable",
