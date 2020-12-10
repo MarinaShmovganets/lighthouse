@@ -223,14 +223,18 @@ class InstallableManifest extends Audit {
     if (errorReasons.length > 0) {
       return {
         score: 0,
+        warnings,
         numericValue: errorReasons.length,
         numericUnit: 'element',
         displayValue: str_(UIStrings.displayValue, {itemCount: errorReasons.length}),
         details: {...Audit.makeTableDetails(headings, errorReasons), debugData},
-        warnings,
       };
     }
-    return {score: 1, details: {...Audit.makeTableDetails(headings, errorReasons), debugData}};
+    return {
+      score: 1,
+      warnings,
+      details: {...Audit.makeTableDetails(headings, errorReasons), debugData},
+    };
   }
 }
 

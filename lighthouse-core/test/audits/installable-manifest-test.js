@@ -157,7 +157,9 @@ describe('PWA: webapp install banner audit', () => {
         assert.ok(items[0].reason.formattedDefault.includes('icon was empty or corrupted'));
       });
     });
+  });
 
+  describe('installability error handling', () => {
     it('fails when InstallabilityError contains the incorrect number of errorArguments', () => {
       const artifacts = generateMockArtifacts();
       artifacts.InstallabilityErrors.errors.push({errorId: 'manifest-missing-suitable-icon',
@@ -180,6 +182,20 @@ describe('PWA: webapp install banner audit', () => {
         assert.strictEqual(result.score, 0);
         const items = result.details.items;
         assert.ok(items[0].reason.formattedDefault.includes('is not recognized'));
+      });
+    });
+  });
+
+  describe('warnings', () => {
+    it('presents a warning if a warn-not-offline-capable if present', () => {
+      const artifacts = generateMockArtifacts(manifestDirtyJpgSrc);
+      artifacts.InstallabilityErrors.errors.push({errorId: 'warn-not-offline-capable'});
+      const context = generateMockAuditContext();
+
+      return InstallableManifestAudit.audit(artifacts, context).then(result => {
+        expect(result.warnings).toHaveLength(1);
+        expect(result.warnings[0].formattedDefault).toMatch('not work offline');
+        expect(result.warnings[0].formattedDefault).toMatch('August 2021');
       });
     });
   });
