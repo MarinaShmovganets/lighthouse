@@ -9,17 +9,14 @@ const Audit = require('./audit.js');
 const i18n = require('../lib/i18n/i18n.js');
 const ManifestValues = require('../computed/manifest-values.js');
 
+/* eslint-disable max-len */
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on if a website is installable as an application. This descriptive title is shown to users when a webapp is installable. */
   'title': 'Web app manifest and service worker meet the installability requirements',
   /** Title of a Lighthouse audit that provides detail on if a website is installable as an application. This descriptive title is shown to users when a webapp is not installable. */
   'failureTitle': 'Web app manifest or service worker do not meet the installability requirements',
   /** Description of a Lighthouse audit that tells the user why installability is important for webapps. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  'description': 'Service worker is the technology that enables your app to use many Progressive ' +
-    'Web App features, such as offline, add to homescreen, and push notifications. ' +
-    'With proper Service Worker and manifest implementations, browsers can proactively prompt ' +
-    'users to add your app to their homescreen, which can lead to higher engagement. ' +
-    '[Learn more](https://web.dev/installable-manifest/).',
+  'description': `Service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. With proper Service Worker and manifest implementations, browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. [Learn more](https://web.dev/installable-manifest/).`,
   /** Description Table column header for the observed value of the Installability failure reason statistic. */
   'columnValue': 'Failure reason',
   /**
@@ -33,9 +30,9 @@ const UIStrings = {
    * @description Error message describing a DevTools error id that was found and has not been identified by this audit.
    * @example {platform-not-supported-on-android} errorId
    */
-  'noErrorId': `Installability error id '{errorId}' is not recognized.`,
+  'noErrorId': `Installability error id '{errorId}' is not recognized`,
   /** Error message explaining that the page is not loaded in the frame.  */
-  'not-in-main-frame': 'Page is not loaded in the main frame',
+  'not-in-main-frame': `Page is not loaded in the main frame`,
   /** Error message explaining that the page is served from a secure origin. */
   'not-from-secure-origin': 'Page is not served from a secure origin',
   /** Error message explaining that the page has no manifest URL. */
@@ -45,31 +42,23 @@ const UIStrings = {
   /** Error message explaining that the provided manifest does not contain a name or short_name field. */
   'manifest-missing-name-or-short-name': `Manifest does not contain a 'name' or 'short_name' field`,
   /** Error message explaining that the manifest display property must be one of 'standalone', 'fullscreen', or 'minimal-ui'. */
-  // eslint-disable-next-line max-len
   'manifest-display-not-supported': `Manifest 'display' property must be one of 'standalone', 'fullscreen', or 'minimal-ui'`,
   /** Error message explaining that the manifest could not be fetched, might be empty, or could not be parsed. */
   'manifest-empty': `Manifest could not be fetched, is empty, or could not be parsed`,
   /** Error message explaining that no matching service worker was detected,
    * and provides a suggestion to reload the page or check whether the scope of the service worker
    * for the current page encloses the scope and start URL from the manifest. */
-  // eslint-disable-next-line max-len
-  'no-matching-service-worker': `No matching service worker detected. You may need to reload the page, 
-    or check that the scope of the service worker for the current page 
-    encloses the scope and start URL from the manifest.`,
+  'no-matching-service-worker': `No matching service worker detected. You may need to reload the page, or check that the scope of the service worker for the current page encloses the scope and start URL from the manifest.`,
   /**
   * @description Error message explaining that the manifest does not contain a suitable icon.
   * @example {192} value0
   */
-  'manifest-missing-suitable-icon': `Manifest does not contain a suitable icon - PNG, 
-                    SVG or WebP format of at least {value0}\xa0px 
-                    is required, the sizes attribute must be set, and the purpose attribute, 
-                    if set, must include "any" or "maskable".`,
+  'manifest-missing-suitable-icon': `Manifest does not contain a suitable icon - PNG, SVG or WebP format of at least {value0}\xa0px is required, the sizes attribute must be set, and the purpose attribute, if set, must include "any" or "maskable".`,
 
   /**
   * @description Error message explaining that the manifest does not supply an icon of the correct format.
   * @example {192} value0
   */
-  // eslint-disable-next-line max-len
   'no-acceptable-icon': `No supplied icon is at least {value0}\xa0px square in PNG, SVG or WebP format`,
 
   /** Error message explaining that the downloaded icon was empty or corrupt. */
@@ -77,7 +66,6 @@ const UIStrings = {
   /** Error message explaining that the downloaded icon was empty or corrupt. */
   'no-icon-available': `Downloaded icon was empty or corrupted`,
   /** Error message explaining that the specified application platform is not supported on Android. */
-  // eslint-disable-next-line max-len
   'platform-not-supported-on-android': `The specified application platform is not supported on Android`,
   /** Error message explaining that a Play store ID was not provided. */
   'no-id-specified': `No Play store ID provided`,
@@ -93,26 +81,20 @@ const UIStrings = {
   /** Error message explaining that the page does not work offline. */
   'not-offline-capable': `Page does not work offline`,
   /** Error message explaining that service worker could not be checked without a start_url. */
-  // eslint-disable-next-line max-len
   'no-url-for-service-worker': `Could not check service worker without a 'start_url' field in the manifest`,
   /** Error message explaining that the manifest specifies prefer_related_applications: true. */
   'prefer-related-applications': `Manifest specifies prefer_related_applications: true`,
-  /** Error message explaining that prefer_related_applications is only supported on Chrome Beta and Stable channe
-               on Android. */
-  // eslint-disable-next-line max-len
-  'prefer-related-applications-only-beta-stable': `prefer_related_applications is only supported on Chrome Beta and Stable channe 
-                on Android.`,
-  /** Error message explaining that the manifest contains 'display_override' field, and the first supported display
-               mode must be one of 'standalone', 'fulcreen', or 'minimal-ui. */
-  // eslint-disable-next-line max-len
-  'manifest-display-override-not-supported': `Manifest contains 'display_override' field, and the first supported display 
-                mode must be one of 'standalone', 'fulcreen', or 'minimal-ui`,
+  /** Error message explaining that prefer_related_applications is only supported on Chrome Beta and Stable channels on Android. */
+  'prefer-related-applications-only-beta-stable': `prefer_related_applications is only supported on Chrome Beta and Stable channels on Android.`,
+  /** Error message explaining that the manifest contains 'display_override' field, and the
+      first supported display mode must be one of 'standalone', 'fullscreen', or 'minimal-ui'. */
+  'manifest-display-override-not-supported': `Manifest contains 'display_override' field, and the first supported display mode must be one of 'standalone', 'fullscreen', or 'minimal-ui'`,
   /** Error message explaining that the web manifest's URL changed while the manifest was being downloaded by the browser. */
   'manifest-location-changed': `Manifest URL changed while the manifest was being fetched.`,
   /** Warning message explaining that the page does not work offline. */
-  'warn-not-offline-capable': `Page does not work offline. The page will not be regarded
-              as installable after Chrome 93, stable release August 2021.`,
+  'warn-not-offline-capable': `Page does not work offline. The page will not be regarded as installable after Chrome 93, stable release August 2021.`,
 };
+/* eslint-enable max-len */
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
