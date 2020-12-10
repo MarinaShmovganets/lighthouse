@@ -172,8 +172,6 @@ const defaultConfig = {
     loadFailureMode: 'ignore',
     gatherers: [
       'service-worker',
-      'offline',
-      'start-url',
     ],
   },
   {

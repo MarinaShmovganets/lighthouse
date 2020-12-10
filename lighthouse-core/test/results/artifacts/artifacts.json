@@ -3331,11 +3331,6 @@
     "versions": [],
     "registrations": []
   },
-  "Offline": -1,
-  "StartUrl": {
-    "statusCode": -1,
-    "explanation": "No usable web app manifest found on page."
-  },
   "HTTPRedirect": {
     "value": false
   },
