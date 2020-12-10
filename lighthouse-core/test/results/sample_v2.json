@@ -5384,7 +5384,7 @@
       "title": "General"
     },
     "hidden": {
-      "title": "Hidden Audits"
+      "title": ""
     }
   },
   "timing": {
@@ -8191,9 +8191,6 @@
       ],
       "lighthouse-core/config/default-config.js | bestPracticesGeneralGroupTitle": [
         "categoryGroups[best-practices-general].title"
-      ],
-      "lighthouse-core/config/default-config.js | hiddenGroupTitle": [
-        "categoryGroups.hidden.title"
       ],
       "node_modules/lighthouse-stack-packs/packs/wordpress.js | unused-css-rules": [
         "stackPacks[0].descriptions[unused-css-rules]"
