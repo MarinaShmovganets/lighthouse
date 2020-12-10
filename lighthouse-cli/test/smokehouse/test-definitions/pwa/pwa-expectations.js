@@ -27,12 +27,6 @@ const expectations = [
         'service-worker': {
           score: 1,
         },
-        'works-offline': {
-          score: 1,
-        },
-        'offline-start-url': {
-          score: 1,
-        },
         'viewport': {
           score: 1,
         },
@@ -87,12 +81,6 @@ const expectations = [
           score: 1,
         },
         'service-worker': {
-          score: 0,
-        },
-        'works-offline': {
-          score: 0,
-        },
-        'offline-start-url': {
           score: 0,
         },
         'viewport': {

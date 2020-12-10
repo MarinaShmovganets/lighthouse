@@ -161,7 +161,6 @@ Auditing: Uses HTTPS
 Computing artifact: NetworkRecords
 Auditing: Redirects HTTP traffic to HTTPS
 Auditing: Registers a service worker that controls page and `start_url`
-Auditing: Current page responds with a 200 when offline
 Auditing: Has a `<meta name="viewport">` tag with `width` or `initial-scale`
 Computing artifact: ViewportMeta
 Auditing: Contains some content when JavaScript is not available
@@ -237,7 +236,6 @@ Auditing: Server Backend Latencies
 Auditing: Tasks
 Auditing: Metrics
 Computing artifact: TimingSummary
-Auditing: `start_url` responds with a 200 when offline
 Auditing: Performance budget
 Computing artifact: ResourceSummary
 Auditing: Timing budget
@@ -512,7 +510,6 @@ no-vulnerable-libraries: pass
 non-composited-animations: notApplicable
 notification-on-start: pass
 object-alt: notApplicable
-offline-start-url: fail
 offscreen-content-hidden: manual
 offscreen-images: flaky
 password-inputs-can-be-pasted-into: pass
@@ -571,7 +568,6 @@ viewport: fail
 viewport-ad-density: notApplicable
 visual-order-follows-dom: manual
 without-javascript: pass
-works-offline: fail
 
 # of .lh-audit divs: 157
 
@@ -677,7 +673,6 @@ no-vulnerable-libraries
 non-composited-animations
 notification-on-start
 object-alt
-offline-start-url
 offscreen-content-hidden
 offscreen-images
 password-inputs-can-be-pasted-into
@@ -732,5 +727,4 @@ viewport
 viewport-ad-density
 visual-order-follows-dom
 without-javascript
-works-offline
 

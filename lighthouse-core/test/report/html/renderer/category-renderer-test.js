@@ -47,7 +47,7 @@ describe('CategoryRenderer', () => {
 
   it('renders an audit', () => {
     const auditRef = sampleResults.categories.pwa.auditRefs
-      .find(a => a.id === 'works-offline');
+      .find(a => a.id === 'splash-screen');
 
     const auditDOM = renderer.renderAudit(auditRef);
     assert.equal(auditDOM.nodeType, 1, 'Audit returns an element');

@@ -18,7 +18,6 @@ content-width
 installable-manifest
 is-on-https
 maskable-icon
-offline-start-url
 pwa-cross-browser
 pwa-each-page-has-url
 pwa-page-transitions
@@ -28,5 +27,4 @@ splash-screen
 themed-omnibox
 viewport
 without-javascript
-works-offline
 

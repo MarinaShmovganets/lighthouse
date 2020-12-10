@@ -18,7 +18,6 @@ module.exports = {
       'is-on-https',
       'redirects-http',
       'service-worker',
-      'works-offline',
       'viewport',
       'without-javascript',
       'user-timings',
