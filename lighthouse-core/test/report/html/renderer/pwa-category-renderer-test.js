@@ -84,7 +84,7 @@ describe('PwaCategoryRenderer', () => {
 
   it('renders the audit groups', () => {
     const categoryGroupIds = new Set(category.auditRefs.filter(a => a.group).map(a => a.group));
-    assert.strictEqual(categoryGroupIds.size, 3); // Ensure there's something to test.
+    assert.strictEqual(categoryGroupIds.size, 2); // Ensure there's something to test.
 
     const categoryElem = pwaRenderer.render(category, sampleResults.categoryGroups);
 
@@ -117,8 +117,7 @@ describe('PwaCategoryRenderer', () => {
         auditRef.result.score = 0;
       }
 
-      const targetGroupId = groupIds[2];
-      assert.ok(targetGroupId);
+      const targetGroupId = 'pwa-optimized';
       const targetGroupTitle = sampleResults.categoryGroups[targetGroupId].title;
       const targetAuditRefs = auditRefs.filter(ref => ref.group === targetGroupId);
 
