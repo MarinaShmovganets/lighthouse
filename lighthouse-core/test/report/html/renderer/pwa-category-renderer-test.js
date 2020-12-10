@@ -83,7 +83,9 @@ describe('PwaCategoryRenderer', () => {
 
   it('renders the audit groups', () => {
     // The hidden group isn't rendered.
-    const categoryGroupIds = new Set(category.auditRefs.filter(a => a.group && a.group !== 'hidden').map(a => a.group));
+    const categoryGroupIds = new Set(category.auditRefs
+      .filter(a => a.group && a.group !== 'hidden')
+      .map(a => a.group));
     assert.strictEqual(categoryGroupIds.size, 3); // Ensure there's something to test.
 
     const categoryElem = pwaRenderer.render(category, sampleResults.categoryGroups);

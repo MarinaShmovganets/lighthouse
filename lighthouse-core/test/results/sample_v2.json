@@ -5237,7 +5237,7 @@
         },
         {
           "id": "service-worker",
-          "weight": 1,
+          "weight": 0,
           "group": "hidden"
         },
         {
@@ -5299,7 +5299,7 @@
         }
       ],
       "id": "pwa",
-      "score": 0.21
+      "score": 0.22
     }
   },
   "categoryGroups": {
