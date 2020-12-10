@@ -1105,11 +1105,6 @@ Object {
           "weight": 1,
         },
         Object {
-          "group": "hidden",
-          "id": "service-worker",
-          "weight": 0,
-        },
-        Object {
           "group": "pwa-installable",
           "id": "installable-manifest",
           "weight": 2,
@@ -1164,6 +1159,11 @@ Object {
         },
         Object {
           "id": "pwa-each-page-has-url",
+          "weight": 0,
+        },
+        Object {
+          "group": "hidden",
+          "id": "service-worker",
           "weight": 0,
         },
       ],
