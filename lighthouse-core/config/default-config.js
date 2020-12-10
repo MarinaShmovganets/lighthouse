@@ -424,7 +424,7 @@ const defaultConfig = {
     'best-practices-general': {
       title: str_(UIStrings.bestPracticesGeneralGroupTitle),
     },
-    // This group hides audits from showing on the report.fser
+    // This group hides audits from showing on the report.
     'hidden': {
       title: '',
     },
