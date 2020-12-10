@@ -126,7 +126,7 @@ class InstallableManifest extends Audit {
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @return {{i18nErrors: Array<LH.IcuMessage | string>; warnings: Array<LH.IcuMessage | string>}}
+   * @return {{i18nErrors: Array<LH.IcuMessage | string>; warnings: Array<LH.IcuMessage>}}
    */
   static getInstallabilityErrors(artifacts) {
     const installabilityErrors = artifacts.InstallabilityErrors.errors;
@@ -172,8 +172,8 @@ class InstallableManifest extends Audit {
         // Matching string, but have the incorrect number of arguments for the message.
         const argsReceived = err.errorArguments.join(', ');
         const msg = err.errorArguments.length > UIStringArguments.length ?
-          ' has unexpected arguments {' + argsReceived + '}' :
-          ' does not have the expected number of arguments.';
+          ` has unexpected arguments {${argsReceived}}` :
+          ` does not have the expected number of arguments.`;
         i18nErrors.push(msg);
       } else if (matchingString && value0) {
         i18nErrors.push(str_(matchingString, {value0}));
