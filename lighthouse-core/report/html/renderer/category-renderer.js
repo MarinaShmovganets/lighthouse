@@ -230,11 +230,12 @@ class CategoryRenderer {
     for (const auditRef of auditRefs) {
       const groupId = auditRef.group || notAGroup;
       const groupAuditRefs = grouped.get(groupId) || [];
+
       // Do not render audit if it is in the 'hidden' group.
-      if (groupId !== hiddenGroup) {
-        groupAuditRefs.push(auditRef);
-        grouped.set(groupId, groupAuditRefs);
-      }
+      if (groupId === hiddenGroup) continue;
+
+      groupAuditRefs.push(auditRef);
+      grouped.set(groupId, groupAuditRefs);
     }
 
     /** @type {Array<Element>} */
