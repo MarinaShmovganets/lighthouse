@@ -47,9 +47,6 @@ module.exports = [
         'viewport': {
           score: 1,
         },
-        'without-javascript': {
-          score: 1,
-        },
         'user-timings': {
           scoreDisplayMode: 'notApplicable',
         },
@@ -139,9 +136,6 @@ module.exports = [
           score: 1,
         },
         'viewport': {
-          score: 1,
-        },
-        'without-javascript': {
           score: 1,
         },
         'user-timings': {
