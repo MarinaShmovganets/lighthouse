@@ -248,7 +248,7 @@ function resolveModule(moduleIdentifier, configDir, category) {
   //     |-- config.js
   //     |-- package.json
   try {
-    return require.resolve(moduleIdentifier, {paths: [relativePath]});
+    return require.resolve(moduleIdentifier, {paths: [configDir]});
   } catch (requireError) {}
 
   throw new Error(errorString + `
