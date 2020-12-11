@@ -26,5 +26,6 @@ service-worker
 splash-screen
 themed-omnibox
 viewport
+without-javascript
 works-offline
 
