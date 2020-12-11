@@ -23,7 +23,9 @@ module.exports = [
           score: 1,
         },
         'redirects-http': {
-          score: 1,
+        // Note: relies on JS redirect.
+        // see https://github.com/GoogleChrome/lighthouse/issues/2383
+          score: 0,
         },
         'service-worker': {
           score: 1,
@@ -35,6 +37,9 @@ module.exports = [
           score: 1,
         },
         'viewport': {
+          score: 1,
+        },
+        'without-javascript': {
           score: 1,
         },
         'installable-manifest': {
@@ -98,6 +103,9 @@ module.exports = [
           score: 1,
         },
         'viewport': {
+          score: 1,
+        },
+        'without-javascript': {
           score: 1,
         },
         'installable-manifest': {
