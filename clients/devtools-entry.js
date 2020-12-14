@@ -29,7 +29,7 @@ function createConfig(categoryIDs, device) {
   const settings = {
     onlyCategories: categoryIDs,
     // DevTools handles all the emulation
-    screenEmulation: false,
+    screenEmulation: {disabled: true},
   };
   if (device === 'desktop') {
     settings.throttling = desktopDense4G;

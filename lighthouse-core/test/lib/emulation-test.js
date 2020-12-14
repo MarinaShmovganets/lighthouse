@@ -64,7 +64,10 @@ describe('emulation', () => {
       const emulateArgs = connectionStub.sendCommand.findInvocation(
         'Emulation.setDeviceMetricsOverride'
       );
-      expect(emulateArgs).toMatchObject(metrics.desktop);
+      expect(emulateArgs).toMatchObject({
+        ...metrics.desktop,
+        ...{disabled: undefined},
+      });
       expect(emulateArgs).toMatchObject({mobile: false});
     });
 
@@ -101,7 +104,10 @@ describe('emulation', () => {
       const emulateArgs = connectionStub.sendCommand.findInvocation(
         'Emulation.setDeviceMetricsOverride'
       );
-      expect(emulateArgs).toMatchObject(metrics.mobile);
+      expect(emulateArgs).toMatchObject({
+        ...metrics.mobile,
+        ...{disabled: undefined},
+      });
       expect(emulateArgs).toMatchObject({mobile: true});
     });
 
@@ -116,7 +122,10 @@ describe('emulation', () => {
       const emulateArgs = connectionStub.sendCommand.findInvocation(
         'Emulation.setDeviceMetricsOverride'
       );
-      expect(emulateArgs).toMatchObject(metrics.desktop);
+      expect(emulateArgs).toMatchObject({
+        ...metrics.desktop,
+        ...{disabled: undefined},
+      });
       expect(emulateArgs).toMatchObject({mobile: false});
     });
   });

@@ -515,6 +515,10 @@ class Config {
     // Locale is special and comes only from flags/settings/lookupLocale.
     settingsWithFlags.locale = locale;
 
+    if (settingsWithFlags.emulatedUserAgent === true) {
+      settingsWithFlags.emulatedUserAgent = constants.userAgents[settingsWithFlags.formFactor];
+    }
+
     return settingsWithFlags;
   }
 

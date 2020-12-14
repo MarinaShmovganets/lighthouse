@@ -41,7 +41,7 @@ async function emulate(driver, settings) {
     // Network.enable must be called for UA overriding to work
     await driver.sendCommand('Network.enable');
     await driver.sendCommand('Network.setUserAgentOverride', {
-      userAgent: settings.emulatedUserAgent,
+      userAgent: /** @type {string} */ (settings.emulatedUserAgent),
     });
   }
   if (settings.screenEmulation.disabled !== true) {
