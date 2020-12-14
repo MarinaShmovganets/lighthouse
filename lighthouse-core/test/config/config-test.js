@@ -9,6 +9,7 @@ const Config = require('../../config/config.js');
 const assert = require('assert').strict;
 const path = require('path');
 const defaultConfig = require('../../config/default-config.js');
+const constants = require('../../config/constants.js');
 const log = require('lighthouse-logger');
 const Gatherer = require('../../gather/gatherers/gatherer.js');
 const Audit = require('../../audits/audit.js');
@@ -789,7 +790,10 @@ describe('Config', () => {
         extends: 'lighthouse:default',
         settings: {
           disableStorageReset: true,
-          formFactor: 'mobile',
+          formFactor: 'desktop',
+          throttling: constants.throttling.desktopDense4G,
+          screenEmulation: constants.screenEmulationMetrics.desktop,
+          emulatedUserAgent: constants.userAgents.desktop,
         },
       },
       {formFactor: 'desktop'}

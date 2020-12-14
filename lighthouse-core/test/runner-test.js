@@ -112,7 +112,7 @@ describe('Runner', () => {
     });
 
     it('-A throws if the settings change', async () => {
-      const settings = {auditMode: artifactsPath, formFactor: 'desktop'};
+      const settings = {auditMode: artifactsPath, throttlingMethod: 'provided'};
       const opts = {config: generateConfig(settings), driverMock};
       try {
         await Runner.run(defaultGatherFn, opts);
@@ -123,7 +123,7 @@ describe('Runner', () => {
     });
 
     it('-A throws if the URL changes', async () => {
-      const settings = {auditMode: artifactsPath, formFactor: 'desktop'};
+      const settings = {auditMode: artifactsPath, formFactor: 'mobile'};
       const opts = {url: 'https://differenturl.com', config: generateConfig(settings), driverMock};
       try {
         await Runner.run(defaultGatherFn, opts);
