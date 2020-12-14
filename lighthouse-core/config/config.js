@@ -565,17 +565,6 @@ class Config {
     const {categories, requestedAuditNames} = Config.filterCategoriesAndAudits(config.categories,
       settings);
 
-    if (config.audits && settings.onlyCategories) {
-      const includesCategoryUsingFullPageScreenshot = settings.onlyCategories.some(cat => {
-        return ['performance', 'accessibility'].includes(cat);
-      });
-      const explicitlyExcludesFullPageScreenshot =
-        settings.skipAudits && settings.skipAudits.includes('full-page-screenshot');
-      if (includesCategoryUsingFullPageScreenshot && !explicitlyExcludesFullPageScreenshot) {
-        requestedAuditNames.add('full-page-screenshot');
-      }
-    }
-
     // 2. Resolve which audits will need to run
     const audits = config.audits && config.audits.filter(auditDefn =>
         requestedAuditNames.has(auditDefn.implementation.meta.id));
@@ -666,6 +655,19 @@ class Config {
         category.auditRefs.forEach(audit => includedAudits.add(audit.id));
       }
     });
+
+    // The `full-page-screenshot` audit belong to no category, but we want to still include
+    // it for the categories that utilize it.
+    if (settings.onlyCategories) {
+      const includesCategoryUsingFullPageScreenshot = settings.onlyCategories.some(cat => {
+        return ['performance', 'accessibility'].includes(cat);
+      });
+      const explicitlyExcludesFullPageScreenshot =
+        settings.skipAudits && settings.skipAudits.includes('full-page-screenshot');
+      if (includesCategoryUsingFullPageScreenshot && !explicitlyExcludesFullPageScreenshot) {
+        includedAudits.add('full-page-screenshot');
+      }
+    }
 
     return {categories, requestedAuditNames: includedAudits};
   }
