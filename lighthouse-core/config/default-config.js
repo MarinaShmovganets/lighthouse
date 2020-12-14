@@ -613,6 +613,7 @@ const defaultConfig = {
         // Installable
         {id: 'installable-manifest', weight: 2, group: 'pwa-installable'},
         // PWA Optimized
+        {id: 'service-worker', weight: 1, group: 'pwa-optimized'},
         {id: 'redirects-http', weight: 2, group: 'pwa-optimized'},
         {id: 'splash-screen', weight: 1, group: 'pwa-optimized'},
         {id: 'themed-omnibox', weight: 1, group: 'pwa-optimized'},
@@ -620,7 +621,6 @@ const defaultConfig = {
         {id: 'viewport', weight: 2, group: 'pwa-optimized'},
         {id: 'apple-touch-icon', weight: 1, group: 'pwa-optimized'},
         {id: 'maskable-icon', weight: 1, group: 'pwa-optimized'},
-        {id: 'service-worker', weight: 1, group: 'pwa-optimized'},
         // Manual audits
         {id: 'pwa-cross-browser', weight: 0},
         {id: 'pwa-page-transitions', weight: 0},
