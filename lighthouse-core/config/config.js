@@ -565,6 +565,17 @@ class Config {
     const {categories, requestedAuditNames} = Config.filterCategoriesAndAudits(config.categories,
       settings);
 
+    if (config.audits && settings.onlyCategories) {
+      const includesCategoryUsingFullPageScreenshot = settings.onlyCategories.some(cat => {
+        return ['performance', 'accessibility'].includes(cat);
+      });
+      const explicitlyExcludesFullPageScreenshot =
+        settings.skipAudits && settings.skipAudits.includes('full-page-screenshot');
+      if (includesCategoryUsingFullPageScreenshot && !explicitlyExcludesFullPageScreenshot) {
+        requestedAuditNames.add('full-page-screenshot');
+      }
+    }
+
     // 2. Resolve which audits will need to run
     const audits = config.audits && config.audits.filter(auditDefn =>
         requestedAuditNames.has(auditDefn.implementation.meta.id));
