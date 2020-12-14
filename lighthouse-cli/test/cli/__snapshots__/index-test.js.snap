@@ -19,9 +19,6 @@ Object {
       "path": "viewport",
     },
     Object {
-      "path": "without-javascript",
-    },
-    Object {
       "path": "metrics/first-contentful-paint",
     },
     Object {
@@ -1170,11 +1167,6 @@ Object {
         },
         Object {
           "group": "pwa-optimized",
-          "id": "without-javascript",
-          "weight": 1,
-        },
-        Object {
-          "group": "pwa-optimized",
           "id": "apple-touch-icon",
           "weight": 1,
         },
@@ -1380,9 +1372,6 @@ Object {
           "path": "viewport-dimensions",
         },
         Object {
-          "path": "runtime-exceptions",
-        },
-        Object {
           "path": "console-messages",
         },
         Object {
@@ -1495,7 +1484,6 @@ Object {
     Object {
       "blankPage": "about:blank",
       "blockedUrlPatterns": Array [
-        "*.css",
         "*.jpg",
         "*.jpeg",
         "*.png",
@@ -1509,9 +1497,6 @@ Object {
       "gatherers": Array [
         Object {
           "path": "http-redirect",
-        },
-        Object {
-          "path": "html-without-javascript",
         },
       ],
       "loadFailureMode": "warn",
