@@ -1382,18 +1382,6 @@
   "lighthouse-core/audits/viewport.js | title": {
     "message": "تضمين علامة `<meta name=\"viewport\">` مع `width` أو `initial-scale`"
   },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "يجب أن يعرض تطبيقك بعض المحتوى عند إيقاف JavaScript، حتى في حال كان مجرد تحذير للمستخدم يشير إلى ضرورة وجود JavaScript لاستخدام التطبيق. [مزيد من المعلومات](https://web.dev/without-javascript/)"
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "يجب أن يعرض نص الصفحة بعض المحتوى في حالة عدم توفر النصوص البرمجية."
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "عدم تقديم المحتوى الاحتياطي عند عدم توفر JavaScript"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "تضمين بعض المحتوى عند عدم توفّر JavaScript"
-  },
   "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
     "message": "هذه هي فرص لتحسين استخدام ARIA في تطبيقك، ما قد يحسّن تجربة مستخدمي التكنولوجيا المساعدة، مثل قارئ الشاشة."
   },

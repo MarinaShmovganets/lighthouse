@@ -136,7 +136,6 @@ const defaultConfig = {
       'css-usage',
       'js-usage',
       'viewport-dimensions',
-      'runtime-exceptions',
       'console-messages',
       'anchor-elements',
       'image-elements',
@@ -176,10 +175,10 @@ const defaultConfig = {
     passName: 'redirectPass',
     loadFailureMode: 'warn',
     // Speed up the redirect pass by blocking stylesheets, fonts, and images
-    blockedUrlPatterns: ['*.css', '*.jpg', '*.jpeg', '*.png', '*.gif', '*.svg', '*.ttf', '*.woff', '*.woff2'],
+    // TODO: restore blocked *.css when https://github.com/GoogleChrome/lighthouse/issues/11803 is resolved.
+    blockedUrlPatterns: ['*.jpg', '*.jpeg', '*.png', '*.gif', '*.svg', '*.ttf', '*.woff', '*.woff2'],
     gatherers: [
       'http-redirect',
-      'html-without-javascript',
     ],
   }],
   audits: [
@@ -187,7 +186,6 @@ const defaultConfig = {
     'redirects-http',
     'service-worker',
     'viewport',
-    'without-javascript',
     'metrics/first-contentful-paint',
     'metrics/largest-contentful-paint',
     'metrics/first-meaningful-paint',
@@ -610,7 +608,6 @@ const defaultConfig = {
         {id: 'themed-omnibox', weight: 1, group: 'pwa-optimized'},
         {id: 'content-width', weight: 1, group: 'pwa-optimized'},
         {id: 'viewport', weight: 2, group: 'pwa-optimized'},
-        {id: 'without-javascript', weight: 1, group: 'pwa-optimized'},
         {id: 'apple-touch-icon', weight: 1, group: 'pwa-optimized'},
         {id: 'maskable-icon', weight: 1, group: 'pwa-optimized'},
         // Manual audits

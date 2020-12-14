@@ -1382,18 +1382,6 @@
   "lighthouse-core/audits/viewport.js | title": {
     "message": "Are o etichetă `<meta name=\"viewport\">` cu `width` sau `initial-scale`"
   },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "Aplicația ta trebuie să afișeze o parte de conținut când JavaScript este dezactivat, chiar dacă este doar o atenționare pentru utilizator că JavaScript este obligatoriu pentru a folosi aplicația. [Află mai multe](https://web.dev/without-javascript/)."
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "Corpul paginii trebuie să redea o parte de conținut dacă scripturile sale nu sunt disponibile."
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "Nu oferă conținut alternativ când JavaScript nu este disponibil"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "Include o parte de conținut când JavaScript nu este disponibil"
-  },
   "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
     "message": "Acestea sunt oportunități de a îmbunătăți utilizarea ARIA în aplicație, lucru care poate îmbunătăți experiența pentru utilizatorii tehnologiei care asigură asistență, precum un cititor de ecran."
   },

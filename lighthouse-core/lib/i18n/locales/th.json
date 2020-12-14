@@ -1382,18 +1382,6 @@
   "lighthouse-core/audits/viewport.js | title": {
     "message": "มีแท็ก `<meta name=\"viewport\">` ที่มี `width` หรือ `initial-scale`"
   },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "แอปควรแสดงเนื้อหาบางอย่างเมื่อมีการปิดใช้ JavaScript แม้จะเป็นเพียงการเตือนผู้ใช้ว่าการใช้แอปจำเป็นต้องใช้ JavaScript [ดูข้อมูลเพิ่มเติม](https://web.dev/without-javascript/)"
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "ส่วนเนื้อหาในหน้าควรแสดงเนื้อหาบางอย่างถ้าสคริปต์ในหน้าไม่พร้อมใช้งาน"
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "ไม่แสดงเนื้อหาทางเลือกเมื่อ JavaScript ไม่พร้อมใช้งาน"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "มีเนื้อหาบางอย่างแสดงขึ้นเมื่อ JavaScript ไม่พร้อมใช้งาน"
-  },
   "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
     "message": "นี่เป็นโอกาสปรับปรุงการใช้งาน ARIA ในแอปพลิเคชันของคุณ ซึ่งอาจช่วยให้ผู้ใช้ได้รับประสบการณ์การใช้งานเทคโนโลยีอำนวยความสะดวก เช่น โปรแกรมอ่านหน้าจอ ที่ดียิ่งขึ้น"
   },

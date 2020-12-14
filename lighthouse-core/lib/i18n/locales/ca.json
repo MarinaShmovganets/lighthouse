@@ -1382,18 +1382,6 @@
   "lighthouse-core/audits/viewport.js | title": {
     "message": "Té una etiqueta `<meta name=\"viewport\">` amb l'atribut `width` o `initial-scale`"
   },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "L'aplicació ha de mostrar algun tipus de contingut quan JavaScript estigui desactivat, encara que només sigui per avisar l'usuari que es requereix JavaScript per utilitzar l'aplicació. [Obtén més informació](https://web.dev/without-javascript/)."
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "El cos de la pàgina ha de renderitzar algun tipus de contingut si els scripts no estan disponibles."
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "No proporciona contingut alternatiu quan JavaScript no està disponible"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "Inclou algun tipus de contingut quan JavaScript no està disponible"
-  },
   "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
     "message": "Aquí tens recomanacions per millorar l'ús dels elements d'ARIA a l'aplicació. També poden millorar l'experiència dels usuaris de tecnologia d'assistència (per exemple, de lectors de pantalla)."
   },

@@ -1382,18 +1382,6 @@
   "lighthouse-core/audits/viewport.js | title": {
     "message": "Bevat een `<meta name=\"viewport\">`-tag met `width` of `initial-scale`"
   },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "Je app moet wat content weergeven wanneer JavaScript is uitgeschakeld, zelfs als het alleen maar een waarschuwing aan de gebruiker is dat JavaScript is vereist om de app te gebruiken. [Meer informatie](https://web.dev/without-javascript/)"
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "Het hoofdgedeelte van de pagina moet wat content weergeven als de bijbehorende scripts niet beschikbaar zijn."
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "Biedt geen reservecontent wanneer JavaScript niet beschikbaar is"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "Bevat wat content wanneer JavaScript niet beschikbaar is"
-  },
   "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
     "message": "Dit zijn suggesties om het gebruik van ARIA in je app te verbeteren, wat kan leiden tot betere functionaliteit voor gebruikers van hulptechnologie, zoals een schermlezer."
   },

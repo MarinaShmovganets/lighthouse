@@ -1382,18 +1382,6 @@
   "lighthouse-core/audits/viewport.js | title": {
     "message": "Має тег `<meta name=\"viewport\">` з атрибутами `width` або `initial-scale`"
   },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "Ваш додаток має відображати певний контент, коли JavaScript вимкнено, навіть якщо це просто сповіщення для користувачів про те, що для використання додатка потрібно ввімкнути JavaScript. [Докладніше](https://web.dev/without-javascript/)."
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "Сторінка має відображати контент, навіть якщо її сценарії недоступні."
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "Резервний контент не відображається, коли JavaScript вимкнено"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "Певний контент відображається, коли JavaScript вимкнено"
-  },
   "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
     "message": "Ці рекомендації допоможуть покращити використання ролей ARIA у вашому додатку, що може позитивно вплинути на взаємодію для користувачів допоміжних технологій, як-от програм зчитування з екрана."
   },

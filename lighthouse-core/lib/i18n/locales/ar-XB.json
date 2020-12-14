@@ -1382,18 +1382,6 @@
   "lighthouse-core/audits/viewport.js | title": {
     "message": "‏‮Has‬‏ ‏‮a‬‏ `<meta name=\"viewport\">` ‏‮tag‬‏ ‏‮with‬‏ `width` ‏‮or‬‏ `initial-scale`"
   },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "‏‮Your‬‏ ‏‮app‬‏ ‏‮should‬‏ ‏‮display‬‏ ‏‮some‬‏ ‏‮content‬‏ ‏‮when‬‏ ‏‮JavaScript‬‏ ‏‮is‬‏ ‏‮disabled‬‏, ‏‮even‬‏ ‏‮if‬‏ ‏‮it‬‏'‏‮s‬‏ ‏‮just‬‏ ‏‮a‬‏ ‏‮warning‬‏ ‏‮to‬‏ ‏‮the‬‏ ‏‮user‬‏ ‏‮that‬‏ ‏‮JavaScript‬‏ ‏‮is‬‏ ‏‮required‬‏ ‏‮to‬‏ ‏‮use‬‏ ‏‮the‬‏ ‏‮app‬‏. [‏‮Learn‬‏ ‏‮more‬‏](https://web.dev/without-javascript/)."
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "‏‮The‬‏ ‏‮page‬‏ ‏‮body‬‏ ‏‮should‬‏ ‏‮render‬‏ ‏‮some‬‏ ‏‮content‬‏ ‏‮if‬‏ ‏‮its‬‏ ‏‮scripts‬‏ ‏‮are‬‏ ‏‮not‬‏ ‏‮available‬‏."
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "‏‮Does‬‏ ‏‮not‬‏ ‏‮provide‬‏ ‏‮fallback‬‏ ‏‮content‬‏ ‏‮when‬‏ ‏‮JavaScript‬‏ ‏‮is‬‏ ‏‮not‬‏ ‏‮available‬‏"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "‏‮Contains‬‏ ‏‮some‬‏ ‏‮content‬‏ ‏‮when‬‏ ‏‮JavaScript‬‏ ‏‮is‬‏ ‏‮not‬‏ ‏‮available‬‏"
-  },
   "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
     "message": "‏‮These‬‏ ‏‮are‬‏ ‏‮opportunities‬‏ ‏‮to‬‏ ‏‮improve‬‏ ‏‮the‬‏ ‏‮usage‬‏ ‏‮of‬‏ ‏‮ARIA‬‏ ‏‮in‬‏ ‏‮your‬‏ ‏‮application‬‏ ‏‮which‬‏ ‏‮may‬‏ ‏‮enhance‬‏ ‏‮the‬‏ ‏‮experience‬‏ ‏‮for‬‏ ‏‮users‬‏ ‏‮of‬‏ ‏‮assistive‬‏ ‏‮technology‬‏, ‏‮like‬‏ ‏‮a‬‏ ‏‮screen‬‏ ‏‮reader‬‏."
   },

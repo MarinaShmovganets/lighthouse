@@ -1382,18 +1382,6 @@
   "lighthouse-core/audits/viewport.js | title": {
     "message": "Έχει ετικέτα `<meta name=\"viewport\">` με `width` ή `initial-scale`"
   },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "Η εφαρμογή σας θα πρέπει να εμφανίζει κάποιο περιεχόμενο όταν η JavaScript είναι απενεργοποιημένη, ακόμη και αν είναι απλώς μια προειδοποίηση που ενημερώνει τον χρήστη ότι η JavaScript είναι απαραίτητη για τη χρήση της εφαρμογής. [Μάθετε περισσότερα](https://web.dev/without-javascript/)."
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "Το σώμα της σελίδας θα πρέπει να αποδίδει κάποιο περιεχόμενο αν τα σενάριά του δεν είναι διαθέσιμα."
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "Δεν παρέχει εναλλακτικό περιεχόμενο όταν η JavaScript δεν είναι διαθέσιμη"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "Περιλαμβάνει κάποιο περιεχόμενο όταν η JavaScript δεν είναι διαθέσιμη"
-  },
   "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
     "message": "Αυτές είναι ευκαιρίες να βελτιώσετε τη χρήση των ARIA στην εφαρμογή σας, κάνοντας καλύτερη την εμπειρία χρήστη σε τεχνολογίες υποβοήθησης, όπως στον αναγνώστη οθόνης."
   },

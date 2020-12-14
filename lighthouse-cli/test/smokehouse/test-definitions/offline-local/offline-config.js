@@ -19,7 +19,6 @@ module.exports = {
       'redirects-http',
       'service-worker',
       'viewport',
-      'without-javascript',
       'user-timings',
       'critical-request-chains',
       'render-blocking-resources',

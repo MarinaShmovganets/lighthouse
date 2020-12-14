@@ -31,7 +31,6 @@ Running beforePass methods
 Gathering setup: CSSUsage
 Gathering setup: JsUsage
 Gathering setup: ViewportDimensions
-Gathering setup: RuntimeExceptions
 Gathering setup: ConsoleMessages
 Gathering setup: AnchorElements
 Gathering setup: ImageElements
@@ -63,7 +62,6 @@ Running pass methods
 Gathering in-page: CSSUsage
 Gathering in-page: JsUsage
 Gathering in-page: ViewportDimensions
-Gathering in-page: RuntimeExceptions
 Gathering in-page: ConsoleMessages
 Gathering in-page: AnchorElements
 Gathering in-page: ImageElements
@@ -94,7 +92,6 @@ Running afterPass methods
 Gathering: CSSUsage
 Gathering: JsUsage
 Gathering: ViewportDimensions
-Gathering: RuntimeExceptions
 Gathering: ConsoleMessages
 Gathering: AnchorElements
 Gathering: ImageElements
@@ -139,16 +136,13 @@ Resetting state with about:blank
 Setting up network for the pass trace
 Running beforePass methods
 Gathering setup: HTTPRedirect
-Gathering setup: HTMLWithoutJavaScript
 Beginning devtoolsLog and trace
 Loading page & waiting for onload
 Running pass methods
 Gathering in-page: HTTPRedirect
-Gathering in-page: HTMLWithoutJavaScript
 Gathering devtoolsLog & network records
 Running afterPass methods
 Gathering: HTTPRedirect
-Gathering: HTMLWithoutJavaScript
 Disconnecting from browser...
 Analyzing and running audits...
 Auditing: Uses HTTPS
@@ -157,7 +151,6 @@ Auditing: Redirects HTTP traffic to HTTPS
 Auditing: Registers a service worker that controls page and `start_url`
 Auditing: Has a `<meta name="viewport">` tag with `width` or `initial-scale`
 Computing artifact: ViewportMeta
-Auditing: Contains some content when JavaScript is not available
 Auditing: First Contentful Paint
 Computing artifact: FirstContentfulPaint
 Computing artifact: TraceOfTab
@@ -561,9 +554,15 @@ video-description: notApplicable
 viewport: fail
 viewport-ad-density: notApplicable
 visual-order-follows-dom: manual
+<<<<<<< HEAD
 without-javascript: pass
 
 # of .lh-audit divs: 155
+=======
+works-offline: fail
+
+# of .lh-audit divs: 156
+>>>>>>> origin/master
 
 .lh-audit divs:
 accesskeys
@@ -720,5 +719,9 @@ viewport
 viewport
 viewport-ad-density
 visual-order-follows-dom
+<<<<<<< HEAD
 without-javascript
+=======
+works-offline
+>>>>>>> origin/master
 

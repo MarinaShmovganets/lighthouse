@@ -26,5 +26,9 @@ service-worker
 splash-screen
 themed-omnibox
 viewport
+<<<<<<< HEAD
 without-javascript
+=======
+works-offline
+>>>>>>> origin/master
 

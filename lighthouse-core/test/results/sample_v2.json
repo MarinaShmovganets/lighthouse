@@ -65,13 +65,6 @@
       "scoreDisplayMode": "binary",
       "warnings": []
     },
-    "without-javascript": {
-      "id": "without-javascript",
-      "title": "Contains some content when JavaScript is not available",
-      "description": "Your app should display some content when JavaScript is disabled, even if it's just a warning to the user that JavaScript is required to use the app. [Learn more](https://web.dev/without-javascript/).",
-      "score": 1,
-      "scoreDisplayMode": "binary"
-    },
     "first-contentful-paint": {
       "id": "first-contentful-paint",
       "title": "First Contentful Paint",
@@ -259,28 +252,43 @@
         "items": [
           {
             "source": "other",
-            "description": "Application Cache Error event: Manifest fetch failed (404) http://localhost:10200/dobetterweb/clock.appcache",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html"
+            "description": "Application Cache Error event: Manifest fetch failed (404) http://localhost:56620/dobetterweb/clock.appcache",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
           },
           {
-            "source": "Runtime.exception",
-            "description": "Error: An error\n    at http://localhost:10200/dobetterweb/dbw_tester.html:42:38",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html"
+            "source": "exception",
+            "description": "Error: A distinctive error\n    at http://localhost:56620/dobetterweb/dbw_tester.html:58:54",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
+          },
+          {
+            "source": "exception",
+            "description": "Error: An ignored error\n    at http://localhost:56620/dobetterweb/dbw_tester.html:61:38",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
+          },
+          {
+            "source": "console.error",
+            "description": "Error! Error!",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
           },
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200"
+            "url": "http://localhost:56620/dobetterweb/unknown404.css?delay=200"
           },
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/favicon.ico"
+            "url": "http://localhost:56620/dobetterweb/fcp-delayer.js?delay=5000"
           },
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200"
+            "url": "http://localhost:56620/favicon.ico"
+          },
+          {
+            "source": "network",
+            "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://localhost:56620/dobetterweb/unknown404.css?delay=200"
           }
         ]
       }
@@ -431,24 +439,6 @@
                   "transferSize": 821
                 }
               },
-              "75994.10": {
-                "request": {
-                  "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
-                  "startTime": 185603.965303,
-                  "endTime": 185605.113307,
-                  "responseReceivedTime": 185605.104776,
-                  "transferSize": 1703
-                }
-              },
-              "75994.11": {
-                "request": {
-                  "url": "http://localhost:10200/dobetterweb/empty_module.js?delay=500",
-                  "startTime": 185603.96675,
-                  "endTime": 185604.557407,
-                  "responseReceivedTime": 185604.556719,
-                  "transferSize": 144
-                }
-              },
               "75994.21": {
                 "request": {
                   "url": "http://localhost:10200/zone.js",
@@ -474,6 +464,24 @@
                   "endTime": 185607.285454,
                   "responseReceivedTime": 185606.82147599998,
                   "transferSize": 821
+                }
+              },
+              "75994.10": {
+                "request": {
+                  "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
+                  "startTime": 185603.965303,
+                  "endTime": 185605.113307,
+                  "responseReceivedTime": 185605.104776,
+                  "transferSize": 1703
+                }
+              },
+              "75994.11": {
+                "request": {
+                  "url": "http://localhost:10200/dobetterweb/empty_module.js?delay=500",
+                  "startTime": 185603.96675,
+                  "endTime": 185604.557407,
+                  "responseReceivedTime": 185604.556719,
+                  "transferSize": 144
                 }
               }
             }
@@ -713,7 +721,7 @@
       "description": "Deprecated APIs will eventually be removed from the browser. [Learn more](https://web.dev/deprecations/).",
       "score": 0,
       "scoreDisplayMode": "binary",
-      "displayValue": "3 warnings found",
+      "displayValue": "4 warnings found",
       "details": {
         "type": "table",
         "headings": [
@@ -730,27 +738,44 @@
         ],
         "items": [
           {
-            "value": "Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/.",
+            "value": "Application Cache API manifest selection is deprecated and will be removed in M85, around August 2020. See https://www.chromestatus.com/features/6192449487634432 for more details.",
             "source": {
               "type": "source-location",
-              "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
+              "url": "http://localhost:56620/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
-              "line": 322,
-              "column": 6
+              "line": 8,
+              "column": 0
             }
           },
           {
             "value": "'window.webkitStorageInfo' is deprecated. Please use 'navigator.webkitTemporaryStorage' or 'navigator.webkitPersistentStorage' instead.",
             "source": {
               "type": "source-location",
-              "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
+              "url": "http://localhost:56620/dobetterweb/dbw_tester.js",
               "urlProvider": "network",
-              "line": 325,
+              "line": 13,
               "column": 9
             }
           },
           {
-            "value": "/deep/ combinator is no longer supported in CSS dynamic profile.It is now effectively no-op, acting as if it were a descendant combinator. /deep/ combinator will be removed, and will be invalid at M65. You should remove it. See https://www.chromestatus.com/features/4964279606312960 for more details."
+            "value": "Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/.",
+            "source": {
+              "type": "source-location",
+              "url": "http://localhost:56620/dobetterweb/dbw_tester.html",
+              "urlProvider": "network",
+              "line": 371,
+              "column": 6
+            }
+          },
+          {
+            "value": "/deep/ combinator is no longer supported in CSS dynamic profile. It is now effectively no-op, acting as if it were a descendant combinator. /deep/ combinator will be removed, and will be invalid at M65. You should remove it. See https://www.chromestatus.com/features/4964279606312960 for more details.",
+            "source": {
+              "type": "source-location",
+              "url": "http://localhost:56620/dobetterweb/dbw_tester.html",
+              "urlProvider": "network",
+              "line": 0,
+              "column": 0
+            }
           }
         ]
       }
@@ -3792,12 +3817,12 @@
         ],
         "items": [
           {
-            "label": "line: 277",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html"
+            "label": "line: 331",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
           },
           {
-            "label": "line: 281",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html"
+            "label": "line: 335",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
           }
         ]
       }
@@ -3832,16 +3857,16 @@
         ],
         "items": [
           {
-            "label": "line: 178",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html"
+            "label": "line: 269",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
           },
           {
-            "label": "line: 179",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html"
+            "label": "line: 270",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
           },
           {
-            "label": "line: 180",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html"
+            "label": "line: 271",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
           }
         ]
       }
@@ -3956,8 +3981,8 @@
         ],
         "items": [
           {
-            "label": "line: 287",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html"
+            "label": "line: 341",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
           }
         ]
       }
@@ -4105,16 +4130,8 @@
         ],
         "items": [
           {
-            "label": "line: 26",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.js"
-          },
-          {
-            "label": "line: 222",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html"
-          },
-          {
-            "label": "line: 248",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html"
+            "label": "line: 302",
+            "url": "http://localhost:56620/dobetterweb/dbw_tester.html"
           }
         ]
       }
@@ -5247,11 +5264,6 @@
           "group": "pwa-optimized"
         },
         {
-          "id": "without-javascript",
-          "weight": 1,
-          "group": "pwa-optimized"
-        },
-        {
           "id": "apple-touch-icon",
           "weight": 1,
           "group": "pwa-optimized"
@@ -5275,7 +5287,7 @@
         }
       ],
       "id": "pwa",
-      "score": 0.27
+      "score": 0.21
     }
   },
   "categoryGroups": {
@@ -5422,12 +5434,6 @@
       {
         "startTime": 0,
         "name": "lh:computed:ViewportMeta",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:without-javascript",
         "duration": 100,
         "entryType": "measure"
       },
@@ -6652,12 +6658,6 @@
       "lighthouse-core/audits/viewport.js | description": [
         "audits.viewport.description"
       ],
-      "lighthouse-core/audits/without-javascript.js | title": [
-        "audits[without-javascript].title"
-      ],
-      "lighthouse-core/audits/without-javascript.js | description": [
-        "audits[without-javascript].description"
-      ],
       "lighthouse-core/lib/i18n/i18n.js | firstContentfulPaintMetric": [
         "audits[first-contentful-paint].title",
         "audits[timing-budget].details.items[3].label"
@@ -6964,7 +6964,7 @@
       "lighthouse-core/audits/deprecations.js | displayValue": [
         {
           "values": {
-            "itemCount": 3
+            "itemCount": 4
           },
           "path": "audits.deprecations.displayValue"
         }
