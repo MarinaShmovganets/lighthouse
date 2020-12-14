@@ -44,11 +44,12 @@ async function emulate(driver, settings) {
       userAgent: settings.emulatedUserAgent,
     });
   }
-
-  if (settings.screenEmulation.disabled !== false) {
-    await driver.sendCommand('Emulation.setDeviceMetricsOverride', settings.screenEmulation);
+  if (settings.screenEmulation.disabled !== true) {
+    const {width, height, deviceScaleFactor, mobile} = settings.screenEmulation;
+    const params = {width, height, deviceScaleFactor, mobile};
+    await driver.sendCommand('Emulation.setDeviceMetricsOverride', params);
     await driver.sendCommand('Emulation.setTouchEmulationEnabled', {
-      enabled: settings.screenEmulation.mobile,
+      enabled: params.mobile,
     });
   }
 }

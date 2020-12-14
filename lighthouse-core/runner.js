@@ -258,7 +258,7 @@ class Runner {
       const normalizedGatherSettings = Object.assign({}, artifacts.settings, overrides);
       const normalizedAuditSettings = Object.assign({}, settings, overrides);
 
-      require('assert').deepStrictEqual(normalizedGatherSettings, normalizedAuditSettings);
+      // require('assert').deepStrictEqual(normalizedGatherSettings, normalizedAuditSettings);
 
       if (!isDeepEqual(normalizedGatherSettings, normalizedAuditSettings)) {
         throw new Error('Cannot change settings between gathering and auditing');
