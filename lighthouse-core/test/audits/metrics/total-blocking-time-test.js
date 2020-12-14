@@ -22,9 +22,13 @@ function generateArtifacts({trace, devtoolsLog}) {
   };
 }
 
-/** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
-/** @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod */
-const getFakeContext = (formFactor, throttlingMethod) => ({
+/**
+ * @param {{
+ * {LH.SharedFlagsSettings['formFactor']} formFactor
+ * {LH.SharedFlagsSettings['formFactor']} formFactor
+ * }} param0
+ */
+const getFakeContext = ({formFactor, throttlingMethod}) => ({
   options: defaultOptions,
   computedCache: new Map(),
   settings: {
@@ -39,7 +43,7 @@ const getFakeContext = (formFactor, throttlingMethod) => ({
 describe('Performance: total-blocking-time audit', () => {
   it('evaluates Total Blocking Time metric properly', async () => {
     const artifacts = generateArtifacts({trace, devtoolsLog});
-    const context = getFakeContext('mobile', 'provided');
+    const context = getFakeContext({formFactor: 'mobile', throttlingMethod: 'provided'});
 
     const output = await TBTAudit.audit(artifacts, context);
     expect(output.numericValue).toBeCloseTo(48.3, 1);
@@ -50,7 +54,7 @@ describe('Performance: total-blocking-time audit', () => {
   it('adjusts scoring based on form factor', async () => {
     const artifactsMobile = generateArtifacts({trace: lcpTrace,
       devtoolsLog: lcpDevtoolsLog});
-    const contextMobile = getFakeContext('mobile', 'provided');
+    const contextMobile = getFakeContext({formFactor: 'mobile', throttlingMethod: 'provided'});
 
     const outputMobile = await TBTAudit.audit(artifactsMobile, contextMobile);
     expect(outputMobile.numericValue).toBeCloseTo(333, 1);
@@ -59,7 +63,7 @@ describe('Performance: total-blocking-time audit', () => {
 
     const artifactsDesktop = generateArtifacts({trace: lcpTrace,
       devtoolsLog: lcpDevtoolsLog});
-    const contextDesktop = getFakeContext('desktop', 'provided');
+    const contextDesktop = getFakeContext({formFactor: 'desktop', throttlingMethod: 'provided'});
 
     const outputDesktop = await TBTAudit.audit(artifactsDesktop, contextDesktop);
     expect(outputDesktop.numericValue).toBeCloseTo(333, 1);

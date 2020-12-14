@@ -32,9 +32,11 @@ describe('emulation', () => {
         .mockResponse('Emulation.setTouchEmulationEnabled');
     });
 
-    /** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
-    /** @param {LH.SharedFlagsSettings['screenEmulation']} screenEmulation */
-    /** @param {LH.SharedFlagsSettings['emulatedUserAgent']} emulatedUserAgent */
+    /**
+     * @param {LH.SharedFlagsSettings['formFactor']} formFactor
+     * @param {LH.SharedFlagsSettings['screenEmulation']} screenEmulation
+     * @param {LH.SharedFlagsSettings['emulatedUserAgent']} emulatedUserAgent
+     */
     const getSettings = (formFactor, screenEmulation, emulatedUserAgent) => ({
       formFactor: formFactor,
       screenEmulation,
