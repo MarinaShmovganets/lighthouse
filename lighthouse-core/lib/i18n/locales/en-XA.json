@@ -788,9 +788,6 @@
   "lighthouse-core/audits/image-aspect-ratio.js | title": {
     "message": "[Ðîšþļåýš îmåĝéš ŵîţĥ çöŕŕéçţ åšþéçţ ŕåţîö one two three four five six seven eight nine]"
   },
-  "lighthouse-core/audits/image-aspect-ratio.js | warningCompute": {
-    "message": "[Îñvåļîð îmåĝé šîžîñĝ îñƒöŕmåţîöñ ᐅ{url}ᐊ one two three four five six seven eight]"
-  },
   "lighthouse-core/audits/image-size-responsive.js | columnActual": {
     "message": "[Åçţûåļ šîžé one two]"
   },
@@ -877,24 +874,6 @@
   },
   "lighthouse-core/audits/layout-shift-elements.js | title": {
     "message": "[Åvöîð ļåŕĝé ļåýöûţ šĥîƒţš one two three four five six]"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
-    "message": "[Å ƒåšţ þåĝé ļöåð övéŕ å çéļļûļåŕ ñéţŵöŕķ éñšûŕéš å ĝööð möбîļé ûšéŕ éxþéŕîéñçé. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/load-fast-enough-for-pwa/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen]"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | displayValueText": {
-    "message": "[Îñţéŕåçţîvé åţ ᐅ{timeInMs, number, seconds}ᐊ š one two three four five]"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | displayValueTextWithOverride": {
-    "message": "[Îñţéŕåçţîvé öñ šîmûļåţéð möбîļé ñéţŵöŕķ åţ ᐅ{timeInMs, number, seconds}ᐊ š one two three four five six seven eight nine ten]"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | explanationLoadSlow": {
-    "message": "[Ýöûŕ þåĝé ļöåðš ţöö šļöŵļý åñð îš ñöţ îñţéŕåçţîvé ŵîţĥîñ 10 šéçöñðš. Ļööķ åţ ţĥé öþþöŕţûñîţîéš åñð ðîåĝñöšţîçš îñ ţĥé \"Þéŕƒöŕmåñçé\" šéçţîöñ ţö ļéåŕñ ĥöŵ ţö îmþŕövé. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree]"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | failureTitle": {
-    "message": "[Þåĝé ļöåð îš ñöţ ƒåšţ éñöûĝĥ öñ möбîļé ñéţŵöŕķš one two three four five six seven eight nine ten]"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | title": {
-    "message": "[Þåĝé ļöåð îš ƒåšţ éñöûĝĥ öñ möбîļé ñéţŵöŕķš one two three four five six seven eight nine]"
   },
   "lighthouse-core/audits/long-tasks.js | description": {
     "message": "[Ļîšţš ţĥé ļöñĝéšţ ţåšķš öñ ţĥé måîñ ţĥŕéåð, ûšéƒûļ ƒöŕ îðéñţîƒýîñĝ ŵöŕšţ çöñţŕîбûţöŕš ţö îñþûţ ðéļåý. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/long-tasks-devtools/)ᐊ one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen]"
@@ -1417,18 +1396,6 @@
   },
   "lighthouse-core/audits/viewport.js | title": {
     "message": "[Ĥåš å ᐅ`<meta name=\"viewport\">`ᐊ ţåĝ ŵîţĥ ᐅ`width`ᐊ öŕ ᐅ`initial-scale`ᐊ one two three four five six seven]"
-  },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "[Ýöûŕ åþþ šĥöûļð ðîšþļåý šömé çöñţéñţ ŵĥéñ ĴåvåŠçŕîþţ îš ðîšåбļéð, évéñ îƒ îţ'š ĵûšţ å ŵåŕñîñĝ ţö ţĥé ûšéŕ ţĥåţ ĴåvåŠçŕîþţ îš ŕéqûîŕéð ţö ûšé ţĥé åþþ. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/without-javascript/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour]"
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "[Ţĥé þåĝé бöðý šĥöûļð ŕéñðéŕ šömé çöñţéñţ îƒ îţš šçŕîþţš åŕé ñöţ åvåîļåбļé. one two three four five six seven eight nine ten eleven twelve thirteen fourteen]"
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "[Ðöéš ñöţ þŕövîðé ƒåļļбåçķ çöñţéñţ ŵĥéñ ĴåvåŠçŕîþţ îš ñöţ åvåîļåбļé one two three four five six seven eight nine ten eleven twelve thirteen]"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "[Çöñţåîñš šömé çöñţéñţ ŵĥéñ ĴåvåŠçŕîþţ îš ñöţ åvåîļåбļé one two three four five six seven eight nine ten eleven]"
   },
   "lighthouse-core/audits/works-offline.js | description": {
     "message": "[Îƒ ýöû'ŕé бûîļðîñĝ å Þŕöĝŕéššîvé Ŵéб Åþþ, çöñšîðéŕ ûšîñĝ å šéŕvîçé ŵöŕķéŕ šö ţĥåţ ýöûŕ åþþ çåñ ŵöŕķ öƒƒļîñé. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/works-offline/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty]"

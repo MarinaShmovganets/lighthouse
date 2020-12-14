@@ -788,9 +788,6 @@
   "lighthouse-core/audits/image-aspect-ratio.js | title": {
     "message": "Afișează imaginile cu rapoarte de dimensiuni corecte"
   },
-  "lighthouse-core/audits/image-aspect-ratio.js | warningCompute": {
-    "message": "Informații nevalide privind dimensiunea imaginilor {url}"
-  },
   "lighthouse-core/audits/image-size-responsive.js | columnActual": {
     "message": "Dimensiunea reală"
   },
@@ -877,24 +874,6 @@
   },
   "lighthouse-core/audits/layout-shift-elements.js | title": {
     "message": "Evită schimbările majore ale aspectului"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
-    "message": "O încărcare rapidă a paginii într-o rețea celulară asigură o experiență bună a utilizatorului pe mobil. [Află mai multe](https://web.dev/load-fast-enough-for-pwa/)."
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | displayValueText": {
-    "message": "Interactiv la {timeInMs, number, seconds} s"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | displayValueTextWithOverride": {
-    "message": "Interactivă pe rețeaua mobilă simulată la {timeInMs, number, seconds} s"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | explanationLoadSlow": {
-    "message": "Pagina se încarcă prea lent și nu este interactivă în 10 secunde. Analizează oportunitățile și diagnosticele din secțiunea „Performanță” ca să afli cum s-o îmbunătățești."
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | failureTitle": {
-    "message": "Încărcarea paginii nu este suficient de rapidă în rețele mobile"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | title": {
-    "message": "Încărcarea paginii este suficient de rapidă în rețele mobile"
   },
   "lighthouse-core/audits/long-tasks.js | description": {
     "message": "Afișează cele mai îndelungate activități din firul principal, ceea ce este util pentru identificarea elementelor care contribuie cel mai mult la întârziere. [Află mai multe](https://web.dev/long-tasks-devtools/)"
@@ -1417,18 +1396,6 @@
   },
   "lighthouse-core/audits/viewport.js | title": {
     "message": "Are o etichetă `<meta name=\"viewport\">` cu `width` sau `initial-scale`"
-  },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "Aplicația ta trebuie să afișeze o parte de conținut când JavaScript este dezactivat, chiar dacă este doar o atenționare pentru utilizator că JavaScript este obligatoriu pentru a folosi aplicația. [Află mai multe](https://web.dev/without-javascript/)."
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "Corpul paginii trebuie să redea o parte de conținut dacă scripturile sale nu sunt disponibile."
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "Nu oferă conținut alternativ când JavaScript nu este disponibil"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "Include o parte de conținut când JavaScript nu este disponibil"
   },
   "lighthouse-core/audits/works-offline.js | description": {
     "message": "Dacă creezi o aplicație web progresivă, poți folosi un service worker pentru ca aplicația să poată funcționa offline. [Află mai multe](https://web.dev/works-offline/)."

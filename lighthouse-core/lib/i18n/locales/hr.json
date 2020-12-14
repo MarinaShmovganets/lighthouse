@@ -788,9 +788,6 @@
   "lighthouse-core/audits/image-aspect-ratio.js | title": {
     "message": "Prikazuje slike točnog omjera"
   },
-  "lighthouse-core/audits/image-aspect-ratio.js | warningCompute": {
-    "message": "Nevažeće informacije o veličini slike {url}"
-  },
   "lighthouse-core/audits/image-size-responsive.js | columnActual": {
     "message": "Stvarna veličina"
   },
@@ -877,24 +874,6 @@
   },
   "lighthouse-core/audits/layout-shift-elements.js | title": {
     "message": "Izbjegavajte velike pomake izgleda"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | description": {
-    "message": "Brzo učitavanje stranice putem mobilne mreže omogućuje dobar doživljaj korisnicima na mobilnim uređajima. [Saznajte više](https://web.dev/load-fast-enough-for-pwa/)."
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | displayValueText": {
-    "message": "Interaktivno u {timeInMs, number, seconds} s"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | displayValueTextWithOverride": {
-    "message": "Interaktivno na simuliranoj mobilnoj mreži za {timeInMs, number, seconds} s"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | explanationLoadSlow": {
-    "message": "Vaša stranica presporo se učitava i nije interaktivna unutar deset sekundi. U odjeljku \"Izvedba\" pogledajte prilike i dijagnostiku da biste saznali kako je poboljšati."
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | failureTitle": {
-    "message": "Učitavanje stranice nije dovoljno brzo na mobilnim mrežama"
-  },
-  "lighthouse-core/audits/load-fast-enough-for-pwa.js | title": {
-    "message": "Učitavanje stranice dovoljno je brzo na mobilnim mrežama"
   },
   "lighthouse-core/audits/long-tasks.js | description": {
     "message": "Navodi najduže zadatke na glavnoj niti, što je korisno za otkrivanje onih koji najviše doprinose kašnjenju unosa. [Saznajte više](https://web.dev/long-tasks-devtools/)"
@@ -1417,18 +1396,6 @@
   },
   "lighthouse-core/audits/viewport.js | title": {
     "message": "Ima oznaku `<meta name=\"viewport\">` s `width` ili `initial-scale`"
-  },
-  "lighthouse-core/audits/without-javascript.js | description": {
-    "message": "Vaša aplikacija trebala bi prikazati bilo kakav sadržaj kada je onemogućen JavaScript, čak i ako je to samo upozorenje da je JavaScript obavezan za korištenje aplikacije. [Saznajte više](https://web.dev/without-javascript/)."
-  },
-  "lighthouse-core/audits/without-javascript.js | explanation": {
-    "message": "Tijelo stranice trebalo bi generirati bilo kakav sadržaj ako skripte nisu dostupne."
-  },
-  "lighthouse-core/audits/without-javascript.js | failureTitle": {
-    "message": "Ne pruža zamjenski sadržaj kada JavaScript nije dostupan"
-  },
-  "lighthouse-core/audits/without-javascript.js | title": {
-    "message": "Prikazuje se bilo kakav sadržaj kada JavaScript nije dostupan"
   },
   "lighthouse-core/audits/works-offline.js | description": {
     "message": "Ako razvijate progresivnu web-aplikaciju, razmislite o korištenju uslužnog alata tako da aplikacija može funkcionirati offline. [Saznajte više](https://web.dev/works-offline/)."

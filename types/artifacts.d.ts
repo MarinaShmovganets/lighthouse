@@ -62,8 +62,8 @@ declare global {
      * on a major version bump.
      */
     export interface PublicGathererArtifacts {
-      /** Console deprecation and intervention warnings logged by Chrome during page load. */
-      ConsoleMessages: Crdp.Log.EntryAddedEvent[];
+      /** ConsoleMessages deprecation and intervention warnings, console API calls, and exceptions logged by Chrome during page load. */
+      ConsoleMessages: Artifacts.ConsoleMessage[];
       /** All the iframe elements in the page.*/
       IFrameElements: Artifacts.IFrameElement[];
       /** The contents of the main HTML document network resource. */
@@ -74,8 +74,6 @@ declare global {
       LinkElements: Artifacts.LinkElement[];
       /** The values of the <meta> elements in the head. */
       MetaElements: Array<{name?: string, content?: string, property?: string, httpEquiv?: string, charset?: string}>;
-      /** Set of exceptions thrown during page load. */
-      RuntimeExceptions: Crdp.Runtime.ExceptionThrownEvent[];
       /** Information on all script elements in the page. Also contains the content of all requested scripts and the networkRecord requestId that contained their content. Note, HTML documents will have one entry per script tag, all with the same requestId. */
       ScriptElements: Array<Artifacts.ScriptElement>;
       /** The dimensions and devicePixelRatio of the loaded viewport. */
@@ -114,8 +112,6 @@ declare global {
       FullPageScreenshot: Artifacts.FullPageScreenshot | null;
       /** Information about event listeners registered on the global object. */
       GlobalListeners: Array<Artifacts.GlobalListener>;
-      /** The page's document body innerText if loaded with JavaScript disabled. */
-      HTMLWithoutJavaScript: {bodyText: string, hasNoScript: boolean};
       /** Whether the page ended up on an HTTPS page after attempting to load the HTTP version. */
       HTTPRedirect: {value: boolean};
       /** The issues surfaced in the devtools Issues panel */
@@ -411,9 +407,9 @@ declare global {
         /** The displayed height of the image, uses img.height when available falling back to clientHeight. See https://codepen.io/patrickhulce/pen/PXvQbM for examples. */
         displayedHeight: number;
         /** The natural width of the underlying image, uses img.naturalWidth. See https://codepen.io/patrickhulce/pen/PXvQbM for examples. */
-        naturalWidth: number;
+        naturalWidth?: number;
         /** The natural height of the underlying image, uses img.naturalHeight. See https://codepen.io/patrickhulce/pen/PXvQbM for examples. */
-        naturalHeight: number;
+        naturalHeight?: number;
         /** The raw width attribute of the image element. CSS images will be set to the empty string. */
         attributeWidth: string;
         /** The raw height attribute of the image element. CSS images will be set to the empty string. */
@@ -437,17 +433,10 @@ declare global {
         isPicture: boolean;
         /** Flags whether this element was contained within a ShadowRoot */
         isInShadowDOM: boolean;
-        /** Flags whether this element was sized using a non-default `object-fit` CSS property. */
-        usesObjectFit: boolean;
-        /** Flags whether this element was rendered using a pixel art scaling method.
-         *  See https://developer.mozilla.org/en-US/docs/Games/Techniques/Crisp_pixel_art_look for
-         *  details.
-         */
-        usesPixelArtScaling: boolean;
-        /** Flags whether the image has a srcset with density descriptors.
-         *  See https://html.spec.whatwg.org/multipage/images.html#pixel-density-descriptor
-         */
-        usesSrcSetDensityDescriptor: boolean;
+        /** `object-fit` CSS property. */
+        cssComputedObjectFit: string;
+        /** `image-rendering` propertry. */
+        cssComputedImageRendering: string;
         /** The MIME type of the underlying image file. */
         mimeType?: string;
         /** Details for node in DOM for the image element */
@@ -766,6 +755,57 @@ declare global {
         /** Column number in the script (0-based). */
         columnNumber: number;
       }
+
+      /** Describes a generic console message. */
+      interface BaseConsoleMessage {
+        /**
+         * The text printed to the console, as shown on the browser console.
+         *
+         * For console API calls, all values are formatted into the text. Primitive values and
+         * function will be printed as-is while objects will be formatted as if the object were
+         * passed to String(). For example, a div will be formatted as "[object HTMLDivElement]".
+         *
+         * For exceptions the text will be the same as err.message at runtime.
+         */
+        text: string;
+        /** Time of the console log in milliseconds since epoch. */
+        timestamp: number;
+        /** The stack trace of the log/exception, if known. */
+        stackTrace?: Crdp.Runtime.StackTrace;
+        /** The URL of the log/exception, if known. */
+        url?: string;
+        /** Line number in the script (0-based), if known. */
+        lineNumber?: number;
+        /** Column number in the script (0-based), if known. */
+        columnNumber?: number;
+      }
+
+      /** Describes a console message logged by a script using the console API. */
+      interface ConsoleAPICall extends BaseConsoleMessage {
+        eventType: 'consoleAPI';
+        /** The console API invoked. Only the following console API calls are gathered. */
+        source: 'console.warn' | 'console.error';
+        /** Corresponds to the API call. */
+        level: 'warning' | 'error';
+      }
+
+      interface ConsoleException extends BaseConsoleMessage {
+        eventType: 'exception';
+        source: 'exception';
+        level: 'error';
+      }
+
+      /**
+       * Describes a report logged to the console by the browser regarding interventions,
+       * deprecations, violations, and more.
+       */
+      interface ConsoleProtocolLog extends BaseConsoleMessage {
+        source: Crdp.Log.LogEntry['source'],
+        level: Crdp.Log.LogEntry['level'],
+        eventType: 'protocolLog';
+      }
+
+      export type ConsoleMessage = ConsoleAPICall | ConsoleException | ConsoleProtocolLog;
     }
   }
 }

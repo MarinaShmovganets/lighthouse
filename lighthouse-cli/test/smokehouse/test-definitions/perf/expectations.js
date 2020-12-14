@@ -240,7 +240,10 @@ module.exports = [
           animations: [
             {
               name: 'anim',
-              failureReasonsMask: 8224,
+              // The animation reliably gets kUnsupportedCSSProperty (1 << 13) === 8192.
+              // Sometimes it also gets kTargetHasInvalidCompositingState (1 << 5) == 32. Together they sum to 8224.
+              // Both are fine for our purposes.
+              failureReasonsMask: '8192 +/- 32',
               unsupportedProperties: ['background-color'],
             },
           ],
@@ -380,7 +383,7 @@ module.exports = [
               {
                 product: 'YouTube Embedded Player (Video)',
                 blockingTime: 0,
-                transferSize: '651128 +/- 100000',
+                transferSize: '>400000', // Transfer size is imprecise.
                 subItems: {
                   type: 'subitems',
                   items: {

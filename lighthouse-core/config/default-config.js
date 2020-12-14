@@ -138,7 +138,6 @@ const defaultConfig = {
       'css-usage',
       'js-usage',
       'viewport-dimensions',
-      'runtime-exceptions',
       'console-messages',
       'anchor-elements',
       'image-elements',
@@ -164,6 +163,7 @@ const defaultConfig = {
       'trace-elements',
       'inspector-issues',
       'source-maps',
+      'full-page-screenshot',
     ],
   },
   {
@@ -179,10 +179,10 @@ const defaultConfig = {
     passName: 'redirectPass',
     loadFailureMode: 'warn',
     // Speed up the redirect pass by blocking stylesheets, fonts, and images
-    blockedUrlPatterns: ['*.css', '*.jpg', '*.jpeg', '*.png', '*.gif', '*.svg', '*.ttf', '*.woff', '*.woff2'],
+    // TODO: restore blocked *.css when https://github.com/GoogleChrome/lighthouse/issues/11803 is resolved.
+    blockedUrlPatterns: ['*.jpg', '*.jpeg', '*.png', '*.gif', '*.svg', '*.ttf', '*.woff', '*.woff2'],
     gatherers: [
       'http-redirect',
-      'html-without-javascript',
     ],
   }],
   audits: [
@@ -191,11 +191,9 @@ const defaultConfig = {
     'service-worker',
     'works-offline',
     'viewport',
-    'without-javascript',
     'metrics/first-contentful-paint',
     'metrics/largest-contentful-paint',
     'metrics/first-meaningful-paint',
-    'load-fast-enough-for-pwa',
     'metrics/speed-index',
     'screenshot-thumbnails',
     'final-screenshot',
@@ -245,6 +243,7 @@ const defaultConfig = {
     'unsized-images',
     'valid-source-maps',
     'preload-lcp-image',
+    'full-page-screenshot',
     'manual/pwa-cross-browser',
     'manual/pwa-page-transitions',
     'manual/pwa-each-page-has-url',
@@ -609,7 +608,6 @@ const defaultConfig = {
       manualDescription: str_(UIStrings.pwaCategoryManualDescription),
       auditRefs: [
         // Fast and Reliable
-        {id: 'load-fast-enough-for-pwa', weight: 7, group: 'pwa-fast-reliable'},
         {id: 'works-offline', weight: 5, group: 'pwa-fast-reliable'},
         {id: 'offline-start-url', weight: 1, group: 'pwa-fast-reliable'},
         // Installable
@@ -622,7 +620,6 @@ const defaultConfig = {
         {id: 'themed-omnibox', weight: 1, group: 'pwa-optimized'},
         {id: 'content-width', weight: 1, group: 'pwa-optimized'},
         {id: 'viewport', weight: 2, group: 'pwa-optimized'},
-        {id: 'without-javascript', weight: 1, group: 'pwa-optimized'},
         {id: 'apple-touch-icon', weight: 1, group: 'pwa-optimized'},
         {id: 'maskable-icon', weight: 1, group: 'pwa-optimized'},
         // Manual audits
