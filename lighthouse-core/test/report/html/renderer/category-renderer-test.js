@@ -45,7 +45,7 @@ describe('CategoryRenderer', () => {
     global.CriticalRequestChainRenderer = undefined;
   });
 
-  it.only('renders an audit', () => {
+  it('renders an audit', () => {
     const auditRef = sampleResults.categories.pwa.auditRefs
       .find(a => a.id === 'redirects-http');
 
