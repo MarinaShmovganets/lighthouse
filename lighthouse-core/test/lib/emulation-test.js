@@ -67,8 +67,10 @@ describe('emulation', () => {
         'Emulation.setDeviceMetricsOverride'
       );
       expect(emulateArgs).toMatchObject({
-        ...metrics.desktop,
-        ...{disabled: undefined},
+        mobile: metrics.desktop.mobile,
+        width: metrics.desktop.width,
+        height: metrics.desktop.height,
+        deviceScaleFactor: metrics.desktop.deviceScaleFactor,
       });
       expect(emulateArgs).toMatchObject({mobile: false});
     });
@@ -107,8 +109,10 @@ describe('emulation', () => {
         'Emulation.setDeviceMetricsOverride'
       );
       expect(emulateArgs).toMatchObject({
-        ...metrics.mobile,
-        ...{disabled: undefined},
+        mobile: metrics.mobile.mobile,
+        width: metrics.mobile.width,
+        height: metrics.mobile.height,
+        deviceScaleFactor: metrics.mobile.deviceScaleFactor,
       });
       expect(emulateArgs).toMatchObject({mobile: true});
     });
@@ -125,8 +129,10 @@ describe('emulation', () => {
         'Emulation.setDeviceMetricsOverride'
       );
       expect(emulateArgs).toMatchObject({
-        ...metrics.desktop,
-        ...{disabled: undefined},
+        mobile: metrics.desktop.mobile,
+        width: metrics.desktop.width,
+        height: metrics.desktop.height,
+        deviceScaleFactor: metrics.desktop.deviceScaleFactor,
       });
       expect(emulateArgs).toMatchObject({mobile: false});
     });
