@@ -573,7 +573,7 @@ visual-order-follows-dom: manual
 without-javascript: pass
 works-offline: fail
 
-# of .lh-audit divs: 155
+# of .lh-audit divs: 156
 
 .lh-audit divs:
 accesskeys
@@ -694,6 +694,7 @@ robots-txt
 script-injected-tags
 serial-header-bidding
 server-response-time
+service-worker
 splash-screen
 structured-data
 tabindex

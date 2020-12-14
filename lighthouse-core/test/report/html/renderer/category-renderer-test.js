@@ -168,10 +168,8 @@ describe('CategoryRenderer', () => {
     assert.ok(Number.isInteger(scoreInDom) && scoreInDom > 10, 'category score is rounded');
     assert.equal(title.textContent, category.title, 'title is set');
 
-    // Audits in 'hidden' group are not rendered.
-    const renderedAudits = category.auditRefs.filter(audit => audit.group !== 'hidden');
     const audits = categoryDOM.querySelectorAll('.lh-audit');
-    assert.equal(audits.length, renderedAudits.length, 'renders correct number of audits');
+    assert.equal(audits.length, category.auditRefs.length, 'renders correct number of audits');
 
     // No plugin categories in sampleResults.
     assert.equal(
@@ -379,27 +377,6 @@ describe('CategoryRenderer', () => {
           `could not find '${selector}'`);
       });
     });
-
-    it('does not render hidden audits', () => {
-      const bestPracticeCategory = sampleResults.categories['best-practices'];
-      const originalCategoriesCount = bestPracticeCategory.auditRefs.length;
-
-      const categoryClone = JSON.parse(JSON.stringify(bestPracticeCategory));
-      let hiddenAuditsCount = 0;
-      // Hide best-practices-general audits, should result in all groups but best-practices-general to render.
-      categoryClone.auditRefs.forEach(ref => {
-        // Catch any audits that may already be hidded by default.
-        if (ref.group === 'best-practices-general' || ref.group === 'hidden') {
-          ref.group = 'hidden';
-          hiddenAuditsCount ++;
-        }
-      });
-
-      const categoryElem = renderer.render(categoryClone, sampleResults.categoryGroups);
-      const renderedElements = categoryElem.querySelectorAll('.lh-audit');
-
-      assert.equal(renderedElements.length, originalCategoriesCount - hiddenAuditsCount);
-    });
   });
 
   describe('clumping passed/failed/warning/manual', () => {
@@ -418,7 +395,7 @@ describe('CategoryRenderer', () => {
       const manualAudits = elem.querySelectorAll('.lh-clump--manual .lh-audit');
 
       assert.equal(passedAudits.length, 1);
-      assert.equal(failedAudits.length, 8);
+      assert.equal(failedAudits.length, 9);
       assert.equal(warningAudits.length, 2);
       assert.equal(manualAudits.length, 3);
     });
@@ -432,7 +409,7 @@ describe('CategoryRenderer', () => {
       const failedAudits = elem.querySelectorAll('.lh-clump--failed .lh-audit');
 
       assert.equal(passedAudits.length, 0);
-      assert.equal(failedAudits.length, 11);
+      assert.equal(failedAudits.length, 12);
     });
 
     it('expands warning audit group', () => {

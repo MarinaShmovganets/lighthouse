@@ -5279,6 +5279,11 @@
           "group": "pwa-optimized"
         },
         {
+          "id": "service-worker",
+          "weight": 1,
+          "group": "pwa-optimized"
+        },
+        {
           "id": "pwa-cross-browser",
           "weight": 0
         },
@@ -5289,15 +5294,10 @@
         {
           "id": "pwa-each-page-has-url",
           "weight": 0
-        },
-        {
-          "id": "service-worker",
-          "weight": 0,
-          "group": "hidden"
         }
       ],
       "id": "pwa",
-      "score": 0.22
+      "score": 0.21
     }
   },
   "categoryGroups": {
@@ -5380,9 +5380,6 @@
     },
     "best-practices-general": {
       "title": "General"
-    },
-    "hidden": {
-      "title": ""
     }
   },
   "timing": {

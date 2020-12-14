@@ -424,10 +424,6 @@ const defaultConfig = {
     'best-practices-general': {
       title: str_(UIStrings.bestPracticesGeneralGroupTitle),
     },
-    // This group hides audits from showing on the report.
-    'hidden': {
-      title: '',
-    },
   },
   categories: {
     'performance': {
@@ -627,12 +623,11 @@ const defaultConfig = {
         {id: 'without-javascript', weight: 1, group: 'pwa-optimized'},
         {id: 'apple-touch-icon', weight: 1, group: 'pwa-optimized'},
         {id: 'maskable-icon', weight: 1, group: 'pwa-optimized'},
+        {id: 'service-worker', weight: 1, group: 'pwa-optimized'},
         // Manual audits
         {id: 'pwa-cross-browser', weight: 0},
         {id: 'pwa-page-transitions', weight: 0},
         {id: 'pwa-each-page-has-url', weight: 0},
-        // Hidden audits
-        {id: 'service-worker', weight: 0, group: 'hidden'},
       ],
     },
   },

@@ -60,7 +60,7 @@ describe('PwaCategoryRenderer', () => {
     const regularAuditElements = allAuditElements.filter(el => !manualElements.includes(el));
 
     const nonManualAudits = category.auditRefs
-      .filter(audit => audit.result.scoreDisplayMode !== 'manual' && audit.group !== 'hidden');
+      .filter(audit => audit.result.scoreDisplayMode !== 'manual');
     assert.strictEqual(regularAuditElements.length, nonManualAudits.length);
   });
 
@@ -83,9 +83,7 @@ describe('PwaCategoryRenderer', () => {
 
   it('renders the audit groups', () => {
     // The hidden group isn't rendered.
-    const categoryGroupIds = new Set(category.auditRefs
-      .filter(a => a.group && a.group !== 'hidden')
-      .map(a => a.group));
+    const categoryGroupIds = new Set(category.auditRefs.filter(a => a.group).map(a => a.group));
     assert.strictEqual(categoryGroupIds.size, 3); // Ensure there's something to test.
 
     const categoryElem = pwaRenderer.render(category, sampleResults.categoryGroups);
@@ -98,27 +96,6 @@ describe('PwaCategoryRenderer', () => {
     });
   });
 
-  it('does not render hidden audits', () => {
-    const pwaCategory = sampleResults.categories['pwa'];
-    const originalCategoriesCount = pwaCategory.auditRefs.length;
-
-    const categoryClone = JSON.parse(JSON.stringify(pwaCategory));
-    let hiddenAuditsCount = 0;
-    // Hide pwa-optimized audits, should result in all groups but pwa-optimized to render.
-    categoryClone.auditRefs.forEach(ref => {
-      // Catch any audits that may already be hidded by default.
-      if (ref.group === 'best-practices-general' || ref.group === 'hidden') {
-        ref.group = 'hidden';
-        hiddenAuditsCount ++;
-      }
-    });
-
-    const categoryElem = pwaRenderer.render(categoryClone, sampleResults.categoryGroups);
-    const renderedElements = categoryElem.querySelectorAll('.lh-audit');
-
-    assert.equal(renderedElements.length, originalCategoriesCount - hiddenAuditsCount);
-  });
-
   describe('badging groups', () => {
     let auditRefs;
     let groupIds;
@@ -126,6 +103,7 @@ describe('PwaCategoryRenderer', () => {
     beforeEach(() => {
       auditRefs = category.auditRefs
         .filter(audit => audit.result.scoreDisplayMode !== 'manual');
+
       // Expect results to all be scorable.
       for (const auditRef of auditRefs) {
         assert.strictEqual(auditRef.result.scoreDisplayMode, 'binary');
@@ -185,11 +163,8 @@ describe('PwaCategoryRenderer', () => {
         auditRef.result.score = 1;
       }
 
-      // Hidden audits are not rendered.
-      const renderedGroups = groupIds.filter(group => group !== 'hidden');
-
       const categoryElem = pwaRenderer.render(category, sampleResults.categoryGroups);
-      assert.strictEqual(categoryElem.querySelectorAll('.lh-badged').length, renderedGroups.length);
+      assert.strictEqual(categoryElem.querySelectorAll('.lh-badged').length, groupIds.length);
 
       // Score gauge.
       const gaugeElem = categoryElem.querySelector('.lh-gauge--pwa__wrapper');
@@ -236,10 +211,7 @@ describe('PwaCategoryRenderer', () => {
       const tips = gaugeElem.title.split(', ');
       assert.strictEqual(tips.length, groupIds.length);
 
-      // Hidden audits are not rendered.
-      const renderedGroups = groupIds.filter(group => group !== 'hidden');
-
-      for (const groupId of renderedGroups) {
+      for (const groupId of groupIds) {
         const expectedCount = groupId === failingGroupId ? 0 : 1;
 
         // Individual group badges.

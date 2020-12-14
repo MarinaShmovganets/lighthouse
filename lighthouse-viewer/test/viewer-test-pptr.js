@@ -107,7 +107,7 @@ describe('Lighthouse Viewer', () => {
         if (category === 'performance') {
           expected = getAuditsOfCategory(category).filter(a => !!a.group);
         }
-        expected = expected.filter(a => a.group !== 'hidden').map(a => a.id);
+        expected = expected.map(audit => audit.id);
         const elementIds = await getAuditElementsIds({category, selector: selectors.audits});
 
         assert.deepStrictEqual(
