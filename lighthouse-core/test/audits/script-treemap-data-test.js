@@ -9,7 +9,8 @@
 
 const ScriptTreemapData_ = require('../../audits/script-treemap-data.js');
 const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
-const {loadSourceMapAndUsageFixture, makeParamsOptional} = require('../test-utils.js');
+const {loadSourceMapAndUsageFixture, loadSourceMapFixture, makeParamsOptional} =
+  require('../test-utils.js');
 
 const ScriptTreemapData = {
   audit: makeParamsOptional(ScriptTreemapData_.audit),
@@ -32,6 +33,7 @@ describe('ScriptTreemapData audit', () => {
     beforeAll(async () => {
       const context = {computedCache: new Map()};
       const {map, content, usage} = loadSourceMapAndUsageFixture('squoosh');
+      expect(map.sourceRoot).not.toBeTruthy();
       const mainUrl = 'https://squoosh.app';
       const scriptUrl = 'https://squoosh.app/main-app.js';
       const networkRecords = [generateRecord(scriptUrl, content.length, 'Script')];
@@ -68,6 +70,36 @@ describe('ScriptTreemapData audit', () => {
       `);
 
       expect(JSON.stringify(treemapData).length).toMatchInlineSnapshot(`6621`);
+      expect(treemapData).toMatchSnapshot();
+    });
+  });
+
+  describe('coursehero fixture', () => {
+    /** @type {import('../../audits/script-treemap-data.js').TreemapData} */
+    let treemapData;
+    beforeAll(async () => {
+      const context = {computedCache: new Map()};
+      const {map, content} = loadSourceMapFixture('coursehero-bundle-1');
+      expect(map.sourceRoot).toBeTruthy();
+      const mainUrl = 'https://courshero.com';
+      const scriptUrl = 'https://courshero.com/script.js';
+      const networkRecords = [generateRecord(scriptUrl, content.length, 'Script')];
+
+      const artifacts = {
+        URL: {requestedUrl: mainUrl, finalUrl: mainUrl},
+        JsUsage: {},
+        devtoolsLogs: {defaultPass: networkRecordsToDevtoolsLog(networkRecords)},
+        SourceMaps: [{scriptUrl: scriptUrl, map}],
+        ScriptElements: [{src: scriptUrl, content}],
+      };
+      const results = await ScriptTreemapData.audit(artifacts, context);
+
+      // @ts-expect-error: Debug data.
+      treemapData = results.details.treemapData;
+    });
+
+    it('has root nodes', () => {
+      expect(JSON.stringify(treemapData).length).toMatchInlineSnapshot(`31703`);
       expect(treemapData).toMatchSnapshot();
     });
   });
