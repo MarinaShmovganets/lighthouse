@@ -45,7 +45,7 @@ async function emulate(driver, settings) {
     });
   }
 
-  if (settings.screenEmulation !== false) {
+  if (settings.screenEmulation.disabled !== false) {
     await driver.sendCommand('Emulation.setDeviceMetricsOverride', settings.screenEmulation);
     await driver.sendCommand('Emulation.setTouchEmulationEnabled', {
       enabled: settings.screenEmulation.mobile,

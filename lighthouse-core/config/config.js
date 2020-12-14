@@ -182,7 +182,7 @@ function assertValidSettings(settings) {
     throw new Error(`\`settings.formFactor\` must be defined as 'mobile' or 'desktop'. See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md`);
   }
 
-  if (settings.screenEmulation) {
+  if (!settings.screenEmulation.disabled) {
     if (settings.screenEmulation.mobile !== (settings.formFactor === 'mobile')) {
       log.error('config', `Screen emulation mobile setting (${settings.screenEmulation.mobile}) does not match formFactor setting (${settings.formFactor})`); // eslint-disable-line max-len
     }

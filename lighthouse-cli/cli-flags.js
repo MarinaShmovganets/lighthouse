@@ -44,7 +44,7 @@ function getFlags(manualArgv) {
           'lighthouse <url> --output=json --output-path=./report.json --save-assets',
           'Save trace, screenshots, and named JSON report.')
       .example(
-          'lighthouse <url> --no-screenEmulation --throttling-method=provided --no-emulatedUserAgent',
+          'lighthouse <url> --screenEmulation.disabled --throttling-method=provided --no-emulatedUserAgent',
           'Disable device emulation and all throttling')
       .example(
           'lighthouse <url> --chrome-flags="--window-size=412,660"',
@@ -98,7 +98,7 @@ function getFlags(manualArgv) {
             'Disable clearing the browser cache and other storage APIs before a run',
 
         'form-factor': 'Determines how performance metrics are scored and if mobile-only audits are skipped.',
-        'screenEmulation': 'Sets screen emulation parameters. See also --preset. Use --no-screenEmulation to disable. Otherwise set the 4 parameters individually: --screenEmulation.mobile --screenEmulation.width=360 --screenEmulation.height=640 --screenEmulation.deviceScaleFactor=2',
+        'screenEmulation': 'Sets screen emulation parameters. See also --preset. Use --screenEmulation.disabled to disable. Otherwise set these 4 parameters individually: --screenEmulation.mobile --screenEmulation.width=360 --screenEmulation.height=640 --screenEmulation.deviceScaleFactor=2',
         'emulatedUserAgent': 'Sets useragent emulation',
 
         'throttling-method': 'Controls throttling method',

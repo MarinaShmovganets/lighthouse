@@ -33,7 +33,8 @@
       "deviceScaleFactor": 2.625,
       "height": 640,
       "mobile": true,
-      "width": 360
+      "width": 360,
+      "disabled": false
     },
     "channel": "cli",
     "budgets": [
