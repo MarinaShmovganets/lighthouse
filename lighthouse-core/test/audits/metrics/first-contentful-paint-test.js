@@ -12,8 +12,10 @@ const constants = require('../../../config/constants.js');
 const pwaTrace = require('../../fixtures/traces/progressive-app-m60.json');
 const pwaDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
-/** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
-/** @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod */
+/**
+ * @param {LH.SharedFlagsSettings['formFactor']} formFactor
+ * @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
+ */
 const getFakeContext = (formFactor, throttlingMethod) => ({
   options,
   computedCache: new Map(),

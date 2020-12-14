@@ -424,6 +424,7 @@ class Util {
         networkThrottling = Util.i18n.strings.runtimeUnknown;
     }
 
+    // TODO(paulirish): revise Runtime Settings strings: https://github.com/GoogleChrome/lighthouse/pull/11796
     const deviceEmulation = settings.formFactor === 'mobile'
       ? Util.i18n.strings.runtimeMobileEmulation
       : Util.i18n.strings.runtimeDesktopEmulation;

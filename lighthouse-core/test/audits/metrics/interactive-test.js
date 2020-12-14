@@ -17,8 +17,10 @@ const acceptableDevToolsLog =
 const redirectTrace = require('../../fixtures/traces/site-with-redirect.json');
 const redirectDevToolsLog = require('../../fixtures/traces/site-with-redirect.devtools.log.json');
 
-/** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
-/** @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod */
+/**
+ * @param {LH.SharedFlagsSettings['formFactor']} formFactor
+ * @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
+ */
 const getFakeContext = (formFactor, throttlingMethod) => ({
   options: options,
   computedCache: new Map(),

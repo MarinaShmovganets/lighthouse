@@ -23,8 +23,10 @@ function generateArtifacts({trace, devtoolsLog, HostUserAgent}) {
   };
 }
 
-/** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
-/** @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod */
+/**
+ * @param {LH.SharedFlagsSettings['formFactor']} formFactor
+ * @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
+ */
 const getFakeContext = (formFactor, throttlingMethod) => ({
   options: defaultOptions,
   computedCache: new Map(),
