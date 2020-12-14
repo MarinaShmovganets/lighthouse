@@ -1506,8 +1506,9 @@ Object {
     "precomputedLanternData": null,
     "screenEmulation": Object {
       "deviceScaleFactor": 2.625,
+      "disabled": false,
       "height": 640,
-      "mobile": false,
+      "mobile": true,
       "width": 360,
     },
     "skipAudits": null,
@@ -1663,8 +1664,9 @@ Object {
     "precomputedLanternData": null,
     "screenEmulation": Object {
       "deviceScaleFactor": 2.625,
+      "disabled": false,
       "height": 640,
-      "mobile": false,
+      "mobile": true,
       "width": 360,
     },
     "skipAudits": null,
