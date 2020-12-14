@@ -135,8 +135,6 @@ class InstallableManifest extends Audit {
     const errorArgumentsRegex = /{([^}]+)}/g;
 
     for (const err of installabilityErrors) {
-      let matchingString;
-
       // Filter out errorId 'in-incognito' since Lighthouse recommends incognito.
       if (err.errorId === 'in-incognito') continue;
 
@@ -145,14 +143,8 @@ class InstallableManifest extends Audit {
         continue;
       }
 
-      try {
-        // @ts-expect-error errorIds from protocol should match up against the strings dict
-        matchingString = UIStrings[err.errorId];
-      } catch {
-        // UIStrings doesn't have a message covered for the provided errorId.
-        i18nErrors.push(str_(UIStrings.noErrorId, {errorId: err.errorId}));
-        continue;
-      }
+      // @ts-expect-error errorIds from protocol should match up against the strings dict
+      const matchingString = UIStrings[err.errorId];
 
       if (matchingString === undefined) {
         i18nErrors.push(str_(UIStrings.noErrorId, {errorId: err.errorId}));
