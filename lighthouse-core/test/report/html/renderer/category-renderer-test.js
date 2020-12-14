@@ -394,7 +394,7 @@ describe('CategoryRenderer', () => {
       const warningAudits = elem.querySelectorAll('.lh-clump--warning .lh-audit');
       const manualAudits = elem.querySelectorAll('.lh-clump--manual .lh-audit');
 
-      assert.equal(passedAudits.length, 1);
+      assert.equal(passedAudits.length, 0);
       assert.equal(failedAudits.length, 9);
       assert.equal(warningAudits.length, 2);
       assert.equal(manualAudits.length, 3);
