@@ -656,7 +656,7 @@ class Config {
       }
     });
 
-    // The `full-page-screenshot` audit belong to no category, but we want to still include
+    // The `full-page-screenshot` audit belongs to no category, but we still want to include
     // it for the categories that utilize it.
     if (settings.onlyCategories) {
       const includesCategoryUsingFullPageScreenshot = settings.onlyCategories.some(cat => {
