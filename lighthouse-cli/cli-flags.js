@@ -52,7 +52,7 @@ function getFlags(manualArgv) {
 
       // We only have the single string positional argument, the url.
       .option('_', {
-        array: true,
+        array: true, // Always an array, but this lets the type system know.
         type: 'string',
       })
 
