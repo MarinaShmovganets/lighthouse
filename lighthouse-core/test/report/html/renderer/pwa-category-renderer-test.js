@@ -254,7 +254,7 @@ describe('PwaCategoryRenderer', () => {
     it('renders score gauges with unique ids for items in <defs>', () => {
       const gauge1 = pwaRenderer.renderScoreGauge(category, sampleResults.categoryGroups);
       const gauge1Ids = [...gauge1.querySelectorAll('defs [id]')].map(el => el.id);
-      assert.ok(gauge1Ids.length > 3);
+      assert.ok(gauge1Ids.length > 2);
 
       const gauge2 = pwaRenderer.renderScoreGauge(category, sampleResults.categoryGroups);
       const gauge2Ids = [...gauge2.querySelectorAll('defs [id]')].map(el => el.id);
