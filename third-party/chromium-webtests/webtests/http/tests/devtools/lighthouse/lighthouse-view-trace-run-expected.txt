@@ -1,4 +1,3 @@
-error: Request DOMDebugger.setBreakOnCSPViolation failed. {"code":-32601,"message":"'DOMDebugger.setBreakOnCSPViolation' wasn't found"}
 Tests that audits panel renders View Trace button.
 
 

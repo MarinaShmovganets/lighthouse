@@ -409,7 +409,7 @@ describe('CategoryRenderer', () => {
       const failedAudits = elem.querySelectorAll('.lh-clump--failed .lh-audit');
 
       assert.equal(passedAudits.length, 0);
-      assert.equal(failedAudits.length, 12);
+      assert.equal(failedAudits.length, 11);
     });
 
     it('expands warning audit group', () => {
