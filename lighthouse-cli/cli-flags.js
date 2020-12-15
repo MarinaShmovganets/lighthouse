@@ -137,9 +137,18 @@ function getFlags(manualArgv) {
           default: 'localhost',
           describe: 'The hostname to use for the debugging protocol.',
         },
-        'emulated-form-factor': {
+        'form-factor': {
           type: 'string',
-          describe: 'Controls the emulated device form factor (mobile vs. desktop) if not disabled',
+          describe: 'Determines how performance metrics are scored and if mobile-only audits are skipped.',
+          default: 'mobile',
+        },
+        'screenEmulation': {
+          type: 'string',
+          describe: 'Sets screen emulation parameters. See also --preset. Use --screenEmulation.disabled to disable. Otherwise set these 4 parameters individually: --screenEmulation.mobile --screenEmulation.width=360 --screenEmulation.height=640 --screenEmulation.deviceScaleFactor=2',
+        },
+        'emulatedUserAgent': {
+          type: 'string',
+          describe: 'Sets useragent emulation',
         },
         'max-wait-for-load': {
           type: 'number',
@@ -185,7 +194,7 @@ function getFlags(manualArgv) {
       })
       .group([
         'save-assets', 'list-all-audits', 'list-trace-categories', 'print-config', 'additional-trace-categories',
-        'config-path', 'preset', 'chrome-flags', 'port', 'hostname', 'emulated-form-factor',
+        'config-path', 'preset', 'chrome-flags', 'port', 'hostname', 'form-factor', 'screenEmulation', 'emulatedUserAgent',
         'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
         'only-audits', 'only-categories', 'skip-audits', 'budget-path',
       ], 'Configuration:')
@@ -278,7 +287,7 @@ function getFlags(manualArgv) {
       })
 
       // Choices added outside of `options()` and cast so tsc picks them up.
-      .choices('emulated-form-factor', /** @type {['mobile', 'desktop', 'none']} */ (['mobile', 'desktop', 'none']))
+      .choices('form-factor', /** @type {['mobile', 'desktop']} */ (['mobile', 'desktop']))
       .choices('throttling-method', /** @type {['devtools', 'provided', 'simulate']} */ (['devtools', 'provided', 'simulate']))
       .choices('preset', /** @type {['perf', 'experimental']} */ (['perf', 'experimental']))
 
