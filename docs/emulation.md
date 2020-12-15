@@ -8,7 +8,7 @@ With the default configuration, Lighthouse emulates a mobile device. There's [a 
 
 ### Advanced emulation setups
 
-Some products use Lighthouse in scenarios where emulation is applied outside of Lighthouse (eg by Puppeteer) or running against Chrome on real mobile devices.
+Some products use Lighthouse in scenarios where emulation is applied outside of Lighthouse (e.g. by Puppeteer) or running against Chrome on real mobile devices.
 
 You must always set `formFactor`. It doesn't control emulation, but it determines how Lighthouse should interpret the run in regards to scoring performance metrics and skipping mobile-only tests in desktop.
 
