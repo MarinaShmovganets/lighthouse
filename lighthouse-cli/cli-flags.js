@@ -190,31 +190,6 @@ function getFlags(manualArgv) {
         'only-audits', 'only-categories', 'skip-audits', 'budget-path',
       ], 'Configuration:')
 
-<<<<<<< HEAD
-      .group(
-        [
-          'save-assets', 'list-all-audits', 'list-trace-categories', 'print-config', 'additional-trace-categories',
-          'config-path', 'preset', 'chrome-flags', 'port', 'hostname', 'form-factor',
-          'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
-          'only-audits', 'only-categories', 'skip-audits', 'budget-path',
-        ],
-        'Configuration:')
-      .describe({
-        'cli-flags-path': 'The path to a JSON file that contains the desired CLI flags to apply. Flags specified at the command line will still override the file-based ones.',
-        // We don't allowlist specific locales. Why? So we can support the user who requests 'es-MX' (unsupported) and we'll fall back to 'es' (supported)
-        'locale': 'The locale/language the report should be formatted in',
-        'enable-error-reporting':
-            'Enables error reporting, overriding any saved preference. --no-enable-error-reporting will do the opposite. More: https://git.io/vFFTO',
-        'blocked-url-patterns': 'Block any network requests to the specified URL patterns',
-        'disable-storage-reset':
-            'Disable clearing the browser cache and other storage APIs before a run',
-
-        'form-factor': 'Determines how performance metrics are scored and if mobile-only audits are skipped.',
-        'screenEmulation': 'Sets screen emulation parameters. See also --preset. Use --screenEmulation.disabled to disable. Otherwise set these 4 parameters individually: --screenEmulation.mobile --screenEmulation.width=360 --screenEmulation.height=640 --screenEmulation.deviceScaleFactor=2',
-        'emulatedUserAgent': 'Sets useragent emulation',
-
-        'throttling-method': 'Controls throttling method',
-=======
       // Output
       .options({
         'output': {
@@ -265,45 +240,12 @@ function getFlags(manualArgv) {
         coerce: coerceThrottling,
       })
       .describe({
->>>>>>> master
         'throttling.rttMs': 'Controls simulated network RTT (TCP layer)',
         'throttling.throughputKbps': 'Controls simulated network download throughput',
         'throttling.requestLatencyMs': 'Controls emulated network RTT (HTTP layer)',
         'throttling.downloadThroughputKbps': 'Controls emulated network download throughput',
         'throttling.uploadThroughputKbps': 'Controls emulated network upload throughput',
         'throttling.cpuSlowdownMultiplier': 'Controls simulated + emulated CPU throttling',
-<<<<<<< HEAD
-
-        'gather-mode':
-            'Collect artifacts from a connected browser and save to disk. (Artifacts folder path may optionally be provided). If audit-mode is not also enabled, the run will quit early.',
-        'audit-mode': 'Process saved artifacts from disk. (Artifacts folder path may be provided, otherwise defaults to ./latest-run/)',
-        'save-assets': 'Save the trace contents & devtools logs to disk',
-        'list-all-audits': 'Prints a list of all available audits and exits',
-        'list-trace-categories': 'Prints a list of all required trace categories and exits',
-        'additional-trace-categories':
-            'Additional categories to capture with the trace (comma-delimited).',
-        'config-path': `The path to the config JSON.
-            An example config file: lighthouse-core/config/lr-desktop-config.js`,
-        'budget-path': `The path to the budget.json file for LightWallet.`,
-        'preset': `Use a built-in configuration.
-            WARNING: If the --config-path flag is provided, this preset will be ignored.`,
-        'chrome-flags':
-            `Custom flags to pass to Chrome (space-delimited). For a full list of flags, see https://bit.ly/chrome-flags
-            Additionally, use the CHROME_PATH environment variable to use a specific Chrome binary. Requires Chromium version 66.0 or later. If omitted, any detected Chrome Canary or Chrome stable will be used.`,
-        'hostname': 'The hostname to use for the debugging protocol.',
-        'port': 'The port to use for the debugging protocol. Use 0 for a random port',
-        'max-wait-for-load':
-            'The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability',
-        'extra-headers': 'Set extra HTTP Headers to pass with request',
-        'precomputed-lantern-data-path': 'Path to the file where lantern simulation data should be read from, overwriting the lantern observed estimates for RTT and server latency.',
-        'lantern-data-output-path': 'Path to the file where lantern simulation data should be written to, can be used in a future run with the `precomputed-lantern-data-path` flag.',
-        'only-audits': 'Only run the specified audits',
-        'only-categories': 'Only run the specified categories. Available categories: accessibility, best-practices, performance, pwa, seo',
-        'skip-audits': 'Run everything except these audits',
-        'plugins': 'Run the specified plugins',
-        'print-config': 'Print the normalized config for the given config and options, then exit.',
-=======
->>>>>>> master
       })
 
       .options({
@@ -335,47 +277,12 @@ function getFlags(manualArgv) {
         },
       })
 
-<<<<<<< HEAD
-      // boolean values
-      .boolean([
-        'disable-storage-reset', 'save-assets', 'list-all-audits',
-        'list-trace-categories', 'view', 'verbose', 'quiet', 'help', 'print-config',
-        'chrome-ignore-default-flags',
-      ])
-      .choices('form-factor', ['mobile', 'desktop'])
-      .choices('throttling-method', ['devtools', 'provided', 'simulate'])
-      .choices('preset', ['perf', 'experimental'])
-      // force as an array
-      // note MUST use camelcase versions or only the kebab-case version will be forced
-      .array('blockedUrlPatterns')
-      .array('onlyAudits')
-      .array('onlyCategories')
-      .array('skipAudits')
-      .array('output')
-      .array('plugins')
-      .string('extraHeaders')
-      .string('channel')
-      .string('precomputedLanternDataPath')
-      .string('lanternDataOutputPath')
-      .string('budgetPath')
-
-      // default values
-      .default('chrome-flags', '')
-      .default('output', ['html'])
-      .default('port', 0)
-      .default('hostname', 'localhost')
-      .default('form-factor', 'mobile')
-      .default('enable-error-reporting', undefined) // Undefined so prompted by default
-      .default('channel', 'cli')
-      .check(/** @param {LH.CliFlags} argv */ (argv) => {
-=======
       // Choices added outside of `options()` and cast so tsc picks them up.
       .choices('emulated-form-factor', /** @type {['mobile', 'desktop', 'none']} */ (['mobile', 'desktop', 'none']))
       .choices('throttling-method', /** @type {['devtools', 'provided', 'simulate']} */ (['devtools', 'provided', 'simulate']))
       .choices('preset', /** @type {['perf', 'experimental']} */ (['perf', 'experimental']))
 
       .check(argv => {
->>>>>>> master
         // Lighthouse doesn't need a URL if...
         //   - We're just listing the available options.
         //   - We're just printing the config.
