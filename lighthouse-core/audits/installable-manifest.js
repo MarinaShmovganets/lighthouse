@@ -16,7 +16,7 @@ const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on if a website is installable as an application. This descriptive title is shown to users when a webapp is not installable. */
   'failureTitle': 'Web app manifest or service worker do not meet the installability requirements',
   /** Description of a Lighthouse audit that tells the user why installability is important for webapps. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  'description': `Service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. With proper Service Worker and manifest implementations, browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. [Learn more](https://web.dev/installable-manifest/).`,
+  'description': `Service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. With proper service worker and manifest implementations, browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. [Learn more](https://web.dev/installable-manifest/).`,
   /** Description Table column header for the observed value of the Installability failure reason statistic. */
   'columnValue': 'Failure reason',
   /**
@@ -146,12 +146,13 @@ class InstallableManifest extends Audit {
       // @ts-expect-error errorIds from protocol should match up against the strings dict
       const matchingString = UIStrings[err.errorId];
 
+      // Handle an errorId we don't recognize.
       if (matchingString === undefined) {
         i18nErrors.push(str_(UIStrings.noErrorId, {errorId: err.errorId}));
         continue;
       }
 
-      // Get the arguments of the installability error message.
+      // Get the i18m argument names of the installability error message, if any.
       const UIStringArguments = matchingString.match(errorArgumentsRegex) || [];
 
       /**
@@ -162,10 +163,10 @@ class InstallableManifest extends Audit {
 
       if (matchingString && err.errorArguments.length !== UIStringArguments.length) {
         // Matching string, but have the incorrect number of arguments for the message.
-        const argsReceived = err.errorArguments.join(', ');
+        const stringArgs = JSON.stringify(err.errorArguments);
         const msg = err.errorArguments.length > UIStringArguments.length ?
-          ` has unexpected arguments {${argsReceived}}` :
-          ` does not have the expected number of arguments.`;
+          `${err.errorId} has unexpected arguments ${stringArgs}` :
+          `${err.errorId} does not have the expected number of arguments.`;
         i18nErrors.push(msg);
       } else if (matchingString && value0) {
         i18nErrors.push(str_(matchingString, {value0}));

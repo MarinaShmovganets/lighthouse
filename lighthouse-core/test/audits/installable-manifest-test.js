@@ -145,7 +145,7 @@ describe('PWA: webapp install banner audit', () => {
   });
 
   describe('installability error handling', () => {
-    it('fails when InstallabilityError contains the incorrect number of errorArguments', () => {
+    it('fails when InstallabilityError doesnt have enough errorArguments', () => {
       const artifacts = generateMockArtifacts();
       artifacts.InstallabilityErrors.errors.push({errorId: 'manifest-missing-suitable-icon',
         errorArguments: []});
@@ -158,6 +158,19 @@ describe('PWA: webapp install banner audit', () => {
       });
     });
 
+    it('fails when InstallabilityError contains too many errorArguments', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.InstallabilityErrors.errors.push({errorId: 'manifest-missing-suitable-icon',
+        errorArguments: [{name: 'argument-1', value: '144'}, {name: 'argument-2', value: '144'}]});
+      const context = generateMockAuditContext();
+
+      return InstallableManifestAudit.audit(artifacts, context).then(result => {
+        assert.strictEqual(result.score, 0);
+        const items = result.details.items;
+        expect(items[0].reason).toBeDisplayString(/unexpected arguments/);
+      });
+    });
+
     it('fails when we receive an unknown InstallabilityError id', () => {
       const artifacts = generateMockArtifacts();
       artifacts.InstallabilityErrors.errors.push({errorId: 'new-error-id', errorArguments: []});
@@ -167,6 +180,16 @@ describe('PWA: webapp install banner audit', () => {
         assert.strictEqual(result.score, 0);
         const items = result.details.items;
         assert.ok(items[0].reason.formattedDefault.includes('is not recognized'));
+      });
+    });
+
+    it('ignores in-incognito InstallabilityError', () => {
+      const artifacts = generateMockArtifacts();
+      artifacts.InstallabilityErrors.errors.push({errorId: 'in-incognito', errorArguments: []});
+      const context = generateMockAuditContext();
+
+      return InstallableManifestAudit.audit(artifacts, context).then(result => {
+        assert.strictEqual(result.score, 1);
       });
     });
   });
