@@ -140,6 +140,7 @@ function getFlags(manualArgv) {
         'form-factor': {
           type: 'string',
           describe: 'Determines how performance metrics are scored and if mobile-only audits are skipped.',
+          // TODO: don't overwrite the formFactor consumed via preset. eg. --preset=desktop
           default: 'mobile',
         },
         'screenEmulation': {
@@ -289,7 +290,7 @@ function getFlags(manualArgv) {
       // Choices added outside of `options()` and cast so tsc picks them up.
       .choices('form-factor', /** @type {['mobile', 'desktop']} */ (['mobile', 'desktop']))
       .choices('throttling-method', /** @type {['devtools', 'provided', 'simulate']} */ (['devtools', 'provided', 'simulate']))
-      .choices('preset', /** @type {['perf', 'experimental']} */ (['perf', 'experimental']))
+      .choices('preset', /** @type {['perf', 'experimental', 'desktop']} */ (['perf', 'experimental', 'desktop']))
 
       .check(argv => {
         // Lighthouse doesn't need a URL if...
