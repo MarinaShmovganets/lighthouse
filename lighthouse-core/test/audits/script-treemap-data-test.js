@@ -82,15 +82,19 @@ describe('ScriptTreemapData audit', () => {
       const {map, content} = loadSourceMapFixture('coursehero-bundle-1');
       expect(map.sourceRoot).toBeTruthy();
       const mainUrl = 'https://courshero.com';
-      const scriptUrl = 'https://courshero.com/script.js';
-      const networkRecords = [generateRecord(scriptUrl, content.length, 'Script')];
+      const scriptUrl1 = 'https://courshero.com/script1.js';
+      const scriptUrl2 = 'https://courshero.com/script2.js';
+      const networkRecords = [
+        generateRecord(scriptUrl1, content.length, 'Script'),
+        generateRecord(scriptUrl2, content.length, 'Script'),
+      ];
 
       const artifacts = {
         URL: {requestedUrl: mainUrl, finalUrl: mainUrl},
         JsUsage: {},
         devtoolsLogs: {defaultPass: networkRecordsToDevtoolsLog(networkRecords)},
-        SourceMaps: [{scriptUrl: scriptUrl, map}],
-        ScriptElements: [{src: scriptUrl, content}],
+        SourceMaps: [{scriptUrl: scriptUrl1, map}, {scriptUrl: scriptUrl2, map}],
+        ScriptElements: [{src: scriptUrl1, content}, {src: scriptUrl2, content}],
       };
       const results = await ScriptTreemapData.audit(artifacts, context);
 
@@ -99,8 +103,19 @@ describe('ScriptTreemapData audit', () => {
     });
 
     it('has root nodes', () => {
-      expect(JSON.stringify(treemapData).length).toMatchInlineSnapshot(`31703`);
+      expect(JSON.stringify(treemapData).length).toMatchInlineSnapshot(`86635`);
       expect(treemapData).toMatchSnapshot();
+    });
+
+    it('finds duplicates', () => {
+      expect(JSON.stringify(treemapData).length).toMatchInlineSnapshot(`86635`);
+      // @ts-ignore all these children exist.
+      const leafNode = treemapData[0].node.
+        children[0].
+        children[0].
+        children[0].
+        children[0].duplicatedNormalizedModuleName;
+      expect(leafNode).toBe('Control/assets/js/vendor/jquery.typeahead.js');
     });
   });
 
