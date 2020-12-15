@@ -28,7 +28,7 @@ function createConfig(categoryIDs, device) {
   /** @type {LH.SharedFlagsSettings} */
   const settings = {
     onlyCategories: categoryIDs,
-    // DevTools handles all the emulation
+    // DevTools handles all the screen emulation
     screenEmulation: {disabled: true},
   };
   if (device === 'desktop') {

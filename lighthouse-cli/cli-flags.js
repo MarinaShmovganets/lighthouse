@@ -33,7 +33,7 @@ function getFlags(manualArgv) {
           'Save trace, screenshots, and named JSON report.')
       .example(
           'lighthouse <url> --screenEmulation.disabled --throttling-method=provided --no-emulatedUserAgent',
-          'Disable device emulation and all throttling')
+          'Disable emulation and all throttling')
       .example(
           'lighthouse <url> --chrome-flags="--window-size=412,660"',
           'Launch Chrome with a specific window size')
