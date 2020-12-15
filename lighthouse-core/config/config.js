@@ -169,6 +169,7 @@ function assertValidGatherer(gathererInstance, gathererName) {
 function assertValidFlags(flags) {
   // COMPAT: compatibility layer for devtools as it uses the old way and we need tests to pass
   // TODO(paulirish): remove this from LH once emulation refactor has rolled into DevTools
+  // @ts-expect-error Deprecated flag
   if (flags.channel === 'devtools' && flags.internalDisableDeviceScreenEmulation) {
     // @ts-expect-error Deprecated flag
     flags.formFactor = flags.emulatedFormFactor;
