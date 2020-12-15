@@ -142,8 +142,8 @@ function getFlags(manualArgv) {
           describe: 'Determines how performance metrics are scored and if mobile-only audits are skipped. For desktop, --preset=desktop instead.',
         },
         'screenEmulation': {
-          type: 'string',
           describe: 'Sets screen emulation parameters. See also --preset. Use --screenEmulation.disabled to disable. Otherwise set these 4 parameters individually: --screenEmulation.mobile --screenEmulation.width=360 --screenEmulation.height=640 --screenEmulation.deviceScaleFactor=2',
+          coerce: coerceScreenEmulation,
         },
         'emulatedUserAgent': {
           type: 'string',
@@ -424,6 +424,48 @@ function coerceThrottling(value) {
   }
 
   return throttlingSettings;
+}
+
+/**
+ * Take yarg's unchecked object value and ensure it's proper screenEmulation settings.
+ * @param {unknown} value
+ * @return {LH.screenEmulationSettings}
+ */
+function coerceScreenEmulation(value) {
+  if (!isObjectOfUnknownValues(value)) {
+    throw new Error(`Invalid value: Argument 'screenEmulation' must be an object, specified per-property ('screenEmulation.width', 'screenEmulation.deviceScaleFactor', etc)`);
+  }
+
+  /** @type {Array<keyof LH.screenEmulationSettings>} */
+  const keys = ['width', 'height', 'deviceScaleFactor', 'mobile', 'disabled'];
+  /** @type {LH.screenEmulationSettings} */
+  const screenEmulationSettings = {};
+
+  for (const key of keys) {
+    const possibleSetting = value[key];
+    switch (key) {
+      case 'width':
+      case 'height':
+      case 'deviceScaleFactor':
+        if (possibleSetting !== undefined && typeof possibleSetting !== 'number') {
+          throw new Error(`Invalid value: 'screenEmulation.${key}' must be a number`);
+        }
+        screenEmulationSettings[key] = possibleSetting;
+
+        break;
+      case 'mobile':
+      case 'disabled':
+        if (possibleSetting !== undefined && typeof possibleSetting !== 'boolean') {
+          throw new Error(`Invalid value: 'screenEmulation.${key}' must be a boolean`);
+        }
+        screenEmulationSettings[key] = possibleSetting;
+        break;
+      default:
+        throw new Error(`Unrecognized screenEmulation option: ${key}`);
+    }
+  }
+
+  return screenEmulationSettings;
 }
 
 module.exports = {

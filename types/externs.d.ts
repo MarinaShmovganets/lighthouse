@@ -125,7 +125,8 @@ declare global {
 
     export type OutputMode = 'json' | 'html' | 'csv';
 
-    export type deviceMetricsOverrideParams = Pick<LH.Crdp.Emulation.SetDeviceMetricsOverrideRequest, 'width'|'height'|'deviceScaleFactor'|'mobile'>;
+    type deviceMetricsOverrideParams = Pick<LH.Crdp.Emulation.SetDeviceMetricsOverrideRequest, 'width'|'height'|'deviceScaleFactor'|'mobile'>;
+    export type screenEmulationSettings = Partial<deviceMetricsOverrideParams & {disabled: boolean}>;
 
     /**
      * Options that are found in both the flags used by the Lighthouse module
@@ -155,7 +156,7 @@ declare global {
       /** How Lighthouse should interpret this run in regards to scoring performance metrics and skipping mobile-only tests in desktop. Must be set even if throttling/emulation is being applied outside of Lighthouse. */
       formFactor?: 'mobile'|'desktop';
       /** Screen emulation properties (width, height, dpr, mobile viewport) to apply or an object of `{disabled: true}` if Lighthouse should avoid applying screen emulation. It's typically set to disabled if either emulation is applied outside of Lighthouse, or it's being run on a mobile device. For desktop, we recommend applying consistent desktop screen emulation. */
-      screenEmulation?: Partial<deviceMetricsOverrideParams & {disabled: boolean}>;
+      screenEmulation?: screenEmulationSettings;
       /** User Agent to apply */
       emulatedUserAgent?: string | boolean;
 
