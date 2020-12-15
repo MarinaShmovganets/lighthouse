@@ -288,9 +288,9 @@ describe('ReportRenderer', () => {
     });
 
     afterAll(() => {
-      delete global.window;
-      delete global.Node;
-      delete global.Element;
+      global.window = undefined;
+      global.Node = undefined;
+      global.Element = undefined;
     });
 
     it('renders without axe violations', (done) => {
