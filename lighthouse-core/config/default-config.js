@@ -599,10 +599,9 @@ const defaultConfig = {
       manualDescription: str_(UIStrings.pwaCategoryManualDescription),
       auditRefs: [
         // Installable
-        {id: 'is-on-https', weight: 2, group: 'pwa-installable'},
-        {id: 'service-worker', weight: 1, group: 'pwa-installable'},
         {id: 'installable-manifest', weight: 2, group: 'pwa-installable'},
         // PWA Optimized
+        {id: 'service-worker', weight: 1, group: 'pwa-optimized'},
         {id: 'redirects-http', weight: 2, group: 'pwa-optimized'},
         {id: 'splash-screen', weight: 1, group: 'pwa-optimized'},
         {id: 'themed-omnibox', weight: 1, group: 'pwa-optimized'},
