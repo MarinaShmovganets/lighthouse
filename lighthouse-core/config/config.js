@@ -167,6 +167,16 @@ function assertValidGatherer(gathererInstance, gathererName) {
  * @param {LH.Flags} flags
  */
 function assertValidFlags(flags) {
+  // COMPAT: compatibility layer for devtools as it uses the old way and we need tests to pass
+  // TODO(paulirish): remove this from LH once emulation refactor has rolled into DevTools
+  if (flags.channel === 'devtools') {
+    // @ts-expect-error Deprecated flag
+    flags.formFactor = flags.emulatedFormFactor;
+    // @ts-expect-error Deprecated flag
+    flags.emulatedFormFactor = flags.internalDisableDeviceScreenEmulation = undefined;
+  }
+
+
   // @ts-expect-error Checking for removed flags
   if (flags.emulatedFormFactor || flags.internalDisableDeviceScreenEmulation) {
     throw new Error('Invalid emulation flag. Emulation configuration changed in LH 7.0. See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md');
@@ -183,6 +193,9 @@ function assertValidSettings(settings) {
   }
 
   if (!settings.screenEmulation.disabled) {
+    // formFactor doesn't control emulation. So we don't want a mismatch:
+    //   Bad mismatch A: user wants mobile emulation but scoring is configured for desktop
+    //   Bad mismtach B: user wants everything desktop and set formFactor, but accidentally not screenEmulation
     if (settings.screenEmulation.mobile !== (settings.formFactor === 'mobile')) {
       throw new Error(`Screen emulation mobile setting (${settings.screenEmulation.mobile}) does not match formFactor setting (${settings.formFactor}). See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md`);
     }

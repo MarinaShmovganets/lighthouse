@@ -9,7 +9,7 @@ const lighthouse = require('../lighthouse-core/index.js');
 const RawProtocol = require('../lighthouse-core/gather/connections/raw.js');
 const log = require('lighthouse-logger');
 const {registerLocaleData, lookupLocale} = require('../lighthouse-core/lib/i18n/i18n.js');
-const desktopDense4G = require('../lighthouse-core/config/constants.js').throttling.desktopDense4G;
+const constants = require('../lighthouse-core/config/constants.js');
 
 /** @typedef {import('../lighthouse-core/gather/connections/connection.js')} Connection */
 
@@ -32,7 +32,9 @@ function createConfig(categoryIDs, device) {
     screenEmulation: {disabled: true},
   };
   if (device === 'desktop') {
-    settings.throttling = desktopDense4G;
+    settings.throttling = constants.throttling.desktopDense4G;
+    settings.emulatedUserAgent = constants.userAgents.desktop;
+    settings.formFactor = 'desktop';
   }
 
   return {
