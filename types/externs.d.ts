@@ -127,15 +127,15 @@ declare global {
 
     export type ScreenEmulationSettings = {
       /** Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override. */
-      width: number,
+      width: number;
       /** Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override. */
-      height: number,
+      height: number;
       /** Overriding device scale factor value. 0 disables the override. */
-      deviceScaleFactor: number,
+      deviceScaleFactor: number;
       /** Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more. */
-      mobile: boolean,
+      mobile: boolean;
       /** Whether screen emulation is disabled. If true, the other emulation settings are ignored. */
-      disabled: boolean,
+      disabled: boolean;
     };
 
     /**
