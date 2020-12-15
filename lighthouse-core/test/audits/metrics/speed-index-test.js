@@ -16,11 +16,13 @@ const pwaTrace = require('../../fixtures/traces/progressive-app-m60.json');
 const pwaDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
 /**
- * @param {LH.SharedFlagsSettings['formFactor']} formFactor
- * @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
+ * @param {{
+ * {LH.SharedFlagsSettings['formFactor']} formFactor
+ * {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
+ * }} param0
  */
-const getFakeContext = (formFactor, throttlingMethod) => ({
-  options,
+const getFakeContext = ({formFactor, throttlingMethod}) => ({
+  options: options,
   computedCache: new Map(),
   settings: {
     formFactor: formFactor,
@@ -37,7 +39,7 @@ describe('Performance: speed-index audit', () => {
       devtoolsLogs: {defaultPass: pwaDevtoolsLog},
     };
 
-    const context = getFakeContext('mobile', 'provided');
+    const context = getFakeContext({formFactor: 'mobile', throttlingMethod: 'provided'});
     return Audit.audit(artifacts, context).then(result => {
       assert.equal(result.score, 1);
       assert.equal(result.numericValue, 605);

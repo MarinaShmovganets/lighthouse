@@ -13,13 +13,18 @@ const options = FMPAudit.defaultOptions;
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLogs = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
-
-/** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
-const getFakeContext = (formFactor = 'mobile') => ({
-  options,
+/**
+ * @param {{
+ * {LH.SharedFlagsSettings['formFactor']} formFactor
+ * {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
+ * }} param0
+ */
+const getFakeContext = ({formFactor, throttlingMethod}) => ({
+  options: options,
   computedCache: new Map(),
   settings: {
     formFactor: formFactor,
+    throttlingMethod,
     screenEmulation: constants.screenEmulationMetrics[formFactor],
   },
 });
@@ -31,8 +36,7 @@ describe('Performance: first-meaningful-paint audit', () => {
       traces: {[Audit.DEFAULT_PASS]: trace},
       devtoolsLogs: {[Audit.DEFAULT_PASS]: devtoolsLogs},
     };
-    const context = getFakeContext();
-    context.settings.throttlingMethod = 'provided';
+    const context = getFakeContext({formFactor: 'mobile', throttlingMethod: 'provided'});
     const fmpResult = await FMPAudit.audit(artifacts, context);
 
     assert.equal(fmpResult.score, 1);
@@ -45,8 +49,7 @@ describe('Performance: first-meaningful-paint audit', () => {
       traces: {[Audit.DEFAULT_PASS]: trace},
       devtoolsLogs: {[Audit.DEFAULT_PASS]: devtoolsLogs},
     };
-    const context = getFakeContext();
-    context.settings.throttlingMethod = 'simulate';
+    const context = getFakeContext({formFactor: 'mobile', throttlingMethod: 'simulate'});
     const fmpResult = await FMPAudit.audit(artifacts, context);
 
     expect({

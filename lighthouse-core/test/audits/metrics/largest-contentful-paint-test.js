@@ -24,10 +24,12 @@ function generateArtifacts({trace, devtoolsLog, HostUserAgent}) {
 }
 
 /**
- * @param {LH.SharedFlagsSettings['formFactor']} formFactor
- * @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
+ * @param {{
+ * {LH.SharedFlagsSettings['formFactor']} formFactor
+ * {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
+ * }} param0
  */
-const getFakeContext = (formFactor, throttlingMethod) => ({
+const getFakeContext = ({formFactor, throttlingMethod}) => ({
   options: defaultOptions,
   computedCache: new Map(),
   settings: {
@@ -45,7 +47,7 @@ describe('Performance: largest-contentful-paint audit', () => {
       trace,
       devtoolsLog,
     });
-    const contextMobile = getFakeContext('mobile', 'provided');
+    const contextMobile = getFakeContext({formFactor: 'mobile', throttlingMethod: 'provided'});
 
     const outputMobile = await LCPAudit.audit(artifactsMobile, contextMobile);
     expect(outputMobile.numericValue).toBeCloseTo(1121.711, 1);
@@ -56,7 +58,7 @@ describe('Performance: largest-contentful-paint audit', () => {
       trace,
       devtoolsLog,
     });
-    const contextDesktop = getFakeContext('desktop', 'provided');
+    const contextDesktop = getFakeContext({formFactor: 'desktop', throttlingMethod: 'provided'});
 
     const outputDesktop = await LCPAudit.audit(artifactsDesktop, contextDesktop);
     expect(outputDesktop.numericValue).toBeCloseTo(1121.711, 1);
@@ -72,7 +74,7 @@ describe('Performance: largest-contentful-paint audit', () => {
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 ' +
         'Mobile Safari/537.36 Chrome-Lighthouse',
     });
-    const contextOldChrome = getFakeContext('mobile', 'provided');
+    const contextOldChrome = getFakeContext({formFactor: 'mobile', throttlingMethod: 'provided'});
 
     await expect(LCPAudit.audit(artifactsOldChrome, contextOldChrome))
       .rejects.toThrow(/UNSUPPORTED_OLD_CHROME/);
@@ -84,7 +86,7 @@ describe('Performance: largest-contentful-paint audit', () => {
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 ' +
         'Mobile Safari/537.36 Chrome-Lighthouse',
     });
-    const contextNewChrome = getFakeContext('mobile', 'provided');
+    const contextNewChrome = getFakeContext({formFactor: 'mobile', throttlingMethod: 'provided'});
 
     await expect(LCPAudit.audit(artifactsNewChrome, contextNewChrome)).rejects.toThrow(/NO_LCP/);
   });

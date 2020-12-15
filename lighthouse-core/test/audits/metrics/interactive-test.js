@@ -18,10 +18,12 @@ const redirectTrace = require('../../fixtures/traces/site-with-redirect.json');
 const redirectDevToolsLog = require('../../fixtures/traces/site-with-redirect.devtools.log.json');
 
 /**
- * @param {LH.SharedFlagsSettings['formFactor']} formFactor
- * @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
+ * @param {{
+ * {LH.SharedFlagsSettings['formFactor']} formFactor
+ * {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
+ * }} param0
  */
-const getFakeContext = (formFactor, throttlingMethod) => ({
+const getFakeContext = ({formFactor, throttlingMethod}) => ({
   options: options,
   computedCache: new Map(),
   settings: {
@@ -43,7 +45,8 @@ describe('Performance: interactive audit', () => {
       },
     };
 
-    return Interactive.audit(artifacts, getFakeContext('mobile', 'provided')).then(output => {
+    const context = getFakeContext({formFactor: 'mobile', throttlingMethod: 'provided'});
+    return Interactive.audit(artifacts, context).then(output => {
       assert.equal(output.score, 1);
       assert.equal(Math.round(output.numericValue), 1582);
       expect(output.displayValue).toBeDisplayString('1.6\xa0s');
@@ -60,7 +63,8 @@ describe('Performance: interactive audit', () => {
       },
     };
 
-    return Interactive.audit(artifacts, getFakeContext('mobile', 'provided')).then(output => {
+    const context = getFakeContext({formFactor: 'mobile', throttlingMethod: 'provided'});
+    return Interactive.audit(artifacts, context).then(output => {
       assert.equal(output.score, 0.97);
       assert.equal(Math.round(output.numericValue), 2712);
       expect(output.displayValue).toBeDisplayString('2.7\xa0s');

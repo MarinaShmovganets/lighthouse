@@ -25,7 +25,7 @@ function generateArtifacts({trace, devtoolsLog}) {
 /**
  * @param {{
  * {LH.SharedFlagsSettings['formFactor']} formFactor
- * {LH.SharedFlagsSettings['formFactor']} formFactor
+ * {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod
  * }} param0
  */
 const getFakeContext = ({formFactor, throttlingMethod}) => ({
