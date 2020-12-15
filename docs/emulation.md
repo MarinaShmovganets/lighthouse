@@ -24,8 +24,8 @@ In Lighthouse v7, most of the configuration regarding emulation changed to be mo
 ) captures additional motivations.
 
 * Removed: The `emulatedFormFactor` property (which determined how emulation is applied).
-* Removed: The `TestedAsMobileDevice` artifact. Instead of being inferred, the  `formFactor` property is used.
-* Removed: The `internalDisableDeviceScreenEmulation` property. It's equivalent to the new `screenEmulation: false`.
+* Removed: The `TestedAsMobileDevice` artifact. Instead of being inferred, the explicit `formFactor` property is used.
+* Removed: The `internalDisableDeviceScreenEmulation` property. It's equivalent to the new `--screenEmulation.disabled=true`.
 * Added: The `formFactor` property.
 * Added: The `screenEmulation` property.
 * Added: The `emulatedUserAgent` property.

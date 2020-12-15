@@ -429,7 +429,7 @@ function coerceThrottling(value) {
 /**
  * Take yarg's unchecked object value and ensure it is a proper LH.screenEmulationSettings.
  * @param {unknown} value
- * @return {LH.ScreenEmulationSettings}
+ * @return {Partial<LH.ScreenEmulationSettings>}
  */
 function coerceScreenEmulation(value) {
   if (!isObjectOfUnknownValues(value)) {
@@ -438,7 +438,7 @@ function coerceScreenEmulation(value) {
 
   /** @type {Array<keyof LH.ScreenEmulationSettings>} */
   const keys = ['width', 'height', 'deviceScaleFactor', 'mobile', 'disabled'];
-  /** @type {LH.ScreenEmulationSettings} */
+  /** @type {Partial<LH.ScreenEmulationSettings>} */
   const screenEmulationSettings = {};
 
   for (const key of keys) {
