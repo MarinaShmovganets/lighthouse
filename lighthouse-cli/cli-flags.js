@@ -427,7 +427,7 @@ function coerceThrottling(value) {
 }
 
 /**
- * Take yarg's unchecked object value and ensure it's proper screenEmulation settings.
+ * Take yarg's unchecked object value and ensure it is a proper LH.screenEmulationSettings.
  * @param {unknown} value
  * @return {LH.screenEmulationSettings}
  */
