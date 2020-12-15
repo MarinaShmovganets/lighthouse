@@ -217,7 +217,7 @@ declare global {
       /** Flag to print a list of all required trace categories. */
       listTraceCategories: boolean;
       /** A preset audit of selected audit categories to run. */
-      preset?: 'experimental'|'perf';
+      preset?: 'experimental'|'perf'|'desktop';
       /** A flag to enable logLevel 'verbose'. */
       verbose: boolean;
       /** A flag to enable logLevel 'silent'. */
