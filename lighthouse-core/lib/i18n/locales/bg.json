@@ -1499,9 +1499,6 @@
   "lighthouse-core/config/default-config.js | pwaCategoryTitle": {
     "message": "Прогресивно уеб приложение (PWA)"
   },
-  "lighthouse-core/config/default-config.js | pwaFastReliableGroupTitle": {
-    "message": "Бързина и надеждност"
-  },
   "lighthouse-core/config/default-config.js | pwaInstallableGroupTitle": {
     "message": "Възможност за инсталиране"
   },

@@ -1499,9 +1499,6 @@
   "lighthouse-core/config/default-config.js | pwaCategoryTitle": {
     "message": "Ứng dụng web tiến bộ"
   },
-  "lighthouse-core/config/default-config.js | pwaFastReliableGroupTitle": {
-    "message": "Nhanh và đáng tin cậy"
-  },
   "lighthouse-core/config/default-config.js | pwaInstallableGroupTitle": {
     "message": "Có thể cài đặt"
   },

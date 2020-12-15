@@ -1499,9 +1499,6 @@
   "lighthouse-core/config/default-config.js | pwaCategoryTitle": {
     "message": "漸進式網絡應用程式"
   },
-  "lighthouse-core/config/default-config.js | pwaFastReliableGroupTitle": {
-    "message": "運作快速，效能可靠"
-  },
   "lighthouse-core/config/default-config.js | pwaInstallableGroupTitle": {
     "message": "可安裝"
   },

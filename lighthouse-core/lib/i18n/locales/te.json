@@ -1499,9 +1499,6 @@
   "lighthouse-core/config/default-config.js | pwaCategoryTitle": {
     "message": "ప్రోగ్రెసివ్ వెబ్ యాప్"
   },
-  "lighthouse-core/config/default-config.js | pwaFastReliableGroupTitle": {
-    "message": "వేగమైనది, విశ్వసనీయమైనది"
-  },
   "lighthouse-core/config/default-config.js | pwaInstallableGroupTitle": {
     "message": "ఇన్‌స్టాల్ చేయదగినవి"
   },

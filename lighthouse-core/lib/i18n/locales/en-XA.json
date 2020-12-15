@@ -1499,9 +1499,6 @@
   "lighthouse-core/config/default-config.js | pwaCategoryTitle": {
     "message": "[Þŕöĝŕéššîvé Ŵéб Åþþ one two three]"
   },
-  "lighthouse-core/config/default-config.js | pwaFastReliableGroupTitle": {
-    "message": "[Fåšţ åñð ŕéļîåбļé one two three]"
-  },
   "lighthouse-core/config/default-config.js | pwaInstallableGroupTitle": {
     "message": "[Îñšţåļļåбļé one two]"
   },
