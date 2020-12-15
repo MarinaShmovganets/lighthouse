@@ -37,7 +37,7 @@ do
     else
       printf "Dowloading data..."
       gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $instance:/home/lighthouse/collect.log "$LOGS_DEST" --zone="$ZONE"
-      # gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $instance:/home/lighthouse/trace-data.tar.gz "$DATA_DEST" --zone="$ZONE"
+      gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $instance:/home/lighthouse/trace-data.tar.gz "$DATA_DEST" --zone="$ZONE"
       gcloud --project="$CLOUDSDK_CORE_PROJECT" compute scp $instance:/home/lighthouse/lhr-data.tar.gz "$LHR_DEST" --zone="$ZONE"
       printf "done!\n"
     fi
