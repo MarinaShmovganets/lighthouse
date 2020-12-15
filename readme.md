@@ -87,14 +87,16 @@ Configuration:
   --print-config                 Print the normalized config for the given config and options, then exit.  [boolean] [default: false]
   --additional-trace-categories  Additional categories to capture with the trace (comma-delimited).  [string]
   --config-path                  The path to the config JSON.
-                                 An example config file: lighthouse-core/config/lr-desktop-config.js  [string]
+                                              An example config file: lighthouse-core/config/lr-desktop-config.js  [string]
   --preset                       Use a built-in configuration.
-                                 WARNING: If the --config-path flag is provided, this preset will be ignored.  [string] [choices: "perf", "experimental"]
+                                 WARNING: If the --config-path flag is provided, this preset will be ignored.  [string] [choices: "perf", "experimental", "desktop"]
   --chrome-flags                 Custom flags to pass to Chrome (space-delimited). For a full list of flags, see https://bit.ly/chrome-flags
-                                 Additionally, use the CHROME_PATH environment variable to use a specific Chrome binary. Requires Chromium version 66.0 or later. If omitted, any detected Chrome Canary or Chrome stable will be used.  [string] [default: ""]
+                                              Additionally, use the CHROME_PATH environment variable to use a specific Chrome binary. Requires Chromium version 66.0 or later. If omitted, any detected Chrome Canary or Chrome stable will be used.  [string] [default: ""]
   --port                         The port to use for the debugging protocol. Use 0 for a random port  [number] [default: 0]
   --hostname                     The hostname to use for the debugging protocol.  [string] [default: "localhost"]
-  --emulated-form-factor         Controls the emulated device form factor (mobile vs. desktop) if not disabled  [string] [choices: "mobile", "desktop", "none"]
+  --form-factor                  Determines how performance metrics are scored and if mobile-only audits are skipped. For desktop, --preset=desktop instead.  [string] [choices: "mobile", "desktop"]
+  --screenEmulation              Sets screen emulation parameters. See also --preset. Use --screenEmulation.disabled to disable. Otherwise set these 4 parameters individually: --screenEmulation.mobile --screenEmulation.width=360 --screenEmulation.height=640 --screenEmulation.deviceScaleFactor=2  [string]
+  --emulatedUserAgent            Sets useragent emulation  [string]
   --max-wait-for-load            The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue. WARNING: Very high values can lead to large traces and instability  [number]
   --enable-error-reporting       Enables error reporting, overriding any saved preference. --no-enable-error-reporting will do the opposite. More: https://git.io/vFFTO  [boolean]
   --gather-mode, -G              Collect artifacts from a connected browser and save to disk. (Artifacts folder path may optionally be provided). If audit-mode is not also enabled, the run will quit early.
@@ -107,10 +109,10 @@ Configuration:
 Output:
   --output       Reporter for the results, supports multiple values. choices: "json", "html", "csv"  [array] [default: ["html"]]
   --output-path  The file path to output the results. Use 'stdout' to write to stdout.
-                   If using JSON output, default is stdout.
-                   If using HTML or CSV output, default is a file in the working directory with a name based on the test URL and date.
-                   If using multiple outputs, --output-path is appended with the standard extension for each output type. "reports/my-run" -> "reports/my-run.report.html", "reports/my-run.report.json", etc.
-                   Example: --output-path=./lighthouse-results.html  [string]
+                    If using JSON output, default is stdout.
+                    If using HTML or CSV output, default is a file in the working directory with a name based on the test URL and date.
+                    If using multiple outputs, --output-path is appended with the standard extension for each output type. "reports/my-run" -> "reports/my-run.report.html", "reports/my-run.report.json", etc.
+                    Example: --output-path=./lighthouse-results.html  [string]
   --view         Open HTML report in your browser  [boolean] [default: false]
 
 Options:
@@ -136,15 +138,15 @@ Options:
   --chrome-ignore-default-flags  [boolean] [default: false]
 
 Examples:
-  lighthouse <url> --view                                                                    Opens the HTML report in a browser after the run completes
-  lighthouse <url> --config-path=./myconfig.js                                               Runs Lighthouse with your own configuration: custom audits, report generation, etc.
-  lighthouse <url> --output=json --output-path=./report.json --save-assets                   Save trace, screenshots, and named JSON report.
-  lighthouse <url> --emulated-form-factor=none --throttling-method=provided                  Disable device emulation and all throttling
-  lighthouse <url> --chrome-flags="--window-size=412,660"                                    Launch Chrome with a specific window size
-  lighthouse <url> --quiet --chrome-flags="--headless"                                       Launch Headless Chrome, turn off logging
-  lighthouse <url> --extra-headers "{\"Cookie\":\"monster=blue\", \"x-men\":\"wolverine\"}"  Stringify'd JSON HTTP Header key/value pairs to send in requests
-  lighthouse <url> --extra-headers=./path/to/file.json                                       Path to JSON file of HTTP Header key/value pairs to send in requests
-  lighthouse <url> --only-categories=performance,pwa                                         Only run the specified categories. Available categories: accessibility, best-practices, performance, pwa, seo
+  lighthouse <url> --view                                                                          Opens the HTML report in a browser after the run completes
+  lighthouse <url> --config-path=./myconfig.js                                                     Runs Lighthouse with your own configuration: custom audits, report generation, etc.
+  lighthouse <url> --output=json --output-path=./report.json --save-assets                         Save trace, screenshots, and named JSON report.
+  lighthouse <url> --screenEmulation.disabled --throttling-method=provided --no-emulatedUserAgent  Disable device emulation and all throttling
+  lighthouse <url> --chrome-flags="--window-size=412,660"                                          Launch Chrome with a specific window size
+  lighthouse <url> --quiet --chrome-flags="--headless"                                             Launch Headless Chrome, turn off logging
+  lighthouse <url> --extra-headers "{\"Cookie\":\"monster=blue\", \"x-men\":\"wolverine\"}"        Stringify'd JSON HTTP Header key/value pairs to send in requests
+  lighthouse <url> --extra-headers=./path/to/file.json                                             Path to JSON file of HTTP Header key/value pairs to send in requests
+  lighthouse <url> --only-categories=performance,pwa                                               Only run the specified categories. Available categories: accessibility, best-practices, performance, pwa, seo
 
 For more information on Lighthouse, see https://developers.google.com/web/tools/lighthouse/.
 ```
