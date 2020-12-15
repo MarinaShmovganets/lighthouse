@@ -59,12 +59,11 @@ describe('PWA: webapp install banner audit', () => {
 
     it('fails with a non-parsable manifest', () => {
       const artifacts = generateMockArtifacts('{,:}');
-      artifacts.InstallabilityErrors.errors.push({errorId: 'manifest-empty', errorArguments: []});
       const context = generateMockAuditContext();
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.score, 0);
         const items = result.details.items;
-        assert.ok(items[0].reason.formattedDefault.includes('is empty'));
+        assert.ok(items[0].reason.includes('failed to parse as valid JSON'));
       });
     });
 
@@ -75,7 +74,7 @@ describe('PWA: webapp install banner audit', () => {
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.score, 0);
         const items = result.details.items;
-        assert.ok(items[0].reason.formattedDefault.includes('is empty'));
+        expect(items[0].reason).toBeDisplayString(/is empty/);
       });
     });
 
@@ -99,25 +98,11 @@ describe('PWA: webapp install banner audit', () => {
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.score, 0);
         const items = result.details.items;
-        assert.ok(items[0].reason.formattedDefault.includes('without a \'start_url\''));
+        expect(items[0].reason).toBeDisplayString(/without a 'start_url'/);
       });
     });
 
-    it('fails when a manifest contains no short_name', () => {
-      const artifacts = generateMockArtifacts();
-      artifacts.InstallabilityErrors.errors.push({errorId: 'manifest-missing-name-or-short-name',
-        errorArguments: []});
-      artifacts.WebAppManifest.value.short_name.value = undefined;
-      const context = generateMockAuditContext();
-
-      return InstallableManifestAudit.audit(artifacts, context).then(result => {
-        assert.strictEqual(result.score, 0);
-        const items = result.details.items;
-        assert.ok(items[0].reason.formattedDefault.includes('does not contain a \'name\''));
-      });
-    });
-
-    it('fails when a manifest contains no name', () => {
+    it('fails when a manifest contains no name or short_name', () => {
       const artifacts = generateMockArtifacts();
       artifacts.InstallabilityErrors.errors.push({errorId: 'manifest-missing-name-or-short-name',
         errorArguments: []});
@@ -127,34 +112,34 @@ describe('PWA: webapp install banner audit', () => {
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.score, 0);
         const items = result.details.items;
-        assert.ok(items[0].reason.formattedDefault.includes('does not contain a \'name\''));
+        expect(items[0].reason).toBeDisplayString(/does not contain a 'name'/);
       });
     });
 
     it('fails if page had no icons in the manifest', () => {
       const artifacts = generateMockArtifacts();
-      artifacts.InstallabilityErrors.errors.push({errorId: 'no-icon-available',
-        errorArguments: []});
+      artifacts.InstallabilityErrors.errors.push({errorId: 'manifest-missing-suitable-icon',
+        errorArguments: [{name: 'minimum-icon-size-in-pixels', value: '144'}]});
       artifacts.WebAppManifest.value.icons.value = [];
       const context = generateMockAuditContext();
 
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.score, 0);
         const items = result.details.items;
-        assert.ok(items[0].reason.formattedDefault.includes('icon was empty or corrupted'));
+        expect(items[0].reason).toBeDisplayString(/does not contain a suitable icon/);
       });
     });
 
     it('fails if page had no fetchable icons in the manifest', () => {
       const artifacts = generateMockArtifacts();
-      artifacts.InstallabilityErrors.errors.push({errorId: 'no-icon-available',
+      artifacts.InstallabilityErrors.errors.push({errorId: 'cannot-download-icon',
         errorArguments: []});
       const context = generateMockAuditContext();
 
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.score, 0);
         const items = result.details.items;
-        assert.ok(items[0].reason.formattedDefault.includes('icon was empty or corrupted'));
+        expect(items[0].reason).toBeDisplayString(/icon was empty or corrupted/);
       });
     });
   });
@@ -169,7 +154,7 @@ describe('PWA: webapp install banner audit', () => {
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.score, 0);
         const items = result.details.items;
-        assert.ok(items[0].reason.includes('number of arguments'));
+        expect(items[0].reason).toBeDisplayString(/number of arguments/);
       });
     });
 
@@ -194,8 +179,7 @@ describe('PWA: webapp install banner audit', () => {
 
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         expect(result.warnings).toHaveLength(1);
-        expect(result.warnings[0].formattedDefault).toMatch('not work offline');
-        expect(result.warnings[0].formattedDefault).toMatch('August 2021');
+        expect(result.warnings[0]).toBeDisplayString(/not work offline.*August 2021/);
       });
     });
   });
@@ -209,7 +193,7 @@ describe('PWA: webapp install banner audit', () => {
     return InstallableManifestAudit.audit(artifacts, context).then(result => {
       assert.strictEqual(result.score, 0);
       const items = result.details.items;
-      assert.ok(items[0].reason.formattedDefault.includes('PNG'));
+      expect(items[0].reason).toBeDisplayString(/PNG/);
     });
   });
 });
