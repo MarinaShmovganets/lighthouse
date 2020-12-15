@@ -103,14 +103,12 @@ describe('CLI Tests', function() {
       });
 
       const config = JSON.parse(ret.stdout);
-      const {emulatedUserAgent, formFactor, screenEmulation, throttling, throttlingMethod} = config.settings;
-      const emulationSettings = {
-        emulatedUserAgent,
-        formFactor,
-        screenEmulation,
-        throttling,
-        throttlingMethod,
-      };
+      const {emulatedUserAgent, formFactor, screenEmulation, throttling, throttlingMethod} =
+        config.settings;
+      const emulationSettings =
+            {emulatedUserAgent, formFactor, screenEmulation, throttling, throttlingMethod};
+
+      /* eslint-disable max-len */
       expect(emulationSettings).toMatchInlineSnapshot(`
         Object {
           "emulatedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4143.7 Safari/537.36 Chrome-Lighthouse",
@@ -133,6 +131,7 @@ describe('CLI Tests', function() {
           "throttlingMethod": "simulate",
         }
       `);
+      /* eslint-enable max-len */
     });
   });
 });
