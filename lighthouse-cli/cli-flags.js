@@ -139,9 +139,7 @@ function getFlags(manualArgv) {
         },
         'form-factor': {
           type: 'string',
-          describe: 'Determines how performance metrics are scored and if mobile-only audits are skipped.',
-          // TODO: don't overwrite the formFactor consumed via preset. eg. --preset=desktop
-          default: 'mobile',
+          describe: 'Determines how performance metrics are scored and if mobile-only audits are skipped. For desktop, --preset=desktop instead.',
         },
         'screenEmulation': {
           type: 'string',

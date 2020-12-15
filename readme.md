@@ -67,6 +67,10 @@ By default, Lighthouse writes the report to an HTML file. You can control the ou
 
 ### CLI options
 
+<!-- To update the help output:
+  node lighthouse-cli --help | pbcopy
+-->
+
 ```
 $ lighthouse --help
 
