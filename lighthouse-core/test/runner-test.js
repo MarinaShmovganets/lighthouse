@@ -112,6 +112,7 @@ describe('Runner', () => {
     });
 
     it('-A throws if the settings change', async () => {
+      // Change throttlingMethod from its default of 'simulate'
       const settings = {auditMode: artifactsPath, throttlingMethod: 'provided'};
       const opts = {config: generateConfig(settings), driverMock};
       try {
@@ -123,7 +124,7 @@ describe('Runner', () => {
     });
 
     it('-A throws if the URL changes', async () => {
-      const settings = {auditMode: artifactsPath, formFactor: 'mobile'};
+      const settings = {auditMode: artifactsPath};
       const opts = {url: 'https://differenturl.com', config: generateConfig(settings), driverMock};
       try {
         await Runner.run(defaultGatherFn, opts);
