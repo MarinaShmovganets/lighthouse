@@ -334,7 +334,7 @@ class Config {
     const settings = Config.initSettings(configJSON.settings, flags);
 
     // Validate and merge in plugins (if any).
-    configJSON = Config.mergePlugins(configJSON, flags, configDir, settings.locale);
+    configJSON = Config.mergePlugins(configJSON, flags, configDir);
 
     // Augment passes with necessary defaults and require gatherers.
     const passesWithDefaults = Config.augmentPassesWithDefaults(configJSON.passes);

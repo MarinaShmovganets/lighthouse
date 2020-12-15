@@ -304,9 +304,11 @@ function _formatMessage(message, values = {}, locale) {
  * @return {string}
  */
 function _localizeIcuMessage(icuMessage, locale, pluginLocales) {
-  const localeMessages =
-    Object.assign(LOCALES[locale], pluginLocales && pluginLocales[locale]);
+  let localeMessages = LOCALES[locale];
   if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
+  if (pluginLocales) {
+    localeMessages = Object.assign(localeMessages, pluginLocales[locale]);
+  }
   const localeMessage = localeMessages[icuMessage.i18nId];
 
   // Fall back to the default (usually the original english message) if we couldn't find a

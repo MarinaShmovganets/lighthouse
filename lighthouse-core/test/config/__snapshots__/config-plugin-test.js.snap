@@ -36,5 +36,6 @@ Object {
       "title": "Group B",
     },
   },
+  "pluginLocales": undefined,
 }
 `;

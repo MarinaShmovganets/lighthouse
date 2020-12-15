@@ -135,6 +135,7 @@ describe('ConfigPlugin', () => {
         'lighthouse-plugin-evil': evilCategory,
       },
       groups: undefined,
+      pluginLocales: undefined,
     });
     assert.strictEqual(Object.getOwnPropertyDescriptor(pluginJson, 'audits').get, undefined);
   });
