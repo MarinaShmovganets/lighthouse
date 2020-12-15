@@ -96,6 +96,7 @@ async function begin() {
     cliFlags.outputPath = 'stdout';
   }
 
+<<<<<<< HEAD
   if (typeof cliFlags.extraHeaders === 'string') {
     // TODO: LH.Flags.extraHeaders is sometimes actually a string at this point, but needs to be
     // copied over to LH.Settings.extraHeaders, which is LH.Crdp.Network.Headers. Force
@@ -109,6 +110,12 @@ async function begin() {
     }
 
     cliFlags.extraHeaders = JSON.parse(extraHeadersStr);
+=======
+  // @ts-expect-error - deprecation message for removed disableDeviceEmulation; can remove warning in v6.
+  if (cliFlags.disableDeviceEmulation) {
+    log.warn('config', 'The "--disable-device-emulation" has been removed in v5.' +
+        ' Please use "--emulated-form-factor=none" instead.');
+>>>>>>> master
   }
 
   if (cliFlags.precomputedLanternDataPath) {
