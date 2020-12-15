@@ -125,8 +125,18 @@ declare global {
 
     export type OutputMode = 'json' | 'html' | 'csv';
 
-    type DeviceMetricsOverrideParams = Pick<LH.Crdp.Emulation.SetDeviceMetricsOverrideRequest, 'width'|'height'|'deviceScaleFactor'|'mobile'>;
-    export type ScreenEmulationSettings = Partial<DeviceMetricsOverrideParams & {disabled: boolean}>;
+    export type ScreenEmulationSettings = {
+      /** Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override. */
+      width: number,
+      /** Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override. */
+      height: number,
+      /** Overriding device scale factor value. 0 disables the override. */
+      deviceScaleFactor: number,
+      /** Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more. */
+      mobile: boolean,
+      /** Whether screen emulation is disabled. If true, the other emulation settings are ignored. */
+      disabled: boolean,
+    };
 
     /**
      * Options that are found in both the flags used by the Lighthouse module
@@ -155,9 +165,9 @@ declare global {
       // TODO: formFactor should really be required, but since this type is shared in Flags, we can't reasonably do that. We'll likely need to separate SharedFlagsSettings into CLI Flags and Config Settings.
       /** How Lighthouse should interpret this run in regards to scoring performance metrics and skipping mobile-only tests in desktop. Must be set even if throttling/emulation is being applied outside of Lighthouse. */
       formFactor?: 'mobile'|'desktop';
-      /** Screen emulation properties (width, height, dpr, mobile viewport) to apply or an object of `{disabled: true}` if Lighthouse should avoid applying screen emulation. It's typically set to disabled if either emulation is applied outside of Lighthouse, or it's being run on a mobile device. For desktop, we recommend applying consistent desktop screen emulation. */
-      screenEmulation?: ScreenEmulationSettings;
-      /** User Agent to apply */
+      /** Screen emulation properties (width, height, dpr, mobile viewport) to apply or an object of `{disabled: true}` if Lighthouse should avoid applying screen emulation. If either emulation is applied outside of Lighthouse, or it's being run on a mobile device, it typically should be set to disabled. For desktop, we recommend applying consistent desktop screen emulation. */
+      screenEmulation?: Partial<ScreenEmulationSettings>;
+      /** User Agent string to apply, `false` to not change the host's UA string, or `true` to use Lighthouse's default UA string. */
       emulatedUserAgent?: string | boolean;
 
       /** The method used to throttle the network. */
