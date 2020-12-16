@@ -666,8 +666,8 @@ describe('Config', () => {
     // +1 for `is-on-https`, +1 for `full-page-screenshot`.
     assert.equal(config.audits.length, origConfig.categories.performance.auditRefs.length + 2);
     assert.equal(config.passes.length, 1, 'filtered out passes');
-    assert.ok(config.audits.filter(a => a.implementation.meta.id === 'is-on-https'));
-    assert.ok(config.audits.filter(a => a.implementation.meta.id === 'full-page-screenshot'));
+    assert.ok(config.audits.find(a => a.implementation.meta.id === 'is-on-https'));
+    assert.ok(config.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
   });
 
   it('warns for invalid filters', () => {
@@ -1145,7 +1145,7 @@ describe('Config', () => {
       const auditCount = Object.keys(selectedCategory.auditRefs).length + 1;
 
       assert.equal(config.audits.length, auditCount, '# of audits match category list');
-      assert.ok(config.audits.filter(a => a.implementation.meta.id === 'full-page-screenshot'));
+      assert.ok(config.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
     });
 
     it('should only run specified audits', () => {
@@ -1174,8 +1174,8 @@ describe('Config', () => {
       const auditCount = Object.keys(selectedCategory.auditRefs).length + 2;
       assert.equal(config.passes.length, 2, 'incorrect # of passes');
       assert.equal(config.audits.length, auditCount, 'audit filtering failed');
-      assert.ok(config.audits.filter(a => a.implementation.meta.id === 'works-offline'));
-      assert.ok(config.audits.filter(a => a.implementation.meta.id === 'full-page-screenshot'));
+      assert.ok(config.audits.find(a => a.implementation.meta.id === 'service-worker'));
+      assert.ok(config.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
     });
 
     it('should support redundant filtering', () => {
@@ -1192,7 +1192,7 @@ describe('Config', () => {
       const auditCount = Object.keys(selectedCategory.auditRefs).length + 1;
       assert.equal(config.passes.length, 3, 'incorrect # of passes');
       assert.equal(config.audits.length, auditCount, 'audit filtering failed');
-      assert.ok(config.audits.filter(a => a.implementation.meta.id === 'full-page-screenshot'));
+      assert.ok(config.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
     });
 
     it('should keep uncategorized audits even if onlyCategories is set', () => {
