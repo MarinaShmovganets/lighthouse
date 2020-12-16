@@ -87,11 +87,11 @@ Configuration:
   --print-config                 Print the normalized config for the given config and options, then exit.  [boolean] [default: false]
   --additional-trace-categories  Additional categories to capture with the trace (comma-delimited).  [string]
   --config-path                  The path to the config JSON.
-                                              An example config file: lighthouse-core/config/lr-desktop-config.js  [string]
+                                 An example config file: lighthouse-core/config/lr-desktop-config.js  [string]
   --preset                       Use a built-in configuration.
                                  WARNING: If the --config-path flag is provided, this preset will be ignored.  [string] [choices: "perf", "experimental", "desktop"]
   --chrome-flags                 Custom flags to pass to Chrome (space-delimited). For a full list of flags, see https://bit.ly/chrome-flags
-                                              Additionally, use the CHROME_PATH environment variable to use a specific Chrome binary. Requires Chromium version 66.0 or later. If omitted, any detected Chrome Canary or Chrome stable will be used.  [string] [default: ""]
+                                 Additionally, use the CHROME_PATH environment variable to use a specific Chrome binary. Requires Chromium version 66.0 or later. If omitted, any detected Chrome Canary or Chrome stable will be used.  [string] [default: ""]
   --port                         The port to use for the debugging protocol. Use 0 for a random port  [number] [default: 0]
   --hostname                     The hostname to use for the debugging protocol.  [string] [default: "localhost"]
   --form-factor                  Determines how performance metrics are scored and if mobile-only audits are skipped. For desktop, --preset=desktop instead.  [string] [choices: "mobile", "desktop"]
@@ -109,10 +109,10 @@ Configuration:
 Output:
   --output       Reporter for the results, supports multiple values. choices: "json", "html", "csv"  [array] [default: ["html"]]
   --output-path  The file path to output the results. Use 'stdout' to write to stdout.
-                    If using JSON output, default is stdout.
-                    If using HTML or CSV output, default is a file in the working directory with a name based on the test URL and date.
-                    If using multiple outputs, --output-path is appended with the standard extension for each output type. "reports/my-run" -> "reports/my-run.report.html", "reports/my-run.report.json", etc.
-                    Example: --output-path=./lighthouse-results.html  [string]
+                   If using JSON output, default is stdout.
+                   If using HTML or CSV output, default is a file in the working directory with a name based on the test URL and date.
+                   If using multiple outputs, --output-path is appended with the standard extension for each output type. "reports/my-run" -> "reports/my-run.report.html", "reports/my-run.report.json", etc.
+                   Example: --output-path=./lighthouse-results.html  [string]
   --view         Open HTML report in your browser  [boolean] [default: false]
 
 Options:
