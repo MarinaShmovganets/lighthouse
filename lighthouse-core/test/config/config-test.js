@@ -657,13 +657,13 @@ describe('Config', () => {
     const config = new Config({
       extends: true,
       settings: {
-        onlyCategories: ['performance'],
+        onlyCategories: ['seo'],
         onlyAudits: ['is-on-https'],
       },
     });
 
     assert.ok(config.audits.length, 'inherited audits by extension');
-    assert.equal(config.audits.length, origConfig.categories.performance.auditRefs.length + 1);
+    assert.equal(config.audits.length, origConfig.categories.seo.auditRefs.length + 1);
     assert.equal(config.passes.length, 1, 'filtered out passes');
   });
 
@@ -1133,11 +1133,11 @@ describe('Config', () => {
       const extended = {
         extends: 'lighthouse:default',
         settings: {
-          onlyCategories: ['performance'],
+          onlyCategories: ['seo'],
         },
       };
       const config = new Config(extended);
-      const selectedCategory = origConfig.categories.performance;
+      const selectedCategory = origConfig.categories.seo;
       const auditCount = Object.keys(selectedCategory.auditRefs).length;
 
       assert.equal(config.audits.length, auditCount, '# of audits match category list');
@@ -1159,12 +1159,12 @@ describe('Config', () => {
       const extended = {
         extends: 'lighthouse:default',
         settings: {
-          onlyCategories: ['performance'],
+          onlyCategories: ['seo'],
           onlyAudits: ['works-offline'],
         },
       };
       const config = new Config(extended);
-      const selectedCategory = origConfig.categories.performance;
+      const selectedCategory = origConfig.categories.seo;
       const auditCount = Object.keys(selectedCategory.auditRefs).length + 1;
       assert.equal(config.passes.length, 2, 'incorrect # of passes');
       assert.equal(config.audits.length, auditCount, 'audit filtering failed');
@@ -1183,6 +1183,24 @@ describe('Config', () => {
       const auditCount = Object.keys(selectedCategory.auditRefs).length;
       assert.equal(config.passes.length, 3, 'incorrect # of passes');
       assert.equal(config.audits.length, auditCount, 'audit filtering failed');
+    });
+
+    it('should keep uncategorized audits even if onlyCategories is set', () => {
+      assert.ok(origConfig.audits.includes('full-page-screenshot'));
+      // full-page-screenshot does not belong to a category.
+      const matchCategories = Object.values(origConfig.categories).filter(cat =>
+          cat.auditRefs.find(ref => ref.id === 'full-page-screenshot'));
+      assert.equal(matchCategories.length, 0);
+
+      const extended = {
+        extends: 'lighthouse:default',
+        settings: {
+          onlyCategories: ['accessibility'],
+        },
+      };
+      const config = new Config(extended);
+
+      assert.ok(config.audits.find(a => a.path.includes('full-page-screenshot')));
     });
   });
 
