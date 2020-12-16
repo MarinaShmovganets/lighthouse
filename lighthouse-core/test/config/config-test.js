@@ -1170,7 +1170,7 @@ describe('Config', () => {
       };
       const config = new Config(extended);
       const selectedCategory = origConfig.categories.performance;
-      // +1 for `works-offline`, +1 for `full-page-screenshot`.
+      // +1 for `service-worker`, +1 for `full-page-screenshot`.
       const auditCount = Object.keys(selectedCategory.auditRefs).length + 2;
       assert.equal(config.passes.length, 2, 'incorrect # of passes');
       assert.equal(config.audits.length, auditCount, 'audit filtering failed');
