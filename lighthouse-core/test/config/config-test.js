@@ -833,6 +833,41 @@ describe('Config', () => {
     });
   });
 
+  describe('emulatedUserAgent', () => {
+    it('uses the default UA string when emulatedUserAgent is undefined', () => {
+      const config = new Config({});
+      expect(config.settings.emulatedUserAgent).toMatch(/^Mozilla\/5.*Chrome-Lighthouse$/);
+    });
+
+    it('uses the default UA string when emulatedUserAgent is true', () => {
+      const config = new Config({
+        settings: {
+          emulatedUserAgent: true,
+        },
+      });
+      expect(config.settings.emulatedUserAgent).toMatch(/^Mozilla\/5.*Chrome-Lighthouse$/);
+    });
+
+    it('does not use a UA string when emulatedUserAgent is false', () => {
+      const config = new Config({
+        settings: {
+          emulatedUserAgent: false,
+        },
+      });
+      expect(config.settings.emulatedUserAgent).toEqual(false);
+    });
+
+    it('uses the UA string provided if it is a string', () => {
+      const emulatedUserAgent = 'one weird trick to get a perfect LH score';
+      const config = new Config({
+        settings: {
+          emulatedUserAgent,
+        },
+      });
+      expect(config.settings.emulatedUserAgent).toEqual(emulatedUserAgent);
+    });
+  });
+
   it('is idempotent when accepting a canonicalized Config as valid ConfigJson input', () => {
     const config = new Config(defaultConfig);
     const configAgain = new Config(config);
