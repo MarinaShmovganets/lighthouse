@@ -529,6 +529,8 @@ class Config {
     // Locale is special and comes only from flags/settings/lookupLocale.
     settingsWithFlags.locale = locale;
 
+    // Default constants uses the mobile UA. Explicitly stating to true asks LH to use the associated UA.
+    // It's a little awkward, but the alternatives are not allowing `true` or a dedicated `disableUAEmulation` setting.
     if (settingsWithFlags.emulatedUserAgent === true) {
       settingsWithFlags.emulatedUserAgent = constants.userAgents[settingsWithFlags.formFactor];
     }
