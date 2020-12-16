@@ -16,7 +16,7 @@ const distLocalesPath = path.join(lhRoot, 'dist', 'dt-locales');
 fs.mkdirSync(distLocalesPath, {recursive: true});
 
 // @ts-expect-error
-const pubAdsLocales = require('lighthouse-plugin-publisher-ads').locales;
+const pubAdsLocales = require('lighthouse-plugin-publisher-ads/plugin.js').locales;
 
 const lhLocalePaths = fs.readdirSync(__dirname + '/../../lib/i18n/locales/')
     .map(f => require.resolve(`../../lib/i18n/locales/${f}`));

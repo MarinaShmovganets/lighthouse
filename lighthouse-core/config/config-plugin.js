@@ -229,7 +229,7 @@ class ConfigPlugin {
           throw new Error(`${pluginName} locale: '${locale}' contains invalid message: '${key}'.`);
         }
         const {message, ...invalidRest} = messageObj;
-        assertNoExcessProperties(invalidRest, pluginName);
+        assertNoExcessProperties(invalidRest, pluginName, 'locale');
 
         const [filename, keyname] = key.split(' | ');
 
