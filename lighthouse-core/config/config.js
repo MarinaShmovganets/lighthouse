@@ -657,14 +657,11 @@ class Config {
     });
 
     // The `full-page-screenshot` audit belongs to no category, but we still want to include
-    // it for the categories that utilize it.
+    // it (unless explictly excluded) because there are audits in every category that can use it.
     if (settings.onlyCategories) {
-      const includesCategoryUsingFullPageScreenshot = settings.onlyCategories.some(cat => {
-        return ['performance', 'accessibility'].includes(cat);
-      });
       const explicitlyExcludesFullPageScreenshot =
         settings.skipAudits && settings.skipAudits.includes('full-page-screenshot');
-      if (includesCategoryUsingFullPageScreenshot && !explicitlyExcludesFullPageScreenshot) {
+      if (!explicitlyExcludesFullPageScreenshot) {
         includedAudits.add('full-page-screenshot');
       }
     }
