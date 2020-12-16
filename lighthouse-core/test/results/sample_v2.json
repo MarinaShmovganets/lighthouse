@@ -57,14 +57,6 @@
       "score": 0,
       "scoreDisplayMode": "binary"
     },
-    "works-offline": {
-      "id": "works-offline",
-      "title": "Current page does not respond with a 200 when offline",
-      "description": "If you're building a Progressive Web App, consider using a service worker so that your app can work offline. [Learn more](https://web.dev/works-offline/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "warnings": []
-    },
     "viewport": {
       "id": "viewport",
       "title": "Has a `<meta name=\"viewport\">` tag with `width` or `initial-scale`",
@@ -520,23 +512,32 @@
     },
     "installable-manifest": {
       "id": "installable-manifest",
-      "title": "Web app manifest does not meet the installability requirements",
-      "description": "Browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. [Learn more](https://web.dev/installable-manifest/).",
+      "title": "Web app manifest or service worker do not meet the installability requirements",
+      "description": "Service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. With proper service worker and manifest implementations, browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. [Learn more](https://web.dev/installable-manifest/).",
       "score": 0,
       "scoreDisplayMode": "binary",
-      "explanation": "Failures: No manifest was fetched.",
+      "numericValue": 1,
+      "numericUnit": "element",
+      "displayValue": "1 reason",
+      "warnings": [],
       "details": {
-        "type": "debugdata",
+        "type": "table",
+        "headings": [
+          {
+            "key": "reason",
+            "itemType": "text",
+            "text": "Failure reason"
+          }
+        ],
         "items": [
           {
-            "failures": [
-              "No manifest was fetched"
-            ],
-            "manifestUrl": null,
-            "isParseFailure": true,
-            "parseFailureReason": "No manifest was fetched"
+            "reason": "No manifest was fetched"
           }
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "manifestUrl": null
+        }
       }
     },
     "apple-touch-icon": {
@@ -1500,15 +1501,6 @@
         ]
       }
     },
-    "offline-start-url": {
-      "id": "offline-start-url",
-      "title": "`start_url` does not respond with a 200 when offline",
-      "description": "A service worker enables your web app to be reliable in unpredictable network conditions. [Learn more](https://web.dev/offline-start-url/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "explanation": "No usable web app manifest found on page.",
-      "warnings": []
-    },
     "performance-budget": {
       "id": "performance-budget",
       "title": "Performance budget",
@@ -2198,6 +2190,18 @@
         "items": []
       }
     },
+    "aria-command-name": {
+      "id": "aria-command-name",
+      "title": "`button`, `link`, and `menuitem` elements have accessible names",
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
     "aria-hidden-body": {
       "id": "aria-hidden-body",
       "title": "`[aria-hidden=\"true\"]` is not present on the document `<body>`",
@@ -2220,9 +2224,33 @@
     "aria-input-field-name": {
       "id": "aria-input-field-name",
       "title": "ARIA input fields have accessible names",
-      "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-input-field-name/).",
+      "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
+    },
+    "aria-meter-name": {
+      "id": "aria-meter-name",
+      "title": "ARIA `meter` elements have accessible names",
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
+    "aria-progressbar-name": {
+      "id": "aria-progressbar-name",
+      "title": "ARIA `progressbar` elements have accessible names",
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
     },
     "aria-required-attr": {
       "id": "aria-required-attr",
@@ -2275,9 +2303,33 @@
     "aria-toggle-field-name": {
       "id": "aria-toggle-field-name",
       "title": "ARIA toggle fields have accessible names",
-      "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-toggle-field-name/).",
+      "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
+    },
+    "aria-tooltip-name": {
+      "id": "aria-tooltip-name",
+      "title": "ARIA `tooltip` elements have accessible names",
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
+    "aria-treeitem-name": {
+      "id": "aria-treeitem-name",
+      "title": "ARIA `treeitem` elements have accessible names",
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more](https://web.dev/aria-name/).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
     },
     "aria-valid-attr-value": {
       "id": "aria-valid-attr-value",
@@ -2799,13 +2851,6 @@
         }
       }
     },
-    "layout-table": {
-      "id": "layout-table",
-      "title": "Presentational `<table>` elements avoid using `<th>`, `<caption>` or the `[summary]` attribute.",
-      "description": "A table being used for layout purposes should not include data elements, such as the th or caption elements or the summary attribute, because this can create a confusing experience for screen reader users. [Learn more](https://web.dev/layout-table/).",
-      "score": null,
-      "scoreDisplayMode": "notApplicable"
-    },
     "link-name": {
       "id": "link-name",
       "title": "Links do not have a discernible name",
@@ -3004,13 +3049,6 @@
       "id": "video-caption",
       "title": "`<video>` elements contain a `<track>` element with `[kind=\"captions\"]`",
       "description": "When a video provides a caption it is easier for deaf and hearing impaired users to access its information. [Learn more](https://web.dev/video-caption/).",
-      "score": null,
-      "scoreDisplayMode": "notApplicable"
-    },
-    "video-description": {
-      "id": "video-description",
-      "title": "`<video>` elements contain a `<track>` element with `[kind=\"description\"]`",
-      "description": "Audio descriptions provide relevant information for videos that dialogue cannot, such as facial expressions and scenes. [Learn more](https://web.dev/video-description/).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
@@ -4040,7 +4078,7 @@
     "uses-http2": {
       "id": "uses-http2",
       "title": "Use HTTP/2",
-      "description": "HTTP/2 offers many benefits over HTTP/1.1, including binary headers, multiplexing, and server push. [Learn more](https://web.dev/uses-http2/).",
+      "description": "HTTP/2 offers many benefits over HTTP/1.1, including binary headers and multiplexing. [Learn more](https://web.dev/uses-http2/).",
       "score": 0.34,
       "scoreDisplayMode": "binary",
       "numericValue": 2130,
@@ -4817,6 +4855,11 @@
           "group": "a11y-aria"
         },
         {
+          "id": "aria-command-name",
+          "weight": 3,
+          "group": "a11y-aria"
+        },
+        {
           "id": "aria-hidden-body",
           "weight": 10,
           "group": "a11y-aria"
@@ -4829,6 +4872,16 @@
         {
           "id": "aria-input-field-name",
           "weight": 0,
+          "group": "a11y-aria"
+        },
+        {
+          "id": "aria-meter-name",
+          "weight": 3,
+          "group": "a11y-aria"
+        },
+        {
+          "id": "aria-progressbar-name",
+          "weight": 3,
           "group": "a11y-aria"
         },
         {
@@ -4854,6 +4907,16 @@
         {
           "id": "aria-toggle-field-name",
           "weight": 0,
+          "group": "a11y-aria"
+        },
+        {
+          "id": "aria-tooltip-name",
+          "weight": 3,
+          "group": "a11y-aria"
+        },
+        {
+          "id": "aria-treeitem-name",
+          "weight": 3,
           "group": "a11y-aria"
         },
         {
@@ -4947,11 +5010,6 @@
           "group": "a11y-names-labels"
         },
         {
-          "id": "layout-table",
-          "weight": 0,
-          "group": "a11y-tables-lists"
-        },
-        {
           "id": "link-name",
           "weight": 3,
           "group": "a11y-names-labels"
@@ -5007,11 +5065,6 @@
           "group": "a11y-audio-video"
         },
         {
-          "id": "video-description",
-          "weight": 0,
-          "group": "a11y-audio-video"
-        },
-        {
           "id": "logical-tab-order",
           "weight": 0
         },
@@ -5053,7 +5106,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 0.79
+      "score": 0.81
     },
     "best-practices": {
       "title": "Best Practices",
@@ -5241,29 +5294,14 @@
       "manualDescription": "These checks are required by the baseline [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
       "auditRefs": [
         {
-          "id": "works-offline",
-          "weight": 5,
-          "group": "pwa-fast-reliable"
-        },
-        {
-          "id": "offline-start-url",
-          "weight": 1,
-          "group": "pwa-fast-reliable"
-        },
-        {
-          "id": "is-on-https",
+          "id": "installable-manifest",
           "weight": 2,
           "group": "pwa-installable"
         },
         {
           "id": "service-worker",
           "weight": 1,
-          "group": "pwa-installable"
-        },
-        {
-          "id": "installable-manifest",
-          "weight": 2,
-          "group": "pwa-installable"
+          "group": "pwa-optimized"
         },
         {
           "id": "redirects-http",
@@ -5314,7 +5352,7 @@
         }
       ],
       "id": "pwa",
-      "score": 0.15
+      "score": 0.25
     }
   },
   "categoryGroups": {
@@ -5332,9 +5370,6 @@
     "diagnostics": {
       "title": "Diagnostics",
       "description": "More information about the performance of your application. These numbers don't [directly affect](https://web.dev/performance-scoring/) the Performance score."
-    },
-    "pwa-fast-reliable": {
-      "title": "Fast and reliable"
     },
     "pwa-installable": {
       "title": "Installable"
@@ -5452,12 +5487,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:service-worker",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:works-offline",
         "duration": 100,
         "entryType": "measure"
       },
@@ -5889,12 +5918,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:offline-start-url",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:performance-budget",
         "duration": 100,
         "entryType": "measure"
@@ -6027,6 +6050,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:aria-command-name",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:aria-hidden-body",
         "duration": 100,
         "entryType": "measure"
@@ -6040,6 +6069,18 @@
       {
         "startTime": 0,
         "name": "lh:audit:aria-input-field-name",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:aria-meter-name",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:aria-progressbar-name",
         "duration": 100,
         "entryType": "measure"
       },
@@ -6070,6 +6111,18 @@
       {
         "startTime": 0,
         "name": "lh:audit:aria-toggle-field-name",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:aria-tooltip-name",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:aria-treeitem-name",
         "duration": 100,
         "entryType": "measure"
       },
@@ -6183,12 +6236,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:layout-table",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:link-name",
         "duration": 100,
         "entryType": "measure"
@@ -6250,12 +6297,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:video-caption",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:video-description",
         "duration": 100,
         "entryType": "measure"
       },
@@ -6694,12 +6735,6 @@
       "lighthouse-core/audits/service-worker.js | description": [
         "audits[service-worker].description"
       ],
-      "lighthouse-core/audits/works-offline.js | failureTitle": [
-        "audits[works-offline].title"
-      ],
-      "lighthouse-core/audits/works-offline.js | description": [
-        "audits[works-offline].description"
-      ],
       "lighthouse-core/audits/viewport.js | title": [
         "audits.viewport.title"
       ],
@@ -6940,6 +6975,17 @@
       "lighthouse-core/audits/installable-manifest.js | description": [
         "audits[installable-manifest].description"
       ],
+      "lighthouse-core/audits/installable-manifest.js | displayValue": [
+        {
+          "values": {
+            "itemCount": 1
+          },
+          "path": "audits[installable-manifest].displayValue"
+        }
+      ],
+      "lighthouse-core/audits/installable-manifest.js | columnValue": [
+        "audits[installable-manifest].details.headings[0].text"
+      ],
       "lighthouse-core/audits/apple-touch-icon.js | failureTitle": [
         "audits[apple-touch-icon].title"
       ],
@@ -7073,12 +7119,6 @@
       ],
       "lighthouse-core/audits/network-server-latency.js | description": [
         "audits[network-server-latency].description"
-      ],
-      "lighthouse-core/audits/offline-start-url.js | failureTitle": [
-        "audits[offline-start-url].title"
-      ],
-      "lighthouse-core/audits/offline-start-url.js | description": [
-        "audits[offline-start-url].description"
       ],
       "lighthouse-core/audits/performance-budget.js | title": [
         "audits[performance-budget].title"
@@ -7383,6 +7423,12 @@
       "lighthouse-core/audits/accessibility/aria-allowed-attr.js | description": [
         "audits[aria-allowed-attr].description"
       ],
+      "lighthouse-core/audits/accessibility/aria-command-name.js | title": [
+        "audits[aria-command-name].title"
+      ],
+      "lighthouse-core/audits/accessibility/aria-command-name.js | description": [
+        "audits[aria-command-name].description"
+      ],
       "lighthouse-core/audits/accessibility/aria-hidden-body.js | title": [
         "audits[aria-hidden-body].title"
       ],
@@ -7400,6 +7446,18 @@
       ],
       "lighthouse-core/audits/accessibility/aria-input-field-name.js | description": [
         "audits[aria-input-field-name].description"
+      ],
+      "lighthouse-core/audits/accessibility/aria-meter-name.js | title": [
+        "audits[aria-meter-name].title"
+      ],
+      "lighthouse-core/audits/accessibility/aria-meter-name.js | description": [
+        "audits[aria-meter-name].description"
+      ],
+      "lighthouse-core/audits/accessibility/aria-progressbar-name.js | title": [
+        "audits[aria-progressbar-name].title"
+      ],
+      "lighthouse-core/audits/accessibility/aria-progressbar-name.js | description": [
+        "audits[aria-progressbar-name].description"
       ],
       "lighthouse-core/audits/accessibility/aria-required-attr.js | title": [
         "audits[aria-required-attr].title"
@@ -7430,6 +7488,18 @@
       ],
       "lighthouse-core/audits/accessibility/aria-toggle-field-name.js | description": [
         "audits[aria-toggle-field-name].description"
+      ],
+      "lighthouse-core/audits/accessibility/aria-tooltip-name.js | title": [
+        "audits[aria-tooltip-name].title"
+      ],
+      "lighthouse-core/audits/accessibility/aria-tooltip-name.js | description": [
+        "audits[aria-tooltip-name].description"
+      ],
+      "lighthouse-core/audits/accessibility/aria-treeitem-name.js | title": [
+        "audits[aria-treeitem-name].title"
+      ],
+      "lighthouse-core/audits/accessibility/aria-treeitem-name.js | description": [
+        "audits[aria-treeitem-name].description"
       ],
       "lighthouse-core/audits/accessibility/aria-valid-attr-value.js | title": [
         "audits[aria-valid-attr-value].title"
@@ -7539,12 +7609,6 @@
       "lighthouse-core/audits/accessibility/label.js | description": [
         "audits.label.description"
       ],
-      "lighthouse-core/audits/accessibility/layout-table.js | title": [
-        "audits[layout-table].title"
-      ],
-      "lighthouse-core/audits/accessibility/layout-table.js | description": [
-        "audits[layout-table].description"
-      ],
       "lighthouse-core/audits/accessibility/link-name.js | failureTitle": [
         "audits[link-name].title"
       ],
@@ -7610,12 +7674,6 @@
       ],
       "lighthouse-core/audits/accessibility/video-caption.js | description": [
         "audits[video-caption].description"
-      ],
-      "lighthouse-core/audits/accessibility/video-description.js | title": [
-        "audits[video-description].title"
-      ],
-      "lighthouse-core/audits/accessibility/video-description.js | description": [
-        "audits[video-description].description"
       ],
       "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | failureTitle": [
         "audits[uses-long-cache-ttl].title"
@@ -8104,9 +8162,6 @@
       ],
       "lighthouse-core/config/default-config.js | diagnosticsGroupDescription": [
         "categoryGroups.diagnostics.description"
-      ],
-      "lighthouse-core/config/default-config.js | pwaFastReliableGroupTitle": [
-        "categoryGroups[pwa-fast-reliable].title"
       ],
       "lighthouse-core/config/default-config.js | pwaInstallableGroupTitle": [
         "categoryGroups[pwa-installable].title"

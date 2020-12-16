@@ -1152,7 +1152,7 @@ describe('Config', () => {
       const extended = {
         extends: 'lighthouse:default',
         settings: {
-          onlyAudits: ['works-offline'],
+          onlyAudits: ['service-worker'], // something from non-defaultPass
         },
       };
       const config = new Config(extended);
@@ -1165,7 +1165,7 @@ describe('Config', () => {
         extends: 'lighthouse:default',
         settings: {
           onlyCategories: ['performance'],
-          onlyAudits: ['works-offline'],
+          onlyAudits: ['service-worker'], // something from non-defaultPass
         },
       };
       const config = new Config(extended);
@@ -1183,7 +1183,7 @@ describe('Config', () => {
         extends: 'lighthouse:default',
         settings: {
           onlyCategories: ['pwa'],
-          onlyAudits: ['is-on-https'],
+          onlyAudits: ['apple-touch-icon'],
         },
       };
       const config = new Config(extended);

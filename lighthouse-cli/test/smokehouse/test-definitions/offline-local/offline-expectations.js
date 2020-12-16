@@ -41,9 +41,6 @@ module.exports = [
         'service-worker': {
           score: 0,
         },
-        'works-offline': {
-          score: 0,
-        },
         'viewport': {
           score: 1,
         },
@@ -55,8 +52,7 @@ module.exports = [
         },
         'installable-manifest': {
           score: 0,
-          explanation: 'Failures: No manifest was fetched.',
-          details: {items: [{isParseFailure: true}]},
+          details: {items: [{reason: 'No manifest was fetched'}]},
         },
         'splash-screen': {
           score: 0,
@@ -133,9 +129,6 @@ module.exports = [
             scopeUrl: 'http://localhost:10503/',
           },
         },
-        'works-offline': {
-          score: 1,
-        },
         'viewport': {
           score: 1,
         },
@@ -147,7 +140,7 @@ module.exports = [
         },
         'installable-manifest': {
           score: 0,
-          explanation: 'Failures: Manifest icon failed to be fetched.',
+          details: {items: [{reason: 'Downloaded icon was empty or corrupted'}]},
         },
         'splash-screen': {
           score: 0,
@@ -191,9 +184,6 @@ module.exports = [
             scriptUrl: 'http://localhost:10503/offline-ready-sw.js?delay=5000&slow',
             scopeUrl: 'http://localhost:10503/',
           },
-        },
-        'works-offline': {
-          score: 1,
         },
       },
     },
