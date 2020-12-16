@@ -16,10 +16,7 @@ Generate report: enabled visible
 apple-touch-icon
 content-width
 installable-manifest
-is-on-https
-load-fast-enough-for-pwa
 maskable-icon
-offline-start-url
 pwa-cross-browser
 pwa-each-page-has-url
 pwa-page-transitions
@@ -28,6 +25,4 @@ service-worker
 splash-screen
 themed-omnibox
 viewport
-without-javascript
-works-offline
 

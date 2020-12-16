@@ -23,7 +23,8 @@ declare global {
     }
 
     /** The limited driver interface shared between pre and post Fraggle Rock Lighthouse. */
-    export interface FRTransitionalDriver extends FRProtocolSession {
+    export interface FRTransitionalDriver {
+      defaultSession: FRProtocolSession;
       evaluateAsync(expression: string, options?: {useIsolation?: boolean}): Promise<any>;
     }
 
@@ -36,10 +37,8 @@ declare global {
       /** The url of the currently loaded page. If the main document redirects, this will be updated to keep track. */
       url: string;
       driver: Driver;
-      disableJavaScript?: boolean;
       passConfig: Config.Pass
       settings: Config.Settings;
-      options?: object;
       /** Gatherers can push to this array to add top-level warnings to the LHR. */
       LighthouseRunWarnings: Array<string | IcuMessage>;
       baseArtifacts: BaseArtifacts;
@@ -49,6 +48,21 @@ declare global {
       networkRecords: Array<Artifacts.NetworkRequest>;
       devtoolsLog: DevtoolsLog;
       trace?: Trace;
+    }
+
+    type PhaseResult_ = void|LH.GathererArtifacts[keyof LH.GathererArtifacts]
+    export type PhaseResult = PhaseResult_ | Promise<PhaseResult_>
+
+    export interface GathererInstance {
+      name: keyof LH.GathererArtifacts;
+      beforePass(context: LH.Gatherer.PassContext): PhaseResult;
+      pass(context: LH.Gatherer.PassContext): PhaseResult;
+      afterPass(context: LH.Gatherer.PassContext, loadData: LH.Gatherer.LoadData): PhaseResult;
+    }
+
+    export interface FRGathererInstance {
+      name: keyof LH.GathererArtifacts;
+      afterPass(context: FRTransitionalContext): PhaseResult;
     }
 
     namespace Simulation {

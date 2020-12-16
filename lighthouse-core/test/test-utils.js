@@ -220,6 +220,14 @@ async function flushAllTimersAndMicrotasks(ms = 1000) {
   }
 }
 
+/**
+ * Mocks gatherers for BaseArtifacts that tests for components using GatherRunner
+ * shouldn't concern themselves about.
+ */
+function makeMocksForGatherRunner() {
+  jest.mock('../lib/stack-collector.js', () => () => Promise.resolve([]));
+}
+
 module.exports = {
   getProtoRoundTrip,
   loadSourceMapFixture,
@@ -228,5 +236,6 @@ module.exports = {
   makePromiseInspectable,
   createDecomposedPromise,
   flushAllTimersAndMicrotasks,
+  makeMocksForGatherRunner,
   ...mockCommands,
 };

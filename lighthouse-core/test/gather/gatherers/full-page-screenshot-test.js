@@ -50,7 +50,7 @@ function createMockDriver({contentSize, screenSize, screenshotData}) {
   };
 }
 
-describe('Full-page screenshot gatherer', () => {
+describe('FullPageScreenshot gatherer', () => {
   it('captures a full-page screenshot', async () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     const driver = createMockDriver({
@@ -61,7 +61,11 @@ describe('Full-page screenshot gatherer', () => {
     });
     const passContext = {
       settings: {
-        emulatedFormFactor: 'mobile',
+        formFactor: 'mobile',
+        screenEmulation: {
+          mobile: true,
+          disabled: false,
+        },
       },
       driver,
       baseArtifacts: {},
@@ -69,9 +73,12 @@ describe('Full-page screenshot gatherer', () => {
 
     const artifact = await fpsGatherer.afterPass(passContext);
     expect(artifact).toEqual({
-      data: 'data:image/jpeg;base64,abc',
-      height: 2000,
-      width: 412,
+      screenshot: {
+        data: 'data:image/jpeg;base64,abc',
+        height: 2000,
+        width: 412,
+      },
+      nodes: {},
     });
   });
 
@@ -85,7 +92,11 @@ describe('Full-page screenshot gatherer', () => {
     });
     const passContext = {
       settings: {
-        emulatedFormFactor: 'mobile',
+        formFactor: 'mobile',
+        screenEmulation: {
+          mobile: true,
+          disabled: false,
+        },
       },
       driver,
       baseArtifacts: {},
@@ -93,7 +104,8 @@ describe('Full-page screenshot gatherer', () => {
 
     await fpsGatherer.afterPass(passContext);
 
-    expect(driver.beginEmulation).toHaveBeenCalledWith({emulatedFormFactor: 'mobile'});
+    const expectedArgs = {formFactor: 'mobile', screenEmulation: {disabled: false, mobile: true}};
+    expect(driver.beginEmulation).toHaveBeenCalledWith(expectedArgs);
     expect(driver.beginEmulation).toHaveBeenCalledTimes(1);
   });
 
@@ -112,12 +124,13 @@ describe('Full-page screenshot gatherer', () => {
     });
     const passContext = {
       settings: {
-        emulatedFormFactor: 'none',
+        screenEmulation: {
+          mobile: true,
+          disabled: true,
+        },
+        formFactor: 'mobile',
       },
       driver,
-      baseArtifacts: {
-        TestedAsMobileDevice: true,
-      },
     };
 
     await fpsGatherer.afterPass(passContext);
@@ -162,7 +175,11 @@ describe('Full-page screenshot gatherer', () => {
     });
     const passContext = {
       settings: {
-        emulatedFormFactor: 'mobile',
+        formFactor: 'mobile',
+        screenEmulation: {
+          mobile: true,
+          disabled: false,
+        },
       },
       driver,
       baseArtifacts: {},
@@ -177,99 +194,5 @@ describe('Full-page screenshot gatherer', () => {
         height: FullPageScreenshotGatherer.MAX_SCREENSHOT_HEIGHT,
       })
     );
-  });
-
-  it('captures a smaller screenshot if the captured data URL is too large', async () => {
-    const fpsGatherer = new FullPageScreenshotGatherer();
-    const pageContentHeight = 15000;
-
-    const driver = createMockDriver({
-      contentSize: {
-        width: 412,
-        height: pageContentHeight,
-      },
-      screenSize: {
-        dpr: 2,
-      },
-      screenshotData: [
-        new Array(3 * 1024 * 1024).join('a'),
-        new Array(1 * 1024 * 1024).join('a'),
-      ],
-    });
-    const passContext = {
-      settings: {
-        emulatedFormFactor: 'mobile',
-      },
-      driver,
-      baseArtifacts: {},
-    };
-
-    const result = await fpsGatherer.afterPass(passContext);
-
-    expect(driver.sendCommand).toHaveBeenCalledWith(
-      'Emulation.setDeviceMetricsOverride',
-      expect.objectContaining({
-        deviceScaleFactor: 1,
-        height: pageContentHeight,
-      })
-    );
-    expect(driver.sendCommand).toHaveBeenCalledWith(
-      'Emulation.setDeviceMetricsOverride',
-      expect.objectContaining({
-        deviceScaleFactor: 1,
-        height: 5000,
-      })
-    );
-
-    expect(result).not.toBeNull();
-  });
-
-  it('returns null if the captured data URL is way too large', async () => {
-    const fpsGatherer = new FullPageScreenshotGatherer();
-    const pageContentHeight = 15000;
-
-    const driver = createMockDriver({
-      contentSize: {
-        width: 412,
-        height: pageContentHeight,
-      },
-      screenSize: {
-        dpr: 3,
-      },
-      screenshotData: [
-        new Array(3 * 1024 * 1024).join('a'),
-        new Array(2 * 1024 * 1024).join('a'),
-      ],
-    });
-    const passContext = {
-      settings: {
-        emulatedFormFactor: 'mobile',
-      },
-      driver,
-      baseArtifacts: {},
-      LighthouseRunWarnings: [],
-    };
-
-    const result = await fpsGatherer.afterPass(passContext);
-
-    // first attempt
-    expect(driver.sendCommand).toHaveBeenCalledWith(
-      'Emulation.setDeviceMetricsOverride',
-      expect.objectContaining({
-        deviceScaleFactor: 1,
-        height: pageContentHeight,
-      })
-    );
-    // second attempt
-    expect(driver.sendCommand).toHaveBeenCalledWith(
-      'Emulation.setDeviceMetricsOverride',
-      expect.objectContaining({
-        deviceScaleFactor: 1,
-        height: 5000,
-      })
-    );
-
-    expect(result).toBeNull();
-    expect(passContext.LighthouseRunWarnings[0]).toMatch('Full page screenshot is too big');
   });
 });
