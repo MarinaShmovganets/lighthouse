@@ -169,18 +169,6 @@ const expectations = [
           tag: {
             tagName: 'LINK',
             url: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&capped',
-            mediaChanges: [
-              {
-                href: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&capped',
-                media: 'not-matching',
-                matches: false,
-              },
-              {
-                href: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&capped',
-                media: 'screen',
-                matches: true,
-              },
-            ],
           },
         },
         {
