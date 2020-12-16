@@ -28,11 +28,13 @@ function createConfig(categoryIDs, device) {
   /** @type {LH.SharedFlagsSettings} */
   const settings = {
     onlyCategories: categoryIDs,
-    // DevTools handles all the screen emulation
+    // In DevTools, emulation is applied _before_ Lighthouse starts (to deal with viewport emulation bugs). go/xcnjf
+    // As a result, we don't double-apply viewport emulation.
     screenEmulation: {disabled: true},
   };
   if (device === 'desktop') {
     settings.throttling = constants.throttling.desktopDense4G;
+    // UA emulation, however, is lost in the protocol handover from devtools frontend to the lighthouse_worker. So it's always applied.
     settings.emulatedUserAgent = constants.userAgents.desktop;
     settings.formFactor = 'desktop';
   }

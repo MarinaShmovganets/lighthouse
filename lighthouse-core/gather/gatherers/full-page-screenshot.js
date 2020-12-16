@@ -42,7 +42,8 @@ class FullPageScreenshot extends Gatherer {
     const height = Math.min(metrics.contentSize.height, MAX_SCREENSHOT_HEIGHT);
 
     await driver.sendCommand('Emulation.setDeviceMetricsOverride', {
-      mobile: passContext.settings.formFactor === 'mobile',
+      // If we're gathering with mobile screenEmulation on (overlay scrollbars, etc), continue to use that for this screenshot.
+      mobile: passContext.settings.screenEmulation.mobile,
       height,
       width,
       deviceScaleFactor: 1,
@@ -116,7 +117,7 @@ class FullPageScreenshot extends Gatherer {
 
     // In case some other program is controlling emulation, try to remember what the device looks
     // like now and reset after gatherer is done.
-    const lighthouseControlsEmulation = passContext.settings.screenEmulation.disabled !== true;
+    const lighthouseControlsEmulation = !passContext.settings.screenEmulation.disabled;
 
     try {
       return {

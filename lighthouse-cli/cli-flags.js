@@ -32,7 +32,7 @@ function getFlags(manualArgv) {
           'lighthouse <url> --output=json --output-path=./report.json --save-assets',
           'Save trace, screenshots, and named JSON report.')
       .example(
-          'lighthouse <url> --screenEmulation.disabled --throttling-method=provided --no-emulatedUserAgent',
+          'lighthouse <url> --screenEmulation.disabled --throttling-method=provided --no-emulated-user-agent',
           'Disable emulation and all throttling')
       .example(
           'lighthouse <url> --chrome-flags="--window-size=412,660"',
@@ -147,6 +147,7 @@ function getFlags(manualArgv) {
         },
         'emulatedUserAgent': {
           type: 'string',
+          coerce: coerceOptionalStringBoolean,
           describe: 'Sets useragent emulation',
         },
         'max-wait-for-load': {
