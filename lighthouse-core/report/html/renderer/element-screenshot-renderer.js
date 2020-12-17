@@ -183,8 +183,8 @@ class ElementScreenshotRenderer {
         maxLightboxSize
       );
 
-      // This would be unexpected here. 
-      // When `screenshotElement` is `null`, there is also no thumbnail element for the user to have clicked to make it this far. 
+      // This would be unexpected here.
+      // When `screenshotElement` is `null`, there is also no thumbnail element for the user to have clicked to make it this far.
       if (!screenshotElement) {
         overlay.remove();
         return;
