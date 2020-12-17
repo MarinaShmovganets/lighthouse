@@ -57,6 +57,12 @@ class NetworkRecorder extends EventEmitter {
     return this._isActiveIdlePeriod(0);
   }
 
+  /**
+   * Returns whether any important resources for the page are in progress.
+   * Above-the-fold images and XHRs should be included.
+   * Tracking pixels, low priority images, and cross frame requests should be excluded.
+   * @return {boolean}
+   */
   isCriticalIdle() {
     const rootFrameRequest = this._records.find(r => r.resourceType === 'Document');
     const rootFrameId = rootFrameRequest && rootFrameRequest.frameId;
