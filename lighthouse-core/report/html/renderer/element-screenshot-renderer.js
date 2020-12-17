@@ -144,13 +144,12 @@ class ElementScreenshotRenderer {
       return console.warn('No lh-root. Overlay install failed.'); // eslint-disable-line no-console
     }
 
-
     const screenshotOverlayClass = 'lh-screenshot-overlay--enabled';
     // Don't install the feature more than once.
     if (rootEl.classList.contains(screenshotOverlayClass)) return;
     rootEl.classList.add(screenshotOverlayClass);
 
-    // Add a single listener to the top container to handle all clicks within (event delegation)
+    // Add a single listener to the root element to handle all clicks within (event delegation).
     rootEl.addEventListener('click', e => {
       const target = /** @type {?HTMLElement} */ (e.target);
       if (!target) return;
@@ -161,7 +160,7 @@ class ElementScreenshotRenderer {
       const overlay = dom.createElement('div', 'lh-element-screenshot__overlay');
       rootEl.append(overlay);
 
-      // The newly-added overlay has the bounding rect we need
+      // The newly-added overlay has the dimensions we need.
       const maxLightboxSize = {
         width: overlay.clientWidth * 0.95,
         height: overlay.clientHeight * 0.80,
@@ -183,7 +182,8 @@ class ElementScreenshotRenderer {
         maxLightboxSize
       );
 
-      // This would be unexpected here. The null return is used to not create a thumbnail in details-renderer
+      // This would be unexpected here. 
+      // When `screenshotElement` is `null`, there is also no thumbnail element for the user to have clicked to make it this far. 
       if (!screenshotElement) {
         return overlay.remove();
       }
