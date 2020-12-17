@@ -141,7 +141,8 @@ class ElementScreenshotRenderer {
   static installOverlayFeature(dom, templateContext, fullPageScreenshot) {
     const rootEl = dom.find('.lh-root', dom.document());
     if (!rootEl) {
-      return console.warn('No lh-root. Overlay install failed.'); // eslint-disable-line no-console
+      console.warn('No lh-root. Overlay install failed.'); // eslint-disable-line no-console
+      return;
     }
 
     const screenshotOverlayClass = 'lh-screenshot-overlay--enabled';
@@ -185,7 +186,8 @@ class ElementScreenshotRenderer {
       // This would be unexpected here. 
       // When `screenshotElement` is `null`, there is also no thumbnail element for the user to have clicked to make it this far. 
       if (!screenshotElement) {
-        return overlay.remove();
+        overlay.remove();
+        return;
       }
       overlay.appendChild(screenshotElement);
       overlay.addEventListener('click', () => overlay.remove());

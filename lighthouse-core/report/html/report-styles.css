@@ -104,7 +104,7 @@
   --image-preview-size: 48px;
   --metric-toggle-lines-fill: #7F7F7F;
   --metrics-toggle-background-color: var(--color-gray-200);
-  --modal-overlay-background: rgba(0, 0, 0, 0.3);
+  --screenshot-overlay-background: rgba(0, 0, 0, 0.3);
   --plugin-badge-background-color: var(--color-white);
   --plugin-badge-size-big: calc(var(--gauge-circle-size-big) / 2.7);
   --plugin-badge-size: calc(var(--gauge-circle-size) / 2.7);
@@ -257,7 +257,7 @@
   --gauge-wrapper-width: 97px;
   --header-line-height: 20px;
   --header-padding: 16px 0 16px 0;
-  --modal-overlay-background: transparent;
+  --screenshot-overlay-background: transparent;
   --plugin-icon-size: 75%;
   --pwa-icon-margin: 0 7px 0 -3px;
   --report-font-family-monospace: 'Menlo', 'dejavu sans mono', 'Consolas', 'Lucida Console', monospace;
@@ -1557,7 +1557,7 @@
   right: 0;
   bottom: 0;
   z-index: 2000; /* .lh-topbar is 1000 */
-  background: var(--modal-overlay-background);
+  background: var(--screenshot-overlay-background);
   display: flex;
   align-items: center;
   justify-content: center;
