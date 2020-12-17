@@ -1840,10 +1840,11 @@
           {
             "node": {
               "type": "node",
-              "path": "1,HTML,1,BODY,0,DIV,1,P",
-              "selector": "body > div > p",
-              "nodeLabel": "This domain is for use in illustrative examples in documents. You may use this …",
-              "snippet": "<p class=\"paragraph\">",
+              "lhId": "page-1-IMG",
+              "path": "3,HTML,1,BODY,14,IMG",
+              "selector": "body > img",
+              "nodeLabel": "img",
+              "snippet": "<img src=\"lighthouse-480x318.jpg?iar2\" width=\"120\" height=\"80\">",
               "boundingRect": {
                 "top": 574,
                 "bottom": 654,

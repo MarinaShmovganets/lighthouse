@@ -3054,8 +3054,9 @@
     {
       "traceEventType": "largest-contentful-paint",
       "node": {
-        "devtoolsNodePath": "1,HTML,1,BODY,0,DIV,1,P",
-        "selector": "body > div > p",
+        "lhId": "page-1-IMG",
+        "devtoolsNodePath": "3,HTML,1,BODY,14,IMG",
+        "selector": "body > img",
         "boundingRect": {
           "top": 574,
           "bottom": 654,
@@ -3064,9 +3065,10 @@
           "width": 120,
           "height": 80
         },
-        "nodeLabel": "This domain is for use in illustrative examples in documents. You may use this …",
-        "snippet": "<p class=\"paragraph\">"
-      }
+        "snippet": "<img src=\"lighthouse-480x318.jpg?iar2\" width=\"120\" height=\"80\">",
+        "nodeLabel": "img"
+      },
+      "nodeId": 9
     },
     {
       "traceEventType": "layout-shift",
