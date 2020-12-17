@@ -58,9 +58,14 @@ class NetworkRecorder extends EventEmitter {
   }
 
   isCriticalIdle() {
+    const rootFrameRequest = this._records.find(r => r.resourceType === 'Document');
+    const rootFrameId = rootFrameRequest && rootFrameRequest.frameId;
+    const rootFrameRequests = new Set(this._records.filter(r => r.frameId === rootFrameId));
+
     return this._isActiveIdlePeriod(
       0,
-      request => request.priority === 'VeryHigh' || request.priority === 'High'
+      request => rootFrameRequests.has(request) &&
+        (request.priority === 'VeryHigh' || request.priority === 'High')
     );
   }
 
