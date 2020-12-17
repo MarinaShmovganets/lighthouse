@@ -429,6 +429,28 @@ const expectations = [
             }],
           },
         },
+        'full-page-screenshot': {
+          score: null,
+          details: {
+            type: 'full-page-screenshot',
+            screenshot: {
+              width: 360,
+              height: 3754,
+              data: /^data:image\/jpeg;.{500,}/,
+            },
+            nodes: {
+              'page-0-IMG': {
+                top: 639,
+                bottom: 654,
+                left: 8,
+                right: 128,
+                width: 120,
+                height: 15,
+              },
+              // And then many more nodes.
+            },
+          },
+        },
       },
     },
   },
