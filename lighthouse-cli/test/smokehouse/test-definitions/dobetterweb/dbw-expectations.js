@@ -441,12 +441,13 @@ const expectations = [
             },
             nodes: {
               'page-0-IMG': {
-                top: 639,
-                bottom: 654,
-                left: 8,
-                right: 128,
-                width: 120,
-                height: 15,
+                // Test that these are numbers and in the ballpark.
+                top: '650±50',
+                bottom: '650±50',
+                left: '10±10',
+                right: '120±20',
+                width: '120±20',
+                height: '20±20',
               },
               // And then many more nodes.
             },
