@@ -58,6 +58,7 @@ async function collectTagsThatBlockFirstPaint() {
   const linkMediaChanges = window.___linkMediaChanges;
 
   try {
+    /** @type {Array<LinkTag>} */
     const linkTags = [...document.querySelectorAll('link')]
       .filter(/** @return {tag is HTMLLinkElement} */ tag => {
         if (tag.tagName !== 'LINK') return false;
@@ -73,7 +74,7 @@ async function collectTagsThatBlockFirstPaint() {
       })
       .map(tag => {
         return {
-          tagName: /** @type {'LINK'} */ ('LINK'),
+          tagName: 'LINK',
           url: tag.href,
           href: tag.href,
           rel: tag.rel,
@@ -83,6 +84,7 @@ async function collectTagsThatBlockFirstPaint() {
         };
       });
 
+    /** @type {Array<ScriptTag>} */
     const scriptTags = [...document.querySelectorAll('head script[src]')]
       .filter(/** @return {tag is HTMLScriptElement} */ tag => {
         if (tag.tagName !== 'SCRIPT') return false;
@@ -98,7 +100,7 @@ async function collectTagsThatBlockFirstPaint() {
       })
       .map(tag => {
         return {
-          tagName: /** @type {'SCRIPT'} */ ('SCRIPT'),
+          tagName: 'SCRIPT',
           url: tag.src,
           src: tag.src,
         };
