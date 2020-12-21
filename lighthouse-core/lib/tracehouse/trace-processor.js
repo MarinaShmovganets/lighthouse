@@ -507,6 +507,10 @@ class TraceProcessor {
   /**
    * Returns the maximum LCP event across all frames in `events`.
    * Sets `invalidated` flag if LCP of every frame is invalidated.
+   *
+   * LCP's trace event was first introduced in m78. We can't surface an LCP for older Chrome versions.
+   * LCP comes from a frame's latest `largestContentfulPaint::Candidate`, but it can be invalidated by a `largestContentfulPaint::Invalidate` event.
+   *
    * @param {LH.TraceEvent[]} events
    * @param {LH.TraceEvent} timeOriginEvent
    * @return {{lcp: LCPEvent | undefined, invalidated: boolean}}
@@ -782,10 +786,7 @@ class TraceProcessor {
       firstMeaningfulPaint = lastCandidate;
     }
 
-    // LCP's trace event was first introduced in m78. We can't surface an LCP for older Chrome versions
-    // LCP comes from the latest `largestContentfulPaint::Candidate`, but it can be invalidated
-    // by a `largestContentfulPaint::Invalidate` event. In the case that the last candidate is
-    // invalidated, the value will be undefined.
+    // This function accepts events spanning multiple frames, but this usage will only provide events from the main frame.
     const lcpResult = this.computeValidLCPAllFrames(frameEvents, timeOriginEvt);
 
     const load = frameEvents.find(e => e.name === 'loadEventEnd' && e.ts > timeOriginEvt.ts);
