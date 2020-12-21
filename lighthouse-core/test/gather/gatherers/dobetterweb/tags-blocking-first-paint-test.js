@@ -160,13 +160,13 @@ describe('First paint blocking tags', () => {
 
     const expected = [
       {
-        tag: {tagName: 'LINK', url: linkDetails.url},
+        tag: {tagName: 'LINK', url: linkDetails.url, mediaChanges: []},
         transferSize: 10,
         startTime: 10,
         endTime: 10,
       },
       {
-        tag: {tagName: 'SCRIPT', url: scriptDetails.url},
+        tag: {tagName: 'SCRIPT', url: scriptDetails.url, mediaChanges: undefined},
         transferSize: 12,
         startTime: 12,
         endTime: 22,
