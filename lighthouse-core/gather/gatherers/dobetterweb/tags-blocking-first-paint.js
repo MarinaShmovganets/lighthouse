@@ -162,6 +162,8 @@ class TagsBlockingFirstPaint extends Gatherer {
       if (!request || request.isLinkPreload) continue;
 
       let endTime = request.endTime;
+      let mediaChanges;
+
       if (tag.tagName === 'LINK') {
         // Even if the request was initially blocking or appeared to be blocking once the
         // page was loaded, the media attribute could have been changed during load, capping the
@@ -169,18 +171,22 @@ class TagsBlockingFirstPaint extends Gatherer {
         const timesResourceBecameNonBlocking = tag.mediaChanges
           .filter(change => !change.matches)
           .map(change => change.msSinceHTMLEnd);
-        const earliestNonBlockingTime = Math.min(...timesResourceBecameNonBlocking);
-        const lastTimeResourceWasBlocking = Math.max(
-          request.startTime,
-          firstRequestEndTime + earliestNonBlockingTime / 1000
-        );
-        endTime = Math.min(endTime, lastTimeResourceWasBlocking);
+        if (timesResourceBecameNonBlocking.length > 0) {
+          const earliestNonBlockingTime = Math.min(...timesResourceBecameNonBlocking);
+          const lastTimeResourceWasBlocking = Math.max(
+            request.startTime,
+            firstRequestEndTime + earliestNonBlockingTime / 1000
+          );
+          endTime = Math.min(endTime, lastTimeResourceWasBlocking);
+        }
+
+        mediaChanges = tag.mediaChanges;
       }
 
       const {tagName, url} = tag;
 
       result.push({
-        tag: {tagName, url},
+        tag: {tagName, url, mediaChanges},
         transferSize: request.transferSize,
         startTime: request.startTime,
         endTime,
