@@ -172,14 +172,14 @@ module.exports = [
   },
 
   {
-    // Only starting in m89 do we get 'warn-not-offline-capable'.
-    // This only happens when a populated `fetch` handler that doesn't provide a 200 response
-    _minChromiumMilestone: 89,
     lhr: {
       requestedUrl: 'http://localhost:10503/offline-ready.html?broken',
       finalUrl: 'http://localhost:10503/offline-ready.html?broken',
       audits: {
         'installable-manifest': {
+          // Only starting in m89 do we get 'warn-not-offline-capable'.
+          // This only happens when a populated `fetch` handler that doesn't provide a 200 response
+          _minChromiumMilestone: 89,
           score: 0,
           details: {items: {length: 1}},
           warnings: {length: 1},
@@ -188,6 +188,7 @@ module.exports = [
     },
     artifacts: {
       InstallabilityErrors: {
+        _minChromiumMilestone: 89,
         errors: {
           length: 2,
           0: {
