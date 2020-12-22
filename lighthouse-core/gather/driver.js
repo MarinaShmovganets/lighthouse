@@ -120,6 +120,9 @@ class Driver {
   // eslint-disable-next-line no-invalid-this
   _executionContext = new ExecutionContext(this);
 
+  // eslint-disable-next-line no-invalid-this
+  defaultSession = this;
+
   /**
    * @param {Connection} connection
    */
@@ -463,12 +466,33 @@ class Driver {
   }
 
   /**
+   * Note: Prefer `evaluate` instead.
+   * Evaluate an expression in the context of the current page. If useIsolation is true, the expression
+   * will be evaluated in a content script that has access to the page's DOM but whose JavaScript state
+   * is completely separate.
+   * Returns a promise that resolves on the expression's value.
    * @param {string} expression
    * @param {{useIsolation?: boolean}=} options
    * @return {Promise<*>}
    */
   evaluateAsync(expression, options) {
     return this._executionContext.evaluateAsync(expression, options);
+  }
+
+  /**
+   * Evaluate a function in the context of the current page.
+   * If `useIsolation` is true, the function will be evaluated in a content script that has
+   * access to the page's DOM but whose JavaScript state is completely separate.
+   * Returns a promise that resolves on a value of `mainFn`'s return type.
+   * @template {any[]} T, R
+   * @param {((...args: T) => R)} mainFn The main function to call.
+   * @param {{args: T, useIsolation?: boolean, deps?: Array<Function|string>}} options `args` should
+   *   match the args of `mainFn`, and can be any serializable value. `deps` are functions that must be
+   *   defined for `mainFn` to work.
+   * @return {FlattenedPromise<R>}
+   */
+  evaluate(mainFn, options) {
+    return this._executionContext.evaluate(mainFn, options);
   }
 
   /**
@@ -661,8 +685,8 @@ class Driver {
     const waitForFcp = options.waitForFcp || false;
     const waitForNavigated = options.waitForNavigated || false;
     const waitForLoad = options.waitForLoad || false;
-    const passContext = /** @type {Partial<LH.Gatherer.PassContext>} */ (options.passContext || {});
-    const disableJS = passContext.disableJavaScript || false;
+    /** @type {Partial<LH.Gatherer.PassContext>} */
+    const passContext = options.passContext || {};
 
     if (waitForNavigated && (waitForFcp || waitForLoad)) {
       throw new Error('Cannot use both waitForNavigated and another event, pick just one');
@@ -681,7 +705,6 @@ class Driver {
 
     await this.sendCommand('Page.enable');
     await this.sendCommand('Page.setLifecycleEventsEnabled', {enabled: true});
-    await this.sendCommand('Emulation.setScriptExecutionDisabled', {value: disableJS});
     // No timeout needed for Page.navigate. See https://github.com/GoogleChrome/lighthouse/pull/6413.
     const waitforPageNavigateCmd = this._innerSendCommand('Page.navigate', undefined, {url});
 
@@ -690,7 +713,8 @@ class Driver {
       await waitForFrameNavigated(this).promise;
     } else if (waitForLoad) {
       const networkMonitor = this._networkStatusMonitor;
-      const passConfig = /** @type {Partial<LH.Config.Pass>} */ (passContext.passConfig || {});
+      /** @type {Partial<LH.Config.Pass>} */
+      const passConfig = passContext.passConfig || {};
 
       /* eslint-disable max-len */
       let {pauseAfterFcpMs, pauseAfterLoadMs, networkQuietThresholdMs, cpuQuietThresholdMs} = passConfig;

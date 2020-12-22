@@ -29,7 +29,7 @@ function collectIFrameElements() {
       // @ts-expect-error - put into scope via stringification
       isPositionFixed: isPositionFixed(node), // eslint-disable-line no-undef
       // @ts-expect-error - getNodeDetails put into scope via stringification
-      ...getNodeDetails(node),
+      node: getNodeDetails(node),
     };
   });
 }
@@ -43,15 +43,15 @@ class IFrameElements extends Gatherer {
   async afterPass(passContext) {
     const driver = passContext.driver;
 
-    const expression = `(() => {
-      ${pageFunctions.getElementsInDocumentString};
-      ${pageFunctions.isPositionFixedString};
-      ${pageFunctions.getNodeDetailsString};
-      return (${collectIFrameElements})();
-    })()`;
-
-    /** @type {LH.Artifacts['IFrameElements']} */
-    const iframeElements = await driver.evaluateAsync(expression, {useIsolation: true});
+    const iframeElements = await driver.evaluate(collectIFrameElements, {
+      args: [],
+      useIsolation: true,
+      deps: [
+        pageFunctions.getElementsInDocumentString,
+        pageFunctions.isPositionFixedString,
+        pageFunctions.getNodeDetailsString,
+      ],
+    });
     return iframeElements;
   }
 }

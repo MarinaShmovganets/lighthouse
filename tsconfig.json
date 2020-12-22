@@ -2,7 +2,7 @@
   "compilerOptions": {
     "noEmit": true,
     "module": "commonjs",
-    "target": "ES2017",
+    "target": "ES2020",
     "allowJs": true,
     "checkJs": true,
     "strict": true,
@@ -32,6 +32,7 @@
     "lighthouse-core/test/chromium-web-tests/webtests",
     // These test files require further changes before they can be type checked.
     "lighthouse-core/test/config/budget-test.js",
+    "lighthouse-core/test/config/config-helpers-test.js",
     "lighthouse-core/test/config/config-plugin-test.js",
     "lighthouse-core/test/config/config-test.js",
     "lighthouse-core/test/config/default-config-test.js",
@@ -40,6 +41,7 @@
     "lighthouse-core/test/gather/driver/wait-for-condition-test.js",
     "lighthouse-core/test/gather/gatherers/accessibility-test.js",
     "lighthouse-core/test/gather/gatherers/cache-contents-test.js",
+    "lighthouse-core/test/gather/gatherers/console-messages-test.js",
     "lighthouse-core/test/gather/gatherers/dobetterweb/optimized-images-test.js",
     "lighthouse-core/test/gather/gatherers/dobetterweb/password-inputs-with-prevented-paste-test.js",
     "lighthouse-core/test/gather/gatherers/dobetterweb/response-compression-test.js",

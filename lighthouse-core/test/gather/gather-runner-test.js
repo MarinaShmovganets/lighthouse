@@ -13,6 +13,7 @@ const Gatherer = require('../../gather/gatherers/gatherer.js');
 const GatherRunner_ = require('../../gather/gather-runner.js');
 const assert = require('assert').strict;
 const Config = require('../../config/config.js');
+const constants = require('../../config/constants.js');
 const unresolvedPerfLog = require('./../fixtures/unresolved-perflog.json');
 const NetworkRequest = require('../../lib/network-request.js');
 const LHError = require('../../lib/lh-error.js');
@@ -33,6 +34,7 @@ const GatherRunner = {
   getNonHtmlError: makeParamsOptional(GatherRunner_.getNonHtmlError),
   getPageLoadError: makeParamsOptional(GatherRunner_.getPageLoadError),
   getWebAppManifest: makeParamsOptional(GatherRunner_.getWebAppManifest),
+  getSlowHostCpuWarning: makeParamsOptional(GatherRunner_.getSlowHostCpuWarning),
   initializeBaseArtifacts: makeParamsOptional(GatherRunner_.initializeBaseArtifacts),
   loadPage: makeParamsOptional(GatherRunner_.loadPage),
   run: makeParamsOptional(GatherRunner_.run),
@@ -109,7 +111,6 @@ class EmulationDriver extends Driver {
 }
 
 const fakeDriver = require('./fake-driver.js');
-const fakeDriverUsingRealMobileDevice = fakeDriver.fakeDriverUsingRealMobileDevice;
 
 /** @type {EmulationDriver} */
 let driver;
@@ -232,58 +233,6 @@ describe('GatherRunner', function() {
     });
   });
 
-  describe('collects TestedAsMobileDevice as an artifact', () => {
-    const requestedUrl = 'https://example.com';
-
-    it('works when running on desktop device without emulation', async () => {
-      const driver = fakeDriver;
-      const config = makeConfig({
-        passes: [],
-        settings: {emulatedFormFactor: 'none', internalDisableDeviceScreenEmulation: false},
-      });
-      const options = {requestedUrl, driver, settings: config.settings};
-
-      const results = await GatherRunner.run(config.passes, options);
-      expect(results.TestedAsMobileDevice).toBe(false);
-    });
-
-    it('works when running on desktop device with mobile emulation', async () => {
-      const driver = fakeDriver;
-      const config = makeConfig({
-        passes: [],
-        settings: {emulatedFormFactor: 'mobile', internalDisableDeviceScreenEmulation: false},
-      });
-      const options = {requestedUrl, driver, settings: config.settings};
-
-      const results = await GatherRunner.run(config.passes, options);
-      expect(results.TestedAsMobileDevice).toBe(true);
-    });
-
-    it('works when running on mobile device without emulation', async () => {
-      const driver = fakeDriverUsingRealMobileDevice;
-      const config = makeConfig({
-        passes: [],
-        settings: {emulatedFormFactor: 'none', internalDisableDeviceScreenEmulation: false},
-      });
-      const options = {requestedUrl, driver, settings: config.settings};
-
-      const results = await GatherRunner.run(config.passes, options);
-      expect(results.TestedAsMobileDevice).toBe(true);
-    });
-
-    it('works when running on mobile device with desktop emulation', async () => {
-      const driver = fakeDriverUsingRealMobileDevice;
-      const config = makeConfig({
-        passes: [],
-        settings: {emulatedFormFactor: 'desktop', internalDisableDeviceScreenEmulation: false},
-      });
-      const options = {requestedUrl, driver, settings: config.settings};
-
-      const results = await GatherRunner.run(config.passes, options);
-      expect(results.TestedAsMobileDevice).toBe(false);
-    });
-  });
-
   describe('collects HostFormFactor as an artifact', () => {
     const requestedUrl = 'https://example.com';
 
@@ -321,14 +270,14 @@ describe('GatherRunner', function() {
     test('works when running on desktop device', DESKTOP_UA, 'desktop');
   });
 
+  /** @param {NonNullable<LH.SharedFlagsSettings['formFactor']>}formFactor */
+  const getSettings = formFactor => ({
+    formFactor: formFactor,
+    screenEmulation: constants.screenEmulationMetrics[formFactor],
+  });
+
   it('sets up the driver to begin emulation when all flags are undefined', async () => {
-    await GatherRunner.setupDriver(driver, {
-      settings: {
-        emulatedFormFactor: 'mobile',
-        throttlingMethod: 'provided',
-        internalDisableDeviceScreenEmulation: false,
-      },
-    });
+    await GatherRunner.setupDriver(driver, {settings: getSettings('mobile')});
 
     connectionStub.sendCommand.findInvocation('Emulation.setDeviceMetricsOverride');
     expect(connectionStub.sendCommand.findInvocation('Network.emulateNetworkConditions')).toEqual({
@@ -338,13 +287,7 @@ describe('GatherRunner', function() {
       connectionStub.sendCommand.findInvocation('Emulation.setCPUThrottlingRate')).toThrow();
   });
 
-  it('applies the correct emulation given a particular emulationFormFactor', async () => {
-    /** @param {'mobile'|'desktop'|'none'} formFactor */
-    const getSettings = formFactor => ({
-      emulatedFormFactor: formFactor,
-      internalDisableDeviceScreenEmulation: false,
-    });
-
+  it('applies the correct emulation given a particular formFactor', async () => {
     await GatherRunner.setupDriver(driver, {settings: getSettings('mobile')});
     expect(connectionStub.sendCommand.findInvocation('Emulation.setDeviceMetricsOverride'))
       .toMatchObject({mobile: true});
@@ -353,17 +296,13 @@ describe('GatherRunner', function() {
     await GatherRunner.setupDriver(driver, {settings: getSettings('desktop')});
     expect(connectionStub.sendCommand.findInvocation('Emulation.setDeviceMetricsOverride'))
       .toMatchObject({mobile: false});
-
-    resetDefaultMockResponses();
-    await GatherRunner.setupDriver(driver, {settings: getSettings('none')});
-    expect(() =>
-      connectionStub.sendCommand.findInvocation('Emulation.setDeviceMetricsOverride')).toThrow();
   });
 
   it('sets throttling according to settings', async () => {
     await GatherRunner.setupDriver(driver, {
       settings: {
-        emulatedFormFactor: 'mobile', internalDisableDeviceScreenEmulation: false,
+        formFactor: 'mobile',
+        screenEmulation: constants.screenEmulationMetrics.mobile,
         throttlingMethod: 'devtools',
         throttling: {
           requestLatencyMs: 100,
@@ -1464,64 +1403,6 @@ describe('GatherRunner', function() {
       });
     });
 
-    it('passes gatherer options', async () => {
-      /** @type {Record<string, any[]>} */
-      const calls = {beforePass: [], pass: [], afterPass: []};
-      /** @param {string} name */
-      const makeEavesdropGatherer = name => {
-        const C = class extends Gatherer {};
-        Object.defineProperty(C, 'name', {value: name});
-        return Object.assign(new C, {
-          /** @param {LH.Gatherer.PassContext} context */
-          beforePass(context) {
-            calls.beforePass.push(context.options);
-          },
-          /** @param {LH.Gatherer.PassContext} context */
-          pass(context) {
-            calls.pass.push(context.options);
-          },
-          /** @param {LH.Gatherer.PassContext} context */
-          afterPass(context) {
-            calls.afterPass.push(context.options);
-            // @ts-expect-error
-            return context.options.x || 'none';
-          },
-        });
-      };
-
-      const gatherers = [
-        {instance: makeEavesdropGatherer('EavesdropGatherer1'), options: {x: 1}},
-        {instance: makeEavesdropGatherer('EavesdropGatherer2'), options: {x: 2}},
-        {instance: makeEavesdropGatherer('EavesdropGatherer3')},
-      ];
-
-      const config = makeConfig({
-        passes: [{
-          passName: 'defaultPass',
-          gatherers,
-        }],
-      });
-
-      /** @type {any} Using Test-only gatherers. */
-      const artifacts = await GatherRunner.run(config.passes, {
-        driver: fakeDriver,
-        requestedUrl: 'https://example.com',
-        settings: config.settings,
-      });
-
-      assert.equal(artifacts.EavesdropGatherer1, 1);
-      assert.equal(artifacts.EavesdropGatherer2, 2);
-      assert.equal(artifacts.EavesdropGatherer3, 'none');
-
-      // assert that all three phases received the gatherer options expected
-      const expectedOptions = [{x: 1}, {x: 2}, {}];
-      for (let i = 0; i < 3; i++) {
-        assert.deepEqual(calls.beforePass[i], expectedOptions[i]);
-        assert.deepEqual(calls.pass[i], expectedOptions[i]);
-        assert.deepEqual(calls.afterPass[i], expectedOptions[i]);
-      }
-    });
-
     it('uses the last not-undefined phase result as artifact', async () => {
       const recoverableError = new Error('My recoverable error');
       const someOtherError = new Error('Bad, bad error.');
@@ -1777,7 +1658,7 @@ describe('GatherRunner', function() {
       };
     });
 
-    it('should return the response from the protocol, if in >=M82 format', async () => {
+    it('should return the response from the protocol', async () => {
       connectionStub.sendCommand
         .mockResponse('Page.getInstallabilityErrors', {
           installabilityErrors: [{errorId: 'no-icon-available', errorArguments: []}],
@@ -1787,17 +1668,53 @@ describe('GatherRunner', function() {
         errors: [{errorId: 'no-icon-available', errorArguments: []}],
       });
     });
+  });
 
-    it('should transform the response from the protocol, if in <M82 format', async () => {
-      connectionStub.sendCommand
-        .mockResponse('Page.getInstallabilityErrors', {
-          // @ts-expect-error
-          errors: ['Downloaded icon was empty or corrupted'],
-        });
-      const result = await GatherRunner.getInstallabilityErrors(passContext);
-      expect(result).toEqual({
-        errors: [{errorId: 'no-icon-available', errorArguments: []}],
-      });
+  describe('.getSlowHostCpuWarning', () => {
+    /** @type {RecursivePartial<LH.Gatherer.PassContext>} */
+    let passContext;
+
+    beforeEach(() => {
+      passContext = {
+        settings: {
+          channel: 'cli',
+          throttlingMethod: 'simulate',
+          throttling: {cpuSlowdownMultiplier: 4},
+        },
+        baseArtifacts: {
+          BenchmarkIndex: 500,
+        },
+      };
+    });
+
+    it('should add a warning when benchmarkindex is low', () => {
+      expect(GatherRunner.getSlowHostCpuWarning(passContext))
+        .toBeDisplayString(/appears to have a slower CPU/);
+    });
+
+    it('should ignore non-cli channels', () => {
+      Object.assign(passContext.settings, {channel: 'devtools'});
+      expect(GatherRunner.getSlowHostCpuWarning(passContext)).toBe(undefined);
+
+      Object.assign(passContext.settings, {channel: 'wpt'});
+      expect(GatherRunner.getSlowHostCpuWarning(passContext)).toBe(undefined);
+
+      Object.assign(passContext.settings, {channel: 'psi'});
+      expect(GatherRunner.getSlowHostCpuWarning(passContext)).toBe(undefined);
+    });
+
+    it('should ignore non-default throttling settings', () => {
+      Object.assign(passContext.settings, {throttling: {cpuSlowdownMultiplier: 2}});
+      expect(GatherRunner.getSlowHostCpuWarning(passContext)).toBe(undefined);
+
+      Object.assign(passContext.settings, {throttlingMethod: 'provided'});
+      Object.assign(passContext.settings, {throttling: {cpuSlowdownMultiplier: 4}});
+      expect(GatherRunner.getSlowHostCpuWarning(passContext)).toBe(undefined);
+    });
+
+    it('should ignore high benchmarkindex values', () => {
+      Object.assign(passContext.baseArtifacts, {BenchmarkIndex: 1500});
+      expect(GatherRunner.getSlowHostCpuWarning(passContext)).toBe(undefined);
     });
   });
 
