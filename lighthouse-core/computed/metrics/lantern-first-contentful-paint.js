@@ -150,7 +150,7 @@ class LanternFirstContentfulPaint extends LanternMetric {
     return dependencyGraph.cloneWithRelationships(node => {
       if (node.type === BaseNode.TYPES.NETWORK) {
         // Exclude all nodes that ended after paintTs (except for the main document which we always consider necessary)
-        if (node.endTime > paintTs && !node.isMainDocument()) return false;
+        if ((node.endTime > paintTs || node.startTime > paintTs) && !node.isMainDocument()) return false;
 
         const url = node.record.url;
         // If the URL definitely wasn't render-blocking then we filter it out.
