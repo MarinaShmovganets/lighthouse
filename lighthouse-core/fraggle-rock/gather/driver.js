@@ -51,7 +51,7 @@ class Driver {
    * @param {{useIsolation?: boolean}} [options]
    * @return {Promise<*>}
    */
-  evaluateAsync(expression, options) {
+  async evaluateAsync(expression, options) {
     if (!this._executionContext) throw new Error('Driver not connected to page');
     return this._executionContext.evaluateAsync(expression, options);
   }
