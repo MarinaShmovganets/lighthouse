@@ -151,6 +151,7 @@ class LanternFirstContentfulPaint extends LanternMetric {
       if (node.type === BaseNode.TYPES.NETWORK) {
         // Exclude all nodes that ended after paintTs (except for the main document which we always consider necessary)
         // endTime is negative if request does not finish, make sure startTime isn't after paintTs in this case.
+        // endTime is negative if request does not finish, make sure startTime isn't after paintTs in this case.
         if ((node.endTime > paintTs || node.startTime > paintTs) &&
           !node.isMainDocument()) return false;
 
