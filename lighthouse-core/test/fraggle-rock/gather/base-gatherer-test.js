@@ -13,7 +13,7 @@ const Gatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 const fakeParam = {};
 
 describe('BaseGatherer', () => {
-  it('should fullfill the contract of of both interfaces', () => {
+  it('should fullfill the contract of both interfaces', () => {
     const gatherer = new Gatherer();
 
     // Fraggle Rock Gatherer contract
