@@ -76,7 +76,7 @@ function getAttributeMap(attributes = []) {
 
   for (let i = 0; i < attributes.length; i += 2) {
     const name = attributes[i].toLowerCase();
-    const value = attributes[i + 1].trim();
+    const value = (attributes[i + 1] || '').trim();
 
     if (value) {
       map.set(name, value);
