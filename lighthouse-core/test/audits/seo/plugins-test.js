@@ -22,7 +22,23 @@ describe('SEO: Avoids plugins', () => {
         tagName: 'OBJECT',
         type: 'application/x-shockwave-flash',
         params: [],
-        node: {},
+        node: {
+          lhId: 'page-11-OBJECT',
+          // eslint-disable-next-line max-len
+          devtoolsNodePath: '1,HTML,1,BODY,1,DIV,0,ARTICLE,12,FORM,0,DIV,1,DIV,1,DIV,0,DIV,0,OBJECT',
+          selector: 'div.code-group > div.result-pane > div.result > object',
+          boundingRect: {
+            top: 1173,
+            bottom: 1268,
+            left: 27,
+            right: 377,
+            width: 350,
+            height: 95,
+          },
+          // eslint-disable-next-line max-len
+          snippet: '<object type="application/x-shockwave-flash" data="/web_design/paris_vegas.swf" width="350" height="95">',
+          nodeLabel: 'object',
+        },
       }],
       [{
         tagName: 'EMBED',
