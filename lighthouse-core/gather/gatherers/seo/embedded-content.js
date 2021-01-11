@@ -14,7 +14,7 @@ const pageFunctions = require('../../../lib/page-functions.js');
  * @return {LH.Artifacts.EmbeddedContentInfo[]}
  */
 function getEmbeddedContent() {
-  const functions = /** @type {typeof pageFunctions} */({
+  const functions = /** @type {typeof pageFunctions} */ ({
     // @ts-expect-error - getElementsInDocument put into scope via stringification
     getElementsInDocument,
     // @ts-expect-error - getNodeDetails put into scope via stringification
