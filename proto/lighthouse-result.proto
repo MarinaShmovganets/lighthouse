@@ -130,8 +130,8 @@ message LighthouseResult {
     // The possible form factors an audit can be run in.
     // This enum served the emulated_form_factor field, but in v7, that field
     // was deprecated. Meanwhile in v7, the form_factor field was added and has
-    // a mobile/desktop enum, so this "legacy-ish" enum gets reused.
-    // https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md#changes-made-in-v7
+    // a mobile/desktop enum, so we simplify reuse, minus the `none` option.
+    // See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md#changes-made-in-v7
     enum EmulatedFormFactor {
       UNKNOWN_FORM_FACTOR = 0;
       mobile = 1;
