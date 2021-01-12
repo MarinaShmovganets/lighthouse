@@ -172,7 +172,7 @@ function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 
  * Get the maximum size of a texture the GPU can handle
  * @see https://bugs.chromium.org/p/chromium/issues/detail?id=770769#c13
  */
-/* istanbul ignore next */ // todo, c8 ignore?
+/* istanbul ignore next */
 function getMaxTextureSize() {
   try {
     let canvas = document.createElement('canvas');
