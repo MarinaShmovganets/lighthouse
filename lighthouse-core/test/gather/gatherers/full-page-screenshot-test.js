@@ -29,11 +29,13 @@ function createMockDriver({contentSize, screenSize, screenshotData}) {
           screenWidth: screenSize.width,
           screenHeight: screenSize.height,
           screenOrientation: {
-            type: 'landscape-primary',
+            type: 'landscapePrimary',
             angle: 30,
           },
           deviceScaleFactor: screenSize.dpr,
         };
+      } else {
+        throw new Error(`unexpected fn ${fn.name}`);
       }
     },
     beginEmulation: jest.fn(),

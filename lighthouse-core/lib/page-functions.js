@@ -68,6 +68,7 @@ function registerPerformanceObserverInPage() {
 
 /**
  * Used by _waitForCPUIdle and executed in the context of the page, returns time since last long task.
+ * @return {number}
  */
 /* istanbul ignore next */
 function checkTimeSinceLastLongTask() {
@@ -390,7 +391,7 @@ function isPositionFixed(element) {
  * strings like the innerText or alt attribute.
  * Falls back to the tagName if no useful label is found.
  * @param {Element} node
- * @return {string|null}
+ * @return {string}
  */
 /* istanbul ignore next */
 function getNodeLabel(node) {
@@ -480,12 +481,15 @@ function wrapRequestIdleCallback(cpuSlowdownMultiplier) {
 
 /**
  * @param {HTMLElement} element
+ * @return {LH.Artifacts.NodeDetails}
  */
-function getNodeDetailsImpl(element) {
+function getNodeDetails(element) {
   // This bookkeeping is for the FullPageScreenshot gatherer.
   if (!window.__lighthouseNodesDontTouchOrAllVarianceGoesAway) {
     window.__lighthouseNodesDontTouchOrAllVarianceGoesAway = new Map();
   }
+
+  const htmlElement = element instanceof ShadowRoot ? element.host : element;
 
   // Create an id that will be unique across all execution contexts.
   // The id could be any arbitrary string, the exact value is not important.
@@ -494,19 +498,18 @@ function getNodeDetailsImpl(element) {
   // We also dedupe this id so that details collected for an element within the same
   // pass and execution context will share the same id. Not technically important, but
   // cuts down on some duplication.
-  let lhId = window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.get(element);
+  let lhId = window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.get(htmlElement);
   if (!lhId) {
     lhId = [
       window.__lighthouseExecutionContextId !== undefined ?
         window.__lighthouseExecutionContextId :
         'page',
       window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.size,
-      element.tagName,
+      htmlElement.tagName,
     ].join('-');
-    window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.set(element, lhId);
+    window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.set(htmlElement, lhId);
   }
 
-  const htmlElement = element instanceof ShadowRoot ? element.host : element;
   const details = {
     lhId,
     devtoolsNodePath: getNodePath(element),
@@ -525,14 +528,13 @@ const getNodeDetailsString = `function getNodeDetails(element) {
   ${getBoundingClientRect.toString()};
   ${getOuterHTMLSnippet.toString()};
   ${getNodeLabel.toString()};
-  ${getNodeDetailsImpl.toString()};
-  return getNodeDetailsImpl(element);
+  return (${getNodeDetails.toString()})(element);
 }`;
 
 module.exports = {
   wrapRuntimeEvalErrorInBrowserString: wrapRuntimeEvalErrorInBrowser.toString(),
   registerPerformanceObserverInPageString: registerPerformanceObserverInPage.toString(),
-  checkTimeSinceLastLongTaskString: checkTimeSinceLastLongTask.toString(),
+  checkTimeSinceLastLongTask,
   getElementsInDocument,
   getElementsInDocumentString: getElementsInDocument.toString(),
   getOuterHTMLSnippetString: getOuterHTMLSnippet.toString(),
@@ -541,6 +543,7 @@ module.exports = {
   computeBenchmarkIndexString: computeBenchmarkIndex.toString(),
   getMaxTextureSize,
   getNodeDetailsString,
+  getNodeDetails,
   getNodePathString: getNodePath.toString(),
   getNodeSelectorString: getNodeSelector.toString(),
   getNodePath,

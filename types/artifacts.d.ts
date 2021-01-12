@@ -148,10 +148,10 @@ declare global {
       export type MetaElement = LH.Artifacts['MetaElements'][0];
 
       export interface NodeDetails {
-        lhId?: string,
+        lhId: string,
         devtoolsNodePath: string,
         selector: string,
-        boundingRect?: Rect,
+        boundingRect: Rect,
         snippet: string,
         nodeLabel: string,
       }
@@ -205,7 +205,8 @@ declare global {
         src: string | null;
         data: string | null;
         code: string | null;
-        params: {name: string; value: string}[];
+        params: Array<{name: string; value: string}>;
+        node: LH.Artifacts.NodeDetails;
       }
 
       export interface IFrameElement {
@@ -466,8 +467,11 @@ declare global {
         endTime: number;
         transferSize: number;
         tag: {
-          tagName: string;
+          tagName: 'LINK'|'SCRIPT';
+          /** The value of `HTMLLinkElement.href` or `HTMLScriptElement.src`. */
           url: string;
+          /** A record of when changes to the `HTMLLinkElement.media` attribute occurred and if the new media type matched the page. */
+          mediaChanges?: Array<{href: string, media: string, msSinceHTMLEnd: number, matches: boolean}>;
         };
       }
 
@@ -603,10 +607,12 @@ declare global {
         processEvents: Array<TraceEvent>;
         /** The subset of trace events from the page's main thread, sorted by timestamp. */
         mainThreadEvents: Array<TraceEvent>;
+        /** The subset of trace events from the main frame and any child frames, sorted by timestamp. */
+        frameTreeEvents: Array<TraceEvent>;
         /** IDs for the trace's main frame, process, and thread. */
         mainFrameIds: {pid: number, tid: number, frameId: string};
         /** The list of frames committed in the trace. */
-        frames: Array<{frame: string, url: string}>;
+        frames: Array<{id: string, url: string}>;
         /** The trace event marking the time at which the page load should consider to have begun. Typically the same as the navigationStart but might differ due to SPA navigations, client-side redirects, etc. */
         timeOriginEvt: TraceEvent;
         /** The trace event marking firstPaint, if it was found. */
