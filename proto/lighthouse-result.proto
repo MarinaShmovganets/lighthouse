@@ -125,6 +125,7 @@ message LighthouseResult {
   map<string, CategoryGroup> category_groups = 11;
 
   // Message containing the configuration settings for the LH run
+  // Next tag: 6
   message ConfigSettings {
 
     // The possible form factors an audit can be run in.
@@ -139,8 +140,13 @@ message LighthouseResult {
       none = 3  [deprecated = true];
     }
 
-    // The form factor emulation to apply. Do not use.
+    // Removed in v7. Do not use.
     EmulatedFormFactor emulated_form_factor = 1 [deprecated = true];
+
+    // How Lighthouse should interpret this run in regards to scoring performance metrics and skipping mobile-only tests in desktop.
+    // Also see the comment above the EmulatedFormFactor enum
+    EmulatedFormFactor form_factor = 5;
+    
 
     // The locale that was active during the audit
     string locale = 2;
@@ -152,9 +158,6 @@ message LighthouseResult {
     // How Lighthouse was run, e.g. from the Chrome extension or from the npm
     // module
     string channel = 4;
-
-    // How Lighthouse should interpret this run in regards to scoring performance metrics and skipping mobile-only tests in desktop.
-    EmulatedFormFactor form_factor = 5;
   }
 
   // The settings that were used to run this audit
