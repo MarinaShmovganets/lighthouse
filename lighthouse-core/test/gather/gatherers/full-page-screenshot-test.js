@@ -17,14 +17,12 @@ const maxTextureSizeMock = 1024 * 8;
  */
 function createMockDriver({contentSize, screenSize, screenshotData}) {
   return {
-    evaluateAsync: async function(code) {
-      if (code === 'window.innerWidth') {
-        return contentSize.width;
-      }
-      if (code.includes('MAX_TEXTURE_SIZE')) {
-        return maxTextureSizeMock;
-      }
-      if (code.includes('document.documentElement.clientWidth')) {
+    evaluate: async function(fn) {
+      if (fn.name === 'resolveNodes') {
+        return {};
+      } if (fn.toString().includes('MAX_TEXTURE_SIZE')) {
+          return maxTextureSizeMock;
+      } else if (fn.name === 'getObservedDeviceMetrics') {
         return {
           width: screenSize.width,
           height: screenSize.height,

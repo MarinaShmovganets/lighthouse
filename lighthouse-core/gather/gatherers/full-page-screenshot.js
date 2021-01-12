@@ -30,8 +30,10 @@ class FullPageScreenshot extends Gatherer {
    * @see https://bugs.chromium.org/p/chromium/issues/detail?id=770769
    */
   async getMaxScreenshotHeight(driver) {
-    return await driver.evaluateAsync(`(${pageFunctions.getMaxTextureSize.toString()})()`, {
+    return await driver.evaluate(pageFunctions.getMaxTextureSize, {
+      args: [],
       useIsolation: true,
+      deps: [],
     });
   }
 
