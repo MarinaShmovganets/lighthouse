@@ -20,7 +20,7 @@ function createMockDriver({contentSize, screenSize, screenshotData}) {
     evaluate: async function(fn) {
       if (fn.name === 'resolveNodes') {
         return {};
-      } if (fn.toString().includes('MAX_TEXTURE_SIZE')) {
+      } if (fn.name === 'getMaxTextureSize') {
           return maxTextureSizeMock;
       } else if (fn.name === 'getObservedDeviceMetrics') {
         return {
