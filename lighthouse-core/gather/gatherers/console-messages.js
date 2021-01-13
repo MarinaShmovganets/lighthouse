@@ -42,12 +42,17 @@ class ConsoleMessages extends Gatherer {
   static createSourceLocation(entry) {
     if (!entry.url) return;
 
+    if (entry.url === "http://localhost:10200/dobetterweb/dbw_tester.js") debugger;
+
+    const topCallFrame = entry.stackTrace && entry.stackTrace.callFrames[0];
+    const column = topCallFrame ? topCallFrame.columnNumber : 0;
+
     return {
       type: 'source-location',
       url: entry.url,
       urlProvider: 'network',
       line: entry.lineNumber || 0,
-      column: entry.columnNumber || 0,
+      column,
     };
   }
 

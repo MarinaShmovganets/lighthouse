@@ -819,7 +819,7 @@
               "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
               "urlProvider": "network",
               "line": 13,
-              "column": 0
+              "column": 9
             }
           },
           {
@@ -829,7 +829,7 @@
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
               "line": 371,
-              "column": 0
+              "column": 6
             }
           },
           {
@@ -4295,7 +4295,7 @@
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
               "line": 331,
-              "column": 0
+              "column": 24
             }
           },
           {
@@ -4304,7 +4304,7 @@
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
               "line": 335,
-              "column": 0
+              "column": 40
             }
           }
         ]
@@ -4344,7 +4344,7 @@
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
               "line": 269,
-              "column": 0
+              "column": 11
             }
           },
           {
@@ -4353,7 +4353,7 @@
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
               "line": 270,
-              "column": 0
+              "column": 11
             }
           },
           {
@@ -4362,7 +4362,7 @@
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
               "line": 271,
-              "column": 0
+              "column": 11
             }
           }
         ]
@@ -4478,7 +4478,7 @@
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
               "line": 341,
-              "column": 0
+              "column": 15
             }
           }
         ]
@@ -4647,7 +4647,7 @@
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
               "line": 302,
-              "column": 0
+              "column": 5
             }
           }
         ]
