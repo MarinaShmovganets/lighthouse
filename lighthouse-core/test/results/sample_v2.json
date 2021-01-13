@@ -786,7 +786,7 @@
       "description": "Deprecated APIs will eventually be removed from the browser. [Learn more](https://web.dev/deprecations/).",
       "score": 0,
       "scoreDisplayMode": "binary",
-      "displayValue": "4 warnings found",
+      "displayValue": "3 warnings found",
       "details": {
         "type": "table",
         "headings": [
@@ -830,16 +830,6 @@
               "urlProvider": "network",
               "line": 371,
               "column": 6
-            }
-          },
-          {
-            "value": "/deep/ combinator is no longer supported in CSS dynamic profile. It is now effectively no-op, acting as if it were a descendant combinator. /deep/ combinator will be removed, and will be invalid at M65. You should remove it. See https://www.chromestatus.com/features/4964279606312960 for more details.",
-            "source": {
-              "type": "source-location",
-              "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
-              "urlProvider": "network",
-              "line": 0,
-              "column": 0
             }
           }
         ]
@@ -7552,7 +7542,7 @@
       "lighthouse-core/audits/deprecations.js | displayValue": [
         {
           "values": {
-            "itemCount": 4
+            "itemCount": 3
           },
           "path": "audits.deprecations.displayValue"
         }
