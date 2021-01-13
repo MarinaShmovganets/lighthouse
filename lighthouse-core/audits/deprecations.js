@@ -13,7 +13,6 @@
 
 const Audit = require('./audit.js');
 const i18n = require('../lib/i18n/i18n.js');
-const ConsoleMessages = require('../gather/gatherers/console-messages.js');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on the use of deprecated APIs. This descriptive title is shown to users when the page does not use deprecated APIs. */
@@ -60,7 +59,7 @@ class Deprecations extends Audit {
     const deprecations = entries.filter(log => log.source === 'deprecation').map(log => {
       return {
         value: log.text,
-        source: ConsoleMessages.createSourceLocation(log),
+        source: Audit.makeSourceLocationFromConsoleMessage(log),
       };
     });
 

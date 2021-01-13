@@ -6,7 +6,6 @@
 'use strict';
 
 const Audit = require('./audit.js');
-const ConsoleMessages = require('../gather/gatherers/console-messages.js');
 
 class ViolationAudit extends Audit {
   /**
@@ -27,7 +26,7 @@ class ViolationAudit extends Audit {
     const seen = new Set();
     return artifacts.ConsoleMessages
         .filter(entry => entry.url && entry.source === 'violation' && pattern.test(entry.text))
-        .map(entry => ConsoleMessages.createSourceLocation(entry))
+        .map(Audit.makeSourceLocationFromConsoleMessage)
         .filter(filterUndefined)
         .filter(source => {
           // Filter out duplicate entries since they are not differentiable to the user

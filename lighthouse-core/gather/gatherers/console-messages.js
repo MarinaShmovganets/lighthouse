@@ -35,22 +35,6 @@ function remoteObjectToString(obj) {
  * @implements {LH.Gatherer.FRGathererInstance}
  */
 class ConsoleMessages extends Gatherer {
-  /**
-   * @param {LH.Artifacts.ConsoleMessage} entry
-   * @return {LH.Audit.Details.SourceLocationValue | undefined}
-   */
-  static createSourceLocation(entry) {
-    if (!entry.url) return;
-
-    return {
-      type: 'source-location',
-      url: entry.url,
-      urlProvider: 'network',
-      line: entry.lineNumber || 0,
-      column: entry.columnNumber || 0,
-    };
-  }
-
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['timespan', 'navigation'],
