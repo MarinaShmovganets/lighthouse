@@ -9,7 +9,7 @@
 /**
  * @fileoverview
  * Helper functions that are passed by `toString()` by Driver to be evaluated in target page.
- * 
+ *
  * Every function in this module only runs in the browser, so it is ignored from
  * the c8 code coverage tool. See c8.sh
  *
