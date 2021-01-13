@@ -169,6 +169,26 @@ function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 
   }
 }
 
+/**
+ * Get the maximum size of a texture the GPU can handle
+ * @see https://bugs.chromium.org/p/chromium/issues/detail?id=770769#c13
+ */
+/* istanbul ignore next */
+function getMaxTextureSize() {
+  try {
+    let canvas = document.createElement('canvas');
+    let gl = canvas.getContext('webgl');
+    const maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+    canvas = gl = undefined; // Cleanup for GC
+    return maxTextureSize;
+  } catch (e) {
+    // If the above fails for any reason we need a fallback number;
+    // 4096 is the max texture size on a Pixel 2 XL, so to be conservative we'll use a low value like it.
+    // But we'll subtract 1 just to identify this case later on.
+    const MAX_TEXTURE_SIZE_FALLBACK = 4095;
+    return MAX_TEXTURE_SIZE_FALLBACK;
+  }
+}
 
 /**
  * Computes a memory/CPU performance benchmark index to determine rough device class.
@@ -371,7 +391,7 @@ function isPositionFixed(element) {
  * strings like the innerText or alt attribute.
  * Falls back to the tagName if no useful label is found.
  * @param {Element} node
- * @return {string|null}
+ * @return {string}
  */
 /* istanbul ignore next */
 function getNodeLabel(node) {
@@ -461,8 +481,9 @@ function wrapRequestIdleCallback(cpuSlowdownMultiplier) {
 
 /**
  * @param {HTMLElement} element
+ * @return {LH.Artifacts.NodeDetails}
  */
-function getNodeDetailsImpl(element) {
+function getNodeDetails(element) {
   // This bookkeeping is for the FullPageScreenshot gatherer.
   if (!window.__lighthouseNodesDontTouchOrAllVarianceGoesAway) {
     window.__lighthouseNodesDontTouchOrAllVarianceGoesAway = new Map();
@@ -507,8 +528,7 @@ const getNodeDetailsString = `function getNodeDetails(element) {
   ${getBoundingClientRect.toString()};
   ${getOuterHTMLSnippet.toString()};
   ${getNodeLabel.toString()};
-  ${getNodeDetailsImpl.toString()};
-  return getNodeDetailsImpl(element);
+  return (${getNodeDetails.toString()})(element);
 }`;
 
 module.exports = {
@@ -521,7 +541,9 @@ module.exports = {
   getOuterHTMLSnippet: getOuterHTMLSnippet,
   computeBenchmarkIndex: computeBenchmarkIndex,
   computeBenchmarkIndexString: computeBenchmarkIndex.toString(),
+  getMaxTextureSize,
   getNodeDetailsString,
+  getNodeDetails,
   getNodePathString: getNodePath.toString(),
   getNodeSelectorString: getNodeSelector.toString(),
   getNodePath,

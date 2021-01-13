@@ -46,7 +46,8 @@ class ErrorLogs extends Audit {
 
   /** @return {AuditOptions} */
   static defaultOptions() {
-    return {};
+    // Any failed network requests with error messsage aren't actionable
+    return {ignoredPatterns: ['ERR_BLOCKED_BY_CLIENT.Inspector']};
   }
 
   /**

@@ -11,7 +11,7 @@
 
 'use strict';
 
-const Gatherer = require('./gatherer.js');
+const Gatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 
 /**
  * @param {LH.Crdp.Runtime.RemoteObject} obj
@@ -30,6 +30,10 @@ function remoteObjectToString(obj) {
   return `[${type} ${className}]`;
 }
 
+/**
+ * @implements {LH.Gatherer.GathererInstance}
+ * @implements {LH.Gatherer.FRGathererInstance}
+ */
 class ConsoleMessages extends Gatherer {
   /**
    * @param {LH.Artifacts.ConsoleMessage} entry
@@ -45,6 +49,11 @@ class ConsoleMessages extends Gatherer {
       line: entry.lineNumber || 0,
       column: entry.columnNumber || 0,
     };
+  }
+
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['timespan', 'navigation'],
   }
 
   constructor() {
@@ -144,33 +153,33 @@ class ConsoleMessages extends Gatherer {
   }
 
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
    */
-  async beforePass(passContext) {
-    const driver = passContext.driver;
+  async beforeTimespan(passContext) {
+    const session = passContext.driver.defaultSession;
 
-    driver.on('Log.entryAdded', this._onLogEntryAdded);
-    await driver.sendCommand('Log.enable');
-    await driver.sendCommand('Log.startViolationsReport', {
+    session.on('Log.entryAdded', this._onLogEntryAdded);
+    await session.sendCommand('Log.enable');
+    await session.sendCommand('Log.startViolationsReport', {
       config: [{name: 'discouragedAPIUse', threshold: -1}],
     });
 
-    driver.on('Runtime.consoleAPICalled', this._onConsoleAPICalled);
-    driver.on('Runtime.exceptionThrown', this._onExceptionThrown);
-    await driver.sendCommand('Runtime.enable');
+    session.on('Runtime.consoleAPICalled', this._onConsoleAPICalled);
+    session.on('Runtime.exceptionThrown', this._onExceptionThrown);
+    await session.sendCommand('Runtime.enable');
   }
 
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['ConsoleMessages']>}
    */
-  async afterPass({driver}) {
-    await driver.sendCommand('Log.stopViolationsReport');
-    await driver.off('Log.entryAdded', this._onLogEntryAdded);
-    await driver.sendCommand('Log.disable');
-    await driver.off('Runtime.consoleAPICalled', this._onConsoleAPICalled);
-    await driver.off('Runtime.exceptionThrown', this._onExceptionThrown);
-    await driver.sendCommand('Runtime.disable');
+  async afterTimespan({driver}) {
+    await driver.defaultSession.sendCommand('Log.stopViolationsReport');
+    await driver.defaultSession.off('Log.entryAdded', this._onLogEntryAdded);
+    await driver.defaultSession.sendCommand('Log.disable');
+    await driver.defaultSession.off('Runtime.consoleAPICalled', this._onConsoleAPICalled);
+    await driver.defaultSession.off('Runtime.exceptionThrown', this._onExceptionThrown);
+    await driver.defaultSession.sendCommand('Runtime.disable');
     return this._logEntries;
   }
 }
