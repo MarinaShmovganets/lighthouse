@@ -21,7 +21,7 @@ function createMockDriver({contentSize, screenSize, screenshotData}) {
       if (fn.name === 'resolveNodes') {
         return {};
       } if (fn.name === 'getMaxTextureSize') {
-          return maxTextureSizeMock;
+        return maxTextureSizeMock;
       } else if (fn.name === 'getObservedDeviceMetrics') {
         return {
           width: screenSize.width,
