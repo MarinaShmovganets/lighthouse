@@ -396,7 +396,7 @@ function isPositionFixed(element) {
  * @return {string}
  */
 function getNodeLabel(element) {
-  // Inline so that audits that import getNodeLabel doesn't
+  // Inline so that audits that import getNodeLabel don't
   // also need to import truncate
   /**
    * @param {string} str
