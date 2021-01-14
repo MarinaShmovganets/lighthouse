@@ -453,7 +453,6 @@ function getBoundingClientRect(element) {
  * penalty for tests run with simulated throttling. Reduces the deadline time to (50 - safetyAllowance) / cpuSlowdownMultiplier to
  * ensure a long task is very unlikely if using the API correctly.
  * @param {number} cpuSlowdownMultiplier
- * @return {void}
  */
 function wrapRequestIdleCallback(cpuSlowdownMultiplier) {
   const safetyAllowanceMs = 10;
