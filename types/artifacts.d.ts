@@ -148,10 +148,10 @@ declare global {
       export type MetaElement = LH.Artifacts['MetaElements'][0];
 
       export interface NodeDetails {
-        lhId?: string,
+        lhId: string,
         devtoolsNodePath: string,
         selector: string,
-        boundingRect?: Rect,
+        boundingRect: Rect,
         snippet: string,
         nodeLabel: string,
       }
@@ -205,7 +205,8 @@ declare global {
         src: string | null;
         data: string | null;
         code: string | null;
-        params: {name: string; value: string}[];
+        params: Array<{name: string; value: string}>;
+        node: LH.Artifacts.NodeDetails;
       }
 
       export interface IFrameElement {
@@ -780,9 +781,9 @@ declare global {
         stackTrace?: Crdp.Runtime.StackTrace;
         /** The URL of the log/exception, if known. */
         url?: string;
-        /** Line number in the script (0-based), if known. */
+        /** Line number in the script (0-indexed), if known. */
         lineNumber?: number;
-        /** Column number in the script (0-based), if known. */
+        /** Column number in the script (0-indexed), if known. */
         columnNumber?: number;
       }
 
