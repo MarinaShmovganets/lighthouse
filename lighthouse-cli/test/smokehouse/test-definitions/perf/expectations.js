@@ -323,4 +323,31 @@ module.exports = [
       },
     },
   },
+  {
+    lhr: {
+      requestedUrl: 'http://localhost:10200/perf/frame-metrics.html',
+      finalUrl: 'http://localhost:10200/perf/frame-metrics.html',
+      audits: {
+        'metrics': {
+          score: null,
+          details: {
+            type: 'debugdata',
+            items: [
+              {
+                firstContentfulPaint: '>1000',
+                firstContentfulPaintAllFrames: '<1000',
+                largestContentfulPaint: '>1000',
+                largestContentfulPaintAllFrames: '<1000',
+                cumulativeLayoutShift: '0.001 +/- 0.0005',
+                cumulativeLayoutShiftAllFrames: '0.068 +/- 0.0005',
+              },
+              {
+                lcpInvalidated: false,
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
 ];
