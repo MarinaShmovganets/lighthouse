@@ -61,8 +61,8 @@ const UIStrings = {
   */
   'no-acceptable-icon': `No supplied icon is at least {value0}\xa0px square in PNG, SVG or WebP format`,
 
-  /** Error message explaining that the downloaded icon was empty or corrupt. */
-  'cannot-download-icon': `Downloaded icon was empty or corrupted`,
+  /** Error message explaining that an icon was unable to be downloaded. */
+  'cannot-download-icon': `Icon was unable to be downloaded`,
   /** Error message explaining that the downloaded icon was empty or corrupt. */
   'no-icon-available': `Downloaded icon was empty or corrupted`,
   /** Error message explaining that the specified application platform is not supported on Android. */
