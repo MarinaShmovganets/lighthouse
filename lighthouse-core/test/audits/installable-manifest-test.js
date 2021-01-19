@@ -139,7 +139,7 @@ describe('PWA: webapp install banner audit', () => {
       return InstallableManifestAudit.audit(artifacts, context).then(result => {
         assert.strictEqual(result.score, 0);
         const items = result.details.items;
-        expect(items[0].reason).toBeDisplayString('Icon was unable to be downloaded');
+        expect(items[0].reason).toBeDisplayString(/Could not download a required icon from/);
       });
     });
   });
