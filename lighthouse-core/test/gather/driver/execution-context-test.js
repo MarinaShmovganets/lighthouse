@@ -77,6 +77,8 @@ describe('ExecutionContext', () => {
     executionDestroyed[1]({executionContextId: 42});
     expect(executionContext.getContextId()).toEqual(undefined);
   });
+
+  it.todo('should cache native objects in page');
 });
 
 describe('.evaluateAsync', () => {
@@ -205,7 +207,7 @@ describe('.evaluate', () => {
         return new __nativePromise(function (resolve) {
           return __nativePromise.resolve()
             .then(_ => (() => {
-      
+
       function main(value) {
       return value;
     }
@@ -245,7 +247,7 @@ describe('.evaluate', () => {
 
     const code = mockFn.mock.calls[0][0];
     expect(code).toBe(`(() => {
-      
+
       function mainFn(value) {
       return value;
     }
