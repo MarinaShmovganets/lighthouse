@@ -214,19 +214,14 @@ class DOM {
    * Guaranteed context.querySelector. Always returns an element or throws if
    * nothing matches query.
    * @template {string} T
-   * @param {string} query
+   * @param {T} query
    * @param {ParentNode} context
-   * @param {T=} tagName Functionally optional, but providing it avoids needing a typecast
-   * @return {HTMLElementByTagName[T]}
    */
-  find(query, context, tagName) {
-    /** @type {?HTMLElement} */
+  find(query, context) {
+    /** @type {?ParseQuerySelector<T>} */
     const result = context.querySelector(query);
     if (result === null) {
       throw new Error(`query ${query} not found`);
-    }
-    if (tagName && result.tagName !== tagName.toUpperCase()) {
-      throw new Error(`expected ${tagName.toUpperCase()}, but got ${result.tagName}`);
     }
     return result;
   }
