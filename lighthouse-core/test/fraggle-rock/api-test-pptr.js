@@ -135,7 +135,7 @@ describe('Fraggle Rock API', () => {
 
   describe('navigation', () => {
     beforeEach(() => {
-      server.baseDir = path.join(__dirname, '../fixtures/fraggle-rock/snapshot-basic');
+      server.baseDir = path.join(__dirname, '../fixtures/fraggle-rock/navigation-basic');
     });
 
     it('should compute both Accessibility & ConsoleMessage results', async () => {
@@ -143,8 +143,12 @@ describe('Fraggle Rock API', () => {
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
       const {lhr} = result;
-      const {erroredAudits} = getAuditsBreakdown(lhr);
+      const {failedAudits, erroredAudits} = getAuditsBreakdown(lhr);
       expect(erroredAudits).toHaveLength(0);
+
+      const failedAuditIds = failedAudits.map(audit => audit.id);
+      expect(failedAuditIds).toContain('label');
+      expect(failedAuditIds).toContain('errors-in-console');
     });
   });
 });

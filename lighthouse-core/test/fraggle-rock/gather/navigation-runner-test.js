@@ -229,7 +229,7 @@ describe('NavigationRunner', () => {
       artifacts = {};
     });
 
-    it('should run the snapshot phase of timespan gatherers', async () => {
+    it('should run the snapshot phase of snapshot gatherers', async () => {
       const {navigation, gatherers} = createNavigation();
       await runner._snapshotPhase({driver, navigation, requestedUrl}, artifacts);
       expect(artifacts).toEqual({Snapshot: expect.any(Promise)});

@@ -186,6 +186,7 @@ async function navigation(options) {
       const driver = new Driver(page);
       const {baseArtifacts} = await _setup({driver, config, requestedUrl});
       const {artifacts} = await _navigations({driver, config, requestedUrl});
+      await _cleanup({driver});
 
       return /** @type {LH.Artifacts} */ ({...baseArtifacts, ...artifacts}); // Cast to drop Partial<>
     },
