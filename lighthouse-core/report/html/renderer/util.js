@@ -66,6 +66,10 @@ class Util {
     if (!clone.configSettings.locale) {
       clone.configSettings.locale = 'en';
     }
+    if (!clone.configSettings.formFactor) {
+      // @ts-expect-error fallback handling for emulatedFormFactor
+      clone.configSettings.formFactor = clone.configSettings.emulatedFormFactor;
+    }
 
     for (const audit of Object.values(clone.audits)) {
       // Turn 'not-applicable' (LHR <4.0) and 'not_applicable' (older proto versions)
@@ -81,6 +85,7 @@ class Util {
         // into 'debugdata' (LHR ≥5.0).
         // @ts-expect-error tsc rightly flags that these values shouldn't occur.
         if (audit.details.type === undefined || audit.details.type === 'diagnostic') {
+          // @ts-expect-error details is of type never.
           audit.details.type = 'debugdata';
         }
 
@@ -423,12 +428,11 @@ class Util {
         networkThrottling = Util.i18n.strings.runtimeUnknown;
     }
 
-    let deviceEmulation = Util.i18n.strings.runtimeNoEmulation;
-    if (settings.emulatedFormFactor === 'mobile') {
-      deviceEmulation = Util.i18n.strings.runtimeMobileEmulation;
-    } else if (settings.emulatedFormFactor === 'desktop') {
-      deviceEmulation = Util.i18n.strings.runtimeDesktopEmulation;
-    }
+    // TODO(paulirish): revise Runtime Settings strings: https://github.com/GoogleChrome/lighthouse/pull/11796
+    const deviceEmulation = {
+      mobile: Util.i18n.strings.runtimeMobileEmulation,
+      desktop: Util.i18n.strings.runtimeDesktopEmulation,
+    }[settings.formFactor] || Util.i18n.strings.runtimeNoEmulation;
 
     return {
       deviceEmulation,

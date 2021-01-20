@@ -74,16 +74,11 @@ class AxeAudit extends Audit {
     /** @type {LH.Audit.Details.Table['items']}>} */
     let items = [];
     if (rule && rule.nodes) {
-      items = rule.nodes.map(node => ({
-        node: /** @type {LH.Audit.Details.NodeValue} */ ({
-          type: 'node',
-          selector: node.selector,
-          path: node.devtoolsNodePath,
-          snippet: node.snippet,
-          boundingRect: node.boundingRect,
-          explanation: node.failureSummary,
-          nodeLabel: node.nodeLabel,
-        }),
+      items = rule.nodes.map(axeNode => ({
+        node: {
+          ...Audit.makeNodeItem(axeNode.node),
+          explanation: axeNode.failureSummary,
+        },
       }));
     }
 

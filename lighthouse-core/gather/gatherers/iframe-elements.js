@@ -15,7 +15,7 @@ const pageFunctions = require('../../lib/page-functions.js');
 /**
  * @return {LH.Artifacts['IFrameElements']}
  */
-/* istanbul ignore next */
+/* c8 ignore start */
 function collectIFrameElements() {
   // @ts-expect-error - put into scope via stringification
   const iFrameElements = getElementsInDocument('iframe'); // eslint-disable-line no-undef
@@ -29,10 +29,11 @@ function collectIFrameElements() {
       // @ts-expect-error - put into scope via stringification
       isPositionFixed: isPositionFixed(node), // eslint-disable-line no-undef
       // @ts-expect-error - getNodeDetails put into scope via stringification
-      ...getNodeDetails(node),
+      node: getNodeDetails(node),
     };
   });
 }
+/* c8 ignore stop */
 
 class IFrameElements extends Gatherer {
   /**
@@ -43,15 +44,15 @@ class IFrameElements extends Gatherer {
   async afterPass(passContext) {
     const driver = passContext.driver;
 
-    const expression = `(() => {
-      ${pageFunctions.getElementsInDocumentString};
-      ${pageFunctions.isPositionFixedString};
-      ${pageFunctions.getNodeDetailsString};
-      return (${collectIFrameElements})();
-    })()`;
-
-    /** @type {LH.Artifacts['IFrameElements']} */
-    const iframeElements = await driver.evaluateAsync(expression, {useIsolation: true});
+    const iframeElements = await driver.evaluate(collectIFrameElements, {
+      args: [],
+      useIsolation: true,
+      deps: [
+        pageFunctions.getElementsInDocumentString,
+        pageFunctions.isPositionFixedString,
+        pageFunctions.getNodeDetailsString,
+      ],
+    });
     return iframeElements;
   }
 }

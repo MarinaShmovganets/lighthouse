@@ -15,7 +15,7 @@ const pageFunctions = require('../../lib/page-functions.js');
 /**
  * @return {LH.Artifacts['FormElements']}
  */
-/* istanbul ignore next */
+/* c8 ignore start */
 function collectFormElements() {
   // @ts-expect-error - put into scope via stringification
   const formChildren = getElementsInDocument('textarea, input, label, select'); // eslint-disable-line no-undef
@@ -23,6 +23,7 @@ function collectFormElements() {
   const forms = new Map();
   /** @type {LH.Artifacts.Form} */
   const formlessObj = {
+    node: null,
     inputs: [],
     labels: [],
   };
@@ -39,16 +40,15 @@ function collectFormElements() {
           id: parentFormElement.id,
           name: parentFormElement.name,
           autocomplete: parentFormElement.autocomplete,
-          // @ts-expect-error - getNodeDetails put into scope via stringification
-          ...getNodeDetails(parentFormElement),
         },
+        // @ts-expect-error - getNodeDetails put into scope via stringification
+        node: getNodeDetails(parentFormElement),
         inputs: [],
         labels: [],
       };
       forms.set(parentFormElement, newFormObj);
     }
     const formObj = forms.get(parentFormElement) || formlessObj;
-
     if (child instanceof HTMLInputElement || child instanceof HTMLTextAreaElement
       || child instanceof HTMLSelectElement) {
       formObj.inputs.push({
@@ -61,26 +61,28 @@ function collectFormElements() {
           prediction: child.getAttribute('autofill-prediction'),
         },
         // @ts-expect-error - getNodeDetails put into scope via stringification
-        ...getNodeDetails(child),
+        node: getNodeDetails(child),
       });
     }
     if (child instanceof HTMLLabelElement) {
       formObj.labels.push({
         for: child.htmlFor,
         // @ts-expect-error - getNodeDetails put into scope via stringification
-        ...getNodeDetails(child),
+        node: getNodeDetails(child),
       });
     }
   }
 
   if (formlessObj.inputs.length > 0 || formlessObj.labels.length > 0) {
     forms.set('formless', {
+      node: formlessObj.node,
       inputs: formlessObj.inputs,
       labels: formlessObj.labels,
     });
   }
   return [...forms.values()];
 }
+/* c8 ignore stop */
 
 class FormElements extends Gatherer {
   /**
@@ -90,14 +92,14 @@ class FormElements extends Gatherer {
   async afterPass(passContext) {
     const driver = passContext.driver;
 
-    const expression = `(() => {
-      ${pageFunctions.getElementsInDocumentString};
-      ${pageFunctions.getNodeDetailsString};
-      return (${collectFormElements})();
-    })()`;
-
-    /** @type {LH.Artifacts['FormElements']} */
-    const formElements = await driver.evaluateAsync(expression, {useIsolation: true});
+    const formElements = await driver.evaluate(collectFormElements, {
+      args: [],
+      useIsolation: true,
+      deps: [
+        pageFunctions.getElementsInDocumentString,
+        pageFunctions.getNodeDetailsString,
+      ],
+    });
     return formElements;
   }
 }

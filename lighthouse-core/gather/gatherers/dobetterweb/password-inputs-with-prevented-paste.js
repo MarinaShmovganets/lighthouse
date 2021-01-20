@@ -14,7 +14,7 @@ const pageFunctions = require('../../../lib/page-functions.js');
 /**
  * @return {LH.Artifacts['PasswordInputsWithPreventedPaste']}
  */
-/* istanbul ignore next */
+/* c8 ignore start */
 function findPasswordInputsWithPreventedPaste() {
   return Array.from(document.querySelectorAll('input[type="password"]'))
     .filter(passwordInput =>
@@ -22,11 +22,12 @@ function findPasswordInputsWithPreventedPaste() {
         new ClipboardEvent('paste', {cancelable: true})
       )
     )
-    .map(passwordInput => (
+    .map(passwordInput => ({
       // @ts-expect-error - getNodeDetails put into scope via stringification
-      getNodeDetails(passwordInput)
-    ));
+      node: getNodeDetails(passwordInput),
+    }));
 }
+/* c8 ignore stop */
 
 class PasswordInputsWithPreventedPaste extends Gatherer {
   /**
@@ -34,12 +35,10 @@ class PasswordInputsWithPreventedPaste extends Gatherer {
    * @return {Promise<LH.Artifacts['PasswordInputsWithPreventedPaste']>}
    */
   afterPass(passContext) {
-    const expression = `(() => {
-      ${pageFunctions.getNodeDetailsString};
-      return (${findPasswordInputsWithPreventedPaste.toString()}());
-    })()`;
-
-    return passContext.driver.evaluateAsync(expression);
+    return passContext.driver.evaluate(findPasswordInputsWithPreventedPaste, {
+      args: [],
+      deps: [pageFunctions.getNodeDetailsString],
+    });
   }
 }
 

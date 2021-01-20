@@ -126,12 +126,12 @@ function createTestTrace(options) {
   if (options.largestContentfulPaint) {
     traceEvents.push({
       name: 'largestContentfulPaint::Candidate',
-      ts: options.largestContentfulPaint,
+      ts: options.largestContentfulPaint * 1000,
       pid,
       tid,
       ph: 'R',
       cat: 'loading,rail,devtools.timeline',
-      args: {frame},
+      args: {frame, data: {size: 50}},
     });
   }
 

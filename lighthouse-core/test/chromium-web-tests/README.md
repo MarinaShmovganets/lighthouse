@@ -14,6 +14,13 @@ yarn test-devtools
 yarn update:test-devtools
 ```
 
+### Debugging
+
+* Want logs from Lighthouse? Add `log.log('status', '**** hello test output ' + JSON.stringify({obj}));` which will be visible in the `lighthouse-successful-run.js` output thanks to `LighthouseTestRunner.addStatusListener`.
+* Want logs from test files? Adding these flags to the invocation `yarn test-devtools --driver-logging --no-retry-failures` will print to terminal.
+* Want logs from the inspected page? Add `testRunner.setDumpConsoleMessages(true);` to a test file. (also, [beware](https://source.chromium.org/chromium/chromium/src/+/master:content/web_test/renderer/web_view_test_proxy.cc;l=125-129;drc=437e5d9a05535b9e2cd7b983f78b23ebc3d92b3f) w/e this is about)
+
+
 ## How it works
 
 Normally, running these webtests requires a full Chromium checkout. However, that takes much too long, so it wouldn't be feasible for daily development or CI. Instead, we:
@@ -43,6 +50,15 @@ DevTools had a script for this, but it was removed. `download-content-shell.js` 
 To run the devtools webtests, `run_web_tests.py` requires the inspector resources (the output of the frontend build process). These files are actually included in the content shell download from before, but instead we want to build the currently checked out Lighthouse, roll to DevTools, build DevTools, and use the newly created inspector files.
 
 `run_web_tests.py` normally serves these files by mounting the Chromium build folder for the DevTools output to the path `/inspector-sources` [1](https://source.chromium.org/chromium/chromium/src/+/master:third_party/blink/tools/blinkpy/web_tests/port/base.py;l=1280;drc=e8e4dcd1d1684251c33cda9b9fc93d7ea808e4bd) [2](https://source.chromium.org/chromium/chromium/src/+/master:third_party/blink/tools/blinkpy/web_tests/servers/apache_http.py;l=118;drc=32408e19204a7ffceebfe774d7e99f2041cf4338). Instead, we fetch the DevTools frontend, roll Lighthouse, build it, then copy the build output to the `inspector-sources` at the root of our `npx http-server` web server.
+
+## Testing Lighthouse from DevTools
+
+`run_web_tests.py` is used to automatically test Lighthouse from DevTools.
+
+```sh
+# Runs Lighthouse from DevTools. Outputs results to ./latest-run/devtools-lhr.json.
+yarn run-devtools http://example.com
+```
 
 ## TODO
 

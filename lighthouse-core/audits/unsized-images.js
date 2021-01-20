@@ -96,15 +96,10 @@ class UnsizedImages extends Audit {
 
       if (isFixedImage || UnsizedImages.isSizedImage(image)) continue;
       const url = URL.elideDataURI(image.src);
+
       unsizedImages.push({
         url,
-        node: /** @type {LH.Audit.Details.NodeValue} */ ({
-          type: 'node',
-          path: image.devtoolsNodePath,
-          selector: image.selector,
-          nodeLabel: image.nodeLabel,
-          snippet: image.snippet,
-        }),
+        node: Audit.makeNodeItem(image.node),
       });
     }
 

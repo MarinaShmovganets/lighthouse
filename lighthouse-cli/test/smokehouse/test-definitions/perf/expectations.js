@@ -72,11 +72,11 @@ module.exports = [
           details: {
             items: [
               {resourceType: 'total', requestCount: 10, transferSize: '168000±1000'},
-              {resourceType: 'font', requestCount: 2, transferSize: '80000±1000'},
+              {resourceType: 'font', requestCount: 2, transferSize: '81000±1000'},
               {resourceType: 'script', requestCount: 3, transferSize: '55000±1000'},
               {resourceType: 'image', requestCount: 2, transferSize: '28000±1000'},
               {resourceType: 'document', requestCount: 1, transferSize: '2200±100'},
-              {resourceType: 'other', requestCount: 1, transferSize: '1000±50'},
+              {resourceType: 'other', requestCount: 1, transferSize: '1030±100'},
               {resourceType: 'stylesheet', requestCount: 1, transferSize: '450±100'},
               {resourceType: 'media', requestCount: 0, transferSize: 0},
               {resourceType: 'third-party', requestCount: 0, transferSize: 0},
@@ -172,43 +172,49 @@ module.exports = [
       TraceElements: [
         {
           traceEventType: 'largest-contentful-paint',
-          nodeLabel: 'img',
-          snippet: '<img src="../dobetterweb/lighthouse-480x318.jpg">',
-          boundingRect: {
-            top: 108,
-            bottom: 426,
-            left: 8,
-            right: 488,
-            width: 480,
-            height: 318,
+          node: {
+            nodeLabel: 'img',
+            snippet: '<img src="../dobetterweb/lighthouse-480x318.jpg">',
+            boundingRect: {
+              top: 108,
+              bottom: 426,
+              left: 8,
+              right: 488,
+              width: 480,
+              height: 318,
+            },
           },
         },
         {
           traceEventType: 'layout-shift',
-          selector: 'body > h1',
-          nodeLabel: 'Please don\'t move me',
-          snippet: '<h1>',
-          boundingRect: {
-            top: 465,
-            bottom: 502,
-            left: 8,
-            right: 352,
-            width: 344,
-            height: 37,
+          node: {
+            selector: 'body > h1',
+            nodeLabel: 'Please don\'t move me',
+            snippet: '<h1>',
+            boundingRect: {
+              top: 465,
+              bottom: 502,
+              left: 8,
+              right: 352,
+              width: 344,
+              height: 37,
+            },
           },
           score: '0.058 +/- 0.01',
         },
         {
           traceEventType: 'layout-shift',
-          nodeLabel: 'Sorry!',
-          snippet: '<div style="height: 18px;">',
-          boundingRect: {
-            top: 426,
-            bottom: 444,
-            left: 8,
-            right: 352,
-            width: 344,
-            height: 18,
+          node: {
+            nodeLabel: 'Sorry!',
+            snippet: '<div style="height: 18px;">',
+            boundingRect: {
+              top: 426,
+              bottom: 444,
+              left: 8,
+              right: 352,
+              width: 344,
+              height: 18,
+            },
           },
           score: '0.026 +/- 0.01',
         },
@@ -218,22 +224,24 @@ module.exports = [
           // https://chromiumdash.appspot.com/commit/995baabedf9e70d16deafc4bc37a2b215a9b8ec9
           _minChromiumMilestone: 86,
           traceEventType: 'animation',
-          selector: 'body > div#animate-me',
-          nodeLabel: 'div',
-          snippet: '<div id="animate-me">',
-          boundingRect: {
-            top: 8,
-            bottom: 108,
-            left: 8,
-            right: 108,
-            width: 100,
-            height: 100,
+          node: {
+            selector: 'body > div#animate-me',
+            nodeLabel: 'This is changing font size',
+            snippet: '<div id="animate-me">',
+            boundingRect: {
+              top: 8,
+              bottom: 108,
+              left: 8,
+              right: 108,
+              width: 100,
+              height: 100,
+            },
           },
           animations: [
             {
               name: 'anim',
               failureReasonsMask: 8224,
-              unsupportedProperties: ['background-color'],
+              unsupportedProperties: ['font-size'],
             },
           ],
         },
@@ -284,12 +292,17 @@ module.exports = [
   },
   {
     lhr: {
-      requestedUrl: 'http://localhost:10200/perf/trace-elements.html?missing',
-      finalUrl: 'http://localhost:10200/perf/trace-elements.html?missing',
+      requestedUrl: 'http://localhost:10200/perf/trace-elements.html?evicted',
+      finalUrl: 'http://localhost:10200/perf/trace-elements.html?evicted',
       audits: {
         'largest-contentful-paint-element': {
           score: null,
+          scoreDisplayMode: /(notApplicable|informative)/,
           details: {
+            // LCP in m88 was changed to allow selection of removed nodes.
+            // When this happens we aren't able to identify the LCP element anymore.
+            // https://chromiumdash.appspot.com/commit/a5484e6310a38223fde757b6f094a673ce032cc0
+            _maxChromiumMilestone: 87,
             items: [
               {
                 node: {
@@ -312,41 +325,24 @@ module.exports = [
   },
   {
     lhr: {
-      requestedUrl: 'http://localhost:10200/perf/animations.html',
-      finalUrl: 'http://localhost:10200/perf/animations.html',
+      requestedUrl: 'http://localhost:10200/perf/frame-metrics.html',
+      finalUrl: 'http://localhost:10200/perf/frame-metrics.html',
       audits: {
-        'non-composited-animations': {
-          // Requires compositor failure reasons to be in the trace
-          // https://chromiumdash.appspot.com/commit/995baabedf9e70d16deafc4bc37a2b215a9b8ec9
-          _minChromiumMilestone: 86,
+        'metrics': {
           score: null,
-          displayValue: '1 animated element found',
           details: {
+            type: 'debugdata',
             items: [
               {
-                node: {
-                  type: 'node',
-                  path: '2,HTML,1,BODY,1,DIV',
-                  selector: 'body > div#animated-boi',
-                  nodeLabel: 'div',
-                  snippet: '<div id="animated-boi">',
-                },
-                subItems: {
-                  items: [
-                    {
-                      // From JavaScript `.animate` which has no animation display name
-                      failureReason: 'Unsupported CSS Property: width',
-                    },
-                    {
-                      failureReason: 'Unsupported CSS Property: height',
-                      animation: 'alpha',
-                    },
-                    {
-                      failureReason: 'Unsupported CSS Property: background-color',
-                      animation: 'beta',
-                    },
-                  ],
-                },
+                firstContentfulPaint: '>5000',
+                firstContentfulPaintAllFrames: '<5000',
+                largestContentfulPaint: '>5000',
+                largestContentfulPaintAllFrames: '<5000',
+                cumulativeLayoutShift: '0.001 +/- 0.0005',
+                cumulativeLayoutShiftAllFrames: '0.068 +/- 0.0005',
+              },
+              {
+                lcpInvalidated: false,
               },
             ],
           },

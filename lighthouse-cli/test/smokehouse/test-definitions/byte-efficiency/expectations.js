@@ -23,7 +23,9 @@ const expectations = [
           // deep in the DOM, and the sample LHR test has plenty of places that would catch
           // a regression in `devtoolsNodePath` calculation. Keep just one for the benefit
           // of other smoke test runners.
-          devtoolsNodePath: '2,HTML,0,HEAD,3,SCRIPT',
+          node: {
+            devtoolsNodePath: '2,HTML,0,HEAD,3,SCRIPT',
+          },
         },
         {
           type: 'application/javascript',
@@ -290,7 +292,7 @@ const expectations = [
               },
               {
                 url: 'http://localhost:10200/byte-efficiency/script.js?gzip=1',
-                transferSize: '1100 +/- 100',
+                transferSize: '1200 +/- 150',
                 resourceSize: '53000 +/- 1000',
                 finished: true,
               },
