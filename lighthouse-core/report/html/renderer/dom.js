@@ -229,21 +229,13 @@ class DOM {
   /**
    * Helper for context.querySelectorAll. Returns an Array instead of a NodeList.
    * @template {string} T
-   * @param {string} query
+   * @param {T} query
    * @param {ParentNode} context
-   * @param {T=} tagName Functionally optional, but providing it avoids needing a typecast
-   * @return {Array<HTMLElementByTagName[T]>}
    */
-  findAll(query, context, tagName) {
-    const result = /** @type {HTMLElement[]} */ (Array.from(context.querySelectorAll(query)));
-    if (tagName) {
-      for (const el of result) {
-        if (el.tagName !== tagName.toUpperCase()) {
-          throw new Error(`expected ${tagName.toUpperCase()}, but got ${el.tagName}`);
-        }
-      }
-    }
-    return result;
+  findAll(query, context) {
+    /** @type {Array<import('typed-query-selector/parser').ParseSelector<T>>} */
+    const elements = Array.from(context.querySelectorAll(query));
+    return elements;
   }
 }
 

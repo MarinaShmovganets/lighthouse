@@ -350,15 +350,6 @@ class ReportUIFeatures {
     return thirdPartyRows;
   }
 
-  /**
-   * From a table, finds and returns URL items.
-   * @param {HTMLTableElement} tableEl
-   * @return {Array<HTMLElement>}
-   */
-  _getUrlItems(tableEl) {
-    return this._dom.findAll('.lh-text__url', tableEl);
-  }
-
   _setupStickyHeaderElements() {
     this.topbarEl = this._dom.find('div.lh-topbar', this._document);
     this.scoreScaleEl = this._dom.find('div.lh-scorescale', this._document);
@@ -568,7 +559,7 @@ class ReportUIFeatures {
    * open a `<details>` element.
    */
   expandAllDetails() {
-    const details = this._dom.findAll('.lh-categories details', this._document, 'details');
+    const details = this._dom.findAll('.lh-categories details', this._document);
     details.map(detail => detail.open = true);
   }
 
@@ -577,7 +568,7 @@ class ReportUIFeatures {
    * open a `<details>` element.
    */
   collapseAllDetails() {
-    const details = this._dom.findAll('.lh-categories details', this._document, 'details');
+    const details = this._dom.findAll('.lh-categories details', this._document);
     details.map(detail => detail.open = false);
   }
 
