@@ -68,7 +68,7 @@ function registerPerformanceObserverInPage() {
  */
 function checkTimeSinceLastLongTask() {
   // This function attempts to return the time since the last long task occurred.
-  // PerformanceObserver's don't always immediately fire though, so we check twice with some time in
+  // `PerformanceObserver`s don't always immediately fire though, so we check twice with some time in
   // between to make sure nothing has happened very recently.
 
   // Chrome 88 introduced heavy throttling of timers which means our `setTimeout` will be executed
