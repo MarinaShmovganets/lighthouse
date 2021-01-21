@@ -139,7 +139,7 @@ describe('Fraggle Rock API', () => {
     });
 
     it('should compute both Accessibility & ConsoleMessage results', async () => {
-      const result = await lighthouse.navigation({page, url: `${serverBaseUrl}/onclick.html`});
+      const result = await lighthouse.navigation({page, url: `${serverBaseUrl}/index.html`});
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
       const {lhr} = result;
