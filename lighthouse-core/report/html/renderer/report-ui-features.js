@@ -171,7 +171,7 @@ class ReportUIFeatures {
 
   /**
    * Finds the first scrollable ancestor of `element`. Falls back to the document.
-   * @param {HTMLElement} element
+   * @param {Element} element
    * @return {Node}
    */
   _getScrollParent(element) {
@@ -360,9 +360,9 @@ class ReportUIFeatures {
   }
 
   _setupStickyHeaderElements() {
-    this.topbarEl = this._dom.find('.lh-topbar', this._document);
-    this.scoreScaleEl = this._dom.find('.lh-scorescale', this._document);
-    this.stickyHeaderEl = this._dom.find('.lh-sticky-header', this._document);
+    this.topbarEl = this._dom.find('div.lh-topbar', this._document);
+    this.scoreScaleEl = this._dom.find('div.lh-scorescale', this._document);
+    this.stickyHeaderEl = this._dom.find('div.lh-sticky-header', this._document);
 
     // Highlighter will be absolutely positioned at first gauge, then transformed on scroll.
     this.highlightEl = this._dom.createChildOf(this.stickyHeaderEl, 'div', 'lh-highlighter');
@@ -714,11 +714,11 @@ class DropDown {
    * @param {function(MouseEvent): any} menuClickHandler
    */
   setup(menuClickHandler) {
-    this._toggleEl = this._dom.find('.lh-tools__button', this._dom.document());
+    this._toggleEl = this._dom.find('button.lh-tools__button', this._dom.document());
     this._toggleEl.addEventListener('click', this.onToggleClick);
     this._toggleEl.addEventListener('keydown', this.onToggleKeydown);
 
-    this._menuEl = this._dom.find('.lh-tools__dropdown', this._dom.document());
+    this._menuEl = this._dom.find('div.lh-tools__dropdown', this._dom.document());
     this._menuEl.addEventListener('keydown', this.onMenuKeydown);
     this._menuEl.addEventListener('click', menuClickHandler);
   }
