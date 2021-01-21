@@ -7819,10 +7819,10 @@ type@^1.0.1:
   resolved "https://registry.yarnpkg.com/type/-/type-1.0.1.tgz#084c9a17fcc9151a2cdb1459905c2e45e4bb7d61"
   integrity sha512-MAM5dBMJCJNKs9E7JXo4CXRAansRfG0nlJxW7Wf6GZzSOvH31zClSaHdIMWLehe/EGMBkqeC55rrkaOr5Oo7Nw==
 
-typed-query-selector@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/typed-query-selector/-/typed-query-selector-2.3.0.tgz#a56db9f4d02c93d01365c07869338372947fcce7"
-  integrity sha512-R0PkWV4BR4FC1hblV7p6DWIp/PwUQVACZ7LVBGi04b9bsIN/9C4Sx7FyRd17MoQS4BrQOImNBY1ItR9gz+knhw==
+typed-query-selector@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/typed-query-selector/-/typed-query-selector-2.4.0.tgz#5b07b099e92c910602f55c26cdb7115618d96b6c"
+  integrity sha512-LVsEnvOgSjMNCPX/6zi9rhpjnTlBfnLsTta+FFJywBdQom0k5yhNraru79HFtU1Q4ncUDtRhfMMHLnbZ10NCLQ==
 
 typedarray-to-buffer@^3.1.5:
   version "3.1.5"

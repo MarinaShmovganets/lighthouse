@@ -94,17 +94,6 @@ declare global {
     [K in keyof T as KebabToCamelCase<K>]: T[K];
   }
 
-  type TagNameToElement<
-    Tag extends string
-  > = Tag extends keyof HTMLElementTagNameMap
-    ? HTMLElementTagNameMap[Tag]
-    : Tag extends keyof SVGElementTagNameMap
-    ? SVGElementTagNameMap[Tag]
-    : HTMLElement; // typed-query-selector use Element here, which we don't want.
-  type ParseQuerySelector<T extends string> = TagNameToElement<
-    import('typed-query-selector/parser').ParseSelectorToTagNames<T>[number]
-  >;
-
   module LH {
     // re-export useful type modules under global LH module.
     export import Crdp = _Crdp;

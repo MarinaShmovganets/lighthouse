@@ -218,7 +218,7 @@ class DOM {
    * @param {ParentNode} context
    */
   find(query, context) {
-    /** @type {?ParseQuerySelector<T>} */
+    /** @type {?import('typed-query-selector/parser').ParseSelector<T, HTMLElement>} */
     const result = context.querySelector(query);
     if (result === null) {
       throw new Error(`query ${query} not found`);
