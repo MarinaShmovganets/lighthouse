@@ -179,7 +179,7 @@ async function _cleanup({driver}) { // eslint-disable-line no-unused-vars
  */
 async function navigation(options) {
   const {url: requestedUrl, page} = options;
-  const {config} = initializeConfig(options.config, {gatherMode: 'timespan'});
+  const {config} = initializeConfig(options.config, {gatherMode: 'navigation'});
 
   return Runner.run(
     async () => {

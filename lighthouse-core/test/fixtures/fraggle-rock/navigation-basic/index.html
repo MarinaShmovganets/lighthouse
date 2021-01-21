@@ -15,9 +15,17 @@
 
   This page has some basic violations when the page has loaded.
 
-  <input type="text" />
+  <!-- FAIL(label) -->
+  <section>
+    <form>
+      <input
+        id="label"
+        type="text">
+    </form>
+  </section>
 
   <script>
+    // FAIL(errors-in-console)
     console.error('Accessibility violations added!');
   </script>
 </body>
