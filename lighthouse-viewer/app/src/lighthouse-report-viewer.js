@@ -282,8 +282,7 @@ class LighthouseReportViewer {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = function(e) {
-        const readerTarget = e.target;
-        const result = /** @type {?string} */ (readerTarget && readerTarget.result);
+        const result = /** @type {?string} */ (e.target && e.target.result);
         if (!result) {
           reject('Could not read file');
           return;
