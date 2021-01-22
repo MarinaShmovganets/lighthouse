@@ -70,6 +70,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     }
 
     // Overwrite the displayValue with opportunity's wastedMs
+    // TODO: normalize this to one tagName.
     const displayEl =
       this.dom.find('span.lh-audit__display-text, div.lh-audit__display-text', element);
     const sparklineWidthPct = `${details.overallSavingsMs / scale * 100}%`;
