@@ -12,25 +12,30 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## Core
 
-* fr: add navigation runner ([#11975](https://github.com/GoogleChrome/lighthouse/pull/11975))
 * handle timer throttling in DevTools to avoid timeouts ([#11987](https://github.com/GoogleChrome/lighthouse/pull/11987))
 * config: refactor config cloning for fraggle rock ([#11759](https://github.com/GoogleChrome/lighthouse/pull/11759))
 * console-messages: use source-location ([#11899](https://github.com/GoogleChrome/lighthouse/pull/11899))
 * errors-in-console: ignore BLOCKED_BY_CLIENT.Inspector errors ([#11901](https://github.com/GoogleChrome/lighthouse/pull/11901))
 * font-size: handle valueless attributes for inline styles ([#11934](https://github.com/GoogleChrome/lighthouse/pull/11934))
-* fr: add navigations to config ([#11957](https://github.com/GoogleChrome/lighthouse/pull/11957))
-* fr: add timespan runner ([#11944](https://github.com/GoogleChrome/lighthouse/pull/11944))
-* fr: filter configs by gather mode ([#11941](https://github.com/GoogleChrome/lighthouse/pull/11941))
 * full-page-screenshot: get the MAX_TEXTURE_SIZE from the browser ([#11847](https://github.com/GoogleChrome/lighthouse/pull/11847))
 * metrics: support FCP for all frames with devtools throttling ([#11874](https://github.com/GoogleChrome/lighthouse/pull/11874))
 * add type checking to page functions ([#11958](https://github.com/GoogleChrome/lighthouse/pull/11958))
 * normalize creation of NodeValue ([#11877](https://github.com/GoogleChrome/lighthouse/pull/11877))
-* fr: add base config ([#11915](https://github.com/GoogleChrome/lighthouse/pull/11915))
-* fr: add base gatherer class ([#11917](https://github.com/GoogleChrome/lighthouse/pull/11917))
 * full-page-screenshot: do not render zero size rects ([#11853](https://github.com/GoogleChrome/lighthouse/pull/11853))
 * proto: clarify deprecated state of EmulatedFormFactor enum ([#11946](https://github.com/GoogleChrome/lighthouse/pull/11946))
 * replace most usages of evaluateAsync with structured evaluate ([#11754](https://github.com/GoogleChrome/lighthouse/pull/11754))
 * trace: compute trace for main frame and any child frames ([#11760](https://github.com/GoogleChrome/lighthouse/pull/11760))
+
+## Fraggle Rock
+
+Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
+
+* add navigation runner ([#11975](https://github.com/GoogleChrome/lighthouse/pull/11975))
+* add navigations to config ([#11957](https://github.com/GoogleChrome/lighthouse/pull/11957))
+* add timespan runner ([#11944](https://github.com/GoogleChrome/lighthouse/pull/11944))
+* filter configs by gather mode ([#11941](https://github.com/GoogleChrome/lighthouse/pull/11941))
+* add base config ([#11915](https://github.com/GoogleChrome/lighthouse/pull/11915))
+* add base gatherer class ([#11917](https://github.com/GoogleChrome/lighthouse/pull/11917))
 
 ## Report
 
@@ -40,8 +45,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## Deps
 
-* snyk: update snyk snapshot ([#11979](https://github.com/GoogleChrome/lighthouse/pull/11979))
-* snyk: update snyk snapshot ([#11952](https://github.com/GoogleChrome/lighthouse/pull/11952))
+* snyk: update snyk snapshot ([#11979](https://github.com/GoogleChrome/lighthouse/pull/11979), [#11952](https://github.com/GoogleChrome/lighthouse/pull/11952))
 
 ## I18n
 
