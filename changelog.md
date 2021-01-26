@@ -13,7 +13,6 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 ## Core
 
 * handle timer throttling in DevTools to avoid timeouts ([#11987](https://github.com/GoogleChrome/lighthouse/pull/11987))
-* config: refactor config cloning for fraggle rock ([#11759](https://github.com/GoogleChrome/lighthouse/pull/11759))
 * console-messages: use source-location ([#11899](https://github.com/GoogleChrome/lighthouse/pull/11899))
 * errors-in-console: ignore BLOCKED_BY_CLIENT.Inspector errors ([#11901](https://github.com/GoogleChrome/lighthouse/pull/11901))
 * font-size: handle valueless attributes for inline styles ([#11934](https://github.com/GoogleChrome/lighthouse/pull/11934))
@@ -31,6 +30,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
 
 * add navigation runner ([#11975](https://github.com/GoogleChrome/lighthouse/pull/11975))
+* config: refactor config cloning for fraggle rock ([#11759](https://github.com/GoogleChrome/lighthouse/pull/11759))
 * add navigations to config ([#11957](https://github.com/GoogleChrome/lighthouse/pull/11957))
 * add timespan runner ([#11944](https://github.com/GoogleChrome/lighthouse/pull/11944))
 * filter configs by gather mode ([#11941](https://github.com/GoogleChrome/lighthouse/pull/11941))
