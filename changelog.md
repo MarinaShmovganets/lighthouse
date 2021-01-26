@@ -18,10 +18,8 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 * font-size: handle valueless attributes for inline styles ([#11934](https://github.com/GoogleChrome/lighthouse/pull/11934))
 * full-page-screenshot: get the MAX_TEXTURE_SIZE from the browser ([#11847](https://github.com/GoogleChrome/lighthouse/pull/11847))
 * metrics: support FCP for all frames with devtools throttling ([#11874](https://github.com/GoogleChrome/lighthouse/pull/11874))
-* add type checking to page functions ([#11958](https://github.com/GoogleChrome/lighthouse/pull/11958))
 * normalize creation of NodeValue ([#11877](https://github.com/GoogleChrome/lighthouse/pull/11877))
 * full-page-screenshot: do not render zero size rects ([#11853](https://github.com/GoogleChrome/lighthouse/pull/11853))
-* proto: clarify deprecated state of EmulatedFormFactor enum ([#11946](https://github.com/GoogleChrome/lighthouse/pull/11946))
 * replace most usages of evaluateAsync with structured evaluate ([#11754](https://github.com/GoogleChrome/lighthouse/pull/11754))
 * trace: compute trace for main frame and any child frames ([#11760](https://github.com/GoogleChrome/lighthouse/pull/11760))
 
@@ -71,6 +69,8 @@ Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighth
 
 ## Misc
 
+* add type checking to page functions ([#11958](https://github.com/GoogleChrome/lighthouse/pull/11958))
+* proto: clarify deprecated state of EmulatedFormFactor enum ([#11946](https://github.com/GoogleChrome/lighthouse/pull/11946))
 * fix "fast" npm script ([#11997](https://github.com/GoogleChrome/lighthouse/pull/11997))
 * use typed-query-selector for native querySelector ([#11990](https://github.com/GoogleChrome/lighthouse/pull/11990))
 * return specific html element type for dom.find ([#11526](https://github.com/GoogleChrome/lighthouse/pull/11526))
