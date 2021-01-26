@@ -28,6 +28,11 @@ function createMockSession() {
   return session;
 }
 
+/** @param {string} s */
+function trimTrailingWhitespace(s) {
+  return s.split('\n').map(line => line.trimEnd()).join('\n');
+}
+
 describe('ExecutionContext', () => {
   /** @type {LH.Gatherer.FRProtocolSession} */
   let sessionMock;
@@ -77,6 +82,8 @@ describe('ExecutionContext', () => {
     executionDestroyed[1]({executionContextId: 42});
     expect(executionContext.getContextId()).toEqual(undefined);
   });
+
+  it.todo('should cache native objects in page');
 });
 
 describe('.evaluateAsync', () => {
@@ -205,7 +212,7 @@ describe('.evaluate', () => {
         return new __nativePromise(function (resolve) {
           return __nativePromise.resolve()
             .then(_ => (() => {
-      
+
       return (function main(value) {
       return value;
     })(1);
@@ -225,7 +232,7 @@ describe('.evaluate', () => {
             .then(resolve);
         });
       }())`.trim();
-    expect(expression).toBe(expected);
+    expect(trimTrailingWhitespace(expression)).toBe(trimTrailingWhitespace(expected));
     expect(await eval(expression)).toBe(1);
   });
 
@@ -308,7 +315,7 @@ describe('.evaluate', () => {
     });
 
     const code = mockFn.mock.calls[0][0];
-    expect(code).toEqual(`(() => {
+    expect(trimTrailingWhitespace(code)).toEqual(`(() => {
       function abs(val) {
       return Math.abs(val);
     }
