@@ -1,16 +1,14 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Paul Irish @paulirish
-Tyler Kindy @tkindy
- <a name="7.0.1"></a>
+<a name="7.0.1"></a>
 # 7.0.1 (2021-01-26)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v7.0.0...v7.0.1)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 90](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
+## New contributors
 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+- Tyler Kindy @tkindy
 
 ## Core
 
@@ -290,7 +288,7 @@ This is a minor release to fix an issue in the npm package where v6.4.0 was publ
 
 ## New Contributors
 
-Thanks to our new contributor 👽🐷🐰🐯🐻! 
+Thanks to our new contributor 👽🐷🐰🐯🐻!
 
 - Csaba Palfi @csabapalfi
 
@@ -315,7 +313,7 @@ We expect this release to ship in the DevTools of [Chrome 88](https://chromiumda
 
 ## New Contributors
 
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 - Denis Seleznev @hcodes
 - Irfan Maulana @mazipan
@@ -518,9 +516,9 @@ Insights within 2 weeks.
 
 ## New Contributors
 
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
 
-* Adam Raine @adamraine 
+* Adam Raine @adamraine
 * Saavan Nanavati @saavannanavati
 * lemcardenas @lemcardenas
 * George Makunde Martin @gMakunde
