@@ -322,7 +322,10 @@ describe('.gotoURL', () => {
     const loadListener = driver.on.findListener('Page.frameNavigated');
 
     /** @param {LH.Crdp.Page.Frame} frame */
-    const navigate = frame => driver._eventEmitter.emit('Page.frameNavigated', {frame});
+    const navigate = frame => driver._connection.emitProtocolEvent({
+      method: 'Page.frameNavigated',
+      params: {frame},
+    });
     const baseFrame = {
       id: 'ABC', loaderId: '', securityOrigin: '', mimeType: 'text/html', domainAndRegistry: '',
       secureContextType: /** @type {'Secure'} */ ('Secure'),
