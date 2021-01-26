@@ -18,8 +18,9 @@ declare global {
       setNextProtocolTimeout(ms: number): void;
       on<TEvent extends keyof LH.CrdpEvents>(event: TEvent, callback: (...args: LH.CrdpEvents[TEvent]) => void): void;
       once<TEvent extends keyof LH.CrdpEvents>(event: TEvent, callback: (...args: LH.CrdpEvents[TEvent]) => void): void;
-      onAnyProtocolMessage(callback: (payload: LH.Protocol.RawEventMessage) => void): void
       off<TEvent extends keyof LH.CrdpEvents>(event: TEvent, callback: (...args: LH.CrdpEvents[TEvent]) => void): void;
+      on(callback: (args: LH.Protocol.RawEventMessage) => void): void;
+      off(callback: (args: LH.Protocol.RawEventMessage) => void): void;
       sendCommand<TMethod extends keyof LH.CrdpCommands>(method: TMethod, ...params: LH.CrdpCommands[TMethod]['paramsType']): Promise<LH.CrdpCommands[TMethod]['returnType']>;
     }
 
