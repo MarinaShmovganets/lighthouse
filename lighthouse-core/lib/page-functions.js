@@ -113,8 +113,10 @@ function getElementsInDocument(selector) {
   const _findAllElements = nodes => {
     for (let i = 0, el; el = nodes[i]; ++i) {
       if (!selector || realMatchesFn.call(el, selector)) {
+        /** @type {ParseSelector<T>} */
         // @ts-expect-error - el is verified as matching above, tsc just can't verify it through the .call().
-        results.push(el);
+        const matchedEl = el;
+        results.push(matchedEl);
       }
 
       // If the element has a shadow root, dig deeper.

@@ -5,9 +5,7 @@
  */
 
 import _Crdp from 'devtools-protocol/types/protocol';
-import _CrdpMappings from 'devtools-protocol/types/protocol-mapping'
-
-// Import for side effects improving types of querySelector/querySelectorAll.
+import _CrdpMappings from 'devtools-protocol/types/protocol-mapping';
 import {ParseSelector} from 'typed-query-selector/parser';
 
 declare global {
