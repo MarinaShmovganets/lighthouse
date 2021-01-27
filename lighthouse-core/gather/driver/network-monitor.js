@@ -5,6 +5,11 @@
  */
 'use strict';
 
+/**
+ * @fileoverview This class wires up the procotol to a network recorder and provides overall
+ * status inspection state.
+ */
+
 const log = require('lighthouse-logger');
 const {EventEmitter} = require('events');
 const NetworkRecorder = require('../../lib/network-recorder.js');
@@ -16,11 +21,6 @@ const {NON_NETWORK_PROTOCOLS} = require('../../lib/url-shim.js');
 /** @typedef {NetworkRecorderEvent|NetworkMonitorEvent_} NetworkMonitorEvent */
 
 const IGNORED_NETWORK_SCHEMES = [...NON_NETWORK_PROTOCOLS, 'ws'];
-
-/**
- * @fileoverview This class wires up the procotol to a network recorder and provides overall
- * status inspection state.
- */
 
 class NetworkMonitor extends EventEmitter {
   /** @type {NetworkRecorder|undefined} */
