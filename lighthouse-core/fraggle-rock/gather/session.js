@@ -26,21 +26,6 @@ class ProtocolSession {
     };
     // @ts-expect-error - It's monkeypatching 🤷‍♂️.
     session.emit[SessionEmitMonkeypatch] = true;
-
-    /** @type {LH.Gatherer.FRProtocolSession['on']} @param {Array<*>} args */
-    this.on = (...args) => args.length === 1 ?
-      session.on('*', args[0]) :
-      session.on(args[0], args[1]);
-
-    /** @type {LH.Gatherer.FRProtocolSession['once']} */
-    this.once = (event, callback) => {
-      session.once(event, callback);
-    };
-
-    /** @type {LH.Gatherer.FRProtocolSession['off']} @param {Array<*>} args */
-    this.off = (...args) => args.length === 1 ?
-      session.off('*', args[0]) :
-      session.off(args[0], args[1]);
   }
 
   /**
@@ -62,6 +47,44 @@ class ProtocolSession {
    */
   setNextProtocolTimeout(ms) { // eslint-disable-line no-unused-vars
     // TODO(FR-COMPAT): support protocol timeout
+  }
+
+  /**
+   * Bind listeners for protocol events.
+   * @template {keyof LH.CrdpEvents} E
+   * @param {E} eventName
+   * @param {(...args: LH.CrdpEvents[E]) => void} callback
+   */
+  on(eventName, callback) {
+    this._session.on(eventName, /** @type {*} */ (callback));
+  }
+
+  /**
+   * Bind listeners for protocol events.
+   * @template {keyof LH.CrdpEvents} E
+   * @param {E} eventName
+   * @param {(...args: LH.CrdpEvents[E]) => void} callback
+   */
+  once(eventName, callback) {
+    this._session.once(eventName, /** @type {*} */ (callback));
+  }
+
+  /**
+   * Bind to our custom event that fires for *any* protocol event.
+   * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
+   */
+  onAnyProtocolMessage(callback) {
+    this._session.on('*', /** @type {*} */ (callback));
+  }
+
+  /**
+   * Bind listeners for protocol events.
+   * @template {keyof LH.CrdpEvents} E
+   * @param {E} eventName
+   * @param {(...args: LH.CrdpEvents[E]) => void} callback
+   */
+  off(eventName, callback) {
+    this._session.off(eventName, /** @type {*} */ (callback));
   }
 
   /**

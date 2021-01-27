@@ -129,16 +129,6 @@ class Driver {
   constructor(connection) {
     this._connection = connection;
 
-    /** @type {LH.Gatherer.FRProtocolSession['on']} @param {Array<*>} args */
-    this.on = (...args) => args.length === 1 ?
-      this._connection.on('protocolevent', args[0]) :
-      this._on(args[0], args[1]);
-
-    /** @type {LH.Gatherer.FRProtocolSession['off']} @param {Array<*>} args */
-    this.off = (...args) => args.length === 1 ?
-      this._connection.off('protocolevent', args[0]) :
-      this._off(args[0], args[1]);
-
     this.on('Target.attachedToTarget', event => {
       this._handleTargetAttached(event).catch(this._handleEventError);
     });
@@ -246,7 +236,7 @@ class Driver {
    * @param {E} eventName
    * @param {(...args: LH.CrdpEvents[E]) => void} cb
    */
-  _on(eventName, cb) {
+  on(eventName, cb) {
     if (this._eventEmitter === null) {
       throw new Error('connect() must be called before attempting to listen to events.');
     }
@@ -278,12 +268,20 @@ class Driver {
    * @param {E} eventName
    * @param {Function} cb
    */
-  _off(eventName, cb) {
+  off(eventName, cb) {
     if (this._eventEmitter === null) {
       throw new Error('connect() must be called before attempting to remove an event listener.');
     }
 
     this._eventEmitter.removeListener(eventName, cb);
+  }
+
+  /**
+   * Bind to *any* protocol event.
+   * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
+   */
+  onAnyProtocolMessage(callback) {
+    this._connection.on('protocolevent', callback);
   }
 
   /**
