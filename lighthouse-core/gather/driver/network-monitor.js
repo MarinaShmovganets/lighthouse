@@ -74,7 +74,7 @@ class NetworkMonitor extends EventEmitter {
     this._networkRecorder.on('requestloaded', reEmit('requestloaded'));
 
     this._session.on('Page.frameNavigated', this._onFrameNavigated);
-    this._session.onAnyProtocolMessage(this._onProtocolMessage);
+    this._session.addProtocolMessageListener(this._onProtocolMessage);
 
     await this._session.sendCommand('Network.enable');
   }
@@ -84,7 +84,7 @@ class NetworkMonitor extends EventEmitter {
    */
   async disable() {
     this._session.off('Page.frameNavigated', this._onFrameNavigated);
-    this._session.offAnyProtocolMessage(this._onProtocolMessage);
+    this._session.removeProtocolMessageListener(this._onProtocolMessage);
 
     this._frameNavigations = [];
     this._networkRecorder = undefined;

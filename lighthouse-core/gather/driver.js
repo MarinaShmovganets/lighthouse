@@ -274,7 +274,7 @@ class Driver {
    * Unbind to *any* protocol event.
    * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
    */
-  onAnyProtocolMessage(callback) {
+  addProtocolMessageListener(callback) {
     this._connection.on('protocolevent', callback);
   }
 
@@ -282,7 +282,7 @@ class Driver {
    * Bind to *any* protocol event.
    * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
    */
-  offAnyProtocolMessage(callback) {
+  removeProtocolMessageListener(callback) {
     this._connection.off('protocolevent', callback);
   }
 

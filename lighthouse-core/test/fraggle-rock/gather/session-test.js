@@ -75,7 +75,7 @@ describe('ProtocolSession', () => {
     });
   }
 
-  describe('.onAnyProtocolMessage', () => {
+  describe('.addProtocolMessageListener', () => {
     it('should listen for any event', () => {
       // @ts-expect-error - we want to use a more limited test of a real event emitter.
       puppeteerSession = new EventEmitter();
@@ -85,7 +85,7 @@ describe('ProtocolSession', () => {
       const allListener = jest.fn();
 
       session.on('Page.frameNavigated', regularListener);
-      session.onAnyProtocolMessage(allListener);
+      session.addProtocolMessageListener(allListener);
 
       puppeteerSession.emit('Page.frameNavigated');
       puppeteerSession.emit('Debugger.scriptParsed', {script: 'details'});
