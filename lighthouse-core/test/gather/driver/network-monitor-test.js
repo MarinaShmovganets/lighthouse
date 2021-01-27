@@ -34,8 +34,11 @@ describe('NetworkMonitor', () => {
   function createMockSession() {
     /** @type {any} */
     const session = {};
+    session.off = jest.fn();
+    session.offAnyProtocolMessage = jest.fn();
+
     const on = (session.on = jest.fn());
-    const onAny = (session.onAny = jest.fn());
+    const onAnyProtocolMessage = (session.onAnyProtocolMessage = jest.fn());
     sendCommandMock = session.sendCommand = createMockSendCommandFn()
       .mockResponse('Network.enable');
     /** @type {(event: LH.Protocol.RawEventMessage) => void} */
@@ -45,7 +48,7 @@ describe('NetworkMonitor', () => {
         if (typeof call[1] === 'function') call[1](event.params);
       }
 
-      for (const call of onAny.mock.calls) {
+      for (const call of onAnyProtocolMessage.mock.calls) {
         if (typeof call[0] === 'function') call[0](event);
       }
     };
@@ -83,6 +86,8 @@ describe('NetworkMonitor', () => {
     it('should record once enabled', async () => {
       await monitor.enable();
       for (const message of devtoolsLog) sessionMock.dispatch(message);
+      expect(sessionMock.on).toHaveBeenCalled();
+      expect(sessionMock.onAnyProtocolMessage).toHaveBeenCalled();
       expect(statusLog.length).toBeGreaterThan(0);
     });
 
@@ -91,6 +96,10 @@ describe('NetworkMonitor', () => {
       await monitor.enable();
       await monitor.disable();
       for (const message of devtoolsLog) sessionMock.dispatch(message);
+      expect(sessionMock.on).toHaveBeenCalled();
+      expect(sessionMock.off).toHaveBeenCalled();
+      expect(sessionMock.onAnyProtocolMessage).toHaveBeenCalled();
+      expect(sessionMock.offAnyProtocolMessage).toHaveBeenCalled();
       expect(statusLog).toEqual([]);
     });
 
@@ -98,6 +107,8 @@ describe('NetworkMonitor', () => {
       await monitor.enable();
       await monitor.enable();
       await monitor.enable();
+      expect(sessionMock.on).toHaveBeenCalledTimes(1);
+      expect(sessionMock.onAnyProtocolMessage).toHaveBeenCalledTimes(1);
       expect(sendCommandMock).toHaveBeenCalledTimes(1);
     });
   });

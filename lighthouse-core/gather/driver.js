@@ -271,11 +271,19 @@ class Driver {
   }
 
   /**
-   * Bind to *any* protocol event.
+   * Unbind to *any* protocol event.
    * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
    */
   onAnyProtocolMessage(callback) {
     this._connection.on('protocolevent', callback);
+  }
+
+  /**
+   * Bind to *any* protocol event.
+   * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
+   */
+  offAnyProtocolMessage(callback) {
+    this._connection.off('protocolevent', callback);
   }
 
   /**
@@ -650,9 +658,7 @@ class Driver {
       throw new Error('Cannot use both waitForNavigated and another event, pick just one');
     }
 
-    const networkMonitor = this._networkMonitor;
-
-    await networkMonitor.enable();
+    await this._networkMonitor.enable();
     await this._executionContext.clearContextId();
 
     // Enable auto-attaching to subtargets so we receive iframe information
@@ -691,15 +697,15 @@ class Driver {
       if (!waitForFcp) maxFCPMs = undefined;
       const waitOptions = {pauseAfterFcpMs, pauseAfterLoadMs, networkQuietThresholdMs,
         cpuQuietThresholdMs, maxWaitForLoadedMs: maxWaitMs, maxWaitForFcpMs: maxFCPMs};
-      const loadResult = await waitForFullyLoaded(this, networkMonitor, waitOptions);
+      const loadResult = await waitForFullyLoaded(this, this._networkMonitor, waitOptions);
       timedOut = loadResult.timedOut;
     }
 
-    const finalUrl = await networkMonitor.getFinalNavigationUrl() || url;
+    const finalUrl = await this._networkMonitor.getFinalNavigationUrl() || url;
 
     // Bring `Page.navigate` errors back into the promise chain. See https://github.com/GoogleChrome/lighthouse/pull/6739.
     await waitforPageNavigateCmd;
-    await networkMonitor.disable();
+    await this._networkMonitor.disable();
 
     return {
       finalUrl,

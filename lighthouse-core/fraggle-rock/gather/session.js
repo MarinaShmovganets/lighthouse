@@ -78,6 +78,14 @@ class ProtocolSession {
   }
 
   /**
+   * Unbind to our custom event that fires for *any* protocol event.
+   * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
+   */
+  offAnyProtocolMessage(callback) {
+    this._session.off('*', /** @type {*} */ (callback));
+  }
+
+  /**
    * Bind listeners for protocol events.
    * @template {keyof LH.CrdpEvents} E
    * @param {E} eventName

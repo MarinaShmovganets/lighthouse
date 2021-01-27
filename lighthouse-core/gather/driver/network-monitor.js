@@ -41,15 +41,14 @@ class NetworkMonitor extends EventEmitter {
     super();
     this._session = session;
 
-    this._session.on('Page.frameNavigated', event => {
-      if (!this._networkRecorder) return;
-      this._frameNavigations.push(event.frame);
-    });
+    /** @param {LH.Crdp.Page.FrameNavigatedEvent} event */
+    this._onFrameNavigated = event => this._frameNavigations.push(event.frame);
 
-    this._session.onAny(event => {
+    /** @param {LH.Protocol.RawEventMessage} event */
+    this._onProtocolMessage = event => {
       if (!this._networkRecorder) return;
       this._networkRecorder.dispatch(event);
-    });
+    };
   }
 
   /**
@@ -74,6 +73,9 @@ class NetworkMonitor extends EventEmitter {
     this._networkRecorder.on('requeststarted', reEmit('requeststarted'));
     this._networkRecorder.on('requestloaded', reEmit('requestloaded'));
 
+    this._session.on('Page.frameNavigated', this._onFrameNavigated);
+    this._session.onAnyProtocolMessage(this._onProtocolMessage);
+
     await this._session.sendCommand('Network.enable');
   }
 
@@ -81,6 +83,9 @@ class NetworkMonitor extends EventEmitter {
    * @return {Promise<void>}
    */
   async disable() {
+    this._session.off('Page.frameNavigated', this._onFrameNavigated);
+    this._session.offAnyProtocolMessage(this._onProtocolMessage);
+
     this._frameNavigations = [];
     this._networkRecorder = undefined;
   }
