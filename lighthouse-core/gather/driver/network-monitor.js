@@ -28,14 +28,6 @@ class NetworkMonitor extends EventEmitter {
   /** @type {Array<LH.Crdp.Page.Frame>} */
   _frameNavigations = [];
 
-  // Redefine the event emitter types with a narrower type signature.
-  /** @param {NetworkMonitorEvent} event @param {*} listener  */
-  on = (event, listener) => super.on(event, listener);
-  /** @param {NetworkMonitorEvent} event @param {*} listener  */
-  once = (event, listener) => super.once(event, listener);
-  /** @param {NetworkMonitorEvent} event @param {*} listener  */
-  off = (event, listener) => super.off(event, listener);
-
   /** @param {LH.Gatherer.FRProtocolSession} session */
   constructor(session) {
     super();
@@ -49,6 +41,14 @@ class NetworkMonitor extends EventEmitter {
       if (!this._networkRecorder) return;
       this._networkRecorder.dispatch(event);
     };
+
+    // Redefine the event emitter types with a narrower type signature.
+    /** @param {NetworkMonitorEvent} event @param {*} listener  */
+    this.on = (event, listener) => super.on(event, listener);
+    /** @param {NetworkMonitorEvent} event @param {*} listener  */
+    this.once = (event, listener) => super.once(event, listener);
+    /** @param {NetworkMonitorEvent} event @param {*} listener  */
+    this.off = (event, listener) => super.off(event, listener);
   }
 
   /**
@@ -133,7 +133,8 @@ class NetworkMonitor extends EventEmitter {
 
     return this._isActiveIdlePeriod(
       0,
-      request => request.frameId === rootFrameId &&
+      request =>
+        request.frameId === rootFrameId &&
         (request.priority === 'VeryHigh' || request.priority === 'High')
     );
   }
