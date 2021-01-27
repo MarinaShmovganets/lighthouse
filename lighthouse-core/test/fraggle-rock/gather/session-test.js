@@ -101,6 +101,23 @@ describe('ProtocolSession', () => {
     });
   });
 
+  describe('.removeProtocolMessageListener', () => {
+    it('should stop listening for any event', () => {
+      // @ts-expect-error - we want to use a more limited test of a real event emitter.
+      puppeteerSession = new EventEmitter();
+      session = new ProtocolSession(puppeteerSession);
+
+      const allListener = jest.fn();
+
+      session.addProtocolMessageListener(allListener);
+      puppeteerSession.emit('Page.frameNavigated');
+      expect(allListener).toHaveBeenCalled();
+      session.removeProtocolMessageListener(allListener);
+      puppeteerSession.emit('Page.frameNavigated');
+      expect(allListener).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('.sendCommand', () => {
     it('delegates to puppeteer', async () => {
       const send = puppeteerSession.send = jest.fn().mockResolvedValue(123);
