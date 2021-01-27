@@ -271,7 +271,7 @@ class Driver {
   }
 
   /**
-   * Unbind to *any* protocol event.
+   * Bind to *any* protocol event.
    * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
    */
   addProtocolMessageListener(callback) {
@@ -279,7 +279,7 @@ class Driver {
   }
 
   /**
-   * Bind to *any* protocol event.
+   * Unbind to *any* protocol event.
    * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
    */
   removeProtocolMessageListener(callback) {
