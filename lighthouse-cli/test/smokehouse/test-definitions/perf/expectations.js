@@ -334,9 +334,9 @@ module.exports = [
             type: 'debugdata',
             items: [
               {
-                // Weighted CLS score was added to the trace in m89:
+                // Weighted CLS score was added to the trace in m90:
                 // https://bugs.chromium.org/p/chromium/issues/detail?id=1173139
-                _minChromiumMilestone: 89,
+                _minChromiumMilestone: 90,
                 firstContentfulPaint: '>5000',
                 firstContentfulPaintAllFrames: '<5000',
                 largestContentfulPaint: '>5000',

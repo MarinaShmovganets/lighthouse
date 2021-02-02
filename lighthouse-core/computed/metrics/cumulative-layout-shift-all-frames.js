@@ -39,7 +39,7 @@ class CumulativeLayoutShiftAllFrames {
       .map(e => {
         if (e.args.data.had_recent_input) return 0;
 
-        // COMPAT: remove after 89 hits stable
+        // COMPAT: remove after m90 hits stable
         // We should replace with a LHError at that point:
         // https://github.com/GoogleChrome/lighthouse/pull/12034#discussion_r568150032
         if (e.args.data.weighted_score_delta !== undefined) {
