@@ -25,6 +25,27 @@ describe('Metrics: CLS All Frames', () => {
     expect(result.value).toBeCloseTo(0.459);
   });
 
+  it('ignores had_recent_input for beginning of shift events', async () => {
+    const trace = createTestTrace({timeOrigin: 0, traceEnd: 2000});
+    const mainFrame = trace.traceEvents[0].args.frame;
+    const childFrame = 'CHILDFRAME';
+    const cat = 'loading,rail,devtools.timeline';
+    const context = {computedCache: new Map()};
+    trace.traceEvents.push(
+      /* eslint-disable max-len */
+      {name: 'FrameCommittedInBrowser', cat, args: {data: {frame: mainFrame, url: 'https://example.com'}}},
+      {name: 'FrameCommittedInBrowser', cat, args: {data: {frame: childFrame, parent: mainFrame, url: 'https://frame.com'}}},
+      {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: true, score: 1, weighted_score_delta: 1}}},
+      {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: true, score: 1, weighted_score_delta: 1}}},
+      {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: false, score: 1, weighted_score_delta: 1}}},
+      {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: true, score: 1, weighted_score_delta: 1}}},
+      {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: false, score: 1, weighted_score_delta: 1}}}
+      /* eslint-enable max-len */
+    );
+    const result = await CumulativeLayoutShiftAllFrames.request(trace, context);
+    expect(result.value).toBe(4);
+  });
+
   it('uses weighted_score_delta instead of score', async () => {
     const trace = createTestTrace({timeOrigin: 0, traceEnd: 2000});
     const mainFrame = trace.traceEvents[0].args.frame;

@@ -21,8 +21,7 @@ class CumulativeLayoutShiftAllFrames {
       event.name === 'LayoutShift' &&
       event.args &&
       event.args.data &&
-      event.args.data.score !== undefined &&
-      !event.args.data.had_recent_input
+      event.args.data.score !== undefined
     );
   }
 
@@ -33,17 +32,31 @@ class CumulativeLayoutShiftAllFrames {
    */
   static async compute_(trace, context) {
     const traceOfTab = await TraceOfTab.request(trace, context);
+    const layoutShiftEvents = traceOfTab.frameTreeEvents.filter(this.isLayoutShiftEvent);
+
+    // Chromium will set `had_recent_input` if there was recent user input, which
+    // skips shift events from contributing to CLS. This flag is also set when Lighthouse changes
+    // the emulation size. This consistently results in the first few shift event always being
+    // ignored for CLS. Since we don't expect any user input, we add the score of these
+    // shift events to CLS.
+    // See https://bugs.chromium.org/p/chromium/issues/detail?id=1094974.
+    for (const event of layoutShiftEvents) {
+      if (!event.args.data.had_recent_input) break;
+      event.args.data.had_recent_input = false;
+    }
 
     let traceHasWeightedScore = true;
-    const cumulativeShift = traceOfTab.frameTreeEvents
-      .filter(this.isLayoutShiftEvent)
+    const cumulativeShift = layoutShiftEvents
       .map(e => {
+        if (e.args.data.had_recent_input) return 0;
+
         // FIXME: remove after 89 hits stable
         // We should replace with a LHError at that point:
         // https://github.com/GoogleChrome/lighthouse/pull/12034#discussion_r568150032
         if (e.args.data.weighted_score_delta !== undefined) {
           return e.args.data.weighted_score_delta;
         }
+
         traceHasWeightedScore = false;
         return e.args.data.score;
       })
