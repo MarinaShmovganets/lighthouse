@@ -34,17 +34,6 @@ class CumulativeLayoutShiftAllFrames {
     const traceOfTab = await TraceOfTab.request(trace, context);
     const layoutShiftEvents = traceOfTab.frameTreeEvents.filter(this.isLayoutShiftEvent);
 
-    // Chromium will set `had_recent_input` if there was recent user input, which
-    // skips shift events from contributing to CLS. This flag is also set when Lighthouse changes
-    // the emulation size. This consistently results in the first few shift event always being
-    // ignored for CLS. Since we don't expect any user input, we add the score of these
-    // shift events to CLS.
-    // See https://bugs.chromium.org/p/chromium/issues/detail?id=1094974.
-    for (const event of layoutShiftEvents) {
-      if (!event.args.data.had_recent_input) break;
-      event.args.data.had_recent_input = false;
-    }
-
     let traceHasWeightedScore = true;
     const cumulativeShift = layoutShiftEvents
       .map(e => {
