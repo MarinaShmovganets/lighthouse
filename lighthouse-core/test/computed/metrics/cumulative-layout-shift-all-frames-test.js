@@ -6,7 +6,7 @@
 'use strict';
 
 const CumulativeLayoutShiftAllFrames = require('../../../computed/metrics/cumulative-layout-shift-all-frames.js'); // eslint-disable-line max-len
-const oldTrace = require('../../fixtures/traces/frame-metrics-m89.json');
+const missingWeightedClsTrace = require('../../fixtures/traces/frame-metrics-m89.json');
 const frameMetricsTrace = require('../../fixtures/traces/frame-metrics-m90.json');
 const createTestTrace = require('../../create-test-trace.js');
 
@@ -19,10 +19,10 @@ describe('Metrics: CLS All Frames', () => {
     expect(result.value).toBeCloseTo(0.0276);
   });
 
-  it('should throw unsupported version error for old trace', async () => {
+  it('should use unweighted score for trace missing weighted score', async () => {
     const context = {computedCache: new Map()};
-    const resultPromise = CumulativeLayoutShiftAllFrames.request(oldTrace, context);
-    expect(resultPromise).rejects.toThrow();
+    const result = await CumulativeLayoutShiftAllFrames.request(missingWeightedClsTrace, context);
+    expect(result.value).toBeCloseTo(0.459);
   });
 
   it('uses weighted_score_delta instead of score', async () => {
@@ -42,6 +42,25 @@ describe('Metrics: CLS All Frames', () => {
     );
     const result = await CumulativeLayoutShiftAllFrames.request(trace, context);
     expect(result.value).toBe(3);
+  });
+
+  it('uses score if weighted_score_delta is unavailable', async () => {
+    const trace = createTestTrace({timeOrigin: 0, traceEnd: 2000});
+    const mainFrame = trace.traceEvents[0].args.frame;
+    const childFrame = 'CHILDFRAME';
+    const cat = 'loading,rail,devtools.timeline';
+    const context = {computedCache: new Map()};
+    trace.traceEvents.push(
+      /* eslint-disable max-len */
+      {name: 'FrameCommittedInBrowser', cat, args: {data: {frame: mainFrame, url: 'https://example.com'}}},
+      {name: 'FrameCommittedInBrowser', cat, args: {data: {frame: childFrame, parent: mainFrame, url: 'https://frame.com'}}},
+      {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: false, score: 1}}},
+      {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: false, score: 2}}},
+      {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: false, score: 3}}}
+      /* eslint-enable max-len */
+    );
+    const result = await CumulativeLayoutShiftAllFrames.request(trace, context);
+    expect(result.value).toBe(6);
   });
 
   it('collects layout shift data from main frame and all child frames', async () => {
