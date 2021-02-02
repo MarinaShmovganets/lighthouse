@@ -3,7 +3,7 @@
 exports[`Performance: metrics evaluates valid input (with lcp from all frames) correctly 1`] = `
 Object {
   "cumulativeLayoutShift": 0.0011656245471340055,
-  "cumulativeLayoutShiftAllFrames": undefined,
+  "cumulativeLayoutShiftAllFrames": 0.4591700003057729,
   "estimatedInputLatency": 16,
   "estimatedInputLatencyTs": undefined,
   "firstCPUIdle": 863,
@@ -22,7 +22,7 @@ Object {
   "largestContentfulPaintTs": 23466886143,
   "maxPotentialFID": 16,
   "observedCumulativeLayoutShift": 0.0011656245471340055,
-  "observedCumulativeLayoutShiftAllFrames": undefined,
+  "observedCumulativeLayoutShiftAllFrames": 0.4591700003057729,
   "observedDomContentLoaded": 596,
   "observedDomContentLoadedTs": 23466619325,
   "observedFirstContentfulPaint": 863,
