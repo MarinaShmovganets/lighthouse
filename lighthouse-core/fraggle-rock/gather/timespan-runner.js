@@ -24,11 +24,10 @@ async function startTimespan(options) {
 
   /** @type {Record<string, Promise<void>>} */
   const artifactErrors = {};
-  const dependencies = {};
 
   for (const {id, gatherer} of config.artifacts || []) {
     artifactErrors[id] = Promise.resolve().then(() =>
-      gatherer.instance.beforeTimespan({gatherMode: 'timespan', driver, dependencies})
+      gatherer.instance.beforeTimespan({gatherMode: 'timespan', driver, dependencies: {}})
     );
 
     // Run each beforeTimespan serially, but handle errors in the next pass.
