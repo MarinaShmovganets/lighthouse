@@ -20,7 +20,7 @@ class CumulativeLayoutShift {
     const layoutShiftEvents = LayoutShiftVariants.getLayoutShiftEvents(traceOfTab.mainThreadEvents);
 
     const cumulativeLayoutShift = layoutShiftEvents
-      .filter(e => e.is_main_frame)
+      .filter(e => e.isMainFrame)
       .reduce((sum, e) => sum += e.score, 0);
 
     return {

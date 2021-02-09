@@ -8,7 +8,7 @@
 const makeComputedArtifact = require('./computed-artifact.js');
 const TraceOfTab = require('./trace-of-tab.js');
 
-/** @typedef {{ts: number, score: number, is_main_frame: boolean, weighted_score_delta?: number}} LayoutShiftEvent */
+/** @typedef {{ts: number, score: number, isMainFrame: boolean, weightedScoreDelta?: number}} LayoutShiftEvent */
 
 /**
  * @fileoverview An implementation of the Layout Shift variants being considered
@@ -130,8 +130,8 @@ class LayoutShiftVariants {
       layoutShiftEvents.push({
         ts: event.ts,
         score: event.args.data.score,
-        is_main_frame: event.args.data.is_main_frame,
-        weighted_score_delta: event.args.data.weighted_score_delta,
+        isMainFrame: event.args.data.is_main_frame,
+        weightedScoreDelta: event.args.data.weighted_score_delta,
       });
     }
 
@@ -146,7 +146,7 @@ class LayoutShiftVariants {
   static async compute_(trace, context) {
     const traceOfTab = await TraceOfTab.request(trace, context);
     const layoutShiftEvents = LayoutShiftVariants.getLayoutShiftEvents(traceOfTab.mainThreadEvents)
-      .filter(e => e.is_main_frame); // Only main frame for now.
+      .filter(e => e.isMainFrame); // Only main frame for now.
 
     return {
       avgSessionGap5s: LayoutShiftVariants.avgSessionGap5s(layoutShiftEvents),

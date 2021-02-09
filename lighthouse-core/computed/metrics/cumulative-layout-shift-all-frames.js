@@ -28,12 +28,12 @@ class CumulativeLayoutShiftAllFrames {
         // COMPAT: remove after m90 hits stable
         // We should replace with a LHError at that point:
         // https://github.com/GoogleChrome/lighthouse/pull/12034#discussion_r568150032
-        if (e.weighted_score_delta === undefined) {
+        if (e.weightedScoreDelta === undefined) {
           traceHasWeightedScore = false;
           return e.score;
         }
 
-        return e.weighted_score_delta;
+        return e.weightedScoreDelta;
       })
       .reduce((sum, score) => sum + score, 0);
 
