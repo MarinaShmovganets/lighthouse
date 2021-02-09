@@ -315,10 +315,15 @@ module.exports = [
         },
         'layout-shift-elements': {
           score: null,
-          scoreDisplayMode: 'notApplicable',
-          details: {
-            items: [],
-          },
+          // If nodes were evicted, then `details.items === []`, and we mark things as notApplicable. #10877
+
+          // Our test page tries to _force_ an eviction (#11426)
+          // But we've seen cases where there is no eviction. This is fine, actually. The user
+          // ends up seeing a useful result. (and item.details is populated!)
+          // This case (just like the normal here-are-your-cls-elements case) is marked `informative`.
+
+          // That leaves us mostly asserting that this audit is error-free.
+          scoreDisplayMode: /(notApplicable|informative)/,
         },
       },
     },
@@ -334,12 +339,15 @@ module.exports = [
             type: 'debugdata',
             items: [
               {
+                // Weighted CLS score was added to the trace in m90:
+                // https://bugs.chromium.org/p/chromium/issues/detail?id=1173139
+                _minChromiumMilestone: 90,
                 firstContentfulPaint: '>5000',
                 firstContentfulPaintAllFrames: '<5000',
                 largestContentfulPaint: '>5000',
                 largestContentfulPaintAllFrames: '<5000',
                 cumulativeLayoutShift: '0.001 +/- 0.0005',
-                cumulativeLayoutShiftAllFrames: '0.068 +/- 0.0005',
+                cumulativeLayoutShiftAllFrames: '0.0276 +/- 0.0005',
               },
               {
                 lcpInvalidated: false,
