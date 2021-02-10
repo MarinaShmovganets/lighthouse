@@ -165,7 +165,7 @@ function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 
 
       // Replace img.src with img.currentSrc. Same for audio and video.
       if (attributeName === 'src' && 'currentSrc' in element) {
-        const elementWithSrc = /** @type {HTMLImageElement} */ (element);
+        const elementWithSrc = /** @type {HTMLImageElement|HTMLMediaElement} */ (element);
         const currentSrc = elementWithSrc.currentSrc;
         // Only replace if the two URLs do not resolve to the same location.
         const documentHref = elementWithSrc.ownerDocument.location.href;
