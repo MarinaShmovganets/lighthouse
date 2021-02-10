@@ -31,8 +31,10 @@ describe('Sized images audit', () => {
       isCss: true,
       attributeWidth: '',
       attributeHeight: '',
-      cssWidth: null,
-      cssHeight: null,
+      cssSizing: {
+        width: null,
+        height: null,
+      }
     });
     expect(result.score).toEqual(1);
   });
@@ -42,8 +44,10 @@ describe('Sized images audit', () => {
       isInShadowDOM: true,
       attributeWidth: '',
       attributeHeight: '',
-      cssWidth: null,
-      cssHeight: null,
+      cssSizing: {
+        width: null,
+        height: null,
+      }
     });
     expect(result.score).toEqual(1);
   });
@@ -53,8 +57,10 @@ describe('Sized images audit', () => {
       cssComputedPosition: 'absolute',
       attributeWidth: '',
       attributeHeight: '',
-      cssWidth: null,
-      cssHeight: null,
+      cssSizing: {
+        width: null,
+        height: null,
+      }
     });
     expect(result.score).toEqual(1);
   });
@@ -64,8 +70,10 @@ describe('Sized images audit', () => {
       cssComputedPosition: 'fixed',
       attributeWidth: '',
       attributeHeight: '',
-      cssWidth: null,
-      cssHeight: null,
+      cssSizing: {
+        width: null,
+        height: null,
+      }
     });
     expect(result.score).toEqual(1);
   });
@@ -75,8 +83,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '100',
-        cssWidth: null,
-        cssHeight: null,
+        cssSizing: {
+          width: null,
+          height: null,
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -85,8 +95,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
-        cssWidth: null,
-        cssHeight: '100',
+        cssSizing: {
+          width: null,
+          height: '100',
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -95,8 +107,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '100',
-        cssWidth: null,
-        cssHeight: '100',
+        cssSizing: {
+          width: null,
+          height: '100',
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -107,8 +121,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '',
-        cssWidth: null,
-        cssHeight: null,
+        cssSizing: {
+          width: null,
+          height: null,
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -117,8 +133,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
-        cssWidth: '100',
-        cssHeight: null,
+        cssSizing: {
+          width: '100',
+          height: null,
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -127,8 +145,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '',
-        cssWidth: '100',
-        cssHeight: null,
+        cssSizing: {
+          width: '100',
+          height: null,
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -138,8 +158,10 @@ describe('Sized images audit', () => {
     const result = await runAudit({
       attributeWidth: '',
       attributeHeight: '',
-      cssWidth: null,
-      cssHeight: null,
+      cssSizing: {
+        width: null,
+        height: null,
+      }
     });
     expect(result.score).toEqual(0);
   });
@@ -149,8 +171,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '',
-        cssWidth: null,
-        cssHeight: '100',
+        cssSizing: {
+          width: null,
+          height: '100',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -159,8 +183,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '100',
-        cssWidth: null,
-        cssHeight: null,
+        cssSizing: {
+          width: null,
+          height: null,
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -169,8 +195,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '100',
-        cssWidth: '100',
-        cssHeight: null,
+        cssSizing: {
+          width: '100',
+          height: null,
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -179,8 +207,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
-        cssWidth: '100',
-        cssHeight: '100',
+        cssSizing: {
+          width: '100',
+          height: '100',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -189,8 +219,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '',
-        cssWidth: '100',
-        cssHeight: '100',
+        cssSizing: {
+          width: '100',
+          height: '100',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -199,8 +231,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '100',
-        cssWidth: '100',
-        cssHeight: null,
+        cssSizing: {
+          width: '100',
+          height: null,
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -209,8 +243,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '100',
-        cssWidth: '100',
-        cssHeight: '100',
+        cssSizing: {
+          width: '100',
+          height: '100',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -219,8 +255,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '100',
-        cssWidth: null,
-        cssHeight: '100',
+        cssSizing: {
+          width: null,
+          height: '100',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -229,8 +267,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '100',
-        cssWidth: '100',
-        cssHeight: '100',
+        cssSizing: {
+          width: '100',
+          height: '100',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -239,8 +279,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '0',
         attributeHeight: '0',
-        cssWidth: null,
-        cssHeight: null,
+        cssSizing: {
+          width: null,
+          height: null,
+        },
         node: {
           boundingRect: {
             width: 0,
@@ -255,8 +297,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
-        cssWidth: null,
-        cssHeight: null,
+        cssSizing: {
+          width: null,
+          height: null,
+        },
         node: {
           boundingRect: {
             width: 0,
@@ -273,8 +317,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '-200',
         attributeHeight: '100',
-        cssWidth: null,
-        cssHeight: null,
+        cssSizing: {
+          width: null,
+          height: null,
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -283,8 +329,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '-200',
-        cssWidth: null,
-        cssHeight: null,
+        cssSizing: {
+          width: null,
+          height: null,
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -293,8 +341,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
-        cssWidth: 'auto',
-        cssHeight: '100',
+        cssSizing: {
+          width: 'auto',
+          height: '100',
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -303,8 +353,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
-        cssWidth: '100',
-        cssHeight: 'auto',
+        cssSizing: {
+          width: '100',
+          height: 'auto',
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -313,8 +365,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '-200',
         attributeHeight: '100',
-        cssWidth: '100',
-        cssHeight: null,
+        cssSizing: {
+          width: '100',
+          height: null,
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -323,8 +377,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '-200',
-        cssWidth: null,
-        cssHeight: '100',
+        cssSizing: {
+          width: null,
+          height: '100',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -333,8 +389,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '',
-        cssWidth: 'auto',
-        cssHeight: '100',
+        cssSizing: {
+          width: 'auto',
+          height: '100',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -343,8 +401,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '100',
-        cssWidth: '100',
-        cssHeight: 'auto',
+        cssSizing: {
+          width: '100',
+          height: 'auto',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -354,8 +414,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '100',
         attributeHeight: '100',
-        cssWidth: 'auto',
-        cssHeight: 'auto',
+        cssSizing: {
+          width: 'auto',
+          height: 'auto',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -365,8 +427,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '-200',
         attributeHeight: '-200',
-        cssWidth: '100',
-        cssHeight: '100',
+        cssSizing: {
+          width: '100',
+          height: '100',
+        }
       });
       expect(result.score).toEqual(1);
     });
@@ -376,8 +440,10 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '-200',
         attributeHeight: '-200',
-        cssWidth: 'auto',
-        cssHeight: 'auto',
+        cssSizing: {
+          width: 'auto',
+          height: 'auto',
+        }
       });
       expect(result.score).toEqual(0);
     });
@@ -398,8 +464,10 @@ describe('Sized images audit', () => {
           {
             attributeWidth: '',
             attributeHeight: '',
-            cssWidth: null,
-            cssHeight: null,
+            cssSizing: {
+              width: null,
+              height: null,
+            }
           },
           'image1.png'
         ),
@@ -414,8 +482,10 @@ describe('Sized images audit', () => {
           {
             attributeWidth: '',
             attributeHeight: '',
-            cssWidth: null,
-            cssHeight: null,
+            cssSizing: {
+              width: null,
+              height: null,
+            }
           },
           'image3.png'
         ),
@@ -433,8 +503,7 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '',
         attributeHeight: '',
-        cssWidth: undefined,
-        cssHeight: undefined,
+        cssSizing: undefined,
       });
       expect(result.details.items.length).toEqual(0);
       expect(result.score).toEqual(1);
@@ -444,8 +513,7 @@ describe('Sized images audit', () => {
       const result = await runAudit({
         attributeWidth: '10',
         attributeHeight: '10',
-        cssWidth: undefined,
-        cssHeight: undefined,
+        cssSizing: undefined,
       });
       expect(result.details.items.length).toEqual(0);
       expect(result.score).toEqual(1);

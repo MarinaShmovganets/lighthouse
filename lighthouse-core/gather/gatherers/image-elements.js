@@ -75,6 +75,7 @@ function getHTMLImages(allElements) {
       attributeHeight: element.getAttribute('height') || '',
       cssWidth: undefined, // this will get overwritten below
       cssHeight: undefined, // this will get overwritten below
+      cssSizing: undefined, // this will get overwritten below
       cssComputedPosition: getPosition(element, computedStyle),
       isCss: false,
       isPicture,
@@ -121,6 +122,7 @@ function getCSSImages(allElements) {
       attributeHeight: '',
       cssWidth: undefined,
       cssHeight: undefined,
+      cssSizing: undefined,
       cssComputedPosition: getPosition(element, style),
       isCss: true,
       isPicture: false,
@@ -269,10 +271,12 @@ class ImageElements extends Gatherer {
       const matchedRules = await driver.sendCommand('CSS.getMatchedStylesForNode', {
         nodeId: nodeId,
       });
-      const sourceWidth = getEffectiveSizingRule(matchedRules, 'width');
-      const sourceHeight = getEffectiveSizingRule(matchedRules, 'height');
-      const sourceRules = {cssWidth: sourceWidth, cssHeight: sourceHeight};
-      Object.assign(element, sourceRules);
+      const width = getEffectiveSizingRule(matchedRules, 'width');
+      const height = getEffectiveSizingRule(matchedRules, 'height');
+      // Maintain backcompat for <= 7.0.1
+      element.cssWidth = width === null ? undefined : width;
+      element.cssHeight = height === null ? undefined : height;
+      Object.assign(element, {cssSizing: {width, height}});
     } catch (err) {
       if (/No node.*found/.test(err.message)) return;
       throw err;

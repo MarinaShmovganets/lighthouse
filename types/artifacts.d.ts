@@ -409,10 +409,23 @@ declare global {
         attributeWidth: string;
         /** The raw height attribute of the image element. CSS images will be set to the empty string. */
         attributeHeight: string;
-        /** The CSS width property of the image element. Set to `undefined` if Lighthouse didn't gather the data. Set to `null` if it was gathered, but there was no width set in CSS. */
-        cssWidth?: string | null;
-        /** The CSS height property of the image element. Set to `undefined` if Lighthouse didn't gather the data. Set to `null` if it was gathered, but there was no height set in CSS. */
-        cssHeight?: string | null;
+        /**
+         * The CSS width property of the image element.
+         * @deprecated Use `element?.cssSizing.width` instead.
+         */
+        cssWidth?: string;
+        /**
+         * The CSS height property of the image element.
+         * @deprecated Use `element?.cssSizing.width` instead
+         */
+        cssHeight?: string;
+        /** The width/height of the element as defined by matching CSS rules. Set to `undefined` if the data was not collected. */
+        cssSizing: undefined | {
+          /** The CSS width property of the image element. Set to `null` if there was no width set in CSS. */
+          width: string | null;
+          /** The CSS height property of the image element. Set to `null` if there was no height set in CSS. */
+          height: string | null;
+        }
         /** The BoundingClientRect of the element. */
         clientRect: {
           top: number;

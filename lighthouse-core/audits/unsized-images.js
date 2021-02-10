@@ -61,7 +61,7 @@ class UnsizedImages extends Audit {
 
   /**
    * An img css size property prevents CLS if it is defined, not empty, and not equal to 'auto'.
-   * @param {LH.Artifacts.ImageElement['cssHeight']} property
+   * @param {string | null} property
    * @return {boolean}
    */
   static doesCssPropProvideExplicitSize(property) {
@@ -75,10 +75,17 @@ class UnsizedImages extends Audit {
    * @return {boolean}
    */
   static isSizedImage(image) {
+    // Perhaps we hit reachedGatheringBudget before collecting this image's cssWidth/Height
+    // in fetchSourceRules. In this case, we don't have enough information to determine if it's sized.
+    // We don't want to show the user a false positive, so we'll call it sized to give it as pass.
+    // While this situation should only befall small-impact images, it means our analysis is incomplete. :(
+    // Handwavey TODO: explore ways to avoid this.
+    if (image.cssSizing === undefined) return true;
+
     const attrWidth = image.attributeWidth;
     const attrHeight = image.attributeHeight;
-    const cssWidth = image.cssWidth;
-    const cssHeight = image.cssHeight;
+    const cssWidth = image.cssSizing.width;
+    const cssHeight = image.cssSizing.height;
     const htmlWidthIsExplicit = UnsizedImages.doesHtmlAttrProvideExplicitSize(attrWidth);
     const cssWidthIsExplicit = UnsizedImages.doesCssPropProvideExplicitSize(cssWidth);
     const htmlHeightIsExplicit = UnsizedImages.doesHtmlAttrProvideExplicitSize(attrHeight);
@@ -102,13 +109,6 @@ class UnsizedImages extends Audit {
       const isFixedImage =
         image.cssComputedPosition === 'fixed' || image.cssComputedPosition === 'absolute';
       if (isFixedImage) continue;
-
-      // Perhaps we hit reachedGatheringBudget before collecting this image's cssWidth/Height
-      // in fetchSourceRules. In this case, we don't have enough information to determine if it's sized.
-      // We don't want to show the user a false positive, so we'll skip it.
-      // While this situation should only befall small-impact images, it means our analysis is incomplete. :(
-      // Handwavey TODO: explore ways to avoid this.
-      if (image.cssWidth === undefined || image.cssHeight === undefined) continue;
 
       // The image was sized with HTML or CSS. Good job.
       if (UnsizedImages.isSizedImage(image)) continue;

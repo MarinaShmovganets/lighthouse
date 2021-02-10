@@ -1214,8 +1214,10 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
-      "cssWidth": "120px",
-      "cssHeight": "15px"
+      "cssSizing": {
+        "width": "120px",
+        "height": "15px"
+      }
     },
     {
       "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar2",
@@ -1255,8 +1257,10 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
-      "cssWidth": "120px",
-      "cssHeight": "80px"
+      "cssSizing": {
+        "width": "120px",
+        "height": "80px"
+      }
     },
     {
       "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
@@ -1296,8 +1300,10 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
-      "cssWidth": "4800px",
-      "cssHeight": "3180px"
+      "cssSizing": {
+        "width": "4800px",
+        "height": "3180px"
+      }
     },
     {
       "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr2",
@@ -1337,8 +1343,10 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
-      "cssWidth": "120px",
-      "cssHeight": "80px"
+      "cssSizing": {
+        "width": "120px",
+        "height": "80px"
+      }
     },
     {
       "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr3",
@@ -1378,8 +1386,10 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
-      "cssWidth": "960px",
-      "cssHeight": "636px"
+      "cssSizing": {
+        "width": "960px",
+        "height": "636px"
+      }
     },
     {
       "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
@@ -1419,8 +1429,10 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
-      "cssWidth": "960px",
-      "cssHeight": "636px"
+      "cssSizing": {
+        "width": "960px",
+        "height": "636px"
+      }
     },
     {
       "src": "http://localhost:10200/dobetterweb/lighthouse-rotating.gif",
@@ -1460,8 +1472,10 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/gif",
-      "cssWidth": "811px",
-      "cssHeight": "462px"
+      "cssSizing": {
+        "width": "811px",
+        "height": "462px"
+      }
     },
     {
       "src": "blob:http://localhost:10200/822c70a0-b912-41c7-9a21-56c3d309e75b",
