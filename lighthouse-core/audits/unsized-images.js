@@ -40,7 +40,7 @@ class UnsizedImages extends Audit {
   }
 
   /**
-   * An img size attribute prevents CLS if it is a non-negative integer (incl zero!).
+   * An img size attribute prevents layout shifts if it is a non-negative integer (incl zero!).
    * @url https://html.spec.whatwg.org/multipage/embedded-content-other.html#dimension-attributes
    * @param {string} attrValue
    * @return {boolean}
@@ -60,7 +60,7 @@ class UnsizedImages extends Audit {
   }
 
   /**
-   * An img css size property prevents CLS if it is defined, not empty, and not equal to 'auto'.
+   * An img css size property prevents layout shifts if it is defined, not empty, and not equal to 'auto'.
    * @param {string | null} property
    * @return {boolean}
    */
