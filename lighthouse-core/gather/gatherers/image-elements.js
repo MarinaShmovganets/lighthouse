@@ -326,25 +326,24 @@ class ImageElements extends Gatherer {
     });
 
     // Don't do more than 3s of this expensive devtools protocol work. See #11289
-    let hasRemainingCDPBudget = true;
-    setTimeout(_ => (hasRemainingCDPBudget = false), 3000);
+    let reachedGatheringBudget = false;
+    setTimeout(_ => (reachedGatheringBudget = true), 3000);
 
     for (let element of elements) {
       // Pull some of our information directly off the network record.
       const networkRecord = indexedNetworkRecords[element.src] || {};
       element.mimeType = networkRecord.mimeType;
 
+      if (reachedGatheringBudget) continue;
+
       // Need source rules to determine if sized via CSS (for unsized-images).
-      if (!element.isInShadowDOM && !element.isCss && hasRemainingCDPBudget) {
+      if (!element.isInShadowDOM && !element.isCss) {
         await this.fetchSourceRules(driver, element.node.devtoolsNodePath, element);
       }
       // Images within `picture` behave strangely and natural size information isn't accurate,
       // CSS images have no natural size information at all. Try to get the actual size if we can.
       // Additional fetch is expensive; don't bother if we don't have a networkRecord for the image.
-      if (
-        (element.isPicture || element.isCss || element.srcset) &&
-        networkRecord && hasRemainingCDPBudget
-      ) {
+      if ((element.isPicture || element.isCss || element.srcset) && networkRecord) {
         element = await this.fetchElementWithSizeInformation(driver, element);
       }
 
