@@ -40,12 +40,12 @@ class UnsizedImages extends Audit {
   }
 
   /**
-   * An img size attribute is valid if it is a non-negative integer (incl zero!).
+   * An img size attribute prevents CLS if it is a non-negative integer (incl zero!).
    * @url https://html.spec.whatwg.org/multipage/embedded-content-other.html#dimension-attributes
    * @param {string} attrValue
    * @return {boolean}
    */
-  static isValidAttr(attrValue) {
+  static doesHtmlAttrProvideExplicitSize(attrValue) {
     // First, superweird edge case of using the positive-sign. The spec _sorta_ says it's valid...
     // https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#rules-for-parsing-integers
     //   > Otherwise, if the character is … (+): Advance position to the next character.
@@ -60,12 +60,11 @@ class UnsizedImages extends Audit {
   }
 
   /**
-   * An img css size property is valid for preventing CLS
-   * if it is defined, not empty, and not equal to 'auto'.
+   * An img css size property prevents CLS if it is defined, not empty, and not equal to 'auto'.
    * @param {LH.Artifacts.ImageElement['cssHeight']} property
    * @return {boolean}
    */
-  static isValidCss(property) {
+  static doesCssPropProvideExplicitSize(property) {
     if (!property) return false;
     return property !== 'auto';
   }
@@ -80,13 +79,13 @@ class UnsizedImages extends Audit {
     const attrHeight = image.attributeHeight;
     const cssWidth = image.cssWidth;
     const cssHeight = image.cssHeight;
-    const widthIsValidAttribute = UnsizedImages.isValidAttr(attrWidth);
-    const widthIsValidCss = UnsizedImages.isValidCss(cssWidth);
-    const heightIsValidAttribute = UnsizedImages.isValidAttr(attrHeight);
-    const heightIsValidCss = UnsizedImages.isValidCss(cssHeight);
-    const validWidth = widthIsValidAttribute || widthIsValidCss;
-    const validHeight = heightIsValidAttribute || heightIsValidCss;
-    return validWidth && validHeight;
+    const htmlWidthIsExplicit = UnsizedImages.doesHtmlAttrProvideExplicitSize(attrWidth);
+    const cssWidthIsExplicit = UnsizedImages.doesCssPropProvideExplicitSize(cssWidth);
+    const htmlHeightIsExplicit = UnsizedImages.doesHtmlAttrProvideExplicitSize(attrHeight);
+    const cssHeightIsExplicit = UnsizedImages.doesCssPropProvideExplicitSize(cssHeight);
+    const explicitWidth = htmlWidthIsExplicit || cssWidthIsExplicit;
+    const explicitHeight = htmlHeightIsExplicit || cssHeightIsExplicit;
+    return explicitWidth && explicitHeight;
   }
 
   /**
