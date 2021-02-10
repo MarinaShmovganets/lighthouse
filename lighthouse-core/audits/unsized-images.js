@@ -80,12 +80,12 @@ class UnsizedImages extends Audit {
     // We don't want to show the user a false positive, so we'll call it sized to give it as pass.
     // While this situation should only befall small-impact images, it means our analysis is incomplete. :(
     // Handwavey TODO: explore ways to avoid this.
-    if (image.cssSizing === undefined) return true;
+    if (image._privateCssSizing === undefined) return true;
 
     const attrWidth = image.attributeWidth;
     const attrHeight = image.attributeHeight;
-    const cssWidth = image.cssSizing.width;
-    const cssHeight = image.cssSizing.height;
+    const cssWidth = image._privateCssSizing.width;
+    const cssHeight = image._privateCssSizing.height;
     const htmlWidthIsExplicit = UnsizedImages.doesHtmlAttrProvideExplicitSize(attrWidth);
     const cssWidthIsExplicit = UnsizedImages.doesCssPropProvideExplicitSize(cssWidth);
     const htmlHeightIsExplicit = UnsizedImages.doesHtmlAttrProvideExplicitSize(attrHeight);

@@ -1216,7 +1216,7 @@
       "mimeType": "image/jpeg",
       "cssWidth": "120px",
       "cssHeight": "15px",
-      "cssSizing": {
+      "_privateCssSizing": {
         "width": "120px",
         "height": "15px"
       }
@@ -1261,7 +1261,7 @@
       "mimeType": "image/jpeg",
       "cssWidth": "120px",
       "cssHeight": "80px",
-      "cssSizing": {
+      "_privateCssSizing": {
         "width": "120px",
         "height": "80px"
       }
@@ -1306,7 +1306,7 @@
       "mimeType": "image/jpeg",
       "cssWidth": "4800px",
       "cssHeight": "3180px",
-      "cssSizing": {
+      "_privateCssSizing": {
         "width": "4800px",
         "height": "3180px"
       }
@@ -1351,7 +1351,7 @@
       "mimeType": "image/jpeg",
       "cssWidth": "120px",
       "cssHeight": "80px",
-      "cssSizing": {
+      "_privateCssSizing": {
         "width": "120px",
         "height": "80px"
       }
@@ -1396,7 +1396,7 @@
       "mimeType": "image/jpeg",
       "cssWidth": "960px",
       "cssHeight": "636px",
-      "cssSizing": {
+      "_privateCssSizing": {
         "width": "960px",
         "height": "636px"
       }
@@ -1439,7 +1439,7 @@
       "mimeType": "image/jpeg",
       "cssWidth": "960px",
       "cssHeight": "636px",
-      "cssSizing": {
+      "_privateCssSizing": {
         "width": "960px",
         "height": "636px"
       },
@@ -1486,7 +1486,7 @@
       "mimeType": "image/gif",
       "cssWidth": "811px",
       "cssHeight": "462px",
-      "cssSizing": {
+      "_privateCssSizing": {
         "width": "811px",
         "height": "462px"
       }
@@ -1528,7 +1528,7 @@
         "snippet": "<img src=\"blob:http://localhost:10200/822c70a0-b912-41c7-9a21-56c3d309e75b\">",
         "nodeLabel": "img"
       },
-      "cssSizing": {
+      "_privateCssSizing": {
         "width": null,
         "height": null
       }
@@ -1570,7 +1570,7 @@
         "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.8423185960902964.png\">",
         "nodeLabel": "img"
       },
-      "cssSizing": {
+      "_privateCssSizing": {
         "width": null,
         "height": null
       }

@@ -411,16 +411,19 @@ declare global {
         attributeHeight: string;
         /**
          * The CSS width property of the image element.
-         * @deprecated Use `element?.cssSizing.width` instead.
+         * @deprecated Use `element?._privateCssSizing.width` instead.
          */
         cssWidth?: string;
         /**
          * The CSS height property of the image element.
-         * @deprecated Use `element?.cssSizing.width` instead
+         * @deprecated Use `element?._privateCssSizing.width` instead
          */
         cssHeight?: string;
-        /** The width/height of the element as defined by matching CSS rules. Set to `undefined` if the data was not collected. */
-        cssSizing: undefined | {
+        /**
+         * The width/height of the element as defined by matching CSS rules. Set to `undefined` if the data was not collected.
+         * @private
+         */
+        _privateCssSizing: undefined | {
           /** The CSS width property of the image element. Set to `null` if there was no width set in CSS. */
           width: string | null;
           /** The CSS height property of the image element. Set to `null` if there was no height set in CSS. */
