@@ -120,6 +120,7 @@ jobs:
       with:
         flags: unit
         file: ./unit-coverage.lcov
+        override_commit: $GITHUB_SHA
 
     # For windows, just test the potentially platform-specific code.
     - name: yarn unit-cli
@@ -178,6 +179,7 @@ jobs:
       with:
         flags: smoke
         file: ./smoke-coverage.lcov
+        override_commit: $GITHUB_SHA
 
     # Fail if any changes were written to source files.
     - run: git diff --exit-code
