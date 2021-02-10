@@ -1214,6 +1214,8 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
+      "cssWidth": "120px",
+      "cssHeight": "15px",
       "cssSizing": {
         "width": "120px",
         "height": "15px"
@@ -1257,6 +1259,8 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
+      "cssWidth": "120px",
+      "cssHeight": "80px",
       "cssSizing": {
         "width": "120px",
         "height": "80px"
@@ -1300,6 +1304,8 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
+      "cssWidth": "4800px",
+      "cssHeight": "3180px",
       "cssSizing": {
         "width": "4800px",
         "height": "3180px"
@@ -1343,6 +1349,8 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
+      "cssWidth": "120px",
+      "cssHeight": "80px",
       "cssSizing": {
         "width": "120px",
         "height": "80px"
@@ -1386,6 +1394,8 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
+      "cssWidth": "960px",
+      "cssHeight": "636px",
       "cssSizing": {
         "width": "960px",
         "height": "636px"
@@ -1402,8 +1412,6 @@
         "left": 252,
         "right": 1212
       },
-      "naturalWidth": 480,
-      "naturalHeight": 318,
       "attributeWidth": "960",
       "attributeHeight": "636",
       "cssComputedPosition": "absolute",
@@ -1425,14 +1433,18 @@
           "width": 960,
           "height": 636
         },
-        "snippet": "<img src=\"lighthouse-480x318.jpg?isr4\" srcset=\"lighthouse-480x318.jpg 2x\" width=\"960\" height=\"636\" style=\"position: absolute;\">",
+        "snippet": "<img src=\"http://localhost:10200/dobetterweb/lighthouse-480x318.jpg\" srcset=\"lighthouse-480x318.jpg 2x\" width=\"960\" height=\"636\" style=\"position: absolute;\">",
         "nodeLabel": "img"
       },
       "mimeType": "image/jpeg",
+      "cssWidth": "960px",
+      "cssHeight": "636px",
       "cssSizing": {
         "width": "960px",
         "height": "636px"
-      }
+      },
+      "naturalWidth": 480,
+      "naturalHeight": 318
     },
     {
       "src": "http://localhost:10200/dobetterweb/lighthouse-rotating.gif",
@@ -1472,6 +1484,8 @@
         "nodeLabel": "img"
       },
       "mimeType": "image/gif",
+      "cssWidth": "811px",
+      "cssHeight": "462px",
       "cssSizing": {
         "width": "811px",
         "height": "462px"
@@ -1513,6 +1527,10 @@
         },
         "snippet": "<img src=\"blob:http://localhost:10200/822c70a0-b912-41c7-9a21-56c3d309e75b\">",
         "nodeLabel": "img"
+      },
+      "cssSizing": {
+        "width": null,
+        "height": null
       }
     },
     {
@@ -1551,6 +1569,10 @@
         },
         "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.8423185960902964.png\">",
         "nodeLabel": "img"
+      },
+      "cssSizing": {
+        "width": null,
+        "height": null
       }
     }
   ],
