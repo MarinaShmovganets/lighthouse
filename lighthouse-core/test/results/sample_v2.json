@@ -5,7 +5,7 @@
     "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4232.0 Safari/537.36",
     "benchmarkIndex": 1000,
     "credits": {
-      "axe-core": "4.1.1"
+      "axe-core": "4.1.2"
     }
   },
   "lighthouseVersion": "7.0.1",
@@ -3054,7 +3054,7 @@
                 "width": 16,
                 "height": 16
               },
-              "snippet": "<img src=\"blob:http://localhost:10200/54001a08-60c6-4ea1-aeec-ca1831fd81f1\">",
+              "snippet": "<img src=\"blob:http://localhost:10200/0be75978-2a6d-4440-921f-85badcab3e5d\">",
               "nodeLabel": "img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -3073,7 +3073,7 @@
                 "width": 16,
                 "height": 16
               },
-              "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.04643974057459421.png\">",
+              "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.647080878678969.png\">",
               "nodeLabel": "img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
