@@ -83,6 +83,8 @@ jobs:
     steps:
     - name: git clone
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
 
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
@@ -120,7 +122,6 @@ jobs:
       with:
         flags: unit
         file: ./unit-coverage.lcov
-        override_commit: $GITHUB_SHA
 
     # For windows, just test the potentially platform-specific code.
     - name: yarn unit-cli
@@ -151,6 +152,8 @@ jobs:
     steps:
     - name: git clone
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
 
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
@@ -179,7 +182,6 @@ jobs:
       with:
         flags: smoke
         file: ./smoke-coverage.lcov
-        override_commit: $GITHUB_SHA
 
     # Fail if any changes were written to source files.
     - run: git diff --exit-code
