@@ -9,6 +9,7 @@
   */
 'use strict';
 
+const log = require('lighthouse-logger');
 const Gatherer = require('./gatherer.js');
 const pageFunctions = require('../../lib/page-functions.js');
 const Driver = require('../driver.js'); // eslint-disable-line no-unused-vars
@@ -309,9 +310,6 @@ class ImageElements extends Gatherer {
       ],
     });
 
-    /** @type {Array<LH.Artifacts.ImageElement>} */
-    const imageUsage = [];
-
     await Promise.all([
       driver.sendCommand('DOM.enable'),
       driver.sendCommand('CSS.enable'),
@@ -328,13 +326,17 @@ class ImageElements extends Gatherer {
     // Don't do more than 3s of this expensive devtools protocol work. See #11289
     let reachedGatheringBudget = false;
     setTimeout(_ => (reachedGatheringBudget = true), 3000);
+    let skippedCount = 0;
 
     for (let element of elements) {
       // Pull some of our information directly off the network record.
       const networkRecord = indexedNetworkRecords[element.src] || {};
       element.mimeType = networkRecord.mimeType;
 
-      if (reachedGatheringBudget) continue;
+      if (reachedGatheringBudget) {
+        skippedCount++;
+        continue;
+      }
 
       // Need source rules to determine if sized via CSS (for unsized-images).
       if (!element.isInShadowDOM && !element.isCss) {
@@ -347,7 +349,10 @@ class ImageElements extends Gatherer {
         element = await this.fetchElementWithSizeInformation(driver, element);
       }
 
-      imageUsage.push(element);
+    }
+
+    if (reachedGatheringBudget) {
+      log.warn('ImageElements', `Reached gathering budget of 3s. Skipped extra details for ${skippedCount}/${elements.length}`);
     }
 
     await Promise.all([
@@ -355,7 +360,7 @@ class ImageElements extends Gatherer {
       driver.sendCommand('CSS.disable'),
     ]);
 
-    return imageUsage;
+    return elements;
   }
 }
 
