@@ -349,7 +349,7 @@ describe('Sized images audit', () => {
       expect(result.score).toEqual(1);
     });
 
-    it('passes when an image has nonexplicit css width & height, and valid attribute width & height',
+    it('passes when an image has nonexplicit css width & height, and valid attribute width & height', // eslint-disable-line max-len
     async () => {
       const result = await runAudit({
         attributeWidth: '100',
@@ -371,7 +371,7 @@ describe('Sized images audit', () => {
       expect(result.score).toEqual(1);
     });
 
-    it('fails when an image has invalid attribute width & height, and nonexplicit css width & height',
+    it('fails when an image has invalid attribute width & height, and nonexplicit css width & height', // eslint-disable-line max-len
     async () => {
       const result = await runAudit({
         attributeWidth: '-200',

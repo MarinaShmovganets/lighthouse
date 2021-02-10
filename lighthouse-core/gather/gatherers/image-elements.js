@@ -327,7 +327,7 @@ class ImageElements extends Gatherer {
 
     // Don't do more than 3s of this expensive devtools protocol work. See #11289
     let reachedGatheringBudget = false;
-    setTimeout(_ => (reachedGatheringBudget = true), 3000);
+    setTimeout(_ => (reachedGatheringBudget = true), 5000);
     let skippedCount = 0;
 
     for (let element of elements) {
@@ -350,11 +350,10 @@ class ImageElements extends Gatherer {
       if ((element.isPicture || element.isCss || element.srcset) && networkRecord) {
         element = await this.fetchElementWithSizeInformation(driver, element);
       }
-
     }
 
     if (reachedGatheringBudget) {
-      log.warn('ImageElements', `Reached gathering budget of 3s. Skipped extra details for ${skippedCount}/${elements.length}`);
+      log.warn('ImageElements', `Reached gathering budget of 5s. Skipped extra details for ${skippedCount}/${elements.length}`); // eslint-disable-line max-len
     }
 
     await Promise.all([
