@@ -329,7 +329,7 @@ class ImageElements extends Gatherer {
       return bRecord.resourceSize - aRecord.resourceSize;
     });
 
-    // Don't do more than 3s of this expensive devtools protocol work. See #11289
+    // Don't do more than 5s of this expensive devtools protocol work. See #11289
     let reachedGatheringBudget = false;
     setTimeout(_ => (reachedGatheringBudget = true), 5000);
     let skippedCount = 0;
