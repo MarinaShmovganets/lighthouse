@@ -251,7 +251,6 @@ class ImageElements extends Gatherer {
   /**
    * Images might be sized via CSS. In order to compute unsized-images failures, we need to collect
    * matched CSS rules to see if this is the case.
-   * Perf warning: Running this for 700 elements takes 1s to 5s.
    * @url http://go/dwoqq (googlers only)
    * @param {Driver} driver
    * @param {string} devtoolsNodePath
@@ -326,9 +325,9 @@ class ImageElements extends Gatherer {
       return bRecord.resourceSize - aRecord.resourceSize;
     });
 
-    // Don't allow more than 3s of this expensive protocol work
-    let hasBudget = true;
-    setTimeout(_ => (hasBudget = false), 3000);
+    // Don't do more than 3s of this expensive devtools protocol work. See #11289
+    let hasRemainingCDPBudget = true;
+    setTimeout(_ => (hasRemainingCDPBudget = false), 3000);
 
     for (let element of elements) {
       // Pull some of our information directly off the network record.
@@ -336,7 +335,7 @@ class ImageElements extends Gatherer {
       element.mimeType = networkRecord.mimeType;
 
       // Need source rules to determine if sized via CSS (for unsized-images).
-      if (!element.isInShadowDOM && !element.isCss && hasBudget) {
+      if (!element.isInShadowDOM && !element.isCss && hasRemainingCDPBudget) {
         await this.fetchSourceRules(driver, element.node.devtoolsNodePath, element);
       }
       // Images within `picture` behave strangely and natural size information isn't accurate,
@@ -344,7 +343,7 @@ class ImageElements extends Gatherer {
       // Additional fetch is expensive; don't bother if we don't have a networkRecord for the image.
       if (
         (element.isPicture || element.isCss || element.srcset) &&
-        networkRecord && hasBudget
+        networkRecord && hasRemainingCDPBudget
       ) {
         element = await this.fetchElementWithSizeInformation(driver, element);
       }
