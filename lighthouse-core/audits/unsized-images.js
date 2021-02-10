@@ -54,7 +54,7 @@ class UnsizedImages extends Audit {
   /**
    * An img css size property is valid for preventing CLS
    * if it is defined, not empty, and not equal to 'auto'.
-   * @param {string | undefined} property
+   * @param {LH.Artifacts.ImageElement['cssHeight']} property
    * @return {boolean}
    */
   static isValidCss(property) {

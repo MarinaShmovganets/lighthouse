@@ -200,7 +200,7 @@ function findMostSpecificCSSRule(matchedCSSRules, property) {
 /**
  * @param {LH.Crdp.CSS.GetMatchedStylesForNodeResponse} matched CSS rules}
  * @param {string} property
- * @returns {string | undefined}
+ * @returns {string | null}
  */
 function getEffectiveSizingRule({attributesStyle, inlineStyle, matchedCSSRules}, property) {
   // CSS sizing can't be inherited.
@@ -215,6 +215,8 @@ function getEffectiveSizingRule({attributesStyle, inlineStyle, matchedCSSRules},
   // Rules directly referencing the node come next.
   const matchedRule = findMostSpecificCSSRule(matchedCSSRules, property);
   if (matchedRule) return matchedRule;
+
+  return null;
 }
 
 class ImageElements extends Gatherer {
