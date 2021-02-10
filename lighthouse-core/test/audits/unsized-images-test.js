@@ -34,7 +34,7 @@ describe('Sized images audit', () => {
       cssSizing: {
         width: null,
         height: null,
-      }
+      },
     });
     expect(result.score).toEqual(1);
   });
@@ -47,7 +47,7 @@ describe('Sized images audit', () => {
       cssSizing: {
         width: null,
         height: null,
-      }
+      },
     });
     expect(result.score).toEqual(1);
   });
@@ -60,7 +60,7 @@ describe('Sized images audit', () => {
       cssSizing: {
         width: null,
         height: null,
-      }
+      },
     });
     expect(result.score).toEqual(1);
   });
@@ -73,7 +73,7 @@ describe('Sized images audit', () => {
       cssSizing: {
         width: null,
         height: null,
-      }
+      },
     });
     expect(result.score).toEqual(1);
   });
@@ -86,7 +86,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: null,
           height: null,
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -98,7 +98,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: null,
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -110,7 +110,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: null,
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -124,7 +124,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: null,
           height: null,
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -136,7 +136,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: null,
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -148,7 +148,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: null,
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -161,7 +161,7 @@ describe('Sized images audit', () => {
       cssSizing: {
         width: null,
         height: null,
-      }
+      },
     });
     expect(result.score).toEqual(0);
   });
@@ -174,7 +174,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: null,
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -186,7 +186,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: null,
           height: null,
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -198,7 +198,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: null,
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -210,7 +210,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -222,7 +222,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -234,7 +234,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: null,
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -246,7 +246,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -258,7 +258,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: null,
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -270,7 +270,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -320,7 +320,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: null,
           height: null,
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -332,7 +332,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: null,
           height: null,
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -344,7 +344,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: 'auto',
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -356,7 +356,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: 'auto',
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -368,7 +368,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: null,
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -380,7 +380,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: null,
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -392,7 +392,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: 'auto',
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -404,7 +404,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: 'auto',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -417,7 +417,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: 'auto',
           height: 'auto',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -430,7 +430,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: '100',
           height: '100',
-        }
+        },
       });
       expect(result.score).toEqual(1);
     });
@@ -443,7 +443,7 @@ describe('Sized images audit', () => {
         cssSizing: {
           width: 'auto',
           height: 'auto',
-        }
+        },
       });
       expect(result.score).toEqual(0);
     });
@@ -467,7 +467,7 @@ describe('Sized images audit', () => {
             cssSizing: {
               width: null,
               height: null,
-            }
+            },
           },
           'image1.png'
         ),
@@ -485,7 +485,7 @@ describe('Sized images audit', () => {
             cssSizing: {
               width: null,
               height: null,
-            }
+            },
           },
           'image3.png'
         ),

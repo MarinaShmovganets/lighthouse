@@ -273,7 +273,7 @@ class ImageElements extends Gatherer {
       });
       const width = getEffectiveSizingRule(matchedRules, 'width');
       const height = getEffectiveSizingRule(matchedRules, 'height');
-      // Maintain backcompat for <= 7.0.1
+      // COMPAT: Maintain backcompat for <= 7.0.1
       element.cssWidth = width === null ? undefined : width;
       element.cssHeight = height === null ? undefined : height;
       Object.assign(element, {cssSizing: {width, height}});
