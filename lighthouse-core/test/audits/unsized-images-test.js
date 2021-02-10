@@ -426,9 +426,23 @@ describe('Sized images audit', () => {
     const srcs = result.details.items.map(item => item.url);
     expect(srcs).toEqual(['image1.png', 'image3.png']);
   });
+
+  describe('doesn\'t have enough data', () => {
+    // https://github.com/GoogleChrome/lighthouse/pull/12065#discussion_r573090652
+    it('passes  because we didnt gather the data we need to be conclusive', async () => {
+      const result = await runAudit({
+        attributeWidth: '',
+        attributeHeight: '',
+        cssWidth: undefined,
+        cssHeight: undefined,
+      });
+      expect(result.details.items.length).toEqual(0);
+      expect(result.score).toEqual(1);
+    });
+  });
 });
 
-describe('Size attribute validity check', () => {
+describe('html attribute sized check', () => {
   it('fails if it is empty', () => {
     expect(UnsizedImagesAudit.doesHtmlAttrProvideExplicitSize('')).toEqual(false);
   });
@@ -455,7 +469,7 @@ describe('Size attribute validity check', () => {
   });
 });
 
-describe('CSS size property sized check', () => {
+describe('CSS property sized check', () => {
   it('fails if it was never defined', () => {
     expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize(undefined)).toEqual(false);
   });
