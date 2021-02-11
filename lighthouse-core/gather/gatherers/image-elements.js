@@ -231,12 +231,11 @@ class ImageElements extends Gatherer {
   /**
    * @param {Driver} driver
    * @param {LH.Artifacts.ImageElement} element
-   * @return {Promise<LH.Artifacts.ImageElement>}
    */
   async fetchElementWithSizeInformation(driver, element) {
     const url = element.src;
     if (this._naturalSizeCache.has(url)) {
-      return Object.assign(element, this._naturalSizeCache.get(url));
+      Object.assign(element, this._naturalSizeCache.get(url));
     }
 
     try {
@@ -246,10 +245,10 @@ class ImageElements extends Gatherer {
         args: [url],
       });
       this._naturalSizeCache.set(url, size);
-      return Object.assign(element, size);
+      Object.assign(element, size);
     } catch (_) {
       // determineNaturalSize fails on invalid images, which we treat as non-visible
-      return element;
+      return;
     }
   }
 
@@ -352,7 +351,7 @@ class ImageElements extends Gatherer {
       // CSS images have no natural size information at all. Try to get the actual size if we can.
       // Additional fetch is expensive; don't bother if we don't have a networkRecord for the image.
       if ((element.isPicture || element.isCss || element.srcset) && networkRecord) {
-        element = await this.fetchElementWithSizeInformation(driver, element);
+        await this.fetchElementWithSizeInformation(driver, element);
       }
     }
 
