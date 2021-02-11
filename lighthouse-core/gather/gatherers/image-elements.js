@@ -276,7 +276,7 @@ class ImageElements extends Gatherer {
       // COMPAT: Maintain backcompat for <= 7.0.1
       element.cssWidth = width === null ? undefined : width;
       element.cssHeight = height === null ? undefined : height;
-      Object.assign(element, {_privateCssSizing: {width, height}});
+      element._privateCssSizing = {width, height};
     } catch (err) {
       if (/No node.*found/.test(err.message)) return;
       throw err;
