@@ -403,7 +403,10 @@ declare global {
         displayedHeight: number;
         /** The natural width of the underlying image, uses img.naturalWidth. See https://codepen.io/patrickhulce/pen/PXvQbM for examples. */
         naturalWidth?: number;
-        /** The natural height of the underlying image, uses img.naturalHeight. See https://codepen.io/patrickhulce/pen/PXvQbM for examples. */
+        /**
+         * The natural height of the underlying image, uses img.naturalHeight. See https://codepen.io/patrickhulce/pen/PXvQbM for examples.
+         * TODO: explore revising the shape of this data. https://github.com/GoogleChrome/lighthouse/issues/12077
+         */
         naturalHeight?: number;
         /** The raw width attribute of the image element. CSS images will be set to the empty string. */
         attributeWidth: string;
@@ -411,22 +414,22 @@ declare global {
         attributeHeight: string;
         /**
          * The CSS width property of the image element.
-         * @deprecated Use `element?._privateCssSizing.width` instead.
+         * TODO: explore deprecating this in favor of _privateCssSizing. https://github.com/GoogleChrome/lighthouse/issues/12077
          */
         cssWidth?: string;
         /**
          * The CSS height property of the image element.
-         * @deprecated Use `element?._privateCssSizing.width` instead
+         * TODO: explore deprecating this in favor of _privateCssSizing
          */
         cssHeight?: string;
         /**
          * The width/height of the element as defined by matching CSS rules. Set to `undefined` if the data was not collected.
-         * @private
+         * @deprecated Not really "deprecated", but marking so we finalize naming/shape of this data prior to Lighthouse 8.
          */
         _privateCssSizing?: {
-          /** The CSS width property of the image element. Set to `null` if there was no width set in CSS. */
+          /** The width of the image as expressed by CSS rules. Set to `null` if there was no width set in CSS. */
           width: string | null;
-          /** The CSS height property of the image element. Set to `null` if there was no height set in CSS. */
+          /** The height of the image as expressed by CSS rules. Set to `null` if there was no height set in CSS. */
           height: string | null;
         }
         /** The BoundingClientRect of the element. */

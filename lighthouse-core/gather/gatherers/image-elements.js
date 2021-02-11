@@ -333,7 +333,7 @@ class ImageElements extends Gatherer {
     setTimeout(_ => (reachedGatheringBudget = true), 5000);
     let skippedCount = 0;
 
-    for (let element of elements) {
+    for (const element of elements) {
       // Pull some of our information directly off the network record.
       const networkRecord = indexedNetworkRecords[element.src] || {};
       element.mimeType = networkRecord.mimeType;
