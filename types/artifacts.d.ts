@@ -424,7 +424,7 @@ declare global {
         cssHeight?: string;
         /**
          * The width/height of the element as defined by matching CSS rules. Set to `undefined` if the data was not collected.
-         * @deprecated Not really "deprecated", but marking so we finalize naming/shape of this data prior to Lighthouse 8.
+         * TODO: Finalize naming/shape of this data prior to Lighthouse 8. https://github.com/GoogleChrome/lighthouse/issues/12077
          */
         _privateCssSizing?: {
           /** The width of the image as expressed by CSS rules. Set to `null` if there was no width set in CSS. */
