@@ -102,7 +102,6 @@ class Trace extends FRGatherer {
     });
   }
 
-
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['Trace']>}
