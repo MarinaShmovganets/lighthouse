@@ -136,6 +136,7 @@ class Driver {
     this.evaluateAsync = this.executionContext.evaluateAsync.bind(this.executionContext);
   }
 
+  /** @deprecated - Not available on Fraggle Rock driver. */
   static get traceCategories() {
     return TraceGatherer.getDefaultTraceCategories();
   }
