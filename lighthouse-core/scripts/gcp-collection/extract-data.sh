@@ -31,4 +31,4 @@ for f in lhr-data-*.tar.gz; do
 done
 
 echo "Run to analyze data:"
-echo   node "$DIRNAME/analyze-lhr-data.js" "$OUTPUT_DIR" 'audit-id' > "$LH_ROOT/.tmp/analyze-results.json"
+echo   node "$DIRNAME/analyze-lhr-data.js" "$OUTPUT_DIR" '___AUDIT-ID-GOES-HERE___' > "$LH_ROOT/.tmp/analyze-results.json"
