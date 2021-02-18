@@ -23,7 +23,7 @@ rm -rf extract_failures.log
 
 # Change this line if you want to extract trace data instead.
 i=0
-for f in lhr-data-*.tar.gz; do
+for f in lhr-data-*.tar.gz; do # change to traces-*.tar.gz if extracting trace data
   echo "Extracting $f...\n"
   tar -xzvf $f data || echo "Failed to extract $f\n" >> extract_failures.log
   mv "$OUTPUT_DIR/urls.txt" "$OUTPUT_DIR/urls-$i.txt"
