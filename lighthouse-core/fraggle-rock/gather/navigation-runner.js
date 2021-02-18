@@ -76,6 +76,11 @@ const phaseToPriorPhase = {
 };
 
 /**
+ * Runs the gatherer methods for a particular navigation phase (beforeTimespan/afterNavigation/etc).
+ * All gatherer method return values are stored on the artifact state object, organized by phase.
+ * This method collects required dependencies, runs the applicable gatherer methods, and saves the
+ * result on the artifact state object that was passed as part of `options`.
+ *
  * @param {CollectPhaseArtifactOptions} options
  */
 async function _collectPhaseArtifacts({navigationContext, artifacts, phase}) {
