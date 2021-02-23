@@ -63,7 +63,8 @@ declare global {
       trace?: Trace;
     }
 
-    export type PhaseArtifact = LH.GathererArtifacts[keyof LH.GathererArtifacts] |
+    export type PhaseArtifact = |
+        LH.GathererArtifacts[keyof LH.GathererArtifacts] |
       LH.Artifacts['devtoolsLogs'] |
       LH.Artifacts['traces'] |
       LH.Artifacts['WebAppManifest'] |
