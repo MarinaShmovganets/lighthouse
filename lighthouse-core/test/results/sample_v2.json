@@ -7265,12 +7265,8 @@
         "audits[geolocation-on-start].details.headings[0].text",
         "audits[no-document-write].details.headings[0].text",
         "audits[notification-on-start].details.headings[0].text",
-<<<<<<< HEAD
-        "audits[uses-passive-event-listeners].details.headings[0].text"
-=======
         "audits[uses-passive-event-listeners].details.headings[0].text",
         "audits[font-size].details.headings[0].text"
->>>>>>> origin/master
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnDescription": [
         "audits[errors-in-console].details.headings[1].text"
@@ -7305,8 +7301,7 @@
         "audits[unminified-javascript].details.headings[0].label",
         "audits[uses-webp-images].details.headings[1].label",
         "audits[uses-text-compression].details.headings[0].label",
-        "audits[legacy-javascript].details.headings[0].label",
-        "audits[uses-http2].details.headings[0].label"
+        "audits[legacy-javascript].details.headings[0].label"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnTimeSpent": [
         "audits[server-response-time].details.headings[1].label",
