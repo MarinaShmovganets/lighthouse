@@ -32,7 +32,12 @@ class TreemapViewer {
       scripts: scriptNodes,
     };
 
-    /** @type {WeakMap<LH.Treemap.Node, LH.Treemap.Node>} */
+    /**
+     * Used to associate every node with a particular depth one node,
+     * so that all nodes from the same depth one node can be colored
+     * the same.
+     * @type {WeakMap<LH.Treemap.Node, LH.Treemap.Node>}
+     */
     this.nodeToDepthOneNodeMap = new WeakMap();
     for (const depthOneNodes of Object.values(this.depthOneNodesByGroup)) {
       for (const depthOneNode of depthOneNodes) {
