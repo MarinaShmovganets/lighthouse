@@ -86,13 +86,17 @@ class UsesRelPreloadAudit extends Audit {
     }
 
     // A failed preload attempt will manifest as a URL that was requested twice within the same frame.
-    // Once with `isLinkPreload` AND again without `isLinkPreload`.
+    // Once with `isLinkPreload` AND again without `isLinkPreload` but not hitting the cache.
     const duplicateRequestsAfterPreload = requests.filter(request => {
       const preloadURLsForFrame = preloadURLsByFrame.get(request.frameId);
       if (!preloadURLsForFrame) return false;
       if (!preloadURLsForFrame.has(request.url)) return false;
-      return !request.isLinkPreload;
+      const fromCache = request.fromDiskCache ||
+        request.fromMemoryCache ||
+        request.fromPrefetchCache;
+      return !fromCache && !request.isLinkPreload;
     });
+
     return new Set(duplicateRequestsAfterPreload.map(req => req.url));
   }
 
@@ -149,11 +153,10 @@ class UsesRelPreloadAudit extends Audit {
     modifiedGraph.traverse(node => {
       if (node.type !== 'network') return;
 
-      const networkNode = /** @type {LH.Gatherer.Simulation.GraphNetworkNode} */ (node);
       if (node.isMainDocument()) {
-        mainDocumentNode = networkNode;
-      } else if (networkNode.record && urls.has(networkNode.record.url)) {
-        nodesToPreload.push(networkNode);
+        mainDocumentNode = node;
+      } else if (node.record && urls.has(node.record.url)) {
+        nodesToPreload.push(node);
       }
     });
 

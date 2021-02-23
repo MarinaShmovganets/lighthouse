@@ -13,7 +13,6 @@ const expectations = [
   {
     artifacts: {
       HostFormFactor: 'desktop',
-      TestedAsMobileDevice: true,
       Stacks: [{
         id: 'jquery',
       }, {
@@ -218,8 +217,13 @@ const expectations = [
                 url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
               },
               {
-                source: 'Runtime.exception',
+                source: 'exception',
                 description: /^Error: A distinctive error\s+at http:\/\/localhost:10200\/dobetterweb\/dbw_tester.html:\d+:\d+$/,
+                url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+              },
+              {
+                source: 'console.error',
+                description: 'Error! Error!',
                 url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
               },
               {
@@ -398,15 +402,15 @@ const expectations = [
         },
         'dom-size': {
           score: 1,
-          numericValue: 148,
+          numericValue: 149,
           details: {
             items: [
-              {statistic: 'Total DOM Elements', value: '148'},
-              {statistic: 'Maximum DOM Depth', value: '4'},
+              {statistic: 'Total DOM Elements', value: 149},
+              {statistic: 'Maximum DOM Depth', value: 4},
               {
                 statistic: 'Maximum Child Elements',
-                value: '100',
-                element: {value: '<div id="shadow-root-container">'},
+                value: 100,
+                node: {snippet: '<div id="shadow-root-container">'},
               },
             ],
           },
@@ -425,6 +429,30 @@ const expectations = [
             }],
           },
         },
+        'full-page-screenshot': {
+          score: null,
+          details: {
+            type: 'full-page-screenshot',
+            screenshot: {
+              width: 360,
+              // Allow for differences in platforms.
+              height: '3755±5',
+              data: /^data:image\/jpeg;.{500,}/,
+            },
+            nodes: {
+              'page-0-IMG': {
+                // Test that these are numbers and in the ballpark.
+                top: '650±50',
+                bottom: '650±50',
+                left: '10±10',
+                right: '120±20',
+                width: '120±20',
+                height: '20±20',
+              },
+              // And then many more nodes.
+            },
+          },
+        },
       },
     },
   },
@@ -433,8 +461,9 @@ const expectations = [
       InspectorIssues: {
         mixedContent: [
           {
+            _minChromiumMilestone: 88, // We went from Warning to AutoUpgrade in https://chromium-review.googlesource.com/c/chromium/src/+/2480817
             resourceType: 'Image',
-            resolutionStatus: 'MixedContentWarning',
+            resolutionStatus: 'MixedContentAutomaticallyUpgraded',
             insecureURL: 'http://www.mixedcontentexamples.com/Content/Test/steveholt.jpg',
             mainResourceURL: 'https://www.mixedcontentexamples.com/Test/NonSecureImage',
             request: {

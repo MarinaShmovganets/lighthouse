@@ -35,6 +35,15 @@ function getTableRows(tableEl) {
   return Array.from(tableEl.tBodies[0].rows);
 }
 
+function getAppsOrigin() {
+  const isVercel = window.location.host.endsWith('.vercel.app');
+  const isDev = new URLSearchParams(window.location.search).has('dev');
+
+  if (isVercel) return `https://${window.location.host}/gh-pages`;
+  if (isDev) return 'http://localhost:8000';
+  return 'https://googlechrome.github.io/lighthouse';
+}
+
 class ReportUIFeatures {
   /**
    * @param {DOM} dom
@@ -138,8 +147,7 @@ class ReportUIFeatures {
     const hasMetricError = report.categories.performance && report.categories.performance.auditRefs
       .some(audit => Boolean(audit.group === 'metrics' && report.audits[audit.id].errorMessage));
     if (hasMetricError) {
-      const toggleInputEl = /** @type {HTMLInputElement} */ (
-        this._dom.find('.lh-metrics-toggle__input', this._document));
+      const toggleInputEl = this._dom.find('input.lh-metrics-toggle__input', this._document);
       toggleInputEl.checked = true;
     }
 
@@ -163,7 +171,7 @@ class ReportUIFeatures {
 
   /**
    * Finds the first scrollable ancestor of `element`. Falls back to the document.
-   * @param {HTMLElement} element
+   * @param {Element} element
    * @return {Node}
    */
   _getScrollParent(element) {
@@ -219,8 +227,9 @@ class ReportUIFeatures {
   _setupThirdPartyFilter() {
     // Some audits should not display the third party filter option.
     const thirdPartyFilterAuditExclusions = [
-      // This audit deals explicitly with third party resources.
+      // These audits deal explicitly with third party resources.
       'uses-rel-preconnect',
+      'third-party-facades',
     ];
     // Some audits should hide third party by default.
     const thirdPartyFilterAuditHideByDefault = [
@@ -229,8 +238,7 @@ class ReportUIFeatures {
     ];
 
     // Get all tables with a text url column.
-    /** @type {Array<HTMLTableElement>} */
-    const tables = Array.from(this._document.querySelectorAll('.lh-table'));
+    const tables = Array.from(this._document.querySelectorAll('table.lh-table'));
     const tablesWithUrls = tables
       .filter(el =>
         el.querySelector('td.lh-table-column--url, td.lh-table-column--source-location'))
@@ -246,8 +254,7 @@ class ReportUIFeatures {
 
       // create input box
       const filterTemplate = this._dom.cloneTemplate('#tmpl-lh-3p-filter', this._templateContext);
-      const filterInput =
-        /** @type {HTMLInputElement} */ (this._dom.find('input', filterTemplate));
+      const filterInput = this._dom.find('input', filterTemplate);
       const id = `lh-3p-filter-label--${index}`;
 
       filterInput.id = id;
@@ -302,8 +309,11 @@ class ReportUIFeatures {
 
   _setupElementScreenshotOverlay() {
     const fullPageScreenshot =
-      this.json.audits['full-page-screenshot'] && this.json.audits['full-page-screenshot'].details;
-    if (!fullPageScreenshot || fullPageScreenshot.type !== 'full-page-screenshot') return;
+      this.json.audits['full-page-screenshot'] &&
+      this.json.audits['full-page-screenshot'].details &&
+      this.json.audits['full-page-screenshot'].details.type === 'full-page-screenshot' &&
+      this.json.audits['full-page-screenshot'].details;
+    if (!fullPageScreenshot) return;
 
     ElementScreenshotRenderer.installOverlayFeature(
       this._dom, this._templateContext, fullPageScreenshot);
@@ -324,8 +334,7 @@ class ReportUIFeatures {
     for (const rowEl of rowEls) {
       if (rowEl.classList.contains('lh-sub-item-row')) continue;
 
-      /** @type {HTMLElement|null} */
-      const urlItem = rowEl.querySelector('.lh-text__url');
+      const urlItem = rowEl.querySelector('div.lh-text__url');
       if (!urlItem) continue;
 
       const datasetUrl = urlItem.dataset.url;
@@ -339,19 +348,10 @@ class ReportUIFeatures {
     return thirdPartyRows;
   }
 
-  /**
-   * From a table, finds and returns URL items.
-   * @param {HTMLTableElement} tableEl
-   * @return {Array<HTMLElement>}
-   */
-  _getUrlItems(tableEl) {
-    return this._dom.findAll('.lh-text__url', tableEl);
-  }
-
   _setupStickyHeaderElements() {
-    this.topbarEl = this._dom.find('.lh-topbar', this._document);
-    this.scoreScaleEl = this._dom.find('.lh-scorescale', this._document);
-    this.stickyHeaderEl = this._dom.find('.lh-sticky-header', this._document);
+    this.topbarEl = this._dom.find('div.lh-topbar', this._document);
+    this.scoreScaleEl = this._dom.find('div.lh-scorescale', this._document);
+    this.stickyHeaderEl = this._dom.find('div.lh-sticky-header', this._document);
 
     // Highlighter will be absolutely positioned at first gauge, then transformed on scroll.
     this.highlightEl = this._dom.createChildOf(this.stickyHeaderEl, 'div', 'lh-highlighter');
@@ -457,8 +457,7 @@ class ReportUIFeatures {
         break;
       }
       case 'open-viewer': {
-        const viewerPath = '/lighthouse/viewer/';
-        ReportUIFeatures.openTabAndSendJsonReport(this.json, viewerPath);
+        ReportUIFeatures.openTabAndSendJsonReportToViewer(this.json);
         break;
       }
       case 'save-gist': {
@@ -492,33 +491,64 @@ class ReportUIFeatures {
   /**
    * Opens a new tab to the online viewer and sends the local page's JSON results
    * to the online viewer using postMessage.
-   * @param {LH.Result} reportJson
-   * @param {string} viewerPath
+   * @param {LH.Result} json
    * @protected
    */
-  static openTabAndSendJsonReport(reportJson, viewerPath) {
-    const VIEWER_ORIGIN = 'https://googlechrome.github.io';
+  static openTabAndSendJsonReportToViewer(json) {
+    // The popup's window.name is keyed by version+url+fetchTime, so we reuse/select tabs correctly
+    // @ts-ignore - If this is a v2 LHR, use old `generatedTime`.
+    const fallbackFetchTime = /** @type {string} */ (json.generatedTime);
+    const fetchTime = json.fetchTime || fallbackFetchTime;
+    const windowName = `${json.lighthouseVersion}-${json.requestedUrl}-${fetchTime}`;
+    const url = getAppsOrigin() + '/viewer/';
+    ReportUIFeatures.openTabAndSendData({lhr: json}, url, windowName);
+  }
+
+  /**
+   * Opens a new tab to the treemap app and sends the JSON results using postMessage.
+   * @param {LH.Result} json
+   */
+  static openTreemap(json) {
+    const treemapDebugData = /** @type {LH.Audit.Details.DebugData} */ (
+      json.audits['script-treemap-data'].details);
+    if (!treemapDebugData) {
+      throw new Error('no script treemap data found');
+    }
+
+    const windowName = `treemap-${json.requestedUrl}`;
+    /** @type {LH.Treemap.Options} */
+    const treemapOptions = {
+      lhr: json,
+    };
+    const url = getAppsOrigin() + '/treemap/';
+    ReportUIFeatures.openTabAndSendData(treemapOptions, url, windowName);
+  }
+
+  /**
+   * Opens a new tab to an external page and sends data using postMessage.
+   * @param {{lhr: LH.Result} | LH.Treemap.Options} data
+   * @param {string} url
+   * @param {string} windowName
+   * @protected
+   */
+  static openTabAndSendData(data, url, windowName) {
+    const origin = new URL(url).origin;
     // Chrome doesn't allow us to immediately postMessage to a popup right
     // after it's created. Normally, we could also listen for the popup window's
     // load event, however it is cross-domain and won't fire. Instead, listen
     // for a message from the target app saying "I'm open".
-    const json = reportJson;
     window.addEventListener('message', function msgHandler(messageEvent) {
-      if (messageEvent.origin !== VIEWER_ORIGIN) {
+      if (messageEvent.origin !== origin) {
         return;
       }
       if (popup && messageEvent.data.opened) {
-        popup.postMessage({lhresults: json}, VIEWER_ORIGIN);
+        popup.postMessage(data, origin);
         window.removeEventListener('message', msgHandler);
       }
     });
 
     // The popup's window.name is keyed by version+url+fetchTime, so we reuse/select tabs correctly
-    // @ts-expect-error - If this is a v2 LHR, use old `generatedTime`.
-    const fallbackFetchTime = /** @type {string} */ (json.generatedTime);
-    const fetchTime = json.fetchTime || fallbackFetchTime;
-    const windowName = `${json.lighthouseVersion}-${json.requestedUrl}-${fetchTime}`;
-    const popup = window.open(`${VIEWER_ORIGIN}${viewerPath}`, windowName);
+    const popup = window.open(url, windowName);
   }
 
   /**
@@ -527,8 +557,7 @@ class ReportUIFeatures {
    * open a `<details>` element.
    */
   expandAllDetails() {
-    const details = /** @type {Array<HTMLDetailsElement>} */ (this._dom.findAll(
-        '.lh-categories details', this._document));
+    const details = this._dom.findAll('.lh-categories details', this._document);
     details.map(detail => detail.open = true);
   }
 
@@ -537,8 +566,7 @@ class ReportUIFeatures {
    * open a `<details>` element.
    */
   collapseAllDetails() {
-    const details = /** @type {Array<HTMLDetailsElement>} */ (this._dom.findAll(
-        '.lh-categories details', this._document));
+    const details = this._dom.findAll('.lh-categories details', this._document);
     details.map(detail => detail.open = false);
   }
 
@@ -551,10 +579,9 @@ class ReportUIFeatures {
     if ('onbeforeprint' in self) {
       self.addEventListener('afterprint', this.collapseAllDetails);
     } else {
-      const win = /** @type {Window} */ (self);
       // Note: FF implements both window.onbeforeprint and media listeners. However,
       // it doesn't matchMedia doesn't fire when matching 'print'.
-      win.matchMedia('print').addListener(mql => {
+      self.matchMedia('print').addListener(mql => {
         if (mql.matches) {
           this.expandAllDetails();
         } else {
@@ -676,11 +703,11 @@ class DropDown {
    * @param {function(MouseEvent): any} menuClickHandler
    */
   setup(menuClickHandler) {
-    this._toggleEl = this._dom.find('.lh-tools__button', this._dom.document());
+    this._toggleEl = this._dom.find('button.lh-tools__button', this._dom.document());
     this._toggleEl.addEventListener('click', this.onToggleClick);
     this._toggleEl.addEventListener('keydown', this.onToggleKeydown);
 
-    this._menuEl = this._dom.find('.lh-tools__dropdown', this._dom.document());
+    this._menuEl = this._dom.find('div.lh-tools__dropdown', this._dom.document());
     this._menuEl.addEventListener('keydown', this.onMenuKeydown);
     this._menuEl.addEventListener('click', menuClickHandler);
   }
@@ -805,11 +832,11 @@ class DropDown {
 
   /**
    * @param {Array<Node>} allNodes
-   * @param {?Node=} startNode
-   * @returns {Node}
+   * @param {?HTMLElement=} startNode
+   * @returns {HTMLElement}
    */
   _getNextSelectableNode(allNodes, startNode) {
-    const nodes = allNodes.filter((node) => {
+    const nodes = allNodes.filter(/** @return {node is HTMLElement} */ (node) => {
       if (!(node instanceof HTMLElement)) {
         return false;
       }
@@ -836,21 +863,21 @@ class DropDown {
   }
 
   /**
-   * @param {?Element=} startEl
+   * @param {?HTMLElement=} startEl
    * @returns {HTMLElement}
    */
   _getNextMenuItem(startEl) {
     const nodes = Array.from(this._menuEl.childNodes);
-    return /** @type {HTMLElement} */ (this._getNextSelectableNode(nodes, startEl));
+    return this._getNextSelectableNode(nodes, startEl);
   }
 
   /**
-   * @param {?Element=} startEl
+   * @param {?HTMLElement=} startEl
    * @returns {HTMLElement}
    */
   _getPreviousMenuItem(startEl) {
     const nodes = Array.from(this._menuEl.childNodes).reverse();
-    return /** @type {HTMLElement} */ (this._getNextSelectableNode(nodes, startEl));
+    return this._getNextSelectableNode(nodes, startEl);
   }
 }
 

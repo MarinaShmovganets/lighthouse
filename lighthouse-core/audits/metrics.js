@@ -11,7 +11,14 @@ const ComputedTimingSummary = require('../computed/metrics/timing-summary.js');
 /** @type {Set<keyof LH.Artifacts.TimingSummary>} */
 const DECIMAL_METRIC_KEYS = new Set([
   'cumulativeLayoutShift',
+  'cumulativeLayoutShiftAllFrames',
   'observedCumulativeLayoutShift',
+  'observedCumulativeLayoutShiftAllFrames',
+  'layoutShiftAvgSessionGap5s',
+  'layoutShiftMaxSessionGap1s',
+  'layoutShiftMaxSessionGap1sLimit5s',
+  'layoutShiftMaxSliding1s',
+  'layoutShiftMaxSliding300ms',
 ]);
 
 class Metrics extends Audit {

@@ -14,6 +14,8 @@ const I18n = require('../../../../report/html/renderer/i18n.js');
 const DetailsRenderer = require('../../../../report/html/renderer/details-renderer.js');
 const SnippetRenderer = require('../../../../report/html/renderer/snippet-renderer.js');
 const CrcDetailsRenderer = require('../../../../report/html/renderer/crc-details-renderer.js');
+const ElementScreenshotRenderer =
+  require('../../../../report/html/renderer/element-screenshot-renderer.js');
 
 const TEMPLATE_FILE = fs.readFileSync(__dirname +
     '/../../../../report/html/templates.html', 'utf8');
@@ -23,15 +25,20 @@ const TEMPLATE_FILE = fs.readFileSync(__dirname +
 describe('DetailsRenderer', () => {
   let renderer;
 
+  function createRenderer(options) {
+    const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
+    const dom = new DOM(document);
+    renderer = new DetailsRenderer(dom, options);
+    renderer.setTemplateContext(dom.document());
+  }
+
   beforeAll(() => {
     global.Util = Util;
     global.Util.i18n = new I18n('en', {...Util.UIStrings});
     global.CriticalRequestChainRenderer = CrcDetailsRenderer;
     global.SnippetRenderer = SnippetRenderer;
-    const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
-    const dom = new DOM(document);
-    renderer = new DetailsRenderer(dom);
-    renderer.setTemplateContext(dom.document());
+    global.ElementScreenshotRenderer = ElementScreenshotRenderer;
+    createRenderer();
   });
 
   afterAll(() => {
@@ -39,6 +46,7 @@ describe('DetailsRenderer', () => {
     global.Util = undefined;
     global.CriticalRequestChainRenderer = undefined;
     global.SnippetRenderer = undefined;
+    global.ElementScreenshotRenderer = undefined;
   });
 
   describe('render', () => {
@@ -370,27 +378,92 @@ describe('DetailsRenderer', () => {
       assert.equal(linkEl.textContent, linkText);
     });
 
-    it('renders node values', () => {
-      const node = {
-        type: 'node',
-        path: '3,HTML,1,BODY,5,DIV,0,H2',
-        selector: 'h2',
-        snippet: '<h2>Do better web tester page</h2>',
-      };
-      const details = {
-        type: 'table',
-        headings: [{key: 'content', itemType: 'node', text: 'Heading'}],
-        items: [{content: node}],
-      };
+    describe('renders node values', () => {
+      it('renders', () => {
+        const node = {
+          type: 'node',
+          path: '3,HTML,1,BODY,5,DIV,0,H2',
+          selector: 'h2',
+          snippet: '<h2>Do better web tester page</h2>',
+        };
+        const details = {
+          type: 'table',
+          headings: [{key: 'content', itemType: 'node', text: 'Heading'}],
+          items: [{content: node}],
+        };
 
-      const el = renderer.render(details);
-      const nodeEl = el.querySelector('.lh-node');
-      assert.strictEqual(nodeEl.localName, 'span');
-      assert.equal(nodeEl.textContent, node.snippet);
-      assert.equal(nodeEl.title, node.selector);
-      assert.equal(nodeEl.getAttribute('data-path'), node.path);
-      assert.equal(nodeEl.getAttribute('data-selector'), node.selector);
-      assert.equal(nodeEl.getAttribute('data-snippet'), node.snippet);
+        const el = renderer.render(details);
+        const nodeEl = el.querySelector('.lh-node');
+        assert.strictEqual(nodeEl.localName, 'span');
+        assert.equal(nodeEl.textContent, node.snippet);
+        assert.equal(nodeEl.title, node.selector);
+        assert.equal(nodeEl.getAttribute('data-path'), node.path);
+        assert.equal(nodeEl.getAttribute('data-selector'), node.selector);
+        assert.equal(nodeEl.getAttribute('data-snippet'), node.snippet);
+      });
+
+      it('renders screenshot using FullPageScreenshot rect data', () => {
+        createRenderer({
+          fullPageScreenshot: {
+            screenshot: {
+              data: '',
+              width: 1000,
+              height: 1000,
+            },
+            nodes: {
+              'page-0-0': {left: 1, right: 101, top: 1, bottom: 101, width: 100, height: 100},
+            },
+          },
+        });
+
+        const node = {
+          type: 'node',
+          lhId: 'page-0-0',
+          boundingRect: {left: 0, right: 100, top: 0, bottom: 100, width: 100, height: 100},
+        };
+        const details = {
+          type: 'table',
+          headings: [{key: 'content', itemType: 'node', text: 'Heading'}],
+          items: [{content: node}],
+        };
+
+        const el = renderer.render(details);
+        const nodeEl = el.querySelector('.lh-node');
+        const screenshotEl = nodeEl.querySelector('.lh-element-screenshot');
+        assert.equal(screenshotEl.dataset['rectLeft'], '1');
+        assert.equal(screenshotEl.dataset['rectTop'], '1');
+      });
+
+      it('does not render screenshot if rect missing in FullPageScreenshot', () => {
+        createRenderer({
+          fullPageScreenshot: {
+            screenshot: {
+              data: '',
+              width: 1000,
+              height: 1000,
+            },
+            nodes: {
+              'ignore-me': {left: 1, right: 101, top: 1, bottom: 101, width: 100, height: 100},
+            },
+          },
+        });
+
+        const node = {
+          type: 'node',
+          lhId: 'page-0-0',
+          boundingRect: {left: 0, right: 100, top: 0, bottom: 100, width: 100, height: 100},
+        };
+        const details = {
+          type: 'table',
+          headings: [{key: 'content', itemType: 'node', text: 'Heading'}],
+          items: [{content: node}],
+        };
+
+        const el = renderer.render(details);
+        const nodeEl = el.querySelector('.lh-node');
+        const screenshotEl = nodeEl.querySelector('.lh-element-screenshot');
+        expect(screenshotEl).toBeNull();
+      });
     });
 
     it('renders source-location values', () => {
@@ -413,6 +486,37 @@ describe('DetailsRenderer', () => {
       assert.strictEqual(sourceLocationEl.localName, 'div');
       assert.equal(anchorEl.href, 'https://www.example.com/script.js');
       assert.equal(sourceLocationEl.textContent, '/script.js:11:5(www.example.com)');
+      assert.equal(sourceLocationEl.getAttribute('data-source-url'), sourceLocation.url);
+      assert.equal(sourceLocationEl.getAttribute('data-source-line'), `${sourceLocation.line}`);
+      assert.equal(sourceLocationEl.getAttribute('data-source-column'), `${sourceLocation.column}`);
+    });
+
+    it('renders source-location values using source map data', () => {
+      const sourceLocation = {
+        type: 'source-location',
+        url: 'https://www.example.com/script.js',
+        urlProvider: 'network',
+        line: 10,
+        column: 5,
+        original: {
+          file: 'main.js',
+          line: 100,
+          column: 10,
+        },
+      };
+      const details = {
+        type: 'table',
+        headings: [{key: 'content', itemType: 'source-location', text: 'Heading'}],
+        items: [{content: sourceLocation}],
+      };
+
+      const el = renderer.render(details);
+      const sourceLocationEl = el.querySelector('.lh-source-location.lh-link');
+      assert.strictEqual(sourceLocationEl.localName, 'a');
+      assert.equal(sourceLocationEl.href, 'https://www.example.com/script.js');
+      assert.equal(sourceLocationEl.textContent, 'main.js:101:10');
+      assert.equal(sourceLocationEl.title, 'maps to generated location https://www.example.com/script.js:11:5');
+      // DevTools should still use the generated location.
       assert.equal(sourceLocationEl.getAttribute('data-source-url'), sourceLocation.url);
       assert.equal(sourceLocationEl.getAttribute('data-source-line'), `${sourceLocation.line}`);
       assert.equal(sourceLocationEl.getAttribute('data-source-column'), `${sourceLocation.column}`);

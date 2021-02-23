@@ -94,6 +94,7 @@ class NetworkRequest {
     this.resourceSize = 0;
     this.fromDiskCache = false;
     this.fromMemoryCache = false;
+    this.fromPrefetchCache = false;
 
     /** @type {LightriderStatistics|undefined} Extra timing information available only when run in Lightrider. */
     this.lrStatistics = undefined;
@@ -110,7 +111,8 @@ class NetworkRequest {
     this.failed = false;
     this.localizedFailDescription = '';
 
-    this.initiator = /** @type {LH.Crdp.Network.Initiator} */ ({type: 'other'});
+    /** @type {LH.Crdp.Network.Initiator} */
+    this.initiator = {type: 'other'};
     /** @type {LH.Crdp.Network.ResourceTiming|undefined} */
     this.timing = undefined;
     /** @type {LH.Crdp.Network.ResourceType|undefined} */
@@ -145,10 +147,10 @@ class NetworkRequest {
   }
 
   /**
-   * @param {NetworkRequest} initiator
+   * @param {NetworkRequest} initiatorRequest
    */
-  setInitiatorRequest(initiator) {
-    this.initiatorRequest = initiator;
+  setInitiatorRequest(initiatorRequest) {
+    this.initiatorRequest = initiatorRequest;
   }
 
   /**
@@ -291,6 +293,9 @@ class NetworkRequest {
 
     this.transferSize = response.encodedDataLength;
     if (typeof response.fromDiskCache === 'boolean') this.fromDiskCache = response.fromDiskCache;
+    if (typeof response.fromPrefetchCache === 'boolean') {
+      this.fromPrefetchCache = response.fromPrefetchCache;
+    }
 
     this.statusCode = response.status;
 

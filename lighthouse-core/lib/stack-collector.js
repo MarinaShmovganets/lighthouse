@@ -14,6 +14,7 @@
 'use strict';
 
 const fs = require('fs');
+const log = require('lighthouse-logger');
 const libDetectorSource = fs.readFileSync(
   require.resolve('js-library-detector/library/libraries.js'), 'utf8');
 
@@ -38,7 +39,7 @@ const libDetectorSource = fs.readFileSync(
 /**
  * Obtains a list of detected JS libraries and their versions.
  */
-/* istanbul ignore next */
+/* c8 ignore start */
 async function detectLibraries() {
   /** @type {JSLibrary[]} */
   const libraries = [];
@@ -73,27 +74,31 @@ async function detectLibraries() {
 
   return libraries;
 }
+/* c8 ignore stop */
 
 /**
  * @param {LH.Gatherer.PassContext} passContext
  * @return {Promise<LH.Artifacts['Stacks']>}
  */
 async function collectStacks(passContext) {
-  const expression = `(function () {
-    ${libDetectorSource};
-    return (${detectLibraries.toString()}());
-  })()`;
+  const status = {msg: 'Collect stacks', id: 'lh:gather:collectStacks'};
+  log.time(status);
 
-  /** @type {JSLibrary[]} */
-  const jsLibraries = await passContext.driver.evaluateAsync(expression);
+  const jsLibraries = await passContext.driver.executionContext.evaluate(detectLibraries, {
+    args: [],
+    deps: [libDetectorSource],
+  });
 
-  return jsLibraries.map(lib => ({
-    detector: /** @type {'js'} */ ('js'),
+  /** @type {LH.Artifacts['Stacks']} */
+  const stacks = jsLibraries.map(lib => ({
+    detector: 'js',
     id: lib.id,
     name: lib.name,
     version: typeof lib.version === 'number' ? String(lib.version) : (lib.version || undefined),
     npm: lib.npm || undefined,
   }));
+  log.timeEnd(status);
+  return stacks;
 }
 
 module.exports = collectStacks;

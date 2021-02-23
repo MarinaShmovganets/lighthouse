@@ -12,12 +12,11 @@
 /**
  * Guaranteed context.querySelector. Always returns an element or throws if
  * nothing matches query.
- * @param {string} query
+ * @template {string} T
+ * @param {T} query
  * @param {ParentNode} context
- * @return {HTMLElement}
  */
 function find(query, context) {
-  /** @type {?HTMLElement} */
   const result = context.querySelector(query);
   if (result === null) {
     throw new Error(`query ${query} not found`);
@@ -67,7 +66,7 @@ class LighthouseReportViewer {
     gistUrlInput.addEventListener('change', this._onUrlInputChange);
 
     // Hidden file input to trigger manual file selector.
-    const fileInput = find('#hidden-file-input', document);
+    const fileInput = find('input#hidden-file-input', document);
     fileInput.addEventListener('change', e => {
       if (!e.target) {
         return;
@@ -178,6 +177,10 @@ class LighthouseReportViewer {
     if ('lhr' in json) {
       json = /** @type {LH.RunnerResult} */ (json).lhr;
     }
+    // Allow users to drop in PSI's json
+    if ('lighthouseResult' in json) {
+      json = /** @type {{lighthouseResult: LH.Result}} */ (json).lighthouseResult;
+    }
 
     // Install as global for easier debugging
     // @ts-expect-error
@@ -279,8 +282,7 @@ class LighthouseReportViewer {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = function(e) {
-        const readerTarget = /** @type {?FileReader} */ (e.target);
-        const result = /** @type {?string} */ (readerTarget && readerTarget.result);
+        const result = /** @type {?string} */ (e.target && e.target.result);
         if (!result) {
           reject('Could not read file');
           return;
@@ -400,8 +402,8 @@ class LighthouseReportViewer {
    */
   _listenForMessages() {
     window.addEventListener('message', e => {
-      if (e.source === self.opener && e.data.lhresults) {
-        this._replaceReportHtml(e.data.lhresults);
+      if (e.source === self.opener && (e.data.lhr || e.data.lhresults)) {
+        this._replaceReportHtml(e.data.lhr || e.data.lhresults);
 
         if (self.opener && !self.opener.closed) {
           self.opener.postMessage({rendered: true}, '*');
