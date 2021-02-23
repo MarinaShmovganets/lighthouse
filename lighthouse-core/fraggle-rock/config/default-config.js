@@ -26,11 +26,15 @@ const defaultConfig = {
     {id: 'FormElements', gatherer: 'form-elements'},
     {id: 'GlobalListeners', gatherer: 'global-listeners'},
     {id: 'IframeElements', gatherer: 'iframe-elements'},
+    {id: 'InstallabillityErrors', gatherer: 'installability-errors'},
     {id: 'MetaElements', gatherer: 'meta-elements'},
+    {id: 'NetworkUserAgent', gatherer: 'network-user-agent'},
     {id: 'PasswordInputsWithPreventedPaste', gatherer: 'dobetterweb/password-inputs-with-prevented-paste'},
     {id: 'RobotsTxt', gatherer: 'seo/robots-txt'},
+    {id: 'Stacks', gatherer: 'stacks'},
     {id: 'TapTargets', gatherer: 'seo/tap-targets'},
     {id: 'ViewportDimensions', gatherer: 'viewport-dimensions'},
+    {id: 'WebAppManifest', gatherer: 'web-app-manifest'},
     /* eslint-enable max-len */
 
     // Artifact copies are renamed for compatibility with legacy artifacts.
@@ -56,11 +60,15 @@ const defaultConfig = {
         'FormElements',
         'GlobalListeners',
         'IframeElements',
+        'InstallabillityErrors',
         'MetaElements',
+        'NetworkUserAgent',
         'PasswordInputsWithPreventedPaste',
         'RobotsTxt',
+        'Stacks',
         'TapTargets',
         'ViewportDimensions',
+        'WebAppManifest',
 
         // Compat artifacts come last.
         'devtoolsLogs',
