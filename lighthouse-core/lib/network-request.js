@@ -32,7 +32,7 @@ const HEADER_PROTOCOL_IS_H2 = 'X-ProtocolIsH2';
 
 /**
  * @typedef ParsedURL
- * @property {string} scheme Equilvalent to a `new URL(url).protocol` BUT w/o the trailing colon (:)
+ * @property {string} scheme Equivalent to a `new URL(url).protocol` BUT w/o the trailing colon (:)
  * @property {string} host Equivalent to a `new URL(url).hostname`
  * @property {string} securityOrigin
  */
