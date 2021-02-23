@@ -25,19 +25,18 @@ class TreemapViewer {
     }
 
     /** @type {LH.Treemap.Node[]} */
-    const scriptRootNodes = treemapDebugData.treemapData;
-
-    /** @type {WeakMap<LH.Treemap.Node, LH.Treemap.Node>} */
-    this.nodeToRootNodeMap = new WeakMap();
+    const scriptNodes = treemapDebugData.treemapData;
 
     /** @type {{[group: string]: LH.Treemap.Node[]}} */
-    this.rootNodesByGroup = {
-      scripts: scriptRootNodes,
+    this.depthOneNodesByGroup = {
+      scripts: scriptNodes,
     };
 
-    for (const rootNodes of Object.values(this.rootNodesByGroup)) {
-      for (const rootNode of rootNodes) {
-        TreemapUtil.walk(rootNode, node => this.nodeToRootNodeMap.set(node, rootNode));
+    /** @type {WeakMap<LH.Treemap.Node, LH.Treemap.Node>} */
+    this.nodeToDepthOneNodeMap = new WeakMap();
+    for (const depthOneNodes of Object.values(this.depthOneNodesByGroup)) {
+      for (const depthOneNode of depthOneNodes) {
+        TreemapUtil.walk(depthOneNode, node => this.nodeToDepthOneNodeMap.set(node, depthOneNode));
       }
     }
 
@@ -57,7 +56,7 @@ class TreemapViewer {
     urlEl.textContent = this.documentUrl;
     urlEl.href = this.documentUrl;
 
-    const bytes = this.wrapNodesInNewRootNode(this.rootNodesByGroup.scripts).resourceBytes;
+    const bytes = this.wrapNodesInNewRootNode(this.depthOneNodesByGroup.scripts).resourceBytes;
     TreemapUtil.find('.lh-header--size').textContent = TreemapUtil.formatBytes(bytes);
   }
 
@@ -71,6 +70,7 @@ class TreemapViewer {
       if (!(e.target instanceof HTMLElement)) return;
       const nodeEl = e.target.closest('.webtreemap-node');
       if (!nodeEl) return;
+
       this.updateColors();
     });
 
@@ -78,6 +78,7 @@ class TreemapViewer {
       if (!(e.target instanceof HTMLElement)) return;
       const nodeEl = e.target.closest('.webtreemap-node');
       if (!nodeEl) return;
+
       nodeEl.classList.add('webtreemap-node--hover');
     });
 
@@ -85,6 +86,7 @@ class TreemapViewer {
       if (!(e.target instanceof HTMLElement)) return;
       const nodeEl = e.target.closest('.webtreemap-node');
       if (!nodeEl) return;
+
       nodeEl.classList.remove('webtreemap-node--hover');
     });
   }
@@ -106,8 +108,8 @@ class TreemapViewer {
   show() {
     const group = 'scripts';
 
-    const rootNodes = this.rootNodesByGroup[group];
-    this.currentTreemapRoot = this.wrapNodesInNewRootNode(rootNodes);
+    const depthOneNodes = this.depthOneNodesByGroup[group];
+    this.currentTreemapRoot = this.wrapNodesInNewRootNode(depthOneNodes);
     renderViewModeOptions(this.currentTreemapRoot.resourceBytes);
 
     TreemapUtil.walk(this.currentTreemapRoot, node => {
@@ -167,9 +169,9 @@ class TreemapViewer {
 
   updateColors() {
     TreemapUtil.walk(this.currentTreemapRoot, node => {
-      // Color a root node and all children the same color.
-      const rootNode = this.nodeToRootNodeMap.get(node);
-      const hueKey = rootNode ? rootNode.name : node.name;
+      // Color a depth one node and all children the same color.
+      const depthOneNode = this.nodeToDepthOneNodeMap.get(node);
+      const hueKey = depthOneNode ? depthOneNode.name : node.name;
       const hue = this.getHueForKey(hueKey);
 
       let backgroundColor = 'white';

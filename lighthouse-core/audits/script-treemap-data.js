@@ -70,7 +70,7 @@ class ScriptTreemapDataAudit extends Audit {
     function addAllNodesInSourcePath(source, data) {
       let node = sourceRootNode;
 
-      // Apply the data to the rootNode.
+      // Apply the data to the sourceRootNode.
       sourceRootNode.resourceBytes += data.resourceBytes;
       if (data.unusedBytes) {
         sourceRootNode.unusedBytes = (sourceRootNode.unusedBytes || 0) + data.unusedBytes;
