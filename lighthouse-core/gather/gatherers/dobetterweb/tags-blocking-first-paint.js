@@ -27,7 +27,7 @@ const Gatherer = require('../gatherer.js');
 /** @typedef {{tagName: 'SCRIPT', url: string, src: string}} ScriptTag */
 /** @typedef {import('../../driver.js')} Driver */
 
-/* istanbul ignore next */
+/* c8 ignore start */
 function installMediaListener() {
   // @ts-expect-error - inserted in page to track media changes.
   window.___linkMediaChanges = [];
@@ -47,11 +47,12 @@ function installMediaListener() {
     },
   });
 }
+/* c8 ignore stop */
 
 /**
  * @return {Promise<Array<LinkTag | ScriptTag>>}
  */
-/* istanbul ignore next */
+/* c8 ignore start */
 async function collectTagsThatBlockFirstPaint() {
   /** @type {Array<MediaChange>} */
   // @ts-expect-error - `___linkMediaChanges` created in `installMediaListener`.
@@ -60,13 +61,10 @@ async function collectTagsThatBlockFirstPaint() {
   try {
     /** @type {Array<LinkTag>} */
     const linkTags = [...document.querySelectorAll('link')]
-      .filter(/** @return {tag is HTMLLinkElement} */ tag => {
-        if (tag.tagName !== 'LINK') return false;
-
+      .filter(linkTag => {
         // Filter stylesheet/HTML imports that block rendering.
         // https://www.igvita.com/2012/06/14/debunking-responsive-css-performance-myths/
         // https://www.w3.org/TR/html-imports/#dfn-import-async-attribute
-        const linkTag = /** @type {HTMLLinkElement} */ (tag);
         const blockingStylesheet = linkTag.rel === 'stylesheet' &&
           window.matchMedia(linkTag.media).matches && !linkTag.disabled;
         const blockingImport = linkTag.rel === 'import' && !linkTag.hasAttribute('async');
@@ -86,10 +84,7 @@ async function collectTagsThatBlockFirstPaint() {
 
     /** @type {Array<ScriptTag>} */
     const scriptTags = [...document.querySelectorAll('head script[src]')]
-      .filter(/** @return {tag is HTMLScriptElement} */ tag => {
-        if (tag.tagName !== 'SCRIPT') return false;
-
-        const scriptTag = /** @type {HTMLScriptElement} */ (tag);
+      .filter(scriptTag => {
         return (
           !scriptTag.hasAttribute('async') &&
           !scriptTag.hasAttribute('defer') &&
@@ -112,6 +107,7 @@ async function collectTagsThatBlockFirstPaint() {
     throw new Error(`${friendly}: ${e.message}`);
   }
 }
+/* c8 ignore stop */
 
 class TagsBlockingFirstPaint extends Gatherer {
   /**
@@ -152,7 +148,7 @@ class TagsBlockingFirstPaint extends Gatherer {
       (min, record) => Math.min(min, record.endTime),
       Infinity
     );
-    const tags = await driver.evaluate(collectTagsThatBlockFirstPaint, {args: []});
+    const tags = await driver.executionContext.evaluate(collectTagsThatBlockFirstPaint, {args: []});
     const requests = TagsBlockingFirstPaint._filteredAndIndexedByUrl(networkRecords);
 
     /** @type {Array<LH.Artifacts.TagBlockingFirstPaint>} */

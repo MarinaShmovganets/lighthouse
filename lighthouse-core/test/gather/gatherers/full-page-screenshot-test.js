@@ -9,29 +9,36 @@
 
 const FullPageScreenshotGatherer = require('../../../gather/gatherers/full-page-screenshot.js');
 
+// Headless's default value is (1024 * 16), but this varies by device
+const maxTextureSizeMock = 1024 * 8;
+
 /**
  * @param {{contentSize: {width: number, height: number}, screenSize: {width?: number, height?: number, dpr: number}, screenshotData: string[]}}
  */
 function createMockDriver({contentSize, screenSize, screenshotData}) {
   return {
-    evaluate: async function(fn) {
-      if (fn.name === 'resolveNodes') {
-        return {};
-      } else if (fn.name === 'getObservedDeviceMetrics') {
-        return {
-          width: screenSize.width,
-          height: screenSize.height,
-          screenWidth: screenSize.width,
-          screenHeight: screenSize.height,
-          screenOrientation: {
-            type: 'landscapePrimary',
-            angle: 30,
-          },
-          deviceScaleFactor: screenSize.dpr,
-        };
-      } else {
-        throw new Error(`unexpected fn ${fn.name}`);
-      }
+    executionContext: {
+      evaluate: async function(fn) {
+        if (fn.name === 'resolveNodes') {
+          return {};
+        } if (fn.name === 'getMaxTextureSize') {
+          return maxTextureSizeMock;
+        } else if (fn.name === 'getObservedDeviceMetrics') {
+          return {
+            width: screenSize.width,
+            height: screenSize.height,
+            screenWidth: screenSize.width,
+            screenHeight: screenSize.height,
+            screenOrientation: {
+              type: 'landscapePrimary',
+              angle: 30,
+            },
+            deviceScaleFactor: screenSize.dpr,
+          };
+        } else {
+          throw new Error(`unexpected fn ${fn.name}`);
+        }
+      },
     },
     beginEmulation: jest.fn(),
     sendCommand: jest.fn().mockImplementation(method => {
@@ -192,7 +199,7 @@ describe('FullPageScreenshot gatherer', () => {
       'Emulation.setDeviceMetricsOverride',
       expect.objectContaining({
         deviceScaleFactor: 1,
-        height: FullPageScreenshotGatherer.MAX_SCREENSHOT_HEIGHT,
+        height: maxTextureSizeMock,
       })
     );
   });

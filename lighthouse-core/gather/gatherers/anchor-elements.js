@@ -21,7 +21,7 @@ const pageFunctions = require('../../lib/page-functions.js');
  *
  * @return {LH.Artifacts['AnchorElements']}
  */
-/* istanbul ignore next */
+/* c8 ignore start */
 function collectAnchorElements() {
   /** @param {string} url */
   const resolveURLOrEmpty = url => {
@@ -71,6 +71,7 @@ function collectAnchorElements() {
     };
   });
 }
+/* c8 ignore stop */
 
 /**
  * @param {LH.Gatherer.PassContext['driver']} driver
@@ -96,7 +97,7 @@ class AnchorElements extends Gatherer {
   async afterPass(passContext) {
     const driver = passContext.driver;
 
-    const anchors = await driver.evaluate(collectAnchorElements, {
+    const anchors = await driver.executionContext.evaluate(collectAnchorElements, {
       args: [],
       useIsolation: true,
       deps: [

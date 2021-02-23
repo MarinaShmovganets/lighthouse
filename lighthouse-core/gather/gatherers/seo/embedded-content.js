@@ -5,16 +5,24 @@
  */
 'use strict';
 
-/* globals getElementsInDocument */
+/* globals getElementsInDocument getNodeDetails */
 
-const Gatherer = require('../gatherer.js');
+const FRGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 const pageFunctions = require('../../../lib/page-functions.js');
 
+/**
+ * @return {LH.Artifacts.EmbeddedContentInfo[]}
+ */
 function getEmbeddedContent() {
+  const functions = /** @type {typeof pageFunctions} */ ({
+    // @ts-expect-error - getElementsInDocument put into scope via stringification
+    getElementsInDocument,
+    // @ts-expect-error - getNodeDetails put into scope via stringification
+    getNodeDetails,
+  });
+
   const selector = 'object, embed, applet';
-  /** @type {HTMLElement[]} */
-  // @ts-expect-error - getElementsInDocument put into scope via stringification
-  const elements = getElementsInDocument(selector);
+  const elements = functions.getElementsInDocument(selector);
   return elements
     .map(node => ({
       tagName: node.tagName,
@@ -28,18 +36,27 @@ function getEmbeddedContent() {
           name: el.getAttribute('name') || '',
           value: el.getAttribute('value') || '',
         })),
+      node: functions.getNodeDetails(node),
     }));
 }
 
-class EmbeddedContent extends Gatherer {
+class EmbeddedContent extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['snapshot', 'navigation'],
+  }
+
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['EmbeddedContent']>}
    */
-  afterPass(passContext) {
-    return passContext.driver.evaluate(getEmbeddedContent, {
+  snapshot(passContext) {
+    return passContext.driver.executionContext.evaluate(getEmbeddedContent, {
       args: [],
-      deps: [pageFunctions.getElementsInDocument],
+      deps: [
+        pageFunctions.getElementsInDocument,
+        pageFunctions.getNodeDetailsString,
+      ],
     });
   }
 }

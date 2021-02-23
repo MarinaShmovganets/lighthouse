@@ -5,14 +5,14 @@
  */
 'use strict';
 
-const Gatherer = require('./gatherer.js');
+const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 
 /* global window */
 
 /**
  * @return {LH.Artifacts.ViewportDimensions}
  */
-/* istanbul ignore next */
+/* c8 ignore start */
 function getViewportDimensions() {
   // window.innerWidth to get the scrollable size of the window (irrespective of zoom)
   // window.outerWidth to get the size of the visible area
@@ -25,16 +25,22 @@ function getViewportDimensions() {
     devicePixelRatio: window.devicePixelRatio,
   };
 }
+/* c8 ignore stop */
 
-class ViewportDimensions extends Gatherer {
+class ViewportDimensions extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['snapshot', 'navigation'],
+  }
+
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts.ViewportDimensions>}
    */
-  async afterPass(passContext) {
+  async snapshot(passContext) {
     const driver = passContext.driver;
 
-    const dimensions = await driver.evaluate(getViewportDimensions, {
+    const dimensions = await driver.executionContext.evaluate(getViewportDimensions, {
       args: [],
       useIsolation: true,
     });
