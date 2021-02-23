@@ -36,7 +36,7 @@ module.exports = [
           score: 1,
         },
         'redirects-http': {
-          score: 1,
+          score: null,
           scoreDisplayMode: 'notApplicable',
         },
         'service-worker': {
@@ -119,7 +119,7 @@ module.exports = [
           score: 1,
         },
         'redirects-http': {
-          score: 1,
+          score: null,
           scoreDisplayMode: 'notApplicable',
         },
         'service-worker': {

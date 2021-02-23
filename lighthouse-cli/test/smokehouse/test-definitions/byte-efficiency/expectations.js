@@ -106,11 +106,11 @@ const expectations = [
       finalUrl: 'http://localhost:10200/byte-efficiency/tester.html',
       audits: {
         'uses-http2': {
-          score: '1',
+          score: 1,
           details: {
             items: {
               // localhost gets a free pass on uses-h2
-              length: '0',
+              length: 0,
             },
           },
         },
