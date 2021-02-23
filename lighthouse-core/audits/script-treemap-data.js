@@ -45,7 +45,7 @@ class ScriptTreemapDataAudit extends Audit {
    * @param {Record<string, SourceData>} sourcesData
    * @return {LH.Treemap.Node}
    */
-  static makeRootNodeFromScriptWithSourceMap(src, sourceRoot, sourcesData) {
+  static makeScriptNode(src, sourceRoot, sourcesData) {
     /**
      * @param {string} name
      * @return {LH.Treemap.Node}
@@ -57,7 +57,7 @@ class ScriptTreemapDataAudit extends Audit {
       };
     }
 
-    const topNode = newNode(sourceRoot);
+    const sourceRootNode = newNode(sourceRoot);
 
     /**
      * Given a slash-delimited path, traverse the Node structure and increment
@@ -68,11 +68,13 @@ class ScriptTreemapDataAudit extends Audit {
      * @param {SourceData} data
      */
     function addAllNodesInSourcePath(source, data) {
-      let node = topNode;
+      let node = sourceRootNode;
 
       // Apply the data to the rootNode.
-      topNode.resourceBytes += data.resourceBytes;
-      if (data.unusedBytes) topNode.unusedBytes = (topNode.unusedBytes || 0) + data.unusedBytes;
+      sourceRootNode.resourceBytes += data.resourceBytes;
+      if (data.unusedBytes) {
+        sourceRootNode.unusedBytes = (sourceRootNode.unusedBytes || 0) + data.unusedBytes;
+      }
 
       // Strip off the shared root.
       const sourcePathSegments = source.replace(sourceRoot, '').split(/\/+/);
@@ -120,27 +122,36 @@ class ScriptTreemapDataAudit extends Audit {
         }
       }
     }
-    collapseAll(topNode);
+    collapseAll(sourceRootNode);
 
-    // Root node should be just the script src.
-    const rootNode = {...topNode};
-    rootNode.name = src;
-    rootNode.children = [topNode];
-    return rootNode;
+    // Script node should be just the script src.
+    const scriptNode = {...sourceRootNode};
+    scriptNode.name = src;
+    scriptNode.children = [sourceRootNode];
+    return scriptNode;
   }
 
   /**
-   * Returns root nodes where the first level of nodes are URLs.
-   * Every external script has a root node.
-   * All inline scripts are combined into a single root node.
+   * Returns nodes where the first level of nodes are URLs.
+   * Every external script has a node.
+   * All inline scripts are combined into a single node.
    * If a script has a source map, that node will be set by makeNodeFromSourceMapData.
+   *
+   * Example return result:
+     - index.html (inlines scripts)
+     - main.js
+     - - webpack://
+     - - - react.js
+     - - - app.js
+     - i-have-no-map.js
+   *
    * @param {LH.Artifacts} artifacts
    * @param {LH.Audit.Context} context
    * @return {Promise<LH.Treemap.Node[]>}
    */
-  static async makeRootNodes(artifacts, context) {
+  static async makeNodes(artifacts, context) {
     /** @type {LH.Treemap.Node[]} */
-    const rootNodes = [];
+    const nodes = [];
 
     let inlineScriptLength = 0;
     for (const scriptElement of artifacts.ScriptElements) {
@@ -152,7 +163,7 @@ class ScriptTreemapDataAudit extends Audit {
     }
     if (inlineScriptLength) {
       const name = artifacts.URL.finalUrl;
-      rootNodes.push({
+      nodes.push({
         name,
         resourceBytes: inlineScriptLength,
       });
@@ -171,7 +182,7 @@ class ScriptTreemapDataAudit extends Audit {
         // No bundle and no coverage information, so simply make a single node
         // detailing how big the script is.
 
-        rootNodes.push({
+        nodes.push({
           name,
           resourceBytes: scriptElement.src.length,
         });
@@ -212,8 +223,7 @@ class ScriptTreemapDataAudit extends Audit {
           sourcesData[source] = sourceData;
         }
 
-        node = this.makeRootNodeFromScriptWithSourceMap(
-          scriptElement.src, bundle.rawMap.sourceRoot || '', sourcesData);
+        node = this.makeScriptNode(scriptElement.src, bundle.rawMap.sourceRoot || '', sourcesData);
       } else {
         // No valid source map for this script, so we can only produce a single node.
 
@@ -224,10 +234,10 @@ class ScriptTreemapDataAudit extends Audit {
         };
       }
 
-      rootNodes.push(node);
+      nodes.push(node);
     }
 
-    return rootNodes;
+    return nodes;
   }
 
   /**
@@ -236,7 +246,7 @@ class ScriptTreemapDataAudit extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const treemapData = await ScriptTreemapDataAudit.makeRootNodes(artifacts, context);
+    const treemapData = await ScriptTreemapDataAudit.makeNodes(artifacts, context);
 
     // TODO: when out of experimental should make a new detail type.
     /** @type {LH.Audit.Details.DebugData} */

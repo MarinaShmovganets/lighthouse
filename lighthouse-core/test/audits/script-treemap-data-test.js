@@ -14,8 +14,7 @@ const {loadSourceMapAndUsageFixture, loadSourceMapFixture, makeParamsOptional} =
 
 const ScriptTreemapData = {
   audit: makeParamsOptional(ScriptTreemapData_.audit),
-  makeRootNodeFromScriptWithSourceMap:
-    makeParamsOptional(ScriptTreemapData_.makeRootNodeFromScriptWithSourceMap),
+  makeScriptNode: makeParamsOptional(ScriptTreemapData_.makeScriptNode),
 };
 
 /**
@@ -58,7 +57,7 @@ describe('ScriptTreemapData audit', () => {
       treemapData = results.details.treemapData;
     });
 
-    it('has root nodes', () => {
+    it('has nodes', () => {
       expect(treemapData.find(s => s.name === 'https://sqoosh.app/no-map-or-usage.js'))
         .toMatchInlineSnapshot(`
         Object {
@@ -101,7 +100,7 @@ describe('ScriptTreemapData audit', () => {
       treemapData = results.details.treemapData;
     });
 
-    it('has root nodes', () => {
+    it('has nodes', () => {
       expect(JSON.stringify(treemapData).length).toMatchInlineSnapshot(`86735`);
       expect(treemapData).toMatchSnapshot();
     });
@@ -119,16 +118,16 @@ describe('ScriptTreemapData audit', () => {
     });
   });
 
-  describe('.makeRootNodeFromScriptWithSourceMap', () => {
+  describe('.makeScriptNode', () => {
     const src = 'main.js';
 
     it('uses node data when available', () => {
-      const rootNode = ScriptTreemapData.makeRootNodeFromScriptWithSourceMap(src, '', {
+      const node = ScriptTreemapData.makeScriptNode(src, '', {
         'a.js': {resourceBytes: 100},
         'b.js': {resourceBytes: 100, duplicatedNormalizedModuleName: 'blah'},
         'c.js': {resourceBytes: 100, unusedBytes: 50},
       });
-      expect(rootNode).toMatchObject(
+      expect(node).toMatchObject(
          {
            name: src,
            resourceBytes: 300,
@@ -161,11 +160,11 @@ describe('ScriptTreemapData audit', () => {
     });
 
     it('creates directory node when multiple leaf nodes', () => {
-      const rootNode = ScriptTreemapData.makeRootNodeFromScriptWithSourceMap(src, '', {
+      const node = ScriptTreemapData.makeScriptNode(src, '', {
         'folder/a.js': {resourceBytes: 100},
         'folder/b.js': {resourceBytes: 100},
       });
-      expect(rootNode).toMatchObject(
+      expect(node).toMatchObject(
         {
           name: src,
           children: [
@@ -189,11 +188,11 @@ describe('ScriptTreemapData audit', () => {
     });
 
     it('flattens directory node when single leaf nodes', () => {
-      const rootNode = ScriptTreemapData.makeRootNodeFromScriptWithSourceMap(src, '', {
+      const node = ScriptTreemapData.makeScriptNode(src, '', {
         'root/folder1/a.js': {resourceBytes: 100},
         'root/folder2/b.js': {resourceBytes: 100},
       });
-      expect(rootNode).toMatchObject(
+      expect(node).toMatchObject(
         {
           name: src,
           children: [
@@ -223,9 +222,8 @@ describe('ScriptTreemapData audit', () => {
         'some/prefix/main.js': {resourceBytes: 100, unusedBytes: 50},
         'not/some/prefix/a.js': {resourceBytes: 101, unusedBytes: 51},
       };
-      const rootNode = ScriptTreemapData
-        .makeRootNodeFromScriptWithSourceMap(src, 'some/prefix', sourcesData);
-      expect(rootNode).toMatchObject(
+      let node = ScriptTreemapData.makeScriptNode(src, 'some/prefix', sourcesData);
+      expect(node).toMatchObject(
         {
           name: src,
           children: [
@@ -252,12 +250,11 @@ describe('ScriptTreemapData audit', () => {
         }
       );
 
-      let node = rootNode;
       expect(node.name).toBe(src);
       expect(node.resourceBytes).toBe(201);
       expect(node.unusedBytes).toBe(101);
 
-      node = /** @type {LH.Treemap.Node} */ (rootNode.children && rootNode.children[0]);
+      node = /** @type {LH.Treemap.Node} */ (node.children && node.children[0]);
       expect(node.name).toBe('some/prefix');
       expect(node.resourceBytes).toBe(201);
       expect(node.unusedBytes).toBe(101);
@@ -271,9 +268,8 @@ describe('ScriptTreemapData audit', () => {
         'lib/folder/b.js': {resourceBytes: 101},
         'lib/c.js': {resourceBytes: 100, unusedBytes: 25},
       };
-      const rootNode = ScriptTreemapData
-        .makeRootNodeFromScriptWithSourceMap(src, '', sourcesData);
-      expect(rootNode).toMatchObject(
+      const node = ScriptTreemapData.makeScriptNode(src, '', sourcesData);
+      expect(node).toMatchObject(
         {
           name: src,
           children: [
@@ -320,9 +316,8 @@ describe('ScriptTreemapData audit', () => {
         'node_modules/dep/b.js': {resourceBytes: 100, unusedBytes: 25, duplicatedNormalizedModuleName: 'dep/b.js'},
         /* eslint-enable max-len */
       };
-      const rootNode = ScriptTreemapData
-        .makeRootNodeFromScriptWithSourceMap(src, '', sourcesData);
-      expect(rootNode).toMatchObject(
+      const node = ScriptTreemapData.makeScriptNode(src, '', sourcesData);
+      expect(node).toMatchObject(
          {
            name: src,
            children: [

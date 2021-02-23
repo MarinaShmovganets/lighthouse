@@ -42,7 +42,7 @@ class TreemapViewer {
     }
 
     /** @type {LH.Treemap.Node} */
-    this.currentRootNode; // eslint-disable-line no-unused-expressions
+    this.currentTreemapRoot; // eslint-disable-line no-unused-expressions
     this.documentUrl = options.lhr.requestedUrl;
     this.el = el;
     this.getHueForKey = TreemapUtil.stableHasher(TreemapUtil.COLOR_HUES);
@@ -107,10 +107,10 @@ class TreemapViewer {
     const group = 'scripts';
 
     const rootNodes = this.rootNodesByGroup[group];
-    this.currentRootNode = this.wrapNodesInNewRootNode(rootNodes);
-    renderViewModeOptions(this.currentRootNode.resourceBytes);
+    this.currentTreemapRoot = this.wrapNodesInNewRootNode(rootNodes);
+    renderViewModeOptions(this.currentTreemapRoot.resourceBytes);
 
-    TreemapUtil.walk(this.currentRootNode, node => {
+    TreemapUtil.walk(this.currentTreemapRoot, node => {
       // @ts-ignore: webtreemap will store `dom` on the data to speed up operations.
       // However, when we change the underlying data representation, we need to delete
       // all the cached DOM elements. Otherwise, the rendering will be incorrect when,
@@ -120,14 +120,14 @@ class TreemapViewer {
       // @ts-ignore: webtreemap uses `size` to partition the treemap.
       node.size = node.resourceBytes || 0;
     });
-    webtreemap.sort(this.currentRootNode);
+    webtreemap.sort(this.currentTreemapRoot);
 
     this.el.innerHTML = '';
     this.render();
   }
 
   render() {
-    this.treemap = new webtreemap.TreeMap(this.currentRootNode, {
+    this.treemap = new webtreemap.TreeMap(this.currentTreemapRoot, {
       padding: [16, 3, 3, 3],
       spacing: 10,
       caption: node => this.makeCaption(node),
@@ -140,7 +140,7 @@ class TreemapViewer {
   resize() {
     if (!this.treemap) throw new Error('must call .render() first');
 
-    this.treemap.layout(this.currentRootNode, this.el);
+    this.treemap.layout(this.currentTreemapRoot, this.el);
     this.updateColors();
   }
 
@@ -150,7 +150,7 @@ class TreemapViewer {
    */
   makeCaption(node) {
     const size = node.resourceBytes;
-    const total = this.currentRootNode.resourceBytes;
+    const total = this.currentTreemapRoot.resourceBytes;
 
     const parts = [
       TreemapUtil.elide(node.name, 60),
@@ -158,7 +158,7 @@ class TreemapViewer {
     ];
 
     // Only add label for bytes on the root node.
-    if (node === this.currentRootNode) {
+    if (node === this.currentTreemapRoot) {
       parts[1] = `resource bytes: ${parts[1]}`;
     }
 
@@ -166,7 +166,7 @@ class TreemapViewer {
   }
 
   updateColors() {
-    TreemapUtil.walk(this.currentRootNode, node => {
+    TreemapUtil.walk(this.currentTreemapRoot, node => {
       // Color a root node and all children the same color.
       const rootNode = this.nodeToRootNodeMap.get(node);
       const hueKey = rootNode ? rootNode.name : node.name;
