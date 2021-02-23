@@ -7,7 +7,7 @@
 
 /* global getNodeDetails */
 
-const Gatherer = require('./gatherer.js');
+const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 const pageFunctions = require('../../lib/page-functions.js');
 
 /* eslint-env browser, node */
@@ -57,6 +57,7 @@ function collectFormElements() {
         placeholder: child instanceof HTMLSelectElement ? undefined : child.placeholder,
         autocomplete: {
           property: child.autocomplete,
+          // Requires `--enable-features=AutofillShowTypePredictions`.
           attribute: child.getAttribute('autocomplete'),
           prediction: child.getAttribute('autofill-prediction'),
         },
@@ -84,15 +85,20 @@ function collectFormElements() {
 }
 /* c8 ignore stop */
 
-class FormElements extends Gatherer {
+class FormElements extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['snapshot', 'navigation'],
+  }
+
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['FormElements']>}
    */
-  async afterPass(passContext) {
+  async snapshot(passContext) {
     const driver = passContext.driver;
 
-    const formElements = await driver.evaluate(collectFormElements, {
+    const formElements = await driver.executionContext.evaluate(collectFormElements, {
       args: [],
       useIsolation: true,
       deps: [

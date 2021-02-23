@@ -13,4 +13,82 @@ function isFRGathererDefn(gathererDefn) {
   return 'meta' in gathererDefn.instance;
 }
 
-module.exports = {isFRGathererDefn};
+/**
+ * Determines if the artifact dependency direction is valid.
+ * A timespan artifact cannot depend on a snapshot/navigation artifact because snapshot runs after timespan.
+ * A snapshot artifact cannot depend on a navigation artifact because it might be run without a navigation.
+ * A navigation artifact also cannot depend on a snapshot artifact because it is collected before snapshot.
+ * In other words, the dependency's minimum supported mode must be less than or equal to the dependent's with
+ * a special exclusion for navigation dependents.
+ *
+ * @param {LH.Config.FRGathererDefn} dependent The artifact that depends on the other.
+ * @param {LH.Config.FRGathererDefn} dependency The artifact that is being depended on by the other.
+ * @return {boolean}
+ */
+function isValidArtifactDependency(dependent, dependency) {
+  const levels = {timespan: 0, snapshot: 1, navigation: 2};
+  const dependentLevel = Math.min(...dependent.instance.meta.supportedModes.map(l => levels[l]));
+  const dependencyLevel = Math.min(...dependency.instance.meta.supportedModes.map(l => levels[l]));
+  // Special case navigation.
+  if (dependentLevel === levels.navigation) return dependencyLevel !== levels.snapshot;
+  return dependencyLevel <= dependentLevel;
+}
+
+/**
+ * Asserts that artifacts are in a valid dependency order that can be computed.
+ *
+ * @param {Array<LH.Config.NavigationDefn>} navigations
+ */
+function assertArtifactTopologicalOrder(navigations) {
+  const availableArtifacts = new Set();
+
+  for (const navigation of navigations) {
+    for (const artifact of navigation.artifacts) {
+      availableArtifacts.add(artifact.id);
+      if (!artifact.dependencies) continue;
+
+      for (const [dependencyKey, {id: dependencyId}] of Object.entries(artifact.dependencies)) {
+        if (availableArtifacts.has(dependencyId)) continue;
+        throwInvalidDependencyOrder(artifact.id, dependencyKey);
+      }
+    }
+  }
+}
+
+/**
+ * @param {string} artifactId
+ * @param {string} dependencyKey
+ * @return {never}
+ */
+function throwInvalidDependencyOrder(artifactId, dependencyKey) {
+  throw new Error(
+    [
+      `Failed to find dependency "${dependencyKey}" for "${artifactId}" artifact`,
+      `Check that...`,
+      `  1. A gatherer exposes a matching Symbol that satisfies "${dependencyKey}".`,
+      `  2. "${dependencyKey}" is configured to run before "${artifactId}"`,
+    ].join('\n')
+  );
+}
+
+/**
+ * @param {string} artifactId
+ * @param {string} dependencyKey
+ * @return {never}
+ */
+function throwInvalidArtifactDependency(artifactId, dependencyKey) {
+  throw new Error(
+    [
+      `Dependency "${dependencyKey}" for "${artifactId}" artifact is invalid.`,
+      `The dependency must be collected before the dependent.`,
+    ].join('\n')
+  );
+}
+
+module.exports = {
+  isFRGathererDefn,
+  isValidArtifactDependency,
+  assertArtifactTopologicalOrder,
+  throwInvalidDependencyOrder,
+  throwInvalidArtifactDependency,
+};

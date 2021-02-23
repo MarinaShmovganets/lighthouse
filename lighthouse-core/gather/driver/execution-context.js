@@ -124,6 +124,7 @@ class ExecutionContext {
   }
 
   /**
+   * Note: Prefer `evaluate` instead.
    * Evaluate an expression in the context of the current page. If useIsolation is true, the expression
    * will be evaluated in a content script that has access to the page's DOM but whose JavaScript state
    * is completely separate.
@@ -167,8 +168,7 @@ class ExecutionContext {
     const depsSerialized = options.deps ? options.deps.join('\n') : '';
     const expression = `(() => {
       ${depsSerialized}
-      ${mainFn}
-      return ${mainFn.name}(${argsSerialized});
+      return (${mainFn})(${argsSerialized});
     })()`;
     return this.evaluateAsync(expression, options);
   }

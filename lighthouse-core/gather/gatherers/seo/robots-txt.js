@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const Gatherer = require('../gatherer.js');
+const FRGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 
 /* global fetch, URL, location */
 
@@ -26,14 +26,18 @@ async function getRobotsTxtContent() {
 }
 /* c8 ignore stop */
 
+class RobotsTxt extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['snapshot', 'navigation'],
+  }
 
-class RobotsTxt extends Gatherer {
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['RobotsTxt']>}
    */
-  afterPass(passContext) {
-    return passContext.driver.evaluate(getRobotsTxtContent, {
+  snapshot(passContext) {
+    return passContext.driver.executionContext.evaluate(getRobotsTxtContent, {
       args: [],
       useIsolation: true,
     });
