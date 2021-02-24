@@ -6,13 +6,14 @@
 'use strict';
 
 const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
+const DevtoolsLogGatherer = require('./devtools-log.js');
 
 /** @implements {LH.Gatherer.FRGathererInstance<'DevtoolsLog'>} */
 class NetworkUserAgent extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta<'DevtoolsLog'>} */
   meta = {
     supportedModes: ['timespan', 'navigation'],
-    dependencies: {DevtoolsLog: require('./devtools-log.js').symbol},
+    dependencies: {DevtoolsLog: DevtoolsLogGatherer.symbol},
   };
 
   /**

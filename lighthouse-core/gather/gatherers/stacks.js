@@ -79,10 +79,17 @@ async function detectLibraries() {
 
 /** @implements {LH.Gatherer.FRGathererInstance} */
 class Stacks extends FRGatherer {
-  /** @type {LH.Gatherer.GathererMeta} */
-  meta = {
-    supportedModes: ['snapshot', 'navigation'],
-  };
+  constructor() {
+    super();
+
+    // Because this file uses `fs.readFile` it gets parsed by a different branch of the browserify internals
+    // that cannot handle the latest ECMAScript features.
+    // See https://github.com/GoogleChrome/lighthouse/issues/12134
+    /** @type {LH.Gatherer.GathererMeta} */
+    this.meta = {
+      supportedModes: ['snapshot', 'navigation'],
+    };
+  }
 
   /**
    * @param {LH.Gatherer.FRTransitionalDriver['executionContext']} executionContext
