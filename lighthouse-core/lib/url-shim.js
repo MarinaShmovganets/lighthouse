@@ -209,7 +209,7 @@ class URLShim extends URL {
    */
   static isNonNetworkProtocol(protocol) {
     // Strip off any colon
-    const urlScheme =  protocol.includes(':') ? protocol.slice(0, protocol.indexOf(':')) : protocol;
+    const urlScheme = protocol.includes(':') ? protocol.slice(0, protocol.indexOf(':')) : protocol;
     return NON_NETWORK_SCHEMES.includes(urlScheme);
   }
 }
