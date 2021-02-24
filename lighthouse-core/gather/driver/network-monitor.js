@@ -13,6 +13,7 @@
 const log = require('lighthouse-logger');
 const {EventEmitter} = require('events');
 const NetworkRecorder = require('../../lib/network-recorder.js');
+const NetworkRequest = require('../../lib/network-request.js');
 const URL = require('../../lib/url-shim.js');
 
 /** @typedef {import('../../lib/network-recorder.js').NetworkRecorderEvent} NetworkRecorderEvent */
@@ -160,7 +161,7 @@ class NetworkMonitor extends EventEmitter {
       const request = requests[i];
       if (request.finished) continue;
       if (requestFilter && !requestFilter(request)) continue;
-      if (URL.isNonNetworkProtocol(request.protocol)) continue;
+      if (NetworkRequest.isNonNetworkRequest(request)) continue;
       inflightRequests++;
     }
 

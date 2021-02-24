@@ -323,4 +323,15 @@ describe('URL Shim', () => {
     assert.ok(!URL.isSecureScheme('http'));
     assert.ok(!URL.isSecureScheme('ws'));
   });
+
+  describe('isNonNetworkProtocol', () => {
+    assert.ok(URL.isNonNetworkProtocol('blob'));
+    assert.ok(URL.isNonNetworkProtocol('data'));
+    assert.ok(URL.isNonNetworkProtocol('data:'));
+    assert.ok(URL.isNonNetworkProtocol('intent:'));
+
+    assert.ok(!URL.isNonNetworkProtocol('filesystem'));
+    assert.ok(!URL.isNonNetworkProtocol('http'));
+    assert.ok(!URL.isNonNetworkProtocol('ws'));
+  });
 });

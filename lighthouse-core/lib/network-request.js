@@ -478,6 +478,7 @@ class NetworkRequest {
    * @return {boolean}
    */
   static isNonNetworkRequest(record) {
+    // The 'protocol' field in devtools a string more like a `scheme`
     return URL.isNonNetworkProtocol(record.protocol);
   }
 
