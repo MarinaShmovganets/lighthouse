@@ -483,6 +483,9 @@ class NetworkRequest {
   }
 
   /**
+   * Technically there's not alignment on URLs that create "secure connections" vs "secure contexts"
+   * https://github.com/GoogleChrome/lighthouse/pull/11766#discussion_r582340683
+   * But for our purposes, we don't need to worry too much.
    * @param {NetworkRequest} record
    * @return {boolean}
    */

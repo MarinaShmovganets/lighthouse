@@ -309,6 +309,7 @@ describe('URL Shim', () => {
     assert.ok(URL.isLikeLocalhost(new URL('http://localhost:10200/').hostname));
     assert.ok(URL.isLikeLocalhost(new URL('http://127.0.0.1/page.html').hostname));
     assert.ok(URL.isLikeLocalhost(new URL('https://localhost/').hostname));
+    assert.ok(URL.isLikeLocalhost(new URL('https://dev.localhost/').hostname));
 
     assert.ok(!URL.isLikeLocalhost(new URL('http://8.8.8.8/').hostname));
     assert.ok(!URL.isLikeLocalhost(new URL('http://example.com/').hostname));

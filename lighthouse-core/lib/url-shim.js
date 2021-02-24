@@ -181,11 +181,16 @@ class URLShim extends URL {
   }
 
   /**
+   * Is the host localhost-enough to satisfy the "secure context" definition
+   * https://github.com/GoogleChrome/lighthouse/pull/11766#discussion_r582340683
    * @param {string} hostname Either a `new URL(url).hostname` or a `networkRequest.parsedUrl.host`
    * @return {boolean}
    */
   static isLikeLocalhost(hostname) {
-    return SECURE_LOCALHOST_DOMAINS.includes(hostname);
+    // Any hostname terminating in `.localhost` is considered to be local.
+    // https://w3c.github.io/webappsec-secure-contexts/#localhost
+    // This method doesn't consider IPs that resolve to loopback, IPv6 or other loopback edgecases
+    return SECURE_LOCALHOST_DOMAINS.includes(hostname) || hostname.endsWith('.localhost');
   }
 
   /**
