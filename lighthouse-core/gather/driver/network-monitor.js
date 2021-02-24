@@ -17,7 +17,6 @@ const NetworkRequest = require('../../lib/network-request.js');
 const URL = require('../../lib/url-shim.js');
 
 /** @typedef {import('../../lib/network-recorder.js').NetworkRecorderEvent} NetworkRecorderEvent */
-/** @typedef {import('../../lib/network-request.js')} NetworkRequest */
 /** @typedef {'network-2-idle'|'network-critical-idle'|'networkidle'|'networkbusy'|'network-critical-busy'|'network-2-busy'} NetworkMonitorEvent_ */
 /** @typedef {NetworkRecorderEvent|NetworkMonitorEvent_} NetworkMonitorEvent */
 

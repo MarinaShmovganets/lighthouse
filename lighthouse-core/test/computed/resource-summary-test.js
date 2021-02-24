@@ -12,6 +12,10 @@ const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.
 /* eslint-env jest */
 
 function mockArtifacts(networkRecords) {
+  for (const record of networkRecords) {
+    record.protocol = record.url.slice(0, record.url.indexOf(':'));
+  }
+
   return {
     devtoolsLog: networkRecordsToDevtoolsLog(networkRecords),
     URL: {requestedUrl: networkRecords[0].url, finalUrl: networkRecords[0].url},
@@ -54,6 +58,10 @@ describe('Resource summary computed', () => {
       {url: 'http://example.com/file.html', resourceType: 'Document', transferSize: 30},
       {url: 'http://third-party.com/another-file.html', resourceType: 'manifest', transferSize: 50},
     ];
+
+    for (const record of networkRecords) {
+      record.protocol = record.url.slice(0, record.url.indexOf(':'));
+    }
 
     const result = ComputedResourceSummary.summarize(
       networkRecords, networkRecords[0].url, context);
