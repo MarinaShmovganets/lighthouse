@@ -16,7 +16,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 * emulation: bump chrome versions ([#12104](https://github.com/GoogleChrome/lighthouse/pull/12104))
 * unsized-images: ignore non-network SVGs ([#12120](https://github.com/GoogleChrome/lighthouse/pull/12120))
 * preload: do not warn for cache loads ([#12122](https://github.com/GoogleChrome/lighthouse/pull/12122))
-* url: redirects-http => n/a for localhost. refactor url special cases ([#11766](https://github.com/GoogleChrome/lighthouse/pull/11766))
+* be more lenient for some audits on localhost ([#11766](https://github.com/GoogleChrome/lighthouse/pull/11766))
 
 ## Fraggle Rock
 
