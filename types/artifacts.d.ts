@@ -18,12 +18,37 @@ declare global {
   module LH {
     export interface Artifacts extends BaseArtifacts, GathererArtifacts {}
 
+    export type FRArtifacts = StrictOmit<Artifacts,
+      | 'AnchorElements'
+      | 'CSSUsage'
+      | 'Fonts'
+      | 'FullPageScreenshot'
+      | 'HTTPRedirect'
+      | 'ImageElements'
+      | 'InspectorIssues'
+      | 'JsUsage'
+      | 'LinkElements'
+      | 'MainDocumentContent'
+      | 'Manifest'
+      | 'MixedContent'
+      | 'OptimizedImages'
+      | 'ResponseCompression'
+      | 'ScriptElements'
+      | 'ServiceWorker'
+      | 'SourceMaps'
+      | 'TagsBlockingFirstPaint'
+      | 'TraceElements'
+      | keyof FRBaseArtifacts
+    >;
+
     /**
      * Artifacts always created by gathering. These artifacts are available to Lighthouse plugins.
      * NOTE: any breaking changes here are considered breaking Lighthouse changes that must be done
      * on a major version bump.
      */
     export type BaseArtifacts = UniversalBaseArtifacts & ContextualBaseArtifacts & LegacyBaseArtifacts
+
+    export type FRBaseArtifacts = UniversalBaseArtifacts & ContextualBaseArtifacts;
 
     /**
      * The set of base artifacts that are available in every mode of Lighthouse operation.
