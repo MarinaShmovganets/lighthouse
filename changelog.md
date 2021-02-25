@@ -31,7 +31,7 @@ Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighth
 
 ## Clients
 
-* lr: should skip uses-http2 audit for mobile ([#12115](https://github.com/GoogleChrome/lighthouse/pull/12115))
+* lr: skip uses-http2 audit for mobile ([#12115](https://github.com/GoogleChrome/lighthouse/pull/12115))
 
 ## Docs
 
@@ -46,7 +46,7 @@ Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighth
 
 * treemap: first pass ([#11832](https://github.com/GoogleChrome/lighthouse/pull/11832))
 * add LIGHTHOUSE_FLAGS to gcp script. tweak extract script ([#12100](https://github.com/GoogleChrome/lighthouse/pull/12100))
-* rename lantern master values to baseline values ([#10950](https://github.com/GoogleChrome/lighthouse/pull/10950))
+* rename lantern baseline values ([#10950](https://github.com/GoogleChrome/lighthouse/pull/10950))
 * fixed typos More => more ([#12092](https://github.com/GoogleChrome/lighthouse/pull/12092))
 * ci: update GH actions commit SHAs ([#12099](https://github.com/GoogleChrome/lighthouse/pull/12099))
 
