@@ -181,18 +181,3 @@ describe('Parsing --chrome-flags', () => {
     );
   });
 });
-
-it('doesn\'t launch a local Chrome when given an external hostname', async () => {
-  const launch = require('chrome-launcher').launch;
-  jest.doMock('chrome-launcher', () => ({
-    launch: jest.fn(() => Promise.reject()),
-  }));
-
-  /** @type {!jest.MockedFunction<typeof launch>} */
-  const mockLaunch = (launch);
-
-  const url = 'chrome://version';
-  await run.runLighthouse(url, getFlags(`${url} --hostname=192.168.1.1`), fastConfig);
-
-  expect(mockLaunch.mock).toBeCalledTimes(0);
-});
