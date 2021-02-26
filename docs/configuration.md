@@ -59,7 +59,7 @@ The `extends` property controls if your configuration should inherit from the de
 
 ### `settings: Object|undefined`
 
-The settings property controls various aspects of running Lighthouse such as CPU/network throttling and which audits should run.
+The settings property controls various aspects of running Lighthouse such as CPU/network throttling and which audits should run. You can also specify to run lighthouse against a remote browser by passing tbe chrome debugging port.
 
 #### Example
 ```js
@@ -67,6 +67,7 @@ The settings property controls various aspects of running Lighthouse such as CPU
   settings: {
     onlyCategories: ['performance'],
     onlyAudits: ['works-offline'],
+    port: 9222,
   }
 }
 ```
