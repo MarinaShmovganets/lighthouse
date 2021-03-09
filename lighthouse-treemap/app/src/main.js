@@ -125,20 +125,16 @@ class TreemapViewer {
   }
 
   createViewModes() {
-    /** @type {LH.Treemap.ViewMode[]} */
-    const viewModes = [];
+    /**
+     * @param {LH.Treemap.Node} root
+     * @return {LH.Treemap.ViewMode|undefined}
+     */
+    function createUnusedBytesViewMode(root) {
+      if (root.unusedBytes === undefined) return;
 
-    viewModes.push({
-      id: 'all',
-      label: `All`,
-      subLabel: TreemapUtil.formatBytes(this.currentTreemapRoot.resourceBytes),
-    });
-
-    // Add the unused bytes view mode only if the usage data is available.
-    if (this.currentTreemapRoot.unusedBytes !== undefined) {
       /** @type {LH.Treemap.NodePath[]} */
       const highlightNodePaths = [];
-      for (const d1Node of this.currentTreemapRoot.children || []) {
+      for (const d1Node of root.children || []) {
         // Only highlight leaf nodes if entire node (ie a JS bundle) has greater than a certain
         // number of unused bytes.
         if (!d1Node.unusedBytes || d1Node.unusedBytes < UNUSED_BYTES_IGNORE_THRESHOLD) continue;
@@ -151,16 +147,28 @@ class TreemapViewer {
             return;
           }
 
-          highlightNodePaths.push([this.currentTreemapRoot.name, ...path]);
+          highlightNodePaths.push([root.name, ...path]);
         });
       }
-      viewModes.push({
+      return {
         id: 'unused-bytes',
         label: 'Unused Bytes',
-        subLabel: TreemapUtil.formatBytes(this.currentTreemapRoot.unusedBytes),
+        subLabel: TreemapUtil.formatBytes(root.unusedBytes),
         highlightNodePaths,
-      });
+      };
     }
+
+    /** @type {LH.Treemap.ViewMode[]} */
+    const viewModes = [];
+
+    viewModes.push({
+      id: 'all',
+      label: `All`,
+      subLabel: TreemapUtil.formatBytes(this.currentTreemapRoot.resourceBytes),
+    });
+
+    const unusedBytesViewMode = createUnusedBytesViewMode(this.currentTreemapRoot);
+    if (unusedBytesViewMode) viewModes.push(unusedBytesViewMode);
 
     return viewModes;
   }
@@ -214,12 +222,12 @@ class TreemapViewer {
     ];
 
     if (bytes !== undefined && total !== undefined) {
-      parts.push(`${TreemapUtil.formatBytes(bytes)} (${Math.round(bytes / total * 100)}%)`);
-
+      let str = `${TreemapUtil.formatBytes(bytes)} (${Math.round(bytes / total * 100)}%)`;
       // Only add label for bytes on the root node.
       if (node === this.currentTreemapRoot) {
-        parts[1] = `${partitionBy}: ${parts[1]}`;
+        str = `${partitionBy}: ${str}`;
       }
+      parts.push(str);
     }
 
     return parts.join(' · ');
