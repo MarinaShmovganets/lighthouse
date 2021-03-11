@@ -17,7 +17,7 @@ export latest_content_shell="$LH_ROOT/.tmp/chromium-web-tests/content-shells/$la
 #   - /inspector-sources -> the inspector resources from the content shell
 #   - CORS (Access-Control-Allow-Origin header)
 
-ln -s "$DEVTOOLS_PATH/out/Default/resources/inspector" "$DEVTOOLS_PATH/test/webtests/http/tests/inspector-sources"
+ln -s "$latest_content_shell/out/Release/resources/inspector" "$DEVTOOLS_PATH/test/webtests/http/tests/inspector-sources"
 
 # Kill background jobs when script ends.
 cleanup() {
