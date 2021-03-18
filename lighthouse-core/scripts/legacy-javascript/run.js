@@ -40,7 +40,7 @@ function runCommand(command, args) {
 }
 
 /**
- * @param {number} version
+ * @param {string} version
  */
 function installCoreJs(version) {
   runCommand('yarn', [
