@@ -1,19 +1,18 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Ryuichi Watanabe @ryuichi1208
- <a name="7.3.0"></a>
+<a name="7.3.0"></a>
 # 7.3.0 (2021-03-18)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v7.2.0...v7.3.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 91](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
+## New contributors
 
+Thanks to our new contributor 👽🐷🐰🐯🐻!
+
+- Ryuichi Watanabe @ryuichi1208
 
 ## New Audits
 
-* csp-xss ([#12044](https://github.com/GoogleChrome/lighthouse/pull/12044))
+* new_audit: csp-xss (experimental config) ([#12044](https://github.com/GoogleChrome/lighthouse/pull/12044))
 
 ## Core
 
@@ -29,7 +28,7 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 
 ## Report
 
-* css var for FPS, move overlay to container ([#12201](https://github.com/GoogleChrome/lighthouse/pull/12201))
+* use css var for element screenshots, move overlay to container ([#12201](https://github.com/GoogleChrome/lighthouse/pull/12201))
 
 ## Deps
 
