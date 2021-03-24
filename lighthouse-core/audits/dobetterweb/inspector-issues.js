@@ -128,6 +128,7 @@ class IssuesPanelEntries extends Audit {
     const requestUrls = new Set();
     for (const issue of cspIssues) {
       const requestUrl = issue.blockedURL;
+	  console.log(issue);
       if (requestUrl) {
         requestUrls.add(requestUrl);
       }
@@ -176,7 +177,8 @@ class IssuesPanelEntries extends Audit {
     const cspIssues = issues.contentSecurityPolicy.filter(issue => {
       // kTrustedTypesSinkViolation and kTrustedTypesPolicyViolation aren't currently supported by the Issues panel
       return issue.contentSecurityPolicyViolationType !== 'kTrustedTypesSinkViolation' &&
-        issue.contentSecurityPolicyViolationType !== 'kTrustedTypesPolicyViolation';
+        issue.contentSecurityPolicyViolationType !== 'kTrustedTypesPolicyViolation' &&
+		!(issue.blockedURL === undefined && issue.violatedDirective === "style-src-elem" && issue.contentSecurityPolicyViolationType === "kInlineViolation");
     });
     if (cspIssues.length) {
       items.push(this.getContentSecurityPolicyRow(cspIssues));
