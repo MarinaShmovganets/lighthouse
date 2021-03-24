@@ -178,6 +178,7 @@ class IssuesPanelEntries extends Audit {
       // kTrustedTypesSinkViolation and kTrustedTypesPolicyViolation aren't currently supported by the Issues panel
       return issue.contentSecurityPolicyViolationType !== 'kTrustedTypesSinkViolation' &&
         issue.contentSecurityPolicyViolationType !== 'kTrustedTypesPolicyViolation' &&
+		// filter csp issue from tap-targets gatherer
 		!(issue.blockedURL === undefined && issue.violatedDirective === "style-src-elem" && issue.contentSecurityPolicyViolationType === "kInlineViolation");
     });
     if (cspIssues.length) {
