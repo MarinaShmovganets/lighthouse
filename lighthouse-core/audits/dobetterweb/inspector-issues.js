@@ -25,8 +25,7 @@ const UIStrings = {
   failureTitle: 'Issues were logged in the `Issues` panel in Chrome Devtools',
   /* eslint-disable max-len */
   /** Description of a Lighthouse audit that tells the user why issues being logged to the Chrome DevTools Issues panel are a cause for concern and so should be fixed. This is displayed after a user expands the section to see more. No character length limits. */
-  description:
-    'Issues logged to the `Issues` panel in Chrome Devtools indicate unresolved problems. They can come from network request failures, insufficient security controls, and other browser concerns. Open up the Issues panel in Chrome DevTools for more details on each issue.',
+  description: 'Issues logged to the `Issues` panel in Chrome Devtools indicate unresolved problems. They can come from network request failures, insufficient security controls, and other browser concerns. Open up the Issues panel in Chrome DevTools for more details on each issue.',
   /* eslint-enable max-len */
   /** Table column header for the types of problems observed in a website, like security or network errors. */
   columnIssueType: 'Issue type',
@@ -59,8 +58,7 @@ class IssuesPanelEntries extends Audit {
   static getMixedContentRow(mixedContentIssues) {
     const requestUrls = new Set();
     for (const issue of mixedContentIssues) {
-      const requestUrl =
-        (issue.request && issue.request.url) || issue.mainResourceURL;
+      const requestUrl = (issue.request && issue.request.url) || issue.mainResourceURL;
       requestUrls.add(requestUrl);
     }
     return {
@@ -79,8 +77,7 @@ class IssuesPanelEntries extends Audit {
   static getSameSiteCookieRow(sameSiteCookieIssues) {
     const requestUrls = new Set();
     for (const issue of sameSiteCookieIssues) {
-      const requestUrl =
-        (issue.request && issue.request.url) || issue.cookieUrl;
+      const requestUrl = (issue.request && issue.request.url) || issue.cookieUrl;
       if (requestUrl) {
         requestUrls.add(requestUrl);
       }
@@ -131,7 +128,6 @@ class IssuesPanelEntries extends Audit {
     const requestUrls = new Set();
     for (const issue of cspIssues) {
       const requestUrl = issue.blockedURL;
-      console.log(issue);
       if (requestUrl) {
         requestUrls.add(requestUrl);
       }
@@ -157,12 +153,7 @@ class IssuesPanelEntries extends Audit {
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       /* eslint-disable max-len */
-      {
-        key: 'issueType',
-        itemType: 'text',
-        subItemsHeading: {key: 'url', itemType: 'url'},
-        text: str_(UIStrings.columnIssueType),
-      },
+      {key: 'issueType', itemType: 'text', subItemsHeading: {key: 'url', itemType: 'url'}, text: str_(UIStrings.columnIssueType)},
       /* eslint-enable max-len */
     ];
 
@@ -185,10 +176,8 @@ class IssuesPanelEntries extends Audit {
     const cspIssues = issues.contentSecurityPolicy.filter(issue => {
       // kTrustedTypesSinkViolation and kTrustedTypesPolicyViolation aren't currently supported by the Issues panel
       return (
-        issue.contentSecurityPolicyViolationType !==
-          'kTrustedTypesSinkViolation' &&
-        issue.contentSecurityPolicyViolationType !==
-          'kTrustedTypesPolicyViolation' &&
+        issue.contentSecurityPolicyViolationType !== 'kTrustedTypesSinkViolation' &&
+        issue.contentSecurityPolicyViolationType !== 'kTrustedTypesPolicyViolation' &&
         // filter csp issue from tap-targets gatherer
         !(
           issue.blockedURL === undefined &&
