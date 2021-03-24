@@ -10,30 +10,30 @@
  * https://source.chromium.org/chromium/chromium/src/+/master:third_party/devtools-frontend/src/front_end/sdk/
  */
 
-"use strict";
+'use strict';
 
 /** @typedef {{url: string}} IssueSubItem */
 /** @typedef {{issueType: string|LH.IcuMessage, subItems: Array<IssueSubItem>}} IssueItem */
 
-const Audit = require("../audit.js");
-const i18n = require("../../lib/i18n/i18n.js");
+const Audit = require('../audit.js');
+const i18n = require('../../lib/i18n/i18n.js');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on various types of problems with a website, like security or network errors. This descriptive title is shown to users when no issues were logged into the Chrome DevTools Issues panel. */
-  title: "No issues in the `Issues` panel in Chrome Devtools",
+  title: 'No issues in the `Issues` panel in Chrome Devtools',
   /** Title of a Lighthouse audit that provides detail on various types of problems with a website, like security or network errors. This descriptive title is shown to users when issues are detected and logged into the Chrome DevTools Issues panel. */
-  failureTitle: "Issues were logged in the `Issues` panel in Chrome Devtools",
+  failureTitle: 'Issues were logged in the `Issues` panel in Chrome Devtools',
   /* eslint-disable max-len */
   /** Description of a Lighthouse audit that tells the user why issues being logged to the Chrome DevTools Issues panel are a cause for concern and so should be fixed. This is displayed after a user expands the section to see more. No character length limits. */
   description:
-    "Issues logged to the `Issues` panel in Chrome Devtools indicate unresolved problems. They can come from network request failures, insufficient security controls, and other browser concerns. Open up the Issues panel in Chrome DevTools for more details on each issue.",
+    'Issues logged to the `Issues` panel in Chrome Devtools indicate unresolved problems. They can come from network request failures, insufficient security controls, and other browser concerns. Open up the Issues panel in Chrome DevTools for more details on each issue.',
   /* eslint-enable max-len */
   /** Table column header for the types of problems observed in a website, like security or network errors. */
-  columnIssueType: "Issue type",
+  columnIssueType: 'Issue type',
   /** The type of an Issue in Chrome DevTools when a resource is blocked due to the website's cross-origin policy. */
-  issueTypeBlockedByResponse: "Blocked by cross-origin policy",
+  issueTypeBlockedByResponse: 'Blocked by cross-origin policy',
   /** The type of an Issue in Chrome DevTools when a site has large ads that use up a lot of the browser's resources. */
-  issueTypeHeavyAds: "Heavy resource usage by ads"
+  issueTypeHeavyAds: 'Heavy resource usage by ads',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -44,11 +44,11 @@ class IssuesPanelEntries extends Audit {
    */
   static get meta() {
     return {
-      id: "inspector-issues",
+      id: 'inspector-issues',
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ["InspectorIssues"]
+      requiredArtifacts: ['InspectorIssues'],
     };
   }
 
@@ -64,11 +64,11 @@ class IssuesPanelEntries extends Audit {
       requestUrls.add(requestUrl);
     }
     return {
-      issueType: "Mixed content",
+      issueType: 'Mixed content',
       subItems: {
-        type: "subitems",
-        items: Array.from(requestUrls).map(url => ({ url }))
-      }
+        type: 'subitems',
+        items: Array.from(requestUrls).map(url => ({url})),
+      },
     };
   }
 
@@ -86,15 +86,15 @@ class IssuesPanelEntries extends Audit {
       }
     }
     return {
-      issueType: "SameSite cookie",
+      issueType: 'SameSite cookie',
       subItems: {
-        type: "subitems",
+        type: 'subitems',
         items: Array.from(requestUrls).map(url => {
           return {
-            url
+            url,
           };
-        })
-      }
+        }),
+      },
     };
   }
 
@@ -113,13 +113,13 @@ class IssuesPanelEntries extends Audit {
     return {
       issueType: str_(UIStrings.issueTypeBlockedByResponse),
       subItems: {
-        type: "subitems",
+        type: 'subitems',
         items: Array.from(requestUrls).map(url => {
           return {
-            url
+            url,
           };
-        })
-      }
+        }),
+      },
     };
   }
 
@@ -137,15 +137,15 @@ class IssuesPanelEntries extends Audit {
       }
     }
     return {
-      issueType: "Content security policy",
+      issueType: 'Content security policy',
       subItems: {
-        type: "subitems",
+        type: 'subitems',
         items: Array.from(requestUrls).map(url => {
           return {
-            url
+            url,
           };
-        })
-      }
+        }),
+      },
     };
   }
 
@@ -158,11 +158,11 @@ class IssuesPanelEntries extends Audit {
     const headings = [
       /* eslint-disable max-len */
       {
-        key: "issueType",
-        itemType: "text",
-        subItemsHeading: { key: "url", itemType: "url" },
-        text: str_(UIStrings.columnIssueType)
-      }
+        key: 'issueType',
+        itemType: 'text',
+        subItemsHeading: {key: 'url', itemType: 'url'},
+        text: str_(UIStrings.columnIssueType),
+      },
       /* eslint-enable max-len */
     ];
 
@@ -180,20 +180,20 @@ class IssuesPanelEntries extends Audit {
       items.push(this.getBlockedByResponseRow(issues.blockedByResponse));
     }
     if (issues.heavyAds.length) {
-      items.push({ issueType: str_(UIStrings.issueTypeHeavyAds) });
+      items.push({issueType: str_(UIStrings.issueTypeHeavyAds)});
     }
     const cspIssues = issues.contentSecurityPolicy.filter(issue => {
       // kTrustedTypesSinkViolation and kTrustedTypesPolicyViolation aren't currently supported by the Issues panel
       return (
         issue.contentSecurityPolicyViolationType !==
-          "kTrustedTypesSinkViolation" &&
+          'kTrustedTypesSinkViolation' &&
         issue.contentSecurityPolicyViolationType !==
-          "kTrustedTypesPolicyViolation" &&
+          'kTrustedTypesPolicyViolation' &&
         // filter csp issue from tap-targets gatherer
         !(
           issue.blockedURL === undefined &&
-          issue.violatedDirective === "style-src-elem" &&
-          issue.contentSecurityPolicyViolationType === "kInlineViolation"
+          issue.violatedDirective === 'style-src-elem' &&
+          issue.contentSecurityPolicyViolationType === 'kInlineViolation'
         )
       );
     });
@@ -202,7 +202,7 @@ class IssuesPanelEntries extends Audit {
     }
     return {
       score: items.length > 0 ? 0 : 1,
-      details: Audit.makeTableDetails(headings, items)
+      details: Audit.makeTableDetails(headings, items),
     };
   }
 }
