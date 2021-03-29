@@ -118,7 +118,7 @@ class TreemapUtil {
     }
     // Because we control the treemap layout and templates, use the simpler
     // `typed-query-selector` types that don't require differentiating between
-    // e.g. HTMLAnchorElement and SVGAElement. See https://github.com/GoogleChrome/lighthouse/issues/12011.
+    // e.g. HTMLAnchorElement and SVGAElement. See https://github.com/GoogleChrome/lighthouse/issues/12011
     return /** @type {ParseSelector<T>} */ (result);
   }
 
