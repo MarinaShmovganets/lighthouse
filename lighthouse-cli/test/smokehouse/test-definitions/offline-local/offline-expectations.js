@@ -179,24 +179,22 @@ module.exports = [
       finalUrl: 'http://localhost:10503/offline-ready.html?broken',
       audits: {
         'installable-manifest': {
-          // Only starting in m89 do we get 'warn-not-offline-capable'.
-          // This only happens when a populated `fetch` handler that doesn't provide a 200 response
-          _minChromiumMilestone: 89,
           score: 0,
           details: {items: {length: 1}},
-          warnings: {length: 1},
+          // COMPAT: 'warn-not-offline-capable' was disabled in m91 until
+          // performance issues can be addressed: https://crbug.com/1187668#c22
+          // warnings: {length: 1},
         },
       },
     },
     artifacts: {
       InstallabilityErrors: {
-        _minChromiumMilestone: 89,
         errors: {
-          length: 2,
+          length: 1,
+          // 0: {
+          //   errorId: /warn-not-offline-capable/,
+          // },
           0: {
-            errorId: /warn-not-offline-capable/,
-          },
-          1: {
             errorId: /no-icon-available/,
           },
         },
