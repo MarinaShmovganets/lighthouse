@@ -176,19 +176,22 @@ module.exports = [
   {
     lhr: {
       requestedUrl: 'http://localhost:10503/offline-ready.html?broken',
+      // This page's SW has a `fetch` handler that doesn't provide a 200 response.
       finalUrl: 'http://localhost:10503/offline-ready.html?broken',
       audits: {
         'installable-manifest': {
           score: 0,
           details: {items: {length: 1}},
-          // COMPAT: 'warn-not-offline-capable' was disabled in m91 until
-          // performance issues can be addressed: https://crbug.com/1187668#c22
+          // TODO: 'warn-not-offline-capable' was disabled in m91. Turn back on once
+          // issues are addressed and check is re-enabled: https://crbug.com/1187668#c22
           // warnings: {length: 1},
         },
       },
     },
     artifacts: {
       InstallabilityErrors: {
+        // COMPAT: `warn-not-offline-capable` occurs in m89 but may be cherry-picked out of m90.
+        _minChromiumMilestone: 91,
         errors: {
           length: 1,
           // 0: {
