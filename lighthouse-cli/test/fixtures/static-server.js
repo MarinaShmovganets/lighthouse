@@ -28,6 +28,10 @@ class Server {
     this._server = http.createServer(this._requestHandler.bind(this));
     /** @type {(data: string) => string=} */
     this._dataTransformer = undefined;
+    /** @type {Map<string, string[]>} */
+    this._requestUrlsByFirstUrl = new Map();
+    /** @type {Map<string, string[]>} */
+    this._requestUrlsBySocket = new Map();
   }
 
   getPort() {
@@ -62,8 +66,32 @@ class Server {
     this._dataTransformer = fn;
   }
 
+  /**
+   * @param {string} firstUrl
+   * @return {string[]}
+   */
+  getRequestUrls(firstUrl) {
+    if (!this._requestUrlsByFirstUrl.size) {
+      for (const urlList of this._requestUrlsBySocket.values()) {
+        if (!urlList.length) continue;
+        this._requestUrlsByFirstUrl.set(urlList[0], urlList);
+      }
+    }
+    return this._requestUrlsByFirstUrl.get(firstUrl);
+  }
+
+  /**
+   * @param {http.IncomingMessage} request
+   * @param {http.ServerResponse} response
+   */
   _requestHandler(request, response) {
     const requestUrl = parseURL(request.url);
+
+    // Collect URLs
+    const urlList = this._requestUrlsBySocket.get(request.socket) || [];
+    if (request.url !== '/favicon.ico' && request.url !== '/robots.txt') urlList.push(request.url);
+    this._requestUrlsBySocket.set(request.socket, urlList);
+
     const filePath = requestUrl.pathname;
     const queryString = requestUrl.search && parseQueryString(requestUrl.search.slice(1));
     let absoluteFilePath = path.join(this.baseDir, filePath);

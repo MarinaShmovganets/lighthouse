@@ -19,6 +19,7 @@
   export type ExpectedRunnerResult = {
     lhr: ExpectedLHR,
     artifacts?: Partial<Record<keyof LH.Artifacts, any>>
+    networkRequests?: any;
   }
 
   export interface TestDfn {

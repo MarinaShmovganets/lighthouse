@@ -13,6 +13,7 @@
 const cloneDeep = require('lodash.clonedeep');
 const log = require('lighthouse-logger');
 const LocalConsole = require('./lib/local-console.js');
+const {server} = require('../fixtures/static-server.js');
 
 const NUMBER_REGEXP = /(?:\d|\.)+/.source;
 const OPS_REGEXP = /<=?|>=?|\+\/-|±/.source;
@@ -254,6 +255,18 @@ function collateResults(localConsole, actual, expected) {
     return makeComparison(auditName + ' audit', actualResult, expectedResult);
   });
 
+  /** @type {Comparison[]} */
+  const requestCountAssertion = [];
+  if (expected.networkRequests) {
+    const url = new URL(actual.lhr.requestedUrl);
+    const urlPath = url.pathname + url.search;
+    requestCountAssertion.push(makeComparison(
+      'Request count',
+      server.getRequestUrls(urlPath),
+      expected.networkRequests
+    ));
+  }
+
   return [
     {
       name: 'final url',
@@ -263,6 +276,7 @@ function collateResults(localConsole, actual, expected) {
     },
     runtimeErrorAssertion,
     runWarningsAssertion,
+    ...requestCountAssertion,
     ...artifactAssertions,
     ...auditAssertions,
   ];
