@@ -71,13 +71,21 @@ class Server {
    * @return {string[]}
    */
   getRequestUrls(firstUrl) {
-    if (!this._requestUrlsByFirstUrl.size) {
-      for (const urlList of this._requestUrlsBySocket.values()) {
-        if (!urlList.length) continue;
-        this._requestUrlsByFirstUrl.set(urlList[0], urlList);
-      }
+    for (const urlList of this._requestUrlsBySocket.values()) {
+      if (!urlList.length) continue;
+      const firstUrl = urlList[0];
+      this._requestUrlsByFirstUrl.set(firstUrl, urlList);
     }
     return this._requestUrlsByFirstUrl.get(firstUrl);
+  }
+
+  /**
+   * @param {http.IncomingMessage} request
+   */
+  _updateRequestUrls(request) {
+    const urlList = this._requestUrlsBySocket.get(request.socket) || [];
+    if (!['/favicon.ico', '/robots.txt'].includes(request.url)) urlList.push(request.url);
+    this._requestUrlsBySocket.set(request.socket, urlList);
   }
 
   /**
@@ -86,12 +94,7 @@ class Server {
    */
   _requestHandler(request, response) {
     const requestUrl = parseURL(request.url);
-
-    // Collect URLs
-    const urlList = this._requestUrlsBySocket.get(request.socket) || [];
-    if (request.url !== '/favicon.ico' && request.url !== '/robots.txt') urlList.push(request.url);
-    this._requestUrlsBySocket.set(request.socket, urlList);
-
+    this._updateRequestUrls(request);
     const filePath = requestUrl.pathname;
     const queryString = requestUrl.search && parseQueryString(requestUrl.search.slice(1));
     let absoluteFilePath = path.join(this.baseDir, filePath);

@@ -11,6 +11,9 @@
  */
 module.exports = [
   {
+    networkRequests: {
+      length: 8,
+    },
     lhr: {
       requestedUrl: 'http://localhost:10200/preload.html',
       finalUrl: 'http://localhost:10200/preload.html',
@@ -62,6 +65,9 @@ module.exports = [
     },
   },
   {
+    networkRequests: {
+      length: 8,
+    },
     lhr: {
       requestedUrl: 'http://localhost:10200/perf/perf-budgets/load-things.html',
       finalUrl: 'http://localhost:10200/perf/perf-budgets/load-things.html',
@@ -140,6 +146,9 @@ module.exports = [
     },
   },
   {
+    networkRequests: {
+      length: 4,
+    },
     lhr: {
       requestedUrl: 'http://localhost:10200/perf/fonts.html',
       finalUrl: 'http://localhost:10200/perf/fonts.html',
@@ -168,6 +177,9 @@ module.exports = [
     },
   },
   {
+    networkRequests: {
+      length: 3,
+    },
     artifacts: {
       TraceElements: [
         {
@@ -291,6 +303,9 @@ module.exports = [
     },
   },
   {
+    networkRequests: {
+      length: 2,
+    },
     lhr: {
       requestedUrl: 'http://localhost:10200/perf/frame-metrics.html',
       finalUrl: 'http://localhost:10200/perf/frame-metrics.html',
