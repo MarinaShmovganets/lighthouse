@@ -261,7 +261,7 @@ function collateResults(localConsole, actual, expected) {
     const url = new URL(actual.lhr.requestedUrl);
     const urlPath = url.pathname + url.search;
     requestCountAssertion.push(makeComparison(
-      'Request count',
+      'Requests',
       server.getRequestUrls(urlPath),
       expected.networkRequests
     ));
