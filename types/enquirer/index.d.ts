@@ -9,6 +9,7 @@ declare module 'enquirer' {
     name: string | (() => string);
     message: string | (() => string);
     initial?: boolean | (() => boolean);
+    actions?: {'ctrl': {[key: string]: string}}
   }
 
   class Confirm extends NodeJS.EventEmitter {

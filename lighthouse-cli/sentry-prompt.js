@@ -33,6 +33,7 @@ function prompt() {
     name: 'isErrorReportingEnabled',
     initial: false,
     message: MESSAGE,
+    actions: {ctrl: {}},
   });
 
   const timeoutPromise = new Promise((resolve) => {
