@@ -56,7 +56,10 @@ class Deprecations extends Audit {
   static audit(artifacts) {
     const entries = artifacts.ConsoleMessages;
 
-    const deprecations = entries.filter(log => log.source === 'deprecation').map(log => {
+    const deprecations = entries.filter(log => log.source === 'deprecation')
+    /** Temporary ignore until Chrome M91 became stable version that doesn't throw deprecation on ::-webkit-details-marker. */ 
+    .filter(log => !log.text.includes('::-webkit-details-marker'))
+    .map(log => {
       return {
         value: log.text,
         source: Audit.makeSourceLocationFromConsoleMessage(log),
