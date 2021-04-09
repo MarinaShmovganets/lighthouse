@@ -127,7 +127,7 @@ jobs:
 
     # For windows, just test the potentially platform-specific code.
     - name: yarn unit-cli
-      run: yarn unit-cli
+      run: bash $GITHUB_WORKSPACE/.github/scripts/jest-retry.sh yarn unit-cli
       if: matrix.os == 'windows-latest'
     - run: yarn diff:sample-json
       if: matrix.os == 'windows-latest'
