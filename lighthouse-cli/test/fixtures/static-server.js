@@ -28,10 +28,8 @@ class Server {
     this._server = http.createServer(this._requestHandler.bind(this));
     /** @type {(data: string) => string=} */
     this._dataTransformer = undefined;
-    /** @type {Map<string, string[]>} */
-    this._requestUrlsByFirstUrl = new Map();
-    /** @type {Map<string, string[]>} */
-    this._requestUrlsBySocket = new Map();
+    /** @type {string[]} */
+    this._requestUrls = [];
   }
 
   getPort() {
@@ -66,26 +64,23 @@ class Server {
     this._dataTransformer = fn;
   }
 
+  clearRequestUrls() {
+    return this._requestUrls = [];
+  }
+
   /**
-   * @param {string} firstUrl
    * @return {string[]}
    */
-  getRequestUrls(firstUrl) {
-    for (const urlList of this._requestUrlsBySocket.values()) {
-      if (!urlList.length) continue;
-      const firstUrl = urlList[0];
-      this._requestUrlsByFirstUrl.set(firstUrl, urlList);
-    }
-    return this._requestUrlsByFirstUrl.get(firstUrl);
+  getRequestUrls() {
+    return this._requestUrls;
   }
 
   /**
    * @param {http.IncomingMessage} request
    */
   _updateRequestUrls(request) {
-    const urlList = this._requestUrlsBySocket.get(request.socket) || [];
-    if (!['/favicon.ico', '/robots.txt'].includes(request.url)) urlList.push(request.url);
-    this._requestUrlsBySocket.set(request.socket, urlList);
+    if (['/favicon.ico', '/robots.txt'].includes(request.url)) return;
+    this._requestUrls.push(request.url);
   }
 
   /**

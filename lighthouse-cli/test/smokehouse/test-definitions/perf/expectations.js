@@ -12,7 +12,7 @@
 module.exports = [
   {
     networkRequests: {
-      length: 8,
+      length: 9,
     },
     lhr: {
       requestedUrl: 'http://localhost:10200/preload.html',
@@ -147,7 +147,7 @@ module.exports = [
   },
   {
     networkRequests: {
-      length: 4,
+      length: 5,
     },
     lhr: {
       requestedUrl: 'http://localhost:10200/perf/fonts.html',

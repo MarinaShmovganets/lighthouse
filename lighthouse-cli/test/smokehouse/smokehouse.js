@@ -16,6 +16,7 @@ const cliLighthouseRunner = require('./lighthouse-runners/cli.js').runLighthouse
 const getAssertionReport = require('./report-assert.js');
 const LocalConsole = require('./lib/local-console.js');
 const ConcurrentMapper = require('./lib/concurrent-mapper.js');
+const {server} = require('../fixtures/static-server.js');
 
 /* eslint-disable no-console */
 
@@ -117,14 +118,19 @@ async function runSmokeTestDefn(concurrentMapper, smokeTestDefn, defnOptions) {
   const {id, config: configJson, expectations} = smokeTestDefn;
   const {concurrency, lighthouseRunner, retries, isDebug} = defnOptions;
 
-  const individualTests = expectations.map(expectation => ({
-    requestedUrl: expectation.lhr.requestedUrl,
-    configJson,
-    expectation,
-    lighthouseRunner,
-    retries,
-    isDebug,
-  }));
+  const individualTests = expectations.map(expectation => {
+    if (expectation.networkRequests && concurrency > 1) {
+      throw new Error(`Test must be run serially to assert network requests (${id})`);
+    }
+    return {
+      requestedUrl: expectation.lhr.requestedUrl,
+      configJson,
+      expectation,
+      lighthouseRunner,
+      retries,
+      isDebug,
+    };
+  });
 
   // Loop sequentially over expectations, comparing against Lighthouse run, and
   // reporting result.
@@ -189,6 +195,9 @@ async function runSmokeTest(testOptions) {
     } else {
       localConsole.log(`Retrying run (${i} out of ${retries} retries)...`);
     }
+
+    // Ensure server only records URLs fetched for this run.
+    server.clearRequestUrls();
 
     // Run Lighthouse.
     try {

@@ -258,11 +258,9 @@ function collateResults(localConsole, actual, expected) {
   /** @type {Comparison[]} */
   const requestCountAssertion = [];
   if (expected.networkRequests) {
-    const url = new URL(actual.lhr.requestedUrl);
-    const urlPath = url.pathname + url.search;
     requestCountAssertion.push(makeComparison(
       'Requests',
-      server.getRequestUrls(urlPath),
+      server.getRequestUrls(),
       expected.networkRequests
     ));
   }
