@@ -54,6 +54,13 @@ body {
   white-space: nowrap;
 }
 
+.lh-topbar__logo {
+  width: 24px;
+  height: 24px;
+  user-select: none;
+  flex: none;
+}
+
 .lh-modes {
   display: flex;
 }
@@ -68,9 +75,6 @@ body {
   box-shadow: 0 0 0 1px #e1e2e5;
   padding: 5px;
   font-size: 16px;
-}
-.view-mode__sublabel {
-  /* color: #4484f3c7; */
 }
 .view-mode:first-child {
   border-top-left-radius: 2px;
