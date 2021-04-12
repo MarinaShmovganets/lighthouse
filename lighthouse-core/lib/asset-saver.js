@@ -171,28 +171,28 @@ async function prepareAssets(artifacts, audits) {
  * @return {IterableIterator<string>}
  */
 function* arrayOfObjectsJsonGenerator(arrayOfObjects) {
-  const ELEMENTS_PER_ITERATION = 500;
+  const ITEMS_PER_ITERATION = 500;
 
-  // Stringify and emit trace events separately to avoid a giant string in memory.
+  // Stringify and emit items separately to avoid a giant string in memory.
   yield '[\n';
   if (arrayOfObjects.length > 0) {
-    const elementsIterator = arrayOfObjects[Symbol.iterator]();
-    // Emit first element manually to avoid a trailing comma.
-    const firstElement = elementsIterator.next().value;
-    yield `  ${JSON.stringify(firstElement)}`;
+    const itemsIterator = arrayOfObjects[Symbol.iterator]();
+    // Emit first item manually to avoid a trailing comma.
+    const firstItem = itemsIterator.next().value;
+    yield `  ${JSON.stringify(firstItem)}`;
 
-    let elementsRemaining = ELEMENTS_PER_ITERATION;
-    let elementsJSON = '';
-    for (const element of elementsIterator) {
-      elementsJSON += `,\n  ${JSON.stringify(element)}`;
-      elementsRemaining--;
-      if (elementsRemaining === 0) {
-        yield elementsJSON;
-        elementsRemaining = ELEMENTS_PER_ITERATION;
-        elementsJSON = '';
+    let itemsRemaining = ITEMS_PER_ITERATION;
+    let itemsJSON = '';
+    for (const item of itemsIterator) {
+      itemsJSON += `,\n  ${JSON.stringify(item)}`;
+      itemsRemaining--;
+      if (itemsRemaining === 0) {
+        yield itemsJSON;
+        itemsRemaining = ITEMS_PER_ITERATION;
+        itemsJSON = '';
       }
     }
-    yield elementsJSON;
+    yield itemsJSON;
   }
   yield '\n]';
 }
@@ -229,6 +229,8 @@ async function saveTrace(traceData, traceFilename) {
   const traceIter = traceJsonGenerator(traceData);
   const writeStream = fs.createWriteStream(traceFilename);
 
+  // TODO: Can remove Readable.from() in Node 13, promisify(pipeline) in Node 15.
+  // https://nodejs.org/api/stream.html#stream_stream_pipeline_streams_callback
   return pipeline(stream.Readable.from(traceIter), writeStream);
 }
 
