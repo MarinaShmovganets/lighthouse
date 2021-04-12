@@ -79,6 +79,8 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     name: unit_${{ matrix.os }}
+    env:
+      GITHUB_WORKSPACE: ${{ github.workspace }}
 
     steps:
     - name: git clone
