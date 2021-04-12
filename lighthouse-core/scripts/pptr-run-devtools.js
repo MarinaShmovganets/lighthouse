@@ -23,15 +23,17 @@ const yargs = require('yargs/yargs');
 
 const argv = yargs(process.argv.slice(2))
   .usage('$0 [url]')
-  .help('h').alias('h', 'help')
+  .help('help').alias('help', 'h')
   .option('_', {type: 'string'})
-  .option('o', {
+  .option('output-dir', {
     type: 'string',
     default: 'latest-run/devtools-lhrs',
-  }).alias('o', 'output-dir')
-  .option('d', {
+    alias: 'o',
+  })
+  .option('custom-devtools-frontend', {
     type: 'string',
-  }).alias('d', 'custom-devtools-frontend')
+    alias: 'd',
+  })
   .argv;
 
 /**
@@ -79,7 +81,8 @@ new Promise(resolve => {
 
 const startLighthouse = `
 (async () => {
-  await UI.ViewManager.instance().showView('lighthouse');
+  const ViewManager = UI.ViewManager.ViewManager || UI.ViewManager;
+  await ViewManager.instance().showView('lighthouse');
   const button = UI.panels.lighthouse.contentElement.querySelector('button');
   if (button.disabled) throw new Error('Start button disabled');
   button.click();
@@ -115,7 +118,7 @@ async function testPage(browser, url) {
     startLHResponse = await session.send('Runtime.evaluate', {
       expression: startLighthouse,
       awaitPromise: true,
-    }).catch(err => err);
+    }).catch(err => ({exceptionDetails: err}));
   }
 
   /** @type {RuntimeEvaluateResponse} */
@@ -153,19 +156,24 @@ async function readUrlList() {
 }
 
 async function run() {
+  const outputDir = argv['output-dir'];
+
   // Create output directory.
-  if (fs.existsSync(argv.o)) {
-    if (fs.readdirSync(argv.o).length) {
+  if (fs.existsSync(outputDir)) {
+    if (fs.readdirSync(outputDir).length) {
       // eslint-disable-next-line no-console
       console.warn('WARNING: Output directory is not empty.');
     }
   } else {
-    fs.mkdirSync(argv.o);
+    fs.mkdirSync(outputDir);
   }
+
+  const customDevtools = argv['custom-devtools-frontend'];
+  console.log(customDevtools);
 
   const browser = await puppeteer.launch({
     executablePath: process.env.CHROME_PATH,
-    args: argv.d ? [`--custom-devtools-frontend=${argv.d}`] : [],
+    args: customDevtools ? [`--custom-devtools-frontend=${customDevtools}`] : [],
     devtools: true,
   });
 
