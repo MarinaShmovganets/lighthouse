@@ -105,11 +105,15 @@ async function testPage(browser, url) {
   await session.send('Runtime.enable');
 
   // Navigate to page and wait for initial HTML to be parsed before trying to start LH.
-  await new Promise(async resolve => {
-    const pageSession = await page.target().createCDPSession();
-    await pageSession.send('Page.enable');
-    pageSession.once('Page.domContentEventFired', resolve);
-    page.goto(url).catch(err => err);
+  await new Promise((resolve, reject) => {
+    page.target().createCDPSession()
+      .then(session => {
+        session.send('Page.enable').then(() => {
+          session.once('Page.domContentEventFired', resolve);
+          page.goto(url);
+        });
+      })
+      .catch(reject);
   });
 
   /** @type {RuntimeEvaluateResponse|undefined} */
@@ -169,7 +173,6 @@ async function run() {
   }
 
   const customDevtools = argv['custom-devtools-frontend'];
-  console.log(customDevtools);
 
   const browser = await puppeteer.launch({
     executablePath: process.env.CHROME_PATH,
