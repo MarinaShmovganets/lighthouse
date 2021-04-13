@@ -519,7 +519,7 @@
     "message": "Reduce unused CSS"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
-    "message": "Reduce unused JavaScript to reduce bytes consumed by network activity. [Learn more](https://web.dev/unused-javascript/)."
+    "message": "Reduce unused JavaScript and defer loading scripts until they are required to reduce bytes consumed by network activity. [Learn more](https://web.dev/unused-javascript/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
     "message": "Reduce unused JavaScript"

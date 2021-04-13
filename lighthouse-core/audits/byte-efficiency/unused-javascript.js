@@ -14,8 +14,8 @@ const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to reduce JavaScript that is never evaluated during page load. This is displayed in a list of audit titles that Lighthouse generates. */
   title: 'Reduce unused JavaScript',
   /** Description of a Lighthouse audit that tells the user *why* they should reduce JavaScript that is never needed/evaluated by the browser. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'Reduce unused JavaScript to reduce bytes consumed by network activity. ' +
-    '[Learn more](https://web.dev/unused-javascript/).',
+  description: 'Reduce unused JavaScript and defer loading scripts until they are required to ' +
+    'reduce bytes consumed by network activity. [Learn more](https://web.dev/unused-javascript/).',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);

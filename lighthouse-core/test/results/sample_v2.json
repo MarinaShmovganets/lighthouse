@@ -3789,7 +3789,7 @@
     "unused-javascript": {
       "id": "unused-javascript",
       "title": "Reduce unused JavaScript",
-      "description": "Reduce unused JavaScript to reduce bytes consumed by network activity. [Learn more](https://web.dev/unused-javascript/).",
+      "description": "Reduce unused JavaScript and defer loading scripts until they are required to reduce bytes consumed by network activity. [Learn more](https://web.dev/unused-javascript/).",
       "score": 1,
       "scoreDisplayMode": "numeric",
       "numericValue": 0,
