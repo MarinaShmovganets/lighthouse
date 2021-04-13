@@ -200,6 +200,8 @@ function pruneExpectations(localConsole, lhr, expected, isSync) {
 
   const cloned = cloneDeep(expected);
 
+  // Tests must be run synchronously so we can clear the request list between tests.
+  // We do not have a good way to map requests to test definitions if the tests are run in parallel.
   if (!isSync && expected.networkRequests) {
     const msg = 'Network requests should only be asserted on tests run synchronously';
     if (process.env.CI) {

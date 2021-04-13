@@ -208,7 +208,7 @@ async function runSmokeTest(testOptions) {
     try {
       result = {
         ...await lighthouseRunner(requestedUrl, configJson, {isDebug}),
-        ...{networkRequests: takeNetworkRequestUrls()},
+        networkRequests: takeNetworkRequestUrls(),
       };
     } catch (e) {
       logChildProcessError(localConsole, e);

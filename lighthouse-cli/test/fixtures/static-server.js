@@ -77,6 +77,8 @@ class Server {
    * @param {http.IncomingMessage} request
    */
   _updateRequestUrls(request) {
+    // Favicon is not fetched in headless mode and robots is not fetched by every test.
+    // Ignoring these makes the assertion much simpler.
     if (['/favicon.ico', '/robots.txt'].includes(request.url)) return;
     this._requestUrls.push(request.url);
   }
