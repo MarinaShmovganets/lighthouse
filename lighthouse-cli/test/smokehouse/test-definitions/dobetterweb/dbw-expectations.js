@@ -11,6 +11,9 @@
  */
 const expectations = [
   {
+    networkRequests: {
+      length: 59,
+    },
     artifacts: {
       HostFormFactor: 'desktop',
       Stacks: [{
