@@ -35,16 +35,16 @@ const DEFAULT_RETRIES = 0;
 /**
  * Runs the selected smoke tests. Returns whether all assertions pass.
  * @param {Array<Smokehouse.TestDfn>} smokeTestDefns
- * @param {Smokehouse.SmokehouseOptions=} smokehouseOptions
+ * @param {Smokehouse.SmokehouseOptions} smokehouseOptions
  * @return {Promise<{success: boolean, testResults: SmokehouseResult[]}>}
  */
-async function runSmokehouse(smokeTestDefns, smokehouseOptions = {}) {
+async function runSmokehouse(smokeTestDefns, smokehouseOptions) {
   const {
     isDebug,
     jobs = DEFAULT_CONCURRENT_RUNS,
     retries = DEFAULT_RETRIES,
     lighthouseRunner = cliLighthouseRunner,
-    takeNetworkRequestUrls = () => [],
+    takeNetworkRequestUrls,
   } = smokehouseOptions;
   assertPositiveInteger('jobs', jobs);
   assertNonNegativeInteger('retries', retries);
