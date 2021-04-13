@@ -64,15 +64,13 @@ class Server {
     this._dataTransformer = fn;
   }
 
-  clearRequestUrls() {
-    return this._requestUrls = [];
-  }
-
   /**
    * @return {string[]}
    */
-  getRequestUrls() {
-    return this._requestUrls;
+  takeRequestUrls() {
+    const requestUrls = this._requestUrls;
+    this._requestUrls = [];
+    return requestUrls;
   }
 
   /**
