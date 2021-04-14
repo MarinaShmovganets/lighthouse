@@ -272,7 +272,7 @@ function waitForCPUIdle(session, waitForCPUQuiet) {
  */
 function registerPerformanceObserverInPage() {
   // Do not re-register if we've already run this script.
-  if (window.____lastLongTask === undefined) return;
+  if (window.____lastLongTask !== undefined) return;
 
   window.____lastLongTask = window.__perfNow();
   const observer = new window.PerformanceObserver(entryList => {
