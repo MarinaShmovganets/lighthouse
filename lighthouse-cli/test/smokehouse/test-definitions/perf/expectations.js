@@ -12,6 +12,8 @@
 module.exports = [
   {
     networkRequests: {
+      // 8 requests made for normal page testing.
+      // 1 extra request made because stylesheets are evicted from the cache by the time DT opens.
       length: 9,
     },
     lhr: {
