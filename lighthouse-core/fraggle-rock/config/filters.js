@@ -5,6 +5,8 @@
  */
 'use strict';
 
+const Audit = require('../../audits/audit.js');
+
 /**
  * Filters an array of artifacts down to the set that supports the specified gather mode.
  *
@@ -48,16 +50,32 @@ function filterCategoriesByAvailableAudits(categories, availableAudits) {
   if (!categories) return categories;
 
   const availableAuditIds = new Set(availableAudits.map(audit => audit.implementation.meta.id));
+  const manualAuditIds = new Set(
+    availableAudits
+      .filter(audit => audit.implementation.meta.scoreDisplayMode === Audit.SCORING_MODES.MANUAL)
+      .map(audit => audit.implementation.meta.id)
+  );
 
-  return Object.fromEntries(
-    Object.entries(categories).map(([categoryId, category]) => {
+  const categoryEntries = Object.entries(categories)
+    .map(([categoryId, category]) => {
       const filteredCategory = {
         ...category,
         auditRefs: category.auditRefs.filter(ref => availableAuditIds.has(ref.id)),
       };
+
+      const didFilter = filteredCategory.auditRefs.length < category.auditRefs.length;
+      const hasOnlyManualAudits = filteredCategory.auditRefs.every(ref =>
+        manualAuditIds.has(ref.id)
+      );
+
+      // If we filtered out audits and the only ones left are manual, remove them too.
+      if (didFilter && hasOnlyManualAudits) filteredCategory.auditRefs = [];
+
       return [categoryId, filteredCategory];
     })
-  );
+    .filter(entry => typeof entry[1] === 'object' && entry[1].auditRefs.length);
+
+  return Object.fromEntries(categoryEntries);
 }
 
 /**
