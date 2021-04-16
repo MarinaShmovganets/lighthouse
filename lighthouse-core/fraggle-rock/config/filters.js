@@ -49,24 +49,23 @@ function filterAuditsByAvailableArtifacts(audits, availableArtifacts) {
 function filterCategoriesByAvailableAudits(categories, availableAudits) {
   if (!categories) return categories;
 
-  const availableAuditIds = new Set(availableAudits.map(audit => audit.implementation.meta.id));
-  const manualAuditIds = new Set(
-    availableAudits
-      .filter(audit => audit.implementation.meta.scoreDisplayMode === Audit.SCORING_MODES.MANUAL)
-      .map(audit => audit.implementation.meta.id)
+  const availableAuditIdToMeta = new Map(
+    availableAudits.map(audit => [audit.implementation.meta.id, audit.implementation.meta])
   );
 
   const categoryEntries = Object.entries(categories)
     .map(([categoryId, category]) => {
       const filteredCategory = {
         ...category,
-        auditRefs: category.auditRefs.filter(ref => availableAuditIds.has(ref.id)),
+        auditRefs: category.auditRefs.filter(ref => availableAuditIdToMeta.has(ref.id)),
       };
 
       const didFilter = filteredCategory.auditRefs.length < category.auditRefs.length;
-      const hasOnlyManualAudits = filteredCategory.auditRefs.every(ref =>
-        manualAuditIds.has(ref.id)
-      );
+      const hasOnlyManualAudits = filteredCategory.auditRefs.every(ref => {
+        const meta = availableAuditIdToMeta.get(ref.id);
+        if (!meta) return false;
+        return meta.scoreDisplayMode === Audit.SCORING_MODES.MANUAL;
+      });
 
       // If we filtered out audits and the only ones left are manual, remove them too.
       if (didFilter && hasOnlyManualAudits) filteredCategory.auditRefs = [];
