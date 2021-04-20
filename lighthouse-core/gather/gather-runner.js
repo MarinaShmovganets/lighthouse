@@ -131,7 +131,6 @@ class GatherRunner {
     const resetStorage = !options.settings.disableStorageReset;
     await driver.assertNoSameOriginServiceWorkerClients(options.requestedUrl);
     await emulation.emulate(driver.defaultSession, options.settings);
-    await emulation.throttle(driver.defaultSession, options.settings);
     await driver.enableRuntimeEvents();
     await driver.enableAsyncStacks();
     await driver.cacheNatives();
