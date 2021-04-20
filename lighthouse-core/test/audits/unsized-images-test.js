@@ -632,28 +632,31 @@ describe('html attribute sized check', () => {
 
 describe('CSS property sized check', () => {
   it('fails if it was never defined', () => {
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize(undefined)).toEqual(false);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet(undefined)).toEqual(false);
   });
 
   it('fails if it is empty', () => {
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('')).toEqual(false);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('')).toEqual(false);
   });
 
-  it('fails if it is auto', () => {
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('auto')).toEqual(false);
+  it('fails if it is not explicit', () => {
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('auto')).toEqual(false);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('inherit')).toEqual(false);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('unset')).toEqual(false);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('initial')).toEqual(false);
   });
 
-  it('passes if it is defined and not auto', () => {
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('200')).toEqual(true);
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('300.5')).toEqual(true);
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('150px')).toEqual(true);
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('80%')).toEqual(true);
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('5cm')).toEqual(true);
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('20rem')).toEqual(true);
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('7vw')).toEqual(true);
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('-20')).toEqual(true);
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('0')).toEqual(true);
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('three')).toEqual(true);
-    expect(UnsizedImagesAudit.doesCssPropProvideExplicitSize('-20')).toEqual(true);
+  it('passes if it is defined and explicit', () => {
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('200')).toEqual(true);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('300.5')).toEqual(true);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('150px')).toEqual(true);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('80%')).toEqual(true);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('5cm')).toEqual(true);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('20rem')).toEqual(true);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('7vw')).toEqual(true);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('-20')).toEqual(true);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('0')).toEqual(true);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('three')).toEqual(true);
+    expect(UnsizedImagesAudit.isCssPropExplicitlySet('-20')).toEqual(true);
   });
 });
