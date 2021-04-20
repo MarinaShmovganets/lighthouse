@@ -329,3 +329,12 @@ function square(val) {
     expect(eval(code)).toEqual({a: 5, b: 100, passThru: 'hello'});
   });
 });
+
+describe('.serializeArguments', () => {
+  it('should serialize a list of differently typed arguments', () => {
+    const args = [undefined, 1, 'foo', null, {x: {y: {z: [2]}}}];
+    expect(ExecutionContext.serializeArguments(args)).toEqual(
+      `undefined,1,"foo",null,{"x":{"y":{"z":[2]}}}`
+    );
+  });
+});
