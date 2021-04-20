@@ -187,11 +187,11 @@ class ExecutionContext {
     const argsSerialized = ExecutionContext.serializeArguments(options.args);
     const depsSerialized = options.deps ? options.deps.join('\n') : '';
 
-    const expression = `
+    const expression = `(() => {
       ${ExecutionContext._cachedNativesPreamble};
       ${depsSerialized};
       (${mainFn})(${argsSerialized});
-    `;
+    })()`;
 
     await this._session.sendCommand('Page.addScriptToEvaluateOnNewDocument', {source: expression});
   }
