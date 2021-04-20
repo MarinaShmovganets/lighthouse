@@ -157,7 +157,7 @@ class ExecutionContext {
    * If `useIsolation` is true, the function will be evaluated in a content script that has
    * access to the page's DOM but whose JavaScript state is completely separate.
    * Returns a promise that resolves on a value of `mainFn`'s return type.
-   * @template {any[]} T, R
+   * @template {unknown[]} T, R
    * @param {((...args: T) => R)} mainFn The main function to call.
    * @param {{args: T, useIsolation?: boolean, deps?: Array<Function|string>}} options `args` should
    *   match the args of `mainFn`, and can be any serializable value. `deps` are functions that must be
@@ -176,7 +176,7 @@ class ExecutionContext {
 
   /**
    * Evaluate a function on every new frame from now on.
-   * @template {any[]} T
+   * @template {unknown[]} T
    * @param {((...args: T) => void)} mainFn The main function to call.
    * @param {{args: T, deps?: Array<Function|string>}} options `args` should
    *   match the args of `mainFn`, and can be any serializable value. `deps` are functions that must be
@@ -220,15 +220,13 @@ class ExecutionContext {
   /**
    * Prefix every script evaluation with a shadowing of common globals that tend to be ponyfilled
    * incorrectly by many sites. This allows functions to still refer to `Promise` instead of
-   * Lighthouse-specific backups like `__nativePromise`.
+   * Lighthouse-specific backups like `__nativePromise` (injected by `cacheNativesOnNewDocument` above).
    */
-  static get _cachedNativesPreamble() {
-    return [
-      'const Promise = globalThis.__nativePromise || globalThis.Promise',
-      'const URL = globalThis.__nativeURL || globalThis.URL',
-      'const performance = globalThis.__nativePerformance || globalThis.performance',
-    ].join(';\n');
-  }
+  static _cachedNativesPreamble = [
+    'const Promise = globalThis.__nativePromise || globalThis.Promise',
+    'const URL = globalThis.__nativeURL || globalThis.URL',
+    'const performance = globalThis.__nativePerformance || globalThis.performance',
+  ].join(';\n');
 
   /**
    * Serializes an array of arguments for use in an `eval` string across the protocol.
