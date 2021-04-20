@@ -206,11 +206,12 @@ describe('.evaluate', () => {
     const {expression} = mockFn.findInvocation('Runtime.evaluate');
     const expected = `
 (function wrapInNativePromise() {
-        const __nativePromise = globalThis.__nativePromise || Promise;
-        const URL = globalThis.__nativeURL || globalThis.URL;
+        const Promise = globalThis.__nativePromise || globalThis.Promise;
+const URL = globalThis.__nativeURL || globalThis.URL;
+const performance = globalThis.__nativePerformance || globalThis.performance;
         globalThis.__lighthouseExecutionContextId = undefined;
-        return new __nativePromise(function (resolve) {
-          return __nativePromise.resolve()
+        return new Promise(function (resolve) {
+          return Promise.resolve()
             .then(_ => (() => {
 
       return (function main(value) {
