@@ -207,6 +207,13 @@ class ExecutionContext {
       window.__nativeURL = window.URL;
       window.__nativePerformance = window.performance;
       window.__ElementMatches = window.Element.prototype.matches;
+      // Ensure the native `performance.now` is not overwritable.
+      const performance = window.performance;
+      const performanceNow = window.performance.now;
+      Object.defineProperty(performance, 'now', {
+        value: () => performanceNow.call(performance),
+        writable: false,
+      });
     }, {args: []});
   }
 
