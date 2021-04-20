@@ -132,7 +132,7 @@ class GatherRunner {
     await driver.beginEmulation(options.settings);
     await driver.enableRuntimeEvents();
     await driver.enableAsyncStacks();
-    await driver.cacheNatives();
+    await driver.executionContext.cacheNativesOnNewDocument();
     await driver.dismissJavaScriptDialogs();
     await driver.registerRequestIdleCallbackWrap(options.settings);
     if (resetStorage) {

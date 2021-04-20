@@ -57,16 +57,10 @@ function makeFakeDriver({protocolGetVersionResponse}) {
     enableAsyncStacks() {
       return Promise.resolve();
     },
-    evaluateScriptOnLoad() {
-      return Promise.resolve();
-    },
     cleanBrowserCaches() {},
     clearDataForOrigin() {},
     getImportantStorageWarning() {
       return Promise.resolve(undefined);
-    },
-    cacheNatives() {
-      return Promise.resolve();
     },
     executionContext: {
       evaluateAsync() {
@@ -74,6 +68,9 @@ function makeFakeDriver({protocolGetVersionResponse}) {
       },
       evaluate() {
         return Promise.resolve({});
+      },
+      cacheNativesOnNewDocument() {
+        return Promise.resolve();
       },
     },
     /** @param {{x: number, y: number}} position */

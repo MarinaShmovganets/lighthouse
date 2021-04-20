@@ -5,6 +5,8 @@
  */
 'use strict';
 
+/* global window */
+
 const pageFunctions = require('../../lib/page-functions.js');
 
 class ExecutionContext {
@@ -164,13 +166,71 @@ class ExecutionContext {
    * @return {FlattenedPromise<R>}
    */
   evaluate(mainFn, options) {
-    const argsSerialized = options.args.map(arg => JSON.stringify(arg)).join(',');
+    const argsSerialized = ExecutionContext.serializeArguments(options.args);
     const depsSerialized = options.deps ? options.deps.join('\n') : '';
     const expression = `(() => {
       ${depsSerialized}
       return (${mainFn})(${argsSerialized});
     })()`;
     return this.evaluateAsync(expression, options);
+  }
+
+  /**
+   * Evaluate a function on every new frame from now on.
+   * @template {any[]} T
+   * @param {((...args: T) => void)} mainFn The main function to call.
+   * @param {{args: T, deps?: Array<Function|string>}} options `args` should
+   *   match the args of `mainFn`, and can be any serializable value. `deps` are functions that must be
+   *   defined for `mainFn` to work.
+   * @return {Promise<void>}
+   */
+  async evaluateOnNewDocument(mainFn, options) {
+    const argsSerialized = ExecutionContext.serializeArguments(options.args);
+    const depsSerialized = options.deps ? options.deps.join('\n') : '';
+
+    const expression = `
+      ${ExecutionContext._cachedNativesPreamble};
+      ${depsSerialized};
+      (${mainFn})(${argsSerialized});
+    `;
+
+    await this._session.sendCommand('Page.addScriptToEvaluateOnNewDocument', {source: expression});
+  }
+
+  /**
+   * Cache native functions/objects inside window so we are sure polyfills do not overwrite the
+   * native implementations when the page loads.
+   * @return {Promise<void>}
+   */
+  async cacheNativesOnNewDocument() {
+    await this.evaluateOnNewDocument(() => {
+      window.__nativePromise = window.Promise;
+      window.__nativeURL = window.URL;
+      window.__nativePerformance = window.performance;
+      window.__ElementMatches = window.Element.prototype.matches;
+    }, {args: []});
+  }
+
+  /**
+   * Prefix every script evaluation with a shadowing of common globals that tend to be ponyfilled
+   * incorrectly by many sites. This allows functions to still refer to `Promise` instead of
+   * Lighthouse-specific backups like `__nativePromise`.
+   */
+  static get _cachedNativesPreamble() {
+    return [
+      'const Promise = globalThis.__nativePromise || globalThis.Promise',
+      'const URL = globalThis.__nativeURL || globalThis.URL',
+      'const performance = globalThis.__nativePerformance || globalThis.performance',
+    ].join(';\n');
+  }
+
+  /**
+   * Serializes an array of arguments for use in an `eval` string across the protocol.
+   * @param {any[]} args
+   * @return {string}
+   */
+  static serializeArguments(args) {
+    return args.map(arg => arg === undefined ? 'undefined' : JSON.stringify(arg)).join(',');
   }
 }
 
