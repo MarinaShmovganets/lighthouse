@@ -230,7 +230,7 @@ class ExecutionContext {
 
   /**
    * Serializes an array of arguments for use in an `eval` string across the protocol.
-   * @param {any[]} args
+   * @param {unknown[]} args
    * @return {string}
    */
   static serializeArguments(args) {
