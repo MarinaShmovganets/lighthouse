@@ -203,6 +203,7 @@ class ExecutionContext {
    */
   async cacheNativesOnNewDocument() {
     await this.evaluateOnNewDocument(() => {
+      /* c8 ignore start */
       window.__nativePromise = window.Promise;
       window.__nativeURL = window.URL;
       window.__nativePerformance = window.performance;
@@ -214,6 +215,7 @@ class ExecutionContext {
         value: () => performanceNow.call(performance),
         writable: false,
       });
+      /* c8 ignore stop */
     }, {args: []});
   }
 
