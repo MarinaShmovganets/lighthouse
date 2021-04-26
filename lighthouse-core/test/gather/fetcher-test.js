@@ -25,7 +25,7 @@ beforeEach(() => {
   connectionStub = new Connection();
   driver = new Driver(connectionStub);
   fetcher = new Fetcher(driver);
-  browserMilestone = 90;
+  browserMilestone = 92;
   driver.getBrowserVersion = jest.fn().mockImplementation(() => {
     return Promise.resolve({milestone: browserMilestone});
   });
@@ -51,8 +51,8 @@ describe('.fetchResource', () => {
     expect(fetcher._fetchResourceIframe).not.toHaveBeenCalled();
   });
 
-  it('calls fetchResourceIframe in chrome before m88', async () => {
-    browserMilestone = 87;
+  it('calls fetchResourceIframe in chrome before M92', async () => {
+    browserMilestone = 91;
     const result = await fetcher.fetchResource('https://example.com');
     expect(result).toEqual('IFRAME');
     expect(fetcher._fetchResourceOverProtocol).not.toHaveBeenCalled();

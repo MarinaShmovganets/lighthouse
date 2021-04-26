@@ -28,10 +28,10 @@ class Fetcher {
   }
 
   /**
-   * Chrome M88 and above:
+   * Chrome M92 and above:
    * We use `Network.loadNetworkResource` to fetch each resource.
    *
-   * Chrome <M88:
+   * Chrome <M92:
    * The Fetch domain accepts patterns for controlling what requests are intercepted, but we
    * enable the domain for all patterns and filter events at a lower level to support multiple
    * concurrent usages. Reasons for this:
@@ -101,8 +101,11 @@ class Fetcher {
       throw new Error('Must call `enable` before using fetchResource');
     }
 
+    // `Network.loadNetworkResource` was introduced in M88.
+    // The long timeout bug with `IO.read` was fixed in M92:
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=1191757
     const milestone = await this.driver.getBrowserVersion().then(v => v.milestone);
-    if (milestone >= 88) {
+    if (milestone >= 92) {
       return await this._fetchResourceOverProtocol(url, options);
     }
     return await this._fetchResourceIframe(url, options);
