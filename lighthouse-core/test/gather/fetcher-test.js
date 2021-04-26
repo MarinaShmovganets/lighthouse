@@ -128,7 +128,7 @@ describe('._fetchResourceOverProtocol', () => {
       })
       .mockResponse('Network.disable');
 
-    const data = await fetcher._fetchResourceOverProtocol('https://example.com');
+    const data = await fetcher._fetchResourceOverProtocol('https://example.com', {timeout: 500});
     expect(data).toEqual(streamContents);
   });
 
@@ -141,7 +141,7 @@ describe('._fetchResourceOverProtocol', () => {
       })
       .mockResponse('Network.disable');
 
-    const dataPromise = fetcher._fetchResourceOverProtocol('https://example.com');
+    const dataPromise = fetcher._fetchResourceOverProtocol('https://example.com', {timeout: 500});
     await expect(dataPromise).rejects.toThrowError(/Loading network resource failed/);
   });
 

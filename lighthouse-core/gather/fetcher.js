@@ -138,8 +138,9 @@ class Fetcher {
 
   /**
    * @param {string} url
+   * @return {Promise<LH.Crdp.IO.StreamHandle>}
    */
-  async _fetchStream(url) {
+  async _loadNetworkResource(url) {
     await this.driver.sendCommand('Network.enable');
     const frameTreeResponse = await this.driver.sendCommand('Page.getFrameTree');
     const networkResponse = await this.driver.sendCommand('Network.loadNetworkResource', {
@@ -162,10 +163,10 @@ class Fetcher {
 
   /**
    * @param {string} url
-   * @param {{timeout: number}=} options timeout is in ms
+   * @param {{timeout: number}} options timeout is in ms
    * @return {Promise<string>}
    */
-  async _fetchResourceOverProtocol(url, options = {timeout: 500}) {
+  async _fetchResourceOverProtocol(url, options) {
     const startTime = Date.now();
 
     /** @type {NodeJS.Timeout} */
@@ -176,7 +177,7 @@ class Fetcher {
       }, options.timeout);
     });
 
-    const fetchStreamPromise = this._fetchStream(url);
+    const fetchStreamPromise = this._loadNetworkResource(url);
     const stream = await Promise.race([fetchStreamPromise, timeoutPromise])
       .finally(() => clearTimeout(timeoutHandle));
 
@@ -186,10 +187,10 @@ class Fetcher {
   /**
    * Fetches resource by injecting an iframe into the page.
    * @param {string} url
-   * @param {{timeout: number}=} options timeout is in ms
+   * @param {{timeout: number}} options timeout is in ms
    * @return {Promise<string>}
    */
-  async _fetchResourceIframe(url, options = {timeout: 500}) {
+  async _fetchResourceIframe(url, options) {
     /** @type {Promise<string>} */
     const requestInterceptionPromise = new Promise((resolve, reject) => {
       /** @param {LH.Crdp.Fetch.RequestPausedEvent} event */
