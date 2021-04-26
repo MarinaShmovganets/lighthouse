@@ -97,10 +97,17 @@ body {
 
 .lh-treemap {
   margin: 2px;
+  contain: content;
 }
 
 .lh-table {
   overflow-y: hidden;
+}
+
+.tabulator {
+  /* Better default for unloaded portions of table. */
+  background-color: #f3f3f3;
+  contain: strict;
 }
 
 .lh-coverage-bar {

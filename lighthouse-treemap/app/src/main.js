@@ -7,13 +7,23 @@
 
 /* eslint-env browser */
 
-/* globals webtreemap TreemapUtil Tabulator */
+/* globals webtreemap TreemapUtil Tabulator Cell Row */
 
 const UNUSED_BYTES_IGNORE_THRESHOLD = 20 * 1024;
 const UNUSED_BYTES_IGNORE_BUNDLE_SOURCE_RATIO = 0.5;
 
 /** @type {TreemapViewer} */
 let treemapViewer;
+
+// Make scrolling in Tabulator more performant.
+// @ts-expect-error
+Cell.prototype.clearHeight = () => {};
+// @ts-expect-error
+Row.prototype.calcHeight = function() {
+  this.height = 24;
+  this.outerHeight = 24;
+  this.heightStyled = '24px';
+};
 
 class TreemapViewer {
   /**
@@ -354,32 +364,33 @@ class TreemapViewer {
     const gridEl = document.createElement('div');
     tableEl.append(gridEl);
 
-    const maxSize = this.currentTreemapRoot.resourceBytes;
+    const children = this.currentTreemapRoot.children || [];
+    const maxSize = Math.max(...children.map(node => node.resourceBytes));
+
     this.table = new Tabulator(gridEl, {
       data,
       height: '100%',
       layout: 'fitColumns',
       tooltips: true,
       addRowPos: 'top',
-      history: true,
       resizableColumns: true,
       initialSort: [
         {column: 'resourceBytes', dir: 'desc'},
       ],
       columns: [
         {title: 'Name', field: 'name', widthGrow: 5},
-        {title: 'Size', field: 'resourceBytes', formatter: cell => {
+        {title: 'Size', field: 'resourceBytes', headerSortStartingDir: 'desc', formatter: cell => {
           const value = cell.getValue();
           return TreemapUtil.formatBytes(value);
         }},
         // eslint-disable-next-line max-len
-        {title: 'Unused', field: 'unusedBytes', widthGrow: 1, sorterParams: {alignEmptyValues: 'bottom'}, formatter: cell => {
+        {title: 'Unused', field: 'unusedBytes', widthGrow: 1, sorterParams: {alignEmptyValues: 'bottom'}, headerSortStartingDir: 'desc', formatter: cell => {
           const value = cell.getValue();
           if (value === undefined) return '';
           return TreemapUtil.formatBytes(value);
         }},
         // eslint-disable-next-line max-len
-        {title: 'Coverage', field: 'resourceBytes', widthGrow: 3, tooltip: makeCoverageTooltip, formatter: cell => {
+        {title: 'Coverage', widthGrow: 3, headerSort: false, tooltip: makeCoverageTooltip, formatter: cell => {
           /** @type {typeof data[number]} */
           const dataRow = cell.getRow().getData();
 
