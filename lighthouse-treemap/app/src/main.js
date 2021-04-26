@@ -326,30 +326,55 @@ class TreemapViewer {
     const tableEl = TreemapUtil.find('.lh-table');
     tableEl.innerHTML = '';
 
-    /** @type {Array<{name: string, resourceBytes: number, unusedBytes?: number}>} */
+    /** @type {Array<{name: string, bundleNode?: LH.Treemap.Node, resourceBytes: number, unusedBytes?: number}>} */
     const data = [];
     TreemapUtil.walk(this.currentTreemapRoot, (node, path) => {
       if (node.children) return;
 
-      // Elide the first path component, which is common to all nodes.
-      let name;
-      if (path[0] === this.currentTreemapRoot.name) {
-        name = path.slice(1).join('/');
-      } else {
-        name = path.join('/');
-      }
+      // const bundleNode = this.depthOneNodesByGroup.scripts.find((bundleNode => {
+      //   const bundleNodePath = this.nodeToPathMap.get(bundleNode);
+      //   if (!bundleNodePath) return false; // shouldn't happen.
 
-      // Elide the document URL.
-      if (name.startsWith(this.currentTreemapRoot.name)) {
-        name = name.replace(this.currentTreemapRoot.name, '//');
+      //   return bundleNode.children && TreemapUtil.pathIsSubpath(bundleNodePath, path);
+      // }));
+      const depthOneNode = this.nodeToDepthOneNodeMap.get(node);
+      const bundleNode = depthOneNode && depthOneNode.children ? depthOneNode : undefined;
+
+      let name;
+      if (bundleNode) {
+        const bundleNodePath = this.nodeToPathMap.get(bundleNode);
+        const amountToTrim = bundleNodePath ? bundleNodePath.length : 0; // should never be 0.
+        name = `(bundle) ${path.slice(amountToTrim).join('/')}`;
+      } else {
+        // Elide the first path component, which is common to all nodes.
+        if (path[0] === this.currentTreemapRoot.name) {
+          name = path.slice(1).join('/');
+        } else {
+          name = path.join('/');
+        }
+
+        // Elide the document URL.
+        if (name.startsWith(this.currentTreemapRoot.name)) {
+          name = name.replace(this.currentTreemapRoot.name, '//');
+        }
       }
 
       data.push({
         name,
+        bundleNode,
         resourceBytes: node.resourceBytes,
         unusedBytes: node.unusedBytes,
       });
     });
+
+    /** @param {Tabulator.CellComponent} cell */
+    const makeNameTooltip = (cell) => {
+      /** @type {typeof data[number]} */
+      const dataRow = cell.getRow().getData();
+      if (!dataRow.bundleNode) return '';
+
+      return dataRow.bundleNode.name;
+    };
 
     /** @param {Tabulator.CellComponent} cell */
     const makeCoverageTooltip = (cell) => {
@@ -378,7 +403,7 @@ class TreemapViewer {
         {column: 'resourceBytes', dir: 'desc'},
       ],
       columns: [
-        {title: 'Name', field: 'name', widthGrow: 5},
+        {title: 'Name', field: 'name', widthGrow: 5, tooltip: makeNameTooltip},
         {title: 'Size', field: 'resourceBytes', headerSortStartingDir: 'desc', formatter: cell => {
           const value = cell.getValue();
           return TreemapUtil.formatBytes(value);
