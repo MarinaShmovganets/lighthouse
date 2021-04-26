@@ -203,7 +203,7 @@ class GatherRunner {
     // Wrap requestIdleCallback so pages under simulation receive the correct rIC deadlines.
     await driver.registerRequestIdleCallbackWrap(options.settings);
 
-    // Reset the storage and warn if there appears to be other data set.
+    // Reset the storage and warn if there appears to be other important data.
     if (resetStorage) {
       const warning = await storage.getImportantStorageWarning(session, options.requestedUrl);
       if (warning) {
