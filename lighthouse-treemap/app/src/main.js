@@ -373,7 +373,7 @@ class TreemapViewer {
       const dataRow = cell.getRow().getData();
       if (!dataRow.bundleNode) return '';
 
-      return dataRow.bundleNode.name;
+      return `${dataRow.bundleNode.name} (bundle) ${dataRow.name}`;
     };
 
     /** @param {Tabulator.CellComponent} cell */
