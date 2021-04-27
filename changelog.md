@@ -13,7 +13,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 - Takeshi Kurosawa @takenspc
 
 ## Notable Changes
-* psi: support element screenshots ([#12288](https://github.com/GoogleChrome/lighthouse/pull/12288))
+* Add element screenshots to PSI ([#12288](https://github.com/GoogleChrome/lighthouse/pull/12288))
 
 ## Core
 
@@ -30,10 +30,10 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
 
-* fr: extract storage and service worker driver methods ([#12400](https://github.com/GoogleChrome/lighthouse/pull/12400))
-* fr: prepare emulation utilities for shared use ([#12375](https://github.com/GoogleChrome/lighthouse/pull/12375))
-* fr: filter out manual-only categories ([#12367](https://github.com/GoogleChrome/lighthouse/pull/12367))
-* fr: colocate PerformanceObserver installation with wait logic ([#12365](https://github.com/GoogleChrome/lighthouse/pull/12365))
+* extract storage and service worker driver methods ([#12400](https://github.com/GoogleChrome/lighthouse/pull/12400))
+* prepare emulation utilities for shared use ([#12375](https://github.com/GoogleChrome/lighthouse/pull/12375))
+* filter out manual-only categories ([#12367](https://github.com/GoogleChrome/lighthouse/pull/12367))
+* colocate PerformanceObserver installation with wait logic ([#12365](https://github.com/GoogleChrome/lighthouse/pull/12365))
 
 ## CLI
 
@@ -54,11 +54,11 @@ Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighth
 
 ## I18n
 
-* import ([#12411](https://github.com/GoogleChrome/lighthouse/pull/12411))
+* import new strings ([#12411](https://github.com/GoogleChrome/lighthouse/pull/12411))
 
 ## Docs
 
-* architecture: augment gathering & artifacts a bit ([#12368](https://github.com/GoogleChrome/lighthouse/pull/12368))
+* architecture: augment gathering & artifacts descriptions ([#12368](https://github.com/GoogleChrome/lighthouse/pull/12368))
 * readme: add Alertdesk to the list of integrations ([#12356](https://github.com/GoogleChrome/lighthouse/pull/12356))
 
 ## Tests
@@ -78,10 +78,10 @@ Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighth
 
 * ci: increase yarn network timeout ([#12376](https://github.com/GoogleChrome/lighthouse/pull/12376))
 * treemap: root node selector ([#12360](https://github.com/GoogleChrome/lighthouse/pull/12360))
-* tweak unused audits strings (remove -> reduce) ([#12281](https://github.com/GoogleChrome/lighthouse/pull/12281))
+* tweak unused-audits strings (remove -> reduce) ([#12281](https://github.com/GoogleChrome/lighthouse/pull/12281))
 * puppeteer script to test a page from devtools ([#12145](https://github.com/GoogleChrome/lighthouse/pull/12145))
 * treemap: tweak styles for logo spacing and text colors ([#12342](https://github.com/GoogleChrome/lighthouse/pull/12342))
-* fix path check for roll devtools script ([#12358](https://github.com/GoogleChrome/lighthouse/pull/12358))
+* fix path check for roll-devtools script ([#12358](https://github.com/GoogleChrome/lighthouse/pull/12358))
 * add patrickhulce back to issue assignment ([#12357](https://github.com/GoogleChrome/lighthouse/pull/12357))
 * fix open-devtools script ([#12313](https://github.com/GoogleChrome/lighthouse/pull/12313))
 * include SVG elements by default in typed querySelector ([#12307](https://github.com/GoogleChrome/lighthouse/pull/12307))
