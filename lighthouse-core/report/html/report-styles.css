@@ -437,16 +437,16 @@
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="black"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 5v14h19V5H3zm2 2h15v4H5V7zm0 10v-4h4v4H5zm6 0v-4h9v4h-9z"/></svg>');
 }
 
-.icon-button {
+.lh-button {
   margin: 10px;
   height: 30px;
-  border: 2px solid var(--report-border-color-secondary);
+  border: 1px solid var(--color-gray-600);
   border-radius: 4px;
   font-weight: bold;
   color: rgb(26, 115, 232);
   background-color: var(--report-background-color);
 }
-.dark .icon-button {
+.dark .lh-button {
   color: var(--color-blue-200);
 }
 

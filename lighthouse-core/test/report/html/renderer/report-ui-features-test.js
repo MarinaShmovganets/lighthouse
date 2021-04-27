@@ -554,13 +554,13 @@ describe('ReportUIFeatures', () => {
     });
   });
 
-  describe('treemap icon button', () => {
-    it('should only show icon button if treemap data is available', () => {
+  describe('treemap button', () => {
+    it('should only show button if treemap data is available', () => {
       expect(sampleResults.audits['script-treemap-data']).toBeUndefined();
-      expect(render(sampleResults).querySelector('.icon-button--treemap')).toBeNull();
+      expect(render(sampleResults).querySelector('.lh-button.report-icon--treemap')).toBeNull();
 
       sampleResults.audits['script-treemap-data'] = {details: {}};
-      expect(render(sampleResults).querySelector('.icon-button--treemap')).toBeTruthy();
+      expect(render(sampleResults).querySelector('.lh-button.report-icon--treemap')).toBeTruthy();
     });
   });
 

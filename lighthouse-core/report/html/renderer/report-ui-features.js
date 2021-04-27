@@ -154,9 +154,9 @@ class ReportUIFeatures {
     const showTreemapApp =
       this.json.audits['script-treemap-data'] && this.json.audits['script-treemap-data'].details;
     if (showTreemapApp) {
-      this.createIconButton({
-        name: 'treemap',
+      this.createButton({
         text: Util.i18n.strings.viewTreemapLabel,
+        icon: 'treemap',
         onClick: () => ReportUIFeatures.openTreemap(this.json),
       });
     }
@@ -180,12 +180,18 @@ class ReportUIFeatures {
   }
 
   /**
-   * @param {{name: string, text: string, onClick: () => void}} opts
+   * @param {{text: string, icon?: string, onClick: () => void}} opts
    */
-  createIconButton(opts) {
+  createButton(opts) {
     const metricsEl = this._dom.find('.lh-audit-group--metrics', this._document);
-    const buttonEl = this._dom.createChildOf(
-      metricsEl, 'button', `icon-button report-icon report-icon--${opts.name}`);
+    const classes = [
+      'lh-button',
+    ];
+    if (opts.icon) {
+      classes.push('report-icon');
+      classes.push(`report-icon--${opts.icon}`);
+    }
+    const buttonEl = this._dom.createChildOf(metricsEl, 'button', classes.join(' '));
     buttonEl.addEventListener('click', opts.onClick);
     buttonEl.textContent = opts.text;
     metricsEl.append(buttonEl);
