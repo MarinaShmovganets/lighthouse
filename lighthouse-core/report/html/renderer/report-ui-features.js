@@ -744,14 +744,14 @@ class DropDown {
   }
 
   close() {
-    // this._toggleEl.classList.remove('active');
-    // this._toggleEl.setAttribute('aria-expanded', 'false');
-    // if (this._menuEl.contains(this._dom.document().activeElement)) {
-    //   // Refocus on the tools button if the drop down last had focus
-    //   this._toggleEl.focus();
-    // }
-    // this._menuEl.removeEventListener('focusout', this.onMenuFocusOut);
-    // this._dom.document().removeEventListener('keydown', this.onDocumentKeyDown);
+    this._toggleEl.classList.remove('active');
+    this._toggleEl.setAttribute('aria-expanded', 'false');
+    if (this._menuEl.contains(this._dom.document().activeElement)) {
+      // Refocus on the tools button if the drop down last had focus
+      this._toggleEl.focus();
+    }
+    this._menuEl.removeEventListener('focusout', this.onMenuFocusOut);
+    this._dom.document().removeEventListener('keydown', this.onDocumentKeyDown);
   }
 
   /**
