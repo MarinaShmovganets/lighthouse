@@ -184,11 +184,10 @@ class ReportUIFeatures {
    */
   createIconButton(opts) {
     const metricsEl = this._dom.find('.lh-audit-group--metrics', this._document);
-    const buttonEl =
-      this._dom.createChildOf(metricsEl, 'div', `icon-button icon-button--${opts.name}`);
+    const buttonEl = this._dom.createChildOf(
+      metricsEl, 'button', `icon-button report-icon report-icon--${opts.name}`);
     buttonEl.addEventListener('click', opts.onClick);
-    this._dom.createChildOf(buttonEl, 'div', 'icon-button__preview');
-    this._dom.createChildOf(buttonEl, 'div', 'icon-button__caption').textContent = opts.text;
+    buttonEl.textContent = opts.text;
     metricsEl.append(buttonEl);
     return buttonEl;
   }
