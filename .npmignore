@@ -22,8 +22,7 @@ lighthouse-logger/
 !lighthouse-core/scripts/manual-chrome-launcher.js
 !lighthouse-core/scripts/download-chrome.sh
 
-# keep smokehouse tests, etc
-!lighthouse-cli/test
+lighthouse-cli/test
 
 results/
 lantern-data/
