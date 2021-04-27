@@ -156,7 +156,7 @@ class ReportUIFeatures {
     if (showTreemapApp) {
       this.createIconButton({
         name: 'treemap',
-        text: 'Open Treemap App',
+        text: Util.i18n.strings.viewTreemapLabel,
         onClick: () => ReportUIFeatures.openTreemap(this.json),
       });
     }
