@@ -44,6 +44,8 @@ function createMockGathererInstance(meta) {
     meta,
     startInstrumentation: jest.fn(),
     stopInstrumentation: jest.fn(),
+    startSensitiveInstrumentation: jest.fn(),
+    stopSensitiveInstrumentation: jest.fn(),
     getArtifact: jest.fn(),
 
     /** @return {LH.Gatherer.FRGathererInstance} */

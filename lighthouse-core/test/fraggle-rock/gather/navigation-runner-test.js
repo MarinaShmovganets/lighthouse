@@ -44,13 +44,13 @@ describe('NavigationRunner', () => {
   function createNavigation() {
     const timespanGatherer = createGathererDefn();
     timespanGatherer.instance.meta.supportedModes = ['timespan', 'navigation'];
-    timespanGatherer.instance.stopInstrumentation = jest.fn().mockResolvedValue({type: 'timespan'});
+    timespanGatherer.instance.getArtifact = jest.fn().mockResolvedValue({type: 'timespan'});
     const snapshotGatherer = createGathererDefn();
     snapshotGatherer.instance.meta.supportedModes = ['snapshot', 'navigation'];
     snapshotGatherer.instance.getArtifact = jest.fn().mockResolvedValue({type: 'snapshot'});
     const navigationGatherer = createGathererDefn();
     navigationGatherer.instance.meta.supportedModes = ['navigation'];
-    navigationGatherer.instance.stopSensitiveInstrumentation = jest
+    navigationGatherer.instance.getArtifact = jest
       .fn()
       .mockResolvedValue({type: 'navigation'});
 
@@ -182,8 +182,8 @@ describe('NavigationRunner', () => {
         Snapshot: {type: 'snapshot'},
       });
 
-      expect(gatherers.navigation.stopSensitiveInstrumentation).toHaveBeenCalled();
-      const navigationArgs = gatherers.navigation.stopSensitiveInstrumentation.mock.calls[0];
+      expect(gatherers.navigation.getArtifact).toHaveBeenCalled();
+      const navigationArgs = gatherers.navigation.getArtifact.mock.calls[0];
       expect(navigationArgs[0].dependencies).toEqual({Accessibility: {type: 'timespan'}});
 
       expect(gatherers.snapshot.getArtifact).toHaveBeenCalled();
@@ -259,132 +259,5 @@ describe('NavigationRunner', () => {
     it.todo('should wait for page conditions');
     it.todo('should disable throttling when finished');
     it.todo('should capture page load errors');
-  });
-
-  describe('_collectPhaseArtifacts', () => {
-    /** @type {import('../../../fraggle-rock/gather/navigation-runner').ArtifactState} */
-    let artifacts;
-
-    beforeEach(() => {
-      artifacts = {
-        startSensitiveInstrumentation: {},
-        startInstrumentation: {},
-        stopInstrumentation: {},
-        stopSensitiveInstrumentation: {},
-        getArtifact: {},
-      };
-    });
-
-    it('should run the navigation phase of navigation gatherers', async () => {
-      const {navigation, gatherers} = createNavigation();
-      const navigationContext = {driver, navigation, requestedUrl};
-      await runner._collectPhaseArtifacts({
-        navigationContext,
-        artifacts,
-        phase: 'stopSensitiveInstrumentation',
-      });
-      expect(artifacts.stopSensitiveInstrumentation).toEqual({Navigation: expect.any(Promise)});
-      expect(await artifacts.stopSensitiveInstrumentation.Navigation).toEqual({type: 'navigation'});
-      expect(gatherers.navigation.stopSensitiveInstrumentation).toHaveBeenCalled();
-      // They were invoked but no artifact was produced.
-      expect(gatherers.timespan.stopSensitiveInstrumentation).toHaveBeenCalled();
-      expect(gatherers.snapshot.stopSensitiveInstrumentation).toHaveBeenCalled();
-    });
-
-    it('should run the snapshot phase of snapshot gatherers', async () => {
-      const {navigation, gatherers} = createNavigation();
-      const navigationContext = {driver, navigation, requestedUrl};
-      await runner._collectPhaseArtifacts({navigationContext, artifacts, phase: 'getArtifact'});
-      expect(artifacts.getArtifact).toEqual({Snapshot: expect.any(Promise)});
-      expect(await artifacts.getArtifact.Snapshot).toEqual({type: 'snapshot'});
-      expect(gatherers.snapshot.getArtifact).toHaveBeenCalled();
-      expect(gatherers.navigation.getArtifact).not.toHaveBeenCalled();
-      expect(gatherers.timespan.getArtifact).not.toHaveBeenCalled();
-    });
-
-    it('should run the timespan phase of timespan gatherers', async () => {
-      const {navigation, gatherers} = createNavigation();
-      const navigationContext = {driver, navigation, requestedUrl};
-      await runner._collectPhaseArtifacts({
-        navigationContext,
-        artifacts,
-        phase: 'stopInstrumentation',
-      });
-      expect(artifacts.stopInstrumentation).toEqual({Timespan: expect.any(Promise)});
-      expect(await artifacts.stopInstrumentation.Timespan).toEqual({type: 'timespan'});
-      expect(gatherers.timespan.stopInstrumentation).toHaveBeenCalled();
-      expect(gatherers.snapshot.stopInstrumentation).not.toHaveBeenCalled();
-      expect(gatherers.navigation.stopInstrumentation).not.toHaveBeenCalled();
-    });
-
-    it('should pass dependencies from prior phase to gatherers', async () => {
-      artifacts.stopInstrumentation = {
-        Dependency: Promise.resolve([{src: 'https://example.com/image.jpg'}]),
-      };
-
-      const {navigation, gatherers} = createNavigation();
-      navigation.artifacts = [
-        {...navigation.artifacts[1], dependencies: {ImageElements: {id: 'Dependency'}}},
-      ];
-
-      const navigationContext = {driver, navigation, requestedUrl};
-      await runner._collectPhaseArtifacts({navigationContext, artifacts, phase: 'getArtifact'});
-      expect(artifacts.getArtifact).toEqual({
-        Snapshot: expect.any(Promise),
-      });
-      expect(gatherers.snapshot.getArtifact).toHaveBeenCalled();
-
-      const receivedDependencies = gatherers.snapshot.getArtifact.mock.calls[0][0].dependencies;
-      expect(receivedDependencies).toEqual({
-        ImageElements: [{src: 'https://example.com/image.jpg'}],
-      });
-    });
-
-    it('should pass dependencies within same phase to gatherers', async () => {
-      const {navigation, gatherers} = createNavigation();
-      const gatherer = navigation.artifacts[1].gatherer;
-      navigation.artifacts = [
-        {id: 'Dependency', gatherer},
-        {id: 'Snapshot', gatherer, dependencies: {ImageElements: {id: 'Dependency'}}},
-      ];
-
-      const navigationContext = {driver, navigation, requestedUrl};
-      await runner._collectPhaseArtifacts({navigationContext, artifacts, phase: 'getArtifact'});
-      expect(artifacts.getArtifact).toEqual({
-        Dependency: expect.any(Promise),
-        Snapshot: expect.any(Promise),
-      });
-
-      // Ensure neither threw an exception
-      await artifacts.getArtifact.Dependency;
-      await artifacts.getArtifact.Snapshot;
-
-      expect(gatherers.snapshot.getArtifact).toHaveBeenCalledTimes(2);
-
-      const receivedDependencies = gatherers.snapshot.getArtifact.mock.calls[1][0].dependencies;
-      expect(receivedDependencies).toEqual({
-        ImageElements: {type: 'snapshot'},
-      });
-    });
-
-    it('should combine the previous promises', async () => {
-      artifacts.startInstrumentation = {
-        Timespan: Promise.reject(new Error('startInstrumentation rejection')),
-      };
-
-      const {navigation, gatherers} = createNavigation();
-      const navigationContext = {driver, navigation, requestedUrl};
-      await runner._collectPhaseArtifacts({
-        navigationContext,
-        artifacts,
-        phase: 'stopInstrumentation',
-      });
-      expect(artifacts.stopInstrumentation).toEqual({Timespan: expect.any(Promise)});
-      await expect(artifacts.stopInstrumentation.Timespan).rejects.toMatchObject({
-        message: 'startInstrumentation rejection',
-      });
-      expect(gatherers.timespan.stopInstrumentation).not.toHaveBeenCalled();
-      expect(gatherers.snapshot.stopInstrumentation).not.toHaveBeenCalled();
-    });
   });
 });

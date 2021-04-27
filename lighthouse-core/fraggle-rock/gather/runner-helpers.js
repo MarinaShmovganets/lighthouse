@@ -79,9 +79,7 @@ async function collectPhaseArtifacts(options) {
       });
     });
 
-    // Do not set the artifact promise if the result was `undefined`.
-    const result = await artifactPromise.catch(err => err);
-    if (result === undefined) continue;
+    await artifactPromise.catch(() => {});
     artifactState[phase][artifactDefn.id] = artifactPromise;
   }
 }

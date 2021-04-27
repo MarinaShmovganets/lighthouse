@@ -117,7 +117,7 @@ declare global {
       startSensitiveInstrumentation(context: FRTransitionalContext<DefaultDependenciesKey>): Promise<void>|void;
       stopSensitiveInstrumentation(context: FRTransitionalContext<TDependencies>): Promise<void>|void;
       stopInstrumentation(context: FRTransitionalContext<TDependencies>): Promise<void>|void;
-      collectArtifact(context: FRTransitionalContext<TDependencies>): PhaseResult;
+      getArtifact(context: FRTransitionalContext<TDependencies>): PhaseResult;
     }
 
     namespace Simulation {

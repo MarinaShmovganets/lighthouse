@@ -89,6 +89,15 @@ describe('Snapshot Runner', () => {
     expect(gathererB.getArtifact).toHaveBeenCalled();
   });
 
+  it('should not invoke instrumentation methods', async () => {
+    await snapshot({page, config});
+    await mockRunnerRun.mock.calls[0][0]();
+    expect(gathererA.startInstrumentation).not.toHaveBeenCalled();
+    expect(gathererA.startSensitiveInstrumentation).not.toHaveBeenCalled();
+    expect(gathererA.stopSensitiveInstrumentation).not.toHaveBeenCalled();
+    expect(gathererA.stopInstrumentation).not.toHaveBeenCalled();
+  });
+
   it('should skip timespan artifacts', async () => {
     gathererB.meta.supportedModes = ['timespan'];
 
