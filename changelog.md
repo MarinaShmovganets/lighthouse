@@ -1,17 +1,19 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-kasperadk @kasperadk
-Milutin Kristofic @milutin
-Takeshi Kurosawa @takenspc
- <a name="7.4.0"></a>
+<a name="7.4.0"></a>
 # 7.4.0 (2021-04-27)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v7.3.0...v7.4.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 92](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## New contributors
+
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+- kasperadk @kasperadk
+- Milutin Kristofic @milutin
+- Takeshi Kurosawa @takenspc
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
-
+* psi: support element screenshots ([#12288](https://github.com/GoogleChrome/lighthouse/pull/12288))
 
 ## Core
 
@@ -20,13 +22,18 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 * driver: move evaluateOnNewDocument to executionContext ([#12381](https://github.com/GoogleChrome/lighthouse/pull/12381))
 * fetcher: fetch over protocol ([#12199](https://github.com/GoogleChrome/lighthouse/pull/12199))
 * fetcher: disable auto-attaching for injected iframe ([#12347](https://github.com/GoogleChrome/lighthouse/pull/12347))
+* hreflang: use Audit.makeNodeItem ([#12273](https://github.com/GoogleChrome/lighthouse/pull/12273))
+* meta-elements: add NodeDetails ([#12274](https://github.com/GoogleChrome/lighthouse/pull/12274))
+* unsized-images: pass with explicit aspect-ratio ([#12377](https://github.com/GoogleChrome/lighthouse/pull/12377))
+
+## Fraggle Rock
+
+Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
+
 * fr: extract storage and service worker driver methods ([#12400](https://github.com/GoogleChrome/lighthouse/pull/12400))
 * fr: prepare emulation utilities for shared use ([#12375](https://github.com/GoogleChrome/lighthouse/pull/12375))
 * fr: filter out manual-only categories ([#12367](https://github.com/GoogleChrome/lighthouse/pull/12367))
 * fr: colocate PerformanceObserver installation with wait logic ([#12365](https://github.com/GoogleChrome/lighthouse/pull/12365))
-* hreflang: use Audit.makeNodeItem ([#12273](https://github.com/GoogleChrome/lighthouse/pull/12273))
-* meta-elements: add NodeDetails ([#12274](https://github.com/GoogleChrome/lighthouse/pull/12274))
-* unsized-images: pass with explicit aspect-ratio ([#12377](https://github.com/GoogleChrome/lighthouse/pull/12377))
 
 ## CLI
 
@@ -40,18 +47,10 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 ## Deps
 
 * remove details-element-polyfill and rimraf ([#12369](https://github.com/GoogleChrome/lighthouse/pull/12369))
-* snyk: update snyk snapshot ([#12385](https://github.com/GoogleChrome/lighthouse/pull/12385))
-* snyk: update snyk snapshot ([#12361](https://github.com/GoogleChrome/lighthouse/pull/12361))
+* snyk: update snyk snapshot ([#12385](https://github.com/GoogleChrome/lighthouse/pull/12385), [#12361](https://github.com/GoogleChrome/lighthouse/pull/12361), [#12336](https://github.com/GoogleChrome/lighthouse/pull/12336), [#12315](https://github.com/GoogleChrome/lighthouse/pull/12315), [#12289](https://github.com/GoogleChrome/lighthouse/pull/12289))
 * update jsonld to latest ([#12338](https://github.com/GoogleChrome/lighthouse/pull/12338))
-* snyk: update snyk snapshot ([#12336](https://github.com/GoogleChrome/lighthouse/pull/12336))
 * replace inquirer with enquirer ([#12317](https://github.com/GoogleChrome/lighthouse/pull/12317))
 * update eslint to latest ([#12333](https://github.com/GoogleChrome/lighthouse/pull/12333))
-* snyk: update snyk snapshot ([#12315](https://github.com/GoogleChrome/lighthouse/pull/12315))
-* snyk: update snyk snapshot ([#12289](https://github.com/GoogleChrome/lighthouse/pull/12289))
-
-## Clients
-
-* psi: support element screenshots ([#12288](https://github.com/GoogleChrome/lighthouse/pull/12288))
 
 ## I18n
 
