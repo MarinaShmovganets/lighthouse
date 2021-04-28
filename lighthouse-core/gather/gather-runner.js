@@ -9,10 +9,13 @@ const log = require('lighthouse-logger');
 const LHError = require('../lib/lh-error.js');
 const NetworkAnalyzer = require('../lib/dependency-graph/simulator/network-analyzer.js');
 const NetworkRecorder = require('../lib/network-recorder.js');
+const emulation = require('../lib/emulation.js');
 const constants = require('../config/constants.js');
 const i18n = require('../lib/i18n/i18n.js');
 const URL = require('../lib/url-shim.js');
 const {getBenchmarkIndex} = require('./driver/environment.js');
+const storage = require('./driver/storage.js');
+const serviceWorkers = require('./driver/service-workers.js');
 const WebAppManifest = require('./gatherers/web-app-manifest.js');
 const InstallabilityErrors = require('./gatherers/installability-errors.js');
 const NetworkUserAgent = require('./gatherers/network-user-agent.js');
@@ -119,6 +122,53 @@ class GatherRunner {
   }
 
   /**
+   * Rejects if any open tabs would share a service worker with the target URL.
+   * This includes the target tab, so navigation to something like about:blank
+   * should be done before calling.
+   * @param {LH.Gatherer.FRProtocolSession} session
+   * @param {string} pageUrl
+   * @return {Promise<void>}
+   */
+  static assertNoSameOriginServiceWorkerClients(session, pageUrl) {
+    /** @type {Array<LH.Crdp.ServiceWorker.ServiceWorkerRegistration>} */
+    let registrations;
+    /** @type {Array<LH.Crdp.ServiceWorker.ServiceWorkerVersion>} */
+    let versions;
+
+    return serviceWorkers.getServiceWorkerRegistrations(session)
+      .then(data => {
+        registrations = data.registrations;
+      })
+      .then(_ => serviceWorkers.getServiceWorkerVersions(session))
+      .then(data => {
+        versions = data.versions;
+      })
+      .then(_ => {
+        const origin = new URL(pageUrl).origin;
+
+        registrations
+          .filter(reg => {
+            const swOrigin = new URL(reg.scopeURL).origin;
+
+            return origin === swOrigin;
+          })
+          .forEach(reg => {
+            versions.forEach(ver => {
+              // Ignore workers unaffiliated with this registration
+              if (ver.registrationId !== reg.registrationId) {
+                return;
+              }
+
+              // Throw if service worker for this origin has active controlledClients.
+              if (ver.controlledClients && ver.controlledClients.length > 0) {
+                throw new Error('You probably have multiple tabs open to the same origin.');
+              }
+            });
+          });
+      });
+  }
+
+  /**
    * @param {Driver} driver
    * @param {{requestedUrl: string, settings: LH.Config.Settings}} options
    * @param {(string | LH.IcuMessage)[]} LighthouseRunWarnings
@@ -128,19 +178,38 @@ class GatherRunner {
     const status = {msg: 'Initializing…', id: 'lh:gather:setupDriver'};
     log.time(status);
     const resetStorage = !options.settings.disableStorageReset;
-    await driver.assertNoSameOriginServiceWorkerClients(options.requestedUrl);
-    await driver.beginEmulation(options.settings);
-    await driver.enableRuntimeEvents();
-    await driver.enableAsyncStacks();
-    await driver.cacheNatives();
+    const session = driver.defaultSession;
+
+    // Assert no service workers are still installed, so we test that they would actually be installed for a new user.
+    // TODO(FR-COMPAT): re-evaluate the necessity of this check
+    await GatherRunner.assertNoSameOriginServiceWorkerClients(session, options.requestedUrl);
+
+    // Emulate our target device screen and user agent.
+    await emulation.emulate(driver.defaultSession, options.settings);
+
+    // Enable `Debugger` domain to receive async stacktrace information on network request initiators.
+    // This is critical for tracing certain performance simulation situations.
+    session.on('Debugger.paused', () => session.sendCommand('Debugger.resume'));
+    await session.sendCommand('Debugger.enable');
+    await session.sendCommand('Debugger.setSkipAllPauses', {skip: true});
+    await session.sendCommand('Debugger.setAsyncCallStackDepth', {maxDepth: 8});
+
+    // Inject our snippet to cache important web platform APIs before they're (possibly) ponyfilled by the page.
+    await driver.executionContext.cacheNativesOnNewDocument();
+
+    // Automatically handle any JavaScript dialogs to prevent a hung renderer.
     await driver.dismissJavaScriptDialogs();
+
+    // Wrap requestIdleCallback so pages under simulation receive the correct rIC deadlines.
     await driver.registerRequestIdleCallbackWrap(options.settings);
+
+    // Reset the storage and warn if there appears to be other important data.
     if (resetStorage) {
-      const warning = await driver.getImportantStorageWarning(options.requestedUrl);
+      const warning = await storage.getImportantStorageWarning(session, options.requestedUrl);
       if (warning) {
         LighthouseRunWarnings.push(warning);
       }
-      await driver.clearDataForOrigin(options.requestedUrl);
+      await storage.clearDataForOrigin(session, options.requestedUrl);
     }
     log.timeEnd(status);
   }
@@ -157,13 +226,14 @@ class GatherRunner {
     log.time(status);
     try {
       // If storage was cleared for the run, clear at the end so Lighthouse specifics aren't cached.
+      const session = driver.defaultSession;
       const resetStorage = !options.settings.disableStorageReset;
-      if (resetStorage) await driver.clearDataForOrigin(options.requestedUrl);
+      if (resetStorage) await storage.clearDataForOrigin(session, options.requestedUrl);
 
       // Disable fetcher, in case a gatherer enabled it.
       // This cleanup should be removed once the only usage of
       // fetcher (fetching arbitrary URLs) is replaced by new protocol support.
-      await driver.fetcher.disableRequestInterception();
+      await driver.fetcher.disable();
 
       await driver.disconnect();
     } catch (err) {
@@ -344,17 +414,21 @@ class GatherRunner {
     const status = {msg: 'Setting up network for the pass trace', id: `lh:gather:setupPassNetwork`};
     log.time(status);
 
+    const session = passContext.driver.defaultSession;
     const passConfig = passContext.passConfig;
-    await passContext.driver.setThrottling(passContext.settings, passConfig);
+    if (passConfig.useThrottling) await emulation.throttle(session, passContext.settings);
+    else await emulation.clearThrottling(session);
 
     const blockedUrls = (passContext.passConfig.blockedUrlPatterns || [])
       .concat(passContext.settings.blockedUrlPatterns || []);
 
     // Set request blocking before any network activity
-    // No "clearing" is done at the end of the pass since blockUrlPatterns([]) will unset all if
+    // No "clearing" is done at the end of the pass since Network.setBlockedURLs([]) will unset all if
     // neccessary at the beginning of the next pass.
-    await passContext.driver.blockUrlPatterns(blockedUrls);
-    await passContext.driver.setExtraHTTPHeaders(passContext.settings.extraHeaders);
+    await session.sendCommand('Network.setBlockedURLs', {urls: blockedUrls});
+
+    const headers = passContext.settings.extraHeaders;
+    if (headers) await session.sendCommand('Network.setExtraHTTPHeaders', {headers});
 
     log.timeEnd(status);
   }
@@ -683,7 +757,7 @@ class GatherRunner {
         // Noop if fetcher was never enabled.
         // This cleanup should be removed once the only usage of
         // fetcher (fetching arbitrary URLs) is replaced by new protocol support.
-        await driver.fetcher.disableRequestInterception();
+        await driver.fetcher.disable();
       }
 
       await GatherRunner.disposeDriver(driver, options);
@@ -741,7 +815,7 @@ class GatherRunner {
     await GatherRunner.loadBlank(driver, passConfig.blankPage);
     await GatherRunner.setupPassNetwork(passContext);
     if (GatherRunner.shouldClearCaches(passContext)) {
-      await driver.cleanBrowserCaches(); // Clear disk & memory cache if it's a perf run
+      await storage.cleanBrowserCaches(driver.defaultSession); // Clear disk & memory cache if it's a perf run
     }
     await GatherRunner.beforePass(passContext, gathererResults);
 
@@ -752,7 +826,7 @@ class GatherRunner {
     const loadData = await GatherRunner.endRecording(passContext);
 
     // Disable throttling so the afterPass analysis isn't throttled
-    await driver.setThrottling(passContext.settings, {useThrottling: false});
+    await emulation.clearThrottling(driver.defaultSession);
 
     // In case of load error, save log and trace with an error prefix, return no artifacts for this pass.
     const pageLoadError = GatherRunner.getPageLoadError(passContext, loadData, possibleNavError);

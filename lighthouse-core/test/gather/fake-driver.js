@@ -5,6 +5,8 @@
  */
 'use strict';
 
+/* eslint-env jest */
+
 /**
  * @param {{protocolGetVersionResponse: LH.CrdpCommands['Browser.getVersion']['returnType']}} param0
  */
@@ -14,9 +16,14 @@ function makeFakeDriver({protocolGetVersionResponse}) {
   return {
     get fetcher() {
       return {
-        disableRequestInterception: () => Promise.resolve(),
+        disable: () => Promise.resolve(),
       };
     },
+    get defaultSession() {
+      return this;
+    },
+    on: jest.fn(),
+    sendCommand: jest.fn().mockResolvedValue(undefined),
     getBrowserVersion() {
       return Promise.resolve(Object.assign({}, protocolGetVersionResponse, {milestone: 71}));
     },
@@ -36,12 +43,6 @@ function makeFakeDriver({protocolGetVersionResponse}) {
     gotoURL(url) {
       return Promise.resolve({finalUrl: url, timedOut: false});
     },
-    beginEmulation() {
-      return Promise.resolve();
-    },
-    setThrottling() {
-      return Promise.resolve();
-    },
     dismissJavaScriptDialogs() {
       return Promise.resolve();
     },
@@ -51,29 +52,15 @@ function makeFakeDriver({protocolGetVersionResponse}) {
     reloadForCleanStateIfNeeded() {
       return Promise.resolve();
     },
-    enableRuntimeEvents() {
-      return Promise.resolve();
-    },
-    enableAsyncStacks() {
-      return Promise.resolve();
-    },
-    evaluateScriptOnLoad() {
-      return Promise.resolve();
-    },
-    cleanBrowserCaches() {},
-    clearDataForOrigin() {},
-    getImportantStorageWarning() {
-      return Promise.resolve(undefined);
-    },
-    cacheNatives() {
-      return Promise.resolve();
-    },
     executionContext: {
       evaluateAsync() {
         return Promise.resolve({});
       },
       evaluate() {
         return Promise.resolve({});
+      },
+      cacheNativesOnNewDocument() {
+        return Promise.resolve();
       },
     },
     /** @param {{x: number, y: number}} position */
@@ -97,12 +84,6 @@ function makeFakeDriver({protocolGetVersionResponse}) {
       // Minimal indirection so TypeScript doesn't crash trying to infer a type.
       const modulePath = '../fixtures/artifacts/perflog/defaultPass.devtoolslog.json';
       return require(modulePath);
-    },
-    blockUrlPatterns() {
-      return Promise.resolve();
-    },
-    setExtraHTTPHeaders() {
-      return Promise.resolve();
     },
     registerRequestIdleCallbackWrap() {
       return Promise.resolve();
