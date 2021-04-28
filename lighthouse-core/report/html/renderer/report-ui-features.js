@@ -154,7 +154,7 @@ class ReportUIFeatures {
     const showTreemapApp =
       this.json.audits['script-treemap-data'] && this.json.audits['script-treemap-data'].details;
     if (showTreemapApp) {
-      this.createButton({
+      this.addButton({
         text: Util.i18n.strings.viewTreemapLabel,
         icon: 'treemap',
         onClick: () => ReportUIFeatures.openTreemap(this.json),
@@ -182,7 +182,7 @@ class ReportUIFeatures {
   /**
    * @param {{text: string, icon?: string, onClick: () => void}} opts
    */
-  createButton(opts) {
+  addButton(opts) {
     const metricsEl = this._dom.find('.lh-audit-group--metrics', this._document);
     const classes = [
       'lh-button',
