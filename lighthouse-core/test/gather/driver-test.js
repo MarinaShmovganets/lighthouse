@@ -11,7 +11,6 @@ const LHElement = require('../../lib/lh-element.js');
 const {protocolGetVersionResponse} = require('./fake-driver.js');
 const {
   createMockSendCommandFn,
-  createMockOnceFn,
   makePromiseInspectable,
   flushAllTimersAndMicrotasks,
 } = require('../test-utils.js');
