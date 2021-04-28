@@ -13,6 +13,8 @@
 
 /* global document */
 
+/** @typedef {{content: string|null, status: number|null}} FetchResponse */
+
 const log = require('lighthouse-logger');
 const {getBrowserVersion} = require('./driver/environment.js');
 
@@ -97,7 +99,7 @@ class Fetcher {
    *
    * @param {string} url
    * @param {{timeout: number}=} options timeout is in ms
-   * @return {Promise<string>}
+   * @return {Promise<FetchResponse>}
    */
   async fetchResource(url, options = {timeout: 500}) {
     if (!this._enabled) {
@@ -141,7 +143,7 @@ class Fetcher {
 
   /**
    * @param {string} url
-   * @return {Promise<LH.Crdp.IO.StreamHandle>}
+   * @return {Promise<{stream: LH.Crdp.IO.StreamHandle|null, status: number|null}>}
    */
   async _loadNetworkResource(url) {
     await this.session.sendCommand('Network.enable');
@@ -156,18 +158,16 @@ class Fetcher {
     });
     await this.session.sendCommand('Network.disable');
 
-    if (!networkResponse.resource.success || !networkResponse.resource.stream) {
-      const statusCode = networkResponse.resource.httpStatusCode || '';
-      throw new Error(`Loading network resource failed (${statusCode})`);
-    }
-
-    return networkResponse.resource.stream;
+    return {
+      stream: networkResponse.resource.success ? (networkResponse.resource.stream || null) : null,
+      status: networkResponse.resource.httpStatusCode || null,
+    };
   }
 
   /**
    * @param {string} url
    * @param {{timeout: number}} options timeout is in ms
-   * @return {Promise<string>}
+   * @return {Promise<FetchResponse>}
    */
   async _fetchResourceOverProtocol(url, options) {
     const startTime = Date.now();
@@ -180,21 +180,29 @@ class Fetcher {
       }, options.timeout);
     });
 
-    const fetchStreamPromise = this._loadNetworkResource(url);
-    const stream = await Promise.race([fetchStreamPromise, timeoutPromise])
+    const responsePromise = this._loadNetworkResource(url);
+
+    /** @type {{stream: LH.Crdp.IO.StreamHandle|null, status: number|null}} */
+    const response = await Promise.race([responsePromise, timeoutPromise])
       .finally(() => clearTimeout(timeoutHandle));
 
-    return await this._readIOStream(stream, {timeout: options.timeout - (Date.now() - startTime)});
+    if (response.stream && response.status && response.status >= 200 && response.status <= 299) {
+      const content = await this._readIOStream(response.stream, {
+        timeout: options.timeout - (Date.now() - startTime),
+      });
+      return {content, status: response.status};
+    }
+    return {content: null, status: response.status};
   }
 
   /**
    * Fetches resource by injecting an iframe into the page.
    * @param {string} url
    * @param {{timeout: number}} options timeout is in ms
-   * @return {Promise<string>}
+   * @return {Promise<FetchResponse>}
    */
   async _fetchResourceIframe(url, options) {
-    /** @type {Promise<string>} */
+    /** @type {Promise<FetchResponse>} */
     const requestInterceptionPromise = new Promise((resolve, reject) => {
       /** @param {LH.Crdp.Fetch.RequestPausedEvent} event */
       const handlerAsync = async event => {
@@ -216,17 +224,14 @@ class Fetcher {
           return;
         }
 
-        // Now in the response stage, but the request failed.
-        if (!(responseStatusCode >= 200 && responseStatusCode < 300)) {
-          reject(new Error(`Invalid response status code: ${responseStatusCode}`));
-          return;
-        }
-
         const responseBody = await this.session.sendCommand('Fetch.getResponseBody', {requestId});
         if (responseBody.base64Encoded) {
-          resolve(Buffer.from(responseBody.body, 'base64').toString());
+          resolve({
+            content: Buffer.from(responseBody.body, 'base64').toString(),
+            status: responseStatusCode,
+          });
         } else {
-          resolve(responseBody.body);
+          resolve({content: responseBody.body, status: responseStatusCode});
         }
 
         // Fail the request (from the page's perspective) so that the iframe never loads.
