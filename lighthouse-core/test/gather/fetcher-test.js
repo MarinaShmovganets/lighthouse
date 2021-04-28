@@ -31,7 +31,7 @@ let fetcher;
 beforeEach(() => {
   connectionStub = new Connection();
   driver = new Driver(connectionStub);
-  fetcher = new Fetcher(driver);
+  fetcher = new Fetcher(driver.defaultSession, driver.executionContext);
   browserMilestone = 92;
 });
 

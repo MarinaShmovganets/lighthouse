@@ -18,11 +18,12 @@ const {getBrowserVersion} = require('./driver/environment.js');
 
 class Fetcher {
   /**
-   * @param {LH.Gatherer.FRTransitionalDriver} driver
+   * @param {LH.Gatherer.FRProtocolSession} session
+   * @param {import('./driver/execution-context.js')} executionContext
    */
-  constructor(driver) {
-    this.session = driver.defaultSession;
-    this.executionContext = driver.executionContext;
+  constructor(session, executionContext) {
+    this.session = session;
+    this.executionContext = executionContext;
     /** @type {Map<string, (event: LH.Crdp.Fetch.RequestPausedEvent) => void>} */
     this._onRequestPausedHandlers = new Map();
     this._onRequestPaused = this._onRequestPaused.bind(this);

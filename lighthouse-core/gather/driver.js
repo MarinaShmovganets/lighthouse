@@ -77,9 +77,8 @@ class Driver {
   // eslint-disable-next-line no-invalid-this
   defaultSession = this;
 
-  /** @type {Fetcher} */
   // eslint-disable-next-line no-invalid-this
-  fetcher = new Fetcher(this);
+  fetcher = new Fetcher(this.defaultSession, this.executionContext);
 
   /**
    * @param {Connection} connection
