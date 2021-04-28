@@ -35,10 +35,11 @@ mkdir -p /tmp/lighthouse-local-test
 cd /tmp/lighthouse-local-test
 
 npm init -y
-cp -r "$LH_PRISTINE_ROOT/lighthouse-cli/test" node_modules/lighthouse/lighthouse-cli
-npx add-dependencies package.json "$LH_PRISTINE_ROOT/lighthouse-$VERSION.tgz" mime-types lodash.clonedeep
+npm install "$LH_PRISTINE_ROOT/lighthouse-$VERSION.tgz"
+npx add-dependencies package.json mime-types lodash.clonedeep
 npm install --only=prod
-npm explore lighthouse -- npm run smoke -- --retries=3
+cp -r "$LH_PRISTINE_ROOT/lighthouse-cli/test/fixtures" node_modules/lighthouse/lighthouse-cli/test
+npm explore lighthouse -- npm run smoke -- --tests-path "$LH_PRISTINE_ROOT/lighthouse-cli/test/smokehouse/test-definitions/core-tests.js" --retries=3
 npm explore lighthouse -- npm run fast -- http://example.com
 
 cd "$LH_PRISTINE_ROOT"

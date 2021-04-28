@@ -19,7 +19,12 @@ const log = require('lighthouse-logger');
 const {runSmokehouse} = require('../smokehouse.js');
 const {server, serverForOffline} = require('../../fixtures/static-server.js');
 
-const coreTestDefnsPath = require.resolve('../test-definitions/core-tests.js');
+let coreTestDefnsPath = '';
+try {
+  coreTestDefnsPath = require.resolve('../test-definitions/core-tests.js');
+} catch (_) {
+  // Won't exist in published package.
+}
 
 /**
  * Possible Lighthouse runners. Loaded dynamically so e.g. a CLI run isn't
