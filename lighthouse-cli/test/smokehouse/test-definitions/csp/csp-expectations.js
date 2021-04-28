@@ -71,9 +71,11 @@ module.exports = [
         ],
       },
       SourceMaps: [{
-        // TODO: Fix frame-src violation when using iframe fetcher.
         // Doesn't trigger a CSP violation because iframe is injected after InspectorIssues gatherer finishes.
         // https://github.com/GoogleChrome/lighthouse/pull/12044#issuecomment-788274938
+        //
+        // Fixed with new fetcher using M92.
+        _maxChromiumMilestone: 91,
         sourceMapUrl: 'http://localhost:10200/source-map/script.js.map',
         errorMessage: 'Error: Timed out fetching resource.',
         map: undefined,
