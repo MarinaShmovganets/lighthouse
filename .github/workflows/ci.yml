@@ -78,7 +78,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    name: unit - ${{ matrix.os ==  'ubuntu-latest' && 'ubuntu' || 'windows' }}
+    name: unit - ${{ matrix.os ==  'ubuntu-latest' && 'Ubuntu' || 'Windows' }}
 
     steps:
     - name: git clone
