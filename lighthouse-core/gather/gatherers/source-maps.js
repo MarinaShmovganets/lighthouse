@@ -29,7 +29,7 @@ class SourceMaps extends Gatherer {
   async fetchSourceMap(driver, sourceMapUrl) {
     const response = await driver.fetcher.fetchResource(sourceMapUrl, {timeout: 1500});
     if (response.content === null) {
-      throw new Error(`Source map could not be fetched (${response.status})`);
+      throw new Error(`Failed fetching source map (${response.status})`);
     }
     return JSON.parse(response.content);
   }
