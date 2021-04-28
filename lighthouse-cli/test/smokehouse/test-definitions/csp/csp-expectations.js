@@ -48,19 +48,11 @@ module.exports = [
   {
     artifacts: {
       RobotsTxt: {
-        status: null,
+        status: 404,
         content: null,
       },
       InspectorIssues: {
         contentSecurityPolicy: [
-          {
-            // TODO: Fix connect-src violation when fetching robots.txt.
-            // https://github.com/GoogleChrome/lighthouse/issues/10225
-            blockedURL: 'http://localhost:10200/robots.txt',
-            violatedDirective: 'connect-src',
-            isReportOnly: false,
-            contentSecurityPolicyViolationType: 'kURLViolation',
-          },
           {
             // TODO: Fix style-src-elem violation when checking tap targets.
             // https://github.com/GoogleChrome/lighthouse/issues/11862
