@@ -331,12 +331,6 @@ class TreemapViewer {
     TreemapUtil.walk(this.currentTreemapRoot, (node, path) => {
       if (node.children) return;
 
-      // const bundleNode = this.depthOneNodesByGroup.scripts.find((bundleNode => {
-      //   const bundleNodePath = this.nodeToPathMap.get(bundleNode);
-      //   if (!bundleNodePath) return false; // shouldn't happen.
-
-      //   return bundleNode.children && TreemapUtil.pathIsSubpath(bundleNodePath, path);
-      // }));
       const depthOneNode = this.nodeToDepthOneNodeMap.get(node);
       const bundleNode = depthOneNode && depthOneNode.children ? depthOneNode : undefined;
 

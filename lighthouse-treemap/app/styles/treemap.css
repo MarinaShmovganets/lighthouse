@@ -116,12 +116,12 @@ body {
   height: 100%;
 }
 .lh-coverage-bar--used {
-  background-color: green;
+  background-color: #63acbe;
   width: calc(100% * var(--used) / var(--max));
   height: 7px;
 }
 .lh-coverage-bar--unused {
-  background-color: red;
+  background-color: #ee442f;
   width: calc(100% * var(--unused) / var(--max));
   height: 7px;
   margin-left: 2px;
