@@ -7,7 +7,6 @@
 
 const Fetcher = require('./fetcher.js');
 const ExecutionContext = require('./driver/execution-context.js');
-
 const LHElement = require('../lib/lh-element.js');
 const LHError = require('../lib/lh-error.js');
 const NetworkRequest = require('../lib/network-request.js');
