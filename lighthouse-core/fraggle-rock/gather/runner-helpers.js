@@ -123,8 +123,7 @@ async function awaitArtifacts(artifactState) {
 
   for (const [id, promise] of Object.entries(artifactState.getArtifact)) {
     const artifact = await promise.catch(err => err);
-    if (artifact === undefined) continue;
-    artifacts[id] = artifact;
+    if (artifact !== undefined) artifacts[id] = artifact;
   }
 
   return artifacts;
