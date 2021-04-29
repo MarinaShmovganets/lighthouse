@@ -224,14 +224,18 @@ class Fetcher {
           return;
         }
 
-        const responseBody = await this.session.sendCommand('Fetch.getResponseBody', {requestId});
-        if (responseBody.base64Encoded) {
-          resolve({
-            content: Buffer.from(responseBody.body, 'base64').toString(),
-            status: responseStatusCode,
-          });
+        if (responseStatusCode >= 200 && responseStatusCode <= 299) {
+          const responseBody = await this.session.sendCommand('Fetch.getResponseBody', {requestId});
+          if (responseBody.base64Encoded) {
+            resolve({
+              content: Buffer.from(responseBody.body, 'base64').toString(),
+              status: responseStatusCode,
+            });
+          } else {
+            resolve({content: responseBody.body, status: responseStatusCode});
+          }
         } else {
-          resolve({content: responseBody.body, status: responseStatusCode});
+          resolve({content: null, status: responseStatusCode});
         }
 
         // Fail the request (from the page's perspective) so that the iframe never loads.

@@ -47,6 +47,51 @@ module.exports = [
   },
   {
     artifacts: {
+      _maxChromiumMilestone: 91,
+      RobotsTxt: {
+        status: null,
+        content: null,
+      },
+      InspectorIssues: {
+        contentSecurityPolicy: [
+          {
+            // https://github.com/GoogleChrome/lighthouse/issues/10225
+            //
+            // Fixed with new fetcher using M92.
+            blockedURL: 'http://localhost:10200/robots.txt',
+            violatedDirective: 'connect-src',
+            isReportOnly: false,
+            contentSecurityPolicyViolationType: 'kURLViolation',
+          },
+          {
+            // TODO: Fix style-src-elem violation when checking tap targets.
+            // https://github.com/GoogleChrome/lighthouse/issues/11862
+            violatedDirective: 'style-src-elem',
+            isReportOnly: false,
+            contentSecurityPolicyViolationType: 'kInlineViolation',
+          },
+        ],
+      },
+      SourceMaps: [{
+        // Doesn't trigger a CSP violation because iframe is injected after InspectorIssues gatherer finishes.
+        // https://github.com/GoogleChrome/lighthouse/pull/12044#issuecomment-788274938
+        //
+        // Fixed with new fetcher using M92.
+        sourceMapUrl: 'http://localhost:10200/source-map/script.js.map',
+        errorMessage: 'Error: Timed out fetching resource.',
+        map: undefined,
+      }],
+    },
+    lhr: {
+      requestedUrl: 'http://localhost:10200/csp.html?' + blockAllExceptInlineScriptCsp,
+      finalUrl: 'http://localhost:10200/csp.html?' + blockAllExceptInlineScriptCsp,
+      audits: {},
+    },
+  },
+  {
+    // Same CSP as above, but verifies correct behavior for M92.
+    artifacts: {
+      _minChromiumMilestone: 92,
       RobotsTxt: {
         status: 404,
         content: null,
@@ -63,14 +108,9 @@ module.exports = [
         ],
       },
       SourceMaps: [{
-        // Doesn't trigger a CSP violation because iframe is injected after InspectorIssues gatherer finishes.
-        // https://github.com/GoogleChrome/lighthouse/pull/12044#issuecomment-788274938
-        //
-        // Fixed with new fetcher using M92.
-        _maxChromiumMilestone: 91,
         sourceMapUrl: 'http://localhost:10200/source-map/script.js.map',
-        errorMessage: 'Error: Timed out fetching resource.',
-        map: undefined,
+        map: {},
+        errorMessage: undefined,
       }],
     },
     lhr: {

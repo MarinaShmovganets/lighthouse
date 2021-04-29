@@ -6,6 +6,26 @@
 'use strict';
 
 const FRGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
+const {getBrowserVersion} = require('../../driver/environment.js');
+
+/* global fetch, location */
+
+/** @return {Promise<LH.Artifacts['RobotsTxt']>} */
+/* c8 ignore start */
+async function getRobotsTxtContent() {
+  try {
+    const response = await fetch(new URL('/robots.txt', location.href).href);
+    if (!response.ok) {
+      return {status: response.status, content: null};
+    }
+
+    const content = await response.text();
+    return {status: response.status, content};
+  } catch (_) {
+    return {status: null, content: null};
+  }
+}
+/* c8 ignore stop */
 
 class RobotsTxt extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
@@ -17,7 +37,20 @@ class RobotsTxt extends FRGatherer {
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['RobotsTxt']>}
    */
-  snapshot(passContext) {
+  async snapshot(passContext) {
+    const milestone
+      = await getBrowserVersion(passContext.driver.defaultSession).then(v => v.milestone);
+
+    // TODO: Remove when 92 hits stable.
+    // Iframe fetcher still has issues with CSPs.
+    // Only use the fetcher if we are fetching over the CDP.
+    if (milestone < 92) {
+      return passContext.driver.executionContext.evaluate(getRobotsTxtContent, {
+        args: [],
+        useIsolation: true,
+      });
+    }
+
     const robotsUrl = new URL(passContext.url);
     robotsUrl.pathname = '/robots.txt';
     passContext.driver.fetcher.enable();
