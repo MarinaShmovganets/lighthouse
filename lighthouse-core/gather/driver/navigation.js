@@ -69,7 +69,7 @@ async function gotoURL(driver, url, options) {
   await session.sendCommand('Page.enable');
   await session.sendCommand('Page.setLifecycleEventsEnabled', {enabled: true});
 
-  // No timeout needed for Page.navigate. See https://github.com/GoogleChrome/lighthouse/pull/6413.
+  // No timeout needed for Page.navigate. See https://github.com/GoogleChrome/lighthouse/pull/6413
   session.setNextProtocolTimeout(Infinity);
   const waitforPageNavigateCmd = session.sendCommand('Page.navigate', {url});
 
