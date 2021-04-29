@@ -109,7 +109,7 @@ class Fetcher {
     // `Network.loadNetworkResource` was introduced in M88.
     // The long timeout bug with `IO.read` was fixed in M92:
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1191757
-    const milestone = await getBrowserVersion(this.session).then(v => v.milestone);
+    const {milestone} = await getBrowserVersion(this.session);
     if (milestone >= 92) {
       return await this._fetchResourceOverProtocol(url, options);
     }
@@ -165,6 +165,18 @@ class Fetcher {
   }
 
   /**
+   * @param {string} requestId
+   * @return {Promise<string>}
+   */
+  async _resolveResponseBody(requestId) {
+    const responseBody = await this.session.sendCommand('Fetch.getResponseBody', {requestId});
+    if (responseBody.base64Encoded) {
+      return Buffer.from(responseBody.body, 'base64').toString();
+    }
+    return responseBody.body;
+  }
+
+  /**
    * @param {string} url
    * @param {{timeout: number}} options timeout is in ms
    * @return {Promise<FetchResponse>}
@@ -186,13 +198,12 @@ class Fetcher {
     const response = await Promise.race([responsePromise, timeoutPromise])
       .finally(() => clearTimeout(timeoutHandle));
 
-    if (response.stream && response.status && response.status >= 200 && response.status <= 299) {
-      const content = await this._readIOStream(response.stream, {
-        timeout: options.timeout - (Date.now() - startTime),
-      });
-      return {content, status: response.status};
-    }
-    return {content: null, status: response.status};
+    const isOk = response.status && response.status >= 200 && response.status <= 299;
+    if (!response.stream || !isOk) return {status: response.status, content: null};
+
+    const timeout = options.timeout - (Date.now() - startTime);
+    const content = await this._readIOStream(response.stream, {timeout});
+    return {status: response.status, content};
   }
 
   /**
@@ -225,17 +236,12 @@ class Fetcher {
         }
 
         if (responseStatusCode >= 200 && responseStatusCode <= 299) {
-          const responseBody = await this.session.sendCommand('Fetch.getResponseBody', {requestId});
-          if (responseBody.base64Encoded) {
-            resolve({
-              content: Buffer.from(responseBody.body, 'base64').toString(),
-              status: responseStatusCode,
-            });
-          } else {
-            resolve({content: responseBody.body, status: responseStatusCode});
-          }
+          resolve({
+            status: responseStatusCode,
+            content: await this._resolveResponseBody(requestId),
+          });
         } else {
-          resolve({content: null, status: responseStatusCode});
+          resolve({status: responseStatusCode, content: null});
         }
 
         // Fail the request (from the page's perspective) so that the iframe never loads.

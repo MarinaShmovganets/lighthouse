@@ -38,8 +38,7 @@ class RobotsTxt extends FRGatherer {
    * @return {Promise<LH.Artifacts['RobotsTxt']>}
    */
   async snapshot(passContext) {
-    const milestone
-      = await getBrowserVersion(passContext.driver.defaultSession).then(v => v.milestone);
+    const {milestone} = await getBrowserVersion(passContext.driver.defaultSession);
 
     // TODO: Remove when 92 hits stable.
     // Iframe fetcher still has issues with CSPs.
