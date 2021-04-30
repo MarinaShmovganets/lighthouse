@@ -37,7 +37,7 @@ class RobotsTxt extends FRGatherer {
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['RobotsTxt']>}
    */
-  async snapshot(passContext) {
+  async getArtifact(passContext) {
     const {milestone} = await getBrowserVersion(passContext.driver.defaultSession);
 
     // TODO: Remove when 92 hits stable.
