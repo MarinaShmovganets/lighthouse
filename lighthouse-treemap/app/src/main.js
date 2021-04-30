@@ -7,13 +7,23 @@
 
 /* eslint-env browser */
 
-/* globals webtreemap TreemapUtil */
+/* globals webtreemap TreemapUtil Tabulator Cell Row */
 
 const UNUSED_BYTES_IGNORE_THRESHOLD = 20 * 1024;
 const UNUSED_BYTES_IGNORE_BUNDLE_SOURCE_RATIO = 0.5;
 
 /** @type {TreemapViewer} */
 let treemapViewer;
+
+// Make scrolling in Tabulator more performant.
+// @ts-expect-error
+Cell.prototype.clearHeight = () => {};
+// @ts-expect-error
+Row.prototype.calcHeight = function() {
+  this.height = 24;
+  this.outerHeight = 24;
+  this.heightStyled = '24px';
+};
 
 class TreemapViewer {
   /**
@@ -55,19 +65,25 @@ class TreemapViewer {
     this.el = el;
     this.getHueForKey = TreemapUtil.stableHasher(TreemapUtil.COLOR_HUES);
 
-    // TODO: make "DataSelector" to switch between different groups or specific d1 nodes
-    const group = 'scripts';
-    const depthOneNodes = this.depthOneNodesByGroup[group];
-    this.currentTreemapRoot = this.wrapNodesInNewRootNode(depthOneNodes);
-    TreemapUtil.walk(this.currentTreemapRoot, (node, path) => this.nodeToPathMap.set(node, path));
+    /* eslint-disable no-unused-expressions */
+    /** @type {LH.Treemap.Node} */
+    this.currentTreemapRoot;
+    /** @type {LH.Treemap.ViewMode} */
+    this.currentViewMode;
+    /** @type {LH.Treemap.Selector} */
+    this.selector;
+    /** @type {LH.Treemap.ViewMode[]} */
+    this.viewModes;
+    /** @type {RenderState=} */
+    this.previousRenderState;
+    /** @type {WebTreeMap} */
+    this.treemap;
+    /*  eslint-enable no-unused-expressions */
 
-    this.viewModes = this.createViewModes();
-    this.currentViewMode = this.viewModes[0];
-
-    renderViewModeButtons(this.viewModes);
     this.createHeader();
-    this.render();
     this.initListeners();
+    this.setSelector({type: 'group', value: 'scripts'});
+    this.render();
   }
 
   createHeader() {
@@ -77,14 +93,61 @@ class TreemapViewer {
 
     const bytes = this.wrapNodesInNewRootNode(this.depthOneNodesByGroup.scripts).resourceBytes;
     TreemapUtil.find('.lh-header--size').textContent = TreemapUtil.formatBytes(bytes);
+
+    this.createBundleSelector();
+
+    const toggleTableBtn = TreemapUtil.find('.lh-button--toggle-table');
+    toggleTableBtn.addEventListener('click', () => treemapViewer.toggleTable());
+  }
+
+  createBundleSelector() {
+    const bundleSelectorEl = TreemapUtil.find('select.bundle-selector');
+    bundleSelectorEl.innerHTML = ''; // Clear just in case document was saved with Ctrl+S.
+
+    /** @type {LH.Treemap.Selector[]} */
+    const selectors = [];
+
+    /**
+     * @param {LH.Treemap.Selector} selector
+     * @param {string} text
+     */
+    function makeOption(selector, text) {
+      const optionEl = TreemapUtil.createChildOf(bundleSelectorEl, 'option');
+      optionEl.value = String(selectors.length);
+      selectors.push(selector);
+      optionEl.textContent = text;
+    }
+
+    for (const [group, depthOneNodes] of Object.entries(this.depthOneNodesByGroup)) {
+      makeOption({type: 'group', value: group}, `All ${group}`);
+      for (const depthOneNode of depthOneNodes) {
+        // Only add bundles.
+        if (!depthOneNode.children) continue;
+
+        makeOption({type: 'depthOneNode', value: depthOneNode.name}, depthOneNode.name);
+      }
+    }
+
+    const currentSelectorIndex = selectors.findIndex(s => {
+      return this.selector &&
+        s.type === this.selector.type &&
+        s.value === this.selector.value;
+    });
+    bundleSelectorEl.value = String(currentSelectorIndex !== -1 ? currentSelectorIndex : 0);
+    bundleSelectorEl.addEventListener('change', () => {
+      const index = Number(bundleSelectorEl.value);
+      const selector = selectors[index];
+      this.setSelector(selector);
+      this.render();
+    });
   }
 
   initListeners() {
-    window.addEventListener('resize', () => {
-      this.resize();
-    });
-
     const treemapEl = TreemapUtil.find('.lh-treemap');
+
+    const resizeObserver = new ResizeObserver(() => this.resize());
+    resizeObserver.observe(treemapEl);
+
     treemapEl.addEventListener('click', (e) => {
       if (!(e.target instanceof HTMLElement)) return;
       const nodeEl = e.target.closest('.webtreemap-node');
@@ -173,32 +236,204 @@ class TreemapViewer {
     return viewModes;
   }
 
+  /**
+   * @param {LH.Treemap.Selector} selector
+   */
+  setSelector(selector) {
+    this.selector = selector;
+
+    if (selector.type === 'group') {
+      this.currentTreemapRoot =
+        this.wrapNodesInNewRootNode(this.depthOneNodesByGroup[selector.value]);
+    } else if (selector.type === 'depthOneNode') {
+      let node;
+      outer: for (const depthOneNodes of Object.values(this.depthOneNodesByGroup)) {
+        for (const depthOneNode of depthOneNodes) {
+          if (depthOneNode.name === selector.value) {
+            node = depthOneNode;
+            break outer;
+          }
+        }
+      }
+
+      if (!node) {
+        throw new Error('unknown depthOneNode: ' + selector.value);
+      }
+
+      this.currentTreemapRoot = node;
+    } else {
+      throw new Error('unknown selector: ' + JSON.stringify(selector));
+    }
+
+    this.viewModes = this.createViewModes();
+    if (!this.currentViewMode) this.currentViewMode = this.viewModes[0];
+  }
+
+  /**
+   * @param {LH.Treemap.ViewMode} viewMode
+   */
+  setViewMode(viewMode) {
+    this.currentViewMode = viewMode;
+  }
+
   render() {
-    TreemapUtil.walk(this.currentTreemapRoot, node => {
-      // @ts-ignore: webtreemap will store `dom` on the data to speed up operations.
-      // However, when we change the underlying data representation, we need to delete
-      // all the cached DOM elements. Otherwise, the rendering will be incorrect when,
-      // for example, switching between "All JavaScript" and a specific bundle.
-      delete node.dom;
+    const rootChanged =
+      !this.previousRenderState || this.previousRenderState.root !== this.currentTreemapRoot;
+    const viewChanged =
+      !this.previousRenderState || this.previousRenderState.viewMode !== this.currentViewMode;
 
-      // @ts-ignore: webtreemap uses `size` to partition the treemap.
-      node.size = node[this.currentViewMode.partitionBy || 'resourceBytes'] || 0;
+    if (rootChanged) {
+      this.nodeToPathMap = new Map();
+      TreemapUtil.walk(this.currentTreemapRoot, (node, path) => this.nodeToPathMap.set(node, path));
+      renderViewModeButtons(this.viewModes);
+
+      TreemapUtil.walk(this.currentTreemapRoot, node => {
+        // @ts-ignore: webtreemap will store `dom` on the data to speed up operations.
+        // However, when we change the underlying data representation, we need to delete
+        // all the cached DOM elements. Otherwise, the rendering will be incorrect when,
+        // for example, switching between "All JavaScript" and a specific bundle.
+        delete node.dom;
+
+        // @ts-ignore: webtreemap uses `size` to partition the treemap.
+        node.size = node[this.currentViewMode.partitionBy || 'resourceBytes'] || 0;
+      });
+      webtreemap.sort(this.currentTreemapRoot);
+
+      this.treemap = new webtreemap.TreeMap(this.currentTreemapRoot, {
+        padding: [16, 3, 3, 3],
+        spacing: 10,
+        caption: node => this.makeCaption(node),
+      });
+      this.el.innerHTML = '';
+      this.treemap.render(this.el);
+      TreemapUtil.find('.webtreemap-node').classList.add('webtreemap-node--root');
+
+      this.createTable();
+    }
+
+    if (rootChanged || viewChanged) {
+      this.updateColors();
+      applyActiveClass(this.currentViewMode.id);
+    }
+
+    this.previousRenderState = {
+      root: this.currentTreemapRoot,
+      viewMode: this.currentViewMode,
+    };
+  }
+
+  createTable() {
+    const tableEl = TreemapUtil.find('.lh-table');
+    tableEl.innerHTML = '';
+
+    /** @type {Array<{name: string, bundleNode?: LH.Treemap.Node, resourceBytes: number, unusedBytes?: number}>} */
+    const data = [];
+    TreemapUtil.walk(this.currentTreemapRoot, (node, path) => {
+      if (node.children) return;
+
+      const depthOneNode = this.nodeToDepthOneNodeMap.get(node);
+      const bundleNode = depthOneNode && depthOneNode.children ? depthOneNode : undefined;
+
+      let name;
+      if (bundleNode) {
+        const bundleNodePath = this.nodeToPathMap.get(bundleNode);
+        const amountToTrim = bundleNodePath ? bundleNodePath.length : 0; // should never be 0.
+        name = `(bundle) ${path.slice(amountToTrim).join('/')}`;
+      } else {
+        // Elide the first path component, which is common to all nodes.
+        if (path[0] === this.currentTreemapRoot.name) {
+          name = path.slice(1).join('/');
+        } else {
+          name = path.join('/');
+        }
+
+        // Elide the document URL.
+        if (name.startsWith(this.currentTreemapRoot.name)) {
+          name = name.replace(this.currentTreemapRoot.name, '//');
+        }
+      }
+
+      data.push({
+        name,
+        bundleNode,
+        resourceBytes: node.resourceBytes,
+        unusedBytes: node.unusedBytes,
+      });
     });
-    webtreemap.sort(this.currentTreemapRoot);
 
-    this.treemap = new webtreemap.TreeMap(this.currentTreemapRoot, {
-      padding: [16, 3, 3, 3],
-      spacing: 10,
-      caption: node => this.makeCaption(node),
+    /** @param {Tabulator.CellComponent} cell */
+    const makeNameTooltip = (cell) => {
+      /** @type {typeof data[number]} */
+      const dataRow = cell.getRow().getData();
+      if (!dataRow.bundleNode) return '';
+
+      return `${dataRow.bundleNode.name} (bundle) ${dataRow.name}`;
+    };
+
+    /** @param {Tabulator.CellComponent} cell */
+    const makeCoverageTooltip = (cell) => {
+      /** @type {typeof data[number]} */
+      const dataRow = cell.getRow().getData();
+      if (!dataRow.unusedBytes) return '';
+
+      const percent = Math.floor(100 * dataRow.unusedBytes / dataRow.resourceBytes);
+      return `${percent}% bytes unused`;
+    };
+
+    const gridEl = document.createElement('div');
+    tableEl.append(gridEl);
+
+    const children = this.currentTreemapRoot.children || [];
+    const maxSize = Math.max(...children.map(node => node.resourceBytes));
+
+    this.table = new Tabulator(gridEl, {
+      data,
+      height: '100%',
+      layout: 'fitColumns',
+      tooltips: true,
+      addRowPos: 'top',
+      resizableColumns: true,
+      initialSort: [
+        {column: 'resourceBytes', dir: 'desc'},
+      ],
+      columns: [
+        {title: 'Name', field: 'name', widthGrow: 5, tooltip: makeNameTooltip},
+        {title: 'Size', field: 'resourceBytes', headerSortStartingDir: 'desc', formatter: cell => {
+          const value = cell.getValue();
+          return TreemapUtil.formatBytes(value);
+        }},
+        // eslint-disable-next-line max-len
+        {title: 'Unused', field: 'unusedBytes', widthGrow: 1, sorterParams: {alignEmptyValues: 'bottom'}, headerSortStartingDir: 'desc', formatter: cell => {
+          const value = cell.getValue();
+          if (value === undefined) return '';
+          return TreemapUtil.formatBytes(value);
+        }},
+        // eslint-disable-next-line max-len
+        {title: 'Coverage', widthGrow: 3, headerSort: false, tooltip: makeCoverageTooltip, formatter: cell => {
+          /** @type {typeof data[number]} */
+          const dataRow = cell.getRow().getData();
+
+          const el = TreemapUtil.createElement('div', 'lh-coverage-bar');
+          if (dataRow.unusedBytes === undefined) return el;
+
+          el.style.setProperty('--max', String(maxSize));
+          el.style.setProperty('--used', String(dataRow.resourceBytes - dataRow.unusedBytes));
+          el.style.setProperty('--unused', String(dataRow.unusedBytes));
+
+          TreemapUtil.createChildOf(el, 'div', 'lh-coverage-bar--used');
+          TreemapUtil.createChildOf(el, 'div', 'lh-coverage-bar--unused');
+
+          return el;
+        }},
+      ],
     });
+  }
 
-    this.el.innerHTML = '';
-    this.treemap.render(this.el);
-
-    applyActiveClass(this.currentViewMode.id);
-    TreemapUtil.find('.webtreemap-node').classList.add('webtreemap-node--root');
-
-    this.updateColors();
+  toggleTable() {
+    const mainEl = TreemapUtil.find('main');
+    mainEl.classList.toggle('lh-main--show-table');
+    const buttonEl = TreemapUtil.find('.lh-button--toggle-table');
+    buttonEl.classList.toggle('lh-button--active');
   }
 
   resize() {
@@ -206,6 +441,7 @@ class TreemapViewer {
 
     this.treemap.layout(this.currentTreemapRoot, this.el);
     this.updateColors();
+    if (this.table) this.table.redraw();
   }
 
   /**
@@ -292,7 +528,7 @@ function renderViewModeButtons(viewModes) {
     });
 
     inputEl.addEventListener('click', () => {
-      treemapViewer.currentViewMode = viewMode;
+      treemapViewer.setViewMode(viewMode);
       treemapViewer.render();
     });
   }
