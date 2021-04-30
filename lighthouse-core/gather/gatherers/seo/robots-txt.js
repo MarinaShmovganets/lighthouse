@@ -50,10 +50,9 @@ class RobotsTxt extends FRGatherer {
       });
     }
 
-    const robotsUrl = new URL(passContext.url);
-    robotsUrl.pathname = '/robots.txt';
+    const robotsUrl = new URL('/robots.txt', passContext.url).href;
     passContext.driver.fetcher.enable();
-    return passContext.driver.fetcher.fetchResource(robotsUrl.toString());
+    return passContext.driver.fetcher.fetchResource(robotsUrl);
   }
 }
 
