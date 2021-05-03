@@ -24,9 +24,6 @@ jest.useFakeTimers();
  * @typedef DriverMockMethods
  * @property {Driver['evaluate']} evaluate redefined to remove "private" designation
  * @property {Driver['evaluateAsync']} evaluateAsync redefined to remove "private" designation
- * @property {ReturnType<typeof createMockOnceFn>} on
- * @property {ReturnType<typeof createMockOnceFn>} once
- * @property {(...args: RecursivePartial<Parameters<Driver['gotoURL']>>) => ReturnType<Driver['gotoURL']>} gotoURL
 */
 
 /** @typedef {Omit<Driver, keyof DriverMockMethods> & DriverMockMethods} TestDriver */
