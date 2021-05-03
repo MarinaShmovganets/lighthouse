@@ -75,7 +75,7 @@ class ModuleDuplication {
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @param {LH.Gatherer.ComputedContext} context
+   * @param {LH.Artifacts.ComputedContext} context
    */
   static async compute_(artifacts, context) {
     const bundles = await JsBundles.request(artifacts, context);

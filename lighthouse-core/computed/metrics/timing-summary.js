@@ -28,7 +28,7 @@ class TimingSummary {
      * @param {LH.Trace} trace
      * @param {LH.DevtoolsLog} devtoolsLog
      * @param {ImmutableObject<LH.Config.Settings>} settings
-     * @param {LH.Gatherer.ComputedContext} context
+     * @param {LH.Artifacts.ComputedContext} context
      * @return {Promise<{metrics: LH.Artifacts.TimingSummary, debugInfo: Record<string,boolean>}>}
      */
   static async summarize(trace, devtoolsLog, settings, context) {
@@ -36,7 +36,7 @@ class TimingSummary {
     /**
      * @template TArtifacts
      * @template TReturn
-     * @param {{request: (artifact: TArtifacts, context: LH.Gatherer.ComputedContext) => Promise<TReturn>}} Artifact
+     * @param {{request: (artifact: TArtifacts, context: LH.Artifacts.ComputedContext) => Promise<TReturn>}} Artifact
      * @param {TArtifacts} artifact
      * @return {Promise<TReturn|undefined>}
      */
@@ -143,7 +143,7 @@ class TimingSummary {
   }
   /**
    * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog, settings: ImmutableObject<LH.Config.Settings>}} data
-   * @param {LH.Gatherer.ComputedContext} context
+   * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<{metrics: LH.Artifacts.TimingSummary, debugInfo: Record<string,boolean>}>}
    */
   static async compute_(data, context) {

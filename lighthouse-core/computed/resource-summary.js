@@ -103,7 +103,7 @@ class ResourceSummary {
 
   /**
    * @param {{URL: LH.Artifacts['URL'], devtoolsLog: LH.DevtoolsLog, settings: ImmutableObject<LH.Config.Settings>}} data
-   * @param {LH.Gatherer.ComputedContext} context
+   * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<Record<LH.Budget.ResourceType,ResourceEntry>>}
    */
   static async compute_(data, context) {

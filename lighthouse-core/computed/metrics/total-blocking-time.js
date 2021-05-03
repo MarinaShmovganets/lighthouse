@@ -79,7 +79,7 @@ class TotalBlockingTime extends ComputedMetric {
 
   /**
    * @param {LH.Artifacts.MetricComputationData} data
-   * @param {LH.Gatherer.ComputedContext} context
+   * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static computeSimulatedMetric(data, context) {
@@ -88,7 +88,7 @@ class TotalBlockingTime extends ComputedMetric {
 
   /**
    * @param {LH.Artifacts.MetricComputationData} data
-   * @param {LH.Gatherer.ComputedContext} context
+   * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<LH.Artifacts.Metric>}
    */
   static async computeObservedMetric(data, context) {
