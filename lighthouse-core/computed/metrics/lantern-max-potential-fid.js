@@ -67,7 +67,7 @@ class LanternMaxPotentialFID extends LanternMetricArtifact {
 
   /**
    * @param {LH.Artifacts.MetricComputationDataInput} data
-   * @param {LH.Audit.Context} context
+   * @param {LH.Gatherer.ComputedContext} context
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static async compute_(data, context) {

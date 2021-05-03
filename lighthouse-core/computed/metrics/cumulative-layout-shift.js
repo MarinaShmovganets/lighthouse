@@ -12,7 +12,7 @@ const LayoutShiftVariants = require('../layout-shift-variants.js');
 class CumulativeLayoutShift {
   /**
    * @param {LH.Trace} trace
-   * @param {LH.Audit.Context} context
+   * @param {LH.Gatherer.ComputedContext} context
    * @return {Promise<{value: number, debugInfo: Record<string,boolean> | null}>}
    */
   static async compute_(trace, context) {

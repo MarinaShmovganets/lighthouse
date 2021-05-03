@@ -37,10 +37,10 @@ class ResourceSummary {
   /**
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @param {string} mainResourceURL
-   * @param {LH.Audit.Context} context
+   * @param {ImmutableObject<LH.Config.Settings>} settings
    * @return {Record<LH.Budget.ResourceType, ResourceEntry>}
    */
-  static summarize(networkRecords, mainResourceURL, context) {
+  static summarize(networkRecords, mainResourceURL, settings) {
     /** @type {Record<LH.Budget.ResourceType, ResourceEntry>} */
     const resourceSummary = {
       'stylesheet': {count: 0, resourceSize: 0, transferSize: 0},
@@ -53,7 +53,7 @@ class ResourceSummary {
       'total': {count: 0, resourceSize: 0, transferSize: 0},
       'third-party': {count: 0, resourceSize: 0, transferSize: 0},
     };
-    const budget = Budget.getMatchingBudget(context.settings.budgets, mainResourceURL);
+    const budget = Budget.getMatchingBudget(settings.budgets, mainResourceURL);
     /** @type {ReadonlyArray<string>} */
     let firstPartyHosts = [];
     if (budget && budget.options && budget.options.firstPartyHostnames) {
@@ -102,8 +102,8 @@ class ResourceSummary {
   }
 
   /**
-   * @param {{URL: LH.Artifacts['URL'], devtoolsLog: LH.DevtoolsLog}} data
-   * @param {LH.Audit.Context} context
+   * @param {{URL: LH.Artifacts['URL'], devtoolsLog: LH.DevtoolsLog, settings: ImmutableObject<LH.Config.Settings>}} data
+   * @param {LH.Gatherer.ComputedContext} context
    * @return {Promise<Record<LH.Budget.ResourceType,ResourceEntry>>}
    */
   static async compute_(data, context) {
@@ -111,7 +111,7 @@ class ResourceSummary {
       NetworkRecords.request(data.devtoolsLog, context),
       MainResource.request(data, context),
     ]);
-    return ResourceSummary.summarize(networkRecords, mainResource.url, context);
+    return ResourceSummary.summarize(networkRecords, mainResource.url, data.settings);
   }
 }
 

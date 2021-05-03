@@ -10,6 +10,7 @@ import _Simulator = require('../lighthouse-core/lib/dependency-graph/simulator/s
 import Driver = require('../lighthouse-core/gather/driver');
 import ExecutionContext = require('../lighthouse-core/gather/driver/execution-context');
 import Fetcher = require('../lighthouse-core/gather/fetcher');
+import ArbitraryEqualityMap = require('../lighthouse-core/lib/arbitrary-equality-map');
 
 declare global {
   module LH.Gatherer {
@@ -58,6 +59,10 @@ declare global {
       LighthouseRunWarnings: Array<string | IcuMessage>;
       baseArtifacts: BaseArtifacts;
     }
+
+    export type ComputedContext = Immutable<{
+      computedCache: Map<string, ArbitraryEqualityMap>;
+    }>;
 
     export interface LoadData {
       networkRecords: Array<Artifacts.NetworkRequest>;
