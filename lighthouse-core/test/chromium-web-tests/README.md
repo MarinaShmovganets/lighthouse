@@ -19,7 +19,7 @@ yarn update:test-devtools
 <details>
   <summary> Install `requests`</summary>
   
-  Ensure you have `requests` module available globally on your python 2.7 install. New Macs do not come with pip which is deprecated, so you might have to install that too.
+  Ensure you have `requests` module available globally on your python 2.7 install. New Macs do not come with pip for python 2.7 which is deprecated, so you might have to install that too.
   
   
   ```sh
