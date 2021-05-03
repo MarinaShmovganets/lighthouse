@@ -109,7 +109,7 @@ class ResourceSummary {
   static async compute_(data, context) {
     const [networkRecords, mainResource] = await Promise.all([
       NetworkRecords.request(data.devtoolsLog, context),
-      MainResource.request(data, context),
+      MainResource.request({devtoolsLog: data.devtoolsLog, URL: data.URL}, context),
     ]);
     return ResourceSummary.summarize(networkRecords, mainResource.url, data.budgets);
   }
