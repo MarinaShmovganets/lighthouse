@@ -9,6 +9,7 @@ import _LanternSimulator = require('../lighthouse-core/lib/dependency-graph/simu
 import _NetworkRequest = require('../lighthouse-core/lib/network-request.js');
 import speedline = require('speedline-core');
 import TextSourceMap = require('../lighthouse-core/lib/cdt/generated/SourceMap.js');
+import ArbitraryEqualityMap = require('../lighthouse-core/lib/arbitrary-equality-map.js');
 
 type _TaskNode = import('../lighthouse-core/lib/tracehouse/main-thread-tasks.js').TaskNode;
 
@@ -189,6 +190,10 @@ declare global {
     }
 
     module Artifacts {
+      export type ComputedContext = Immutable<{
+        computedCache: Map<string, ArbitraryEqualityMap>;
+      }>;
+
       export type NetworkRequest = _NetworkRequest;
       export type TaskNode = _TaskNode;
       export type MetaElement = LH.Artifacts['MetaElements'][0];
@@ -476,6 +481,8 @@ declare global {
           width: string | null;
           /** The height of the image as expressed by CSS rules. Set to `null` if there was no height set in CSS. */
           height: string | null;
+          /** The aspect ratio of the image as expressed by CSS rules. Set to `null` if there was no aspect ratio set in CSS. */
+          aspectRatio: string | null;
         }
         /** The BoundingClientRect of the element. */
         clientRect: {

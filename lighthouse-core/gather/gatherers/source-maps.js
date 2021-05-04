@@ -27,9 +27,11 @@ class SourceMaps extends Gatherer {
    * @return {Promise<LH.Artifacts.RawSourceMap>}
    */
   async fetchSourceMap(driver, sourceMapUrl) {
-    /** @type {string} */
-    const sourceMapJson = await driver.fetcher.fetchResource(sourceMapUrl, {timeout: 1500});
-    return JSON.parse(sourceMapJson);
+    const response = await driver.fetcher.fetchResource(sourceMapUrl, {timeout: 1500});
+    if (response.content === null) {
+      throw new Error(`Failed fetching source map (${response.status})`);
+    }
+    return JSON.parse(response.content);
   }
 
   /**
@@ -131,7 +133,7 @@ class SourceMaps extends Gatherer {
     driver.off('Debugger.scriptParsed', this.onScriptParsed);
     await driver.sendCommand('Debugger.disable');
 
-    await driver.fetcher.enableRequestInterception();
+    await driver.fetcher.enable();
     const eventProcessPromises = this._scriptParsedEvents
       .map((event) => this._retrieveMapFromScriptParsedEvent(driver, event));
     return Promise.all(eventProcessPromises);

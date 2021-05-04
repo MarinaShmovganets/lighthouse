@@ -44,6 +44,8 @@ describe('ExecutionContext', () => {
 
     forceNewContextId = async (executionContext, executionContextId) => {
       executionContext._session.sendCommand = createMockSendCommandFn()
+        .mockResponse('Page.enable')
+        .mockResponse('Runtime.enable')
         .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
         .mockResponse('Page.createIsolatedWorld', {executionContextId})
         .mockResponse('Runtime.evaluate', {result: {value: 2}});
@@ -139,6 +141,8 @@ describe('.evaluateAsync', () => {
 
   it('evaluates an expression in isolation', async () => {
     let sendCommand = (sessionMock.sendCommand = createMockSendCommandFn()
+      .mockResponse('Page.enable')
+      .mockResponse('Runtime.enable')
       .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
       .mockResponse('Page.createIsolatedWorld', {executionContextId: 1})
       .mockResponse('Runtime.evaluate', {result: {value: 2}}));
@@ -168,9 +172,13 @@ describe('.evaluateAsync', () => {
 
   it('recovers from isolation failures', async () => {
     sessionMock.sendCommand = createMockSendCommandFn()
+      .mockResponse('Page.enable')
+      .mockResponse('Runtime.enable')
       .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
       .mockResponse('Page.createIsolatedWorld', {executionContextId: 9001})
       .mockResponse('Runtime.evaluate', Promise.reject(new Error('Cannot find context')))
+      .mockResponse('Page.enable')
+      .mockResponse('Runtime.enable')
       .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
       .mockResponse('Page.createIsolatedWorld', {executionContextId: 9002})
       .mockResponse('Runtime.evaluate', {result: {value: 'mocked value'}});
@@ -206,11 +214,12 @@ describe('.evaluate', () => {
     const {expression} = mockFn.findInvocation('Runtime.evaluate');
     const expected = `
 (function wrapInNativePromise() {
-        const __nativePromise = globalThis.__nativePromise || Promise;
-        const URL = globalThis.__nativeURL || globalThis.URL;
+        const Promise = globalThis.__nativePromise || globalThis.Promise;
+const URL = globalThis.__nativeURL || globalThis.URL;
+const performance = globalThis.__nativePerformance || globalThis.performance;
         globalThis.__lighthouseExecutionContextId = undefined;
-        return new __nativePromise(function (resolve) {
-          return __nativePromise.resolve()
+        return new Promise(function (resolve) {
+          return Promise.resolve()
             .then(_ => (() => {
 
       return (function main(value) {
@@ -250,8 +259,8 @@ describe('.evaluate', () => {
     const value = await executionContext.evaluate(mainFn, {args: [1]}); // eslint-disable-line no-unused-vars
 
     const code = mockFn.mock.calls[0][0];
-    expect(code).toBe(`(() => {
-      
+    expect(trimTrailingWhitespace(code)).toBe(`(() => {
+
       return (function mainFn(value) {
       return value;
     })(1);
@@ -273,8 +282,8 @@ describe('.evaluate', () => {
     const value = await executionContext.evaluate(mainFn, {args: [1]}); // eslint-disable-line no-unused-vars
 
     const code = mockFn.mock.calls[0][0];
-    expect(code).toBe(`(() => {
-      
+    expect(trimTrailingWhitespace(code)).toBe(`(() => {
+
       return ((value) => {
       return value;
     })(1);
@@ -327,5 +336,14 @@ function square(val) {
     })({"a":-5,"b":10},"hello");
     })()`);
     expect(eval(code)).toEqual({a: 5, b: 100, passThru: 'hello'});
+  });
+});
+
+describe('.serializeArguments', () => {
+  it('should serialize a list of differently typed arguments', () => {
+    const args = [undefined, 1, 'foo', null, {x: {y: {z: [2]}}}];
+    expect(ExecutionContext.serializeArguments(args)).toEqual(
+      `undefined,1,"foo",null,{"x":{"y":{"z":[2]}}}`
+    );
   });
 });

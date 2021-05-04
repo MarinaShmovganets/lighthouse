@@ -227,6 +227,7 @@ async function flushAllTimersAndMicrotasks(ms = 1000) {
 function makeMocksForGatherRunner() {
   jest.mock('../gather/driver/environment.js', () => ({
     getBenchmarkIndex: () => Promise.resolve(150),
+    getBrowserVersion: async () => ({userAgent: 'Chrome', milestone: 80}),
   }));
   jest.mock('../gather/gatherers/stacks.js', () => ({collectStacks: () => Promise.resolve([])}));
   jest.mock('../gather/gatherers/installability-errors.js', () => ({
@@ -234,6 +235,16 @@ function makeMocksForGatherRunner() {
   }));
   jest.mock('../gather/gatherers/web-app-manifest.js', () => ({
     getWebAppManifest: async () => null,
+  }));
+  jest.mock('../lib/emulation.js', () => ({
+    emulate: jest.fn(),
+    throttle: jest.fn(),
+    clearThrottling: jest.fn(),
+  }));
+  jest.mock('../gather/driver/storage.js', () => ({
+    clearDataForOrigin: jest.fn(),
+    cleanBrowserCaches: jest.fn(),
+    getImportantStorageWarning: jest.fn(),
   }));
 }
 
