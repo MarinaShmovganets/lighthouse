@@ -91,6 +91,11 @@ async function getEventListeners(session, devtoolsNodePath) {
 }
 
 class AnchorElements extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['snapshot', 'navigation'],
+  }
+
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['AnchorElements']>}
