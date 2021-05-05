@@ -45,6 +45,9 @@ class TraceElements extends FRGatherer {
     dependencies: {Trace: Trace.symbol},
   }
 
+  /** @type {Map<string, string>} */
+  animationIdToName = new Map();
+
   /**
    * @param {LH.TraceEvent | undefined} event
    * @return {number | undefined}
@@ -93,33 +96,6 @@ class TraceElements extends FRGatherer {
       height: rect[3],
     };
     return RectHelpers.addRectTopAndBottom(rectArgs);
-  }
-
-  /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
-   * @param {string} animationId
-   * @return {Promise<string | undefined>}
-   */
-  static async resolveAnimationName(context, animationId) {
-    const session = context.driver.defaultSession;
-    try {
-      const result = await session.sendCommand('Animation.resolveAnimation', {animationId});
-      const objectId = result.remoteObject.objectId;
-      if (!objectId) return undefined;
-      const response = await session.sendCommand('Runtime.getProperties', {
-        objectId,
-      });
-      const nameProperty = response.result.find((property) => property.name === 'animationName');
-      const animationName = nameProperty && nameProperty.value && nameProperty.value.value;
-      if (animationName === '') return undefined;
-      return animationName;
-    } catch (err) {
-      // Animation name is not mission critical information and can be evicted, so don't throw fatally if we can't find it.
-      Sentry.captureException(err, {
-        tags: {gatherer: TraceElements.name},
-        level: 'error',
-      });
-    }
   }
 
   /**
@@ -192,11 +168,10 @@ class TraceElements extends FRGatherer {
 
   /**
    * Find the node ids of elements which are animated using the Animation trace events.
-   * @param {LH.Gatherer.FRTransitionalContext} context
    * @param {Array<LH.TraceEvent>} mainThreadEvents
    * @return {Promise<Array<TraceElementData>>}
    */
-  static async getAnimatedElements(context, mainThreadEvents) {
+  async getAnimatedElements(mainThreadEvents) {
     /** @type {Map<string, {begin: LH.TraceEvent | undefined, status: LH.TraceEvent | undefined}>} */
     const animationPairs = new Map();
     for (const event of mainThreadEvents) {
@@ -220,10 +195,10 @@ class TraceElements extends FRGatherer {
     /** @type {Map<number, Set<{animationId: string, failureReasonsMask?: number, unsupportedProperties?: string[]}>>} */
     const elementAnimations = new Map();
     for (const {begin, status} of animationPairs.values()) {
-      const nodeId = this.getNodeIDFromTraceEvent(begin);
-      const animationId = this.getAnimationIDFromTraceEvent(begin);
-      const failureReasonsMask = this.getFailureReasonsFromTraceEvent(status);
-      const unsupportedProperties = this.getUnsupportedPropertiesFromTraceEvent(status);
+      const nodeId = TraceElements.getNodeIDFromTraceEvent(begin);
+      const animationId = TraceElements.getAnimationIDFromTraceEvent(begin);
+      const failureReasonsMask = TraceElements.getFailureReasonsFromTraceEvent(status);
+      const unsupportedProperties = TraceElements.getUnsupportedPropertiesFromTraceEvent(status);
       if (!nodeId || !animationId) continue;
       const animationIds = elementAnimations.get(nodeId) || new Set();
       animationIds.add({animationId, failureReasonsMask, unsupportedProperties});
@@ -235,7 +210,7 @@ class TraceElements extends FRGatherer {
     for (const [nodeId, animationIds] of elementAnimations) {
       const animations = [];
       for (const {animationId, failureReasonsMask, unsupportedProperties} of animationIds) {
-        const animationName = await this.resolveAnimationName(context, animationId);
+        const animationName = await this.animationIdToName.get(animationId);
         animations.push({name: animationName, failureReasonsMask, unsupportedProperties});
       }
       animatedElementData.push({nodeId, animations});
@@ -248,6 +223,23 @@ class TraceElements extends FRGatherer {
    */
   async startInstrumentation(context) {
     await context.driver.defaultSession.sendCommand('Animation.enable');
+
+    /** @param {LH.Crdp.Animation.AnimationStartedEvent} args */
+    this.onAnimationCreated = ({animation: {id, name}}) => {
+      name && this.animationIdToName.set(id, name);
+    };
+
+    context.driver.defaultSession.on('Animation.animationStarted', this.onAnimationCreated);
+  }
+
+  /**
+   * @param {LH.Gatherer.FRTransitionalContext} context
+   */
+  async stopInstrumentation(context) {
+    if (this.onAnimationCreated) {
+      context.driver.defaultSession.off('Animation.animationStarted', this.onAnimationCreated);
+    }
+    await context.driver.defaultSession.sendCommand('Animation.disable');
   }
 
   /**
@@ -267,7 +259,7 @@ class TraceElements extends FRGatherer {
     const lcpNodeId = TraceElements.getNodeIDFromTraceEvent(largestContentfulPaintEvt);
     const clsNodeData = TraceElements.getTopLayoutShiftElements(mainThreadEvents);
     const animatedElementData =
-      await TraceElements.getAnimatedElements(context, mainThreadEvents);
+      await this.getAnimatedElements(mainThreadEvents);
 
     /** @type {Map<string, TraceElementData[]>} */
     const backendNodeDataMap = new Map([
@@ -314,8 +306,6 @@ class TraceElements extends FRGatherer {
       }
     }
 
-    session.sendCommand('Animation.disable');
-
     return traceElements;
   }
 
@@ -334,6 +324,7 @@ class TraceElements extends FRGatherer {
    */
   async afterPass(passContext, loadData) {
     const context = {...passContext, dependencies: {}};
+    await this.stopInstrumentation(context);
     return this._getArtifact(context, loadData.trace);
   }
 }
