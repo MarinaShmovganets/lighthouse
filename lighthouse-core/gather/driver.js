@@ -462,39 +462,6 @@ class Driver {
     this._devtoolsLog.endRecording();
     return this._devtoolsLog.messages;
   }
-
-  /**
-   * Use a RequestIdleCallback shim for tests run with simulated throttling, so that the deadline can be used without
-   * a penalty
-   * @param {LH.Config.Settings} settings
-   * @return {Promise<void>}
-   */
-  async registerRequestIdleCallbackWrap(settings) {
-    if (settings.throttlingMethod === 'simulate') {
-      await this.executionContext.evaluateOnNewDocument(
-        pageFunctions.wrapRequestIdleCallback,
-        {args: [settings.throttling.cpuSlowdownMultiplier]}
-      );
-    }
-  }
-
-  /**
-   * Dismiss JavaScript dialogs (alert, confirm, prompt), providing a
-   * generic promptText in case the dialog is a prompt.
-   * @return {Promise<void>}
-   */
-  async dismissJavaScriptDialogs() {
-    this.on('Page.javascriptDialogOpening', data => {
-      log.warn('Driver', `${data.type} dialog opened by the page automatically suppressed.`);
-
-      this.sendCommand('Page.handleJavaScriptDialog', {
-        accept: true,
-        promptText: 'Lighthouse prompt response',
-      }).catch(err => log.warn('Driver', err));
-    });
-
-    await this.sendCommand('Page.enable');
-  }
 }
 
 module.exports = Driver;
