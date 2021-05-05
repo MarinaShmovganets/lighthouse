@@ -30,6 +30,10 @@ echo "Testing a fresh local install..."
 VERSION=$(node -e "console.log(require('./package.json').version)")
 npm pack
 
+# Start pristine's static-server (and kill it on exit) for smokehouse run below.
+yarn static-server &
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
 rm -rf /tmp/lighthouse-local-test || true
 mkdir -p /tmp/lighthouse-local-test
 cd /tmp/lighthouse-local-test
@@ -38,9 +42,6 @@ npm init -y
 npm install "$LH_PRISTINE_ROOT/lighthouse-$VERSION.tgz"
 npm explore lighthouse -- npm run fast -- http://example.com
 
-# Start up pristine's static-server (and kill it on exit).
-node "$LH_PRISTINE_ROOT/lighthouse-cli/test/fixtures/static-server.js" &
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 # Packaged smokehouse/lighthouse using pristine's static-server and test fixtures.
 yarn smokehouse --tests-path="$LH_PRISTINE_ROOT/lighthouse-cli/test/smokehouse/test-definitions/core-tests.js" --retries=2
 

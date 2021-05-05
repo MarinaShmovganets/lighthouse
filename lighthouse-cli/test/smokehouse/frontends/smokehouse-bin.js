@@ -90,7 +90,7 @@ function pruneExpectedNetworkRequests(testDefns, takeNetworkRequestUrls) {
         const msg = `'networkRequests' cannot be asserted in test '${id}'. They should only be asserted on tests from an in-process server`;
         if (process.env.CI) {
           // If we're in CI, we require any networkRequests expectations to be asserted.
-          throw new Error();
+          throw new Error(msg);
         }
 
         console.warn(log.redify('Warning:'),
