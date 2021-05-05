@@ -36,11 +36,13 @@ cd /tmp/lighthouse-local-test
 
 npm init -y
 npm install "$LH_PRISTINE_ROOT/lighthouse-$VERSION.tgz"
-npx add-dependencies package.json mime-types lodash.clonedeep
-npm install --only=prod
-cp -r "$LH_PRISTINE_ROOT/lighthouse-cli/test/fixtures" node_modules/lighthouse/lighthouse-cli/test
-npm explore lighthouse -- npm run smoke -- --tests-path "$LH_PRISTINE_ROOT/lighthouse-cli/test/smokehouse/test-definitions/core-tests.js" --retries=3
 npm explore lighthouse -- npm run fast -- http://example.com
+
+# Start up pristine's static-server (and kill it on exit).
+node "$LH_PRISTINE_ROOT/lighthouse-cli/test/fixtures/static-server.js" &
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+# Packaged smokehouse/lighthouse using pristine's static-server and test fixtures.
+yarn smokehouse --tests-path="$LH_PRISTINE_ROOT/lighthouse-cli/test/smokehouse/test-definitions/core-tests.js" --retries=2
 
 cd "$LH_PRISTINE_ROOT"
 rm -rf /tmp/lighthouse-local-test
