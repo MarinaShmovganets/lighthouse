@@ -48,6 +48,14 @@ class TraceElements extends FRGatherer {
   /** @type {Map<string, string>} */
   animationIdToName = new Map();
 
+  constructor() {
+    super();
+    /** @param {LH.Crdp.Animation.AnimationStartedEvent} args */
+    this.onAnimationStarted = ({animation: {id, name}}) => {
+      if (name) this.animationIdToName.set(id, name);
+    };
+  }
+
   /**
    * @param {LH.TraceEvent | undefined} event
    * @return {number | undefined}
@@ -210,7 +218,7 @@ class TraceElements extends FRGatherer {
     for (const [nodeId, animationIds] of elementAnimations) {
       const animations = [];
       for (const {animationId, failureReasonsMask, unsupportedProperties} of animationIds) {
-        const animationName = await this.animationIdToName.get(animationId);
+        const animationName = this.animationIdToName.get(animationId);
         animations.push({name: animationName, failureReasonsMask, unsupportedProperties});
       }
       animatedElementData.push({nodeId, animations});
@@ -223,22 +231,14 @@ class TraceElements extends FRGatherer {
    */
   async startInstrumentation(context) {
     await context.driver.defaultSession.sendCommand('Animation.enable');
-
-    /** @param {LH.Crdp.Animation.AnimationStartedEvent} args */
-    this.onAnimationCreated = ({animation: {id, name}}) => {
-      name && this.animationIdToName.set(id, name);
-    };
-
-    context.driver.defaultSession.on('Animation.animationStarted', this.onAnimationCreated);
+    context.driver.defaultSession.on('Animation.animationStarted', this.onAnimationStarted);
   }
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} context
    */
   async stopInstrumentation(context) {
-    if (this.onAnimationCreated) {
-      context.driver.defaultSession.off('Animation.animationStarted', this.onAnimationCreated);
-    }
+    context.driver.defaultSession.off('Animation.animationStarted', this.onAnimationStarted);
     await context.driver.defaultSession.sendCommand('Animation.disable');
   }
 

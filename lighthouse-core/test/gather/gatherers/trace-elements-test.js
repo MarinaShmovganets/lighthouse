@@ -12,6 +12,7 @@ const Driver = require('../../../gather/driver.js');
 const Connection = require('../../../gather/connections/connection.js');
 const createTestTrace = require('../../create-test-trace.js');
 const {createMockSendCommandFn, createMockOnFn} = require('../mock-commands.js');
+const {flushAllTimersAndMicrotasks} = require('../../test-utils.js');
 
 const animationTrace = require('../../fixtures/traces/animation.json');
 
@@ -696,8 +697,7 @@ describe('instrumentation', () => {
     const gatherer = new TraceElementsGatherer();
     await gatherer.startInstrumentation({driver});
 
-    // Flush events.
-    jest.advanceTimersByTime(1);
+    await flushAllTimersAndMicrotasks();
 
     await gatherer.stopInstrumentation({driver});
 
@@ -719,8 +719,7 @@ describe('instrumentation', () => {
     const gatherer = new TraceElementsGatherer();
     await gatherer.startInstrumentation({driver});
 
-    // Flush events.
-    jest.advanceTimersByTime(1);
+    await flushAllTimersAndMicrotasks();
 
     await gatherer.stopInstrumentation({driver});
 
