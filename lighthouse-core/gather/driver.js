@@ -15,8 +15,6 @@ const log = require('lighthouse-logger');
 const DevtoolsLog = require('./devtools-log.js');
 const TraceGatherer = require('./gatherers/trace.js');
 
-const pageFunctions = require('../lib/page-functions.js');
-
 // Pulled in for Connection type checking.
 // eslint-disable-next-line no-unused-vars
 const Connection = require('./connections/connection.js');

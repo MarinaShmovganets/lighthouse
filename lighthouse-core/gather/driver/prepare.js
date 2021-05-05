@@ -25,7 +25,7 @@ async function enableAsyncStacks(session) {
   // Resume any pauses that make it through `setSkipAllPauses`
   session.on('Debugger.paused', () => session.sendCommand('Debugger.resume'));
 
-  // `Debugger.setSkipAllPauses` is reset after every navigation, so retrigger it.
+  // `Debugger.setSkipAllPauses` is reset after every navigation, so retrigger it on main frame navigations.
   // See https://bugs.chromium.org/p/chromium/issues/detail?id=990945&q=setSkipAllPauses&can=2
   session.on('Page.frameNavigated', event => {
     if (event.frame.parentId) return;
@@ -48,21 +48,22 @@ async function shimRequestIdleCallbackOnNewDocument(driver, settings) {
   });
 }
 
-
 /**
-   * Dismiss JavaScript dialogs (alert, confirm, prompt), providing a
-   * generic promptText in case the dialog is a prompt.
-  * @param {LH.Gatherer.FRProtocolSession} session
-   * @return {Promise<void>}
-   */
+ * Dismiss JavaScript dialogs (alert, confirm, prompt), providing a
+ * generic promptText in case the dialog is a prompt.
+ * @param {LH.Gatherer.FRProtocolSession} session
+ * @return {Promise<void>}
+ */
 async function dismissJavaScriptDialogs(session) {
   session.on('Page.javascriptDialogOpening', data => {
     log.warn('Driver', `${data.type} dialog opened by the page automatically suppressed.`);
 
-    session.sendCommand('Page.handleJavaScriptDialog', {
-      accept: true,
-      promptText: 'Lighthouse prompt response',
-    }).catch(err => log.warn('Driver', err));
+    session
+      .sendCommand('Page.handleJavaScriptDialog', {
+        accept: true,
+        promptText: 'Lighthouse prompt response',
+      })
+      .catch(err => log.warn('Driver', err));
   });
 
   await session.sendCommand('Page.enable');
@@ -105,8 +106,9 @@ async function prepareNetworkForNavigation(session, settings, navigation) {
   // Set request blocking before any network activity.
   // No "clearing" is done at the end of the navigation since Network.setBlockedURLs([]) will unset all if
   // neccessary at the beginning of the next navigation.
-  const blockedUrls = (navigation.blockedUrlPatterns || [])
-    .concat(settings.blockedUrlPatterns || []);
+  const blockedUrls = (navigation.blockedUrlPatterns || []).concat(
+    settings.blockedUrlPatterns || []
+  );
   await session.sendCommand('Network.setBlockedURLs', {urls: blockedUrls});
 
   const headers = settings.extraHeaders;
@@ -169,6 +171,7 @@ async function prepareTargetForIndividualNavigation(session, settings, navigatio
 }
 
 module.exports = {
+  prepareNetworkForNavigation,
   prepareTargetForNavigationMode,
   prepareTargetForIndividualNavigation,
 };

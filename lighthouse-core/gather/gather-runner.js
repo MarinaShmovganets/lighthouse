@@ -755,7 +755,7 @@ class GatherRunner {
       passContext.settings,
       {
         url: passContext.url,
-        disableStorageReset: false, // Legacy LH has no concept of storage reset per-pass
+        disableStorageReset: !passConfig.useThrottling,
         disableThrottling: !passConfig.useThrottling,
         blockedUrlPatterns: passConfig.blockedUrlPatterns,
       }
