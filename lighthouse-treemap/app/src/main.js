@@ -92,7 +92,7 @@ class TreemapViewer {
     urlEl.href = this.documentUrl;
 
     const bytes = this.wrapNodesInNewRootNode(this.depthOneNodesByGroup.scripts).resourceBytes;
-    TreemapUtil.find('.lh-header--size').textContent = TreemapUtil.formatBytes(bytes);
+    TreemapUtil.find('.lh-header--size').textContent = Util.i18n.formatBytesWithBestUnit(bytes);
 
     this.createBundleSelector();
 
@@ -216,7 +216,7 @@ class TreemapViewer {
       return {
         id: 'unused-bytes',
         label: 'Unused Bytes',
-        subLabel: TreemapUtil.formatBytes(root.unusedBytes),
+        subLabel: Util.i18n.formatBytesWithBestUnit(root.unusedBytes),
         highlightNodePaths,
       };
     }
@@ -227,7 +227,7 @@ class TreemapViewer {
     viewModes.push({
       id: 'all',
       label: `All`,
-      subLabel: TreemapUtil.formatBytes(this.currentTreemapRoot.resourceBytes),
+      subLabel: Util.i18n.formatBytesWithBestUnit(this.currentTreemapRoot.resourceBytes),
     });
 
     const unusedBytesViewMode = createUnusedBytesViewMode(this.currentTreemapRoot);
@@ -390,8 +390,8 @@ class TreemapViewer {
       const dataRow = cell.getRow().getData();
       if (!dataRow.unusedBytes) return '';
 
-      const percent = Math.floor(100 * dataRow.unusedBytes / dataRow.resourceBytes);
-      return `${Util.i18n.formatNumber(percent)}% bytes unused`;
+      const percent = dataRow.unusedBytes / dataRow.resourceBytes;
+      return `${Util.i18n.formatPercent(percent)} bytes unused`;
     };
 
     const gridEl = document.createElement('div');
@@ -416,13 +416,13 @@ class TreemapViewer {
         // eslint-disable-next-line max-len
         {title: Util.i18n.strings.treemapResourceBytes, field: 'resourceBytes', headerSortStartingDir: 'desc', tooltip: makeBytesTooltip('resourceBytes'), formatter: cell => {
           const value = cell.getValue();
-          return TreemapUtil.formatBytes(value);
+          return Util.i18n.formatBytesWithBestUnit(value);
         }},
         // eslint-disable-next-line max-len
         {title: Util.i18n.strings.treemapUnusedBytes, field: 'unusedBytes', widthGrow: 1, sorterParams: {alignEmptyValues: 'bottom'}, headerSortStartingDir: 'desc', tooltip: makeBytesTooltip('unusedBytes'), formatter: cell => {
           const value = cell.getValue();
           if (value === undefined) return '';
-          return TreemapUtil.formatBytes(value);
+          return Util.i18n.formatBytesWithBestUnit(value);
         }},
         // eslint-disable-next-line max-len
         {title: Util.i18n.strings.treemapCoverage, widthGrow: 3, headerSort: false, tooltip: makeCoverageTooltip, formatter: cell => {
@@ -478,8 +478,8 @@ class TreemapViewer {
     ];
 
     if (bytes !== undefined && total !== undefined) {
-      const percentStr = `${Util.i18n.formatNumber(Math.round(bytes / total * 100))}%`;
-      let str = `${TreemapUtil.formatBytes(bytes)} (${percentStr})`;
+      const percentStr = Util.i18n.formatPercent(bytes / total);
+      let str = `${Util.i18n.formatBytesWithBestUnit(bytes)} (${percentStr})`;
       // Only add label for bytes on the root node.
       if (node === this.currentTreemapRoot) {
         str = `${partitionByStr}: ${str}`;
@@ -597,7 +597,6 @@ function init(options) {
     ...report.i18n.rendererFormattedStrings,
   });
   Util.i18n = i18n;
-  Util.reportJson = report;
 
   // Fill in all i18n data.
   for (const node of document.querySelectorAll('[data-i18n]')) {

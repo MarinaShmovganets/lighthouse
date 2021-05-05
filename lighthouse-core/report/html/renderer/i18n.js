@@ -9,6 +9,8 @@
 
 // Not named `NBSP` because that creates a duplicate identifier (util.js).
 const NBSP2 = '\xa0';
+const KiB = 1024;
+const MiB = KiB * KiB;
 
 class I18n {
   /**
@@ -21,6 +23,7 @@ class I18n {
 
     this._numberDateLocale = locale;
     this._numberFormatter = new Intl.NumberFormat(locale);
+    this._percentFormatter = new Intl.NumberFormat(locale, {style: 'percent'});
     this._strings = /** @type {LH.I18NRendererStrings} */ (strings || {});
   }
 
@@ -37,6 +40,15 @@ class I18n {
   formatNumber(number, granularity = 0.1) {
     const coarseValue = Math.round(number / granularity) * granularity;
     return this._numberFormatter.format(coarseValue);
+  }
+
+  /**
+   * Format percent.
+   * @param {number} number 0–1
+   * @return {string}
+   */
+  formatPercent(number) {
+    return this._percentFormatter.format(number);
   }
 
   /**
@@ -70,6 +82,17 @@ class I18n {
     const formatter = this._byteFormatterForGranularity(granularity);
     const kbs = formatter.format(Math.round(size / granularity) * granularity);
     return `${kbs}${NBSP2}bytes`;
+  }
+
+  /**
+   * @param {number} size
+   * @param {number=} granularity Controls how coarse the displayed value is, defaults to 1
+   * @return {string}
+   */
+  formatBytesWithBestUnit(size, granularity = 1) {
+    if (size >= MiB) return this.formatBytesToMiB(size, granularity);
+    if (size >= KiB) return this.formatBytesToKiB(size, granularity);
+    return this.formatNumber(size, granularity) + '\xa0B';
   }
 
   /**

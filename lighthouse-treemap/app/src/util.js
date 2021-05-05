@@ -12,9 +12,6 @@
 /** @typedef {HTMLElementTagNameMap & {[id: string]: HTMLElement}} HTMLElementByTagName */
 /** @template {string} T @typedef {import('typed-query-selector/parser').ParseSelector<T, Element>} ParseSelector */
 
-const KiB = 1024;
-const MiB = KiB * KiB;
-
 class TreemapUtil {
   /**
    * @param {LH.Treemap.Node} node
@@ -125,20 +122,11 @@ class TreemapUtil {
   }
 
   /**
-   * @param {number} bytes
-   */
-  static formatBytes(bytes) {
-    if (bytes >= MiB) return Util.i18n.formatBytesToMiB(bytes);
-    if (bytes >= KiB) return Util.i18n.formatBytesToKiB(bytes);
-    return Util.i18n.formatNumber(bytes) + '\xa0B';
-  }
-
-  /**
    * @param {number} value
    * @param {string} unit
    */
   static format(value, unit) {
-    if (unit === 'bytes') return TreemapUtil.formatBytes(value);
+    if (unit === 'bytes') return Util.i18n.formatBytes(value);
     if (unit === 'time') return `${Util.i18n.formatNumber(value)}\xa0ms`;
     return `${Util.i18n.formatNumber(value)}\xa0${unit}`;
   }

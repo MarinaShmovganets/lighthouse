@@ -2084,6 +2084,30 @@
   "lighthouse-core/report/html/renderer/util.js | toplevelWarningsMessage": {
     "message": "There were issues affecting this run of Lighthouse:"
   },
+  "lighthouse-core/report/html/renderer/util.js | treemapAll": {
+    "message": "All"
+  },
+  "lighthouse-core/report/html/renderer/util.js | treemapAllScripts": {
+    "message": "All Scripts"
+  },
+  "lighthouse-core/report/html/renderer/util.js | treemapCoverage": {
+    "message": "Coverage"
+  },
+  "lighthouse-core/report/html/renderer/util.js | treemapDuplicateModules": {
+    "message": "Duplicate Modules"
+  },
+  "lighthouse-core/report/html/renderer/util.js | treemapName": {
+    "message": "Name"
+  },
+  "lighthouse-core/report/html/renderer/util.js | treemapResourceBytes": {
+    "message": "Resource Bytes"
+  },
+  "lighthouse-core/report/html/renderer/util.js | treemapToggleTable": {
+    "message": "Toggle Table"
+  },
+  "lighthouse-core/report/html/renderer/util.js | treemapUnusedBytes": {
+    "message": "Unused Bytes"
+  },
   "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
     "message": "Values are estimated and may vary. The [performance score is calculated](https://web.dev/performance-scoring/) directly from these metrics."
   },
