@@ -50,10 +50,12 @@ class TraceElements extends FRGatherer {
 
   constructor() {
     super();
-    /** @param {LH.Crdp.Animation.AnimationStartedEvent} args */
-    this.onAnimationStarted = ({animation: {id, name}}) => {
-      if (name) this.animationIdToName.set(id, name);
-    };
+    this._onAnimationStarted = this._onAnimationStarted.bind(this);
+  }
+
+  /** @param {LH.Crdp.Animation.AnimationStartedEvent} args */
+  _onAnimationStarted({animation: {id, name}}) {
+    if (name) this.animationIdToName.set(id, name);
   }
 
   /**
@@ -231,14 +233,14 @@ class TraceElements extends FRGatherer {
    */
   async startInstrumentation(context) {
     await context.driver.defaultSession.sendCommand('Animation.enable');
-    context.driver.defaultSession.on('Animation.animationStarted', this.onAnimationStarted);
+    context.driver.defaultSession.on('Animation.animationStarted', this._onAnimationStarted);
   }
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} context
    */
   async stopInstrumentation(context) {
-    context.driver.defaultSession.off('Animation.animationStarted', this.onAnimationStarted);
+    context.driver.defaultSession.off('Animation.animationStarted', this._onAnimationStarted);
     await context.driver.defaultSession.sendCommand('Animation.disable');
   }
 
