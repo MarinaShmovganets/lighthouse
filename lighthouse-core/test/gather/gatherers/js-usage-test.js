@@ -50,7 +50,7 @@ describe('JsUsage gatherer', () => {
     await gatherer.startSensitiveInstrumentation({driver});
 
     // Needed for protocol events to emit.
-    await flushAllTimersAndMicrotasks();
+    await flushAllTimersAndMicrotasks(1);
 
     expect(gatherer._scriptParsedEvents).toEqual(scriptParsedEvents);
 
