@@ -13,6 +13,7 @@ const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 class JsUsage extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
+    // TODO(FR-COMPAT): special snapshot case for scriptId -> URL mappings.
     supportedModes: ['timespan', 'navigation'],
   }
 
