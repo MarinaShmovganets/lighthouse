@@ -67,7 +67,9 @@ class JsUsage extends FRGatherer {
    * @param {LH.Gatherer.FRTransitionalContext} context
    */
   async stopSensitiveInstrumentation(context) {
-    await context.driver.defaultSession.sendCommand('Debugger.disable');
+    const session = context.driver.defaultSession;
+    await session.off('Debugger.scriptParsed', this.onScriptParsed);
+    await session.sendCommand('Debugger.disable');
   }
 
   /**
