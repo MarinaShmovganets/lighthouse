@@ -7,12 +7,9 @@
 
 const Fetcher = require('./fetcher.js');
 const ExecutionContext = require('./driver/execution-context.js');
-const {waitForFullyLoaded, waitForFrameNavigated} = require('./driver/wait-for-condition.js');
-const LHElement = require('../lib/lh-element.js');
 const LHError = require('../lib/lh-error.js');
 const NetworkRequest = require('../lib/network-request.js');
 const EventEmitter = require('events').EventEmitter;
-const constants = require('../config/constants.js');
 
 const log = require('lighthouse-logger');
 const DevtoolsLog = require('./devtools-log.js');
@@ -23,17 +20,8 @@ const pageFunctions = require('../lib/page-functions.js');
 // Pulled in for Connection type checking.
 // eslint-disable-next-line no-unused-vars
 const Connection = require('./connections/connection.js');
-const NetworkMonitor = require('./driver/network-monitor.js');
 const {getBrowserVersion} = require('./driver/environment.js');
 
-// Controls how long to wait after FCP before continuing
-const DEFAULT_PAUSE_AFTER_FCP = 0;
-// Controls how long to wait after onLoad before continuing
-const DEFAULT_PAUSE_AFTER_LOAD = 0;
-// Controls how long to wait between network requests before determining the network is quiet
-const DEFAULT_NETWORK_QUIET_THRESHOLD = 5000;
-// Controls how long to wait between longtasks before determining the CPU is idle, off by default
-const DEFAULT_CPU_QUIET_THRESHOLD = 0;
 // Controls how long to wait for a response after sending a DevTools protocol command.
 const DEFAULT_PROTOCOL_TIMEOUT = 30000;
 
@@ -85,10 +73,23 @@ class Driver {
    */
   constructor(connection) {
     this._connection = connection;
-    this._networkMonitor = new NetworkMonitor(this);
 
     this.on('Target.attachedToTarget', event => {
       this._handleTargetAttached(event).catch(this._handleEventError);
+    });
+
+    this.on('Page.frameNavigated', event => {
+      // We're only interested in setting autoattach on the root via this method.
+      // `_handleTargetAttached` takes care of the recursive piece.
+      if (event.frame.parentId) return;
+
+      // Enable auto-attaching to subtargets so we receive iframe information.
+      this.sendCommand('Target.setAutoAttach', {
+        flatten: true,
+        autoAttach: true,
+        // Pause targets on startup so we don't miss anything
+        waitForDebuggerOnStart: true,
+      }).catch(this._handleEventError);
     });
 
     connection.on('protocolevent', this._handleProtocolEvent.bind(this));
@@ -318,6 +319,7 @@ class Driver {
     /** @type {NodeJS.Timer|undefined} */
     let asyncTimeout;
     const timeoutPromise = new Promise((resolve, reject) => {
+      if (timeout === Infinity) return;
       asyncTimeout = setTimeout((() => {
         const err = new LHError(
           LHError.errors.PROTOCOL_TIMEOUT,
@@ -377,106 +379,6 @@ class Driver {
   }
 
   /**
-   * Navigate to the given URL. Direct use of this method isn't advised: if
-   * the current page is already at the given URL, navigation will not occur and
-   * so the returned promise will only resolve after the MAX_WAIT_FOR_FULLY_LOADED
-   * timeout. See https://github.com/GoogleChrome/lighthouse/pull/185 for one
-   * possible workaround.
-   * Resolves on the url of the loaded page, taking into account any redirects.
-   * @param {string} url
-   * @param {{waitForFcp?: boolean, waitForLoad?: boolean, waitForNavigated?: boolean, passContext?: LH.Gatherer.PassContext}} options
-   * @return {Promise<{finalUrl: string, timedOut: boolean}>}
-   */
-  async gotoURL(url, options = {}) {
-    const waitForFcp = options.waitForFcp || false;
-    const waitForNavigated = options.waitForNavigated || false;
-    const waitForLoad = options.waitForLoad || false;
-    /** @type {Partial<LH.Gatherer.PassContext>} */
-    const passContext = options.passContext || {};
-
-    if (waitForNavigated && (waitForFcp || waitForLoad)) {
-      throw new Error('Cannot use both waitForNavigated and another event, pick just one');
-    }
-
-    await this._networkMonitor.enable();
-    await this.executionContext.clearContextId();
-
-    // Enable auto-attaching to subtargets so we receive iframe information
-    await this.sendCommand('Target.setAutoAttach', {
-      flatten: true,
-      autoAttach: true,
-      // Pause targets on startup so we don't miss anything
-      waitForDebuggerOnStart: true,
-    });
-
-    await this.sendCommand('Page.enable');
-    await this.sendCommand('Page.setLifecycleEventsEnabled', {enabled: true});
-    // No timeout needed for Page.navigate. See https://github.com/GoogleChrome/lighthouse/pull/6413.
-    const waitforPageNavigateCmd = this._innerSendCommand('Page.navigate', undefined, {url});
-
-    let timedOut = false;
-    if (waitForNavigated) {
-      await waitForFrameNavigated(this).promise;
-    } else if (waitForLoad) {
-      /** @type {Partial<LH.Config.Pass>} */
-      const passConfig = passContext.passConfig || {};
-
-      /* eslint-disable max-len */
-      let {pauseAfterFcpMs, pauseAfterLoadMs, networkQuietThresholdMs, cpuQuietThresholdMs} = passConfig;
-      let maxWaitMs = passContext.settings && passContext.settings.maxWaitForLoad;
-      let maxFCPMs = passContext.settings && passContext.settings.maxWaitForFcp;
-
-      if (typeof pauseAfterFcpMs !== 'number') pauseAfterFcpMs = DEFAULT_PAUSE_AFTER_FCP;
-      if (typeof pauseAfterLoadMs !== 'number') pauseAfterLoadMs = DEFAULT_PAUSE_AFTER_LOAD;
-      if (typeof networkQuietThresholdMs !== 'number') networkQuietThresholdMs = DEFAULT_NETWORK_QUIET_THRESHOLD;
-      if (typeof cpuQuietThresholdMs !== 'number') cpuQuietThresholdMs = DEFAULT_CPU_QUIET_THRESHOLD;
-      if (typeof maxWaitMs !== 'number') maxWaitMs = constants.defaultSettings.maxWaitForLoad;
-      if (typeof maxFCPMs !== 'number') maxFCPMs = constants.defaultSettings.maxWaitForFcp;
-      /* eslint-enable max-len */
-
-      if (!waitForFcp) maxFCPMs = undefined;
-      const waitOptions = {pauseAfterFcpMs, pauseAfterLoadMs, networkQuietThresholdMs,
-        cpuQuietThresholdMs, maxWaitForLoadedMs: maxWaitMs, maxWaitForFcpMs: maxFCPMs};
-      const loadResult = await waitForFullyLoaded(this, this._networkMonitor, waitOptions);
-      timedOut = loadResult.timedOut;
-    }
-
-    const finalUrl = await this._networkMonitor.getFinalNavigationUrl() || url;
-
-    // Bring `Page.navigate` errors back into the promise chain. See https://github.com/GoogleChrome/lighthouse/pull/6739.
-    await waitforPageNavigateCmd;
-    await this._networkMonitor.disable();
-
-    return {
-      finalUrl,
-      timedOut,
-    };
-  }
-
-  /**
-   * @param {string} objectId Object ID for the resolved DOM node
-   * @param {string} propName Name of the property
-   * @return {Promise<string|null>} The property value, or null, if property not found
-  */
-  async getObjectProperty(objectId, propName) {
-    const propertiesResponse = await this.sendCommand('Runtime.getProperties', {
-      objectId,
-      accessorPropertiesOnly: true,
-      generatePreview: false,
-      ownProperties: false,
-    });
-
-    const propertyForName = propertiesResponse.result
-        .find(property => property.name === propName);
-
-    if (propertyForName && propertyForName.value) {
-      return propertyForName.value.value;
-    } else {
-      return null;
-    }
-  }
-
-  /**
    * Return the body of the response with the given ID. Rejects if getting the
    * body times out.
    * @param {string} requestId
@@ -491,68 +393,6 @@ class Driver {
     this.setNextProtocolTimeout(timeout);
     const result = await this.sendCommand('Network.getResponseBody', {requestId});
     return result.body;
-  }
-
-  /**
-   * @param {string} selector Selector to find in the DOM
-   * @return {Promise<LHElement|null>} The found element, or null, resolved in a promise
-   */
-  async querySelector(selector) {
-    const documentResponse = await this.sendCommand('DOM.getDocument');
-    const rootNodeId = documentResponse.root.nodeId;
-
-    const targetNode = await this.sendCommand('DOM.querySelector', {
-      nodeId: rootNodeId,
-      selector,
-    });
-
-    if (targetNode.nodeId === 0) {
-      return null;
-    }
-    return new LHElement(targetNode, this);
-  }
-
-  /**
-   * Resolves a backend node ID (from a trace event, protocol, etc) to the object ID for use with
-   * `Runtime.callFunctionOn`. `undefined` means the node could not be found.
-   *
-   * @param {number} backendNodeId
-   * @return {Promise<string|undefined>}
-   */
-  async resolveNodeIdToObjectId(backendNodeId) {
-    try {
-      const resolveNodeResponse = await this.sendCommand('DOM.resolveNode', {backendNodeId});
-      return resolveNodeResponse.object.objectId;
-    } catch (err) {
-      if (/No node.*found/.test(err.message) ||
-        /Node.*does not belong to the document/.test(err.message)) return undefined;
-      throw err;
-    }
-  }
-
-  /**
-   * Resolves a proprietary devtools node path (created from page-function.js) to the object ID for use
-   * with `Runtime.callFunctionOn`. `undefined` means the node could not be found.
-   * Requires `DOM.getDocument` to have been called since the object's creation or it will always be `undefined`.
-   *
-   * @param {string} devtoolsNodePath
-   * @return {Promise<string|undefined>}
-   */
-  async resolveDevtoolsNodePathToObjectId(devtoolsNodePath) {
-    try {
-      const {nodeId} = await this.sendCommand('DOM.pushNodeByPathToFrontend', {
-        path: devtoolsNodePath,
-      });
-
-      const {object: {objectId}} = await this.sendCommand('DOM.resolveNode', {
-        nodeId,
-      });
-
-      return objectId;
-    } catch (err) {
-      if (/No node.*found/.test(err.message)) return undefined;
-      throw err;
-    }
   }
 
   /**

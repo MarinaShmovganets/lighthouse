@@ -7,11 +7,9 @@
 
 const Driver = require('../../gather/driver.js');
 const Connection = require('../../gather/connections/connection.js');
-const LHElement = require('../../lib/lh-element.js');
 const {protocolGetVersionResponse} = require('./fake-driver.js');
 const {
   createMockSendCommandFn,
-  createMockOnceFn,
   makePromiseInspectable,
   flushAllTimersAndMicrotasks,
 } = require('../test-utils.js');
@@ -25,9 +23,6 @@ jest.useFakeTimers();
  * @typedef DriverMockMethods
  * @property {Driver['evaluate']} evaluate redefined to remove "private" designation
  * @property {Driver['evaluateAsync']} evaluateAsync redefined to remove "private" designation
- * @property {ReturnType<typeof createMockOnceFn>} on
- * @property {ReturnType<typeof createMockOnceFn>} once
- * @property {(...args: RecursivePartial<Parameters<Driver['gotoURL']>>) => ReturnType<Driver['gotoURL']>} gotoURL
 */
 
 /** @typedef {Omit<Driver, keyof DriverMockMethods> & DriverMockMethods} TestDriver */
@@ -46,59 +41,6 @@ beforeEach(() => {
   };
   // @ts-expect-error - driver has a mocked version of on/once implemented in each test
   driver = new Driver(connectionStub);
-});
-
-describe('.querySelector(All)', () => {
-  it('returns null when DOM.querySelector finds no node', async () => {
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('DOM.getDocument', {root: {nodeId: 249}})
-      .mockResponse('DOM.querySelector', {nodeId: 0});
-
-    const result = await driver.querySelector('invalid');
-    expect(result).toEqual(null);
-  });
-
-  it('returns element instance when DOM.querySelector finds a node', async () => {
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('DOM.getDocument', {root: {nodeId: 249}})
-      .mockResponse('DOM.querySelector', {nodeId: 231});
-
-    const result = await driver.querySelector('meta head');
-    expect(result).toBeInstanceOf(LHElement);
-  });
-});
-
-describe('.getObjectProperty', () => {
-  it('returns value when getObjectProperty finds property name', async () => {
-    const property = {
-      name: 'testProp',
-      value: {
-        value: 123,
-      },
-    };
-
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Runtime.getProperties', {result: [property]});
-
-    const result = await driver.getObjectProperty('objectId', 'testProp');
-    expect(result).toEqual(123);
-  });
-
-  it('returns null when getObjectProperty finds no property name', async () => {
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Runtime.getProperties', {result: []});
-
-    const result = await driver.getObjectProperty('objectId', 'testProp');
-    expect(result).toEqual(null);
-  });
-
-  it('returns null when getObjectProperty finds property name with no value', async () => {
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Runtime.getProperties', {result: [{name: 'testProp'}]});
-
-    const result = await driver.getObjectProperty('objectId', 'testProp');
-    expect(result).toEqual(null);
-  });
 });
 
 describe('.getRequestContent', () => {
@@ -199,85 +141,6 @@ describe('.beginTrace', () => {
     expect(tracingStartArgs.categories).toContain('xtra_cat');
     // Make sure it deduplicates categories too
     expect(tracingStartArgs.categories).not.toMatch(/loading.*loading/);
-  });
-});
-
-describe('.gotoURL', () => {
-  beforeEach(() => {
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Network.enable')
-      .mockResponse('Page.enable')
-      .mockResponse('Page.setLifecycleEventsEnabled')
-      .mockResponse('Emulation.setScriptExecutionDisabled')
-      .mockResponse('Page.navigate')
-      .mockResponse('Target.setAutoAttach')
-      .mockResponse('Runtime.evaluate')
-      .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: 'ABC'}}});
-  });
-
-  it('will track redirects through gotoURL load', async () => {
-    driver.on = driver.once = createMockOnceFn();
-
-    const url = 'https://www.example.com';
-
-    const loadOptions = {
-      waitForNavigated: true,
-    };
-
-    const loadPromise = makePromiseInspectable(driver.gotoURL(url, loadOptions));
-    await flushAllTimersAndMicrotasks();
-    expect(loadPromise).not.toBeDone('Did not wait for frameNavigated');
-
-    // Use `getListeners` instead of `mockEvent` so we can control exactly when the promise resolves
-    // The first listener is from the network monitor and the second is from the load watcher.
-    const [networkMonitorListener, loadListener] = driver.on.getListeners('Page.frameNavigated');
-
-    /** @param {LH.Crdp.Page.Frame} frame */
-    const navigate = frame => networkMonitorListener({frame});
-    const baseFrame = {
-      id: 'ABC', loaderId: '', securityOrigin: '', mimeType: 'text/html', domainAndRegistry: '',
-      secureContextType: /** @type {'Secure'} */ ('Secure'),
-      crossOriginIsolatedContextType: /** @type {'Isolated'} */ ('Isolated'),
-      gatedAPIFeatures: [],
-    };
-    navigate({...baseFrame, url: 'http://example.com'});
-    navigate({...baseFrame, url: 'https://example.com'});
-    navigate({...baseFrame, url: 'https://www.example.com'});
-    navigate({...baseFrame, url: 'https://m.example.com'});
-    navigate({...baseFrame, id: 'ad1', url: 'https://frame-a.example.com'});
-    navigate({...baseFrame, url: 'https://m.example.com/client'});
-    navigate({...baseFrame, id: 'ad2', url: 'https://frame-b.example.com'});
-    navigate({...baseFrame, id: 'ad3', url: 'https://frame-c.example.com'});
-
-    loadListener(baseFrame);
-    await flushAllTimersAndMicrotasks();
-    expect(loadPromise).toBeDone('Did not resolve after frameNavigated');
-
-    const results = await loadPromise;
-    expect(results.finalUrl).toEqual('https://m.example.com/client');
-  });
-
-  describe('when waitForNavigated', () => {
-    it('waits for Page.frameNavigated', async () => {
-      driver.on = driver.once = createMockOnceFn();
-
-      const url = 'https://www.example.com';
-      const loadOptions = {
-        waitForNavigated: true,
-      };
-
-      const loadPromise = makePromiseInspectable(driver.gotoURL(url, loadOptions));
-      await flushAllTimersAndMicrotasks();
-      expect(loadPromise).not.toBeDone('Did not wait for frameNavigated');
-
-      // Use `getListeners` instead of `mockEvent` so we can control exactly when the promise resolves
-      const [_, listener] = driver.on.getListeners('Page.frameNavigated');
-      listener({frame: {url: 'https://www.example.com'}});
-      await flushAllTimersAndMicrotasks();
-      expect(loadPromise).toBeDone('Did not resolve after frameNavigated');
-
-      await loadPromise;
-    });
   });
 });
 
