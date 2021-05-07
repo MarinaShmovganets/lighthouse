@@ -26,7 +26,6 @@ declare global {
       | 'HTTPRedirect'
       | 'ImageElements'
       | 'InspectorIssues'
-      | 'JsUsage'
       | 'LinkElements'
       | 'MainDocumentContent'
       | 'Manifest'
@@ -37,7 +36,6 @@ declare global {
       | 'ServiceWorker'
       | 'SourceMaps'
       | 'TagsBlockingFirstPaint'
-      | 'TraceElements'
       | keyof FRBaseArtifacts
     >;
 
