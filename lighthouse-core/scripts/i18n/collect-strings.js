@@ -26,9 +26,22 @@ const UISTRINGS_REGEX = /UIStrings = .*?\};\n/s;
 /** @typedef {Required<Pick<CtcMessage, 'message'|'placeholders'>>} IncrementalCtc */
 /** @typedef {{message: string, description: string, examples: Record<string, string>}} ParsedUIString */
 
-const foldersWithStrings = [
-  `${LH_ROOT}/lighthouse-core`,
-  path.dirname(require.resolve('lighthouse-stack-packs')) + '/packs',
+const runs = [
+  {
+    folders: [
+      `${LH_ROOT}/lighthouse-core`,
+      path.dirname(require.resolve('lighthouse-stack-packs')) + '/packs',
+    ],
+    expectedCollisions: 30,
+    output: 'lighthouse-core/lib/i18n/locales',
+  },
+  {
+    folders: [
+      `${LH_ROOT}/lighthouse-treemap/app/src`,
+    ],
+    expectedCollisions: 0,
+    output: 'lighthouse-treemap/app/src/i18n/locales',
+  },
 ];
 
 const ignoredPathComponents = [
@@ -39,6 +52,7 @@ const ignoredPathComponents = [
   '**/test/**',
   '**/*-test.js',
   '**/*-renderer.js',
+  'lighthouse-treemap/app/src/main.js',
 ];
 
 /**
@@ -608,11 +622,12 @@ function collectAllStringsInDir(dir) {
 }
 
 /**
+ * @param {string} dir
  * @param {string} locale
  * @param {Record<string, CtcMessage>} strings
  */
-function writeStringsToCtcFiles(locale, strings) {
-  const fullPath = path.join(LH_ROOT, `lighthouse-core/lib/i18n/locales/${locale}.ctc.json`);
+function writeStringsToCtcFiles(dir, locale, strings) {
+  const fullPath = path.join(dir, `${locale}.ctc.json`);
   /** @type {Record<string, CtcMessage>} */
   const output = {};
   const sortedEntries = Object.entries(strings).sort(([keyA], [keyB]) => keyA.localeCompare(keyB));
@@ -623,47 +638,61 @@ function writeStringsToCtcFiles(locale, strings) {
   fs.writeFileSync(fullPath, JSON.stringify(output, null, 2) + '\n');
 }
 
-// Test if called from the CLI or as a module.
-if (require.main === module) {
+/**
+ * @param {runs[number]} run
+ */
+function processRun(run) {
+  // Reset global state.
+  seenStrings.clear();
+  collisions = 0;
+  collisionStrings.length = 0;
+
   /** @type {Record<string, CtcMessage>} */
   const strings = {};
 
-  for (const folderWithStrings of foldersWithStrings) {
-    console.log(`\n====\nCollecting strings from ${folderWithStrings}\n====`);
-    const moreStrings = collectAllStringsInDir(folderWithStrings);
+  for (const folder of run.folders) {
+    console.log(`\n====\nCollecting strings from ${folder}\n====`);
+    const moreStrings = collectAllStringsInDir(folder);
     Object.assign(strings, moreStrings);
   }
 
-  if (collisions > 0) {
+  if (collisions !== run.expectedCollisions) {
     console.log(`MEANING COLLISION: ${collisions} string(s) have the same content.`);
-    assert.equal(collisions, 32, `The number of duplicate strings have changed, update this assertion if that is expected, or reword strings. Collisions: ${collisionStrings.join('\n')}`);
+    assert.equal(collisions, run.expectedCollisions, `The number of duplicate strings have changed, update this assertion if that is expected, or reword strings. Collisions: ${collisionStrings.join('\n')}`);
   }
 
-  writeStringsToCtcFiles('en-US', strings);
+  writeStringsToCtcFiles(run.output, 'en-US', strings);
   console.log('Written to disk!', 'en-US.ctc.json');
   // Generate local pseudolocalized files for debugging while translating
-  writeStringsToCtcFiles('en-XL', createPsuedoLocaleStrings(strings));
+  writeStringsToCtcFiles(run.output, 'en-XL', createPsuedoLocaleStrings(strings));
   console.log('Written to disk!', 'en-XL.ctc.json');
 
   // Bake the ctc en-US and en-XL files into en-US and en-XL LHL format
-  const lhl = collectAndBakeCtcStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/'),
-      path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/'));
+  const lhl = collectAndBakeCtcStrings(path.join(LH_ROOT, run.output));
   lhl.forEach(function(locale) {
     console.log(`Baked ${locale} into LHL format.`);
   });
 
   // Remove any obsolete strings in existing LHL files.
   console.log('Checking for out-of-date LHL messages...');
-  pruneObsoleteLhlMessages();
+  pruneObsoleteLhlMessages(run.output);
 
   // Report on translation progress.
-  const progress = countTranslatedMessages();
+  const progress = countTranslatedMessages(run.output);
   console.log(`  ${progress.localeCount} translated locale files`);
   console.log(`  ${progress.translatedCount}/${progress.messageCount} fully translated messages`);
   if (progress.partiallyTranslatedCount) {
     console.log(`  ${progress.partiallyTranslatedCount}/${progress.messageCount} partially translated messages`);
   }
   console.log(`  ${progress.notTranslatedCount}/${progress.messageCount} untranslated messages`);
+}
+
+// Test if called from the CLI or as a module.
+if (require.main === module) {
+  for (const run of runs) {
+    console.log(`Processing run for: ${run.output}`);
+    processRun(run);
+  }
 
   console.log('✨ Complete!');
 }

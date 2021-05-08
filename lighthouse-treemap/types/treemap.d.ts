@@ -1,4 +1,5 @@
 import _TreemapUtil = require('../app/src/util.js');
+import _locales = require('../app/src/i18n/locales.js');
 
 declare global {
   class WebTreeMap {
@@ -24,8 +25,8 @@ declare global {
     render(el: HTMLElement, data: any, options: WebTreeMapOptions): void;
     sort(data: any): void;
   };
-
   var TreemapUtil: typeof _TreemapUtil;
+  var locales: typeof _locales;
 
   interface Window {
     __treemapOptions?: LH.Treemap.Options;

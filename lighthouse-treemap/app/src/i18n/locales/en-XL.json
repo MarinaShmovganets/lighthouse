@@ -1,0 +1,26 @@
+{
+  "lighthouse-treemap/app/src/util.js | all": {
+    "message": "Âĺl̂"
+  },
+  "lighthouse-treemap/app/src/util.js | allScripts": {
+    "message": "Âĺl̂ Śĉŕîṕt̂ś"
+  },
+  "lighthouse-treemap/app/src/util.js | coverage": {
+    "message": "Ĉóv̂ér̂áĝé"
+  },
+  "lighthouse-treemap/app/src/util.js | duplicateModules": {
+    "message": "D̂úp̂ĺîćât́ê Ḿôd́ûĺêś"
+  },
+  "lighthouse-treemap/app/src/util.js | name": {
+    "message": "N̂ám̂é"
+  },
+  "lighthouse-treemap/app/src/util.js | resourceBytes": {
+    "message": "R̂éŝóûŕĉé B̂ýt̂éŝ"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTable": {
+    "message": "T̂óĝǵl̂é T̂áb̂ĺê"
+  },
+  "lighthouse-treemap/app/src/util.js | unusedBytes": {
+    "message": "Ûńûśêd́ B̂ýt̂éŝ"
+  }
+}

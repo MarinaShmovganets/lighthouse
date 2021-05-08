@@ -18,16 +18,17 @@ const enUsLhl = JSON.parse(fs.readFileSync(enUsLhlFilename, 'utf8'));
 /**
  * Count how many locale files have a translated version of each string found in
  * the `en-US.json` i18n messages.
+ * @param {string} dir
  * @return {{localeCount: number, messageCount: number, translatedCount: number, partiallyTranslatedCount: number, notTranslatedCount: number}}
  */
-function countTranslatedMessages() {
+function countTranslatedMessages(dir) {
   // Find all locale files, ignoring self-generated en-US and en-XL, and ctc files.
   const ignore = [
     '**/.ctc.json',
     '**/en-US.json',
     '**/en-XL.json',
   ];
-  const globPattern = 'lighthouse-core/lib/i18n/locales/**/+([-a-zA-Z0-9]).json';
+  const globPattern = `${dir}/**/+([-a-zA-Z0-9]).json`;
   const localeFilenames = glob.sync(globPattern, {
     ignore,
     cwd: lhRoot,

@@ -12,10 +12,13 @@ const NBSP2 = '\xa0';
 const KiB = 1024;
 const MiB = KiB * KiB;
 
+/**
+ * @template T
+ */
 class I18n {
   /**
    * @param {LH.Locale} locale
-   * @param {LH.I18NRendererStrings=} strings
+   * @param {T=} strings
    */
   constructor(locale, strings) {
     // When testing, use a locale with more exciting numeric formatting.
@@ -24,7 +27,7 @@ class I18n {
     this._numberDateLocale = locale;
     this._numberFormatter = new Intl.NumberFormat(locale);
     this._percentFormatter = new Intl.NumberFormat(locale, {style: 'percent'});
-    this._strings = /** @type {LH.I18NRendererStrings} */ (strings || {});
+    this._strings = /** @type {T} */ (strings || {});
   }
 
   get strings() {

@@ -30,7 +30,7 @@ async function run() {
       /* eslint-enable max-len */
       {path: '../../lighthouse-core/report/html/renderer/i18n.js'},
       {path: '../../lighthouse-core/report/html/renderer/util.js'},
-      {path: 'src/*'},
+      {path: 'src/**/*'},
     ],
     assets: [
       {path: 'debug.json'},

@@ -7,7 +7,7 @@
 
 /* eslint-env browser */
 
-/* globals I18n webtreemap TreemapUtil Util Tabulator Cell Row */
+/* globals I18n webtreemap locales TreemapUtil Util Tabulator Cell Row */
 
 const UNUSED_BYTES_IGNORE_THRESHOLD = 20 * 1024;
 const UNUSED_BYTES_IGNORE_BUNDLE_SOURCE_RATIO = 0.5;
@@ -481,20 +481,20 @@ class TreemapViewer {
       ],
       columns: [
         // eslint-disable-next-line max-len
-        {title: Util.i18n.strings.treemapName, field: 'name', widthGrow: 5, tooltip: makeNameTooltip},
+        {title: TreemapUtil.i18n.strings.name, field: 'name', widthGrow: 5, tooltip: makeNameTooltip},
         // eslint-disable-next-line max-len
-        {title: Util.i18n.strings.treemapResourceBytes, field: 'resourceBytes', headerSortStartingDir: 'desc', tooltip: makeBytesTooltip('resourceBytes'), formatter: cell => {
+        {title: TreemapUtil.i18n.strings.resourceBytes, field: 'resourceBytes', headerSortStartingDir: 'desc', tooltip: makeBytesTooltip('resourceBytes'), formatter: cell => {
           const value = cell.getValue();
-          return Util.i18n.formatBytesWithBestUnit(value);
+          return TreemapUtil.i18n.formatBytesWithBestUnit(value);
         }},
         // eslint-disable-next-line max-len
-        {title: Util.i18n.strings.treemapUnusedBytes, field: 'unusedBytes', widthGrow: 1, sorterParams: {alignEmptyValues: 'bottom'}, headerSortStartingDir: 'desc', tooltip: makeBytesTooltip('unusedBytes'), formatter: cell => {
+        {title: TreemapUtil.i18n.strings.unusedBytes, field: 'unusedBytes', widthGrow: 1, sorterParams: {alignEmptyValues: 'bottom'}, headerSortStartingDir: 'desc', tooltip: makeBytesTooltip('unusedBytes'), formatter: cell => {
           const value = cell.getValue();
           if (value === undefined) return '';
-          return Util.i18n.formatBytesWithBestUnit(value);
+          return TreemapUtil.i18n.formatBytesWithBestUnit(value);
         }},
         // eslint-disable-next-line max-len
-        {title: Util.i18n.strings.treemapCoverage, widthGrow: 3, headerSort: false, tooltip: makeCoverageTooltip, formatter: cell => {
+        {title: TreemapUtil.i18n.strings.coverage, widthGrow: 3, headerSort: false, tooltip: makeCoverageTooltip, formatter: cell => {
           /** @type {typeof data[number]} */
           const dataRow = cell.getRow().getData();
 
@@ -536,8 +536,8 @@ class TreemapViewer {
   makeCaption(node) {
     const partitionBy = this.currentViewMode.partitionBy || 'resourceBytes';
     const partitionByStr = {
-      resourceBytes: Util.i18n.strings.treemapResourceBytes,
-      unusedBytes: Util.i18n.strings.treemapUnusedBytes,
+      resourceBytes: TreemapUtil.i18n.strings.resourceBytes,
+      unusedBytes: TreemapUtil.i18n.strings.unusedBytes,
     }[partitionBy];
     const bytes = node[partitionBy];
     const total = this.currentTreemapRoot[partitionBy];
@@ -668,17 +668,17 @@ function init(options) {
   const report = Util.prepareReportResult(options.lhr);
   const i18n = new I18n(report.configSettings.locale, {
     // Set missing renderer strings to default (english) values.
-    ...Util.UIStrings,
-    ...report.i18n.rendererFormattedStrings,
+    ...TreemapUtil.UIStrings,
+    ...locales[report.configSettings.locale],
   });
-  Util.i18n = i18n;
+  TreemapUtil.i18n = i18n;
 
   // Fill in all i18n data.
   for (const node of document.querySelectorAll('[data-i18n]')) {
     // These strings are guaranteed to (at least) have a default English string in Util.UIStrings,
     // so this cannot be undefined as long as `report-ui-features.data-i18n` test passes.
-    const i18nAttr = /** @type {keyof LH.I18NRendererStrings} */ (node.getAttribute('data-i18n'));
-    node.textContent = Util.i18n.strings[i18nAttr];
+    const i18nAttr = /** @type {keyof TreemapUtil['UIStrings']} */ (node.getAttribute('data-i18n'));
+    node.textContent = TreemapUtil.i18n.strings[i18nAttr];
   }
 
   treemapViewer = new TreemapViewer(options, TreemapUtil.find('div.lh-treemap'));

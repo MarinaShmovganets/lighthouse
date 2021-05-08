@@ -18,7 +18,7 @@
 
 /* globals self */
 
-/** @typedef {import('./i18n')} I18n */
+/** @template T @typedef {import('./i18n')<T>} I18n */
 
 const ELLIPSIS = '\u2026';
 const NBSP = '\xa0';
@@ -508,7 +508,7 @@ Util.getUniqueSuffix = (() => {
   };
 })();
 
-/** @type {I18n} */
+/** @type {I18n<typeof Util['UIStrings']>} */
 // @ts-expect-error: Is set in report renderer.
 Util.i18n = null;
 
@@ -617,23 +617,6 @@ Util.UIStrings = {
 
   /** Descriptive explanation for environment throttling that was provided by the runtime environment instead of provided by Lighthouse throttling. */
   throttlingProvided: 'Provided by environment',
-
-  /** Label for a button that alternates between showing or hiding a table. */
-  treemapToggleTable: 'Toggle Table',
-  /** Text for an option in a dropdown menu, when selected the current view of the app is set to all scripts. */
-  treemapAllScripts: 'All Scripts',
-  /** Label for a column where the values are URLs, JS module names, or arbitrary identifiers. For simplicity, just 'name' is used. */
-  treemapName: 'Name',
-  /** Label for a value associated with how many bytes a URL/file is, on-disk. */
-  treemapResourceBytes: 'Resource Bytes',
-  /** Label for a value associated with how many bytes a URL/file is, over-network. */
-  treemapUnusedBytes: 'Unused Bytes',
-  /** Label for a column where the values represent how much of a file is used bytes vs unused bytes (coverage). */
-  treemapCoverage: 'Coverage',
-  /** Label for a button that shows everything. */
-  treemapAll: 'All',
-  /** Label for a button that highlights information about duplicate modules (aka: files, javascript resources). */
-  treemapDuplicateModules: 'Duplicate Modules',
 };
 
 if (typeof module !== 'undefined' && module.exports) {

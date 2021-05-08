@@ -113,9 +113,11 @@ function getGoldenLocaleArgumentIds(goldenLhl) {
  * If a new `en-US.json` message is sufficiently different so that existing
  * translations should no longer be used, it's up to the author to remove them
  * (e.g. by picking a new message id).
+ *
+ * @param {string} dir
  */
-function pruneObsoleteLhlMessages() {
-  const goldenLhl = require('../../lib/i18n/locales/en-US.json');
+function pruneObsoleteLhlMessages(dir) {
+  const goldenLhl = JSON.parse(fs.readFileSync(`${dir}/en-US.json`, 'utf-8'));
   const goldenLocaleArgumentIds = getGoldenLocaleArgumentIds(goldenLhl);
 
   // Find all locale files, ignoring self-generated en-US, en-XL, and ctc files.
@@ -124,7 +126,7 @@ function pruneObsoleteLhlMessages() {
     '**/en-US.json',
     '**/en-XL.json',
   ];
-  const globPattern = 'lighthouse-core/lib/i18n/locales/**/+([-a-zA-Z0-9]).json';
+  const globPattern = `${dir}/**/+([-a-zA-Z0-9]).json`;
   const lhRoot = `${__dirname}/../../../`;
   const localePaths = glob.sync(globPattern, {
     ignore,

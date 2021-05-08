@@ -11,6 +11,7 @@
 
 /** @typedef {HTMLElementTagNameMap & {[id: string]: HTMLElement}} HTMLElementByTagName */
 /** @template {string} T @typedef {import('typed-query-selector/parser').ParseSelector<T, Element>} ParseSelector */
+/** @template T @typedef {import('../../../lighthouse-core/report/html/renderer/i18n')<T>} I18n */
 
 class TreemapUtil {
   /**
@@ -196,7 +197,32 @@ TreemapUtil.COLOR_HUES = [
   199.5,
 ];
 
+/** @type {I18n<typeof TreemapUtil['UIStrings']>} */
+// @ts-expect-error: Is set in main.
+TreemapUtil.i18n = null;
+
+TreemapUtil.UIStrings = {
+  /** Label for a button that alternates between showing or hiding a table. */
+  toggleTable: 'Toggle Table',
+  /** Text for an option in a dropdown menu, when selected the current view of the app is set to all scripts. */
+  allScripts: 'All Scripts',
+  /** Label for a column where the values are URLs, JS module names, or arbitrary identifiers. For simplicity, just 'name' is used. */
+  name: 'Name',
+  /** Label for a value associated with how many bytes a URL/file is, on-disk. */
+  resourceBytes: 'Resource Bytes',
+  /** Label for a value associated with how many bytes a URL/file is, over-network. */
+  unusedBytes: 'Unused Bytes',
+  /** Label for a column where the values represent how much of a file is used bytes vs unused bytes (coverage). */
+  coverage: 'Coverage',
+  /** Label for a button that shows everything. */
+  all: 'All',
+  /** Label for a button that highlights information about duplicate modules (aka: files, javascript resources). */
+  duplicateModules: 'Duplicate Modules',
+};
+
 // node export for testing.
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = TreemapUtil;
+} else {
+  self.TreemapUtil = TreemapUtil;
 }
