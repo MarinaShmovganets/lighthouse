@@ -1,5 +1,5 @@
 import _TreemapUtil = require('../app/src/util.js');
-import _locales = require('../app/src/i18n/locales.js');
+import _locales = require('../../lighthouse-core/lib/i18n/locales.js');
 
 declare global {
   class WebTreeMap {

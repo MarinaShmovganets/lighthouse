@@ -8,6 +8,24 @@
 const fs = require('fs');
 const GhPagesApp = require('./gh-pages-app.js');
 
+function buildLocales() {
+  const locales = require('../lighthouse-core/lib/i18n/locales.js');
+  const clonedLocales = JSON.parse(JSON.stringify(locales));
+
+  for (const [locale, lhlMessages] of Object.entries(clonedLocales)) {
+    locales[/** @type {LH.Locale} */ (locale)] = {
+      ...lhlMessages,
+    };
+    for (const key of Object.keys(lhlMessages)) {
+      if (!key.startsWith('lighthouse-treemap')) {
+        delete lhlMessages[key];
+      }
+    }
+  }
+
+  return 'const locales =' + JSON.stringify(clonedLocales, null, 2) + ';';
+}
+
 /**
  * Build treemap app, optionally deploying to gh-pages if `--deploy` flag was set.
  */
@@ -28,6 +46,7 @@ async function run() {
       fs.readFileSync(require.resolve('tabulator-tables/dist/js/modules/format.js'), 'utf8'),
       fs.readFileSync(require.resolve('tabulator-tables/dist/js/modules/resize_columns.js'), 'utf8'),
       /* eslint-enable max-len */
+      buildLocales(),
       {path: '../../lighthouse-core/report/html/renderer/i18n.js'},
       {path: 'src/**/*'},
     ],

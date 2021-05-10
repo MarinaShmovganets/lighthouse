@@ -123,7 +123,10 @@ class TreemapViewer {
     }
 
     for (const [group, depthOneNodes] of Object.entries(this.depthOneNodesByGroup)) {
-      makeOption({type: 'group', value: group}, `All ${group}`);
+      const allLabel = {
+        scripts: TreemapUtil.i18n.strings.allScripts,
+      }[group] || `All ${group}`;
+      makeOption({type: 'group', value: group}, allLabel);
       for (const depthOneNode of depthOneNodes) {
         // Only add bundles.
         if (!depthOneNode.children) continue;
@@ -219,7 +222,7 @@ class TreemapViewer {
       }
       return {
         id: 'unused-bytes',
-        label: 'Unused Bytes',
+        label: TreemapUtil.i18n.strings.unusedBytes,
         subLabel: TreemapUtil.i18n.formatBytesWithBestUnit(root.unusedBytes),
         highlightNodePaths,
         enabled: true,
@@ -276,7 +279,7 @@ class TreemapViewer {
 
       return {
         id: 'duplicate-modules',
-        label: 'Duplicate Modules',
+        label: TreemapUtil.i18n.strings.duplicateModules,
         subLabel: enabled ? TreemapUtil.i18n.formatBytesWithBestUnit(potentialByteSavings) : 'N/A',
         highlightNodePaths,
         enabled,
@@ -288,7 +291,7 @@ class TreemapViewer {
 
     viewModes.push({
       id: 'all',
-      label: `All`,
+      label: TreemapUtil.i18n.strings.all,
       subLabel: TreemapUtil.i18n.formatBytesWithBestUnit(this.currentTreemapRoot.resourceBytes),
       enabled: true,
     });
@@ -663,13 +666,29 @@ function injectOptions(options) {
 }
 
 /**
+ * @param {import('../../../lighthouse-core/lib/i18n/locales').LhlMessages} localeMessages
+ */
+function getStrings(localeMessages) {
+  const strings = /** @type {Record<string, string>} */ ({});
+  for (const icuMessageId of Object.keys(localeMessages)) {
+    const [filename, varName] = icuMessageId.split(' | ');
+    if (!filename.endsWith('util.js')) throw new Error(`Unexpected message: ${icuMessageId}`);
+
+    const key = /** @type {keyof LH.I18NRendererStrings} */ (varName);
+    strings[key] = localeMessages[icuMessageId].message;
+  }
+
+  return strings;
+}
+
+/**
  * @param {LH.Treemap.Options} options
  */
 function init(options) {
   const i18n = new I18n(options.lhr.configSettings.locale, {
     // Set missing renderer strings to default (english) values.
     ...TreemapUtil.UIStrings,
-    ...locales[options.lhr.configSettings.locale],
+    ...getStrings(locales[options.lhr.configSettings.locale]),
   });
   TreemapUtil.i18n = i18n;
 
