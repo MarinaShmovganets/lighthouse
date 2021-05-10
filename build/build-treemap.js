@@ -29,7 +29,6 @@ async function run() {
       fs.readFileSync(require.resolve('tabulator-tables/dist/js/modules/resize_columns.js'), 'utf8'),
       /* eslint-enable max-len */
       {path: '../../lighthouse-core/report/html/renderer/i18n.js'},
-      {path: '../../lighthouse-core/report/html/renderer/util.js'},
       {path: 'src/**/*'},
     ],
     assets: [

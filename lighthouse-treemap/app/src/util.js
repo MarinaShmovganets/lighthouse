@@ -7,8 +7,6 @@
 
 /* eslint-env browser */
 
-/* globals Util */
-
 /** @typedef {HTMLElementTagNameMap & {[id: string]: HTMLElement}} HTMLElementByTagName */
 /** @template {string} T @typedef {import('typed-query-selector/parser').ParseSelector<T, Element>} ParseSelector */
 /** @template T @typedef {import('../../../lighthouse-core/report/html/renderer/i18n')<T>} I18n */
@@ -127,9 +125,9 @@ class TreemapUtil {
    * @param {string} unit
    */
   static format(value, unit) {
-    if (unit === 'bytes') return Util.i18n.formatBytes(value);
-    if (unit === 'time') return `${Util.i18n.formatNumber(value)}\xa0ms`;
-    return `${Util.i18n.formatNumber(value)}\xa0${unit}`;
+    if (unit === 'bytes') return this.i18n.formatBytes(value);
+    if (unit === 'time') return `${this.i18n.formatNumber(value)}\xa0ms`;
+    return `${this.i18n.formatNumber(value)}\xa0${unit}`;
   }
 
   /**
