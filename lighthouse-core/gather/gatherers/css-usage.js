@@ -13,6 +13,7 @@ const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 class CSSUsage extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
+    // TODO(FR-COMPAT): Add support for timespan.
     supportedModes: ['snapshot', 'navigation'],
   };
 
