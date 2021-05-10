@@ -12,10 +12,7 @@ function buildLocales() {
   const locales = require('../lighthouse-core/lib/i18n/locales.js');
   const clonedLocales = JSON.parse(JSON.stringify(locales));
 
-  for (const [locale, lhlMessages] of Object.entries(clonedLocales)) {
-    locales[/** @type {LH.Locale} */ (locale)] = {
-      ...lhlMessages,
-    };
+  for (const lhlMessages of Object.values(clonedLocales)) {
     for (const key of Object.keys(lhlMessages)) {
       if (!key.startsWith('lighthouse-treemap')) {
         delete lhlMessages[key];
