@@ -30,8 +30,9 @@ echo "Testing a fresh local install..."
 VERSION=$(node -e "console.log(require('./package.json').version)")
 npm pack
 
-# Start pristine's static-server (and kill it on exit) for smokehouse run below.
+# Start pristine's static-server for smokehouse run below.
 yarn static-server &
+# Kill static-server on exit (see https://github.com/GoogleChrome/lighthouse/pull/12446#discussion_r627589729).
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 rm -rf /tmp/lighthouse-local-test || true
