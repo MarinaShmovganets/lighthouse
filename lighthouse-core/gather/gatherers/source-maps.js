@@ -12,6 +12,11 @@ const URL = require('../../lib/url-shim.js');
  * @fileoverview Gets JavaScript source maps.
  */
 class SourceMaps extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['timespan', 'navigation'],
+  }
+
   constructor() {
     super();
     /** @type {LH.Crdp.Debugger.ScriptParsedEvent[]} */
