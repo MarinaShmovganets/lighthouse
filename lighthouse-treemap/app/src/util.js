@@ -204,11 +204,11 @@ TreemapUtil.i18n = null;
 TreemapUtil.UIStrings = {
   /** Label for a button that alternates between showing or hiding a table. */
   toggleTable: 'Toggle Table',
-  /** Text for an option in a dropdown menu, when selected the current view of the app is set to all scripts. */
+  /** Text for an option in a dropdown menu. When selected, the app shows information for all scripts that were found in a web page. */
   allScripts: 'All Scripts',
   /** Label for a column where the values are URLs, JS module names, or arbitrary identifiers. For simplicity, just 'name' is used. */
   name: 'Name',
-  /** Label for a value associated with how many bytes a URL/file is, on-disk. */
+  /** Label for column giving the size of a file in bytes. */
   resourceBytes: 'Resource Bytes',
   /** Label for a value associated with how many bytes a URL/file is, over-network. */
   unusedBytes: 'Unused Bytes',
@@ -216,7 +216,7 @@ TreemapUtil.UIStrings = {
   coverage: 'Coverage',
   /** Label for a button that shows everything. */
   all: 'All',
-  /** Label for a button that highlights information about duplicate modules (aka: files, javascript resources). */
+  /** Label for a button that highlights information about duplicate modules (aka: files, javascript resources that were included twice by a web page). */
   duplicateModules: 'Duplicate Modules',
 };
 
