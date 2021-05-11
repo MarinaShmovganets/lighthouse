@@ -573,13 +573,14 @@ describe('ReportUIFeatures', () => {
       }
 
       // Do the same for the strings in treemap app.
+      const TreemapUtil = require('../../../../../lighthouse-treemap/app/src/util.js');
       const TREEMAP_INDEX = fs.readFileSync(__dirname +
         '/../../../../../lighthouse-treemap/app/index.html', 'utf8');
       const document = new jsdom.JSDOM(TREEMAP_INDEX);
       dom = new DOM(document.window.document);
       for (const node of dom.findAll('[data-i18n]', dom._document)) {
         const val = node.getAttribute('data-i18n');
-        assert.ok(val in Util.UIStrings, `Invalid data-i18n value of: "${val}" found.`);
+        assert.ok(val in TreemapUtil.UIStrings, `Invalid data-i18n value of: "${val}" found.`);
       }
     });
   });
