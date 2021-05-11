@@ -689,6 +689,7 @@ function init(options) {
   const i18n = new I18n(options.lhr.configSettings.locale, {
     // Set missing renderer strings to default (english) values.
     ...TreemapUtil.UIStrings,
+    // `locales` is generated in build/build-treemap.js
     ...getStrings(locales[options.lhr.configSettings.locale]),
   });
   TreemapUtil.i18n = i18n;
