@@ -282,7 +282,7 @@ class TreemapViewer {
 
       return {
         id: 'duplicate-modules',
-        label: TreemapUtil.i18n.strings.duplicateModules,
+        label: TreemapUtil.i18n.strings.duplicateModulesLabel,
         subLabel: enabled ? TreemapUtil.i18n.formatBytesWithBestUnit(potentialByteSavings) : 'N/A',
         highlights,
         enabled,
@@ -294,7 +294,7 @@ class TreemapViewer {
 
     viewModes.push({
       id: 'all',
-      label: TreemapUtil.i18n.strings.all,
+      label: TreemapUtil.i18n.strings.allLabel,
       subLabel: TreemapUtil.i18n.formatBytesWithBestUnit(this.currentTreemapRoot.resourceBytes),
       enabled: true,
     });
