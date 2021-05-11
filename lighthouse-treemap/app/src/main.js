@@ -123,7 +123,7 @@ class TreemapViewer {
 
     for (const [group, depthOneNodes] of Object.entries(this.depthOneNodesByGroup)) {
       const allLabel = {
-        scripts: TreemapUtil.i18n.strings.allScripts,
+        scripts: TreemapUtil.i18n.strings.allScriptsDropdownLabel,
       }[group] || `All ${group}`;
       makeOption({type: 'group', value: group}, allLabel);
       for (const depthOneNode of depthOneNodes) {
@@ -221,7 +221,7 @@ class TreemapViewer {
       }
       return {
         id: 'unused-bytes',
-        label: TreemapUtil.i18n.strings.unusedBytes,
+        label: TreemapUtil.i18n.strings.unusedBytesLabel,
         subLabel: TreemapUtil.i18n.formatBytesWithBestUnit(root.unusedBytes),
         highlights,
         enabled: true,
@@ -488,20 +488,20 @@ class TreemapViewer {
       ],
       columns: [
         // eslint-disable-next-line max-len
-        {title: TreemapUtil.i18n.strings.name, field: 'name', widthGrow: 5, tooltip: makeNameTooltip},
+        {title: TreemapUtil.i18n.strings.tableColumnName, field: 'name', widthGrow: 5, tooltip: makeNameTooltip},
         // eslint-disable-next-line max-len
-        {title: TreemapUtil.i18n.strings.resourceBytes, field: 'resourceBytes', headerSortStartingDir: 'desc', tooltip: makeBytesTooltip('resourceBytes'), formatter: cell => {
+        {title: TreemapUtil.i18n.strings.resourceBytesLabel, field: 'resourceBytes', headerSortStartingDir: 'desc', tooltip: makeBytesTooltip('resourceBytes'), formatter: cell => {
           const value = cell.getValue();
           return TreemapUtil.i18n.formatBytesWithBestUnit(value);
         }},
         // eslint-disable-next-line max-len
-        {title: TreemapUtil.i18n.strings.unusedBytes, field: 'unusedBytes', widthGrow: 1, sorterParams: {alignEmptyValues: 'bottom'}, headerSortStartingDir: 'desc', tooltip: makeBytesTooltip('unusedBytes'), formatter: cell => {
+        {title: TreemapUtil.i18n.strings.unusedBytesLabel, field: 'unusedBytes', widthGrow: 1, sorterParams: {alignEmptyValues: 'bottom'}, headerSortStartingDir: 'desc', tooltip: makeBytesTooltip('unusedBytes'), formatter: cell => {
           const value = cell.getValue();
           if (value === undefined) return '';
           return TreemapUtil.i18n.formatBytesWithBestUnit(value);
         }},
         // eslint-disable-next-line max-len
-        {title: TreemapUtil.i18n.strings.coverage, widthGrow: 3, headerSort: false, tooltip: makeCoverageTooltip, formatter: cell => {
+        {title: TreemapUtil.i18n.strings.coverageColumnName, widthGrow: 3, headerSort: false, tooltip: makeCoverageTooltip, formatter: cell => {
           /** @type {typeof data[number]} */
           const dataRow = cell.getRow().getData();
 
@@ -543,8 +543,8 @@ class TreemapViewer {
   makeCaption(node) {
     const partitionBy = this.currentViewMode.partitionBy || 'resourceBytes';
     const partitionByStr = {
-      resourceBytes: TreemapUtil.i18n.strings.resourceBytes,
-      unusedBytes: TreemapUtil.i18n.strings.unusedBytes,
+      resourceBytes: TreemapUtil.i18n.strings.resourceBytesLabel,
+      unusedBytes: TreemapUtil.i18n.strings.unusedBytesLabel,
     }[partitionBy];
     const bytes = node[partitionBy];
     const total = this.currentTreemapRoot[partitionBy];

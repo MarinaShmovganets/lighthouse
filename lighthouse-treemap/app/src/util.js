@@ -203,21 +203,21 @@ TreemapUtil.i18n = null;
 
 TreemapUtil.UIStrings = {
   /** Label for a button that alternates between showing or hiding a table. */
-  toggleTable: 'Toggle Table',
+  toggleTableButtonLabel: 'Toggle Table',
   /** Text for an option in a dropdown menu. When selected, the app shows information for all scripts that were found in a web page. */
-  allScripts: 'All Scripts',
-  /** Label for a column where the values are URLs, JS module names, or arbitrary identifiers. For simplicity, just 'name' is used. */
-  name: 'Name',
+  allScriptsDropdownLabel: 'All Scripts',
+  /** Label for a table column where the values are URLs, JS module names, or arbitrary identifiers. For simplicity, just 'name' is used. */
+  tableColumnName: 'Name',
   /** Label for column giving the size of a file in bytes. */
-  resourceBytes: 'Resource Bytes',
+  resourceBytesLabel: 'Resource Bytes',
   /** Label for a value associated with how many bytes a URL/file is, over-network. */
-  unusedBytes: 'Unused Bytes',
+  unusedBytesLabel: 'Unused Bytes',
   /** Label for a column where the values represent how much of a file is used bytes vs unused bytes (coverage). */
-  coverage: 'Coverage',
-  /** Label for a button that shows everything. */
-  all: 'All',
+  coverageColumnName: 'Coverage',
+  /** Label for a button that shows everything (or rather, does not highlight any specific mode such as: unused bytes, duplicate bytes, etc). */
+  allLabel: 'All',
   /** Label for a button that highlights information about duplicate modules (aka: files, javascript resources that were included twice by a web page). */
-  duplicateModules: 'Duplicate Modules',
+  duplicateModulesLabel: 'Duplicate Modules',
 };
 
 // node export for testing.

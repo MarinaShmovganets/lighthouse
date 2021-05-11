@@ -2096,28 +2096,28 @@
   "lighthouse-core/report/html/renderer/util.js | warningHeader": {
     "message": "Ŵár̂ńîńĝś: "
   },
-  "lighthouse-treemap/app/src/util.js | all": {
+  "lighthouse-treemap/app/src/util.js | allLabel": {
     "message": "Âĺl̂"
   },
-  "lighthouse-treemap/app/src/util.js | allScripts": {
+  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "Âĺl̂ Śĉŕîṕt̂ś"
   },
-  "lighthouse-treemap/app/src/util.js | coverage": {
+  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
     "message": "Ĉóv̂ér̂áĝé"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModules": {
+  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "D̂úp̂ĺîćât́ê Ḿôd́ûĺêś"
   },
-  "lighthouse-treemap/app/src/util.js | name": {
-    "message": "N̂ám̂é"
-  },
-  "lighthouse-treemap/app/src/util.js | resourceBytes": {
+  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
     "message": "R̂éŝóûŕĉé B̂ýt̂éŝ"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTable": {
+  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+    "message": "N̂ám̂é"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "T̂óĝǵl̂é T̂áb̂ĺê"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytes": {
+  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
     "message": "Ûńûśêd́ B̂ýt̂éŝ"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
