@@ -569,7 +569,7 @@ describe('ReportUIFeatures', () => {
       const container = render(sampleResults);
       for (const node of dom.findAll('[data-i18n]', container)) {
         const val = node.getAttribute('data-i18n');
-        assert.ok(val in Util.UIStrings, `Invalid data-i18n value of: "${val}" found.`);
+        assert.ok(val in Util.UIStrings, `Invalid data-i18n value of: "${val}" not found.`);
       }
 
       // Do the same for the strings in treemap app.
@@ -580,7 +580,7 @@ describe('ReportUIFeatures', () => {
       dom = new DOM(document.window.document);
       for (const node of dom.findAll('[data-i18n]', dom._document)) {
         const val = node.getAttribute('data-i18n');
-        assert.ok(val in TreemapUtil.UIStrings, `Invalid data-i18n value of: "${val}" found.`);
+        assert.ok(val in TreemapUtil.UIStrings, `Invalid data-i18n value of: "${val}" not found.`);
       }
     });
   });
