@@ -575,7 +575,6 @@ class TreemapViewer {
       const dom = /** @type {HTMLElement?} */ (node.dom);
       if (dom) {
         dom.style.backgroundColor = backgroundColor;
-        // dom.style.color = 'black';
       }
     });
   }
