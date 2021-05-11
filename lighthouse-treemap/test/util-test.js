@@ -65,5 +65,8 @@ describe('TreemapUtil', () => {
     expect(hasher('value3')).toBe(expectedValues[3]);
     expect(hasher('value4')).toBe(expectedValues[4]);
     expect(hasher('value5')).toBe(expectedValues[5]);
+
+    // Expect values array is not modified.
+    expect(values).toEqual([1, 2, 3, 4, 5]);
   });
 });
