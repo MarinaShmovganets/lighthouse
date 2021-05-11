@@ -20,14 +20,11 @@ declare global {
     export interface Artifacts extends BaseArtifacts, GathererArtifacts {}
 
     export type FRArtifacts = StrictOmit<Artifacts,
-      | 'AnchorElements'
-      | 'CSSUsage'
       | 'Fonts'
       | 'FullPageScreenshot'
       | 'HTTPRedirect'
       | 'ImageElements'
       | 'InspectorIssues'
-      | 'JsUsage'
       | 'MainDocumentContent'
       | 'Manifest'
       | 'MixedContent'
@@ -37,7 +34,6 @@ declare global {
       | 'ServiceWorker'
       | 'SourceMaps'
       | 'TagsBlockingFirstPaint'
-      | 'TraceElements'
       | keyof FRBaseArtifacts
     >;
 
