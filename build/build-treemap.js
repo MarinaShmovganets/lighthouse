@@ -8,15 +8,27 @@
 const fs = require('fs');
 const GhPagesApp = require('./gh-pages-app.js');
 
+/**
+ * Extract only the strings needed for lighthouse-treemap into
+ * a script that sets a global variable `locales`, whose keys
+ * are locale codes (en-US, es, etc.)
+ */
 function buildLocales() {
   const locales = require('../lighthouse-core/lib/i18n/locales.js');
   const clonedLocales = JSON.parse(JSON.stringify(locales));
 
   for (const lhlMessages of Object.values(clonedLocales)) {
-    for (const key of Object.keys(lhlMessages)) {
-      if (!key.startsWith('lighthouse-treemap')) {
-        delete lhlMessages[key];
+    for (const icuMessageId of Object.keys(lhlMessages)) {
+      const lhlMessage = lhlMessages[icuMessageId];
+      delete lhlMessages[icuMessageId];
+
+      if (!icuMessageId.startsWith('lighthouse-treemap')) {
+        continue;
       }
+
+      const [filename, varName] = icuMessageId.split(' | ');
+      if (!filename.endsWith('util.js')) throw new Error(`Unexpected message: ${icuMessageId}`);
+      lhlMessages[varName] = lhlMessage;
     }
   }
 

@@ -588,6 +588,8 @@ function collectAllStringsInDir(dir) {
       if (seenStrings.has(ctc.message)) {
         ctc.meaning = ctc.description;
         const seenId = seenStrings.get(ctc.message);
+        // TODO: `strings[seenId]` check shouldn't be necessary here ...
+        // see https://github.com/GoogleChrome/lighthouse/pull/12441/files#r630521367
         if (seenId && strings[seenId]) {
           if (!strings[seenId].meaning) {
             strings[seenId].meaning = strings[seenId].description;

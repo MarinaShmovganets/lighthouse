@@ -670,13 +670,11 @@ function injectOptions(options) {
  * @param {import('../../../lighthouse-core/lib/i18n/locales').LhlMessages} localeMessages
  */
 function getStrings(localeMessages) {
-  const strings = /** @type {Record<string, string>} */ ({});
-  for (const icuMessageId of Object.keys(localeMessages)) {
-    const [filename, varName] = icuMessageId.split(' | ');
-    if (!filename.endsWith('util.js')) throw new Error(`Unexpected message: ${icuMessageId}`);
+  const strings = /** @type {TreemapUtil['UIStrings']} */ ({});
 
-    const key = /** @type {keyof LH.I18NRendererStrings} */ (varName);
-    strings[key] = localeMessages[icuMessageId].message;
+  for (const varName of Object.keys(localeMessages)) {
+    const key = /** @type {keyof typeof TreemapUtil['UIStrings']} */ (varName);
+    strings[key] = localeMessages[varName].message;
   }
 
   return strings;
