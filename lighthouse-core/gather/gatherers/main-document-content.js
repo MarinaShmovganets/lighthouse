@@ -30,7 +30,7 @@ class MainDocumentContent extends FRGatherer {
   async _getArtifact(context, networkRecords) {
     const mainResource = NetworkAnalyzer.findMainDocument(networkRecords, context.url);
     const session = context.driver.defaultSession;
-    return NetworkRequest.getRequestContent(session, mainResource.requestId);
+    return NetworkRequest.fetchResponseBodyFromCache(session, mainResource.requestId);
   }
   /**
    *

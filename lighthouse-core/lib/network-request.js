@@ -461,7 +461,7 @@ class NetworkRequest {
    * @param {number} [timeout]
    * @return {Promise<string>}
    */
-  static async getRequestContent(session, requestId, timeout = 1000) {
+  static async fetchResponseBodyFromCache(session, requestId, timeout = 1000) {
     requestId = NetworkRequest.getRequestIdForBackend(requestId);
 
     // Encoding issues may lead to hanging getResponseBody calls: https://github.com/GoogleChrome/lighthouse/pull/4718

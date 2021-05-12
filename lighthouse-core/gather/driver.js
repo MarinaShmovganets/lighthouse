@@ -384,7 +384,7 @@ class Driver {
    * @return {Promise<string>}
    */
   async getRequestContent(requestId, timeout = 1000) {
-    return NetworkRequest.getRequestContent(this.defaultSession, requestId, timeout);
+    return NetworkRequest.fetchResponseBodyFromCache(this.defaultSession, requestId, timeout);
   }
 
   /**
