@@ -52,6 +52,7 @@
     "lighthouse-core/test/gather/gatherers/http-redirect-test.js",
     "lighthouse-core/test/gather/gatherers/js-usage-test.js",
     "lighthouse-core/test/gather/gatherers/link-elements-test.js",
+    "lighthouse-core/test/gather/gatherers/main-document-content-test.js",
     "lighthouse-core/test/gather/gatherers/offline-test.js",
     "lighthouse-core/test/gather/gatherers/runtime-exceptions-test.js",
     "lighthouse-core/test/gather/gatherers/seo/font-size-test.js",

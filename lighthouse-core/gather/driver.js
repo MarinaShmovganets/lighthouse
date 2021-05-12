@@ -384,13 +384,7 @@ class Driver {
    * @return {Promise<string>}
    */
   async getRequestContent(requestId, timeout = 1000) {
-    requestId = NetworkRequest.getRequestIdForBackend(requestId);
-
-    // Encoding issues may lead to hanging getResponseBody calls: https://github.com/GoogleChrome/lighthouse/pull/4718
-    // driver.sendCommand will handle timeout after 1s.
-    this.setNextProtocolTimeout(timeout);
-    const result = await this.sendCommand('Network.getResponseBody', {requestId});
-    return result.body;
+    return NetworkRequest.getRequestContent(this.defaultSession, requestId, timeout);
   }
 
   /**
