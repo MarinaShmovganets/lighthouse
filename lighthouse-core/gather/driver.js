@@ -8,7 +8,7 @@
 const Fetcher = require('./fetcher.js');
 const ExecutionContext = require('./driver/execution-context.js');
 const LHError = require('../lib/lh-error.js');
-const NetworkRequest = require('../lib/network-request.js');
+const {fetchResponseBodyFromCache} = require('../gather/driver/network.js');
 const EventEmitter = require('events').EventEmitter;
 
 const log = require('lighthouse-logger');
@@ -384,7 +384,7 @@ class Driver {
    * @return {Promise<string>}
    */
   async getRequestContent(requestId, timeout = 1000) {
-    return NetworkRequest.fetchResponseBodyFromCache(this.defaultSession, requestId, timeout);
+    return fetchResponseBodyFromCache(this.defaultSession, requestId, timeout);
   }
 
   /**

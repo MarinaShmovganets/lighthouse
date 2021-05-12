@@ -454,24 +454,6 @@ class NetworkRequest {
   }
 
   /**
-   * Return the body of the response with the given ID. Rejects if getting the
-   * body times out.
-   * @param {LH.Gatherer.FRProtocolSession} session
-   * @param {string} requestId
-   * @param {number} [timeout]
-   * @return {Promise<string>}
-   */
-  static async fetchResponseBodyFromCache(session, requestId, timeout = 1000) {
-    requestId = NetworkRequest.getRequestIdForBackend(requestId);
-
-    // Encoding issues may lead to hanging getResponseBody calls: https://github.com/GoogleChrome/lighthouse/pull/4718
-    // driver.sendCommand will handle timeout after 1s.
-    session.setNextProtocolTimeout(timeout);
-    const result = await session.sendCommand('Network.getResponseBody', {requestId});
-    return result.body;
-  }
-
-  /**
    * Based on DevTools NetworkManager.
    * @see https://github.com/ChromeDevTools/devtools-frontend/blob/3415ee28e86a3f4bcc2e15b652d22069938df3a6/front_end/sdk/NetworkManager.js#L285-L297
    * @param {LH.Crdp.Network.Headers} headersDict

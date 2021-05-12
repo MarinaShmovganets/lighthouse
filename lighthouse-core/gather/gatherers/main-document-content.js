@@ -7,9 +7,9 @@
 
 const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 const NetworkAnalyzer = require('../../lib/dependency-graph/simulator/network-analyzer.js');
-const NetworkRequest = require('../../lib/network-request.js');
 const NetworkRecords = require('../../computed/network-records.js');
 const DevtoolsLog = require('./devtools-log.js');
+const {fetchResponseBodyFromCache} = require('../driver/network.js');
 
 /**
  * Collects the content of the main html document.
@@ -30,7 +30,7 @@ class MainDocumentContent extends FRGatherer {
   async _getArtifact(context, networkRecords) {
     const mainResource = NetworkAnalyzer.findMainDocument(networkRecords, context.url);
     const session = context.driver.defaultSession;
-    return NetworkRequest.fetchResponseBodyFromCache(session, mainResource.requestId);
+    return fetchResponseBodyFromCache(session, mainResource.requestId);
   }
   /**
    *
