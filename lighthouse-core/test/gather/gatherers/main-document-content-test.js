@@ -8,40 +8,42 @@
 /* eslint-env jest */
 
 const MainDocumentContent = require('../../../gather/gatherers/main-document-content.js');
-const NetworkRecords = require('../../../computed/network-records.js');
+const NetworkRecorder = require('../../../lib/network-recorder.js');
+const {createMockContext} = require('../../fraggle-rock/gather/mock-driver.js');
 
-jest.mock('../../../computed/network-records.js');
+const devtoolsLog
+  = /** @type {LH.DevtoolsLog} */ (require('../../fixtures/traces/lcp-m78.devtools.log.json'));
 
 describe('FR compat', () => {
-  /** @type {MainDocumentContent} */
-  let gatherer;
-  beforeEach(() => {
-    gatherer = new MainDocumentContent();
-    gatherer._getArtifact = jest.fn();
-    NetworkRecords.request = jest.fn();
-  });
-
   it('uses loadData in legacy mode', async () => {
-    const networkRecords = ['1', '2'];
+    const gatherer = new MainDocumentContent();
+    const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
+    const mockContext = createMockContext();
+    mockContext.driver.defaultSession.sendCommand
+      .mockResponse('Network.getResponseBody', {body: 'RESPONSE'});
 
-    await gatherer.afterPass({}, {networkRecords});
+    const artifact = await gatherer.afterPass(
+      mockContext.asLegacyContext(),
+      {devtoolsLog, networkRecords}
+    );
 
-    expect(NetworkRecords.request).not.toHaveBeenCalled();
-    expect(gatherer._getArtifact).toHaveBeenCalledWith({dependencies: {}}, networkRecords);
+    expect(artifact).toEqual('RESPONSE');
   });
 
   it('uses dependencies for FR', async () => {
-    const networkRecords = ['1', '2'];
-    const devtoolsLog = ['3', '4'];
+    const gatherer = new MainDocumentContent();
+    const mockContext = createMockContext();
+    mockContext.driver.defaultSession.sendCommand
+      .mockResponse('Network.getResponseBody', {body: 'RESPONSE'});
+
+    /** @type {LH.Gatherer.FRTransitionalContext<'DevtoolsLog'>} */
     const context = {
+      ...mockContext.asContext(),
       dependencies: {DevtoolsLog: devtoolsLog},
-      computedCache: new Map(),
     };
-    NetworkRecords.request.mockReturnValue(networkRecords);
 
-    await gatherer.getArtifact(context);
+    const artifact = await gatherer.getArtifact(context);
 
-    expect(NetworkRecords.request).toHaveBeenCalledWith(devtoolsLog, context);
-    expect(gatherer._getArtifact).toHaveBeenCalledWith(context, networkRecords);
+    expect(artifact).toEqual('RESPONSE');
   });
 });
