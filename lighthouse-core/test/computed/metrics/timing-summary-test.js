@@ -43,6 +43,7 @@ describe('Timing summary', () => {
         "layoutShiftMaxSliding1s": 0.0011656245471340055,
         "layoutShiftMaxSliding300ms": 0.0011656245471340055,
         "maxPotentialFID": 51.056,
+        "newCumulativeLayoutShiftAllFrames": 0.026463014612806653,
         "observedCumulativeLayoutShift": 0.0011656245471340055,
         "observedCumulativeLayoutShiftAllFrames": 0.027628639159940658,
         "observedDomContentLoaded": 604.135,

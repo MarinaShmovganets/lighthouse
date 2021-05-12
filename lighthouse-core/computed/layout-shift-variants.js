@@ -72,6 +72,40 @@ class LayoutShiftVariants {
   }
 
   /**
+   * Calculates cumulative layout shifts per cluster (session) of LayoutShift
+   * events -- where a new cluster is created when there's a gap of more than
+   * 1000ms since the last LayoutShift event or the cluster is greater than
+   * 5000ms long -- and returns the max LayoutShift score found.
+   * @param {Array<LayoutShiftEvent>} layoutShiftEvents
+   * @return {number}
+   */
+  static newCumulativeLayoutShift(layoutShiftEvents) {
+    const gapµs = 1_000_000;
+    const limitµs = 5_000_000;
+    let maxScore = 0;
+    let currentClusterScore = 0;
+    let firstTs = Number.NEGATIVE_INFINITY;
+    let prevTs = Number.NEGATIVE_INFINITY;
+
+    for (const event of layoutShiftEvents) {
+      if (event.weightedScoreDelta === undefined) {
+        // TODO(bckenny): replace with an LHError when moving to AF by default.
+        return -1;
+      }
+
+      if (event.ts - firstTs > limitµs || event.ts - prevTs > gapµs) {
+        firstTs = event.ts;
+        currentClusterScore = 0;
+      }
+      prevTs = event.ts;
+      currentClusterScore += event.weightedScoreDelta;
+      maxScore = Math.max(maxScore, currentClusterScore);
+    }
+
+    return maxScore;
+  }
+
+  /**
    * Returns the maximum cumulative layout shift in any `windowMs` ms window
    * (inclusive of bounds) in the trace.
    * @param {Array<LayoutShiftEvent>} layoutShiftEvents
@@ -141,12 +175,15 @@ class LayoutShiftVariants {
   /**
    * @param {LH.Trace} trace
    * @param {LH.Artifacts.ComputedContext} context
-   * @return {Promise<{avgSessionGap5s: number, maxSessionGap1s: number, maxSessionGap1sLimit5s: number, maxSliding1s: number, maxSliding300ms: number}>}
+   * @return {Promise<{avgSessionGap5s: number, maxSessionGap1s: number, maxSessionGap1sLimit5s: number, maxSliding1s: number, maxSliding300ms: number, newCumulativeLayoutShiftAllFrames: number}>}
    */
   static async compute_(trace, context) {
     const traceOfTab = await TraceOfTab.request(trace, context);
     const layoutShiftEvents = LayoutShiftVariants.getLayoutShiftEvents(traceOfTab.mainThreadEvents)
       .filter(e => e.isMainFrame); // Only main frame for now.
+
+    const layoutShiftEventsAllFrames =
+      LayoutShiftVariants.getLayoutShiftEvents(traceOfTab.frameTreeEvents);
 
     return {
       avgSessionGap5s: LayoutShiftVariants.avgSessionGap5s(layoutShiftEvents),
@@ -154,6 +191,8 @@ class LayoutShiftVariants {
       maxSessionGap1sLimit5s: LayoutShiftVariants.maxSession(layoutShiftEvents, 1000, 5000),
       maxSliding1s: LayoutShiftVariants.maxSliding(layoutShiftEvents, 1000),
       maxSliding300ms: LayoutShiftVariants.maxSliding(layoutShiftEvents, 300),
+      // eslint-disable-next-line max-len
+      newCumulativeLayoutShiftAllFrames: LayoutShiftVariants.newCumulativeLayoutShift(layoutShiftEventsAllFrames),
     };
   }
 }

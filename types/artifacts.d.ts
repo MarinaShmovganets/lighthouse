@@ -789,6 +789,7 @@ declare global {
         layoutShiftMaxSessionGap1sLimit5s: number,
         layoutShiftMaxSliding1s: number,
         layoutShiftMaxSliding300ms: number,
+        newCumulativeLayoutShiftAllFrames: number,
       }
 
       export interface Form {

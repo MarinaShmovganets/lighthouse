@@ -19,6 +19,7 @@ const DECIMAL_METRIC_KEYS = new Set([
   'layoutShiftMaxSessionGap1sLimit5s',
   'layoutShiftMaxSliding1s',
   'layoutShiftMaxSliding300ms',
+  'newCumulativeLayoutShiftAllFrames',
 ]);
 
 class Metrics extends Audit {
