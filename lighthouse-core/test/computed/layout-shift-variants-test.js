@@ -30,7 +30,7 @@ describe('Layout Shift Variants', () => {
         maxSessionGap1sLimit5s: expect.toBeApproximately(2.268816, 6),
         maxSliding1s: expect.toBeApproximately(1.911799, 6),
         maxSliding300ms: expect.toBeApproximately(1.436742, 6),
-        newCumulativeLayoutShiftAllFrames: expect.toBeApproximately(2.268816, 6),
+        layoutShiftMaxSessionGap1sLimit5sAllFrames: expect.toBeApproximately(2.268816, 6),
       });
     });
 
@@ -44,7 +44,7 @@ describe('Layout Shift Variants', () => {
         maxSliding1s: 0.0011656245471340055,
         maxSliding300ms: 0.0011656245471340055,
         // No weightedScoreDeltas in this trace.
-        newCumulativeLayoutShiftAllFrames: -1,
+        layoutShiftMaxSessionGap1sLimit5sAllFrames: -1,
       });
     });
 
@@ -57,7 +57,7 @@ describe('Layout Shift Variants', () => {
         maxSliding1s: 0.0011656245471340055,
         maxSliding300ms: 0.0011656245471340055,
         // No weightedScoreDeltas in this trace.
-        newCumulativeLayoutShiftAllFrames: 0.026463014612806653,
+        layoutShiftMaxSessionGap1sLimit5sAllFrames: 0.026463014612806653,
       });
     });
 
@@ -69,7 +69,7 @@ describe('Layout Shift Variants', () => {
         maxSessionGap1sLimit5s: 0,
         maxSliding1s: 0,
         maxSliding300ms: 0,
-        newCumulativeLayoutShiftAllFrames: 0,
+        layoutShiftMaxSessionGap1sLimit5sAllFrames: 0,
       });
     });
   });
@@ -149,7 +149,7 @@ describe('Layout Shift Variants', () => {
           maxSessionGap1sLimit5s: 0.75,
           maxSliding1s: 0.25,
           maxSliding300ms: 0.125,
-          newCumulativeLayoutShiftAllFrames: 0.75,
+          layoutShiftMaxSessionGap1sLimit5sAllFrames: 0.75,
         });
       });
 
@@ -177,7 +177,7 @@ describe('Layout Shift Variants', () => {
           maxSessionGap1sLimit5s: 1.0625,
           maxSliding1s: 0.5625,
           maxSliding300ms: 0.375,
-          newCumulativeLayoutShiftAllFrames: 1.0625,
+          layoutShiftMaxSessionGap1sLimit5sAllFrames: 1.0625,
         });
       });
 
@@ -198,7 +198,7 @@ describe('Layout Shift Variants', () => {
           maxSessionGap1sLimit5s: 3.75,
           maxSliding1s: 3.75,
           maxSliding300ms: 3.75,
-          newCumulativeLayoutShiftAllFrames: 3.75,
+          layoutShiftMaxSessionGap1sLimit5sAllFrames: 3.75,
         });
       });
 
@@ -225,7 +225,7 @@ describe('Layout Shift Variants', () => {
           maxSessionGap1sLimit5s: 5,
           maxSliding1s: 5,
           maxSliding300ms: 2,
-          newCumulativeLayoutShiftAllFrames: 5,
+          layoutShiftMaxSessionGap1sLimit5sAllFrames: 5,
         });
       });
     });
@@ -245,7 +245,7 @@ describe('Layout Shift Variants', () => {
         const variants = await LayoutShiftVariants.request(trace, context);
         expect(variants).toEqual({
           avgSessionGap5s: 1.875, // No 5s gaps, so 0.125 * 15 (main frame shifts).
-          newCumulativeLayoutShiftAllFrames: 0.75, // Includes all frames, so same value as when only main_frame.
+          layoutShiftMaxSessionGap1sLimit5sAllFrames: 0.75, // Includes all frames, so same value as when only main_frame.
           maxSessionGap1s: 0.125, // These all have 2s gaps, so single 0.125 shift per cluster.
           maxSessionGap1sLimit5s: 0.125,
           maxSliding1s: 0.125,
@@ -277,7 +277,7 @@ describe('Layout Shift Variants', () => {
         const variants = await LayoutShiftVariants.request(trace, context);
         expect(variants).toMatchObject({
           maxSessionGap1sLimit5s: 3,
-          newCumulativeLayoutShiftAllFrames: 6,
+          layoutShiftMaxSessionGap1sLimit5sAllFrames: 6,
         });
       });
 
@@ -292,7 +292,7 @@ describe('Layout Shift Variants', () => {
         const variants = await LayoutShiftVariants.request(trace, context);
         expect(variants).toMatchObject({
           maxSessionGap1sLimit5s: 2,
-          newCumulativeLayoutShiftAllFrames: 4,
+          layoutShiftMaxSessionGap1sLimit5sAllFrames: 4,
         });
       });
     });
@@ -352,7 +352,7 @@ describe('Layout Shift Variants', () => {
         expect(variants.maxSliding300ms).toEqual(2);
       });
 
-      describe('newCumulativeLayoutShiftAllFrames', () => {
+      describe('layoutShiftMaxSessionGap1sLimit5sAllFrames', () => {
         it('only counts gaps > 1s', async () => {
           const shiftEvents = [
             {score: 1, ts: 1_000_000},
@@ -360,7 +360,7 @@ describe('Layout Shift Variants', () => {
           ];
           const trace = makeTrace(shiftEvents);
           const variants = await LayoutShiftVariants.request(trace, context);
-          expect(variants.newCumulativeLayoutShiftAllFrames).toEqual(2);
+          expect(variants.layoutShiftMaxSessionGap1sLimit5sAllFrames).toEqual(2);
         });
 
         it('ignores gaps ≤ 1s, even across frames', async () => {
@@ -372,7 +372,7 @@ describe('Layout Shift Variants', () => {
           const variants = await LayoutShiftVariants.request(trace, context);
           expect(variants).toMatchObject({
             maxSessionGap1sLimit5s: 1,
-            newCumulativeLayoutShiftAllFrames: 2,
+            layoutShiftMaxSessionGap1sLimit5sAllFrames: 2,
           });
         });
 
@@ -390,7 +390,7 @@ describe('Layout Shift Variants', () => {
           const variants = await LayoutShiftVariants.request(trace, context);
           expect(variants).toMatchObject({
             maxSessionGap1sLimit5s: 1,
-            newCumulativeLayoutShiftAllFrames: 6,
+            layoutShiftMaxSessionGap1sLimit5sAllFrames: 6,
           });
         });
       });

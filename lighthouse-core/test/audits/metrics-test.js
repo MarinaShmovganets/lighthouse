@@ -160,7 +160,7 @@ describe('Performance: metrics', () => {
       layoutShiftMaxSessionGap1sLimit5s: expect.toBeApproximately(2.268816, 6),
       layoutShiftMaxSliding1s: expect.toBeApproximately(1.911799, 6),
       layoutShiftMaxSliding300ms: expect.toBeApproximately(1.436742, 6),
-      newCumulativeLayoutShiftAllFrames: expect.toBeApproximately(2.268816, 6),
+      layoutShiftMaxSessionGap1sLimit5sAllFrames: expect.toBeApproximately(2.268816, 6),
     });
   });
 
@@ -179,7 +179,7 @@ describe('Performance: metrics', () => {
     expect(details.items[0]).toMatchObject({
       cumulativeLayoutShift: expect.toBeApproximately(0.001166, 6),
       cumulativeLayoutShiftAllFrames: expect.toBeApproximately(0.027629, 6),
-      newCumulativeLayoutShiftAllFrames: expect.toBeApproximately(0.026463, 6),
+      layoutShiftMaxSessionGap1sLimit5sAllFrames: expect.toBeApproximately(0.026463, 6),
     });
   });
 });

@@ -80,8 +80,8 @@ class LayoutShiftVariants {
    * @return {number}
    */
   static newCumulativeLayoutShift(layoutShiftEvents) {
-    const gapµs = 1_000_000;
-    const limitµs = 5_000_000;
+    const gapMicroseconds = 1_000_000;
+    const limitMicroseconds = 5_000_000;
     let maxScore = 0;
     let currentClusterScore = 0;
     let firstTs = Number.NEGATIVE_INFINITY;
@@ -93,7 +93,7 @@ class LayoutShiftVariants {
         return -1;
       }
 
-      if (event.ts - firstTs > limitµs || event.ts - prevTs > gapµs) {
+      if (event.ts - firstTs > limitMicroseconds || event.ts - prevTs > gapMicroseconds) {
         firstTs = event.ts;
         currentClusterScore = 0;
       }
@@ -175,7 +175,7 @@ class LayoutShiftVariants {
   /**
    * @param {LH.Trace} trace
    * @param {LH.Artifacts.ComputedContext} context
-   * @return {Promise<{avgSessionGap5s: number, maxSessionGap1s: number, maxSessionGap1sLimit5s: number, maxSliding1s: number, maxSliding300ms: number, newCumulativeLayoutShiftAllFrames: number}>}
+   * @return {Promise<{avgSessionGap5s: number, maxSessionGap1s: number, maxSessionGap1sLimit5s: number, maxSliding1s: number, maxSliding300ms: number, layoutShiftMaxSessionGap1sLimit5sAllFrames: number}>}
    */
   static async compute_(trace, context) {
     const traceOfTab = await TraceOfTab.request(trace, context);
@@ -192,7 +192,7 @@ class LayoutShiftVariants {
       maxSliding1s: LayoutShiftVariants.maxSliding(layoutShiftEvents, 1000),
       maxSliding300ms: LayoutShiftVariants.maxSliding(layoutShiftEvents, 300),
       // eslint-disable-next-line max-len
-      newCumulativeLayoutShiftAllFrames: LayoutShiftVariants.newCumulativeLayoutShift(layoutShiftEventsAllFrames),
+      layoutShiftMaxSessionGap1sLimit5sAllFrames: LayoutShiftVariants.newCumulativeLayoutShift(layoutShiftEventsAllFrames),
     };
   }
 }

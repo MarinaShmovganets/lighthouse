@@ -137,7 +137,8 @@ class TimingSummary {
       layoutShiftMaxSliding300ms: layoutShiftVariants.maxSliding300ms,
 
       // And new CLS (layoutShiftMaxSessionGap1sLimit5s) across all frames.
-      newCumulativeLayoutShiftAllFrames: layoutShiftVariants.newCumulativeLayoutShiftAllFrames,
+      // eslint-disable-next-line max-len
+      layoutShiftMaxSessionGap1sLimit5sAllFrames: layoutShiftVariants.layoutShiftMaxSessionGap1sLimit5sAllFrames,
     };
     /** @type {Record<string,boolean>} */
     const debugInfo = {lcpInvalidated: traceOfTab.lcpInvalidated};

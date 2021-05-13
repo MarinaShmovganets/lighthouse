@@ -335,7 +335,7 @@ module.exports = [
                 layoutShiftMaxSessionGap1sLimit5s: '>0',
                 layoutShiftMaxSliding1s: '>0',
                 layoutShiftMaxSliding300ms: '>0',
-                newCumulativeLayoutShiftAllFrames: '0.197 +/- 0.001',
+                layoutShiftMaxSessionGap1sLimit5sAllFrames: '0.197 +/- 0.001',
               },
               {
                 lcpInvalidated: false,
