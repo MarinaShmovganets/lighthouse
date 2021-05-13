@@ -19,7 +19,7 @@ async function fetchResponseBodyFromCache(session, requestId, timeout = 1000) {
   requestId = NetworkRequest.getRequestIdForBackend(requestId);
 
   // Encoding issues may lead to hanging getResponseBody calls: https://github.com/GoogleChrome/lighthouse/pull/4718
-  // driver.sendCommand will handle timeout after 1s.
+  // session.sendCommand will handle timeout after 1s.
   session.setNextProtocolTimeout(timeout);
   const result = await session.sendCommand('Network.getResponseBody', {requestId});
   return result.body;
