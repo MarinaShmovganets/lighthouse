@@ -27,7 +27,6 @@ declare global {
       | 'InspectorIssues'
       | 'Manifest'
       | 'MixedContent'
-      | 'OptimizedImages'
       | 'ResponseCompression'
       | 'ScriptElements'
       | 'ServiceWorker'
