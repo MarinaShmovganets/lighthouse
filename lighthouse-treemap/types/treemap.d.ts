@@ -1,5 +1,6 @@
 import _TreemapUtil = require('../app/src/util.js');
-import _locales = require('../../lighthouse-core/lib/i18n/locales.js');
+
+export type Strings = Record<LH.Locale, import('../../lighthouse-core/lib/i18n/locales').LhlMessages>;
 
 declare global {
   class WebTreeMap {
@@ -26,7 +27,7 @@ declare global {
     sort(data: any): void;
   };
   var TreemapUtil: typeof _TreemapUtil;
-  var locales: typeof _locales;
+  var strings: Strings;
 
   interface Window {
     __treemapOptions?: LH.Treemap.Options;

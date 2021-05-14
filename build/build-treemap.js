@@ -10,29 +10,29 @@ const GhPagesApp = require('./gh-pages-app.js');
 
 /**
  * Extract only the strings needed for lighthouse-treemap into
- * a script that sets a global variable `locales`, whose keys
- * are locale codes (en-US, es, etc.)
+ * a script that sets a global variable `strings`, whose keys
+ * are locale codes (en-US, es, etc.) and values are localized UIStrings.
  */
-function buildLocales() {
+function buildStrings() {
   const locales = require('../lighthouse-core/lib/i18n/locales.js');
-  const clonedLocales = JSON.parse(JSON.stringify(locales));
+  const UIStrings = require('../lighthouse-treemap/app/src/util.js').UIStrings;
+  const strings = /** @type {import('../lighthouse-treemap/types/treemap').Strings} */ ({});
 
-  for (const lhlMessages of Object.values(clonedLocales)) {
-    for (const icuMessageId of Object.keys(lhlMessages)) {
-      const lhlMessage = lhlMessages[icuMessageId];
-      delete lhlMessages[icuMessageId];
+  for (const [locale, lhlMessages] of Object.entries(locales)) {
+    const localizedStrings = Object.fromEntries(
+      Object.entries(lhlMessages).map(([icuMessageId, v]) => {
+        const [filename, varName] = icuMessageId.split(' | ');
+        if (!filename.endsWith('util.js') || !(varName in UIStrings)) {
+          return [];
+        }
 
-      if (!icuMessageId.startsWith('lighthouse-treemap')) {
-        continue;
-      }
-
-      const [filename, varName] = icuMessageId.split(' | ');
-      if (!filename.endsWith('util.js')) throw new Error(`Unexpected message: ${icuMessageId}`);
-      lhlMessages[varName] = lhlMessage;
-    }
+        return [varName, v];
+      })
+    );
+    strings[/** @type {LH.Locale} */ (locale)] = localizedStrings;
   }
 
-  return 'const locales =' + JSON.stringify(clonedLocales, null, 2) + ';';
+  return 'const strings =' + JSON.stringify(strings, null, 2) + ';';
 }
 
 /**
@@ -55,7 +55,7 @@ async function run() {
       fs.readFileSync(require.resolve('tabulator-tables/dist/js/modules/format.js'), 'utf8'),
       fs.readFileSync(require.resolve('tabulator-tables/dist/js/modules/resize_columns.js'), 'utf8'),
       /* eslint-enable max-len */
-      buildLocales(),
+      buildStrings(),
       {path: '../../lighthouse-core/report/html/renderer/i18n.js'},
       {path: 'src/**/*'},
     ],

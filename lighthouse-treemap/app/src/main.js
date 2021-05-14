@@ -7,7 +7,7 @@
 
 /* eslint-env browser */
 
-/* globals I18n webtreemap locales TreemapUtil Tabulator Cell Row */
+/* globals I18n webtreemap strings TreemapUtil Tabulator Cell Row */
 
 const UNUSED_BYTES_IGNORE_THRESHOLD = 20 * 1024;
 const UNUSED_BYTES_IGNORE_BUNDLE_SOURCE_RATIO = 0.5;
@@ -687,8 +687,8 @@ function init(options) {
   const i18n = new I18n(options.lhr.configSettings.locale, {
     // Set missing renderer strings to default (english) values.
     ...TreemapUtil.UIStrings,
-    // `locales` is generated in build/build-treemap.js
-    ...getStrings(locales[options.lhr.configSettings.locale]),
+    // `strings` is generated in build/build-treemap.js
+    ...getStrings(strings[options.lhr.configSettings.locale]),
   });
   TreemapUtil.i18n = i18n;
 
