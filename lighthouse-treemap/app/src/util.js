@@ -210,7 +210,7 @@ TreemapUtil.UIStrings = {
   tableColumnName: 'Name',
   /** Label for column giving the size of a file in bytes. */
   resourceBytesLabel: 'Resource Bytes',
-  /** Label for a value associated with how many bytes a URL/file is, over-network. */
+  /** Label for a value associated with how many bytes of a script are not executed. */
   unusedBytesLabel: 'Unused Bytes',
   /** Label for a column where the values represent how much of a file is used bytes vs unused bytes (coverage). */
   coverageColumnName: 'Coverage',
