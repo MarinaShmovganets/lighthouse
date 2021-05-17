@@ -229,10 +229,6 @@ header {
   display: block;
 }
 
-.lh-treemap#unused-bytes .webtreemap-node {
-  text-shadow: hsl(0, 0%, 81%) 0px 0px 2px;
-}
-
 .webtreemap-caption {
   font-size: 12px;
   text-align: center;

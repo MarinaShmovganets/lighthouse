@@ -224,29 +224,10 @@ class TreemapViewer {
     function createUnusedBytesViewMode(root) {
       if (root.unusedBytes === undefined) return;
 
-      /** @type {LH.Treemap.Highlight[]} */
-      const highlights = [];
-      for (const d1Node of root.children || []) {
-        // Only highlight leaf nodes if entire node (ie a JS bundle) has greater than a certain
-        // number of unused bytes.
-        if (!d1Node.unusedBytes || d1Node.unusedBytes < UNUSED_BYTES_IGNORE_THRESHOLD) continue;
-
-        TreemapUtil.walk(d1Node, (node, path) => {
-          // Only highlight leaf nodes of a certain ratio of unused bytes.
-          if (node.children) return;
-          if (!node.unusedBytes || !node.resourceBytes) return;
-          if (node.unusedBytes / node.resourceBytes < UNUSED_BYTES_IGNORE_BUNDLE_SOURCE_RATIO) {
-            return;
-          }
-
-          highlights.push({path: [root.name, ...path]});
-        });
-      }
       return {
         id: 'unused-bytes',
         label: TreemapUtil.i18n.strings.unusedBytesLabel,
         subLabel: TreemapUtil.i18n.formatBytesWithBestUnit(root.unusedBytes),
-        highlights,
         enabled: true,
       };
     }
@@ -628,16 +609,16 @@ class TreemapViewer {
         } else {
           backgroundColor = 'white';
         }
-      } else {
-        backgroundColor = depthOneNodeColor;
+        dom.style.backgroundColor = backgroundColor;
+        return;
       }
 
+      dom.style.backgroundColor = depthOneNodeColor;
+
       // Set a bicolor background to communicate unused-bytes
-      if (this.currentViewMode.id === 'unused-bytes' && hue) {
+      if (this.currentViewMode.id === 'unused-bytes') {
         const pctUsed = (1 - (node.unusedBytes || 0) / node.resourceBytes) * 100;
         dom.style.setProperty('--pctUsed', `${pctUsed}%`);
-      } else {
-        dom.style.backgroundColor = backgroundColor;
       }
     });
   }
