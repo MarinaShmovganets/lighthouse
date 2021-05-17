@@ -180,7 +180,7 @@ class TreemapViewer {
       nodeEl.classList.remove('webtreemap-node--hover');
     });
 
-    document.addEventListener('mouseover', e => {
+    TreemapUtil.find('.lh-table').addEventListener('mouseover', e => {
       const target = e.target;
       if (!(target instanceof HTMLElement)) return;
 
@@ -188,13 +188,9 @@ class TreemapViewer {
       if (!(el instanceof HTMLElement)) return;
 
       const node = this.tableRowToNodeMap.get(el);
-      if (!node) return;
+      if (!node || !node.dom) return;
 
-      // @ts-ignore: webtreemap will add a dom node property to every node.
-      const dom = /** @type {HTMLElement?} */ (node.dom);
-      if (!dom) return;
-
-      dom.classList.add('webtreemap-node--hover');
+      node.dom.classList.add('webtreemap-node--hover');
       el.addEventListener('mouseout', () => {
         for (const hoverEl of treemapEl.querySelectorAll('.webtreemap-node--hover')) {
           hoverEl.classList.remove('webtreemap-node--hover');
@@ -388,7 +384,7 @@ class TreemapViewer {
       renderViewModeButtons(this.viewModes);
 
       TreemapUtil.walk(this.currentTreemapRoot, node => {
-        // @ts-ignore: webtreemap will store `dom` on the data to speed up operations.
+        // webtreemap will store `dom` on the data to speed up operations.
         // However, when we change the underlying data representation, we need to delete
         // all the cached DOM elements. Otherwise, the rendering will be incorrect when,
         // for example, switching between "All JavaScript" and a specific bundle.
@@ -625,10 +621,8 @@ class TreemapViewer {
         backgroundColor = depthOneNodeColor;
       }
 
-      // @ts-ignore: webtreemap will add a dom node property to every node.
-      const dom = /** @type {HTMLElement?} */ (node.dom);
-      if (dom) {
-        dom.style.backgroundColor = backgroundColor;
+      if (node.dom) {
+        node.dom.style.backgroundColor = backgroundColor;
       }
     });
   }
