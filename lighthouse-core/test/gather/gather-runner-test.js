@@ -1190,6 +1190,39 @@ describe('GatherRunner', function() {
       });
     });
 
+    it('resolves and does not warn when page times out on non-fatal pass', () => {
+      const config = makeConfig({
+        passes: [{
+          recordTrace: true,
+          passName: 'firstPass',
+          gatherers: [],
+        }, {
+          recordTrace: true,
+          passName: 'secondPass',
+          loadFailureMode: 'warn',
+          gatherers: [],
+        }],
+      });
+
+      const requestedUrl = 'http://www.slow-loading-page.com/';
+      const timedoutDriver = Object.assign({}, fakeDriver, {
+        online: true,
+      });
+
+      const gotoURL = jest.requireMock('../../gather/driver/navigation.js').gotoURL;
+      gotoURL
+        .mockResolvedValueOnce({finalUrl: requestedUrl, warnings: []})
+        .mockResolvedValueOnce({finalUrl: requestedUrl, warnings: ['It is too slow']});
+
+      return GatherRunner.run(config.passes, {
+        driver: timedoutDriver,
+        requestedUrl,
+        settings: config.settings,
+      }).then(artifacts => {
+        expect(artifacts.LighthouseRunWarnings).toEqual([]);
+      });
+    });
+
     it('resolves when domain name can\'t be resolved but is offline', () => {
       const config = makeConfig({
         passes: [{

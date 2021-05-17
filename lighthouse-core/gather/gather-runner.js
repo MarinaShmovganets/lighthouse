@@ -77,7 +77,9 @@ class GatherRunner {
         ...passContext.passConfig,
       });
       passContext.url = finalUrl;
-      passContext.LighthouseRunWarnings.push(...warnings);
+      if (passContext.passConfig.loadFailureMode === 'fatal') {
+        passContext.LighthouseRunWarnings.push(...warnings);
+      }
     } catch (err) {
       // If it's one of our loading-based LHErrors, we'll treat it as a page load error.
       if (err.code === 'NO_FCP' || err.code === 'PAGE_HUNG') {
