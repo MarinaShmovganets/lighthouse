@@ -1239,6 +1239,7 @@ describe('GatherRunner', function() {
         driver: timedoutDriver,
         requestedUrl,
         settings: config.settings,
+        computedCache: new Map(),
       }).then(artifacts => {
         expect(artifacts.LighthouseRunWarnings).toEqual([]);
       });
