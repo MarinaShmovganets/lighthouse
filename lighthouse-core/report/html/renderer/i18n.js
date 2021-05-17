@@ -18,7 +18,7 @@ const MiB = KiB * KiB;
 class I18n {
   /**
    * @param {LH.Locale} locale
-   * @param {T=} strings
+   * @param {T} strings
    */
   constructor(locale, strings) {
     // When testing, use a locale with more exciting numeric formatting.
@@ -27,7 +27,7 @@ class I18n {
     this._numberDateLocale = locale;
     this._numberFormatter = new Intl.NumberFormat(locale);
     this._percentFormatter = new Intl.NumberFormat(locale, {style: 'percent'});
-    this._strings = /** @type {T} */ (strings || {});
+    this._strings = strings;
   }
 
   get strings() {
@@ -89,10 +89,10 @@ class I18n {
 
   /**
    * @param {number} size
-   * @param {number=} granularity Controls how coarse the displayed value is, defaults to 1
+   * @param {number=} granularity Controls how coarse the displayed value is, defaults to 0.1
    * @return {string}
    */
-  formatBytesWithBestUnit(size, granularity = 1) {
+  formatBytesWithBestUnit(size, granularity = 0.1) {
     if (size >= MiB) return this.formatBytesToMiB(size, granularity);
     if (size >= KiB) return this.formatBytesToKiB(size, granularity);
     return this.formatNumber(size, granularity) + '\xa0B';

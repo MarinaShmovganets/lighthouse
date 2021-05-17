@@ -78,11 +78,14 @@ class TreemapViewer {
     this.viewModes;
     /** @type {RenderState=} */
     this.previousRenderState;
+    /** @type {WeakMap<HTMLElement, LH.Treemap.Node>} */
+    this.tableRowToNodeMap = new WeakMap();
     /** @type {WebTreeMap} */
     this.treemap;
     /*  eslint-enable no-unused-expressions */
 
     this.createHeader();
+    this.toggleTable(window.innerWidth >= 600);
     this.initListeners();
     this.setSelector({type: 'group', value: 'scripts'});
     this.render();
@@ -92,10 +95,6 @@ class TreemapViewer {
     const urlEl = TreemapUtil.find('a.lh-header--url');
     urlEl.textContent = this.documentUrl;
     urlEl.href = this.documentUrl;
-
-    const bytes = this.wrapNodesInNewRootNode(this.depthOneNodesByGroup.scripts).resourceBytes;
-    TreemapUtil.find('.lh-header--size').textContent =
-      TreemapUtil.i18n.formatBytesWithBestUnit(bytes);
 
     this.createBundleSelector();
 
@@ -162,6 +161,12 @@ class TreemapViewer {
       this.updateColors();
     });
 
+    treemapEl.addEventListener('keypress', (e) => {
+      if (!(e instanceof KeyboardEvent)) return;
+
+      if (e.key === 'Enter') this.updateColors();
+    });
+
     treemapEl.addEventListener('mouseover', (e) => {
       if (!(e.target instanceof HTMLElement)) return;
       const nodeEl = e.target.closest('.webtreemap-node');
@@ -176,6 +181,24 @@ class TreemapViewer {
       if (!nodeEl) return;
 
       nodeEl.classList.remove('webtreemap-node--hover');
+    });
+
+    TreemapUtil.find('.lh-table').addEventListener('mouseover', e => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      const el = target.closest('.tabulator-row');
+      if (!(el instanceof HTMLElement)) return;
+
+      const node = this.tableRowToNodeMap.get(el);
+      if (!node || !node.dom) return;
+
+      node.dom.classList.add('webtreemap-node--hover');
+      el.addEventListener('mouseout', () => {
+        for (const hoverEl of treemapEl.querySelectorAll('.webtreemap-node--hover')) {
+          hoverEl.classList.remove('webtreemap-node--hover');
+        }
+      }, {once: true});
     });
   }
 
@@ -364,7 +387,7 @@ class TreemapViewer {
       renderViewModeButtons(this.viewModes);
 
       TreemapUtil.walk(this.currentTreemapRoot, node => {
-        // @ts-ignore: webtreemap will store `dom` on the data to speed up operations.
+        // webtreemap will store `dom` on the data to speed up operations.
         // However, when we change the underlying data representation, we need to delete
         // all the cached DOM elements. Otherwise, the rendering will be incorrect when,
         // for example, switching between "All JavaScript" and a specific bundle.
@@ -403,7 +426,7 @@ class TreemapViewer {
     const tableEl = TreemapUtil.find('.lh-table');
     tableEl.innerHTML = '';
 
-    /** @type {Array<{name: string, bundleNode?: LH.Treemap.Node, resourceBytes: number, unusedBytes?: number}>} */
+    /** @type {Array<{node: LH.Treemap.Node, name: string, bundleNode?: LH.Treemap.Node, resourceBytes: number, unusedBytes?: number}>} */
     const data = [];
     TreemapUtil.walk(this.currentTreemapRoot, (node, path) => {
       if (node.children) return;
@@ -431,6 +454,7 @@ class TreemapViewer {
       }
 
       data.push({
+        node,
         name,
         bundleNode,
         resourceBytes: node.resourceBytes,
@@ -477,6 +501,7 @@ class TreemapViewer {
     const children = this.currentTreemapRoot.children || [];
     const maxSize = Math.max(...children.map(node => node.resourceBytes));
 
+    this.tableRowToNodeMap = new WeakMap();
     this.table = new Tabulator(gridEl, {
       data,
       height: '100%',
@@ -519,14 +544,20 @@ class TreemapViewer {
           return el;
         }},
       ],
+      rowFormatter: (row) => {
+        this.tableRowToNodeMap.set(row.getElement(), row.getData().node);
+      },
     });
   }
 
-  toggleTable() {
+  /**
+   * @param {boolean=} show
+   */
+  toggleTable(show) {
     const mainEl = TreemapUtil.find('main');
-    mainEl.classList.toggle('lh-main--show-table');
+    mainEl.classList.toggle('lh-main--show-table', show);
     const buttonEl = TreemapUtil.find('.lh-button--toggle-table');
-    buttonEl.classList.toggle('lh-button--active');
+    buttonEl.classList.toggle('lh-button--active', show);
   }
 
   resize() {
@@ -624,16 +655,19 @@ function renderViewModeButtons(viewModes) {
     if (!viewMode.enabled) viewModeEl.classList.add('view-mode--disabled');
     viewModeEl.id = `view-mode--${viewMode.id}`;
 
-    const labelEl = TreemapUtil.createChildOf(viewModeEl, 'label');
-    TreemapUtil.createChildOf(labelEl, 'span', 'view-mode__label').textContent = viewMode.label;
-    TreemapUtil.createChildOf(labelEl, 'span', 'view-mode__sublabel lh-text-dim').textContent =
-      ` (${viewMode.subLabel})`;
-
-    const inputEl = TreemapUtil.createChildOf(labelEl, 'input', 'view-mode__button', {
+    const inputEl = TreemapUtil.createChildOf(viewModeEl, 'input', 'view-mode__button', {
+      id: `view-mode--${viewMode.id}__label`,
       type: 'radio',
       name: 'view-mode',
       disabled: viewMode.enabled ? undefined : '',
     });
+
+    const labelEl = TreemapUtil.createChildOf(viewModeEl, 'label', undefined, {
+      for: inputEl.id,
+    });
+    TreemapUtil.createChildOf(labelEl, 'span', 'view-mode__label').textContent = viewMode.label;
+    TreemapUtil.createChildOf(labelEl, 'span', 'view-mode__sublabel lh-text-dim').textContent =
+      ` (${viewMode.subLabel})`;
 
     inputEl.addEventListener('click', () => {
       treemapViewer.setViewMode(viewMode);
