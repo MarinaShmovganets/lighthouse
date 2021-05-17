@@ -592,8 +592,7 @@ class TreemapViewer {
         this.getHueForD1NodeName(depthOneNode ? depthOneNode.name : node.name);
       const depthOneNodeColor = hue !== undefined ? this.getColorFromHue(hue) : 'white';
 
-      // @ts-ignore: webtreemap will add a dom node property to every node.
-      const dom = /** @type {HTMLElement?} */ (node.dom);
+      const dom = node.dom;
       if (!dom) return;
 
       let backgroundColor;
