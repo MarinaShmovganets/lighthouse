@@ -118,18 +118,6 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     if (fci) v5andv6metrics.push(fci);
     if (fmp) v5andv6metrics.push(fmp);
 
-    /** @type {Record<string, string>} */
-    const acronymMapping = {
-      'cumulative-layout-shift': 'CLS',
-      'first-contentful-paint': 'FCP',
-      'first-cpu-idle': 'FCI',
-      'first-meaningful-paint': 'FMP',
-      'interactive': 'TTI',
-      'largest-contentful-paint': 'LCP',
-      'speed-index': 'SI',
-      'total-blocking-time': 'TBT',
-    };
-
     /**
      * Clamp figure to 2 decimal places
      * @param {number} val
@@ -147,7 +135,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
       } else {
         value = 'null';
       }
-      return [acronymMapping[audit.id] || audit.id, value];
+      return [audit.acronym || audit.id, value];
     });
     const paramPairs = [...metricPairs];
 
@@ -225,6 +213,13 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
         .filter(audit => audit.group === 'load-opportunities' && !Util.showAsPassed(audit.result))
         .sort((auditA, auditB) => this._getWastedMs(auditB) - this._getWastedMs(auditA));
 
+
+    const filterableMetrics = metricAudits.filter(a => !!a.relevantAudits);
+    // TODO: only add if there are opportunities & diagnostics rendered.
+    if (filterableMetrics.length) {
+      this.renderMetricAuditFilter(filterableMetrics, element);
+    }
+
     if (opportunityAudits.length) {
       // Scale the sparklines relative to savings, minimum 2s to not overstate small savings
       const minimumScale = 2000;
@@ -298,6 +293,71 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
     }
 
     return element;
+  }
+
+  /**
+   * Render the control to filter the audits by metric. The filtering is done at runtime by CSS only
+   * @param {LH.ReportResult.AuditRef[]} filterableMetrics
+   * @param {HTMLDivElement} categoryEl
+   */
+  renderMetricAuditFilter(filterableMetrics, categoryEl) {
+    const metricFilterEl = this.dom.createElement('div', 'lh-metricfilter');
+    const textEl = this.dom.createChildOf(metricFilterEl, 'span', 'lh-metricfilter__text');
+    textEl.textContent = Util.i18n.strings.showRelevantAudits;
+
+    const filterChoices = /** @type {LH.ReportResult.AuditRef[]} */ ([
+      ({acronym: 'All'}),
+      ...filterableMetrics,
+    ]);
+    for (const metric of filterChoices) {
+      const elemId = `metric-${metric.acronym}`;
+      const labelEl = this.dom.createChildOf(metricFilterEl, 'label', 'lh-metricfilter__label', {
+        for: elemId,
+        title: metric.result && metric.result.title,
+      });
+      labelEl.textContent = metric.acronym || metric.id;
+      const radioEl = this.dom.createChildOf(labelEl, 'input', 'lh-metricfilter__radio', {
+        type: 'radio',
+        name: 'metricsfilter',
+        id: elemId,
+        hidden: 'true',
+      });
+
+      if (metric.acronym === 'All') {
+        radioEl.checked = true;
+        labelEl.classList.add('lh-metricfilter__label--active');
+      }
+      categoryEl.append(metricFilterEl);
+
+      // Toggle class/hidden state based on filter choice.
+      radioEl.addEventListener('input', _ => {
+        for (const elem of categoryEl.querySelectorAll('label.lh-metricfilter__label')) {
+          elem.classList.toggle('lh-metricfilter__label--active', elem.htmlFor === elemId);
+        }
+        categoryEl.classList.toggle('lh-category--filtered', metric.acronym !== 'All');
+
+        for (const perfAuditEl of categoryEl.querySelectorAll('div.lh-audit')) {
+          if (metric.acronym === 'All') {
+            perfAuditEl.hidden = false;
+            continue;
+          }
+
+          perfAuditEl.hidden = true;
+          if (metric.relevantAudits && metric.relevantAudits.includes(perfAuditEl.id)) {
+            perfAuditEl.hidden = false;
+          }
+        }
+
+        // Hide groups/clumps if all child audits are also hidden.
+        const groupEls = categoryEl.querySelectorAll('div.lh-audit-group, details.lh-audit-group');
+        for (const groupEl of groupEls) {
+          groupEl.hidden = false;
+          const childEls = Array.from(groupEl.querySelectorAll('div.lh-audit'));
+          const areAllHidden = !!childEls.length && childEls.every(auditEl => auditEl.hidden);
+          groupEl.hidden = areAllHidden;
+        }
+      });
+    }
   }
 }
 
