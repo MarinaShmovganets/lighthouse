@@ -333,7 +333,7 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
       radioEl.addEventListener('input', _ => {
         for (const elem of categoryEl.querySelectorAll('label.lh-metricfilter__label')) {
           elem.classList.toggle('lh-metricfilter__label--active', elem.htmlFor === elemId);
-        };
+        }
         categoryEl.classList.toggle('lh-category--filtered', metric.acronym !== 'All');
 
         for (const perfAuditEl of categoryEl.querySelectorAll('div.lh-audit')) {
