@@ -35,6 +35,7 @@ describe('ReportUIFeatures', () => {
 
   /**
    * @param {LH.JSON} lhr
+   * @return {HTMLElement}
    */
   function render(lhr) {
     const detailsRenderer = new DetailsRenderer(dom);
@@ -553,12 +554,22 @@ describe('ReportUIFeatures', () => {
     });
   });
 
+  describe('treemap button', () => {
+    it('should only show button if treemap data is available', () => {
+      expect(sampleResults.audits['script-treemap-data']).toBeUndefined();
+      expect(render(sampleResults).querySelector('.lh-button.report-icon--treemap')).toBeNull();
+
+      sampleResults.audits['script-treemap-data'] = {details: {}};
+      expect(render(sampleResults).querySelector('.lh-button.report-icon--treemap')).toBeTruthy();
+    });
+  });
+
   describe('data-i18n', () => {
     it('should have only valid data-i18n values in template', () => {
       const container = render(sampleResults);
       for (const node of dom.findAll('[data-i18n]', container)) {
         const val = node.getAttribute('data-i18n');
-        assert.ok(val in Util.UIStrings, `Invalid data-i18n value of: "${val}" found.`);
+        assert.ok(val in Util.UIStrings, `Invalid data-i18n value of: "${val}" not found.`);
       }
     });
   });

@@ -12,7 +12,6 @@ const cpy = require('cpy');
 const ghPages = require('gh-pages');
 const glob = require('glob');
 const lighthousePackage = require('../package.json');
-const rimraf = require('rimraf');
 const terser = require('terser');
 
 const ghPagesDistDir = `${__dirname}/../dist/gh-pages`;
@@ -56,7 +55,7 @@ const license = `/*
  * @return {string[]}
  */
 function loadFiles(pattern) {
-  const filePaths = glob.sync(pattern);
+  const filePaths = glob.sync(pattern, {nodir: true});
   return filePaths.map(path => fs.readFileSync(path, {encoding: 'utf8'}));
 }
 
@@ -81,7 +80,7 @@ class GhPagesApp {
   }
 
   async build() {
-    rimraf.sync(this.distDir);
+    fs.rmdirSync(this.distDir, {recursive: true});
 
     const html = this._compileHtml();
     safeWriteFile(`${this.distDir}/index.html`, html);

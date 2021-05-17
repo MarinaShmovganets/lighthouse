@@ -19,6 +19,7 @@ const DECIMAL_METRIC_KEYS = new Set([
   'layoutShiftMaxSessionGap1sLimit5s',
   'layoutShiftMaxSliding1s',
   'layoutShiftMaxSliding300ms',
+  'layoutShiftMaxSessionGap1sLimit5sAllFrames',
 ]);
 
 class Metrics extends Audit {
@@ -44,7 +45,7 @@ class Metrics extends Audit {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const summary = await ComputedTimingSummary
-      .request({trace, devtoolsLog}, context);
+      .request({trace, devtoolsLog, settings: context.settings}, context);
     const metrics = summary.metrics;
     const debugInfo = summary.debugInfo;
 

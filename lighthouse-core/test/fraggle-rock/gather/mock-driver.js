@@ -27,6 +27,8 @@ function createMockSession() {
     once: createMockOnceFn(),
     on: createMockOnFn(),
     off: jest.fn(),
+    addProtocolMessageListener: createMockOnFn(),
+    removeProtocolMessageListener: jest.fn(),
 
     /** @return {LH.Gatherer.FRProtocolSession} */
     asSession() {
@@ -42,9 +44,11 @@ function createMockSession() {
 function createMockGathererInstance(meta) {
   return {
     meta,
-    beforeTimespan: jest.fn(),
-    afterTimespan: jest.fn(),
-    snapshot: jest.fn(),
+    startInstrumentation: jest.fn(),
+    stopInstrumentation: jest.fn(),
+    startSensitiveInstrumentation: jest.fn(),
+    stopSensitiveInstrumentation: jest.fn(),
+    getArtifact: jest.fn(),
 
     /** @return {LH.Gatherer.FRGathererInstance} */
     asGatherer() {
@@ -69,8 +73,18 @@ function createMockPage() {
 }
 
 function createMockExecutionContext() {
-  const context = /** @type {ExecutionContext} */ ({});
-  return {...context, evaluate: jest.fn(), evaluateAsync: jest.fn()};
+  return {
+    evaluate: jest.fn(),
+    evaluateAsync: jest.fn(),
+    evaluateOnNewDocument: jest.fn(),
+    cacheNativesOnNewDocument: jest.fn(),
+
+    /** @return {ExecutionContext} */
+    asExecutionContext() {
+      // @ts-expect-error - We'll rely on the tests passing to know this matches.
+      return this;
+    },
+  };
 }
 
 function createMockDriver() {
@@ -85,7 +99,7 @@ function createMockDriver() {
     url: () => page.url(),
     defaultSession: session,
     connect: jest.fn(),
-    executionContext: context,
+    executionContext: context.asExecutionContext(),
 
     /** @return {Driver} */
     asDriver() {
@@ -113,6 +127,28 @@ function mockDriverModule(driverProvider) {
   };
 }
 
+function createMockContext() {
+  return {
+    driver: createMockDriver(),
+    url: 'https://example.com',
+    gatherMode: 'navigation',
+    computedCache: new Map(),
+    dependencies: {},
+
+    /** @return {LH.Gatherer.FRTransitionalContext} */
+    asContext() {
+      // @ts-expect-error - We'll rely on the tests passing to know this matches.
+      return this;
+    },
+
+    /** @return {LH.Gatherer.PassContext} */
+    asLegacyContext() {
+      // @ts-expect-error - We'll rely on the tests passing to know this matches.
+      return this;
+    },
+  };
+}
+
 module.exports = {
   mockRunnerModule,
   mockDriverModule,
@@ -120,4 +156,5 @@ module.exports = {
   createMockPage,
   createMockSession,
   createMockGathererInstance,
+  createMockContext,
 };

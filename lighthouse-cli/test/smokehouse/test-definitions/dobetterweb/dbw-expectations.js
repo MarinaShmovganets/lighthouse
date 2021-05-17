@@ -11,6 +11,12 @@
  */
 const expectations = [
   {
+    networkRequests: {
+      // 50 requests made for normal page testing.
+      // 6 extra requests made because stylesheets are evicted from the cache by the time DT opens.
+      // 3 extra requests made to /dobetterweb/clock.appcache
+      length: 59,
+    },
     artifacts: {
       HostFormFactor: 'desktop',
       Stacks: [{
@@ -409,7 +415,7 @@ const expectations = [
             screenshot: {
               width: 360,
               // Allow for differences in platforms.
-              height: '3755±5',
+              height: '1350±20',
               data: /^data:image\/jpeg;.{500,}/,
             },
             nodes: {

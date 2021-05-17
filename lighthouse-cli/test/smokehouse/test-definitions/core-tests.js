@@ -35,6 +35,7 @@ const smokeTests = [{
   id: 'dbw',
   expectations: require('./dobetterweb/dbw-expectations.js'),
   config: require('./dobetterweb/dbw-config.js'),
+  runSerially: true, // Need access to network request assertions.
 }, {
   id: 'redirects',
   expectations: require('./redirects/expectations.js'),
@@ -87,6 +88,10 @@ const smokeTests = [{
   id: 'screenshot',
   expectations: require('./screenshot/expectations.js'),
   config: require('./screenshot/screenshot-config.js'),
+}, {
+  id: 'csp',
+  expectations: require('./csp/csp-expectations.js'),
+  config: require('./csp/csp-config.js'),
 }];
 
 module.exports = smokeTests;

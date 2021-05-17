@@ -13,8 +13,9 @@ const devtoolsLog = require('../../fixtures/traces/frame-metrics-m90.devtools.lo
 /* eslint-env jest */
 describe('Timing summary', () => {
   it('contains the correct data', async () => {
-    const context = {settings: {throttlingMethod: 'devtools'}, computedCache: new Map()};
-    const result = await TimingSummary.request({trace, devtoolsLog}, context);
+    const artifacts = {settings: {throttlingMethod: 'devtools'}, trace, devtoolsLog};
+    const context = {computedCache: new Map()};
+    const result = await TimingSummary.request(artifacts, context);
 
     expect(result.metrics).toMatchInlineSnapshot(`
       Object {
@@ -39,6 +40,7 @@ describe('Timing summary', () => {
         "layoutShiftAvgSessionGap5s": 0.0011656245471340055,
         "layoutShiftMaxSessionGap1s": 0.0011656245471340055,
         "layoutShiftMaxSessionGap1sLimit5s": 0.0011656245471340055,
+        "layoutShiftMaxSessionGap1sLimit5sAllFrames": 0.026463014612806653,
         "layoutShiftMaxSliding1s": 0.0011656245471340055,
         "layoutShiftMaxSliding300ms": 0.0011656245471340055,
         "maxPotentialFID": 51.056,
