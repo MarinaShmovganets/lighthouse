@@ -43,7 +43,7 @@ const MESSAGE_I18N_ID_REGEX = / | [^\s]+$/;
   }
   // Deal with buggy regex caching. https://github.com/andyearnshaw/Intl.js/issues/308
   if (IntlPolyfill.__disableRegExpRestore) {
-    IntlPolyfill.__disableRegExpRestore()
+    IntlPolyfill.__disableRegExpRestore();
   }
 })();
 
