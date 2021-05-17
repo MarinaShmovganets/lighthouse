@@ -54,6 +54,7 @@ async function _setup({driver, config, requestedUrl}) {
 
 /**
  * @param {NavigationContext} navigationContext
+ * @return {Promise<{warnings: Array<LH.IcuMessage>>}
  */
 async function _setupNavigation({requestedUrl, driver, navigation, config}) {
   await gotoURL(driver, navigation.blankPage, {...navigation, waitUntil: ['navigated']});
@@ -102,6 +103,7 @@ async function _navigate(navigationContext) {
 /**
  * @param {NavigationContext} navigationContext
  * @param {PhaseState} phaseState
+ * @return {Promise<Array<LH.Artifacts.NetworkRequest | undefined>>}
  */
 async function _collectNetworkRecords(navigationContext, phaseState) {
   const devtoolsLogArtifactDefn = phaseState.artifactDefinitions.find(
