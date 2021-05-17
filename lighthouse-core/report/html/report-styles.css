@@ -615,8 +615,7 @@
   color: black !important;
 }
 
-/* If audits are filtered, also hide group headers & descriptions… */
-.lh-category--filtered .lh-audit-group .lh-audit-group__description,
+/* If audits are filtered, hide the itemcount for Passed Audits… */
 .lh-category--filtered .lh-audit-group .lh-audit-group__itemcount {
   display: none;
 }
