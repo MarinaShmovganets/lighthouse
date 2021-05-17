@@ -83,6 +83,7 @@ class TreemapViewer {
     /*  eslint-enable no-unused-expressions */
 
     this.createHeader();
+    this.toggleTable(window.innerWidth >= 600);
     this.initListeners();
     this.setSelector({type: 'group', value: 'scripts'});
     this.render();
@@ -517,11 +518,14 @@ class TreemapViewer {
     });
   }
 
-  toggleTable() {
+  /**
+   * @param {boolean=} show
+   */
+  toggleTable(show) {
     const mainEl = TreemapUtil.find('main');
-    mainEl.classList.toggle('lh-main--show-table');
+    mainEl.classList.toggle('lh-main--show-table', show);
     const buttonEl = TreemapUtil.find('.lh-button--toggle-table');
-    buttonEl.classList.toggle('lh-button--active');
+    buttonEl.classList.toggle('lh-button--active', show);
   }
 
   resize() {
