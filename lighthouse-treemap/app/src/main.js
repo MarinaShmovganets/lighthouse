@@ -35,7 +35,7 @@ class TreemapViewer {
   constructor(options, el) {
     const scriptTreemapData = /** @type {LH.Audit.Details.TreemapData} */ (
       options.lhr.audits['script-treemap-data'].details);
-    if (!scriptTreemapData || !scriptTreemapData.nodes) {
+    if (!scriptTreemapData || scriptTreemapData.type !== 'treemap-data') {
       throw new Error('missing script-treemap-data');
     }
 
