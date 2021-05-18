@@ -183,7 +183,10 @@ class ReportUIFeatures {
    * @param {{text: string, icon?: string, onClick: () => void}} opts
    */
   addButton(opts) {
-    const metricsEl = this._dom.find('.lh-audit-group--metrics', this._document);
+    const metricsEl = this._document.querySelector('.lh-audit-group--metrics');
+    // Not supported without metrics group.
+    if (!metricsEl) return;
+
     const classes = [
       'lh-button',
     ];
