@@ -7,13 +7,22 @@
 
 /* eslint-env jest */
 
+jest.mock('../../../../gather/driver/network.js', () => ({
+  fetchResponseBodyFromCache: jest.fn(),
+}));
+
 const ResponseCompression =
     require('../../../../gather/gatherers/dobetterweb/response-compression.js');
-const assert = require('assert').strict;
-const mockDriver = require('../../fake-driver.js');
+const {createMockContext} = require('../../../fraggle-rock/gather/mock-driver.js');
 
-let options;
-let responseCompression;
+/** @type {jest.Mock} */
+let fetchResponseBodyFromCache;
+
+beforeEach(() => {
+  fetchResponseBodyFromCache
+    = require('../../../../gather/driver/network.js').fetchResponseBodyFromCache;
+});
+
 const traceData = {
   networkRecords: [
     {
@@ -120,50 +129,40 @@ const traceData = {
 };
 
 describe('Optimized responses', () => {
-  // Reset the Gatherer before each test.
+  let context;
+  /** @type {ResponseCompression} */
+  let gatherer;
   beforeEach(() => {
-    responseCompression = new ResponseCompression();
-    const driver = Object.assign({}, mockDriver, {
-      getRequestContent(id) {
-        return Promise.resolve(traceData.networkRecords[id].content);
-      },
+    gatherer = new ResponseCompression();
+    context = createMockContext();
+    fetchResponseBodyFromCache.mockImplementation((_, id) => {
+      return Promise.resolve(traceData.networkRecords[id].content);
     });
-
-    options = {
-      url: 'http://google.com/',
-      driver,
-    };
   });
 
-  it('returns only text and non encoded responses', () => {
-    return responseCompression.afterPass(options, traceData)
-      .then(artifact => {
-        assert.equal(artifact.length, 2);
-        assert.ok(/index\.css$/.test(artifact[0].url));
-        assert.ok(/index\.json$/.test(artifact[1].url));
-      });
+  it('returns only text and non encoded responses', async () => {
+    const artifact = await gatherer.afterPass(context, traceData);
+    expect(artifact).toHaveLength(2);
+    expect(artifact[0].url).toMatch(/index\.css$/);
+    expect(artifact[1].url).toMatch(/index\.json$/);
   });
 
-  it('computes sizes', () => {
-    return responseCompression.afterPass(options, traceData)
-      .then(artifact => {
-        assert.equal(artifact.length, 2);
-        assert.equal(artifact[0].resourceSize, 6);
-        assert.equal(artifact[0].gzipSize, 26);
-      });
+  it('computes sizes', async () => {
+    const artifact = await gatherer.afterPass(context, traceData);
+    expect(artifact).toHaveLength(2);
+    expect(artifact[0].resourceSize).toEqual(6);
+    expect(artifact[0].gzipSize).toEqual(26);
   });
 
-  it('recovers from driver errors', () => {
-    options.driver.getRequestContent = () => Promise.reject(new Error('Failed'));
-    return responseCompression.afterPass(options, traceData)
-      .then(artifact => {
-        assert.equal(artifact.length, 2);
-        assert.equal(artifact[0].resourceSize, 6);
-        assert.equal(artifact[0].gzipSize, undefined);
-      });
+  it('recovers from driver errors', async () => {
+    fetchResponseBodyFromCache.mockRejectedValue(new Error('Failed'));
+    const artifact = await gatherer.afterPass(context, traceData);
+    expect(artifact).toHaveLength(2);
+    expect(artifact[0].resourceSize).toEqual(6);
+    expect(artifact[0].gzipSize).toBeUndefined();
   });
 
-  it('ignores responses from installed Chrome extensions', () => {
+  it('ignores responses from installed Chrome extensions', async () => {
     const traceData = {
       networkRecords: [
         {
@@ -191,10 +190,8 @@ describe('Optimized responses', () => {
       ],
     };
 
-    return responseCompression.afterPass(options, traceData)
-      .then(artifact => {
-        assert.equal(artifact.length, 1);
-        assert.equal(artifact[0].resourceSize, 123);
-      });
+    const artifact = await gatherer.afterPass(context, traceData);
+    expect(artifact).toHaveLength(1);
+    expect(artifact[0].resourceSize).toEqual(123);
   });
 });
