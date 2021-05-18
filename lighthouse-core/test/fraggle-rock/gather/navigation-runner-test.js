@@ -367,4 +367,18 @@ describe('NavigationRunner', () => {
       await expect(run()).rejects.toThrowError('Other fatal error');
     });
   });
+
+  describe('_cleanup', () => {
+    it('should clear storage when storage was reset', async () => {
+      config.settings.disableStorageReset = false;
+      await runner._cleanup({requestedUrl, driver, config});
+      expect(mocks.storageMock.clearDataForOrigin).toHaveBeenCalled();
+    });
+
+    it('should not clear storage when storage reset was disabled', async () => {
+      config.settings.disableStorageReset = true;
+      await runner._cleanup({requestedUrl, driver, config});
+      expect(mocks.storageMock.clearDataForOrigin).not.toHaveBeenCalled();
+    });
+  });
 });
