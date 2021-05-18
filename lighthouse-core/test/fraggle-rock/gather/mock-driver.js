@@ -170,9 +170,9 @@ function mockDriverSubmodules() {
   /**
    * @param {Record<string, (...args: any[]) => any>} target
    * @param {string} name
+   * @return {(...args: any[]) => void}
    */
   const get = (target, name) => {
-    /** @param {any[]} args */
     return (...args) => target[name](...args);
   };
   jest.mock('../../../gather/driver/navigation.js', () => new Proxy(navigationMock, {get}));
