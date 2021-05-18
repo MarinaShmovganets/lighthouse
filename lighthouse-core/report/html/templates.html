@@ -323,8 +323,8 @@ limitations under the License.
       background-color: var(--color-gray-200);
       outline: none;
     }
-    /* save-as-gist option hidden in report */
-    .lh-tools__dropdown .lh-tools--gist {
+    /* save-gist option hidden in report. */
+    .lh-tools__dropdown a[data-action='save-gist'] {
       display: none;
     }
 
@@ -381,20 +381,20 @@ limitations under the License.
     <a href="" class="lh-topbar__url" target="_blank" rel="noopener"></a>
 
     <div class="lh-tools">
-      <button id="lh-tools-button" class="lh-tools__button" title="Tools menu" aria-label="Toggle report tools menu" aria-haspopup="menu" aria-expanded="false" aria-controls="lh-tools-dropdown">
+      <button id="lh-tools-button" class="lh-tools__button" title="Tools menu" aria-label="Toggle report tools menu" aria-haspopup="menu" aria-expanded="false" aria-controls="lh-tools__dropdown">
         <svg width="100%" height="100%" viewBox="0 0 24 24">
             <path d="M0 0h24v24H0z" fill="none"/>
             <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
         </svg>
       </button>
-      <div id="lh-tools-dropdown" role="menu" class="lh-tools__dropdown" aria-labelledby="lh-tools-button">
+      <div role="menu" class="lh-tools__dropdown" aria-labelledby="lh-tools-button">
         <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--print" data-i18n="dropdownPrintSummary" data-action="print-summary"></a>
         <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--print" data-i18n="dropdownPrintExpanded" data-action="print-expanded"></a>
         <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--copy" data-i18n="dropdownCopyJSON" data-action="copy"></a>
         <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--download" data-i18n="dropdownSaveHTML" data-action="save-html"></a>
         <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--download" data-i18n="dropdownSaveJSON" data-action="save-json"></a>
-        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--open lh-tools--viewer" data-i18n="dropdownViewer" data-action="open-viewer"></a>
-        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--open lh-tools--gist" data-i18n="dropdownSaveGist" data-action="save-gist"></a>
+        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--open" data-i18n="dropdownViewer" data-action="open-viewer"></a>
+        <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--open" data-i18n="dropdownSaveGist" data-action="save-gist"></a>
         <a role="menuitem" tabindex="-1" href="#" class="report-icon report-icon--dark" data-i18n="dropdownDarkTheme" data-action="toggle-dark"></a>
       </div>
     </div>
