@@ -14,14 +14,14 @@
 class TreemapUtil {
   /**
    * @param {LH.Treemap.Node} node
-   * @param {(node: LH.Treemap.Node, path: string[]) => void} fn
+   * @param {(node: NodeWithElement, path: string[]) => void} fn
    * @param {string[]=} path
    */
   static walk(node, fn, path) {
     if (!path) path = [];
     path.push(node.name);
 
-    fn(node, path);
+    fn(/** @type {NodeWithElement} */ (node), path);
     if (!node.children) return;
 
     for (const child of node.children) {
