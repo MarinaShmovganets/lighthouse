@@ -546,8 +546,7 @@ class ReportUIFeatures {
    * @param {LH.Result} json
    */
   static openTreemap(json) {
-    const treemapData = /** @type {LH.Audit.Details.TreemapData} */ (
-      json.audits['script-treemap-data'].details);
+    const treemapData = json.audits['script-treemap-data'].details;
     if (!treemapData) {
       throw new Error('no script treemap data found');
     }
