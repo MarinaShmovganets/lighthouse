@@ -36,7 +36,7 @@ const textResourceTypes = [
 class ResponseCompression extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta<'DevtoolsLog'>} */
   meta = {
-    supportedModes: ['navigation', 'navigation'],
+    supportedModes: ['timespan', 'navigation'],
     dependencies: {DevtoolsLog: DevtoolsLog.symbol},
   }
 
