@@ -610,7 +610,7 @@ class TreemapViewer {
 
       node.dom.style.backgroundColor = depthOneNodeColor;
 
-      // Set a bicolor background to communicate unused-bytes
+      // Shade the element to communicate coverage.
       if (this.currentViewMode.id === 'unused-bytes') {
         const pctUsed = (1 - (node.unusedBytes || 0) / node.resourceBytes) * 100;
         node.dom.style.setProperty('--pctUsed', `${pctUsed}%`);
