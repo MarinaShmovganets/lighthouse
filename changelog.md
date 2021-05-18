@@ -2,7 +2,6 @@
 # 7.5.0 (2021-05-18)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v7.4.0...v7.5.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
 We expect this release to ship in the DevTools of [Chrome 92](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
 ## New contributors
@@ -17,7 +16,7 @@ We are releasing the Lighthouse Treemap!
 
 ![image](https://user-images.githubusercontent.com/4071474/118602146-2d08d480-b767-11eb-9273-9a8de7000e67.png)
 
-You may already be familiar with treemaps thanks to [webtreemap](https://github.com/evmar/webtreemap) (which we use!) or [source-map-explorer](https://github.com/danvk/source-map-explorer). With Lighthouse Treemap, you'll be able to view all the JavaScript bundles on your page in a single treemap view. The only requirement is that source maps are accessible (either publicly, or securely from a private network).
+You may already be familiar with treemaps thanks to [webtreemap](https://github.com/evmar/webtreemap) (which we use!) or [source-map-explorer](https://github.com/danvk/source-map-explorer). With Lighthouse Treemap, you'll be able to view all the JavaScript bundles on your page easily from a Lighthouse report, in addition to some insights that may help with bundle size. The only requirement is that source maps are accessible (either publicly, or securely from a private network).
 
 We even collect the coverage data from Chrome, and extrapolate the coverage of individual modules in a bundle:
 
