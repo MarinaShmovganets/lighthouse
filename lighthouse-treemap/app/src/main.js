@@ -33,8 +33,7 @@ class TreemapViewer {
    * @param {HTMLElement} el
    */
   constructor(options, el) {
-    const scriptTreemapData = /** @type {LH.Audit.Details.TreemapData} */ (
-      options.lhr.audits['script-treemap-data'].details);
+    const scriptTreemapData = options.lhr.audits['script-treemap-data'].details;
     if (!scriptTreemapData || scriptTreemapData.type !== 'treemap-data') {
       throw new Error('missing script-treemap-data');
     }
