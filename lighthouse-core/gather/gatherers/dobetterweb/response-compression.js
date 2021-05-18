@@ -10,7 +10,7 @@
   */
 'use strict';
 
-const FRGatherer = require('../gatherer.js');
+const FRGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 const URL = require('../../../lib/url-shim.js');
 const Sentry = require('../../../lib/sentry.js');
 const NetworkRequest = require('../../../lib/network-request.js');
