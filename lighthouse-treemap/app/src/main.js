@@ -391,8 +391,7 @@ class TreemapViewer {
 
     if (rootChanged || viewChanged) {
       this.updateColors();
-      this.el.id = this.currentViewMode.id;
-      applyActiveClass(this.currentViewMode.id);
+      applyActiveClass(this.currentViewMode.id, this.el);
     }
 
     this.previousRenderState = {
@@ -660,14 +659,16 @@ function renderViewModeButtons(viewModes) {
 
 /**
  * @param {string} currentViewModeId
+ * @param {HTMLElement} el
  */
-function applyActiveClass(currentViewModeId) {
+function applyActiveClass(currentViewModeId, el) {
   const viewModesEl = TreemapUtil.find('.lh-modes');
   for (const viewModeEl of viewModesEl.querySelectorAll('.view-mode')) {
     if (!(viewModeEl instanceof HTMLElement)) continue;
 
-    viewModeEl.classList
-      .toggle('view-mode--active', viewModeEl.id === `view-mode--${currentViewModeId}`);
+    const isMatch = viewModeEl.id === `view-mode--${currentViewModeId}`;
+    viewModeEl.classList.toggle('view-mode--active', isMatch);
+    el.classList.toggle(`lh-treemap--${viewModeEl.id}`, isMatch);
   }
 }
 

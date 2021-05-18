@@ -208,13 +208,13 @@ header {
   outline: 2px solid black;
 }
 
-.webtreemap-node::before {
+.lh-treemap--view-mode--unused-bytes .webtreemap-node::before {
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
   content: '';
-  display: none;
+  display: block;
   width: var(--pctUsed);
   background: repeating-linear-gradient(
           -45deg,
@@ -223,10 +223,6 @@ header {
           hsla(7, 85%, 56%, 0.3) 2px,
           hsla(7, 85%, 56%, 0.3) 4px
   );
-}
-
-.lh-treemap#unused-bytes .webtreemap-node::before {
-  display: block;
 }
 
 .webtreemap-caption {
