@@ -21,7 +21,7 @@ class TreemapUtil {
     if (!path) path = [];
     path.push(node.name);
 
-    fn(/** @type {NodeWithElement} */ (node), path);
+    fn(node, path);
     if (!node.children) return;
 
     for (const child of node.children) {
