@@ -14,7 +14,7 @@
 class TreemapUtil {
   /**
    * @param {LH.Treemap.Node} node
-   * @param {(node: LH.Treemap.Node, path: string[]) => void} fn
+   * @param {(node: NodeWithElement, path: string[]) => void} fn
    * @param {string[]=} path
    */
   static walk(node, fn, path) {
@@ -191,9 +191,7 @@ TreemapUtil.COLOR_HUES = [
   65.5,
   45,
   35.8,
-  14.4,
   15.9,
-  0,
   199.5,
 ];
 
