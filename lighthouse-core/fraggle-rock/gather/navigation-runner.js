@@ -39,6 +39,7 @@ const NetworkRecords = require('../../computed/network-records.js');
 
 /**
  * @param {{driver: Driver, config: LH.Config.FRConfig, requestedUrl: string}} args
+ * @return {Promise<{baseArtifacts: LH.FRBaseArtifacts}>}
  */
 async function _setup({driver, config, requestedUrl}) {
   await driver.connect();
@@ -160,6 +161,7 @@ async function _computeNavigationResult(
 
 /**
  * @param {NavigationContext} navigationContext
+ * @return {ReturnType<typeof _computeNavigationResult>}
  */
 async function _navigation(navigationContext) {
   const artifactState = getEmptyArtifactState();
@@ -184,6 +186,7 @@ async function _navigation(navigationContext) {
 
 /**
  * @param {{driver: Driver, config: LH.Config.FRConfig, requestedUrl: string; computedCache: NavigationContext['computedCache']}} args
+ * @return {Promise<{artifacts: Partial<LH.FRArtifacts & LH.FRBaseArtifacts>}>}
  */
 async function _navigations({driver, config, requestedUrl, computedCache}) {
   if (!config.navigations) throw new Error('No navigations configured');
