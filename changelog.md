@@ -13,7 +13,25 @@ Thanks to our new contributor 👽🐷🐰🐯🐻!
 
 ## Notable Changes
 
+We are releasing the Lighthouse Treemap!
 
+![image](https://user-images.githubusercontent.com/4071474/118602146-2d08d480-b767-11eb-9273-9a8de7000e67.png)
+
+You may already be familiar with treemaps thanks to [webtreemap](https://github.com/evmar/webtreemap) (which we use!) or [source-map-explorer](https://github.com/danvk/source-map-explorer). With Lighthouse Treemap, you'll be able to view all the JavaScript bundles on your page in a single treemap view. The only requirement is that source maps are accessible (either publicly, or securely from a private network).
+
+We even collect the coverage data from Chrome, and extrapolate the coverage of individual modules in a bundle:
+
+![image](https://user-images.githubusercontent.com/4071474/118602240-4742b280-b767-11eb-9f6a-433788029a30.png)
+
+Note: this only takes into account a cold-load: code only used after user interaction will be marked as unused. Stay tuned for a future release, which will enable you to configure user flows and capture even more accurate performance insights.
+
+If we detect a large module included by multiple bundles, we'll alert you of that too.
+
+You can access Lighthouse Treemap from the report:
+
+![image](https://user-images.githubusercontent.com/4071474/118600879-6e4cb480-b766-11eb-85f7-e8281006711b.png)
+
+Currently, only reports generated with the Lighthouse Node CLI will connect to the Lighthouse Treemap App. We are working on adding this functionality to Lighthouse in DevTools and PageSpeed Insights.
 
 ## Core
 
