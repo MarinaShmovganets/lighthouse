@@ -1,51 +1,58 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Johannes Weber @johannes-weber
- <a name="7.5.0"></a>
+<a name="7.5.0"></a>
 # 7.5.0 (2021-05-18)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v7.4.0...v7.5.0)
 
 ~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 92](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## New contributors
+
+Thanks to our new contributor 👽🐷🐰🐯🐻!
+
+- Johannes Weber @johannes-weber
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
+
 
 
 ## Core
 
-* computed-artifact: remove settings and options from context ([#12435](https://github.com/GoogleChrome/lighthouse/pull/12435))
-* driver: extract gotoURL to navigation module ([#12421](https://github.com/GoogleChrome/lighthouse/pull/12421))
-* fr: convert optimized-images gatherer ([#12491](https://github.com/GoogleChrome/lighthouse/pull/12491))
-* fr: convert image-elements gatherer ([#12474](https://github.com/GoogleChrome/lighthouse/pull/12474))
-* fr: extract warnings from gather-runner ([#12469](https://github.com/GoogleChrome/lighthouse/pull/12469))
-* fr: add computed cache to pass context ([#12427](https://github.com/GoogleChrome/lighthouse/pull/12427))
-* fr: convert source-maps gatherer ([#12467](https://github.com/GoogleChrome/lighthouse/pull/12467))
-* fr: convert js-usage gatherer ([#12450](https://github.com/GoogleChrome/lighthouse/pull/12450))
-* fr: extract driver preparation methods ([#12445](https://github.com/GoogleChrome/lighthouse/pull/12445))
-* fr: split out DOM utilities from legacy driver ([#12431](https://github.com/GoogleChrome/lighthouse/pull/12431))
-* responsive-images: ignore images larger than viewport ([#12414](https://github.com/GoogleChrome/lighthouse/pull/12414))
-* script-treemap-data: default config ([#12494](https://github.com/GoogleChrome/lighthouse/pull/12494))
 * add new CLS (all frames) to hidden metrics audit ([#12476](https://github.com/GoogleChrome/lighthouse/pull/12476))
-* fr: convert main-document-content gatherer ([#12470](https://github.com/GoogleChrome/lighthouse/pull/12470))
-* fr: extract navigation errors from gather-runner ([#12461](https://github.com/GoogleChrome/lighthouse/pull/12461))
-* fr: convert css-usage gatherer ([#12460](https://github.com/GoogleChrome/lighthouse/pull/12460))
-* fr: convert trace-elements gatherer ([#12442](https://github.com/GoogleChrome/lighthouse/pull/12442))
-* fr: separate phase from gatherMode ([#12370](https://github.com/GoogleChrome/lighthouse/pull/12370))
-* fr: add fetcher to transitional driver ([#12419](https://github.com/GoogleChrome/lighthouse/pull/12419))
-* robots: use new fetcher to get robots.txt ([#12423](https://github.com/GoogleChrome/lighthouse/pull/12423))
+* script-treemap-data: default config ([#12494](https://github.com/GoogleChrome/lighthouse/pull/12494))
 * script-treemap-data: include unmapped bytes ([#12452](https://github.com/GoogleChrome/lighthouse/pull/12452))
+* driver: extract gotoURL to navigation module ([#12421](https://github.com/GoogleChrome/lighthouse/pull/12421))
+* responsive-images: ignore images larger than viewport ([#12414](https://github.com/GoogleChrome/lighthouse/pull/12414))
+* robots: use new fetcher to get robots.txt ([#12423](https://github.com/GoogleChrome/lighthouse/pull/12423))
+
+## Fraggle Rock
+
+Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
+
+* computed-artifact: remove settings and options from context ([#12435](https://github.com/GoogleChrome/lighthouse/pull/12435))
+* convert optimized-images gatherer ([#12491](https://github.com/GoogleChrome/lighthouse/pull/12491))
+* convert image-elements gatherer ([#12474](https://github.com/GoogleChrome/lighthouse/pull/12474))
+* convert source-maps gatherer ([#12467](https://github.com/GoogleChrome/lighthouse/pull/12467))
+* convert js-usage gatherer ([#12450](https://github.com/GoogleChrome/lighthouse/pull/12450))
+* convert main-document-content gatherer ([#12470](https://github.com/GoogleChrome/lighthouse/pull/12470))
+* convert css-usage gatherer ([#12460](https://github.com/GoogleChrome/lighthouse/pull/12460))
+* convert trace-elements gatherer ([#12442](https://github.com/GoogleChrome/lighthouse/pull/12442))
+* extract warnings from gather-runner ([#12469](https://github.com/GoogleChrome/lighthouse/pull/12469))
+* extract driver preparation methods ([#12445](https://github.com/GoogleChrome/lighthouse/pull/12445))
+* extract navigation errors from gather-runner ([#12461](https://github.com/GoogleChrome/lighthouse/pull/12461))
+* split out DOM utilities from legacy driver ([#12431](https://github.com/GoogleChrome/lighthouse/pull/12431))
+* separate phase from gatherMode ([#12370](https://github.com/GoogleChrome/lighthouse/pull/12370))
+* add fetcher to transitional driver ([#12419](https://github.com/GoogleChrome/lighthouse/pull/12419))
+* add computed cache to pass context ([#12427](https://github.com/GoogleChrome/lighthouse/pull/12427))
 
 ## Report
 
-* metric filter refactor to JS and adornments ([#12477](https://github.com/GoogleChrome/lighthouse/pull/12477))
-* map metrics to audits ([#11732](https://github.com/GoogleChrome/lighthouse/pull/11732))
+* map metrics to audits, add metric filter ([#11732](https://github.com/GoogleChrome/lighthouse/pull/11732), [#12477](https://github.com/GoogleChrome/lighthouse/pull/12477))
 * add treemap button, refactor icon styles ([#12392](https://github.com/GoogleChrome/lighthouse/pull/12392))
 
 ## Deps
 
-* snyk: update snyk snapshot ([#12468](https://github.com/GoogleChrome/lighthouse/pull/12468))
+* snyk: update snyk snapshot ([#12443](https://github.com/GoogleChrome/lighthouse/pull/12443), [#12468](https://github.com/GoogleChrome/lighthouse/pull/12468))
 * update transitive dependencies ([#12466](https://github.com/GoogleChrome/lighthouse/pull/12466))
-* snyk: update snyk snapshot ([#12443](https://github.com/GoogleChrome/lighthouse/pull/12443))
 * update marky to latest ([#12440](https://github.com/GoogleChrome/lighthouse/pull/12440))
 
 ## I18n
@@ -68,7 +75,6 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 
 ## Misc
 
-* cli: destructure args in import ([#12398](https://github.com/GoogleChrome/lighthouse/pull/12398))
 * treemap: esc to zoom out ([#12498](https://github.com/GoogleChrome/lighthouse/pull/12498))
 * treemap: remove too similar color hues ([#12497](https://github.com/GoogleChrome/lighthouse/pull/12497))
 * treemap: shade background for unused bytes ([#12486](https://github.com/GoogleChrome/lighthouse/pull/12486))
@@ -80,12 +86,13 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 * treemap: use 0.1 for default granularity ([#12485](https://github.com/GoogleChrome/lighthouse/pull/12485))
 * treemap: remove byte size from title ([#12484](https://github.com/GoogleChrome/lighthouse/pull/12484))
 * treemap: add GA snippet for new property ([#12481](https://github.com/GoogleChrome/lighthouse/pull/12481))
-* move predictive-perf off renderer i18n ([#12482](https://github.com/GoogleChrome/lighthouse/pull/12482))
 * treemap: i18n ([#12441](https://github.com/GoogleChrome/lighthouse/pull/12441))
 * treemap: fix colors ([#12462](https://github.com/GoogleChrome/lighthouse/pull/12462))
 * treemap: duplicate-modules view mode ([#12424](https://github.com/GoogleChrome/lighthouse/pull/12424))
-* do not publish lighthouse-cli/test except smokehouse ([#12415](https://github.com/GoogleChrome/lighthouse/pull/12415))
 * treemap: add data table ([#12363](https://github.com/GoogleChrome/lighthouse/pull/12363))
+* cli: destructure args in import ([#12398](https://github.com/GoogleChrome/lighthouse/pull/12398))
+* move predictive-perf off renderer i18n ([#12482](https://github.com/GoogleChrome/lighthouse/pull/12482))
+* do not publish lighthouse-cli/test except smokehouse ([#12415](https://github.com/GoogleChrome/lighthouse/pull/12415))
 
 <a name="7.4.0"></a>
 # 7.4.0 (2021-04-27)
