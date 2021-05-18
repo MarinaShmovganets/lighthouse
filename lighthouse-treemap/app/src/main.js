@@ -591,8 +591,7 @@ class TreemapViewer {
         this.getHueForD1NodeName(depthOneNode ? depthOneNode.name : node.name);
       const depthOneNodeColor = hue !== undefined ? this.getColorFromHue(hue) : 'white';
 
-      const dom = node.dom;
-      if (!dom) return;
+      if (!node.dom) return;
 
       let backgroundColor;
       if (this.currentViewMode.highlights) {
@@ -605,16 +604,16 @@ class TreemapViewer {
         } else {
           backgroundColor = 'white';
         }
-        dom.style.backgroundColor = backgroundColor;
+        node.dom.style.backgroundColor = backgroundColor;
         return;
       }
 
-      dom.style.backgroundColor = depthOneNodeColor;
+      node.dom.style.backgroundColor = depthOneNodeColor;
 
       // Set a bicolor background to communicate unused-bytes
       if (this.currentViewMode.id === 'unused-bytes') {
         const pctUsed = (1 - (node.unusedBytes || 0) / node.resourceBytes) * 100;
-        dom.style.setProperty('--pctUsed', `${pctUsed}%`);
+        node.dom.style.setProperty('--pctUsed', `${pctUsed}%`);
       }
     });
   }
