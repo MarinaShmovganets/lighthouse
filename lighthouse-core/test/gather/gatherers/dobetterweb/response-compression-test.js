@@ -7,21 +7,13 @@
 
 /* eslint-env jest */
 
-jest.mock('../../../../gather/driver/network.js', () => ({
-  fetchResponseBodyFromCache: jest.fn(),
-}));
-
-const ResponseCompression =
-    require('../../../../gather/gatherers/dobetterweb/response-compression.js');
-const {createMockContext} = require('../../../fraggle-rock/gather/mock-driver.js');
-
-/** @type {jest.Mock} */
-let fetchResponseBodyFromCache;
-
-beforeEach(() => {
-  fetchResponseBodyFromCache
-    = require('../../../../gather/driver/network.js').fetchResponseBodyFromCache;
-});
+const {
+  createMockContext,
+  mockDriverSubmodules,
+} = require('../../../fraggle-rock/gather/mock-driver.js');
+const mocks = mockDriverSubmodules();
+const ResponseCompression
+  = require('../../../../gather/gatherers/dobetterweb/response-compression.js');
 
 const networkRecords = [
   {
@@ -133,7 +125,8 @@ describe('Optimized responses', () => {
   beforeEach(() => {
     gatherer = new ResponseCompression();
     context = createMockContext();
-    fetchResponseBodyFromCache.mockImplementation((_, id) => {
+    mocks.reset();
+    mocks.networkMock.fetchResponseBodyFromCache.mockImplementation((_, id) => {
       return Promise.resolve(networkRecords[id].content);
     });
   });
@@ -153,7 +146,7 @@ describe('Optimized responses', () => {
   });
 
   it('recovers from driver errors', async () => {
-    fetchResponseBodyFromCache.mockRejectedValue(new Error('Failed'));
+    mocks.networkMock.fetchResponseBodyFromCache.mockRejectedValue(new Error('Failed'));
     const artifact = await gatherer._getArtifact(context, networkRecords);
     expect(artifact).toHaveLength(2);
     expect(artifact[0].resourceSize).toEqual(6);
