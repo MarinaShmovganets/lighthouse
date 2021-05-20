@@ -55,12 +55,12 @@ function installMediaListener() {
  */
 /* c8 ignore start */
 async function collectTagsThatBlockFirstPaint() {
-  /** @type {MediaChange[]} */
+  /** @type {Array<MediaChange>} */
   // @ts-expect-error - `___linkMediaChanges` created in `installMediaListener`.
   const linkMediaChanges = window.___linkMediaChanges;
 
   try {
-    /** @type {LinkTag[]} */
+    /** @type {Array<LinkTag>} */
     const linkTags = [...document.querySelectorAll('link')]
       .filter(linkTag => {
         // Filter stylesheet/HTML imports that block rendering.
@@ -83,7 +83,7 @@ async function collectTagsThatBlockFirstPaint() {
         };
       });
 
-    /** @type {ScriptTag[]} */
+    /** @type {Array<ScriptTag>} */
     const scriptTags = [...document.querySelectorAll('head script[src]')]
       .filter(/** @return {scriptTag is HTMLScriptElement} */ scriptTag => {
         // SVGScriptElement can't appear in <head> (it'll be kicked to <body>), but keep tsc happy.
@@ -122,7 +122,7 @@ class TagsBlockingFirstPaint extends FRGatherer {
   }
 
   /**
-   * @param {LH.Artifacts.NetworkRequest[]} networkRecords
+   * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @return {Map<string, LH.Artifacts.NetworkRequest>}
    */
   static _filteredAndIndexedByUrl(networkRecords) {
@@ -151,8 +151,8 @@ class TagsBlockingFirstPaint extends FRGatherer {
 
   /**
    * @param {LH.Gatherer.FRTransitionalDriver} driver
-   * @param {LH.Artifacts.NetworkRequest[]} networkRecords
-   * @return {Promise<LH.Artifacts.TagBlockingFirstPaint[]>}
+   * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
+   * @return {Promise<Array<LH.Artifacts.TagBlockingFirstPaint>>}
    */
   static async findBlockingTags(driver, networkRecords) {
     const firstRequestEndTime = networkRecords.reduce(
@@ -162,7 +162,7 @@ class TagsBlockingFirstPaint extends FRGatherer {
     const tags = await driver.executionContext.evaluate(collectTagsThatBlockFirstPaint, {args: []});
     const requests = TagsBlockingFirstPaint._filteredAndIndexedByUrl(networkRecords);
 
-    /** @type {LH.Artifacts.TagBlockingFirstPaint[]} */
+    /** @type {Array<LH.Artifacts.TagBlockingFirstPaint>} */
     const result = [];
     for (const tag of tags) {
       const request = requests.get(tag.url);
