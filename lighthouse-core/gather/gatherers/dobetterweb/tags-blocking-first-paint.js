@@ -230,7 +230,7 @@ class TagsBlockingFirstPaint extends FRGatherer {
    * @param {LH.Gatherer.LoadData} loadData
    * @return {Promise<LH.Artifacts['TagsBlockingFirstPaint']>}
    */
-  async afterPass(passContext, loadData) {
+  afterPass(passContext, loadData) {
     return TagsBlockingFirstPaint.findBlockingTags(passContext.driver, loadData.networkRecords);
   }
 }
