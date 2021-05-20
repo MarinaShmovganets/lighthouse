@@ -85,6 +85,8 @@ declare global {
 
   type FlattenedPromise<A> = Promise<A extends Promise<infer X> ? X : A>;
 
+  type UnPromise<T> = T extends Promise<infer U> ? U : T
+
   /**
    * Split string `S` on delimiter `D`.
    * From https://github.com/microsoft/TypeScript/pull/40336#issue-476562046
@@ -393,11 +395,11 @@ declare global {
 
   interface Window {
     // Cached native functions/objects for use in case the page overwrites them.
-    // See: `driver.cacheNatives`.
+    // See: `executionContext.cacheNativesOnNewDocument`.
     __nativePromise: PromiseConstructor;
-    __nativeURL: URL;
+    __nativePerformance: Performance;
+    __nativeURL: typeof URL;
     __ElementMatches: Element['matches'];
-    __perfNow: Performance['now'];
 
     /** Used for monitoring long tasks in the test page. */
     ____lastLongTask?: number;

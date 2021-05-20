@@ -513,16 +513,16 @@
     "message": "Forminsk JavaScript"
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": {
-    "message": "Fjern overflødige regler fra stilark og utsett å laste inn CSS som ikke brukes på innholdet i den synlige delen av nettsiden. Da reduserer du antall byte som går med til unødvendig nettverksaktivitet. [Finn ut mer](https://web.dev/unused-css-rules/)."
+    "message": "Reduser antall ubrukte regler i stilark, og utsett innlasting av CSS som ikke brukes på innholdet på den synlige delen av nettsiden, for å redusere antall byte som går med til nettverksaktivitet. [Finn ut mer](https://web.dev/unused-css-rules/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | title": {
-    "message": "Fjern ubrukt CSS"
+    "message": "Reduser mengden ubrukt CSS"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
-    "message": "Fjern ubrukt JavaScript for å redusere antall byte som brukes av nettverksaktiviteten. [Finn ut mer](https://web.dev/unused-javascript/)."
+    "message": "Reduser mengden ubrukt JavaScript, og utsett innlasting av skript frem til de trengs, for å redusere antall byte som går med til nettverksaktivitet. [Finn ut mer](https://web.dev/unused-javascript/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
-    "message": "Fjern ubrukt JavaScript"
+    "message": "Reduser mengden ubrukt JavaScript"
   },
   "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | description": {
     "message": "En lang bufferlevetid kan gjøre at gjentatte besøk på siden din går raskere. [Finn ut mer](https://web.dev/uses-long-cache-ttl/)."
@@ -1703,17 +1703,17 @@
   "lighthouse-core/config/default-config.js | seoMobileGroupTitle": {
     "message": "Mobilvennlig"
   },
-  "lighthouse-core/gather/driver.js | warningData": {
-    "message": "{locationCount,plural, =1{Det kan være lagrede data som påvirker innlastingsytelsen, på denne plasseringen: {locations}. Utfør en revisjon på denne siden i et inkognitovindu for å forhindre disse ressursene fra å påvirke poengsummene.}other{Det kan være lagrede data som påvirker innlastingsytelsen, på disse plasseringene: {locations}. Utfør en revisjon på denne siden i et inkognitovindu for å forhindre disse ressursene fra å påvirke poengsummene.}}"
-  },
-  "lighthouse-core/gather/gather-runner.js | warningRedirected": {
-    "message": "Siden lastes kanskje ikke inn som forventet, fordi testnettadressen ({requested}) ble viderekoblet til {final}. Prøv å teste den andre nettadressen direkte."
-  },
-  "lighthouse-core/gather/gather-runner.js | warningSlowHostCpu": {
+  "lighthouse-core/gather/driver/environment.js | warningSlowHostCpu": {
     "message": "Den testede enheten ser ut til å ha tregere prosessor enn Lighthouse forventer. Dette kan virke negativt inn på ytelsespoengsummen din. Finn ut mer om [kalibrering av en hensiktsmessig multiplikator for prosessorforsinkelse](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling)."
   },
-  "lighthouse-core/gather/gather-runner.js | warningTimeout": {
+  "lighthouse-core/gather/driver/navigation.js | warningRedirected": {
+    "message": "Siden lastes kanskje ikke inn som forventet, fordi testnettadressen ({requested}) ble viderekoblet til {final}. Prøv å teste den andre nettadressen direkte."
+  },
+  "lighthouse-core/gather/driver/navigation.js | warningTimeout": {
     "message": "Siden ble lastet inn for tregt til å bli ferdig innenfor tidsgrensen. Resultatene kan være ufullstendige."
+  },
+  "lighthouse-core/gather/driver/storage.js | warningData": {
+    "message": "{locationCount,plural, =1{Det kan være lagrede data som påvirker innlastingsytelsen, på denne plasseringen: {locations}. Utfør en revisjon på denne siden i et inkognitovindu for å forhindre disse ressursene fra å påvirke poengsummene.}other{Det kan være lagrede data som påvirker innlastingsytelsen, på disse plasseringene: {locations}. Utfør en revisjon på denne siden i et inkognitovindu for å forhindre disse ressursene fra å påvirke poengsummene.}}"
   },
   "lighthouse-core/lib/csp-evaluator.js | allowlistFallback": {
     "message": "Vurder å legge til nettadresseskjemaene https: og http: (ignoreres av nettlesere som støtter «strict-dynamic») for bakoverkompatibilitet med eldre nettlesere."
@@ -1728,7 +1728,7 @@
     "message": "reflected-xss er avviklet siden CSP2. Bruk hodet X-XSS-Protection i stedet."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing base-uri allows injected <base> tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting base-uri to 'none' or 'self'."
+    "message": "Når base-uri mangler, kan injiserte <base>-tagger sette grunn-nettadressen for alle relative nettadresser (f.eks. skript) til et domene som en angriper kontrollerer. Vurder å sette base-uri til «none» eller «self»."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingObjectSrc": {
     "message": "Elementer som kontrolleres av object-src, anses som foreldede funksjoner. Vurder å sette object-src til «none» for å forhindre injisering av programtillegg som kjører utrygge skript."
@@ -2069,6 +2069,9 @@
   "lighthouse-core/report/html/renderer/util.js | runtimeUnknown": {
     "message": "Ukjent"
   },
+  "lighthouse-core/report/html/renderer/util.js | showRelevantAudits": {
+    "message": "Show audits relevant to:"
+  },
   "lighthouse-core/report/html/renderer/util.js | snippetCollapseButtonLabel": {
     "message": "Skjul fragment"
   },
@@ -2087,11 +2090,38 @@
   "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
     "message": "Verdiene er anslått og kan variere. [Beregningen av ytelsespoengsummen](https://web.dev/performance-scoring/) er basert direkte på disse verdiene."
   },
+  "lighthouse-core/report/html/renderer/util.js | viewTreemapLabel": {
+    "message": "Vis trekart"
+  },
   "lighthouse-core/report/html/renderer/util.js | warningAuditsGroupTitle": {
     "message": "Revisjoner som er bestått, men med advarsler"
   },
   "lighthouse-core/report/html/renderer/util.js | warningHeader": {
     "message": "Advarsler: "
+  },
+  "lighthouse-treemap/app/src/util.js | allLabel": {
+    "message": "Alt"
+  },
+  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+    "message": "Alle skript"
+  },
+  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+    "message": "Dekning"
+  },
+  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+    "message": "Duplikatmoduler"
+  },
+  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+    "message": "Ressursstørrelse i byte"
+  },
+  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+    "message": "Navn"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+    "message": "Slå av/på tabell"
+  },
+  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+    "message": "Ubrukte byte"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
     "message": "For animert innhold, bruk [`amp-anim`‏](https://amp.dev/documentation/components/amp-anim/) for å minimere prosessorbruken når innholdet er utenfor skjermen."

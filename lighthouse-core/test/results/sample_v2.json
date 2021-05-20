@@ -8,7 +8,7 @@
       "axe-core": "4.1.3"
     }
   },
-  "lighthouseVersion": "7.3.0",
+  "lighthouseVersion": "7.5.0",
   "fetchTime": "2018-03-13T00:55:45.840Z",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -703,59 +703,14 @@
     },
     "image-size-responsive": {
       "id": "image-size-responsive",
-      "title": "Serves images with low resolution",
+      "title": "Serves images with appropriate resolution",
       "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn more](https://web.dev/serve-responsive-images/).",
-      "score": 0,
+      "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
         "type": "table",
-        "headings": [
-          {
-            "key": "url",
-            "itemType": "thumbnail",
-            "text": ""
-          },
-          {
-            "key": "elidedUrl",
-            "itemType": "url",
-            "text": "URL"
-          },
-          {
-            "key": "displayedSize",
-            "itemType": "text",
-            "text": "Displayed size"
-          },
-          {
-            "key": "actualSize",
-            "itemType": "text",
-            "text": "Actual size"
-          },
-          {
-            "key": "expectedSize",
-            "itemType": "text",
-            "text": "Expected size"
-          }
-        ],
-        "items": [
-          {
-            "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
-            "elidedUrl": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
-            "displayedSize": "4800 x 3180",
-            "actualSize": "480 x 318",
-            "actualPixels": 152640,
-            "expectedSize": "9600 x 6360",
-            "expectedPixels": 61056000
-          },
-          {
-            "url": "http://localhost:10200/dobetterweb/lighthouse-rotating.gif",
-            "elidedUrl": "http://localhost:10200/dobetterweb/lighthouse-rotating.gif",
-            "displayedSize": "811 x 462",
-            "actualSize": "811 x 462",
-            "actualPixels": 374682,
-            "expectedSize": "1622 x 924",
-            "expectedPixels": 1498728
-          }
-        ]
+        "headings": [],
+        "items": []
       }
     },
     "preload-fonts": {
@@ -1552,7 +1507,8 @@
             "layoutShiftMaxSessionGap1s": 0.42,
             "layoutShiftMaxSessionGap1sLimit5s": 0.42,
             "layoutShiftMaxSliding1s": 0.42,
-            "layoutShiftMaxSliding300ms": 0.42
+            "layoutShiftMaxSliding300ms": 0.42,
+            "layoutShiftMaxSessionGap1sLimit5sAllFrames": -1
           },
           {
             "lcpInvalidated": false
@@ -2547,6 +2503,42 @@
             "height": 150
           }
         }
+      }
+    },
+    "script-treemap-data": {
+      "id": "script-treemap-data",
+      "title": "Script Treemap Data",
+      "description": "Used for treemap app",
+      "score": null,
+      "scoreDisplayMode": "informative",
+      "details": {
+        "type": "treemap-data",
+        "nodes": [
+          {
+            "name": "http://localhost:10200/dobetterweb/dbw_tester.html",
+            "resourceBytes": 5806
+          },
+          {
+            "name": "http://localhost:10200/dobetterweb/dbw_tester.js",
+            "resourceBytes": 48
+          },
+          {
+            "name": "http://localhost:10200/dobetterweb/empty_module.js?delay=500",
+            "resourceBytes": 60
+          },
+          {
+            "name": "http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000",
+            "resourceBytes": 60
+          },
+          {
+            "name": "http://localhost:10200/zone.js",
+            "resourceBytes": 30
+          },
+          {
+            "name": "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js",
+            "resourceBytes": 63
+          }
+        ]
       }
     },
     "pwa-cross-browser": {
@@ -3771,8 +3763,8 @@
     },
     "unused-css-rules": {
       "id": "unused-css-rules",
-      "title": "Remove unused CSS",
-      "description": "Remove dead rules from stylesheets and defer the loading of CSS not used for above-the-fold content to reduce unnecessary bytes consumed by network activity. [Learn more](https://web.dev/unused-css-rules/).",
+      "title": "Reduce unused CSS",
+      "description": "Reduce unused rules from stylesheets and defer CSS not used for above-the-fold content to decrease bytes consumed by network activity. [Learn more](https://web.dev/unused-css-rules/).",
       "score": 1,
       "scoreDisplayMode": "numeric",
       "numericValue": 0,
@@ -3788,8 +3780,8 @@
     },
     "unused-javascript": {
       "id": "unused-javascript",
-      "title": "Remove unused JavaScript",
-      "description": "Remove unused JavaScript to reduce bytes consumed by network activity. [Learn more](https://web.dev/unused-javascript/).",
+      "title": "Reduce unused JavaScript",
+      "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. [Learn more](https://web.dev/unused-javascript/).",
       "score": 1,
       "scoreDisplayMode": "numeric",
       "numericValue": 0,
@@ -4921,36 +4913,89 @@
         {
           "id": "first-contentful-paint",
           "weight": 15,
-          "group": "metrics"
+          "group": "metrics",
+          "acronym": "FCP",
+          "relevantAudits": [
+            "server-response-time",
+            "render-blocking-resources",
+            "redirects",
+            "critical-request-chains",
+            "uses-text-compression",
+            "uses-rel-preconnect",
+            "uses-rel-preload",
+            "font-display",
+            "unminified-javascript",
+            "unminified-css",
+            "unused-css-rules"
+          ]
         },
         {
           "id": "speed-index",
           "weight": 15,
-          "group": "metrics"
+          "group": "metrics",
+          "acronym": "SI"
         },
         {
           "id": "largest-contentful-paint",
           "weight": 25,
-          "group": "metrics"
+          "group": "metrics",
+          "acronym": "LCP",
+          "relevantAudits": [
+            "server-response-time",
+            "render-blocking-resources",
+            "redirects",
+            "critical-request-chains",
+            "uses-text-compression",
+            "uses-rel-preconnect",
+            "uses-rel-preload",
+            "font-display",
+            "unminified-javascript",
+            "unminified-css",
+            "unused-css-rules",
+            "largest-contentful-paint-element",
+            "preload-lcp-image",
+            "unused-javascript",
+            "efficient-animated-content",
+            "total-byte-weight"
+          ]
         },
         {
           "id": "interactive",
           "weight": 15,
-          "group": "metrics"
+          "group": "metrics",
+          "acronym": "TTI"
         },
         {
           "id": "total-blocking-time",
           "weight": 25,
-          "group": "metrics"
+          "group": "metrics",
+          "acronym": "TBT",
+          "relevantAudits": [
+            "long-tasks",
+            "third-party-summary",
+            "third-party-facades",
+            "bootup-time",
+            "mainthread-work-breakdown",
+            "dom-size",
+            "duplicated-javascript",
+            "legacy-javascript"
+          ]
         },
         {
           "id": "cumulative-layout-shift",
           "weight": 5,
-          "group": "metrics"
+          "group": "metrics",
+          "acronym": "CLS",
+          "relevantAudits": [
+            "layout-shift-elements",
+            "non-composited-animations",
+            "unsized-images"
+          ]
         },
         {
           "id": "first-cpu-idle",
-          "weight": 0
+          "weight": 0,
+          "acronym": "FCI"
         },
         {
           "id": "max-potential-fid",
@@ -4958,7 +5003,8 @@
         },
         {
           "id": "first-meaningful-paint",
-          "weight": 0
+          "weight": 0,
+          "acronym": "FMP"
         },
         {
           "id": "estimated-input-latency",
@@ -5189,6 +5235,10 @@
         },
         {
           "id": "final-screenshot",
+          "weight": 0
+        },
+        {
+          "id": "script-treemap-data",
           "weight": 0
         }
       ],
@@ -5559,7 +5609,7 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.19
+      "score": 0.25
     },
     "seo": {
       "title": "SEO",
@@ -6388,6 +6438,24 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:script-treemap-data",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:JSBundles",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:ModuleDuplication",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:pwa-cross-browser",
         "duration": 100,
         "entryType": "measure"
@@ -7063,12 +7131,14 @@
       "runtimeSettingsUANetwork": "User agent (network)",
       "runtimeSettingsUrl": "URL",
       "runtimeUnknown": "Unknown",
+      "showRelevantAudits": "Show audits relevant to:",
       "snippetCollapseButtonLabel": "Collapse snippet",
       "snippetExpandButtonLabel": "Expand snippet",
       "thirdPartyResourcesLabel": "Show 3rd-party resources",
       "throttlingProvided": "Provided by environment",
       "toplevelWarningsMessage": "There were issues affecting this run of Lighthouse:",
       "varianceDisclaimer": "Values are estimated and may vary. The [performance score is calculated](https://web.dev/performance-scoring/) directly from these metrics.",
+      "viewTreemapLabel": "View Treemap",
       "warningAuditsGroupTitle": "Passed audits but with warnings",
       "warningHeader": "Warnings: "
     },
@@ -7283,7 +7353,6 @@
       "lighthouse-core/lib/i18n/i18n.js | columnURL": [
         "audits[server-response-time].details.headings[0].label",
         "audits[image-aspect-ratio].details.headings[1].text",
-        "audits[image-size-responsive].details.headings[1].text",
         "audits[preload-fonts].details.headings[0].text",
         "audits[bootup-time].details.headings[0].text",
         "audits[network-rtt].details.headings[0].text",
@@ -7403,20 +7472,11 @@
       "lighthouse-core/audits/image-aspect-ratio.js | columnActual": [
         "audits[image-aspect-ratio].details.headings[3].text"
       ],
-      "lighthouse-core/audits/image-size-responsive.js | failureTitle": [
+      "lighthouse-core/audits/image-size-responsive.js | title": [
         "audits[image-size-responsive].title"
       ],
       "lighthouse-core/audits/image-size-responsive.js | description": [
         "audits[image-size-responsive].description"
-      ],
-      "lighthouse-core/audits/image-size-responsive.js | columnDisplayed": [
-        "audits[image-size-responsive].details.headings[2].text"
-      ],
-      "lighthouse-core/audits/image-size-responsive.js | columnActual": [
-        "audits[image-size-responsive].details.headings[3].text"
-      ],
-      "lighthouse-core/audits/image-size-responsive.js | columnExpected": [
-        "audits[image-size-responsive].details.headings[4].text"
       ],
       "lighthouse-core/audits/preload-fonts.js | failureTitle": [
         "audits[preload-fonts].title"

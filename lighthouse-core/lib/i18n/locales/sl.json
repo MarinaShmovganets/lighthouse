@@ -513,16 +513,16 @@
     "message": "Pomanjšajte JavaScript"
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": {
-    "message": "Iz slogovnih datotek odstranite nedejavna pravila in odložite nalaganje CSS-ja, ki se ne uporablja za vsebino na vrhu strani, ter tako zmanjšajte nepotrebno porabo bajtov v omrežni dejavnosti. [Več o tem](https://web.dev/unused-css-rules/)."
+    "message": "V slogovnih datotekah zmanjšajte število nedejavnih pravil in odložite nalaganje CSS-ja, ki se ne uporablja za vsebino na vrhu strani, ter tako zmanjšajte nepotrebno porabo bajtov v omrežni dejavnosti. [Več o tem](https://web.dev/unused-css-rules/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | title": {
-    "message": "Odstranitev neuporabljenega CSS-ja"
+    "message": "Zmanjšajte količino neuporabljenega CSS-ja"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
-    "message": "Odstranite neuporabljeni JavaScript, če želite zmanjšati število bajtov, uporabljenih v omrežni dejavnosti. [Več o tem](https://web.dev/unused-javascript/)."
+    "message": "Zmanjšajte količino neuporabljenega JavaScripta in odložite nalaganje skriptov, dokler niso potrebni, ter tako zmanjšajte nepotrebno porabo bajtov v omrežni dejavnosti. [Več o tem](https://web.dev/unused-javascript/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
-    "message": "Odstranite neuporabljeni JavaScript"
+    "message": "Zmanjšajte količino neuporabljenega JavaScripta"
   },
   "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | description": {
     "message": "Dolgotrajno predpomnjenje lahko pospeši vnovične obiske strani. [Več o tem](https://web.dev/uses-long-cache-ttl/)."
@@ -1703,17 +1703,17 @@
   "lighthouse-core/config/default-config.js | seoMobileGroupTitle": {
     "message": "Prilagojeno za mobilne naprave"
   },
-  "lighthouse-core/gather/driver.js | warningData": {
-    "message": "{locationCount,plural, =1{Na tej lokaciji so morda shranjeni podatki, ki vplivajo na uspešnost nalaganja: {locations}. Preglejte to stran v anonimnem oknu, da preprečite, da bi ti viri vplivali na vaše rezultate.}one{Na teh lokacijah so morda shranjeni podatki, ki vplivajo na uspešnost nalaganja: {locations}. Preglejte to stran v anonimnem oknu, da preprečite, da bi ti viri vplivali na vaše rezultate.}two{Na teh lokacijah so morda shranjeni podatki, ki vplivajo na uspešnost nalaganja: {locations}. Preglejte to stran v anonimnem oknu, da preprečite, da bi ti viri vplivali na vaše rezultate.}few{Na teh lokacijah so morda shranjeni podatki, ki vplivajo na uspešnost nalaganja: {locations}. Preglejte to stran v anonimnem oknu, da preprečite, da bi ti viri vplivali na vaše rezultate.}other{Na teh lokacijah so morda shranjeni podatki, ki vplivajo na uspešnost nalaganja: {locations}. Preglejte to stran v anonimnem oknu, da preprečite, da bi ti viri vplivali na vaše rezultate.}}"
-  },
-  "lighthouse-core/gather/gather-runner.js | warningRedirected": {
-    "message": "Stran se morda ne naloži po pričakovanjih, ker je bil preizkusni URL ({requested}) preusmerjen na {final}. Poskusite neposredno preizkusiti drugi URL."
-  },
-  "lighthouse-core/gather/gather-runner.js | warningSlowHostCpu": {
+  "lighthouse-core/gather/driver/environment.js | warningSlowHostCpu": {
     "message": "Videti je, da ima preizkušena naprava počasnejši CPE kot ga pričakuje Lighthouse. To lahko negativno vpliva na rezultat uspešnosti. Preberite več o [umerjanju ustreznega množitelja za upočasnitev CPE-ja](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling)."
   },
-  "lighthouse-core/gather/gather-runner.js | warningTimeout": {
+  "lighthouse-core/gather/driver/navigation.js | warningRedirected": {
+    "message": "Stran se morda ne naloži po pričakovanjih, ker je bil preizkusni URL ({requested}) preusmerjen na {final}. Poskusite neposredno preizkusiti drugi URL."
+  },
+  "lighthouse-core/gather/driver/navigation.js | warningTimeout": {
     "message": "Stran se je naložila prepočasi, da bi se nalaganje dokončalo znotraj časovne omejitve. Rezultati so morda nepopolni."
+  },
+  "lighthouse-core/gather/driver/storage.js | warningData": {
+    "message": "{locationCount,plural, =1{Na tej lokaciji so morda shranjeni podatki, ki vplivajo na uspešnost nalaganja: {locations}. Preglejte to stran v anonimnem oknu, da preprečite, da bi ti viri vplivali na vaše rezultate.}one{Na teh lokacijah so morda shranjeni podatki, ki vplivajo na uspešnost nalaganja: {locations}. Preglejte to stran v anonimnem oknu, da preprečite, da bi ti viri vplivali na vaše rezultate.}two{Na teh lokacijah so morda shranjeni podatki, ki vplivajo na uspešnost nalaganja: {locations}. Preglejte to stran v anonimnem oknu, da preprečite, da bi ti viri vplivali na vaše rezultate.}few{Na teh lokacijah so morda shranjeni podatki, ki vplivajo na uspešnost nalaganja: {locations}. Preglejte to stran v anonimnem oknu, da preprečite, da bi ti viri vplivali na vaše rezultate.}other{Na teh lokacijah so morda shranjeni podatki, ki vplivajo na uspešnost nalaganja: {locations}. Preglejte to stran v anonimnem oknu, da preprečite, da bi ti viri vplivali na vaše rezultate.}}"
   },
   "lighthouse-core/lib/csp-evaluator.js | allowlistFallback": {
     "message": "Razmislite o dodajanju shem URL-jev https: in http: (brskalniki, ki podpirajo element »strict-dynamic«, jih prezrejo) zaradi povratne združljivosti s starejšimi brskalniki."
@@ -1728,7 +1728,7 @@
     "message": "Direktiva reflected-xss je zastarela od pravilnika CSP2. Uporabite glavo za X-XSS-Protection."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing base-uri allows injected <base> tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting base-uri to 'none' or 'self'."
+    "message": "Manjkajoči element base-uri omogoča, da vstavljene oznake <base> nastavijo temeljni URL za vse relativne URL-je (npr. skripte) do domene, ki jo nadzira napadalec. Razmislite o nastavitvi elementa base-uri na »none« ali »self«."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingObjectSrc": {
     "message": "Elementi, ki jih nadzira object-src, se obravnavajo kot starejše funkcije. Razmislite o nastavitvi elementa object-src na »none«, da preprečite vstavitev vtičnikov, ki izvajajo skripte, ki niso varni."
@@ -2069,6 +2069,9 @@
   "lighthouse-core/report/html/renderer/util.js | runtimeUnknown": {
     "message": "Neznano"
   },
+  "lighthouse-core/report/html/renderer/util.js | showRelevantAudits": {
+    "message": "Show audits relevant to:"
+  },
   "lighthouse-core/report/html/renderer/util.js | snippetCollapseButtonLabel": {
     "message": "Strni delček"
   },
@@ -2087,11 +2090,38 @@
   "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
     "message": "Vrednosti so ocenjene in lahko odstopajo. [Rezultat uspešnosti se izračuna](https://web.dev/performance-scoring/) neposredno iz teh meritev."
   },
+  "lighthouse-core/report/html/renderer/util.js | viewTreemapLabel": {
+    "message": "Ogled drevesnega zemljevida"
+  },
   "lighthouse-core/report/html/renderer/util.js | warningAuditsGroupTitle": {
     "message": "Pregledi so bili uspešno opravljeni, vendar z opozorili"
   },
   "lighthouse-core/report/html/renderer/util.js | warningHeader": {
     "message": "Opozorila: "
+  },
+  "lighthouse-treemap/app/src/util.js | allLabel": {
+    "message": "Vse"
+  },
+  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+    "message": "Vsi skripti"
+  },
+  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+    "message": "Pokritost"
+  },
+  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+    "message": "Podvojeni moduli"
+  },
+  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+    "message": "Bajti sredstva"
+  },
+  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+    "message": "Ime"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+    "message": "Preklop tabele"
+  },
+  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+    "message": "Neuporabljeni bajti"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
     "message": "Za animirano vsebino uporabite [`amp-anim`](https://amp.dev/documentation/components/amp-anim/), da zmanjšate uporabo CPE-ja, ko vsebina ni na zaslonu."

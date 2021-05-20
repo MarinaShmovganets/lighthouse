@@ -513,16 +513,16 @@
     "message": "JavaScript'i küçült"
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": {
-    "message": "Ağ etkinliğinin gereksiz yere kullandığı bayt sayısını azaltmak için, kullanılmayan kuralları stil sayfalarından kaldırın ve ekranın üst kısmında içerik için kullanılmayan CSS'nin yüklenmesini erteleyin. [Daha fazla bilgi](https://web.dev/unused-css-rules/)."
+    "message": "Ağ etkinliğinin kullandığı bayt sayısını azaltmak üzere stil sayfalarında kullanılmayan kuralları azaltıp ekranın üst kısmında içerik için kullanılmayan CSS'yi erteleyin. [Daha fazla bilgi](https://web.dev/unused-css-rules/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | title": {
-    "message": "Kullanılmayan CSS'yi kaldırın"
+    "message": "Kullanılmayan CSS'yi azaltın"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
-    "message": "Ağ etkinliğinin kullandığı bayt sayısını azaltmak için kullanılmayan JavaScript'i kaldırın. [Daha fazla bilgi](https://web.dev/unused-javascript/)."
+    "message": "Ağ etkinliğinin kullandığı bayt sayısını azaltılmaları gerekene kadar kullanılmayan JavaScript'i azaltıp komut dosyalarını erteleyin. [Daha fazla bilgi](https://web.dev/unused-javascript/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
-    "message": "Kullanılmayan JavaScript'i kaldırın"
+    "message": "Kullanılmayan JavaScript'i azaltın"
   },
   "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | description": {
     "message": "Uzun önbellek ömrü, sayfanızın tekrar ziyaret edilmesi sürecini hızlandırabilir. [Daha fazla bilgi](https://web.dev/uses-long-cache-ttl/)."
@@ -1703,17 +1703,17 @@
   "lighthouse-core/config/default-config.js | seoMobileGroupTitle": {
     "message": "Mobil Uyumlu"
   },
-  "lighthouse-core/gather/driver.js | warningData": {
-    "message": "{locationCount,plural, =1{Şu konumda yükleme performansını etkileyen depolanmış veriler olabilir: {locations}. Bu kaynakların puanlarınızı etkilemesini engellemek için bu sayfayı gizli pencerede denetleyin.}other{Şu konumlarda yükleme performansını etkileyen depolanmış veriler olabilir: {locations}. Bu kaynakların puanlarınızı etkilemesini engellemek için bu sayfayı gizli pencerede denetleyin.}}"
-  },
-  "lighthouse-core/gather/gather-runner.js | warningRedirected": {
-    "message": "Sayfa, test URL'niz ({requested}) {final} adresine yönlendirildiğinden beklendiği gibi yüklenmiyor olabilir. İkinci URL'yi doğrudan test etmeyi deneyin."
-  },
-  "lighthouse-core/gather/gather-runner.js | warningSlowHostCpu": {
+  "lighthouse-core/gather/driver/environment.js | warningSlowHostCpu": {
     "message": "Test edilen cihazın CPU'sunun, Lighthouse'un beklediğinden daha yavaş olduğu anlaşılıyor. Bu durum, performans skorunuzu olumsuz etkileyebilir. [Uygun CPU yavaşlama katsayısını ayarlama](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling) hakkında daha fazla bilgi edinin."
   },
-  "lighthouse-core/gather/gather-runner.js | warningTimeout": {
+  "lighthouse-core/gather/driver/navigation.js | warningRedirected": {
+    "message": "Sayfa, test URL'niz ({requested}) {final} adresine yönlendirildiğinden beklendiği gibi yüklenmiyor olabilir. İkinci URL'yi doğrudan test etmeyi deneyin."
+  },
+  "lighthouse-core/gather/driver/navigation.js | warningTimeout": {
     "message": "Sayfa, zaman sınırı içinde bitmeyecek kadar yavaş yüklendi. Sonuçlar eksik olabilir."
+  },
+  "lighthouse-core/gather/driver/storage.js | warningData": {
+    "message": "{locationCount,plural, =1{Şu konumda yükleme performansını etkileyen depolanmış veriler olabilir: {locations}. Bu kaynakların puanlarınızı etkilemesini engellemek için bu sayfayı gizli pencerede denetleyin.}other{Şu konumlarda yükleme performansını etkileyen depolanmış veriler olabilir: {locations}. Bu kaynakların puanlarınızı etkilemesini engellemek için bu sayfayı gizli pencerede denetleyin.}}"
   },
   "lighthouse-core/lib/csp-evaluator.js | allowlistFallback": {
     "message": "Eski tarayıcılarla geriye dönük uyumluluk sağlamak için https: ve http: URL şemaları (\"strict-dynamic\" yönergesini destekleyen tarayıcılar tarafından yok sayılır) eklemeyi düşünün."
@@ -1728,7 +1728,7 @@
     "message": "reflected-xss yönergesi CSP2'den beri kullanılmamaktadır. Lütfen onun yerine X-XSS-Protection başlığını kullanın."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing base-uri allows injected <base> tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting base-uri to 'none' or 'self'."
+    "message": "Base-uri yönergesinin olmaması, yerleştirilen <base> etiketlerinin tüm göreli URL'ler (örneğin, komut dosyaları) için temel URL'yi saldırgan kontrolündeki bir alana ayarlamaya olanak tanır. Base-uri'yi \"none\" veya \"self\" olarak ayarlamayı düşünün."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingObjectSrc": {
     "message": "object-src tarafından kontrol edilen öğeler eski özellik olarak kabul edilir. Güvenli olmayan komut satırları yürüten eklentilerin yerleştirilmesine engel olmak için object-src yönergesini \"none\" olarak ayarlamayı düşünün."
@@ -2069,6 +2069,9 @@
   "lighthouse-core/report/html/renderer/util.js | runtimeUnknown": {
     "message": "Bilinmiyor"
   },
+  "lighthouse-core/report/html/renderer/util.js | showRelevantAudits": {
+    "message": "Show audits relevant to:"
+  },
   "lighthouse-core/report/html/renderer/util.js | snippetCollapseButtonLabel": {
     "message": "Snippet'i daralt"
   },
@@ -2087,11 +2090,38 @@
   "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
     "message": "Değerler tahminidir ve değişiklik gösterebilir. [Performance skorunun hesaplanması ](https://web.dev/performance-scoring/), doğrudan bu metriklerle yapılır."
   },
+  "lighthouse-core/report/html/renderer/util.js | viewTreemapLabel": {
+    "message": "Ağaç grafiği göster"
+  },
   "lighthouse-core/report/html/renderer/util.js | warningAuditsGroupTitle": {
     "message": "Kontrollerden geçti, ancak uyarılar var"
   },
   "lighthouse-core/report/html/renderer/util.js | warningHeader": {
     "message": "Uyarılar: "
+  },
+  "lighthouse-treemap/app/src/util.js | allLabel": {
+    "message": "Tümü"
+  },
+  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+    "message": "Tüm Alfabeler"
+  },
+  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+    "message": "Kapsam"
+  },
+  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+    "message": "Yinelenen Modüller"
+  },
+  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+    "message": "Kaynak Baytları"
+  },
+  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+    "message": "Ad"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+    "message": "Tabloyu Aç/Kapat"
+  },
+  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+    "message": "Kullanılmayan Baytlar"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
     "message": "Animasyonlu içerik için içerik ekran dışındayken CPU kullanımını en aza indirmek amacıyla [`amp-anim`](https://amp.dev/documentation/components/amp-anim/) kullanın."

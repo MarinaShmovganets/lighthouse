@@ -5,6 +5,8 @@
  */
 'use strict';
 
+/** @typedef {import('../../lib/i18n/locales').LhlMessages} LhlMessages */
+
 const path = require('path');
 const MessageFormat = require('intl-messageformat').default;
 const lookupClosestLocale = require('lookup-closest-locale');
@@ -40,6 +42,10 @@ const MESSAGE_I18N_ID_REGEX = / | [^\s]+$/;
   if (supportedLocales.length !== minimumLocales.length) {
     Intl.NumberFormat = IntlPolyfill.NumberFormat;
     Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
+  }
+  // Deal with buggy regex caching. https://github.com/andyearnshaw/Intl.js/issues/308
+  if (IntlPolyfill.__disableRegExpRestore) {
+    IntlPolyfill.__disableRegExpRestore();
   }
 })();
 
@@ -503,8 +509,6 @@ function replaceIcuMessages(inputObject, locale) {
   replaceInObject(inputObject, icuMessagePaths);
   return icuMessagePaths;
 }
-
-/** @typedef {import('./locales').LhlMessages} LhlMessages */
 
 /**
  * Populate the i18n string lookup dict with locale data

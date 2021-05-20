@@ -223,6 +223,17 @@ class ScriptTreemapDataAudit extends Audit {
           sourcesData[source] = sourceData;
         }
 
+        if (bundle.sizes.unmappedBytes) {
+          /** @type {SourceData} */
+          const sourceData = {
+            resourceBytes: bundle.sizes.unmappedBytes,
+          };
+          if (unusedJavascriptSummary.sourcesWastedBytes) {
+            sourceData.unusedBytes = unusedJavascriptSummary.sourcesWastedBytes['(unmapped)'];
+          }
+          sourcesData['(unmapped)'] = sourceData;
+        }
+
         node = this.makeScriptNode(scriptElement.src, bundle.rawMap.sourceRoot || '', sourcesData);
       } else {
         // No valid source map for this script, so we can only produce a single node.
@@ -246,13 +257,12 @@ class ScriptTreemapDataAudit extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const treemapData = await ScriptTreemapDataAudit.makeNodes(artifacts, context);
+    const nodes = await ScriptTreemapDataAudit.makeNodes(artifacts, context);
 
-    // TODO: when out of experimental should make a new detail type.
-    /** @type {LH.Audit.Details.DebugData} */
+    /** @type {LH.Audit.Details.TreemapData} */
     const details = {
-      type: 'debugdata',
-      treemapData,
+      type: 'treemap-data',
+      nodes,
     };
 
     return {

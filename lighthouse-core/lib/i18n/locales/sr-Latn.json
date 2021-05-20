@@ -513,16 +513,16 @@
     "message": "Umanjite JavaScript"
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": {
-    "message": "Uklonite neaktivna pravila iz opisa stilova i odložite učitavanje CSS-a koji se ne koristi za sadržaj iznad preloma da biste smanjili nepotrebnu potrošnju podataka tokom mrežnih aktivnosti. [Saznajte više](https://web.dev/unused-css-rules/)."
+    "message": "Smanjite nekorišćena pravila iz opisa stilova i odložite CSS koji se ne koristi za sadržaj iznad preloma da biste smanjili potrošnju bajtova tokom mrežnih aktivnosti. [Saznajte više](https://web.dev/unused-css-rules/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | title": {
-    "message": "Uklonite nekorišćeni CSS"
+    "message": "Smanjite nekorišćeni CSS"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
-    "message": "Uklonite nekorišćeni JavaScript da biste smanjili potrošnju podataka tokom mrežnih aktivnosti. [Saznajte više](https://web.dev/unused-javascript/)."
+    "message": "Smanjite nekorišćeni JavaScript i odložite učitavanje skripti dok ne budu potrebne da biste smanjili potrošnju bajtova tokom mrežnih aktivnosti. [Saznajte više](https://web.dev/unused-javascript/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
-    "message": "Uklonite nekorišćeni JavaScript"
+    "message": "Smanjite nekorišćeni JavaScript"
   },
   "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | description": {
     "message": "Dugo trajanje keša može da ubrza ponovne posete stranici. [Saznajte više](https://web.dev/uses-long-cache-ttl/)."
@@ -1703,17 +1703,17 @@
   "lighthouse-core/config/default-config.js | seoMobileGroupTitle": {
     "message": "Prilagođeno mobilnim uređajima"
   },
-  "lighthouse-core/gather/driver.js | warningData": {
-    "message": "{locationCount,plural, =1{Na ovoj lokaciji možda ima sačuvanih podataka koji utiču na efikasnost učitavanja: {locations}. Proverite tu stranicu u prozoru bez arhiviranja da biste sprečili da ti resursi utiču na rezultate.}one{Na ovim lokacijama možda ima sačuvanih podataka koji utiču na efikasnost učitavanja: {locations}. Proverite tu stranicu u prozoru bez arhiviranja da biste sprečili da ti resursi utiču na rezultate.}few{Na ovim lokacijama možda ima sačuvanih podataka koji utiču na efikasnost učitavanja: {locations}. Proverite tu stranicu u prozoru bez arhiviranja da biste sprečili da ti resursi utiču na rezultate.}other{Na ovim lokacijama možda ima sačuvanih podataka koji utiču na efikasnost učitavanja: {locations}. Proverite tu stranicu u prozoru bez arhiviranja da biste sprečili da ti resursi utiču na rezultate.}}"
-  },
-  "lighthouse-core/gather/gather-runner.js | warningRedirected": {
-    "message": "Stranica se možda ne učitava na očekivan način zato što je probni URL ({requested}) preusmeren na {final}. Probajte direktno da testirate drugi URL."
-  },
-  "lighthouse-core/gather/gather-runner.js | warningSlowHostCpu": {
+  "lighthouse-core/gather/driver/environment.js | warningSlowHostCpu": {
     "message": "Izgleda da testirani uređaj ima sporiji procesor nego što  Lighthouse očekuje. To može negativno da utiče na ocenu učinka. Saznajte više o [kalibrisanju odgovarajućeg množioca u vezi sa usporavanjem procesora](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling)."
   },
-  "lighthouse-core/gather/gather-runner.js | warningTimeout": {
+  "lighthouse-core/gather/driver/navigation.js | warningRedirected": {
+    "message": "Stranica se možda ne učitava na očekivan način zato što je probni URL ({requested}) preusmeren na {final}. Probajte direktno da testirate drugi URL."
+  },
+  "lighthouse-core/gather/driver/navigation.js | warningTimeout": {
     "message": "Učitavanje stranice je bilo presporo da bi se dovršilo u okviru vremenskog ograničenja. Rezultati mogu da budu nepotpuni."
+  },
+  "lighthouse-core/gather/driver/storage.js | warningData": {
+    "message": "{locationCount,plural, =1{Na ovoj lokaciji možda ima sačuvanih podataka koji utiču na efikasnost učitavanja: {locations}. Proverite tu stranicu u prozoru bez arhiviranja da biste sprečili da ti resursi utiču na rezultate.}one{Na ovim lokacijama možda ima sačuvanih podataka koji utiču na efikasnost učitavanja: {locations}. Proverite tu stranicu u prozoru bez arhiviranja da biste sprečili da ti resursi utiču na rezultate.}few{Na ovim lokacijama možda ima sačuvanih podataka koji utiču na efikasnost učitavanja: {locations}. Proverite tu stranicu u prozoru bez arhiviranja da biste sprečili da ti resursi utiču na rezultate.}other{Na ovim lokacijama možda ima sačuvanih podataka koji utiču na efikasnost učitavanja: {locations}. Proverite tu stranicu u prozoru bez arhiviranja da biste sprečili da ti resursi utiču na rezultate.}}"
   },
   "lighthouse-core/lib/csp-evaluator.js | allowlistFallback": {
     "message": "Možete da dodate https: i http: URL šeme (koje ignorišu pregledači koji podržavaju strict-dynamic) radi kompatibilnosti unazad sa starijim pregledačima."
@@ -1728,7 +1728,7 @@
     "message": "Direktiva reflected-xss je zastarela od smernica CSP2. Koristite zaglavlje za X-XSS-Protection."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing base-uri allows injected <base> tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting base-uri to 'none' or 'self'."
+    "message": "Base-uri koji nedostaje omogućava umetnutim oznakama <base> da podese osnovni URL za sve relativne URL-ove (npr. skripte) do domena koji kontroliše napadač. Savetujemo vam da podesite base-uri na „none“ ili „self“."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingObjectSrc": {
     "message": "Elementi koje kontroliše object-src smatraju se zastarelim funkcijama. Savetujemo vam da podesite direktivu object-src na „none“ da biste sprečili umetanje dodatnih komponenti koje izvršavaju nebezbedne skripte."
@@ -2069,6 +2069,9 @@
   "lighthouse-core/report/html/renderer/util.js | runtimeUnknown": {
     "message": "Nepoznato"
   },
+  "lighthouse-core/report/html/renderer/util.js | showRelevantAudits": {
+    "message": "Show audits relevant to:"
+  },
   "lighthouse-core/report/html/renderer/util.js | snippetCollapseButtonLabel": {
     "message": "Skupi fragment"
   },
@@ -2087,11 +2090,38 @@
   "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
     "message": "Vrednosti predstavljaju procene i mogu da variraju. [Ocena učinka sa izračunava](https://web.dev/performance-scoring/) direktno na osnovu tih pokazatelja."
   },
+  "lighthouse-core/report/html/renderer/util.js | viewTreemapLabel": {
+    "message": "Prikaži Treemap"
+  },
   "lighthouse-core/report/html/renderer/util.js | warningAuditsGroupTitle": {
     "message": "Provere sa zadovoljavajućom ocenom koje sadrže upozorenja"
   },
   "lighthouse-core/report/html/renderer/util.js | warningHeader": {
     "message": "Upozorenja: "
+  },
+  "lighthouse-treemap/app/src/util.js | allLabel": {
+    "message": "Sve"
+  },
+  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+    "message": "Sva skripte"
+  },
+  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+    "message": "Pokrivenost"
+  },
+  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+    "message": "Duplirani moduli"
+  },
+  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+    "message": "Bajtovi resursa"
+  },
+  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+    "message": "Naziv"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+    "message": "Uključi/isključi tabelu"
+  },
+  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+    "message": "Neiskorišćeni bajtovi"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
     "message": "Kada je u pitanju animirani sadržaj, koristite [`amp-anim`](https://amp.dev/documentation/components/amp-anim/) da biste smanjili korišćenje procesora kada sadržaj nije na ekranu."

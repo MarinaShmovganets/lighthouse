@@ -513,16 +513,16 @@
     "message": "יש לקצר את קוד JavaScript למינימום ההכרחי"
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": {
-    "message": "יש להסיר מגיליונות הסגנונות כללים שאינם בשימוש ולדחות את הטעינה של רכיבי CSS שאינם חלק מהתוכן בחלק העליון והקבוע. הפעולה הזו תצמצם צריכה בלתי נחוצה של בייטים כתוצאה מפעילות הרשת. [מידע נוסף](https://web.dev/unused-css-rules/)."
+    "message": "ניתן לצמצם את צריכת הבייטים כתוצאה מפעילות הרשת על ידי הפחתת כללים שאינם בשימוש מגיליונות הסגנונות ודחיית הטעינה של רכיבי CSS שלא משמשים את התוכן בחלק העליון והקבוע. [מידע נוסף](https://web.dev/unused-css-rules/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | title": {
-    "message": "יש להסיר CSS שאינו בשימוש"
+    "message": "הפחתת CSS שאינו בשימוש"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
-    "message": "יש להסיר JavaScript שאינו בשימוש כדי לצמצם צריכת בייטים על-ידי פעילות ברשת. [מידע נוסף](https://web.dev/unused-javascript/)"
+    "message": "ניתן לצמצם את צריכת הבייטים כתוצאה מפעילות הרשת על ידי הפחתת תוכן JavaScript שלא נמצא בשימוש ודחיית הטעינה של הסקריטפים עד שהם יידרשו. [מידע נוסף](https://web.dev/unused-javascript/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
-    "message": "יש להסיר JavaScript שאינו בשימוש"
+    "message": "הפחתת תוכן JavaScript שאינו בשימוש"
   },
   "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | description": {
     "message": "משך חיים ארוך של מטמון יכול לזרז את הביקורים החוזרים בדף. [מידע נוסף](https://web.dev/uses-long-cache-ttl/)."
@@ -1703,17 +1703,17 @@
   "lighthouse-core/config/default-config.js | seoMobileGroupTitle": {
     "message": "התאמה לניידים"
   },
-  "lighthouse-core/gather/driver.js | warningData": {
-    "message": "{locationCount,plural, =1{ייתכן שיש נתונים שמורים שמשפיעים על ביצועי הטעינה במיקום הזה: {locations}. יש לבדוק את הדף הזה בחלון אנונימי כדי למנוע מהמשאבים האלה להשפיע על תוצאות הניקוד.}two{ייתכן שיש נתונים שמורים שמשפיעים על ביצועי הטעינה במיקומים האלה: {locations}. יש לבדוק את הדף הזה בחלון אנונימי כדי למנוע מהמשאבים האלה להשפיע על תוצאות הניקוד.}many{ייתכן שיש נתונים שמורים שמשפיעים על ביצועי הטעינה במיקומים האלה: {locations}. יש לבדוק את הדף הזה בחלון אנונימי כדי למנוע מהמשאבים האלה להשפיע על תוצאות הניקוד.}other{ייתכן שיש נתונים שמורים שמשפיעים על ביצועי הטעינה במיקומים האלה: {locations}. יש לבדוק את הדף הזה בחלון אנונימי כדי למנוע מהמשאבים האלה להשפיע על תוצאות הניקוד.}}"
-  },
-  "lighthouse-core/gather/gather-runner.js | warningRedirected": {
-    "message": "ייתכן שהדף לא נטען כמו שציפית כי כתובת ה-URL הנבדקת ({requested}) הופנתה לכתובת {final}. כדאי לנסות לבדוק ישירות את כתובת ה-URL השנייה."
-  },
-  "lighthouse-core/gather/gather-runner.js | warningSlowHostCpu": {
+  "lighthouse-core/gather/driver/environment.js | warningSlowHostCpu": {
     "message": "יחידת העיבוד המרכזית (CPU) במכשיר שנבדק איטית ממה שצפוי ב-Lighthouse. זה עשוי להשפיע לרעה על ציון הביצועים שלך. בקישור הבא אפשר למצוא מידע נוסף על [כיול של מכפיל מתאים להאטה ביחידת העיבוד המרכזית (CPU)](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling)."
   },
-  "lighthouse-core/gather/gather-runner.js | warningTimeout": {
+  "lighthouse-core/gather/driver/navigation.js | warningRedirected": {
+    "message": "ייתכן שהדף לא נטען כמו שציפית כי כתובת ה-URL הנבדקת ({requested}) הופנתה לכתובת {final}. כדאי לנסות לבדוק ישירות את כתובת ה-URL השנייה."
+  },
+  "lighthouse-core/gather/driver/navigation.js | warningTimeout": {
     "message": "הדף נטען לאט מדי והפעולה לא הסתיימה במסגרת הזמן שהוקצבה. ייתכן שהתוצאות לא יהיו מלאות."
+  },
+  "lighthouse-core/gather/driver/storage.js | warningData": {
+    "message": "{locationCount,plural, =1{ייתכן שיש נתונים שמורים שמשפיעים על ביצועי הטעינה במיקום הזה: {locations}. יש לבדוק את הדף הזה בחלון אנונימי כדי למנוע מהמשאבים האלה להשפיע על תוצאות הניקוד.}two{ייתכן שיש נתונים שמורים שמשפיעים על ביצועי הטעינה במיקומים האלה: {locations}. יש לבדוק את הדף הזה בחלון אנונימי כדי למנוע מהמשאבים האלה להשפיע על תוצאות הניקוד.}many{ייתכן שיש נתונים שמורים שמשפיעים על ביצועי הטעינה במיקומים האלה: {locations}. יש לבדוק את הדף הזה בחלון אנונימי כדי למנוע מהמשאבים האלה להשפיע על תוצאות הניקוד.}other{ייתכן שיש נתונים שמורים שמשפיעים על ביצועי הטעינה במיקומים האלה: {locations}. יש לבדוק את הדף הזה בחלון אנונימי כדי למנוע מהמשאבים האלה להשפיע על תוצאות הניקוד.}}"
   },
   "lighthouse-core/lib/csp-evaluator.js | allowlistFallback": {
     "message": "כדאי להוסיף סכימות של כתובות URL מסוג https:‎ ו-http:‎ (דפדפנים שתומכים ב-strict-dynamic יתעלמו מהן) לצורך תאימות לאחור עם דפדפנים ישנים."
@@ -1728,7 +1728,7 @@
     "message": "הוראת reflected-xss הוצאה משימוש החל מ-CSP2. במקום זאת, יש להשתמש בכותרת X-XSS-Protection."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing base-uri allows injected <base> tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting base-uri to 'none' or 'self'."
+    "message": "חסר base-uri, המאפשר להחדיר תגי <base> כדי להגדיר את כתובת ה-URL הבסיסית לכל כתובות ה-URL היחסיות (למשל, סקריפטים) לדומיין שנשלט על ידי תוקף. כדאי להגדיר את base-uri ל-none או ל-self."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingObjectSrc": {
     "message": "רכיבים שנשלטים על ידי object-src נחשבים לתכונות מדור קודם. כדאי להגדיר את object-src ל-none כדי למנוע החדרת יישומי פלאגין שמפעילים סקריפטים לא בטוחים."
@@ -2069,6 +2069,9 @@
   "lighthouse-core/report/html/renderer/util.js | runtimeUnknown": {
     "message": "ערך לא ידוע"
   },
+  "lighthouse-core/report/html/renderer/util.js | showRelevantAudits": {
+    "message": "Show audits relevant to:"
+  },
   "lighthouse-core/report/html/renderer/util.js | snippetCollapseButtonLabel": {
     "message": "כיווץ קטע הטקסט"
   },
@@ -2087,11 +2090,38 @@
   "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
     "message": "הערכים משוערים והם עשויים להשתנות. [ציון הביצועים מחושב](https://web.dev/performance-scoring/) ישירות לפי הערכים האלה."
   },
+  "lighthouse-core/report/html/renderer/util.js | viewTreemapLabel": {
+    "message": "הצגת תרשים Treemap"
+  },
   "lighthouse-core/report/html/renderer/util.js | warningAuditsGroupTitle": {
     "message": "בדיקות שהסתיימו בציון 'עובר', אבל עם אזהרות"
   },
   "lighthouse-core/report/html/renderer/util.js | warningHeader": {
     "message": "אזהרות: "
+  },
+  "lighthouse-treemap/app/src/util.js | allLabel": {
+    "message": "הכול"
+  },
+  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+    "message": "כל הסקריפטים"
+  },
+  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+    "message": "כיסוי"
+  },
+  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+    "message": "מודולים כפולים"
+  },
+  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+    "message": "בייטים בשימוש המשאב"
+  },
+  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+    "message": "שם"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+    "message": "החלפת מצב התצוגה של הטבלה"
+  },
+  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+    "message": "בייטים לא בשימוש"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
     "message": "להצגת תוכן באנימציה, כשהתוכן לא מוצג במסך כדאי להשתמש ב-[`amp-anim`](https://amp.dev/documentation/components/amp-anim/) כדי לצמצם את השימוש ביחידת העיבוד המרכזית (CPU)."

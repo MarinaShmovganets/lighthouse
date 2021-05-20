@@ -66,8 +66,8 @@ const RESOURCE_TYPES = {
   Manifest: 'Manifest',
   SignedExchange: 'SignedExchange',
   Ping: 'Ping',
-  CSPViolationReport: 'CSPViolationReport',
   Preflight: 'Preflight',
+  CSPViolationReport: 'CSPViolationReport',
 };
 
 class NetworkRequest {

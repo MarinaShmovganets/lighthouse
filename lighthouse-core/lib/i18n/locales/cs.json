@@ -513,13 +513,13 @@
     "message": "Minifikujte JavaScript"
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": {
-    "message": "Odstraňte ze šablon stylů nepoužívaná pravidla a odložte načítání stylů CSS, které se nepoužívají pro obsah zobrazený bez posouvání, abyste snížili množství nepotřebných dat využívaných síťovou aktivitou. [Další informace](https://web.dev/unused-css-rules/)"
+    "message": "Odstraňte ze šablon stylů nepoužívaná pravidla a odložte styly CSS, které se nepoužívají pro obsah nad okrajem, abyste snížili množství dat využívaných síťovou aktivitou. [Další informace](https://web.dev/unused-css-rules/)"
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | title": {
     "message": "Odstraňte nepoužívané styly CSS"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
-    "message": "Odstraněním nepoužívaného JavaScriptu zmenšíte množství přenášených dat. [Další informace](https://web.dev/unused-javascript/)"
+    "message": "Odstraňte nepoužívaný JavaScript a odložte načítání skriptů, abyste snížili množství dat využívaných síťovou aktivitou. [Další informace](https://web.dev/unused-javascript/)"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
     "message": "Odstraňte nepoužívaný JavaScript"
@@ -1703,17 +1703,17 @@
   "lighthouse-core/config/default-config.js | seoMobileGroupTitle": {
     "message": "Optimalizováno pro mobily"
   },
-  "lighthouse-core/gather/driver.js | warningData": {
-    "message": "{locationCount,plural, =1{Rychlost načítání může být ovlivněna daty uloženými v následujícím umístění: {locations}. Spusťte audit této stránky v anonymním okně, aby tyto zdroje na skóre neměly vliv.}few{Rychlost načítání může být ovlivněna daty uloženými v následujících umístěních: {locations}. Spusťte audit této stránky v anonymním okně, aby tyto zdroje na skóre neměly vliv.}many{Rychlost načítání může být ovlivněna daty uloženými v následujících umístěních: {locations}. Spusťte audit této stránky v anonymním okně, aby tyto zdroje na skóre neměly vliv.}other{Rychlost načítání může být ovlivněna daty uloženými v následujících umístěních: {locations}. Spusťte audit této stránky v anonymním okně, aby tyto zdroje na skóre neměly vliv.}}"
-  },
-  "lighthouse-core/gather/gather-runner.js | warningRedirected": {
-    "message": "Stránka se možná nenačítá očekávaným způsobem, protože testovací adresa URL ({requested}) byla přesměrována na adresu {final}. Zkuste přímo otestovat druhou URL."
-  },
-  "lighthouse-core/gather/gather-runner.js | warningSlowHostCpu": {
+  "lighthouse-core/gather/driver/environment.js | warningSlowHostCpu": {
     "message": "Testovací zařízení má patrně pomalejší procesor, než Lighthouse očekává. To může negativně ovlivnit skóre výkonu. Přečtěte si další informace o [kalibrování vhodného multiplikátoru zpomalení procesoru](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling)."
   },
-  "lighthouse-core/gather/gather-runner.js | warningTimeout": {
+  "lighthouse-core/gather/driver/navigation.js | warningRedirected": {
+    "message": "Stránka se možná nenačítá očekávaným způsobem, protože testovací adresa URL ({requested}) byla přesměrována na adresu {final}. Zkuste přímo otestovat druhou URL."
+  },
+  "lighthouse-core/gather/driver/navigation.js | warningTimeout": {
     "message": "Stránka se načítala příliš pomalu, a test se proto do časového limitu nepodařilo dokončit. Výsledky mohou být neúplné."
+  },
+  "lighthouse-core/gather/driver/storage.js | warningData": {
+    "message": "{locationCount,plural, =1{Rychlost načítání může být ovlivněna daty uloženými v následujícím umístění: {locations}. Spusťte audit této stránky v anonymním okně, aby tyto zdroje na skóre neměly vliv.}few{Rychlost načítání může být ovlivněna daty uloženými v následujících umístěních: {locations}. Spusťte audit této stránky v anonymním okně, aby tyto zdroje na skóre neměly vliv.}many{Rychlost načítání může být ovlivněna daty uloženými v následujících umístěních: {locations}. Spusťte audit této stránky v anonymním okně, aby tyto zdroje na skóre neměly vliv.}other{Rychlost načítání může být ovlivněna daty uloženými v následujících umístěních: {locations}. Spusťte audit této stránky v anonymním okně, aby tyto zdroje na skóre neměly vliv.}}"
   },
   "lighthouse-core/lib/csp-evaluator.js | allowlistFallback": {
     "message": "Zvažte, zda nepřidat schémata URL https: a http: (ta jsou ignorována prohlížeči, které podporují strict-dynamic) z důvodu zpětné kompatibility se staršími prohlížeči."
@@ -1728,7 +1728,7 @@
     "message": "Direktiva reflected-xss je od verze CSP2 zastaralá. Použijte místo ní hlavičku X-XSS-Protection."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing base-uri allows injected <base> tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting base-uri to 'none' or 'self'."
+    "message": "Chybějící base-uri umožňuje vložení značek <base> za účelem nastavení základní adresy URL pro všechny relativní adresy URL (např. skripty) na doménu kontrolovanou útočníkem. Nastavte base-uri na hodnotu „none“ nebo „self“."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingObjectSrc": {
     "message": "Prvky řízené pomocí object-src se považují za starší funkce. Zvažte, zda nenastavit object-src na „none“, abyste předešli vložení pluginů spouštějících skripty, které nejsou bezpečné."
@@ -2069,6 +2069,9 @@
   "lighthouse-core/report/html/renderer/util.js | runtimeUnknown": {
     "message": "Není známo"
   },
+  "lighthouse-core/report/html/renderer/util.js | showRelevantAudits": {
+    "message": "Show audits relevant to:"
+  },
   "lighthouse-core/report/html/renderer/util.js | snippetCollapseButtonLabel": {
     "message": "Sbalit úryvek"
   },
@@ -2087,11 +2090,38 @@
   "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
     "message": "Hodnoty jsou odhady a mohou se lišit. [Skóre výkonu se počítá](https://web.dev/performance-scoring/) přímo z těchto metrik."
   },
+  "lighthouse-core/report/html/renderer/util.js | viewTreemapLabel": {
+    "message": "Zobrazit stromovou mapu"
+  },
   "lighthouse-core/report/html/renderer/util.js | warningAuditsGroupTitle": {
     "message": "Úspěšné audity s upozorněními"
   },
   "lighthouse-core/report/html/renderer/util.js | warningHeader": {
     "message": "Upozornění: "
+  },
+  "lighthouse-treemap/app/src/util.js | allLabel": {
+    "message": "Vše"
+  },
+  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+    "message": "Všechna písma"
+  },
+  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+    "message": "Pokrytí"
+  },
+  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+    "message": "Duplicitní moduly"
+  },
+  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+    "message": "Počet bajtů zdroje"
+  },
+  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+    "message": "Název"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+    "message": "Zobrazit nebo skrýt tabulku"
+  },
+  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+    "message": "Nevyužité bajty"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
     "message": "Pro animovaný obsah použijte prvek [`amp-anim`](https://amp.dev/documentation/components/amp-anim/), abyste minimalizovali využití procesoru, když příslušný obsah není na obrazovce."

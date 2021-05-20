@@ -513,16 +513,16 @@
     "message": "Pienennä JavaScript-tiedostoja"
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": {
-    "message": "Poista käyttämättömät säännöt tyylisivuilta ja lykkää sellaisen CSS:n lataamista, jota ei käytetä sivun yläosan sisältöön, niin vähennät verkkotoiminnan turhaa tavujen kulutusta. [Lue lisää](https://web.dev/unused-css-rules/)."
+    "message": "Vähennä tyylisivujen käyttämättömiä sääntöjä ja lykkää sellaista CSS:ää, jota ei käytetä sivun yläosan sisältöön, niin vähennät verkkotoiminnan tavujen kulutusta. [Lue lisää](https://web.dev/unused-css-rules/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | title": {
-    "message": "Poista käyttämätön CSS"
+    "message": "Vähennä käyttämätöntä CSS:ää"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
-    "message": "Poista tarpeeton JavaScript pienentääksesi verkkotoiminnan tavunkulutusta. [Lue lisää](https://web.dev/unused-javascript/)."
+    "message": "Vähennä käyttämätöntä JavaScriptiä ja lykkää skriptien lataamista, kunnes niiden on vähennettävä verkkotoiminnan tavujen kulutusta. [Lue lisää](https://web.dev/unused-javascript/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
-    "message": "Poista käyttämätön JavaScript"
+    "message": "Vähennä käyttämätöntä JavaScriptiä"
   },
   "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | description": {
     "message": "Pitkä välimuistin käyttöikä voi nopeuttaa sivun lataamista, kun käyttäjä avaa sen uudelleen. [Lue lisää](https://web.dev/uses-long-cache-ttl/)."
@@ -1703,17 +1703,17 @@
   "lighthouse-core/config/default-config.js | seoMobileGroupTitle": {
     "message": "Mobiiliystävällinen"
   },
-  "lighthouse-core/gather/driver.js | warningData": {
-    "message": "{locationCount,plural, =1{Tähän sijaintiin on voitu tallentaa dataa, joka vaikuttaa lataukseen: {locations}. Tarkista sivu incognito-ikkunassa, jotta voit estää kyseisten resurssien vaikutuksen tuloksiisi.}other{Näihin sijainteihin on voitu tallentaa dataa, joka vaikuttaa lataukseen: {locations}. Tarkista sivu incognito-ikkunassa, jotta voit estää kyseisten resurssien vaikutuksen tuloksiisi.}}"
-  },
-  "lighthouse-core/gather/gather-runner.js | warningRedirected": {
-    "message": "Sivun lataus ei ehkä onnistu odotetusti, koska testi-URL ({requested}) ohjattiin uudelleen osoitteeseen {final}. Kokeile suoraan toista URL-osoitetta."
-  },
-  "lighthouse-core/gather/gather-runner.js | warningSlowHostCpu": {
+  "lighthouse-core/gather/driver/environment.js | warningSlowHostCpu": {
     "message": "Testatun laitteen CPU näyttää olevan hitaampi kuin Lighthouse olettaa. Tämä voi vaikuttaa tuloksiin negatiivisesti. Lue lisää [sopivan CPU-hidastuskertoimen kalibroinnista](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling)."
   },
-  "lighthouse-core/gather/gather-runner.js | warningTimeout": {
+  "lighthouse-core/gather/driver/navigation.js | warningRedirected": {
+    "message": "Sivun lataus ei ehkä onnistu odotetusti, koska testi-URL ({requested}) ohjattiin uudelleen osoitteeseen {final}. Kokeile suoraan toista URL-osoitetta."
+  },
+  "lighthouse-core/gather/driver/navigation.js | warningTimeout": {
     "message": "Sivu ei ehtinyt latautua loppuun aikarajan sisällä. Tuloksista voi puuttua osa."
+  },
+  "lighthouse-core/gather/driver/storage.js | warningData": {
+    "message": "{locationCount,plural, =1{Tähän sijaintiin on voitu tallentaa dataa, joka vaikuttaa lataukseen: {locations}. Tarkista sivu incognito-ikkunassa, jotta voit estää kyseisten resurssien vaikutuksen tuloksiisi.}other{Näihin sijainteihin on voitu tallentaa dataa, joka vaikuttaa lataukseen: {locations}. Tarkista sivu incognito-ikkunassa, jotta voit estää kyseisten resurssien vaikutuksen tuloksiisi.}}"
   },
   "lighthouse-core/lib/csp-evaluator.js | allowlistFallback": {
     "message": "Harkitse https:- ja http:-URL-osoitteen kaavojen (joita \"strict-dynamicia\" tukevat selaimet ohittavat) lisäämistä, niin voit saavuttaa taaksepäinyhteensopivuuden vanhempien selainten kanssa."
@@ -1728,7 +1728,7 @@
     "message": "CSP2:sta lähtien reflected-xss on poistettu käytöstä. Käytä sen sijaan X-XSS-Protection-ylätunnistetta."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing base-uri allows injected <base> tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting base-uri to 'none' or 'self'."
+    "message": "Puuttuva base-uri sallii injektoitujen <base>-tagien määrittää kaikkien suhteellisten URL-osoitteiden (esim. skriptien) pohja-URL-osoitteen hyökkääjän hallitsemaan verkkotunnukseen. Sinun kannattaa valita base-urin arvoksi \"none\" tai \"self\"."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingObjectSrc": {
     "message": "object-srcin ohjaamat elementit ovat vanhoja ominaisuuksia. Määritä object-srcin arvoksi \"none\" estääksesi vaarallisten skriptejä suorittavien liitännäisten injektointi."
@@ -2069,6 +2069,9 @@
   "lighthouse-core/report/html/renderer/util.js | runtimeUnknown": {
     "message": "Ei tietoa"
   },
+  "lighthouse-core/report/html/renderer/util.js | showRelevantAudits": {
+    "message": "Show audits relevant to:"
+  },
   "lighthouse-core/report/html/renderer/util.js | snippetCollapseButtonLabel": {
     "message": "Tiivistä koodinpätkä"
   },
@@ -2087,11 +2090,38 @@
   "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
     "message": "Arvot ovat arvioita ja voivat vaihdella. [Tehokkuusprosentti lasketaan](https://web.dev/performance-scoring/) suoraan näistä mittareista."
   },
+  "lighthouse-core/report/html/renderer/util.js | viewTreemapLabel": {
+    "message": "Katso Treemap"
+  },
   "lighthouse-core/report/html/renderer/util.js | warningAuditsGroupTitle": {
     "message": "Läpäisi tarkastukset, mutta sai varoituksia"
   },
   "lighthouse-core/report/html/renderer/util.js | warningHeader": {
     "message": "Varoitukset: "
+  },
+  "lighthouse-treemap/app/src/util.js | allLabel": {
+    "message": "Kaikki"
+  },
+  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+    "message": "Kaikki skriptit"
+  },
+  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+    "message": "Kattavuus"
+  },
+  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+    "message": "Moduulien kaksoiskappaleet"
+  },
+  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+    "message": "Resurssin tavut"
+  },
+  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+    "message": "Nimi"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+    "message": "Näytä/piilota taulukko"
+  },
+  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+    "message": "Käyttämättömät tavut"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
     "message": "Käytä animoidun sisällön kanssa [`amp-anim`](https://amp.dev/documentation/components/amp-anim/)-ominaisuutta, joka minimoi suoritinkäytön, kun sisältö ei ole näytöllä."

@@ -14,6 +14,18 @@ const {default: {toBeCloseTo}} = require('expect/build/matchers.js');
 
 expect.extend({
   toBeDisplayString(received, expected) {
+    if (!i18n.isIcuMessage(received)) {
+      const message = () =>
+      [
+        `${this.utils.matcherHint('.toBeDisplayString')}\n`,
+        `Expected object to be an ${this.utils.printExpected('LH.IcuMessage')}`,
+        `Received ${typeof received}`,
+        `  ${this.utils.printReceived(received)}`,
+      ].join('\n');
+
+      return {message, pass: false};
+    }
+
     const actual = i18n.getFormatted(received, 'en-US');
     const pass = expected instanceof RegExp ?
       expected.test(actual) :
@@ -28,7 +40,7 @@ expect.extend({
         `  ${this.utils.printReceived(actual)}`,
       ].join('\n');
 
-    return {actual, message, pass};
+    return {message, pass};
   },
 
   // Expose toBeCloseTo() so it can be used as an asymmetric matcher.
@@ -227,6 +239,8 @@ async function flushAllTimersAndMicrotasks(ms = 1000) {
 function makeMocksForGatherRunner() {
   jest.mock('../gather/driver/environment.js', () => ({
     getBenchmarkIndex: () => Promise.resolve(150),
+    getBrowserVersion: async () => ({userAgent: 'Chrome', milestone: 80}),
+    getEnvironmentWarnings: () => [],
   }));
   jest.mock('../gather/gatherers/stacks.js', () => ({collectStacks: () => Promise.resolve([])}));
   jest.mock('../gather/gatherers/installability-errors.js', () => ({
@@ -234,6 +248,26 @@ function makeMocksForGatherRunner() {
   }));
   jest.mock('../gather/gatherers/web-app-manifest.js', () => ({
     getWebAppManifest: async () => null,
+  }));
+  jest.mock('../lib/emulation.js', () => ({
+    emulate: jest.fn(),
+    throttle: jest.fn(),
+    clearThrottling: jest.fn(),
+  }));
+  jest.mock('../gather/driver/prepare.js', () => ({
+    prepareTargetForNavigationMode: jest.fn(),
+    prepareTargetForIndividualNavigation: jest.fn().mockResolvedValue({warnings: []}),
+  }));
+  jest.mock('../gather/driver/storage.js', () => ({
+    clearDataForOrigin: jest.fn(),
+    cleanBrowserCaches: jest.fn(),
+    getImportantStorageWarning: jest.fn(),
+  }));
+  jest.mock('../gather/driver/navigation.js', () => ({
+    gotoURL: jest.fn().mockResolvedValue({
+      finalUrl: 'http://example.com',
+      warnings: [],
+    }),
   }));
 }
 

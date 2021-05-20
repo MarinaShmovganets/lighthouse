@@ -27,6 +27,8 @@ function createMockSession() {
     once: createMockOnceFn(),
     on: createMockOnFn(),
     off: jest.fn(),
+    addProtocolMessageListener: createMockOnFn(),
+    removeProtocolMessageListener: jest.fn(),
 
     /** @return {LH.Gatherer.FRProtocolSession} */
     asSession() {
@@ -42,9 +44,11 @@ function createMockSession() {
 function createMockGathererInstance(meta) {
   return {
     meta,
-    beforeTimespan: jest.fn(),
-    afterTimespan: jest.fn(),
-    snapshot: jest.fn(),
+    startInstrumentation: jest.fn(),
+    stopInstrumentation: jest.fn(),
+    startSensitiveInstrumentation: jest.fn(),
+    stopSensitiveInstrumentation: jest.fn(),
+    getArtifact: jest.fn(),
 
     /** @return {LH.Gatherer.FRGathererInstance} */
     asGatherer() {
@@ -69,8 +73,18 @@ function createMockPage() {
 }
 
 function createMockExecutionContext() {
-  const context = /** @type {ExecutionContext} */ ({});
-  return {...context, evaluate: jest.fn(), evaluateAsync: jest.fn()};
+  return {
+    evaluate: jest.fn(),
+    evaluateAsync: jest.fn(),
+    evaluateOnNewDocument: jest.fn(),
+    cacheNativesOnNewDocument: jest.fn(),
+
+    /** @return {ExecutionContext} */
+    asExecutionContext() {
+      // @ts-expect-error - We'll rely on the tests passing to know this matches.
+      return this;
+    },
+  };
 }
 
 function createMockDriver() {
@@ -85,7 +99,7 @@ function createMockDriver() {
     url: () => page.url(),
     defaultSession: session,
     connect: jest.fn(),
-    executionContext: context,
+    executionContext: context.asExecutionContext(),
 
     /** @return {Driver} */
     asDriver() {
@@ -113,11 +127,80 @@ function mockDriverModule(driverProvider) {
   };
 }
 
+function createMockContext() {
+  return {
+    driver: createMockDriver(),
+    url: 'https://example.com',
+    gatherMode: 'navigation',
+    computedCache: new Map(),
+    dependencies: {},
+
+    /** @return {LH.Gatherer.FRTransitionalContext} */
+    asContext() {
+      // @ts-expect-error - We'll rely on the tests passing to know this matches.
+      return this;
+    },
+
+    /** @return {LH.Gatherer.PassContext} */
+    asLegacyContext() {
+      // @ts-expect-error - We'll rely on the tests passing to know this matches.
+      return this;
+    },
+  };
+}
+
+function mockDriverSubmodules() {
+  const navigationMock = {gotoURL: jest.fn()};
+  const prepareMock = {
+    prepareTargetForNavigationMode: jest.fn(),
+    prepareTargetForIndividualNavigation: jest.fn(),
+  };
+  const storageMock = {clearDataForOrigin: jest.fn()};
+  const emulationMock = {clearThrottling: jest.fn()};
+  const networkMock = {
+    fetchResponseBodyFromCache: jest.fn(),
+  };
+
+  function reset() {
+    navigationMock.gotoURL = jest.fn().mockResolvedValue({finalUrl: 'https://example.com', warnings: [], timedOut: false});
+    prepareMock.prepareTargetForNavigationMode = jest.fn().mockResolvedValue({warnings: []});
+    prepareMock.prepareTargetForIndividualNavigation = jest.fn().mockResolvedValue({warnings: []});
+    storageMock.clearDataForOrigin = jest.fn();
+    emulationMock.clearThrottling = jest.fn();
+    networkMock.fetchResponseBodyFromCache = jest.fn().mockResolvedValue('');
+  }
+
+  /**
+   * @param {Record<string, (...args: any[]) => any>} target
+   * @param {string} name
+   * @return {(...args: any[]) => void}
+   */
+  const get = (target, name) => {
+    return (...args) => target[name](...args);
+  };
+  jest.mock('../../../gather/driver/navigation.js', () => new Proxy(navigationMock, {get}));
+  jest.mock('../../../gather/driver/prepare.js', () => new Proxy(prepareMock, {get}));
+  jest.mock('../../../gather/driver/storage.js', () => new Proxy(storageMock, {get}));
+  jest.mock('../../../gather/driver/network.js', () => new Proxy(networkMock, {get}));
+  jest.mock('../../../lib/emulation.js', () => new Proxy(emulationMock, {get}));
+
+  return {
+    navigationMock,
+    prepareMock,
+    storageMock,
+    emulationMock,
+    networkMock,
+    reset,
+  };
+}
+
 module.exports = {
   mockRunnerModule,
   mockDriverModule,
+  mockDriverSubmodules,
   createMockDriver,
   createMockPage,
   createMockSession,
   createMockGathererInstance,
+  createMockContext,
 };

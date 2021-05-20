@@ -513,16 +513,16 @@
     "message": "Kecilkan ukuran JavaScript"
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": {
-    "message": "Hapus aturan yang tidak berlaku dari stylesheet dan tunda pemuatan CSS yang tidak digunakan untuk konten paruh atas, guna mengurangi byte yang tidak perlu yang digunakan oleh aktivitas jaringan. [Pelajari lebih lanjut](https://web.dev/unused-css-rules/)."
+    "message": "Mengurangi aturan yang tidak digunakan dari stylesheet dan menunda CSS yang tidak digunakan untuk konten paruh atas guna menurunkan byte yang digunakan oleh aktivitas jaringan. [Pelajari lebih lanjut](https://web.dev/unused-css-rules/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | title": {
-    "message": "Hapus CSS yang tidak digunakan"
+    "message": "Kurangi CSS yang tidak digunakan"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
-    "message": "Menghapus JavaScript yang tidak digunakan untuk mengurangi byte yang digunakan oleh aktivitas jaringan. [Pelajari lebih lanjut](https://web.dev/unused-javascript/)."
+    "message": "Mengurangi JavaScript yang tidak digunakan dan menunda pemuatan skrip sampai diperlukan untuk menurunkan byte yang digunakan oleh aktivitas jaringan. [Pelajari lebih lanjut](https://web.dev/unused-javascript/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
-    "message": "Hapus JavaScript yang tidak digunakan"
+    "message": "Kurangi JavaScript yang tidak digunakan"
   },
   "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | description": {
     "message": "Durasi cache yang panjang dapat mempercepat kunjungan berulang ke halaman Anda. [Pelajari lebih lanjut](https://web.dev/uses-long-cache-ttl/)."
@@ -1703,17 +1703,17 @@
   "lighthouse-core/config/default-config.js | seoMobileGroupTitle": {
     "message": "Mobile Friendly"
   },
-  "lighthouse-core/gather/driver.js | warningData": {
-    "message": "{locationCount,plural, =1{Mungkin terdapat data tersimpan yang memengaruhi performa pemuatan di lokasi ini: {locations}. Audit halaman ini di jendela Samaran untuk mencegah resource tersebut memengaruhi performa Anda.}other{Mungkin terdapat data tersimpan yang memengaruhi performa pemuatan di lokasi ini {locations}. Audit halaman ini di jendela Samaran untuk mencegah resource tersebut memengaruhi performa Anda.}}"
-  },
-  "lighthouse-core/gather/gather-runner.js | warningRedirected": {
-    "message": "Halaman tersebut mungkin tidak dimuat sesuai harapan karena URL uji Anda ({requested}) dialihkan ke {final}. Coba uji URL kedua secara langsung."
-  },
-  "lighthouse-core/gather/gather-runner.js | warningSlowHostCpu": {
+  "lighthouse-core/gather/driver/environment.js | warningSlowHostCpu": {
     "message": "Perangkat yang diuji sepertinya memiliki CPU yang lebih lambat daripada perkiraan Lighthouse. Hal ini dapat berdampak buruk pada skor performa Anda. Pelajari lebih lanjut [cara mengalibrasi pengali pelambatan CPU yang sesuai](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling)."
   },
-  "lighthouse-core/gather/gather-runner.js | warningTimeout": {
+  "lighthouse-core/gather/driver/navigation.js | warningRedirected": {
+    "message": "Halaman tersebut mungkin tidak dimuat sesuai harapan karena URL uji Anda ({requested}) dialihkan ke {final}. Coba uji URL kedua secara langsung."
+  },
+  "lighthouse-core/gather/driver/navigation.js | warningTimeout": {
     "message": "Pemuatan halaman terlalu lambat untuk bisa selesai tepat waktu. Hasil mungkin tidak lengkap."
+  },
+  "lighthouse-core/gather/driver/storage.js | warningData": {
+    "message": "{locationCount,plural, =1{Mungkin terdapat data tersimpan yang memengaruhi performa pemuatan di lokasi ini: {locations}. Audit halaman ini di jendela Samaran untuk mencegah resource tersebut memengaruhi performa Anda.}other{Mungkin terdapat data tersimpan yang memengaruhi performa pemuatan di lokasi ini {locations}. Audit halaman ini di jendela Samaran untuk mencegah resource tersebut memengaruhi performa Anda.}}"
   },
   "lighthouse-core/lib/csp-evaluator.js | allowlistFallback": {
     "message": "Sebaiknya tambahkan skema URL https: dan http: (diabaikan oleh browser yang mendukung 'strict-dynamic') agar kompatibel dengan browser versi lama."
@@ -1728,7 +1728,7 @@
     "message": "reflected-xss tidak digunakan lagi sejak CSP2. Sebagai gantinya, gunakan header X-XSS-Protection."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing base-uri allows injected <base> tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting base-uri to 'none' or 'self'."
+    "message": "Base-uri yang tidak ada memungkinkan injeksi tag <base> untuk menyetel URL dasar bagi semua URL relatif (misalnya, skrip) ke domain yang dikontrol penyerang. Sebaiknya setel base-uri ke 'none' atau 'self'."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingObjectSrc": {
     "message": "Elemen yang dikontrol oleh object-src dianggap sebagai fitur lama. Sebaiknya setel object-src ke 'none' untuk mencegah injeksi plugin yang mengeksekusi skrip yang tidak aman."
@@ -2069,6 +2069,9 @@
   "lighthouse-core/report/html/renderer/util.js | runtimeUnknown": {
     "message": "Tidak dikenal"
   },
+  "lighthouse-core/report/html/renderer/util.js | showRelevantAudits": {
+    "message": "Show audits relevant to:"
+  },
   "lighthouse-core/report/html/renderer/util.js | snippetCollapseButtonLabel": {
     "message": "Ciutkan cuplikan"
   },
@@ -2087,11 +2090,38 @@
   "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
     "message": "Nilai adalah hasil perkiraan dan dapat bervariasi. [Skor performa dihitung](https://web.dev/performance-scoring/) secara langsung dari metrik ini."
   },
+  "lighthouse-core/report/html/renderer/util.js | viewTreemapLabel": {
+    "message": "Lihat Peta Hierarki"
+  },
   "lighthouse-core/report/html/renderer/util.js | warningAuditsGroupTitle": {
     "message": "Lulus audit tetapi dengan peringatan"
   },
   "lighthouse-core/report/html/renderer/util.js | warningHeader": {
     "message": "Peringatan: "
+  },
+  "lighthouse-treemap/app/src/util.js | allLabel": {
+    "message": "Semua"
+  },
+  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+    "message": "Semua Skrip"
+  },
+  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+    "message": "Cakupan"
+  },
+  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+    "message": "Modul Duplikat"
+  },
+  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+    "message": "Byte Resource"
+  },
+  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+    "message": "Nama"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+    "message": "Tampilkan/Sembunyikan Tabel"
+  },
+  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+    "message": "Byte yang Tidak Digunakan"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
     "message": "Untuk konten animasi, gunakan [`amp-anim`](https://amp.dev/documentation/components/amp-anim/) untuk meminimalkan penggunaan CPU saat konten tidak berada di layar."

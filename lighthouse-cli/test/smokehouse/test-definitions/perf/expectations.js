@@ -11,6 +11,11 @@
  */
 module.exports = [
   {
+    networkRequests: {
+      // 8 requests made for normal page testing.
+      // 1 extra request made because stylesheets are evicted from the cache by the time DT opens.
+      length: 9,
+    },
     lhr: {
       requestedUrl: 'http://localhost:10200/preload.html',
       finalUrl: 'http://localhost:10200/preload.html',
@@ -62,6 +67,9 @@ module.exports = [
     },
   },
   {
+    networkRequests: {
+      length: 8,
+    },
     lhr: {
       requestedUrl: 'http://localhost:10200/perf/perf-budgets/load-things.html',
       finalUrl: 'http://localhost:10200/perf/perf-budgets/load-things.html',
@@ -140,6 +148,9 @@ module.exports = [
     },
   },
   {
+    networkRequests: {
+      length: 5,
+    },
     lhr: {
       requestedUrl: 'http://localhost:10200/perf/fonts.html',
       finalUrl: 'http://localhost:10200/perf/fonts.html',
@@ -168,6 +179,9 @@ module.exports = [
     },
   },
   {
+    networkRequests: {
+      length: 3,
+    },
     artifacts: {
       TraceElements: [
         {
@@ -291,6 +305,9 @@ module.exports = [
     },
   },
   {
+    networkRequests: {
+      length: 2,
+    },
     lhr: {
       requestedUrl: 'http://localhost:10200/perf/frame-metrics.html',
       finalUrl: 'http://localhost:10200/perf/frame-metrics.html',
@@ -318,6 +335,7 @@ module.exports = [
                 layoutShiftMaxSessionGap1sLimit5s: '>0',
                 layoutShiftMaxSliding1s: '>0',
                 layoutShiftMaxSliding300ms: '>0',
+                layoutShiftMaxSessionGap1sLimit5sAllFrames: '0.197 +/- 0.001',
               },
               {
                 lcpInvalidated: false,

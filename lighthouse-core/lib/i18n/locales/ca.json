@@ -513,16 +513,16 @@
     "message": "Redueix els fitxers JavaScript"
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | description": {
-    "message": "Per reduir els bytes que es consumeixen de manera innecessària durant l'activitat de la xarxa, suprimeix dels fulls d'estil les regles que no s'utilitzin i ajorna la càrrega dels CSS que no es facin servir per al contingut de la part superior visible. [Obtén més informació](https://web.dev/unused-css-rules/)."
+    "message": "Redueix el nombre de regles no utilitzades dels fulls d'estil i ajorna els CSS que no es facin servir per al contingut de la meitat superior de la pàgina a fi de rebaixar el consum de bytes durant l'activitat de la xarxa. [Obtén més informació](https://web.dev/unused-css-rules/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-css-rules.js | title": {
-    "message": "Suprimeix els CSS no utilitzats"
+    "message": "Redueix el nombre de fitxers CSS no utilitzats"
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": {
-    "message": "Suprimeix els fitxers JavaScript que no s'utilitzen per reduir els bytes que es consumeixen durant l'activitat de la xarxa. [Obtén més informació](https://web.dev/unused-javascript/)."
+    "message": "Redueix el nombre de fitxers JavaScript no utilitzats i ajorna la càrrega dels scripts fins que siguin necessaris a fi de rebaixar el consum de bytes durant l'activitat de la xarxa. [Obtén més informació](https://web.dev/unused-javascript/)."
   },
   "lighthouse-core/audits/byte-efficiency/unused-javascript.js | title": {
-    "message": "Suprimeix els fitxers JavaScript no utilitzats"
+    "message": "Redueix el nombre de fitxers JavaScript no utilitzats"
   },
   "lighthouse-core/audits/byte-efficiency/uses-long-cache-ttl.js | description": {
     "message": "Si la memòria cau té una vida llarga, es poden accelerar les visites repetides a la teva pàgina. [Obtén més informació](https://web.dev/uses-long-cache-ttl/)."
@@ -1554,7 +1554,7 @@
     "message": "Té una etiqueta `<meta name=\"viewport\">` amb l'atribut `width` o `initial-scale`"
   },
   "lighthouse-core/config/default-config.js | a11yAriaGroupDescription": {
-    "message": "Aquí tens recomanacions per millorar l'ús dels elements d'ARIA a l'aplicació. També poden millorar l'experiència dels usuaris de tecnologia d'assistència (per exemple, de lectors de pantalla)."
+    "message": "Aquí tens recomanacions per millorar l'ús dels elements d'ARIA a l'aplicació. També poden millorar l'experiència dels usuaris de tecnologia assistencial (per exemple, de lectors de pantalla)."
   },
   "lighthouse-core/config/default-config.js | a11yAriaGroupTitle": {
     "message": "ARIA"
@@ -1593,7 +1593,7 @@
     "message": "Internacionalització i localització"
   },
   "lighthouse-core/config/default-config.js | a11yNamesLabelsGroupDescription": {
-    "message": "Aquí tens recomanacions per millorar la semàntica dels controls a l'aplicació. També poden millorar l'experiència dels usuaris de tecnologia d'assistència (per exemple, de lectors de pantalla)."
+    "message": "Aquí tens recomanacions per millorar la semàntica dels controls a l'aplicació. També poden millorar l'experiència dels usuaris de tecnologia assistencial (per exemple, de lectors de pantalla)."
   },
   "lighthouse-core/config/default-config.js | a11yNamesLabelsGroupTitle": {
     "message": "Noms i etiquetes"
@@ -1605,7 +1605,7 @@
     "message": "Navegació"
   },
   "lighthouse-core/config/default-config.js | a11yTablesListsVideoGroupDescription": {
-    "message": "Aquí tens recomanacions per millorar la lectura de dades de taules o llistes utilitzant la tecnologia d'assistència (per exemple, lectors de pantalla)."
+    "message": "Aquí tens recomanacions per millorar la lectura de dades de taules o llistes utilitzant la tecnologia assistencial (per exemple, lectors de pantalla)."
   },
   "lighthouse-core/config/default-config.js | a11yTablesListsVideoGroupTitle": {
     "message": "Taules i llistes"
@@ -1703,17 +1703,17 @@
   "lighthouse-core/config/default-config.js | seoMobileGroupTitle": {
     "message": "Adaptació per a mòbils"
   },
-  "lighthouse-core/gather/driver.js | warningData": {
-    "message": "{locationCount,plural, =1{Pot ser que hi hagi dades emmagatzemades que afectin el rendiment de càrrega en aquesta ubicació: {locations}. Audita aquesta pàgina en una finestra d'incògnit per impedir que aquests recursos afectin els teus resultats.}other{Pot ser que hi hagi dades emmagatzemades que afectin el rendiment de càrrega en aquestes ubicacions: {locations}. Audita aquesta pàgina en una finestra d'incògnit per impedir que aquests recursos afectin els teus resultats.}}"
-  },
-  "lighthouse-core/gather/gather-runner.js | warningRedirected": {
-    "message": "És possible que la pàgina no s'estigui carregant com s'esperava perquè s'ha redirigit el teu URL de prova ({requested}) a {final}. Intenta provar el segon URL directament."
-  },
-  "lighthouse-core/gather/gather-runner.js | warningSlowHostCpu": {
+  "lighthouse-core/gather/driver/environment.js | warningSlowHostCpu": {
     "message": "Sembla que el dispositiu provat té una CPU més lenta que la que espera Lighthouse. Això pot repercutir negativament en el teu resultat del rendiment. Obtén més informació sobre com pots [calibrar un multiplicador de retenció de la CPU adequat](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md#cpu-throttling)."
   },
-  "lighthouse-core/gather/gather-runner.js | warningTimeout": {
+  "lighthouse-core/gather/driver/navigation.js | warningRedirected": {
+    "message": "És possible que la pàgina no s'estigui carregant com s'esperava perquè s'ha redirigit el teu URL de prova ({requested}) a {final}. Intenta provar el segon URL directament."
+  },
+  "lighthouse-core/gather/driver/navigation.js | warningTimeout": {
     "message": "La pàgina s'ha carregat molt lentament i ha sobrepassat el límit de temps. És possible que els resultats siguin incomplets."
+  },
+  "lighthouse-core/gather/driver/storage.js | warningData": {
+    "message": "{locationCount,plural, =1{Pot ser que hi hagi dades emmagatzemades que afectin el rendiment de càrrega en aquesta ubicació: {locations}. Audita aquesta pàgina en una finestra d'incògnit per impedir que aquests recursos afectin els teus resultats.}other{Pot ser que hi hagi dades emmagatzemades que afectin el rendiment de càrrega en aquestes ubicacions: {locations}. Audita aquesta pàgina en una finestra d'incògnit per impedir que aquests recursos afectin els teus resultats.}}"
   },
   "lighthouse-core/lib/csp-evaluator.js | allowlistFallback": {
     "message": "Pots optar per afegir esquemes d'URL https: o http: (els navegadors que admeten \"strict-dynamic\" els ignoren) perquè sigui retrocompatible amb navegadors més antics."
@@ -1728,7 +1728,7 @@
     "message": "La directiva \"reflected-xss\" està obsoleta des de la CSP2. Com a alternativa, utilitza la capçalera X-XSS-Protection."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing base-uri allows injected <base> tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting base-uri to 'none' or 'self'."
+    "message": "Si no hi ha una directiva \"base-uri\", es poden injectar etiquetes <base> per establir l'URL de base de tots els URL relatius (per exemple, scripts) en un domini controlat per un atacant. Pots optar per establir \"base-uri\" en \"none\" o \"self\"."
   },
   "lighthouse-core/lib/csp-evaluator.js | missingObjectSrc": {
     "message": "Els elements controlats per \"object-src\" es consideren funcions heretades. Pots optar per establir \"object-src\" en \"none\" per prevenir la injecció de connectors que executin scripts no segurs."
@@ -2069,6 +2069,9 @@
   "lighthouse-core/report/html/renderer/util.js | runtimeUnknown": {
     "message": "Desconegut"
   },
+  "lighthouse-core/report/html/renderer/util.js | showRelevantAudits": {
+    "message": "Show audits relevant to:"
+  },
   "lighthouse-core/report/html/renderer/util.js | snippetCollapseButtonLabel": {
     "message": "Replega el fragment"
   },
@@ -2087,11 +2090,38 @@
   "lighthouse-core/report/html/renderer/util.js | varianceDisclaimer": {
     "message": "Els valors són estimacions i poden variar. El [resultat del rendiment es calcula](https://web.dev/performance-scoring/) directament a partir d'aquestes mètriques."
   },
+  "lighthouse-core/report/html/renderer/util.js | viewTreemapLabel": {
+    "message": "Mostra un mapa d'arbre"
+  },
   "lighthouse-core/report/html/renderer/util.js | warningAuditsGroupTitle": {
     "message": "Auditories aprovades però amb advertiments"
   },
   "lighthouse-core/report/html/renderer/util.js | warningHeader": {
     "message": "Advertiments: "
+  },
+  "lighthouse-treemap/app/src/util.js | allLabel": {
+    "message": "Tot"
+  },
+  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+    "message": "Tots els scripts"
+  },
+  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+    "message": "Cobertura"
+  },
+  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+    "message": "Mòduls duplicats"
+  },
+  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+    "message": "Bytes del recurs"
+  },
+  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+    "message": "Nom"
+  },
+  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+    "message": "Commuta la taula"
+  },
+  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+    "message": "Bytes no utilitzats"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
     "message": "En el cas de contingut animat, fes servir [`amp-anim`](https://amp.dev/documentation/components/amp-anim/) per minimitzar l'ús de la CPU quan el contingut és fora de la pantalla."
