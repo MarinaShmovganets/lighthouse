@@ -153,16 +153,34 @@ describe('i18n', () => {
 
     it('logs a warning if locale is not available and the default is used', () => {
       const logListener = jest.fn();
-      log.events.once('warning', logListener);
+      log.events.on('warning', logListener);
 
       expect(i18n.lookupLocale(invalidLocale)).toEqual('en');
+
+      // COMPAT: Node 12 logs an extra warning that full-icu is not available.
+      if (process.versions.node.startsWith('12')) {
+        expect(logListener).toBeCalledTimes(2);
+        expect(logListener).toHaveBeenNthCalledWith(1, ['i18n',
+          expect.stringMatching(/Requested locale not available in this version of node/)]);
+        expect(logListener).toHaveBeenNthCalledWith(2, ['i18n',
+          `locale(s) '${invalidLocale}' not available. Falling back to default 'en'`]);
+        return;
+      }
 
       expect(logListener).toBeCalledTimes(1);
       expect(logListener).toBeCalledWith(['i18n',
         `locale(s) '${invalidLocale}' not available. Falling back to default 'en'`]);
+
+      log.events.off('warning', logListener);
     });
 
     it('falls back to root tag prefix if specific locale not available', () => {
+      // COMPAT: Node 12 only has 'en' by default.
+      if (process.versions.node.startsWith('12')) {
+        expect(i18n.lookupLocale('es-JKJK')).toEqual('en');
+        return;
+      }
+
       expect(i18n.lookupLocale('es-JKJK')).toEqual('es');
     });
 
