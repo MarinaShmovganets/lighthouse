@@ -102,7 +102,6 @@ class InspectorIssues extends FRGatherer {
       if (issue.details.heavyAdIssueDetails) {
         artifact.heavyAds.push(issue.details.heavyAdIssueDetails);
       }
-      // Duplicate issues can occur for the same request; only use the one with a matching networkRequest.
       if (issue.details.contentSecurityPolicyIssueDetails) {
         artifact.contentSecurityPolicy.push(issue.details.contentSecurityPolicyIssueDetails);
       }
