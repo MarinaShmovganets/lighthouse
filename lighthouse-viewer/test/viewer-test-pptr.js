@@ -148,19 +148,29 @@ describe('Lighthouse Viewer', () => {
   });
 
   describe('PSI', () => {
+    /** @type {Partial<puppeteer.ResponseForRequest>} */
     let interceptedRequest;
+    /** @type {Partial<puppeteer.ResponseForRequest>} */
     let psiResponse;
 
     const sampleLhrJson = JSON.parse(fs.readFileSync(sampleLhr, 'utf-8'));
+    /** @type {Partial<puppeteer.ResponseForRequest>} */
     const goodPsiResponse = {
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify({lighthouseResult: sampleLhrJson}),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
+    /** @type {Partial<puppeteer.ResponseForRequest>} */
     const badPsiResponse = {
       status: 500,
       contentType: 'application/json',
       body: JSON.stringify({error: {message: 'Test error'}}),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
 
     /**
