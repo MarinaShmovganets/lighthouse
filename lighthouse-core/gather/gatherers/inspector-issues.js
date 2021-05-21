@@ -38,7 +38,7 @@ class InspectorIssues extends FRGatherer {
   /**
    * @param {LH.Gatherer.FRTransitionalContext} context
    */
-  async startSensitiveInstrumentation(context) {
+  async startInstrumentation(context) {
     const session = context.driver.defaultSession;
     session.on('Audits.issueAdded', this._onIssueAdded);
     await session.sendCommand('Audits.enable');
@@ -47,7 +47,7 @@ class InspectorIssues extends FRGatherer {
   /**
    * @param {LH.Gatherer.FRTransitionalContext} context
    */
-  async stopSensitiveInstrumentation(context) {
+  async stopInstrumentation(context) {
     const session = context.driver.defaultSession;
     session.off('Audits.issueAdded', this._onIssueAdded);
     await session.sendCommand('Audits.disable');
@@ -126,7 +126,7 @@ class InspectorIssues extends FRGatherer {
    * @returns {Promise<LH.Artifacts['InspectorIssues']>}
    */
   async afterPass(passContext, loadData) {
-    await this.stopSensitiveInstrumentation({...passContext, dependencies: {}});
+    await this.stopInstrumentation({...passContext, dependencies: {}});
     return this._getArtifact(loadData.networkRecords);
   }
 }

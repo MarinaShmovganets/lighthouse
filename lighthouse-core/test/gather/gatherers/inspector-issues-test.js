@@ -142,9 +142,9 @@ describe('instrumentation', () => {
       .mockResponse('Audits.disable');
     const gatherer = new InspectorIssues();
 
-    await gatherer.startSensitiveInstrumentation(mockContext.asContext());
+    await gatherer.startInstrumentation(mockContext.asContext());
     await flushAllTimersAndMicrotasks();
-    await gatherer.stopSensitiveInstrumentation(mockContext.asContext());
+    await gatherer.stopInstrumentation(mockContext.asContext());
 
     expect(gatherer._issues).toEqual([
       mockMixedContent(),
@@ -308,9 +308,9 @@ describe('FR compat', () => {
       ...mockContext.asContext(),
       dependencies: {DevtoolsLog: devtoolsLog},
     };
-    await gatherer.startSensitiveInstrumentation(context);
+    await gatherer.startInstrumentation(context);
     await flushAllTimersAndMicrotasks();
-    await gatherer.stopSensitiveInstrumentation(context);
+    await gatherer.stopInstrumentation(context);
 
     const artifact = await gatherer.getArtifact(context);
 
