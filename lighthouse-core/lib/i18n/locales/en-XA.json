@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "[Éñåбļé ţéxţ çömþŕéššîöñ one two three]"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "[Îmåĝé ƒöŕmåţš ļîķé ĴÞÉĜ 2000, ĴÞÉĜ XŔ, åñð ŴéбÞ öƒţéñ þŕövîðé бéţţéŕ çömþŕéššîöñ ţĥåñ ÞÑĜ öŕ ĴÞÉĜ, ŵĥîçĥ méåñš ƒåšţéŕ ðöŵñļöåðš åñð ļéšš ðåţå çöñšûmþţîöñ. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/uses-webp-images/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour]"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "[Šéŕvé îmåĝéš îñ ñéxţ-ĝéñ ƒöŕmåţš one two three four five six seven]"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "[Îƒ ţĥé ŵîðţĥ öƒ ýöûŕ åþþ'š çöñţéñţ ðöéšñ'ţ måţçĥ ţĥé ŵîðţĥ öƒ ţĥé vîéŵþöŕţ, ýöûŕ åþþ mîĝĥţ ñöţ бé öþţîmîžéð ƒöŕ möбîļé šçŕééñš. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/content-width/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo]"
   },

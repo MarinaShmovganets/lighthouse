@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Įgalinkite teksto glaudinimą"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Tokių formatų kaip JPEG 2000, JPEG XR ir „WebP“ vaizdai dažniausiai glaudinami geriau nei PNG ar JPEG vaizdai, todėl yra atsisiunčiami greičiau ir sunaudoja mažiau duomenų. [Sužinokite daugiau](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Pateikite naujos kartos formatų vaizdus"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Jei programos turinio plotis nesutampa su peržiūros srities pločiu, jūsų programa gali būti neoptimizuota mobiliųjų įrenginių ekranams. [Sužinokite daugiau](https://web.dev/content-width/)"
   },

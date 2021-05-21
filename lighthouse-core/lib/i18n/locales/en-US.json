@@ -476,6 +476,12 @@
   "lighthouse-core/audits/byte-efficiency/legacy-javascript.js | title": {
     "message": "Avoid serving legacy JavaScript to modern browsers"
   },
+  "lighthouse-core/audits/byte-efficiency/next-gen-image-formats.js | description": {
+    "message": "Image formats like JPEG 2000, JPEG XR, and WebP often provide better compression than PNG or JPEG, which means faster downloads and less data consumption. [Learn more](https://web.dev/uses-webp-images/)."
+  },
+  "lighthouse-core/audits/byte-efficiency/next-gen-image-formats.js | title": {
+    "message": "Serve images in next-gen formats"
+  },
   "lighthouse-core/audits/byte-efficiency/offscreen-images.js | description": {
     "message": "Consider lazy-loading offscreen and hidden images after all critical resources have finished loading to lower time to interactive. [Learn more](https://web.dev/offscreen-images/)."
   },
@@ -553,12 +559,6 @@
   },
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Enable text compression"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Image formats like JPEG 2000, JPEG XR, and WebP often provide better compression than PNG or JPEG, which means faster downloads and less data consumption. [Learn more](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Serve images in next-gen formats"
   },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "If the width of your app's content doesn't match the width of the viewport, your app might not be optimized for mobile screens. [Learn more](https://web.dev/content-width/)."

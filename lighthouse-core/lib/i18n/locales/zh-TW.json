@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "啟用文字壓縮"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "JPEG 2000、JPEG XR 和 WebP 等圖片格式的壓縮效果通常優於 PNG 或 JPEG，因此能提高下載速度並節省使用者的數據用量。[瞭解詳情](https://web.dev/uses-webp-images/)。"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "提供 next-gen 格式的圖片"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "如果你的應用程式內容寬度與可視區域的寬度不相符，應用程式可能無法在行動裝置螢幕上呈現最佳效果。[瞭解詳情](https://web.dev/content-width/)。"
   },

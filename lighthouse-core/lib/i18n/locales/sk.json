@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Povoľte kompresiu textu"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Formáty obrázka, napríklad JPEG 2000, JPEG XR a WebP, zvyčajne poskytujú lepšiu kompresiu než PNG alebo JPEG, čo znamená rýchlejšie sťahovanie a nižšiu spotrebu dát. [Ďalšie informácie](https://web.dev/uses-webp-images/)"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Zobrazujte obrázky vo formátoch ďalšej generácie"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Ak šírka obsahu vašej aplikácie nezodpovedá šírke oblasti zobrazenia, aplikácia nemusí byť optimalizovaná pre obrazovky mobilných zariadení. [Ďalšie informácie](https://web.dev/content-width/)"
   },

@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Activez la compression de texte"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Les formats d'image comme JPEG 2000, JPEG XR et WebP proposent souvent une meilleure compression que les formats PNG ou JPEG. Par conséquent, les téléchargements sont plus rapides et la consommation de données est réduite. [En savoir plus](https://web.dev/uses-webp-images/)"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Diffusez des images aux formats nouvelle génération"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Si la largeur du contenu de votre application ne correspond pas à la largeur de la fenêtre d'affichage, il se peut que votre application ne soit pas optimisée pour les écrans mobiles. [Découvrez-en davantage](https://web.dev/content-width/)."
   },

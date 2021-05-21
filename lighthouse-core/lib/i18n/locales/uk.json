@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Увімкніть стиснення тексту"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Формати зображень JPEG 2000, JPEG XR і WebP часто стискаються краще, ніж PNG чи JPEG. Тому вони швидше завантажуються й використовують менше даних. [Докладніше](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Показуйте зображення в нових форматах"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Якщо ширина контенту додатка не збігається з шириною області перегляду, можливо, додаток не вдасться оптимізувати для екранів мобільних пристроїв. [Докладніше](https://web.dev/content-width/)."
   },

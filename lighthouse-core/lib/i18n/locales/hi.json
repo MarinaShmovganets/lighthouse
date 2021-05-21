@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "लेख कंप्रेशन चालू करें"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "JPEG 2000, JPEG XR, और WebP जैसे इमेज फ़ॉर्मैट, ज़्यादातर PNG या JPEG से बेहतर कंप्रेस करते हैं जिससे उपयोगकर्ता कम डेटा खर्च करके तेज़ डाउनलोड कर सकते हैं. [ज़्यादा जानें](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "इमेज अगली जेनरेशन के फ़ॉर्मेट में ऑफ़र करें"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "अगर आपके ऐप्लिकेशन की सामग्री की चौड़ाई व्यूपोर्ट की चौड़ाई से मेल नहीं खाती है, तो आपका ऐप्लिकेशन मोबाइल स्क्रीन पर ऑप्टिमाइज़ नहीं किया जा सकेगा. [ज़्यादा जानें](https://web.dev/content-width/)."
   },

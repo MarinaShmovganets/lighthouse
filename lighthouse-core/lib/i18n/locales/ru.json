@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Включите сжатие текста"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Форматы JPEG 2000, JPEG XR и WebP обеспечивают более эффективное сжатие по сравнению с PNG или JPEG, поэтому такие изображения загружаются быстрее и потребляют меньше трафика. [Подробнее…](https://web.dev/uses-webp-images/)"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Используйте современные форматы изображений"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Приложение не оптимизировано для работы на экранах мобильных устройств, если ширина контента приложения не совпадает с шириной области просмотра. [Подробнее…](https://web.dev/content-width/)"
   },

@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Ative a compactação de texto"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Formatos de imagem como JPEG 2000, JPEG XR e WebP geralmente oferecem uma melhor compactação do que PNG ou JPEG, o que significa downloads mais rápidos e menor consumo de dados. [Saiba mais](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Disponibilize imagens em formatos de última geração"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Se a largura do conteúdo do seu app não corresponder à largura da janela de visualização, não será possível otimizar o app para telas de dispositivos móveis. [Saiba mais](https://web.dev/content-width/)."
   },

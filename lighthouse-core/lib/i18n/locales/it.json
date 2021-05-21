@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Attiva la compressione del testo"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "I formati delle immagini come JPEG 2000, JPEG XR e WebP spesso consentono una compressione migliore rispetto a quella dei formati PNG o JPEG, che comporta download più veloci e un minor consumo di dati. [Ulteriori informazioni](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Pubblica immagini in formati più recenti"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Se la larghezza dei contenuti dell'app non corrisponde alla larghezza dell'area visibile, l'app potrebbe non essere ottimizzata per gli schermi dei dispositivi mobili. [Ulteriori informazioni](https://web.dev/content-width/)."
   },

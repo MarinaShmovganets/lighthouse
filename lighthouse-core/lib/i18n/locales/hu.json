@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Engedélyezze a szövegtömörítést"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Az olyan képformátumok, mint a JPEG 2000, a JPEG XR és a WebP gyakran jobb tömörítést nyújtanak, mint a PNG és a JPEG, azaz kevesebb adatforgalom mellett gyorsabb letöltést biztosítanak. [További információ](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Jelenítse meg a képeket következő generációs formátumokban"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Ha az alkalmazás tartalmának szélessége nem egyezik a megjelenítési terület szélességével, akkor lehet, hogy alkalmazása nincs optimalizálva a mobilok képernyőjére. [További információ](https://web.dev/content-width/)."
   },

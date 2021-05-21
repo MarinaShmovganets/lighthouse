@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Активирайте компресирането на текста"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Графични формати, като JPEG 2000, JPEG XR и WebP, често осигуряват по-ефективно компресиране от PNG или JPEG. Това означава по-бързо изтегляне и използване на по-малко данни. [Научете повече](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Използвайте съвременни формати за показване на изображения"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Ако ширината на съдържанието на приложението ви не съответства на тази на прозоречния изглед, приложението ви може да не е оптимизирано за мобилни екрани. [Научете повече](https://web.dev/content-width/)."
   },

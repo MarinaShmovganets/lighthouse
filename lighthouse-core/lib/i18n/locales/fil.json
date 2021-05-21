@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "I-enable ang compression ng text"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Kadalasan, mas mahusay ang pag-compress ng mga format ng larawan gaya ng JPEG 2000, JPEG XR, at WebP kaysa sa pag-compress ng PNG o JPEG, kaya mas mabilis ang pag-download at mas kaunti ang nakokonsumong data. [Matuto pa](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Maghatid ng mga larawan sa mga makabagong format"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Kung hindi tumutugma ang lapad ng content ng iyong app sa lapad ng viewport, puwedeng hindi ma-optimize ang app mo para sa mga screen ng mobile. [Matuto pa](https://web.dev/content-width/)."
   },

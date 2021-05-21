@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Aktifkan kompresi teks"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Format gambar seperti JPEG 2000, JPEG XR, dan WebP biasanya memberikan kompresi yang lebih baik daripada PNG atau JPEG, sehingga download lebih cepat dan konsumsi data lebih kecil. [Pelajari lebih lanjut](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Tayangkan gambar dalam format generasi berikutnya"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Jika lebar konten aplikasi Anda tidak cocok dengan lebar area pandang, aplikasi mungkin tidak dioptimalkan untuk layar perangkat seluler. [Pelajari lebih lanjut](https://web.dev/content-width/)."
   },

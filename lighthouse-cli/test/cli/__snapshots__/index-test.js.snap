@@ -370,7 +370,7 @@ Object {
       "path": "byte-efficiency/unused-javascript",
     },
     Object {
-      "path": "byte-efficiency/uses-webp-images",
+      "path": "byte-efficiency/next-gen-image-formats",
     },
     Object {
       "path": "byte-efficiency/uses-optimized-images",
@@ -976,7 +976,7 @@ Object {
         },
         Object {
           "group": "load-opportunities",
-          "id": "uses-webp-images",
+          "id": "next-gen-image-formats",
           "weight": 0,
         },
         Object {

@@ -476,6 +476,12 @@
   "lighthouse-core/audits/byte-efficiency/legacy-javascript.js | title": {
     "message": "Âv́ôíd̂ śêŕv̂ín̂ǵ l̂éĝáĉý Ĵáv̂áŜćr̂íp̂t́ t̂ó m̂ód̂ér̂ń b̂ŕôẃŝér̂ś"
   },
+  "lighthouse-core/audits/byte-efficiency/next-gen-image-formats.js | description": {
+    "message": "Îḿâǵê f́ôŕm̂át̂ś l̂ík̂é ĴṔÊǴ 2000, ĴṔÊǴ X̂Ŕ, âńd̂ Ẃêb́P̂ óf̂t́êń p̂ŕôv́îd́ê b́êt́t̂ér̂ ćôḿp̂ŕêśŝíôń t̂h́âń P̂ŃĜ ór̂ J́P̂ÉĜ, ẃĥíĉh́ m̂éâńŝ f́âśt̂ér̂ d́ôẃn̂ĺôád̂ś âńd̂ ĺêśŝ d́ât́â ćôńŝúm̂ṕt̂íôń. [L̂éâŕn̂ ḿôŕê](https://web.dev/uses-webp-images/)."
+  },
+  "lighthouse-core/audits/byte-efficiency/next-gen-image-formats.js | title": {
+    "message": "Ŝér̂v́ê ím̂áĝéŝ ín̂ ńêx́t̂-ǵêń f̂ór̂ḿât́ŝ"
+  },
   "lighthouse-core/audits/byte-efficiency/offscreen-images.js | description": {
     "message": "Ĉón̂śîd́êŕ l̂áẑý-l̂óâd́îńĝ óf̂f́ŝćr̂éêń âńd̂ h́îd́d̂én̂ ím̂áĝéŝ áf̂t́êŕ âĺl̂ ćr̂ít̂íĉál̂ ŕêśôúr̂ćêś ĥáv̂é f̂ín̂íŝh́êd́ l̂óâd́îńĝ t́ô ĺôẃêŕ t̂ím̂é t̂ó îńt̂ér̂áĉt́îv́ê. [Ĺêár̂ń m̂ór̂é](https://web.dev/offscreen-images/)."
   },
@@ -553,12 +559,6 @@
   },
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Êńâb́l̂é t̂éx̂t́ ĉóm̂ṕr̂éŝśîón̂"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Îḿâǵê f́ôŕm̂át̂ś l̂ík̂é ĴṔÊǴ 2000, ĴṔÊǴ X̂Ŕ, âńd̂ Ẃêb́P̂ óf̂t́êń p̂ŕôv́îd́ê b́êt́t̂ér̂ ćôḿp̂ŕêśŝíôń t̂h́âń P̂ŃĜ ór̂ J́P̂ÉĜ, ẃĥíĉh́ m̂éâńŝ f́âśt̂ér̂ d́ôẃn̂ĺôád̂ś âńd̂ ĺêśŝ d́ât́â ćôńŝúm̂ṕt̂íôń. [L̂éâŕn̂ ḿôŕê](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Ŝér̂v́ê ím̂áĝéŝ ín̂ ńêx́t̂-ǵêń f̂ór̂ḿât́ŝ"
   },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Îf́ t̂h́ê ẃîd́t̂h́ ôf́ ŷóûŕ âṕp̂'ś ĉón̂t́êńt̂ d́ôéŝń't̂ ḿât́ĉh́ t̂h́ê ẃîd́t̂h́ ôf́ t̂h́ê v́îéŵṕôŕt̂, ýôúr̂ áp̂ṕ m̂íĝh́t̂ ńôt́ b̂é ôṕt̂ím̂íẑéd̂ f́ôŕ m̂ób̂íl̂é ŝćr̂éêńŝ. [Ĺêár̂ń m̂ór̂é](https://web.dev/content-width/)."

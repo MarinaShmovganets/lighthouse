@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Bật tính năng nén văn bản"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Các định dạng hình ảnh như JPEG 2000, JPEG XR và WebP thường nén tốt hơn PNG hoặc JPEG, tức là tải xuống nhanh hơn và tiêu tốn ít dữ liệu hơn. [Tìm hiểu thêm](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Phân phối hình ảnh ở định dạng mới và hiệu quả hơn"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Nếu chiều rộng của nội dung trong ứng dụng không khớp với chiều rộng của khung nhìn, thì ứng dụng có thể không được tối ưu hóa cho màn hình thiết bị di động. [Tìm hiểu thêm](https://web.dev/content-width/)"
   },

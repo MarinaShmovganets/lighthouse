@@ -213,7 +213,7 @@ const expectations = [
             ],
           },
         },
-        'uses-webp-images': {
+        'next-gen-image-formats': {
           details: {
             overallSavingsBytes: '>60000',
             items: {

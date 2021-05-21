@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Activează comprimarea textului"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Formatele de imagine ca JPEG 2000, JPEG XR și WebP oferă adesea o comprimare mai bună decât PNG sau JPEG, ceea ce înseamnă descărcări mai rapide și mai puțin consum de date. [Află mai multe](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Difuzează imagini în formate moderne"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Dacă lățimea conținutului aplicației nu se potrivește cu lățimea ariei vizibile, este posibil ca aplicația să nu fie optimizată pentru ecrane mobile. [Află mai multe](https://web.dev/content-width/)."
   },

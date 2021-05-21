@@ -563,7 +563,7 @@ uses-rel-preconnect: numeric
 uses-rel-preload: flaky
 uses-responsive-images: flaky
 uses-text-compression: flaky
-uses-webp-images: flaky
+next-gen-image-formats: flaky
 valid-lang: notApplicable
 valid-source-maps: pass
 video-caption: notApplicable
@@ -722,7 +722,7 @@ uses-rel-preconnect
 uses-rel-preload
 uses-responsive-images
 uses-text-compression
-uses-webp-images
+next-gen-image-formats
 valid-lang
 valid-source-maps
 video-caption

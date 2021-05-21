@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "เปิดใช้การบีบอัดข้อความ"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "รูปแบบรูปภาพอย่างเช่น JPEG 2000, JPEG XR และ WebP มักบีบอัดได้ดีกว่า PNG หรือ JPEG ซึ่งหมายความว่าจะดาวน์โหลดได้เร็วขึ้นและใช้อินเทอร์เน็ตน้อยลง [ดูข้อมูลเพิ่มเติม](https://web.dev/uses-webp-images/)"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "แสดงรูปภาพในรูปแบบสมัยใหม่"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "หากความกว้างของเนื้อหาในแอปไม่ตรงกับความกว้างของวิวพอร์ต แอปอาจไม่ได้รับการเพิ่มประสิทธิภาพเพื่อหน้าจออุปกรณ์เคลื่อนที่ [ดูข้อมูลเพิ่มเติม](https://web.dev/content-width/)"
   },

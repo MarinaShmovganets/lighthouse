@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Ενεργοποίηση συμπίεσης κειμένου"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Οι μορφές εικόνας JPEG 2000, JPEG XR και WebP συχνά παρέχουν καλύτερη συμπίεση από ό,τι οι μορφές PNG και JPEG. Αυτό σημαίνει γρηγορότερες λήψεις και μικρότερη κατανάλωση δεδομένων. [Μάθετε περισσότερα](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Προβολή εικόνων σε μορφές επόμενης γενιάς"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Εάν το πλάτος του περιεχομένου της εφαρμογής σας δεν αντιστοιχεί στο πλάτος της θύρας προβολής, η εφαρμογή σας ενδέχεται να μην είναι βελτιστοποιημένη για οθόνες κινητών συσκευών. [Μάθετε περισσότερα](https://web.dev/content-width/)."
   },

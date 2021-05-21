@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "உரைச் சுருக்கத்தை இயக்கவும்"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "JPEG 2000, JPEG XR, WebP போன்ற பட வடிவமைப்புகளானது PNG அல்லது JPEGயைக் காட்டிலும் சிறந்த அளவு சுருக்கத்தை வழங்குகின்றன, இதன் மூலம் பதிவிறக்கங்கள் வேகமாக நடைபெறுவதுடன் டேட்டா உபயோகமும் குறையும். [மேலும் அறிக](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "படங்களை நவீன வடிவமைப்புகளில் வழங்கவும்"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "ஆப்ஸின் உள்ளடக்க அகலம் காட்சிப் பகுதியின் அகலத்துடன் பொருந்தவில்லை எனில் மொபைல் திரைகளுக்கு ஏற்ற வகையில் உங்கள் ஆப்ஸ் மேம்படுத்தப்படாமல் போகலாம். [மேலும் அறிக](https://web.dev/content-width/)."
   },

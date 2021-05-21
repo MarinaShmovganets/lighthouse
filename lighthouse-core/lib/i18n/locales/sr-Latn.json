@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Omogućite kompresiju teksta"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Formati slika kao što su JPEG 2000, JPEG XR i WebP često pružaju bolju kompresiju nego PNG ili JPEG, što podrazumeva brža preuzimanja i manju potrošnju podataka. [Saznajte više](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Prikazujte slike u formatima sledeće generacije"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Ako se širina sadržaja aplikacije ne podudara sa širinom oblasti prikaza, aplikacija možda nije optimizovana za ekrane na mobilnim uređajima. [Saznajte više](https://web.dev/content-width/)."
   },

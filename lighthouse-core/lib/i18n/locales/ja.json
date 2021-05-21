@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "テキスト圧縮の有効化"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "JPEG 2000、JPEG XR、WebP などの画像フォーマットは、PNG や JPEG より圧縮性能が高く、ダウンロード時間やデータ使用量を抑えることができます。[詳細](https://web.dev/uses-webp-images/)"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "次世代フォーマットでの画像の配信"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "アプリのコンテンツの幅がビューポートの幅と一致しない場合、アプリがモバイル画面に合わせて最適化されない可能性があります。[詳細](https://web.dev/content-width/)"
   },

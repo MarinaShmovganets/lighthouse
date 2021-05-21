@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Zet tekstcompressie aan"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Afbeeldingsindelingen zoals JPEG 2000, JPEG XR en WebP bieden vaak betere compressie dan PNG of JPEG. Dit resulteert in snellere downloads en minder dataverbruik. [Meer informatie](https://web.dev/uses-webp-images/)"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Lever afbeeldingen in moderne indelingen"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Als de breedte van de content van je app niet overeenkomt met de breedte van het kijkvenster, is je app mogelijk niet geoptimaliseerd voor mobiele schermen. [Meer informatie](https://web.dev/content-width/)"
   },

@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Ota tekstin pakkaus käyttöön"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Tietyt kuvamuodot, kuten JPEG 2000, JPEG XR ja WebP, pakkaavat sisältöä usein paremmin kuin PNG tai JPEG, minkä vuoksi ne auttavat nopeuttamaan latauksia ja vähentämään datan kulutusta. [Lue lisää](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Jakele kuvat seuraavan sukupolven muodoissa"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Jos sovelluksesi leveys ei vastaa näkymän leveyttä, sovelluksesi ei välttämättä ole mobiilinäytöille optimoitu. [Lue lisää](https://web.dev/content-width/)."
   },

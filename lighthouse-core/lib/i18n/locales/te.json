@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "వచనం కుదింపును ప్రారంభించండి"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "JPEG 2000, JPEG XR, WebP లాంటి చిత్రం ఫార్మాట్‌లు తరచుగా PNG లేదా JPEG కంటే మెరుగైన కుదింపును అందిస్తాయి. దీని వలన, డౌన్‌లోడ్‌లు మరింత వేగంగా ఉంటాయి, తక్కువ డేటా వినియోగం అవుతుంది. [మరింత తెలుసుకోండి](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "చిత్రాలను తర్వాతి-తరం ఫార్మాట్‌లలో అందించండి"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "ఒకవేళ వీక్షణ పోర్ట్ వెడల్పుతో మీ యాప్ కంటెంట్ వెడల్పు సరిపోలకుంటే, మొబైల్ స్క్రీన్‌లకు అనుగుణంగా మీ యాప్‌ను ఆప్టిమైజ్ చేయడం సాధ్యపడకపోవచ్చు. [మరింత తెలుసుకోండి](https://web.dev/content-width/)."
   },

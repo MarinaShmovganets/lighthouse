@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Aktivér tekstkomprimering"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Billedformater såsom JPEG 2000, JPEG XR og WebP giver ofte en bedre komprimering end PNG og JPEG, hvilket betyder hurtigere downloads og mindre dataforbrug. [Få flere oplysninger](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Vis billeder i formater af næste generation"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Hvis bredden på indholdet i din app ikke stemmer overens med bredden på din visning, bliver din app muligvis ikke optimeret til mobilskærme. [Få flere oplysninger](https://web.dev/content-width/)."
   },

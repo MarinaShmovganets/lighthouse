@@ -137,14 +137,15 @@ describe('ReportUIFeatures', () => {
       beforeAll(() => {
         const lhr = JSON.parse(JSON.stringify(sampleResults));
         lhr.requestedUrl = lhr.finalUrl = 'http://www.example.com';
-        const webpAuditItemTemplate = sampleResults.audits['uses-webp-images'].details.items[0];
+        const webpAuditItemTemplate = sampleResults.audits['next-gen-image-formats']
+            .details.items[0];
         const renderBlockingAuditItemTemplate =
           sampleResults.audits['render-blocking-resources'].details.items[0];
         const textCompressionAuditItemTemplate =
           sampleResults.audits['uses-text-compression'].details.items[0];
 
         // Interleave first/third party URLs to test restoring order.
-        lhr.audits['uses-webp-images'].details.items = [
+        lhr.audits['next-gen-image-formats'].details.items = [
           {
             ...webpAuditItemTemplate,
             url: 'http://www.cdn.com/img1.jpg', // Third party, will be filtered.
@@ -243,12 +244,11 @@ describe('ReportUIFeatures', () => {
       });
 
       it('filters out third party resources in on click', () => {
-        const filterCheckbox = dom.find('#uses-webp-images .lh-3p-filter-input', container);
+        const filterCheckbox = dom.find('#next-gen-image-formats .lh-3p-filter-input', container);
 
         function getUrlsInTable() {
           return dom
-            .findAll(
-              '#uses-webp-images tr:not(.lh-row--hidden) .lh-text__url a:first-child', container)
+            .findAll('#next-gen-image-formats tr:not(.lh-row--hidden) .lh-text__url a:first-child', container) // eslint-disable-line max-len
             .map(el => el.textContent);
         }
 
@@ -296,7 +296,7 @@ describe('ReportUIFeatures', () => {
       it('adds no filter for audits in thirdPartyFilterAuditExclusions', () => {
         const checkboxClassName = 'lh-3p-filter-input';
 
-        const yesCheckbox = dom.find(`#uses-webp-images .${checkboxClassName}`, container);
+        const yesCheckbox = dom.find(`#next-gen-image-formats .${checkboxClassName}`, container);
         expect(yesCheckbox).toBeTruthy();
 
         expect(() => dom.find(`#uses-rel-preconnect .${checkboxClassName}`, container))

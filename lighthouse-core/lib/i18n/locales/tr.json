@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Metin sıkıştırmayı etkinleştirin"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "JPEG 2000, JPEG XR ve WebP gibi resim biçimleri genellikle PNG veya JPEG'den daha iyi sıkıştırma sağlar. Böylece indirme işlemleri daha hızlı tamamlanır ve veri tüketimi daha az olur. [Daha fazla bilgi](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Resimleri yeni nesil biçimlerde yayınlayın"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Uygulamanızın içeriğinin genişliği, görüntü alanının genişliğiyle eşleşmiyorsa uygulamanız mobil ekranlar için optimize edilmemiş olabilir. [Daha fazla bilgi](https://web.dev/content-width/)."
   },

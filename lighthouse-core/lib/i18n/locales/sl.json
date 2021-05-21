@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "Omogočite stiskanje besedila"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "Oblike zapisa slik, kot so JPEG 2000, JPEG XR in WebP, pogosto omogočajo učinkovitejše stiskanje kot oblika zapisa PNG ali JPEG, kar pomeni hitrejše prenose in manjšo porabo podatkov. [Več o tem](https://web.dev/uses-webp-images/)."
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "Dostavljajte slike v sodobnih oblikah zapisa"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "Če se širina vsebine aplikacije ne ujema s širino vidnega polja, aplikacija morda ni optimizirana za zaslone mobilnih naprav. [Več o tem](https://web.dev/content-width/)."
   },

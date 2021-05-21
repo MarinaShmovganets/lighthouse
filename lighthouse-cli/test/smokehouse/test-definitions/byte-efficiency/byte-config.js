@@ -17,7 +17,7 @@ const config = {
       'network-requests',
       'offscreen-images',
       'uses-http2',
-      'uses-webp-images',
+      'next-gen-image-formats',
       'uses-optimized-images',
       'uses-text-compression',
       'uses-responsive-images',

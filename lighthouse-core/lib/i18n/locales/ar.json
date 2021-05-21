@@ -554,12 +554,6 @@
   "lighthouse-core/audits/byte-efficiency/uses-text-compression.js | title": {
     "message": "تفعيل ضغط النص"
   },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | description": {
-    "message": "غالبًا ما توفِّر تنسيقات الصور، مثل JPEG 2000 وJPEG XR وWebP، ضغطًا أفضل من تنسيق PNG أو JPEG، وهذا يعني تنزيلاً أسرع واستهلاكًا أقل للبيانات. [مزيد من المعلومات](https://web.dev/uses-webp-images/)"
-  },
-  "lighthouse-core/audits/byte-efficiency/uses-webp-images.js | title": {
-    "message": "عرض الصور بتنسيقات الجيل القادم"
-  },
   "lighthouse-core/audits/content-width.js | description": {
     "message": "في حال كان عرض محتوى التطبيق لا يتطابق مع عرض إطار العرض، قد لا يتم تحسين تطبيقك لشاشات الجوّال. [مزيد من المعلومات](https://web.dev/content-width/)"
   },
