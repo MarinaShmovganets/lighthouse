@@ -213,7 +213,7 @@ class NetworkRecorder extends EventEmitter {
     // to Lighthouse.
     // Many places in Lighthouse use `record.sessionId === undefined` to mean that the session is not
     // an OOPIF. To maintain this property, we intercept sessionId here and set it to undefined if
-    // itt matches the first value seen.
+    // it matches the first value seen.
     if (this._mainSessionId === null) {
       this._mainSessionId = sessionId;
     }
