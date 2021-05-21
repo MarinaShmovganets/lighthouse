@@ -21,6 +21,8 @@ class NetworkRecorder extends EventEmitter {
     this._records = [];
     /** @type {Map<string, NetworkRequest>} */
     this._recordsById = new Map();
+    /** @type {string|null|undefined} */
+    this._mainSessionId = null;
   }
 
   /**
@@ -205,6 +207,13 @@ class NetworkRecorder extends EventEmitter {
    * @return {NetworkRequest|undefined}
    */
   _findRealRequestAndSetSession(requestId, sessionId) {
+    if (this._mainSessionId === null) {
+      this._mainSessionId = sessionId;
+    }
+    if (this._mainSessionId === sessionId) {
+      sessionId = undefined;
+    }
+
     let request = this._recordsById.get(requestId);
     if (!request || !request.isValid) return undefined;
 
