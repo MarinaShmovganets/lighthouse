@@ -207,6 +207,13 @@ class NetworkRecorder extends EventEmitter {
    * @return {NetworkRequest|undefined}
    */
   _findRealRequestAndSetSession(requestId, sessionId) {
+    // The very first sessionId processed is always the main sessionId. In all but DevTools,
+    // this sessionId is undefined. However, in DevTools the main Lighthouse protocol connection
+    // does send events with sessionId set to a string, because of how DevTools routes the protocol
+    // to Lighthouse.
+    // Many places in Lighthouse use `record.sessionId === undefined` to mean that the session is not
+    // an OOPIF. To maintain this property, we intercept sessionId here and set it to undefined if
+    // itt matches the first value seen.
     if (this._mainSessionId === null) {
       this._mainSessionId = sessionId;
     }
