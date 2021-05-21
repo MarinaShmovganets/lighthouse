@@ -3795,8 +3795,8 @@
         "overallSavingsBytes": 0
       }
     },
-    "next-gen-image-formats": {
-      "id": "next-gen-image-formats",
+    "modern-image-formats": {
+      "id": "modern-image-formats",
       "title": "Serve images in next-gen formats",
       "description": "Image formats like JPEG 2000, JPEG XR, and WebP often provide better compression than PNG or JPEG, which means faster downloads and less data consumption. [Learn more](https://web.dev/uses-webp-images/).",
       "score": 0.88,
@@ -5051,7 +5051,7 @@
           "group": "load-opportunities"
         },
         {
-          "id": "next-gen-image-formats",
+          "id": "modern-image-formats",
           "weight": 0,
           "group": "load-opportunities"
         },
@@ -6876,7 +6876,7 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:next-gen-image-formats",
+        "name": "lh:audit:modern-image-formats",
         "duration": 100,
         "entryType": "measure"
       },
@@ -7363,7 +7363,7 @@
         "audits[total-byte-weight].details.headings[0].text",
         "audits[render-blocking-resources].details.headings[0].label",
         "audits[unminified-javascript].details.headings[0].label",
-        "audits[next-gen-image-formats].details.headings[1].label",
+        "audits[modern-image-formats].details.headings[1].label",
         "audits[uses-text-compression].details.headings[0].label",
         "audits[legacy-javascript].details.headings[0].label"
       ],
@@ -8163,7 +8163,7 @@
       "lighthouse-core/lib/i18n/i18n.js | columnWastedBytes": [
         "audits[render-blocking-resources].details.headings[2].label",
         "audits[unminified-javascript].details.headings[2].label",
-        "audits[next-gen-image-formats].details.headings[3].label",
+        "audits[modern-image-formats].details.headings[3].label",
         "audits[uses-text-compression].details.headings[2].label",
         "audits[legacy-javascript].details.headings[2].label"
       ],
@@ -8190,7 +8190,7 @@
           "values": {
             "wastedBytes": 9028
           },
-          "path": "audits[next-gen-image-formats].displayValue"
+          "path": "audits[modern-image-formats].displayValue"
         },
         {
           "values": {
@@ -8217,14 +8217,14 @@
       "lighthouse-core/audits/byte-efficiency/unused-javascript.js | description": [
         "audits[unused-javascript].description"
       ],
-      "lighthouse-core/audits/byte-efficiency/next-gen-image-formats.js | title": [
-        "audits[next-gen-image-formats].title"
+      "lighthouse-core/audits/byte-efficiency/modern-image-formats.js | title": [
+        "audits[modern-image-formats].title"
       ],
-      "lighthouse-core/audits/byte-efficiency/next-gen-image-formats.js | description": [
-        "audits[next-gen-image-formats].description"
+      "lighthouse-core/audits/byte-efficiency/modern-image-formats.js | description": [
+        "audits[modern-image-formats].description"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnResourceSize": [
-        "audits[next-gen-image-formats].details.headings[2].label"
+        "audits[modern-image-formats].details.headings[2].label"
       ],
       "lighthouse-core/audits/byte-efficiency/uses-optimized-images.js | title": [
         "audits[uses-optimized-images].title"

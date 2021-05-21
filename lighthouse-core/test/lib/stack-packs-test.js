@@ -54,7 +54,7 @@ describe('lighthouse-stack-packs dep', () => {
           "id": "wordpress",
           "keys": Array [
             "unused-css-rules",
-            "next-gen-image-formats",
+            "modern-image-formats",
             "offscreen-images",
             "total-byte-weight",
             "render-blocking-resources",
@@ -74,7 +74,7 @@ describe('lighthouse-stack-packs dep', () => {
           "keys": Array [
             "unused-css-rules",
             "unused-javascript",
-            "next-gen-image-formats",
+            "modern-image-formats",
             "offscreen-images",
             "total-byte-weight",
             "render-blocking-resources",
@@ -115,7 +115,7 @@ describe('lighthouse-stack-packs dep', () => {
         Object {
           "id": "amp",
           "keys": Array [
-            "next-gen-image-formats",
+            "modern-image-formats",
             "offscreen-images",
             "render-blocking-resources",
             "unminified-css",
@@ -126,7 +126,7 @@ describe('lighthouse-stack-packs dep', () => {
         Object {
           "id": "magento",
           "keys": Array [
-            "next-gen-image-formats",
+            "modern-image-formats",
             "offscreen-images",
             "disable-bundling",
             "unminified-css",
@@ -144,7 +144,7 @@ describe('lighthouse-stack-packs dep', () => {
           "id": "joomla",
           "keys": Array [
             "unused-css-rules",
-            "next-gen-image-formats",
+            "modern-image-formats",
             "offscreen-images",
             "total-byte-weight",
             "render-blocking-resources",
@@ -163,7 +163,7 @@ describe('lighthouse-stack-packs dep', () => {
           "id": "octobercms",
           "keys": Array [
             "unused-css-rules",
-            "next-gen-image-formats",
+            "modern-image-formats",
             "offscreen-images",
             "total-byte-weight",
             "render-blocking-resources",

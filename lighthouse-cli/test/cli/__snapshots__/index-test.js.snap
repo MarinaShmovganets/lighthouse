@@ -370,7 +370,7 @@ Object {
       "path": "byte-efficiency/unused-javascript",
     },
     Object {
-      "path": "byte-efficiency/next-gen-image-formats",
+      "path": "byte-efficiency/modern-image-formats",
     },
     Object {
       "path": "byte-efficiency/uses-optimized-images",
@@ -976,7 +976,7 @@ Object {
         },
         Object {
           "group": "load-opportunities",
-          "id": "next-gen-image-formats",
+          "id": "modern-image-formats",
           "weight": 0,
         },
         Object {

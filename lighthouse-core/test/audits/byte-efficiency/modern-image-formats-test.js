@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const NextGenImageFormats = require('../../../audits/byte-efficiency/next-gen-image-formats.js');
+const NextGenImageFormats = require('../../../audits/byte-efficiency/modern-image-formats.js');
 
 function generateArtifacts(images) {
   const optimizedImages = [];

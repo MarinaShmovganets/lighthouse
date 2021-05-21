@@ -31,7 +31,7 @@
     'uses-rel-preload',
     'uses-responsive-images',
     'uses-text-compression',
-    'next-gen-image-formats',
+    'modern-image-formats',
   ];
 
   TestRunner.addResult('Tests that audits panel works.\n');

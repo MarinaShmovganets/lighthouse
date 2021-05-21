@@ -31,7 +31,7 @@ class NextGenImageFormats extends ByteEfficiencyAudit {
    */
   static get meta() {
     return {
-      id: 'next-gen-image-formats',
+      id: 'modern-image-formats',
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
