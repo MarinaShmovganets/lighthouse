@@ -51,9 +51,7 @@ describe('Fraggle Rock API', () => {
     server = new StaticServer();
     await server.listen(0, '127.0.0.1');
     serverBaseUrl = `http://localhost:${server.getPort()}`;
-    if (!process.env.CHROME_PATH) throw Error('CHROME_PATH is not set');
     browser = await puppeteer.launch({
-      executablePath: process.env.CHROME_PATH,
       headless: true,
     });
   });
