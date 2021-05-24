@@ -7893,7 +7893,7 @@
       "lighthouse-core/audits/csp-xss.js | columnSeverity": [
         "audits[csp-xss].details.headings[2].text"
       ],
-      "lighthouse-core/lib/i18n/i18n.js | rowSeverityHigh": [
+      "lighthouse-core/lib/i18n/i18n.js | itemSeverityHigh": [
         "audits[csp-xss].details.items[0].severity"
       ],
       "lighthouse-core/audits/csp-xss.js | noCsp": [
@@ -8447,7 +8447,7 @@
       "lighthouse-core/audits/dobetterweb/no-vulnerable-libraries.js | columnSeverity": [
         "audits[no-vulnerable-libraries].details.headings[2].text"
       ],
-      "lighthouse-core/lib/i18n/i18n.js | rowSeverityMedium": [
+      "lighthouse-core/lib/i18n/i18n.js | itemSeverityMedium": [
         "audits[no-vulnerable-libraries].details.items[0].highestSeverity"
       ],
       "lighthouse-core/audits/dobetterweb/js-libraries.js | title": [

@@ -1856,6 +1856,15 @@
   "lighthouse-core/lib/i18n/i18n.js | interactiveMetric": {
     "message": "Time to Interactive"
   },
+  "lighthouse-core/lib/i18n/i18n.js | itemSeverityHigh": {
+    "message": "High"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | itemSeverityLow": {
+    "message": "Low"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | itemSeverityMedium": {
+    "message": "Medium"
+  },
   "lighthouse-core/lib/i18n/i18n.js | largestContentfulPaintMetric": {
     "message": "Largest Contentful Paint"
   },
@@ -1873,15 +1882,6 @@
   },
   "lighthouse-core/lib/i18n/i18n.js | otherResourceType": {
     "message": "Other"
-  },
-  "lighthouse-core/lib/i18n/i18n.js | rowSeverityHigh": {
-    "message": "High"
-  },
-  "lighthouse-core/lib/i18n/i18n.js | rowSeverityLow": {
-    "message": "Low"
-  },
-  "lighthouse-core/lib/i18n/i18n.js | rowSeverityMedium": {
-    "message": "Medium"
   },
   "lighthouse-core/lib/i18n/i18n.js | scriptResourceType": {
     "message": "Script"
