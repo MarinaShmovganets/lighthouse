@@ -11,16 +11,18 @@ const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.
 
 /* eslint-env jest */
 
-/** Using tooltips while severity icons are just for testing. */
-const ICONS = {
-  bypass: 'Bypass',
-  warning: 'Warning',
-  syntax: 'Syntax',
+const SEVERITY = {
+  high: {
+    formattedDefault: 'High',
+  },
+  medium: {
+    formattedDefault: 'Medium',
+  },
 };
 
 const STATIC_RESULTS = {
   noObjectSrc: {
-    severity: ICONS.bypass,
+    severity: SEVERITY.high,
     description: {
       formattedDefault:
         'Elements controlled by object-src are considered legacy features. ' +
@@ -30,7 +32,7 @@ const STATIC_RESULTS = {
     directive: 'object-src',
   },
   noBaseUri: {
-    severity: ICONS.bypass,
+    severity: SEVERITY.high,
     description: {
       formattedDefault:
         'Missing base-uri allows injected <base> tags to set the base URL for all ' +
@@ -40,7 +42,7 @@ const STATIC_RESULTS = {
     directive: 'base-uri',
   },
   noReportingDestination: {
-    severity: ICONS.warning,
+    severity: SEVERITY.medium,
     description: {
       formattedDefault:
         'No CSP configures a reporting destination. ' +
@@ -49,7 +51,7 @@ const STATIC_RESULTS = {
     directive: 'report-uri',
   },
   metaTag: {
-    severity: ICONS.warning,
+    severity: SEVERITY.medium,
     description: {
       formattedDefault:
         'The page contains a CSP defined in a <meta> tag. ' +
@@ -58,7 +60,7 @@ const STATIC_RESULTS = {
     directive: undefined,
   },
   unsafeInlineFallback: {
-    severity: ICONS.warning,
+    severity: SEVERITY.medium,
     description: {
       formattedDefault:
         'Consider adding \'unsafe-inline\' (ignored by browsers supporting ' +
@@ -87,7 +89,7 @@ it('audit basic header', async () => {
   expect(results.details.items).toMatchObject(
     [
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.high,
         description: {
           value:
             'script-src \'nonce-12345678\'; foo-bar \'none\'',
@@ -250,7 +252,7 @@ describe('constructResults', () => {
     expect(score).toEqual(0);
     expect(results).toMatchObject([
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.high,
         description: {
           value: 'script-src \'none\'; foo-bar \'none\'',
         },
@@ -292,7 +294,7 @@ describe('constructResults', () => {
     expect(score).toEqual(0);
     expect(results).toMatchObject([
       {
-        severity: ICONS.bypass,
+        severity: SEVERITY.high,
         description: {
           formattedDefault: 'No CSP found in enforcement mode',
         },
@@ -311,7 +313,7 @@ describe('constructSyntaxResults', () => {
     const results = CspXss.constructSyntaxResults(syntaxFindings, rawCsps);
     expect(results).toMatchObject([
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.high,
         description: {
           value: 'foo-bar \'none\'',
         },
@@ -351,7 +353,7 @@ describe('constructSyntaxResults', () => {
     const results = CspXss.constructSyntaxResults(syntaxFindings, rawCsps);
     expect(results).toMatchObject([
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.high,
         description: {
           value: 'foo-bar \'asdf\'',
         },
@@ -389,7 +391,7 @@ describe('constructSyntaxResults', () => {
     const results = CspXss.constructSyntaxResults(syntaxFindings, rawCsps);
     expect(results).toMatchObject([
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.high,
         description: {
           value: 'foo-bar \'none\'',
         },
@@ -406,7 +408,7 @@ describe('constructSyntaxResults', () => {
         },
       },
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.high,
         description: {
           value: 'object-src \'asdf\'',
         },
