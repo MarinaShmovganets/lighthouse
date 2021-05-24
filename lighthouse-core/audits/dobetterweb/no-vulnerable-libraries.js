@@ -47,7 +47,7 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 const SEMVER_REGEX = /^(\d+\.\d+\.\d+)[^-0-9]+/;
 
 /** @type {Record<string, LH.IcuMessage>} */
-const rowMap = {
+const severityStringsMap = {
   'low': str_(i18n.UIStrings.rowSeverityLow),
   'medium': str_(i18n.UIStrings.rowSeverityMedium),
   'high': str_(i18n.UIStrings.rowSeverityHigh),
@@ -140,7 +140,7 @@ class NoVulnerableLibrariesAudit extends Audit {
 
     const vulns = matchingVulns.map(vuln => {
       return {
-        severity: rowMap[vuln.severity],
+        severity: severityStringsMap[vuln.severity],
         numericSeverity: this.severityMap[vuln.severity],
         library: `${lib.name}@${normalizedVersion}`,
         url: 'https://snyk.io/vuln/' + vuln.id,
