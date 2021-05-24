@@ -138,13 +138,13 @@ class CspXss extends Audit {
     const results = [
       ...this.constructSyntaxResults(syntax, rawCsps),
       ...bypasses.map(f => this.findingToTableItem(f, str_(i18n.UIStrings.rowSeverityHigh))),
-      ...warnings.map(f => this.findingToTableItem(f, str_(i18n.UIStrings.rowSeverityHigh))),
+      ...warnings.map(f => this.findingToTableItem(f, str_(i18n.UIStrings.rowSeverityMedium))),
     ];
 
     // Add extra warning for a CSP defined in a meta tag.
     if (cspMetaTags.length) {
       results.push({
-        severity: str_(i18n.UIStrings.rowSeverityHigh),
+        severity: str_(i18n.UIStrings.rowSeverityMedium),
         description: str_(UIStrings.metaTagMessage),
         directive: undefined,
       });
