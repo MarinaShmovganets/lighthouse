@@ -100,7 +100,7 @@ class CspXss extends Audit {
       const items = syntaxFindings[i].map(f => this.findingToTableItem(f));
       if (!items.length) continue;
       results.push({
-        severity: str_(i18n.UIStrings.rowSeverityHigh),
+        severity: str_(i18n.UIStrings.itemSeverityHigh),
         description: {
           type: 'code',
           value: rawCsps[i],
@@ -126,7 +126,7 @@ class CspXss extends Audit {
       return {
         score: 0,
         results: [{
-          severity: str_(i18n.UIStrings.rowSeverityHigh),
+          severity: str_(i18n.UIStrings.itemSeverityHigh),
           description: str_(UIStrings.noCsp),
           directive: undefined,
         }],
@@ -137,14 +137,14 @@ class CspXss extends Audit {
 
     const results = [
       ...this.constructSyntaxResults(syntax, rawCsps),
-      ...bypasses.map(f => this.findingToTableItem(f, str_(i18n.UIStrings.rowSeverityHigh))),
-      ...warnings.map(f => this.findingToTableItem(f, str_(i18n.UIStrings.rowSeverityMedium))),
+      ...bypasses.map(f => this.findingToTableItem(f, str_(i18n.UIStrings.itemSeverityHigh))),
+      ...warnings.map(f => this.findingToTableItem(f, str_(i18n.UIStrings.itemSeverityMedium))),
     ];
 
     // Add extra warning for a CSP defined in a meta tag.
     if (cspMetaTags.length) {
       results.push({
-        severity: str_(i18n.UIStrings.rowSeverityMedium),
+        severity: str_(i18n.UIStrings.itemSeverityMedium),
         description: str_(UIStrings.metaTagMessage),
         directive: undefined,
       });

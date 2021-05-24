@@ -48,9 +48,9 @@ const SEMVER_REGEX = /^(\d+\.\d+\.\d+)[^-0-9]+/;
 
 /** @type {Record<string, LH.IcuMessage>} */
 const severityStringsMap = {
-  'low': str_(i18n.UIStrings.rowSeverityLow),
-  'medium': str_(i18n.UIStrings.rowSeverityMedium),
-  'high': str_(i18n.UIStrings.rowSeverityHigh),
+  'low': str_(i18n.UIStrings.itemSeverityLow),
+  'medium': str_(i18n.UIStrings.itemSeverityMedium),
+  'high': str_(i18n.UIStrings.itemSeverityHigh),
 };
 
 /** @typedef {{npm: Object<string, Array<{id: string, severity: string, semver: {vulnerable: Array<string>}}>>}} SnykDB */
