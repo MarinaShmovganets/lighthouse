@@ -31,6 +31,8 @@ const UIStrings = {
   columnDirective: 'Directive',
   /** Label for a column in a data table; entries will be the severity of an issue with the CSP. "CSP" stands for "Content Security Policy". */
   columnSeverity: 'Severity',
+  /** Table item value calling out the presence of a syntax error. */
+  itemSeveritySyntax: 'Syntax',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -100,7 +102,7 @@ class CspXss extends Audit {
       const items = syntaxFindings[i].map(f => this.findingToTableItem(f));
       if (!items.length) continue;
       results.push({
-        severity: str_(i18n.UIStrings.itemSeverityHigh),
+        severity: str_(UIStrings.itemSeveritySyntax),
         description: {
           type: 'code',
           value: rawCsps[i],
