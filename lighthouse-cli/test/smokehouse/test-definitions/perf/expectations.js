@@ -330,7 +330,7 @@ module.exports = [
                 largestContentfulPaintAllFrames: '<5000',
                 cumulativeLayoutShift: '0.197 +/- 0.001',
                 cumulativeLayoutShiftMainFrame: '0.001 +/- 0.0005',
-                oldCumulativeLayoutShift: '0.001 +/- 0.0005',
+                totalCumulativeLayoutShift: '0.001 +/- 0.0005',
               },
               {
                 lcpInvalidated: false,

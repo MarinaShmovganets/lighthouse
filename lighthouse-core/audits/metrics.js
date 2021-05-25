@@ -12,10 +12,10 @@ const ComputedTimingSummary = require('../computed/metrics/timing-summary.js');
 const DECIMAL_METRIC_KEYS = new Set([
   'cumulativeLayoutShift',
   'cumulativeLayoutShiftMainFrame',
-  'oldCumulativeLayoutShift',
+  'totalCumulativeLayoutShift',
   'observedCumulativeLayoutShift',
   'observedCumulativeLayoutShiftMainFrame',
-  'observedOldCumulativeLayoutShift',
+  'observedTotalCumulativeLayoutShift',
 ]);
 
 class Metrics extends Audit {

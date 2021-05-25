@@ -225,7 +225,7 @@
         "items": [
           {
             "cumulativeLayoutShiftMainFrame": 0.42,
-            "oldCumulativeLayoutShift": 0.42
+            "totalCumulativeLayoutShift": 0.42
           }
         ]
       }
@@ -1474,7 +1474,7 @@
             "maxPotentialFID": 123,
             "cumulativeLayoutShift": 0.42,
             "cumulativeLayoutShiftMainFrame": 0.42,
-            "oldCumulativeLayoutShift": 0.42,
+            "totalCumulativeLayoutShift": 0.42,
             "observedTimeOrigin": 0,
             "observedTimeOriginTs": 185603319912,
             "observedNavigationStart": 0,
@@ -1499,7 +1499,7 @@
             "observedDomContentLoadedTs": 185608220734,
             "observedCumulativeLayoutShift": 0.42,
             "observedCumulativeLayoutShiftMainFrame": 0.42,
-            "observedOldCumulativeLayoutShift": 0.42,
+            "observedTotalCumulativeLayoutShift": 0.42,
             "observedFirstVisualChange": 3969,
             "observedFirstVisualChangeTs": 185607288912,
             "observedLastVisualChange": 4791,

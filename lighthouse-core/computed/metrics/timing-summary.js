@@ -60,7 +60,7 @@ class TimingSummary {
     const {
       cumulativeLayoutShift,
       cumulativeLayoutShiftMainFrame,
-      oldCumulativeLayoutShift,
+      totalCumulativeLayoutShift,
     } = cumulativeLayoutShiftValues || {};
 
     /** @type {LH.Artifacts.TimingSummary} */
@@ -88,7 +88,7 @@ class TimingSummary {
       maxPotentialFID: maxPotentialFID && maxPotentialFID.timing,
       cumulativeLayoutShift,
       cumulativeLayoutShiftMainFrame,
-      oldCumulativeLayoutShift,
+      totalCumulativeLayoutShift,
 
       // Include all timestamps of interest from trace of tab
       observedTimeOrigin: traceOfTab.timings.timeOrigin,
@@ -117,7 +117,7 @@ class TimingSummary {
       observedDomContentLoadedTs: traceOfTab.timestamps.domContentLoaded,
       observedCumulativeLayoutShift: cumulativeLayoutShift,
       observedCumulativeLayoutShiftMainFrame: cumulativeLayoutShiftMainFrame,
-      observedOldCumulativeLayoutShift: oldCumulativeLayoutShift,
+      observedTotalCumulativeLayoutShift: totalCumulativeLayoutShift,
 
       // Include some visual metrics from speedline
       observedFirstVisualChange: speedline.first,

@@ -62,17 +62,17 @@ describe('Timing summary', () => {
         "observedLoadTs": 10327876093,
         "observedNavigationStart": 0,
         "observedNavigationStartTs": 10327187909,
-        "observedOldCumulativeLayoutShift": 0.0011656245471340055,
         "observedSpeedIndex": 1334.5801200005412,
         "observedSpeedIndexTs": 10328522489.12,
         "observedTimeOrigin": 0,
         "observedTimeOriginTs": 10327187909,
+        "observedTotalCumulativeLayoutShift": 0.0011656245471340055,
         "observedTraceEnd": 14214.313,
         "observedTraceEndTs": 10341402222,
-        "oldCumulativeLayoutShift": 0.0011656245471340055,
         "speedIndex": 1335,
         "speedIndexTs": 10328522909,
         "totalBlockingTime": 2.7429999999994834,
+        "totalCumulativeLayoutShift": 0.0011656245471340055,
       }
     `);
     // Includes performance metrics

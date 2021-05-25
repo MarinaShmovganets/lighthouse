@@ -45,17 +45,17 @@ Object {
   "observedLoadTs": 23466696096,
   "observedNavigationStart": 0,
   "observedNavigationStartTs": 23466023130,
-  "observedOldCumulativeLayoutShift": undefined,
   "observedSpeedIndex": 1583,
   "observedSpeedIndexTs": 23467605703,
   "observedTimeOrigin": 0,
   "observedTimeOriginTs": 23466023130,
+  "observedTotalCumulativeLayoutShift": undefined,
   "observedTraceEnd": 6006,
   "observedTraceEndTs": 23472029453,
-  "oldCumulativeLayoutShift": undefined,
   "speedIndex": 1583,
   "speedIndexTs": 23467606130,
   "totalBlockingTime": 0,
+  "totalCumulativeLayoutShift": undefined,
 }
 `;
 
@@ -104,17 +104,17 @@ Object {
   "observedLoadTs": 713039182071,
   "observedNavigationStart": 0,
   "observedNavigationStartTs": 713037023064,
-  "observedOldCumulativeLayoutShift": 0,
   "observedSpeedIndex": 1393,
   "observedSpeedIndexTs": 713038416494,
   "observedTimeOrigin": 0,
   "observedTimeOriginTs": 713037023064,
+  "observedTotalCumulativeLayoutShift": 0,
   "observedTraceEnd": 7416,
   "observedTraceEndTs": 713044439102,
-  "oldCumulativeLayoutShift": 0,
   "speedIndex": 3681,
   "speedIndexTs": undefined,
   "totalBlockingTime": 1205,
+  "totalCumulativeLayoutShift": 0,
 }
 `;
 
@@ -163,17 +163,17 @@ Object {
   "observedLoadTs": 225416370913,
   "observedNavigationStart": 0,
   "observedNavigationStartTs": 225414172015,
-  "observedOldCumulativeLayoutShift": 0,
   "observedSpeedIndex": 605,
   "observedSpeedIndexTs": 225414776724,
   "observedTimeOrigin": 0,
   "observedTimeOriginTs": 225414172015,
+  "observedTotalCumulativeLayoutShift": 0,
   "observedTraceEnd": 12540,
   "observedTraceEndTs": 225426711887,
-  "oldCumulativeLayoutShift": 0,
   "speedIndex": 605,
   "speedIndexTs": 225414777015,
   "totalBlockingTime": 48,
+  "totalCumulativeLayoutShift": 0,
 }
 `;
 
@@ -222,16 +222,16 @@ Object {
   "observedLoadTs": 225416370913,
   "observedNavigationStart": 0,
   "observedNavigationStartTs": 225414172015,
-  "observedOldCumulativeLayoutShift": 0,
   "observedSpeedIndex": 605,
   "observedSpeedIndexTs": 225414776724,
   "observedTimeOrigin": 0,
   "observedTimeOriginTs": 225414172015,
+  "observedTotalCumulativeLayoutShift": 0,
   "observedTraceEnd": 12540,
   "observedTraceEndTs": 225426711887,
-  "oldCumulativeLayoutShift": 0,
   "speedIndex": 1676,
   "speedIndexTs": undefined,
   "totalBlockingTime": 777,
+  "totalCumulativeLayoutShift": 0,
 }
 `;

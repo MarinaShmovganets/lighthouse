@@ -27,7 +27,7 @@ describe('Metrics: CLS', () => {
       expect(result).toEqual({
         cumulativeLayoutShift: expect.toBeApproximately(2.268816, 6),
         cumulativeLayoutShiftMainFrame: expect.toBeApproximately(2.268816, 6),
-        oldCumulativeLayoutShift: expect.toBeApproximately(4.809794, 6),
+        totalCumulativeLayoutShift: expect.toBeApproximately(4.809794, 6),
       });
     });
 
@@ -41,7 +41,7 @@ describe('Metrics: CLS', () => {
       expect(result).toEqual({
         cumulativeLayoutShift: 0.026463014612806653,
         cumulativeLayoutShiftMainFrame: 0.0011656245471340055,
-        oldCumulativeLayoutShift: 0.0011656245471340055,
+        totalCumulativeLayoutShift: 0.0011656245471340055,
       });
     });
 
@@ -50,7 +50,7 @@ describe('Metrics: CLS', () => {
       expect(result).toEqual({
         cumulativeLayoutShift: 0,
         cumulativeLayoutShiftMainFrame: 0,
-        oldCumulativeLayoutShift: 0,
+        totalCumulativeLayoutShift: 0,
       });
     });
   });
@@ -124,7 +124,7 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 4,
           cumulativeLayoutShiftMainFrame: 4,
-          oldCumulativeLayoutShift: 4,
+          totalCumulativeLayoutShift: 4,
         });
       });
 
@@ -141,7 +141,7 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 3,
           cumulativeLayoutShiftMainFrame: 3,
-          oldCumulativeLayoutShift: 3,
+          totalCumulativeLayoutShift: 3,
         });
       });
 
@@ -159,7 +159,7 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 0.75,
           cumulativeLayoutShiftMainFrame: 0.75,
-          oldCumulativeLayoutShift: 3.75, // 30 * 0.125
+          totalCumulativeLayoutShift: 3.75, // 30 * 0.125
         });
       });
 
@@ -184,7 +184,7 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 1.0625,
           cumulativeLayoutShiftMainFrame: 1.0625,
-          oldCumulativeLayoutShift: 1.375,
+          totalCumulativeLayoutShift: 1.375,
         });
       });
 
@@ -202,7 +202,7 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 3.75, // 30 * 0.125
           cumulativeLayoutShiftMainFrame: 3.75,
-          oldCumulativeLayoutShift: 3.75,
+          totalCumulativeLayoutShift: 3.75,
         });
       });
 
@@ -226,7 +226,7 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 5,
           cumulativeLayoutShiftMainFrame: 5,
-          oldCumulativeLayoutShift: 5,
+          totalCumulativeLayoutShift: 5,
         });
       });
     });
@@ -247,7 +247,7 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 0.75, // Same value as single-frame uniformly distributed.
           cumulativeLayoutShiftMainFrame: 0.125, // All 1s gaps, so only one event per cluster.
-          oldCumulativeLayoutShift: 1.875, // 0.125 * 15
+          totalCumulativeLayoutShift: 1.875, // 0.125 * 15
         });
       });
 
@@ -276,7 +276,7 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 6,
           cumulativeLayoutShiftMainFrame: 3,
-          oldCumulativeLayoutShift: 3,
+          totalCumulativeLayoutShift: 3,
         });
       });
 
@@ -292,7 +292,7 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 4,
           cumulativeLayoutShiftMainFrame: 2,
-          oldCumulativeLayoutShift: 2,
+          totalCumulativeLayoutShift: 2,
         });
       });
 
@@ -322,7 +322,7 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 3,
           cumulativeLayoutShiftMainFrame: 1,
-          oldCumulativeLayoutShift: 1,
+          totalCumulativeLayoutShift: 1,
         });
       });
     });
@@ -342,7 +342,7 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 6,
           cumulativeLayoutShiftMainFrame: 6,
-          oldCumulativeLayoutShift: 6,
+          totalCumulativeLayoutShift: 6,
         });
       });
 
@@ -361,7 +361,7 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 6,
           cumulativeLayoutShiftMainFrame: 1,
-          oldCumulativeLayoutShift: 4,
+          totalCumulativeLayoutShift: 4,
         });
       });
 
@@ -375,7 +375,7 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 2,
           cumulativeLayoutShiftMainFrame: 2,
-          oldCumulativeLayoutShift: 2,
+          totalCumulativeLayoutShift: 2,
         });
       });
 
@@ -389,7 +389,7 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 2,
           cumulativeLayoutShiftMainFrame: 1,
-          oldCumulativeLayoutShift: 1,
+          totalCumulativeLayoutShift: 1,
         });
       });
     });

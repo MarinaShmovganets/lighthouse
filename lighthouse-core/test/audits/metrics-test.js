@@ -101,10 +101,10 @@ describe('Performance: metrics', () => {
     expect(details.items[0]).toMatchObject({
       cumulativeLayoutShift: undefined,
       cumulativeLayoutShiftMainFrame: undefined,
-      oldCumulativeLayoutShift: undefined,
+      totalCumulativeLayoutShift: undefined,
       observedCumulativeLayoutShift: undefined,
       observedCumulativeLayoutShiftMainFrame: undefined,
-      observedOldCumulativeLayoutShift: undefined,
+      observedTotalCumulativeLayoutShift: undefined,
     });
   });
 
@@ -125,11 +125,11 @@ describe('Performance: metrics', () => {
     expect(details.items[0]).toMatchObject({
       cumulativeLayoutShift: expect.toBeApproximately(0.026463, 6),
       cumulativeLayoutShiftMainFrame: expect.toBeApproximately(0.001166, 6),
-      oldCumulativeLayoutShift: expect.toBeApproximately(0.001166, 6),
+      totalCumulativeLayoutShift: expect.toBeApproximately(0.001166, 6),
 
       observedCumulativeLayoutShift: expect.toBeApproximately(0.026463, 6),
       observedCumulativeLayoutShiftMainFrame: expect.toBeApproximately(0.001166, 6),
-      observedOldCumulativeLayoutShift: expect.toBeApproximately(0.001166, 6),
+      observedTotalCumulativeLayoutShift: expect.toBeApproximately(0.001166, 6),
     });
   });
 
@@ -165,11 +165,11 @@ describe('Performance: metrics', () => {
     expect(details.items[0]).toMatchObject({
       cumulativeLayoutShift: expect.toBeApproximately(2.268816, 6),
       cumulativeLayoutShiftMainFrame: expect.toBeApproximately(2.268816, 6),
-      oldCumulativeLayoutShift: expect.toBeApproximately(4.809794, 6),
+      totalCumulativeLayoutShift: expect.toBeApproximately(4.809794, 6),
 
       observedCumulativeLayoutShift: expect.toBeApproximately(2.268816, 6),
       observedCumulativeLayoutShiftMainFrame: expect.toBeApproximately(2.268816, 6),
-      observedOldCumulativeLayoutShift: expect.toBeApproximately(4.809794, 6),
+      observedTotalCumulativeLayoutShift: expect.toBeApproximately(4.809794, 6),
     });
   });
 });

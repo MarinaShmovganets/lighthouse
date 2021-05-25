@@ -748,7 +748,7 @@ declare global {
         maxPotentialFID: number | undefined;
         cumulativeLayoutShift: number | undefined;
         cumulativeLayoutShiftMainFrame: number | undefined;
-        oldCumulativeLayoutShift: number | undefined;
+        totalCumulativeLayoutShift: number | undefined;
         totalBlockingTime: number;
         observedTimeOrigin: number;
         observedTimeOriginTs: number;
@@ -756,7 +756,7 @@ declare global {
         observedNavigationStartTs: number;
         observedCumulativeLayoutShift: number | undefined;
         observedCumulativeLayoutShiftMainFrame: number | undefined;
-        observedOldCumulativeLayoutShift: number | undefined;
+        observedTotalCumulativeLayoutShift: number | undefined;
         observedFirstPaint: number | undefined;
         observedFirstPaintTs: number | undefined;
         observedFirstContentfulPaint: number;
