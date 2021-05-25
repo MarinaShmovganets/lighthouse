@@ -25,7 +25,7 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 const IGNORE_THRESHOLD_IN_BYTES = 8192;
 
-class NextGenImageFormats extends ByteEfficiencyAudit {
+class ModernImageFormats extends ByteEfficiencyAudit {
   /**
    * @return {LH.Audit.Meta}
    */
@@ -100,7 +100,7 @@ class NextGenImageFormats extends ByteEfficiencyAudit {
         // If naturalHeight or naturalWidth are falsy, information is not valid, skip.
         if (!naturalWidth || !naturalHeight) continue;
 
-        webpSize = NextGenImageFormats.estimateWebPSizeFromDimensions({
+        webpSize = ModernImageFormats.estimateWebPSizeFromDimensions({
           naturalHeight,
           naturalWidth,
         });
@@ -111,7 +111,7 @@ class NextGenImageFormats extends ByteEfficiencyAudit {
 
       const url = URL.elideDataURI(image.url);
       const isCrossOrigin = !URL.originsMatch(pageURL, image.url);
-      const webpSavings = NextGenImageFormats.computeSavings({...image, webpSize: webpSize});
+      const webpSavings = ModernImageFormats.computeSavings({...image, webpSize: webpSize});
 
       items.push({
         url,
@@ -138,5 +138,5 @@ class NextGenImageFormats extends ByteEfficiencyAudit {
   }
 }
 
-module.exports = NextGenImageFormats;
+module.exports = ModernImageFormats;
 module.exports.UIStrings = UIStrings;
