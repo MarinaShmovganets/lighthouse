@@ -78,7 +78,7 @@ class CspXss extends Audit {
 
   /**
    * @param {Finding} finding
-   * @param {(string|LH.IcuMessage)=} severity
+   * @param {LH.IcuMessage=} severity
    * @return {LH.Audit.Details.TableItem}
    */
   static findingToTableItem(finding, severity) {
