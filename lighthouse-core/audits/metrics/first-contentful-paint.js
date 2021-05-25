@@ -46,7 +46,7 @@ class FirstContentfulPaint extends Audit {
         },
       },
       desktop: {
-        // SELECT QUANTILES(renderStart, 21) FROM [httparchive:summary_pages.2018_12_15_desktop] LIMIT 1000
+        // SELECT QUANTILES(renderStart, 21) FROM [httparchive:summary_pages.2020_07_01_desktop] LIMIT 1000
         scoring: {
           p10: 934,
           median: 1600,

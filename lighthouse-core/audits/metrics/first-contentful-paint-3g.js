@@ -30,7 +30,7 @@ class FirstContentfulPaint3G extends Audit {
   static get defaultOptions() {
     return {
       // 25th and 8th percentiles HTTPArchive on Slow 4G -> multiply by 1.5 for RTT differential -> median and p10.
-      // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
+      // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2021_05_01_mobile
       // https://www.desmos.com/calculator/xi5oympawp
       p10: 2700,
       median: 4500,
