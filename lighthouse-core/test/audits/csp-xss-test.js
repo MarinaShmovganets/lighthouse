@@ -12,6 +12,9 @@ const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.
 /* eslint-env jest */
 
 const SEVERITY = {
+  syntax: {
+    formattedDefault: 'Syntax',
+  },
   high: {
     formattedDefault: 'High',
   },
@@ -89,7 +92,7 @@ it('audit basic header', async () => {
   expect(results.details.items).toMatchObject(
     [
       {
-        severity: SEVERITY.high,
+        severity: SEVERITY.syntax,
         description: {
           value:
             'script-src \'nonce-12345678\'; foo-bar \'none\'',
@@ -252,7 +255,7 @@ describe('constructResults', () => {
     expect(score).toEqual(0);
     expect(results).toMatchObject([
       {
-        severity: SEVERITY.high,
+        severity: SEVERITY.syntax,
         description: {
           value: 'script-src \'none\'; foo-bar \'none\'',
         },
@@ -313,7 +316,7 @@ describe('constructSyntaxResults', () => {
     const results = CspXss.constructSyntaxResults(syntaxFindings, rawCsps);
     expect(results).toMatchObject([
       {
-        severity: SEVERITY.high,
+        severity: SEVERITY.syntax,
         description: {
           value: 'foo-bar \'none\'',
         },
@@ -353,7 +356,7 @@ describe('constructSyntaxResults', () => {
     const results = CspXss.constructSyntaxResults(syntaxFindings, rawCsps);
     expect(results).toMatchObject([
       {
-        severity: SEVERITY.high,
+        severity: SEVERITY.syntax,
         description: {
           value: 'foo-bar \'asdf\'',
         },
@@ -391,7 +394,7 @@ describe('constructSyntaxResults', () => {
     const results = CspXss.constructSyntaxResults(syntaxFindings, rawCsps);
     expect(results).toMatchObject([
       {
-        severity: SEVERITY.high,
+        severity: SEVERITY.syntax,
         description: {
           value: 'foo-bar \'none\'',
         },
@@ -408,7 +411,7 @@ describe('constructSyntaxResults', () => {
         },
       },
       {
-        severity: SEVERITY.high,
+        severity: SEVERITY.syntax,
         description: {
           value: 'object-src \'asdf\'',
         },
