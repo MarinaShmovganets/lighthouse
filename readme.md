@@ -26,7 +26,7 @@
   * [Can I configure the lighthouse run?](#can-i-configure-the-lighthouse-run)
   * [How does Lighthouse use network throttling, and how can I make it better?](#how-does-lighthouse-use-network-throttling-and-how-can-i-make-it-better)
   * [Are results sent to a remote server?](#are-results-sent-to-a-remote-server)
-  * [How do I get localized Lighthouse results?](#how-do-i-get-localized-lighthouse-results)
+  * [How do I get localized Lighthouse results?](#how-do-i-get-localized-lighthouse-results-via-the-cli)
   * [How do I author custom audits to extend Lighthouse?](#how-do-i-author-custom-audits-to-extend-lighthouse)
   * [How do I contribute?](#how-do-i-contribute)
 
