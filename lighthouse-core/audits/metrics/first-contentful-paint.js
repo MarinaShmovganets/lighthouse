@@ -37,12 +37,12 @@ class FirstContentfulPaint extends Audit {
   static get defaultOptions() {
     return {
       mobile: {
-        // 25th and 5th percentiles HTTPArchive -> median and PODR, then p10 is derived from them.
-        // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2018_04_01_mobile?pli=1
-        // see https://www.desmos.com/calculator/oqlvmezbze
+        // 25th and 8th percentiles HTTPArchive -> median and p10.
+        // https://bigquery.cloud.google.com/table/httparchive:lighthouse.2021_05_01_mobile
+        // see https://www.desmos.com/calculator/6wi8rhipve
         scoring: {
-          p10: 2336,
-          median: 4000,
+          p10: 1800,
+          median: 3000,
         },
       },
       desktop: {
