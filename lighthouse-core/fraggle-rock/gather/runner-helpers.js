@@ -78,7 +78,7 @@ async function collectPhaseArtifacts(options) {
         url: await driver.url(),
         gatherMode,
         driver,
-        dependencies: /** @type {Dependencies} */ (dependencies), // eslint-disable-line max-len
+        dependencies: /** @type {Dependencies} */ (dependencies),
         computedCache,
       });
     });
