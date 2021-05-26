@@ -19,6 +19,8 @@
 
 /** @typedef {Record<CollectPhaseArtifactOptions['phase'], IntermediateArtifacts>} ArtifactState */
 
+/** @typedef {LH.Gatherer.FRTransitionalContext<LH.Gatherer.DependencyKey>['dependencies']} Dependencies */
+
 /**
  *
  * @param {{id: string}} dependency
@@ -76,7 +78,7 @@ async function collectPhaseArtifacts(options) {
         url: await driver.url(),
         gatherMode,
         driver,
-        dependencies,
+        dependencies: /** @type {Dependencies} */ (dependencies), // eslint-disable-line max-len
         computedCache,
       });
     });
@@ -89,10 +91,10 @@ async function collectPhaseArtifacts(options) {
 /**
  * @param {LH.Config.ArtifactDefn} artifact
  * @param {Record<string, LH.Gatherer.PhaseResult>} artifactsById
- * @return {Promise<LH.Gatherer.FRTransitionalContext<LH.Gatherer.DependencyKey>['dependencies']>}
+ * @return {Promise<Dependencies>}
  */
 async function collectArtifactDependencies(artifact, artifactsById) {
-  if (!artifact.dependencies) return {};
+  if (!artifact.dependencies) return /** @type {Dependencies} */ ({});
 
   const dependencyPromises = Object.entries(artifact.dependencies).map(
     async ([dependencyName, dependency]) => {
