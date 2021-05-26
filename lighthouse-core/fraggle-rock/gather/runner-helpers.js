@@ -72,13 +72,13 @@ async function collectPhaseArtifacts(options) {
     const artifactPromise = priorArtifactPromise.then(async () => {
       const dependencies = phase === 'getArtifact'
         ? await collectArtifactDependencies(artifactDefn, artifactState.getArtifact)
-        : {};
+        : /** @type {Dependencies} */ ({});
 
       return gatherer[phase]({
         url: await driver.url(),
         gatherMode,
         driver,
-        dependencies: /** @type {Dependencies} */ (dependencies),
+        dependencies,
         computedCache,
       });
     });
