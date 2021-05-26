@@ -7,11 +7,10 @@
 
 /* globals window document getBoundingClientRect */
 
-const Gatherer = require('./gatherer.js');
+const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 const emulation = require('../../lib/emulation.js');
 const pageFunctions = require('../../lib/page-functions.js');
-
-/** @typedef {import('../driver.js')} Driver */
+const Settings = require('./settings.js');
 
 // JPEG quality setting
 // Exploration and examples of reports using different quality settings: https://docs.google.com/document/d/1ZSffucIca9XDW2eEwfoevrk-OTl7WQFeMf0CgeJAA8M/edit#
@@ -24,14 +23,20 @@ function snakeCaseToCamelCase(str) {
   return str.replace(/(-\w)/g, m => m[1].toUpperCase());
 }
 
-class FullPageScreenshot extends Gatherer {
+class FullPageScreenshot extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta<'Settings'>} */
+  meta = {
+    supportedModes: ['snapshot', 'timespan', 'navigation'],
+    dependencies: {Settings: Settings.symbol},
+  }
+
   /**
-   * @param {Driver} driver
+   * @param {LH.Gatherer.FRTransitionalContext} context
    * @return {Promise<number>}
    * @see https://bugs.chromium.org/p/chromium/issues/detail?id=770769
    */
-  async getMaxScreenshotHeight(driver) {
-    return await driver.executionContext.evaluate(pageFunctions.getMaxTextureSize, {
+  async getMaxScreenshotHeight(context) {
+    return await context.driver.executionContext.evaluate(pageFunctions.getMaxTextureSize, {
       args: [],
       useIsolation: true,
       deps: [],
@@ -39,13 +44,14 @@ class FullPageScreenshot extends Gatherer {
   }
 
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Config.Settings} settings
    * @return {Promise<LH.Artifacts.FullPageScreenshot['screenshot']>}
    */
-  async _takeScreenshot(passContext) {
-    const driver = passContext.driver;
-    const maxScreenshotHeight = await this.getMaxScreenshotHeight(driver);
-    const metrics = await driver.sendCommand('Page.getLayoutMetrics');
+  async _takeScreenshot(context, settings) {
+    const session = context.driver.defaultSession;
+    const maxScreenshotHeight = await this.getMaxScreenshotHeight(context);
+    const metrics = await session.sendCommand('Page.getLayoutMetrics');
 
     // Width should match emulated width, without considering content overhang.
     // Both layoutViewport and visualViewport capture this. visualViewport accounts
@@ -56,9 +62,9 @@ class FullPageScreenshot extends Gatherer {
     const width = Math.min(metrics.layoutViewport.clientWidth, maxScreenshotHeight);
     const height = Math.min(metrics.contentSize.height, maxScreenshotHeight);
 
-    await driver.sendCommand('Emulation.setDeviceMetricsOverride', {
+    await session.sendCommand('Emulation.setDeviceMetricsOverride', {
       // If we're gathering with mobile screenEmulation on (overlay scrollbars, etc), continue to use that for this screenshot.
-      mobile: passContext.settings.screenEmulation.mobile,
+      mobile: settings.screenEmulation.mobile,
       height,
       width,
       deviceScaleFactor: 1,
@@ -70,7 +76,7 @@ class FullPageScreenshot extends Gatherer {
     // The lower in the page, the more likely (footer elements especially).
     // https://github.com/GoogleChrome/lighthouse/issues/11118
 
-    const result = await driver.sendCommand('Page.captureScreenshot', {
+    const result = await session.sendCommand('Page.captureScreenshot', {
       format: 'jpeg',
       quality: FULL_PAGE_SCREENSHOT_QUALITY,
     });
@@ -90,10 +96,10 @@ class FullPageScreenshot extends Gatherer {
    * `getNodeDetails` maintains a collection of DOM objects in the page, which we can iterate
    * to re-collect the bounding client rectangle.
    * @see pageFunctions.getNodeDetails
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} context
    * @return {Promise<LH.Artifacts.FullPageScreenshot['nodes']>}
    */
-  async _resolveNodes(passContext) {
+  async _resolveNodes(context) {
     function resolveNodes() {
       /** @type {LH.Artifacts.FullPageScreenshot['nodes']} */
       const nodes = {};
@@ -113,7 +119,7 @@ class FullPageScreenshot extends Gatherer {
      * @param {{useIsolation: boolean}} _
      */
     function resolveNodesInPage({useIsolation}) {
-      return passContext.driver.executionContext.evaluate(resolveNodes, {
+      return context.driver.executionContext.evaluate(resolveNodes, {
         args: [],
         useIsolation,
         deps: [pageFunctions.getBoundingClientRectString],
@@ -129,26 +135,27 @@ class FullPageScreenshot extends Gatherer {
   }
 
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Config.Settings} settings
    * @return {Promise<LH.Artifacts['FullPageScreenshot']>}
    */
-  async afterPass(passContext) {
-    const {driver} = passContext;
-    const executionContext = driver.executionContext;
+  async _getArtifact(context, settings) {
+    const session = context.driver.defaultSession;
+    const executionContext = context.driver.executionContext;
 
     // In case some other program is controlling emulation, try to remember what the device looks
     // like now and reset after gatherer is done.
-    const lighthouseControlsEmulation = !passContext.settings.screenEmulation.disabled;
+    const lighthouseControlsEmulation = !settings.screenEmulation.disabled;
 
     try {
       return {
-        screenshot: await this._takeScreenshot(passContext),
-        nodes: await this._resolveNodes(passContext),
+        screenshot: await this._takeScreenshot(context, settings),
+        nodes: await this._resolveNodes(context),
       };
     } finally {
       // Revert resized page.
       if (lighthouseControlsEmulation) {
-        await emulation.emulate(driver.defaultSession, passContext.settings);
+        await emulation.emulate(session, settings);
       } else {
         // Best effort to reset emulation to what it was.
         // https://github.com/GoogleChrome/lighthouse/pull/10716#discussion_r428970681
@@ -179,12 +186,30 @@ class FullPageScreenshot extends Gatherer {
           useIsolation: true,
           deps: [snakeCaseToCamelCase],
         });
-        await driver.sendCommand('Emulation.setDeviceMetricsOverride', {
-          mobile: passContext.settings.formFactor === 'mobile',
+        await session.sendCommand('Emulation.setDeviceMetricsOverride', {
+          mobile: settings.formFactor === 'mobile',
           ...observedDeviceMetrics,
         });
       }
     }
+  }
+
+  /**
+   * @param {LH.Gatherer.FRTransitionalContext<'Settings'>} context
+   * @return {Promise<LH.Artifacts['FullPageScreenshot']>}
+   */
+  async getArtifact(context) {
+    const settings = context.dependencies.Settings;
+    return this._getArtifact(context, settings);
+  }
+
+  /**
+   * @param {LH.Gatherer.PassContext} passContext
+   * @return {Promise<LH.Artifacts['FullPageScreenshot']>}
+   */
+  async afterPass(passContext) {
+    const settings = passContext.settings;
+    return this._getArtifact({...passContext, dependencies: {}}, settings);
   }
 }
 

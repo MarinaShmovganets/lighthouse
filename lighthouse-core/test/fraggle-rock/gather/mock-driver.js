@@ -156,7 +156,10 @@ function mockDriverSubmodules() {
     prepareTargetForIndividualNavigation: jest.fn(),
   };
   const storageMock = {clearDataForOrigin: jest.fn()};
-  const emulationMock = {clearThrottling: jest.fn()};
+  const emulationMock = {
+    clearThrottling: jest.fn(),
+    emulate: jest.fn(),
+  };
   const networkMock = {
     fetchResponseBodyFromCache: jest.fn(),
   };
@@ -167,6 +170,7 @@ function mockDriverSubmodules() {
     prepareMock.prepareTargetForIndividualNavigation = jest.fn().mockResolvedValue({warnings: []});
     storageMock.clearDataForOrigin = jest.fn();
     emulationMock.clearThrottling = jest.fn();
+    emulationMock.emulate = jest.fn();
     networkMock.fetchResponseBodyFromCache = jest.fn().mockResolvedValue('');
   }
 
