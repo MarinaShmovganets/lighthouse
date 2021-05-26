@@ -163,6 +163,8 @@ declare global {
       ResponseCompression: {requestId: string, url: string, mimeType: string, transferSize: number, resourceSize: number, gzipSize?: number}[];
       /** Information on fetching and the content of the /robots.txt file. */
       RobotsTxt: {status: number|null, content: string|null};
+      /** An object containing information about the testing configuration used by Lighthouse. */
+      Settings: Config.Settings;
       /** Version information for all ServiceWorkers active after the first page load. */
       ServiceWorker: {versions: Crdp.ServiceWorker.ServiceWorkerVersion[], registrations: Crdp.ServiceWorker.ServiceWorkerRegistration[]};
       /** Source maps of scripts executed in the page. */

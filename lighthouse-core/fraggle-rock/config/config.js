@@ -24,6 +24,7 @@ const {
   resolveAuditsToDefns,
   resolveGathererToDefn,
 } = require('../../config/config-helpers.js');
+const Settings = require('../../gather/gatherers/settings.js');
 const defaultConfigPath = path.join(__dirname, './default-config.js');
 
 /**
@@ -174,6 +175,13 @@ function initializeConfig(configJSON, context) {
   // TODO(FR-COMPAT): handle config plugins
 
   const settings = resolveSettings(configWorkingCopy.settings || {}, context.settingsOverrides);
+  if (configWorkingCopy.artifacts) {
+    const settingsArtifact = configWorkingCopy.artifacts.find(a => a.id === 'Settings');
+    if (settingsArtifact) {
+      settingsArtifact.gatherer = {instance: new Settings(settings)};
+    }
+  }
+
   const artifacts = resolveArtifactsToDefns(configWorkingCopy.artifacts, configDir);
   const navigations = resolveNavigationsToDefns(configWorkingCopy.navigations, artifacts);
 
