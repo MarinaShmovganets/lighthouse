@@ -81,7 +81,7 @@ declare global {
       export interface StackPackDescription {
          /** The title of the stack pack. */
         title: string;
-        /** A TextEncoding data url to be used as the stack pack's icon. */
+        /** A base64 data url to be used as the stack pack's icon. */
         iconDataURL: string;
         /** The stack-specific description for this audit. */
         description: string;
