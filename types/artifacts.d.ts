@@ -470,9 +470,7 @@ declare global {
           /** The aspect ratio of the image as expressed by CSS rules. Set to `null` if there was no aspect ratio set in CSS. */
           aspectRatio: string | null;
         };
-        /**
-         * The computed style
-         */
+        /** The computed styles as determined by `getComputedStyle`. */
         computedStyle: {
           /** The CSS position attribute of the element */
           position: string;
