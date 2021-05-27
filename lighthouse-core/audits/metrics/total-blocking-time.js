@@ -40,11 +40,11 @@ class TotalBlockingTime extends Audit {
         // According to a cluster telemetry run over top 10k sites on mobile, 5th percentile was 0ms,
         // 25th percentile was 270ms and median was 895ms. These numbers include 404 pages. Picking
         // thresholds according to our 25/75-th rule will be quite harsh scoring (a single 350ms task)
-        // after FCP will yield a score of .5. The following coefficients are semi-arbitrarily picked
-        // to give 600ms jank a score of .5 and 100ms jank a score of .999. We can tweak these numbers
-        // in the future. See https://www.desmos.com/calculator/bbsv8fedg5
+        // after FCP will yield a score of .5. The following coefficients are semi-arbitrarily chosen,
+        // but start to approach the 25/75 numbers.
+        // See https://www.desmos.com/calculator/pwcgna1cvf go/lh8-tbt-curves
         scoring: {
-          p10: 287,
+          p10: 200,
           median: 600,
         },
       },
