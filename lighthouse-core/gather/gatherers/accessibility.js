@@ -59,6 +59,7 @@ async function runA11yChecks() {
       'aria-treeitem-name': {enabled: true},
       // https://github.com/dequelabs/axe-core/issues/2958
       'nested-interactive': {enabled: false},
+      'frame-focusable-content': {enabled: false},
     },
   });
 

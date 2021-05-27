@@ -30,15 +30,6 @@ const expectations = [
                   'nodeLabel': 'div',
                 },
               },
-              {
-                node: {
-                  'type': 'node',
-                  'selector': 'body > section > div#duplicate-id-aria > div',
-                  'snippet': '<div aria-labelledby="duplicate-id-aria">',
-                  'explanation': 'Fix all of the following:\n  ARIA attribute cannot be used, add a role attribute or use a different element: aria-labelledby',
-                  'nodeLabel': 'div',
-                },
-              },
             ],
           },
         },
