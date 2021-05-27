@@ -7,11 +7,11 @@
 
 /* global self btoa atob window CompressionStream Response */
 
-const btoaIso = typeof btoa !== 'undefined' ?
+const btoa_ = typeof btoa !== 'undefined' ?
   btoa :
   /** @param {string} str */
   (str) => Buffer.from(str).toString('base64');
-const atobIso = typeof atob !== 'undefined' ?
+const atob_ = typeof atob !== 'undefined' ?
   atob :
   /** @param {string} str */
   (str) => Buffer.from(str, 'base64').toString();
@@ -50,7 +50,7 @@ async function toBase64(string, options) {
   for (let i = 0; i < bytes.length; i += chunkSize) {
     binaryString += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
   }
-  return btoaIso(binaryString);
+  return btoa_(binaryString);
 }
 
 /**
@@ -59,7 +59,7 @@ async function toBase64(string, options) {
  * @return {string}
  */
 function fromBase64(encoded, options) {
-  const binaryString = atobIso(encoded);
+  const binaryString = atob_(encoded);
   const bytes = Uint8Array.from(binaryString, c => c.charCodeAt(0));
 
   if (options.gzip) {
