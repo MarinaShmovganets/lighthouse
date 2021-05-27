@@ -456,7 +456,7 @@ declare global {
         };
         /**
          * The width/height of the element as defined by matching CSS rules.
-         * These are distinct from the `computedStyles` properties in that the are the raw property value.
+         * These are distinct from the `computedStyles` properties in that they are the raw property value.
          * e.g. `width` would be `"100vw"`, not the computed width in pixels.
          * Set to `undefined` if the data was not collected.
          */
@@ -472,9 +472,9 @@ declare global {
         computedStyles: {
           /** CSS `position` property. */
           position: string;
-          /** `object-fit` CSS property. */
+          /** CSS `object-fit` property. */
           objectFit: string;
-          /** `image-rendering` propertry. */
+          /** CSS `image-rendering` propertry. */
           imageRendering: string;
         };
         /** The BoundingClientRect of the element. */

@@ -1518,7 +1518,7 @@
       }
     },
     {
-      "src": "blob:http://localhost:10200/5a659d35-80ca-42e2-8f98-19daed3b98aa",
+      "src": "blob:http://localhost:10200/822c70a0-b912-41c7-9a21-56c3d309e75b",
       "srcset": "",
       "displayedWidth": 16,
       "displayedHeight": 16,
@@ -1555,7 +1555,7 @@
           "width": 16,
           "height": 16
         },
-        "snippet": "<img src=\"blob:http://localhost:10200/5a659d35-80ca-42e2-8f98-19daed3b98aa\">",
+        "snippet": "<img src=\"blob:http://localhost:10200/822c70a0-b912-41c7-9a21-56c3d309e75b\">",
         "nodeLabel": "img"
       },
       "cssEffectiveRules": {
@@ -1565,7 +1565,7 @@
       }
     },
     {
-      "src": "filesystem:http://localhost:10200/temporary/empty-0.1357101858843155.png",
+      "src": "filesystem:http://localhost:10200/temporary/empty-0.8423185960902964.png",
       "srcset": "",
       "displayedWidth": 16,
       "displayedHeight": 16,
@@ -1602,7 +1602,7 @@
           "width": 16,
           "height": 16
         },
-        "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.1357101858843155.png\">",
+        "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.8423185960902964.png\">",
         "nodeLabel": "img"
       },
       "cssEffectiveRules": {
