@@ -70,45 +70,14 @@ describe('FullPageScreenshot gatherer', () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 412, height: 2000};
 
-    const settings = {
+    mockContext.settings = {
       formFactor: 'mobile',
       screenEmulation: {
         mobile: true,
         disabled: false,
       },
     };
-    const context = {
-      ...mockContext.asContext(),
-      dependencies: {Settings: settings},
-    };
-    const artifact = await fpsGatherer.getArtifact(context);
-
-    expect(artifact).toEqual({
-      screenshot: {
-        data: 'data:image/jpeg;base64,abc',
-        height: 2000,
-        width: 412,
-      },
-      nodes: {},
-    });
-  });
-
-  it('captures a full-page screenshot in legacy mode', async () => {
-    const fpsGatherer = new FullPageScreenshotGatherer();
-    contentSize = {width: 412, height: 2000};
-
-    const settings = {
-      formFactor: 'mobile',
-      screenEmulation: {
-        mobile: true,
-        disabled: false,
-      },
-    };
-    const context = {
-      ...mockContext.asLegacyContext(),
-      settings,
-    };
-    const artifact = await fpsGatherer.afterPass(context);
+    const artifact = await fpsGatherer.getArtifact(mockContext.asContext());
 
     expect(artifact).toEqual({
       screenshot: {
@@ -123,14 +92,15 @@ describe('FullPageScreenshot gatherer', () => {
   it('resets the emulation correctly when Lighthouse controls it', async () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 412, height: 2000};
-
-    await fpsGatherer._getArtifact(mockContext.asContext(), {
+    mockContext.settings = {
       formFactor: 'mobile',
       screenEmulation: {
         mobile: true,
         disabled: false,
       },
-    });
+    };
+
+    await fpsGatherer.getArtifact(mockContext.asContext());
 
     const expectedArgs = {formFactor: 'mobile', screenEmulation: {disabled: false, mobile: true}};
     expect(mocks.emulationMock.emulate).toHaveBeenCalledTimes(1);
@@ -144,14 +114,15 @@ describe('FullPageScreenshot gatherer', () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 500, height: 1500};
     screenSize = {width: 500, height: 500, dpr: 2};
-
-    await fpsGatherer._getArtifact(mockContext.asContext(), {
+    mockContext.settings = {
       screenEmulation: {
         mobile: true,
         disabled: true,
       },
       formFactor: 'mobile',
-    });
+    };
+
+    await fpsGatherer.getArtifact(mockContext.asContext());
 
     // Setting up for screenshot.
     expect(mockContext.driver.defaultSession.sendCommand).toHaveBeenCalledWith(
@@ -185,14 +156,15 @@ describe('FullPageScreenshot gatherer', () => {
 
     contentSize = {width: 412, height: 100000};
     screenSize = {dpr: 1};
-
-    await fpsGatherer._getArtifact(mockContext.asContext(), {
+    mockContext.settings = {
       formFactor: 'mobile',
       screenEmulation: {
         mobile: true,
         disabled: false,
       },
-    });
+    };
+
+    await fpsGatherer.getArtifact(mockContext.asContext());
 
     expect(mockContext.driver.defaultSession.sendCommand).toHaveBeenCalledWith(
       'Emulation.setDeviceMetricsOverride',

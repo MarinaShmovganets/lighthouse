@@ -53,28 +53,6 @@ describe('Fraggle Rock Config', () => {
     });
   });
 
-  it('should resolve settings artifact', () => {
-    const {config} = initializeConfig(
-      {
-        settings: {output: 'csv', maxWaitForFcp: 1234},
-        artifacts: [{id: 'Settings', gatherer: 'settings'}],
-      },
-      {gatherMode}
-    );
-    if (!config.artifacts) throw new Error('Did not define artifacts');
-    expect(config.artifacts).toHaveLength(1);
-    expect(config.artifacts[0].gatherer).toMatchObject({
-      instance: {
-        _settings: {
-          output: 'csv',
-          maxWaitForFcp: 1234,
-        },
-      },
-      implementation: undefined,
-      path: undefined,
-    });
-  });
-
   it('should resolve artifact definitions', () => {
     const configJson = {artifacts: [{id: 'Accessibility', gatherer: 'accessibility'}]};
     const {config} = initializeConfig(configJson, {gatherMode});
@@ -85,8 +63,8 @@ describe('Fraggle Rock Config', () => {
   });
 
   it('should throw on invalid artifact definitions', () => {
-    const configJson = {artifacts: [{id: 'FullPageScreenshot', gatherer: 'full-page-screenshot'}]};
-    expect(() => initializeConfig(configJson, {gatherMode})).toThrow(/FullPageScreenshot gatherer/);
+    const configJson = {artifacts: [{id: 'ScriptElements', gatherer: 'script-elements'}]};
+    expect(() => initializeConfig(configJson, {gatherMode})).toThrow(/ScriptElements gatherer/);
   });
 
   it('should resolve navigation definitions', () => {

@@ -38,7 +38,6 @@ const artifacts = {
   PasswordInputsWithPreventedPaste: '',
   ResponseCompression: '',
   RobotsTxt: '',
-  Settings: '',
   SourceMaps: '',
   Stacks: '',
   TagsBlockingFirstPaint: '',
@@ -58,7 +57,6 @@ for (const key of Object.keys(artifacts)) {
 const defaultConfig = {
   artifacts: [
     // Artifacts which can be depended on come first.
-    {id: artifacts.Settings, gatherer: 'settings'},
     {id: artifacts.DevtoolsLog, gatherer: 'devtools-log'},
     {id: artifacts.Trace, gatherer: 'trace'},
 
@@ -111,7 +109,6 @@ const defaultConfig = {
       cpuQuietThresholdMs: 1000,
       artifacts: [
         // Artifacts which can be depended on come first.
-        artifacts.Settings,
         artifacts.DevtoolsLog,
         artifacts.Trace,
 

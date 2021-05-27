@@ -10,7 +10,6 @@
 const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 const emulation = require('../../lib/emulation.js');
 const pageFunctions = require('../../lib/page-functions.js');
-const Settings = require('./settings.js');
 
 // JPEG quality setting
 // Exploration and examples of reports using different quality settings: https://docs.google.com/document/d/1ZSffucIca9XDW2eEwfoevrk-OTl7WQFeMf0CgeJAA8M/edit#
@@ -24,10 +23,9 @@ function snakeCaseToCamelCase(str) {
 }
 
 class FullPageScreenshot extends FRGatherer {
-  /** @type {LH.Gatherer.GathererMeta<'Settings'>} */
+  /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['snapshot', 'timespan', 'navigation'],
-    dependencies: {Settings: Settings.symbol},
   }
 
   /**
@@ -136,12 +134,12 @@ class FullPageScreenshot extends FRGatherer {
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} context
-   * @param {LH.Config.Settings} settings
    * @return {Promise<LH.Artifacts['FullPageScreenshot']>}
    */
-  async _getArtifact(context, settings) {
+  async getArtifact(context) {
     const session = context.driver.defaultSession;
     const executionContext = context.driver.executionContext;
+    const settings = context.settings;
 
     // In case some other program is controlling emulation, try to remember what the device looks
     // like now and reset after gatherer is done.
@@ -192,24 +190,6 @@ class FullPageScreenshot extends FRGatherer {
         });
       }
     }
-  }
-
-  /**
-   * @param {LH.Gatherer.FRTransitionalContext<'Settings'>} context
-   * @return {Promise<LH.Artifacts['FullPageScreenshot']>}
-   */
-  async getArtifact(context) {
-    const settings = context.dependencies.Settings;
-    return this._getArtifact(context, settings);
-  }
-
-  /**
-   * @param {LH.Gatherer.PassContext} passContext
-   * @return {Promise<LH.Artifacts['FullPageScreenshot']>}
-   */
-  async afterPass(passContext) {
-    const settings = passContext.settings;
-    return this._getArtifact({...passContext, dependencies: {}}, settings);
   }
 }
 

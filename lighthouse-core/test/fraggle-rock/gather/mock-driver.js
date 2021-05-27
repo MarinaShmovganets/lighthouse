@@ -12,6 +12,7 @@ const {
   createMockOnceFn,
   createMockSendCommandFn,
 } = require('../../gather/mock-commands.js');
+const {defaultSettings} = require('../../../config/constants.js');
 
 /**
  * @fileoverview Mock fraggle rock driver for testing.
@@ -134,6 +135,7 @@ function createMockContext() {
     gatherMode: 'navigation',
     computedCache: new Map(),
     dependencies: {},
+    settings: defaultSettings,
 
     /** @return {LH.Gatherer.FRTransitionalContext} */
     asContext() {
