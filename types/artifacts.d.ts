@@ -472,7 +472,7 @@ declare global {
         };
         /** The computed styles as determined by `getComputedStyle`. */
         computedStyle: {
-          /** The CSS position attribute of the element */
+          /** CSS `position` property. */
           position: string;
           /** `object-fit` CSS property. */
           objectFit: string;
