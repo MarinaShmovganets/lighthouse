@@ -10,8 +10,8 @@ const UnsizedImagesAudit = require('../../audits/unsized-images.js');
 /* eslint-env jest */
 
 function generateImage(props, src = 'https://google.com/logo.png', isCss = false,
-  isInShadowDOM = false, computedStyle = {position: 'static'}, node = {boundingRect: {}}) {
-  const image = {src, isCss, isInShadowDOM, computedStyle, node};
+  isInShadowDOM = false, computedStyles = {position: 'static'}, node = {boundingRect: {}}) {
+  const image = {src, isCss, isInShadowDOM, computedStyles, node};
   Object.assign(image, props);
   return image;
 }
@@ -54,7 +54,7 @@ describe('Sized images audit', () => {
 
   it('passes when an image has absolute css position', async () => {
     const result = await runAudit({
-      computedStyle: {position: 'absolute'},
+      computedStyles: {position: 'absolute'},
       attributeWidth: '',
       attributeHeight: '',
       cssEffectiveRules: {
@@ -67,7 +67,7 @@ describe('Sized images audit', () => {
 
   it('passes when an image has fixed css position', async () => {
     const result = await runAudit({
-      computedStyle: {position: 'fixed'},
+      computedStyles: {position: 'fixed'},
       attributeWidth: '',
       attributeHeight: '',
       cssEffectiveRules: {

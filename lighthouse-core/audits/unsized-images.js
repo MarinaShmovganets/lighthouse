@@ -124,7 +124,7 @@ class UnsizedImages extends Audit {
     for (const image of images) {
       // Fixed images are out of document flow and won't cause layout shifts
       const isFixedImage =
-        image.computedStyle.position === 'fixed' || image.computedStyle.position === 'absolute';
+        image.computedStyles.position === 'fixed' || image.computedStyles.position === 'absolute';
       if (isFixedImage) continue;
 
       // Non-network SVGs with dimensions don't cause layout shifts in practice, skip them.

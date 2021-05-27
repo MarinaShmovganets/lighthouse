@@ -23,7 +23,7 @@ function generateImage(clientSize, naturalDimensions, props, src = 'https://goog
     },
   };
   return {
-    computedStyle: {objectFit: 'fill'},
+    computedStyles: {objectFit: 'fill'},
     src,
     mimeType: 'image/png',
     naturalDimensions,
@@ -118,7 +118,7 @@ describe('Images: size audit', () => {
     clientSize: [100, 100],
     naturalSize: [5, 5],
     props: {
-      computedStyle: {objectFit: 'cover'},
+      computedStyles: {objectFit: 'cover'},
     },
   });
 
@@ -127,7 +127,7 @@ describe('Images: size audit', () => {
     clientSize: [100, 100],
     naturalSize: [5, 5],
     props: {
-      computedStyle: {imageRendering: 'pixelated'},
+      computedStyles: {imageRendering: 'pixelated'},
     },
   });
 

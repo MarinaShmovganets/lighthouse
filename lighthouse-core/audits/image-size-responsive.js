@@ -101,11 +101,11 @@ function isCandidate(image) {
   if (image.isCss) {
     return false;
   }
-  if (image.computedStyle.objectFit !== 'fill') {
+  if (image.computedStyles.objectFit !== 'fill') {
     return false;
   }
   // Check if pixel art scaling is used.
-  if (artisticImageRenderingValues.includes(image.computedStyle.imageRendering)) {
+  if (artisticImageRenderingValues.includes(image.computedStyles.imageRendering)) {
     return false;
   }
   // Check if density descriptor is used.

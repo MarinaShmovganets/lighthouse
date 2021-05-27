@@ -1198,7 +1198,7 @@
         "width": 811,
         "height": 462
       },
-      "computedStyle": {
+      "computedStyles": {
         "position": "static",
         "objectFit": "fill",
         "imageRendering": "auto"
@@ -1246,7 +1246,7 @@
         "width": 480,
         "height": 318
       },
-      "computedStyle": {
+      "computedStyles": {
         "position": "static",
         "objectFit": "fill",
         "imageRendering": "auto"
@@ -1294,7 +1294,7 @@
         "width": 480,
         "height": 318
       },
-      "computedStyle": {
+      "computedStyles": {
         "position": "static",
         "objectFit": "fill",
         "imageRendering": "auto"
@@ -1342,7 +1342,7 @@
         "width": 480,
         "height": 318
       },
-      "computedStyle": {
+      "computedStyles": {
         "position": "absolute",
         "objectFit": "fill",
         "imageRendering": "auto"
@@ -1390,7 +1390,7 @@
         "width": 480,
         "height": 318
       },
-      "computedStyle": {
+      "computedStyles": {
         "position": "absolute",
         "objectFit": "fill",
         "imageRendering": "auto"
@@ -1438,7 +1438,7 @@
         "width": 480,
         "height": 318
       },
-      "computedStyle": {
+      "computedStyles": {
         "position": "absolute",
         "objectFit": "fill",
         "imageRendering": "pixelated"
@@ -1482,7 +1482,7 @@
       },
       "attributeWidth": "360",
       "attributeHeight": "240",
-      "computedStyle": {
+      "computedStyles": {
         "position": "absolute",
         "objectFit": "fill",
         "imageRendering": "auto"
@@ -1534,7 +1534,7 @@
         "width": 0,
         "height": 0
       },
-      "computedStyle": {
+      "computedStyles": {
         "position": "static",
         "objectFit": "fill",
         "imageRendering": "auto"
@@ -1581,7 +1581,7 @@
         "width": 0,
         "height": 0
       },
-      "computedStyle": {
+      "computedStyles": {
         "position": "static",
         "objectFit": "fill",
         "imageRendering": "auto"

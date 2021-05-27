@@ -14,7 +14,7 @@ function generateImage(clientSize, naturalDimensions, props, src = 'https://goog
   return {
     src,
     mimeType: 'image/png',
-    computedStyle: {objectFit: 'fill'},
+    computedStyles: {objectFit: 'fill'},
     naturalDimensions,
     ...clientSize,
     ...props,
@@ -81,7 +81,7 @@ describe('Images: aspect-ratio audit', () => {
     naturalSize: [800, 500],
     props: {
       isCss: false,
-      computedStyle: {objectFit: 'cover'},
+      computedStyles: {objectFit: 'cover'},
     },
   });
 

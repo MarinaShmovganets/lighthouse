@@ -76,7 +76,7 @@ function getHTMLImages(allElements) {
         {width: element.naturalWidth, height: element.naturalHeight} :
         undefined,
       cssRules: undefined, // this will get overwritten below
-      computedStyle: {
+      computedStyles: {
         position: getPosition(element, computedStyle),
         objectFit: computedStyle.getPropertyValue('object-fit'),
         imageRendering: computedStyle.getPropertyValue('image-rendering'),
@@ -124,7 +124,7 @@ function getCSSImages(allElements) {
       attributeHeight: null,
       naturalDimensions: undefined,
       cssEffectiveRules: undefined,
-      computedStyle: {
+      computedStyles: {
         position: getPosition(element, style),
         objectFit: '',
         imageRendering: style.getPropertyValue('image-rendering'),

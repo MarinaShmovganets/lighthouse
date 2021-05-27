@@ -50,7 +50,7 @@ function mockElement(partial = {}) {
     attributeHeight: '',
     naturalDimensions: undefined,
     cssEffectiveRules: undefined,
-    computedStyle: {position: 'absolute', objectFit: '', imageRendering: ''},
+    computedStyles: {position: 'absolute', objectFit: '', imageRendering: ''},
     isCss: false,
     isPicture: false,
     isInShadowDOM: false,

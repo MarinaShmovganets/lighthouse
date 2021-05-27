@@ -95,7 +95,7 @@ class ImageAspectRatio extends Audit {
         image.naturalDimensions.width > 5 &&
         image.displayedWidth &&
         image.displayedHeight &&
-        image.computedStyle.objectFit === 'fill';
+        image.computedStyles.objectFit === 'fill';
     }).forEach(image => {
       const wellDefinedImage = /** @type {WellDefinedImage} */ (image);
       const processed = ImageAspectRatio.computeAspectRatios(wellDefinedImage);
