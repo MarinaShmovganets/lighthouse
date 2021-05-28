@@ -26,6 +26,9 @@ let screenshotData;
 let mockContext = createMockContext();
 
 beforeEach(() => {
+  contentSize = {width: 100, height: 100};
+  screenSize = {dpr: 1};
+  screenshotData = [];
   mockContext = createMockContext();
   mockContext.driver.defaultSession.sendCommand.mockImplementation(method => {
     if (method === 'Page.getLayoutMetrics') {
@@ -66,7 +69,7 @@ beforeEach(() => {
 });
 
 describe('FullPageScreenshot gatherer', () => {
-  it('captures a full-page screenshot in FR', async () => {
+  it('captures a full-page screenshot', async () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 412, height: 2000};
 
