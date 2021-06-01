@@ -43,10 +43,9 @@ class FullPageScreenshot extends FRGatherer {
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} context
-   * @param {LH.Config.Settings} settings
    * @return {Promise<LH.Artifacts.FullPageScreenshot['screenshot']>}
    */
-  async _takeScreenshot(context, settings) {
+  async _takeScreenshot(context) {
     const session = context.driver.defaultSession;
     const maxScreenshotHeight = await this.getMaxScreenshotHeight(context);
     const metrics = await session.sendCommand('Page.getLayoutMetrics');
@@ -62,7 +61,7 @@ class FullPageScreenshot extends FRGatherer {
 
     await session.sendCommand('Emulation.setDeviceMetricsOverride', {
       // If we're gathering with mobile screenEmulation on (overlay scrollbars, etc), continue to use that for this screenshot.
-      mobile: settings.screenEmulation.mobile,
+      mobile: context.settings.screenEmulation.mobile,
       height,
       width,
       deviceScaleFactor: 1,
@@ -147,7 +146,7 @@ class FullPageScreenshot extends FRGatherer {
 
     try {
       return {
-        screenshot: await this._takeScreenshot(context, settings),
+        screenshot: await this._takeScreenshot(context),
         nodes: await this._resolveNodes(context),
       };
     } finally {
