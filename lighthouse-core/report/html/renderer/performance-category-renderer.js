@@ -112,15 +112,12 @@ class PerformanceCategoryRenderer extends CategoryRenderer {
    * @return {string}
    */
   _getScoringCalculatorHref(auditRefs) {
-    const metrics = auditRefs.filter(audit => audit.acronym);
-    // COMPAT: remove when dropping renderer support of v7 LHRs.
-    if (!metrics.length) {
-      metrics.push(...auditRefs.filter(audit => audit.group === 'metrics'));
-      const fci = auditRefs.find(audit => audit.id === 'first-cpu-idle');
-      const fmp = auditRefs.find(audit => audit.id === 'first-meaningful-paint');
-      if (fci) metrics.push(fci);
-      if (fmp) metrics.push(fmp);
-    }
+    // TODO: filter by !!acronym when dropping renderer support of v7 LHRs.
+    const metrics = auditRefs.filter(audit => audit.group === 'metrics');
+    const fci = auditRefs.find(audit => audit.id === 'first-cpu-idle');
+    const fmp = auditRefs.find(audit => audit.id === 'first-meaningful-paint');
+    if (fci) metrics.push(fci);
+    if (fmp) metrics.push(fmp);
 
     /**
      * Clamp figure to 2 decimal places
