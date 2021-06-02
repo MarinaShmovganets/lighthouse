@@ -46,7 +46,7 @@ bugfixes](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/
 to the CLS metric since then. Now, given its maturity and established placement in Core
 Web Vitals, the weight increases from 5% to 15%.
 
-### Why are the Core Web Vitals metrics weighted differently?
+### Why are the Core Web Vitals metrics weighted differently in the performance score?
 
 The Core Web Vitals metrics are [independent signals in the Page Experience
 ranking
@@ -165,8 +165,8 @@ experience—we maintain a 40% weighting (TBT and TTI together) in Lighthouse
 
 [FCP's score curve was
 adjusted](https://github.com/GoogleChrome/lighthouse/pull/12556) to align with
-the current de facto "good" threshold, and as a result will score a bit more
-strictly.
+the current de facto ["good" threshold](https://web.dev/fcp/#what-is-a-good-fcp-score),
+and as a result will score a bit more strictly.
 
 The curve for TBT was made stricter to [more closely
 approach](https://github.com/GoogleChrome/lighthouse/pull/12576) the ideal score
