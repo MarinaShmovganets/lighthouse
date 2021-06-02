@@ -5,7 +5,13 @@
 We expect this release to ship in the DevTools of [Chrome 93](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within a day!
 
 ## Notable changes
-* The **Performance Category** had a number of scoring changes to align with other performance tools and to better reflect the state of the web. See the [v8.0 Performance FAQ](https://github.com/GoogleChrome/lighthouse/blob/master/docs/v8-perf-faq.md) for more detail.
+* The **Performance Category** had a number of scoring changes to align with other performance tools and to better reflect the state of the web.
+  - The Performance Score has been reweighted ([#12577](https://github.com/GoogleChrome/lighthouse/pull/12577))
+  - The TBT and FCP score curves have been updated ([#12576](https://github.com/GoogleChrome/lighthouse/pull/12576), [#12556](https://github.com/GoogleChrome/lighthouse/pull/12556))
+  - CLS has been updated to its new, windowed
+definition ([#12554](https://github.com/GoogleChrome/lighthouse/pull/12554))
+
+  See the [v8.0 Performance FAQ](https://github.com/GoogleChrome/lighthouse/blob/master/docs/v8-perf-faq.md) for more detail.
 
   <img width="550" alt="the new metric weightings in the Lighthouse score calculator" src="https://user-images.githubusercontent.com/39191/120410971-de337100-c308-11eb-9fb6-368a33c0855e.png">
 
