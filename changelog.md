@@ -13,7 +13,7 @@ definition ([#12554](https://github.com/GoogleChrome/lighthouse/pull/12554))
 
   See the [v8.0 Performance FAQ](https://github.com/GoogleChrome/lighthouse/blob/master/docs/v8-perf-faq.md) for more detail.
 
-  <img width="550" alt="the new metric weightings in the Lighthouse score calculator" src="https://user-images.githubusercontent.com/39191/120410971-de337100-c308-11eb-9fb6-368a33c0855e.png">
+  <a href="https://github.com/GoogleChrome/lighthouse/blob/master/docs/v8-perf-faq.md"><img width="500" alt="the new metric weightings in the Lighthouse score calculator" src="https://user-images.githubusercontent.com/39191/120410971-de337100-c308-11eb-9fb6-368a33c0855e.png"></a>
 
 
 * The report includes a new metric filter. Pick a metric to focus on the opportunities and diagnostics most relevant to improving just that metric:
