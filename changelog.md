@@ -1,5 +1,5 @@
 <a name="8.0.0"></a>
-# 8.0.0 (2021-06-01)
+# 8.0.0 (2021-06-02)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v7.5.0...v8.0.0)
 
 We expect this release to ship in the DevTools of [Chrome 93](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within a day!
