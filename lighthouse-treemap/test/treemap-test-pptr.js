@@ -179,6 +179,7 @@ describe('Lighthouse Treemap', () => {
 
       // Reminder! UNUSED == RED
       const percentDataUnused = gtmNode.unusedBytes / gtmNode.resourceBytes;
+      expect(percentDataUnused).toBeGreaterThan(0);
 
       // Assert 0.2520 ~= 0.2602 w/ 1 decimal place of precision.
       // CSS pixels won't let us go to 2 decimal places.
