@@ -29,14 +29,27 @@ higher weights.
 
 ### What are the exact score weighting changes?
 
-| metric                         | _phase_        | _v6 phase weight_ | v6 weight | v8 weight | _v8 phase weight_ | metric Δ | _phase Δ_ |
-|--------------------------------|----------------|-----------------|-----------|-----------|-----------------|----------|---------|
-| First Contentful Paint (FCP)   | _early_        | _15_            | 15        | **10**    | _10_            | -5       | _-5_    |
-| Speed Index (SI)               | _mid_          | _40_            | 15        | **10**    | _35_            | -5       | _-5_    |
-| Largest Contentful Paint (LCP) |                |                 | 25        | **25**    |                 | 0        |         |
-| Time To Interactive (TTI)      | _interactivity_  | _40_            | 15        | **10**    | _40_            | -5       | _0_     |
-| Total Blocking Time (TBT)      |                  |                 | 25        | **30**    |                 | 5        |         |
-| Cumulative Layout Shift (CLS)  | _predictability_ | _5_             | 5         | **15**    | _15_            | 10       | _10_    |
+#### Changes by metric
+
+| metric                         | v6 weight | v8 weight | Δ |
+|--------------------------------|-----------|-----------|----------|
+| First Contentful Paint (FCP)   | 15        | **10**    | -5       |
+| Speed Index (SI)               | 15        | **10**    | -5       |
+| Largest Contentful Paint (LCP) | 25        | **25**    | 0        |
+| Time To Interactive (TTI)        | 15        | **10**    | -5       |
+| Total Blocking Time (TBT)        | 25        | **30**    | 5        |
+| Cumulative Layout Shift (CLS)    | 5         | **15**    | 10       |
+
+#### Changes by phase
+
+| phase          | metric                         | v6 phase weight | v8 phase weight | Δ   |
+|----------------|--------------------------------|-----------------|-----------------|-----|
+| early          | First Contentful Paint (FCP)   | 15              | 10              | -5  |
+| mid            | Speed Index (SI)               | 40              | 35              | -5  |
+|                | Largest Contentful Paint (LCP) |                 |                 |     |
+| interactivity  | Time To Interactive (TTI)      | 40              | 40              | 0   |
+|                | Total Blocking Time (TBT)      |                 |                 |     |
+| predictability | Cumulative Layout Shift (CLS)  | 5               | 15              | 10  |
 
 ### Why did the weight of CLS go up?
 
