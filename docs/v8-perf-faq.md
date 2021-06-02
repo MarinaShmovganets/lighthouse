@@ -62,8 +62,8 @@ score.
 ### How should I think about the Lighthouse performance score in relation to Core Web Vitals?
 
 [Core Web Vitals](https://web.dev/vitals/) refer to a specific set of key user
-experience metrics, their passing thresholds and field percentile. In general,
-CWV's primary focus is field data.
+experience metrics, their passing thresholds and percentile at which they're measured.
+In general, CWV's primary focus is field data.
 
 The Lighthouse score is a means to understand the degree of opportunity
 available to improve critical elements of user experience. The lower the score,
@@ -123,8 +123,8 @@ captures the delay in handling the first input event of the page, whenever that
 input happened.  TBT roughly captures how dangerous the length of all the main
 thread's tasks are.
 
-It's very possible to have a page that does well on FID, but bad on TBT.  And
-it's slightly harder, but possible, to do well on TBT but bad on FID\*.   So,
+It's very possible to have a page that does well on FID, but poorly on TBT.  And
+it's slightly harder, but possible, to do well on TBT but poorly on FID\*.   So,
 you shouldn't expect your TBT and FID measurements to correlate strongly. A
 large-scale analysis found their [Spearman's
 ρ](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient) at
@@ -133,11 +133,11 @@ prefer.
 
 From the Lighthouse project's perspective, the current passing threshold for FID
 is quite lenient but more importantly, the percentile-of-record for FID (75th
-percentile) is not sufficient for detecting issues and the 95th percentile is a
+percentile) is not sufficient for detecting issues. The 95th percentile is a
 much stronger indicator of problematic interactions for this metric. We
 encourage user-centric teams to focus on the 95th percentile of all input delays
 (not just the first) in their field data in order to identify and address
-problems that surface just 10% of the time.
+problems that surface just 5% of the time.
 
 \*Aside: The [Chrome 91 FID change for
 double-tap-to-zoom](https://chromium.googlesource.com/chromium/src.git/+/refs/heads/main/docs/speed/metrics_changelog/2021_05_fid.md)
@@ -159,8 +159,8 @@ Heavy JS and long tasks are a problem for the web that's
 [worsening](https://httparchive.org/reports/state-of-javascript#bytesJs). Field
 FID is currently too lenient and not sufficiently incentivizing action to
 address the problem. Lighthouse has historically weighed its interactivity
-metrics at 40-55% of the performance score and as interactivity is key to user
-experience, we maintain a 40% weighting (TBT and TTI together) in Lighthouse
+metrics at 40-55% of the performance score and—as interactivity is key to user
+experience—we maintain a 40% weighting (TBT and TTI together) in Lighthouse
 8.0.
 
 [FCP's score curve was
