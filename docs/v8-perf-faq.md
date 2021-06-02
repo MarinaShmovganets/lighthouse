@@ -5,7 +5,7 @@
 First, it may be useful to refresh on [the math behind Lighthouse's metric
 scores and performance score.](https://web.dev/performance-scoring/)
 
-In Lighthouse v8.0, we updated the score curves for FCP and TBT measurements,
+In [Lighthouse v8.0](https://github.com/GoogleChrome/lighthouse/releases/tag/v8.0.0), we updated the score curves for FCP and TBT measurements,
 making both a bit more strict. CLS has been updated to its new, [windowed
 definition](https://web.dev/evolving-cls/). Additionally, the Performance
 Score's weighted average was
@@ -124,8 +124,8 @@ input happened.  TBT roughly captures how dangerous the length of all the main
 thread's tasks are.
 
 It's very possible to have a page that does well on FID, but bad on TBT.  And
-it's slightly harder, but possible, to do well on TBT but bad on FID.   So, you
-shouldn't expect your TBT and FID measurements to correlate strongly. A
+it's slightly harder, but possible, to do well on TBT but bad on FID\*.   So,
+you shouldn't expect your TBT and FID measurements to correlate strongly. A
 large-scale analysis found their [Spearman's
 ρ](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient) at
 about 0.40, which indicates a connection, but not one as strong as many would
@@ -133,16 +133,21 @@ prefer.
 
 From the Lighthouse project's perspective, the current passing threshold for FID
 is quite lenient but more importantly, the percentile-of-record for FID (75th
-percentile) is not indicative of issues and the 95th percentile is a much
-stronger indicator of problematic interactions for this metric. We encourage
-user-centric teams to focus on the 95th percentile of all input delays (not just
-the first) in their field data in order to identify and address problems that
-surface just 10% of the time.
+percentile) is not sufficient for detecting issues and the 95th percentile is a
+much stronger indicator of problematic interactions for this metric. We
+encourage user-centric teams to focus on the 95th percentile of all input delays
+(not just the first) in their field data in order to identify and address
+problems that surface just 10% of the time.
 
-Aside: The [Chrome 91 FID change for
+\*Aside: The [Chrome 91 FID change for
 double-tap-to-zoom](https://chromium.googlesource.com/chromium/src.git/+/refs/heads/main/docs/speed/metrics_changelog/2021_05_fid.md)
-may be observable in your field metrics, with higher percentiles improving
-slightly.
+fixes a lot of high FID / low TBT cases and may be observable in your field
+metrics, with higher percentiles improving slightly. Most remaining high FID /
+low TBT cases are likely due to incorrect meta viewport tags, which [Lighthouse
+will
+flag](https://www.google.com/url?q=https://web.dev/viewport/&sa=D&source=editors&ust=1622651275263000&usg=AOvVaw1OS_kJ9oNMlPSjIJbFy7c8).
+Delivering a mobile-friendly viewport, reducing main-thread blocking JS, and
+keeping your TBT low is the best defense against bad FID in the field.
 
 ### Overall, what motivated the changes to the performance score?
 
