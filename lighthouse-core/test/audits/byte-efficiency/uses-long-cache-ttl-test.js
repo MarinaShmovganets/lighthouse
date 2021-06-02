@@ -116,6 +116,11 @@ describe('Cache headers audit', () => {
   });
 
   it('respects expires/cache-control priority', () => {
+    // Stub Date.now so the test is not sensitive to timing.
+    const now = Date.now();
+    const dateNowFn = Date.now;
+    Date.now = () => now;
+
     const expiresIn = seconds => new Date(Date.now() + seconds * 1000).toGMTString();
 
     const networkRecords = [
@@ -136,6 +141,8 @@ describe('Cache headers audit', () => {
       assert.equal(Math.round(items[0].wastedBytes), 8000);
       assert.ok(Math.abs(items[1].cacheLifetimeMs - 86400 * 1000) <= 5, 'invalid expires parsing');
       assert.equal(Math.round(items[1].wastedBytes), 4000);
+    }).finally(() => {
+      Date.now = dateNowFn;
     });
   });
 
