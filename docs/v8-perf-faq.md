@@ -46,7 +46,7 @@ bugfixes](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/
 to the CLS metric since then. Now, given its maturity and established placement in Core
 Web Vitals, the weight increases from 5% to 15%.
 
-### Why aren't the weights for the Core Web Vitals metrics the same in the updated performance score?
+### Why are the Core Web Vitals metrics weighted differently?
 
 The Core Web Vitals metrics are [independent signals in the Page Experience
 ranking
