@@ -66,7 +66,7 @@ class TreemapUtil {
    * @param {URL} url
    * @param {URL} fromRelativeUrl
    */
-  static elideUrl(url, fromRelativeUrl) {
+  static elideSameOrigin(url, fromRelativeUrl) {
     if (url.origin !== fromRelativeUrl.origin) return url.toString();
     return url.toString().replace(fromRelativeUrl.origin, '');
   }

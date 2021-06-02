@@ -71,11 +71,13 @@ class TreemapViewer {
     // These depth one node uses the network URL for the name, but we want
     // to elide common parts of the URL so text fits better in the UI.
     for (const node of this.depthOneNodesByGroup.scripts) {
-      const url = new URL(node.name);
-      node.name = TreemapUtil.elideUrl(url, this.documentUrl);
-      if (url.href === this.documentUrl.href) {
-        node.name += ' (inline)';
-      }
+      try {
+        const url = new URL(node.name);
+        node.name = TreemapUtil.elideSameOrigin(url, this.documentUrl);
+        if (url.href === this.documentUrl.href) {
+          node.name += ' (inline)';
+        }
+      } catch {}
     }
 
     /* eslint-disable no-unused-expressions */
