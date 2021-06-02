@@ -29,14 +29,14 @@ higher weights.
 
 ### What are the exact score weighting changes?
 
-| phase          | metric                         | v6 phase weight | v6 weight | v8 weight | v8 phase weight | metric Δ | phase Δ |
-|----------------|--------------------------------|-----------------|-----------|-----------|-----------------|----------|---------|
-| early          | First Contentful Paint (FCP)   | 15              | 15        | **10**        | 10              | -5       | -5      |
-| mid            | Speed Index (SI)               | 40              | 15        | **10**        | 35              | -5       | -5      |
-|                | Largest Contentful Paint (LCP) |                 | 25        | **25**        |                 | 0        |         |
-| interactivity  | Time To Interactive (TTI)      | 40              | 15        | **10**        | 40              | -5       | 0       |
-|                | Total Blocking Time (TBT)      |                 | 25        | **30**        |                 | 5        |         |
-| predictability | Cumulative Layout Shift (CLS)  | 5               | 5         | **15**        | 15              | 10       | 10      |
+| metric                         | _phase_        | _v6 phase weight_ | v6 weight | v8 weight | _v8 phase weight_ | metric Δ | _phase Δ_ |
+|--------------------------------|----------------|-----------------|-----------|-----------|-----------------|----------|---------|
+| First Contentful Paint (FCP)   | _early_        | _15_            | 15        | **10**    | _10_            | -5       | _-5_    |
+| Speed Index (SI)               | _mid_          | _40_            | 15        | **10**    | _35_            | -5       | _-5_    |
+| Largest Contentful Paint (LCP) |                |                 | 25        | **25**    |                 | 0        |         |
+| Time To Interactive (TTI)      | _interactivity_  | _40_            | 15        | **10**    | _40_            | -5       | _0_     |
+| Total Blocking Time (TBT)      |                  |                 | 25        | **30**    |                 | 5        |         |
+| Cumulative Layout Shift (CLS)  | _predictability_ | _5_             | 5         | **15**    | _15_            | 10       | _10_    |
 
 ### Why did the weight of CLS go up?
 
