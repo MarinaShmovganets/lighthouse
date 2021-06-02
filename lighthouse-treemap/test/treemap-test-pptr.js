@@ -45,8 +45,7 @@ describe('Lighthouse Treemap', () => {
   beforeEach(async () => {
     if (!browser) {
       browser = await puppeteer.launch({
-        headless: false,
-        slowMo: true,
+        headless: true,
       });
     }
     page = await browser.newPage();
