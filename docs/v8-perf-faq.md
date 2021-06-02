@@ -11,7 +11,7 @@ definition](https://web.dev/evolving-cls/). Additionally, the Performance
 Score's weighted average was
 [rebalanced](https://googlechrome.github.io/lighthouse/scorecalc/#FCP=3000&SI=5800&FMP=4000&TTI=7300&FCI=6500&LCP=4000&TBT=600&CLS=0.25&device=mobile&version=8&version=6&version=5),
 giving more weight to CLS and TBT than before, and slightly decreasing the
-weighting of FCP, SI, and TTI.
+weights of FCP, SI, and TTI.
 
 From an analysis of HTTP Archive's latest [crawl of the
 web](https://httparchive.org/faq#how-does-the-http-archive-decide-which-urls-to-test),
@@ -43,10 +43,10 @@ higher weights.
 When introduced in Lighthouse v6, it was still early days for the metric.
 There've been [many improvements and
 bugfixes](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/speed/metrics_changelog/cls.md)
-to the CLS metric. Now, given its maturity and its established placement in Core
+to the CLS metric since then. Now, given its maturity and established placement in Core
 Web Vitals, the weight increases from 5% to 15%.
 
-### Why aren't the weights for the Core Web Vitals metrics the same in the updated performance score?
+### Why are the Core Web Vitals metrics weighted differently?
 
 The Core Web Vitals metrics are [independent signals in the Page Experience
 ranking
@@ -62,7 +62,7 @@ score.
 ### How should I think about the Lighthouse performance score in relation to Core Web Vitals?
 
 [Core Web Vitals](https://web.dev/vitals/) refer to a specific set of key user
-experience metrics, their passing thresholds and percentile at which they're measured.
+experience metrics, their passing thresholds, and percentile at which they're measured.
 In general, CWV's primary focus is field data.
 
 The Lighthouse score is a means to understand the degree of opportunity
@@ -77,7 +77,7 @@ compute FID. Instead, we have TBT, which you can consider a proxy metric for
 FID, and though they measure two different things they are both signals about a
 page's interactivity.
 
-_So CWV and Lighthouse have commonalities, but are different, how can you
+_So CWV and Lighthouse have commonalities, but are different. How can you
 rationalize paying attention to both?_
 
 Ultimately, a combination approach is most effective. Use field data for the
@@ -139,7 +139,7 @@ encourage user-centric teams to focus on the 95th percentile of all input delays
 (not just the first) in their field data in order to identify and address
 problems that surface just 5% of the time.
 
-\*Aside: The [Chrome 91 FID change for
+\*Aside: the [Chrome 91 FID change for
 double-tap-to-zoom](https://chromium.googlesource.com/chromium/src.git/+/refs/heads/main/docs/speed/metrics_changelog/2021_05_fid.md)
 fixes a lot of high FID / low TBT cases and may be observable in your field
 metrics, with higher percentiles improving slightly. Most remaining high FID /
@@ -151,8 +151,8 @@ keeping your TBT low is the best defense against bad FID in the field.
 
 ### Overall, what motivated the changes to the performance score?
 
-As it is anytime the Lighthouse score is updated, changes are made to reflect
-the latest in how to measure user experience quality holistically, accurately,
+As with all Lighthouse score updates, changes are made to reflect
+the latest in how to measure user-experience quality holistically and accurately,
 and to focus attention on key priorities.
 
 Heavy JS and long tasks are a problem for the web that's
@@ -165,18 +165,18 @@ experience—we maintain a 40% weighting (TBT and TTI together) in Lighthouse
 
 [FCP's score curve was
 adjusted](https://github.com/GoogleChrome/lighthouse/pull/12556) to align with
-the current defacto threshold of good, and as a result will score a bit more
+the current de facto "good" threshold, and as a result will score a bit more
 strictly.
 
-The curve for TBT was made more strict to [more closely
+The curve for TBT was made stricter to [more closely
 approach](https://github.com/GoogleChrome/lighthouse/pull/12576) the ideal score
 curve. TBT has had (and still has) a more lenient curve than our methodology
-dictates. The new curve is also more linear which means there's a larger range
+dictates, but the new curve is more linear which means there's a larger range
 where improvements in the metric are rewarded with improvements in the score. If
 your page currently scores poorly with TBT, the new curve will be more
 responsive to changes as page performance incrementally improves.
 
-FCP drops slightly from 15% to 10%, as it's fairly gameable and also partly
+FCP's weight drops slightly from 15% to 10% because it's fairly gameable and is also partly
 captured by Speed Index.
 
 ### What's the story with TTI?
@@ -185,11 +185,11 @@ TTI serves a useful role as it's the largest metric value reported (often &gt;10
 seconds) and helps anchor perceptions.
 
 We see TBT as a stronger metric for evaluating the health of your main thread
-and impact on interactivity, plus it [has lower
+and its impact on interactivity, plus it [has lower
 variability](https://docs.google.com/document/d/1xCERB_X7PiP5RAZDwyIkODnIXoBk-Oo7Mi9266aEdGg/edit).
  TTI serves as a nice complement that captures the cost of long tasks, often
-from heavy JavaScript. That said, we expect to continue to reduce the weighting
-of TTI and likely remove it in future major Lighthouse versions.
+from heavy JavaScript. That said, we expect to continue to reduce the weight
+of TTI and will likely remove it in a future major Lighthouse release.
 
 ### How does the Lighthouse Perf score get calculated? What is it based on?
 
