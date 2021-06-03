@@ -83,7 +83,6 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
     const url = URL.elideDataURI(image.src);
     const actualPixels = image.naturalWidth * image.naturalHeight;
     const wastedRatio = 1 - (usedPixels / actualPixels);
-    // tranferSize of cached records is 0
     const totalBytes = NetworkRequest.getActualResourceSize(networkRecord);
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 

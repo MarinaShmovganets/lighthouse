@@ -506,6 +506,7 @@ class NetworkRequest {
     // HOWEVER, there are some cases where an image is compressed again over the network and transfer size
     // is smaller (see https://github.com/GoogleChrome/lighthouse/pull/4968).
     // Use the min of the two numbers to be safe.
+    // tranferSize of cached records is 0
     return Math.min(networkRecord.resourceSize || 0, networkRecord.transferSize || Infinity);
   }
 }
