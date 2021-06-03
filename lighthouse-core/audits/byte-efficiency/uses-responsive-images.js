@@ -14,6 +14,7 @@
 'use strict';
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit.js');
+const NetworkRequest = require('../../lib/network-request.js');
 const URL = require('../../lib/url-shim.js');
 const i18n = require('../../lib/i18n/i18n.js');
 
@@ -86,9 +87,8 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
     //     transferSize = resourceSize + headers.length
     // HOWEVER, there are some cases where an image is compressed again over the network and transfer size
     // is smaller (see https://github.com/GoogleChrome/lighthouse/pull/4968).
-    // Use the min of the two numbers to be safe.
-    const {resourceSize = 0, transferSize = 0} = networkRecord;
-    const totalBytes = Math.min(resourceSize || 0, transferSize || Infinity);
+    // Use the min of the two numbers to be safe.    
+    const totalBytes = NetworkRequest.getActualResourceSize(networkRecord);
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
     return {

@@ -495,6 +495,14 @@ class NetworkRequest {
         URL.isSecureScheme(record.protocol) ||
         URL.isLikeLocalhost(record.parsedURL.host);
   }
+
+  /**
+   * @param {NetworkRequest} networkRecord
+   * @return {number}
+   */
+  static getActualResourceSize(networkRecord) {
+    return Math.min(networkRecord.resourceSize || 0, networkRecord.transferSize || Infinity);
+  }
 }
 
 NetworkRequest.HEADER_TCP = HEADER_TCP;

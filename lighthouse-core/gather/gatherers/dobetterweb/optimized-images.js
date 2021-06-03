@@ -62,7 +62,7 @@ class OptimizedImages extends FRGatherer {
       const isOptimizableImage = record.resourceType === NetworkRequest.TYPES.Image &&
         IMAGE_REGEX.test(record.mimeType);
 
-      const actualResourceSize = Math.min(record.resourceSize || 0, record.transferSize || Infinity);
+      const actualResourceSize = NetworkRequest.getActualResourceSize(record);
       if (isOptimizableImage && actualResourceSize > MINIMUM_IMAGE_SIZE) {
         prev.push({
           requestId: record.requestId,
