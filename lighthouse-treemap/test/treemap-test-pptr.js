@@ -150,9 +150,9 @@ describe('Lighthouse Treemap', () => {
       });
 
       await page.click('#view-mode--unused-bytes');
-      await page.waitForSelector('.lh-treemap--view-mode--unused-bytes', {visible: true});
+      await page.waitForSelector('.lh-treemap--view-mode--unused-bytes');
 
-      // Identify the JS data
+      // Identify the JS data.
       const gtmNode = await page.evaluate(() => {
         const d1Nodes = window.__treemapOptions.lhr.audits['script-treemap-data'].details.nodes;
         const gtmNode = d1Nodes.find(n => n.name.includes('gtm.js'));
@@ -162,7 +162,7 @@ describe('Lighthouse Treemap', () => {
       expect(gtmNode.unusedBytes).toBeGreaterThan(20_000);
       expect(gtmNode.resourceBytes).toBeGreaterThan(20_000);
 
-      // Identify the DOM node
+      // Identify the DOM node.
       const gtmElemHandle = await page.evaluateHandle(() => {
         const captionEls = Array.from(document.querySelectorAll('.webtreemap-caption'));
         return captionEls.find(el => el.textContent.includes('gtm.js')).parentElement;
@@ -170,7 +170,7 @@ describe('Lighthouse Treemap', () => {
 
       expect(await gtmElemHandle.isIntersectingViewport()).toBeTruthy();
 
-      // Determine visual red shading percentage
+      // Determine visual red shading percentage.
       const percentRed = await gtmElemHandle.evaluate(node => {
         const redWidthPx = parseInt(window.getComputedStyle(node, ':before').width);
         const completeWidthPx = node.offsetWidth;
