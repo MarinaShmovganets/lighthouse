@@ -88,7 +88,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
     // is smaller (see https://github.com/GoogleChrome/lighthouse/pull/4968).
     // Use the min of the two numbers to be safe.
     const {resourceSize = 0, transferSize = 0} = networkRecord;
-    const totalBytes = Math.min(resourceSize, transferSize);
+    const totalBytes = Math.min(resourceSize || 0, transferSize || Infinity);
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
     return {
