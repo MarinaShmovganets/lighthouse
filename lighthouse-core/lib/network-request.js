@@ -501,6 +501,11 @@ class NetworkRequest {
    * @return {number}
    */
   static getActualResourceSize(networkRecord) {
+    // Resource size is almost always the right one to be using because of the below:
+    //     transferSize = resourceSize + headers.length
+    // HOWEVER, there are some cases where an image is compressed again over the network and transfer size
+    // is smaller (see https://github.com/GoogleChrome/lighthouse/pull/4968).
+    // Use the min of the two numbers to be safe.
     return Math.min(networkRecord.resourceSize || 0, networkRecord.transferSize || Infinity);
   }
 }
