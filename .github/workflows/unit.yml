@@ -2,7 +2,6 @@ name: unit
 
 on:
   push:
-    branches: [master]
   pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:
@@ -51,40 +50,4 @@ jobs:
 
     - name: yarn unit
       if: ${{ matrix.node != env.LATEST_NODE }}
-      run: xvfb-run --auto-servernum yarn unit:ci
-
-    # Only gather coverage on latest node, where c8 is the most accurate.
-    - name: yarn unit:coverage
-      if: ${{ matrix.node == env.LATEST_NODE }}
-      run: |
-        xvfb-run --auto-servernum yarn unit:cicoverage
-        yarn c8 report --reporter text-lcov > unit-coverage.lcov
-    - name: Upload test coverage to Codecov
-      if: ${{ matrix.node == env.LATEST_NODE }}
-      uses: codecov/codecov-action@6004246f47ab62d32be025ce173b241cd84ac58e
-      with:
-        flags: unit
-        file: ./unit-coverage.lcov
-  
-  # For windows, just test the potentially platform-specific code.
-  unit-windows:
-    runs-on: windows-latest
-    name: Windows
-
-    steps:
-    - name: git clone
-      uses: actions/checkout@v2
-
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-
-    - run: yarn install --frozen-lockfile --network-timeout 1000000
-
-    - name: yarn unit-cli
-      run: yarn unit-cli
-    - run: yarn diff:sample-json
-
-    # Fail if any changes were written to any source files or generated untracked files (ex, from -GA).
-    - run: git add -A && git diff --cached --exit-code
+      run: xvfb-run --auto-servernum yarn jest report-render
