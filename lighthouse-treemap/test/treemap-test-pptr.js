@@ -173,7 +173,7 @@ describe('Lighthouse Treemap', () => {
       // Determine visual red shading percentage.
       const percentRed = await gtmElemHandle.evaluate(node => {
         const redWidthPx = parseInt(window.getComputedStyle(node, ':before').width);
-        const completeWidthPx = node.offsetWidth;
+        const completeWidthPx = node.getBoundingClientRect().width;
         return redWidthPx / completeWidthPx;
       });
 
