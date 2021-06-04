@@ -40,7 +40,7 @@ function createMockSession() {
 }
 
 /**
- * @param {LH.Gatherer.FRGathererInstance<keyof LH.GathererArtifacts>['meta']|LH.Gatherer.FRGathererInstance<LH.Gatherer.DefaultDependenciesKey>['meta']} meta
+ * @param {LH.Gatherer.AnyFRGathererInstance['meta']} meta
  */
 function createMockGathererInstance(meta) {
   return {
