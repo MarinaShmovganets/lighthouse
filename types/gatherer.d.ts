@@ -126,7 +126,6 @@ declare global {
         FRGathererInstance<Exclude<TDependencies, DefaultDependenciesKey>>
     export type AnyFRGathererInstance = FRGathererInstanceExpander<Gatherer.DependencyKey>
 
-
     namespace Simulation {
       export type GraphNode = import('../lighthouse-core/lib/dependency-graph/base-node').Node;
       export type GraphNetworkNode = _NetworkNode;

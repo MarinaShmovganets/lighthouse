@@ -191,7 +191,6 @@ declare global {
           FRGathererDefn<TDependencies>
       export type AnyFRGathererDefn = FRGathererDefnExpander<Gatherer.DefaultDependenciesKey>|FRGathererDefnExpander<Gatherer.DependencyKey>
 
-
       export interface GathererDefn {
         implementation?: ClassOf<Gatherer.GathererInstance>;
         instance: Gatherer.GathererInstance;
