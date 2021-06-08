@@ -128,7 +128,7 @@ async function prepareNetworkForNavigation(session, settings, navigation) {
  */
 async function prepareTargetForNavigationMode(driver, settings) {
   // Enable network domain here so future calls to `emulate()` don't clear cache (#12631)
-  driver.defaultSession.sendCommand('Network.enable');
+  await driver.defaultSession.sendCommand('Network.enable');
 
   // Emulate our target device screen and user agent.
   await emulation.emulate(driver.defaultSession, settings);
