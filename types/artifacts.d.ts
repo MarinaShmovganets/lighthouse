@@ -142,6 +142,8 @@ declare global {
       FormElements: Artifacts.Form[];
       /** Screenshot of the entire page (rather than just the above the fold content). */
       FullPageScreenshot: Artifacts.FullPageScreenshot | null;
+      /** Information about how Lighthouse artifacts were gathered. */
+      GatherContext: {gatherMode: LH.Gatherer.GatherMode};
       /** Information about event listeners registered on the global object. */
       GlobalListeners: Array<Artifacts.GlobalListener>;
       /** Whether the page ended up on an HTTPS page after attempting to load the HTTP version. */
@@ -612,12 +614,20 @@ declare global {
         devtoolsLog: DevtoolsLog;
         trace: Trace;
         settings: Immutable<Config.Settings>;
+        gatherContext: Artifacts['GatherContext'];
         simulator?: LanternSimulator;
       }
 
       export interface MetricComputationData extends MetricComputationDataInput {
         networkRecords: Array<Artifacts.NetworkRequest>;
-        traceOfTab: TraceOfTab;
+        processedTrace: ProcessedTrace;
+        processedNavigation?: ProcessedNavigation;
+      }
+
+      export interface NavigationMetricComputationData extends MetricComputationDataInput {
+        networkRecords: Array<Artifacts.NetworkRequest>;
+        processedTrace: ProcessedTrace;
+        processedNavigation: ProcessedNavigation;
       }
 
       export interface Metric {
@@ -645,6 +655,11 @@ declare global {
 
       export interface TraceTimes {
         timeOrigin: number;
+        traceEnd: number;
+      }
+
+      export interface NavigationTraceTimes {
+        timeOrigin: number;
         firstPaint?: number;
         firstContentfulPaint: number;
         firstContentfulPaintAllFrames: number;
@@ -656,10 +671,10 @@ declare global {
         domContentLoaded?: number;
       }
 
-      export interface TraceOfTab {
-        /** The raw timestamps of key metric events, in microseconds. */
+      export interface ProcessedTrace {
+        /** The raw timestamps of key events, in microseconds. */
         timestamps: TraceTimes;
-        /** The relative times from navigationStart to key metric events, in milliseconds. */
+        /** The relative times from timeOrigin to key events, in milliseconds. */
         timings: TraceTimes;
         /** The subset of trace events from the page's process, sorted by timestamp. */
         processEvents: Array<TraceEvent>;
@@ -673,6 +688,13 @@ declare global {
         frames: Array<{id: string, url: string}>;
         /** The trace event marking the time at which the page load should consider to have begun. Typically the same as the navigationStart but might differ due to SPA navigations, client-side redirects, etc. */
         timeOriginEvt: TraceEvent;
+      }
+
+      export interface ProcessedNavigation {
+        /** The raw timestamps of key metric events, in microseconds. */
+        timestamps: NavigationTraceTimes;
+        /** The relative times from navigationStart to key metric events, in milliseconds. */
+        timings: NavigationTraceTimes;
         /** The trace event marking firstPaint, if it was found. */
         firstPaintEvt?: TraceEvent;
         /** The trace event marking firstContentfulPaint, if it was found. */

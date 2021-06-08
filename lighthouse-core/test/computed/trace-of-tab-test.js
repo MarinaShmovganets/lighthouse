@@ -7,7 +7,7 @@
 
 /* eslint-env jest */
 
-const TraceOfTab = require('../../computed/trace-of-tab.js');
+const ProcessedTrace = require('../../computed/processed-trace.js');
 const pwaTrace = require('../fixtures/traces/progressive-app-m60.json');
 const noFCPtrace = require('../fixtures/traces/airhorner_no_fcp.json');
 const noNavStartTrace = require('../fixtures/traces/no_navstart_event.json');
@@ -15,16 +15,16 @@ const noNavStartTrace = require('../fixtures/traces/no_navstart_event.json');
 describe('TraceOfTabComputed', () => {
   it('computes the artifact', async () => {
     const context = {computedCache: new Map()};
-    const traceOfTab = await TraceOfTab.request(pwaTrace, context);
+    const processedTrace = await ProcessedTrace.request(pwaTrace, context);
 
-    expect(traceOfTab.processEvents.length).toEqual(12865);
-    expect(traceOfTab.mainThreadEvents.length).toEqual(7629);
+    expect(processedTrace.processEvents.length).toEqual(12865);
+    expect(processedTrace.mainThreadEvents.length).toEqual(7629);
 
-    delete traceOfTab.processEvents;
-    delete traceOfTab.mainThreadEvents;
-    delete traceOfTab.frameTreeEvents;
+    delete processedTrace.processEvents;
+    delete processedTrace.mainThreadEvents;
+    delete processedTrace.frameTreeEvents;
 
-    expect(traceOfTab).toEqual({
+    expect(processedTrace).toEqual({
       domContentLoadedEvt: {
         args: {
           frame: '0x25a638821e30',
@@ -145,13 +145,13 @@ describe('TraceOfTabComputed', () => {
 
   it('fails with NO_NAVSTART', async () => {
     const context = {computedCache: new Map()};
-    await expect(TraceOfTab.request(noNavStartTrace, context))
+    await expect(ProcessedTrace.request(noNavStartTrace, context))
       .rejects.toMatchObject({code: 'NO_NAVSTART'});
   });
 
   it('fails with NO_FCP', async () => {
     const context = {computedCache: new Map()};
-    await expect(TraceOfTab.request(noFCPtrace, context))
+    await expect(ProcessedTrace.request(noFCPtrace, context))
       .rejects.toMatchObject({code: 'NO_FCP'});
   });
 
@@ -169,7 +169,7 @@ describe('TraceOfTabComputed', () => {
       }),
     };
 
-    await expect(TraceOfTab.request(noTracingStartedTrace, context))
+    await expect(ProcessedTrace.request(noTracingStartedTrace, context))
       .rejects.toMatchObject({code: 'NO_TRACING_STARTED'});
   });
 });

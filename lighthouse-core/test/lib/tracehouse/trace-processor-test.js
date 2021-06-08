@@ -696,10 +696,10 @@ Object {
       const trace = JSON.parse(fs.readFileSync(__dirname +
           '/../../fixtures/traces/tracingstarted-after-navstart.json', 'utf8'));
       const shuffledEvents = trace.traceEvents.slice().sort(() => Math.random() * 2 - 1);
-      const traceOfTab = TraceProcessor.computeTraceOfTab({traceEvents: shuffledEvents});
+      const processedTrace = TraceProcessor.computeTraceOfTab({traceEvents: shuffledEvents});
 
       let lastTs = -Infinity;
-      for (const event of traceOfTab.processEvents) {
+      for (const event of processedTrace.processEvents) {
         if (!event.ts) continue;
         expect(event.ts).toBeGreaterThanOrEqual(lastTs);
         lastTs = event.ts;

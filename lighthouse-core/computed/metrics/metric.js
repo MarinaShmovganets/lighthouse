@@ -6,7 +6,8 @@
 'use strict';
 
 const TracingProcessor = require('../../lib/tracehouse/trace-processor.js');
-const TraceOfTab = require('../trace-of-tab.js');
+const ProcessedTrace = require('../processed-trace.js');
+const ProcessedNavigation = require('../processed-navigation.js');
 const NetworkRecords = require('../network-records.js');
 
 /**
@@ -18,7 +19,7 @@ const NetworkRecords = require('../network-records.js');
  *     - Override the computeSimulatedMetric method with the simulated-mode implementation (which
  *       may call another computed artifact with the name LanternMyMetricName).
  */
-class ComputedMetric {
+class NavigationMetric {
   constructor() {}
 
   /**
@@ -45,20 +46,28 @@ class ComputedMetric {
    * @return {Promise<LH.Artifacts.LanternMetric|LH.Artifacts.Metric>}
    */
   static async compute_(data, context) {
-    const {trace, devtoolsLog, settings} = data;
-    if (!trace || !devtoolsLog || !settings) {
+    const {trace, devtoolsLog, gatherContext, settings} = data;
+    if (!trace || !devtoolsLog || !gatherContext || !settings) {
       throw new Error('Did not provide necessary metric computation data');
     }
 
+    const processedTrace = await ProcessedTrace.request(trace, context);
+    const processedNavigation = await ProcessedNavigation.request(processedTrace, context);
+
     const augmentedData = Object.assign({
       networkRecords: await NetworkRecords.request(devtoolsLog, context),
-      traceOfTab: await TraceOfTab.request(trace, context),
+      processedTrace,
+      processedNavigation,
     }, data);
 
-    TracingProcessor.assertHasToplevelEvents(augmentedData.traceOfTab.mainThreadEvents);
+    TracingProcessor.assertHasToplevelEvents(augmentedData.processedTrace.mainThreadEvents);
 
     switch (settings.throttlingMethod) {
       case 'simulate':
+        if (gatherContext.gatherMode !== 'navigation') {
+          throw new Error(`${gatherContext.gatherMode} does not support throttlingMethod simulate`);
+        }
+
         return this.computeSimulatedMetric(augmentedData, context);
       case 'provided':
       case 'devtools':
@@ -69,4 +78,4 @@ class ComputedMetric {
   }
 }
 
-module.exports = ComputedMetric;
+module.exports = NavigationMetric;

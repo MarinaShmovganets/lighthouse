@@ -6,13 +6,13 @@
 'use strict';
 
 const makeComputedArtifact = require('../computed-artifact.js');
-const ComputedMetric = require('./metric.js');
+const NavigationMetric = require('./navigation-metric.js');
 const LHError = require('../../lib/lh-error.js');
 const LanternFirstMeaningfulPaint = require('./lantern-first-meaningful-paint.js');
 
-class FirstMeaningfulPaint extends ComputedMetric {
+class FirstMeaningfulPaint extends NavigationMetric {
   /**
-   * @param {LH.Artifacts.MetricComputationData} data
+   * @param {LH.Artifacts.NavigationMetricComputationData} data
    * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
@@ -21,18 +21,18 @@ class FirstMeaningfulPaint extends ComputedMetric {
   }
 
   /**
-   * @param {LH.Artifacts.MetricComputationData} data
+   * @param {LH.Artifacts.NavigationMetricComputationData} data
    * @return {Promise<LH.Artifacts.Metric>}
    */
   static async computeObservedMetric(data) {
-    const {traceOfTab} = data;
-    if (traceOfTab.timings.firstMeaningfulPaint === undefined) {
+    const {processedNavigation} = data;
+    if (processedNavigation.timings.firstMeaningfulPaint === undefined) {
       throw new LHError(LHError.errors.NO_FMP);
     }
 
     return {
-      timing: traceOfTab.timings.firstMeaningfulPaint,
-      timestamp: traceOfTab.timestamps.firstMeaningfulPaint,
+      timing: processedNavigation.timings.firstMeaningfulPaint,
+      timestamp: processedNavigation.timestamps.firstMeaningfulPaint,
     };
   }
 }

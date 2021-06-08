@@ -5,37 +5,42 @@
  */
 'use strict';
 
-const makeComputedArtifact = require('../computed-artifact.js');
-const NavigationMetric = require('./navigation-metric.js');
-const LanternMaxPotentialFID = require('./lantern-max-potential-fid.js');
-const TracingProcessor = require('../../lib/tracehouse/trace-processor.js');
+const Metric = require('./metric.js');
 
-class MaxPotentialFID extends NavigationMetric {
+/**
+ * @fileOverview Enforces that a metric can only be computed on navigations.
+ */
+class NavigationMetric extends Metric {
   /**
    * @param {LH.Artifacts.NavigationMetricComputationData} data
    * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
-  static computeSimulatedMetric(data, context) {
-    return LanternMaxPotentialFID.request(data, context);
+  static computeSimulatedMetric(data, context) { // eslint-disable-line no-unused-vars
+    throw new Error('Unimplemented');
   }
 
   /**
    * @param {LH.Artifacts.NavigationMetricComputationData} data
+   * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<LH.Artifacts.Metric>}
    */
-  static computeObservedMetric(data) {
-    const {firstContentfulPaint} = data.processedNavigation.timings;
+  static computeObservedMetric(data, context) { // eslint-disable-line no-unused-vars
+    throw new Error('Unimplemented');
+  }
 
-    const events = TracingProcessor.getMainThreadTopLevelEvents(
-      data.processedTrace,
-      firstContentfulPaint
-    ).filter(evt => evt.duration >= 1);
+  /**
+   * @param {LH.Artifacts.MetricComputationDataInput} data
+   * @param {LH.Artifacts.ComputedContext} context
+   * @return {Promise<LH.Artifacts.LanternMetric|LH.Artifacts.Metric>}
+   */
+  static async compute_(data, context) {
+    if (data.gatherContext.gatherMode !== 'navigation') {
+      throw new Error(`${this.name} can only be computed on navigations`);
+    }
 
-    return Promise.resolve({
-      timing: Math.max(...events.map(evt => evt.duration), 16),
-    });
+    return super.compute_(data, context);
   }
 }
 
-module.exports = makeComputedArtifact(MaxPotentialFID);
+module.exports = NavigationMetric;

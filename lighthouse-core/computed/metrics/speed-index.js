@@ -6,13 +6,13 @@
 'use strict';
 
 const makeComputedArtifact = require('../computed-artifact.js');
-const ComputedMetric = require('./metric.js');
+const NavigationMetric = require('./navigation-metric.js');
 const LanternSpeedIndex = require('./lantern-speed-index.js');
 const Speedline = require('../speedline.js');
 
-class SpeedIndex extends ComputedMetric {
+class SpeedIndex extends NavigationMetric {
   /**
-   * @param {LH.Artifacts.MetricComputationData} data
+   * @param {LH.Artifacts.NavigationMetricComputationData} data
    * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
@@ -21,7 +21,7 @@ class SpeedIndex extends ComputedMetric {
   }
 
   /**
-   * @param {LH.Artifacts.MetricComputationData} data
+   * @param {LH.Artifacts.NavigationMetricComputationData} data
    * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<LH.Artifacts.Metric>}
    */

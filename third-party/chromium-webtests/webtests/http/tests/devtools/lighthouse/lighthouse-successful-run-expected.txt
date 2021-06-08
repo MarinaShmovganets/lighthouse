@@ -158,7 +158,7 @@ Auditing: Has a `<meta name="viewport">` tag with `width` or `initial-scale`
 Computing artifact: ViewportMeta
 Auditing: First Contentful Paint
 Computing artifact: FirstContentfulPaint
-Computing artifact: TraceOfTab
+Computing artifact: ProcessedTrace
 Computing artifact: LanternFirstContentfulPaint
 Computing artifact: PageDependencyGraph
 Computing artifact: LoadSimulator
