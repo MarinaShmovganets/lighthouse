@@ -304,10 +304,8 @@ class TapTargets extends FRGatherer {
       styleSheetId,
       text: ruleText,
     });
-    await session.sendCommand('CSS.disable');
-    await session.sendCommand('DOM.disable');
 
-    return passContext.driver.executionContext.evaluate(gatherTapTargets, {
+    const tapTargets = await passContext.driver.executionContext.evaluate(gatherTapTargets, {
       args: [tapTargetsSelector, className],
       useIsolation: true,
       deps: [
@@ -326,6 +324,16 @@ class TapTargets extends FRGatherer {
         pageFunctions.getNodeLabel,
       ],
     });
+
+    // Remove lighthouse style rule
+    await session.sendCommand('CSS.setStyleSheetText', {
+      styleSheetId,
+      text: '',
+    });
+    await session.sendCommand('CSS.disable');
+    await session.sendCommand('DOM.disable');
+
+    return tapTargets;
   }
 }
 
