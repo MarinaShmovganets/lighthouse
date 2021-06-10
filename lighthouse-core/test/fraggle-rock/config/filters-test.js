@@ -69,6 +69,14 @@ describe('Fraggle Rock Config Filtering', () => {
       ...auditMeta,
     };
   }
+  class NavigationOnlyAudit extends BaseAudit {
+    static meta = {
+      id: 'navigation-only',
+      requiredArtifacts: /** @type {any} */ (['Snapshot', 'Timespan']),
+      applicableModes: /** @type {['navigation']} */ (['navigation']),
+      ...auditMeta,
+    };
+  }
 
   const audits = [SnapshotAudit, TimespanAudit, NavigationAudit, ManualAudit].map(audit => ({
     implementation: audit,
@@ -77,12 +85,12 @@ describe('Fraggle Rock Config Filtering', () => {
 
   describe('filterAuditsByAvailableArtifacts', () => {
     it('should handle null', () => {
-      expect(filters.filterAuditsByAvailableArtifacts(null, [])).toBe(null);
+      expect(filters.filterAudits(null, [], 'navigation')).toBe(null);
     });
 
     it('should filter when partial artifacts available', () => {
       const partialArtifacts = [{id: 'Snapshot', gatherer: {instance: snapshotGatherer}}];
-      expect(filters.filterAuditsByAvailableArtifacts(audits, partialArtifacts)).toEqual([
+      expect(filters.filterAudits(audits, partialArtifacts, 'snapshot')).toEqual([
         {implementation: SnapshotAudit, options: {}},
         {implementation: ManualAudit, options: {}},
       ]);
@@ -103,12 +111,25 @@ describe('Fraggle Rock Config Filtering', () => {
       }));
       const partialArtifacts = [{id: 'Snapshot', gatherer: {instance: snapshotGatherer}}];
       expect(
-        filters.filterAuditsByAvailableArtifacts(auditsWithBaseArtifacts, partialArtifacts)
+        filters.filterAudits(auditsWithBaseArtifacts, partialArtifacts, 'navigation')
       ).toEqual([{implementation: SnapshotWithBase, options: {}}]);
     });
 
     it('should be noop when all artifacts available', () => {
-      expect(filters.filterAuditsByAvailableArtifacts(audits, artifacts)).toEqual(audits);
+      expect(filters.filterAudits(audits, artifacts, 'navigation')).toEqual(audits);
+    });
+
+    it('should not compute audit in non-applicable mode', () => {
+      const modeSpecificAudits = [{
+        implementation: NavigationOnlyAudit,
+        options: {},
+      }];
+      expect(
+        filters.filterAudits(modeSpecificAudits, artifacts, 'navigation')
+      ).toEqual(modeSpecificAudits);
+      expect(
+        filters.filterAudits(modeSpecificAudits, artifacts, 'timespan')
+      ).toHaveLength(0);
     });
   });
 
