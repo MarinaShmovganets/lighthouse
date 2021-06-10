@@ -1,5 +1,5 @@
 /**
- * @license Copyright 2019 The Lighthouse Authors. All Rights Reserved.
+ * @license Copyright 2021 The Lighthouse Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
@@ -8,23 +8,18 @@
 /* eslint-env jest */
 
 const ProcessedTrace = require('../../computed/processed-trace.js');
+const ProcessedNavigation = require('../../computed/processed-navigation.js');
 const pwaTrace = require('../fixtures/traces/progressive-app-m60.json');
 const noFCPtrace = require('../fixtures/traces/airhorner_no_fcp.json');
 const noNavStartTrace = require('../fixtures/traces/no_navstart_event.json');
 
-describe('TraceOfTabComputed', () => {
+describe('ProcessedTrace', () => {
   it('computes the artifact', async () => {
     const context = {computedCache: new Map()};
     const processedTrace = await ProcessedTrace.request(pwaTrace, context);
+    const processedNavigation = await ProcessedNavigation.request(processedTrace, context);
 
-    expect(processedTrace.processEvents.length).toEqual(12865);
-    expect(processedTrace.mainThreadEvents.length).toEqual(7629);
-
-    delete processedTrace.processEvents;
-    delete processedTrace.mainThreadEvents;
-    delete processedTrace.frameTreeEvents;
-
-    expect(processedTrace).toEqual({
+    expect(processedNavigation).toEqual({
       domContentLoadedEvt: {
         args: {
           frame: '0x25a638821e30',
@@ -102,24 +97,6 @@ describe('TraceOfTabComputed', () => {
         ts: 225416370913,
         tts: 2369379,
       },
-      mainFrameIds: {
-        frameId: '0x25a638821e30',
-        pid: 44277,
-        tid: 775,
-      },
-      timeOriginEvt: {
-        args: {
-          frame: '0x25a638821e30',
-        },
-        cat: 'blink.user_timing',
-        name: 'navigationStart',
-        ph: 'R',
-        pid: 44277,
-        tid: 775,
-        ts: 225414172015,
-        tts: 455539,
-      },
-      frames: [],
       timestamps: {
         domContentLoaded: 225414732309,
         firstContentfulPaint: 225414670885,
@@ -145,31 +122,21 @@ describe('TraceOfTabComputed', () => {
 
   it('fails with NO_NAVSTART', async () => {
     const context = {computedCache: new Map()};
-    await expect(ProcessedTrace.request(noNavStartTrace, context))
-      .rejects.toMatchObject({code: 'NO_NAVSTART'});
+    const compute = async () => {
+      const processedTrace = await ProcessedTrace.request(noNavStartTrace, context);
+      await ProcessedNavigation.request(processedTrace, context);
+    };
+    await expect(compute()).rejects.toMatchObject({code: 'NO_NAVSTART'});
   });
 
   it('fails with NO_FCP', async () => {
     const context = {computedCache: new Map()};
-    await expect(ProcessedTrace.request(noFCPtrace, context))
-      .rejects.toMatchObject({code: 'NO_FCP'});
-  });
 
-  it('fails with NO_TRACING_STARTED', async () => {
-    const context = {computedCache: new Map()};
-    const noTracingStartedTrace = {
-      traceEvents: pwaTrace.traceEvents.filter(event => {
-        if (event.name === 'TracingStartedInBrowser' ||
-            event.name === 'TracingStartedInPage' ||
-            event.name === 'ResourceSendRequest') {
-          return false;
-        }
-
-        return true;
-      }),
+    const compute = async () => {
+      const processedTrace = await ProcessedTrace.request(noFCPtrace, context);
+      await ProcessedNavigation.request(processedTrace, context);
     };
 
-    await expect(ProcessedTrace.request(noTracingStartedTrace, context))
-      .rejects.toMatchObject({code: 'NO_TRACING_STARTED'});
+    await expect(compute()).rejects.toMatchObject({code: 'NO_FCP'});
   });
 });

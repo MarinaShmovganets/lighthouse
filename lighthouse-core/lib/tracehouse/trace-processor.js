@@ -659,6 +659,7 @@ class TraceProcessor {
     return {
       frames,
       mainThreadEvents,
+      frameEvents,
       frameTreeEvents,
       processEvents,
       mainFrameIds,
@@ -681,10 +682,10 @@ class TraceProcessor {
    * @return {LH.Artifacts.ProcessedNavigation}
   */
   static processNavigation(processedTrace) {
-    const {frameTreeEvents, timeOriginEvt, timings, timestamps} = processedTrace;
+    const {frameEvents, frameTreeEvents, timeOriginEvt, timings, timestamps} = processedTrace;
 
     // Compute the key frame timings for the main frame.
-    const frameTimings = this.computeNavigationTimingsForFrame(frameTreeEvents, {timeOriginEvt});
+    const frameTimings = this.computeNavigationTimingsForFrame(frameEvents, {timeOriginEvt});
 
     // Compute FCP for all frames.
     const fcpAllFramesEvt = frameTreeEvents.find(
@@ -705,7 +706,7 @@ class TraceProcessor {
 
     return {
       timings: {
-        ...timings,
+        timeOrigin: timings.timeOrigin,
         firstPaint: frameTimings.timings.firstPaint,
         firstContentfulPaint: frameTimings.timings.firstContentfulPaint,
         firstContentfulPaintAllFrames: getTiming(fcpAllFramesEvt.ts),
@@ -714,9 +715,10 @@ class TraceProcessor {
         largestContentfulPaintAllFrames: maybeGetTiming(lcpAllFramesEvt && lcpAllFramesEvt.ts),
         load: frameTimings.timings.load,
         domContentLoaded: frameTimings.timings.domContentLoaded,
+        traceEnd: timings.traceEnd,
       },
       timestamps: {
-        ...timestamps,
+        timeOrigin: timestamps.timeOrigin,
         firstPaint: frameTimings.timestamps.firstPaint,
         firstContentfulPaint: frameTimings.timestamps.firstContentfulPaint,
         firstContentfulPaintAllFrames: fcpAllFramesEvt.ts,
@@ -725,6 +727,7 @@ class TraceProcessor {
         largestContentfulPaintAllFrames: lcpAllFramesEvt && lcpAllFramesEvt.ts,
         load: frameTimings.timestamps.load,
         domContentLoaded: frameTimings.timestamps.domContentLoaded,
+        traceEnd: timestamps.traceEnd,
       },
       firstPaintEvt: frameTimings.firstPaintEvt,
       firstContentfulPaintEvt: frameTimings.firstContentfulPaintEvt,
