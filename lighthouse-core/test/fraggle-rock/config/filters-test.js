@@ -85,12 +85,14 @@ describe('Fraggle Rock Config Filtering', () => {
 
   describe('filterAuditsByAvailableArtifacts', () => {
     it('should handle null', () => {
-      expect(filters.filterAudits(null, [], 'navigation')).toBe(null);
+      expect(filters.filterAuditsByAvailableArtifacts(null, [], 'navigation')).toBe(null);
     });
 
     it('should filter when partial artifacts available', () => {
       const partialArtifacts = [{id: 'Snapshot', gatherer: {instance: snapshotGatherer}}];
-      expect(filters.filterAudits(audits, partialArtifacts, 'snapshot')).toEqual([
+      expect(
+        filters.filterAuditsByAvailableArtifacts(audits, partialArtifacts, 'snapshot')
+      ).toEqual([
         {implementation: SnapshotAudit, options: {}},
         {implementation: ManualAudit, options: {}},
       ]);
@@ -111,12 +113,18 @@ describe('Fraggle Rock Config Filtering', () => {
       }));
       const partialArtifacts = [{id: 'Snapshot', gatherer: {instance: snapshotGatherer}}];
       expect(
-        filters.filterAudits(auditsWithBaseArtifacts, partialArtifacts, 'navigation')
+        filters.filterAuditsByAvailableArtifacts(
+          auditsWithBaseArtifacts,
+          partialArtifacts,
+          'navigation'
+        )
       ).toEqual([{implementation: SnapshotWithBase, options: {}}]);
     });
 
     it('should be noop when all artifacts available', () => {
-      expect(filters.filterAudits(audits, artifacts, 'navigation')).toEqual(audits);
+      expect(
+        filters.filterAuditsByAvailableArtifacts(audits, artifacts, 'navigation')
+      ).toEqual(audits);
     });
 
     it('should not compute audit in non-applicable mode', () => {
@@ -125,10 +133,10 @@ describe('Fraggle Rock Config Filtering', () => {
         options: {},
       }];
       expect(
-        filters.filterAudits(modeSpecificAudits, artifacts, 'navigation')
+        filters.filterAuditsByAvailableArtifacts(modeSpecificAudits, artifacts, 'navigation')
       ).toEqual(modeSpecificAudits);
       expect(
-        filters.filterAudits(modeSpecificAudits, artifacts, 'timespan')
+        filters.filterAuditsByAvailableArtifacts(modeSpecificAudits, artifacts, 'timespan')
       ).toHaveLength(0);
     });
   });

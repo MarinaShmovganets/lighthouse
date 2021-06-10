@@ -43,7 +43,7 @@ function filterArtifactsByGatherMode(artifacts, mode) {
  * @param {LH.Gatherer.GatherMode} mode
  * @return {LH.Config.FRConfig['audits']}
  */
-function filterAudits(audits, availableArtifacts, mode) {
+function filterAuditsByAvailableArtifacts(audits, availableArtifacts, mode) {
   if (!audits) return null;
 
   const availableArtifactIds = new Set(
@@ -104,7 +104,7 @@ function filterCategoriesByAvailableAudits(categories, availableAudits) {
  */
 function filterConfigByGatherMode(config, mode) {
   const artifacts = filterArtifactsByGatherMode(config.artifacts, mode);
-  const audits = filterAudits(config.audits, artifacts || [], mode);
+  const audits = filterAuditsByAvailableArtifacts(config.audits, artifacts || [], mode);
   const categories = filterCategoriesByAvailableAudits(config.categories, audits || []);
 
   return {
@@ -118,6 +118,6 @@ function filterConfigByGatherMode(config, mode) {
 module.exports = {
   filterConfigByGatherMode,
   filterArtifactsByGatherMode,
-  filterAudits,
+  filterAuditsByAvailableArtifacts,
   filterCategoriesByAvailableAudits,
 };
