@@ -36,14 +36,12 @@ function filterArtifactsByGatherMode(artifacts, mode) {
 
 /**
  * Filters an array of audits down to the set that can be computed using only the specified artifacts.
- * Optional `applicableModes` property can explicitly exclude an audit even if all required artifacts are available.
  *
  * @param {LH.Config.FRConfig['audits']} audits
  * @param {Array<LH.Config.AnyArtifactDefn>} availableArtifacts
- * @param {LH.Gatherer.GatherMode} mode
  * @return {LH.Config.FRConfig['audits']}
  */
-function filterAuditsByAvailableArtifacts(audits, availableArtifacts, mode) {
+function filterAuditsByAvailableArtifacts(audits, availableArtifacts) {
   if (!audits) return null;
 
   const availableArtifactIds = new Set(
@@ -51,8 +49,23 @@ function filterAuditsByAvailableArtifacts(audits, availableArtifacts, mode) {
   );
   return audits.filter(audit => {
     const meta = audit.implementation.meta;
-    if (meta.applicableModes && !meta.applicableModes.includes(mode)) return false;
     return meta.requiredArtifacts.every(id => availableArtifactIds.has(id));
+  });
+}
+
+/**
+ * Optional `applicableModes` property can explicitly exclude an audit even if all required artifacts are available.
+ *
+ * @param {LH.Config.FRConfig['audits']} audits
+ * @param {LH.Gatherer.GatherMode} mode
+ * @return {LH.Config.FRConfig['audits']}
+ */
+function filterAuditsByGatherMode(audits, mode) {
+  if (!audits) return null;
+
+  return audits.filter(audit => {
+    const meta = audit.implementation.meta;
+    return !meta.applicableModes || meta.applicableModes.includes(mode);
   });
 }
 
@@ -104,7 +117,8 @@ function filterCategoriesByAvailableAudits(categories, availableAudits) {
  */
 function filterConfigByGatherMode(config, mode) {
   const artifacts = filterArtifactsByGatherMode(config.artifacts, mode);
-  const audits = filterAuditsByAvailableArtifacts(config.audits, artifacts || [], mode);
+  const availableAudits = filterAuditsByAvailableArtifacts(config.audits, artifacts || []);
+  const audits = filterAuditsByGatherMode(availableAudits, mode);
   const categories = filterCategoriesByAvailableAudits(config.categories, audits || []);
 
   return {
@@ -119,5 +133,6 @@ module.exports = {
   filterConfigByGatherMode,
   filterArtifactsByGatherMode,
   filterAuditsByAvailableArtifacts,
+  filterAuditsByGatherMode,
   filterCategoriesByAvailableAudits,
 };

@@ -85,14 +85,12 @@ describe('Fraggle Rock Config Filtering', () => {
 
   describe('filterAuditsByAvailableArtifacts', () => {
     it('should handle null', () => {
-      expect(filters.filterAuditsByAvailableArtifacts(null, [], 'navigation')).toBe(null);
+      expect(filters.filterAuditsByAvailableArtifacts(null, [])).toBe(null);
     });
 
     it('should filter when partial artifacts available', () => {
       const partialArtifacts = [{id: 'Snapshot', gatherer: {instance: snapshotGatherer}}];
-      expect(
-        filters.filterAuditsByAvailableArtifacts(audits, partialArtifacts, 'snapshot')
-      ).toEqual([
+      expect(filters.filterAuditsByAvailableArtifacts(audits, partialArtifacts)).toEqual([
         {implementation: SnapshotAudit, options: {}},
         {implementation: ManualAudit, options: {}},
       ]);
@@ -113,31 +111,12 @@ describe('Fraggle Rock Config Filtering', () => {
       }));
       const partialArtifacts = [{id: 'Snapshot', gatherer: {instance: snapshotGatherer}}];
       expect(
-        filters.filterAuditsByAvailableArtifacts(
-          auditsWithBaseArtifacts,
-          partialArtifacts,
-          'navigation'
-        )
+        filters.filterAuditsByAvailableArtifacts(auditsWithBaseArtifacts, partialArtifacts)
       ).toEqual([{implementation: SnapshotWithBase, options: {}}]);
     });
 
     it('should be noop when all artifacts available', () => {
-      expect(
-        filters.filterAuditsByAvailableArtifacts(audits, artifacts, 'navigation')
-      ).toEqual(audits);
-    });
-
-    it('should not compute audit in non-applicable mode', () => {
-      const modeSpecificAudits = [{
-        implementation: NavigationOnlyAudit,
-        options: {},
-      }];
-      expect(
-        filters.filterAuditsByAvailableArtifacts(modeSpecificAudits, artifacts, 'navigation')
-      ).toEqual(modeSpecificAudits);
-      expect(
-        filters.filterAuditsByAvailableArtifacts(modeSpecificAudits, artifacts, 'timespan')
-      ).toHaveLength(0);
+      expect(filters.filterAuditsByAvailableArtifacts(audits, artifacts)).toEqual(audits);
     });
   });
 
@@ -206,6 +185,33 @@ describe('Fraggle Rock Config Filtering', () => {
 
     it('should be noop when all audits available', () => {
       expect(filters.filterCategoriesByAvailableAudits(categories, audits)).toEqual(categories);
+    });
+  });
+
+  describe('filterAuditsByGatherMode', () => {
+    it('should handle null', () => {
+      expect(filters.filterAuditsByGatherMode(null, 'timespan')).toBeNull();
+    });
+
+    it('should filter unsupported audits', () => {
+      const timespanAudits = [TimespanAudit, NavigationOnlyAudit].map(audit => ({
+        implementation: audit,
+        options: {},
+      }));
+      expect(filters.filterAuditsByGatherMode(timespanAudits, 'timespan')).toEqual([
+        {implementation: TimespanAudit, options: {}},
+      ]);
+    });
+
+    it('should keep audits without explicit modes defined', () => {
+      const timespanAudits = [TimespanAudit, NavigationAudit].map(audit => ({
+        implementation: audit,
+        options: {},
+      }));
+      expect(filters.filterAuditsByGatherMode(timespanAudits, 'timespan')).toEqual([
+        {implementation: TimespanAudit, options: {}},
+        {implementation: NavigationAudit, options: {}},
+      ]);
     });
   });
 
