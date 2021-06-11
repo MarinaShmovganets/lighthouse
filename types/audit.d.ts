@@ -58,7 +58,7 @@ declare global {
       /** A string identifying how the score should be interpreted for display. */
       scoreDisplayMode?: Audit.ScoreDisplayMode;
       /** A list of gather modes that this audit is applicable to. */
-      applicableModes?: Gatherer.GatherMode[],
+      supportedModes?: Gatherer.GatherMode[],
     }
 
     export interface ByteEfficiencyItem extends Audit.Details.OpportunityItem {

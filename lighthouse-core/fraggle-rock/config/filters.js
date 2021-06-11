@@ -65,7 +65,7 @@ function filterAuditsByGatherMode(audits, mode) {
 
   return audits.filter(audit => {
     const meta = audit.implementation.meta;
-    return !meta.applicableModes || meta.applicableModes.includes(mode);
+    return !meta.supportedModes || meta.supportedModes.includes(mode);
   });
 }
 
