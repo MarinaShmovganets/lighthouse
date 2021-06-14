@@ -6098,12 +6098,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:computed:Interactive",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:user-timings",
         "duration": 100,
         "entryType": "measure"
@@ -6272,12 +6266,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:computed:LoadSimulator",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:uses-rel-preconnect",
         "duration": 100,
         "entryType": "measure"
@@ -6429,12 +6417,6 @@
       {
         "startTime": 0,
         "name": "lh:computed:LanternLargestContentfulPaint",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:computed:LoadSimulator",
         "duration": 100,
         "entryType": "measure"
       },
@@ -6849,6 +6831,12 @@
       {
         "startTime": 0,
         "name": "lh:computed:LanternFirstContentfulPaint",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:LoadSimulator",
         "duration": 100,
         "entryType": "measure"
       },
