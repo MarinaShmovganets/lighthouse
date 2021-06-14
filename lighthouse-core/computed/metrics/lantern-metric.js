@@ -99,7 +99,9 @@ class LanternMetricArtifact {
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static async computeMetricWithGraphs(data, context, extras) {
-    const {trace, devtoolsLog, gatherContext, settings} = data;
+    // TODO: remove this fallback when lighthouse-pub-ads plugin can update.
+    const gatherContext = data.gatherContext || {gatherMode: 'navigation'};
+    const {trace, devtoolsLog, settings} = data;
     if (gatherContext.gatherMode !== 'navigation') {
       throw new Error(`Lantern metrics can only be computed on navigations`);
     }

@@ -46,8 +46,10 @@ class NavigationMetric {
    * @return {Promise<LH.Artifacts.LanternMetric|LH.Artifacts.Metric>}
    */
   static async compute_(data, context) {
-    const {trace, devtoolsLog, gatherContext, settings} = data;
-    if (!trace || !devtoolsLog || !gatherContext || !settings) {
+    // TODO: remove this fallback when lighthouse-pub-ads plugin can update.
+    const gatherContext = data.gatherContext || {gatherMode: 'navigation'};
+    const {trace, devtoolsLog, settings} = data;
+    if (!trace || !devtoolsLog || !settings) {
       throw new Error('Did not provide necessary metric computation data');
     }
 
@@ -56,6 +58,7 @@ class NavigationMetric {
 
     const augmentedData = Object.assign({
       networkRecords: await NetworkRecords.request(devtoolsLog, context),
+      gatherContext,
       processedTrace,
       processedNavigation,
     }, data);
