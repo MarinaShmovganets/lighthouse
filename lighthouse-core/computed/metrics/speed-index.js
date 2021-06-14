@@ -17,7 +17,8 @@ class SpeedIndex extends NavigationMetric {
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static computeSimulatedMetric(data, context) {
-    return LanternSpeedIndex.request(data, context);
+    const metricData = NavigationMetric.getMetricComputationInput(data);
+    return LanternSpeedIndex.request(metricData, context);
   }
 
   /**

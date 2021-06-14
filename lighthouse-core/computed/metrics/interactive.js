@@ -146,7 +146,8 @@ class Interactive extends NavigationMetric {
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static computeSimulatedMetric(data, context) {
-    return LanternInteractive.request(data, context);
+    const metricData = NavigationMetric.getMetricComputationInput(data);
+    return LanternInteractive.request(metricData, context);
   }
 
   /**

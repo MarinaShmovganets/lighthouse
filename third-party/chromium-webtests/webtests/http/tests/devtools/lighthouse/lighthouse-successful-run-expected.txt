@@ -199,9 +199,6 @@ Computing artifact: UserTimings
 Auditing: Avoid chaining critical requests
 Computing artifact: CriticalRequestChains
 Auditing: Avoid multiple page redirects
-Computing artifact: LanternInteractive
-Computing artifact: LanternFirstMeaningfulPaint
-Computing artifact: LanternFirstContentfulPaint
 Auditing: Web app manifest and service worker meet the installability requirements
 Computing artifact: ManifestValues
 Auditing: Provides a valid `apple-touch-icon`
@@ -219,7 +216,6 @@ Auditing: Minimizes main-thread work
 Computing artifact: MainThreadTasks
 Auditing: JavaScript execution time
 Auditing: Preload key requests
-Computing artifact: LoadSimulator
 Auditing: Preconnect to required origins
 Auditing: All text remains visible during webfont loads
 Auditing: Diagnostics
@@ -243,8 +239,6 @@ Auditing: Avoid non-composited animations
 Auditing: Image elements have explicit `width` and `height`
 Auditing: Page has valid source maps
 Auditing: Preload Largest Contentful Paint image
-Computing artifact: LanternLargestContentfulPaint
-Computing artifact: LoadSimulator
 Auditing: Ensure CSP is effective against XSS attacks
 Auditing: Full-page screenshot
 Auditing: Script Treemap Data
@@ -313,7 +307,6 @@ Auditing: Defer offscreen images
 Auditing: Eliminate render-blocking resources
 Computing artifact: UnusedCSS
 Computing artifact: FirstContentfulPaint
-Computing artifact: LanternFirstContentfulPaint
 Auditing: Minify CSS
 Auditing: Minify JavaScript
 Auditing: Reduce unused CSS

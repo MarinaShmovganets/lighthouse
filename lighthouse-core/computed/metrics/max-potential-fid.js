@@ -17,7 +17,8 @@ class MaxPotentialFID extends NavigationMetric {
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static computeSimulatedMetric(data, context) {
-    return LanternMaxPotentialFID.request(data, context);
+    const metricData = NavigationMetric.getMetricComputationInput(data);
+    return LanternMaxPotentialFID.request(metricData, context);
   }
 
   /**

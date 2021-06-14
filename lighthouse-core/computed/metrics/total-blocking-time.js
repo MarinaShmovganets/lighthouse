@@ -82,7 +82,8 @@ class TotalBlockingTime extends ComputedMetric {
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static computeSimulatedMetric(data, context) {
-    return LanternTotalBlockingTime.request(data, context);
+    const metricData = ComputedMetric.getMetricComputationInput(data);
+    return LanternTotalBlockingTime.request(metricData, context);
   }
 
   /**
@@ -95,7 +96,8 @@ class TotalBlockingTime extends ComputedMetric {
 
     if (data.processedNavigation) {
       const {firstContentfulPaint} = data.processedNavigation.timings;
-      const interactiveTimeMs = (await TimetoInteractive.request(data, context)).timing;
+      const metricData = ComputedMetric.getMetricComputationInput(data);
+      const interactiveTimeMs = (await TimetoInteractive.request(metricData, context)).timing;
 
       return {
         timing: TotalBlockingTime.calculateSumOfBlockingTime(

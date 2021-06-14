@@ -137,9 +137,11 @@ class RenderBlockingResources extends Audit {
     const simulator = await LoadSimulator.request(simulatorData, context);
     const wastedCssBytes = await RenderBlockingResources.computeWastedCSSBytes(artifacts, context);
 
-    /** @type {LH.Config.Settings} */
-    // @ts-expect-error - TODO(bckenny): allow optional `throttling` settings
-    const metricSettings = {throttlingMethod: 'simulate'};
+    /** @type {Immutable<LH.Config.Settings>} */
+    const metricSettings = {
+      ...context.settings,
+      throttlingMethod: 'simulate',
+    };
 
     const metricComputationData = {trace, devtoolsLog, gatherContext, simulator,
       settings: metricSettings};

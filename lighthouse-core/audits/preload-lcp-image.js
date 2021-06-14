@@ -200,14 +200,14 @@ class PreloadLCPImageAudit extends Audit {
     const trace = artifacts.traces[PreloadLCPImageAudit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[PreloadLCPImageAudit.DEFAULT_PASS];
     const URL = artifacts.URL;
-    const simulatorOptions = {trace, devtoolsLog, gatherContext, settings: context.settings};
+    const metricData = {trace, devtoolsLog, gatherContext, settings: context.settings};
     const lcpElement = artifacts.TraceElements
       .find(element => element.traceEventType === 'largest-contentful-paint');
 
     const [mainResource, lanternLCP, simulator] = await Promise.all([
       MainResource.request({devtoolsLog, URL}, context),
-      LanternLCP.request(simulatorOptions, context),
-      LoadSimulator.request(simulatorOptions, context),
+      LanternLCP.request(metricData, context),
+      LoadSimulator.request({devtoolsLog, settings: context.settings}, context),
     ]);
 
     const graph = lanternLCP.pessimisticGraph;

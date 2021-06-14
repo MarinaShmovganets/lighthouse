@@ -19,8 +19,23 @@ const NetworkRecords = require('../network-records.js');
  *     - Override the computeSimulatedMetric method with the simulated-mode implementation (which
  *       may call another computed artifact with the name LanternMyMetricName).
  */
-class NavigationMetric {
+class Metric {
   constructor() {}
+
+  /**
+   * Narrows the metric computation data to the input so child metric requests can be cached.
+   *
+   * @param {LH.Artifacts.MetricComputationData} data
+   * @return {LH.Artifacts.MetricComputationDataInput}
+   */
+  static getMetricComputationInput(data) {
+    return {
+      trace: data.trace,
+      devtoolsLog: data.devtoolsLog,
+      gatherContext: data.gatherContext,
+      settings: data.settings,
+    };
+  }
 
   /**
    * @param {LH.Artifacts.MetricComputationData} data
@@ -81,4 +96,4 @@ class NavigationMetric {
   }
 }
 
-module.exports = NavigationMetric;
+module.exports = Metric;

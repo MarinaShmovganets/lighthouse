@@ -25,7 +25,8 @@ class LargestContentfulPaint extends NavigationMetric {
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static computeSimulatedMetric(data, context) {
-    return LanternLargestContentfulPaint.request(data, context);
+    const metricData = NavigationMetric.getMetricComputationInput(data);
+    return LanternLargestContentfulPaint.request(metricData, context);
   }
 
   /**

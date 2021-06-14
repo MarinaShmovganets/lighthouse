@@ -17,7 +17,8 @@ class FirstMeaningfulPaint extends NavigationMetric {
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static computeSimulatedMetric(data, context) {
-    return LanternFirstMeaningfulPaint.request(data, context);
+    const metricData = NavigationMetric.getMetricComputationInput(data);
+    return LanternFirstMeaningfulPaint.request(metricData, context);
   }
 
   /**

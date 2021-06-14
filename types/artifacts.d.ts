@@ -624,9 +624,7 @@ declare global {
         processedNavigation?: ProcessedNavigation;
       }
 
-      export interface NavigationMetricComputationData extends MetricComputationDataInput {
-        networkRecords: Array<Artifacts.NetworkRequest>;
-        processedTrace: ProcessedTrace;
+      export interface NavigationMetricComputationData extends MetricComputationData {
         processedNavigation: ProcessedNavigation;
       }
 
@@ -688,7 +686,7 @@ declare global {
         mainFrameIds: {pid: number, tid: number, frameId: string};
         /** The list of frames committed in the trace. */
         frames: Array<{id: string, url: string}>;
-        /** The trace event marking the time at which the page load should consider to have begun. Typically the same as the navigationStart but might differ due to SPA navigations, client-side redirects, etc. */
+        /** The trace event marking the time at which the run should consider to have begun. Typically the same as the navigationStart but might differ due to SPA navigations, client-side redirects, etc. In the FR timespan case, this event is injected by Lighthouse itself. */
         timeOriginEvt: TraceEvent;
       }
 

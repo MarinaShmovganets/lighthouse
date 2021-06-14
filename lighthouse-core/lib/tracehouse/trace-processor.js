@@ -380,7 +380,7 @@ class TraceProcessor {
   }
 
   /**
-   * Provides the top level events on the main thread with timestamps in ms relative to navigation
+   * Provides the top level events on the main thread with timestamps in ms relative to timeOrigin.
    * start.
    * @param {LH.Artifacts.ProcessedTrace} trace
    * @param {number=} startTime Optional start time (in ms relative to timeOrigin) of range of interest. Defaults to 0.
