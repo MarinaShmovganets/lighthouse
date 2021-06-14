@@ -5,6 +5,26 @@
  */
 'use strict';
 
+/** @fileoverview This file is no longer used internally, but remains here for backcompat with plugins. */
+
 const log = require('lighthouse-logger');
+const makeComputedArtifact = require('./computed-artifact.js');
+const ProcessedTrace = require('./processed-trace.js');
+const ProcessedNavigation = require('./processed-navigation.js');
+
+class TraceOfTab {
+  /**
+     * @param {LH.Trace} trace
+     * @param {LH.Artifacts.ComputedContext} context
+     * @return {Promise<any>}
+    */
+  static async compute_(trace, context) {
+    const processedTrace = await ProcessedTrace.request(trace, context);
+    const processedNavigation = await ProcessedNavigation.request(processedTrace, context);
+    return {...processedTrace, ...processedNavigation};
+  }
+}
+
 log.warn(`trace-of-tab`, `trace-of-tab is deprecated, use processed-trace / processed-navigation instead`); // eslint-disable-line max-len
-module.exports = require('./trace-of-tab--deprecated.js');
+module.exports = makeComputedArtifact(TraceOfTab);
+
