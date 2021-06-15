@@ -54,7 +54,7 @@ function filterAuditsByAvailableArtifacts(audits, availableArtifacts) {
 }
 
 /**
- * Optional `applicableModes` property can explicitly exclude an audit even if all required artifacts are available.
+ * Optional `supportedModes` property can explicitly exclude an audit even if all required artifacts are available.
  *
  * @param {LH.Config.FRConfig['audits']} audits
  * @param {LH.Gatherer.GatherMode} mode
