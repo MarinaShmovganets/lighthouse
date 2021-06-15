@@ -73,7 +73,7 @@ describe('Fraggle Rock Config Filtering', () => {
     static meta = {
       id: 'navigation-only',
       requiredArtifacts: /** @type {any} */ (['Snapshot', 'Timespan']),
-      applicableModes: /** @type {['navigation']} */ (['navigation']),
+      supportedModes: /** @type {['navigation']} */ (['navigation']),
       ...auditMeta,
     };
   }
