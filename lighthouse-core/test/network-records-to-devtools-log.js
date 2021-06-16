@@ -115,7 +115,7 @@ function getResponseReceivedEvent(networkRecord, index) {
         connectionId: networkRecord.connectionId || 140,
         fromDiskCache: networkRecord.fromDiskCache || false,
         fromServiceWorker: networkRecord.fetchedViaServiceWorker || false,
-        encodedDataLength: typeof networkRecord.transferSize === 'undefined' ?
+        encodedDataLength: networkRecord.transferSize === undefined ?
           0 : networkRecord.transferSize,
         timing,
         protocol: networkRecord.protocol || 'http/1.1',
@@ -135,7 +135,7 @@ function getDataReceivedEvent(networkRecord, index) {
     params: {
       requestId: getBaseRequestId(networkRecord) || `${idBase}.${index}`,
       dataLength: networkRecord.resourceSize || 0,
-      encodedDataLength: typeof networkRecord.transferSize === 'undefined' ?
+      encodedDataLength: networkRecord.transferSize === undefined ?
         0 : networkRecord.transferSize,
     },
   };
@@ -151,7 +151,7 @@ function getLoadingFinishedEvent(networkRecord, index) {
     params: {
       requestId: getBaseRequestId(networkRecord) || `${idBase}.${index}`,
       timestamp: networkRecord.endTime || 3,
-      encodedDataLength: typeof networkRecord.transferSize === 'undefined' ?
+      encodedDataLength: networkRecord.transferSize === undefined ?
         0 : networkRecord.transferSize,
     },
   };
