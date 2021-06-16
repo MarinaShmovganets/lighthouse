@@ -582,6 +582,7 @@ describe('OffscreenImages audit', () => {
 
     return UnusedImages.audit_(artifacts, [networkRecord], context).then(auditResult => {
       assert.equal(auditResult.items.length, 1);
+      assert.equal(auditResult.items[0].wastedBytes, wastedSize, 'correctly computes wastedBytes');
     });
   });
 });

@@ -90,7 +90,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
     const visiblePixels = this.computeVisiblePixels(image.clientRect, viewportDimensions);
     // Treat images with 0 area as if they're offscreen. See https://github.com/GoogleChrome/lighthouse/issues/1914
     const wastedRatio = totalPixels === 0 ? 1 : 1 - visiblePixels / totalPixels;
-    const totalBytes = NetworkRequest.getActualResourceSize(networkRecord);
+    const totalBytes = NetworkRequest.getResourceSizeOnNetwork(networkRecord);
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
     if (!Number.isFinite(wastedRatio)) {

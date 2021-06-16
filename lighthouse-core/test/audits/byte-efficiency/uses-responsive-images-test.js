@@ -230,7 +230,7 @@ describe('Page uses responsive images', () => {
   it('handles cached images', () => {
     const networkRecord = {
       mimeType: 'image/png',
-      resourceSize: 102400,
+      resourceSize: 1024 * 100,
       transferSize: 0,
       url: 'https://google.com/logo.png',
     };
@@ -238,9 +238,9 @@ describe('Page uses responsive images', () => {
       ViewportDimensions: {innerWidth: 1000, innerHeight: 1000, devicePixelRatio: 1},
       ImageElements: [
         generateImage(
-          generateSize(200, 200),
-          {width: 450, height: 450},
-          'https://google.com/logo.png',
+          generateSize(500, 500),
+          {width: 1000, height: 1000},
+          'https://google.com/logo.png'
         ),
       ],
     },
@@ -248,5 +248,6 @@ describe('Page uses responsive images', () => {
     );
 
     assert.equal(auditResult.items.length, 1);
+    assert.equal(auditResult.items[0].wastedBytes / 1024, 75, 'correctly computes wastedBytes');
   });
 });
