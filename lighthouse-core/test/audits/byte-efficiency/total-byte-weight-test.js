@@ -102,7 +102,7 @@ describe('Total byte weight audit', () => {
     expect(result.numericValue).toEqual(10_000);
   });
 
-  it('does not throw on requests with NaN transferSize', async () => {
+  it('ignores requests with falsy transfer size', async () => {
     const artifacts = generateArtifacts([
       {url: 'https://example.com/file.html', transferSize: 5_000},
       {url: 'https://example.com/file.js', transferSize: NaN},
