@@ -14,6 +14,7 @@
 const Audit = require('./audit.js');
 const URL = require('../lib/url-shim.js');
 const i18n = require('../lib/i18n/i18n.js');
+const {isSVG} = require('../lib/image-helpers.js');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on the aspect ratios of all images on the page. This descriptive title is shown to users when all images use correct aspect ratios. */
@@ -88,7 +89,7 @@ class ImageAspectRatio extends Audit {
       // - filter all svgs as they have no natural dimensions to audit
       // - filter out images that have falsy naturalWidth or naturalHeight
       return !image.isCss &&
-        !/\.svg$/.test(image.src) &&
+        !isSVG(image.src) &&
         image.naturalDimensions &&
         image.naturalDimensions.height > 5 &&
         image.naturalDimensions.width > 5 &&

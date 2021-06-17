@@ -13,6 +13,7 @@
 const Audit = require('./audit.js');
 const URL = require('../lib/url-shim.js');
 const i18n = require('../lib/i18n/i18n.js');
+const {isSVG} = require('../lib/image-helpers.js');
 
 /** @typedef {LH.Artifacts.ImageElement & Required<Pick<LH.Artifacts.ImageElement, 'naturalDimensions'>>} ImageWithNaturalDimensions */
 
@@ -95,7 +96,7 @@ function isCandidate(image) {
   ) {
     return false;
   }
-  if (/\.svg$/.test(image.src)) {
+  if (isSVG(image.src)) {
     return false;
   }
   if (image.isCss) {

@@ -13,7 +13,6 @@ const assert = require('assert').strict;
 function generateImage(clientSize, naturalDimensions, props, src = 'https://google.com/logo.png') {
   return {
     src,
-    mimeType: 'image/png',
     computedStyles: {objectFit: 'fill'},
     naturalDimensions,
     ...clientSize,
@@ -143,11 +142,13 @@ describe('Images: aspect-ratio audit', () => {
       ImageElements: [
         generateImage(
           {width: 150, height: 150},
-          {},
+          {width: 100, height: 200},
           {
-            mimeType: 'image/svg+xml',
             isCss: false,
-          }
+            displayedWidth: 150,
+            displayedHeight: 150,
+          },
+          'https://example.com/image.svg'
         ),
       ],
     });

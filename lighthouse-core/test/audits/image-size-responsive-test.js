@@ -25,7 +25,6 @@ function generateImage(clientSize, naturalDimensions, props, src = 'https://goog
   return {
     computedStyles: {objectFit: 'fill'},
     src,
-    mimeType: 'image/png',
     naturalDimensions,
     ...clientSize,
     ...clientRect,
@@ -100,7 +99,7 @@ describe('Images: size audit', () => {
     clientSize: [100, 100],
     naturalSize: [5, 5],
     props: {
-      mimeType: 'image/svg+xml',
+      src: 'https://example.com/image.svg',
     },
   });
 
@@ -416,19 +415,19 @@ describe('Images: size audit', () => {
           {displayedWidth: 80, displayedHeight: 40},
           {width: 40, height: 20},
           {},
-          'image1.png'
+          'https://example.com/image1.png'
         ),
         generateImage(
           {displayedWidth: 120, displayedHeight: 60},
           {width: 40, height: 20},
           {},
-          'image2.png'
+          'https://example.com/image2.png'
         ),
         generateImage(
           {displayedWidth: 90, displayedHeight: 45},
           {width: 40, height: 20},
           {},
-          'image3.png'
+          'https://example.com/image3.png'
         ),
       ],
       ViewportDimensions: {
@@ -439,7 +438,11 @@ describe('Images: size audit', () => {
     });
     assert.equal(result.details.items.length, 3);
     const srcs = result.details.items.map(item => item.url);
-    assert.deepEqual(srcs, ['image2.png', 'image3.png', 'image1.png']);
+    assert.deepEqual(srcs, [
+      'https://example.com/image2.png',
+      'https://example.com/image3.png',
+      'https://example.com/image1.png',
+    ]);
   });
 
   it('shows the right expected size', () => {
