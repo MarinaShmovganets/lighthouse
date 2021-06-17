@@ -13,7 +13,6 @@
 const Audit = require('./audit.js');
 const i18n = require('./../lib/i18n/i18n.js');
 const URL = require('./../lib/url-shim.js');
-const {isSVG} = require('../lib/image-helpers.js');
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on whether all images have explicit width and height. This descriptive title is shown to users when every image has explicit width and height */
@@ -109,7 +108,7 @@ class UnsizedImages extends Audit {
   static isNonNetworkSvg(image) {
     const urlScheme = image.src.slice(0, image.src.indexOf(':'));
     const isNonNetwork = URL.isNonNetworkProtocol(urlScheme);
-    return isSVG(image.src) && isNonNetwork;
+    return URL.isSvgUrl(image.src) && isNonNetwork;
   }
 
   /**

@@ -304,7 +304,7 @@ describe('URL Shim', () => {
     });
   });
 
-  describe('isLikeLocalhost', () => {
+  it('isLikeLocalhost', () => {
     assert.ok(URL.isLikeLocalhost(new URL('http://localhost/').hostname));
     assert.ok(URL.isLikeLocalhost(new URL('http://localhost:10200/').hostname));
     assert.ok(URL.isLikeLocalhost(new URL('http://127.0.0.1/page.html').hostname));
@@ -315,7 +315,7 @@ describe('URL Shim', () => {
     assert.ok(!URL.isLikeLocalhost(new URL('http://example.com/').hostname));
   });
 
-  describe('isSecureScheme', () => {
+  it('isSecureScheme', () => {
     assert.ok(URL.isSecureScheme('wss'));
     assert.ok(URL.isSecureScheme('about'));
     assert.ok(URL.isSecureScheme('data'));
@@ -325,7 +325,7 @@ describe('URL Shim', () => {
     assert.ok(!URL.isSecureScheme('ws'));
   });
 
-  describe('isNonNetworkProtocol', () => {
+  it('isNonNetworkProtocol', () => {
     assert.ok(URL.isNonNetworkProtocol('blob'));
     assert.ok(URL.isNonNetworkProtocol('data'));
     assert.ok(URL.isNonNetworkProtocol('data:'));
@@ -334,5 +334,12 @@ describe('URL Shim', () => {
     assert.ok(!URL.isNonNetworkProtocol('filesystem'));
     assert.ok(!URL.isNonNetworkProtocol('http'));
     assert.ok(!URL.isNonNetworkProtocol('ws'));
+  });
+
+  it('isSvgUrl', () => {
+    assert.ok(URL.isSvgUrl('https://example.com/image.svg'));
+    assert.ok(URL.isSvgUrl('data:image/svg+xml;base64,imagedata'));
+    assert.ok(!URL.isSvgUrl('https://example.com/image.png'));
+    assert.ok(!URL.isSvgUrl('data:image/png;base64,imagedata'));
   });
 });

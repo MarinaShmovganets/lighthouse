@@ -215,6 +215,18 @@ class URLShim extends URL {
     const urlScheme = protocol.includes(':') ? protocol.slice(0, protocol.indexOf(':')) : protocol;
     return NON_NETWORK_SCHEMES.includes(urlScheme);
   }
+
+  /**
+   * @param {string} src
+   * @return {boolean}
+   */
+  static isSvgUrl(src) {
+    const url = new URL(src);
+    if (url.protocol === 'data:') {
+      return /image\/svg\+xml/.test(url.pathname);
+    }
+    return /\.svg$/.test(src);
+  }
 }
 
 URLShim.URL = URL;
