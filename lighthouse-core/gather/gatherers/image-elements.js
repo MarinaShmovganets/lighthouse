@@ -287,24 +287,6 @@ class ImageElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Artifacts.NetworkRequest[]} networkRecords
-   */
-  indexNetworkRecords(networkRecords) {
-    return networkRecords.reduce((map, record) => {
-      // An image response in newer formats is sometimes incorrectly marked as "application/octet-stream",
-      // so respect the extension too.
-      const isImage = /^image/.test(record.mimeType) || /\.(avif|webp)$/i.test(record.url);
-      // The network record is only valid for size information if it finished with a successful status
-      // code that indicates a complete image response.
-      if (isImage && record.finished && record.statusCode === 200) {
-        map[record.url] = record;
-      }
-
-      return map;
-    }, /** @type {Record<string, LH.Artifacts.NetworkRequest>} */ ({}));
-  }
-
-  /**
    *
    * @param {LH.Gatherer.FRTransitionalDriver} driver
    * @param {LH.Artifacts.ImageElement[]} elements

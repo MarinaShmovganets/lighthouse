@@ -488,12 +488,15 @@ declare global {
         isPicture: boolean;
         /** Flags whether this element was contained within a ShadowRoot */
         isInShadowDOM: boolean;
-        /** The MIME type of the underlying image file. */
-        mimeType?: string;
         /** Details for node in DOM for the image element */
         node: NodeDetails;
         /** The loading attribute of the image. */
         loading?: string;
+      }
+
+      export interface ImageRecord extends ImageElement {
+        /** The MIME type of the underlying image file. */
+        mimeType?: string;
       }
 
       export interface OptimizedImage {

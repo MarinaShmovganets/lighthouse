@@ -106,7 +106,7 @@ class UnsizedImages extends Audit {
    * @return {boolean}
    */
   static isNonNetworkSvg(image) {
-    const isSvg = image.mimeType === 'image/svg+xml';
+    const isSvg = /\.svg$/.test(image.src);
     const urlScheme = image.src.slice(0, image.src.indexOf(':'));
     const isNonNetwork = URL.isNonNetworkProtocol(urlScheme);
     return isSvg && isNonNetwork;
