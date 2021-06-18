@@ -95,7 +95,7 @@ function isCandidate(image) {
   ) {
     return false;
   }
-  if (URL.isSvgUrl(image.src)) {
+  if (image.mimeType === 'image/svg+xml') {
     return false;
   }
   if (image.isCss) {

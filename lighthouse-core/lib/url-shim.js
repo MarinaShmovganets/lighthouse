@@ -218,14 +218,22 @@ class URLShim extends URL {
 
   /**
    * @param {string} src
-   * @return {boolean}
+   * @return {string|undefined}
    */
-  static isSvgUrl(src) {
+  static guessMimeType(src) {
     const url = new URL(src);
     if (url.protocol === 'data:') {
-      return /image\/svg\+xml/.test(url.pathname);
+      const match = url.pathname.match(/image\/(png|jpeg|jpg|svg\+xml|webp|gif|avif);/);
+      if (!match) return undefined;
+      return match[0].split(';')[0];
     }
-    return /\.svg$/.test(src);
+
+    const match = src.toLocaleLowerCase().match(/\.(png|jpeg|jpg|svg|webp|gif|avif)$/);
+    if (!match) return undefined;
+
+    const ext = match[0].substr(1);
+    if (ext === 'svg') return 'image/svg+xml';
+    return `image/${ext}`;
   }
 }
 

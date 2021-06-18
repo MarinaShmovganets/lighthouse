@@ -86,6 +86,7 @@ describe('Sized images audit', () => {
         width: null,
         height: null,
       },
+      mimeType: 'image/svg+xml',
       src: 'data:image/svg+xml;base64,foo',
     });
     expect(result.score).toEqual(1);
@@ -136,7 +137,7 @@ describe('Sized images audit', () => {
           width: null,
           height: '100',
         },
-        src: 'https://example.com/img.svg',
+        mimeType: 'image/svg+xml',
       });
       expect(result.score).toEqual(0);
     });
@@ -549,14 +550,14 @@ describe('Sized images audit', () => {
               height: null,
             },
           },
-          'https://example.com/image1.png'
+          'image1.png'
         ),
         generateImage(
           {
             attributeWidth: '100',
             attributeHeight: '150',
           },
-          'https://example.com/image2.png'
+          'image2.png'
         ),
         generateImage(
           {
@@ -567,14 +568,14 @@ describe('Sized images audit', () => {
               height: null,
             },
           },
-          'https://example.com/image3.png'
+          'image3.png'
         ),
       ],
     });
     expect(result.score).toEqual(0);
     expect(result.details.items).toHaveLength(2);
     const srcs = result.details.items.map(item => item.url);
-    expect(srcs).toEqual(['https://example.com/image1.png', 'https://example.com/image3.png']);
+    expect(srcs).toEqual(['image1.png', 'image3.png']);
   });
 
   describe('doesn\'t have enough data', () => {

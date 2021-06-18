@@ -28,19 +28,22 @@ class ImageRecords {
 
   /**
    * @param {{ImageElements: LH.Artifacts['ImageElements'], networkRecords: LH.Artifacts.NetworkRequest[]}} data
-   * @return {Promise<LH.Artifacts.ImageRecord[]>}
+   * @return {Promise<LH.Artifacts.ImageElement[]>}
    */
   static async compute_(data) {
     const indexedNetworkRecords = ImageRecords.indexNetworkRecords(data.networkRecords);
 
-    /** @type {LH.Artifacts.ImageRecord[]} */
+    /** @type {LH.Artifacts.ImageElement[]} */
     const imageRecords = [];
 
     for (const element of data.ImageElements) {
       const networkRecord = indexedNetworkRecords[element.src];
+      const mimeType = networkRecord && networkRecord.mimeType;
+
+      // Don't change the guessed mime type if no mime type was found.
       imageRecords.push({
-        mimeType: networkRecord && networkRecord.mimeType,
         ...element,
+        mimeType: mimeType ? mimeType : element.mimeType,
       });
     }
 

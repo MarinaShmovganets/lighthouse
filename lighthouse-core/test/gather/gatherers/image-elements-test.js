@@ -317,6 +317,7 @@ describe('FR compat', () => {
 
     expect(artifact).toEqual([
       mockElement({
+        mimeType: 'image/jpg',
         cssEffectiveRules: {
           width: '200px',
           height: '200px',
@@ -349,6 +350,7 @@ describe('FR compat', () => {
 
     expect(artifact).toEqual([
       mockElement({
+        mimeType: 'image/jpg',
         cssEffectiveRules: {
           width: '200px',
           height: '200px',

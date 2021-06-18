@@ -336,10 +336,22 @@ describe('URL Shim', () => {
     assert.ok(!URL.isNonNetworkProtocol('ws'));
   });
 
-  it('isSvgUrl', () => {
-    assert.ok(URL.isSvgUrl('https://example.com/image.svg'));
-    assert.ok(URL.isSvgUrl('data:image/svg+xml;base64,imagedata'));
-    assert.ok(!URL.isSvgUrl('https://example.com/image.png'));
-    assert.ok(!URL.isSvgUrl('data:image/png;base64,imagedata'));
+  describe('guessMimeType', () => {
+    it('uses mime type from data URI', () => {
+      expect(URL.guessMimeType('data:image/png;DATA')).toEqual('image/png');
+      expect(URL.guessMimeType('data:image/jpeg;DATA')).toEqual('image/jpeg');
+      expect(URL.guessMimeType('data:image/jpg;DATA')).toEqual('image/jpg');
+      expect(URL.guessMimeType('data:image/svg+xml;DATA')).toEqual('image/svg+xml');
+      expect(URL.guessMimeType('data:text/html;DATA')).toEqual(undefined);
+    });
+
+    it('uses extension for normal files', () => {
+      expect(URL.guessMimeType('https://example.com/img.png')).toEqual('image/png');
+      expect(URL.guessMimeType('https://example.com/img.jpeg')).toEqual('image/jpeg');
+      expect(URL.guessMimeType('https://example.com/img.jpg')).toEqual('image/jpg');
+      expect(URL.guessMimeType('https://example.com/img.svg')).toEqual('image/svg+xml');
+      expect(URL.guessMimeType('https://example.com/page.html')).toEqual(undefined);
+      expect(URL.guessMimeType('https://example.com/')).toEqual(undefined);
+    });
   });
 });
