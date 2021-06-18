@@ -229,10 +229,10 @@ class URLShim extends URL {
         return match[0].split(';')[0];
       }
 
-      const match = src.toLocaleLowerCase().match(/\.(png|jpeg|jpg|svg|webp|gif|avif)$/);
+      const match = src.toLowerCase().match(/\.(png|jpeg|jpg|svg|webp|gif|avif)$/);
       if (!match) return undefined;
 
-      const ext = match[0].substr(1);
+      const ext = match[1];
       if (ext === 'svg') return 'image/svg+xml';
       return `image/${ext}`;
     } catch (_) {

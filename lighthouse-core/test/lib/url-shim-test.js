@@ -337,6 +337,11 @@ describe('URL Shim', () => {
   });
 
   describe('guessMimeType', () => {
+    it('handles invalid url', () => {
+      expect(URL.guessMimeType('')).toEqual(undefined);
+      expect(URL.guessMimeType('I_AM_NO_URL')).toEqual(undefined);
+    });
+
     it('uses mime type from data URI', () => {
       expect(URL.guessMimeType('data:image/png;DATA')).toEqual('image/png');
       expect(URL.guessMimeType('data:image/jpeg;DATA')).toEqual('image/jpeg');
@@ -347,6 +352,7 @@ describe('URL Shim', () => {
 
     it('uses extension for normal files', () => {
       expect(URL.guessMimeType('https://example.com/img.png')).toEqual('image/png');
+      expect(URL.guessMimeType('https://example.com/IMG.PNG')).toEqual('image/png');
       expect(URL.guessMimeType('https://example.com/img.jpeg')).toEqual('image/jpeg');
       expect(URL.guessMimeType('https://example.com/img.jpg')).toEqual('image/jpg');
       expect(URL.guessMimeType('https://example.com/img.svg')).toEqual('image/svg+xml');

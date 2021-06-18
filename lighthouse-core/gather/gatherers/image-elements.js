@@ -353,8 +353,10 @@ class ImageElements extends FRGatherer {
       ],
     });
 
-    elements.sort((a, b) => estimateFileSize(b) - estimateFileSize(a))
-      .map(e => ({...e, mimeType: URL.guessMimeType(e.src)}));
+    elements.sort((a, b) => estimateFileSize(b) - estimateFileSize(a));
+    for (const element of elements) {
+      element.mimeType = URL.guessMimeType(element.src);
+    }
 
     await Promise.all([
       session.sendCommand('DOM.enable'),
