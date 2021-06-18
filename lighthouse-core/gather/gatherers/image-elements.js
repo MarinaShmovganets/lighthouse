@@ -223,6 +223,17 @@ function getEffectiveSizingRule({attributesStyle, inlineStyle, matchedCSSRules},
   return null;
 }
 
+/**
+ * @param {LH.Artifacts.ImageElement} element
+ * @return {number}
+ */
+function estimateFileSize(element) {
+  if (element.naturalDimensions) {
+    return element.naturalDimensions.height * element.naturalDimensions.width;
+  }
+  return element.displayedHeight * element.displayedWidth;
+}
+
 class ImageElements extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
@@ -342,9 +353,8 @@ class ImageElements extends FRGatherer {
       ],
     });
 
-    for (const element of elements) {
-      element.mimeType = URL.guessMimeType(element.src);
-    }
+    elements.sort((a, b) => estimateFileSize(b) - estimateFileSize(a))
+      .map(e => ({...e, mimeType: URL.guessMimeType(e.src)}));
 
     await Promise.all([
       session.sendCommand('DOM.enable'),
