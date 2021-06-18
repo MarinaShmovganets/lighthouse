@@ -321,7 +321,6 @@ class ImageElements extends FRGatherer {
       }
       // Images within `picture` behave strangely and natural size information isn't accurate,
       // CSS images have no natural size information at all. Try to get the actual size if we can.
-      // Additional fetch is expensive; don't bother if we don't have a networkRecord for the image.
       if (element.isPicture || element.isCss || element.srcset) {
         await this.fetchElementWithSizeInformation(driver, element);
       }
