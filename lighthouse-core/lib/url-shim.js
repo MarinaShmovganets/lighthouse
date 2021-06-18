@@ -221,19 +221,23 @@ class URLShim extends URL {
    * @return {string|undefined}
    */
   static guessMimeType(src) {
-    const url = new URL(src);
-    if (url.protocol === 'data:') {
-      const match = url.pathname.match(/image\/(png|jpeg|jpg|svg\+xml|webp|gif|avif);/);
+    try {
+      const url = new URL(src);
+      if (url.protocol === 'data:') {
+        const match = url.pathname.match(/image\/(png|jpeg|jpg|svg\+xml|webp|gif|avif);/);
+        if (!match) return undefined;
+        return match[0].split(';')[0];
+      }
+
+      const match = src.toLocaleLowerCase().match(/\.(png|jpeg|jpg|svg|webp|gif|avif)$/);
       if (!match) return undefined;
-      return match[0].split(';')[0];
+
+      const ext = match[0].substr(1);
+      if (ext === 'svg') return 'image/svg+xml';
+      return `image/${ext}`;
+    } catch (_) {
+      return undefined;
     }
-
-    const match = src.toLocaleLowerCase().match(/\.(png|jpeg|jpg|svg|webp|gif|avif)$/);
-    if (!match) return undefined;
-
-    const ext = match[0].substr(1);
-    if (ext === 'svg') return 'image/svg+xml';
-    return `image/${ext}`;
   }
 }
 
