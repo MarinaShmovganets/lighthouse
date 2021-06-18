@@ -227,7 +227,7 @@ function getEffectiveSizingRule({attributesStyle, inlineStyle, matchedCSSRules},
  * @param {LH.Artifacts.ImageElement} element
  * @return {number}
  */
-function estimateFileSize(element) {
+function getPixelArea(element) {
   if (element.naturalDimensions) {
     return element.naturalDimensions.height * element.naturalDimensions.width;
   }
@@ -353,7 +353,7 @@ class ImageElements extends FRGatherer {
       ],
     });
 
-    elements.sort((a, b) => estimateFileSize(b) - estimateFileSize(a));
+    elements.sort((a, b) => getPixelArea(b) - getPixelArea(a));
     for (const element of elements) {
       element.mimeType = URL.guessMimeType(element.src);
     }
