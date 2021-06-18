@@ -234,7 +234,7 @@ class URLShim extends URL {
       return match[0].split(';')[0];
     }
 
-    const match = src.toLowerCase().match(/\.(png|jpeg|jpg|svg|webp|gif|avif)$/);
+    const match = url.pathname.toLowerCase().match(/\.(png|jpeg|jpg|svg|webp|gif|avif)$/);
     if (!match) return undefined;
 
     const ext = match[1];

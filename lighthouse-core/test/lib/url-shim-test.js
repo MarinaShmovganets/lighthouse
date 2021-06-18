@@ -350,8 +350,9 @@ describe('URL Shim', () => {
       expect(URL.guessMimeType('data:text/html;DATA')).toEqual(undefined);
     });
 
-    it('uses extension for normal files', () => {
+    it('uses path extension for normal files', () => {
       expect(URL.guessMimeType('https://example.com/img.png')).toEqual('image/png');
+      expect(URL.guessMimeType('https://example.com/img.png?test')).toEqual('image/png');
       expect(URL.guessMimeType('https://example.com/IMG.PNG')).toEqual('image/png');
       expect(URL.guessMimeType('https://example.com/img.jpeg')).toEqual('image/jpeg');
       expect(URL.guessMimeType('https://example.com/img.jpg')).toEqual('image/jpg');
