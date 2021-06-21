@@ -53,7 +53,7 @@ const UIStrings = {
   * @description Error message explaining that the manifest does not contain a suitable icon.
   * @example {192} value0
   */
-  'manifest-missing-suitable-icon': `Manifest does not contain a suitable icon - PNG, SVG or WebP format of at least {value0}\xa0px is required, the sizes attribute must be set, and the purpose attribute, if set, must include "any" and should not include "maskable".`,
+  'manifest-missing-suitable-icon': `Manifest does not contain a suitable icon - PNG, SVG or WebP format of at least {value0}\xa0px is required, the sizes attribute must be set, and the purpose attribute, if set, must include "any".`,
 
   /**
   * @description Error message explaining that the manifest does not supply an icon of the correct format.
