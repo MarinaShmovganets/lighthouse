@@ -355,7 +355,7 @@ describe('URL Shim', () => {
       expect(URL.guessMimeType('https://example.com/img.png?test')).toEqual('image/png');
       expect(URL.guessMimeType('https://example.com/IMG.PNG')).toEqual('image/png');
       expect(URL.guessMimeType('https://example.com/img.jpeg')).toEqual('image/jpeg');
-      expect(URL.guessMimeType('https://example.com/img.jpg')).toEqual('image/jpg');
+      expect(URL.guessMimeType('https://example.com/img.jpg')).toEqual('image/jpeg');
       expect(URL.guessMimeType('https://example.com/img.svg')).toEqual('image/svg+xml');
       expect(URL.guessMimeType('https://example.com/page.html')).toEqual(undefined);
       expect(URL.guessMimeType('https://example.com/')).toEqual(undefined);

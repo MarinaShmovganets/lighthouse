@@ -360,9 +360,11 @@ class ImageElements extends FRGatherer {
       session.sendCommand('DOM.getDocument', {depth: -1, pierce: true}),
     ]);
 
-    await this.collectExtraDetails(context.driver, elements);
-
+    // Spend our extra details budget on highest impact images.
+    // Our best approximation of impact without network records is to use pixel area.
     elements.sort((a, b) => getPixelArea(b) - getPixelArea(a));
+
+    await this.collectExtraDetails(context.driver, elements);
 
     await Promise.all([
       session.sendCommand('DOM.disable'),

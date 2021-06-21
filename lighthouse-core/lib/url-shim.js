@@ -229,9 +229,9 @@ class URLShim extends URL {
     }
 
     if (url.protocol === 'data:') {
-      const match = url.pathname.match(/image\/(png|jpeg|jpg|svg\+xml|webp|gif|avif);/);
+      const match = url.pathname.match(/image\/(png|jpeg|jpg|svg\+xml|webp|gif|avif)(?=;)/);
       if (!match) return undefined;
-      return match[0].split(';')[0];
+      return match[0];
     }
 
     const match = url.pathname.toLowerCase().match(/\.(png|jpeg|jpg|svg|webp|gif|avif)$/);
@@ -239,6 +239,7 @@ class URLShim extends URL {
 
     const ext = match[1];
     if (ext === 'svg') return 'image/svg+xml';
+    if (ext === 'jpg') return 'image/jpeg';
     return `image/${ext}`;
   }
 }
