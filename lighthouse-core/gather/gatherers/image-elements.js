@@ -310,6 +310,8 @@ class ImageElements extends FRGatherer {
     let skippedCount = 0;
 
     for (const element of elements) {
+      element.mimeType = URL.guessMimeType(element.src);
+
       if (reachedGatheringBudget) {
         skippedCount++;
         continue;
@@ -352,11 +354,6 @@ class ImageElements extends FRGatherer {
       ],
     });
 
-    elements.sort((a, b) => getPixelArea(b) - getPixelArea(a));
-    for (const element of elements) {
-      element.mimeType = URL.guessMimeType(element.src);
-    }
-
     await Promise.all([
       session.sendCommand('DOM.enable'),
       session.sendCommand('CSS.enable'),
@@ -364,6 +361,8 @@ class ImageElements extends FRGatherer {
     ]);
 
     await this.collectExtraDetails(context.driver, elements);
+
+    elements.sort((a, b) => getPixelArea(b) - getPixelArea(a));
 
     await Promise.all([
       session.sendCommand('DOM.disable'),
