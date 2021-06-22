@@ -927,7 +927,13 @@
       "title": "Preload key requests",
       "description": "Consider using `<link rel=preload>` to prioritize fetching resources that are currently requested later in page load. [Learn more](https://web.dev/uses-rel-preload/).",
       "score": null,
-      "scoreDisplayMode": "notApplicable"
+      "scoreDisplayMode": "notApplicable",
+      "details": {
+        "type": "opportunity",
+        "headings": [],
+        "items": [],
+        "overallSavingsMs": 0
+      }
     },
     "uses-rel-preconnect": {
       "id": "uses-rel-preconnect",
@@ -2137,7 +2143,13 @@
       "title": "Preload Largest Contentful Paint image",
       "description": "Preload the image used by the LCP element in order to improve your LCP time. [Learn more](https://web.dev/optimize-lcp/#preload-important-resources).",
       "score": null,
-      "scoreDisplayMode": "notApplicable"
+      "scoreDisplayMode": "notApplicable",
+      "details": {
+        "type": "opportunity",
+        "headings": [],
+        "items": [],
+        "overallSavingsMs": 0
+      }
     },
     "csp-xss": {
       "id": "csp-xss",
