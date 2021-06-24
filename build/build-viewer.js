@@ -16,7 +16,7 @@ const htmlReportAssets = require('../lighthouse-report/report-assets.js');
  */
 async function run() {
   // JS bundle from browserified ReportGenerator.
-  const generatorFilename = `${__dirname}/../lighthouse-core/report/report-generator.js`;
+  const generatorFilename = `${__dirname}/../lighthouse-report/report-generator.js`;
   const generatorBrowserify = browserify(generatorFilename, {standalone: 'ReportGenerator'})
     .transform('@wardpeet/brfs', {
       readFileSyncTransform: minifyFileTransform,
