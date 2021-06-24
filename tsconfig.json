@@ -24,7 +24,6 @@
     "lighthouse-core/lib/cdt",
     "lighthouse-core/test/audits/**/*.js",
     "lighthouse-core/test/fixtures/**/*.js",
-    // "lighthouse-report/test/**/*.js",
     "lighthouse-core/test/computed/**/*.js",
     "clients/test/**/*.js",
     "lighthouse-cli/test/fixtures/**/*.js",
