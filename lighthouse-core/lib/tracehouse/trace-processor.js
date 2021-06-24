@@ -39,7 +39,9 @@ const SCHEDULABLE_TASK_TITLE_ALT2 = 'ThreadControllerImpl::DoWork';
 const SCHEDULABLE_TASK_TITLE_ALT3 = 'TaskQueueManager::ProcessTaskFromWorkQueue';
 
 class TraceProcessor {
-  static TIMESPAN_MARKER_ID = '__lighthouseTimespanStart__';
+  static get TIMESPAN_MARKER_ID() {
+    return '__lighthouseTimespanStart__';
+  }
 
   /**
    * @return {Error}
