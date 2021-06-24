@@ -27,8 +27,8 @@ describe('PwaCategoryRenderer', () => {
     global.Util.i18n = new I18n('en', {...Util.UIStrings});
     global.CategoryRenderer = CategoryRenderer;
 
-    const PwaCategoryRenderer =
-        require('../../renderer/pwa-category-renderer.js');
+    // Delayed so that CategoryRenderer is in global scope
+    const PwaCategoryRenderer = require('../../renderer/pwa-category-renderer.js');
 
     const {document} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
     const dom = new DOM(document);

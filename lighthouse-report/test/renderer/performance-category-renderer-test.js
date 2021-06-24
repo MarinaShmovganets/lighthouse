@@ -30,8 +30,8 @@ describe('PerfCategoryRenderer', () => {
     global.CriticalRequestChainRenderer = CriticalRequestChainRenderer;
     global.CategoryRenderer = CategoryRenderer;
 
-    const PerformanceCategoryRenderer =
-        require('../../renderer/performance-category-renderer.js');
+    // Delayed so that CategoryRenderer is in global scope
+    const PerformanceCategoryRenderer = require('../../renderer/performance-category-renderer.js');
 
     const {document} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
     const dom = new DOM(document);

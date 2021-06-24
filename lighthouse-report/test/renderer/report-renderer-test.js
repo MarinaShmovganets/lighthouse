@@ -40,8 +40,7 @@ describe('ReportRenderer', () => {
     // lazy loaded because they depend on CategoryRenderer to be available globally
     global.PerformanceCategoryRenderer =
         require('../../renderer/performance-category-renderer.js');
-    global.PwaCategoryRenderer =
-        require('../../renderer/pwa-category-renderer.js');
+    global.PwaCategoryRenderer = require('../../renderer/pwa-category-renderer.js');
 
     // Stub out matchMedia for Node.
     global.matchMedia = function() {
