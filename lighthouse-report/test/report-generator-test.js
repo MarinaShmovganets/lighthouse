@@ -8,9 +8,9 @@
 const assert = require('assert').strict;
 const fs = require('fs');
 const jsdom = require('jsdom');
-const ReportGenerator = require('../../report/report-generator.js');
-const TEMPLATES_FILE = fs.readFileSync(__dirname + '/../../report/html/templates.html', 'utf8');
-const sampleResults = require('../../../lighthouse-core/test/results/sample_v2.json');
+const ReportGenerator = require('../report-generator.js');
+const TEMPLATES_FILE = fs.readFileSync(__dirname + '/../assets/templates.html', 'utf8');
+const sampleResults = require('../../lighthouse-core/test/results/sample_v2.json');
 const csvValidator = require('csv-validator');
 
 /* eslint-env jest */

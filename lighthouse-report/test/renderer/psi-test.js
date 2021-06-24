@@ -10,25 +10,22 @@ const fs = require('fs');
 
 const jsdom = require('jsdom');
 
-const testUtils = require('../../../test-utils.js');
-const prepareLabData = require('../../../../report/html/renderer/psi.js');
-const Util = require('../../../../report/html/renderer/util.js');
-const I18n = require('../../../../report/html/renderer/i18n.js');
-const DOM = require('../../../../report/html/renderer/dom.js');
-const CategoryRenderer = require('../../../../report/html/renderer/category-renderer.js');
-const DetailsRenderer = require('../../../../report/html/renderer/details-renderer.js');
-const CriticalRequestChainRenderer =
-    require('../../../../report/html/renderer/crc-details-renderer.js');
-const ElementScreenshotRenderer =
-    require('../../../../report/html/renderer/element-screenshot-renderer.js');
-const ReportUIFeatures =
-    require('../../../../report/html/renderer/report-ui-features.js');
+const testUtils = require('../../../lighthouse-core/test/test-utils.js');
+const prepareLabData = require('../../renderer/psi.js');
+const Util = require('../../renderer/util.js');
+const I18n = require('../../renderer/i18n.js');
+const DOM = require('../../renderer/dom.js');
+const CategoryRenderer = require('../../renderer/category-renderer.js');
+const DetailsRenderer = require('../../renderer/details-renderer.js');
+const CriticalRequestChainRenderer = require('../../renderer/crc-details-renderer.js');
+const ElementScreenshotRenderer = require('../../renderer/element-screenshot-renderer.js');
+const ReportUIFeatures = require('../../renderer/report-ui-features.js');
 
 const {itIfProtoExists, sampleResultsRoundtripStr} = testUtils.getProtoRoundTrip();
 const sampleResultsStr = fs.readFileSync(__dirname + '/../../../results/sample_v2.json', 'utf-8');
 
 const TEMPLATE_FILE = fs.readFileSync(
-  __dirname + '/../../../../report/html/templates.html',
+  __dirname + '/../../templates.html',
   'utf8'
 );
 
@@ -46,7 +43,7 @@ describe('DOM', () => {
 
     // Delayed so that CategoryRenderer is in global scope
     const PerformanceCategoryRenderer =
-        require('../../../../report/html/renderer/performance-category-renderer.js');
+        require('../../renderer/performance-category-renderer.js');
     global.PerformanceCategoryRenderer = PerformanceCategoryRenderer;
     global.CriticalRequestChainRenderer = CriticalRequestChainRenderer;
     global.ElementScreenshotRenderer = ElementScreenshotRenderer;

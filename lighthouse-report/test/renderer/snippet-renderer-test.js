@@ -10,13 +10,13 @@
 const assert = require('assert').strict;
 const fs = require('fs');
 const jsdom = require('jsdom');
-const Util = require('../../../../report/html/renderer/util.js');
-const I18n = require('../../../../report/html/renderer/i18n.js');
-const DOM = require('../../../../report/html/renderer/dom.js');
-const SnippetRenderer = require('../../../../report/html/renderer/snippet-renderer.js');
+const Util = require('../../renderer/util.js');
+const I18n = require('../../renderer/i18n.js');
+const DOM = require('../../renderer/dom.js');
+const SnippetRenderer = require('../../renderer/snippet-renderer.js');
 
 const TEMPLATE_FILE = fs.readFileSync(
-  __dirname + '/../../../../report/html/templates.html',
+  __dirname + '/../../templates.html',
   'utf8'
 );
 

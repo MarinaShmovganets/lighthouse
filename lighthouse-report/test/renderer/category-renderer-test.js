@@ -10,17 +10,16 @@
 const assert = require('assert').strict;
 const fs = require('fs');
 const jsdom = require('jsdom');
-const Util = require('../../../../report/html/renderer/util.js');
-const I18n = require('../../../../report/html/renderer/i18n.js');
-const DOM = require('../../../../report/html/renderer/dom.js');
-const DetailsRenderer = require('../../../../report/html/renderer/details-renderer.js');
-const CriticalRequestChainRenderer = require(
-    '../../../../report/html/renderer/crc-details-renderer.js');
-const CategoryRenderer = require('../../../../report/html/renderer/category-renderer.js');
-const sampleResultsOrig = require('../../../results/sample_v2.json');
+const Util = require('../../renderer/util.js');
+const I18n = require('../../renderer/i18n.js');
+const DOM = require('../../renderer/dom.js');
+const DetailsRenderer = require('../../renderer/details-renderer.js');
+const CriticalRequestChainRenderer = require('../../renderer/crc-details-renderer.js');
+const CategoryRenderer = require('../../renderer/category-renderer.js');
+const sampleResultsOrig = require('../../../lighthouse-core/test/results/sample_v2.json');
 
 const TEMPLATE_FILE = fs.readFileSync(__dirname +
-    '/../../../../report/html/templates.html', 'utf8');
+    '/../../templates.html', 'utf8');
 
 describe('CategoryRenderer', () => {
   let renderer;

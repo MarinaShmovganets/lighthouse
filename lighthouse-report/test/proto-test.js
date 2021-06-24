@@ -5,9 +5,11 @@
  */
 'use strict';
 
-const testUtils = require('../test-utils.js');
-const sampleJson = require('../results/sample_v2.json');
-const preprocessor = require('../../lib/proto-preprocessor.js');
+// TODO: should this be moved to lighthouse-core/test/lib/proto-preprocessor-test.js ?
+
+const testUtils = require('../../lighthouse-core/test/test-utils.js');
+const sampleJson = require('../../lighthouse-core/test/results/sample_v2.json');
+const preprocessor = require('../../lighthouse-core/lib/proto-preprocessor.js');
 
 /* eslint-env jest */
 
