@@ -10,7 +10,7 @@ body:
     id: faq
     attributes:
       label: FAQ
-      description: Please double check that this isn't one of our most common questions already answered by documentation.
+      description: Please double check that this isn't one of our most common questions already answered by [documentation]((https://github.com/GoogleChrome/lighthouse/blob/master/docs).
       options:
         - label: Yes, my issue is not about [variability](https://github.com/GoogleChrome/lighthouse/blob/master/docs/variability.md) or [throttling](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md).
           required: true
