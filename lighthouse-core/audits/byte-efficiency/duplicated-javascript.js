@@ -130,7 +130,7 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
       context.options && context.options.ignoreThresholdInBytes || IGNORE_THRESHOLD_IN_BYTES;
     const duplication =
       await DuplicatedJavascript._getDuplicationGroupedByNodeModules(artifacts, context);
-    const mainDocumentRecord = await NetworkAnalyzer.findOptionalMainDocument(networkRecords);
+    const mainDocumentRecord = NetworkAnalyzer.findOptionalMainDocument(networkRecords);
 
     /** @type {Map<string, number>} */
     const transferRatioByUrl = new Map();
@@ -165,9 +165,6 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
           const networkRecord = url === artifacts.URL.finalUrl ?
             mainDocumentRecord :
             networkRecords.find(n => n.url === url);
-
-          // If we couldn't find *any* network information, we can't estimate size at all.
-          if (!networkRecord) continue;
 
           const script = artifacts.ScriptElements.find(script => script.src === url);
           if (!script || script.content === null) {

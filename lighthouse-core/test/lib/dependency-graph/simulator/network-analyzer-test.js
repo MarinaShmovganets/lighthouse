@@ -401,7 +401,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
     });
 
     it('should return undefined when it cannot be found', async () => {
-      expect(() => NetworkAnalyzer.findOptionalMainDocument([])).toBe(undefined);
+      expect(NetworkAnalyzer.findOptionalMainDocument([])).toBe(undefined);
     });
   });
 
