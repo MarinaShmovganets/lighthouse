@@ -10,7 +10,7 @@ body:
     id: url
     attributes:
       label: URL
-      description: What URL did you run Lighthouse on?
+      description: What URL did you run Lighthouse on? If this happened locally, please upload a minimal repro to a public location (e.g. https://glitch.com/, http://jsbin.com/, etc)
       placeholder: https://example.com
     validations:
       required: true
@@ -26,7 +26,7 @@ body:
     id: what-expected
     attributes:
       label: What did you expect?
-      description: A brief description of the behavior you observed.
+      description: A brief description of the behavior you _expected_.
       placeholder: Tell us what you expected to see instead!
     validations:
       required: true
@@ -42,14 +42,16 @@ body:
     id: channels
     attributes:
       label: How were you running Lighthouse?
+      description: Where were you running Lighthouse when you observed this behavior?
       multiple: true
       options:
         - CLI
         - node
         - PageSpeed Insights
         - Chrome DevTools
+        - WebPageTest
     validations:
-      required: false
+      required: true
   - type: input
     id: version
     attributes:
@@ -61,7 +63,7 @@ body:
     id: chromeversion
     attributes:
       label: Chrome Version
-      description: What version of Chrome were you using?
+      description: What version of Chrome were you using? (Only applicable if you ran locally)
     validations:
       required: false
   - type: input
@@ -81,6 +83,7 @@ body:
     id: faq
     attributes:
       label: FAQ
+      description: Please double check that this isn't one of our most common questions already answered by documentation.
       options:
         - label: Yes, my issue is not about [variability](https://github.com/GoogleChrome/lighthouse/blob/master/docs/variability.md) or [throttling](https://github.com/GoogleChrome/lighthouse/blob/master/docs/throttling.md).
           required: true
