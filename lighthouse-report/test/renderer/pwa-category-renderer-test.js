@@ -8,7 +8,6 @@
 /* eslint-env jest, browser */
 
 const assert = require('assert').strict;
-const fs = require('fs');
 const jsdom = require('jsdom');
 const reportAssets = require('../../report-assets.js');
 const Util = require('../../renderer/util.js');
