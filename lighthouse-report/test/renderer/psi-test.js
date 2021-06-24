@@ -11,6 +11,7 @@ const fs = require('fs');
 const jsdom = require('jsdom');
 
 const testUtils = require('../../../lighthouse-core/test/test-utils.js');
+const reportAssets = require('../../report-assets.js');
 const prepareLabData = require('../../renderer/psi.js');
 const Util = require('../../renderer/util.js');
 const I18n = require('../../renderer/i18n.js');
@@ -22,12 +23,8 @@ const ElementScreenshotRenderer = require('../../renderer/element-screenshot-ren
 const ReportUIFeatures = require('../../renderer/report-ui-features.js');
 
 const {itIfProtoExists, sampleResultsRoundtripStr} = testUtils.getProtoRoundTrip();
-const sampleResultsStr = fs.readFileSync(__dirname + '/../../../results/sample_v2.json', 'utf-8');
-
-const TEMPLATE_FILE = fs.readFileSync(
-  __dirname + '/../../templates.html',
-  'utf8'
-);
+const sampleResultsStr =
+  fs.readFileSync(__dirname + '/../../../lighthouse-core/test/results/sample_v2.json', 'utf-8');
 
 /* eslint-env jest */
 
@@ -49,7 +46,7 @@ describe('DOM', () => {
     global.ElementScreenshotRenderer = ElementScreenshotRenderer;
     global.ReportUIFeatures = ReportUIFeatures;
 
-    const {window} = new jsdom.JSDOM(TEMPLATE_FILE);
+    const {window} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES);
     document = window.document;
   });
 

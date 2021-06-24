@@ -6,8 +6,8 @@
 'use strict';
 
 const assert = require('assert').strict;
-const fs = require('fs');
 const jsdom = require('jsdom');
+const reportAssets = require('../../report-assets.js');
 const DOM = require('../../renderer/dom.js');
 const Util = require('../../renderer/util.js');
 const I18n = require('../../renderer/i18n.js');
@@ -16,16 +16,13 @@ const SnippetRenderer = require('../../renderer/snippet-renderer.js');
 const CrcDetailsRenderer = require('../../renderer/crc-details-renderer.js');
 const ElementScreenshotRenderer = require('../../renderer/element-screenshot-renderer.js');
 
-const TEMPLATE_FILE = fs.readFileSync(__dirname +
-    '/../../templates.html', 'utf8');
-
 /* eslint-env jest */
 
 describe('DetailsRenderer', () => {
   let renderer;
 
   function createRenderer(options) {
-    const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
+    const {document} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
     const dom = new DOM(document);
     renderer = new DetailsRenderer(dom, options);
     renderer.setTemplateContext(dom.document());

@@ -8,8 +8,8 @@
 /* eslint-env jest */
 
 const assert = require('assert').strict;
-const fs = require('fs');
 const jsdom = require('jsdom');
+const reportAssets = require('../../report-assets.js');
 const Util = require('../../renderer/util.js');
 const I18n = require('../../renderer/i18n.js');
 const DOM = require('../../renderer/dom.js');
@@ -21,11 +21,6 @@ const RectHelpers = require('../../../lighthouse-core/lib/rect-helpers.js');
 const CriticalRequestChainRenderer = require('../../renderer/crc-details-renderer.js');
 const ReportRenderer = require('../../renderer/report-renderer.js');
 const sampleResultsOrig = require('../../../lighthouse-core/test/results/sample_v2.json');
-
-const TEMPLATE_FILE = fs.readFileSync(__dirname +
-    '/../../templates.html', 'utf8');
-const TEMPLATE_FILE_REPORT = fs.readFileSync(__dirname +
-  '/../../report-template.html', 'utf8');
 
 describe('ReportUIFeatures', () => {
   let sampleResults;
@@ -69,8 +64,8 @@ describe('ReportUIFeatures', () => {
       };
     };
 
-    const reportWithTemplates = TEMPLATE_FILE_REPORT
-      .replace('%%LIGHTHOUSE_TEMPLATES%%', TEMPLATE_FILE);
+    const reportWithTemplates = reportAssets.REPORT_TEMPLATE
+      .replace('%%LIGHTHOUSE_TEMPLATES%%', reportAssets.REPORT_TEMPLATES);
     const document = new jsdom.JSDOM(reportWithTemplates);
     global.self = document.window;
     global.self.matchMedia = function() {

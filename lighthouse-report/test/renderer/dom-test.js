@@ -6,14 +6,11 @@
 'use strict';
 
 const assert = require('assert').strict;
-const fs = require('fs');
 const jsdom = require('jsdom');
+const reportAssets = require('../../report-assets.js');
 const DOM = require('../../renderer/dom.js');
 const Util = require('../../renderer/util.js');
 const I18n = require('../../renderer/i18n.js');
-
-const TEMPLATE_FILE = fs.readFileSync(__dirname +
-    '/../../templates.html', 'utf8');
 
 /* eslint-env jest */
 
@@ -23,7 +20,7 @@ describe('DOM', () => {
   beforeAll(() => {
     global.Util = Util;
     global.Util.i18n = new I18n('en', {...Util.UIStrings});
-    const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
+    const {document} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
     dom = new DOM(document);
     dom.setLighthouseChannel('someChannel');
   });

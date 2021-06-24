@@ -8,8 +8,8 @@
 /* eslint-env jest */
 
 const assert = require('assert').strict;
-const fs = require('fs');
 const jsdom = require('jsdom');
+const reportAssets = require('../../report-assets.js');
 const Util = require('../../renderer/util.js');
 const I18n = require('../../renderer/i18n.js');
 const URL = require('../../../lighthouse-core/lib/url-shim.js');
@@ -23,8 +23,6 @@ const ReportRenderer = require('../../renderer/report-renderer.js');
 const sampleResultsOrig = require('../../../lighthouse-core/test/results/sample_v2.json');
 
 const TIMESTAMP_REGEX = /\d+, \d{4}.*\d+:\d+/;
-const TEMPLATE_FILE = fs.readFileSync(__dirname +
-    '/../../templates.html', 'utf8');
 
 describe('ReportRenderer', () => {
   let renderer;
@@ -52,7 +50,7 @@ describe('ReportRenderer', () => {
       };
     };
 
-    const {window} = new jsdom.JSDOM(TEMPLATE_FILE);
+    const {window} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES);
     global.self = window;
 
     const dom = new DOM(window.document);
@@ -224,7 +222,7 @@ describe('ReportRenderer', () => {
   it('can set a custom templateContext', () => {
     assert.equal(renderer._templateContext, renderer._dom.document());
 
-    const {window} = new jsdom.JSDOM(TEMPLATE_FILE);
+    const {window} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES);
     const otherDocument = window.document;
     renderer.setTemplateContext(otherDocument);
     assert.equal(renderer._templateContext, otherDocument);

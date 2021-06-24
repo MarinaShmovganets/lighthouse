@@ -10,15 +10,13 @@
 const assert = require('assert').strict;
 const fs = require('fs');
 const jsdom = require('jsdom');
+const reportAssets = require('../../report-assets.js');
 const Util = require('../../renderer/util.js');
 const I18n = require('../../renderer/i18n.js');
 const DOM = require('../../renderer/dom.js');
 const DetailsRenderer = require('../../renderer/details-renderer.js');
 const CategoryRenderer = require('../../renderer/category-renderer.js');
 const sampleResultsOrig = require('../../../lighthouse-core/test/results/sample_v2.json');
-
-const TEMPLATE_FILE = fs.readFileSync(__dirname +
-    '/../../templates.html', 'utf8');
 
 describe('PwaCategoryRenderer', () => {
   let category;
@@ -33,7 +31,7 @@ describe('PwaCategoryRenderer', () => {
     const PwaCategoryRenderer =
         require('../../renderer/pwa-category-renderer.js');
 
-    const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
+    const {document} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
     pwaRenderer = new PwaCategoryRenderer(dom, detailsRenderer);

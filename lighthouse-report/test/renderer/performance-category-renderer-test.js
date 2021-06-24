@@ -8,7 +8,6 @@
 /* eslint-env jest, browser */
 
 const assert = require('assert').strict;
-const fs = require('fs');
 const jsdom = require('jsdom');
 const Util = require('../../renderer/util.js');
 const I18n = require('../../renderer/i18n.js');
@@ -18,9 +17,7 @@ const DetailsRenderer = require('../../renderer/details-renderer.js');
 const CriticalRequestChainRenderer = require('../../renderer/crc-details-renderer.js');
 const CategoryRenderer = require('../../renderer/category-renderer.js');
 const sampleResultsOrig = require('../../../lighthouse-core/test/results/sample_v2.json');
-
-const TEMPLATE_FILE = fs.readFileSync(__dirname +
-    '/../../templates.html', 'utf8');
+const reportAssets = require('../../report-assets.js');
 
 describe('PerfCategoryRenderer', () => {
   let category;
@@ -36,7 +33,7 @@ describe('PerfCategoryRenderer', () => {
     const PerformanceCategoryRenderer =
         require('../../renderer/performance-category-renderer.js');
 
-    const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
+    const {document} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
     renderer = new PerformanceCategoryRenderer(dom, detailsRenderer);

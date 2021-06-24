@@ -8,17 +8,12 @@
 /* eslint-env jest */
 
 const assert = require('assert').strict;
-const fs = require('fs');
 const jsdom = require('jsdom');
+const reportAssets = require('../../report-assets.js');
 const Util = require('../../renderer/util.js');
 const I18n = require('../../renderer/i18n.js');
 const DOM = require('../../renderer/dom.js');
 const SnippetRenderer = require('../../renderer/snippet-renderer.js');
-
-const TEMPLATE_FILE = fs.readFileSync(
-  __dirname + '/../../templates.html',
-  'utf8'
-);
 
 /* Generates a snippet lines array like this (for a single range from 1 to 4):
   [
@@ -64,7 +59,7 @@ describe('DetailsRenderer', () => {
   beforeAll(() => {
     global.Util = Util;
     global.Util.i18n = new I18n('en', {...Util.UIStrings});
-    const {document} = new jsdom.JSDOM(TEMPLATE_FILE).window;
+    const {document} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
     dom = new DOM(document);
   });
 
