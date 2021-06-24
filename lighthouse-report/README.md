@@ -1,11 +1,8 @@
 # Lighthouse HTML Report Renderer
 
-[Source on GitHub](https://github.com/GoogleChrome/lighthouse/tree/master/lighthouse-core/report/html)
-
-
 ## Overview
 
-Lighthouse has an indepedent report renderer that takes the **LHR** (Lighthouse Result object) and creates a DOM tree of the report. It's all done client-side.
+Lighthouse has an independent report renderer that takes the **LHR** (Lighthouse Result object) and creates a DOM tree of the report. It's all done client-side.
 
 Example standalone HTML report, delivered by the CLI: [`dbwtest-3.0.3.html`](https://googlechrome.github.io/lighthouse/reports/dbwtest-3.0.3.html) _(View the source! 📖)_
 
