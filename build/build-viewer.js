@@ -9,7 +9,7 @@ const fs = require('fs');
 const browserify = require('browserify');
 const GhPagesApp = require('./gh-pages-app.js');
 const {minifyFileTransform} = require('./build-utils.js');
-const htmlReportAssets = require('../lighthouse-core/report/html/html-report-assets.js');
+const htmlReportAssets = require('../lighthouse-report/report-assets.js');
 
 /**
  * Build viewer, optionally deploying to gh-pages if `--deploy` flag was set.
