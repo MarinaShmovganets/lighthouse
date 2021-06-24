@@ -197,7 +197,7 @@ class UnusedBytes extends Audit {
   static computeWastedMsWithThroughput(wastedBytes, simulator) {
     const bitsPerSecond = simulator.getOptions().throughput;
     const wastedBits = wastedBytes * 8;
-    const wastedMs = wastedBits / bitsPerSecond / 1000;
+    const wastedMs = wastedBits / bitsPerSecond * 1000;
     return wastedMs;
   }
 
