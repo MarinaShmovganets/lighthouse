@@ -11,7 +11,7 @@
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
-const assert = require('assert').strict;
+const expect = require('expect');
 const tsc = require('typescript');
 const MessageParser = require('intl-messageformat-parser').default;
 const Util = require('../../report/html/renderer/util.js');
@@ -516,15 +516,6 @@ function parseUIStrings(sourceStr, liveUIStrings) {
   return parsedMessages;
 }
 
-/** @type {Map<string, string>} */
-const seenStrings = new Map();
-
-/** @type {number} */
-let collisions = 0;
-
-/** @type {Array<string>} */
-const collisionStrings = [];
-
 /**
  * Collects all LHL messsages defined in UIString from Javascript files in dir,
  * and converts them into CTC.
@@ -583,28 +574,6 @@ function collectAllStringsInDir(dir) {
 
       const messageKey = `${relativeToRootPath} | ${key}`;
       strings[messageKey] = ctc;
-
-      // check for duplicates, if duplicate, add @description as @meaning to both
-      if (seenStrings.has(ctc.message)) {
-        ctc.meaning = ctc.description;
-        const seenId = seenStrings.get(ctc.message);
-        // TODO: `strings[seenId]` check shouldn't be necessary here ...
-        // see https://github.com/GoogleChrome/lighthouse/pull/12441/files#r630521367
-        if (seenId && strings[seenId]) {
-          if (!strings[seenId].meaning) {
-            strings[seenId].meaning = strings[seenId].description;
-            collisions++;
-          }
-
-          if (ctc.meaning === strings[seenId].meaning) {
-            throw new Error(`'${messageKey}' is an exact duplicate of '${seenId}' when placeholders are removed. Each strings' \`message\` or \`description\` must be different for the translation pipeline`);
-          }
-
-          collisionStrings.push(ctc.message);
-          collisions++;
-        }
-      }
-      seenStrings.set(ctc.message, messageKey);
     }
   }
 
@@ -627,6 +596,83 @@ function writeStringsToCtcFiles(locale, strings) {
   fs.writeFileSync(fullPath, JSON.stringify(output, null, 2) + '\n');
 }
 
+/**
+ * @param {Record<string, CtcMessage>} strings
+ */
+function checkForCollisions(strings) {
+  /** @type {Map<string, string>} */
+  const seenStrings = new Map();
+
+  /** @type {Array<string>} */
+  const collisionStrings = [];
+
+  // check for duplicates, if duplicate, add @description as @meaning to both
+  for (const [messageKey, ctc] of Object.entries(strings)) {
+    if (seenStrings.has(ctc.message)) {
+      ctc.meaning = ctc.description;
+      const seenId = seenStrings.get(ctc.message);
+      // TODO: `strings[seenId]` check shouldn't be necessary here ...
+      // see https://github.com/GoogleChrome/lighthouse/pull/12441/files#r630521367
+      if (seenId && strings[seenId]) {
+        if (!strings[seenId].meaning) {
+          strings[seenId].meaning = strings[seenId].description;
+          collisionStrings.push(ctc.message);
+        }
+
+        if (ctc.meaning === strings[seenId].meaning) {
+          throw new Error(`'${messageKey}' is an exact duplicate of '${seenId}' when placeholders are removed. Each strings' \`message\` or \`description\` must be different for the translation pipeline`);
+        }
+
+        collisionStrings.push(ctc.message);
+      }
+    }
+
+    seenStrings.set(ctc.message, messageKey);
+  }
+
+  try {
+    expect(collisionStrings).toEqual([
+      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
+      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
+      '$MARKDOWN_SNIPPET_0$ elements have $MARKDOWN_SNIPPET_1$ text',
+      '$MARKDOWN_SNIPPET_0$ elements have $MARKDOWN_SNIPPET_1$ text',
+      '$MARKDOWN_SNIPPET_0$ elements do not have $MARKDOWN_SNIPPET_1$ text',
+      '$MARKDOWN_SNIPPET_0$ elements do not have $MARKDOWN_SNIPPET_1$ text',
+      'Document has a valid $MARKDOWN_SNIPPET_0$',
+      'Document has a valid $MARKDOWN_SNIPPET_0$',
+      'Potential Savings',
+      'Potential Savings',
+      'Failing Elements',
+      'Failing Elements',
+      'URL',
+      'URL',
+      'Name',
+      'Name',
+      'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
+      'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
+      'Consider using a $LINK_START_0$plugin$LINK_END_0$ or service that will automatically convert your uploaded images to the optimal formats.',
+      'Consider using a $LINK_START_0$plugin$LINK_END_0$ or service that will automatically convert your uploaded images to the optimal formats.',
+      'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
+    ]);
+  } catch (err) {
+    console.log('The number of duplicate strings have changed, update this assertion if that is expected, or reword strings');
+    console.log('copy/paste this to pass check:');
+    console.log(collisionStrings);
+    throw new Error(err.message);
+  }
+}
+
 // Test if called from the CLI or as a module.
 if (require.main === module) {
   /** @type {Record<string, CtcMessage>} */
@@ -638,10 +684,7 @@ if (require.main === module) {
     Object.assign(strings, moreStrings);
   }
 
-  if (collisions > 0) {
-    console.log(`MEANING COLLISION: ${collisions} string(s) have the same content.`);
-    assert.equal(collisions, 30, `The number of duplicate strings have changed, update this assertion if that is expected, or reword strings. Collisions: ${collisionStrings.join('\n')}`);
-  }
+  checkForCollisions(strings);
 
   writeStringsToCtcFiles('en-US', strings);
   console.log('Written to disk!', 'en-US.ctc.json');
