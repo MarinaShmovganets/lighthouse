@@ -597,78 +597,93 @@ function writeStringsToCtcFiles(locale, strings) {
 }
 
 /**
+ * This function does three things:
+ *
+ *    - Add `meaning` property to ctc messages that have the same message so TC can disambiguate (otherwise it fails to import).
+ *    - Throw if the `meaning` of any collisions *also* collides (can't disambiguate messages).
+ *    - Throw if the known collisions has changed at all.
+ *
  * @param {Record<string, CtcMessage>} strings
  */
-function checkForCollisions(strings) {
-  /** @type {Map<string, string>} */
-  const seenStrings = new Map();
+function resolveMessageCollisions(strings) {
+  /** @type {Map<string, Array<[string, CtcMessage]>>} */
+  const stringsByMessage = new Map();
 
-  /** @type {Array<string>} */
-  const collisionStrings = [];
-
-  // check for duplicates, if duplicate, add @description as @meaning to both
-  for (const [messageKey, ctc] of Object.entries(strings)) {
-    if (seenStrings.has(ctc.message)) {
-      ctc.meaning = ctc.description;
-      const seenId = seenStrings.get(ctc.message);
-      // TODO: `strings[seenId]` check shouldn't be necessary here ...
-      // see https://github.com/GoogleChrome/lighthouse/pull/12441/files#r630521367
-      if (seenId && strings[seenId]) {
-        if (!strings[seenId].meaning) {
-          strings[seenId].meaning = strings[seenId].description;
-          collisionStrings.push(ctc.message);
-        }
-
-        if (ctc.meaning === strings[seenId].meaning) {
-          throw new Error(`'${messageKey}' is an exact duplicate of '${seenId}' when placeholders are removed. Each strings' \`message\` or \`description\` must be different for the translation pipeline`);
-        }
-
-        collisionStrings.push(ctc.message);
-      }
-    }
-
-    seenStrings.set(ctc.message, messageKey);
+  // Group all the strings by their message.
+  for (const entry of Object.entries(strings)) {
+    const collisions = stringsByMessage.get(entry[1].message) || [];
+    collisions.push(entry);
+    stringsByMessage.set(entry[1].message, collisions);
   }
 
+  /** @type {Array<[string, CtcMessage]>} */
+  const allCollisions = [];
+  for (const group of stringsByMessage.values()) {
+    // If this message didn't collide with anything else, skip it.
+    if (group.length <= 1) continue;
+    allCollisions.push(...group);
+
+    // We have a message collision, time to check collisions on the `meaning` property.
+    /** @type {Map<string|undefined, Array<[string, CtcMessage]>>} */
+    const stringsByMeaning = new Map();
+    for (const [key, ctc] of group) {
+      ctc.meaning = ctc.description;
+
+      const collisions = stringsByMeaning.get(ctc.meaning) || [];
+      collisions.push([key, ctc]);
+      stringsByMeaning.set(ctc.meaning, collisions);
+    }
+
+    for (const meaningGroup of stringsByMeaning.values()) {
+      if (meaningGroup.length <= 1) continue;
+
+      const debugMeaningList = meaningGroup.map(entry => [entry[0], entry[1].meaning].join('\n'));
+      const debugCollisionsMessage = `${meaningGroup[0][1].message}\n\n${debugMeaningList.join('\n\n')}`;
+      throw new Error(`Each strings' \`message\` or \`description\` must be different for the translation pipeline. The following keys did not have unique \`meaning\` values:\n\n${debugCollisionsMessage}`);
+    }
+  }
+
+  // We survived fatal collisions, now check that the known collisions match our known list.
+  const collidingMessages = allCollisions.map(collision => collision[1].message).sort();
+
   try {
-    expect(collisionStrings).toEqual([
-      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
-      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
-      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
-      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
-      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
-      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
-      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
-      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
-      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
-      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
-      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
-      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
-      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
-      '$MARKDOWN_SNIPPET_0$ elements have $MARKDOWN_SNIPPET_1$ text',
-      '$MARKDOWN_SNIPPET_0$ elements have $MARKDOWN_SNIPPET_1$ text',
+    expect(collidingMessages).toEqual([
       '$MARKDOWN_SNIPPET_0$ elements do not have $MARKDOWN_SNIPPET_1$ text',
       '$MARKDOWN_SNIPPET_0$ elements do not have $MARKDOWN_SNIPPET_1$ text',
-      'Document has a valid $MARKDOWN_SNIPPET_0$',
-      'Document has a valid $MARKDOWN_SNIPPET_0$',
-      'Potential Savings',
-      'Potential Savings',
-      'Failing Elements',
-      'Failing Elements',
-      'URL',
-      'URL',
-      'Name',
-      'Name',
+      '$MARKDOWN_SNIPPET_0$ elements have $MARKDOWN_SNIPPET_1$ text',
+      '$MARKDOWN_SNIPPET_0$ elements have $MARKDOWN_SNIPPET_1$ text',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
       'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
       'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
       'Consider using a $LINK_START_0$plugin$LINK_END_0$ or service that will automatically convert your uploaded images to the optimal formats.',
       'Consider using a $LINK_START_0$plugin$LINK_END_0$ or service that will automatically convert your uploaded images to the optimal formats.',
-      'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
+      'Document has a valid $MARKDOWN_SNIPPET_0$',
+      'Document has a valid $MARKDOWN_SNIPPET_0$',
+      'Failing Elements',
+      'Failing Elements',
+      'Name',
+      'Name',
+      'Potential Savings',
+      'Potential Savings',
+      'URL',
+      'URL',
+      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
+      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
+      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
+      'When an element doesn\'t have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. $LINK_START_0$Learn more$LINK_END_0$.',
     ]);
   } catch (err) {
     console.log('The number of duplicate strings have changed, update this assertion if that is expected, or reword strings');
     console.log('copy/paste this to pass check:');
-    console.log(collisionStrings);
+    console.log(collidingMessages);
     throw new Error(err.message);
   }
 }
@@ -684,7 +699,7 @@ if (require.main === module) {
     Object.assign(strings, moreStrings);
   }
 
-  checkForCollisions(strings);
+  resolveMessageCollisions(strings);
 
   writeStringsToCtcFiles('en-US', strings);
   console.log('Written to disk!', 'en-US.ctc.json');
