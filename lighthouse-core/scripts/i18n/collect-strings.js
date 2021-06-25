@@ -14,7 +14,7 @@ const path = require('path');
 const assert = require('assert').strict;
 const tsc = require('typescript');
 const MessageParser = require('intl-messageformat-parser').default;
-const Util = require('../../../lighthouse-report/renderer/util.js');
+const Util = require('../../../report/renderer/util.js');
 const {collectAndBakeCtcStrings} = require('./bake-ctc-to-lhl.js');
 const {pruneObsoleteLhlMessages} = require('./prune-obsolete-lhl-messages.js');
 const {countTranslatedMessages} = require('./count-translated.js');
@@ -28,7 +28,7 @@ const UISTRINGS_REGEX = /UIStrings = .*?\};\n/s;
 
 const foldersWithStrings = [
   `${LH_ROOT}/lighthouse-core`,
-  `${LH_ROOT}/lighthouse-report`,
+  `${LH_ROOT}/report`,
   `${LH_ROOT}/lighthouse-treemap`,
   path.dirname(require.resolve('lighthouse-stack-packs')) + '/packs',
 ];

@@ -12,8 +12,8 @@ const assert = require('assert').strict;
 
 const distDir = path.join(__dirname, '..', 'dist', 'dt-report-resources');
 const bundleOutFile = `${distDir}/report-generator.js`;
-const generatorFilename = `./lighthouse-report/report-generator.js`;
-const htmlReportAssets = require('../lighthouse-report/report-assets.js');
+const generatorFilename = `./report/report-generator.js`;
+const htmlReportAssets = require('../report/report-assets.js');
 
 /**
  * Used to save cached resources (Runtime.cachedResources).

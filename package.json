@@ -43,7 +43,7 @@
     "test-proto": "yarn compile-proto && yarn build-proto-roundtrip",
     "unit-core": "jest \"lighthouse-core\"",
     "unit-cli": "jest \"lighthouse-cli/\"",
-    "unit-report": "jest \"lighthouse-report/\"",
+    "unit-report": "jest \"report/\"",
     "unit-treemap": "jest \"lighthouse-treemap/.*-test.js\"",
     "unit-viewer": "jest \"lighthouse-viewer/.*-test.js\"",
     "unit": "yarn unit-core && yarn unit-cli && yarn unit-report && yarn unit-viewer && yarn unit-treemap",
