@@ -76,6 +76,11 @@ class ModernImageFormats extends ByteEfficiencyAudit {
   static estimateAvifSizeFromWebPAndJpegEstimates(otherFormatSizes) {
     if (!otherFormatSizes.jpegSize || !otherFormatSizes.webpSize) return undefined;
 
+    // AVIF saves at least ~50% on JPEG, ~20% on WebP at low quality.
+    // http://downloads.aomedia.org/assets/pdf/symposium-2019/slides/CyrilConcolato_Netflix-AVIF-AOM-Research-Symposium-2019.pdf
+    // https://jakearchibald.com/2020/avif-has-landed/
+    // https://www.finally.agency/blog/what-is-avif-image-format
+    // See https://github.com/GoogleChrome/lighthouse/issues/12295#issue-840261460 for more.
     const estimateFromJpeg = otherFormatSizes.jpegSize * 5 / 10;
     const estimateFromWebp = otherFormatSizes.webpSize * 8 / 10;
     return estimateFromJpeg / 2 + estimateFromWebp / 2;
@@ -140,6 +145,7 @@ class ModernImageFormats extends ByteEfficiencyAudit {
 
       if (webpSize === undefined || avifSize === undefined) continue;
 
+      // Visible wasted bytes uses AVIF, but we still include the WebP savings in the LHR.
       const wastedWebpBytes = image.originalSize - webpSize;
       const wastedBytes = image.originalSize - avifSize;
       if (wastedBytes < IGNORE_THRESHOLD_IN_BYTES) continue;
