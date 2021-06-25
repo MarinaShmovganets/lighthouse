@@ -105,7 +105,7 @@ class UnusedBytes extends Audit {
    * @param {LH.Audit.Context} context
    * @return {Promise<LH.Audit.Product>}
    */
-  static audit(artifacts, context) {
+  static async audit(artifacts, context) {
     const gatherContext = artifacts.GatherContext;
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
@@ -115,17 +115,14 @@ class UnusedBytes extends Audit {
       settings,
     };
 
-    return NetworkRecords.request(devtoolsLog, context)
-      .then(networkRecords =>
-        Promise.all([
-          this.audit_(artifacts, networkRecords, context),
-          PageDependencyGraph.request({trace, devtoolsLog}, context),
-          LoadSimulator.request(simulatorOptions, context),
-        ])
-      )
-      .then(([result, graph, simulator]) =>
-        this.createAuditProduct(result, graph, simulator, gatherContext)
-      );
+    const networkRecords = await NetworkRecords.request(devtoolsLog, context);
+    const [result, graph, simulator] = await Promise.all([
+      this.audit_(artifacts, networkRecords, context),
+      PageDependencyGraph.request({trace, devtoolsLog}, context),
+      LoadSimulator.request(simulatorOptions, context),
+    ]);
+
+    return this.createAuditProduct(result, graph, simulator, gatherContext);
   }
 
   /**
