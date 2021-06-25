@@ -529,12 +529,9 @@ const collisionStrings = [];
  * Collects all LHL messsages defined in UIString from Javascript files in dir,
  * and converts them into CTC.
  * @param {string} dir absolute path
- * @return {Record<string, CtcMessage>}
+ * @param {Record<string, CtcMessage>} strings
  */
-function collectAllStringsInDir(dir) {
-  /** @type {Record<string, CtcMessage>} */
-  const strings = {};
-
+function collectAllStringsInDir(dir, strings) {
   const globPattern = path.join(path.relative(LH_ROOT, dir), '/**/*.js');
   const files = glob.sync(globPattern, {
     cwd: LH_ROOT,
@@ -588,9 +585,7 @@ function collectAllStringsInDir(dir) {
       if (seenStrings.has(ctc.message)) {
         ctc.meaning = ctc.description;
         const seenId = seenStrings.get(ctc.message);
-        // TODO: `strings[seenId]` check shouldn't be necessary here ...
-        // see https://github.com/GoogleChrome/lighthouse/pull/12441/files#r630521367
-        if (seenId && strings[seenId]) {
+        if (seenId) {
           if (!strings[seenId].meaning) {
             strings[seenId].meaning = strings[seenId].description;
             collisions++;
@@ -607,8 +602,6 @@ function collectAllStringsInDir(dir) {
       seenStrings.set(ctc.message, messageKey);
     }
   }
-
-  return strings;
 }
 
 /**
@@ -634,13 +627,12 @@ if (require.main === module) {
 
   for (const folderWithStrings of foldersWithStrings) {
     console.log(`\n====\nCollecting strings from ${folderWithStrings}\n====`);
-    const moreStrings = collectAllStringsInDir(folderWithStrings);
-    Object.assign(strings, moreStrings);
+    collectAllStringsInDir(folderWithStrings, strings);
   }
 
   if (collisions > 0) {
     console.log(`MEANING COLLISION: ${collisions} string(s) have the same content.`);
-    assert.equal(collisions, 30, `The number of duplicate strings have changed, update this assertion if that is expected, or reword strings. Collisions: ${collisionStrings.join('\n')}`);
+    assert.equal(collisions, 32, `The number of duplicate strings have changed, update this assertion if that is expected, or reword strings. Collisions: ${collisionStrings.join('\n')}`);
   }
 
   writeStringsToCtcFiles('en-US', strings);
