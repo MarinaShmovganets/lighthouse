@@ -177,16 +177,16 @@ describe('Page Functions', () => {
       assert.equal(pageFunctions.getNodeLabel(el), Array(78).fill('a').join('') + '💡…');
     });
 
-    it('Uses tag name for html tags', () => {
+    it('Returns null if nodeLabel is not usable for html tags', () => {
       const el = dom.createElement('html');
-      assert.equal(pageFunctions.getNodeLabel(el), 'html');
+      assert.equal(pageFunctions.getNodeLabel(el), null);
     });
 
-    it('Uses tag name if there is no better label', () => {
+    it('Returns null if there is no better label', () => {
       const el = dom.createElement('div');
       const childEl = dom.createElement('span');
       el.appendChild(childEl);
-      assert.equal(pageFunctions.getNodeLabel(el), 'div');
+      assert.equal(pageFunctions.getNodeLabel(el), null);
     });
   });
 
