@@ -10,13 +10,14 @@ const browserify = require('browserify');
 const GhPagesApp = require('./gh-pages-app.js');
 const {minifyFileTransform} = require('./build-utils.js');
 const htmlReportAssets = require('../report/report-assets.js');
+const {LH_ROOT} = require('../root.js');
 
 /**
  * Build viewer, optionally deploying to gh-pages if `--deploy` flag was set.
  */
 async function run() {
   // JS bundle from browserified ReportGenerator.
-  const generatorFilename = `${__dirname}/../report/report-generator.js`;
+  const generatorFilename = `${LH_ROOT}/report/report-generator.js`;
   const generatorBrowserify = browserify(generatorFilename, {standalone: 'ReportGenerator'})
     .transform('@wardpeet/brfs', {
       readFileSyncTransform: minifyFileTransform,
@@ -32,7 +33,7 @@ async function run() {
 
   const app = new GhPagesApp({
     name: 'viewer',
-    appDir: `${__dirname}/../lighthouse-viewer/app`,
+    appDir: `${LH_ROOT}/lighthouse-viewer/app`,
     html: {path: 'index.html'},
     htmlReplacements: {
       '%%LIGHTHOUSE_TEMPLATES%%': htmlReportAssets.REPORT_TEMPLATES,
