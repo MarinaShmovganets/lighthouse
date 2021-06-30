@@ -378,7 +378,7 @@ function isPositionFixed(element) {
 /**
  * Generate a human-readable label for the given element, based on end-user facing
  * strings like the innerText or alt attribute.
- * Falls back to the tagName if no useful label is found.
+ * Falls back to the selector if no useful label is found.
  * @param {Element} element
  * @return {string}
  */
@@ -400,6 +400,7 @@ function getNodeLabel(element) {
   }
 
   const tagName = element.tagName.toLowerCase();
+  const selector = getNodeSelector(element);
   // html and body content is too broad to be useful, since they contain all page content
   if (tagName !== 'html' && tagName !== 'body') {
     const nodeLabel = element instanceof HTMLElement && element.innerText ||
@@ -415,7 +416,7 @@ function getNodeLabel(element) {
       }
     }
   }
-  return tagName;
+  return selector;
 }
 
 /**
