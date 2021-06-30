@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const shell = require('child_process').execSync;
 const utils = require('./utils.js');
-const {LH_ROOT} = require('../../../root.js');
+const {LH_ROOT} = require('../../root.js');
 
 const TARGET = 'Release';
 const CONTENT_SHELL_ZIP = 'content-shell.zip';
