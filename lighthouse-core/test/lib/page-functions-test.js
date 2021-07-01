@@ -149,6 +149,9 @@ describe('Page Functions', () => {
     });
   });
 
+  /**
+   * @jest-environment jsdom
+   */
   describe('getNodeLabel', () => {
     it('Returns innerText if element has visible text', () => {
       const el = dom.createElement('div');
@@ -177,9 +180,14 @@ describe('Page Functions', () => {
       assert.equal(pageFunctions.getNodeLabel(el), Array(78).fill('a').join('') + '💡…');
     });
 
-    it('Returns null if nodeLabel is not usable for html tags', () => {
+    it('Returns selector as fallback if nodeLabel equals html tag name', () => {
+      // define a global `window` object for the first
+      // few lines in `getNodeDetails`
+      global.window = {};
+      // use `html` element to ensure getNodeLabel returns null
       const el = dom.createElement('html');
-      assert.equal(pageFunctions.getNodeLabel(el), null);
+      const {nodeLabel} = pageFunctions.getNodeDetails(el);
+      assert.equal(nodeLabel, 'html');
     });
 
     it('Returns null if there is no better label', () => {
