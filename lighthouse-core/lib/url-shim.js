@@ -9,7 +9,7 @@
  * URL shim so we keep our code DRY
  */
 
-const Util = require('../report/html/renderer/util.js');
+const Util = require('../../report/renderer/util.js');
 
 /** @typedef {import('./network-request.js')} NetworkRequest */
 
@@ -214,6 +214,33 @@ class URLShim extends URL {
     // Strip off any colon
     const urlScheme = protocol.includes(':') ? protocol.slice(0, protocol.indexOf(':')) : protocol;
     return NON_NETWORK_SCHEMES.includes(urlScheme);
+  }
+
+  /**
+   * @param {string} src
+   * @return {string|undefined}
+   */
+  static guessMimeType(src) {
+    let url;
+    try {
+      url = new URL(src);
+    } catch {
+      return undefined;
+    }
+
+    if (url.protocol === 'data:') {
+      const match = url.pathname.match(/image\/(png|jpeg|svg\+xml|webp|gif|avif)(?=;)/);
+      if (!match) return undefined;
+      return match[0];
+    }
+
+    const match = url.pathname.toLowerCase().match(/\.(png|jpeg|jpg|svg|webp|gif|avif)$/);
+    if (!match) return undefined;
+
+    const ext = match[1];
+    if (ext === 'svg') return 'image/svg+xml';
+    if (ext === 'jpg') return 'image/jpeg';
+    return `image/${ext}`;
   }
 }
 

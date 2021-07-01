@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const GhPagesApp = require('./gh-pages-app.js');
+const {LH_ROOT} = require('../root.js');
 
 /**
  * Extract only the strings needed for lighthouse-treemap into
@@ -46,7 +47,7 @@ function buildStrings() {
 async function run() {
   const app = new GhPagesApp({
     name: 'treemap',
-    appDir: `${__dirname}/../lighthouse-treemap/app`,
+    appDir: `${LH_ROOT}/lighthouse-treemap/app`,
     html: {path: 'index.html'},
     stylesheets: [
       fs.readFileSync(require.resolve('tabulator-tables/dist/css/tabulator.min.css'), 'utf8'),
@@ -64,9 +65,9 @@ async function run() {
       fs.readFileSync(require.resolve('pako/dist/pako_inflate.js'), 'utf-8'),
       /* eslint-enable max-len */
       buildStrings(),
-      {path: '../../lighthouse-core/report/html/renderer/logger.js'},
-      {path: '../../lighthouse-core/report/html/renderer/i18n.js'},
-      {path: '../../lighthouse-core/report/html/renderer/text-encoding.js'},
+      {path: '../../report/renderer/logger.js'},
+      {path: '../../report/renderer/i18n.js'},
+      {path: '../../report/renderer/text-encoding.js'},
       {path: '../../lighthouse-viewer/app/src/drag-and-drop.js'},
       {path: '../../lighthouse-viewer/app/src/github-api.js'},
       {path: '../../lighthouse-viewer/app/src/firebase-auth.js'},
