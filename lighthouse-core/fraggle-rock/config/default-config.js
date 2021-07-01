@@ -23,9 +23,9 @@ const frCategoryAuditRefExtensions = {
 function mergeCategories() {
   if (!legacyDefaultConfig.categories) return {};
   const categories = legacyDefaultConfig.categories;
-  for (const key of Object.keys(frCategories)) {
+  for (const key of Object.keys(frCategoryAuditRefExtensions)) {
     if (!categories[key]) continue;
-    categories[key].auditRefs.push(...frCategories[key]);
+    categories[key].auditRefs.push(...frCategoryAuditRefExtensions[key]);
   }
   return categories;
 }

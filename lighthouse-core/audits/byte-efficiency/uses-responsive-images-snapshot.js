@@ -25,6 +25,9 @@ const UIStrings = {
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
+// Based on byte threshold of 4096, with 3 bytes per pixel.
+const IGNORE_THRESHOLD_IN_PIXELS = 1365;
+
 class UsesResponsiveImagesSnapshot extends Audit {
   /**
    * @return {LH.Audit.Meta}
@@ -44,6 +47,7 @@ class UsesResponsiveImagesSnapshot extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts) {
+    let score = 1;
     /** @type {LH.Audit.Details.TableItem[]} */
     const items = [];
     for (const image of artifacts.ImageElements) {
@@ -58,6 +62,7 @@ class UsesResponsiveImagesSnapshot extends Audit {
       const usedPixels = displayed.width * displayed.height;
 
       if (actualPixels <= usedPixels) continue;
+      if (actualPixels - usedPixels > IGNORE_THRESHOLD_IN_PIXELS) score = 0;
 
       items.push({
         url: URL.elideDataURI(image.src),
@@ -79,7 +84,7 @@ class UsesResponsiveImagesSnapshot extends Audit {
     const details = Audit.makeTableDetails(headings, items);
 
     return {
-      score: items.length ? 0 : 1,
+      score,
       details,
     };
   }
