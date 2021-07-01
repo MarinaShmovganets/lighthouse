@@ -28,7 +28,7 @@ describe('Page Functions', () => {
   afterAll(() => {
     global.ShadowRoot = undefined;
     global.Node = undefined;
-    global.window = {};
+    global.window = undefined;
   });
 
   describe('wrapRuntimeEvalErrorInBrowser()', () => {
