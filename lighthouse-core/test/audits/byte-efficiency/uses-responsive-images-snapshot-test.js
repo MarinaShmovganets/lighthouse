@@ -138,3 +138,27 @@ it('uses pixel ratio to compute used pixels', async () => {
     },
   ]);
 });
+
+it('passes if pixel difference is within the threshold', async () => {
+  const artifacts = {
+    ImageElements: [
+      mockElement({naturalDimensions: {width: 201, height: 200}}),
+    ],
+    ViewportDimensions: {
+      width: 500,
+      height: 500,
+      devicePixelRatio: 1,
+    },
+  };
+
+  const result = await UsesResponsiveImagesSnapshot.audit(artifacts);
+
+  expect(result.score).toEqual(1);
+  expect(result.details.items).toEqual([
+    {
+      actualDimensions: '201x200',
+      displayedDimensions: '200x200',
+      url: 'https://www.paulirish.com/avatar150.jpg',
+    },
+  ]);
+});
