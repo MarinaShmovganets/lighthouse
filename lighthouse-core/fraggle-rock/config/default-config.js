@@ -13,7 +13,7 @@ const frAudits = [
 ];
 
 /** @type {Record<string, LH.Config.AuditRefJson[]>} */
-const frCategories = {
+const frCategoryAuditRefExtensions = {
   'performance': [
     {id: 'uses-responsive-images-snapshot', weight: 0, group: 'diagnostics'},
   ],
