@@ -17,16 +17,18 @@ describe('Page Functions', () => {
   let dom;
 
   beforeAll(() => {
-    const {document, ShadowRoot, Node, HTMLElement} = new jsdom.JSDOM('', {url}).window;
+    const {document, ShadowRoot, Node, HTMLElement, window} = new jsdom.JSDOM('', {url}).window;
     global.ShadowRoot = ShadowRoot;
     global.Node = Node;
     global.HTMLElement = HTMLElement;
+    global.window = window;
     dom = new DOM(document);
   });
 
   afterAll(() => {
     global.ShadowRoot = undefined;
     global.Node = undefined;
+    global.window = {};
   });
 
   describe('wrapRuntimeEvalErrorInBrowser()', () => {
@@ -181,13 +183,11 @@ describe('Page Functions', () => {
     });
 
     it('Returns selector as fallback if nodeLabel equals html tag name', () => {
-      // define a global `window` object for the first
-      // few lines in `getNodeDetails`
-      global.window = {};
-      // use `html` element to ensure getNodeLabel returns null
-      const el = dom.createElement('html');
+      const el = dom.createElement('div', '', {id: 'parent', class: 'parent-el'});
+      const childEl = dom.createElement('p', '', {id: 'child', class: 'child-el'});
+      el.appendChild(childEl);
       const {nodeLabel} = pageFunctions.getNodeDetails(el);
-      assert.equal(nodeLabel, 'html');
+      assert.equal(nodeLabel, 'div#parent');
     });
 
     it('Returns null if there is no better label', () => {
