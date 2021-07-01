@@ -17,11 +17,11 @@ describe('Page Functions', () => {
   let dom;
 
   beforeAll(() => {
-    const {document, ShadowRoot, Node, HTMLElement, window} = new jsdom.JSDOM('', {url}).window;
+    const {document, ShadowRoot, Node, HTMLElement} = new jsdom.JSDOM('', {url}).window;
     global.ShadowRoot = ShadowRoot;
     global.Node = Node;
     global.HTMLElement = HTMLElement;
-    global.window = window;
+    global.window = {};
     dom = new DOM(document);
   });
 
