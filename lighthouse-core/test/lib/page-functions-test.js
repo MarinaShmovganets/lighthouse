@@ -151,9 +151,6 @@ describe('Page Functions', () => {
     });
   });
 
-  /**
-   * @jest-environment jsdom
-   */
   describe('getNodeLabel', () => {
     it('Returns innerText if element has visible text', () => {
       const el = dom.createElement('div');
