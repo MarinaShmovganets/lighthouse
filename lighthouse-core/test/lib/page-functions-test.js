@@ -179,14 +179,6 @@ describe('Page Functions', () => {
       assert.equal(pageFunctions.getNodeLabel(el), Array(78).fill('a').join('') + '💡…');
     });
 
-    it('Returns selector as fallback if nodeLabel equals html tag name', () => {
-      const el = dom.createElement('div', '', {id: 'parent', class: 'parent-el'});
-      const childEl = dom.createElement('p', '', {id: 'child', class: 'child-el'});
-      el.appendChild(childEl);
-      const {nodeLabel} = pageFunctions.getNodeDetails(el);
-      assert.equal(nodeLabel, 'div#parent');
-    });
-
     it('Returns null if there is no better label', () => {
       const el = dom.createElement('div');
       const childEl = dom.createElement('span');
@@ -220,6 +212,16 @@ describe('Page Functions', () => {
       shadowRoot.append(sectionEl);
 
       assert.equal(pageFunctions.getNodePath(img), '0,MAIN,a,#document-fragment,0,SECTION,0,IMG');
+    });
+  });
+
+  describe('getNodeDetails', () => {
+    it('Returns selector as fallback if nodeLabel equals html tag name', () => {
+      const el = dom.createElement('div', '', {id: 'parent', class: 'parent-el'});
+      const childEl = dom.createElement('p', '', {id: 'child', class: 'child-el'});
+      el.appendChild(childEl);
+      const {nodeLabel} = pageFunctions.getNodeDetails(el);
+      assert.equal(nodeLabel, 'div#parent');
     });
   });
 });
