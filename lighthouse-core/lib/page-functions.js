@@ -506,7 +506,7 @@ function getNodeDetails(element) {
   const details = {
     lhId,
     devtoolsNodePath: getNodePath(element),
-    selector: getNodeSelector(element),
+    selector: selector,
     boundingRect: getBoundingClientRect(element),
     snippet: getOuterHTMLSnippet(element),
     nodeLabel: getNodeLabel(element) || selector,
