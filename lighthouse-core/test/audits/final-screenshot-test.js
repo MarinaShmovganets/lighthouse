@@ -5,8 +5,6 @@
  */
 'use strict';
 
-const assert = require('assert').strict;
-
 const FinalScreenshotAudit = require('../../audits/final-screenshot.js');
 const pwaTrace = require('../fixtures/traces/progressive-app-m60.json');
 const noScreenshotsTrace = {traceEvents: pwaTrace.traceEvents.filter(e => e.name !== 'Screenshot')};
@@ -27,10 +25,10 @@ describe('Final screenshot', () => {
     });
     const results = await FinalScreenshotAudit.audit(artifacts, context);
 
-    assert.equal(results.score, 1);
-    assert.equal(results.details.timing, 818);
-    assert.equal(results.details.timestamp, 225414990064);
-    assert.ok(results.details.data.startsWith('data:image/jpeg;base64,/9j/4AAQSkZJRgABA'));
+    expect(results.score).toEqual(1);
+    expect(results.details.timing).toEqual(818);
+    expect(results.details.timestamp).toEqual(225414990064);
+    expect(results.details.data).toContain('data:image/jpeg;base64,/9j/4AAQSkZJRgABA');
   });
 
   it('should returns not applicable for missing screenshots in timespan mode', async () => {
@@ -40,7 +38,7 @@ describe('Final screenshot', () => {
     };
 
     const results = await FinalScreenshotAudit.audit(artifacts, context);
-    assert.equal(results.notApplicable, true);
+    expect(results.notApplicable).toEqual(true);
   });
 
   it('should throws for missing screenshots in navigation mode', async () => {

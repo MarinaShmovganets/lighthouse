@@ -106,9 +106,7 @@ class ResourceSummary {
    * @return {Promise<Record<LH.Budget.ResourceType,ResourceEntry>>}
    */
   static async compute_(data, context) {
-    const [networkRecords] = await Promise.all([
-      NetworkRecords.request(data.devtoolsLog, context),
-    ]);
+    const networkRecords = await NetworkRecords.request(data.devtoolsLog, context);
     return ResourceSummary.summarize(networkRecords, data.URL.finalUrl, data.budgets);
   }
 }
