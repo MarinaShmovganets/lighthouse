@@ -285,6 +285,11 @@ function gatherTapTargets(tapTargetsSelector, className) {
 /* c8 ignore stop */
 
 class TapTargets extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['snapshot', 'navigation'],
+  }
+
   /**
    * @param {LH.Gatherer.FRProtocolSession} session
    * @param {string} className
