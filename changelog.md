@@ -1,31 +1,41 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Todor Totev @todortotev
-Tanner Dolby @tannerdolby
-Victor Porof @victorporof
-Gareth Jones @G-Rath
  <a name="8.1.0"></a>
 # 8.1.0 (2021-07-13)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.0.0...v8.1.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 93](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
+## New contributors
 
+Thanks to our new contributors 👽🐷🐰🐯🐻! 
+
+- Todor Totev @todortotev
+- Tanner Dolby @tannerdolby
+- Victor Porof @victorporof
+- Gareth Jones @G-Rath
 
 ## New Audits
 
-* fr: uses-responsive-images-snapshot ([#12714](https://github.com/GoogleChrome/lighthouse/pull/12714))
 
 ## Core
 
+* modern-images: update to include AVIF estimates ([#12682](https://github.com/GoogleChrome/lighthouse/pull/12682))
+* preload: temporarily disable all preload advice ([#12661](https://github.com/GoogleChrome/lighthouse/pull/12661))
+* network-request: consider HSTS redirects secure ([#12681](https://github.com/GoogleChrome/lighthouse/pull/12681))
+* total-byte-weight: count partially finished requests ([#12665](https://github.com/GoogleChrome/lighthouse/pull/12665))
 * canonical: proper explanation for url misuse ([#12676](https://github.com/GoogleChrome/lighthouse/pull/12676))
-* fr: limit scope of audits to applicable modes ([#12764](https://github.com/GoogleChrome/lighthouse/pull/12764))
-* fr: split timespan support for server-response-time ([#12758](https://github.com/GoogleChrome/lighthouse/pull/12758))
-* reference chromium main instead of master ([#12757](https://github.com/GoogleChrome/lighthouse/pull/12757))
 * fallback to selector, not tagName for nodeLabel ([#12727](https://github.com/GoogleChrome/lighthouse/pull/12727))
 * csp-xss: update learn more link ([#12672](https://github.com/GoogleChrome/lighthouse/pull/12672))
+* installable-manifest: align descriptions with applicatons panel ([#12678](https://github.com/GoogleChrome/lighthouse/pull/12678))
+* trace: include additional perf categories ([#12692](https://github.com/GoogleChrome/lighthouse/pull/12692))
+* tap-targets: add stylesheet over protocol ([#12634](https://github.com/GoogleChrome/lighthouse/pull/12634))
+
+## ⛏️👷 Fraggle Rock
+
+  Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
+
+* fr: uses-responsive-images-snapshot ([#12714](https://github.com/GoogleChrome/lighthouse/pull/12714))
+* fr: limit scope of audits to applicable modes ([#12764](https://github.com/GoogleChrome/lighthouse/pull/12764))
+* fr: split timespan support for server-response-time ([#12758](https://github.com/GoogleChrome/lighthouse/pull/12758))
 * fr: enable traces artifact in timespan mode ([#12695](https://github.com/GoogleChrome/lighthouse/pull/12695))
 * fr: add lighthouseMarker timeOrigin support ([#12688](https://github.com/GoogleChrome/lighthouse/pull/12688))
 * fr: add timespan support to viewport-dimensions ([#12680](https://github.com/GoogleChrome/lighthouse/pull/12680))
@@ -38,13 +48,6 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 * fr: convert script-elements gatherer ([#12621](https://github.com/GoogleChrome/lighthouse/pull/12621))
 * fr: convert additional base artifacts ([#12594](https://github.com/GoogleChrome/lighthouse/pull/12594))
 * fr: align base artifacts with legacy gather-runner ([#12510](https://github.com/GoogleChrome/lighthouse/pull/12510))
-* installable-manifest: align descriptions with applicatons panel ([#12678](https://github.com/GoogleChrome/lighthouse/pull/12678))
-* modern-images: update to include AVIF estimates ([#12682](https://github.com/GoogleChrome/lighthouse/pull/12682))
-* network-request: consider HSTS redirects secure ([#12681](https://github.com/GoogleChrome/lighthouse/pull/12681))
-* preload: temporarily disable all preload advice ([#12661](https://github.com/GoogleChrome/lighthouse/pull/12661))
-* tap-targets: add stylesheet over protocol ([#12634](https://github.com/GoogleChrome/lighthouse/pull/12634))
-* total-byte-weight: count partially finished requests ([#12665](https://github.com/GoogleChrome/lighthouse/pull/12665))
-* trace: include additional perf categories ([#12692](https://github.com/GoogleChrome/lighthouse/pull/12692))
 
 ## Report
 
@@ -77,17 +80,18 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 
 ## Misc
 
+* treemap: elide origin from url if same as requestedUrl ([#12598](https://github.com/GoogleChrome/lighthouse/pull/12598))
+* treemap: fix node coverage shading ([#12603](https://github.com/GoogleChrome/lighthouse/pull/12603))
+* build: add build step for report ([#12707](https://github.com/GoogleChrome/lighthouse/pull/12707))
+* npmignore larger unnecessary files ([#12627](https://github.com/GoogleChrome/lighthouse/pull/12627))
 * run build-report for vercel deployment and lhci ([#12782](https://github.com/GoogleChrome/lighthouse/pull/12782))
 * fix common "typos" ([#12742](https://github.com/GoogleChrome/lighthouse/pull/12742))
 * get LH_ROOT via new file root.js ([#12724](https://github.com/GoogleChrome/lighthouse/pull/12724))
-* build: add build step for report ([#12707](https://github.com/GoogleChrome/lighthouse/pull/12707))
 * scripts: improve collision check in collect-strings ([#12697](https://github.com/GoogleChrome/lighthouse/pull/12697))
-* npmignore larger unnecessary files ([#12627](https://github.com/GoogleChrome/lighthouse/pull/12627))
 * add GitHub bug report form ([#12694](https://github.com/GoogleChrome/lighthouse/pull/12694))
 * scripts: error handling for pptr-run-devtools.js ([#12679](https://github.com/GoogleChrome/lighthouse/pull/12679))
 * fix typos and update faq answer ([#12605](https://github.com/GoogleChrome/lighthouse/pull/12605))
-* treemap: elide origin from url if same as requestedUrl ([#12598](https://github.com/GoogleChrome/lighthouse/pull/12598))
-* treemap: fix node coverage shading ([#12603](https://github.com/GoogleChrome/lighthouse/pull/12603))
+* reference chromium main instead of master ([#12757](https://github.com/GoogleChrome/lighthouse/pull/12757))
 
 ## Scripts
 
