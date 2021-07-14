@@ -13,9 +13,6 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 - Victor Porof @victorporof
 - Gareth Jones @G-Rath
 
-## New Audits
-
-
 ## Core
 
 * modern-images: update to include AVIF estimates ([#12682](https://github.com/GoogleChrome/lighthouse/pull/12682))
