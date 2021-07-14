@@ -69,6 +69,14 @@ describe('Fraggle Rock Config Filtering', () => {
       ...auditMeta,
     };
   }
+  class NavigationOnlyAudit extends BaseAudit {
+    static meta = {
+      id: 'navigation-only',
+      requiredArtifacts: /** @type {any} */ (['Snapshot', 'Timespan']),
+      supportedModes: /** @type {['navigation']} */ (['navigation']),
+      ...auditMeta,
+    };
+  }
 
   const audits = [SnapshotAudit, TimespanAudit, NavigationAudit, ManualAudit].map(audit => ({
     implementation: audit,
@@ -92,7 +100,7 @@ describe('Fraggle Rock Config Filtering', () => {
       class SnapshotWithBase extends BaseAudit {
         static meta = {
           id: 'snapshot',
-          requiredArtifacts: /** @type {any} */ (['Snapshot', 'URL', 'HostUserAgent']),
+          requiredArtifacts: /** @type {any} */ (['Snapshot', 'URL', 'Timing']),
           ...auditMeta,
         };
       }
@@ -177,6 +185,33 @@ describe('Fraggle Rock Config Filtering', () => {
 
     it('should be noop when all audits available', () => {
       expect(filters.filterCategoriesByAvailableAudits(categories, audits)).toEqual(categories);
+    });
+  });
+
+  describe('filterAuditsByGatherMode', () => {
+    it('should handle null', () => {
+      expect(filters.filterAuditsByGatherMode(null, 'timespan')).toBeNull();
+    });
+
+    it('should filter unsupported audits', () => {
+      const timespanAudits = [TimespanAudit, NavigationOnlyAudit].map(audit => ({
+        implementation: audit,
+        options: {},
+      }));
+      expect(filters.filterAuditsByGatherMode(timespanAudits, 'timespan')).toEqual([
+        {implementation: TimespanAudit, options: {}},
+      ]);
+    });
+
+    it('should keep audits without explicit modes defined', () => {
+      const timespanAudits = [TimespanAudit, NavigationAudit].map(audit => ({
+        implementation: audit,
+        options: {},
+      }));
+      expect(filters.filterAuditsByGatherMode(timespanAudits, 'timespan')).toEqual([
+        {implementation: TimespanAudit, options: {}},
+        {implementation: NavigationAudit, options: {}},
+      ]);
     });
   });
 
