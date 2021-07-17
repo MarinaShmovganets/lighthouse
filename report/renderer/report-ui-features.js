@@ -58,8 +58,6 @@ export class ReportUIFeatures {
     this._dom = dom;
     /** @type {Document} */
     this._document = this._dom.document();
-    /** @type {ParentNode} */
-    this._templateContext = this._dom.document();
     /** @type {DropDown} */
     this._dropDown = new DropDown(this._dom);
     /** @type {boolean} */
@@ -174,15 +172,6 @@ export class ReportUIFeatures {
   }
 
   /**
-   * Define a custom element for <templates> to be extracted from. For example:
-   *     this.setTemplateContext(new DOMParser().parseFromString(htmlStr, 'text/html'))
-   * @param {ParentNode} context
-   */
-  setTemplateContext(context) {
-    this._templateContext = context;
-  }
-
-  /**
    * @param {{container?: Element, text: string, icon?: string, onClick: () => void}} opts
    */
   addButton(opts) {
@@ -293,7 +282,7 @@ export class ReportUIFeatures {
       const thirdPartyRows = this._getThirdPartyRows(rowEls, this.json.finalUrl);
 
       // create input box
-      const filterTemplate = this._dom.cloneTemplate('#tmpl-lh-3p-filter', this._templateContext);
+      const filterTemplate = this._dom.createComponent('3pFilter');
       const filterInput = this._dom.find('input', filterTemplate);
       const id = `lh-3p-filter-label--${index}`;
 
@@ -362,7 +351,6 @@ export class ReportUIFeatures {
       dom: this._dom,
       reportEl: el,
       overlayContainerEl: el,
-      templateContext: this._templateContext,
       fullPageScreenshot,
     });
   }
@@ -460,7 +448,6 @@ export class ReportUIFeatures {
    */
   _resetUIState() {
     this._dropDown.close();
-    this._dom.resetTemplates();
   }
 
   /**
