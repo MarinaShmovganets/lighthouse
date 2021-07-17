@@ -526,7 +526,7 @@ describe('Manifest Parser', function() {
     });
 
     it('correctly parses RGB/RGBA colors', () => {
-      const bgColor = 'rgb(222, 184, 135)';
+      const bgColor = 'rgba(222, 184, 135, 1.0)';
       const themeColor = 'rgba(5%, 10%, 20%, 0.4)';
       const parsedManifest = getParsedManifest(bgColor, themeColor).value;
 
