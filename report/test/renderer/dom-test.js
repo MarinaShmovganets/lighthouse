@@ -16,17 +16,25 @@ import {I18n} from '../../renderer/i18n.js';
 
 describe('DOM', () => {
   let dom;
+  let window;
 
   beforeAll(() => {
     Util.i18n = new I18n('en', {...Util.UIStrings});
+    window = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
 
-    const {document} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
-    dom = new DOM(document);
+    // Make a lame "polyfill" since JSDOM doesn't have createObjectURL: https://github.com/jsdom/jsdom/issues/1721
+    global.URL = window.URL;
+    if (!window.URL.createObjectURL) {
+      window.URL.createObjectURL = _ => `${new URL(window.location.href).origin}/blahblahblobid`;
+    }
+
+    dom = new DOM(window.document);
     dom.setLighthouseChannel('someChannel');
   });
 
   afterAll(() => {
     Util.i18n = undefined;
+    global.URL = undefined;
   });
 
   describe('createElement', () => {
@@ -142,6 +150,75 @@ describe('DOM', () => {
           'Here is some `code`, and then some `more code`, and yet event `more`.');
       assert.equal(result.innerHTML, 'Here is some <code>code</code>, and then some ' +
           '<code>more code</code>, and yet event <code>more</code>.');
+    });
+  });
+
+  describe('safelySetHref', () => {
+    it('sets href for safe destinations', () => {
+      [
+        'https://safe.com/',
+        'http://safe.com/',
+      ].forEach(url => {
+        const a = dom.createElement('a');
+        dom.safelySetHref(a, url);
+        expect(a.href).toEqual(url);
+      });
+    });
+
+    it('sets href for safe in-page named anchors', () => {
+      const a = dom.createElement('a');
+      dom.safelySetHref(a, '#footer');
+      expect(a.href).toEqual('about:blank#footer');
+    });
+
+    it('doesnt set href if destination is unsafe', () => {
+      [
+        'javascript:evil()',
+        'data:text/html;base64,abcdef',
+        'data:application/json;base64,abcdef',
+        'ftp://evil.com/',
+        'blob:http://example.com/ca6df701-9c67-49fd-a787',
+        'intent://example.com',
+        'filesystem:http://localhost/img.png',
+        'ws://evilchat.com/',
+        'wss://evilchat.com/',
+        'about:about',
+        'chrome://chrome-urls/',
+      ].forEach(url => {
+        const a = dom.createElement('a');
+        dom.safelySetHref(a, url);
+
+        expect(a.href).toEqual('');
+        expect(!a.href).toBeTruthy();
+        expect(a.getAttribute('href')).toEqual(null);
+      });
+    });
+  });
+
+
+  describe('safelySetBlobHref', () => {
+    it('sets href for safe blob types', () => {
+      [
+        new window.Blob([JSON.stringify({test: 1234})], {type: 'application/json'}),
+        new window.Blob([`<html><h1>hello`], {type: 'text/html'}),
+      ].forEach(blob => {
+        const a = dom.createElement('a');
+        dom.safelySetBlobHref(a, blob);
+        expect(a.href).toEqual('null/blahblahblobid');
+      });
+    });
+
+    it('throws with unsupported blob types', () => {
+      [
+        new window.Blob(['<xml>'], {type: 'image/svg+xml'}),
+        new window.Blob(['evilbinary'], {type: 'application/octet-stream'}),
+        new window.Blob(['fake']),
+      ].forEach(blob => {
+        const a = dom.createElement('a');
+        expect(() => {
+          dom.safelySetBlobHref(a, blob);
+        }).toThrowError(/Unsupported blob/);
+      });
     });
   });
 });
