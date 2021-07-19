@@ -29,6 +29,12 @@ module.exports = {
         'CallExpression > ArrowFunctionExpression > :expression.body',
       ],
     }],
+
+    'no-restricted-properties': [2, {
+      'property': 'href',
+      'message': 'Please use allowedObjectName.allowedPropertyName.',
+    }],
+
     'no-floating-decimal': 2,
     'max-len': [2, 100, {
       ignoreComments: true,

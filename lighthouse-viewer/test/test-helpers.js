@@ -19,6 +19,19 @@ function setupJsDomGlobals() {
   global.window = window;
   global.logger = console;
   global.logger.hide = () => {/* noop */};
+
+  const anchorElem = document.createElement('a');
+  const propDesc = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(anchorElem), 'href');
+  Object.defineProperty(window.HTMLAnchorElement, 'href', {
+    enumerable: propDesc.enumerable,
+    configurable: propDesc.configurable,
+    get: propDesc.get,
+    set: _ => {
+      const stack = new Error().stack;
+      console.log({stack});
+      throw new Error('Setting .href directly is verboten!');
+    },
+  });
 }
 
 function cleanupJsDomGlobals() {
