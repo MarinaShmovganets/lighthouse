@@ -19,39 +19,10 @@ describe('DetailsRenderer', () => {
   let renderer;
 
   function createRenderer(options) {
-    const {window} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES);
-    const dom = new DOM(window.document);
+    const {document} = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
+    const dom = new DOM(document);
     renderer = new DetailsRenderer(dom, options);
     renderer.setTemplateContext(dom.document());
-    global.window = window;
-
-    // hack to avoid setting .href directly.
-    const anchorElem = window.document.createElement('a');
-    const propDesc = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(anchorElem), 'href');
-    Object.defineProperty(Object.getPrototypeOf(anchorElem), 'href', {
-      enumerable: propDesc.enumerable,
-      configurable: propDesc.configurable,
-      get: propDesc.get,
-      set: value => {
-        const err = new Error();
-
-        // Was .href set from safelySetHref ?
-        let isFound = false;
-        const prevPrepare = Error.prepareStackTrace;
-        Error.prepareStackTrace = (error, stack) => {
-          isFound = stack.some(callsite => callsite.getFunctionName().includes('safelySetHref'));
-        };
-        const _ = err.stack; // Triggers call to prepareStackTrace
-        Error.prepareStackTrace = prevPrepare;
-
-
-        if (isFound) {
-          propDesc.set.call(propDesc, value);
-        } else {
-          throw new Error('Setting .href directly is verboten!');
-        }
-      },
-    });
   }
 
   beforeAll(() => {
@@ -342,7 +313,7 @@ describe('DetailsRenderer', () => {
       assert.strictEqual(thumbnailEl.alt, '');
     });
 
-    it.only('renders link values', () => {
+    it('renders link values', () => {
       const linkText = 'Example Site';
       const linkUrl = 'https://example.com/';
       const link = {
@@ -384,7 +355,7 @@ describe('DetailsRenderer', () => {
       assert.equal(linkEl.textContent, linkText);
     });
 
-    it.only('renders link value as text if URL is invalid', () => {
+    it('renders link value as text if URL is invalid', () => {
       const linkText = 'Invalid Link';
       const linkUrl = 'link nonsense';
       const link = {
@@ -397,9 +368,9 @@ describe('DetailsRenderer', () => {
         headings: [{key: 'content', itemType: 'link', text: 'Heading'}],
         items: [{content: link}],
       };
+
       const el = renderer.render(details);
       const linkEl = el.querySelector('td.lh-table-column--link > .lh-text');
-
       assert.equal(linkEl.localName, 'div');
       assert.equal(linkEl.textContent, linkText);
     });
