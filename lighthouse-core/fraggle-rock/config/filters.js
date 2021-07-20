@@ -21,6 +21,43 @@ const baseArtifactKeySource = {
 const baseArtifactKeys = Object.keys(baseArtifactKeySource);
 
 /**
+ * Returns the set of audit IDs used in the list of categories.
+ * If `onlyCategories` is not set, this function returns the list of all audit IDs across all
+ * categories.
+ *
+ * @param {LH.Config.FRConfig['categories']} allCategories
+ * @param {string[] | undefined} onlyCategories
+ * @return {string[]}
+ */
+function getAuditIdsInCategories(allCategories, onlyCategories) {
+  if (!allCategories) return [];
+
+  onlyCategories = onlyCategories || Object.keys(allCategories);
+  const categories = onlyCategories.map(categoryId => allCategories[categoryId]);
+  const auditRefs = categories.flatMap(category => category.auditRefs);
+  return auditRefs.map(auditRef => auditRef.id);
+}
+
+/**
+ * Filters an array of artifacts down to the set that supports the specified gather mode.
+ *
+ * @param {LH.Config.FRConfig['artifacts']} artifacts
+ * @param {LH.Config.FRConfig['audits']} audits
+ * @return {LH.Config.FRConfig['artifacts']}
+ */
+function filterArtifactsByAvailableAudits(artifacts, audits) {
+  if (!artifacts) return null;
+  if (!audits) return artifacts;
+
+  /** @type {Set<string>} */
+  const artifactIdsToKeep = new Set(
+    audits.flatMap(audit => audit.implementation.meta.requiredArtifacts)
+  );
+
+  return artifacts.filter(artifact => artifactIdsToKeep.has(artifact.id));
+}
+
+/**
  * Filters an array of artifacts down to the set that supports the specified gather mode.
  *
  * @param {LH.Config.FRConfig['artifacts']} artifacts
@@ -32,6 +69,30 @@ function filterArtifactsByGatherMode(artifacts, mode) {
   return artifacts.filter(artifact => {
     return artifact.gatherer.instance.meta.supportedModes.includes(mode);
   });
+}
+
+/**
+ * Filters an array of navigations down to the set supported by the available artifacts.
+ *
+ * @param {LH.Config.FRConfig['navigations']} navigations
+ * @param {Array<LH.Config.AnyArtifactDefn>} availableArtifacts
+ * @return {LH.Config.FRConfig['navigations']}
+ */
+function filterNavigationsByAvailableArtifacts(navigations, availableArtifacts) {
+  if (!navigations) return navigations;
+
+  const availableArtifactIds = new Set(
+    availableArtifacts.map(artifact => artifact.id).concat(baseArtifactKeys)
+  );
+
+  return navigations
+    .map(navigation => {
+      return {
+        ...navigation,
+        artifacts: navigation.artifacts.filter((artifact) => availableArtifactIds.has(artifact.id)),
+      };
+    })
+    .filter(navigation => navigation.artifacts.length);
 }
 
 /**
@@ -67,6 +128,22 @@ function filterAuditsByGatherMode(audits, mode) {
     const meta = audit.implementation.meta;
     return !meta.supportedModes || meta.supportedModes.includes(mode);
   });
+}
+
+/**
+ * Filters a categories object and their auditRefs down to the set that can be computed using
+ * only the specified audits.
+ *
+ * @param {LH.Config.Config['categories']} categories
+ * @param {string[] | null | undefined} onlyCategories
+ * @return {LH.Config.Config['categories']}
+ */
+function filterCategoriesByExplicitFilters(categories, onlyCategories) {
+  if (!categories || !onlyCategories) return categories;
+
+  const categoriesToKeep = Object.entries(categories)
+    .filter(([categoryId]) => onlyCategories.includes(categoryId));
+  return Object.fromEntries(categoriesToKeep);
 }
 
 /**
@@ -129,10 +206,52 @@ function filterConfigByGatherMode(config, mode) {
   };
 }
 
+/**
+ * Filters a config's artifacts, audits, and categories down to the requested set.
+ * Skip audits overrides inclusion via `onlyAudits`/`onlyCategories`.
+ *
+ * @param {LH.Config.FRConfig} config
+ * @param {Pick<LH.Config.Settings, 'onlyAudits'|'onlyCategories'|'skipAudits'>} filters
+ * @return {LH.Config.FRConfig}
+ */
+function filterConfigByExplicitFilters(config, filters) {
+  const {onlyAudits, onlyCategories, skipAudits} = filters;
+
+  let baseAuditIds = getAuditIdsInCategories(config.categories, undefined);
+  if (onlyCategories) {
+    baseAuditIds = getAuditIdsInCategories(config.categories, onlyCategories);
+  } else if (onlyAudits) {
+    baseAuditIds = [];
+  }
+
+  const auditIdsToKeep = new Set([...(onlyAudits || []), ...baseAuditIds]
+    .filter(auditId => !skipAudits || !skipAudits.includes(auditId)));
+  const audits = auditIdsToKeep.size && config.audits ?
+    config.audits.filter(audit => auditIdsToKeep.has(audit.implementation.meta.id)) :
+    config.audits;
+
+  const availableCategories = filterCategoriesByAvailableAudits(config.categories, audits || []);
+  const categories = filterCategoriesByExplicitFilters(availableCategories, onlyCategories);
+  const artifacts = filterArtifactsByAvailableAudits(config.artifacts, audits);
+  const navigations = filterNavigationsByAvailableArtifacts(config.navigations, artifacts || []);
+
+  return {
+    ...config,
+    artifacts,
+    navigations,
+    audits,
+    categories,
+  };
+}
+
 module.exports = {
   filterConfigByGatherMode,
+  filterConfigByExplicitFilters,
   filterArtifactsByGatherMode,
+  filterArtifactsByAvailableAudits,
+  filterNavigationsByAvailableArtifacts,
   filterAuditsByAvailableArtifacts,
   filterAuditsByGatherMode,
   filterCategoriesByAvailableAudits,
+  filterCategoriesByExplicitFilters,
 };
