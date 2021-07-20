@@ -9,6 +9,7 @@ const BaseAudit = require('../../../audits/audit.js');
 const BaseGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 const {defaultSettings, defaultNavigationConfig} = require('../../../config/constants.js');
 const filters = require('../../../fraggle-rock/config/filters.js');
+const {initializeConfig} = require('../../../fraggle-rock/config/config.js');
 
 /* eslint-env jest */
 
@@ -466,6 +467,20 @@ describe('Fraggle Rock Config Filtering', () => {
           {implementation: ManualAudit},
         ],
       });
+    });
+
+    it('should preserve full-page-screenshot', () => {
+      config = initializeConfig(undefined, {gatherMode: 'navigation'}).config;
+
+      const filtered = filters.filterConfigByExplicitFilters(config, {
+        onlyAudits: ['color-contrast'],
+        onlyCategories: null,
+        skipAudits: null,
+      });
+
+      if (!filtered.audits) throw new Error('No audits produced');
+      const auditIds = filtered.audits.map(audit => audit.implementation.meta.id);
+      expect(auditIds).toEqual(['full-page-screenshot', 'color-contrast']);
     });
   });
 });

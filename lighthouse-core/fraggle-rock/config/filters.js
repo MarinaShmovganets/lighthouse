@@ -20,6 +20,10 @@ const baseArtifactKeySource = {
 
 const baseArtifactKeys = Object.keys(baseArtifactKeySource);
 
+// Some audits are used by the report for additional information.
+// Keep these audits unless they are *directly* skipped with `skipAudits`.
+const filterResistantAuditIds = ['full-page-screenshot'];
+
 /**
  * Returns the set of audit IDs used in the list of categories.
  * If `onlyCategories` is not set, this function returns the list of all audit IDs across all
@@ -237,8 +241,14 @@ function filterConfigByExplicitFilters(config, filters) {
     baseAuditIds = [];
   }
 
-  const auditIdsToKeep = new Set([...(onlyAudits || []), ...baseAuditIds]
-    .filter(auditId => !skipAudits || !skipAudits.includes(auditId)));
+  const auditIdsToKeep = new Set(
+    [
+      ...baseAuditIds, // Start with our base audits.
+      ...(onlyAudits || []), // Additionally include the opt-in audits from `onlyAudits`.
+      ...filterResistantAuditIds, // Always include our filter-resistant audits (full-page-screenshot).
+    ].filter(auditId => !skipAudits || !skipAudits.includes(auditId))
+  );
+
   const audits = auditIdsToKeep.size && config.audits ?
     config.audits.filter(audit => auditIdsToKeep.has(audit.implementation.meta.id)) :
     config.audits;
