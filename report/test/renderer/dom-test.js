@@ -6,6 +6,8 @@
 'use strict';
 
 import {strict as assert} from 'assert';
+import {jest} from '@jest/globals';
+
 import jsdom from 'jsdom';
 import reportAssets from '../../report-assets.js';
 import {DOM} from '../../renderer/dom.js';
@@ -23,8 +25,9 @@ describe('DOM', () => {
     window = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
 
     // Make a lame "polyfill" since JSDOM doesn't have createObjectURL: https://github.com/jsdom/jsdom/issues/1721
+    const lameCOURL = jest.fn(_ => `https://fake-origin/blahblah-blobid`);
     if (!URL.createObjectURL) {
-      URL.createObjectURL = _ => `https://fake-origin/blahblah-blobid`;
+      URL.createObjectURL = lameCOURL;
     }
 
     dom = new DOM(window.document);
