@@ -23,9 +23,8 @@ describe('DOM', () => {
     window = new jsdom.JSDOM(reportAssets.REPORT_TEMPLATES).window;
 
     // Make a lame "polyfill" since JSDOM doesn't have createObjectURL: https://github.com/jsdom/jsdom/issues/1721
-    global.URL = window.URL;
-    if (!window.URL.createObjectURL) {
-      window.URL.createObjectURL = _ => `${new URL(window.location.href).origin}/blahblahblobid`;
+    if (!URL.createObjectURL) {
+      URL.createObjectURL = _ => `https://fake-origin/blahblah-blobid`;
     }
 
     dom = new DOM(window.document);
@@ -34,7 +33,6 @@ describe('DOM', () => {
 
   afterAll(() => {
     Util.i18n = undefined;
-    global.URL = undefined;
   });
 
   describe('createElement', () => {
@@ -189,7 +187,6 @@ describe('DOM', () => {
         dom.safelySetHref(a, url);
 
         expect(a.href).toEqual('');
-        expect(!a.href).toBeTruthy();
         expect(a.getAttribute('href')).toEqual(null);
       });
     });
@@ -204,7 +201,7 @@ describe('DOM', () => {
       ].forEach(blob => {
         const a = dom.createElement('a');
         dom.safelySetBlobHref(a, blob);
-        expect(a.href).toEqual('null/blahblahblobid');
+        expect(a.href).toEqual('https://fake-origin/blahblah-blobid');
       });
     });
 
