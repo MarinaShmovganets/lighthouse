@@ -18,6 +18,8 @@ let pageFunctions;
 
 /* eslint-env jest */
 
+/* global document */
+
 describe('Page Functions', () => {
   const url = 'http://www.example.com';
 
