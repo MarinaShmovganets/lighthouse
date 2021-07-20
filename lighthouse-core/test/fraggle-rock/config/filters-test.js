@@ -130,6 +130,54 @@ describe('Fraggle Rock Config Filtering', () => {
         {id: 'Timespan', gatherer: {instance: timespanGatherer}},
       ]);
     });
+
+    it('should handle transitive dependencies', () => {
+      const baseSymbol = Symbol('baseGatherer');
+      const base = new BaseGatherer();
+      base.meta = {supportedModes: ['snapshot'], symbol: baseSymbol};
+
+      const dependentSymbol = Symbol('dependentGatherer');
+      /** @type {LH.Gatherer.FRGathererInstance<'Accessibility'>} */
+      const dependent = Object.assign(new BaseGatherer(), {
+        meta: {
+          supportedModes: ['snapshot'],
+          dependencies: {Accessibility: baseSymbol},
+          symbol: dependentSymbol,
+        },
+      });
+
+      /** @type {LH.Gatherer.FRGathererInstance<'Accessibility'>} */
+      const dependentsDependent = Object.assign(new BaseGatherer(), {
+        meta: {
+          supportedModes: ['snapshot'],
+          dependencies: {Accessibility: dependentSymbol},
+        },
+      });
+
+
+      /** @type {LH.Config.AnyArtifactDefn[]} */
+      const transitiveArtifacts = [
+        {id: 'DependencysDependency', gatherer: {instance: base}},
+        {
+          id: 'SnapshotDependency',
+          gatherer: {instance: dependent},
+          dependencies: {Accessibility: {id: 'DependencysDependency'}},
+        },
+        {
+          id: 'Snapshot',
+          gatherer: {instance: dependentsDependent},
+          dependencies: {Accessibility: {id: 'SnapshotDependency'}},
+        },
+      ];
+
+      expect(filters.filterArtifactsByAvailableAudits(transitiveArtifacts, [
+        {implementation: SnapshotAudit, options: {}},
+      ])).toMatchObject([
+        {id: 'DependencysDependency', gatherer: {instance: base}},
+        {id: 'SnapshotDependency', gatherer: {instance: dependent}},
+        {id: 'Snapshot', gatherer: {instance: dependentsDependent}},
+      ]);
+    });
   });
 
   describe('filterNavigationsByAvailableArtifacts', () => {

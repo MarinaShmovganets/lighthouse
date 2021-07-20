@@ -54,6 +54,19 @@ function filterArtifactsByAvailableAudits(artifacts, audits) {
     audits.flatMap(audit => audit.implementation.meta.requiredArtifacts)
   );
 
+  let previousSize = 0;
+  while (previousSize !== artifactIdsToKeep.size) {
+    previousSize = artifactIdsToKeep.size;
+    for (const artifact of artifacts) {
+      if (!artifact.dependencies) continue;
+      if (!artifactIdsToKeep.has(artifact.id)) continue;
+
+      for (const dep of Object.values(artifact.dependencies)) {
+        artifactIdsToKeep.add(dep.id);
+      }
+    }
+  }
+
   return artifacts.filter(artifact => artifactIdsToKeep.has(artifact.id));
 }
 
