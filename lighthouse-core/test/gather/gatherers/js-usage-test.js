@@ -13,6 +13,7 @@ const Driver = require('../../../gather/driver.js');
 const Connection = require('../../../gather/connections/connection.js');
 const JsUsage = require('../../../gather/gatherers/js-usage.js');
 const {createMockSendCommandFn, createMockOnFn} = require('../mock-commands.js');
+const {createMockContext} = require('../../fraggle-rock/gather/mock-driver.js');
 const {flushAllTimersAndMicrotasks} = require('../../test-utils.js');
 
 describe('JsUsage gatherer', () => {
@@ -100,6 +101,37 @@ describe('JsUsage gatherer', () => {
           Object {
             "scriptId": "1",
             "url": "LOL WHAT",
+          },
+        ],
+      }
+    `);
+  });
+
+  it('uses best effort coverage in snapshot mode', async () => {
+    const coverage = [{scriptId: '1', url: 'https://www.example.com'}];
+    const context = createMockContext();
+    context.gatherMode = 'snapshot';
+    context.driver._session.on
+      .mockEvent('Debugger.scriptParsed', {
+        scriptId: '1',
+        embedderName: 'https://www.example.com',
+      });
+    context.driver._session.sendCommand
+      // Events are flushed on domain enable.
+      .mockResponse('Debugger.enable', async () => await flushAllTimersAndMicrotasks)
+      .mockResponse('Profiler.enable', {})
+      .mockResponse('Profiler.getBestEffortCoverage', {result: coverage})
+      .mockResponse('Profiler.disable', {})
+      .mockResponse('Debugger.disable', {});
+
+    const artifact = await new JsUsage().getArtifact(context.asContext());
+
+    expect(artifact).toMatchInlineSnapshot(`
+      Object {
+        "https://www.example.com": Array [
+          Object {
+            "scriptId": "1",
+            "url": "https://www.example.com",
           },
         ],
       }
