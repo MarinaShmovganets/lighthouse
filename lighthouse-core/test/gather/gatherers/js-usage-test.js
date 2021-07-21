@@ -60,7 +60,7 @@ describe('JsUsage gatherer', () => {
 
     expect(gatherer._scriptUsages).toEqual(coverage);
 
-    return gatherer.getArtifact();
+    return gatherer.getArtifact({gatherMode: 'navigation'});
   }
 
   it('combines coverage data by url', async () => {
@@ -107,8 +107,7 @@ describe('JsUsage gatherer', () => {
     `);
   });
 
-  it('uses best effort coverage in snapshot mode', async () => {
-    const coverage = [{scriptId: '1', url: 'https://www.example.com'}];
+  it('just establishes url to script id mappings in snapshot mode', async () => {
     const context = createMockContext();
     context.gatherMode = 'snapshot';
     context.driver._session.on
@@ -118,23 +117,19 @@ describe('JsUsage gatherer', () => {
       });
     context.driver._session.sendCommand
       // Events are flushed on domain enable.
-      .mockResponse('Debugger.enable', async () => await flushAllTimersAndMicrotasks)
-      .mockResponse('Profiler.enable', {})
-      .mockResponse('Profiler.getBestEffortCoverage', {result: coverage})
-      .mockResponse('Profiler.disable', {})
+      .mockResponse('Debugger.enable', flushAllTimersAndMicrotasks)
       .mockResponse('Debugger.disable', {});
 
     const artifact = await new JsUsage().getArtifact(context.asContext());
 
-    expect(artifact).toMatchInlineSnapshot(`
-      Object {
-        "https://www.example.com": Array [
-          Object {
-            "scriptId": "1",
-            "url": "https://www.example.com",
-          },
-        ],
-      }
-    `);
+    expect(artifact).toEqual({
+      'https://www.example.com': [
+        {
+          scriptId: '1',
+          url: 'https://www.example.com',
+          functions: [],
+        },
+      ],
+    });
   });
 });

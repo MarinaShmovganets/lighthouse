@@ -77,21 +77,29 @@ class JsUsage extends FRGatherer {
    * @return {Promise<LH.Artifacts['JsUsage']>}
    */
   async getArtifact(context) {
-    const session = context.driver.defaultSession;
-    if (context.gatherMode === 'snapshot') {
-      await this.startSensitiveInstrumentation(context);
-
-      // Get any usage data available to map script ids to urls.
-      await session.sendCommand('Profiler.enable');
-      const {result} = await session.sendCommand('Profiler.getBestEffortCoverage');
-      await session.sendCommand('Profiler.disable');
-      this._scriptUsages = result;
-
-      await this.stopSensitiveInstrumentation(context);
-    }
-
     /** @type {Record<string, Array<LH.Crdp.Profiler.ScriptCoverage>>} */
     const usageByUrl = {};
+
+    // Return url to scriptId mappings in snapshot mode.
+    if (context.gatherMode === 'snapshot') {
+      await this.startSensitiveInstrumentation(context);
+      await this.stopSensitiveInstrumentation(context);
+
+      for (const scriptParsedEvent of this._scriptParsedEvents) {
+        const url = scriptParsedEvent.embedderName;
+        if (!url) continue;
+        const scripts = usageByUrl[url] || [];
+        scripts.push({
+          url,
+          scriptId: scriptParsedEvent.scriptId,
+          functions: [],
+        });
+        usageByUrl[url] = scripts;
+      }
+
+      return usageByUrl;
+    }
+
     for (const scriptUsage of this._scriptUsages) {
       // `ScriptCoverage.url` can be overridden by a magic sourceURL comment.
       // Get the associated ScriptParsedEvent and use embedderName, which is the original url.
