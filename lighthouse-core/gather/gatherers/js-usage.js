@@ -84,20 +84,6 @@ class JsUsage extends FRGatherer {
     if (context.gatherMode === 'snapshot') {
       await this.startSensitiveInstrumentation(context);
       await this.stopSensitiveInstrumentation(context);
-
-      for (const scriptParsedEvent of this._scriptParsedEvents) {
-        const url = scriptParsedEvent.embedderName;
-        if (!url) continue;
-        const scripts = usageByUrl[url] || [];
-        scripts.push({
-          url,
-          scriptId: scriptParsedEvent.scriptId,
-          functions: [],
-        });
-        usageByUrl[url] = scripts;
-      }
-
-      return usageByUrl;
     }
 
     for (const scriptUsage of this._scriptUsages) {
@@ -123,6 +109,26 @@ class JsUsage extends FRGatherer {
       const scripts = usageByUrl[url] || [];
       scripts.push(scriptUsage);
       usageByUrl[url] = scripts;
+    }
+
+    // Usages alone do not always generate an exhaustive list of scripts in timespan and snapshot.
+    // For audits which use this for url/scriptId mappings, we can include an empty usage object.
+    // TODO(FR-COMPAT): Enable this logic for legacy and navigation or make a separate artifact for url/scriptId mappings.
+    if (context.gatherMode !== 'navigation') {
+      for (const scriptParsedEvent of this._scriptParsedEvents) {
+        const url = scriptParsedEvent.embedderName;
+        if (!url) continue;
+
+        const scripts = usageByUrl[url] || [];
+        if (!scripts.find(s => s.scriptId === scriptParsedEvent.scriptId)) {
+          scripts.push({
+            url,
+            scriptId: scriptParsedEvent.scriptId,
+            functions: [],
+          });
+        }
+        usageByUrl[url] = scripts;
+      }
     }
 
     return usageByUrl;
