@@ -13,8 +13,7 @@ const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 class JsUsage extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
-    // TODO(FR-COMPAT): special snapshot case for scriptId -> URL mappings.
-    supportedModes: ['timespan', 'navigation'],
+    supportedModes: ['snapshot', 'timespan', 'navigation'],
   }
 
   constructor() {
@@ -60,8 +59,8 @@ class JsUsage extends FRGatherer {
    */
   async startSensitiveInstrumentation(context) {
     const session = context.driver.defaultSession;
+    session.on('Debugger.scriptParsed', this.onScriptParsed);
     await session.sendCommand('Debugger.enable');
-    await session.on('Debugger.scriptParsed', this.onScriptParsed);
   }
 
   /**
@@ -69,14 +68,28 @@ class JsUsage extends FRGatherer {
    */
   async stopSensitiveInstrumentation(context) {
     const session = context.driver.defaultSession;
-    await session.off('Debugger.scriptParsed', this.onScriptParsed);
     await session.sendCommand('Debugger.disable');
+    session.off('Debugger.scriptParsed', this.onScriptParsed);
   }
 
   /**
+   * @param {LH.Gatherer.FRTransitionalContext} context
    * @return {Promise<LH.Artifacts['JsUsage']>}
    */
-  async getArtifact() {
+  async getArtifact(context) {
+    const session = context.driver.defaultSession;
+    if (context.gatherMode === 'snapshot') {
+      await this.startSensitiveInstrumentation(context);
+
+      // Get any usage data available to map script ids to urls.
+      await session.sendCommand('Profiler.enable');
+      const {result} = await session.sendCommand('Profiler.getBestEffortCoverage');
+      await session.sendCommand('Profiler.disable');
+      this._scriptUsages = result;
+
+      await this.stopSensitiveInstrumentation(context);
+    }
+
     /** @type {Record<string, Array<LH.Crdp.Profiler.ScriptCoverage>>} */
     const usageByUrl = {};
     for (const scriptUsage of this._scriptUsages) {
