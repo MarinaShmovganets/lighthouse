@@ -87,8 +87,8 @@ const smokeTests = [{
   expectations: redirects.singleClient,
   config: require('./redirects/redirects-config.js'),
 }, {
-  id: 'redirects-client-paint-server-2',
-  expectations: redirects.clientPaintServer2,
+  id: 'redirects-history-push-state',
+  expectations: redirects.historyPushState,
   config: require('./redirects/redirects-config.js'),
 }, {
   id: 'seo-passing',
@@ -103,7 +103,7 @@ const smokeTests = [{
   expectations: seo.status403,
   config: require('./seo/seo-config.js'),
 }, {
-  id: 'seo-tap-target',
+  id: 'seo-tap-targets',
   expectations: seo.tapTargets,
   config: require('./seo/seo-config.js'),
 }, {
@@ -190,12 +190,12 @@ const smokeTests = [{
   expectations: lantern.xhr,
   config: require('./lantern/lantern-config.js'),
 }, {
-  id: 'lantern-ric-short',
-  expectations: lantern.ricShort,
+  id: 'lantern-idle-callback-short',
+  expectations: lantern.idleCallbackShort,
   config: require('./lantern/lantern-config.js'),
 }, {
-  id: 'lantern-ric-long',
-  expectations: lantern.ricLong,
+  id: 'lantern-idle-callback-long',
+  expectations: lantern.idleCallbackLong,
   config: require('./lantern/lantern-config.js'),
 }, {
   id: 'metrics-tricky-tti',

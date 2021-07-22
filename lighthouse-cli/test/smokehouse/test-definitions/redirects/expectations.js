@@ -126,13 +126,12 @@ const singleClient = {
   },
 };
 
-// TODO: what's the describable difference between this and the above? Also, better names.
 /**
  * @type {Smokehouse.ExpectedRunnerResult}
  * Expected Lighthouse audit values for a site with a client-side redirect (2s + 5s),
- * paints at 2s, then a server-side redirect (1s).
+ * paints at 2s, then a server-side redirect (1s), followed by a history.pushState to an unrelated URL.
  */
-const clientPaintServer2 = {
+const historyPushState = {
   // TODO: Assert performance metrics on client-side redirects, see https://github.com/GoogleChrome/lighthouse/pull/10325
   lhr: {
     requestedUrl: `http://localhost:10200/js-redirect.html?delay=2000&jsDelay=5000&jsRedirect=%2Fonline-only.html%3Fdelay%3D1000%26redirect%3D%2Fredirects-final.html%253FpushState`,
@@ -152,5 +151,5 @@ module.exports = {
   multipleServer,
   clientPaintServer,
   singleClient,
-  clientPaintServer2,
+  historyPushState,
 };

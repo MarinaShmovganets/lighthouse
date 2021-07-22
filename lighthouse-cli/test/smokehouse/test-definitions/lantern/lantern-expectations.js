@@ -112,7 +112,7 @@ const xhr = {
 /**
  * @type {Smokehouse.ExpectedRunnerResult}
  */
-const ricShort = {
+const idleCallbackShort = {
   lhr: {
     requestedUrl: 'http://localhost:10200/ric-shim.html?short',
     finalUrl: 'http://localhost:10200/ric-shim.html?short',
@@ -129,7 +129,7 @@ const ricShort = {
 /**
  * @type {Smokehouse.ExpectedRunnerResult}
  */
-const ricLong = {
+const idleCallbackLong = {
   lhr: {
     requestedUrl: 'http://localhost:10200/ric-shim.html?long',
     finalUrl: 'http://localhost:10200/ric-shim.html?long',
@@ -150,6 +150,6 @@ module.exports = {
   setTimeout,
   fetch,
   xhr,
-  ricShort,
-  ricLong,
+  idleCallbackShort,
+  idleCallbackLong,
 };
