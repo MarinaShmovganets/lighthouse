@@ -235,16 +235,16 @@ const smokeTests = [{
   expectations: require('./screenshot/expectations.js'),
   config: require('./screenshot/screenshot-config.js'),
 }, {
-  id: 'csp-base',
-  expectations: csp.base,
+  id: 'csp-allow-all',
+  expectations: csp.allowAll,
   config: require('./csp/csp-config.js'),
 }, {
-  id: 'csp-except-inline',
-  expectations: csp.exceptInline,
+  id: 'csp-block-all-m91',
+  expectations: csp.blockAllM91,
   config: require('./csp/csp-config.js'),
 }, {
-  id: 'csp-except-inline-m92',
-  expectations: csp.exceptInlineM92,
+  id: 'csp-block-all',
+  expectations: csp.blockAll,
   config: require('./csp/csp-config.js'),
 }];
 

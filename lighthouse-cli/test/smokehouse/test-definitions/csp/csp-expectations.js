@@ -26,7 +26,7 @@ const blockAllExceptInlineScriptCsp = headersParam([[
  * @type {Smokehouse.ExpectedRunnerResult}
  * Expectations of CSP results with a defalt Lighthouse run.
  */
-const base = {
+const allowAll = {
   artifacts: {
     RobotsTxt: {
       status: 404,
@@ -49,7 +49,7 @@ const base = {
 /**
  * @type {Smokehouse.ExpectedRunnerResult}
  */
-const exceptInline = {
+const blockAllM91 = {
   artifacts: {
     _maxChromiumMilestone: 91,
     RobotsTxt: {
@@ -89,7 +89,7 @@ const exceptInline = {
 /**
  * @type {Smokehouse.ExpectedRunnerResult}
  */
-const exceptInlineM92 = {
+const blockAll = {
   // Same CSP as above, but verifies correct behavior for M92.
   artifacts: {
     _minChromiumMilestone: 92,
@@ -115,7 +115,7 @@ const exceptInlineM92 = {
 };
 
 module.exports = {
-  base,
-  exceptInline,
-  exceptInlineM92,
+  allowAll,
+  blockAllM91,
+  blockAll,
 };
