@@ -54,7 +54,7 @@ async function runSmokehouse(smokeTestDefns, smokehouseOptions) {
 
   const testOptions = {isDebug, retries, lighthouseRunner, takeNetworkRequestUrls};
   const smokePromises = smokeTestDefns.map(testDefn => {
-    // If defn is set to `runSerially`, we'll run its tests in succession, not parallel.
+    // If defn is set to `runSerially`, we'll run it in succession with other tests, not parallel.
     const concurrency = testDefn.runSerially ? 1 : jobs;
     return concurrentMapper.runInPool(() => runSmokeTest(testDefn, testOptions), {concurrency});
   });
@@ -67,8 +67,8 @@ async function runSmokehouse(smokeTestDefns, smokehouseOptions) {
     passingCount += testResult.passed;
     failingCount += testResult.failed;
   }
-  if (passingCount) console.log(log.greenify(`${passingCount} expectation(s) passing`));
-  if (failingCount) console.log(log.redify(`${failingCount} expectation(s) failing`));
+  if (passingCount) console.log(log.greenify(`${getAssertionLog(passingCount)} passing in total`));
+  if (failingCount) console.log(log.redify(`${getAssertionLog(failingCount)} failing in total`));
 
   // Print id(s) and fail if there were failing tests.
   const failingDefns = testResults.filter(result => result.failed);
@@ -122,10 +122,9 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
   let result;
   let report;
   const bufferedConsole = new LocalConsole();
+  bufferedConsole.log(`\n${purpleify(id)}: testing '${requestedUrl}'…`);
   for (let i = 0; i <= retries; i++) {
-    if (i === 0) {
-      bufferedConsole.log(`${purpleify(id)}: testing '${requestedUrl}'…`);
-    } else {
+    if (i !== 0) {
       bufferedConsole.log(`  Retrying run (${i} out of ${retries} retries)…`);
     }
 
@@ -146,7 +145,7 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
     // Assert result.
     report = getAssertionReport(result, expectations, {isDebug});
     if (report.failed) {
-      bufferedConsole.log(`  ${report.failed} assertion(s) failed.`);
+      bufferedConsole.log(`  ${getAssertionLog(report.failed)} failed.`);
       continue; // Retry, if possible.
     }
 
@@ -158,24 +157,22 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
   // Write result log if we have one.
   if (result) bufferedConsole.write(result.log);
 
-  // If there's not an assertion report, not much detail to share but a failure.
+  // If there's not an assertion report, just report the whole thing as a single failure.
   if (report) bufferedConsole.write(report.log);
   const passed = report ? report.passed : 0;
   const failed = report ? report.failed : 1;
 
-  const correctStr = logAssertString(passed);
+  const correctStr = getAssertionLog(passed);
   const colorFn = passed === 0 ? log.redify : log.greenify;
   bufferedConsole.log(`  Correctly passed ${colorFn(correctStr)}`);
 
   if (failed) {
-    const failedString = logAssertString(failed);
-    const failedColorFn = failed === 0 ? log.greenify : log.redify;
-    bufferedConsole.log(`  Failed ${failedColorFn(failedString)}`);
+    const failedString = getAssertionLog(failed);
+    bufferedConsole.log(`  Failed ${log.redify(failedString)}`);
   }
   bufferedConsole.log(`${purpleify(id)} smoketest complete.`);
 
-  // Log all at once.
-  console.log(''); // extra line break
+  // Log now so right after finish, but all at once so not interleaved with other tests.
   console.log(bufferedConsole.getLog());
 
   return {
@@ -203,7 +200,7 @@ function logChildProcessError(localConsole, err) {
  * @param {number} count
  * @return {string}
  */
-function logAssertString(count) {
+function getAssertionLog(count) {
   const plural = count === 1 ? '' : 's';
   return `${count} assertion${plural}`;
 }

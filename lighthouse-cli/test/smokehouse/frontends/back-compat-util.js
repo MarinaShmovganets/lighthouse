@@ -16,13 +16,7 @@
  */
 function updateTestDefnFormat(allTestDefns) {
   const expandedTestDefns = allTestDefns.map(testDefn => {
-    if (!Array.isArray(testDefn.expectations)) {
-      // New object to make tsc happy.
-      return {
-        ...testDefn,
-        expectations: testDefn.expectations,
-      };
-    } else {
+    if (Array.isArray(testDefn.expectations)) {
       // Create a testDefn per expectation.
       return testDefn.expectations.map((expectations, index) => {
         return {
@@ -31,6 +25,12 @@ function updateTestDefnFormat(allTestDefns) {
           expectations,
         };
       });
+    } else {
+      // New object to make tsc happy.
+      return {
+        ...testDefn,
+        expectations: testDefn.expectations,
+      };
     }
   });
 

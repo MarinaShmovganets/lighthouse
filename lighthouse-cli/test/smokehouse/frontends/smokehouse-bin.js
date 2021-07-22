@@ -50,8 +50,9 @@ function getDefinitionsToRun(allTestDefns, requestedIds, {invertMatch}) {
     smokes = allTestDefns.filter(test => {
       // Include all tests that *include* requested id.
       // e.g. a requested 'pwa' will match 'pwa-airhorner', 'pwa-caltrain', etc
-      const isRequested = requestedIds.some(requestedId => test.id.includes(requestedId));
-      return invertMatch !== isRequested;
+      let isRequested = requestedIds.some(requestedId => test.id.includes(requestedId));
+      if (invertMatch) isRequested = !isRequested;
+      return isRequested;
     });
     console.log(`Running ONLY smoketests for: ${smokes.map(t => t.id).join(' ')}\n`);
   }
