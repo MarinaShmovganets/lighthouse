@@ -53,18 +53,25 @@ function filterArtifactsByAvailableAudits(artifacts, audits) {
   if (!artifacts) return null;
   if (!audits) return artifacts;
 
+  const artifactsById = new Map(artifacts.map(artifact => [artifact.id, artifact]));
+
   /** @type {Set<string>} */
   const artifactIdsToKeep = new Set(
     audits.flatMap(audit => audit.implementation.meta.requiredArtifacts)
   );
 
+  // Keep all artifacts in the dependency tree of required artifacts.
+  // Iterate through all kept artifacts, adding their dependencies along the way, until the set does not change.
   let previousSize = 0;
   while (previousSize !== artifactIdsToKeep.size) {
     previousSize = artifactIdsToKeep.size;
-    for (const artifact of artifacts) {
+    for (const artifactId of artifactIdsToKeep) {
+      const artifact = artifactsById.get(artifactId);
+      // This shouldn't happen because the config has passed validation by this point.
+      if (!artifact) continue;
+      // If the artifact doesn't have any dependencies, we can move on.
       if (!artifact.dependencies) continue;
-      if (!artifactIdsToKeep.has(artifact.id)) continue;
-
+      // Add all of the artifact's dependencies to our set.
       for (const dep of Object.values(artifact.dependencies)) {
         artifactIdsToKeep.add(dep.id);
       }
