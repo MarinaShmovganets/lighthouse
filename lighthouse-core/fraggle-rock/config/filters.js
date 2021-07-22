@@ -43,7 +43,7 @@ function getAuditIdsInCategories(allCategories, onlyCategories) {
 }
 
 /**
- * Filters an array of artifacts down to the set that supports the specified gather mode.
+ * Filters an array of artifacts down to the set that's required by the specified audits.
  *
  * @param {LH.Config.FRConfig['artifacts']} artifacts
  * @param {LH.Config.FRConfig['audits']} audits
@@ -148,8 +148,7 @@ function filterAuditsByGatherMode(audits, mode) {
 }
 
 /**
- * Filters a categories object and their auditRefs down to the set that can be computed using
- * only the specified audits.
+ * Filters a categories object and their auditRefs down to the specified category ids.
  *
  * @param {LH.Config.Config['categories']} categories
  * @param {string[] | null | undefined} onlyCategories
