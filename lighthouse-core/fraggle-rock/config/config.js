@@ -17,7 +17,7 @@ const {
   throwInvalidArtifactDependency,
   assertArtifactTopologicalOrder,
 } = require('./validation.js');
-const {filterConfigByGatherMode} = require('./filters.js');
+const {filterConfigByGatherMode, filterConfigByExplicitFilters} = require('./filters.js');
 const {
   deepCloneConfigJson,
   resolveSettings,
@@ -163,7 +163,7 @@ function resolveNavigationsToDefns(navigations, artifactDefns) {
 
 /**
  * @param {LH.Config.Json|undefined} configJSON
- * @param {{gatherMode: LH.Gatherer.GatherMode, configPath?: string, settingsOverrides?: LH.SharedFlagsSettings}} context
+ * @param {Omit<LH.Config.FRContext, 'gatherMode'> & {gatherMode: LH.Gatherer.GatherMode}} context
  * @return {{config: LH.Config.FRConfig, warnings: string[]}}
  */
 function initializeConfig(configJSON, context) {
@@ -192,10 +192,9 @@ function initializeConfig(configJSON, context) {
   // TODO(FR-COMPAT): validate navigations
   // TODO(FR-COMPAT): validate audits
   // TODO(FR-COMPAT): validate categories
-  // TODO(FR-COMPAT): filter config using onlyAudits/onlyCategories
-  // TODO(FR-COMPAT): always keep base/shared artifacts/audits (Stacks, FullPageScreenshot, etc)
 
   config = filterConfigByGatherMode(config, context.gatherMode);
+  config = filterConfigByExplicitFilters(config, settings);
 
   log.timeEnd(status);
   return {config, warnings: []};

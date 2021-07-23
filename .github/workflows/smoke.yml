@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # The smokehouse tests run by job `test set 1`. `test set 2` will run the rest.
-      SMOKE_BATCH_1: a11y oopif pwa pwa2 pwa3 dbw redirects errors offline
+      SMOKE_BATCH_1: a11y oopif pwa dbw redirects errors offline
     # Job named e.g. "Chrome stable, test set 1".
     name: Chrome ${{ matrix.chrome-channel }}, batch ${{ matrix.smoke-test-invert == false && '1' || '2' }}
 
@@ -46,6 +46,7 @@ jobs:
       run: bash $GITHUB_WORKSPACE/lighthouse-core/scripts/download-chrome.sh && mv chrome-linux chrome-linux-tot
 
     - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: yarn build-report
 
     - run: sudo apt-get install xvfb
     - name: Run smoke tests
@@ -78,6 +79,7 @@ jobs:
         node-version: 12.x
 
     - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: yarn build-report
 
     - name: Run smoke tests
       # Windows bots are slow, so only run enough tests to verify matching behavior.
@@ -100,6 +102,7 @@ jobs:
         node-version: 12.x
 
     - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: yarn build-report
     - run: yarn build-devtools
 
     - run: sudo apt-get install xvfb
