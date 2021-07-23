@@ -21,7 +21,7 @@
 const fs = require('fs');
 
 /** @type {Record<string, LhlMessages>} */
-const l = {
+const files = {
   'ar': JSON.parse(fs.readFileSync(`${__dirname}/locales/ar.json`, 'utf8')),
   'ar-XB': JSON.parse(fs.readFileSync(`${__dirname}/locales/ar-XB.json`, 'utf8')),
   'bg': JSON.parse(fs.readFileSync(`${__dirname}/locales/bg.json`, 'utf8')),
@@ -75,94 +75,94 @@ const l = {
 // The keys within this const must exactly match the LH.Locale type in externs.d.ts
 /** @type {Record<LH.Locale, LhlMessages>} */
 const locales = {
-  'en-US': l['en-US'], // The 'source' strings, with descriptions
-  'en': l['en-US'], // According to CLDR/ICU, 'en' == 'en-US' dates/numbers (Why?!)
+  'en-US': files['en-US'], // The 'source' strings, with descriptions
+  'en': files['en-US'], // According to CLDR/ICU, 'en' == 'en-US' dates/numbers (Why?!)
 
   // TODO: en-GB has just ~10 messages that are different from en-US. We should only ship those.
-  'en-AU': l['en-GB'], // Alias of 'en-GB'
-  'en-GB': l['en-GB'], // Alias of 'en-GB'
-  'en-IE': l['en-GB'], // Alias of 'en-GB'
-  'en-SG': l['en-GB'], // Alias of 'en-GB'
-  'en-ZA': l['en-GB'], // Alias of 'en-GB'
-  'en-IN': l['en-GB'], // Alias of 'en-GB'
+  'en-AU': files['en-GB'], // Alias of 'en-GB'
+  'en-GB': files['en-GB'], // Alias of 'en-GB'
+  'en-IE': files['en-GB'], // Alias of 'en-GB'
+  'en-SG': files['en-GB'], // Alias of 'en-GB'
+  'en-ZA': files['en-GB'], // Alias of 'en-GB'
+  'en-IN': files['en-GB'], // Alias of 'en-GB'
 
   // All locales from here have a messages file, though we allow fallback to the base locale when the files are identical
-  'ar-XB': l['ar-XB'], // psuedolocalization
-  'ar': l['ar'],
-  'bg': l['bg'],
-  'ca': l['ca'],
-  'cs': l['cs'],
-  'da': l['da'],
-  'de': l['de'], // de-AT, de-CH identical, so they fall back into de
-  'el': l['el'],
-  'en-XA': l['en-XA'], // psuedolocalization
-  'en-XL': l['en-XL'], // local psuedolocalization
-  'es': l['es'],
-  'es-419': l['es-419'],
+  'ar-XB': files['ar-XB'], // psuedolocalization
+  'ar': files['ar'],
+  'bg': files['bg'],
+  'ca': files['ca'],
+  'cs': files['cs'],
+  'da': files['da'],
+  'de': files['de'], // de-AT, de-CH identical, so they fall back into de
+  'el': files['el'],
+  'en-XA': files['en-XA'], // psuedolocalization
+  'en-XL': files['en-XL'], // local psuedolocalization
+  'es': files['es'],
+  'es-419': files['es-419'],
   // Aliases of es-419: https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/parentLocales.json
-  'es-AR': l['es-419'],
-  'es-BO': l['es-419'],
-  'es-BR': l['es-419'],
-  'es-BZ': l['es-419'],
-  'es-CL': l['es-419'],
-  'es-CO': l['es-419'],
-  'es-CR': l['es-419'],
-  'es-CU': l['es-419'],
-  'es-DO': l['es-419'],
-  'es-EC': l['es-419'],
-  'es-GT': l['es-419'],
-  'es-HN': l['es-419'],
-  'es-MX': l['es-419'],
-  'es-NI': l['es-419'],
-  'es-PA': l['es-419'],
-  'es-PE': l['es-419'],
-  'es-PR': l['es-419'],
-  'es-PY': l['es-419'],
-  'es-SV': l['es-419'],
-  'es-US': l['es-419'],
-  'es-UY': l['es-419'],
-  'es-VE': l['es-419'],
+  'es-AR': files['es-419'],
+  'es-BO': files['es-419'],
+  'es-BR': files['es-419'],
+  'es-BZ': files['es-419'],
+  'es-CL': files['es-419'],
+  'es-CO': files['es-419'],
+  'es-CR': files['es-419'],
+  'es-CU': files['es-419'],
+  'es-DO': files['es-419'],
+  'es-EC': files['es-419'],
+  'es-GT': files['es-419'],
+  'es-HN': files['es-419'],
+  'es-MX': files['es-419'],
+  'es-NI': files['es-419'],
+  'es-PA': files['es-419'],
+  'es-PE': files['es-419'],
+  'es-PR': files['es-419'],
+  'es-PY': files['es-419'],
+  'es-SV': files['es-419'],
+  'es-US': files['es-419'],
+  'es-UY': files['es-419'],
+  'es-VE': files['es-419'],
 
-  'fi': l['fi'],
-  'fil': l['fil'],
-  'fr': l['fr'], // fr-CH identical, so it falls back into fr
-  'he': l['he'],
-  'hi': l['hi'],
-  'hr': l['hr'],
-  'hu': l['hu'],
-  'gsw': l['de'], // swiss german. identical (for our purposes) to 'de'
-  'id': l['id'],
-  'in': l['id'], // Alias of 'id'
-  'it': l['it'],
-  'iw': l['he'], // Alias of 'he'
-  'ja': l['ja'],
-  'ko': l['ko'],
-  'lt': l['lt'],
-  'lv': l['lv'],
-  'mo': l['ro'], // Alias of 'ro'
-  'nl': l['nl'],
-  'nb': l['no'], // Alias of 'no'
-  'no': l['no'],
-  'pl': l['pl'],
-  'pt': l['pt'], // pt-BR identical, so it falls back into pt
-  'pt-PT': l['pt-PT'],
-  'ro': l['ro'],
-  'ru': l['ru'],
-  'sk': l['sk'],
-  'sl': l['sl'],
-  'sr': l['sr'],
-  'sr-Latn': l['sr-Latn'],
-  'sv': l['sv'],
-  'ta': l['ta'],
-  'te': l['te'],
-  'th': l['th'],
-  'tl': l['fil'], // Alias of 'fil'
-  'tr': l['tr'],
-  'uk': l['uk'],
-  'vi': l['vi'],
-  'zh': l['zh'], // aka ZH-Hans, sometimes seen as zh-CN, zh-Hans-CN, Simplified Chinese
-  'zh-HK': l['zh-HK'], // aka zh-Hant-HK. Note: yue-Hant-HK is not supported.
-  'zh-TW': l['zh-TW'], // aka zh-Hant, zh-Hant-TW, Traditional Chinese
+  'fi': files['fi'],
+  'fil': files['fil'],
+  'fr': files['fr'], // fr-CH identical, so it falls back into fr
+  'he': files['he'],
+  'hi': files['hi'],
+  'hr': files['hr'],
+  'hu': files['hu'],
+  'gsw': files['de'], // swiss german. identical (for our purposes) to 'de'
+  'id': files['id'],
+  'in': files['id'], // Alias of 'id'
+  'it': files['it'],
+  'iw': files['he'], // Alias of 'he'
+  'ja': files['ja'],
+  'ko': files['ko'],
+  'lt': files['lt'],
+  'lv': files['lv'],
+  'mo': files['ro'], // Alias of 'ro'
+  'nl': files['nl'],
+  'nb': files['no'], // Alias of 'no'
+  'no': files['no'],
+  'pl': files['pl'],
+  'pt': files['pt'], // pt-BR identical, so it falls back into pt
+  'pt-PT': files['pt-PT'],
+  'ro': files['ro'],
+  'ru': files['ru'],
+  'sk': files['sk'],
+  'sl': files['sl'],
+  'sr': files['sr'],
+  'sr-Latn': files['sr-Latn'],
+  'sv': files['sv'],
+  'ta': files['ta'],
+  'te': files['te'],
+  'th': files['th'],
+  'tl': files['fil'], // Alias of 'fil'
+  'tr': files['tr'],
+  'uk': files['uk'],
+  'vi': files['vi'],
+  'zh': files['zh'], // aka ZH-Hans, sometimes seen as zh-CN, zh-Hans-CN, Simplified Chinese
+  'zh-HK': files['zh-HK'], // aka zh-Hant-HK. Note: yue-Hant-HK is not supported.
+  'zh-TW': files['zh-TW'], // aka zh-Hant, zh-Hant-TW, Traditional Chinese
 };
 
 module.exports = locales;
