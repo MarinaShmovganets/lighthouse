@@ -73,6 +73,29 @@ class JsUsage extends FRGatherer {
   }
 
   /**
+   * Usages alone do not always generate an exhaustive list of scripts in timespan and snapshot.
+   * For audits which use this for url/scriptId mappings, we can include an empty usage object.
+   *
+   * @param {Record<string, Array<LH.Crdp.Profiler.ScriptCoverage>>} usageByUrl
+   */
+  _addMissingScriptIds(usageByUrl) {
+    for (const scriptParsedEvent of this._scriptParsedEvents) {
+      const url = scriptParsedEvent.embedderName;
+      if (!url) continue;
+
+      const scripts = usageByUrl[url] || [];
+      if (!scripts.find(s => s.scriptId === scriptParsedEvent.scriptId)) {
+        scripts.push({
+          url,
+          scriptId: scriptParsedEvent.scriptId,
+          functions: [],
+        });
+      }
+      usageByUrl[url] = scripts;
+    }
+  }
+
+  /**
    * @param {LH.Gatherer.FRTransitionalContext} context
    * @return {Promise<LH.Artifacts['JsUsage']>}
    */
@@ -111,24 +134,9 @@ class JsUsage extends FRGatherer {
       usageByUrl[url] = scripts;
     }
 
-    // Usages alone do not always generate an exhaustive list of scripts in timespan and snapshot.
-    // For audits which use this for url/scriptId mappings, we can include an empty usage object.
     // TODO(FR-COMPAT): Enable this logic for legacy and navigation or make a separate artifact for url/scriptId mappings.
     if (context.gatherMode !== 'navigation') {
-      for (const scriptParsedEvent of this._scriptParsedEvents) {
-        const url = scriptParsedEvent.embedderName;
-        if (!url) continue;
-
-        const scripts = usageByUrl[url] || [];
-        if (!scripts.find(s => s.scriptId === scriptParsedEvent.scriptId)) {
-          scripts.push({
-            url,
-            scriptId: scriptParsedEvent.scriptId,
-            functions: [],
-          });
-        }
-        usageByUrl[url] = scripts;
-      }
+      this._addMissingScriptIds(usageByUrl);
     }
 
     return usageByUrl;
