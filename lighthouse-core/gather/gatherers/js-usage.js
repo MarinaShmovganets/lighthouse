@@ -80,7 +80,7 @@ class JsUsage extends FRGatherer {
     /** @type {Record<string, Array<LH.Crdp.Profiler.ScriptCoverage>>} */
     const usageByUrl = {};
 
-    // Return url to scriptId mappings in snapshot mode.
+    // Force `Debugger.scriptParsed` events for url to scriptId mappings in snapshot mode.
     if (context.gatherMode === 'snapshot') {
       await this.startSensitiveInstrumentation(context);
       await this.stopSensitiveInstrumentation(context);
