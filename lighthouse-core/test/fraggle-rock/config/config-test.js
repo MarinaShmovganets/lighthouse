@@ -331,12 +331,14 @@ describe('Fraggle Rock Config', () => {
       });
     });
 
-    it('should extend the default config', () => {
+    it('should extend the default config with filters', () => {
       const gatherMode = 'navigation';
-      const {config} = initializeConfig({extends: 'lighthouse:default'}, {gatherMode});
+      const {config} = initializeConfig({
+        extends: 'lighthouse:default',
+        settings: {onlyCategories: ['accessibility']},
+      }, {gatherMode});
       if (!config.artifacts) throw new Error(`No artifacts created`);
       if (!config.audits) throw new Error(`No audits created`);
-
 
       const hasAccessibilityArtifact = config.artifacts.some(a => a.id === 'Accessibility');
       if (!hasAccessibilityArtifact) expect(config.artifacts).toContain('Accessibility');
@@ -345,7 +347,8 @@ describe('Fraggle Rock Config', () => {
         some(a => a.implementation.meta.id === 'color-contrast');
       if (!hasAccessibilityAudit) expect(config.audits).toContain('color-contrast');
 
-      expect(config.categories).toHaveProperty('performance');
+      expect(config.categories).toHaveProperty('accessibility');
+      expect(config.categories).not.toHaveProperty('performance');
     });
 
     it('should merge in artifacts', () => {
