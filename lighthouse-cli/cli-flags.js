@@ -362,14 +362,22 @@ function coerceOptionalStringBoolean(value) {
  */
 function coerceOutput(values) {
   const outputTypes = ['json', 'html', 'csv'];
-  const errorMsg = `Invalid values. Argument 'output' must be an array from choices "${outputTypes.join('", "')}"`;
+  const errorTemplate = (/** @type {string} */ error) => `${error}. Argument 'output' must be an array from choices "${outputTypes.join('", "')}"`;
   if (!values.every(/** @return {item is string} */ item => typeof item === 'string')) {
-    throw new Error(errorMsg);
+    throw new Error(errorTemplate('Invalid values'));
   }
   // Allow parsing of comma-separated values.
   const strings = values.flatMap(value => value.split(','));
-  if (!strings.every(/** @return {str is LH.OutputMode} */ str => outputTypes.includes(str))) {
-    throw new Error(errorMsg);
+  let invalidType = '';
+  if (!strings.every(/** @return {str is LH.OutputMode} */ str => {
+    if (outputTypes.includes(str)) {
+      return true;
+    } else {
+      invalidType = str;
+      return false;
+    }
+  })) {
+    throw new Error(errorTemplate(`'${invalidType}' is a invalid 'output' value`));
   }
   return strings;
 }
