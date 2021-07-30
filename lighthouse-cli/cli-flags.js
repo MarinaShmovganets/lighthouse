@@ -368,13 +368,13 @@ function coerceOutput(values) {
   }
   // Allow parsing of comma-separated values.
   const strings = values.flatMap(value => value.split(','));
-  const valid = strings.filter(/** @return {str is LH.OutputMode} */ str => {
+  const validValues = strings.filter(/** @return {str is LH.OutputMode} */ str => {
     if (!outputTypes.includes(str)) {
       throw new Error(`"${str}" is not a valid 'output' value. ` + errorHint);
     } return true;
   });
 
-  return valid;
+  return validValues;
 }
 
 /**
