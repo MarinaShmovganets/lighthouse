@@ -371,7 +371,8 @@ function coerceOutput(values) {
   const validValues = strings.filter(/** @return {str is LH.OutputMode} */ str => {
     if (!outputTypes.includes(str)) {
       throw new Error(`"${str}" is not a valid 'output' value. ` + errorHint);
-    } return true;
+    }
+    return true;
   });
 
   return validValues;
