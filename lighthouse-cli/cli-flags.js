@@ -10,7 +10,6 @@
 const yargs = require('yargs');
 const fs = require('fs');
 const {isObjectOfUnknownValues} = require('../lighthouse-core/lib/type-verifiers.js');
-const { string } = require('yargs');
 
 /**
  * @param {string=} manualArgv
