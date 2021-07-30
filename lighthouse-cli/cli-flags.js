@@ -10,6 +10,7 @@
 const yargs = require('yargs');
 const fs = require('fs');
 const {isObjectOfUnknownValues} = require('../lighthouse-core/lib/type-verifiers.js');
+const { string } = require('yargs');
 
 /**
  * @param {string=} manualArgv
@@ -362,9 +363,9 @@ function coerceOptionalStringBoolean(value) {
  */
 function coerceOutput(values) {
   const outputTypes = ['json', 'html', 'csv'];
-  const errorTemplate = (/** @type {string} */ error) => `${error}. Argument 'output' must be an array from choices "${outputTypes.join('", "')}"`;
+  const errorHint = `Argument 'output' must be an array from choices "${outputTypes.join('", "')}"`;
   if (!values.every(/** @return {item is string} */ item => typeof item === 'string')) {
-    throw new Error(errorTemplate('Invalid values'));
+    throw new Error('Invalid values. ' + errorHint);
   }
   // Allow parsing of comma-separated values.
   const strings = values.flatMap(value => value.split(','));
@@ -377,7 +378,7 @@ function coerceOutput(values) {
       return false;
     }
   })) {
-    throw new Error(errorTemplate(`'${invalidType}' is a invalid 'output' value`));
+    throw new Error(`"${invalidType}" is not a valid 'output' value. ` + errorHint);
   }
   return strings;
 }
