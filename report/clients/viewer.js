@@ -23,4 +23,5 @@ window.Logger = Logger;
 window.ReportRenderer = ReportRenderer;
 // @ts-expect-error
 window.ReportUIFeatures = ReportUIFeatures;
+// @ts-expect-error
 window.TextEncoding = TextEncoding;
