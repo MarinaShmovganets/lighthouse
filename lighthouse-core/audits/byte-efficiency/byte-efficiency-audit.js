@@ -117,7 +117,8 @@ class UnusedBytes extends Audit {
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
 
     // Requesting load simulator requires non-empty network records.
-    // Timespan is not guaranteed to generate network records, so mark N/A if empty.
+    // Timespans are not guaranteed to have any network activity.
+    // There are no bytes to be saved if no bytes were downloaded, so mark N/A if empty.
     if (!networkRecords.length && gatherContext.gatherMode === 'timespan') {
       return {
         score: 1,
