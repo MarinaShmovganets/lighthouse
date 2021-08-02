@@ -19,6 +19,8 @@ class CSSUsage extends FRGatherer {
     this._onStylesheetAdded = sheet => this._stylesheets.push(sheet);
     /** @param {LH.Crdp.CSS.StyleSheetRemovedEvent} sheet */
     this._onStylesheetRemoved = sheet => {
+      // We can't fetch the content of removed stylesheets, so we ignore them completely.
+      // TODO(FR-COMPAT): Refactor use of CSSUsage artifact to not *always* rely on the content of stylesheets. 
       const styleSheetId = sheet.styleSheetId;
       this._stylesheets = this._stylesheets.filter(s => s.header.styleSheetId !== styleSheetId);
     };
