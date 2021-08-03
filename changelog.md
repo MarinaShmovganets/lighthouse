@@ -1,37 +1,38 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Krzysztof Szarlej @kszarlej
- <a name="8.2.0"></a>
+<a name="8.2.0"></a>
 # 8.2.0 (2021-08-03)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.1.0...v8.2.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 94](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
+## New contributors
 
+Thanks to our new contributor 👽🐷🐰🐯🐻!
+
+- Krzysztof Szarlej @kszarlej
 
 ## Core
 
-* byte-efficiency: mark n/a if no network records in timespan ([#12839](https://github.com/GoogleChrome/lighthouse/pull/12839))
 * csp-xss: make n/a with empty results ([#12801](https://github.com/GoogleChrome/lighthouse/pull/12801))
 * css-usage: ignore removed stylesheets ([#12827](https://github.com/GoogleChrome/lighthouse/pull/12827))
-* dom: introduce safelySetHref ([#12796](https://github.com/GoogleChrome/lighthouse/pull/12796))
 * emulation: bump chrome versions ([#12849](https://github.com/GoogleChrome/lighthouse/pull/12849))
-* fr: add config extension support ([#12832](https://github.com/GoogleChrome/lighthouse/pull/12832))
-* fr: add snapshot and timespan support to no-unload-listeners audit ([#12830](https://github.com/GoogleChrome/lighthouse/pull/12830))
-* fr: support config filtering via only/skip settings ([#12808](https://github.com/GoogleChrome/lighthouse/pull/12808))
-* fr: add timespan support to css-usage ([#12728](https://github.com/GoogleChrome/lighthouse/pull/12728))
 * traces: disable cpu-profiler trace category ([#12843](https://github.com/GoogleChrome/lighthouse/pull/12843))
+* byte-efficiency: mark n/a if no network records in timespan ([#12839](https://github.com/GoogleChrome/lighthouse/pull/12839))
 
-## CLI
+## ⛏️👷 Fraggle Rock
 
-* fr: add --fraggle-rock flag ([#12805](https://github.com/GoogleChrome/lighthouse/pull/12805))
+  Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
+
+* add --fraggle-rock flag ([#12805](https://github.com/GoogleChrome/lighthouse/pull/12805))
+* add config extension support ([#12832](https://github.com/GoogleChrome/lighthouse/pull/12832))
+* add snapshot and timespan support to no-unload-listeners audit ([#12830](https://github.com/GoogleChrome/lighthouse/pull/12830))
+* support config filtering via only/skip settings ([#12808](https://github.com/GoogleChrome/lighthouse/pull/12808))
+* add timespan support to css-usage ([#12728](https://github.com/GoogleChrome/lighthouse/pull/12728))
 
 ## Report
 
-* metric-filter: handle multiple reports in the same DOM ([#12817](https://github.com/GoogleChrome/lighthouse/pull/12817))
 * convert to ES modules ([#12702](https://github.com/GoogleChrome/lighthouse/pull/12702))
+* metric-filter: handle multiple reports in the same DOM ([#12817](https://github.com/GoogleChrome/lighthouse/pull/12817))
+* dom: introduce safelySetHref ([#12796](https://github.com/GoogleChrome/lighthouse/pull/12796))
 
 ## Deps
 
@@ -41,6 +42,7 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 ## Clients
 
 * viewer: add disclaimer regarding devtools bug ([#12846](https://github.com/GoogleChrome/lighthouse/pull/12846))
+* viewer: accept lhr from fragment ([#12557](https://github.com/GoogleChrome/lighthouse/pull/12557))
 
 ## Docs
 
@@ -48,22 +50,21 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 
 ## Tests
 
-* fr: add fraggle rock smoke tests ([#12834](https://github.com/GoogleChrome/lighthouse/pull/12834))
+* add fraggle rock smoke tests ([#12834](https://github.com/GoogleChrome/lighthouse/pull/12834))
 * add report/ to tsconfig ([#12822](https://github.com/GoogleChrome/lighthouse/pull/12822))
 * devtools: sync tests, fix cache action ([#12807](https://github.com/GoogleChrome/lighthouse/pull/12807))
 * page-functions: remove segfault workaround ([#12847](https://github.com/GoogleChrome/lighthouse/pull/12847))
-* smoke: convert core tests to single-expectations format ([#12819](https://github.com/GoogleChrome/lighthouse/pull/12819))
 * smoke: convert to single LH run per test ([#12818](https://github.com/GoogleChrome/lighthouse/pull/12818))
+* smoke: convert core tests to single-expectations format ([#12819](https://github.com/GoogleChrome/lighthouse/pull/12819))
 
 ## Misc
 
 * build: ensure distDir is present before emptying it ([#12829](https://github.com/GoogleChrome/lighthouse/pull/12829))
 * types: fix null return on querySelector ([#12848](https://github.com/GoogleChrome/lighthouse/pull/12848))
-* viewer: accept lhr from fragment ([#12557](https://github.com/GoogleChrome/lighthouse/pull/12557))
 * read locale files without using `require` ([#12721](https://github.com/GoogleChrome/lighthouse/pull/12721))
 * add prefix to lighthouse-logger debug scope ([#12806](https://github.com/GoogleChrome/lighthouse/pull/12806))
 
- <a name="8.1.0"></a>
+<a name="8.1.0"></a>
 # 8.1.0 (2021-07-13)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.0.0...v8.1.0)
 
