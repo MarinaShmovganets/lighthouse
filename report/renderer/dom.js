@@ -154,6 +154,9 @@ export class DOM {
    * @param {string} url
    */
   safelySetHref(elem, url) {
+    // Defaults to '' to fix proto roundtrip issue.
+    url = url || '';
+
     // In-page anchor links are safe.
     if (url.startsWith('#')) {
       elem.href = url;
