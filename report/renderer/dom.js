@@ -153,7 +153,7 @@ export class DOM {
    * @param {HTMLAnchorElement} elem
    * @param {string} url
    */
-  safelySetHref(elem, url) {
+  safelySetHref(elem, url = '') {
     // In-page anchor links are safe.
     if (url.startsWith('#')) {
       elem.href = url;
