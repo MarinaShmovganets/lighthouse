@@ -351,7 +351,7 @@ This section details services that have integrated Lighthouse data. If you're wo
 
 * **[DTEKT.IO](https://dtekt.io)** - DTEKT is a website performance and uptime monitoring service. It uses lighthouse to provide visibility into the performance of websites from multiple locations on multiple devices. It offers three months free trial and paid plans.
 
-* **[SpeedVitals](https://speedvitals.com)** - SpeedVitals is a Lighthouse powered tool to measure Web Vitals across multiple devices and locations worldwide. It has various features like Layout Shift Visualization, Waterfall Chart, Field Data and Resource Graphs.
+* **[SpeedVitals](https://speedvitals.com)** - SpeedVitals is a Lighthouse powered tool to measure Web Vitals across multiple devices and locations. It has various features like Layout Shift Visualization, Waterfall Chart, Field Data and Resource Graphs.
 
 ## Lighthouse Integrations in non-Web Perf services
 
