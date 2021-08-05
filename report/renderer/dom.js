@@ -154,7 +154,7 @@ export class DOM {
    * @param {string} url
    */
   safelySetHref(elem, url) {
-    // Defaults to '' to fix proto roundtrip issue.
+    // Defaults to '' to fix proto roundtrip issue. See https://github.com/GoogleChrome/lighthouse/issues/12868
     url = url || '';
 
     // In-page anchor links are safe.
