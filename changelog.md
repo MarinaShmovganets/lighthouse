@@ -15,9 +15,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 ## Core
 
 * fix resource size calculation of cached images ([#12612](https://github.com/GoogleChrome/lighthouse/pull/12612))
-* convert externs.d.ts files to modules ([#12888](https://github.com/GoogleChrome/lighthouse/pull/12888))
-* convert core d.ts files to modules ([#12880](https://github.com/GoogleChrome/lighthouse/pull/12880))
-* convert audit types to modules ([#12870](https://github.com/GoogleChrome/lighthouse/pull/12870))
+* convert core `.d.ts` files to modules ([#12870](https://github.com/GoogleChrome/lighthouse/pull/12870), [#12880](https://github.com/GoogleChrome/lighthouse/pull/12880), [#12888](https://github.com/GoogleChrome/lighthouse/pull/12888))
 
 ## ⛏️👷 Fraggle Rock
 
