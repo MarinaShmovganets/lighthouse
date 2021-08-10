@@ -1,17 +1,16 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Haruaki OTAKE @aaharu
-Georgi Yonchev @g-yonchev
-Kartike Bansal @kraten
- <a name="8.3.0"></a>
+<a name="8.3.0"></a>
 # 8.3.0 (2021-08-10)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.2.0...v8.3.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 94](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
+## New Contriubutors
 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+- Haruaki OTAKE @aaharu
+- Georgi Yonchev @g-yonchev
+- Kartike Bansal @kraten
 
 ## Core
 
@@ -19,7 +18,12 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 * convert externs.d.ts files to modules ([#12888](https://github.com/GoogleChrome/lighthouse/pull/12888))
 * convert core d.ts files to modules ([#12880](https://github.com/GoogleChrome/lighthouse/pull/12880))
 * convert audit types to modules ([#12870](https://github.com/GoogleChrome/lighthouse/pull/12870))
-* fr: override quiet windows for observed performance ([#12873](https://github.com/GoogleChrome/lighthouse/pull/12873))
+
+## ⛏️👷 Fraggle Rock
+
+  Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
+
+* override quiet windows for observed performance ([#12873](https://github.com/GoogleChrome/lighthouse/pull/12873))
 
 ## Report
 
@@ -122,7 +126,7 @@ We expect this release to ship in the DevTools of [Chrome 93](https://chromiumda
 
 ## New contributors
 
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 - Todor Totev @todortotev
 - Tanner Dolby @tannerdolby
