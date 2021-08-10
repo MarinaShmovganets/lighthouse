@@ -69,11 +69,27 @@ async function buildEsModulesBundle() {
   });
 }
 
+async function buildUmdBundle() {
+  const bundle = await rollup.rollup({
+    input: 'report/clients/bundle.js',
+    plugins: [
+      commonjs(),
+    ],
+  });
+
+  await bundle.write({
+    file: 'dist/report/bundle-umd.js',
+    format: 'umd',
+    name: 'report',
+  });
+}
+
 if (require.main === module) {
   if (process.argv[2] === '--only-standalone') {
     buildStandaloneReport();
   } else {
     buildStandaloneReport();
+    buildUmdBundle();
     buildEsModulesBundle();
   }
 }
@@ -81,5 +97,6 @@ if (require.main === module) {
 module.exports = {
   buildStandaloneReport,
   buildPsiReport,
+  buildUmdBundle,
   buildTreemapReport,
 };
