@@ -239,14 +239,14 @@ describe('Page uses responsive images', () => {
     assert.equal(auditResult.items[0].wastedPercent, 75, 'correctly computes wastedPercent');
   });
 
-  it('handles cached images', () => {
+  it('handles cached images', async () => {
     const networkRecord = {
       mimeType: 'image/png',
       resourceSize: 1024 * 100,
       transferSize: 0,
       url: 'https://google.com/logo.png',
     };
-    const auditResult = UsesResponsiveImagesAudit.audit_({
+    const auditResult = await UsesResponsiveImagesAudit.audit_({
       ViewportDimensions: {innerWidth: 1000, innerHeight: 1000, devicePixelRatio: 1},
       ImageElements: [
         generateImage(
@@ -256,7 +256,8 @@ describe('Page uses responsive images', () => {
         ),
       ],
     },
-      [networkRecord]
+      [networkRecord],
+      {computedCache: new Map()}
     );
 
     assert.equal(auditResult.items.length, 1);
