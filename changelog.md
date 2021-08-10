@@ -1,3 +1,53 @@
+Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Haruaki OTAKE @aaharu
+Georgi Yonchev @g-yonchev
+Kartike Bansal @kraten
+ <a name="8.3.0"></a>
+# 8.3.0 (2021-08-10)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.2.0...v8.3.0)
+
+~~ TODO: https://chromiumdash.appspot.com/schedule ~~
+We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## Notable Changes
+~~ TODO: Move notable changes here ~~
+
+
+## Core
+
+* fix resource size calculation of cached images ([#12612](https://github.com/GoogleChrome/lighthouse/pull/12612))
+* convert externs.d.ts files to modules ([#12888](https://github.com/GoogleChrome/lighthouse/pull/12888))
+* convert core d.ts files to modules ([#12880](https://github.com/GoogleChrome/lighthouse/pull/12880))
+* convert audit types to modules ([#12870](https://github.com/GoogleChrome/lighthouse/pull/12870))
+* fr: override quiet windows for observed performance ([#12873](https://github.com/GoogleChrome/lighthouse/pull/12873))
+
+## Report
+
+* autogenerate components.js from templates.html ([#12803](https://github.com/GoogleChrome/lighthouse/pull/12803))
+* reword SEO category description ([#12877](https://github.com/GoogleChrome/lighthouse/pull/12877))
+* dom: handle undefined link url from proto roundtrip ([#12872](https://github.com/GoogleChrome/lighthouse/pull/12872))
+
+## Deps
+
+* csp-evaluator: upgrade to exactly 1.0.4 ([#12858](https://github.com/GoogleChrome/lighthouse/pull/12858))
+
+## Clients
+
+* viewer: convert to ES modules ([#12878](https://github.com/GoogleChrome/lighthouse/pull/12878))
+
+## I18n
+
+* import ([#12893](https://github.com/GoogleChrome/lighthouse/pull/12893))
+
+## Docs
+
+* readme: add SpeedVitals to the list of integrations ([#12866](https://github.com/GoogleChrome/lighthouse/pull/12866))
+
+## Misc
+
+* remove nyc config ([#12876](https://github.com/GoogleChrome/lighthouse/pull/12876))
+* npmignore all of dist/ except standalone report ([#12855](https://github.com/GoogleChrome/lighthouse/pull/12855))
+
 <a name="8.2.0"></a>
 # 8.2.0 (2021-08-03)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.1.0...v8.2.0)
