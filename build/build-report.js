@@ -64,7 +64,7 @@ async function buildEsModulesBundle() {
   });
 
   await bundle.write({
-    file: 'dist/report/bundle.js',
+    file: 'dist/report/bundle.esm.js',
     format: 'esm',
   });
 }
@@ -78,7 +78,7 @@ async function buildUmdBundle() {
   });
 
   await bundle.write({
-    file: 'dist/report/bundle-umd.js',
+    file: 'dist/report/bundle.umd.js',
     format: 'umd',
     name: 'report',
   });
