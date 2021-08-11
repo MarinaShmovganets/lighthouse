@@ -52,7 +52,7 @@ declare global {
     __lighthouseNodesDontTouchOrAllVarianceGoesAway: Map<Element, string>;
     __lighthouseExecutionContextId?: number;
 
-    /** Injected by the page when the `--debug` flag is used. */
+    /** Injected into the page when the `--debug` flag is used. */
     continueLighthouseRun(): void;
 
     // Not defined in tsc yet: https://github.com/microsoft/TypeScript/issues/40807
