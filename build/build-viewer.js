@@ -9,7 +9,6 @@ const fs = require('fs');
 const browserify = require('browserify');
 const GhPagesApp = require('./gh-pages-app.js');
 const {minifyFileTransform} = require('./build-utils.js');
-const {buildViewerReport} = require('./build-report.js');
 const htmlReportAssets = require('../report/report-assets.js');
 const {LH_ROOT} = require('../root.js');
 
@@ -32,25 +31,18 @@ async function run() {
     });
   });
 
-  await buildViewerReport();
-
   const app = new GhPagesApp({
     name: 'viewer',
     appDir: `${LH_ROOT}/lighthouse-viewer/app`,
     html: {path: 'index.html'},
-    htmlReplacements: {
-      '%%LIGHTHOUSE_TEMPLATES%%': htmlReportAssets.REPORT_TEMPLATES,
-    },
     stylesheets: [
       htmlReportAssets.REPORT_CSS,
       {path: 'styles/*'},
     ],
     javascripts: [
       await generatorJsPromise,
-      fs.readFileSync(require.resolve('idb-keyval/dist/idb-keyval-min.js'), 'utf8'),
       fs.readFileSync(require.resolve('pako/dist/pako_inflate.js'), 'utf-8'),
-      {path: '../../dist/report/viewer.js'},
-      {path: 'src/*'},
+      {path: 'src/main.js', rollup: true},
     ],
     assets: [
       {path: 'images/**/*'},

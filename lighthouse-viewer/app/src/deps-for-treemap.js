@@ -5,18 +5,15 @@
  */
 'use strict';
 
-/* global window */
+// TODO(esmodules): remove when treemap is esm.
 
-// TODO(esmodules): delete when viewer app is esm.
+import {GithubApi} from './github-api.js';
+import {FirebaseAuth} from './firebase-auth.js';
+import {DragAndDrop} from './drag-and-drop.js';
 
-import {DOM} from '../renderer/dom.js';
-import {Logger} from '../renderer/logger.js';
-import {ReportRenderer} from '../renderer/report-renderer.js';
-import {ReportUIFeatures} from '../renderer/report-ui-features.js';
-import {TextEncoding} from '../renderer/text-encoding.js';
-
-window.DOM = DOM;
-window.Logger = Logger;
-window.ReportRenderer = ReportRenderer;
-window.ReportUIFeatures = ReportUIFeatures;
-window.TextEncoding = TextEncoding;
+// @ts-expect-error
+window.GithubApi = GithubApi;
+// @ts-expect-error
+window.FirebaseAuth = FirebaseAuth;
+// @ts-expect-error
+window.DragAndDrop = DragAndDrop;
