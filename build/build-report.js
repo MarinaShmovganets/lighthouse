@@ -64,8 +64,23 @@ async function buildEsModulesBundle() {
   });
 
   await bundle.write({
-    file: 'dist/report/bundle.js',
+    file: 'dist/report/bundle.esm.js',
     format: 'esm',
+  });
+}
+
+async function buildUmdBundle() {
+  const bundle = await rollup.rollup({
+    input: 'report/clients/bundle.js',
+    plugins: [
+      commonjs(),
+    ],
+  });
+
+  await bundle.write({
+    file: 'dist/report/bundle.umd.js',
+    format: 'umd',
+    name: 'report',
   });
 }
 
@@ -74,6 +89,7 @@ if (require.main === module) {
     buildStandaloneReport();
     buildEsModulesBundle();
     buildPsiReport();
+    buildUmdBundle();
   }
 
   if (process.argv.includes('--psi')) {
@@ -85,10 +101,14 @@ if (require.main === module) {
   if (process.argv.includes('--esm')) {
     buildEsModulesBundle();
   }
+  if (process.argv.includes('--umd')) {
+    buildUmdBundle();
+  }
 }
 
 module.exports = {
   buildStandaloneReport,
   buildPsiReport,
+  buildUmdBundle,
   buildTreemapReport,
 };
