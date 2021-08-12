@@ -6,6 +6,8 @@
     "allowJs": true,
     "checkJs": true,
     "strict": true,
+    // TODO: turn this off to be fully `strict`.
+    "useUnknownInCatchVariables": false,
     // "listFiles": true,
     // "noErrorTruncation": true,
 
