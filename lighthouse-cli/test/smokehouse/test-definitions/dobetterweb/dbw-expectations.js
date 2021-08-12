@@ -11,6 +11,10 @@
  */
 const expectations = {
   networkRequests: {
+    // Number of network requests differs between Fraggle Rock and legacy modes because
+    // FR has fewer passes, preserve this check in legacy mode only.
+    _legacyOnly: true,
+
     // 50 requests made for normal page testing.
     // 6 extra requests made because stylesheets are evicted from the cache by the time DT opens.
     // 3 extra requests made to /dobetterweb/clock.appcache
@@ -191,43 +195,40 @@ const expectations = {
       'errors-in-console': {
         score: 0,
         details: {
-          items: [
-            {
+          items: {
+            0: {
               source: 'other',
               description: 'Application Cache Error event: Manifest fetch failed (404) http://localhost:10200/dobetterweb/clock.appcache',
               url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
             },
-            {
+            1: {
               source: 'exception',
               description: /^Error: A distinctive error\s+at http:\/\/localhost:10200\/dobetterweb\/dbw_tester.html:\d+:\d+$/,
               url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
             },
-            {
+            2: {
               source: 'console.error',
               description: 'Error! Error!',
               url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
             },
-            {
+            3: {
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               url: 'http://localhost:10200/dobetterweb/unknown404.css?delay=200',
             },
-            {
+            4: {
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               url: 'http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000',
             },
-            {
+            5: {
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               url: 'http://localhost:10200/favicon.ico',
             },
-            {
-              source: 'network',
-              description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
-              url: 'http://localhost:10200/dobetterweb/unknown404.css?delay=200',
-            },
-          ],
+            // In legacy Lighthouse this audit will have additional duplicate failures which are a mistake.
+            // Fraggle Rock ordering of gatherer `stopInstrumentation` and `getArtifact` fixes the re-request issue.
+          },
         },
       },
       'is-on-https': {
@@ -418,8 +419,19 @@ const expectations = {
             data: /^data:image\/jpeg;.{500,}/,
           },
           nodes: {
+            // Test that the numbers for individual elements are in the ballpark.
+            // Exact ordering and IDs between FR and legacy differ, so fork the expectations.
             'page-0-IMG': {
-              // Test that these are numbers and in the ballpark.
+              _legacyOnly: true,
+              top: '650±50',
+              bottom: '650±50',
+              left: '10±10',
+              right: '120±20',
+              width: '120±20',
+              height: '20±20',
+            },
+            'page-2-IMG': {
+              _fraggleRockOnly: true,
               top: '650±50',
               bottom: '650±50',
               left: '10±10',
