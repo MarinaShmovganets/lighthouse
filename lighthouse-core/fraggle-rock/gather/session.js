@@ -125,11 +125,9 @@ class ProtocolSession {
     const resultPromise = this._session.send(method, ...params);
     const resultWithTimeoutPromise = Promise.race([resultPromise, timeoutPromise]);
 
-    resultWithTimeoutPromise.finally(() => {
+    return resultWithTimeoutPromise.finally(() => {
       if (timeout) clearTimeout(timeout);
     });
-
-    return resultWithTimeoutPromise;
   }
 }
 
