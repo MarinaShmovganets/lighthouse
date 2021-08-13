@@ -26,7 +26,7 @@
     "./types/**/*.d.ts",
     "eslint-local-rules.js",
 
-    // JSON files included via resolveJsonModule. Removable on the switch to ES Modules.
+    // TODO(esmodules): JSON files included via resolveJsonModule. Removable on the switch to ES Modules.
     "package.json",
     "lighthouse-core/lib/i18n/locales/en-US.json",
     "lighthouse-core/test/results/sample_v2.json",
