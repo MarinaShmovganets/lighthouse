@@ -5,7 +5,6 @@
  */
 'use strict';
 
-const isDeepEqual = require('lodash.isequal');
 const log = require('lighthouse-logger');
 const NetworkRecords = require('../computed/network-records.js');
 const {getPageLoadError} = require('../lib/navigation-error.js');
