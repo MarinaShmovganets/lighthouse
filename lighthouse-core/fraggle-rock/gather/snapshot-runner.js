@@ -7,16 +7,23 @@
 
 const Driver = require('./driver.js');
 const Runner = require('../../runner.js');
-const {collectArtifactDependencies} = require('./runner-helpers.js');
+const {
+  getEmptyArtifactState,
+  collectPhaseArtifacts,
+  awaitArtifacts,
+} = require('./runner-helpers.js');
 const {initializeConfig} = require('../config/config.js');
-const {getBaseArtifacts} = require('./base-artifacts.js');
+const {getBaseArtifacts, finalizeArtifacts} = require('./base-artifacts.js');
 
-/** @param {{page: import('puppeteer').Page, config?: LH.Config.Json}} options */
+/** @param {{page: import('puppeteer').Page, config?: LH.Config.Json, configContext?: LH.Config.FRContext}} options */
 async function snapshot(options) {
-  const {config} = initializeConfig(options.config, {gatherMode: 'snapshot'});
+  const {configContext = {}} = options;
+  const {config} = initializeConfig(options.config, {...configContext, gatherMode: 'snapshot'});
   const driver = new Driver(options.page);
   await driver.connect();
 
+  /** @type {Map<string, LH.ArbitraryEqualityMap>} */
+  const computedCache = new Map();
   const url = await options.page.url();
 
   return Runner.run(
@@ -25,32 +32,25 @@ async function snapshot(options) {
       baseArtifacts.URL.requestedUrl = url;
       baseArtifacts.URL.finalUrl = url;
 
-      /** @type {Partial<LH.GathererArtifacts>} */
-      const artifacts = {};
+      const artifactDefinitions = config.artifacts || [];
+      const artifactState = getEmptyArtifactState();
+      await collectPhaseArtifacts({
+        phase: 'getArtifact',
+        gatherMode: 'snapshot',
+        driver,
+        artifactDefinitions,
+        artifactState,
+        computedCache,
+        settings: config.settings,
+      });
 
-      for (const artifactDefn of config.artifacts || []) {
-        const {id, gatherer} = artifactDefn;
-        const artifactName = /** @type {keyof LH.GathererArtifacts} */ (id);
-        const dependencies = await collectArtifactDependencies(artifactDefn, artifacts);
-        /** @type {LH.Gatherer.FRTransitionalContext} */
-        const context = {
-          gatherMode: 'snapshot',
-          url,
-          driver,
-          dependencies,
-        };
-        const artifact = await Promise.resolve()
-          .then(() => gatherer.instance.snapshot(context))
-          .catch(err => err);
-
-        artifacts[artifactName] = artifact;
-      }
-
-      return /** @type {LH.Artifacts} */ ({...baseArtifacts, ...artifacts}); // Cast to drop Partial<>
+      const artifacts = await awaitArtifacts(artifactState);
+      return finalizeArtifacts(baseArtifacts, artifacts);
     },
     {
       url,
       config,
+      computedCache,
     }
   );
 }

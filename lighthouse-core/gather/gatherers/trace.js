@@ -12,8 +12,12 @@
  */
 
 const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
+const TraceProcessor = require('../../lib/tracehouse/trace-processor.js');
 
 class Trace extends FRGatherer {
+  /** @type {LH.Trace} */
+  _trace = {traceEvents: []};
+
   static getDefaultTraceCategories() {
     return [
       // Exclude default categories. We'll be selective to minimize trace size
@@ -48,7 +52,13 @@ class Trace extends FRGatherer {
       // This doesn't add its own events, but adds a `stackTrace` property to devtools.timeline events
       'disabled-by-default-devtools.timeline.stack',
 
-      // CPU sampling profiler data only enabled for debugging purposes
+      // Additional categories used by devtools. Not used by Lighthouse, but included to facilitate
+      // loading traces from Lighthouse into the Performance panel.
+      'disabled-by-default-devtools.timeline.frame',
+      'latencyInfo',
+
+      // A bug introduced in M92 causes these categories to crash targets on Linux.
+      // See https://github.com/GoogleChrome/lighthouse/issues/12835 for full investigation.
       // 'disabled-by-default-v8.cpu_profiler',
       // 'disabled-by-default-v8.cpu_profiler.hires',
     ];
@@ -92,7 +102,7 @@ class Trace extends FRGatherer {
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    */
-  async beforeTimespan({driver}) {
+  async startSensitiveInstrumentation({driver, gatherMode}) {
     // TODO(FR-COMPAT): read additional trace categories from overall settings?
     // TODO(FR-COMPAT): check if CSS/DOM domains have been enabled in another session and warn?
     await driver.defaultSession.sendCommand('Page.enable');
@@ -100,14 +110,22 @@ class Trace extends FRGatherer {
       categories: Trace.getDefaultTraceCategories().join(','),
       options: 'sampling-frequency=10000', // 1000 is default and too slow.
     });
+
+    if (gatherMode === 'timespan') {
+      await driver.defaultSession.sendCommand('Tracing.recordClockSyncMarker',
+        {syncId: TraceProcessor.TIMESPAN_MARKER_ID});
+    }
   }
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
-   * @return {Promise<LH.Artifacts['Trace']>}
    */
-  async afterTimespan({driver}) {
-    return Trace.endTraceAndCollectEvents(driver.defaultSession);
+  async stopSensitiveInstrumentation({driver}) {
+    this._trace = await Trace.endTraceAndCollectEvents(driver.defaultSession);
+  }
+
+  getArtifact() {
+    return this._trace;
   }
 }
 

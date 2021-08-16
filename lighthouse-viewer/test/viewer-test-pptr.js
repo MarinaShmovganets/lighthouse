@@ -7,18 +7,18 @@
 
 /* eslint-env jest */
 
-const path = require('path');
-const fs = require('fs');
-const assert = require('assert').strict;
-const puppeteer = require('../../node_modules/puppeteer/index.js');
+import {jest} from '@jest/globals';
+import * as fs from 'fs';
+import * as assert from 'assert';
+import puppeteer from 'puppeteer';
+import {server} from '../../lighthouse-cli/test/fixtures/static-server.js';
+import defaultConfig from '../../lighthouse-core/config/default-config.js';
+import {LH_ROOT} from '../../root.js';
 
-const {server} = require('../../lighthouse-cli/test/fixtures/static-server.js');
 const portNumber = 10200;
 const viewerUrl = `http://localhost:${portNumber}/dist/gh-pages/viewer/index.html`;
-const sampleLhr = __dirname + '/../../lighthouse-core/test/results/sample_v2.json';
+const sampleLhr = LH_ROOT + '/lighthouse-core/test/results/sample_v2.json';
 
-const defaultConfig =
-  require(path.resolve(__dirname, '../../lighthouse-core/config/default-config.js'));
 const lighthouseCategories = Object.keys(defaultConfig.categories);
 const getAuditsOfCategory = category => defaultConfig.categories[category].auditRefs;
 
@@ -79,7 +79,7 @@ describe('Lighthouse Viewer', () => {
     if (pageErrors.length > 0) console.error(pageErrors);
 
     await Promise.all([
-      new Promise(resolve => server.close(resolve)),
+      server.close(),
       browser && browser.close(),
     ]);
   });
@@ -148,25 +148,38 @@ describe('Lighthouse Viewer', () => {
   });
 
   describe('PSI', () => {
+    /** @type {Partial<puppeteer.ResponseForRequest>} */
     let interceptedRequest;
+    /** @type {Partial<puppeteer.ResponseForRequest>} */
     let psiResponse;
 
     const sampleLhrJson = JSON.parse(fs.readFileSync(sampleLhr, 'utf-8'));
+    /** @type {Partial<puppeteer.ResponseForRequest>} */
     const goodPsiResponse = {
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify({lighthouseResult: sampleLhrJson}),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
+    /** @type {Partial<puppeteer.ResponseForRequest>} */
     const badPsiResponse = {
       status: 500,
       contentType: 'application/json',
       body: JSON.stringify({error: {message: 'Test error'}}),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
 
-    // Sniffs just the request made to the PSI API. All other requests
-    // fall through.
-    // To set the mocked PSI response, assign `psiResponse`.
-    // To read the intercepted request, use `interceptedRequest`.
+    /**
+     * Sniffs just the request made to the PSI API. All other requests
+     * fall through.
+     * To set the mocked PSI response, assign `psiResponse`.
+     * To read the intercepted request, use `interceptedRequest`.
+     * @param {import('puppeteer').HTTPRequest} request
+     */
     function onRequest(request) {
       if (request.url().includes('https://www.googleapis.com')) {
         interceptedRequest = request;
@@ -198,7 +211,7 @@ describe('Lighthouse Viewer', () => {
       await viewerPage.goto(url);
 
       // Wait for report to render.
-      await viewerPage.waitForSelector('.lh-metrics-container');
+      await viewerPage.waitForSelector('.lh-metrics-container', {timeout: 5000});
 
       const interceptedUrl = new URL(interceptedRequest.url());
       expect(interceptedUrl.origin + interceptedUrl.pathname)

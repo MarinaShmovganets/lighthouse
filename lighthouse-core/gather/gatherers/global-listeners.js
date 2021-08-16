@@ -17,7 +17,7 @@ const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 class GlobalListeners extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
-    supportedModes: ['snapshot', 'navigation'],
+    supportedModes: ['snapshot', 'timespan', 'navigation'],
   }
 
   /**
@@ -59,7 +59,7 @@ class GlobalListeners extends FRGatherer {
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['GlobalListeners']>}
    */
-  async snapshot(passContext) {
+  async getArtifact(passContext) {
     const session = passContext.driver.defaultSession;
 
     // Get a RemoteObject handle to `window`.

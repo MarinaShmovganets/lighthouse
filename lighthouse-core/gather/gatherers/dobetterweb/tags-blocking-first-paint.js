@@ -18,14 +18,15 @@
 
 'use strict';
 
-const Gatherer = require('../gatherer.js');
+const NetworkRecords = require('../../../computed/network-records.js');
+const DevtoolsLog = require('../devtools-log.js');
+const FRGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 
-/* global document, window, HTMLLinkElement, SVGScriptElement */
+/* global document, window, performance, HTMLLinkElement, SVGScriptElement */
 
 /** @typedef {{href: string, media: string, msSinceHTMLEnd: number, matches: boolean}} MediaChange */
 /** @typedef {{tagName: 'LINK', url: string, href: string, rel: string, media: string, disabled: boolean, mediaChanges: Array<MediaChange>}} LinkTag */
 /** @typedef {{tagName: 'SCRIPT', url: string, src: string}} ScriptTag */
-/** @typedef {import('../../driver.js')} Driver */
 
 /* c8 ignore start */
 function installMediaListener() {
@@ -37,7 +38,7 @@ function installMediaListener() {
       const mediaChange = {
         href: this.href,
         media: val,
-        msSinceHTMLEnd: Date.now() - window.performance.timing.responseEnd,
+        msSinceHTMLEnd: Date.now() - performance.timing.responseEnd,
         matches: window.matchMedia(val).matches,
       };
       // @ts-expect-error - `___linkMediaChanges` created above.
@@ -113,7 +114,13 @@ async function collectTagsThatBlockFirstPaint() {
 }
 /* c8 ignore stop */
 
-class TagsBlockingFirstPaint extends Gatherer {
+class TagsBlockingFirstPaint extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta<'DevtoolsLog'>} */
+  meta = {
+    supportedModes: ['navigation'],
+    dependencies: {DevtoolsLog: DevtoolsLog.symbol},
+  }
+
   /**
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @return {Map<string, LH.Artifacts.NetworkRequest>}
@@ -143,7 +150,7 @@ class TagsBlockingFirstPaint extends Gatherer {
   }
 
   /**
-   * @param {Driver} driver
+   * @param {LH.Gatherer.FRTransitionalDriver} driver
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @return {Promise<Array<LH.Artifacts.TagBlockingFirstPaint>>}
    */
@@ -200,11 +207,22 @@ class TagsBlockingFirstPaint extends Gatherer {
   }
 
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} context
    */
-  async beforePass(passContext) {
-    // Don't return return value of `evaluateScriptOnNewDocument`.
-    await passContext.driver.evaluateScriptOnNewDocument(`(${installMediaListener.toString()})()`);
+  async startSensitiveInstrumentation(context) {
+    const {executionContext} = context.driver;
+    // Don't return return value of `evaluateOnNewDocument`.
+    await executionContext.evaluateOnNewDocument(installMediaListener, {args: []});
+  }
+
+  /**
+   * @param {LH.Gatherer.FRTransitionalContext<'DevtoolsLog'>} context
+   * @return {Promise<LH.Artifacts['TagsBlockingFirstPaint']>}
+   */
+  async getArtifact(context) {
+    const devtoolsLog = context.dependencies.DevtoolsLog;
+    const networkRecords = await NetworkRecords.request(devtoolsLog, context);
+    return TagsBlockingFirstPaint.findBlockingTags(context.driver, networkRecords);
   }
 
   /**

@@ -17,9 +17,9 @@ const mime = require('mime-types');
 const parseQueryString = require('querystring').parse;
 const parseURL = require('url').parse;
 const URLSearchParams = require('url').URLSearchParams;
-const HEADER_SAFELIST = new Set(['x-robots-tag', 'link']);
+const {LH_ROOT} = require('../../../root.js');
 
-const lhRootDirPath = path.join(__dirname, '../../../');
+const HEADER_SAFELIST = new Set(['x-robots-tag', 'link', 'content-security-policy']);
 
 class Server {
   baseDir = __dirname;
@@ -28,6 +28,8 @@ class Server {
     this._server = http.createServer(this._requestHandler.bind(this));
     /** @type {(data: string) => string=} */
     this._dataTransformer = undefined;
+    /** @type {string[]} */
+    this._requestUrls = [];
   }
 
   getPort() {
@@ -62,8 +64,32 @@ class Server {
     this._dataTransformer = fn;
   }
 
+  /**
+   * @return {string[]}
+   */
+  takeRequestUrls() {
+    const requestUrls = this._requestUrls;
+    this._requestUrls = [];
+    return requestUrls;
+  }
+
+  /**
+   * @param {http.IncomingMessage} request
+   */
+  _updateRequestUrls(request) {
+    // Favicon is not fetched in headless mode and robots is not fetched by every test.
+    // Ignoring these makes the assertion much simpler.
+    if (['/favicon.ico', '/robots.txt'].includes(request.url)) return;
+    this._requestUrls.push(request.url);
+  }
+
+  /**
+   * @param {http.IncomingMessage} request
+   * @param {http.ServerResponse} response
+   */
   _requestHandler(request, response) {
     const requestUrl = parseURL(request.url);
+    this._updateRequestUrls(request);
     const filePath = requestUrl.pathname;
     const queryString = requestUrl.search && parseQueryString(requestUrl.search.slice(1));
     let absoluteFilePath = path.join(this.baseDir, filePath);
@@ -166,7 +192,7 @@ class Server {
 
     // Disallow file requests outside of LH folder
     const filePathDir = path.parse(absoluteFilePath).dir;
-    if (!filePathDir.startsWith(lhRootDirPath)) {
+    if (!filePathDir.startsWith(LH_ROOT)) {
       return readFileCallback(new Error('Disallowed path'));
     }
 
