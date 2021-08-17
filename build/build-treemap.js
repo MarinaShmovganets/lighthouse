@@ -7,7 +7,7 @@
 
 /** @typedef {import('../lighthouse-core/lib/i18n/locales').LhlMessages} LhlMessages */
 
-const {buildTreemapReport} = require('./build-report.js');
+const fs = require('fs');
 const GhPagesApp = require('./gh-pages-app.js');
 const {LH_ROOT} = require('../root.js');
 
@@ -18,10 +18,9 @@ const {LH_ROOT} = require('../root.js');
  */
 function buildStrings() {
   const locales = require('../lighthouse-core/lib/i18n/locales.js');
-  const UIStrings = require(
-    // Prevent `tsc -p .` from evaluating util.js using core types, it is already typchecked by `tsc -p lighthouse-treemap`.
-    '' + '../lighthouse-treemap/app/src/util.js'
-  ).UIStrings;
+  // TODO(esmodules): use dynamic import when build/ is esm.
+  const utilCode = fs.readFileSync(LH_ROOT + '/lighthouse-treemap/app/src/util.js', 'utf-8');
+  const {UIStrings} = eval(utilCode.replace('export ', '') + '\nmodule.exports = TreemapUtil;');
   const strings = /** @type {Record<LH.Locale, LhlMessages>} */ ({});
 
   for (const [locale, lhlMessages] of Object.entries(locales)) {
@@ -45,8 +44,6 @@ function buildStrings() {
  * Build treemap app, optionally deploying to gh-pages if `--deploy` flag was set.
  */
 async function run() {
-  await buildTreemapReport();
-
   const app = new GhPagesApp({
     name: 'treemap',
     appDir: `${LH_ROOT}/lighthouse-treemap/app`,
@@ -65,9 +62,7 @@ async function run() {
       {path: require.resolve('tabulator-tables/dist/js/modules/format.js')},
       {path: require.resolve('tabulator-tables/dist/js/modules/resize_columns.js')},
       {path: require.resolve('pako/dist/pako_inflate.js')},
-      {path: '../../lighthouse-viewer/app/src/deps-for-treemap.js', rollup: true},
-      {path: '../../dist/report/treemap.js'},
-      {path: 'src/**/*'},
+      {path: 'src/main.js', rollup: true},
     ],
     assets: [
       {path: 'images/**/*'},

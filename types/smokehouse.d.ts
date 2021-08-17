@@ -6,7 +6,7 @@
 
 import {Artifacts} from './artifacts';
 import Config from './config';
-import LHResult from './lhr';
+import LHResult from './lhr/lhr';
 
 declare global {
   module Smokehouse {
@@ -24,7 +24,7 @@ declare global {
     export type ExpectedRunnerResult = {
       lhr: ExpectedLHR,
       artifacts?: Partial<Record<keyof Artifacts|'_maxChromiumMilestone'|'_minChromiumMilestone', any>>
-      networkRequests?: {length: number};
+      networkRequests?: {length: number, _legacyOnly?: boolean, _fraggleRockOnly?: boolean};
     }
 
     export interface TestDfn {

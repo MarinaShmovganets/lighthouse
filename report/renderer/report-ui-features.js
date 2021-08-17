@@ -166,16 +166,10 @@ export class ReportUIFeatures {
     for (const node of this._dom.findAll('[data-i18n]', this._dom.document())) {
       // These strings are guaranteed to (at least) have a default English string in Util.UIStrings,
       // so this cannot be undefined as long as `report-ui-features.data-i18n` test passes.
-      const i18nAttr = /** @type {keyof LH.I18NRendererStrings} */ (node.getAttribute('data-i18n'));
+      const i18nKey = node.getAttribute('data-i18n');
+      const i18nAttr = /** @type {keyof typeof Util.i18n.strings} */ (i18nKey);
       node.textContent = Util.i18n.strings[i18nAttr];
     }
-  }
-
-  /**
-   * @param {ParentNode} _
-   */
-  setTemplateContext(_) {
-    // Removed, exists until usage is removed from CDT.
   }
 
   /**
@@ -442,7 +436,7 @@ export class ReportUIFeatures {
           });
         }
       }
-    } catch (/** @type {Error} */ e) {
+    } catch (e) {
       this._copyAttempt = false;
       this._fireEventOn('lh-log', this._document, {cmd: 'log', msg: e.message});
     }
@@ -491,7 +485,7 @@ export class ReportUIFeatures {
         const htmlStr = this.getReportHtml();
         try {
           this._saveFile(new Blob([htmlStr], {type: 'text/html'}));
-        } catch (/** @type {Error} */ e) {
+        } catch (e) {
           this._fireEventOn('lh-log', this._document, {
             cmd: 'error', msg: 'Could not export as HTML. ' + e.message,
           });
