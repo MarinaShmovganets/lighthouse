@@ -18,12 +18,13 @@ const lhr = /** @type {LH.Result} */ (require('../lighthouse-core/test/results/s
 const {LH_ROOT} = require('../root.js');
 const htmlReportAssets = require('../lighthouse-core/../report/report-assets.js');
 
-const flowResult = /** @type {LH.FlowResult} */ (JSON.parse(
+/** @type {LH.FlowResult} */
+const flowResult = JSON.parse(
   fs.readFileSync(
     `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json`,
     'utf-8'
   )
-));
+);
 
 const DIST = path.join(LH_ROOT, 'dist');
 
