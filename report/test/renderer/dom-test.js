@@ -25,6 +25,8 @@ describe('DOM', () => {
     Util.i18n = new I18n('en', {...Util.UIStrings});
     window = new jsdom.JSDOM().window;
 
+    // The Node version of URL.createObjectURL isn't compatible with the jsdom blob type,
+    // so we stub it.
     nativeCreateObjectURL = URL.createObjectURL;
     URL.createObjectURL = jest.fn(_ => `https://fake-origin/blahblah-blobid`);
 
