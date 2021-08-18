@@ -30,3 +30,46 @@ The renderer was designed to be portable across various environments.
 1. _LH CLI_: It [creates the HTML as the runner finishes up](https://github.com/GoogleChrome/lighthouse/blob/440155cdda377c458c0efce006bc3a69ce2a351c/lighthouse-core/runner.js#L137-L138) and [saves it to disk](https://github.com/GoogleChrome/lighthouse/blob/440155cdda377c458c0efce006bc3a69ce2a351c/lighthouse-cli/printer.js#L71-L92).
 1. _Chrome DevTools Audits Panel_: The `renderer` files are rolled into the Chromium repo, and they execute within the DevTools context. The audits panel [receives the LHR object from a WebWorker](https://github.com/ChromeDevTools/devtools-frontend/blob/aa1532c2f8bdc37c9886255644ed90ad01c61c77/front_end/audits/AuditsProtocolService.js#L27-L35), through a `postMessage` and then runs [the renderer within DevTools UI](https://github.com/ChromeDevTools/devtools-frontend/blob/aa1532c2f8bdc37c9886255644ed90ad01c61c77/front_end/audits/AuditsPanel.js#L123-L157), making a few [simplifications](https://github.com/ChromeDevTools/devtools-frontend/blob/master/front_end/audits/AuditsReportRenderer.js).
 1. _Hosted [Lighthouse Viewer](https://googlechrome.github.io/lighthouse/viewer/)_: It's a webapp that has the renderer (along with some [additional features](https://github.com/GoogleChrome/lighthouse/blob/master/report/renderer/report-ui-features.js)) all compiled into a [`viewer.js`](https://googlechrome.github.io/lighthouse/viewer/src/viewer.js) file. Same [basic approach](https://github.com/GoogleChrome/lighthouse/blob/440155cdda377c458c0efce006bc3a69ce2a351c/lighthouse-viewer/app/src/lighthouse-report-viewer.js#L116-L117) there.
+
+### import-vs-typedef
+
+If a function is exported in a module and uses a parameter whose type is only referenced in the file (but not used directly):
+
+```js
+/**
+ * @param {DOM} dom
+ * @param {boolean} [force]
+ */
+export function toggleDarkTheme(dom, force) {
+   // ... dom is type DOM, but `new DOM` is never used
+}
+```
+
+... our eslint rules would guide use to avoid importing because the variable would go unused. So we'd have to import the type
+via jsdoc:
+
+```js
+/** @typedef {import('./dom.js').DOM} DOM */
+```
+
+However, this breaks tsc declaration creation, specifically needed for the DevTools bundle. It would created something like:
+
+```js
+export type DOM = any;
+// ...
+export class DOM { ... }
+```
+
+Which results in `DOM` being thrown out. The alternative is to do this:
+
+```js
+/** @typedef {import('./dom.js').DOM} DOM_ */
+```
+
+But that's a little ugly. Instead, we do this:
+
+```js
+// See report/README.md#import-vs-typedef
+// eslint-disable-next-line no-unused-vars
+import {DOM} from './dom.js';
+```
