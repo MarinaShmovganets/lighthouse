@@ -27,8 +27,19 @@ class LargestContentfulPaintElement extends Audit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       supportedModes: ['navigation'],
-      requiredArtifacts: ['TraceElements', 'ImageElements'],
+      requiredArtifacts: ['TraceElements', 'ViewportDimensions', 'ImageElements'],
     };
+  }
+
+  /**
+   * @param {LH.Artifacts.ImageElement} image
+   * @param {LH.Artifacts.ViewportDimensions} viewportDimensions
+   * @return {boolean}
+   */
+  static isImageInViewport(image, viewportDimensions) {
+    const imageTop = image.clientRect.top;
+    const viewportHeight = viewportDimensions.innerHeight;
+    return imageTop < viewportHeight;
   }
 
   /**
@@ -45,13 +56,18 @@ class LargestContentfulPaintElement extends Audit {
     const lcpElementDetails = [];
     if (lcpElement) {
       const lcpImageElement = lazyLoadedImages.find(elem => {
-        return elem.node.devtoolsNodePath === lcpElement.node.devtoolsNodePath;
+        return elem.node.devtoolsNodePath === lcpElement.node.devtoolsNodePath
+            && this.isImageInViewport(elem, artifacts.ViewportDimensions);
       });
       if (lcpImageElement) {
         lcpElementDetails.push({
           node: Audit.makeNodeItem(lcpImageElement.node),
         });
       }
+    }
+
+    if (lcpElementDetails.length === 0) {
+      return {score: 1, notApplicable: true};
     }
 
     /** @type {LH.Audit.Details.Table['headings']} */
@@ -63,7 +79,6 @@ class LargestContentfulPaintElement extends Audit {
 
     return {
       score: 0,
-      notApplicable: lcpElementDetails.length === 0,
       details,
     };
   }
