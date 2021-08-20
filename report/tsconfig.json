@@ -7,8 +7,8 @@
 
     // Limit to base JS and DOM defs.
     "lib": ["es2020", "dom", "dom.iterable"],
-    // Include `@types/node` for use of `Buffer` in text-encoding.js.
-    "types": ["node"],
+    // Don't include any node_module types.
+    "types": [],
     "target": "es2020",
     "module": "es2020",
     "moduleResolution": "node",

@@ -705,7 +705,7 @@ export class ReportUIFeatures {
 
     // cleanup.
     this._document.body.removeChild(a);
-    setTimeout(_ => URL.revokeObjectURL(a.href), 500);
+    setTimeout(() => URL.revokeObjectURL(a.href), 500);
   }
 
   /**
