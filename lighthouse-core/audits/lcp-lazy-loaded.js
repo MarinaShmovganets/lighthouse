@@ -10,7 +10,7 @@ const i18n = require('../lib/i18n/i18n.js');
 
 const UIStrings = {
   /** Descriptive title of a diagnostic audit that provides */
-  title: 'LCP element was lazy-loaded',
+  title: 'Largest Contentful Paint element was lazy-loaded',
   /** Description of a Lighthouse audit that tells */
   description: 'Consider to remove lazy loading for largest contentful paint element.',
 };
