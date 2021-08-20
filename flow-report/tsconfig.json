@@ -20,7 +20,7 @@
     // TODO: remove the next line to be fully `strict`.
     "useUnknownInCatchVariables": false,
 
-    "listFiles": true,
+    // "listFiles": true,
     // "noErrorTruncation": true,
     "extendedDiagnostics": true,
 
