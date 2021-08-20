@@ -12,7 +12,7 @@ const UIStrings = {
   /** Descriptive title of a diagnostic audit that provides */
   title: 'LCP element was lazy-loaded',
   /** Description of a Lighthouse audit that tells */
-  description: 'Consider to remove lazy loading for largest contentful paint element',
+  description: 'Consider to remove lazy loading for largest contentful paint element.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
