@@ -6,10 +6,8 @@
 
 import {FunctionComponent} from 'preact';
 import {useState} from 'preact/hooks';
-import type FlowResult from '../types/lhr/flow';
-import type LHResult from '../types/lhr/lhr';
 
-export const Report: FunctionComponent<{lhr: LHResult}> = ({lhr}) => {
+export const Report: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
   // TODO(FR-COMPAT): Render an actual report here.
   return (
     <div>
@@ -23,7 +21,7 @@ export const Report: FunctionComponent<{lhr: LHResult}> = ({lhr}) => {
   );
 };
 
-export const App: FunctionComponent<{flowResult: FlowResult}> = ({flowResult}) => {
+export const App: FunctionComponent<{flowResult: LH.FlowResult}> = ({flowResult}) => {
   const [currentLhrIndex, setCurrentLhrIndex] = useState(0);
   return (
     <>
