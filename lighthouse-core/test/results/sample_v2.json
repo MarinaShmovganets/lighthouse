@@ -1859,6 +1859,13 @@
         ]
       }
     },
+    "lcp-lazy-loaded": {
+      "id": "lcp-lazy-loaded",
+      "title": "LCP element was lazy-loaded",
+      "description": "Consider to remove lazy loading for largest contentful paint element.",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
+    },
     "layout-shift-elements": {
       "id": "layout-shift-elements",
       "title": "Avoid large layout shifts",
@@ -5189,6 +5196,11 @@
           "group": "diagnostics"
         },
         {
+          "id": "lcp-lazy-loaded",
+          "weight": 0,
+          "group": "diagnostics"
+        },
+        {
           "id": "layout-shift-elements",
           "weight": 0,
           "group": "diagnostics"
@@ -6349,6 +6361,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:largest-contentful-paint-element",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:lcp-lazy-loaded",
         "duration": 100,
         "entryType": "measure"
       },
@@ -7690,6 +7708,12 @@
         "audits[layout-shift-elements].details.headings[0].text",
         "audits[non-composited-animations].details.headings[0].text",
         "audits[dom-size].details.headings[1].text"
+      ],
+      "lighthouse-core/audits/lcp-lazy-loaded.js | title": [
+        "audits[lcp-lazy-loaded].title"
+      ],
+      "lighthouse-core/audits/lcp-lazy-loaded.js | description": [
+        "audits[lcp-lazy-loaded].description"
       ],
       "lighthouse-core/audits/layout-shift-elements.js | title": [
         "audits[layout-shift-elements].title"
