@@ -12,12 +12,12 @@ const UIStrings = {
   /** Descriptive title of a diagnostic audit that provides */
   title: 'LCP element was lazy-loaded',
   /** Description of a Lighthouse audit that tells */
-  description: '',
+  description: 'Consider to remove lazy loading for largest contentful paint element',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
-class LargestContentfulPaintElement extends Audit {
+class LargestContentfulPaintLazyLoaded extends Audit {
   /**
    * @return {LH.Audit.Meta}
    */
@@ -84,5 +84,5 @@ class LargestContentfulPaintElement extends Audit {
   }
 }
 
-module.exports = LargestContentfulPaintElement;
+module.exports = LargestContentfulPaintLazyLoaded;
 module.exports.UIStrings = UIStrings;
