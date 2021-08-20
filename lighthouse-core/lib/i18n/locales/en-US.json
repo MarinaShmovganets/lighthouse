@@ -1026,7 +1026,7 @@
     "message": "Consider to remove lazy loading for largest contentful paint element."
   },
   "lighthouse-core/audits/lcp-lazy-loaded.js | title": {
-    "message": "LCP element was lazy-loaded"
+    "message": "Largest Contentful Paint element was lazy-loaded"
   },
   "lighthouse-core/audits/long-tasks.js | description": {
     "message": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn more](https://web.dev/long-tasks-devtools/)"

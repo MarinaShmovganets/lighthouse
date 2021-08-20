@@ -1861,7 +1861,7 @@
     },
     "lcp-lazy-loaded": {
       "id": "lcp-lazy-loaded",
-      "title": "LCP element was lazy-loaded",
+      "title": "Largest Contentful Paint element was lazy-loaded",
       "description": "Consider to remove lazy loading for largest contentful paint element.",
       "score": null,
       "scoreDisplayMode": "notApplicable"
