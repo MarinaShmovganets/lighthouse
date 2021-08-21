@@ -8,7 +8,7 @@
 const fs = require('fs');
 const GhPagesApp = require('./gh-pages-app.js');
 const {LH_ROOT} = require('../root.js');
-
+ 
 /**
  * Extract only the strings needed for lighthouse-treemap into
  * a script that sets a global variable `strings`, whose keys
