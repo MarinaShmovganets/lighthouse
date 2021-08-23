@@ -29,11 +29,13 @@ export const Gauge: FunctionComponent<{category: LH.ReportResult.Category, href:
   const {categoryRenderer} = useLhGlobals();
   const gauge = useMemo(() => {
     const el = categoryRenderer.renderScoreGauge(category, {});
-    const anchor = el.querySelector('a');
+    const anchor = el.querySelector('a') as HTMLAnchorElement;
     if (anchor) anchor.href = href;
-    const label = el.querySelector('.lh-gauge__label');
+
     // Category label is displayed in the navigation header.
+    const label = el.querySelector('.lh-gauge__label');
     if (label) label.remove();
+
     return el;
   }, [categoryRenderer]);
   return <div ref={e => e && e.appendChild(gauge)}></div>;

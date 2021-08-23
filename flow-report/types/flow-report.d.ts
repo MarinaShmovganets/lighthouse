@@ -5,9 +5,9 @@
  */
 
 import FlowResult_ from '../../types/lhr/flow';
-import LHResult from '../../types/lhr/lhr';
-import ReportResult_ from '../../report/types/report-result';
 import * as Settings from '../../types/lhr/settings';
+
+import '../../report/types/html-renderer';
 
 declare global {
   interface Window {
@@ -17,10 +17,7 @@ declare global {
 
   // Expose global types in LH namespace.
   module LH {
-    export import Result = LHResult;
-    export import ReportResult = ReportResult_;
     export type FlowResult = FlowResult_;
-    export type Locale = Settings.Locale;
     export type ConfigSettings = Settings.ConfigSettings;
   }
 }
