@@ -158,7 +158,8 @@
 }
 
 .Summary {
-  max-width: var(--report-width);
+  width: var(--report-width);
+  max-width: 90%;
   margin: 0px auto;
   display: grid;
   grid-auto-rows: min-content;
