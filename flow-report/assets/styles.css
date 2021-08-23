@@ -156,3 +156,15 @@
   background-color: var(--color-blue-A700);
   display: block;
 }
+
+.Summary {
+  max-width: var(--report-width);
+  margin: 0px auto;
+  display: grid;
+  grid-auto-rows: min-content;
+  grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+}
+
+.SummaryFlowStep {
+  display: contents;
+}

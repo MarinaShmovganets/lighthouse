@@ -5,7 +5,13 @@
  */
 
 import {FunctionComponent} from 'preact';
+import {useMemo} from 'preact/hooks';
+import {CategoryRenderer} from '../../report/renderer/category-renderer';
+import {DetailsRenderer} from '../../report/renderer/details-renderer';
+import {DOM} from '../../report/renderer/dom';
+import {LhContext} from './lh-wrappers';
 import {Sidebar} from './sidebar/sidebar';
+import {Summary} from './summary/summary';
 import {FlowResultContext, useCurrentLhr} from './util';
 
 const Report: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
@@ -22,23 +28,30 @@ const Report: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
   );
 };
 
-const Summary: FunctionComponent = () => {
-  // TODO(FR-COMPAT): Design summary page.
-  return <h1 data-testid="Summary">SUMMARY</h1>;
-};
-
 const Content: FunctionComponent = () => {
   const currentLhr = useCurrentLhr();
   return currentLhr ? <Report lhr={currentLhr.value}/> : <Summary/>;
 };
 
 export const App: FunctionComponent<{flowResult: LH.FlowResult}> = ({flowResult}) => {
+  const globals = useMemo(() => {
+    const dom = new DOM(document);
+    const detailsRenderer = new DetailsRenderer(dom);
+    const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
+    return {
+      dom,
+      detailsRenderer,
+      categoryRenderer,
+    };
+  }, []);
   return (
     <FlowResultContext.Provider value={flowResult}>
-      <div className="App">
-        <Sidebar/>
-        <Content/>
-      </div>
+      <LhContext.Provider value={globals}>
+        <div className="App">
+          <Sidebar/>
+          <Content/>
+        </div>
+      </LhContext.Provider>
     </FlowResultContext.Provider>
   );
 };
