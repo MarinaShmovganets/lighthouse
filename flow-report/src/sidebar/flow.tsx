@@ -7,7 +7,7 @@
 import {FunctionComponent} from 'preact';
 import {classNames, useCurrentLhr, useDerivedStepNames, useFlowResult} from '../util';
 
-const FlowStepIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
+export const FlowStepIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
   return <div className={`FlowStepIcon FlowStepIcon--${mode}`}></div>;
 };
 

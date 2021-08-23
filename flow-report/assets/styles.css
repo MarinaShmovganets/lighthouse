@@ -165,7 +165,7 @@
   margin: 0px auto;
   display: grid;
   grid-auto-rows: min-content;
-  grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: min-content 4fr 1fr 1fr 1fr 1fr;
 }
 
 .SummaryFlowStep {
@@ -176,6 +176,7 @@
   font-size: var(--summary-flow-step-label-font-size);
   align-self: center;
   text-decoration: underline !important;
+  grid-column: 2;
 }
 
 .SummaryNavigationHeader {
@@ -187,6 +188,23 @@
   background-color: lightgrey;
 }
 
+.SummaryNavigationHeader__url {
+  grid-column: 2;
+}
+
 .SummaryNavigationHeader__category {
   text-align: center;
+}
+
+.SummaryFlowIcon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 var(--base-spacing);
+}
+
+.SummaryFlowIcon__line {
+  width: 2px;
+  flex-grow: 1;
+  background-color: blue;
 }
