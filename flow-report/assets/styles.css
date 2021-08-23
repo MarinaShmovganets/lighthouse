@@ -222,11 +222,11 @@
   background-color: var(--color-blue-A700);
 }
 
-.SummaryFlowDivider {
+.SummaryFlowStep__divider {
   display: contents;
 }
 
-.SummaryFlowDivider__line {
+.SummaryFlowStep__divider--line {
   grid-column-end: span 5;
   height: 1px;
   background-color: var(--color-gray-300);
