@@ -71,7 +71,6 @@
   width: 100%;
   display: flex;
   padding: 8px 16px;
-  column-gap: var(--base-spacing);
   align-items: center;
 }
 
@@ -81,6 +80,8 @@
   width: 16px;
   align-items: center;
   justify-content: center;
+  /* Flex column-gap workaround for safari */
+  margin-right: var(--base-spacing);
 }
 .SidebarSummary__icon::before {
   content: '☰';
@@ -94,7 +95,6 @@
 
 .SidebarFlowStep {
   display: flex;
-  column-gap: var(--base-spacing);
   padding-left: var(--base-spacing);
   padding-right: var(--base-spacing);
 }
@@ -116,6 +116,8 @@
   align-items: center;
   justify-content: center;
   width: 16px;
+  /* Flex column-gap workaround for safari */
+  margin-right: var(--base-spacing);
 }
 .SidebarFlowStep__icon--line {
   width: 2px;
