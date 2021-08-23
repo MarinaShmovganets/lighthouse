@@ -185,7 +185,7 @@
 }
 .SummaryNavigationHeader > * {
   padding: 8px 0;
-  background-color: lightgrey;
+  background-color: var(--color-gray-200);
 }
 
 .SummaryNavigationHeader__url {
@@ -206,5 +206,5 @@
 .SummaryFlowIcon__line {
   width: 2px;
   flex-grow: 1;
-  background-color: blue;
+  background-color: var(--color-blue-A700);
 }
