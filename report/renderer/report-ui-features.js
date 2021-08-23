@@ -16,8 +16,6 @@
  */
 'use strict';
 
-/* eslint-env browser */
-
 /**
  * @fileoverview Adds tools button, print, and other dynamic functionality to
  * the report.
@@ -25,7 +23,7 @@
 
 /** @typedef {import('./dom').DOM} DOM */
 
-import {getFilenamePrefix} from './file-namer.js';
+import {getFilenamePrefix} from '../../report/generator/file-namer.js';
 import {ElementScreenshotRenderer} from './element-screenshot-renderer.js';
 import {TextEncoding} from './text-encoding.js';
 import {Util} from './util.js';
@@ -707,7 +705,7 @@ export class ReportUIFeatures {
 
     // cleanup.
     this._document.body.removeChild(a);
-    setTimeout(_ => URL.revokeObjectURL(a.href), 500);
+    setTimeout(() => URL.revokeObjectURL(a.href), 500);
   }
 
   /**
