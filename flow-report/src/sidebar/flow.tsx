@@ -48,36 +48,35 @@ export const SidebarFlow: FunctionComponent = () => {
   let numTimespan = 1;
   let numSnapshot = 1;
 
-  const steps = flowResult.lhrs.map((lhr, index) => {
-    let name;
-    switch (lhr.gatherMode) {
-      case 'navigation':
-        name = `Navigation (${numNavigation++})`;
-        break;
-      case 'timespan':
-        name = `Timespan (${numTimespan++})`;
-        break;
-      case 'snapshot':
-        name = `Snapshot (${numSnapshot++})`;
-        break;
-    }
-    const url = new URL(location.href);
-    url.hash = `#index=${index}`;
-    return (
-      <SidebarFlowStep
-        key={lhr.fetchTime}
-        mode={lhr.gatherMode}
-        href={url.href}
-        label={name}
-        hideTopLine={index === 0}
-        hideBottomLine={index === flowResult.lhrs.length - 1}
-        isCurrent={index === (currentLhr && currentLhr.index)}
-      />
-    );
-  });
   return (
     <>
-      {steps}
+      {flowResult.lhrs.map((lhr, index) => {
+        let name;
+        switch (lhr.gatherMode) {
+          case 'navigation':
+            name = `Navigation (${numNavigation++})`;
+            break;
+          case 'timespan':
+            name = `Timespan (${numTimespan++})`;
+            break;
+          case 'snapshot':
+            name = `Snapshot (${numSnapshot++})`;
+            break;
+        }
+        const url = new URL(location.href);
+        url.hash = `#index=${index}`;
+        return (
+          <SidebarFlowStep
+            key={lhr.fetchTime}
+            mode={lhr.gatherMode}
+            href={url.href}
+            label={name}
+            hideTopLine={index === 0}
+            hideBottomLine={index === flowResult.lhrs.length - 1}
+            isCurrent={index === (currentLhr && currentLhr.index)}
+          />
+        );
+      })}
     </>
   );
 };
