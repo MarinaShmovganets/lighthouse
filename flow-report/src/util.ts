@@ -76,3 +76,23 @@ export function useCurrentLhr(): {value: LH.Result, index: number}|null {
 
   return {value, index};
 }
+
+export function useDerivedStepNames() {
+  const flowResult = useFlowResult();
+
+  let numNavigation = 1;
+  let numTimespan = 1;
+  let numSnapshot = 1;
+
+  // TODO(FR-COMPAT): Override with a provided step name.
+  return flowResult.lhrs.map((lhr) => {
+    switch (lhr.gatherMode) {
+      case 'navigation':
+        return `Navigation (${numNavigation++})`;
+      case 'timespan':
+        return `Timespan (${numTimespan++})`;
+      case 'snapshot':
+        return `Snapshot (${numSnapshot++})`;
+    }
+  });
+}

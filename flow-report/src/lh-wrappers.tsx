@@ -24,10 +24,14 @@ function useLhGlobals() {
   return globals;
 }
 
-export const Gauge: FunctionComponent<{category: LH.ReportResult.Category}> = ({category}) => {
+export const Gauge: FunctionComponent<{category: LH.ReportResult.Category, href: string}> =
+({category, href}) => {
   const {categoryRenderer} = useLhGlobals();
   const gauge = useMemo(() => {
-    return categoryRenderer.renderScoreGauge(category, {});
+    const el = categoryRenderer.renderScoreGauge(category, {});
+    const anchor = el.querySelector('a');
+    if (anchor) anchor.href = href;
+    return el;
   }, [categoryRenderer]);
   return <div ref={e => e && e.appendChild(gauge)}></div>;
 };
