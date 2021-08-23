@@ -7,12 +7,12 @@
 import {FunctionComponent} from 'preact';
 import {classNames, useCurrentLhr, useFlowResult} from '../util';
 
-const FlowStepIcon: FunctionComponent<{mode: LH.Gatherer.GatherMode}> = ({mode}) => {
+const FlowStepIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
   return <div className={`FlowStepIcon FlowStepIcon--${mode}`}></div>;
 };
 
 const SidebarFlowStep: FunctionComponent<{
-  mode: LH.Gatherer.GatherMode,
+  mode: LH.Result.GatherMode,
   href: string,
   label: string,
   hideTopLine: boolean,

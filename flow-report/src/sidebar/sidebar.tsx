@@ -29,7 +29,7 @@ export const SidebarSummary: FunctionComponent = () => {
   );
 };
 
-const SidebarRuntimeSettings: FunctionComponent<{settings: LH.Config.Settings}> = ({settings}) => {
+const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> = ({settings}) => {
   return (
     <details className="SidebarRuntimeSettings">
       <summary>

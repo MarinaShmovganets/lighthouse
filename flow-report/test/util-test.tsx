@@ -7,13 +7,12 @@
 import fs from 'fs';
 import {FlowResultContext, useCurrentLhr} from '../src/util';
 import {renderHook} from '@testing-library/preact-hooks';
-import {LH_ROOT} from '../../root';
 import {FunctionComponent} from 'preact';
 import {act} from 'preact/test-utils';
 
 const flowResult: LH.FlowResult = JSON.parse(
   fs.readFileSync(
-    `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json`,
+    `${__dirname}/../../lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json`,
     'utf-8'
   )
 );
