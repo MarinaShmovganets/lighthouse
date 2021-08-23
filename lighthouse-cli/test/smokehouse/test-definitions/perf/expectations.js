@@ -203,7 +203,7 @@ const traceElements = {
         traceEventType: 'largest-contentful-paint',
         node: {
           nodeLabel: 'section > img',
-          snippet: '<img src="../dobetterweb/lighthouse-480x318.jpg">',
+          snippet: '<img src="../dobetterweb/lighthouse-480x318.jpg" loading="lazy">',
           boundingRect: {
             top: 108,
             bottom: 426,
@@ -283,6 +283,20 @@ const traceElements = {
       'largest-contentful-paint-element': {
         score: null,
         displayValue: '1 element found',
+        details: {
+          items: [
+            {
+              node: {
+                type: 'node',
+                nodeLabel: 'section > img',
+                path: '0,HTML,1,BODY,1,DIV,a,#document-fragment,0,SECTION,0,IMG',
+              },
+            },
+          ],
+        },
+      },
+      'lcp-lazy-loaded': {
+        score: 0,
         details: {
           items: [
             {
