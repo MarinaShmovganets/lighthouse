@@ -172,7 +172,7 @@ async function minifyScript(filePath) {
   const result = await terser.minify(code, {
     ecma: 2019,
     output: {
-      comments: /^!/,
+      comments: /^!|Prevent tsc/,
       max_line_len: 1000,
     },
     // The config relies on class names for gatherers.
