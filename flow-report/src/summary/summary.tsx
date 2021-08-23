@@ -11,6 +11,8 @@ import {Util} from '../../../report/renderer/util';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 
+const NullGauge: FunctionComponent = () => <h1>-</h1>;
+
 const SummaryFlowStep: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
   const reportResult = Util.prepareReportResult(lhr);
   return <div className="SummaryFlowStep">
@@ -19,7 +21,7 @@ const SummaryFlowStep: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
       DISPLAYED_CATEGORIES.map(c => (
         reportResult.categories[c] ?
           <Gauge category={reportResult.categories[c]}></Gauge> :
-          <div>-</div>
+          <NullGauge/>
       ))
     }
   </div>;
