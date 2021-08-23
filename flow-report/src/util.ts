@@ -47,6 +47,9 @@ export function useLocale(): LH.Locale {
 export function useCurrentLhr(): {value: LH.Result, index: number}|null {
   const flowResult = useFlowResult();
   const [indexString, setIndexString] = useState(getHashParam('index'));
+
+  // Use two-way-binding on the URL hash.
+  // Triggers a re-render if the LHR index changes.
   useEffect(() => {
     function hashListener() {
       const newIndexString = getHashParam('index');
