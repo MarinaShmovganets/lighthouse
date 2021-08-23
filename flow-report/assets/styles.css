@@ -165,18 +165,25 @@
   margin: 0px auto;
   display: grid;
   grid-auto-rows: min-content;
-  grid-template-columns: min-content 4fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: min-content min-content 4fr 1fr 1fr 1fr 1fr;
 }
 
 .SummaryFlowStep {
   display: contents;
 }
 
+.SummaryFlowStep__screenshot {
+  width: 60px;
+  align-self: center;
+  justify-self: center;
+  margin: var(--base-spacing) 0;
+}
+
 .SummaryFlowStep__label {
   font-size: var(--summary-flow-step-label-font-size);
   align-self: center;
   text-decoration: underline !important;
-  grid-column: 2;
+  grid-column: 3;
 }
 
 .SummaryNavigationHeader {
@@ -189,7 +196,7 @@
 }
 
 .SummaryNavigationHeader__url {
-  grid-column: 2;
+  grid-column: 3;
 }
 
 .SummaryNavigationHeader__category {

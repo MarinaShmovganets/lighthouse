@@ -58,6 +58,13 @@ const SummaryFlowStep: FunctionComponent<{
 }> =
 ({lhr, label, hashIndex, hideBottomLine, hideTopLine}) => {
   const reportResult = Util.prepareReportResult(lhr);
+  const screenshotAudit = reportResult.audits['screenshot-thumbnails'];
+  const screenshots =
+    screenshotAudit &&
+    screenshotAudit.details &&
+    screenshotAudit.details.type === 'filmstrip' &&
+    screenshotAudit.details.items;
+  const lastScreenshot = screenshots && screenshots[screenshots.length - 1];
   return <>
     {
       lhr.gatherMode === 'navigation' ?
@@ -65,6 +72,7 @@ const SummaryFlowStep: FunctionComponent<{
         undefined
     }
     <div className="SummaryFlowStep">
+      <img className="SummaryFlowStep__screenshot" src={lastScreenshot ? lastScreenshot.data : ''}/>
       <SummaryFlowIcon
         mode={lhr.gatherMode}
         hideBottomLine={hideBottomLine}
