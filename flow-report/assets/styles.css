@@ -159,7 +159,8 @@
 }
 
 .Summary {
-  width: var(--report-width);
+  min-width: var(--report-width);
+  width: max-content;
   max-width: 90%;
   margin: 0px auto;
   display: grid;
@@ -175,4 +176,17 @@
   font-size: var(--summary-flow-step-label-font-size);
   align-self: center;
   text-decoration: underline !important;
+}
+
+.SummaryNavigationHeader {
+  font-size: var(--summary-flow-step-label-font-size);
+  display: contents;
+}
+.SummaryNavigationHeader > * {
+  padding: 8px 0;
+  background-color: lightgrey;
+}
+
+.SummaryNavigationHeader__category {
+  text-align: center;
 }

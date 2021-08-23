@@ -13,20 +13,40 @@ const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 
 
 const NullGauge: FunctionComponent = () => <h1>-</h1>;
 
+const SummaryNavigationHeader: FunctionComponent<{url: string}> =
+({url}) => {
+  return (
+    <div className="SummaryNavigationHeader">
+      <div className="SummaryNavigationHeader__url">{url}</div>
+      <div className="SummaryNavigationHeader__category">Performance</div>
+      <div className="SummaryNavigationHeader__category">Accessibility</div>
+      <div className="SummaryNavigationHeader__category">Best Practices</div>
+      <div className="SummaryNavigationHeader__category">SEO</div>
+    </div>
+  );
+};
+
 const SummaryFlowStep: FunctionComponent<{lhr: LH.Result, label: string, hashIndex: number}> =
 ({lhr, label, hashIndex}) => {
   const reportResult = Util.prepareReportResult(lhr);
-  return <div className="SummaryFlowStep">
-    <a className="SummaryFlowStep__label" href={`#index=${hashIndex}`}>{label}</a>
+  return <>
     {
-      DISPLAYED_CATEGORIES.map(c => (
-        reportResult.categories[c] ?
-          // TODO(FR-COMPAT): jump to category specific anchor.
-          <Gauge category={reportResult.categories[c]} href={`#index=${hashIndex}`}/> :
-          <NullGauge/>
-      ))
+      lhr.gatherMode === 'navigation' ?
+        <SummaryNavigationHeader url={lhr.finalUrl}/> :
+        undefined
     }
-  </div>;
+    <div className="SummaryFlowStep">
+      <a className="SummaryFlowStep__label" href={`#index=${hashIndex}`}>{label}</a>
+      {
+        DISPLAYED_CATEGORIES.map(c => (
+          reportResult.categories[c] ?
+            // TODO(FR-COMPAT): jump to category specific anchor.
+            <Gauge category={reportResult.categories[c]} href={`#index=${hashIndex}`}/> :
+            <NullGauge/>
+        ))
+      }
+    </div>
+  </>;
 };
 
 export const Summary: FunctionComponent = () => {
