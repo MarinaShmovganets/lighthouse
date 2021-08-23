@@ -73,7 +73,7 @@ function assertValidFRNavigations(navigationsDefn) {
   /** @type {string[]} */
   const warnings = [];
 
-  // Assert that the first pass has loadFailureMode fatal.
+  // Assert that the first navigation has loadFailureMode fatal.
   const firstNavigation = navigationsDefn[0];
   if (firstNavigation.loadFailureMode !== 'fatal') {
     const currentMode = firstNavigation.loadFailureMode;
