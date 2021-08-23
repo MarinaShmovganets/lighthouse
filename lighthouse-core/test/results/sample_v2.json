@@ -1629,17 +1629,17 @@
           {
             "resourceType": "total",
             "label": "Total",
-            "requestCount": 24,
+            "requestCount": 23,
             "transferSize": 1181660,
-            "countOverBudget": "14 requests",
+            "countOverBudget": "13 requests",
             "sizeOverBudget": 1079260
           },
           {
             "resourceType": "image",
             "label": "Image",
-            "requestCount": 8,
+            "requestCount": 7,
             "transferSize": 1083419,
-            "countOverBudget": "6 requests",
+            "countOverBudget": "5 requests",
             "sizeOverBudget": 1052699
           },
           {
@@ -1660,9 +1660,8 @@
           {
             "resourceType": "third-party",
             "label": "Third-party",
-            "requestCount": 2,
+            "requestCount": 1,
             "transferSize": 30345,
-            "countOverBudget": "1 request",
             "sizeOverBudget": 4745
           },
           {
@@ -1754,7 +1753,7 @@
       "description": "To set budgets for the quantity and size of page resources, add a budget.json file. [Learn more](https://web.dev/use-lighthouse-for-performance-budgets/).",
       "score": null,
       "scoreDisplayMode": "informative",
-      "displayValue": "24 requests • 1,154 KiB",
+      "displayValue": "23 requests • 1,154 KiB",
       "details": {
         "type": "table",
         "headings": [
@@ -1778,13 +1777,13 @@
           {
             "resourceType": "total",
             "label": "Total",
-            "requestCount": 24,
+            "requestCount": 23,
             "transferSize": 1181660
           },
           {
             "resourceType": "image",
             "label": "Image",
-            "requestCount": 8,
+            "requestCount": 7,
             "transferSize": 1083419
           },
           {
@@ -1826,7 +1825,7 @@
           {
             "resourceType": "third-party",
             "label": "Third-party",
-            "requestCount": 2,
+            "requestCount": 1,
             "transferSize": 30345
           }
         ]
@@ -4087,9 +4086,9 @@
       "id": "unused-javascript",
       "title": "Reduce unused JavaScript",
       "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. [Learn more](https://web.dev/unused-javascript/).",
-      "score": 0.88,
+      "score": 0.75,
       "scoreDisplayMode": "numeric",
-      "numericValue": 150,
+      "numericValue": 300,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 21 KiB",
       "details": {
@@ -4129,7 +4128,7 @@
             "wastedPercent": 70.99531129443884
           }
         ],
-        "overallSavingsMs": 150,
+        "overallSavingsMs": 300,
         "overallSavingsBytes": 21544
       }
     },
@@ -4243,9 +4242,9 @@
       "id": "uses-text-compression",
       "title": "Enable text compression",
       "description": "Text-based resources should be served with compression (gzip, deflate or brotli) to minimize total network bytes. [Learn more](https://web.dev/uses-text-compression/).",
-      "score": 0.68,
+      "score": 0.63,
       "scoreDisplayMode": "numeric",
-      "numericValue": 430,
+      "numericValue": 520,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 27 KiB",
       "details": {
@@ -4279,7 +4278,7 @@
             "wastedBytes": 11269
           }
         ],
-        "overallSavingsMs": 430,
+        "overallSavingsMs": 520,
         "overallSavingsBytes": 27922
       }
     },
@@ -4400,9 +4399,9 @@
       "id": "legacy-javascript",
       "title": "Avoid serving legacy JavaScript to modern browsers",
       "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn More](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/)",
-      "score": 0.88,
+      "score": 0.75,
       "scoreDisplayMode": "numeric",
-      "numericValue": 150,
+      "numericValue": 300,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 21 KiB",
       "details": {
@@ -4463,7 +4462,7 @@
             "totalBytes": 0
           }
         ],
-        "overallSavingsMs": 150,
+        "overallSavingsMs": 300,
         "overallSavingsBytes": 21353
       }
     },
@@ -8668,13 +8667,13 @@
       "lighthouse-core/audits/performance-budget.js | requestCountOverBudget": [
         {
           "values": {
-            "count": 14
+            "count": 13
           },
           "path": "audits[performance-budget].details.items[0].countOverBudget"
         },
         {
           "values": {
-            "count": 6
+            "count": 5
           },
           "path": "audits[performance-budget].details.items[1].countOverBudget"
         },
@@ -8683,12 +8682,6 @@
             "count": 3
           },
           "path": "audits[performance-budget].details.items[2].countOverBudget"
-        },
-        {
-          "values": {
-            "count": 1
-          },
-          "path": "audits[performance-budget].details.items[4].countOverBudget"
         },
         {
           "values": {
@@ -8750,7 +8743,7 @@
       "lighthouse-core/audits/resource-summary.js | displayValue": [
         {
           "values": {
-            "requestCount": 24,
+            "requestCount": 23,
             "byteCount": 1181660
           },
           "path": "audits[resource-summary].displayValue"
