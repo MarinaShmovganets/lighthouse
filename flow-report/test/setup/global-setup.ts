@@ -5,5 +5,7 @@
  */
 
 export default async () => {
+  // Use consistent TZ across testing environments.
+  // Timezone is used to construct date strings.
   process.env.TZ = 'UTC';
 };
