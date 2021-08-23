@@ -12,8 +12,6 @@ import {Util} from '../../../report/renderer/util';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 
-const NullGauge: FunctionComponent = () => <h1>-</h1>;
-
 const SummaryFlowIcon: FunctionComponent<{
   hideTopLine: boolean,
   hideBottomLine: boolean,
@@ -84,7 +82,7 @@ const SummaryFlowStep: FunctionComponent<{
           reportResult.categories[c] ?
             // TODO(FR-COMPAT): jump to category specific anchor.
             <Gauge key={c} category={reportResult.categories[c]} href={`#index=${hashIndex}`}/> :
-            <NullGauge key={c}/>
+            <div className="SummaryFlowStep__null-gauge"/>
         ))
       }
     </div>

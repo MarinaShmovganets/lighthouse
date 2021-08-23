@@ -231,3 +231,11 @@
   height: 1px;
   background-color: var(--color-gray-300);
 }
+
+.SummaryFlowStep__null-gauge {
+  align-self: center;
+  justify-self: center;
+  height: 2px;
+  width: 10px;
+  background-color: var(--color-gray-700);
+}
