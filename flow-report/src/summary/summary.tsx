@@ -49,6 +49,15 @@ const SummaryNavigationHeader: FunctionComponent<{url: string}> =
   );
 };
 
+const SummaryFlowDivider: FunctionComponent<{hideLines: boolean}> = ({hideLines}) => {
+  return (
+    <div className="SummaryFlowDivider">
+      <SummaryFlowIcon hideTopLine={hideLines} hideBottomLine={hideLines}/>
+      <div className="SummaryFlowDivider__line"/>
+    </div>
+  );
+};
+
 const SummaryFlowStep: FunctionComponent<{
   lhr: LH.Result,
   label: string,
@@ -88,6 +97,7 @@ const SummaryFlowStep: FunctionComponent<{
         ))
       }
     </div>
+    <SummaryFlowDivider hideLines={hideBottomLine}/>
   </>;
 };
 
