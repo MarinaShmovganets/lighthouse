@@ -5221,6 +5221,11 @@
           "group": "diagnostics"
         },
         {
+          "id": "viewport",
+          "weight": 0,
+          "group": "diagnostics"
+        },
+        {
           "id": "network-requests",
           "weight": 0
         },
