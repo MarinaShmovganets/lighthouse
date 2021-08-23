@@ -50,8 +50,8 @@ describe('swap-locale', () => {
     expect(lhrDe.audits.plugins.title).toEqual('Dokument verwendet keine Plug-ins');
 
     // With ICU string argument values
-    expect(lhrEn.audits['dom-size'].displayValue).toEqual('149 elements');
-    expect(lhrDe.audits['dom-size'].displayValue).toEqual('149 Elemente');
+    expect(lhrEn.audits['dom-size'].displayValue).toMatchInlineSnapshot('149 elements');
+    expect(lhrDe.audits['dom-size'].displayValue).toMatchInlineSnapshot('149 Elemente');
 
     // Renderer formatted strings
     expect(lhrEn.i18n.rendererFormattedStrings.labDataTitle).toEqual('Lab Data');
@@ -59,9 +59,9 @@ describe('swap-locale', () => {
 
     // Formatted numbers in placeholders.
     expect(lhrEn.audits['mainthread-work-breakdown'].displayValue)
-      .toEqual('1.7 s');
+      .toMatchInlineSnapshot('1.7 s');
     expect(lhrDe.audits['mainthread-work-breakdown'].displayValue)
-      .toEqual('1,7 s');
+      .toMatchInlineSnapshot('1,7 s');
   });
 
   it('can roundtrip back to english correctly', () => {
