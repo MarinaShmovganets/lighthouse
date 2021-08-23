@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "composite": true,
-    "outDir": "../.tmp/tsbuildinfo/lighthouse-viewer",
+    "outDir": "../.tmp/tsbuildinfo/report",
     "emitDeclarationOnly": true,
     "declarationMap": true,
 
@@ -12,7 +12,6 @@
     "target": "es2020",
     "module": "es2020",
     "moduleResolution": "node",
-    "esModuleInterop": true,
 
     "allowJs": true,
     "checkJs": true,
@@ -25,11 +24,16 @@
     "extendedDiagnostics": true,
   },
   "include": [
-    "app/src/**/*.js",
-    "./types/*.d.ts",
+    "**/*.js",
+    "types/**/*.d.ts",
   ],
   "references": [
     {"path": "../types/lhr/"},
-    {"path": "../report/"}
+    {"path": "./generator/"}
+  ],
+  "exclude": [
+    "generator/**/*.js",
+    // These test files require further changes before they can be type checked.
+    "test/**/*.js",
   ],
 }

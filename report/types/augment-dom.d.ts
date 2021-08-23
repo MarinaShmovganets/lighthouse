@@ -4,20 +4,21 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import FlowResult_ from '../../types/lhr/flow';
-import LHResult from '../../types/lhr/lhr';
+/**
+ * @fileoverview Augment global scope with needed DOM APIs that are newer or not
+ * widely supported enough to be in tsc's lib `dom`.
+ */
+
+// Import to augment querySelector/querySelectorAll with stricter type checking.
+import '../../types/query-selector';
 
 declare global {
-  interface Window {
-    __LIGHTHOUSE_FLOW_JSON__: FlowResult_;
-    __initLighthouseFlowReport__: () => void;
-  }
+  var CompressionStream: {
+    prototype: CompressionStream,
+    new (format: string): CompressionStream,
+  };
 
-  // Expose global types in LH namespace.
-  module LH {
-    export import Result = LHResult;
-    export type FlowResult = FlowResult_;
+  interface CompressionStream extends GenericTransformStream {
+    readonly format: string;
   }
 }
-
-export {};
