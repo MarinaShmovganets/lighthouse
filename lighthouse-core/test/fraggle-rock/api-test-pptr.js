@@ -17,7 +17,10 @@ jest.setTimeout(90_000);
 /**
  * Some audits can be notApplicable based on machine timing information.
  * Exclude these audits from applicability comparisons. */
-const FLAKY_AUDIT_IDS_APPLICABILITY = new Set(['long-tasks']);
+const FLAKY_AUDIT_IDS_APPLICABILITY = new Set([
+  'long-tasks',
+  'screenshot-thumbnails',
+]);
 
 /**
  * @param {LH.Result} lhr
@@ -182,7 +185,7 @@ describe('Fraggle Rock API', () => {
       const {auditResults, erroredAudits, notApplicableAudits} = getAuditsBreakdown(result.lhr);
       expect(auditResults.length).toMatchInlineSnapshot(`50`);
 
-      expect(notApplicableAudits.length).toMatchInlineSnapshot(`23`);
+      expect(notApplicableAudits.length).toMatchInlineSnapshot(`22`);
       expect(notApplicableAudits.map(audit => audit.id)).toContain('server-response-time');
 
       // TODO(FR-COMPAT): Reduce this number by handling the error, making N/A, or removing timespan support.
