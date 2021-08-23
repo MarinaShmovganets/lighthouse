@@ -9,31 +9,34 @@ const LargestContentfulPaintLazyLoaded =
   require('../../audits/lcp-lazy-loaded.js');
 
 /* eslint-env jest */
+const SAMPLE_NODE = {
+  devtoolsNodePath: '1,HTML,1,BODY,3,DIV,2,IMG',
+  selector: 'div.l-header > div.chorus-emc__content',
+  nodeLabel: 'My Test Label',
+  snippet: '<img class="test-class">',
+};
+function generateImage(loading, clientRectTop) {
+  return {
+    src: 'test',
+    loading,
+    clientRect: {
+      top: clientRectTop,
+      bottom: 400,
+      left: 0,
+      right: 0,
+    },
+    node: SAMPLE_NODE,
+  };
+}
 describe('Performance: lcp-lazy-loaded audit', () => {
   it('correctly surfaces the lazy loaded LCP element', async () => {
-    const node = {
-      devtoolsNodePath: '1,HTML,1,BODY,3,DIV,2,IMG',
-      selector: 'div.l-header > div.chorus-emc__content',
-      nodeLabel: 'My Test Label',
-      snippet: '<img class="test-class">',
-    };
     const artifacts = {
       TraceElements: [{
         traceEventType: 'largest-contentful-paint',
-        node,
+        node: SAMPLE_NODE,
       }],
       ImageElements: [
-        {
-          src: 'test',
-          loading: 'lazy',
-          clientRect: {
-            top: 0,
-            bottom: 400,
-            left: 0,
-            right: 0,
-          },
-          node,
-        },
+        generateImage('lazy', 0),
       ],
       ViewportDimensions: {
         innerHeight: 500,
@@ -47,6 +50,43 @@ describe('Performance: lcp-lazy-loaded audit', () => {
     expect(auditResult.details.items[0].node.path).toEqual('1,HTML,1,BODY,3,DIV,2,IMG');
     expect(auditResult.details.items[0].node.nodeLabel).toEqual('My Test Label');
     expect(auditResult.details.items[0].node.snippet).toEqual('<img class="test-class">');
+  });
+
+  it('eager LCP element scores 1', async () => {
+    const artifacts = {
+      TraceElements: [{
+        traceEventType: 'largest-contentful-paint',
+        node: SAMPLE_NODE,
+      }],
+      ImageElements: [
+        generateImage('eager', 0),
+      ],
+      ViewportDimensions: {
+        innerHeight: 500,
+        innerWidth: 300,
+      },
+    };
+    const auditResult = await LargestContentfulPaintLazyLoaded.audit(artifacts);
+    expect(auditResult.score).toEqual(1);
+    expect(auditResult.details.items).toHaveLength(1);
+  });
+
+  it('not applicable when outside of viewport', async () => {
+    const artifacts = {
+      TraceElements: [{
+        traceEventType: 'largest-contentful-paint',
+        node: SAMPLE_NODE,
+      }],
+      ImageElements: [
+        generateImage('lazy', 700),
+      ],
+      ViewportDimensions: {
+        innerHeight: 500,
+        innerWidth: 300,
+      },
+    };
+    const auditResult = await LargestContentfulPaintLazyLoaded.audit(artifacts);
+    expect(auditResult.notApplicable).toEqual(true);
   });
 
   it('doesn\'t throw an error when there is nothing to show', async () => {
