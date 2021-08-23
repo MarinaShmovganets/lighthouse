@@ -232,6 +232,7 @@ Auditing: Keep request counts low and transfer sizes small
 Auditing: Minimize third-party usage
 Auditing: Lazy load third-party resources with facades
 Auditing: Largest Contentful Paint element
+Auditing: Largest Contentful Paint image was not lazily loaded
 Auditing: Avoid large layout shifts
 Auditing: Avoid long main-thread tasks
 Auditing: Avoids `unload` event listeners
@@ -486,6 +487,7 @@ label: notApplicable
 largest-contentful-paint: numeric
 largest-contentful-paint-element: informative
 layout-shift-elements: notApplicable
+lcp-lazy-loaded: notApplicable
 legacy-javascript: numeric
 link-name: notApplicable
 link-text: pass
