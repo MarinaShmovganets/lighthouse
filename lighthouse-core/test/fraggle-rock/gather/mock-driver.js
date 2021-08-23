@@ -128,6 +128,23 @@ function mockDriverModule(driverProvider) {
   };
 }
 
+/**
+ * @returns {LH.FRBaseArtifacts}
+ */
+function createMockBaseArtifacts() {
+  return {
+    fetchTime: new Date().toISOString(),
+    URL: {finalUrl: 'https://example.com', requestedUrl: 'https://example.com'},
+    PageLoadError: null,
+    settings: defaultSettings,
+    BenchmarkIndex: 500,
+    LighthouseRunWarnings: [],
+    Timing: [],
+    HostFormFactor: 'desktop',
+    HostUserAgent: 'Chrome/93.0.1449.0',
+  };
+}
+
 function createMockContext() {
   return {
     driver: createMockDriver(),
@@ -135,6 +152,7 @@ function createMockContext() {
     gatherMode: 'navigation',
     computedCache: new Map(),
     dependencies: {},
+    baseArtifacts: createMockBaseArtifacts(),
     settings: defaultSettings,
 
     /** @return {LH.Gatherer.FRTransitionalContext} */
@@ -208,5 +226,6 @@ module.exports = {
   createMockPage,
   createMockSession,
   createMockGathererInstance,
+  createMockBaseArtifacts,
   createMockContext,
 };

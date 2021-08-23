@@ -15,6 +15,11 @@ const StaticServer = require('../../../lighthouse-cli/test/fixtures/static-serve
 jest.setTimeout(90_000);
 
 /**
+ * Some audits can be notApplicable based on machine timing information.
+ * Exclude these audits from applicability comparisons. */
+const FLAKY_AUDIT_IDS_APPLICABILITY = new Set(['long-tasks']);
+
+/**
  * @param {LH.Result} lhr
  */
 function getAuditsBreakdown(lhr) {
@@ -25,7 +30,10 @@ function getAuditsBreakdown(lhr) {
   );
 
   const notApplicableAudits = auditResults.filter(
-    audit => audit.scoreDisplayMode === 'notApplicable'
+    audit => (
+      audit.scoreDisplayMode === 'notApplicable' &&
+      !FLAKY_AUDIT_IDS_APPLICABILITY.has(audit.id)
+    )
   );
 
   const informativeAudits = applicableAudits.filter(
@@ -38,7 +46,7 @@ function getAuditsBreakdown(lhr) {
 
   const failedAudits = applicableAudits.filter(audit => audit.score !== null && audit.score < 1);
 
-  return {auditResults, erroredAudits, failedAudits, informativeAudits, notApplicableAudits};
+  return {auditResults, erroredAudits, failedAudits, notApplicableAudits};
 }
 
 describe('Fraggle Rock API', () => {
@@ -174,7 +182,7 @@ describe('Fraggle Rock API', () => {
       const {auditResults, erroredAudits, notApplicableAudits} = getAuditsBreakdown(result.lhr);
       expect(auditResults.length).toMatchInlineSnapshot(`50`);
 
-      expect(notApplicableAudits.length).toMatchInlineSnapshot(`22`);
+      expect(notApplicableAudits.length).toMatchInlineSnapshot(`23`);
       expect(notApplicableAudits.map(audit => audit.id)).toContain('server-response-time');
 
       // TODO(FR-COMPAT): Reduce this number by handling the error, making N/A, or removing timespan support.
