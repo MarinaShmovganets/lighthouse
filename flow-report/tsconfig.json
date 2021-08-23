@@ -2,7 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "outDir": "../.tmp/tsbuildinfo/flow-report",
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "declarationMap": true,
 
     // Limit to base JS and DOM defs.
