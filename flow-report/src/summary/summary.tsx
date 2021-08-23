@@ -80,8 +80,11 @@ const SummaryFlowStep: FunctionComponent<{
       {
         DISPLAYED_CATEGORIES.map(c => (
           reportResult.categories[c] ?
-            // TODO(FR-COMPAT): jump to category specific anchor.
-            <Gauge key={c} category={reportResult.categories[c]} href={`#index=${hashIndex}`}/> :
+            <Gauge
+              key={c}
+              category={reportResult.categories[c]}
+              href={`#index=${hashIndex}&anchor=${c}`}
+            /> :
             <div className="SummaryFlowStep__null-gauge"/>
         ))
       }
@@ -93,10 +96,10 @@ const SummaryFlowStep: FunctionComponent<{
   </>;
 };
 
-export const Summary: FunctionComponent = () => {
+export const SummaryFlow: FunctionComponent = () => {
   const flowResult = useFlowResult();
   const stepNames = useDerivedStepNames();
-  return <div className="Summary">
+  return <div className="SummaryFlow">
     {
       flowResult.lhrs.map((lhr, index) =>
         <SummaryFlowStep
@@ -110,4 +113,46 @@ export const Summary: FunctionComponent = () => {
       )
     }
   </div>;
+};
+
+const SummaryHeader: FunctionComponent = () => {
+  const flowResult = useFlowResult();
+
+  let numNavigation = 0;
+  let numTimespan = 0;
+  let numSnapshot = 0;
+  for (const lhr of flowResult.lhrs) {
+    switch (lhr.gatherMode) {
+      case 'navigation':
+        numNavigation++;
+        break;
+      case 'timespan':
+        numTimespan++;
+        break;
+      case 'snapshot':
+        numSnapshot++;
+        break;
+    }
+  }
+  const subtitleCounts = [];
+  if (numNavigation) subtitleCounts.push(`${numNavigation} navigation reports`);
+  if (numTimespan) subtitleCounts.push(`${numTimespan} timespan reports`);
+  if (numSnapshot) subtitleCounts.push(`${numSnapshot} snapshot reports`);
+  const subtitle = subtitleCounts.join(' · ');
+
+  return (
+    <div className="SummaryHeader">
+      <div className="SummaryHeader__title">Summary</div>
+      <div className="SummaryHeader__subtitle">{subtitle}</div>
+    </div>
+  );
+};
+
+export const Summary: FunctionComponent = () => {
+  return (
+    <div className="Summary">
+      <SummaryHeader/>
+      <SummaryFlow/>
+    </div>
+  );
 };

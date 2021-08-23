@@ -10,6 +10,8 @@
   --sidebar-summary-font-size: 14px;
   --sidebar-flow-step-navigation-font-size: 14px;
   --summary-flow-step-label-font-size: 16px;
+  --summary-title-font-size: 32px;
+  --summary-subtitle-font-size: 16px;
   --base-spacing: 16px;
 }
 
@@ -159,10 +161,27 @@
 }
 
 .Summary {
+  margin: 0 auto;
   min-width: var(--report-width);
   width: max-content;
   max-width: 90%;
-  margin: 0px auto;
+}
+
+.SummaryHeader {
+  margin: var(--base-spacing) 0;
+}
+
+.SummaryHeader__title {
+  margin: var(--base-spacing) 0;
+  font-size: var(--summary-title-font-size);
+}
+
+.SummaryHeader__subtitle {
+  font-size: var(--summary-subtitle-font-size);
+}
+
+.SummaryFlow {
+  width: 100%;
   display: grid;
   grid-auto-rows: min-content;
   grid-template-columns: min-content min-content 4fr 1fr 1fr 1fr 1fr;
