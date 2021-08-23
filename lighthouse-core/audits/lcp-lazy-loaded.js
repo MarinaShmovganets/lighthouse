@@ -11,7 +11,7 @@ const i18n = require('../lib/i18n/i18n.js');
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on whether the largest above-the-fold image was loaded with sufficient priority. This descriptive title is shown to users when the image was loaded properly. */
   title: 'Largest Contentful Paint image was not lazily loaded',
-    /** Title of a Lighthouse audit that provides detail on whether the largest above-the-fold image was loaded with sufficient priority. This descriptive title is shown to users when the image was loaded inefficiently using the `loading=lazy` attribute. */
+  /** Title of a Lighthouse audit that provides detail on whether the largest above-the-fold image was loaded with sufficient priority. This descriptive title is shown to users when the image was loaded inefficiently using the `loading=lazy` attribute. */
   failureTitle: 'Largest Contentful Paint image was lazily loaded',
   /** Description of a Lighthouse audit that tells the user why the advice is important. This is displayed after a user expands the section to see more. No character length limits. */
   description: 'Above-the-fold images that are lazily loaded render later in the page lifecycle, which can delay the largest contentful paint. [Learn more](https://web.dev/lcp-lazy-loading/).',
@@ -49,26 +49,15 @@ class LargestContentfulPaintLazyLoaded extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    const images = artifacts.ImageElements;
-    const lazyLoadedImages = images.filter(
-      image => image.loading === 'lazy');
     const lcpElement = artifacts.TraceElements
       .find(element => element.traceEventType === 'largest-contentful-paint');
+    const lcpElementImage = lcpElement ? artifacts.ImageElements.find(elem => {
+      return elem.node.devtoolsNodePath === lcpElement.node.devtoolsNodePath;
+    }) : undefined;
 
-    const lcpElementDetails = [];
-    if (lcpElement) {
-      const lcpImageElement = lazyLoadedImages.find(elem => {
-        return elem.node.devtoolsNodePath === lcpElement.node.devtoolsNodePath
-            && this.isImageInViewport(elem, artifacts.ViewportDimensions);
-      });
-      if (lcpImageElement) {
-        lcpElementDetails.push({
-          node: Audit.makeNodeItem(lcpImageElement.node),
-        });
-      }
-    }
 
-    if (lcpElementDetails.length === 0) {
+    if (!lcpElementImage ||
+      !this.isImageInViewport(lcpElementImage, artifacts.ViewportDimensions)) {
       return {score: 1, notApplicable: true};
     }
 
@@ -77,10 +66,14 @@ class LargestContentfulPaintLazyLoaded extends Audit {
       {key: 'node', itemType: 'node', text: str_(i18n.UIStrings.columnElement)},
     ];
 
-    const details = Audit.makeTableDetails(headings, lcpElementDetails);
+    const details = Audit.makeTableDetails(headings, [
+      {
+        node: Audit.makeNodeItem(lcpElementImage.node),
+      },
+    ]);
 
     return {
-      score: 0,
+      score: lcpElementImage.loading === 'lazy' ? 0 : 1,
       details,
     };
   }
