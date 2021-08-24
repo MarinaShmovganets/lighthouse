@@ -573,7 +573,7 @@ viewport: fail
 viewport-ad-density: notApplicable
 visual-order-follows-dom: manual
 
-# of .lh-audit divs: 160
+# of .lh-audit divs: 161
 
 .lh-audit divs:
 accesskeys
