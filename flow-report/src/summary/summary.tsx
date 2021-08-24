@@ -6,7 +6,7 @@
 
 import {FunctionComponent} from 'preact';
 import {Gauge} from '../lh-wrappers';
-import {FlowStepIcon} from '../common';
+import {CategorySummary, FlowStepIcon} from '../common';
 import {useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 
@@ -53,12 +53,19 @@ const SummaryFlowStep: FunctionComponent<{
       {
         DISPLAYED_CATEGORIES.map(c => (
           reportResult.categories[c] ?
-            <Gauge
-              key={c}
-              category={reportResult.categories[c]}
-              href={`#index=${hashIndex}&anchor=${c}`}
-            /> :
-            <div className="SummaryFlowStep__null-gauge"/>
+            reportResult.gatherMode === 'navigation' ?
+              <Gauge
+                key={c}
+                category={reportResult.categories[c]}
+                href={`#index=${hashIndex}&anchor=${c}`}
+              /> :
+              <CategorySummary
+                key={c}
+                category={reportResult.categories[c]}
+                audits={reportResult.audits}
+                href={`#index=${hashIndex}&anchor=${c}`}
+              /> :
+            <div key={c} className="SummaryFlowStep__null-gauge"/>
         ))
       }
       <div className="SummaryFlowStep__divider">

@@ -7,6 +7,7 @@
 .flow-vars {
   --app-font-size: 12px;
   --base-spacing: 16px;
+  --category-summary-font-size: 18px;
   --sidebar-flow-step-navigation-font-size: 14px;
   --sidebar-summary-font-size: 14px;
   --sidebar-title-font-size: 16px;
@@ -68,6 +69,51 @@
   border-radius: 50%;
   background-color: var(--color-blue-A700);
   display: block;
+}
+
+.CategorySummary {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--category-summary-font-size);
+  min-height: var(--gauge-circle-size);
+  min-width: var(--gauge-circle-size);
+  text-decoration: none;
+}
+.CategorySummary::before {
+  content: '';
+  height: var(--score-icon-size);
+  width: var(--score-icon-size);
+  margin: var(--score-icon-margin);
+}
+.CategorySummary--pass {
+  color: var(--color-pass)
+}
+.CategorySummary--pass::before {
+  background-color: var(--color-pass);
+  border-radius: 50%;
+}
+.CategorySummary--average {
+  color: var(--color-average)
+}
+.CategorySummary--average::before {
+  background-color: var(--color-average);
+}
+.CategorySummary--fail {
+  color: var(--color-fail)
+}
+.CategorySummary--fail::before {
+  border-left: calc(var(--score-icon-size) / 2) solid transparent;
+  border-right: calc(var(--score-icon-size) / 2) solid transparent;
+  border-bottom: var(--score-icon-size) solid var(--color-fail);
+}
+.CategorySummary--null {
+  color: var(--color-gray-700);
+}
+.CategorySummary--null::before {
+  border-radius: 50%;
+  border: 2px solid var(--color-gray-700);
 }
 
 .Separator {
