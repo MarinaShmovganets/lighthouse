@@ -17,11 +17,11 @@ type _TaskNode = import('../lighthouse-core/lib/tracehouse/main-thread-tasks.js'
 import AuditDetails from './lhr/audit-details'
 import Config from './config';
 import Gatherer from './gatherer';
-import { IcuMessage } from './lhr/i18n';
+import {IcuMessage} from './lhr/i18n';
 import LHResult from './lhr/lhr'
 import Protocol from './protocol';
 
-export interface Artifacts extends BaseArtifacts, GathererArtifacts { }
+export interface Artifacts extends BaseArtifacts, GathererArtifacts {}
 
 export type FRArtifacts = StrictOmit<Artifacts,
   | 'Fonts'
@@ -61,7 +61,7 @@ interface UniversalBaseArtifacts {
  */
 interface ContextualBaseArtifacts {
   /** The URL initially requested and the post-redirects URL that was actually loaded. */
-  URL: { requestedUrl: string, finalUrl: string };
+  URL: {requestedUrl: string, finalUrl: string};
   /** If loading the page failed, value is the error that caused it. Otherwise null. */
   PageLoadError: LighthouseError | null;
 }
@@ -71,7 +71,7 @@ interface ContextualBaseArtifacts {
  */
 interface LegacyBaseArtifacts {
   /** Device which Chrome is running on. */
-  HostFormFactor: 'desktop' | 'mobile';
+  HostFormFactor: 'desktop'|'mobile';
   /** The user agent string of the version of Chrome used. */
   HostUserAgent: string;
   /** The user agent string that Lighthouse used to load the page. Set to the empty string if unknown. */
@@ -83,9 +83,9 @@ interface LegacyBaseArtifacts {
   /** Errors preventing page being installable as PWA. This moved to a regular artifact in Fraggle Rock. */
   InstallabilityErrors: Artifacts.InstallabilityErrors;
   /** A set of page-load traces, keyed by passName. */
-  traces: { [passName: string]: Trace };
+  traces: {[passName: string]: Trace};
   /** A set of DevTools debugger protocol records, keyed by passName. */
-  devtoolsLogs: { [passName: string]: DevtoolsLog };
+  devtoolsLogs: {[passName: string]: DevtoolsLog};
 }
 
 /**
@@ -105,7 +105,7 @@ interface PublicGathererArtifacts {
   /** All the link elements on the page or equivalently declared in `Link` headers. @see https://html.spec.whatwg.org/multipage/links.html */
   LinkElements: Artifacts.LinkElement[];
   /** The values of the <meta> elements in the head. */
-  MetaElements: Array<{ name?: string, content?: string, property?: string, httpEquiv?: string, charset?: string, node: Artifacts.NodeDetails }>;
+  MetaElements: Array<{name?: string, content?: string, property?: string, httpEquiv?: string, charset?: string, node: Artifacts.NodeDetails}>;
   /** Information on all script elements in the page. Also contains the content of all requested scripts and the networkRecord requestId that contained their content. Note, HTML documents will have one entry per script tag, all with the same requestId. */
   ScriptElements: Array<Artifacts.ScriptElement>;
   /** The dimensions and devicePixelRatio of the loaded viewport. */
@@ -116,7 +116,7 @@ interface PublicGathererArtifacts {
  * Artifacts provided by the default gatherers. Augment this interface when adding additional
  * gatherers. Changes to these artifacts are not considered a breaking Lighthouse change.
  */
-export interface GathererArtifacts extends PublicGathererArtifacts, LegacyBaseArtifacts {
+export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArtifacts {
   /** The results of running the aXe accessibility tests on the page. */
   Accessibility: Artifacts.Accessibility;
   /** Array of all anchors on the page. */
@@ -126,7 +126,7 @@ export interface GathererArtifacts extends PublicGathererArtifacts, LegacyBaseAr
   /** Array of all URLs cached in CacheStorage. */
   CacheContents: string[];
   /** CSS coverage information for styles used by page's final state. */
-  CSSUsage: { rules: LH.Crdp.CSS.RuleUsage[], stylesheets: Artifacts.CSSStyleSheetInfo[] };
+  CSSUsage: {rules: LH.Crdp.CSS.RuleUsage[], stylesheets: Artifacts.CSSStyleSheetInfo[]};
   /** The primary log of devtools protocol activity. Used in Fraggle Rock gathering. */
   DevtoolsLog: DevtoolsLog;
   /** Information on the document's doctype(or null if not present), specifically the name, publicId, and systemId.
@@ -145,11 +145,11 @@ export interface GathererArtifacts extends PublicGathererArtifacts, LegacyBaseAr
   /** Screenshot of the entire page (rather than just the above the fold content). */
   FullPageScreenshot: Artifacts.FullPageScreenshot | null;
   /** Information about how Lighthouse artifacts were gathered. */
-  GatherContext: { gatherMode: Gatherer.GatherMode };
+  GatherContext: {gatherMode: Gatherer.GatherMode};
   /** Information about event listeners registered on the global object. */
   GlobalListeners: Array<Artifacts.GlobalListener>;
   /** Whether the page ended up on an HTTPS page after attempting to load the HTTP version. */
-  HTTPRedirect: { value: boolean };
+  HTTPRedirect: {value: boolean};
   /** The issues surfaced in the devtools Issues panel */
   InspectorIssues: Artifacts.InspectorIssues;
   /** JS coverage information for code used during page load. Keyed by network URL. */
@@ -157,17 +157,17 @@ export interface GathererArtifacts extends PublicGathererArtifacts, LegacyBaseAr
   /** Parsed version of the page's Web App Manifest, or null if none found. */
   Manifest: Artifacts.Manifest | null;
   /** The URL loaded with interception */
-  MixedContent: { url: string };
+  MixedContent: {url: string};
   /** Size and compression opportunity information for all the images in the page. */
   OptimizedImages: Array<Artifacts.OptimizedImage | Artifacts.OptimizedImageError>;
   /** HTML snippets and node paths from any password inputs that prevent pasting. */
   PasswordInputsWithPreventedPaste: Artifacts.PasswordInputsWithPreventedPaste[];
   /** Size info of all network records sent without compression and their size after gzipping. */
-  ResponseCompression: { requestId: string, url: string, mimeType: string, transferSize: number, resourceSize: number, gzipSize?: number }[];
+  ResponseCompression: {requestId: string, url: string, mimeType: string, transferSize: number, resourceSize: number, gzipSize?: number}[];
   /** Information on fetching and the content of the /robots.txt file. */
-  RobotsTxt: { status: number | null, content: string | null };
+  RobotsTxt: {status: number|null, content: string|null};
   /** Version information for all ServiceWorkers active after the first page load. */
-  ServiceWorker: { versions: LH.Crdp.ServiceWorker.ServiceWorkerVersion[], registrations: LH.Crdp.ServiceWorker.ServiceWorkerRegistration[] };
+  ServiceWorker: {versions: LH.Crdp.ServiceWorker.ServiceWorkerVersion[], registrations: LH.Crdp.ServiceWorker.ServiceWorkerRegistration[]};
   /** Source maps of scripts executed in the page. */
   SourceMaps: Array<Artifacts.SourceMap>;
   /** Information on <script> and <link> tags blocking first paint. */
@@ -237,8 +237,8 @@ declare module Artifacts {
   interface DOMStats {
     /** The total number of elements found within the page's body. */
     totalBodyElements: number;
-    width: NodeDetails & { max: number; };
-    depth: NodeDetails & { max: number; };
+    width: NodeDetails & {max: number;};
+    depth: NodeDetails & {max: number;};
   }
 
   interface EmbeddedContentInfo {
@@ -247,7 +247,7 @@ declare module Artifacts {
     src: string | null;
     data: string | null;
     code: string | null;
-    params: Array<{ name: string; value: string }>;
+    params: Array<{name: string; value: string}>;
     node: Artifacts.NodeDetails;
   }
 
@@ -274,7 +274,7 @@ declare module Artifacts {
   /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#Attributes */
   interface LinkElement {
     /** The `rel` attribute of the link, normalized to lower case. @see https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types */
-    rel: 'alternate' | 'canonical' | 'dns-prefetch' | 'preconnect' | 'preload' | 'stylesheet' | string;
+    rel: 'alternate'|'canonical'|'dns-prefetch'|'preconnect'|'preload'|'stylesheet'|string;
     /** The `href` attribute of the link or `null` if it was invalid in the header. */
     href: string | null
     /** The raw value of the `href` attribute. Only different from `href` when source is 'headers' */
@@ -286,11 +286,11 @@ declare module Artifacts {
     /** The `crossOrigin` attribute of the link */
     crossOrigin: string | null
     /** Where the link was found, either in the DOM or in the headers of the main document */
-    source: 'head' | 'body' | 'headers'
+    source: 'head'|'body'|'headers'
     node: NodeDetails | null
   }
 
-  interface PasswordInputsWithPreventedPaste { node: NodeDetails }
+  interface PasswordInputsWithPreventedPaste {node: NodeDetails}
 
   interface ScriptElement {
     type: string | null
@@ -302,7 +302,7 @@ declare module Artifacts {
     /** Details for node in DOM for the script element */
     node: NodeDetails | null
     /** Where the script was discovered, either in the head, the body, or network records. */
-    source: 'head' | 'body' | 'network'
+    source: 'head'|'body'|'network'
     /** The content of the inline script or the network record with the matching URL, null if the script had a src and no network record could be found. */
     content: string | null
     /** The ID of the network request that matched the URL of the src or the main document if inline, null if no request could be found. */
@@ -330,7 +330,7 @@ declare module Artifacts {
      * `map` is optional because the spec defines that either `url` or `map` must be defined.
      * We explicitly only support `map` here.
     */
-    sections?: Array<{ offset: { line: number, column: number }, map?: RawSourceMap }>
+    sections?: Array<{offset: {line: number, column: number}, map?: RawSourceMap}>
   }
 
   /**
@@ -364,7 +364,7 @@ declare module Artifacts {
       files: Record<string, number>;
       unmappedBytes: number;
       totalBytes: number;
-    } | { errorMessage: string };
+    } | {errorMessage: string};
   }
 
   /** @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#Attributes */
@@ -419,8 +419,8 @@ declare module Artifacts {
       };
       cssRule?: {
         type: 'Regular' | 'Inline' | 'Attributes';
-        range?: { startLine: number, startColumn: number };
-        parentRule?: { origin: LH.Crdp.CSS.StyleSheetOrigin, selectors: { text: string }[] };
+        range?: {startLine: number, startColumn: number};
+        parentRule?: {origin: LH.Crdp.CSS.StyleSheetOrigin, selectors: {text: string}[]};
         styleSheetId?: string;
         stylesheet?: LH.Crdp.CSS.CSSStyleSheetHeader;
         cssProperties?: Array<LH.Crdp.CSS.CSSProperty>;
@@ -527,11 +527,11 @@ declare module Artifacts {
     endTime: number;
     transferSize: number;
     tag: {
-      tagName: 'LINK' | 'SCRIPT';
+      tagName: 'LINK'|'SCRIPT';
       /** The value of `HTMLLinkElement.href` or `HTMLScriptElement.src`. */
       url: string;
       /** A record of when changes to the `HTMLLinkElement.media` attribute occurred and if the new media type matched the page. */
-      mediaChanges?: Array<{ href: string, media: string, msSinceHTMLEnd: number, matches: boolean }>;
+      mediaChanges?: Array<{href: string, media: string, msSinceHTMLEnd: number, matches: boolean}>;
     };
   }
 
@@ -544,11 +544,11 @@ declare module Artifacts {
   }
 
   interface TraceElement {
-    traceEventType: 'largest-contentful-paint' | 'layout-shift' | 'animation';
+    traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation';
     score?: number;
     node: NodeDetails;
     nodeId?: number;
-    animations?: { name?: string, failureReasonsMask?: number, unsupportedProperties?: string[] }[];
+    animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[];
   }
 
   interface ViewportDimensions {
@@ -575,7 +575,7 @@ declare module Artifacts {
     }
   }
 
-  type ManifestValueCheckID = 'hasStartUrl' | 'hasIconsAtLeast144px' | 'hasIconsAtLeast512px' | 'fetchesIcon' | 'hasPWADisplayValue' | 'hasBackgroundColor' | 'hasThemeColor' | 'hasShortName' | 'hasName' | 'shortNameLength' | 'hasMaskableIcon';
+  type ManifestValueCheckID = 'hasStartUrl'|'hasIconsAtLeast144px'|'hasIconsAtLeast512px'|'fetchesIcon'|'hasPWADisplayValue'|'hasBackgroundColor'|'hasThemeColor'|'hasShortName'|'hasName'|'shortNameLength'|'hasMaskableIcon';
 
   type ManifestValues = {
     isParseFailure: false;
@@ -669,9 +669,9 @@ declare module Artifacts {
     /** The subset of trace events from the main frame and any child frames, sorted by timestamp. */
     frameTreeEvents: Array<TraceEvent>;
     /** IDs for the trace's main frame, process, and thread. */
-    mainFrameIds: { pid: number, tid: number, frameId: string };
+    mainFrameIds: {pid: number, tid: number, frameId: string};
     /** The list of frames committed in the trace. */
-    frames: Array<{ id: string, url: string }>;
+    frames: Array<{id: string, url: string}>;
     /** The trace event marking the time at which the run should consider to have begun. Typically the same as the navigationStart but might differ due to SPA navigations, client-side redirects, etc. In the FR timespan case, this event is injected by Lighthouse itself. */
     timeOriginEvt: TraceEvent;
   }
@@ -817,7 +817,7 @@ declare module Artifacts {
   /** Information about an event listener registered on the global object. */
   interface GlobalListener {
     /** Event listener type, limited to those events currently of interest. */
-    type: 'pagehide' | 'unload' | 'visibilitychange';
+    type: 'pagehide'|'unload'|'visibilitychange';
     /** The DevTools protocol script identifier. */
     scriptId: string;
     /** Line number in the script (0-based). */
@@ -888,7 +888,7 @@ export interface Trace {
 
 /** The type of the Profile & ProfileChunk event in Chromium traces. Note that this is subtly different from Crdp.Profiler.Profile. */
 export interface TraceCpuProfile {
-  nodes?: Array<{ id: number, callFrame: { functionName: string, url?: string }, parent?: number }>
+  nodes?: Array<{id: number, callFrame: {functionName: string, url?: string}, parent?: number}>
   samples?: Array<number>
   timeDeltas?: Array<number>
 }
@@ -960,7 +960,7 @@ export interface TraceEvent {
   /** Timestamp of the event in microseconds. */
   ts: number;
   dur: number;
-  ph: 'B' | 'b' | 'D' | 'E' | 'e' | 'F' | 'I' | 'M' | 'N' | 'n' | 'O' | 'R' | 'S' | 'T' | 'X';
+  ph: 'B'|'b'|'D'|'E'|'e'|'F'|'I'|'M'|'N'|'n'|'O'|'R'|'S'|'T'|'X';
   s?: 't';
   id?: string;
   id2?: {
