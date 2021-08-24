@@ -19,12 +19,23 @@ describe('DOBETTERWEB: doctype audit', () => {
     expect(auditResult.explanation).toBeDisplayString('Document must contain a doctype');
   });
 
+  it('fails when document is in quirks-mode', () => {
+    const auditResult = Audit.audit({
+      Doctype: {
+        compatMode: 'BackCompat',
+      },
+    });
+    assert.equal(auditResult.score, 0);
+    expect(auditResult.explanation).toBeDisplayString('Document contains wrong doctype');
+  });
+
   it('fails when the value of the name attribute is a value other then lowercase "html"', () => {
     const auditResult = Audit.audit({
       Doctype: {
         name: 'xml',
         publicId: '',
         systemId: '',
+        compatMode: 'CSS1Compat',
       },
     });
     assert.equal(auditResult.score, 0);
@@ -38,6 +49,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'HTML',
         publicId: '',
         systemId: '',
+        compatMode: 'CSS1Compat',
       },
     });
     assert.equal(auditResult.score, 0);
@@ -51,6 +63,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'html',
         publicId: '189655',
         systemId: '',
+        compatMode: 'CSS1Compat',
       },
     });
     assert.equal(auditResult.score, 0);
@@ -63,6 +76,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'html',
         publicId: '',
         systemId: '189655',
+        compatMode: 'CSS1Compat',
       },
     });
     assert.equal(auditResult.score, 0);
@@ -75,6 +89,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'html',
         publicId: '',
         systemId: '',
+        compatMode: 'CSS1Compat',
       },
     });
     assert.equal(auditResult.score, 1);
