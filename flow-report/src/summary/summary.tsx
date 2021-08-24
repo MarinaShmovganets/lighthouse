@@ -6,29 +6,17 @@
 
 import {FunctionComponent} from 'preact';
 import {Gauge} from '../lh-wrappers';
-import {FlowStepIcon} from '../sidebar/flow';
+import {FlowStepIcon} from '../common';
 import {useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 
-const SummaryFlowIcon: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
-  return (
-    <div className="SummaryFlowIcon">
-      <div className="SummaryFlowIcon__top-line"/>
-      {
-        mode && <FlowStepIcon mode={mode}/>
-      }
-      <div className="SummaryFlowIcon__bottom-line"/>
-    </div>
-  );
-};
-
 const SummaryNavigationHeader: FunctionComponent<{url: string}> =
 ({url}) => {
   return (
     <div className="SummaryNavigationHeader">
-      <SummaryFlowIcon/>
+      <FlowStepIcon/>
       <div className="SummaryNavigationHeader__url">{url}</div>
       <div className="SummaryNavigationHeader__category">Performance</div>
       <div className="SummaryNavigationHeader__category">Accessibility</div>
@@ -60,7 +48,7 @@ const SummaryFlowStep: FunctionComponent<{
           undefined
       }
       <img className="SummaryFlowStep__screenshot" src={lastScreenshot ? lastScreenshot.data : ''}/>
-      <SummaryFlowIcon mode={lhr.gatherMode}/>
+      <FlowStepIcon mode={lhr.gatherMode}/>
       <a className="SummaryFlowStep__label" href={`#index=${hashIndex}`}>{label}</a>
       {
         DISPLAYED_CATEGORIES.map(c => (
@@ -74,7 +62,7 @@ const SummaryFlowStep: FunctionComponent<{
         ))
       }
       <div className="SummaryFlowStep__divider">
-        <SummaryFlowIcon/>
+        <FlowStepIcon/>
         <div className="SummaryFlowStep__divider--line"/>
       </div>
     </div>

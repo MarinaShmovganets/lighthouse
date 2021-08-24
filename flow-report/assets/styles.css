@@ -24,6 +24,52 @@
   font-size: var(--app-font-size);
 }
 
+.FlowStepIcon {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 var(--base-spacing);
+}
+
+.FlowStepIcon__top-line, .FlowStepIcon__bottom-line {
+  width: 2px;
+  flex-grow: 1;
+  background-color: var(--color-blue-A700);
+}
+
+.FlowModeIcon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+}
+.FlowModeIcon--navigation::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--color-blue-A700);
+  display: block;
+}
+.FlowModeIcon--timespan::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-blue-A700);
+  display: block;
+}
+.FlowModeIcon--snapshot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-blue-A700);
+  display: block;
+}
+
 .Separator {
   height: 1px;
   width: 100%;
@@ -98,7 +144,6 @@
 
 .SidebarFlowStep {
   display: flex;
-  padding-left: var(--base-spacing);
   padding-right: var(--base-spacing);
 }
 
@@ -110,54 +155,6 @@
 }
 .SidebarFlowStep__label--navigation {
   font-size: var(--sidebar-flow-step-navigation-font-size);
-}
-
-.SidebarFlowStep__icon {
-  grid-column: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  /* Flex column-gap workaround for safari */
-  margin-right: var(--base-spacing);
-}
-.SidebarFlowStep__icon--line {
-  width: 2px;
-  flex-grow: 1;
-  background-color: var(--color-blue-A700);
-}
-
-.FlowStepIcon {
-  display: flex;
-  width: 16px;
-  height: 16px;
-  align-items: center;
-  justify-content: center;
-}
-.FlowStepIcon--navigation::before {
-  content: '';
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 2px solid var(--color-blue-A700);
-  display: block;
-}
-.FlowStepIcon--timespan::before {
-  content: '';
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background-color: var(--color-blue-A700);
-  display: block;
-}
-.FlowStepIcon--snapshot::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--color-blue-A700);
-  display: block;
 }
 
 .Summary {
@@ -188,27 +185,35 @@
   align-items: center;
 }
 
-/* Hide ends segments of entire flow */
-.SummaryFlow > :first-child > .SummaryFlowIcon > .SummaryFlowIcon__top-line {
+/* Hide end segments of sidebar flow */
+.SidebarFlow > :first-child .FlowStepIcon > .FlowStepIcon__top-line {
   background-color: transparent;
 }
-.SummaryFlow > :last-child > .SummaryFlowIcon > .SummaryFlowIcon__bottom-line {
+.SidebarFlow > :last-child .FlowStepIcon > .FlowStepIcon__bottom-line {
+  background-color: transparent;
+}
+
+/* Hide end segments of summary flow */
+.SummaryFlow > :first-child > .FlowStepIcon > .FlowStepIcon__top-line {
+  background-color: transparent;
+}
+.SummaryFlow > :last-child > .FlowStepIcon > .FlowStepIcon__bottom-line {
   background-color: transparent;
 }
 
 /* Hide segment for first navigation header */
-.SummaryFlow > :first-child .SummaryNavigationHeader .SummaryFlowIcon__bottom-line {
+.SummaryFlow > :first-child .SummaryNavigationHeader .FlowStepIcon__bottom-line {
   background-color: transparent;
 }
-.SummaryFlow > :first-child .SummaryNavigationHeader .SummaryFlowIcon__top-line {
+.SummaryFlow > :first-child .SummaryNavigationHeader .FlowStepIcon__top-line {
   background-color: transparent;
 }
 
 /* Hide segment for the final divider */
-.SummaryFlow > :last-child .SummaryFlowStep__divider .SummaryFlowIcon__bottom-line {
+.SummaryFlow > :last-child .SummaryFlowStep__divider .FlowStepIcon__bottom-line {
   background-color: transparent;
 }
-.SummaryFlow > :last-child .SummaryFlowStep__divider .SummaryFlowIcon__top-line {
+.SummaryFlow > :last-child .SummaryFlowStep__divider .FlowStepIcon__top-line {
   background-color: transparent;
 }
 
@@ -217,6 +222,9 @@
 }
 .SummaryFlowStep > * {
   margin: 8px;
+}
+.SummaryFlowStep .FlowStepIcon {
+  grid-column: 2;
 }
 
 .SummaryFlowStep__screenshot {
@@ -251,21 +259,6 @@
 .SummaryNavigationHeader__url {
   justify-content: start;
   text-align: left;
-}
-
-.SummaryFlowIcon {
-  height: 100%;
-  grid-column: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 var(--base-spacing);
-}
-
-.SummaryFlowIcon__top-line, .SummaryFlowIcon__bottom-line {
-  width: 2px;
-  flex-grow: 1;
-  background-color: var(--color-blue-A700);
 }
 
 .SummaryFlowStep__divider {

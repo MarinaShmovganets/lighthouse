@@ -5,35 +5,22 @@
  */
 
 import {FunctionComponent} from 'preact';
+import {FlowStepIcon} from '../common';
 import {classNames, useCurrentLhr, useDerivedStepNames, useFlowResult} from '../util';
-
-export const FlowStepIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
-  return <div className={`FlowStepIcon FlowStepIcon--${mode}`}></div>;
-};
 
 const SidebarFlowStep: FunctionComponent<{
   mode: LH.Result.GatherMode,
   href: string,
   label: string,
-  hideTopLine: boolean,
-  hideBottomLine: boolean,
   isCurrent: boolean,
-}> = ({href, label, mode, hideTopLine, hideBottomLine, isCurrent}) => {
+}> = ({href, label, mode, isCurrent}) => {
   return (
     <a
       className={classNames('SidebarFlowStep', {'Sidebar--current': isCurrent})}
       href={href}
     >
-      <div className="SidebarFlowStep__icon">
-        <div
-          className="SidebarFlowStep__icon--line"
-          style={hideTopLine ? {background: 'transparent'} : undefined}
-        />
+      <div>
         <FlowStepIcon mode={mode}/>
-        <div
-          className="SidebarFlowStep__icon--line"
-          style={hideBottomLine ? {background: 'transparent'} : undefined}
-        />
       </div>
       <div className={`SidebarFlowStep__label SidebarFlowStep__label--${mode}`}>{label}</div>
     </a>
@@ -46,7 +33,7 @@ export const SidebarFlow: FunctionComponent = () => {
   const stepNames = useDerivedStepNames();
 
   return (
-    <>
+    <div className="SidebarFlow">
       {
         flowResult.lhrs.map((lhr, index) => {
           const stepName = stepNames[index];
@@ -58,13 +45,11 @@ export const SidebarFlow: FunctionComponent = () => {
               mode={lhr.gatherMode}
               href={url.href}
               label={stepName}
-              hideTopLine={index === 0}
-              hideBottomLine={index === flowResult.lhrs.length - 1}
               isCurrent={index === (currentLhr && currentLhr.index)}
             />
           );
         })
       }
-    </>
+    </div>
   );
 };
