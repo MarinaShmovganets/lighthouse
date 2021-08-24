@@ -12,7 +12,8 @@ const FRGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 /**
  * Get and return `name`, `publicId`, `systemId` from
  * `document.doctype`
- * @return {{name: string, publicId: string, systemId: string} | null}
+ * and `compatMode` from `document` to check `quirks-mode`
+ * @return {{name: string, publicId: string, systemId: string, compatMode: string} | null}
  */
 function getDoctype() {
   // An example of this is warnerbros.com/archive/spacejam/movie/jam.htm
@@ -20,8 +21,9 @@ function getDoctype() {
     return null;
   }
 
+  const compatMode = document.compatMode;
   const {name, publicId, systemId} = document.doctype;
-  return {name, publicId, systemId};
+  return {name, publicId, systemId, compatMode};
 }
 
 class Doctype extends FRGatherer {

@@ -19,6 +19,8 @@ const UIStrings = {
     '[Learn more](https://web.dev/doctype/).',
   /** Explanatory message stating that the document has no doctype. */
   explanationNoDoctype: 'Document must contain a doctype',
+  /** Explanatory message stating that the document has wrong doctype */
+  explanationWrongDoctype: 'Document contains wrong doctype',
   /** Explanatory message stating that the publicId field is not empty. */
   explanationPublicId: 'Expected publicId to be an empty string',
   /** Explanatory message stating that the systemId field is not empty. */
@@ -59,6 +61,14 @@ class Doctype extends Audit {
     const doctypeName = artifacts.Doctype.name.trim();
     const doctypePublicId = artifacts.Doctype.publicId;
     const doctypeSystemId = artifacts.Doctype.systemId;
+    const compatMode = artifacts.Doctype.compatMode;
+
+    if (compatMode === 'BackCompat') {
+      return {
+        score: 0,
+        explanation: str_(UIStrings.explanationWrongDoctype),
+      };
+    }
 
     if (doctypePublicId !== '') {
       return {
