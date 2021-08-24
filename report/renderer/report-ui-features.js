@@ -16,8 +16,6 @@
  */
 'use strict';
 
-/* eslint-env browser */
-
 /**
  * @fileoverview Adds tools button, print, and other dynamic functionality to
  * the report.
