@@ -12,24 +12,14 @@ import {Util} from '../../../report/renderer/util';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 
-const SummaryFlowIcon: FunctionComponent<{
-  hideTopLine: boolean,
-  hideBottomLine: boolean,
-  mode?: LH.Result.GatherMode
-}> = ({mode, hideBottomLine, hideTopLine}) => {
+const SummaryFlowIcon: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
   return (
     <div className="SummaryFlowIcon">
-      <div
-        className="SummaryFlowIcon__line"
-        style={hideTopLine ? {background: 'transparent'} : undefined}
-      />
+      <div className="SummaryFlowIcon__top-line"/>
       {
         mode && <FlowStepIcon mode={mode}/>
       }
-      <div
-        className="SummaryFlowIcon__line"
-        style={hideBottomLine ? {background: 'transparent'} : undefined}
-      />
+      <div className="SummaryFlowIcon__bottom-line"/>
     </div>
   );
 };
@@ -51,10 +41,8 @@ const SummaryFlowStep: FunctionComponent<{
   lhr: LH.Result,
   label: string,
   hashIndex: number,
-  hideTopLine: boolean,
-  hideBottomLine: boolean,
 }> =
-({lhr, label, hashIndex, hideBottomLine, hideTopLine}) => {
+({lhr, label, hashIndex}) => {
   const reportResult = Util.prepareReportResult(lhr);
   const screenshotAudit = reportResult.audits['screenshot-thumbnails'];
   const screenshots =
@@ -63,19 +51,15 @@ const SummaryFlowStep: FunctionComponent<{
     screenshotAudit.details.type === 'filmstrip' &&
     screenshotAudit.details.items;
   const lastScreenshot = screenshots && screenshots[screenshots.length - 1];
-  return <>
-    {
-      lhr.gatherMode === 'navigation' ?
-        <SummaryNavigationHeader url={lhr.finalUrl}/> :
-        undefined
-    }
+  return (
     <div className="SummaryFlowStep">
+      {
+        lhr.gatherMode === 'navigation' ?
+          <SummaryNavigationHeader url={lhr.finalUrl}/> :
+          undefined
+      }
       <img className="SummaryFlowStep__screenshot" src={lastScreenshot ? lastScreenshot.data : ''}/>
-      <SummaryFlowIcon
-        mode={lhr.gatherMode}
-        hideBottomLine={hideBottomLine}
-        hideTopLine={hideTopLine}
-      />
+      <SummaryFlowIcon mode={lhr.gatherMode}/>
       <a className="SummaryFlowStep__label" href={`#index=${hashIndex}`}>{label}</a>
       {
         DISPLAYED_CATEGORIES.map(c => (
@@ -88,12 +72,12 @@ const SummaryFlowStep: FunctionComponent<{
             <div className="SummaryFlowStep__null-gauge"/>
         ))
       }
+      <div className="SummaryFlowStep__divider">
+        <SummaryFlowIcon/>
+        <div className="SummaryFlowStep__divider--line"/>
+      </div>
     </div>
-    <div className="SummaryFlowStep__divider">
-      <SummaryFlowIcon hideTopLine={hideBottomLine} hideBottomLine={hideBottomLine}/>
-      <div className="SummaryFlowStep__divider--line"/>
-    </div>
-  </>;
+  );
 };
 
 export const SummaryFlow: FunctionComponent = () => {
@@ -107,8 +91,6 @@ export const SummaryFlow: FunctionComponent = () => {
           lhr={lhr}
           label={stepNames[index]}
           hashIndex={index}
-          hideTopLine={index === 0}
-          hideBottomLine={index === flowResult.lhrs.length - 1}
         />
       )
     }

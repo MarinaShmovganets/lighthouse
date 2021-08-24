@@ -188,6 +188,22 @@
   align-items: center;
 }
 
+/* Hide ends segments of entire flow */
+.SummaryFlow > :first-child > .SummaryFlowIcon > .SummaryFlowIcon__top-line {
+  background-color: transparent;
+}
+.SummaryFlow > :last-child > .SummaryFlowIcon > .SummaryFlowIcon__bottom-line {
+  background-color: transparent;
+}
+
+/* Hide segment for the final divider */
+.SummaryFlow > :last-child .SummaryFlowStep__divider .SummaryFlowIcon__bottom-line {
+  background-color: transparent;
+}
+.SummaryFlow > :last-child .SummaryFlowStep__divider .SummaryFlowIcon__top-line {
+  background-color: transparent;
+}
+
 .SummaryFlowStep {
   display: contents;
 }
@@ -235,7 +251,7 @@
   margin: 0 var(--base-spacing);
 }
 
-.SummaryFlowIcon__line {
+.SummaryFlowIcon__top-line, .SummaryFlowIcon__bottom-line {
   width: 2px;
   flex-grow: 1;
   background-color: var(--color-blue-A700);
