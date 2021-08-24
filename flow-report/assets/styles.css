@@ -6,13 +6,13 @@
 
 .flow-vars {
   --app-font-size: 12px;
-  --sidebar-title-font-size: 16px;
-  --sidebar-summary-font-size: 14px;
-  --sidebar-flow-step-navigation-font-size: 14px;
-  --summary-flow-step-label-font-size: 16px;
-  --summary-title-font-size: 32px;
-  --summary-subtitle-font-size: 16px;
   --base-spacing: 16px;
+  --sidebar-flow-step-navigation-font-size: 14px;
+  --sidebar-summary-font-size: 14px;
+  --sidebar-title-font-size: 16px;
+  --summary-flow-step-label-font-size: 16px;
+  --summary-subtitle-font-size: 16px;
+  --summary-title-font-size: 32px;
 }
 
 .App {
