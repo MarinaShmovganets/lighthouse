@@ -196,6 +196,14 @@
   background-color: transparent;
 }
 
+/* Hide segment for first navigation header */
+.SummaryFlow > :first-child .SummaryNavigationHeader .SummaryFlowIcon__bottom-line {
+  background-color: transparent;
+}
+.SummaryFlow > :first-child .SummaryNavigationHeader .SummaryFlowIcon__top-line {
+  background-color: transparent;
+}
+
 /* Hide segment for the final divider */
 .SummaryFlow > :last-child .SummaryFlowStep__divider .SummaryFlowIcon__bottom-line {
   background-color: transparent;
@@ -230,15 +238,11 @@
   font-size: var(--summary-flow-step-label-font-size);
   display: contents;
 }
-.SummaryNavigationHeader > * {
+
+.SummaryNavigationHeader__url,.SummaryNavigationHeader__category {
   padding: 8px;
   background-color: var(--color-gray-200);
 }
-
-.SummaryNavigationHeader__url {
-  grid-column: 3;
-}
-
 .SummaryNavigationHeader__category {
   text-align: center;
 }

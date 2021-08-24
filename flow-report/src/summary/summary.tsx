@@ -28,6 +28,7 @@ const SummaryNavigationHeader: FunctionComponent<{url: string}> =
 ({url}) => {
   return (
     <div className="SummaryNavigationHeader">
+      <SummaryFlowIcon/>
       <div className="SummaryNavigationHeader__url">{url}</div>
       <div className="SummaryNavigationHeader__category">Performance</div>
       <div className="SummaryNavigationHeader__category">Accessibility</div>
