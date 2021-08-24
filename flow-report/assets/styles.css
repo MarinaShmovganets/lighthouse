@@ -240,11 +240,17 @@
 }
 
 .SummaryNavigationHeader__url,.SummaryNavigationHeader__category {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 8px;
   background-color: var(--color-gray-200);
-}
-.SummaryNavigationHeader__category {
   text-align: center;
+}
+.SummaryNavigationHeader__url {
+  justify-content: start;
+  text-align: left;
 }
 
 .SummaryFlowIcon {
