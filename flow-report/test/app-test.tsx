@@ -7,10 +7,13 @@
 import fs from 'fs';
 import {App} from '../src/app';
 import {render} from '@testing-library/preact';
+import {dirname} from 'path';
+import {fileURLToPath} from 'url';
 
 const flowResult = JSON.parse(
   fs.readFileSync(
-    `${__dirname}/../../lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json`,
+    // eslint-disable-next-line max-len
+    `${dirname(fileURLToPath(import.meta.url))}/../../lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json`,
     'utf-8'
   )
 );
@@ -27,8 +30,7 @@ beforeEach(() => {
 it('renders a standalone report with summary', async () => {
   const root = render(<App flowResult={flowResult}/>);
 
-  const summary = await root.findByTestId('Summary');
-  expect(summary.textContent).toEqual('SUMMARY');
+  await expect(root.findByTestId('Summary')).resolves.toBeTruthy();
 });
 
 it('renders the navigation step', async () => {

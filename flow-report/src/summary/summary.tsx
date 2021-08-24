@@ -150,7 +150,7 @@ const SummaryHeader: FunctionComponent = () => {
 
 export const Summary: FunctionComponent = () => {
   return (
-    <div className="Summary">
+    <div className="Summary" data-testid="Summary">
       <SummaryHeader/>
       <SummaryFlow/>
     </div>
