@@ -5,7 +5,7 @@
  */
 
 import fs from 'fs';
-import {App} from '../../src/app';
+import {App} from '../src/app';
 import {render} from '@testing-library/preact';
 
 const flowResult = JSON.parse(
