@@ -303,7 +303,6 @@ const traceElements = {
               node: {
                 type: 'node',
                 nodeLabel: 'section > img',
-                path: '0,HTML,1,BODY,1,DIV,a,#document-fragment,0,SECTION,0,IMG',
               },
             },
           ],
