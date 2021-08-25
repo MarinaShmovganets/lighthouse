@@ -57,6 +57,7 @@ beforeEach(() => {
     hostname: '',
     // Command modes
     listAllAudits: false,
+    listLocales: false,
     listTraceCategories: false,
     printConfig: false,
   };
