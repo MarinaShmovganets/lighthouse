@@ -7,7 +7,7 @@
 import {FunctionComponent} from 'preact';
 import {Gauge} from '../lh-wrappers';
 import {CategoryRatio, FlowStepIcon} from '../common';
-import {useDerivedStepNames, useFlowResult} from '../util';
+import {getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
@@ -51,19 +51,13 @@ const SummaryFlowStep: FunctionComponent<{
 }> =
 ({lhr, label, hashIndex}) => {
   const reportResult = Util.prepareReportResult(lhr);
-  const screenshotAudit = reportResult.audits['screenshot-thumbnails'];
-  const screenshots =
-    screenshotAudit &&
-    screenshotAudit.details &&
-    screenshotAudit.details.type === 'filmstrip' &&
-    screenshotAudit.details.items;
-  const lastScreenshot = screenshots && screenshots[screenshots.length - 1];
+  const screenshot = getScreenshot(reportResult);
   return (
     <div className="SummaryFlowStep">
       {
         lhr.gatherMode === 'navigation' && <SummaryNavigationHeader url={lhr.finalUrl}/>
       }
-      <img className="SummaryFlowStep__screenshot" src={lastScreenshot ? lastScreenshot.data : ''}/>
+      <img className="SummaryFlowStep__screenshot" src={screenshot ? screenshot.data : ''}/>
       <FlowStepIcon mode={lhr.gatherMode}/>
       <a className="SummaryFlowStep__label" href={`#index=${hashIndex}`}>{label}</a>
       {

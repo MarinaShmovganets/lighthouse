@@ -33,6 +33,17 @@ export function classNames(...args: Array<string|undefined|Record<string, boolea
   return classes.join(' ');
 }
 
+export function getScreenshot(reportResult: LH.ReportResult) {
+  const screenshotAudit = reportResult.audits['screenshot-thumbnails'];
+  const screenshots =
+    screenshotAudit &&
+    screenshotAudit.details &&
+    screenshotAudit.details.type === 'filmstrip' &&
+    screenshotAudit.details.items;
+  const lastScreenshot = screenshots && screenshots[screenshots.length - 1];
+  return lastScreenshot ? lastScreenshot : null;
+}
+
 export function getScoreRating(score: number): 'pass'|'average'|'fail' {
   if (score >= 0.9) return 'pass';
   if (score >= 0.5) return 'average';
