@@ -44,7 +44,7 @@ it('renders the navigation step', async () => {
 
   const scores = await root.findAllByText(/^\S+: [0-9.]+/);
   expect(scores.map(s => s.textContent)).toEqual([
-    'performance: 0.99',
+    'performance: 0.97',
     'accessibility: 1',
     'best-practices: 1',
     'seo: 1',
@@ -63,7 +63,7 @@ it('renders the timespan step', async () => {
 
   const scores = await root.findAllByText(/^\S+: [0-9.]+/);
   expect(scores.map(s => s.textContent)).toEqual([
-    'performance: 0.97',
+    'performance: 1',
     'best-practices: 0.71',
     'seo: 0',
     'pwa: 1',
@@ -84,7 +84,7 @@ it('renders the snapshot step', async () => {
     'performance: 0',
     'accessibility: 0.9',
     'best-practices: 0.88',
-    'seo: 0.85',
+    'seo: 0.86',
     'pwa: 1',
   ]);
 });
