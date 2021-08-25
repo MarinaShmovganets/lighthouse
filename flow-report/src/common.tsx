@@ -39,7 +39,7 @@ export const CategorySummary: FunctionComponent<{
       console.warn(`Could not find score for audit '${auditRef.id}', treating as failed.`);
       continue;
     }
-    if (audit.score === 1) numPassed++;
+    if (audit.score === 1 || audit.score === null) numPassed++;
   }
 
   let rating = 'null';
