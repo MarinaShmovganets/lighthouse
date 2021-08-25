@@ -301,7 +301,7 @@ describe('Lighthouse Viewer', () => {
       await viewerPage.goto(url);
 
       // Wait for error.
-      const errorEl = await viewerPage.waitForSelector('#lh-log.show');
+      const errorEl = await viewerPage.waitForSelector('#lh-log.lh-show');
       const errorMessage = await viewerPage.evaluate(errorEl => errorEl.textContent, errorEl);
       expect(errorMessage).toBe('Test error');
 
