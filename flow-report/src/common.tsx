@@ -23,7 +23,7 @@ export const FlowStepIcon: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({
   );
 };
 
-export const CategorySummary: FunctionComponent<{
+export const CategoryRatio: FunctionComponent<{
   category: LH.ReportResult.Category,
   audits: LH.Result['audits'],
   href: string,
@@ -47,7 +47,7 @@ export const CategorySummary: FunctionComponent<{
   if (category.score !== null && totalWeight > 0) rating = getScoreRating(ratio);
 
   return (
-    <a href={href} className={`CategorySummary CategorySummary--${rating}`}>
+    <a href={href} className={`CategoryRatio CategoryRatio--${rating}`}>
       {`${numPassed}/${numAudits}`}
     </a>
   );

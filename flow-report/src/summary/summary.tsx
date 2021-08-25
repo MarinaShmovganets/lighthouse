@@ -6,7 +6,7 @@
 
 import {FunctionComponent} from 'preact';
 import {Gauge} from '../lh-wrappers';
-import {CategorySummary, FlowStepIcon} from '../common';
+import {CategoryRatio, FlowStepIcon} from '../common';
 import {useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 
@@ -59,7 +59,7 @@ const SummaryFlowStep: FunctionComponent<{
                 category={reportResult.categories[c]}
                 href={`#index=${hashIndex}&anchor=${c}`}
               /> :
-              <CategorySummary
+              <CategoryRatio
                 key={c}
                 category={reportResult.categories[c]}
                 audits={reportResult.audits}
