@@ -98,6 +98,11 @@ function getFlags(manualArgv, options = {}) {
           default: false,
           describe: 'Prints a list of all available audits and exits',
         },
+        'list-locales': {
+          type: 'boolean',
+          default: false,
+          describe: 'Prints a list of all supported locales and exits',
+        },
         'list-trace-categories': {
           type: 'boolean',
           default: false,
@@ -203,7 +208,7 @@ function getFlags(manualArgv, options = {}) {
         },
       })
       .group([
-        'save-assets', 'list-all-audits', 'list-trace-categories', 'print-config', 'additional-trace-categories',
+        'save-assets', 'list-all-audits', 'list-locales', 'list-trace-categories', 'print-config', 'additional-trace-categories',
         'config-path', 'preset', 'chrome-flags', 'port', 'hostname', 'form-factor', 'screenEmulation', 'emulatedUserAgent',
         'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
         'only-audits', 'only-categories', 'skip-audits', 'budget-path',

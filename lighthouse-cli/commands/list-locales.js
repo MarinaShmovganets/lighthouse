@@ -5,12 +5,12 @@
  */
 'use strict';
 
-const listAudits = require('./list-audits.js');
-const listLocales = require('./list-locales.js');
-const listTraceCategories = require('./list-trace-categories.js');
+const locales = require('../../lighthouse-core/lib/i18n/locales.js');
 
-module.exports = {
-  listAudits,
-  listLocales,
-  listTraceCategories,
-};
+function listLocales() {
+  const localesList = Object.keys(locales);
+  process.stdout.write(JSON.stringify({localesList}, null, 2));
+  process.exit(0);
+}
+
+module.exports = listLocales;

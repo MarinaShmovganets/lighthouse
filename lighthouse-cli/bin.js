@@ -54,6 +54,11 @@ async function begin() {
   }
 
   // Process terminating command
+  if (cliFlags.listLocales) {
+    commands.listLocales();
+  }
+
+  // Process terminating command
   if (cliFlags.listTraceCategories) {
     commands.listTraceCategories();
   }
