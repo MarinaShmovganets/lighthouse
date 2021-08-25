@@ -482,7 +482,7 @@ function createScoresWrapperComponent(dom) {
   el0.append(el1);
   const el2 = dom.createElement('div', 'lh-scores-wrapper');
   const el3 = dom.createElement('div', 'lh-scores-container');
-  const el4 = dom.createElement('div', 'pyro');
+  const el4 = dom.createElement('div', 'lh-pyro');
   const el5 = dom.createElement('div', 'lh-before');
   const el6 = dom.createElement('div', 'lh-after');
   el4.append(' ', el5, ' ', el6, ' ');
