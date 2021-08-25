@@ -34,7 +34,8 @@ const SummaryCategory: FunctionComponent<{
 }> = ({gatherMode, audits, category, href}) => {
   return (
     category ?
-      gatherMode === 'navigation' ?
+      (
+        gatherMode === 'navigation' ?
         <Gauge
           category={category}
           href={href}
@@ -44,7 +45,7 @@ const SummaryCategory: FunctionComponent<{
           audits={audits}
           href={href}
         />
-      :
+      ) :
       <div
         className="SummaryCategory__null"
         data-testid="SummaryCategory__null"
