@@ -206,17 +206,17 @@
       "id": "cumulative-layout-shift",
       "title": "Cumulative Layout Shift",
       "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more](https://web.dev/cls/).",
-      "score": 1,
+      "score": 0.23,
       "scoreDisplayMode": "numeric",
-      "numericValue": 0,
+      "numericValue": 0.42,
       "numericUnit": "unitless",
-      "displayValue": "0",
+      "displayValue": "0.42",
       "details": {
         "type": "debugdata",
         "items": [
           {
-            "cumulativeLayoutShiftMainFrame": 0,
-            "totalCumulativeLayoutShift": 0
+            "cumulativeLayoutShiftMainFrame": 0.42,
+            "totalCumulativeLayoutShift": 0.42
           }
         ]
       }
@@ -1538,9 +1538,9 @@
             "speedIndexTs": 196778958699,
             "totalBlockingTime": 1127,
             "maxPotentialFID": 1178,
-            "cumulativeLayoutShift": 0,
-            "cumulativeLayoutShiftMainFrame": 0,
-            "totalCumulativeLayoutShift": 0,
+            "cumulativeLayoutShift": 0.42,
+            "cumulativeLayoutShiftMainFrame": 0.42,
+            "totalCumulativeLayoutShift": 0.42,
             "observedTimeOrigin": 0,
             "observedTimeOriginTs": 196772002699,
             "observedNavigationStart": 0,
@@ -1563,9 +1563,9 @@
             "observedLoadTs": 196784928807,
             "observedDomContentLoaded": 8139,
             "observedDomContentLoadedTs": 196780142142,
-            "observedCumulativeLayoutShift": 0,
-            "observedCumulativeLayoutShiftMainFrame": 0,
-            "observedTotalCumulativeLayoutShift": 0,
+            "observedCumulativeLayoutShift": 0.42,
+            "observedCumulativeLayoutShiftMainFrame": 0.42,
+            "observedTotalCumulativeLayoutShift": 0.42,
             "observedFirstVisualChange": 6843,
             "observedFirstVisualChangeTs": 196778845699,
             "observedLastVisualChange": 8176,
@@ -5664,7 +5664,7 @@
         }
       ],
       "id": "performance",
-      "score": 0.3
+      "score": 0.19
     },
     "accessibility": {
       "title": "Accessibility",

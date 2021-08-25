@@ -54,42 +54,26 @@ async function update(artifactName) {
 
 async function augmentDefaultPassTrace() {
   const defaultPassTracePath = `${LH_ROOT}/${artifactPath}/defaultPass.trace.json`;
-  /** @type {LH.Trace} */
+  /** @type {{traceEvents: Array<LH.TraceEvent & {_comment?: string}>}} */
   const traceData = JSON.parse(fs.readFileSync(defaultPassTracePath, 'utf-8'));
   // Delete manually added events. Makes this function idempotent.
-  traceData.traceEvents = traceData.traceEvents.filter(e =>
-    // @ts-expect-error
-    !e._comment);
-  const markDomContentEventIndex =
-    traceData.traceEvents.findIndex((e) => e.name === 'MarkDOMContent');
-  const markDomContentEvent = traceData.traceEvents[markDomContentEventIndex];
-  if (!markDomContentEvent) throw new Error('could not find MarkDOMContent');
+  traceData.traceEvents = traceData.traceEvents.filter(e => !e._comment);
+  const lcpCandidateEventIndex =
+    traceData.traceEvents.findIndex((e) => e.name === 'largestContentfulPaint::Candidate');
+  const lcpCandidateEvent = traceData.traceEvents[lcpCandidateEventIndex];
+  if (!lcpCandidateEvent) throw new Error('could not find largestContentfulPaint::Candidate');
 
-  traceData.traceEvents.push({
-    // @ts-expect-error
-    '_comment': 'Manually added event to make sample lhr not error',
-    'name': 'largestContentfulPaint::Candidate',
-    'pid': markDomContentEvent.pid,
-    'tid': markDomContentEvent.tid,
-    'ts': markDomContentEvent.ts,
-    'ph': 'R',
-    'cat': 'loading,rail,devtools.timeline',
-    'args': {
-      'frame': markDomContentEvent.args.frame,
-      'data': {'size': 50},
-    },
-  });
-  traceData.traceEvents.push({
-    // @ts-expect-error
-    '_comment': 'Manually added event to make test CLS',
+  traceData.traceEvents.splice(lcpCandidateEventIndex, 0, {
+    '_comment': 'Manually added event to test CLS',
     'name': 'LayoutShift',
-    'pid': markDomContentEvent.pid,
-    'tid': markDomContentEvent.tid,
-    'ts': markDomContentEvent.ts,
+    'pid': lcpCandidateEvent.pid,
+    'tid': lcpCandidateEvent.tid,
+    'ts': lcpCandidateEvent.ts,
+    'dur': 0,
     'ph': 'R',
     'cat': 'loading,rail,devtools.timeline',
     'args': {
-      'frame': markDomContentEvent.args.frame,
+      'frame': lcpCandidateEvent.args.frame,
       'data': {
         'is_main_frame': true,
         'score': 0.42,
