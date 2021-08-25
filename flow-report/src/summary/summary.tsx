@@ -61,9 +61,7 @@ const SummaryFlowStep: FunctionComponent<{
   return (
     <div className="SummaryFlowStep">
       {
-        lhr.gatherMode === 'navigation' ?
-          <SummaryNavigationHeader url={lhr.finalUrl}/> :
-          undefined
+        lhr.gatherMode === 'navigation' && <SummaryNavigationHeader url={lhr.finalUrl}/>
       }
       <img className="SummaryFlowStep__screenshot" src={lastScreenshot ? lastScreenshot.data : ''}/>
       <FlowStepIcon mode={lhr.gatherMode}/>
