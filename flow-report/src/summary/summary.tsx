@@ -12,8 +12,7 @@ import {Util} from '../../../report/renderer/util';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 
-const SummaryNavigationHeader: FunctionComponent<{url: string}> =
-({url}) => {
+const SummaryNavigationHeader: FunctionComponent<{url: string}> = ({url}) => {
   return (
     <div className="SummaryNavigationHeader" data-testid="SummaryNavigationHeader">
       <FlowStepIcon/>
@@ -57,8 +56,7 @@ export const SummaryFlowStep: FunctionComponent<{
   lhr: LH.Result,
   label: string,
   hashIndex: number,
-}> =
-({lhr, label, hashIndex}) => {
+}> = ({lhr, label, hashIndex}) => {
   const reportResult = Util.prepareReportResult(lhr);
   const screenshot = getScreenshot(reportResult);
   return (
@@ -91,18 +89,20 @@ export const SummaryFlowStep: FunctionComponent<{
 const SummaryFlow: FunctionComponent = () => {
   const flowResult = useFlowResult();
   const stepNames = useDerivedStepNames();
-  return <div className="SummaryFlow">
-    {
-      flowResult.lhrs.map((lhr, index) =>
-        <SummaryFlowStep
-          key={lhr.fetchTime}
-          lhr={lhr}
-          label={stepNames[index]}
-          hashIndex={index}
-        />
-      )
-    }
-  </div>;
+  return (
+    <div className="SummaryFlow">
+      {
+        flowResult.lhrs.map((lhr, index) =>
+          <SummaryFlowStep
+            key={lhr.fetchTime}
+            lhr={lhr}
+            label={stepNames[index]}
+            hashIndex={index}
+          />
+        )
+      }
+    </div>
+  );
 };
 
 export const SummaryHeader: FunctionComponent = () => {
