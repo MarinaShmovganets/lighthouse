@@ -26,7 +26,7 @@ const SummaryNavigationHeader: FunctionComponent<{url: string}> =
   );
 };
 
-const SummaryFlowCategory: FunctionComponent<{
+const SummaryCategory: FunctionComponent<{
   gatherMode: LH.Result.GatherMode,
   audits: LH.ReportResult['audits'],
   category: LH.ReportResult.Category,
@@ -71,7 +71,7 @@ const SummaryFlowStep: FunctionComponent<{
       {
         DISPLAYED_CATEGORIES.map(c => (
           reportResult.categories[c] ?
-            <SummaryFlowCategory
+            <SummaryCategory
               key={c}
               gatherMode={reportResult.gatherMode}
               category={reportResult.categories[c]}
