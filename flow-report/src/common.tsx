@@ -43,7 +43,8 @@ export const CategorySummary: FunctionComponent<{
   }
 
   let rating = 'null';
-  if (category.score !== null && totalWeight > 0) rating = getScoreRating(category.score);
+  const ratio = numPassed / numAudits;
+  if (category.score !== null && totalWeight > 0) rating = getScoreRating(ratio);
 
   return (
     <a href={href} className={`CategorySummary CategorySummary--${rating}`}>
