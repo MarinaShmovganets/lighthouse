@@ -47,7 +47,7 @@ export const CategoryRatio: FunctionComponent<{
   if (category.score !== null && totalWeight > 0) rating = getScoreRating(ratio);
 
   return (
-    <a href={href} className={`CategoryRatio CategoryRatio--${rating}`}>
+    <a href={href} className={`CategoryRatio CategoryRatio--${rating}`} data-testid="CategoryRatio">
       {`${numPassed}/${numAudits}`}
     </a>
   );

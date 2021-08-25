@@ -317,7 +317,7 @@
   background-color: var(--color-gray-300);
 }
 
-.SummaryFlowStep__null-gauge {
+.SummaryCategory__null {
   align-self: center;
   justify-self: center;
   height: 2px;

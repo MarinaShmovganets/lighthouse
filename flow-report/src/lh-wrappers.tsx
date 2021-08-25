@@ -38,5 +38,5 @@ export const Gauge: FunctionComponent<{category: LH.ReportResult.Category, href:
 
     return el;
   }, [categoryRenderer]);
-  return <div ref={e => e && e.appendChild(gauge)}></div>;
+  return <div ref={e => e && e.appendChild(gauge)} data-testid="Gauge"></div>;
 };

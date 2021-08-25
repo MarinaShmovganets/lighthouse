@@ -15,7 +15,7 @@ const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 
 const SummaryNavigationHeader: FunctionComponent<{url: string}> =
 ({url}) => {
   return (
-    <div className="SummaryNavigationHeader">
+    <div className="SummaryNavigationHeader" data-testid="SummaryNavigationHeader">
       <FlowStepIcon/>
       <div className="SummaryNavigationHeader__url">{url}</div>
       <div className="SummaryNavigationHeader__category">Performance</div>
@@ -29,22 +29,30 @@ const SummaryNavigationHeader: FunctionComponent<{url: string}> =
 const SummaryCategory: FunctionComponent<{
   gatherMode: LH.Result.GatherMode,
   audits: LH.ReportResult['audits'],
-  category: LH.ReportResult.Category,
+  category: LH.ReportResult.Category|undefined,
   href: string,
 }> = ({gatherMode, audits, category, href}) => {
-  return gatherMode === 'navigation' ?
-    <Gauge
-      category={category}
-      href={href}
-    /> :
-    <CategoryRatio
-      category={category}
-      audits={audits}
-      href={href}
-    />;
+  return (
+    category ?
+      gatherMode === 'navigation' ?
+        <Gauge
+          category={category}
+          href={href}
+        /> :
+        <CategoryRatio
+          category={category}
+          audits={audits}
+          href={href}
+        />
+      :
+      <div
+        className="SummaryCategory__null"
+        data-testid="SummaryCategory__null"
+      />
+  );
 };
 
-const SummaryFlowStep: FunctionComponent<{
+export const SummaryFlowStep: FunctionComponent<{
   lhr: LH.Result,
   label: string,
   hashIndex: number,
@@ -57,20 +65,18 @@ const SummaryFlowStep: FunctionComponent<{
       {
         lhr.gatherMode === 'navigation' && <SummaryNavigationHeader url={lhr.finalUrl}/>
       }
-      <img className="SummaryFlowStep__screenshot" src={screenshot ? screenshot.data : ''}/>
+      <img className="SummaryFlowStep__screenshot" src={screenshot ? screenshot.data : undefined}/>
       <FlowStepIcon mode={lhr.gatherMode}/>
       <a className="SummaryFlowStep__label" href={`#index=${hashIndex}`}>{label}</a>
       {
         DISPLAYED_CATEGORIES.map(c => (
-          reportResult.categories[c] ?
-            <SummaryCategory
-              key={c}
-              gatherMode={reportResult.gatherMode}
-              category={reportResult.categories[c]}
-              audits={reportResult.audits}
-              href={`#index=${hashIndex}&anchor=${c}`}
-            /> :
-            <div key={c} className="SummaryFlowStep__null-gauge"/>
+          <SummaryCategory
+            key={c}
+            gatherMode={reportResult.gatherMode}
+            category={reportResult.categories[c]}
+            audits={reportResult.audits}
+            href={`#index=${hashIndex}&anchor=${c}`}
+          />
         ))
       }
       <div className="SummaryFlowStep__divider">
@@ -81,7 +87,7 @@ const SummaryFlowStep: FunctionComponent<{
   );
 };
 
-export const SummaryFlow: FunctionComponent = () => {
+const SummaryFlow: FunctionComponent = () => {
   const flowResult = useFlowResult();
   const stepNames = useDerivedStepNames();
   return <div className="SummaryFlow">
@@ -98,7 +104,7 @@ export const SummaryFlow: FunctionComponent = () => {
   </div>;
 };
 
-const SummaryHeader: FunctionComponent = () => {
+export const SummaryHeader: FunctionComponent = () => {
   const flowResult = useFlowResult();
 
   let numNavigation = 0;
