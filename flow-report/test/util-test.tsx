@@ -5,7 +5,7 @@
  */
 
 import fs from 'fs';
-import {FlowResultContext, useCurrentLhr} from '../src/util';
+import {FlowResultContext, useCurrentLhr, useDerivedStepNames} from '../src/util';
 import {renderHook} from '@testing-library/preact-hooks';
 import {FunctionComponent} from 'preact';
 import {act} from 'preact/test-utils';
@@ -20,16 +20,16 @@ const flowResult: LH.FlowResult = JSON.parse(
   )
 );
 
+let wrapper: FunctionComponent;
+
+beforeEach(() => {
+  window.location.hash = '';
+  wrapper = ({children}) => (
+    <FlowResultContext.Provider value={flowResult}>{children}</FlowResultContext.Provider>
+  );
+});
+
 describe('useCurrentLhr', () => {
-  let wrapper: FunctionComponent;
-
-  beforeEach(() => {
-    window.location.hash = '';
-    wrapper = ({children}) => (
-      <FlowResultContext.Provider value={flowResult}>{children}</FlowResultContext.Provider>
-    );
-  });
-
   it('gets current lhr index from url hash', () => {
     window.location.hash = '#index=1';
     const {result} = renderHook(() => useCurrentLhr(), {wrapper});
@@ -74,5 +74,17 @@ describe('useCurrentLhr', () => {
     window.location.hash = '#index=OHNO';
     const {result} = renderHook(() => useCurrentLhr(), {wrapper});
     expect(result.current).toBeNull();
+  });
+});
+
+describe('useDerivedStepNames', () => {
+  it('counts up for each mode', () => {
+    const {result} = renderHook(() => useDerivedStepNames(), {wrapper});
+    expect(result.current).toEqual([
+      'Navigation (1)',
+      'Timespan (1)',
+      'Snapshot (1)',
+      'Navigation (2)',
+    ]);
   });
 });
