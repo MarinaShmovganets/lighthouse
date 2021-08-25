@@ -34,17 +34,20 @@ describe('SidebarFlow', () => {
     const navigation = await root.findByText('Navigation (1)');
     const timespan = await root.findByText('Timespan (1)');
     const snapshot = await root.findByText('Snapshot (1)');
+    const navigation2 = await root.findByText('Navigation (2)');
 
     const links = await root.findAllByRole('link') as HTMLAnchorElement[];
     expect(links.map(a => a.textContent)).toEqual([
       navigation.textContent,
       timespan.textContent,
       snapshot.textContent,
+      navigation2.textContent,
     ]);
     expect(links.map(a => a.href)).toEqual([
       'file:///Users/example/report.html#index=0',
       'file:///Users/example/report.html#index=1',
       'file:///Users/example/report.html#index=2',
+      'file:///Users/example/report.html#index=3',
     ]);
   });
 
