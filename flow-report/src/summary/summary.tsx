@@ -26,6 +26,24 @@ const SummaryNavigationHeader: FunctionComponent<{url: string}> =
   );
 };
 
+const SummaryFlowCategory: FunctionComponent<{
+  gatherMode: LH.Result.GatherMode,
+  audits: LH.ReportResult['audits'],
+  category: LH.ReportResult.Category,
+  href: string,
+}> = ({gatherMode, audits, category, href}) => {
+  return gatherMode === 'navigation' ?
+    <Gauge
+      category={category}
+      href={href}
+    /> :
+    <CategoryRatio
+      category={category}
+      audits={audits}
+      href={href}
+    />;
+};
+
 const SummaryFlowStep: FunctionComponent<{
   lhr: LH.Result,
   label: string,
@@ -53,18 +71,13 @@ const SummaryFlowStep: FunctionComponent<{
       {
         DISPLAYED_CATEGORIES.map(c => (
           reportResult.categories[c] ?
-            reportResult.gatherMode === 'navigation' ?
-              <Gauge
-                key={c}
-                category={reportResult.categories[c]}
-                href={`#index=${hashIndex}&anchor=${c}`}
-              /> :
-              <CategoryRatio
-                key={c}
-                category={reportResult.categories[c]}
-                audits={reportResult.audits}
-                href={`#index=${hashIndex}&anchor=${c}`}
-              /> :
+            <SummaryFlowCategory
+              key={c}
+              gatherMode={reportResult.gatherMode}
+              category={reportResult.categories[c]}
+              audits={reportResult.audits}
+              href={`#index=${hashIndex}&anchor=${c}`}
+            /> :
             <div key={c} className="SummaryFlowStep__null-gauge"/>
         ))
       }
