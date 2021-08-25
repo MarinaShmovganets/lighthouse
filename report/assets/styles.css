@@ -1353,7 +1353,7 @@
   z-index: 3;
 }
 
-#lh-log.show {
+#lh-log.lh-show {
   opacity: 1;
   transform: translateY(0);
 }
