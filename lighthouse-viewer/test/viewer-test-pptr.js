@@ -140,7 +140,7 @@ describe('Lighthouse Viewer', () => {
         });
       }
 
-      const errorSelectors = '.lh-audit-explanation, .tooltip--error';
+      const errorSelectors = '.lh-audit-explanation, .lh-tooltip--error';
       const auditErrors = await viewerPage.$$eval(errorSelectors, getErrors, selectors);
       const errors = auditErrors.filter(item => item.explanation.includes('Audit error:'));
       assert.deepStrictEqual(errors, [], 'Audit errors found within the report');
