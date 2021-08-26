@@ -14,14 +14,18 @@ export const Gauge: FunctionComponent<{category: LH.ReportResult.Category, href:
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!ref.current) return;
     const el = categoryRenderer.renderScoreGauge(category, {});
 
     // Category label is displayed in the navigation header.
     const label = el.querySelector('.lh-gauge__label');
     if (label) label.remove();
 
-    ref.current.append(el);
+    ref.current && ref.current.append(el);
+    return () => {
+      if (ref.current && ref.current.contains(el)) {
+        ref.current.removeChild(el);
+      }
+    };
   }, [categoryRenderer, category]);
 
   useEffect(() => {
