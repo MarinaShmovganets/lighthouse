@@ -5,6 +5,7 @@
  */
 
 import {FunctionComponent} from 'preact';
+import {Util} from '../../report/renderer/util';
 import {getScoreRating} from './util';
 
 const GatherModeIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
@@ -50,7 +51,7 @@ export const CategoryRatio: FunctionComponent<{
       console.warn(`Could not find score for audit '${auditRef.id}', treating as failed.`);
       continue;
     }
-    if (audit.score === 1 || audit.score === null) numPassed++;
+    if (Util.showAsPassed(audit)) numPassed++;
   }
 
   let rating = 'null';
