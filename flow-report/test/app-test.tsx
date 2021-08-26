@@ -44,7 +44,7 @@ it('renders the navigation step', async () => {
 
   const scores = await root.findAllByText(/^\S+: [0-9.]+/);
   expect(scores.map(s => s.textContent)).toEqual([
-    'performance: 0.97',
+    'performance: 0.98',
     'accessibility: 1',
     'best-practices: 1',
     'seo: 1',
