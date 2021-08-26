@@ -63,12 +63,6 @@ export function getScreenshot(reportResult: LH.ReportResult) {
   return screenshot;
 }
 
-export function getScoreRating(score: number): 'pass'|'average'|'fail' {
-  if (score >= 0.9) return 'pass';
-  if (score >= 0.5) return 'average';
-  return 'fail';
-}
-
 export function useFlowResult(): LH.FlowResult {
   const flowResult = useContext(FlowResultContext);
   if (!flowResult) throw Error('useFlowResult must be called in the FlowResultContext');

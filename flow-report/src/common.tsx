@@ -6,7 +6,6 @@
 
 import {FunctionComponent} from 'preact';
 import {Util} from '../../report/renderer/util';
-import {getScoreRating} from './util';
 
 const GatherModeIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
   return (
@@ -54,9 +53,14 @@ export const CategoryRatio: FunctionComponent<{
     if (Util.showAsPassed(audit)) numPassed++;
   }
 
-  let rating = 'null';
   const ratio = numPassed / numAudits;
-  if (totalWeight > 0) rating = getScoreRating(ratio);
+  let rating = Util.calculateRating(ratio);
+
+  // If none of the available audits can affect the score, a rating isn't useful.
+  // The flow report should display the ratio with neutral icon and coloring in this case.
+  if (totalWeight === 0) {
+    rating = 'null';
+  }
 
   return (
     <a href={href} className={`CategoryRatio CategoryRatio--${rating}`} data-testid="CategoryRatio">
