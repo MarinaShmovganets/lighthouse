@@ -66,7 +66,7 @@ describe('SummaryFlowStep', () => {
     const screenshot = await root.findByTestId('SummaryFlowStep__screenshot') as HTMLImageElement;
     expect(screenshot.src).toMatch(/data:image\/jpeg;base64/);
 
-    const gauges = await root.findAllByTestId('Gauge');
+    const gauges = await root.findAllByTestId('LegacyGauge');
     expect(gauges).toHaveLength(4);
 
     const links = await root.findAllByRole('link') as HTMLAnchorElement[];
@@ -121,7 +121,7 @@ describe('SummaryFlowStep', () => {
 
     // TODO(FR-COMPAT): Add thumbnail for snapshot steps.
     const screenshot = await root.findByTestId('SummaryFlowStep__screenshot') as HTMLImageElement;
-    expect(screenshot.src).toBeFalsy();
+    expect(screenshot.src).toMatch(/data:image\/jpeg;base64/);
 
     const gauges = await root.findAllByTestId('CategoryRatio');
     expect(gauges).toHaveLength(4);

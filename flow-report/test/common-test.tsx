@@ -11,7 +11,7 @@ describe('CategoryRatio', () => {
   it('renders passed audit count', async () => {
     const audits = {
       'audit1': {score: 1},
-      'audit2': {score: null},
+      'audit2': {score: 1},
       'audit3': {score: 0},
     } as any;
     const category = {
@@ -62,7 +62,7 @@ describe('CategoryRatio', () => {
     const audits = {
       'audit1': {score: 1},
       'audit2': {score: 1},
-      'audit3': {score: null},
+      'audit3': {score: 1},
     } as any;
     const category = {
       auditRefs: [

@@ -62,6 +62,6 @@ export const LegacyGauge: FunctionComponent<{category: LH.ReportResult.Category,
   }, [href]);
 
   return (
-    <div ref={ref}/>
+    <div ref={ref} data-testid="LegacyGauge"/>
   );
 };
