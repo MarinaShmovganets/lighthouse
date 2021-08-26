@@ -5,7 +5,7 @@
  */
 
 import {createContext, FunctionComponent} from 'preact';
-import {useContext, useMemo} from 'preact/hooks';
+import {useContext, useEffect, useLayoutEffect, useMemo, useRef} from 'preact/hooks';
 import {CategoryRenderer} from '../../report/renderer/category-renderer';
 import {DetailsRenderer} from '../../report/renderer/details-renderer';
 import {DOM} from '../../report/renderer/dom';
@@ -43,16 +43,25 @@ export const LegacyRendererWrapper: FunctionComponent = ({children}) => {
 export const LegacyGauge: FunctionComponent<{category: LH.ReportResult.Category, href: string}> =
 ({category, href}) => {
   const {categoryRenderer} = useReportRenderer();
-  const gauge = useMemo(() => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (!ref.current) return;
     const el = categoryRenderer.renderScoreGauge(category, {});
-    const anchor = el.querySelector('a') as HTMLAnchorElement;
-    if (anchor) anchor.href = href;
 
     // Category label is displayed in the navigation header.
     const label = el.querySelector('.lh-gauge__label');
     if (label) label.remove();
 
-    return el;
-  }, [categoryRenderer]);
-  return <div ref={e => e && e.appendChild(gauge)} data-testid="Gauge"></div>;
+    ref.current.append(el);
+  }, [categoryRenderer, category]);
+
+  useEffect(() => {
+    const anchor = ref.current && ref.current.querySelector('a') as HTMLAnchorElement;
+    if (anchor) anchor.href = href;
+  }, [href]);
+
+  return (
+    <div ref={ref}/>
+  );
 };
