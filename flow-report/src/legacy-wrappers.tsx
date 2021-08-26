@@ -6,9 +6,9 @@
 
 import {createContext, FunctionComponent} from 'preact';
 import {useContext, useMemo} from 'preact/hooks';
-import type {DOM} from '../../report/renderer/dom';
-import type {DetailsRenderer} from '../../report/renderer/details-renderer';
-import type {CategoryRenderer} from '../../report/renderer/category-renderer';
+import {CategoryRenderer} from '../../report/renderer/category-renderer';
+import {DetailsRenderer} from '../../report/renderer/details-renderer';
+import {DOM} from '../../report/renderer/dom';
 
 interface ReportRendererGlobals {
    dom: DOM,
@@ -16,13 +16,29 @@ interface ReportRendererGlobals {
    categoryRenderer: CategoryRenderer,
 }
 
-export const ReportRendererContext = createContext<ReportRendererGlobals|undefined>(undefined);
+const ReportRendererContext = createContext<ReportRendererGlobals|undefined>(undefined);
 
 function useReportRenderer() {
   const globals = useContext(ReportRendererContext);
   if (!globals) throw Error('Globals not defined');
   return globals;
 }
+
+export const LegacyRendererWrapper: FunctionComponent = ({children}) => {
+  const globals = useMemo(() => {
+    const dom = new DOM(document);
+    const detailsRenderer = new DetailsRenderer(dom);
+    const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
+    return {
+      dom,
+      detailsRenderer,
+      categoryRenderer,
+    };
+  }, []);
+  return (
+    <ReportRendererContext.Provider value={globals}>{children}</ReportRendererContext.Provider>
+  );
+};
 
 export const LegacyGauge: FunctionComponent<{category: LH.ReportResult.Category, href: string}> =
 ({category, href}) => {

@@ -11,10 +11,7 @@ import {dirname} from 'path';
 import {fileURLToPath} from 'url';
 import {FunctionComponent} from 'preact';
 import {FlowResultContext} from '../../src/util';
-import {DOM} from '../../../report/renderer/dom';
-import {DetailsRenderer} from '../../../report/renderer/details-renderer';
-import {CategoryRenderer} from '../../../report/renderer/category-renderer';
-import {ReportRendererContext} from '../../src/legacy-wrappers';
+import {LegacyRendererWrapper} from '../../src/legacy-wrappers';
 
 const flowResult:LH.FlowResult = JSON.parse(
   fs.readFileSync(
@@ -33,16 +30,11 @@ beforeEach(() => {
     get: () => mockLocation,
   });
 
-  // LH globals
-  const dom = new DOM(document);
-  const detailsRenderer = new DetailsRenderer(dom);
-  const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
-
   wrapper = ({children}) => (
     <FlowResultContext.Provider value={flowResult}>
-      <ReportRendererContext.Provider value={{dom, detailsRenderer, categoryRenderer}}>
+      <LegacyRendererWrapper>
         {children}
-      </ReportRendererContext.Provider>
+      </LegacyRendererWrapper>
     </FlowResultContext.Provider>
   );
 });
