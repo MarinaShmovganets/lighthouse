@@ -12,7 +12,7 @@ import {Util} from '../../../report/renderer/util';
 import {useMemo} from 'preact/hooks';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
-const THUMBNAIL_WIDTH = 40;
+const THUMBNAIL_WIDTH = 50;
 
 const SummaryNavigationHeader: FunctionComponent<{url: string}> = ({url}) => {
   return (
@@ -34,23 +34,27 @@ const SummaryCategory: FunctionComponent<{
   href: string,
 }> = ({gatherMode, audits, category, href}) => {
   return (
-    category ?
-      (
-        gatherMode === 'navigation' ?
-        <Gauge
-          category={category}
-          href={href}
-        /> :
-        <CategoryRatio
-          category={category}
-          audits={audits}
-          href={href}
-        />
-      ) :
-      <div
-        className="SummaryCategory__null"
-        data-testid="SummaryCategory__null"
-      />
+    <div className="SummaryCategory">
+      {
+        category ?
+          (
+            gatherMode === 'navigation' ?
+            <Gauge
+              category={category}
+              href={href}
+            /> :
+            <CategoryRatio
+              category={category}
+              audits={audits}
+              href={href}
+            />
+          ) :
+          <div
+            className="SummaryCategory__null"
+            data-testid="SummaryCategory__null"
+          />
+      }
+    </div>
   );
 };
 

@@ -30,7 +30,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 var(--base-spacing);
+  margin: 0 18px;
 }
 
 .FlowStepIcon__top-line, .FlowStepIcon__bottom-line {
@@ -266,20 +266,19 @@
 .SummaryFlowStep {
   display: contents;
 }
-.SummaryFlowStep > * {
-  margin: 8px;
-}
 .SummaryFlowStep .FlowStepIcon {
   grid-column: 2;
 }
 
 .SummaryFlowStep__screenshot {
-  margin: 8px;
   align-self: center;
   justify-self: center;
-  margin: var(--base-spacing) 0;
+  margin: var(--base-spacing) 8px;
   object-fit: cover;
   object-position: top left;
+}
+.SummaryFlowStep__screenshot[src] {
+  border: 1px solid var(--color-gray);
 }
 
 .SummaryFlowStep__label {
@@ -287,6 +286,11 @@
   color: var(--color-gray-800);
   text-decoration: underline;
   grid-column: 3;
+  margin: 8px;
+}
+
+.SummaryCategory {
+  margin: 8px;
 }
 
 .SummaryNavigationHeader {
@@ -323,5 +327,6 @@
   justify-self: center;
   height: 2px;
   width: 10px;
+  margin: auto;
   background-color: var(--color-gray-700);
 }
