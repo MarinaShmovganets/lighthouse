@@ -8,6 +8,7 @@
   --app-font-size: 12px;
   --base-spacing: 16px;
   --category-summary-font-size: 18px;
+  --half-base-spacing: calc(var(--base-spacing) / 2);
   --sidebar-flow-step-navigation-font-size: 14px;
   --sidebar-summary-font-size: 14px;
   --sidebar-title-font-size: 16px;
@@ -165,7 +166,7 @@
 .SidebarSummary {
   width: 100%;
   display: flex;
-  padding: calc(var(--base-spacing) / 2) var(--base-spacing);
+  padding: var(--half-base-spacing) var(--base-spacing);
   align-items: center;
 }
 
@@ -265,7 +266,7 @@
 .SummaryFlowStep__screenshot {
   align-self: center;
   justify-self: center;
-  margin: var(--base-spacing) calc(var(--base-spacing) / 2);
+  margin: var(--base-spacing) var(--half-base-spacing);
   object-fit: cover;
   object-position: top left;
 }
@@ -278,11 +279,11 @@
   color: var(--color-gray-800);
   text-decoration: underline;
   grid-column: 3;
-  margin: calc(var(--base-spacing) / 2);
+  margin: var(--half-base-spacing);
 }
 
 .SummaryCategory {
-  margin: calc(var(--base-spacing) / 2);
+  margin: var(--half-base-spacing);
 }
 
 .SummaryNavigationHeader {
@@ -290,12 +291,13 @@
   display: contents;
 }
 
-.SummaryNavigationHeader__url,.SummaryNavigationHeader__category {
+.SummaryNavigationHeader__url,
+.SummaryNavigationHeader__category {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: calc(var(--base-spacing) / 2);
+  padding: var(--half-base-spacing);
   background-color: var(--color-gray-200);
   text-align: center;
 }
