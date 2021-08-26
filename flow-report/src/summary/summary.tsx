@@ -9,6 +9,7 @@ import {LegacyGauge} from '../legacy-wrappers';
 import {CategoryRatio, FlowStepIcon} from '../common';
 import {getScreenDimensions, getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
+import {useMemo} from 'preact/hooks';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 const THUMBNAIL_WIDTH = 40;
@@ -58,7 +59,8 @@ export const SummaryFlowStep: FunctionComponent<{
   label: string,
   hashIndex: number,
 }> = ({lhr, label, hashIndex}) => {
-  const reportResult = Util.prepareReportResult(lhr);
+  // TODO(FR-COMPAT): Store report results globally.
+  const reportResult = useMemo(() => Util.prepareReportResult(lhr), [lhr]);
 
   // Crop the displayed image to the viewport dimensions.
   const screenshot = getScreenshot(reportResult);
