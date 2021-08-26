@@ -75,7 +75,12 @@ export const SummaryFlowStep: FunctionComponent<{
   return (
     <div className="SummaryFlowStep">
       {
-        lhr.gatherMode === 'navigation' && <SummaryNavigationHeader url={lhr.finalUrl}/>
+        lhr.gatherMode === 'navigation' || hashIndex === 0 ?
+          <SummaryNavigationHeader url={lhr.finalUrl}/> :
+          <div className="SummaryFlowStep__divider">
+            <FlowStepIcon/>
+            <div className="SummaryFlowStep__divider--line"/>
+          </div>
       }
       <img
         className="SummaryFlowStep__screenshot"
@@ -96,10 +101,6 @@ export const SummaryFlowStep: FunctionComponent<{
           />
         ))
       }
-      <div className="SummaryFlowStep__divider">
-        <FlowStepIcon/>
-        <div className="SummaryFlowStep__divider--line"/>
-      </div>
     </div>
   );
 };

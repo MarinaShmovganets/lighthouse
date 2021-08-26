@@ -255,14 +255,6 @@
   background-color: transparent;
 }
 
-/* Hide segment for the final divider */
-.SummaryFlow > :last-child .SummaryFlowStep__divider .FlowStepIcon__bottom-line {
-  background-color: transparent;
-}
-.SummaryFlow > :last-child .SummaryFlowStep__divider .FlowStepIcon__top-line {
-  background-color: transparent;
-}
-
 .SummaryFlowStep {
   display: contents;
 }
