@@ -8,7 +8,13 @@ import {FunctionComponent} from 'preact';
 import {getScoreRating} from './util';
 
 const FlowModeIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
-  return <div className={`FlowModeIcon FlowModeIcon--${mode}`}></div>;
+  return (
+    <div
+      className={`FlowModeIcon FlowModeIcon--${mode}`}
+      role="img"
+      aria-label={`Icon representing a ${mode} report`}
+    />
+  );
 };
 
 export const FlowStepIcon: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
