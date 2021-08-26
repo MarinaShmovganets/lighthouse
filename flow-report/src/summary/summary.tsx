@@ -135,6 +135,8 @@ export const SummaryHeader: FunctionComponent = () => {
         break;
     }
   }
+
+  // TODO(FR-COMPAT): Pluralize UI strings.
   const subtitleCounts = [];
   if (numNavigation) subtitleCounts.push(`${numNavigation} navigation reports`);
   if (numTimespan) subtitleCounts.push(`${numTimespan} timespan reports`);
