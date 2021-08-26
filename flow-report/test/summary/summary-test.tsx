@@ -11,7 +11,7 @@ import {dirname} from 'path';
 import {fileURLToPath} from 'url';
 import {FunctionComponent} from 'preact';
 import {FlowResultContext} from '../../src/util';
-import {ReportRendererProvider} from '../../src/legacy-wrappers';
+import {ReportRendererProvider} from '../../src/wrappers/report-renderer';
 
 const flowResult:LH.FlowResult = JSON.parse(
   fs.readFileSync(

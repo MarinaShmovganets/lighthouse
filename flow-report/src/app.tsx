@@ -5,7 +5,7 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {ReportRendererProvider} from './legacy-wrappers';
+import {ReportRendererProvider} from './wrappers/report-renderer';
 import {Sidebar} from './sidebar/sidebar';
 import {Summary} from './summary/summary';
 import {FlowResultContext, useCurrentLhr} from './util';

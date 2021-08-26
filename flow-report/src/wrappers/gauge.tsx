@@ -6,7 +6,7 @@
 
 import {FunctionComponent} from 'preact';
 import {useEffect, useLayoutEffect, useRef} from 'preact/hooks';
-import {useReportRenderer} from '../legacy-wrappers';
+import {useReportRenderer} from './report-renderer';
 
 export const Gauge: FunctionComponent<{category: LH.ReportResult.Category, href: string}> =
 ({category, href}) => {
