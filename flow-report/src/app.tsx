@@ -5,7 +5,7 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {LegacyRendererWrapper} from './legacy-wrappers';
+import {LegacyRendererProvider} from './legacy-wrappers';
 import {Sidebar} from './sidebar/sidebar';
 import {Summary} from './summary/summary';
 import {FlowResultContext, useCurrentLhr} from './util';
@@ -32,12 +32,12 @@ const Content: FunctionComponent = () => {
 export const App: FunctionComponent<{flowResult: LH.FlowResult}> = ({flowResult}) => {
   return (
     <FlowResultContext.Provider value={flowResult}>
-      <LegacyRendererWrapper>
+      <LegacyRendererProvider>
         <div className="App">
           <Sidebar/>
           <Content/>
         </div>
-      </LegacyRendererWrapper>
+      </LegacyRendererProvider>
     </FlowResultContext.Provider>
   );
 };

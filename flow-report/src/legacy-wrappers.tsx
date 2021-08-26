@@ -24,7 +24,7 @@ function useReportRenderer() {
   return globals;
 }
 
-export const LegacyRendererWrapper: FunctionComponent = ({children}) => {
+export const LegacyRendererProvider: FunctionComponent = ({children}) => {
   const globals = useMemo(() => {
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);

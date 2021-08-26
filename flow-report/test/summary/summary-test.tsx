@@ -11,7 +11,7 @@ import {dirname} from 'path';
 import {fileURLToPath} from 'url';
 import {FunctionComponent} from 'preact';
 import {FlowResultContext} from '../../src/util';
-import {LegacyRendererWrapper} from '../../src/legacy-wrappers';
+import {LegacyRendererProvider} from '../../src/legacy-wrappers';
 
 const flowResult:LH.FlowResult = JSON.parse(
   fs.readFileSync(
@@ -32,9 +32,9 @@ beforeEach(() => {
 
   wrapper = ({children}) => (
     <FlowResultContext.Provider value={flowResult}>
-      <LegacyRendererWrapper>
+      <LegacyRendererProvider>
         {children}
-      </LegacyRendererWrapper>
+      </LegacyRendererProvider>
     </FlowResultContext.Provider>
   );
 });
