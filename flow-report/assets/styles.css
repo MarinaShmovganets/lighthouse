@@ -39,14 +39,14 @@
   background-color: var(--color-blue-A700);
 }
 
-.FlowModeIcon {
+.GatherModeIcon {
   display: flex;
   width: 16px;
   height: 16px;
   align-items: center;
   justify-content: center;
 }
-.FlowModeIcon--navigation::before {
+.GatherModeIcon--navigation::before {
   content: '';
   width: 16px;
   height: 16px;
@@ -54,7 +54,7 @@
   border: 2px solid var(--color-blue-A700);
   display: block;
 }
-.FlowModeIcon--timespan::before {
+.GatherModeIcon--timespan::before {
   content: '';
   width: 4px;
   height: 4px;
@@ -62,7 +62,7 @@
   background-color: var(--color-blue-A700);
   display: block;
 }
-.FlowModeIcon--snapshot::before {
+.GatherModeIcon--snapshot::before {
   content: '';
   width: 8px;
   height: 8px;
