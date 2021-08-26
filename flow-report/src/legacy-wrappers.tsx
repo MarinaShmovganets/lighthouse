@@ -18,7 +18,7 @@ interface ReportRendererGlobals {
 
 export const ReportRendererContext = createContext<ReportRendererGlobals|undefined>(undefined);
 
-function useLhGlobals() {
+function useReportRenderer() {
   const globals = useContext(ReportRendererContext);
   if (!globals) throw Error('Globals not defined');
   return globals;
@@ -26,7 +26,7 @@ function useLhGlobals() {
 
 export const LegacyGauge: FunctionComponent<{category: LH.ReportResult.Category, href: string}> =
 ({category, href}) => {
-  const {categoryRenderer} = useLhGlobals();
+  const {categoryRenderer} = useReportRenderer();
   const gauge = useMemo(() => {
     const el = categoryRenderer.renderScoreGauge(category, {});
     const anchor = el.querySelector('a') as HTMLAnchorElement;
