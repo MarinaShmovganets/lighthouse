@@ -58,6 +58,9 @@ const SummaryCategory: FunctionComponent<{
   );
 };
 
+/**
+ * The div should behave like a JSX <>...</>. This still allows us to identify "rows" with CSS selectors.
+ */
 export const SummaryFlowStep: FunctionComponent<{
   lhr: LH.Result,
   label: string,
@@ -105,6 +108,10 @@ export const SummaryFlowStep: FunctionComponent<{
   );
 };
 
+/**
+ * For the summary flow, there are many different cells with different contents and different display properties.
+ * CSS grid makes it easier to enforce things like content alignment and column width (e.g. all category columns have the same width).
+ */
 const SummaryFlow: FunctionComponent = () => {
   const flowResult = useFlowResult();
   const stepNames = useDerivedStepNames();
