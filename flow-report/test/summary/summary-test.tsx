@@ -63,7 +63,7 @@ describe('SummaryFlowStep', () => {
 
     await expect(root.findByText('Navigation (1)')).resolves.toBeTruthy();
 
-    const screenshot = await root.findByRole('img') as HTMLImageElement;
+    const screenshot = await root.findByTestId('SummaryFlowStep__screenshot') as HTMLImageElement;
     expect(screenshot.src).toMatch(/data:image\/jpeg;base64/);
 
     const gauges = await root.findAllByTestId('Gauge');
@@ -91,7 +91,7 @@ describe('SummaryFlowStep', () => {
     await expect(root.findByText('Timespan (1)')).resolves.toBeTruthy();
 
     // TODO(FR-COMPAT): Possibly remove thumbnail for timespan.
-    const screenshot = await root.findByRole('img') as HTMLImageElement;
+    const screenshot = await root.findByTestId('SummaryFlowStep__screenshot') as HTMLImageElement;
     expect(screenshot.src).toMatch(/data:image\/jpeg;base64/);
 
     await expect(root.findByTestId('SummaryCategory__null'));
@@ -120,7 +120,7 @@ describe('SummaryFlowStep', () => {
     await expect(root.findByText('Snapshot (1)')).resolves.toBeTruthy();
 
     // TODO(FR-COMPAT): Add thumbnail for snapshot steps.
-    const screenshot = await root.findByRole('img') as HTMLImageElement;
+    const screenshot = await root.findByTestId('SummaryFlowStep__screenshot') as HTMLImageElement;
     expect(screenshot.src).toBeFalsy();
 
     const gauges = await root.findAllByTestId('CategoryRatio');

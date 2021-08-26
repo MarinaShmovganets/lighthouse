@@ -64,7 +64,11 @@ export const SummaryFlowStep: FunctionComponent<{
       {
         lhr.gatherMode === 'navigation' && <SummaryNavigationHeader url={lhr.finalUrl}/>
       }
-      <img className="SummaryFlowStep__screenshot" src={screenshot ? screenshot.data : undefined}/>
+      <img
+        className="SummaryFlowStep__screenshot"
+        data-testid="SummaryFlowStep__screenshot"
+        src={screenshot ? screenshot.data : undefined}
+      />
       <FlowStepIcon mode={lhr.gatherMode}/>
       <a className="SummaryFlowStep__label" href={`#index=${hashIndex}`}>{label}</a>
       {
