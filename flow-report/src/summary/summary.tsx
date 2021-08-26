@@ -5,7 +5,7 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {LegacyGauge} from '../lh-wrappers';
+import {LegacyGauge} from '../legacy-wrappers';
 import {CategoryRatio, FlowStepIcon} from '../common';
 import {getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';

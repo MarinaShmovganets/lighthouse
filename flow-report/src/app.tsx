@@ -9,7 +9,7 @@ import {useMemo} from 'preact/hooks';
 import {CategoryRenderer} from '../../report/renderer/category-renderer';
 import {DetailsRenderer} from '../../report/renderer/details-renderer';
 import {DOM} from '../../report/renderer/dom';
-import {ReportRendererContext} from './lh-wrappers';
+import {ReportRendererContext} from './legacy-wrappers';
 import {Sidebar} from './sidebar/sidebar';
 import {Summary} from './summary/summary';
 import {FlowResultContext, useCurrentLhr} from './util';

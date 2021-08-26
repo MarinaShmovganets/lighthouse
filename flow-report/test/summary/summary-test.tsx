@@ -14,7 +14,7 @@ import {FlowResultContext} from '../../src/util';
 import {DOM} from '../../../report/renderer/dom';
 import {DetailsRenderer} from '../../../report/renderer/details-renderer';
 import {CategoryRenderer} from '../../../report/renderer/category-renderer';
-import {ReportRendererContext} from '../../src/lh-wrappers';
+import {ReportRendererContext} from '../../src/legacy-wrappers';
 
 const flowResult:LH.FlowResult = JSON.parse(
   fs.readFileSync(
