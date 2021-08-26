@@ -62,8 +62,9 @@ export const SummaryFlowStep: FunctionComponent<{
   // TODO(FR-COMPAT): Store report results globally.
   const reportResult = useMemo(() => Util.prepareReportResult(lhr), [lhr]);
 
+  const screenshot = reportResult.gatherMode !== 'timespan' ? getScreenshot(reportResult) : null;
+
   // Crop the displayed image to the viewport dimensions.
-  const screenshot = getScreenshot(reportResult);
   const {width, height} = getScreenDimensions(reportResult);
   const thumbnailHeight = height * THUMBNAIL_WIDTH / width;
 

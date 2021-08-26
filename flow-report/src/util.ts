@@ -39,28 +39,13 @@ export function getScreenDimensions(reportResult: LH.ReportResult) {
 }
 
 export function getScreenshot(reportResult: LH.ReportResult) {
-  const screenshotAudit = reportResult.audits['screenshot-thumbnails'];
   const fullPageScreenshotAudit = reportResult.audits['full-page-screenshot'];
-  const screenshots =
-    screenshotAudit &&
-    screenshotAudit.details &&
-    screenshotAudit.details.type === 'filmstrip' &&
-    screenshotAudit.details.items;
-  const lastScreenshot = screenshots && screenshots[screenshots.length - 1];
+  const fullPageScreenshot =
+    fullPageScreenshotAudit.details &&
+    fullPageScreenshotAudit.details.type === 'full-page-screenshot' &&
+    fullPageScreenshotAudit.details.screenshot.data;
 
-  let screenshot = lastScreenshot ? lastScreenshot.data : null;
-
-  // Screenshot audit won't be available in snapshot mode.
-  // Fall back to full page screenshot if it's unavailable.
-  if (!screenshot) {
-    const fullPageScreenshot =
-      fullPageScreenshotAudit.details &&
-      fullPageScreenshotAudit.details.type === 'full-page-screenshot' &&
-      fullPageScreenshotAudit.details.screenshot.data;
-    if (fullPageScreenshot) screenshot = fullPageScreenshot;
-  }
-
-  return screenshot;
+  return fullPageScreenshot || null;
 }
 
 export function useFlowResult(): LH.FlowResult {
