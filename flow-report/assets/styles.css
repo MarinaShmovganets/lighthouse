@@ -88,20 +88,20 @@
   margin: var(--score-icon-margin);
 }
 .CategoryRatio--pass {
-  color: var(--color-pass)
+  color: var(--color-pass);
 }
 .CategoryRatio--pass::before {
   background-color: var(--color-pass);
   border-radius: 50%;
 }
 .CategoryRatio--average {
-  color: var(--color-average)
+  color: var(--color-average);
 }
 .CategoryRatio--average::before {
   background-color: var(--color-average);
 }
 .CategoryRatio--fail {
-  color: var(--color-fail)
+  color: var(--color-fail);
 }
 .CategoryRatio--fail::before {
   border-left: calc(var(--score-icon-size) / 2) solid transparent;
@@ -165,7 +165,7 @@
 .SidebarSummary {
   width: 100%;
   display: flex;
-  padding: 8px 16px;
+  padding: calc(var(--base-spacing) / 2) var(--base-spacing);
   align-items: center;
 }
 
@@ -265,7 +265,7 @@
 .SummaryFlowStep__screenshot {
   align-self: center;
   justify-self: center;
-  margin: var(--base-spacing) 8px;
+  margin: var(--base-spacing) calc(var(--base-spacing) / 2);
   object-fit: cover;
   object-position: top left;
 }
@@ -278,11 +278,11 @@
   color: var(--color-gray-800);
   text-decoration: underline;
   grid-column: 3;
-  margin: 8px;
+  margin: calc(var(--base-spacing) / 2);
 }
 
 .SummaryCategory {
-  margin: 8px;
+  margin: calc(var(--base-spacing) / 2);
 }
 
 .SummaryNavigationHeader {
@@ -295,7 +295,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: calc(var(--base-spacing) / 2);
   background-color: var(--color-gray-200);
   text-align: center;
 }
