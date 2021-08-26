@@ -32,7 +32,7 @@ export const FlowStepIcon: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({
 /**
  * Summarizes the category as a ratio of passed audits to total audits.
  * The rating color and icon are calculated from the passed/total ratio, not the category score.
- * A category will be given a null rating and color if none of it's audits are weighted.
+ * A category will be given a null rating and color if none of its audits are weighted.
  */
 export const CategoryRatio: FunctionComponent<{
   category: LH.ReportResult.Category,
