@@ -31,7 +31,7 @@ const reportGenerator = require('../../report/generator/report-generator.js');
     const snapshotResult = await lighthouse.snapshot({page});
 
     const navigationResult2 = await lighthouse.navigation({
-      url: 'https://www.mikescerealshack.co',
+      url: 'https://www.mikescerealshack.co/corrections',
       page,
     });
 
