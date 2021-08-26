@@ -48,6 +48,21 @@ export function getScreenshot(reportResult: LH.ReportResult) {
   return fullPageScreenshot || null;
 }
 
+export function convertChildAnchors(element: HTMLElement, index: number) {
+  const links = element.querySelectorAll('a');
+  for (const link of links) {
+    // Check if the link destination is in the report.
+    const currentUrl = new URL(location.href);
+    currentUrl.hash = '';
+    const linkUrl = new URL(link.href);
+    linkUrl.hash = '';
+    if (currentUrl.href !== linkUrl.href || !link.hash) continue;
+
+    const nodeId = link.hash.substr(1);
+    link.hash = `#index=${index}&anchor=${nodeId}`;
+  }
+}
+
 export function useFlowResult(): LH.FlowResult {
   const flowResult = useContext(FlowResultContext);
   if (!flowResult) throw Error('useFlowResult must be called in the FlowResultContext');
@@ -59,22 +74,27 @@ export function useLocale(): LH.Locale {
   return flowResult.lhrs[0].configSettings.locale;
 }
 
-export function useCurrentLhr(): {value: LH.Result, index: number}|null {
-  const flowResult = useFlowResult();
-  const [indexString, setIndexString] = useState(getHashParam('index'));
+export function useHashParam(param: string) {
+  const [paramValue, setParamValue] = useState(getHashParam(param));
 
   // Use two-way-binding on the URL hash.
-  // Triggers a re-render if the LHR index changes.
+  // Triggers a re-render if the param changes.
   useEffect(() => {
     function hashListener() {
-      const newIndexString = getHashParam('index');
-      if (newIndexString === indexString) return;
-      setIndexString(newIndexString);
+      const newIndexString = getHashParam(param);
+      if (newIndexString === paramValue) return;
+      setParamValue(newIndexString);
     }
     window.addEventListener('hashchange', hashListener);
     return () => window.removeEventListener('hashchange', hashListener);
-  }, [indexString]);
+  }, [paramValue]);
 
+  return paramValue;
+}
+
+export function useCurrentLhr(): {value: LH.Result, index: number}|null {
+  const flowResult = useFlowResult();
+  const indexString = useHashParam('index');
   if (!indexString) return null;
 
   const index = Number(indexString);
