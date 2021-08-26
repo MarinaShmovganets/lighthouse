@@ -10,21 +10,21 @@ import type {DOM} from '../../report/renderer/dom';
 import type {DetailsRenderer} from '../../report/renderer/details-renderer';
 import type {CategoryRenderer} from '../../report/renderer/category-renderer';
 
-interface LhGlobals {
+interface ReportRendererGlobals {
    dom: DOM,
    detailsRenderer: DetailsRenderer,
    categoryRenderer: CategoryRenderer,
 }
 
-export const LhContext = createContext<LhGlobals|undefined>(undefined);
+export const ReportRendererContext = createContext<ReportRendererGlobals|undefined>(undefined);
 
 function useLhGlobals() {
-  const globals = useContext(LhContext);
+  const globals = useContext(ReportRendererContext);
   if (!globals) throw Error('Globals not defined');
   return globals;
 }
 
-export const Gauge: FunctionComponent<{category: LH.ReportResult.Category, href: string}> =
+export const LegacyGauge: FunctionComponent<{category: LH.ReportResult.Category, href: string}> =
 ({category, href}) => {
   const {categoryRenderer} = useLhGlobals();
   const gauge = useMemo(() => {

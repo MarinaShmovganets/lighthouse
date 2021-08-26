@@ -14,7 +14,7 @@ import {FlowResultContext} from '../../src/util';
 import {DOM} from '../../../report/renderer/dom';
 import {DetailsRenderer} from '../../../report/renderer/details-renderer';
 import {CategoryRenderer} from '../../../report/renderer/category-renderer';
-import {LhContext} from '../../src/lh-wrappers';
+import {ReportRendererContext} from '../../src/lh-wrappers';
 
 const flowResult:LH.FlowResult = JSON.parse(
   fs.readFileSync(
@@ -40,9 +40,9 @@ beforeEach(() => {
 
   wrapper = ({children}) => (
     <FlowResultContext.Provider value={flowResult}>
-      <LhContext.Provider value={{dom, detailsRenderer, categoryRenderer}}>
+      <ReportRendererContext.Provider value={{dom, detailsRenderer, categoryRenderer}}>
         {children}
-      </LhContext.Provider>
+      </ReportRendererContext.Provider>
     </FlowResultContext.Provider>
   );
 });

@@ -9,7 +9,7 @@ import {useMemo} from 'preact/hooks';
 import {CategoryRenderer} from '../../report/renderer/category-renderer';
 import {DetailsRenderer} from '../../report/renderer/details-renderer';
 import {DOM} from '../../report/renderer/dom';
-import {LhContext} from './lh-wrappers';
+import {ReportRendererContext} from './lh-wrappers';
 import {Sidebar} from './sidebar/sidebar';
 import {Summary} from './summary/summary';
 import {FlowResultContext, useCurrentLhr} from './util';
@@ -46,12 +46,12 @@ export const App: FunctionComponent<{flowResult: LH.FlowResult}> = ({flowResult}
   }, []);
   return (
     <FlowResultContext.Provider value={flowResult}>
-      <LhContext.Provider value={globals}>
+      <ReportRendererContext.Provider value={globals}>
         <div className="App">
           <Sidebar/>
           <Content/>
         </div>
-      </LhContext.Provider>
+      </ReportRendererContext.Provider>
     </FlowResultContext.Provider>
   );
 };
