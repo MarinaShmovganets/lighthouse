@@ -5,7 +5,7 @@
  */
 
 import {createContext, FunctionComponent} from 'preact';
-import {useContext, useEffect, useLayoutEffect, useMemo, useRef} from 'preact/hooks';
+import {useContext, useMemo} from 'preact/hooks';
 import {CategoryRenderer} from '../../report/renderer/category-renderer';
 import {DetailsRenderer} from '../../report/renderer/details-renderer';
 import {DOM} from '../../report/renderer/dom';
@@ -18,13 +18,13 @@ interface ReportRendererGlobals {
 
 const ReportRendererContext = createContext<ReportRendererGlobals|undefined>(undefined);
 
-function useReportRenderer() {
+export function useReportRenderer() {
   const globals = useContext(ReportRendererContext);
   if (!globals) throw Error('Globals not defined');
   return globals;
 }
 
-export const LegacyRendererProvider: FunctionComponent = ({children}) => {
+export const ReportRendererProvider: FunctionComponent = ({children}) => {
   const globals = useMemo(() => {
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
@@ -37,31 +37,5 @@ export const LegacyRendererProvider: FunctionComponent = ({children}) => {
   }, []);
   return (
     <ReportRendererContext.Provider value={globals}>{children}</ReportRendererContext.Provider>
-  );
-};
-
-export const LegacyGauge: FunctionComponent<{category: LH.ReportResult.Category, href: string}> =
-({category, href}) => {
-  const {categoryRenderer} = useReportRenderer();
-  const ref = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    if (!ref.current) return;
-    const el = categoryRenderer.renderScoreGauge(category, {});
-
-    // Category label is displayed in the navigation header.
-    const label = el.querySelector('.lh-gauge__label');
-    if (label) label.remove();
-
-    ref.current.append(el);
-  }, [categoryRenderer, category]);
-
-  useEffect(() => {
-    const anchor = ref.current && ref.current.querySelector('a') as HTMLAnchorElement;
-    if (anchor) anchor.href = href;
-  }, [href]);
-
-  return (
-    <div ref={ref} data-testid="LegacyGauge"/>
   );
 };

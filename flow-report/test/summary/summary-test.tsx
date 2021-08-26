@@ -11,7 +11,7 @@ import {dirname} from 'path';
 import {fileURLToPath} from 'url';
 import {FunctionComponent} from 'preact';
 import {FlowResultContext} from '../../src/util';
-import {LegacyRendererProvider} from '../../src/legacy-wrappers';
+import {ReportRendererProvider} from '../../src/legacy-wrappers';
 
 const flowResult:LH.FlowResult = JSON.parse(
   fs.readFileSync(
@@ -32,9 +32,9 @@ beforeEach(() => {
 
   wrapper = ({children}) => (
     <FlowResultContext.Provider value={flowResult}>
-      <LegacyRendererProvider>
+      <ReportRendererProvider>
         {children}
-      </LegacyRendererProvider>
+      </ReportRendererProvider>
     </FlowResultContext.Provider>
   );
 });
@@ -66,7 +66,7 @@ describe('SummaryFlowStep', () => {
     const screenshot = await root.findByTestId('SummaryFlowStep__screenshot') as HTMLImageElement;
     expect(screenshot.src).toMatch(/data:image\/jpeg;base64/);
 
-    const gauges = await root.findAllByTestId('LegacyGauge');
+    const gauges = await root.findAllByTestId('Gauge');
     expect(gauges).toHaveLength(4);
 
     const links = await root.findAllByRole('link') as HTMLAnchorElement[];

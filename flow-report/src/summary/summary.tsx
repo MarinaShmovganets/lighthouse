@@ -5,7 +5,7 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {LegacyGauge} from '../legacy-wrappers';
+import {Gauge} from '../wrappers/gauge';
 import {CategoryRatio, FlowStepIcon} from '../common';
 import {getScreenDimensions, getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
@@ -37,7 +37,7 @@ const SummaryCategory: FunctionComponent<{
     category ?
       (
         gatherMode === 'navigation' ?
-        <LegacyGauge
+        <Gauge
           category={category}
           href={href}
         /> :
