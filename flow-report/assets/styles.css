@@ -274,11 +274,12 @@
 }
 
 .SummaryFlowStep__screenshot {
-  width: 60px;
   margin: 8px;
   align-self: center;
   justify-self: center;
   margin: var(--base-spacing) 0;
+  object-fit: cover;
+  object-position: top left;
 }
 
 .SummaryFlowStep__label {

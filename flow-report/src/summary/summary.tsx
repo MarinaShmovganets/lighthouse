@@ -7,10 +7,11 @@
 import {FunctionComponent} from 'preact';
 import {LegacyGauge} from '../legacy-wrappers';
 import {CategoryRatio, FlowStepIcon} from '../common';
-import {getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
+import {getScreenDimensions, getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
+const THUMBNAIL_WIDTH = 40;
 
 const SummaryNavigationHeader: FunctionComponent<{url: string}> = ({url}) => {
   return (
@@ -58,7 +59,12 @@ export const SummaryFlowStep: FunctionComponent<{
   hashIndex: number,
 }> = ({lhr, label, hashIndex}) => {
   const reportResult = Util.prepareReportResult(lhr);
+
+  // Crop the displayed image to the viewport dimensions.
   const screenshot = getScreenshot(reportResult);
+  const {width, height} = getScreenDimensions(reportResult);
+  const thumbnailHeight = height * THUMBNAIL_WIDTH / width;
+
   return (
     <div className="SummaryFlowStep">
       {
@@ -67,7 +73,8 @@ export const SummaryFlowStep: FunctionComponent<{
       <img
         className="SummaryFlowStep__screenshot"
         data-testid="SummaryFlowStep__screenshot"
-        src={screenshot ? screenshot.data : undefined}
+        src={screenshot || undefined}
+        style={{width: THUMBNAIL_WIDTH, maxHeight: thumbnailHeight}}
       />
       <FlowStepIcon mode={lhr.gatherMode}/>
       <a className="SummaryFlowStep__label" href={`#index=${hashIndex}`}>{label}</a>
