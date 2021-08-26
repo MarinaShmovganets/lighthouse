@@ -100,6 +100,7 @@ export function useDerivedStepNames() {
   let numSnapshot = 1;
 
   // TODO(FR-COMPAT): Override with a provided step name.
+  // TODO(FR-COMPAT): Add shortened URL and reset count for navigations.
   return flowResult.lhrs.map((lhr) => {
     switch (lhr.gatherMode) {
       case 'navigation':
