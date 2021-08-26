@@ -20,7 +20,7 @@ export const Gauge: FunctionComponent<{category: LH.ReportResult.Category, href:
     const label = el.querySelector('.lh-gauge__label');
     if (label) label.remove();
 
-    ref.current && ref.current.append(el);
+    if (ref.current) ref.current.append(el);
     return () => {
       if (ref.current && ref.current.contains(el)) {
         ref.current.removeChild(el);
