@@ -76,11 +76,17 @@ const UIStrings = {
   deprecatedDisownOpener: 'disown-opener is deprecated since CSP3. ' +
     'Please, use the Cross-Origin-Opener-Policy header instead.',
   /**
-   * @description Message shown when a CSP keyword allows unsafe scripts to be run in the page. Shown in a table with a list of other CSP vulnerabilities and suggestions. "CSP" stands for "Content Security Policy". "'strict-dynamic'" does not need to be translated.
+   * @description Message shown when a CSP wildcard allows unsafe scripts to be run in the page. Shown in a table with a list of other CSP vulnerabilities and suggestions. "CSP" stands for "Content Security Policy".
    *  @example {https:} keyword
    */
-  unsafeKeyword: 'Avoid using {keyword} in this directive ' +
-    'if it is not a fallback for \'strict-dynamic\'.',
+  wildcard: 'Avoid using wildcards ({keyword}) in this directive. ' +
+    'It can allow scripts to be sourced from an unsafe domain.',
+  /**
+   * @description Message shown when a CSP URL scheme allows unsafe scripts to be run in the page. Shown in a table with a list of other CSP vulnerabilities and suggestions. "CSP" stands for "Content Security Policy".
+   *  @example {https:} keyword
+   */
+  plainUrlScheme: 'Avoid using plain URL schemes ({keyword}) in this directive. ' +
+    'It can allow scripts to be sourced from an unsafe domain.',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -96,8 +102,8 @@ const FINDING_TO_UI_STRING = {
     [Directive.OBJECT_SRC]: str_(UIStrings.missingObjectSrc),
   },
   [Type.SCRIPT_UNSAFE_INLINE]: str_(UIStrings.unsafeInline),
-  [Type.PLAIN_WILDCARD]: UIStrings.unsafeKeyword,
-  [Type.PLAIN_URL_SCHEMES]: UIStrings.unsafeKeyword,
+  [Type.PLAIN_WILDCARD]: UIStrings.wildcard,
+  [Type.PLAIN_URL_SCHEMES]: UIStrings.plainUrlScheme,
   [Type.NONCE_LENGTH]: str_(UIStrings.nonceLength),
   [Type.NONCE_CHARSET]: str_(UIStrings.nonceCharset),
   [Type.DEPRECATED_DIRECTIVE]: {
