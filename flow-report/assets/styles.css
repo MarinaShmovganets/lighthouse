@@ -27,7 +27,7 @@
 }
 
 .Content {
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .FlowStepIcon {
