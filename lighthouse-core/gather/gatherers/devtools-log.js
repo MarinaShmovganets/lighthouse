@@ -11,7 +11,7 @@
  * This protocol log can be used to recreate the network records using lib/network-recorder.js.
  */
 
-const MessageLog = require('../devtools-log.js');
+const NetworkMonitor = require('../driver/network-monitor.js');
 const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 
 class DevtoolsLog extends FRGatherer {
@@ -26,38 +26,32 @@ class DevtoolsLog extends FRGatherer {
   constructor() {
     super();
 
-    this._messageLog = new MessageLog(/^(Page|Network)\./);
+    /** @type {NetworkMonitor|undefined} */
+    this._networkMonitor = undefined;
 
-    /** @param {LH.Protocol.RawEventMessage} e */
-    this._onProtocolMessage = e => this._messageLog.record(e);
+    /** @type {LH.DevtoolsLog} */
+    this._devtoolsLog = [];
   }
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    */
   async startSensitiveInstrumentation({driver}) {
-    this._messageLog.reset();
-    this._messageLog.beginRecording();
-    driver.defaultSession.addProtocolMessageListener(this._onProtocolMessage);
-
-    // TODO(FR-COMPAT): use a dedicated session for these
-    await driver.defaultSession.sendCommand('Page.enable');
-    await driver.defaultSession.sendCommand('Network.enable');
+    this._networkMonitor = new NetworkMonitor(driver.defaultSession);
+    this._networkMonitor.enable();
   }
 
-  /**
-   * @param {LH.Gatherer.FRTransitionalContext} passContext
-   */
-  async stopSensitiveInstrumentation({driver}) {
-    this._messageLog.endRecording();
-    driver.defaultSession.removeProtocolMessageListener(this._onProtocolMessage);
+  async stopSensitiveInstrumentation() {
+    if (!this._networkMonitor) return;
+    this._devtoolsLog = this._networkMonitor.getMessageLog();
+    this._networkMonitor.disable();
   }
 
   /**
    * @return {Promise<LH.Artifacts['DevtoolsLog']>}
    */
   async getArtifact() {
-    return this._messageLog.messages;
+    return this._devtoolsLog;
   }
 }
 

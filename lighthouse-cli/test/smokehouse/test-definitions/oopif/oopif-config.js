@@ -11,6 +11,15 @@
  */
 module.exports = {
   extends: 'lighthouse:default',
+  categories: {
+    performance: {
+      title: 'Performance',
+      auditRefs: [{id: 'iframe-elements', weight: 0}],
+    },
+  },
+  audits: [
+    {path: `${__dirname}/oopif-iframe-audit.js`},
+  ],
   settings: {
     // This test runs in CI and hits the outside network of a live site.
     // Be a little more forgiving on how long it takes all network requests of several nested iframes

@@ -23,6 +23,7 @@ const {defaultSettings} = require('../../../config/constants.js');
 
 function createMockSession() {
   return {
+    setTargetInfo: jest.fn(),
     sendCommand: createMockSendCommandFn({useSessionId: false}),
     setNextProtocolTimeout: jest.fn(),
     once: createMockOnceFn(),
@@ -30,6 +31,8 @@ function createMockSession() {
     off: jest.fn(),
     addProtocolMessageListener: createMockOnFn(),
     removeProtocolMessageListener: jest.fn(),
+    addSessionAttachedListener: createMockOnFn(),
+    removeSessionAttachedListener: jest.fn(),
 
     /** @return {LH.Gatherer.FRProtocolSession} */
     asSession() {

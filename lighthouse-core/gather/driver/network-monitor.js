@@ -12,9 +12,11 @@
 
 const log = require('lighthouse-logger');
 const {EventEmitter} = require('events');
+const MessageLog = require('../devtools-log.js');
 const NetworkRecorder = require('../../lib/network-recorder.js');
 const NetworkRequest = require('../../lib/network-request.js');
 const URL = require('../../lib/url-shim.js');
+const TargetManager = require('./target-manager.js');
 
 /** @typedef {import('../../lib/network-recorder.js').NetworkRecorderEvent} NetworkRecorderEvent */
 /** @typedef {'network-2-idle'|'network-critical-idle'|'networkidle'|'networkbusy'|'network-critical-busy'|'network-2-busy'} NetworkMonitorEvent_ */
@@ -23,6 +25,8 @@ const URL = require('../../lib/url-shim.js');
 class NetworkMonitor extends EventEmitter {
   /** @type {NetworkRecorder|undefined} */
   _networkRecorder = undefined;
+  /** @type {TargetManager|undefined} */
+  _targetManager = undefined;
   /** @type {Array<LH.Crdp.Page.Frame>} */
   _frameNavigations = [];
 
@@ -31,11 +35,19 @@ class NetworkMonitor extends EventEmitter {
     super();
     this._session = session;
 
+    this._messageLog = new MessageLog(/^(Page|Network)\./);
+
+    this._onTargetAttached = this._onTargetAttached.bind(this);
+
+    /** @type {Map<string, LH.Gatherer.FRProtocolSession>} */
+    this._sessions = new Map();
+
     /** @param {LH.Crdp.Page.FrameNavigatedEvent} event */
     this._onFrameNavigated = event => this._frameNavigations.push(event.frame);
 
     /** @param {LH.Protocol.RawEventMessage} event */
     this._onProtocolMessage = event => {
+      this._messageLog.record(event);
       if (!this._networkRecorder) return;
       this._networkRecorder.dispatch(event);
     };
@@ -50,13 +62,28 @@ class NetworkMonitor extends EventEmitter {
   }
 
   /**
+   * @param {{target: {targetId: string}, session: LH.Gatherer.FRProtocolSession}} session
+   */
+  async _onTargetAttached({session, target}) {
+    const targetId = target.targetId;
+    if (this._sessions.has(targetId)) return;
+
+    this._sessions.set(targetId, session);
+    session.addProtocolMessageListener(this._onProtocolMessage);
+
+    await session.sendCommand('Network.enable');
+  }
+
+  /**
    * @return {Promise<void>}
    */
   async enable() {
     if (this._networkRecorder) return;
 
     this._frameNavigations = [];
+    this._sessions = new Map();
     this._networkRecorder = new NetworkRecorder();
+    this._targetManager = new TargetManager(this._session);
 
     /**
      * Reemit the same network recorder events.
@@ -71,22 +98,38 @@ class NetworkMonitor extends EventEmitter {
     this._networkRecorder.on('requeststarted', reEmit('requeststarted'));
     this._networkRecorder.on('requestloaded', reEmit('requestloaded'));
 
-    this._session.on('Page.frameNavigated', this._onFrameNavigated);
-    this._session.addProtocolMessageListener(this._onProtocolMessage);
+    this._messageLog.reset();
+    this._messageLog.beginRecording();
 
-    await this._session.sendCommand('Page.enable');
-    await this._session.sendCommand('Network.enable');
+    this._session.on('Page.frameNavigated', this._onFrameNavigated);
+    this._targetManager.addTargetAttachedListener(this._onTargetAttached);
+
+    await this._targetManager.enable();
   }
 
   /**
    * @return {Promise<void>}
    */
   async disable() {
+    if (!this._targetManager) return;
+
+    this._messageLog.reset();
+    this._messageLog.endRecording();
+
     this._session.off('Page.frameNavigated', this._onFrameNavigated);
     this._session.removeProtocolMessageListener(this._onProtocolMessage);
+    this._targetManager.removeTargetAttachedListener(this._onTargetAttached);
+
+    for (const session of this._sessions.values()) {
+      session.removeProtocolMessageListener(this._onProtocolMessage);
+    }
+
+    await this._targetManager.disable();
 
     this._frameNavigations = [];
     this._networkRecorder = undefined;
+    this._targetManager = undefined;
+    this._sessions = new Map();
   }
 
   /** @return {Promise<string | undefined>} */
@@ -101,6 +144,13 @@ class NetworkMonitor extends EventEmitter {
     if (!finalNavigation) log.warn('NetworkMonitor', 'No detected navigations');
 
     return finalNavigation && finalNavigation.url;
+  }
+
+  /**
+   * @return {LH.DevtoolsLog}
+   */
+  getMessageLog() {
+    return this._messageLog.messages;
   }
 
   /**

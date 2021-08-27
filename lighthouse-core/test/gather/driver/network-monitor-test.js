@@ -123,10 +123,11 @@ describe('NetworkMonitor', () => {
       sendCommandMock.mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1'}}});
       await monitor.enable();
 
+      const type = 'Navigation';
       const frame = /** @type {*} */ ({id: '1', url: 'https://page.example.com'});
-      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: {...frame, url: '1'}}});
-      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: {...frame, url: '2'}}});
-      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame}});
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: {...frame, url: '1'}, type}}); // eslint-disable-line max-len
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: {...frame, url: '2'}, type}}); // eslint-disable-line max-len
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame, type}});
 
       expect(await monitor.getFinalNavigationUrl()).toEqual('https://page.example.com');
     });
@@ -135,10 +136,11 @@ describe('NetworkMonitor', () => {
       sendCommandMock.mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1'}}});
       await monitor.enable();
 
+      const type = 'Navigation';
       const frame = /** @type {*} */ ({id: '1', url: 'https://page.example.com'});
-      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame}});
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame, type}});
       const iframe = /** @type {*} */ ({id: '2', url: 'https://iframe.example.com'});
-      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: iframe}});
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: iframe, type}});
 
       expect(await monitor.getFinalNavigationUrl()).toEqual('https://page.example.com');
     });
