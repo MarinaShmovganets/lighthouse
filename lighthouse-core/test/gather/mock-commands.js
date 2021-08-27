@@ -107,6 +107,15 @@ function createMockSendCommandFn(options) {
         call => call[0] === command && (!useSessionId || call[1] === sessionId)
       )[useSessionId ? 2 : 1];
     },
+    /**
+     * @param {keyof LH.CrdpCommands} command
+     * @param {string=} sessionId
+     */
+    findAllInvocations(command, sessionId) {
+      return mockFn.mock.calls.filter(
+        call => call[0] === command && (!useSessionId || call[1] === sessionId)
+      ).map(invocation => useSessionId ? invocation[2] : invocation[1]);
+    },
   });
 
   return mockFn;

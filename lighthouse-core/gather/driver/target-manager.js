@@ -49,7 +49,7 @@ class TargetManager {
   async _onSessionAttached(session) {
     try {
       const target = await session.sendCommand('Target.getTargetInfo').catch(() => null);
-      const targetType = target && target.targetInfo.type;
+      const targetType = target && target.targetInfo && target.targetInfo.type;
       const hasValidTargetType = targetType === 'page' || targetType === 'iframe';
       if (!target || !hasValidTargetType) return;
 
@@ -71,7 +71,7 @@ class TargetManager {
       });
     } catch (err) {
       // Sometimes targets can be closed before we even have a chance to listen to their network activity.
-      if (/Target closed/.test(err.stack)) return;
+      if (/Target closed/.test(err.message)) return;
 
       throw err;
     } finally {

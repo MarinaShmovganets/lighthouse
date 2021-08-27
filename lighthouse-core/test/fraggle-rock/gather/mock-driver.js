@@ -91,6 +91,26 @@ function createMockExecutionContext() {
   };
 }
 
+function createMockTargetManager() {
+  return {
+    enable: jest.fn(),
+    disable: jest.fn(),
+    addTargetAttachedListener: createMockOnFn(),
+    removeTargetAttachedListener: jest.fn(),
+    reset() {
+      this.enable = jest.fn();
+      this.disable = jest.fn();
+      this.addTargetAttachedListener = createMockOnFn();
+      this.removeTargetAttachedListener = jest.fn();
+    },
+    /** @return {import('../../../gather/driver/target-manager.js')} */
+    asTargetManager() {
+      // @ts-expect-error - We'll rely on the tests passing to know this matches.
+      return this;
+    },
+  };
+}
+
 function createMockDriver() {
   const page = createMockPage();
   const session = createMockSession();
@@ -168,6 +188,7 @@ function mockDriverSubmodules() {
   const networkMock = {
     fetchResponseBodyFromCache: jest.fn(),
   };
+  const targetManagerMock = createMockTargetManager();
 
   function reset() {
     navigationMock.gotoURL = jest.fn().mockResolvedValue({finalUrl: 'https://example.com', warnings: [], timedOut: false});
@@ -177,6 +198,7 @@ function mockDriverSubmodules() {
     emulationMock.clearThrottling = jest.fn();
     emulationMock.emulate = jest.fn();
     networkMock.fetchResponseBodyFromCache = jest.fn().mockResolvedValue('');
+    targetManagerMock.reset();
   }
 
   /**
@@ -187,11 +209,21 @@ function mockDriverSubmodules() {
   const get = (target, name) => {
     return (...args) => target[name](...args);
   };
+
+  /** @type {(instance: any) => (...args: any[]) => any} */
+  const proxyCtor = instance => function() {
+    // IMPORTANT! This must be a `function` not an arrow function so it can be invoked as a constructor.
+    return instance;
+  };
+
   jest.mock('../../../gather/driver/navigation.js', () => new Proxy(navigationMock, {get}));
   jest.mock('../../../gather/driver/prepare.js', () => new Proxy(prepareMock, {get}));
   jest.mock('../../../gather/driver/storage.js', () => new Proxy(storageMock, {get}));
   jest.mock('../../../gather/driver/network.js', () => new Proxy(networkMock, {get}));
+  jest.mock('../../../gather/driver/target-manager.js', () => proxyCtor(targetManagerMock));
   jest.mock('../../../lib/emulation.js', () => new Proxy(emulationMock, {get}));
+
+  reset();
 
   return {
     navigationMock,
@@ -199,6 +231,7 @@ function mockDriverSubmodules() {
     storageMock,
     emulationMock,
     networkMock,
+    targetManagerMock,
     reset,
   };
 }

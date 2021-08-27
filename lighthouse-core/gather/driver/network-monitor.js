@@ -78,7 +78,7 @@ class NetworkMonitor extends EventEmitter {
    * @return {Promise<void>}
    */
   async enable() {
-    if (this._networkRecorder) return;
+    if (this._targetManager) return;
 
     this._frameNavigations = [];
     this._sessions = new Map();
@@ -104,6 +104,7 @@ class NetworkMonitor extends EventEmitter {
     this._session.on('Page.frameNavigated', this._onFrameNavigated);
     this._targetManager.addTargetAttachedListener(this._onTargetAttached);
 
+    await this._session.sendCommand('Page.enable');
     await this._targetManager.enable();
   }
 
@@ -117,7 +118,6 @@ class NetworkMonitor extends EventEmitter {
     this._messageLog.endRecording();
 
     this._session.off('Page.frameNavigated', this._onFrameNavigated);
-    this._session.removeProtocolMessageListener(this._onProtocolMessage);
     this._targetManager.removeTargetAttachedListener(this._onTargetAttached);
 
     for (const session of this._sessions.values()) {
