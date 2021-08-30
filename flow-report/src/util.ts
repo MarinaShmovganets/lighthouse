@@ -5,7 +5,7 @@
  */
 
 import {createContext} from 'preact';
-import {useContext, useEffect, useState} from 'preact/hooks';
+import {useContext, useEffect, useMemo, useState} from 'preact/hooks';
 
 export const FlowResultContext = createContext<LH.FlowResult|undefined>(undefined);
 
@@ -18,6 +18,28 @@ function shortenUrl(longUrl: string) {
   const url = new URL(longUrl);
   return `${url.hostname}${url.pathname}`;
 }
+
+/**
+ * The step label should be enumerated if there is another report of the same gather mode in the same section.
+ * Navigation reports will never be enumerated.
+ */
+function shouldEnumerate(flowResult:LH.FlowResult, index:number) {
+  const {lhrs} = flowResult;
+  if (lhrs[index].gatherMode === 'navigation') return false;
+
+  for (let i = index + 1; lhrs[i] && lhrs[i].gatherMode !== 'navigation'; ++i) {
+    if (lhrs[i].gatherMode === lhrs[index].gatherMode) {
+      return true;
+    }
+  }
+  for (let i = index - 1; lhrs[i] && lhrs[i].gatherMode !== 'navigation'; --i) {
+    if (lhrs[i].gatherMode === lhrs[index].gatherMode) {
+      return true;
+    }
+  }
+  return false;
+}
+
 
 export function classNames(...args: Array<string|undefined|Record<string, boolean>>): string {
   const classes = [];
@@ -100,21 +122,30 @@ export function useCurrentLhr(): {value: LH.Result, index: number}|null {
 export function useDerivedStepNames() {
   const flowResult = useFlowResult();
 
-  let numTimespan = 1;
-  let numSnapshot = 1;
+  return useMemo(() => {
+    let numTimespan = 1;
+    let numSnapshot = 1;
 
-  // TODO(FR-COMPAT): Override with a provided step name.
-  return flowResult.lhrs.map((lhr) => {
-    const shortUrl = shortenUrl(lhr.finalUrl);
-    switch (lhr.gatherMode) {
-      case 'navigation':
-        numTimespan = 1;
-        numSnapshot = 1;
-        return `Navigation report (${shortUrl})`;
-      case 'timespan':
-        return `Timespan report ${numTimespan} (${shortUrl})`;
-      case 'snapshot':
-        return `Snapshot report ${numSnapshot} (${shortUrl})`;
-    }
-  });
+    // TODO(FR-COMPAT): Override with a provided step name.
+    return flowResult.lhrs.map((lhr, index) => {
+      const shortUrl = shortenUrl(lhr.finalUrl);
+
+      switch (lhr.gatherMode) {
+        case 'navigation':
+          numTimespan = 1;
+          numSnapshot = 1;
+          return `Navigation report (${shortUrl})`;
+        case 'timespan':
+          if (shouldEnumerate(flowResult, index)) {
+            return `Timespan report ${numTimespan} (${shortUrl})`;
+          }
+          return `Timespan report (${shortUrl})`;
+        case 'snapshot':
+          if (shouldEnumerate(flowResult, index)) {
+            return `Snapshot report ${numSnapshot} (${shortUrl})`;
+          }
+          return `Snapshot report (${shortUrl})`;
+      }
+    });
+  }, [flowResult]);
 }
