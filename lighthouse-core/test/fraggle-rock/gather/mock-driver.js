@@ -97,6 +97,14 @@ function createMockTargetManager() {
     disable: jest.fn(),
     addTargetAttachedListener: createMockOnFn(),
     removeTargetAttachedListener: jest.fn(),
+    /** @param {LH.Gatherer.FRProtocolSession} session */
+    mockEnable(session) {
+      this.enable.mockImplementation(async () => {
+        const listeners = this.addTargetAttachedListener.mock.calls.map(call => call[0]);
+        const targetWithSession = {target: {type: 'page', targetId: 'page'}, session};
+        for (const listener of listeners) await listener(targetWithSession);
+      });
+    },
     reset() {
       this.enable = jest.fn();
       this.disable = jest.fn();
@@ -151,6 +159,20 @@ function mockDriverModule(driverProvider) {
   };
 }
 
+function mockTargetManagerModule() {
+  const targetManagerMock = createMockTargetManager();
+
+  /** @type {(instance: any) => (...args: any[]) => any} */
+  const proxyCtor = instance => function() {
+    // IMPORTANT! This must be a `function` not an arrow function so it can be invoked as a constructor.
+    return instance;
+  };
+
+  jest.mock('../../../gather/driver/target-manager.js', () => proxyCtor(targetManagerMock));
+
+  return targetManagerMock;
+}
+
 function createMockContext() {
   return {
     driver: createMockDriver(),
@@ -188,7 +210,7 @@ function mockDriverSubmodules() {
   const networkMock = {
     fetchResponseBodyFromCache: jest.fn(),
   };
-  const targetManagerMock = createMockTargetManager();
+  const targetManagerMock = mockTargetManagerModule();
 
   function reset() {
     navigationMock.gotoURL = jest.fn().mockResolvedValue({finalUrl: 'https://example.com', warnings: [], timedOut: false});
@@ -210,17 +232,10 @@ function mockDriverSubmodules() {
     return (...args) => target[name](...args);
   };
 
-  /** @type {(instance: any) => (...args: any[]) => any} */
-  const proxyCtor = instance => function() {
-    // IMPORTANT! This must be a `function` not an arrow function so it can be invoked as a constructor.
-    return instance;
-  };
-
   jest.mock('../../../gather/driver/navigation.js', () => new Proxy(navigationMock, {get}));
   jest.mock('../../../gather/driver/prepare.js', () => new Proxy(prepareMock, {get}));
   jest.mock('../../../gather/driver/storage.js', () => new Proxy(storageMock, {get}));
   jest.mock('../../../gather/driver/network.js', () => new Proxy(networkMock, {get}));
-  jest.mock('../../../gather/driver/target-manager.js', () => proxyCtor(targetManagerMock));
   jest.mock('../../../lib/emulation.js', () => new Proxy(emulationMock, {get}));
 
   reset();
@@ -238,6 +253,7 @@ function mockDriverSubmodules() {
 
 module.exports = {
   mockRunnerModule,
+  mockTargetManagerModule,
   mockDriverModule,
   mockDriverSubmodules,
   createMockDriver,

@@ -200,17 +200,17 @@ class Driver {
 
   /** @param {LH.Crdp.Target.TargetInfo} targetInfo */
   setTargetInfo(targetInfo) { // eslint-disable-line no-unused-vars
-    throw new Error(`OOPIF handling in legacy driver is implicit`);
+    // OOPIF handling in legacy driver is implicit.
   }
 
   /** @param {(session: LH.Gatherer.FRProtocolSession) => void} callback */
   addSessionAttachedListener(callback) { // eslint-disable-line no-unused-vars
-    throw new Error(`OOPIF handling in legacy driver is implicit`);
+    // OOPIF handling in legacy driver is implicit.
   }
 
   /** @param {(session: LH.Gatherer.FRProtocolSession) => void} callback */
   removeSessionAttachedListener(callback) { // eslint-disable-line no-unused-vars
-    throw new Error(`OOPIF handling in legacy driver is implicit`);
+    // OOPIF handling in legacy driver is implicit.
   }
 
   /**

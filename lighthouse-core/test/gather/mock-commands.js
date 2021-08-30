@@ -63,7 +63,7 @@ function createMockSendCommandFn(options) {
 
       const indexOfResponse = mockResponses
         .findIndex(entry => entry.command === command && entry.sessionId === sessionId);
-      if (indexOfResponse === -1) throw new Error(`${command} unimplemented`);
+      if (indexOfResponse === -1) return Promise.reject(new Error(`${command} unimplemented`));
       const {response, delay} = mockResponses[indexOfResponse];
       mockResponses.splice(indexOfResponse, 1);
       const returnValue = typeof response === 'function' ? response(...args) : response;
