@@ -7,11 +7,6 @@
 
 const TargetManager = require('../../../gather/driver/target-manager.js');
 const {createMockSession} = require('../../fraggle-rock/gather/mock-driver.js');
-const {
-  makePromiseInspectable,
-  createDecomposedPromise,
-  flushAllTimersAndMicrotasks,
-} = require('../../test-utils.js');
 
 /* eslint-env jest */
 
