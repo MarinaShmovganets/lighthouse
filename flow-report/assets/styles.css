@@ -11,6 +11,7 @@
   --gather-mode-icon-size: 16px;
   --half-base-spacing: calc(var(--base-spacing) / 2);
   --sidebar-flow-step-navigation-font-size: 14px;
+  --sidebar-selected-bg-color: #DDEEFF;
   --sidebar-summary-font-size: 14px;
   --sidebar-title-font-size: 16px;
   --summary-flow-step-label-font-size: 16px;
@@ -134,7 +135,8 @@
 }
 
 .Sidebar--current {
-  background-color: var(--color-gray-200);
+  background-color: var(--sidebar-selected-bg-color);
+  color: var(--color-blue-A700) !important;
   font-weight: bold;
 }
 
@@ -160,7 +162,7 @@
 .SidebarSummary {
   width: 100%;
   display: flex;
-  padding: var(--half-base-spacing) var(--base-spacing);
+  padding: var(--half-base-spacing) 0px;
   align-items: center;
   margin: var(--half-base-spacing) 0px;
 }
@@ -172,12 +174,7 @@
   align-items: center;
   justify-content: center;
   /* Flex column-gap workaround for safari */
-  margin-right: var(--base-spacing);
-}
-.SidebarSummary__icon::before {
-  content: '☰';
-  font-weight: normal;
-  color: var(--color-blue-A700);
+  margin: 0px 18px;
 }
 
 .SidebarSummary__label {
@@ -195,7 +192,7 @@
 
 .SidebarFlowStep__label {
   grid-column: 2;
-  margin: var(--half-base-spacing);
+  margin: var(--half-base-spacing) 0px;
   justify-self: left;
 }
 .SidebarFlowStep__label--navigation {
