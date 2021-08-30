@@ -1737,7 +1737,10 @@
     "message": "Nonces should be at least 8 characters long."
   },
   "lighthouse-core/lib/csp-evaluator.js | plainUrlScheme": {
-    "message": "Avoid using plain URL schemes ({keyword}) in this directive. It can allow scripts to be sourced from an unsafe domain."
+    "message": "Avoid using plain URL schemes ({keyword}) in this directive. Plain URL schemes allow scripts to be sourced from an unsafe domain."
+  },
+  "lighthouse-core/lib/csp-evaluator.js | plainWildcards": {
+    "message": "Avoid using plain wildcards ({keyword}) in this directive. Plain wildcards allow scripts to be sourced from an unsafe domain."
   },
   "lighthouse-core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "No CSP configures a reporting destination. This makes it difficult to maintain the CSP over time and monitor for any breakages."
@@ -1759,9 +1762,6 @@
   },
   "lighthouse-core/lib/csp-evaluator.js | unsafeInlineFallback": {
     "message": "Consider adding 'unsafe-inline' (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
-  },
-  "lighthouse-core/lib/csp-evaluator.js | wildcard": {
-    "message": "Avoid using wildcards ({keyword}) in this directive. It can allow scripts to be sourced from an unsafe domain."
   },
   "lighthouse-core/lib/i18n/i18n.js | columnBlockingTime": {
     "message": "Main-Thread Blocking Time"

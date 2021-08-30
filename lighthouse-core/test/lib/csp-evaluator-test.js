@@ -99,8 +99,8 @@ describe('getTranslatedDescription', () => {
     expect(findings[0].directive).toEqual('object-src');
     expect(isIcuMessage(translated[0])).toBeTruthy();
     expect(translated[0]).toBeDisplayString(
-      'Avoid using wildcards (*) in this directive. ' +
-      'It can allow scripts to be sourced from an unsafe domain.'
+      'Avoid using plain wildcards (*) in this directive. ' +
+      'Plain wildcards allow scripts to be sourced from an unsafe domain.'
     );
   });
 
@@ -114,7 +114,7 @@ describe('getTranslatedDescription', () => {
     expect(isIcuMessage(translated[0])).toBeTruthy();
     expect(translated[0]).toBeDisplayString(
       'Avoid using plain URL schemes (https:) in this directive. ' +
-      'It can allow scripts to be sourced from an unsafe domain.'
+      'Plain URL schemes allow scripts to be sourced from an unsafe domain.'
     );
   });
 
