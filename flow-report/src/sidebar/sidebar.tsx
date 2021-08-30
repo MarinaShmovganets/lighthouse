@@ -6,12 +6,9 @@
 
 import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
+import {Separator} from '../common';
 import {classNames, useCurrentLhr, useFlowResult, useLocale} from '../util';
 import {SidebarFlow} from './flow';
-
-const Separator: FunctionComponent = () => {
-  return <div className="Separator" role="separator"></div>;
-};
 
 export const SidebarSummary: FunctionComponent = () => {
   const currentLhr = useCurrentLhr();
@@ -62,25 +59,18 @@ export const SidebarHeader: FunctionComponent<{title: string, date: string}> = (
   );
 };
 
-const SidebarSectionTitle: FunctionComponent = ({children}) => {
-  return <div className="SidebarSectionTitle">{children}</div>;
-};
-
 export const Sidebar: FunctionComponent = () => {
   const flowResult = useFlowResult();
   const firstLhr = flowResult.lhrs[0];
   return (
     <div className="Sidebar">
       <SidebarHeader title="Lighthouse User Flow Report" date={firstLhr.fetchTime}/>
-      <SidebarSectionTitle>RUNTIME SETTINGS</SidebarSectionTitle>
-      <Separator/>
-      <SidebarRuntimeSettings settings={firstLhr.configSettings}/>
-      <Separator/>
-      <SidebarSectionTitle>USER FLOW</SidebarSectionTitle>
       <Separator/>
       <SidebarSummary/>
       <Separator/>
       <SidebarFlow/>
+      <Separator/>
+      <SidebarRuntimeSettings settings={firstLhr.configSettings}/>
     </div>
   );
 };

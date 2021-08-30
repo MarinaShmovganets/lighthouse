@@ -68,3 +68,7 @@ export const CategoryRatio: FunctionComponent<{
     </a>
   );
 };
+
+export const Separator: FunctionComponent = () => {
+  return <div className="Separator" role="separator"></div>;
+};

@@ -121,8 +121,6 @@
   height: 1px;
   width: 100%;
   background-color: var(--color-gray-300);
-  margin-top: 12px;
-  margin-bottom: 12px;
 }
 
 .Sidebar {
@@ -138,14 +136,8 @@
   font-weight: bold;
 }
 
-.SidebarSectionTitle {
-  height: 16px;
-  margin: 32px 16px 0px 16px;
-  color: var(--color-gray-700);
-}
-
 .SidebarHeader {
-  margin: var(--base-spacing);
+  margin: 26px var(--base-spacing);
 }
 .SidebarHeader__title {
   font-size: var(--sidebar-title-font-size);
@@ -168,6 +160,7 @@
   display: flex;
   padding: var(--half-base-spacing) var(--base-spacing);
   align-items: center;
+  margin: var(--half-base-spacing) 0px;
 }
 
 .SidebarSummary__icon {
@@ -189,6 +182,10 @@
   font-size: var(--sidebar-summary-font-size);
 }
 
+.SidebarFlow {
+  margin: var(--half-base-spacing) 0px;
+}
+
 .SidebarFlowStep {
   display: flex;
   padding-right: var(--base-spacing);
@@ -196,12 +193,17 @@
 
 .SidebarFlowStep__label {
   grid-column: 2;
-  margin-top: 14px;
-  margin-bottom: 14px;
+  margin: var(--half-base-spacing);
   justify-self: left;
 }
 .SidebarFlowStep__label--navigation {
   font-size: var(--sidebar-flow-step-navigation-font-size);
+}
+
+.SidebarFlowSeparator__line {
+  height: var(--half-base-spacing);
+  width: 2px;
+  background-color: var(--color-blue-A700);
 }
 
 .Summary {
@@ -232,11 +234,8 @@
   align-items: center;
 }
 
-/* Hide end segments of sidebar flow */
+/* Hide top segment of sidebar flow */
 .SidebarFlow > :first-child .FlowStepIcon > .FlowStepIcon__top-line {
-  background-color: transparent;
-}
-.SidebarFlow > :last-child .FlowStepIcon > .FlowStepIcon__bottom-line {
   background-color: transparent;
 }
 
