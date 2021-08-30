@@ -14,6 +14,11 @@ function getHashParam(param: string): string|null {
   return params.get(param);
 }
 
+function shortenUrl(longUrl: string) {
+  const url = new URL(longUrl);
+  return `${url.hostname}${url.pathname}`;
+}
+
 export function classNames(...args: Array<string|undefined|Record<string, boolean>>): string {
   const classes = [];
   for (const arg of args) {
@@ -95,20 +100,21 @@ export function useCurrentLhr(): {value: LH.Result, index: number}|null {
 export function useDerivedStepNames() {
   const flowResult = useFlowResult();
 
-  let numNavigation = 1;
   let numTimespan = 1;
   let numSnapshot = 1;
 
   // TODO(FR-COMPAT): Override with a provided step name.
-  // TODO(FR-COMPAT): Add shortened URL and reset count for navigations.
   return flowResult.lhrs.map((lhr) => {
+    const shortUrl = shortenUrl(lhr.finalUrl);
     switch (lhr.gatherMode) {
       case 'navigation':
-        return `Navigation (${numNavigation++})`;
+        numTimespan = 1;
+        numSnapshot = 1;
+        return `Navigation report (${shortUrl})`;
       case 'timespan':
-        return `Timespan (${numTimespan++})`;
+        return `Timespan report ${numTimespan} (${shortUrl})`;
       case 'snapshot':
-        return `Snapshot (${numSnapshot++})`;
+        return `Snapshot report ${numSnapshot} (${shortUrl})`;
     }
   });
 }
