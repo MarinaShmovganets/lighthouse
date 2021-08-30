@@ -18,6 +18,7 @@ module.exports = {
     },
   },
   audits: [
+    // Include an audit that *forces* the IFrameElements artifact to be used for our test.
     {path: `${__dirname}/oopif-iframe-audit.js`},
   ],
   settings: {

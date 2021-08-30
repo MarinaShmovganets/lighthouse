@@ -28,6 +28,7 @@ module.exports = {
     },
   },
   artifacts: {
+    _skipInBundled: true,
     IFrameElements: [
       {
         id: 'oopif',
