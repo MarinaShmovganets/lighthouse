@@ -8,6 +8,7 @@
   --app-font-size: 12px;
   --base-spacing: 16px;
   --category-summary-font-size: 18px;
+  --gather-mode-icon-size: 16px;
   --half-base-spacing: calc(var(--base-spacing) / 2);
   --sidebar-flow-step-navigation-font-size: 14px;
   --sidebar-summary-font-size: 14px;
@@ -28,6 +29,7 @@
 
 .FlowStepIcon {
   height: 100%;
+  width: var(--gather-mode-icon-size);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,31 +44,31 @@
 
 .GatherModeIcon {
   display: flex;
-  width: 16px;
-  height: 16px;
+  width: var(--gather-mode-icon-size);
+  height: var(--gather-mode-icon-size);
   align-items: center;
   justify-content: center;
 }
 .GatherModeIcon--navigation::before {
   content: '';
-  width: 16px;
-  height: 16px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   border: 2px solid var(--color-blue-A700);
   display: block;
 }
 .GatherModeIcon--timespan::before {
   content: '';
-  width: 4px;
-  height: 4px;
+  width: 25%;
+  height: 25%;
   border-radius: 50%;
   background-color: var(--color-blue-A700);
   display: block;
 }
 .GatherModeIcon--snapshot::before {
   content: '';
-  width: 8px;
-  height: 8px;
+  width: 50%;
+  height: 50%;
   border-radius: 50%;
   background-color: var(--color-blue-A700);
   display: block;
@@ -202,8 +204,6 @@
 
 .SidebarFlowSeparator__line {
   height: var(--half-base-spacing);
-  width: 2px;
-  background-color: var(--color-blue-A700);
 }
 
 .Summary {

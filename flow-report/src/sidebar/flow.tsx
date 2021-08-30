@@ -30,9 +30,13 @@ const SidebarFlowStep: FunctionComponent<{
 
 const SidebarFlowSeparator: FunctionComponent = () => {
   return <>
-    <div className="SidebarFlowSeparator__line"/>
+    <div className="SidebarFlowSeparator__line">
+      <FlowStepIcon/>
+    </div>
     <Separator/>
-    <div className="SidebarFlowSeparator__line"/>
+    <div className="SidebarFlowSeparator__line">
+      <FlowStepIcon/>
+    </div>
   </>;
 };
 
