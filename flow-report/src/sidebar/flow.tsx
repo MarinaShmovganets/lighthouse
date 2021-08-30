@@ -29,15 +29,13 @@ const SidebarFlowStep: FunctionComponent<{
 };
 
 const SidebarFlowSeparator: FunctionComponent = () => {
-  return <>
-    <div className="SidebarFlowSeparator__line">
+  return (
+    <div className="SidebarFlowSeparator">
+      <FlowStepIcon/>
+      <Separator/>
       <FlowStepIcon/>
     </div>
-    <Separator/>
-    <div className="SidebarFlowSeparator__line">
-      <FlowStepIcon/>
-    </div>
-  </>;
+  );
 };
 
 export const SidebarFlow: FunctionComponent = () => {

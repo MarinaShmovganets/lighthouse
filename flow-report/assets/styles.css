@@ -202,7 +202,7 @@
   font-size: var(--sidebar-flow-step-navigation-font-size);
 }
 
-.SidebarFlowSeparator__line {
+.SidebarFlowSeparator > .FlowStepIcon {
   height: var(--half-base-spacing);
 }
 
