@@ -135,8 +135,8 @@ export class ReportUIFeatures {
       'lh-button',
     ];
     if (opts.icon) {
-      classes.push('report-icon');
-      classes.push(`report-icon--${opts.icon}`);
+      classes.push('lh-report-icon');
+      classes.push(`lh-report-icon--${opts.icon}`);
     }
     const buttonEl = this._dom.createChildOf(buttonsEl, 'button', classes.join(' '));
     buttonEl.textContent = opts.text;
@@ -163,9 +163,9 @@ export class ReportUIFeatures {
 
   _enableFireworks() {
     const scoresContainer = this._dom.find('.lh-scores-container', this._document);
-    scoresContainer.classList.add('score100');
+    scoresContainer.classList.add('lh-score100');
     scoresContainer.addEventListener('click', _ => {
-      scoresContainer.classList.toggle('fireworks-paused');
+      scoresContainer.classList.toggle('lh-fireworks-paused');
     });
   }
 
