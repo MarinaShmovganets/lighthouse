@@ -137,12 +137,12 @@ export function useDerivedStepNames() {
           return `Navigation report (${shortUrl})`;
         case 'timespan':
           if (shouldEnumerate(flowResult, index)) {
-            return `Timespan report ${numTimespan} (${shortUrl})`;
+            return `Timespan report ${numTimespan++} (${shortUrl})`;
           }
           return `Timespan report (${shortUrl})`;
         case 'snapshot':
           if (shouldEnumerate(flowResult, index)) {
-            return `Snapshot report ${numSnapshot} (${shortUrl})`;
+            return `Snapshot report ${numSnapshot++} (${shortUrl})`;
           }
           return `Snapshot report (${shortUrl})`;
       }
