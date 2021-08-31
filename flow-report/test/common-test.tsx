@@ -5,6 +5,7 @@
  */
 
 import {render} from '@testing-library/preact';
+
 import {CategoryRatio} from '../src/common';
 
 describe('CategoryRatio', () => {

@@ -1,8 +1,10 @@
 import fs from 'fs';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
+
 import {render} from '@testing-library/preact';
 import {FunctionComponent} from 'preact';
+
 import {SidebarFlow} from '../../src/sidebar/flow';
 import {FlowResultContext} from '../../src/util';
 

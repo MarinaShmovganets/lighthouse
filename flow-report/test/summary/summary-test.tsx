@@ -7,8 +7,10 @@
 import fs from 'fs';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
+
 import {render} from '@testing-library/preact';
 import {FunctionComponent} from 'preact';
+
 import {SummaryHeader, SummaryFlowStep} from '../../src/summary/summary';
 import {FlowResultContext} from '../../src/util';
 import {ReportRendererProvider} from '../../src/wrappers/report-renderer';

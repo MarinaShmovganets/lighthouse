@@ -6,6 +6,7 @@
 
 import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
+
 import {Util} from '../../../report/renderer/util';
 import {CategoryRatio, FlowStepIcon} from '../common';
 import {getScreenDimensions, getScreenshot, useDerivedStepNames, useFlowResult} from '../util';

@@ -5,6 +5,7 @@
  */
 
 import {FunctionComponent} from 'preact';
+
 import {Sidebar} from './sidebar/sidebar';
 import {Summary} from './summary/summary';
 import {FlowResultContext, useCurrentLhr} from './util';
