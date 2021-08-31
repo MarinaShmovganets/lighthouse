@@ -6,6 +6,7 @@
 
 import {FunctionComponent} from 'preact';
 import {Util} from '../../report/renderer/util';
+import {SnapshotIcon} from './icons';
 
 const GatherModeIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
   return (
@@ -13,7 +14,11 @@ const GatherModeIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode})
       className={`GatherModeIcon GatherModeIcon--${mode}`}
       role="img"
       aria-label={`Icon representing a ${mode} report`}
-    />
+    >
+      {
+        mode === 'snapshot' && <SnapshotIcon/>
+      }
+    </div>
   );
 };
 

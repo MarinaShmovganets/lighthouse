@@ -49,6 +49,7 @@
   height: var(--gather-mode-icon-size);
   align-items: center;
   justify-content: center;
+  color: var(--color-blue-A700);
 }
 .GatherModeIcon--navigation::before {
   content: '';
@@ -62,14 +63,6 @@
   content: '';
   width: 25%;
   height: 25%;
-  border-radius: 50%;
-  background-color: var(--color-blue-A700);
-  display: block;
-}
-.GatherModeIcon--snapshot::before {
-  content: '';
-  width: 50%;
-  height: 50%;
   border-radius: 50%;
   background-color: var(--color-blue-A700);
   display: block;
