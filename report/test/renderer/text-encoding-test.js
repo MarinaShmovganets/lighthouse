@@ -6,7 +6,9 @@
 'use strict';
 
 import fs from 'fs';
+
 import pako from 'pako';
+
 import {LH_ROOT} from '../../../root.js';
 import {TextEncoding} from '../../renderer/text-encoding.js';
 

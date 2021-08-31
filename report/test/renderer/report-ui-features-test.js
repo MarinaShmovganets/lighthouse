@@ -8,7 +8,9 @@
 /* eslint-env jest */
 
 import {strict as assert} from 'assert';
+
 import jsdom from 'jsdom';
+
 import sampleResultsOrig from '../../../lighthouse-core/test/results/sample_v2.json';
 import reportAssets from '../../generator/report-assets.js';
 import {CategoryRenderer} from '../../renderer/category-renderer.js';

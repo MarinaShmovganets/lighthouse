@@ -8,8 +8,10 @@
 /* eslint-env jest */
 
 import fs from 'fs';
+
 import expect from 'expect';
 import jsdom from 'jsdom';
+
 import {normalizeTextNodeText} from '../../../build/build-report-components.js';
 import {LH_ROOT} from '../../../root.js';
 import {DOM} from '../../renderer/dom.js';

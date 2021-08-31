@@ -9,8 +9,10 @@
 
 import * as assert from 'assert';
 import * as fs from 'fs';
+
 import {jest} from '@jest/globals';
 import puppeteer from 'puppeteer';
+
 import {server} from '../../lighthouse-cli/test/fixtures/static-server.js';
 import defaultConfig from '../../lighthouse-core/config/default-config.js';
 import {LH_ROOT} from '../../root.js';

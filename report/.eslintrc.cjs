@@ -19,7 +19,16 @@ module.exports = {
     // TODO(esmodules): move to root eslint when all code is ESM
     // or when this is resolved: https://github.com/import-js/eslint-plugin-import/issues/2214
     'import/order': [2, {
-      alphabetize: {order: 'asc'},
+      'groups': [
+        'builtin',
+        'external',
+        ['sibling', 'parent'],
+        'index',
+        'object',
+        'type',
+      ],
+      'alphabetize': {order: 'asc'},
+      'newlines-between': 'always',
     }],
   },
 };

@@ -6,7 +6,9 @@
 'use strict';
 
 import {strict as assert} from 'assert';
+
 import jsdom from 'jsdom';
+
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {DOM} from '../../renderer/dom.js';
 import {I18n} from '../../renderer/i18n.js';

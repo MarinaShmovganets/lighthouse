@@ -6,6 +6,7 @@
 'use strict';
 
 import idbKeyval from 'idb-keyval';
+
 import {DOM} from '../../../report/renderer/dom.js';
 import {ReportRenderer} from '../../../report/renderer/report-renderer.js';
 import {TextEncoding} from '../../../report/renderer/text-encoding.js';

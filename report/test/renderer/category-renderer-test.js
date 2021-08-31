@@ -10,6 +10,7 @@
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
+
 import sampleResultsOrig from '../../../lighthouse-core/test/results/sample_v2.json';
 import {CategoryRenderer} from '../../renderer/category-renderer.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';

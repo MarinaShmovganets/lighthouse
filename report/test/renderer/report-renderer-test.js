@@ -10,6 +10,7 @@
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
+
 import URL from '../../../lighthouse-core/lib/url-shim.js';
 import sampleResultsOrig from '../../../lighthouse-core/test/results/sample_v2.json';
 import {CategoryRenderer} from '../../renderer/category-renderer.js';

@@ -6,6 +6,7 @@
 'use strict';
 
 import {strict as assert} from 'assert';
+
 import sampleResult from '../../../lighthouse-core/test/results/sample_v2.json';
 import {I18n} from '../../renderer/i18n.js';
 import {Util} from '../../renderer/util.js';
