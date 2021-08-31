@@ -116,6 +116,13 @@
 </head>
 <body>
 
+<div class="shift-me">Shifter</div>
+<script>
+  setTimeout(() => {
+    document.querySelector('.shift-me').style.fontSize = '50px';
+  }, 1000);
+</script>
+
 <!-- Various sites like to assign HTMLElements a custom `matches` property. See issue #5934 -->
 
 <!-- EmbeddedContent will process these elements -->

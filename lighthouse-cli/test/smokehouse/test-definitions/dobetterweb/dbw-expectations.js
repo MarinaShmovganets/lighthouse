@@ -381,10 +381,10 @@ const expectations = {
       },
       'dom-size': {
         score: 1,
-        numericValue: 149,
+        numericValue: 151,
         details: {
           items: [
-            {statistic: 'Total DOM Elements', value: 149},
+            {statistic: 'Total DOM Elements', value: 151},
             {statistic: 'Maximum DOM Depth', value: 4},
             {
               statistic: 'Maximum Child Elements',
@@ -415,7 +415,7 @@ const expectations = {
           screenshot: {
             width: 360,
             // Allow for differences in platforms.
-            height: '1350±20',
+            height: '1400±20',
             data: /^data:image\/jpeg;.{500,}/,
           },
           nodes: {
@@ -423,8 +423,8 @@ const expectations = {
             // Exact ordering and IDs between FR and legacy differ, so fork the expectations.
             'page-0-IMG': {
               _legacyOnly: true,
-              top: '650±50',
-              bottom: '650±50',
+              top: '700±50',
+              bottom: '700±50',
               left: '10±10',
               right: '120±20',
               width: '120±20',
@@ -432,8 +432,8 @@ const expectations = {
             },
             'page-2-IMG': {
               _fraggleRockOnly: true,
-              top: '650±50',
-              bottom: '650±50',
+              top: '700±50',
+              bottom: '700±50',
               left: '10±10',
               right: '120±20',
               width: '120±20',

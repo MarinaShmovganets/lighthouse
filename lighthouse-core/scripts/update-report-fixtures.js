@@ -36,7 +36,7 @@ async function update(artifactName) {
   await cli.runLighthouse(url, flags, budgetedConfig);
   await server.close();
 
-  await augmentDefaultPassTrace();
+  // await augmentDefaultPassTrace();
 
   if (artifactName) {
     // Revert everything except the one artifact
