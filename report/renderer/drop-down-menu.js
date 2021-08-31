@@ -46,7 +46,7 @@ export class DropDownMenu {
   }
 
   close() {
-    this._toggleEl.classList.remove('active');
+    this._toggleEl.classList.remove('lh-active');
     this._toggleEl.setAttribute('aria-expanded', 'false');
     if (this._menuEl.contains(this._dom.document().activeElement)) {
       // Refocus on the tools button if the drop down last had focus
@@ -60,7 +60,7 @@ export class DropDownMenu {
    * @param {HTMLElement} firstFocusElement
    */
   open(firstFocusElement) {
-    if (this._toggleEl.classList.contains('active')) {
+    if (this._toggleEl.classList.contains('lh-active')) {
       // If the drop down is already open focus on the element
       firstFocusElement.focus();
     } else {
@@ -70,7 +70,7 @@ export class DropDownMenu {
       }, {once: true});
     }
 
-    this._toggleEl.classList.add('active');
+    this._toggleEl.classList.add('lh-active');
     this._toggleEl.setAttribute('aria-expanded', 'true');
     this._menuEl.addEventListener('focusout', this.onMenuFocusOut);
     this._dom.document().addEventListener('keydown', this.onDocumentKeyDown);
@@ -84,7 +84,7 @@ export class DropDownMenu {
     e.preventDefault();
     e.stopImmediatePropagation();
 
-    if (this._toggleEl.classList.contains('active')) {
+    if (this._toggleEl.classList.contains('lh-active')) {
       this.close();
     } else {
       this.open(this._getNextMenuItem());
