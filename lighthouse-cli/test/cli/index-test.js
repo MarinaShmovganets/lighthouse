@@ -50,7 +50,7 @@ describe('CLI Tests', function() {
     const output = JSON.parse(ret.stdout);
     assert.ok(Array.isArray(output.listLocales));
     assert.ok(output.listLocales.length > 52);
-    for(const lang of ['en', 'es', 'ru', 'zh']) {
+    for (const lang of ['en', 'es', 'ru', 'zh']) {
       assert.ok(output.includes(lang));
     }
   });
