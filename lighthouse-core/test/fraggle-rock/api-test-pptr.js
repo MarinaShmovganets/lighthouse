@@ -132,7 +132,7 @@ describe('Fraggle Rock API', () => {
       // TODO(FR-COMPAT): This assertion can be removed when full compatibility is reached.
       expect(auditResults.length).toMatchInlineSnapshot(`50`);
 
-      expect(notApplicableAudits.length).toMatchInlineSnapshot(`8`);
+      expect(notApplicableAudits.length).toMatchInlineSnapshot(`7`);
       expect(notApplicableAudits.map(audit => audit.id)).not.toContain('server-response-time');
 
       expect(erroredAudits).toHaveLength(0);
