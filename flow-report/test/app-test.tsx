@@ -5,10 +5,10 @@
  */
 
 import fs from 'fs';
-import {App} from '../src/app';
-import {render} from '@testing-library/preact';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
+import {render} from '@testing-library/preact';
+import {App} from '../src/app';
 
 const flowResult = JSON.parse(
   fs.readFileSync(

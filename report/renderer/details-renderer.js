@@ -25,10 +25,10 @@
 /** @typedef {LH.FormattedIcu<LH.Audit.Details.TableItem>} TableItem */
 /** @typedef {LH.FormattedIcu<LH.Audit.Details.ItemValue>} TableItemValue */
 
-import {Util} from './util.js';
 import {CriticalRequestChainRenderer} from './crc-details-renderer.js';
-import {SnippetRenderer} from './snippet-renderer.js';
 import {ElementScreenshotRenderer} from './element-screenshot-renderer.js';
+import {SnippetRenderer} from './snippet-renderer.js';
+import {Util} from './util.js';
 
 const URL_PREFIXES = ['http://', 'https://', 'data:'];
 

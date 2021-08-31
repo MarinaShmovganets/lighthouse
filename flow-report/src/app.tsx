@@ -5,10 +5,10 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {ReportRendererProvider} from './wrappers/report-renderer';
 import {Sidebar} from './sidebar/sidebar';
 import {Summary} from './summary/summary';
 import {FlowResultContext, useCurrentLhr} from './util';
+import {ReportRendererProvider} from './wrappers/report-renderer';
 
 const Report: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
   // TODO(FR-COMPAT): Render an actual report here.

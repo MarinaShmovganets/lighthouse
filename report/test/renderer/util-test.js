@@ -6,9 +6,9 @@
 'use strict';
 
 import {strict as assert} from 'assert';
-import {Util} from '../../renderer/util.js';
-import {I18n} from '../../renderer/i18n.js';
 import sampleResult from '../../../lighthouse-core/test/results/sample_v2.json';
+import {I18n} from '../../renderer/i18n.js';
+import {Util} from '../../renderer/util.js';
 
 /* eslint-env jest */
 

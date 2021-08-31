@@ -8,11 +8,11 @@
 /* eslint-env jest */
 
 import fs from 'fs';
-import jsdom from 'jsdom';
 import expect from 'expect';
-import {DOM} from '../../renderer/dom.js';
-import {LH_ROOT} from '../../../root.js';
+import jsdom from 'jsdom';
 import {normalizeTextNodeText} from '../../../build/build-report-components.js';
+import {LH_ROOT} from '../../../root.js';
+import {DOM} from '../../renderer/dom.js';
 
 const html = fs.readFileSync(LH_ROOT + '/report/assets/templates.html', 'utf-8');
 const {window} = new jsdom.JSDOM(html);

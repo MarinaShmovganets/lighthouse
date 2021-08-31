@@ -5,11 +5,11 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {Gauge} from '../wrappers/gauge';
+import {useMemo} from 'preact/hooks';
+import {Util} from '../../../report/renderer/util';
 import {CategoryRatio, FlowStepIcon} from '../common';
 import {getScreenDimensions, getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
-import {Util} from '../../../report/renderer/util';
-import {useMemo} from 'preact/hooks';
+import {Gauge} from '../wrappers/gauge';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 const THUMBNAIL_WIDTH = 50;
