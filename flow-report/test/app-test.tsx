@@ -7,12 +7,11 @@
  */
 
 import fs from 'fs';
-import {jest} from '@jest/globals';
-import {JSDOM} from 'jsdom';
 import {App} from '../src/app';
 import {render} from '@testing-library/preact';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
+import {setupJsDom} from './jsdom';
 
 const flowResult = JSON.parse(
   fs.readFileSync(
@@ -22,13 +21,7 @@ const flowResult = JSON.parse(
   )
 );
 
-beforeEach(() => {
-  const {window} = new JSDOM();
-  global.window = window as any;
-  global.document = window.document;
-  global.location = window.location;
-  window.Element.prototype.scrollIntoView = jest.fn();
-});
+beforeEach(setupJsDom);
 
 it('renders a standalone report with summary', async () => {
   const root = render(<App flowResult={flowResult}/>);
