@@ -48,3 +48,29 @@ export const CpuIcon: FunctionComponent = () => {
     </svg>
   );
 };
+
+const GatherModeIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
+  return (
+    <div
+      className={`GatherModeIcon GatherModeIcon--${mode}`}
+      role="img"
+      aria-label={`Icon representing a ${mode} report`}
+    >
+      {
+        mode === 'snapshot' && <SnapshotIcon/>
+      }
+    </div>
+  );
+};
+
+export const FlowStepIcon: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
+  return (
+    <div className="FlowStepIcon">
+      <div className="FlowStepIcon__top-line"/>
+      {
+        mode && <GatherModeIcon mode={mode}/>
+      }
+      <div className="FlowStepIcon__bottom-line"/>
+    </div>
+  );
+};

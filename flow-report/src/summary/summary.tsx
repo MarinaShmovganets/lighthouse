@@ -6,7 +6,8 @@
 
 import {FunctionComponent} from 'preact';
 import {Gauge} from '../wrappers/gauge';
-import {CategoryRatio, FlowStepIcon} from '../common';
+import {FlowStepIcon} from '../icons';
+import {CategoryRatio} from '../common';
 import {getScreenDimensions, getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 import {useMemo} from 'preact/hooks';
