@@ -11,7 +11,6 @@ import {App} from '../src/app';
 import {render} from '@testing-library/preact';
 import {dirname} from 'path';
 import {fileURLToPath} from 'url';
-import {setupJsDom} from './jsdom';
 
 const flowResult = JSON.parse(
   fs.readFileSync(
@@ -20,8 +19,6 @@ const flowResult = JSON.parse(
     'utf-8'
   )
 );
-
-beforeEach(setupJsDom);
 
 it('renders a standalone report with summary', async () => {
   const root = render(<App flowResult={flowResult}/>);

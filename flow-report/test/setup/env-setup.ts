@@ -9,10 +9,11 @@ import {JSDOM} from 'jsdom';
 
 /**
  * The jest environment "jsdom" does not work when preact is combined with the report renderer.
- * Use this in a `beforeEach` with environment "node" on tests that exercise the report renderer.
  */
 export function setupJsDom() {
-  const {window} = new JSDOM();
+  const {window} = new JSDOM(undefined, {
+    url: 'file:///Users/example/report.html/',
+  });
   global.window = window as any;
   global.document = window.document;
   global.location = window.location;
@@ -20,3 +21,5 @@ export function setupJsDom() {
   // Function not implemented in JSDOM.
   window.Element.prototype.scrollIntoView = jest.fn();
 }
+
+global.beforeEach(setupJsDom);
