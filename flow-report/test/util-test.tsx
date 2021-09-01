@@ -81,10 +81,10 @@ describe('useDerivedStepNames', () => {
   it('counts up for each mode', () => {
     const {result} = renderHook(() => useDerivedStepNames(), {wrapper});
     expect(result.current).toEqual([
-      'Navigation (1)',
-      'Timespan (1)',
-      'Snapshot (1)',
-      'Navigation (2)',
+      'Navigation report (www.mikescerealshack.co/)',
+      'Timespan report (www.mikescerealshack.co/search)',
+      'Snapshot report (www.mikescerealshack.co/search)',
+      'Navigation report (www.mikescerealshack.co/corrections)',
     ]);
   });
 });

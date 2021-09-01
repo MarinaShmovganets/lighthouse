@@ -31,10 +31,12 @@ describe('SidebarFlow', () => {
   it('renders flow steps', async () => {
     const root = render(<SidebarFlow/>, {wrapper});
 
-    const navigation = await root.findByText('Navigation (1)');
-    const timespan = await root.findByText('Timespan (1)');
-    const snapshot = await root.findByText('Snapshot (1)');
-    const navigation2 = await root.findByText('Navigation (2)');
+    const navigation = await root.findByText('Navigation report (www.mikescerealshack.co/)');
+    const timespan = await root.findByText('Timespan report (www.mikescerealshack.co/search)');
+    const snapshot = await root.findByText('Snapshot report (www.mikescerealshack.co/search)');
+    const navigation2 = await root.findByText(
+      'Navigation report (www.mikescerealshack.co/corrections)'
+    );
 
     const links = await root.findAllByRole('link') as HTMLAnchorElement[];
     expect(links.map(a => a.textContent)).toEqual([
