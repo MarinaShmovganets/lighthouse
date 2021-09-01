@@ -49,7 +49,7 @@ export function getScreenshot(reportResult: LH.ReportResult) {
 }
 
 export function convertChildAnchors(element: HTMLElement, index: number) {
-  const links = element.querySelectorAll('a');
+  const links = element.querySelectorAll('a') as NodeListOf<HTMLAnchorElement>;
   for (const link of links) {
     // Check if the link destination is in the report.
     const currentUrl = new URL(location.href);
