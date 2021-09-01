@@ -28,6 +28,7 @@ import {toggleDarkTheme} from './features-util.js';
 import {openTreemap} from './open-tab.js';
 import {TopbarFeatures} from './topbar-features.js';
 import {Util} from './util.js';
+import {getFilenamePrefix} from '../generator/file-namer.js';
 
 /**
  * @param {HTMLTableElement} tableEl
@@ -323,5 +324,28 @@ export class ReportUIFeatures {
     }
 
     return thirdPartyRows;
+  }
+
+  /**
+   * Downloads a file (blob) using a[download].
+   * @param {Blob|File} blob The file to save.
+   */
+  _saveFile(blob) {
+    const filename = getFilenamePrefix({
+      finalUrl: this.json.finalUrl,
+      fetchTime: this.json.fetchTime,
+    });
+
+    const ext = blob.type.match('json') ? '.json' : '.html';
+
+    const a = this._dom.createElement('a');
+    a.download = `${filename}${ext}`;
+    this._dom.safelySetBlobHref(a, blob);
+    this._document.body.appendChild(a); // Firefox requires anchor to be in the DOM.
+    a.click();
+
+    // cleanup.
+    this._document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 500);
   }
 }

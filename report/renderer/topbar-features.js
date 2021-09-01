@@ -10,7 +10,6 @@
 /** @typedef {import('./dom.js').DOM} DOM */
 /** @typedef {import('./report-ui-features').ReportUIFeatures} ReportUIFeatures */
 
-import {getFilenamePrefix} from '../../report/generator/file-namer.js';
 import {DropDownMenu} from './drop-down-menu.js';
 import {toggleDarkTheme} from './features-util.js';
 import {openViewer, openViewerAndSendData} from './open-tab.js';
@@ -105,13 +104,13 @@ export class TopbarFeatures {
         break;
       case 'save-json': {
         const jsonStr = JSON.stringify(this.lhr, null, 2);
-        this._saveFile(new Blob([jsonStr], {type: 'application/json'}));
+        this._reportUIFeatures._saveFile(new Blob([jsonStr], {type: 'application/json'}));
         break;
       }
       case 'save-html': {
         const htmlStr = this._reportUIFeatures.getReportHtml();
         try {
-          this._saveFile(new Blob([htmlStr], {type: 'text/html'}));
+          this._reportUIFeatures._saveFile(new Blob([htmlStr], {type: 'text/html'}));
         } catch (e) {
           this._dom.fireEventOn('lh-log', this._document, {
             cmd: 'error', msg: 'Could not export as HTML. ' + e.message,
@@ -306,29 +305,5 @@ export class TopbarFeatures {
     // Mutate at end to avoid layout thrashing.
     this.highlightEl.style.transform = `translate(${offset}px)`;
     this.stickyHeaderEl.classList.toggle('lh-sticky-header--visible', showStickyHeader);
-  }
-
-  /**
-   * Downloads a file (blob) using a[download].
-   * @param {Blob|File} blob The file to save.
-   * @private
-   */
-  _saveFile(blob) {
-    const filename = getFilenamePrefix({
-      finalUrl: this.lhr.finalUrl,
-      fetchTime: this.lhr.fetchTime,
-    });
-
-    const ext = blob.type.match('json') ? '.json' : '.html';
-
-    const a = this._dom.createElement('a');
-    a.download = `${filename}${ext}`;
-    this._dom.safelySetBlobHref(a, blob);
-    this._document.body.appendChild(a); // Firefox requires anchor to be in the DOM.
-    a.click();
-
-    // cleanup.
-    this._document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(a.href), 500);
   }
 }
