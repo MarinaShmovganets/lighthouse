@@ -7,7 +7,7 @@
 import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
 import {Separator} from '../common';
-import {SummaryIcon} from '../icons';
+import {CpuIcon, EnvIcon, SummaryIcon} from '../icons';
 import {classNames, useCurrentLhr, useFlowResult, useLocale} from '../util';
 import {SidebarFlow} from './flow';
 
@@ -31,16 +31,25 @@ export const SidebarSummary: FunctionComponent = () => {
 
 const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> = ({settings}) => {
   return (
-    <details className="SidebarRuntimeSettings">
-      <summary>
+    <div className="SidebarRuntimeSettings">
+      <div className="SidebarRuntimeSettings__item">
+        <div className="SidebarRuntimeSettings__item--icon">
+          <EnvIcon/>
+        </div>
         {
-          `${settings.screenEmulation.height}x${settings.screenEmulation.width}px | ` +
-          `${settings.formFactor}`
+          `${settings.formFactor === 'desktop' ? 'Desktop' : 'Mobile'} | ` +
+          `${settings.screenEmulation.height}x${settings.screenEmulation.width}px`
         }
-      </summary>
-      <div>Emulated user agent: {settings.emulatedUserAgent}</div>
-      <div>Channel: {settings.channel}</div>
-    </details>
+      </div>
+      <div className="SidebarRuntimeSettings__item">
+        <div className="SidebarRuntimeSettings__item--icon">
+          <CpuIcon/>
+        </div>
+        {
+          `${settings.throttling.cpuSlowdownMultiplier}x slowdown`
+        }
+      </div>
+    </div>
   );
 };
 

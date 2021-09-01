@@ -141,10 +141,26 @@
   width: max-content;
 }
 
-.SidebarRuntimeSettings > summary {
-  padding: 4px 16px;
-  list-style: none;
-  color: var(--color-gray-700);
+.SidebarRuntimeSettings {
+  margin: var(--base-spacing);
+  padding: var(--half-base-spacing);
+  background-color: var(--color-gray-50);
+  border-radius: 3px;
+}
+
+.SidebarRuntimeSettings__item {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.SidebarRuntimeSettings__item--icon {
+  margin-right: 8px;
+  display: flex;
+  height: 16px;
+  width: 16px;
+  align-items: center;
+  justify-content: center;
 }
 
 .SidebarSummary {
