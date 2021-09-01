@@ -18,8 +18,8 @@ export const Report: FunctionComponent = () => {
   useLayoutEffect(() => {
     if (!currentLhr) return;
 
-    dom.clearComponentCache();
     if (ref.current) {
+      dom.clearComponentCache();
       reportRenderer.renderReport(currentLhr.value, ref.current);
       convertChildAnchors(ref.current, currentLhr.index);
     }

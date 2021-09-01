@@ -5,7 +5,7 @@
  */
 
 import {createContext} from 'preact';
-import {useContext, useEffect, useState} from 'preact/hooks';
+import {useContext, useEffect, useMemo, useState} from 'preact/hooks';
 
 export const FlowResultContext = createContext<LH.FlowResult|undefined>(undefined);
 
@@ -95,21 +95,25 @@ export function useHashParam(param: string) {
 export function useCurrentLhr(): {value: LH.Result, index: number}|null {
   const flowResult = useFlowResult();
   const indexString = useHashParam('index');
-  if (!indexString) return null;
 
-  const index = Number(indexString);
-  if (!Number.isFinite(index)) {
-    console.warn(`Invalid hash index: ${indexString}`);
-    return null;
-  }
+  // Memoize result so a new object is not created on every call.
+  return useMemo(() => {
+    if (!indexString) return null;
 
-  const value = flowResult.lhrs[index];
-  if (!value) {
-    console.warn(`No LHR at index ${index}`);
-    return null;
-  }
+    const index = Number(indexString);
+    if (!Number.isFinite(index)) {
+      console.warn(`Invalid hash index: ${indexString}`);
+      return null;
+    }
 
-  return {value, index};
+    const value = flowResult.lhrs[index];
+    if (!value) {
+      console.warn(`No LHR at index ${index}`);
+      return null;
+    }
+
+    return {value, index};
+  }, [indexString, flowResult]);
 }
 
 export function useDerivedStepNames() {
