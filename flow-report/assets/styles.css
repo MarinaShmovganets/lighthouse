@@ -125,7 +125,6 @@
 .Sidebar--current {
   background-color: var(--sidebar-selected-bg-color);
   color: var(--color-blue-A700) !important;
-  font-weight: bold;
 }
 
 .SidebarHeader {
