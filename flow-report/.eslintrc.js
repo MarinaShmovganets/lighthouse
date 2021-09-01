@@ -22,7 +22,6 @@ module.exports = {
         'object',
         'type',
       ],
-      'alphabetize': {order: 'asc'},
       'newlines-between': 'always',
     }],
   },
