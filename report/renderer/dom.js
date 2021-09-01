@@ -19,8 +19,8 @@
 /** @typedef {HTMLElementTagNameMap & {[id: string]: HTMLElement}} HTMLElementByTagName */
 /** @template {string} T @typedef {import('typed-query-selector/parser').ParseSelector<T, Element>} ParseSelector */
 
-import {createComponent} from './components.js';
 import {Util} from './util.js';
+import {createComponent} from './components.js';
 
 export class DOM {
   /**

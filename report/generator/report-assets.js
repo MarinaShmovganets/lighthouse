@@ -6,7 +6,6 @@
 'use strict';
 
 const fs = require('fs');
-
 const flowReportAssets = require('./flow-report-assets.js');
 
 const REPORT_TEMPLATE = fs.readFileSync(__dirname + '/../assets/standalone-template.html',

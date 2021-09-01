@@ -16,8 +16,8 @@
  */
 'use strict';
 
-import {CategoryRenderer} from './category-renderer.js';
 import {Util} from './util.js';
+import {CategoryRenderer} from './category-renderer.js';
 
 export class PwaCategoryRenderer extends CategoryRenderer {
   /**

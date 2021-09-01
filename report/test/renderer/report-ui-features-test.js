@@ -8,17 +8,15 @@
 /* eslint-env jest */
 
 import {strict as assert} from 'assert';
-
 import jsdom from 'jsdom';
-
-import sampleResultsOrig from '../../../lighthouse-core/test/results/sample_v2.json';
 import reportAssets from '../../generator/report-assets.js';
-import {CategoryRenderer} from '../../renderer/category-renderer.js';
-import {DetailsRenderer} from '../../renderer/details-renderer.js';
-import {DOM} from '../../renderer/dom.js';
-import {ReportRenderer} from '../../renderer/report-renderer.js';
-import {ReportUIFeatures} from '../../renderer/report-ui-features.js';
 import {Util} from '../../renderer/util.js';
+import {DOM} from '../../renderer/dom.js';
+import {DetailsRenderer} from '../../renderer/details-renderer.js';
+import {ReportUIFeatures} from '../../renderer/report-ui-features.js';
+import {CategoryRenderer} from '../../renderer/category-renderer.js';
+import {ReportRenderer} from '../../renderer/report-renderer.js';
+import sampleResultsOrig from '../../../lighthouse-core/test/results/sample_v2.json';
 
 describe('ReportUIFeatures', () => {
   let sampleResults;

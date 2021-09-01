@@ -10,14 +10,13 @@
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
-
-import URL from '../../../lighthouse-core/lib/url-shim.js';
-import sampleResultsOrig from '../../../lighthouse-core/test/results/sample_v2.json';
-import {CategoryRenderer} from '../../renderer/category-renderer.js';
-import {DetailsRenderer} from '../../renderer/details-renderer.js';
-import {DOM} from '../../renderer/dom.js';
-import {ReportRenderer} from '../../renderer/report-renderer.js';
 import {Util} from '../../renderer/util.js';
+import URL from '../../../lighthouse-core/lib/url-shim.js';
+import {DOM} from '../../renderer/dom.js';
+import {DetailsRenderer} from '../../renderer/details-renderer.js';
+import {CategoryRenderer} from '../../renderer/category-renderer.js';
+import {ReportRenderer} from '../../renderer/report-renderer.js';
+import sampleResultsOrig from '../../../lighthouse-core/test/results/sample_v2.json';
 
 const TIMESTAMP_REGEX = /\d+, \d{4}.*\d+:\d+/;
 

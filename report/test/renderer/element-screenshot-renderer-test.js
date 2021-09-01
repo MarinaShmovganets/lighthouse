@@ -9,10 +9,10 @@
 
 import jsdom from 'jsdom';
 
-import {DOM} from '../../renderer/dom.js';
 import {ElementScreenshotRenderer} from '../../renderer/element-screenshot-renderer.js';
-import {I18n} from '../../renderer/i18n.js';
 import {Util} from '../../renderer/util.js';
+import {I18n} from '../../renderer/i18n.js';
+import {DOM} from '../../renderer/dom.js';
 
 /**
  * @param {{left: number, top: number, width: number, height:number}} opts

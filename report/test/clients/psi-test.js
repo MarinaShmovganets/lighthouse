@@ -7,21 +7,19 @@
 
 import {strict as assert} from 'assert';
 import fs from 'fs';
-
 import jsdom from 'jsdom';
-
 import testUtils from '../../../lighthouse-core/test/test-utils.js';
-import {LH_ROOT} from '../../../root.js';
 import {prepareLabData} from '../../clients/psi.js';
-import {CategoryRenderer} from '../../renderer/category-renderer.js';
-import {CriticalRequestChainRenderer} from '../../renderer/crc-details-renderer.js';
-import {DetailsRenderer} from '../../renderer/details-renderer.js';
-import {DOM} from '../../renderer/dom.js';
-import {ElementScreenshotRenderer} from '../../renderer/element-screenshot-renderer.js';
-import {I18n} from '../../renderer/i18n.js';
-import {PerformanceCategoryRenderer} from '../../renderer/performance-category-renderer.js';
-import {ReportUIFeatures} from '../../renderer/report-ui-features.js';
 import {Util} from '../../renderer/util.js';
+import {I18n} from '../../renderer/i18n.js';
+import {DOM} from '../../renderer/dom.js';
+import {CategoryRenderer} from '../../renderer/category-renderer.js';
+import {PerformanceCategoryRenderer} from '../../renderer/performance-category-renderer.js';
+import {DetailsRenderer} from '../../renderer/details-renderer.js';
+import {CriticalRequestChainRenderer} from '../../renderer/crc-details-renderer.js';
+import {ElementScreenshotRenderer} from '../../renderer/element-screenshot-renderer.js';
+import {ReportUIFeatures} from '../../renderer/report-ui-features.js';
+import {LH_ROOT} from '../../../root.js';
 
 const {itIfProtoExists, sampleResultsRoundtripStr} = testUtils.getProtoRoundTrip();
 const sampleResultsStr =

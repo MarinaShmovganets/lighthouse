@@ -10,9 +10,8 @@
 /** @typedef {{etag: ?string, content: LH.Result}} CachableGist */
 
 import idbKeyval from 'idb-keyval';
-
-import {getFilenamePrefix} from '../../../report/generator/file-namer.js';
 import {FirebaseAuth} from './firebase-auth.js';
+import {getFilenamePrefix} from '../../../report/generator/file-namer.js';
 
 /**
  * Wrapper around the GitHub API for reading/writing gists.

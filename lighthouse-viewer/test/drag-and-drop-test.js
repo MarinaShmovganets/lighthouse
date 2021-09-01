@@ -8,7 +8,6 @@
 /* eslint-env jest */
 
 import {jest} from '@jest/globals';
-
 import {DragAndDrop} from '../app/src/drag-and-drop.js';
 import * as testHelpers from './test-helpers.js';
 

@@ -5,7 +5,6 @@
  */
 
 import {FunctionComponent} from 'preact';
-
 import {FlowStepIcon} from '../common';
 import {classNames, useCurrentLhr, useDerivedStepNames, useFlowResult} from '../util';
 

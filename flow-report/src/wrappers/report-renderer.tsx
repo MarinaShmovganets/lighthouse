@@ -6,7 +6,6 @@
 
 import {createContext, FunctionComponent} from 'preact';
 import {useContext, useMemo} from 'preact/hooks';
-
 import {CategoryRenderer} from '../../../report/renderer/category-renderer';
 import {DetailsRenderer} from '../../../report/renderer/details-renderer';
 import {DOM} from '../../../report/renderer/dom';
