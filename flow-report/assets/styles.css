@@ -59,13 +59,8 @@
   border: 2px solid var(--color-blue-A700);
   display: block;
 }
-.GatherModeIcon--timespan::before {
-  content: '';
-  width: 25%;
-  height: 25%;
-  border-radius: 50%;
-  background-color: var(--color-blue-A700);
-  display: block;
+.GatherModeIcon--timespan {
+  display: none;
 }
 
 .CategoryRatio {
