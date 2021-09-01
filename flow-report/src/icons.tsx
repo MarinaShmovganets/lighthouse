@@ -16,7 +16,7 @@ export const SummaryIcon: FunctionComponent = () => {
   );
 };
 
-export const SnapshotIcon: FunctionComponent = () => {
+const SnapshotIcon: FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
