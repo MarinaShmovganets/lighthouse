@@ -5,7 +5,7 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {useLayoutEffect, useRef} from 'preact/hooks';
+import {useEffect, useLayoutEffect, useRef} from 'preact/hooks';
 import {useCurrentLhr, useHashParam} from '../util';
 import {useReportRenderer} from './report-renderer';
 
@@ -51,11 +51,11 @@ export const Report: FunctionComponent = () => {
     };
   }, [reportRenderer, currentLhr]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (anchor) {
       const el = document.getElementById(anchor);
       if (el) {
-        el.scrollIntoView();
+        el.scrollIntoView({behavior: 'smooth'});
         return;
       }
     }
