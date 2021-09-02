@@ -48,26 +48,6 @@ export function getScreenshot(reportResult: LH.ReportResult) {
   return fullPageScreenshot || null;
 }
 
-/**
- * The default behavior of anchor links is not compatible with the flow report's hash navigation.
- * This function converts any anchor links under the provided element to a flow report link.
- * e.g. <a href="#link"> -> <a href="#index=0&anchor=link">
- */
-export function convertChildAnchors(element: HTMLElement, index: number) {
-  const links = element.querySelectorAll('a') as NodeListOf<HTMLAnchorElement>;
-  for (const link of links) {
-    // Check if the link destination is in the report.
-    const currentUrl = new URL(location.href);
-    currentUrl.hash = '';
-    const linkUrl = new URL(link.href);
-    linkUrl.hash = '';
-    if (currentUrl.href !== linkUrl.href || !link.hash) continue;
-
-    const nodeId = link.hash.substr(1);
-    link.hash = `#index=${index}&anchor=${nodeId}`;
-  }
-}
-
 export function useFlowResult(): LH.FlowResult {
   const flowResult = useContext(FlowResultContext);
   if (!flowResult) throw Error('useFlowResult must be called in the FlowResultContext');

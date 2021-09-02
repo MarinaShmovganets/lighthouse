@@ -6,8 +6,30 @@
 
 import {FunctionComponent} from 'preact';
 import {useLayoutEffect, useRef} from 'preact/hooks';
-import {convertChildAnchors, useCurrentLhr, useHashParam} from '../util';
+import {useCurrentLhr, useHashParam} from '../util';
 import {useReportRenderer} from './report-renderer';
+
+/**
+ * The default behavior of anchor links is not compatible with the flow report's hash navigation.
+ * This function converts any anchor links under the provided element to a flow report link.
+ * e.g. <a href="#link"> -> <a href="#index=0&anchor=link">
+ */
+export function convertChildAnchors(element: HTMLElement, index: number) {
+  const links = element.querySelectorAll('a') as NodeListOf<HTMLAnchorElement>;
+  for (const link of links) {
+    // Check if the link destination is in the report.
+    const currentUrl = new URL(location.href);
+    currentUrl.hash = '';
+    currentUrl.search = '';
+    const linkUrl = new URL(link.href);
+    linkUrl.hash = '';
+    linkUrl.search = '';
+    if (currentUrl.href !== linkUrl.href || !link.hash) continue;
+
+    const nodeId = link.hash.substr(1);
+    link.hash = `#index=${index}&anchor=${nodeId}`;
+  }
+}
 
 export const Report: FunctionComponent = () => {
   const {dom, reportRenderer} = useReportRenderer();
