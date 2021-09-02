@@ -32,7 +32,7 @@
   overflow-y: auto;
 }
 
-.FlowStepIcon {
+.FlowSegment {
   height: 100%;
   width: var(--gather-mode-icon-size);
   display: flex;
@@ -42,7 +42,7 @@
   color: var(--color-blue-A700);
 }
 
-.FlowStepIcon__top-line, .FlowStepIcon__bottom-line {
+.FlowSegment__top-line, .FlowSegment__bottom-line {
   width: 2px;
   flex-grow: 1;
   background-color: var(--color-blue-A700);
@@ -187,7 +187,7 @@
   font-size: var(--sidebar-flow-step-navigation-font-size);
 }
 
-.SidebarFlowSeparator > .FlowStepIcon {
+.SidebarFlowSeparator > .FlowSegment {
   height: var(--half-base-spacing);
 }
 
@@ -220,30 +220,30 @@
 }
 
 /* Hide top segment of sidebar flow */
-.SidebarFlow > :first-child .FlowStepIcon > .FlowStepIcon__top-line {
+.SidebarFlow > :first-child .FlowSegment > .FlowSegment__top-line {
   background-color: transparent;
 }
 
 /* Hide end segments of summary flow */
-.SummaryFlow > :first-child > .FlowStepIcon > .FlowStepIcon__top-line {
+.SummaryFlow > :first-child > .FlowSegment > .FlowSegment__top-line {
   background-color: transparent;
 }
-.SummaryFlow > :last-child > .FlowStepIcon > .FlowStepIcon__bottom-line {
+.SummaryFlow > :last-child > .FlowSegment > .FlowSegment__bottom-line {
   background-color: transparent;
 }
 
 /* Hide segment for first navigation header */
-.SummaryFlow > :first-child .SummaryNavigationHeader .FlowStepIcon__bottom-line {
+.SummaryFlow > :first-child .SummaryNavigationHeader .FlowSegment__bottom-line {
   background-color: transparent;
 }
-.SummaryFlow > :first-child .SummaryNavigationHeader .FlowStepIcon__top-line {
+.SummaryFlow > :first-child .SummaryNavigationHeader .FlowSegment__top-line {
   background-color: transparent;
 }
 
 .SummaryFlowStep {
   display: contents;
 }
-.SummaryFlowStep .FlowStepIcon {
+.SummaryFlowStep .FlowSegment {
   grid-column: 2;
 }
 

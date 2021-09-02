@@ -16,7 +16,7 @@ export const SummaryIcon: FunctionComponent = () => {
   );
 };
 
-const NavigationIcon: FunctionComponent = () => {
+export const NavigationIcon: FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +37,7 @@ const NavigationIcon: FunctionComponent = () => {
   )
 }
 
-const TimespanIcon: FunctionComponent = () => {
+export const TimespanIcon: FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@ const TimespanIcon: FunctionComponent = () => {
   )
 }
 
-const SnapshotIcon: FunctionComponent = () => {
+export const SnapshotIcon: FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -95,23 +95,5 @@ export const CpuIcon: FunctionComponent = () => {
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd" clip-rule="evenodd" d="M15.5 7.16667V5.5H13.8333V3.83333C13.8333 2.91667 13.0833 2.16667 12.1667 2.16667H10.5V0.5H8.83333V2.16667H7.16667V0.5H5.5V2.16667H3.83333C2.91667 2.16667 2.16667 2.91667 2.16667 3.83333V5.5H0.5V7.16667H2.16667V8.83333H0.5V10.5H2.16667V12.1667C2.16667 13.0833 2.91667 13.8333 3.83333 13.8333H5.5V15.5H7.16667V13.8333H8.83333V15.5H10.5V13.8333H12.1667C13.0833 13.8333 13.8333 13.0833 13.8333 12.1667V10.5H15.5V8.83333H13.8333V7.16667H15.5ZM10.5 5.5H5.5V10.5H10.5V5.5ZM3.83333 12.1667H12.1667V3.83333H3.83333V12.1667Z" fill="currentColor"/>
     </svg>
-  );
-};
-
-export const FlowStepIcon: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
-  return (
-    <div className="FlowStepIcon">
-      <div className="FlowStepIcon__top-line"/>
-      {
-        mode === 'navigation' && <NavigationIcon/>
-      }
-      {
-        mode === 'timespan' && <TimespanIcon/>
-      }
-      {
-        mode === 'snapshot' && <SnapshotIcon/>
-      }
-      <div className="FlowStepIcon__bottom-line"/>
-    </div>
   );
 };

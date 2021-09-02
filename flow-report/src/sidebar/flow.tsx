@@ -6,7 +6,7 @@
 
 import {FunctionComponent} from 'preact';
 
-import {FlowStepIcon} from '../icons';
+import {FlowSegment} from '../common';
 import {classNames, useCurrentLhr, useDerivedStepNames, useFlowResult} from '../util';
 import {Separator} from '../common';
 
@@ -22,7 +22,7 @@ const SidebarFlowStep: FunctionComponent<{
       href={href}
     >
       <div>
-        <FlowStepIcon mode={mode}/>
+        <FlowSegment mode={mode}/>
       </div>
       <div className={`SidebarFlowStep__label SidebarFlowStep__label--${mode}`}>{label}</div>
     </a>
@@ -32,9 +32,9 @@ const SidebarFlowStep: FunctionComponent<{
 const SidebarFlowSeparator: FunctionComponent = () => {
   return (
     <div className="SidebarFlowSeparator">
-      <FlowStepIcon/>
+      <FlowSegment/>
       <Separator/>
-      <FlowStepIcon/>
+      <FlowSegment/>
     </div>
   );
 };

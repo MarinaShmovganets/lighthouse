@@ -7,6 +7,7 @@
 import {FunctionComponent} from 'preact';
 
 import {Util} from '../../report/renderer/util';
+import {NavigationIcon, SnapshotIcon, TimespanIcon} from './icons';
 
 /**
  * Summarizes the category as a ratio of passed audits to total audits.
@@ -50,4 +51,22 @@ export const CategoryRatio: FunctionComponent<{
 
 export const Separator: FunctionComponent = () => {
   return <div className="Separator" role="separator"></div>;
+};
+
+export const FlowSegment: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
+  return (
+    <div className="FlowSegment">
+      <div className="FlowSegment__top-line"/>
+      {
+        mode === 'navigation' && <NavigationIcon/>
+      }
+      {
+        mode === 'timespan' && <TimespanIcon/>
+      }
+      {
+        mode === 'snapshot' && <SnapshotIcon/>
+      }
+      <div className="FlowSegment__bottom-line"/>
+    </div>
+  );
 };
