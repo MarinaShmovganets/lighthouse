@@ -48,6 +48,11 @@ export function getScreenshot(reportResult: LH.ReportResult) {
   return fullPageScreenshot || null;
 }
 
+/**
+ * The default behavior of anchor links is not compatible with the flow report's hash navigation.
+ * This function converts any anchor links under the provided element to a flow report link.
+ * e.g. <a href="#link"> -> <a href="#index=0&anchor=link">
+ */
 export function convertChildAnchors(element: HTMLElement, index: number) {
   const links = element.querySelectorAll('a') as NodeListOf<HTMLAnchorElement>;
   for (const link of links) {
