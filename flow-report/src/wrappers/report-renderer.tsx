@@ -10,11 +10,13 @@ import {useContext, useMemo} from 'preact/hooks';
 import {CategoryRenderer} from '../../../report/renderer/category-renderer';
 import {DetailsRenderer} from '../../../report/renderer/details-renderer';
 import {DOM} from '../../../report/renderer/dom';
+import {ReportRenderer} from '../../../report/renderer/report-renderer';
 
 interface ReportRendererGlobals {
    dom: DOM,
    detailsRenderer: DetailsRenderer,
    categoryRenderer: CategoryRenderer,
+   reportRenderer: ReportRenderer,
 }
 
 const ReportRendererContext = createContext<ReportRendererGlobals|undefined>(undefined);
@@ -30,10 +32,12 @@ export const ReportRendererProvider: FunctionComponent = ({children}) => {
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
     const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
+    const reportRenderer = new ReportRenderer(dom);
     return {
       dom,
       detailsRenderer,
       categoryRenderer,
+      reportRenderer,
     };
   }, []);
   return (
