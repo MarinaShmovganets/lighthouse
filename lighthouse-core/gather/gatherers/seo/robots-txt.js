@@ -39,7 +39,7 @@ class RobotsTxt extends FRGatherer {
   async getArtifact(passContext) {
     // Iframe fetcher still has issues with CSPs.
     // Only use the fetcher if we are fetching over the protocol.
-    if (await passContext.driver.fetcher.getFetcherImplBasedOnEnv() === 'iframe') {
+    if (await passContext.driver.fetcher.shouldUseLegacyFetcher()) {
       return passContext.driver.executionContext.evaluate(getRobotsTxtContent, {
         args: [],
         useIsolation: true,
