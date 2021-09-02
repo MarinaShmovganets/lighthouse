@@ -6,6 +6,7 @@
 
 import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
+
 import {Separator} from '../common';
 import {CpuIcon, EnvIcon, SummaryIcon} from '../icons';
 import {classNames, useCurrentLhr, useFlowResult, useLocale} from '../util';
