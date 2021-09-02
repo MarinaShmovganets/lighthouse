@@ -8,13 +8,13 @@
 const FRGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 const {getBrowserVersion} = require('../../driver/environment.js');
 
-/* global fetch, location */
+/* global fetch, location, window */
 
 /** @return {Promise<LH.Artifacts['RobotsTxt']>} */
 /* c8 ignore start */
 async function getRobotsTxtContent() {
   try {
-    const response = await fetch(new URL('/robots.txt', location.href).href);
+    const response = await fetch(new window.__nativeURL('/robots.txt', location.href).href);
     if (!response.ok) {
       return {status: response.status, content: null};
     }
