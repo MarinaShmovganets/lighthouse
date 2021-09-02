@@ -8,7 +8,9 @@
 /* eslint-env jest */
 
 import {strict as assert} from 'assert';
+
 import jsdom from 'jsdom';
+
 import reportAssets from '../../generator/report-assets.js';
 import {Util} from '../../renderer/util.js';
 import {DOM} from '../../renderer/dom.js';
@@ -332,7 +334,7 @@ describe('ReportUIFeatures', () => {
       window = dom.document().defaultView;
       const features = new ReportUIFeatures(dom);
       features.initFeatures(sampleResults);
-      dropDown = features._dropDown;
+      dropDown = features._topbar._dropDownMenu;
     });
 
     it('click should toggle active class', () => {
