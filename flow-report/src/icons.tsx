@@ -16,6 +16,53 @@ export const SummaryIcon: FunctionComponent = () => {
   );
 };
 
+const NavigationIcon: FunctionComponent = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      role="img"
+      aria-label="Icon representing a navigation report">
+      <circle
+        cx="8"
+        cy="8"
+        r="7"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"/>
+   </svg>
+  )
+}
+
+const TimespanIcon: FunctionComponent = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      role="img"
+      aria-label="Icon representing a timespan report">
+      <circle
+        cx="8"
+        cy="8"
+        r="7"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"/>
+      <path
+        d="m 8,4 v 4 l 4,1.9999998"
+        stroke="currentColor"
+        stroke-width="1.5"/>
+   </svg>
+
+  )
+}
+
 const SnapshotIcon: FunctionComponent = () => {
   return (
     <svg
@@ -23,7 +70,9 @@ const SnapshotIcon: FunctionComponent = () => {
       width="16"
       height="16"
       viewBox="0 0 16 16"
-      fill="none">
+      fill="none"
+      role="img"
+      aria-label="Icon representing a snapshot report">
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"
@@ -49,26 +98,18 @@ export const CpuIcon: FunctionComponent = () => {
   );
 };
 
-const GatherModeIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
-  return (
-    <div
-      className={`GatherModeIcon GatherModeIcon--${mode}`}
-      role="img"
-      aria-label={`Icon representing a ${mode} report`}
-    >
-      {
-        mode === 'snapshot' && <SnapshotIcon/>
-      }
-    </div>
-  );
-};
-
 export const FlowStepIcon: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
   return (
     <div className="FlowStepIcon">
       <div className="FlowStepIcon__top-line"/>
       {
-        mode && <GatherModeIcon mode={mode}/>
+        mode === 'navigation' && <NavigationIcon/>
+      }
+      {
+        mode === 'timespan' && <TimespanIcon/>
+      }
+      {
+        mode === 'snapshot' && <SnapshotIcon/>
       }
       <div className="FlowStepIcon__bottom-line"/>
     </div>
