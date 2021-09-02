@@ -92,7 +92,7 @@ describe('PerfCategoryRenderer', () => {
     const oppElements = [...categoryDOM.querySelectorAll('.lh-audit--load-opportunity')];
     expect(oppElements.map(e => e.id).sort()).toEqual(oppAudits.map(a => a.id).sort());
     expect(oppElements.length).toBeGreaterThan(0);
-    expect(oppElements.length).toMatchInlineSnapshot('6');
+    expect(oppElements.length).toMatchInlineSnapshot('7');
 
     const oppElement = oppElements[0];
     const oppSparklineBarElement = oppElement.querySelector('.lh-sparkline__bar');
@@ -243,13 +243,13 @@ describe('PerfCategoryRenderer', () => {
       const url = new URL(href);
       expect(url.hash.split('&')).toMatchInlineSnapshot(`
 Array [
-  "#FCP=6905",
-  "SI=6901",
-  "LCP=6905",
-  "TTI=8200",
-  "TBT=1168",
+  "#FCP=6875",
+  "SI=7016",
+  "LCP=6875",
+  "TTI=8278",
+  "TBT=1271",
   "CLS=0",
-  "FMP=6905",
+  "FMP=6875",
 ]
 `);
     });
@@ -264,13 +264,13 @@ Array [
       try {
         expect(url.hash.split('&')).toMatchInlineSnapshot(`
 Array [
-  "#FCP=6905",
-  "SI=6901",
-  "LCP=6905",
-  "TTI=8200",
-  "TBT=1168",
-  "CLS=0.05",
-  "FMP=6905",
+  "#FCP=6875",
+  "SI=7016",
+  "LCP=6875",
+  "TTI=8278",
+  "TBT=1271",
+  "CLS=0.14",
+  "FMP=6875",
   "device=mobile",
   "version=6.0.0",
 ]

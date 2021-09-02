@@ -415,7 +415,7 @@ const expectations = {
           screenshot: {
             width: 360,
             // Allow for differences in platforms.
-            height: '1410±30',
+            height: '1350±20',
             data: /^data:image\/jpeg;.{500,}/,
           },
           nodes: {
@@ -423,8 +423,8 @@ const expectations = {
             // Exact ordering and IDs between FR and legacy differ, so fork the expectations.
             'page-0-IMG': {
               _legacyOnly: true,
-              top: '700±50',
-              bottom: '700±50',
+              top: '650±50',
+              bottom: '650±50',
               left: '10±10',
               right: '120±20',
               width: '120±20',
@@ -432,8 +432,8 @@ const expectations = {
             },
             'page-2-IMG': {
               _fraggleRockOnly: true,
-              top: '700±50',
-              bottom: '700±50',
+              top: '650±50',
+              bottom: '650±50',
               left: '10±10',
               right: '120±20',
               width: '120±20',

@@ -116,11 +116,14 @@
 </head>
 <body>
 
-<div class="shift-me">Shifter</div>
+<div class="shifter">Shifter</div>
 <script>
   setTimeout(() => {
-    document.querySelector('.shift-me').style.fontSize = '50px';
+    document.querySelector('.shifter').style.fontSize = '50px';
   }, 1000);
+  setTimeout(() => {
+    document.querySelector('.shifter').style.display = 'none';
+  }, 2000);
 </script>
 
 <!-- Various sites like to assign HTMLElements a custom `matches` property. See issue #5934 -->
