@@ -13,11 +13,10 @@ import {useReportRenderer} from './report-renderer';
 export const Gauge: FunctionComponent<{
   category: LH.ReportResult.Category,
   href: string,
-  audits: LH.ReportResult['audits'],
   gatherMode: LH.ReportResult['gatherMode']
-}> = ({category, href, audits, gatherMode}) => {
+}> = ({category, href, gatherMode}) => {
   const {dom, detailsRenderer} = useReportRenderer();
-  const categoryRenderer = new CategoryRenderer(dom, detailsRenderer, gatherMode, audits);
+  const categoryRenderer = new CategoryRenderer(dom, detailsRenderer, gatherMode);
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {

@@ -203,8 +203,7 @@ export class ReportRenderer {
     const categoryRenderer = new CategoryRenderer(
       this._dom,
       detailsRenderer,
-      report.gatherMode,
-      report.audits
+      report.gatherMode
     );
 
     /** @type {Record<string, CategoryRenderer>} */
@@ -212,14 +211,12 @@ export class ReportRenderer {
       performance: new PerformanceCategoryRenderer(
         this._dom,
         detailsRenderer,
-        report.gatherMode,
-        report.audits
+        report.gatherMode
       ),
       pwa: new PwaCategoryRenderer(
         this._dom,
         detailsRenderer,
-        report.gatherMode,
-        report.audits
+        report.gatherMode
       ),
     };
 

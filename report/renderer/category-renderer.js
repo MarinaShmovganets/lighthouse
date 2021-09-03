@@ -28,15 +28,12 @@ export class CategoryRenderer {
    * @param {DOM} dom
    * @param {DetailsRenderer} detailsRenderer
    * @param {LH.ReportResult['gatherMode']} gatherMode
-   * @param {LH.ReportResult['audits']} audits
    */
-  constructor(dom, detailsRenderer, gatherMode, audits) {
+  constructor(dom, detailsRenderer, gatherMode) {
     /** @type {DOM} */
     this.dom = dom;
     /** @type {DetailsRenderer} */
     this.detailsRenderer = detailsRenderer;
-    /** @type {LH.ReportResult['audits']} */
-    this.audits = audits;
     /** @type {LH.ReportResult['gatherMode']} */
     this.gatherMode = gatherMode;
   }
@@ -325,7 +322,7 @@ export class CategoryRenderer {
   renderScoreGauge(category, groupDefinitions) { // eslint-disable-line no-unused-vars
     // TODO: Move this to a real function.
     if (this.gatherMode !== 'navigation') {
-      return this.renderCategoryRatio(category, this.audits);
+      return this.renderCategoryRatio(category);
     }
 
     const tmpl = this.dom.createComponent('gauge');
@@ -366,10 +363,9 @@ export class CategoryRenderer {
 
   /**
    * @param {LH.ReportResult.Category} category
-   * @param {LH.ReportResult['audits']} audits
    * @return {DocumentFragment}
    */
-  renderCategoryRatio(category, audits) {
+  renderCategoryRatio(category) {
     const tmpl = this.dom.createComponent('ratio');
     const wrapper = this.dom.find('a.lh-ratio__wrapper', tmpl);
     this.dom.safelySetHref(wrapper, `#${category.id}`);
@@ -380,17 +376,15 @@ export class CategoryRenderer {
     let totalWeight = 0;
     for (const auditRef of category.auditRefs) {
       totalWeight += auditRef.weight;
-      const audit = audits[auditRef.id];
-      if (!audit) {
-        console.warn(`Could not find score for audit '${auditRef.id}', treating as failed.`);
-        continue;
-      }
-      if (Util.showAsPassed(audit)) numPassed++;
+      if (Util.showAsPassed(auditRef.result)) numPassed++;
     }
 
     const ratio = numPassed / numAudits;
     const content = this.dom.find('.lh-ratio__content', tmpl);
-    content.innerHTML += `${numPassed}/${numAudits}`;
+    const text = this.dom.createElement('span');
+    text.innerText = `${numPassed}/${numAudits}`;
+    content.appendChild(text);
+
     let rating = Util.calculateRating(ratio);
 
     // If none of the available audits can affect the score, a rating isn't useful.
