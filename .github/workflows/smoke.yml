@@ -65,7 +65,7 @@ jobs:
     - run: git diff --exit-code
 
     - name: Upload dist
-      if: always()
+      if: failure()
       uses: actions/upload-artifact@v1
       with:
         name: Smokehouse (ubuntu; chrome ${{ matrix.chrome-channel }})
@@ -96,7 +96,7 @@ jobs:
     - run: git diff --exit-code
 
     - name: Upload dist
-      if: always()
+      if: failure()
       uses: actions/upload-artifact@v1
       with:
         name: Smokehouse (windows)
@@ -126,7 +126,7 @@ jobs:
     - run: git diff --exit-code
 
     - name: Upload dist
-      if: always()
+      if: failure()
       uses: actions/upload-artifact@v1
       with:
         name: Smokehouse (fr)
@@ -157,7 +157,7 @@ jobs:
     - run: git diff --exit-code
 
     - name: Upload dist
-      if: always()
+      if: failure()
       uses: actions/upload-artifact@v1
       with:
         name: Smokehouse (bundled)
