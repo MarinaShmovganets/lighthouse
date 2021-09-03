@@ -13,7 +13,6 @@
  */
 
 const fs = require('fs').promises;
-const os = require('os');
 const {promisify} = require('util');
 const execFileAsync = promisify(require('child_process').execFile);
 
@@ -33,7 +32,7 @@ const {LH_ROOT} = require('../../../../root.js');
  */
 async function runLighthouse(url, configJson, testRunnerOptions = {}) {
   const {isDebug} = testRunnerOptions;
-  const tmpDir = isDebug ? `${LH_ROOT}/.tmp/smokehouse` : os.tmpdir();
+  const tmpDir = `${LH_ROOT}/.tmp/smokehouse`;
   await fs.mkdir(tmpDir, {recursive: true});
   const tmpPath = await fs.mkdtemp(`${tmpDir}/smokehouse-`);
   return internalRun(url, tmpPath, configJson, testRunnerOptions)
