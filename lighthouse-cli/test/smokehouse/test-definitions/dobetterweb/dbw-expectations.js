@@ -197,7 +197,8 @@ const expectations = {
         details: {
           items: {
             0: {
-              source: 'other',
+              // TODO(COMPAT): M95 changes this to 'exception'. before it was 'other'.
+              source: /other|exception/,
               description: 'Application Cache Error event: Manifest fetch failed (404) http://localhost:10200/dobetterweb/clock.appcache',
               url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
             },
