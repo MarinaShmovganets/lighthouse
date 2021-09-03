@@ -8,7 +8,7 @@ import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
 
 import {Gauge} from '../wrappers/gauge';
-import {CategoryRatio, FlowStepIcon} from '../common';
+import {FlowStepIcon} from '../common';
 import {getScreenDimensions, getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 
@@ -38,18 +38,12 @@ const SummaryCategory: FunctionComponent<{
     <div className="SummaryCategory">
       {
         category ?
-          (
-            gatherMode === 'navigation' ?
-            <Gauge
-              category={category}
-              href={href}
-            /> :
-            <CategoryRatio
-              category={category}
-              audits={audits}
-              href={href}
-            />
-          ) :
+          <Gauge
+            category={category}
+            audits={audits}
+            gatherMode={gatherMode}
+            href={href}
+          /> :
           <div
             className="SummaryCategory__null"
             data-testid="SummaryCategory__null"

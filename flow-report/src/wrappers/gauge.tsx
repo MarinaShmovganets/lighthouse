@@ -7,19 +7,27 @@
 import {FunctionComponent} from 'preact';
 import {useEffect, useLayoutEffect, useRef} from 'preact/hooks';
 
+import {CategoryRenderer} from '../../../report/renderer/category-renderer';
 import {useReportRenderer} from './report-renderer';
 
-export const Gauge: FunctionComponent<{category: LH.ReportResult.Category, href: string}> =
-({category, href}) => {
-  const {categoryRenderer} = useReportRenderer();
+export const Gauge: FunctionComponent<{
+  category: LH.ReportResult.Category,
+  href: string,
+  audits: LH.ReportResult['audits'],
+  gatherMode: LH.ReportResult['gatherMode']
+}> = ({category, href, audits, gatherMode}) => {
+  const {dom, detailsRenderer} = useReportRenderer();
+  const categoryRenderer = new CategoryRenderer(dom, detailsRenderer, gatherMode, audits);
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const el = categoryRenderer.renderScoreGauge(category, {});
 
     // Category label is displayed in the navigation header.
-    const label = el.querySelector('.lh-gauge__label');
+    const label = el.querySelector('.lh-gauge__label,.lh-ratio__label');
     if (label) label.remove();
+    const bg = el.querySelector('.lh-ratio__background');
+    if (bg) bg.remove();
 
     if (ref.current) ref.current.append(el);
     return () => {

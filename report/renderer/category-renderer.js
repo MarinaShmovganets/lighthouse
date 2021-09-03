@@ -27,12 +27,18 @@ export class CategoryRenderer {
   /**
    * @param {DOM} dom
    * @param {DetailsRenderer} detailsRenderer
+   * @param {LH.ReportResult['gatherMode']} gatherMode
+   * @param {LH.ReportResult['audits']} audits
    */
-  constructor(dom, detailsRenderer) {
+  constructor(dom, detailsRenderer, gatherMode, audits) {
     /** @type {DOM} */
     this.dom = dom;
     /** @type {DetailsRenderer} */
     this.detailsRenderer = detailsRenderer;
+    /** @type {LH.ReportResult['audits']} */
+    this.audits = audits;
+    /** @type {LH.ReportResult['gatherMode']} */
+    this.gatherMode = gatherMode;
   }
 
   /**
@@ -317,6 +323,11 @@ export class CategoryRenderer {
    * @return {DocumentFragment}
    */
   renderScoreGauge(category, groupDefinitions) { // eslint-disable-line no-unused-vars
+    // TODO: Move this to a real function.
+    if (this.gatherMode !== 'navigation') {
+      return this.renderCategoryRatio(category, this.audits);
+    }
+
     const tmpl = this.dom.createComponent('gauge');
     const wrapper = this.dom.find('a.lh-gauge__wrapper', tmpl);
     this.dom.safelySetHref(wrapper, `#${category.id}`);
@@ -350,6 +361,47 @@ export class CategoryRenderer {
     }
 
     this.dom.find('.lh-gauge__label', tmpl).textContent = category.title;
+    return tmpl;
+  }
+
+  /**
+   * @param {LH.ReportResult.Category} category
+   * @param {LH.ReportResult['audits']} audits
+   * @return {DocumentFragment}
+   */
+  renderCategoryRatio(category, audits) {
+    const tmpl = this.dom.createComponent('ratio');
+    const wrapper = this.dom.find('a.lh-ratio__wrapper', tmpl);
+    this.dom.safelySetHref(wrapper, `#${category.id}`);
+
+    const numAudits = category.auditRefs.length;
+
+    let numPassed = 0;
+    let totalWeight = 0;
+    for (const auditRef of category.auditRefs) {
+      totalWeight += auditRef.weight;
+      const audit = audits[auditRef.id];
+      if (!audit) {
+        console.warn(`Could not find score for audit '${auditRef.id}', treating as failed.`);
+        continue;
+      }
+      if (Util.showAsPassed(audit)) numPassed++;
+    }
+
+    const ratio = numPassed / numAudits;
+    const content = this.dom.find('.lh-ratio__content', tmpl);
+    content.innerHTML += `${numPassed}/${numAudits}`;
+    let rating = Util.calculateRating(ratio);
+
+    // If none of the available audits can affect the score, a rating isn't useful.
+    // The flow report should display the ratio with neutral icon and coloring in this case.
+    if (totalWeight === 0) {
+      rating = 'null';
+    }
+
+    wrapper.classList.add(`lh-ratio__wrapper--${rating}`);
+
+    this.dom.find('.lh-ratio__label', tmpl).textContent = category.title;
     return tmpl;
   }
 

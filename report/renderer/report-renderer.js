@@ -200,12 +200,27 @@ export class ReportRenderer {
       fullPageScreenshot,
     });
 
-    const categoryRenderer = new CategoryRenderer(this._dom, detailsRenderer);
+    const categoryRenderer = new CategoryRenderer(
+      this._dom,
+      detailsRenderer,
+      report.gatherMode,
+      report.audits
+    );
 
     /** @type {Record<string, CategoryRenderer>} */
     const specificCategoryRenderers = {
-      performance: new PerformanceCategoryRenderer(this._dom, detailsRenderer),
-      pwa: new PwaCategoryRenderer(this._dom, detailsRenderer),
+      performance: new PerformanceCategoryRenderer(
+        this._dom,
+        detailsRenderer,
+        report.gatherMode,
+        report.audits
+      ),
+      pwa: new PwaCategoryRenderer(
+        this._dom,
+        detailsRenderer,
+        report.gatherMode,
+        report.audits
+      ),
     };
 
     const headerContainer = this._dom.createElement('div');

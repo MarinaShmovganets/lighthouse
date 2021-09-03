@@ -458,6 +458,22 @@ function createOpportunityHeaderComponent(dom) {
 /**
  * @param {DOM} dom
  */
+function createRatioComponent(dom) {
+  const el0 = dom.document().createDocumentFragment();
+  const el1 = dom.createElement('a', 'lh-ratio__wrapper');
+  el1.setAttribute('href', '#');
+  const el2 = dom.createElement('div', 'lh-ratio__content');
+  const el3 = dom.createElement('div', 'lh-ratio__background');
+  el2.append(' ', el3, ' ');
+  const el4 = dom.createElement('div', 'lh-ratio__label');
+  el1.append(' ', el2, ' ', el4, ' ');
+  el0.append(el1);
+  return el0;
+}
+
+/**
+ * @param {DOM} dom
+ */
 function createScorescaleComponent(dom) {
   const el0 = dom.document().createDocumentFragment();
   const el1 = dom.createElement('div', 'lh-scorescale');
@@ -752,7 +768,7 @@ function createWarningsToplevelComponent(dom) {
 }
 
 
-/** @typedef {'3pFilter'|'audit'|'categoryHeader'|'chevron'|'clump'|'crc'|'crcChain'|'elementScreenshot'|'envItem'|'footer'|'gauge'|'gaugePwa'|'heading'|'metric'|'metricsToggle'|'opportunity'|'opportunityHeader'|'scorescale'|'scoresWrapper'|'snippet'|'snippetContent'|'snippetHeader'|'snippetLine'|'topbar'|'warningsToplevel'} ComponentName */
+/** @typedef {'3pFilter'|'audit'|'categoryHeader'|'chevron'|'clump'|'crc'|'crcChain'|'elementScreenshot'|'envItem'|'footer'|'gauge'|'gaugePwa'|'heading'|'metric'|'metricsToggle'|'opportunity'|'opportunityHeader'|'ratio'|'scorescale'|'scoresWrapper'|'snippet'|'snippetContent'|'snippetHeader'|'snippetLine'|'topbar'|'warningsToplevel'} ComponentName */
 /**
  * @param {DOM} dom
  * @param {ComponentName} componentName
@@ -777,6 +793,7 @@ export function createComponent(dom, componentName) {
     case 'metricsToggle': return createMetricsToggleComponent(dom);
     case 'opportunity': return createOpportunityComponent(dom);
     case 'opportunityHeader': return createOpportunityHeaderComponent(dom);
+    case 'ratio': return createRatioComponent(dom);
     case 'scorescale': return createScorescaleComponent(dom);
     case 'scoresWrapper': return createScoresWrapperComponent(dom);
     case 'snippet': return createSnippetComponent(dom);
