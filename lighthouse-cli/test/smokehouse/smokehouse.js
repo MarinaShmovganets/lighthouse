@@ -119,6 +119,9 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
   const {lighthouseRunner, retries, isDebug, useFraggleRock, takeNetworkRequestUrls} = testOptions;
   const requestedUrl = expectations.lhr.requestedUrl;
 
+  const failuresDir = `${LH_ROOT}/.tmp/smokehouse-ci-failures`;
+  if (process.env.CI) fs.mkdirSync(failuresDir, {recursive: true});
+
   console.log(`${purpleify(id)} smoketest starting…`);
 
   // Rerun test until there's a passing result or retries are exhausted to prevent flakes.
@@ -152,9 +155,7 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
 
       // For CI, save to directory to be uploaded.
       if (process.env.CI) {
-        const dir = `${LH_ROOT}/.tmp/smokehouse-ci-failures/smokehouse-${smokeTestDefn.id}-${i}`;
-        fs.mkdirSync(dir, {recursive: true});
-        fs.writeFileSync(`${dir}/result.json`, JSON.stringify({
+        fs.writeFileSync(`${failuresDir}/${smokeTestDefn.id}-${i}.json`, JSON.stringify({
           ...result,
           ...report,
           log: report.log.split('\n'),
