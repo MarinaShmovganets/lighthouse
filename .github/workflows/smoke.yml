@@ -69,7 +69,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Smokehouse (ubuntu; chrome ${{ matrix.chrome-channel }})
-        path: .tmp/smokehouse/
+        path: .tmp/smokehouse-ci-failures/
 
   # Only run smoke tests for windows against stable chrome.
   smoke-windows:
@@ -100,7 +100,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Smokehouse (windows)
-        path: .tmp/smokehouse/
+        path: .tmp/smokehouse-ci-failures/
 
   smoke-fr:
     runs-on: ubuntu-latest
@@ -130,7 +130,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Smokehouse (fr)
-        path: .tmp/smokehouse/
+        path: .tmp/smokehouse-ci-failures/
 
   smoke-bundle:
     runs-on: ubuntu-latest
@@ -161,4 +161,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Smokehouse (bundled)
-        path: .tmp/smokehouse/
+        path: .tmp/smokehouse-ci-failures/
