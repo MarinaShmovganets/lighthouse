@@ -32,7 +32,7 @@ class ProtocolSession {
     if (originalEmit[SessionEmitMonkeypatch]) return;
     session.emit = (method, ...args) => {
       // OOPIF sessions need to emit their sessionId so downstream processors can recognize
-      // the appropriate target to use.
+      // the target the event came from.
       const sessionId = this._targetInfo && this._targetInfo.type === 'iframe' ?
         this._targetInfo.targetId : undefined;
       originalEmit.call(session, '*', {method, params: args[0], sessionId});
