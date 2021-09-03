@@ -100,7 +100,15 @@ describe('TargetManager', () => {
     });
 
     it('should fire listeners before target attached', async () => {
-
+      sessionMock.sendCommand
+        .mockResponse('Target.getTargetInfo', {targetInfo})
+        .mockResponse('Target.setAutoAttach');
+      targetManager.addTargetAttachedListener(jest.fn().mockImplementation(() => {
+        const setAutoAttachCalls = sessionMock.sendCommand.mock.calls
+          .filter(call => call[0] === 'Target.setAutoAttach');
+        expect(setAutoAttachCalls).toHaveLength(0);
+      }));
+      await targetManager.enable();
     });
 
     it('should handle target closed gracefully', async () => {

@@ -44,8 +44,8 @@ class TargetManager {
   }
 
   /**
-    * @param {LH.Gatherer.FRProtocolSession} session
-    */
+   * @param {LH.Gatherer.FRProtocolSession} session
+   */
   async _onSessionAttached(session) {
     try {
       const target = await session.sendCommand('Target.getTargetInfo').catch(() => null);
@@ -81,8 +81,8 @@ class TargetManager {
   }
 
   /**
-    * @return {Promise<void>}
-    */
+   * @return {Promise<void>}
+   */
   async enable() {
     if (this._enabled) return;
 
@@ -97,8 +97,8 @@ class TargetManager {
   }
 
   /**
-    * @return {Promise<void>}
-    */
+   * @return {Promise<void>}
+   */
   async disable() {
     this._session.off('Page.frameNavigated', this._onFrameNavigated);
     this._session.removeSessionAttachedListener(this._onSessionAttached);

@@ -66,7 +66,6 @@ class NetworkMonitor extends EventEmitter {
    */
   async _onTargetAttached({session, target}) {
     const targetId = target.targetId;
-    if (this._sessions.has(targetId)) return;
 
     this._sessions.set(targetId, session);
     session.addProtocolMessageListener(this._onProtocolMessage);

@@ -54,7 +54,7 @@ function createMockSendCommandFn(options) {
      * @param {string|undefined=} sessionId
      * @param {LH.CrdpCommands[C]['paramsType']} args
      */
-    (command, sessionId, ...args) => {
+    async (command, sessionId, ...args) => {
       if (!useSessionId) {
         // @ts-expect-error - If sessionId isn't used, it *is* args.
         args = [sessionId, ...args];
@@ -63,13 +63,12 @@ function createMockSendCommandFn(options) {
 
       const indexOfResponse = mockResponses
         .findIndex(entry => entry.command === command && entry.sessionId === sessionId);
-      if (indexOfResponse === -1) return Promise.reject(new Error(`${command} unimplemented`));
+      if (indexOfResponse === -1) throw new Error(`${command} unimplemented`);
       const {response, delay} = mockResponses[indexOfResponse];
       mockResponses.splice(indexOfResponse, 1);
       const returnValue = typeof response === 'function' ? response(...args) : response;
       if (delay) return new Promise(resolve => setTimeout(() => resolve(returnValue), delay));
-      // @ts-expect-error: Some covariant type stuff doesn't work here. idk, I'm not a type scientist.
-      return Promise.resolve(returnValue);
+      return returnValue;
     });
 
   const mockFn = Object.assign(mockFnImpl, {
