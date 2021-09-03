@@ -34,7 +34,7 @@ const {LH_ROOT} = require('../../../../root.js');
 async function runLighthouse(url, configJson, testRunnerOptions = {}) {
   const {isDebug} = testRunnerOptions;
   const tmpDir = isDebug ? `${LH_ROOT}/.tmp/smokehouse` : os.tmpdir();
-  fs.mkdir(tmpDir, {recursive: true});
+  await fs.mkdir(tmpDir, {recursive: true});
   const tmpPath = await fs.mkdtemp(`${tmpDir}/smokehouse-`);
   return internalRun(url, tmpPath, configJson, testRunnerOptions)
     // Wait for internalRun() before removing scratch directory.

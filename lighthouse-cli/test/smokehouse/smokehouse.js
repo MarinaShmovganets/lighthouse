@@ -11,11 +11,13 @@
  * smoke tests passed.
  */
 
+const fs = require('fs');
 const log = require('lighthouse-logger');
 const cliLighthouseRunner = require('./lighthouse-runners/cli.js').runLighthouse;
 const getAssertionReport = require('./report-assert.js');
 const LocalConsole = require('./lib/local-console.js');
 const ConcurrentMapper = require('./lib/concurrent-mapper.js');
+const {LH_ROOT} = require('../../../root.js');
 
 /* eslint-disable no-console */
 
@@ -147,6 +149,18 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
     report = getAssertionReport(result, expectations, {isDebug});
     if (report.failed) {
       bufferedConsole.log(`  ${getAssertionLog(report.failed)} failed.`);
+
+      // For CI, save to directory to be uploaded.
+      if (process.env.CI) {
+        const dir = `${LH_ROOT}/.tmp/smokehouse-ci-failures/smokehouse-${smokeTestDefn.id}-${i}`;
+        fs.mkdirSync(dir, {recursive: true});
+        fs.writeFileSync(`${dir}/result.json`, JSON.stringify({
+          ...result,
+          ...report,
+          log: report.log.split('\n'),
+        }, null, 2));
+      }
+
       continue; // Retry, if possible.
     }
 
