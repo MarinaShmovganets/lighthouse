@@ -11,13 +11,11 @@
  * smoke tests passed.
  */
 
-const fs = require('fs');
 const log = require('lighthouse-logger');
 const cliLighthouseRunner = require('./lighthouse-runners/cli.js').runLighthouse;
 const getAssertionReport = require('./report-assert.js');
 const LocalConsole = require('./lib/local-console.js');
 const ConcurrentMapper = require('./lib/concurrent-mapper.js');
-const {LH_ROOT} = require('../../../root.js');
 
 /* eslint-disable no-console */
 
@@ -28,10 +26,20 @@ const DEFAULT_CONCURRENT_RUNS = 5;
 const DEFAULT_RETRIES = 0;
 
 /**
+ * @typedef Run
+ * @property {string[] | undefined} networkRequests
+ * @property {LH.Result} lhr
+ * @property {LH.Artifacts} lhr
+ * @property {string} lighthouseLog
+ * @property {string} assertionLog
+ */
+
+/**
  * @typedef SmokehouseResult
  * @property {string} id
  * @property {number} passed
  * @property {number} failed
+ * @property {Run[]} runs
  */
 
 /**
@@ -119,12 +127,11 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
   const {lighthouseRunner, retries, isDebug, useFraggleRock, takeNetworkRequestUrls} = testOptions;
   const requestedUrl = expectations.lhr.requestedUrl;
 
-  const failuresDir = `${LH_ROOT}/.tmp/smokehouse-ci-failures`;
-  if (process.env.CI) fs.mkdirSync(failuresDir, {recursive: true});
-
   console.log(`${purpleify(id)} smoketest starting…`);
 
   // Rerun test until there's a passing result or retries are exhausted to prevent flakes.
+  /** @type {Run[]} */
+  const runs = [];
   let result;
   let report;
   const bufferedConsole = new LocalConsole();
@@ -150,18 +157,15 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
 
     // Assert result.
     report = getAssertionReport(result, expectations, {isDebug});
+
+    runs.push({
+      ...result,
+      lighthouseLog: result.log,
+      assertionLog: report.log,
+    });
+
     if (report.failed) {
       bufferedConsole.log(`  ${getAssertionLog(report.failed)} failed.`);
-
-      // For CI, save to directory to be uploaded.
-      if (process.env.CI) {
-        fs.writeFileSync(`${failuresDir}/${smokeTestDefn.id}-${i}.json`, JSON.stringify({
-          ...result,
-          ...report,
-          log: report.log.split('\n'),
-        }, null, 2));
-      }
-
       continue; // Retry, if possible.
     }
 
@@ -195,6 +199,7 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
     id,
     passed,
     failed,
+    runs,
   };
 }
 
