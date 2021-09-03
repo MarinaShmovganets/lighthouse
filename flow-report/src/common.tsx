@@ -6,24 +6,26 @@
 
 import {FunctionComponent} from 'preact';
 
-const GatherModeIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
-  return (
-    <div
-      className={`GatherModeIcon GatherModeIcon--${mode}`}
-      role="img"
-      aria-label={`Icon representing a ${mode} report`}
-    />
-  );
+import {NavigationIcon, SnapshotIcon, TimespanIcon} from './icons';
+
+export const Separator: FunctionComponent = () => {
+  return <div className="Separator" role="separator"></div>;
 };
 
-export const FlowStepIcon: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
+export const FlowSegment: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
   return (
-    <div className="FlowStepIcon">
-      <div className="FlowStepIcon__top-line"/>
+    <div className="FlowSegment">
+      <div className="FlowSegment__top-line"/>
       {
-        mode && <GatherModeIcon mode={mode}/>
+        mode === 'navigation' && <NavigationIcon/>
       }
-      <div className="FlowStepIcon__bottom-line"/>
+      {
+        mode === 'timespan' && <TimespanIcon/>
+      }
+      {
+        mode === 'snapshot' && <SnapshotIcon/>
+      }
+      <div className="FlowSegment__bottom-line"/>
     </div>
   );
 };
