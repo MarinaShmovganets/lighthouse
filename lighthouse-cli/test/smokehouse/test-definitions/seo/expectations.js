@@ -142,7 +142,7 @@ const passing = {
         score: 1,
       },
       'document-title': {
-        score: 1,
+        score: 10,
       },
       'meta-description': {
         score: 1,
@@ -467,7 +467,7 @@ const tapTargets = {
               'overlapScoreRatio': 0.2916666666666667,
               'size': '40x40',
               'width': 40,
-              'height': 40,
+              'height': 400,
             },
           ],
         },

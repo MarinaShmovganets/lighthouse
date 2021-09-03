@@ -22,6 +22,7 @@ const log = require('lighthouse-logger');
 const assetSaver = require('../../../../lighthouse-core/lib/asset-saver.js');
 const LocalConsole = require('../lib/local-console.js');
 const ChildProcessError = require('../lib/child-process-error.js');
+const {LH_ROOT} = require('../../../../root.js');
 
 /**
  * Launch Chrome and do a full Lighthouse run via the Lighthouse CLI.
@@ -31,9 +32,10 @@ const ChildProcessError = require('../lib/child-process-error.js');
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */
 async function runLighthouse(url, configJson, testRunnerOptions = {}) {
-  const tmpPath = await fs.mkdtemp(`${os.tmpdir()}/smokehouse-`);
-
   const {isDebug} = testRunnerOptions;
+  const tmpDir = isDebug ? `${LH_ROOT}/.tmp/smokehouse` : os.tmpdir();
+  fs.mkdir(tmpDir, {recursive: true});
+  const tmpPath = await fs.mkdtemp(`${tmpDir}/smokehouse-`);
   return internalRun(url, tmpPath, configJson, testRunnerOptions)
     // Wait for internalRun() before removing scratch directory.
     .finally(() => !isDebug && fs.rmdir(tmpPath, {recursive: true}));
