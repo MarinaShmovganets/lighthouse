@@ -62,7 +62,7 @@ describe('SummaryFlowStep', () => {
     const screenshot = root.getByTestId('SummaryFlowStep__screenshot') as HTMLImageElement;
     expect(screenshot.src).toMatch(/data:image\/jpeg;base64/);
 
-    const gauges = root.getAllByTestId('Gauge');
+    const gauges = root.getAllByTestId('CategoryScore');
     expect(gauges).toHaveLength(4);
 
     const links = root.getAllByRole('link') as HTMLAnchorElement[];

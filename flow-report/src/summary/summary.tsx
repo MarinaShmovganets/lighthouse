@@ -7,7 +7,7 @@
 import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
 
-import {Gauge} from '../wrappers/gauge';
+import {CategoryScore} from '../wrappers/gauge';
 import {FlowStepIcon} from '../common';
 import {getScreenDimensions, getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
@@ -29,17 +29,15 @@ const SummaryNavigationHeader: FunctionComponent<{url: string}> = ({url}) => {
 };
 
 const SummaryCategory: FunctionComponent<{
-  gatherMode: LH.Result.GatherMode,
   category: LH.ReportResult.Category|undefined,
   href: string,
-}> = ({gatherMode, category, href}) => {
+}> = ({category, href}) => {
   return (
     <div className="SummaryCategory">
       {
         category ?
-          <Gauge
+          <CategoryScore
             category={category}
-            gatherMode={gatherMode}
             href={href}
           /> :
           <div
@@ -90,7 +88,6 @@ export const SummaryFlowStep: FunctionComponent<{
         DISPLAYED_CATEGORIES.map(c => (
           <SummaryCategory
             key={c}
-            gatherMode={reportResult.gatherMode}
             category={reportResult.categories[c]}
             href={`#index=${hashIndex}&anchor=${c}`}
           />

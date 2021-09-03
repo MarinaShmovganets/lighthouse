@@ -7,16 +7,13 @@
 import {FunctionComponent} from 'preact';
 import {useEffect, useLayoutEffect, useRef} from 'preact/hooks';
 
-import {CategoryRenderer} from '../../../report/renderer/category-renderer';
 import {useReportRenderer} from './report-renderer';
 
-export const Gauge: FunctionComponent<{
+export const CategoryScore: FunctionComponent<{
   category: LH.ReportResult.Category,
   href: string,
-  gatherMode: LH.ReportResult['gatherMode']
-}> = ({category, href, gatherMode}) => {
-  const {dom, detailsRenderer} = useReportRenderer();
-  const categoryRenderer = new CategoryRenderer(dom, detailsRenderer, gatherMode);
+}> = ({category, href}) => {
+  const {categoryRenderer} = useReportRenderer();
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -42,6 +39,6 @@ export const Gauge: FunctionComponent<{
   }, [href]);
 
   return (
-    <div ref={ref} data-testid="Gauge"/>
+    <div ref={ref} data-testid="CategoryScore"/>
   );
 };

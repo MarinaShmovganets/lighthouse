@@ -27,15 +27,12 @@ export class CategoryRenderer {
   /**
    * @param {DOM} dom
    * @param {DetailsRenderer} detailsRenderer
-   * @param {LH.ReportResult['gatherMode']} gatherMode
    */
-  constructor(dom, detailsRenderer, gatherMode) {
+  constructor(dom, detailsRenderer) {
     /** @type {DOM} */
     this.dom = dom;
     /** @type {DetailsRenderer} */
     this.detailsRenderer = detailsRenderer;
-    /** @type {LH.ReportResult['gatherMode']} */
-    this.gatherMode = gatherMode;
   }
 
   /**
@@ -321,7 +318,7 @@ export class CategoryRenderer {
    */
   renderScoreGauge(category, groupDefinitions) { // eslint-disable-line no-unused-vars
     // TODO: Move this to a real function.
-    if (this.gatherMode !== 'navigation') {
+    if (category.displayMode === 'ratio') {
       return this.renderCategoryRatio(category);
     }
 

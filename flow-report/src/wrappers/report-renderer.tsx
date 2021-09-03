@@ -31,7 +31,7 @@ export const ReportRendererProvider: FunctionComponent = ({children}) => {
   const globals = useMemo(() => {
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
-    const categoryRenderer = new CategoryRenderer(dom, detailsRenderer, 'navigation');
+    const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
     const reportRenderer = new ReportRenderer(dom);
     return {
       dom,
