@@ -33,9 +33,9 @@ export const NavigationIcon: FunctionComponent = () => {
         fill="none"
         stroke="currentColor"
         stroke-width="2"/>
-   </svg>
-  )
-}
+    </svg>
+  );
+};
 
 export const TimespanIcon: FunctionComponent = () => {
   return (
@@ -58,10 +58,9 @@ export const TimespanIcon: FunctionComponent = () => {
         d="m 8,4 v 4 l 4,1.9999998"
         stroke="currentColor"
         stroke-width="1.5"/>
-   </svg>
-
-  )
-}
+    </svg>
+  );
+};
 
 export const SnapshotIcon: FunctionComponent = () => {
   return (

@@ -23,7 +23,7 @@ function shortenUrl(longUrl: string) {
  * The step label should be enumerated if there is another report of the same gather mode in the same section.
  * Navigation reports will never be enumerated.
  */
-function shouldEnumerate(flowResult:LH.FlowResult, index:number) {
+function shouldEnumerate(flowResult: LH.FlowResult, index: number) {
   const {lhrs} = flowResult;
   if (lhrs[index].gatherMode === 'navigation') return false;
 

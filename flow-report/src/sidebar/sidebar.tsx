@@ -57,7 +57,7 @@ const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
 export const SidebarHeader: FunctionComponent<{title: string, date: string}> = ({title, date}) => {
   const locale = useLocale();
   const formatter = useMemo(() => {
-    const options:Intl.DateTimeFormatOptions = {
+    const options: Intl.DateTimeFormatOptions = {
       month: 'short', day: 'numeric', year: 'numeric',
       hour: 'numeric', minute: 'numeric', timeZoneName: 'short',
     };

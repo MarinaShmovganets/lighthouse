@@ -93,7 +93,7 @@ describe('useDerivedStepNames', () => {
     const lhrs = flowResult.lhrs;
     lhrs[3] = lhrs[2];
     const newFlowResult = {lhrs};
-    const wrapper:FunctionComponent = ({children}) => (
+    const wrapper: FunctionComponent = ({children}) => (
       <FlowResultContext.Provider value={newFlowResult}>{children}</FlowResultContext.Provider>
     );
 
