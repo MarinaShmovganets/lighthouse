@@ -312,7 +312,7 @@ function getFlags(manualArgv, options = {}) {
         //   - We're just printing the config.
         //   - We're in auditMode (and we have artifacts already)
         // If one of these don't apply, if no URL, stop the program and ask for one.
-        const isPrintSomethingMode = argv.listAllAudits || argv.listTraceCategories || argv.printConfig;
+        const isPrintSomethingMode = argv.listAllAudits || argv.listLocales || argv.listTraceCategories || argv.printConfig;
         const isOnlyAuditMode = !!argv.auditMode && !argv.gatherMode;
         if (isPrintSomethingMode || isOnlyAuditMode) {
           return true;
