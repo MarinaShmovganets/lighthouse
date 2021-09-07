@@ -50,9 +50,9 @@ describe('swap-locale', () => {
     expect(lhrDe.audits.plugins.title).toEqual('Dokument verwendet keine Plug-ins');
 
     // With ICU string argument values
-    expect(lhrEn.audits['dom-size'].displayValue).toMatchInlineSnapshot(`"151 elements"`);
+    expect(lhrEn.audits['dom-size'].displayValue).toMatchInlineSnapshot(`"153 elements"`);
     /* eslint-disable no-irregular-whitespace */
-    expect(lhrDe.audits['dom-size'].displayValue).toMatchInlineSnapshot(`"151 Elemente"`);
+    expect(lhrDe.audits['dom-size'].displayValue).toMatchInlineSnapshot(`"153 Elemente"`);
 
     // Renderer formatted strings
     expect(lhrEn.i18n.rendererFormattedStrings.labDataTitle).toEqual('Lab Data');
@@ -60,9 +60,9 @@ describe('swap-locale', () => {
 
     // Formatted numbers in placeholders.
     expect(lhrEn.audits['mainthread-work-breakdown'].displayValue).
-toMatchInlineSnapshot(`"1.8 s"`);
+toMatchInlineSnapshot(`"2.3 s"`);
     expect(lhrDe.audits['mainthread-work-breakdown'].displayValue).
-toMatchInlineSnapshot(`"1,8 s"`);
+toMatchInlineSnapshot(`"2,3 s"`);
     /* eslint-enable no-irregular-whitespace */
   });
 

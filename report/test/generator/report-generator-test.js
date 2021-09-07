@@ -96,7 +96,7 @@ describe('ReportGenerator', () => {
       expect(lines.length).toBeGreaterThan(100);
       expect(lines.slice(0, 3).join('\n')).toMatchInlineSnapshot(`
 "requestedUrl,finalUrl,category,name,title,type,score
-\\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"Performance\\",\\"performance-score\\",\\"Overall Performance Category Score\\",\\"numeric\\",\\"0.27\\"
+\\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"Performance\\",\\"performance-score\\",\\"Overall Performance Category Score\\",\\"numeric\\",\\"0.26\\"
 \\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"http://localhost:10200/dobetterweb/dbw_tester.html\\",\\"Performance\\",\\"first-contentful-paint\\",\\"First Contentful Paint\\",\\"numeric\\",\\"0.02\\"
 "
 `);
