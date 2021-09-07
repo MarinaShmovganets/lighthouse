@@ -5,9 +5,20 @@
  */
 
 module.exports = {
-  testEnvironment: 'jsdom',
+  testEnvironment: 'node',
   preset: 'ts-jest',
+  globalSetup: './test/setup/global-setup.ts',
+  setupFilesAfterEnv: [
+    './test/setup/env-setup.ts',
+  ],
   testMatch: [
+    '**/test/**/*-test.ts',
     '**/test/**/*-test.tsx',
   ],
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
+  globals: {
+    'ts-jest': {
+      useESM: true,
+    },
+  },
 };

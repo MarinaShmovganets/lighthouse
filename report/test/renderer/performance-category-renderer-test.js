@@ -5,11 +5,12 @@
  */
 'use strict';
 
-/* eslint-env jest, browser */
+/* eslint-env jest */
 
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
+
 import {Util} from '../../renderer/util.js';
 import {I18n} from '../../renderer/i18n.js';
 import URL from '../../../lighthouse-core/lib/url-shim.js';
@@ -114,7 +115,7 @@ describe('PerfCategoryRenderer', () => {
 
     const fakeCategory = Object.assign({}, category, {auditRefs: [auditWithError]});
     const categoryDOM = renderer.render(fakeCategory, sampleResults.categoryGroups);
-    const tooltipEl = categoryDOM.querySelector('.lh-audit--load-opportunity .tooltip--error');
+    const tooltipEl = categoryDOM.querySelector('.lh-audit--load-opportunity .lh-tooltip--error');
     assert.ok(tooltipEl, 'did not render error message');
     assert.ok(/Yikes!!/.test(tooltipEl.textContent));
   });
