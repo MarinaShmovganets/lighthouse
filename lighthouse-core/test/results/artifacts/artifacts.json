@@ -172,669 +172,669 @@
   },
   "Timing": [
     {
-      "startTime": 1302.212579,
+      "startTime": 0,
       "name": "lh:init:config",
-      "duration": 404.13015300000006,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 1304.157529,
+      "startTime": 0,
       "name": "lh:config:requireGatherers",
-      "duration": 24.16548899999998,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 1328.418715,
+      "startTime": 0,
       "name": "lh:config:requireAudits",
-      "duration": 295.3787769999999,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 1707.483643,
+      "startTime": 0,
       "name": "lh:init:connect",
-      "duration": 113.193176,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 1820.755161,
+      "startTime": 0,
       "name": "lh:gather:loadBlank",
-      "duration": 28.111973000000035,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 1849.020906,
+      "startTime": 0,
       "name": "lh:gather:getVersion",
-      "duration": 0.6967409999999745,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 1849.850425,
+      "startTime": 0,
       "name": "lh:gather:getBenchmarkIndex",
-      "duration": 1006.0868019999998,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2856.027449,
+      "startTime": 0,
       "name": "lh:gather:setupDriver",
-      "duration": 9.023711999999705,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2865.299316,
+      "startTime": 0,
       "name": "lh:gather:runPass-defaultPass",
-      "duration": 29178.882084,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2865.314029,
+      "startTime": 0,
       "name": "lh:gather:loadBlank",
-      "duration": 9.753901999999925,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2884.601539,
+      "startTime": 0,
       "name": "lh:storage:clearBrowserCaches",
-      "duration": 66.06629100000009,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2950.833738,
+      "startTime": 0,
       "name": "lh:gather:prepareNetworkForNavigation",
-      "duration": 4.228947000000062,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2955.207352,
+      "startTime": 0,
       "name": "lh:gather:beforePass",
-      "duration": 23.44757000000027,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2955.233221,
+      "startTime": 0,
       "name": "lh:gather:beforePass:CSSUsage",
-      "duration": 0.13570900000013353,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2955.383468,
+      "startTime": 0,
       "name": "lh:gather:beforePass:JsUsage",
-      "duration": 18.059613999999783,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2973.459682,
+      "startTime": 0,
       "name": "lh:gather:beforePass:ViewportDimensions",
-      "duration": 0.0407310000000507,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2973.518135,
+      "startTime": 0,
       "name": "lh:gather:beforePass:ConsoleMessages",
-      "duration": 1.9988230000003568,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.534412,
+      "startTime": 0,
       "name": "lh:gather:beforePass:AnchorElements",
-      "duration": 0.028321000000232743,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.570946,
+      "startTime": 0,
       "name": "lh:gather:beforePass:ImageElements",
-      "duration": 0.011843000000226311,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.588746,
+      "startTime": 0,
       "name": "lh:gather:beforePass:LinkElements",
-      "duration": 0.012322000000040134,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.606302,
+      "startTime": 0,
       "name": "lh:gather:beforePass:MetaElements",
-      "duration": 0.01421699999991688,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.626349,
+      "startTime": 0,
       "name": "lh:gather:beforePass:ScriptElements",
-      "duration": 0.012643999999909283,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.642778,
+      "startTime": 0,
       "name": "lh:gather:beforePass:IFrameElements",
-      "duration": 0.011554000000160158,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.658189,
+      "startTime": 0,
       "name": "lh:gather:beforePass:FormElements",
-      "duration": 0.010995999999977357,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.67245,
+      "startTime": 0,
       "name": "lh:gather:beforePass:MainDocumentContent",
-      "duration": 0.011590000000069267,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.687713,
+      "startTime": 0,
       "name": "lh:gather:beforePass:GatherContext",
-      "duration": 0.010411000000203785,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.701712,
+      "startTime": 0,
       "name": "lh:gather:beforePass:GlobalListeners",
-      "duration": 0.009365999999772612,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.714847,
+      "startTime": 0,
       "name": "lh:gather:beforePass:AppCacheManifest",
-      "duration": 0.008485999999720661,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.726621,
+      "startTime": 0,
       "name": "lh:gather:beforePass:Doctype",
-      "duration": 0.0090979999999945,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.739008,
+      "startTime": 0,
       "name": "lh:gather:beforePass:DOMStats",
-      "duration": 0.008678000000145403,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.750258,
+      "startTime": 0,
       "name": "lh:gather:beforePass:OptimizedImages",
-      "duration": 0.009090999999898486,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.762053,
+      "startTime": 0,
       "name": "lh:gather:beforePass:PasswordInputsWithPreventedPaste",
-      "duration": 0.009620000000268192,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.774327,
+      "startTime": 0,
       "name": "lh:gather:beforePass:ResponseCompression",
-      "duration": 0.009743999999955122,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2975.786729,
+      "startTime": 0,
       "name": "lh:gather:beforePass:TagsBlockingFirstPaint",
-      "duration": 1.2813930000002074,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2977.075331,
+      "startTime": 0,
       "name": "lh:gather:beforePass:FontSize",
-      "duration": 0.01985999999988053,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2977.099259,
+      "startTime": 0,
       "name": "lh:gather:beforePass:EmbeddedContent",
-      "duration": 0.010804000000007363,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2977.113409,
+      "startTime": 0,
       "name": "lh:gather:beforePass:RobotsTxt",
-      "duration": 0.008944000000155938,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2977.125153,
+      "startTime": 0,
       "name": "lh:gather:beforePass:TapTargets",
-      "duration": 0.007849000000078377,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2977.135637,
+      "startTime": 0,
       "name": "lh:gather:beforePass:Accessibility",
-      "duration": 0.014012999999977183,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2977.152642,
+      "startTime": 0,
       "name": "lh:gather:beforePass:TraceElements",
-      "duration": 0.6399230000001808,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2977.798708,
+      "startTime": 0,
       "name": "lh:gather:beforePass:InspectorIssues",
-      "duration": 0.7436930000003485,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2978.54917,
+      "startTime": 0,
       "name": "lh:gather:beforePass:SourceMaps",
-      "duration": 0.08246600000029503,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2978.636866,
+      "startTime": 0,
       "name": "lh:gather:beforePass:FullPageScreenshot",
-      "duration": 0.014124000000265369,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 2978.70142,
+      "startTime": 0,
       "name": "lh:gather:beginRecording",
-      "duration": 65.89308900000015,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 3044.727436,
+      "startTime": 0,
       "name": "lh:gather:loadPage-defaultPass",
-      "duration": 24506.989030999997,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 27551.834551,
+      "startTime": 0,
       "name": "lh:gather:pass",
-      "duration": 0.2680030000010447,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 27552.170672,
+      "startTime": 0,
       "name": "lh:gather:getTrace",
-      "duration": 829.8860849999983,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 28382.065952,
+      "startTime": 0,
       "name": "lh:gather:getDevtoolsLog",
-      "duration": 1.3107720000007248,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 28382.24337,
+      "startTime": 0,
       "name": "lh:computed:NetworkRecords",
-      "duration": 1.1258699999998498,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 28384.533942,
+      "startTime": 0,
       "name": "lh:gather:afterPass",
-      "duration": 3659.462203000003,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 28388.192323,
+      "startTime": 0,
       "name": "lh:gather:afterPass:CSSUsage",
-      "duration": 3020.6146850000005,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31408.827254,
+      "startTime": 0,
       "name": "lh:gather:afterPass:JsUsage",
-      "duration": 8.02767600000152,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31416.873541,
+      "startTime": 0,
       "name": "lh:gather:afterPass:ViewportDimensions",
-      "duration": 2.2036039999984496,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31419.09591,
+      "startTime": 0,
       "name": "lh:gather:afterPass:ConsoleMessages",
-      "duration": 2.160475000000588,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31421.276076,
+      "startTime": 0,
       "name": "lh:gather:afterPass:AnchorElements",
-      "duration": 15.61171000000104,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31436.90637,
+      "startTime": 0,
       "name": "lh:gather:afterPass:ImageElements",
-      "duration": 24.166692999999213,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31461.091417,
+      "startTime": 0,
       "name": "lh:gather:afterPass:LinkElements",
-      "duration": 4.680921999999555,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31465.789272,
+      "startTime": 0,
       "name": "lh:gather:afterPass:MetaElements",
-      "duration": 3.7559399999991,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31469.55906,
+      "startTime": 0,
       "name": "lh:gather:afterPass:ScriptElements",
-      "duration": 9.901159000000916,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31479.476187,
+      "startTime": 0,
       "name": "lh:gather:afterPass:IFrameElements",
-      "duration": 2.626248000000487,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31482.115611,
+      "startTime": 0,
       "name": "lh:gather:afterPass:FormElements",
-      "duration": 3.8040669999973034,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31485.933944,
+      "startTime": 0,
       "name": "lh:gather:afterPass:MainDocumentContent",
-      "duration": 1.6742110000013781,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31487.621147,
+      "startTime": 0,
       "name": "lh:gather:afterPass:GatherContext",
-      "duration": 0.8946799999976065,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31488.527262,
+      "startTime": 0,
       "name": "lh:gather:afterPass:GlobalListeners",
-      "duration": 2.077115000000049,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31490.616097,
+      "startTime": 0,
       "name": "lh:gather:afterPass:AppCacheManifest",
-      "duration": 1.4761450000005425,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31492.103985,
+      "startTime": 0,
       "name": "lh:gather:afterPass:Doctype",
-      "duration": 1.4815659999985655,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31493.597037,
+      "startTime": 0,
       "name": "lh:gather:afterPass:DOMStats",
-      "duration": 3.783527999999933,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31497.393142,
+      "startTime": 0,
       "name": "lh:gather:afterPass:OptimizedImages",
-      "duration": 130.30911600000036,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31627.721168,
+      "startTime": 0,
       "name": "lh:gather:afterPass:PasswordInputsWithPreventedPaste",
-      "duration": 4.0047709999998915,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31631.744677,
+      "startTime": 0,
       "name": "lh:gather:afterPass:ResponseCompression",
-      "duration": 9.048507999999856,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31640.809438,
+      "startTime": 0,
       "name": "lh:gather:afterPass:TagsBlockingFirstPaint",
-      "duration": 3.0785429999996268,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31643.901879,
+      "startTime": 0,
       "name": "lh:gather:afterPass:FontSize",
-      "duration": 8.25276699999813,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31652.169802,
+      "startTime": 0,
       "name": "lh:gather:afterPass:EmbeddedContent",
-      "duration": 3.5626919999995152,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31655.746511,
+      "startTime": 0,
       "name": "lh:gather:afterPass:RobotsTxt",
-      "duration": 5.299015000000509,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31655.847013,
+      "startTime": 0,
       "name": "lh:gather:getVersion",
-      "duration": 0.3598740000015823,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31656.907964,
+      "startTime": 0,
       "name": "lh:gather:getVersion",
-      "duration": 0.36956199999985984,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31661.062635,
+      "startTime": 0,
       "name": "lh:gather:afterPass:TapTargets",
-      "duration": 9.993341000001237,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31671.073682,
+      "startTime": 0,
       "name": "lh:gather:afterPass:Accessibility",
-      "duration": 158.88659800000096,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31829.979989,
+      "startTime": 0,
       "name": "lh:gather:afterPass:TraceElements",
-      "duration": 84.43224499999997,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31830.751196,
+      "startTime": 0,
       "name": "lh:computed:ProcessedTrace",
-      "duration": 57.36606599999868,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31888.14094,
+      "startTime": 0,
       "name": "lh:computed:ProcessedNavigation",
-      "duration": 0.6123009999973874,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31914.430184,
+      "startTime": 0,
       "name": "lh:gather:afterPass:InspectorIssues",
-      "duration": 2.2000909999987925,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31916.645007,
+      "startTime": 0,
       "name": "lh:gather:afterPass:SourceMaps",
-      "duration": 1.1042379999998957,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 31917.76503,
+      "startTime": 0,
       "name": "lh:gather:afterPass:FullPageScreenshot",
-      "duration": 126.22015300000203,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 32044.392797,
+      "startTime": 0,
       "name": "lh:gather:populateBaseArtifacts",
-      "duration": 24.781827999999223,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 32045.095436,
+      "startTime": 0,
       "name": "lh:gather:collectStacks",
-      "duration": 23.937086000001727,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 32069.82688,
+      "startTime": 0,
       "name": "lh:gather:runPass-offlinePass",
-      "duration": 5631.646756000002,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 32069.840385,
+      "startTime": 0,
       "name": "lh:gather:loadBlank",
-      "duration": 64.22183399999994,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 32134.088329,
+      "startTime": 0,
       "name": "lh:gather:prepareNetworkForNavigation",
-      "duration": 1.195294000001013,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 32135.310827,
+      "startTime": 0,
       "name": "lh:gather:beforePass",
-      "duration": 1.5293019999990065,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 32135.325179,
+      "startTime": 0,
       "name": "lh:gather:beforePass:ServiceWorker",
-      "duration": 1.50463800000216,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 32136.850103,
+      "startTime": 0,
       "name": "lh:gather:beginRecording",
-      "duration": 0.010564000000158558,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 32136.866249,
+      "startTime": 0,
       "name": "lh:gather:loadPage-offlinePass",
-      "duration": 5502.304552000001,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37639.18705,
+      "startTime": 0,
       "name": "lh:gather:pass",
-      "duration": 0.02530799999658484,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37639.218827,
+      "startTime": 0,
       "name": "lh:gather:getDevtoolsLog",
-      "duration": 0.9994100000039907,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37639.552274,
+      "startTime": 0,
       "name": "lh:computed:NetworkRecords",
-      "duration": 0.6560009999957401,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37641.246762,
+      "startTime": 0,
       "name": "lh:gather:afterPass",
-      "duration": 60.20158299999457,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37699.622661,
+      "startTime": 0,
       "name": "lh:gather:afterPass:ServiceWorker",
-      "duration": 1.8123429999977816,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37701.52839,
+      "startTime": 0,
       "name": "lh:gather:runPass-redirectPass",
-      "duration": 5385.226497000003,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37701.54323,
+      "startTime": 0,
       "name": "lh:gather:loadBlank",
-      "duration": 58.35459099999571,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37759.916087,
+      "startTime": 0,
       "name": "lh:gather:prepareNetworkForNavigation",
-      "duration": 1.072070000001986,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37761.002465,
+      "startTime": 0,
       "name": "lh:gather:beforePass",
-      "duration": 0.1233009999996284,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37761.015595,
+      "startTime": 0,
       "name": "lh:gather:beforePass:HTTPRedirect",
-      "duration": 0.1039840000012191,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37761.131513,
+      "startTime": 0,
       "name": "lh:gather:beginRecording",
-      "duration": 0.008543999996618368,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 37761.144973,
+      "startTime": 0,
       "name": "lh:gather:loadPage-redirectPass",
-      "duration": 5317.903321999998,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 43079.062994,
+      "startTime": 0,
       "name": "lh:gather:pass",
-      "duration": 0.059622000000672415,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 43079.129476,
+      "startTime": 0,
       "name": "lh:gather:getDevtoolsLog",
-      "duration": 0.5048810000007506,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 43079.159487,
+      "startTime": 0,
       "name": "lh:computed:NetworkRecords",
-      "duration": 0.4682630000024801,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 43080.340639,
+      "startTime": 0,
       "name": "lh:gather:afterPass",
-      "duration": 6.402044999995269,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 43084.143417,
+      "startTime": 0,
       "name": "lh:gather:afterPass:HTTPRedirect",
-      "duration": 2.58684699999867,
+      "duration": 1,
       "entryType": "measure"
     },
     {
-      "startTime": 43086.89783,
+      "startTime": 0,
       "name": "lh:gather:disconnect",
-      "duration": 10.732551000000967,
+      "duration": 1,
       "entryType": "measure"
     }
   ],

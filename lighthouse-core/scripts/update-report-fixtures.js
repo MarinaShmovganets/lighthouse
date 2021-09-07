@@ -5,11 +5,13 @@
  */
 'use strict';
 
+const fs = require('fs');
 const cli = require('../../lighthouse-cli/run.js');
 const cliFlags = require('../../lighthouse-cli/cli-flags.js');
 const assetSaver = require('../lib/asset-saver.js');
 const {server} = require('../../lighthouse-cli/test/fixtures/static-server.js');
 const budgetedConfig = require('../test/results/sample-config.js');
+const {LH_ROOT} = require('../../root.js');
 
 const artifactPath = 'lighthouse-core/test/results/artifacts';
 // All artifacts must have resources from a consistent port, to ensure reproducibility.
@@ -46,6 +48,20 @@ async function update(artifactName) {
     finalArtifacts[artifactName] = newArtifact;
     await assetSaver.saveArtifacts(finalArtifacts, artifactPath);
   }
+
+  // Normalize some data.
+  const artifactsFile = `${LH_ROOT}/${artifactPath}/artifacts.json`;
+  /** @type {LH.Artifacts} */
+  const artifacts = JSON.parse(fs.readFileSync(artifactsFile, 'utf-8'));
+
+  for (const timing of artifacts.Timing) {
+    // @ts-expect-error: Value actually is writeable at this point.
+    timing.startTime = 0;
+    // @ts-expect-error: Value actually is writeable at this point.
+    timing.duration = 1;
+  }
+
+  fs.writeFileSync(artifactsFile, JSON.stringify(artifacts, null, 2));
 }
 
 update(/** @type {keyof LH.Artifacts | undefined} */ (process.argv[2]));
