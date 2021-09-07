@@ -411,7 +411,7 @@ const expectations = {
           screenshot: {
             width: 360,
             // Allow for differences in platforms.
-            height: '1350±20',
+            height: '1350±100',
             data: /^data:image\/jpeg;.{500,}/,
           },
           nodes: {
