@@ -285,6 +285,22 @@ describe('CategoryRenderer', () => {
       assert.ok(description.querySelector('a'), 'description contains converted markdown links');
     });
 
+    it('renders the category header with ratio', () => {
+      category.displayMode = 'ratio';
+      const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
+
+      const gauge = categoryDOM.querySelector('.lh-ratio__content');
+      assert.equal(gauge.textContent.trim(), '49/54', 'ratio is included');
+
+      const score = categoryDOM.querySelector('.lh-category-header');
+      const title = score.querySelector('.lh-ratio__label');
+      const description = score.querySelector('.lh-category-header__description');
+
+      assert.deepEqual(score, score.firstElementChild, 'first child is a score');
+      assert.equal(title.textContent, category.title, 'title is set');
+      assert.ok(description.querySelector('a'), 'description contains converted markdown links');
+    });
+
     it('renders the failed audits grouped by group', () => {
       // Fail all the audits.
       const categoryClone = JSON.parse(JSON.stringify(category));

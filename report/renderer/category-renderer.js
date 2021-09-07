@@ -379,7 +379,7 @@ export class CategoryRenderer {
     const ratio = numPassed / numAudits;
     const content = this.dom.find('.lh-ratio__content', tmpl);
     const text = this.dom.createElement('span');
-    text.innerText = `${numPassed}/${numAudits}`;
+    text.textContent = `${numPassed}/${numAudits}`;
     content.appendChild(text);
 
     let rating = Util.calculateRating(ratio);
