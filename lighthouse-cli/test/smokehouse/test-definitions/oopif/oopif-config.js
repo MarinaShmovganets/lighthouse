@@ -5,8 +5,6 @@
  */
 'use strict';
 
-const {LH_ROOT} = require('../../../../../root.js');
-
 /**
  * @type {LH.Config.Json}
  * Config file for running the OOPIF tests
@@ -21,7 +19,7 @@ module.exports = {
   },
   audits: [
     // Include an audit that *forces* the IFrameElements artifact to be used for our test.
-    {path: `${LH_ROOT}/lighthouse-cli/test/smokehouse/test-definitions/oopif/oopif-iframe-audit.js`}, // eslint-disable-line max-len
+    {path: 'oopif-iframe-audit'},
   ],
   settings: {
     // This test runs in CI and hits the outside network of a live site.

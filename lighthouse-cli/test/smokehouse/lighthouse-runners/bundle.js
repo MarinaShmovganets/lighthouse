@@ -31,32 +31,6 @@ global.require = originalRequire;
 const lighthouse = global.runBundledLighthouse;
 
 /**
- * Clean the config of any additional audits that might not be able to be referenced.
- * A new audit is detected by finding any audit entry with a path and no options.
- *
- * @param {LH.Config.Json=} configJson
- */
-function cleanConfig(configJson) {
-  if (!configJson) return;
-
-  if (configJson.audits) {
-    configJson.audits = configJson.audits.filter(audit => {
-      // Just a string, is adding a new audit that won't be in the bundle, prune it.
-      if (typeof audit === 'string') return false;
-      // If it's the audit implementation directly, it's a new audit, prune it. (though not currently possible)
-      if (typeof audit !== 'object') return false;
-      // Keep the audit only if it is setting options, which is the signal that it's an existing core audit.
-      return Boolean(audit.options);
-    });
-  }
-
-  if (configJson.categories) {
-    // Categories are only defined for introduction of new categories.
-    delete configJson.categories;
-  }
-}
-
-/**
  * Launch Chrome and do a full Lighthouse run via the Lighthouse CLI.
  * @param {string} url
  * @param {LH.Config.Json=} configJson
@@ -68,20 +42,22 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
   const launchedChrome = await ChromeLauncher.launch();
   const port = launchedChrome.port;
   const connection = new ChromeProtocol(port);
-  cleanConfig(configJson);
 
-  // Run Lighthouse.
-  const logLevel = testRunnerOptions.isDebug ? 'info' : undefined;
-  const runnerResult = await lighthouse(url, {port, logLevel}, configJson, connection);
-  if (!runnerResult) throw new Error('No runnerResult');
+  try {
+    // Run Lighthouse.
+    const logLevel = testRunnerOptions.isDebug ? 'info' : undefined;
+    const runnerResult = await lighthouse(url, {port, logLevel}, configJson, connection);
+    if (!runnerResult) throw new Error('No runnerResult');
 
-  // Clean up and return results.
-  await launchedChrome.kill();
-  return {
-    lhr: runnerResult.lhr,
-    artifacts: runnerResult.artifacts,
-    log: '', // TODO: if want to run in parallel, need to capture lighthouse-logger output.
-  };
+    return {
+      lhr: runnerResult.lhr,
+      artifacts: runnerResult.artifacts,
+      log: '', // TODO: if want to run in parallel, need to capture lighthouse-logger output.
+    };
+  } finally {
+    // Clean up and return results.
+    await launchedChrome.kill();
+  }
 }
 
 module.exports = {
