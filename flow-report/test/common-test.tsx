@@ -4,8 +4,9 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {CategoryRatio} from '../src/common';
 import {render} from '@testing-library/preact';
+
+import {CategoryRatio} from '../src/common';
 
 describe('CategoryRatio', () => {
   it('renders passed audit count', async () => {
@@ -27,7 +28,7 @@ describe('CategoryRatio', () => {
       category={category}
       href="index=0&achor=seo"
     />);
-    const link = await root.findByRole('link');
+    const link = root.getByRole('link');
 
     expect(link.className).toEqual('CategoryRatio CategoryRatio--average');
     expect(link.textContent).toEqual('2/3');
@@ -52,7 +53,7 @@ describe('CategoryRatio', () => {
       category={category}
       href="index=0&achor=seo"
     />);
-    const link = await root.findByRole('link');
+    const link = root.getByRole('link');
 
     expect(link.className).toEqual('CategoryRatio CategoryRatio--fail');
     expect(link.textContent).toEqual('0/3');
@@ -77,7 +78,7 @@ describe('CategoryRatio', () => {
       category={category}
       href="index=0&achor=seo"
     />);
-    const link = await root.findByRole('link');
+    const link = root.getByRole('link');
 
     expect(link.className).toEqual('CategoryRatio CategoryRatio--pass');
     expect(link.textContent).toEqual('3/3');
@@ -100,7 +101,7 @@ describe('CategoryRatio', () => {
       category={category}
       href="index=0&achor=seo"
     />);
-    const link = await root.findByRole('link');
+    const link = root.getByRole('link');
 
     expect(link.className).toEqual('CategoryRatio CategoryRatio--null');
     expect(link.textContent).toEqual('1/2');
@@ -122,7 +123,7 @@ describe('CategoryRatio', () => {
       category={category}
       href="index=0&achor=seo"
     />);
-    const link = await root.findByRole('link');
+    const link = root.getByRole('link');
 
     expect(link.className).toEqual('CategoryRatio CategoryRatio--average');
     expect(link.textContent).toEqual('1/2');

@@ -5,7 +5,7 @@
  */
 
 import {createContext} from 'preact';
-import {useContext, useEffect, useState} from 'preact/hooks';
+import {useContext, useEffect, useMemo, useState} from 'preact/hooks';
 
 export const FlowResultContext = createContext<LH.FlowResult|undefined>(undefined);
 
@@ -13,6 +13,33 @@ function getHashParam(param: string): string|null {
   const params = new URLSearchParams(location.hash.replace('#', '?'));
   return params.get(param);
 }
+
+function shortenUrl(longUrl: string) {
+  const url = new URL(longUrl);
+  return `${url.hostname}${url.pathname}`;
+}
+
+/**
+ * The step label should be enumerated if there is another report of the same gather mode in the same section.
+ * Navigation reports will never be enumerated.
+ */
+function shouldEnumerate(flowResult: LH.FlowResult, index: number) {
+  const {lhrs} = flowResult;
+  if (lhrs[index].gatherMode === 'navigation') return false;
+
+  for (let i = index + 1; lhrs[i] && lhrs[i].gatherMode !== 'navigation'; ++i) {
+    if (lhrs[i].gatherMode === lhrs[index].gatherMode) {
+      return true;
+    }
+  }
+  for (let i = index - 1; lhrs[i] && lhrs[i].gatherMode !== 'navigation'; --i) {
+    if (lhrs[i].gatherMode === lhrs[index].gatherMode) {
+      return true;
+    }
+  }
+  return false;
+}
+
 
 export function classNames(...args: Array<string|undefined|Record<string, boolean>>): string {
   const classes = [];
@@ -59,56 +86,75 @@ export function useLocale(): LH.Locale {
   return flowResult.lhrs[0].configSettings.locale;
 }
 
-export function useCurrentLhr(): {value: LH.Result, index: number}|null {
-  const flowResult = useFlowResult();
-  const [indexString, setIndexString] = useState(getHashParam('index'));
+export function useHashParam(param: string) {
+  const [paramValue, setParamValue] = useState(getHashParam(param));
 
   // Use two-way-binding on the URL hash.
-  // Triggers a re-render if the LHR index changes.
+  // Triggers a re-render if the param changes.
   useEffect(() => {
     function hashListener() {
-      const newIndexString = getHashParam('index');
-      if (newIndexString === indexString) return;
-      setIndexString(newIndexString);
+      const newIndexString = getHashParam(param);
+      if (newIndexString === paramValue) return;
+      setParamValue(newIndexString);
     }
     window.addEventListener('hashchange', hashListener);
     return () => window.removeEventListener('hashchange', hashListener);
-  }, [indexString]);
+  }, [paramValue]);
 
-  if (!indexString) return null;
+  return paramValue;
+}
 
-  const index = Number(indexString);
-  if (!Number.isFinite(index)) {
-    console.warn(`Invalid hash index: ${indexString}`);
-    return null;
-  }
+export function useCurrentLhr(): {value: LH.Result, index: number}|null {
+  const flowResult = useFlowResult();
+  const indexString = useHashParam('index');
 
-  const value = flowResult.lhrs[index];
-  if (!value) {
-    console.warn(`No LHR at index ${index}`);
-    return null;
-  }
+  // Memoize result so a new object is not created on every call.
+  return useMemo(() => {
+    if (!indexString) return null;
 
-  return {value, index};
+    const index = Number(indexString);
+    if (!Number.isFinite(index)) {
+      console.warn(`Invalid hash index: ${indexString}`);
+      return null;
+    }
+
+    const value = flowResult.lhrs[index];
+    if (!value) {
+      console.warn(`No LHR at index ${index}`);
+      return null;
+    }
+
+    return {value, index};
+  }, [indexString, flowResult]);
 }
 
 export function useDerivedStepNames() {
   const flowResult = useFlowResult();
 
-  let numNavigation = 1;
-  let numTimespan = 1;
-  let numSnapshot = 1;
+  return useMemo(() => {
+    let numTimespan = 1;
+    let numSnapshot = 1;
 
-  // TODO(FR-COMPAT): Override with a provided step name.
-  // TODO(FR-COMPAT): Add shortened URL and reset count for navigations.
-  return flowResult.lhrs.map((lhr) => {
-    switch (lhr.gatherMode) {
-      case 'navigation':
-        return `Navigation (${numNavigation++})`;
-      case 'timespan':
-        return `Timespan (${numTimespan++})`;
-      case 'snapshot':
-        return `Snapshot (${numSnapshot++})`;
-    }
-  });
+    // TODO(FR-COMPAT): Override with a provided step name.
+    return flowResult.lhrs.map((lhr, index) => {
+      const shortUrl = shortenUrl(lhr.finalUrl);
+
+      switch (lhr.gatherMode) {
+        case 'navigation':
+          numTimespan = 1;
+          numSnapshot = 1;
+          return `Navigation report (${shortUrl})`;
+        case 'timespan':
+          if (shouldEnumerate(flowResult, index)) {
+            return `Timespan report ${numTimespan++} (${shortUrl})`;
+          }
+          return `Timespan report (${shortUrl})`;
+        case 'snapshot':
+          if (shouldEnumerate(flowResult, index)) {
+            return `Snapshot report ${numSnapshot++} (${shortUrl})`;
+          }
+          return `Snapshot report (${shortUrl})`;
+      }
+    });
+  }, [flowResult]);
 }
