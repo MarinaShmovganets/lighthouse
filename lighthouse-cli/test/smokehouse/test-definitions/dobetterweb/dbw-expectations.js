@@ -381,10 +381,10 @@ const expectations = {
       },
       'dom-size': {
         score: 1,
-        numericValue: 151,
+        numericValue: 153,
         details: {
           items: [
-            {statistic: 'Total DOM Elements', value: 151},
+            {statistic: 'Total DOM Elements', value: 153},
             {statistic: 'Maximum DOM Depth', value: 4},
             {
               statistic: 'Maximum Child Elements',
