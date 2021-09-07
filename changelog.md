@@ -1,3 +1,106 @@
+Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Emmanouil Zoumpoulakis @emzoumpo
+Milutin Kristofic @milutin
+Bjørn Erik Pedersen @bep
+Jerome Cukier @jckr
+ <a name="8.4.0"></a>
+# 8.4.0 (2021-09-07)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.3.0...v8.4.0)
+
+~~ TODO: https://chromiumdash.appspot.com/schedule ~~
+We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## Notable Changes
+~~ TODO: Move notable changes here ~~
+
+
+## New Audits
+
+* lcp-lazy-loaded ([#12838](https://github.com/GoogleChrome/lighthouse/pull/12838))
+
+## Core
+
+* config: keep full-page-screenshot in skipAudits case ([#12645](https://github.com/GoogleChrome/lighthouse/pull/12645))
+* csp-evaluator: bump package version ([#12990](https://github.com/GoogleChrome/lighthouse/pull/12990))
+* fr: collect devtoolsLogs on pageLoadError ([#12980](https://github.com/GoogleChrome/lighthouse/pull/12980))
+* fr: add config validation ([#12945](https://github.com/GoogleChrome/lighthouse/pull/12945))
+* fr: align navigation failure behavior ([#12862](https://github.com/GoogleChrome/lighthouse/pull/12862))
+* fr: add protocol timeout to session ([#12913](https://github.com/GoogleChrome/lighthouse/pull/12913))
+* fr: parity on Stacks and FullPageSnapshot gatherers ([#12907](https://github.com/GoogleChrome/lighthouse/pull/12907))
+* http-status-code: navigation only ([#13005](https://github.com/GoogleChrome/lighthouse/pull/13005))
+* large-javascript-libraries: delete ([#12941](https://github.com/GoogleChrome/lighthouse/pull/12941))
+* network-request: identify filesystem resources as non-network ([#12970](https://github.com/GoogleChrome/lighthouse/pull/12970))
+* viewport: add viewport audit as perf diagnostic ([#12972](https://github.com/GoogleChrome/lighthouse/pull/12972))
+* extract independent LHR types ([#12914](https://github.com/GoogleChrome/lighthouse/pull/12914))
+* add --debugNavigation setting ([#12902](https://github.com/GoogleChrome/lighthouse/pull/12902))
+
+## Report
+
+* flow: sidebar mocks ([#13002](https://github.com/GoogleChrome/lighthouse/pull/13002))
+* flow: embedded lighthouse report ([#12989](https://github.com/GoogleChrome/lighthouse/pull/12989))
+* split topbar features ([#12926](https://github.com/GoogleChrome/lighthouse/pull/12926))
+* accessible n/a icon ([#12984](https://github.com/GoogleChrome/lighthouse/pull/12984))
+* flow: summary page ([#12973](https://github.com/GoogleChrome/lighthouse/pull/12973))
+* prefix all classnames with lh- ([#12985](https://github.com/GoogleChrome/lighthouse/pull/12985))
+* flow: navigation sidebar ([#12929](https://github.com/GoogleChrome/lighthouse/pull/12929))
+* isolate treemap type checking ([#12953](https://github.com/GoogleChrome/lighthouse/pull/12953))
+* isolate flow-report type checking ([#12952](https://github.com/GoogleChrome/lighthouse/pull/12952))
+* isolate viewer type checking ([#12951](https://github.com/GoogleChrome/lighthouse/pull/12951))
+* extract independent report types ([#12946](https://github.com/GoogleChrome/lighthouse/pull/12946))
+* extract independent report-generator types ([#12940](https://github.com/GoogleChrome/lighthouse/pull/12940))
+* extract independent report-generator types ([#12940](https://github.com/GoogleChrome/lighthouse/pull/12940))
+* use postMessage to open viewer outside devtools ([#12927](https://github.com/GoogleChrome/lighthouse/pull/12927))
+* flow: standalone shell report with preact ([#12850](https://github.com/GoogleChrome/lighthouse/pull/12850))
+* better deduping of warnings ([#12355](https://github.com/GoogleChrome/lighthouse/pull/12355))
+* create faux psi report ([#12815](https://github.com/GoogleChrome/lighthouse/pull/12815))
+* build: create UMD bundle build ([#12898](https://github.com/GoogleChrome/lighthouse/pull/12898))
+
+## Deps
+
+* snyk: update snyk snapshot ([#13001](https://github.com/GoogleChrome/lighthouse/pull/13001))
+* update to typescript 4.4.2 ([#12999](https://github.com/GoogleChrome/lighthouse/pull/12999))
+* snyk: update snyk snapshot ([#12982](https://github.com/GoogleChrome/lighthouse/pull/12982))
+* update to typescript@4.4.1-rc ([#12909](https://github.com/GoogleChrome/lighthouse/pull/12909))
+
+## Clients
+
+* devtools: tsc type override bug workaround ([#12933](https://github.com/GoogleChrome/lighthouse/pull/12933))
+* lightrider: use iframe fetcher ([#13006](https://github.com/GoogleChrome/lighthouse/pull/13006))
+* treemap: convert to ES modules ([#12892](https://github.com/GoogleChrome/lighthouse/pull/12892))
+* viewer: make entire directory use modules ([#12975](https://github.com/GoogleChrome/lighthouse/pull/12975))
+
+## Docs
+
+* auth: add missing build step in README ([#12911](https://github.com/GoogleChrome/lighthouse/pull/12911))
+* changelog: fix typo in changelog.md ([#12997](https://github.com/GoogleChrome/lighthouse/pull/12997))
+* hacking: add links to buildtracker/pr-tracking ([#12922](https://github.com/GoogleChrome/lighthouse/pull/12922))
+
+## Tests
+
+* avoid node 16.9.0 ([#13012](https://github.com/GoogleChrome/lighthouse/pull/13012))
+* ci: restore ToT Chromium download ([#12950](https://github.com/GoogleChrome/lighthouse/pull/12950))
+* ci: temporarily use a fixed version of ToT Chromium ([#12943](https://github.com/GoogleChrome/lighthouse/pull/12943))
+* devtools: sync ([#12899](https://github.com/GoogleChrome/lighthouse/pull/12899))
+* dom: fix node 16 createObjectURL bug ([#12935](https://github.com/GoogleChrome/lighthouse/pull/12935))
+* eslint: add import/order rule ([#12998](https://github.com/GoogleChrome/lighthouse/pull/12998))
+* fr: convert screenshot expectations ([#12912](https://github.com/GoogleChrome/lighthouse/pull/12912))
+* smoke: check for passing robots-txt ([#13007](https://github.com/GoogleChrome/lighthouse/pull/13007))
+* smoke: fix dbw console error expectation ([#13011](https://github.com/GoogleChrome/lighthouse/pull/13011))
+* smoke: print command to rerun failures ([#12924](https://github.com/GoogleChrome/lighthouse/pull/12924))
+
+## Misc
+
+* the great sample rebaseline ([#12932](https://github.com/GoogleChrome/lighthouse/pull/12932))
+* build: refactor devtools bundle tweaking ([#12974](https://github.com/GoogleChrome/lighthouse/pull/12974))
+* exit collect-strings script with error code on failure ([#12971](https://github.com/GoogleChrome/lighthouse/pull/12971))
+* build: sample flow report ([#12930](https://github.com/GoogleChrome/lighthouse/pull/12930))
+* build: prefer paths when using gh-pages-app ([#12905](https://github.com/GoogleChrome/lighthouse/pull/12905))
+* build: do not include locales in devtools bundle ([#12921](https://github.com/GoogleChrome/lighthouse/pull/12921))
+* build: remove template.html from devtools report resources ([#12891](https://github.com/GoogleChrome/lighthouse/pull/12891))
+* tweak folder used for vercel deployment ([#12879](https://github.com/GoogleChrome/lighthouse/pull/12879))
+* build: normalize sample-report build naming ([#12901](https://github.com/GoogleChrome/lighthouse/pull/12901))
+* cli: improve error if invalid value for  `--output` argument is passed ([#12836](https://github.com/GoogleChrome/lighthouse/pull/12836))
+
 <a name="8.3.0"></a>
 # 8.3.0 (2021-08-10)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.2.0...v8.3.0)
