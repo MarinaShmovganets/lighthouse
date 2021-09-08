@@ -22,6 +22,7 @@ export const CategoryScore: FunctionComponent<{
     // Category label is displayed in the navigation header.
     const label = el.querySelector('.lh-gauge__label,.lh-ratio__label');
     if (label) label.remove();
+    // Background is displayed in individual reports, but not on the summary page.
     const bg = el.querySelector('.lh-ratio__background');
     if (bg) bg.remove();
 
