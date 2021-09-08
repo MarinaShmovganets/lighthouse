@@ -98,6 +98,7 @@ describe('Fraggle Rock API', () => {
       expect(accessibility.score).toBeLessThan(1);
 
       const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
+      // TODO(FR-COMPAT): This assertion can be removed when full compatibility is reached.
       expect(auditResults.length).toMatchInlineSnapshot(`80`);
 
       expect(erroredAudits).toHaveLength(0);
@@ -128,6 +129,7 @@ describe('Fraggle Rock API', () => {
         failedAudits,
         notApplicableAudits,
       } = getAuditsBreakdown(lhr);
+      // TODO(FR-COMPAT): This assertion can be removed when full compatibility is reached.
       expect(auditResults.length).toMatchInlineSnapshot(`48`);
 
       expect(notApplicableAudits.length).toMatchInlineSnapshot(`6`);
@@ -192,6 +194,7 @@ describe('Fraggle Rock API', () => {
 
       const {lhr} = result;
       const {auditResults, failedAudits, erroredAudits} = getAuditsBreakdown(lhr);
+      // TODO(FR-COMPAT): This assertion can be removed when full compatibility is reached.
       expect(auditResults.length).toMatchInlineSnapshot(`154`);
       expect(erroredAudits).toHaveLength(0);
 
