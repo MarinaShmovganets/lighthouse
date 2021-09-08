@@ -216,7 +216,7 @@ async function begin() {
   if (!smokehouseResult.success) {
     const failedTestResults = smokehouseResult.testResults.filter(r => r.failed);
 
-    // For CI, save to directory to be uploaded.
+    // For CI, save failed runs to directory to be uploaded.
     if (process.env.CI) {
       const failuresDir = `${LH_ROOT}/.tmp/smokehouse-ci-failures`;
       fs.mkdirSync(failuresDir, {recursive: true});
