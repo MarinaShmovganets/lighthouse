@@ -19,7 +19,7 @@ module.exports = {
   },
   audits: [
     // Include an audit that *forces* the IFrameElements artifact to be used for our test.
-    {path: 'oopif-iframe-audit'},
+    {path: 'oopif-iframe-test-audit'},
   ],
   settings: {
     // This test runs in CI and hits the outside network of a live site.
