@@ -1,5 +1,5 @@
 <a name="8.4.0"></a>
-# 8.4.0 (2021-09-07)
+# 8.4.0 (2021-09-08)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.3.0...v8.4.0)
 
 We expect this release to ship in the DevTools of [Chrome 95](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
@@ -38,6 +38,11 @@ Saurav Kumar @svkrclg
 * parity on Stacks and FullPageSnapshot gatherers ([#12907](https://github.com/GoogleChrome/lighthouse/pull/12907))
 * http-status-code: navigation only ([#13005](https://github.com/GoogleChrome/lighthouse/pull/13005))
 * add --debugNavigation setting ([#12902](https://github.com/GoogleChrome/lighthouse/pull/12902))
+* flow: sidebar mocks ([#13002](https://github.com/GoogleChrome/lighthouse/pull/13002))
+* flow: embedded lighthouse report ([#12989](https://github.com/GoogleChrome/lighthouse/pull/12989))
+* flow: summary page ([#12973](https://github.com/GoogleChrome/lighthouse/pull/12973))
+* flow: navigation sidebar ([#12929](https://github.com/GoogleChrome/lighthouse/pull/12929))
+* flow: standalone shell report with preact ([#12850](https://github.com/GoogleChrome/lighthouse/pull/12850))
 
 ## Report
 
@@ -48,11 +53,6 @@ Saurav Kumar @svkrclg
 * extract independent types ([#12946](https://github.com/GoogleChrome/lighthouse/pull/12946), [#12940](https://github.com/GoogleChrome/lighthouse/pull/12940))
 * use postMessage to open viewer outside devtools ([#12927](https://github.com/GoogleChrome/lighthouse/pull/12927))
 * better deduping of warnings ([#12355](https://github.com/GoogleChrome/lighthouse/pull/12355))
-* flow: sidebar mocks ([#13002](https://github.com/GoogleChrome/lighthouse/pull/13002))
-* flow: embedded lighthouse report ([#12989](https://github.com/GoogleChrome/lighthouse/pull/12989))
-* flow: summary page ([#12973](https://github.com/GoogleChrome/lighthouse/pull/12973))
-* flow: navigation sidebar ([#12929](https://github.com/GoogleChrome/lighthouse/pull/12929))
-* flow: standalone shell report with preact ([#12850](https://github.com/GoogleChrome/lighthouse/pull/12850))
 
 
 ## Deps
