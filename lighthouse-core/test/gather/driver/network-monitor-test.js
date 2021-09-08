@@ -134,10 +134,6 @@ describe('NetworkMonitor', () => {
         .mockResponse('Network.enable')
         .mockResponse('Network.enable');
 
-      targetListener({target: {type: 'page', targetId: 'page'}, session: sessionMock}); // duplicate
-      expect(sessionMock.addProtocolMessageListener).toHaveBeenCalledTimes(1);
-      expect(sendCommandMock).toHaveBeenCalledTimes(2);
-
       targetListener({target: {type: 'page', targetId: 'page-2'}, session: sessionMock}); // new
       expect(sessionMock.addProtocolMessageListener).toHaveBeenCalledTimes(2);
       expect(sendCommandMock).toHaveBeenCalledTimes(3);

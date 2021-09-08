@@ -12,6 +12,7 @@
  */
 
 const NetworkMonitor = require('../driver/network-monitor.js');
+const MessageLog = require('../devtools-log.js');
 const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 
 class DevtoolsLog extends FRGatherer {
@@ -29,29 +30,36 @@ class DevtoolsLog extends FRGatherer {
     /** @type {NetworkMonitor|undefined} */
     this._networkMonitor = undefined;
 
-    /** @type {LH.DevtoolsLog} */
-    this._devtoolsLog = [];
+    this._messageLog = new MessageLog(/^(Page|Network)\./);
+
+    /** @param {LH.Protocol.RawEventMessage} e */
+    this._onProtocolMessage = e => this._messageLog.record(e);
   }
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    */
   async startSensitiveInstrumentation({driver}) {
+    this._messageLog.reset();
+    this._messageLog.beginRecording();
+
     this._networkMonitor = new NetworkMonitor(driver.defaultSession);
+    this._networkMonitor.on('protocolmessage', this._onProtocolMessage);
     this._networkMonitor.enable();
   }
 
   async stopSensitiveInstrumentation() {
     if (!this._networkMonitor) return;
-    this._devtoolsLog = this._networkMonitor.getMessageLog();
+    this._messageLog.endRecording();
     this._networkMonitor.disable();
+    this._networkMonitor.off('protocolmessage', this._onProtocolMessage);
   }
 
   /**
    * @return {Promise<LH.Artifacts['DevtoolsLog']>}
    */
   async getArtifact() {
-    return this._devtoolsLog;
+    return this._messageLog.messages;
   }
 }
 
