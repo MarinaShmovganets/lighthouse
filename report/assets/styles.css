@@ -1210,13 +1210,18 @@
   z-index: -1;
 }
 
+.lh-ratio__content-wrapper {
+  height: var(--gauge-circle-size);
+  display: flex;
+  align-items: center;
+}
+
 .lh-ratio__content {
   display: flex;
   position: relative;
   align-items: center;
   justify-content: center;
   font-size: var(--gauge-label-font-size);
-  height: var(--gauge-circle-size);
   width: max-content;
   padding: 0px 10%;
 }

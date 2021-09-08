@@ -462,11 +462,13 @@ function createRatioComponent(dom) {
   const el0 = dom.document().createDocumentFragment();
   const el1 = dom.createElement('a', 'lh-ratio__wrapper');
   el1.setAttribute('href', '#');
-  const el2 = dom.createElement('div', 'lh-ratio__content');
-  const el3 = dom.createElement('div', 'lh-ratio__background');
+  const el2 = dom.createElement('div', 'lh-ratio__content-wrapper');
+  const el3 = dom.createElement('div', 'lh-ratio__content');
+  const el4 = dom.createElement('div', 'lh-ratio__background');
+  el3.append(' ', el4, ' ');
   el2.append(' ', el3, ' ');
-  const el4 = dom.createElement('div', 'lh-ratio__label');
-  el1.append(' ', el2, ' ', el4, ' ');
+  const el5 = dom.createElement('div', 'lh-ratio__label');
+  el1.append(' ', el2, ' ', el5, ' ');
   el0.append(el1);
   return el0;
 }
