@@ -317,7 +317,6 @@ export class CategoryRenderer {
    * @return {DocumentFragment}
    */
   renderScoreGauge(category, groupDefinitions) { // eslint-disable-line no-unused-vars
-    // TODO: Move this to a real function.
     if (category.displayMode === 'ratio') {
       return this.renderCategoryRatio(category);
     }
