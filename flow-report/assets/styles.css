@@ -218,6 +218,10 @@
   grid-template-columns: min-content min-content 4fr 1fr 1fr 1fr 1fr;
   align-items: center;
 }
+.SummaryFlow .lh-ratio__content {
+  padding: 0px;
+  min-width: unset;
+}
 
 /* Hide top segment of sidebar flow */
 .SidebarFlow > :first-child .FlowSegment > .FlowSegment__top-line {

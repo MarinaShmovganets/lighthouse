@@ -1225,6 +1225,7 @@
   font-size: var(--gauge-label-font-size);
   width: max-content;
   padding: 1em;
+  min-width: 6em;
 }
 
 .lh-gauge {
