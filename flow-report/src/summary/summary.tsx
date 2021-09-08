@@ -10,7 +10,7 @@ import {useMemo} from 'preact/hooks';
 import {FlowSegment} from '../common';
 import {getScreenDimensions, getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
-import {CategoryScore} from '../wrappers/gauge';
+import {CategoryScore} from '../wrappers/category-score';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 const THUMBNAIL_WIDTH = 50;
