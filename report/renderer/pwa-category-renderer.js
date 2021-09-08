@@ -48,6 +48,16 @@ export class PwaCategoryRenderer extends CategoryRenderer {
   }
 
   /**
+   * Alias for backcompat.
+   * @param {LH.ReportResult.Category} category
+   * @param {Record<string, LH.Result.ReportGroup>} groupDefinitions
+   * @return {DocumentFragment}
+   */
+  renderScoreGauge(category, groupDefinitions) {
+    return this.renderCategoryScore(category, groupDefinitions);
+  }
+
+  /**
    * @param {LH.ReportResult.Category} category
    * @param {Record<string, LH.Result.ReportGroup>} groupDefinitions
    * @return {DocumentFragment}
@@ -55,7 +65,7 @@ export class PwaCategoryRenderer extends CategoryRenderer {
   renderCategoryScore(category, groupDefinitions) {
     // Defer to parent-gauge style if category error.
     if (category.score === null) {
-      return super.renderCategoryScore(category, groupDefinitions);
+      return super.renderScoreGauge(category, groupDefinitions);
     }
 
     const tmpl = this.dom.createComponent('gaugePwa');
