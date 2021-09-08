@@ -109,7 +109,7 @@ class Util {
 
     for (const category of Object.values(clone.categories)) {
       category.displayMode =
-        clone.gatherMode === 'timespan' || clone.gatherMode === 'snapshot' ? 'ratio' : 'gauge';
+        clone.gatherMode === 'timespan' || clone.gatherMode === 'snapshot' ? 'fraction' : 'gauge';
 
       // Make basic lookup table for relevantAudits
       category.auditRefs.forEach(metricRef => {
