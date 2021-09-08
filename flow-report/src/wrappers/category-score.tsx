@@ -17,7 +17,7 @@ export const CategoryScore: FunctionComponent<{
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    const el = categoryRenderer.renderCategoryScore(category, {});
+    const el = categoryRenderer.renderScoreGauge(category, {});
 
     // Category label is displayed in the navigation header.
     const label = el.querySelector('.lh-gauge__label,.lh-ratio__label');
