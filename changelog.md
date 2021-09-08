@@ -21,7 +21,6 @@ Saurav Kumar @svkrclg
 ## Core
 
 * network-request: identify filesystem resources as non-network ([#12970](https://github.com/GoogleChrome/lighthouse/pull/12970))
-* extract independent LHR types ([#12914](https://github.com/GoogleChrome/lighthouse/pull/12914))
 * viewport: add viewport audit as perf diagnostic ([#12972](https://github.com/GoogleChrome/lighthouse/pull/12972))
 * csp-evaluator: bump package version ([#12990](https://github.com/GoogleChrome/lighthouse/pull/12990))
 * config: keep full-page-screenshot in skipAudits case ([#12645](https://github.com/GoogleChrome/lighthouse/pull/12645))
@@ -50,7 +49,6 @@ Saurav Kumar @svkrclg
 * split topbar features ([#12926](https://github.com/GoogleChrome/lighthouse/pull/12926))
 * prefix all classnames with lh- ([#12985](https://github.com/GoogleChrome/lighthouse/pull/12985))
 * isolate type checking ([#12953](https://github.com/GoogleChrome/lighthouse/pull/12953), [#12952](https://github.com/GoogleChrome/lighthouse/pull/12952), [#12951](https://github.com/GoogleChrome/lighthouse/pull/12951))
-* extract independent types ([#12946](https://github.com/GoogleChrome/lighthouse/pull/12946), [#12940](https://github.com/GoogleChrome/lighthouse/pull/12940))
 * use postMessage to open viewer outside devtools ([#12927](https://github.com/GoogleChrome/lighthouse/pull/12927))
 * better deduping of warnings ([#12355](https://github.com/GoogleChrome/lighthouse/pull/12355))
 
@@ -89,6 +87,7 @@ Saurav Kumar @svkrclg
 ## Misc
 
 * the great sample rebaseline ([#12932](https://github.com/GoogleChrome/lighthouse/pull/12932))
+* restructure types to use project references ([#12914](https://github.com/GoogleChrome/lighthouse/pull/12914), [#12946](https://github.com/GoogleChrome/lighthouse/pull/12946), [#12940](https://github.com/GoogleChrome/lighthouse/pull/12940))
 * build: sample flow report ([#12930](https://github.com/GoogleChrome/lighthouse/pull/12930))
 * build: do not include locales in devtools bundle ([#12921](https://github.com/GoogleChrome/lighthouse/pull/12921))
 * build: remove template.html from devtools report resources ([#12891](https://github.com/GoogleChrome/lighthouse/pull/12891))
