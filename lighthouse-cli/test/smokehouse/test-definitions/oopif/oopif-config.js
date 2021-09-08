@@ -14,7 +14,7 @@ module.exports = {
   categories: {
     performance: {
       title: 'Performance',
-      auditRefs: [{id: 'iframe-elements', weight: 0}],
+      auditRefs: [{id: 'oopif-iframe-test-audit', weight: 0}],
     },
   },
   audits: [
