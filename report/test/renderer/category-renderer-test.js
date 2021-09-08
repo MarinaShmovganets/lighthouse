@@ -289,15 +289,15 @@ describe('CategoryRenderer', () => {
       assert.ok(description.querySelector('a'), 'description contains converted markdown links');
     });
 
-    it('renders the category header with ratio', () => {
-      category.displayMode = 'ratio';
+    it('renders the category header with fraction', () => {
+      category.displayMode = 'fraction';
       const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
 
-      const gauge = categoryDOM.querySelector('.lh-ratio__content');
-      assert.equal(gauge.textContent.trim(), '49/54', 'ratio is included');
+      const gauge = categoryDOM.querySelector('.lh-fraction__content');
+      assert.equal(gauge.textContent.trim(), '49/54', 'fraction is included');
 
       const score = categoryDOM.querySelector('.lh-category-header');
-      const title = score.querySelector('.lh-ratio__label');
+      const title = score.querySelector('.lh-fraction__label');
       const description = score.querySelector('.lh-category-header__description');
 
       assert.deepEqual(score, score.firstElementChild, 'first child is a score');

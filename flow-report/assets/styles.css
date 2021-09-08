@@ -173,7 +173,7 @@
   grid-template-columns: min-content min-content 4fr 1fr 1fr 1fr 1fr;
   align-items: center;
 }
-.SummaryFlow .lh-ratio__content {
+.SummaryFlow .lh-fraction__content {
   padding: 0px;
   min-width: unset;
 }

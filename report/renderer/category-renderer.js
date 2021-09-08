@@ -317,8 +317,8 @@ export class CategoryRenderer {
    * @return {DocumentFragment}
    */
   renderCategoryScore(category, groupDefinitions) {
-    if (category.displayMode === 'ratio') {
-      return this.renderCategoryRatio(category);
+    if (category.displayMode === 'fraction') {
+      return this.renderCategoryFraction(category);
     }
     return this.renderScoreGauge(category, groupDefinitions);
   }
@@ -369,9 +369,9 @@ export class CategoryRenderer {
    * @param {LH.ReportResult.Category} category
    * @return {DocumentFragment}
    */
-  renderCategoryRatio(category) {
-    const tmpl = this.dom.createComponent('ratio');
-    const wrapper = this.dom.find('a.lh-ratio__wrapper', tmpl);
+  renderCategoryFraction(category) {
+    const tmpl = this.dom.createComponent('fraction');
+    const wrapper = this.dom.find('a.lh-fraction__wrapper', tmpl);
     this.dom.safelySetHref(wrapper, `#${category.id}`);
 
     const numAudits = category.auditRefs.length;
@@ -383,23 +383,23 @@ export class CategoryRenderer {
       if (Util.showAsPassed(auditRef.result)) numPassed++;
     }
 
-    const ratio = numPassed / numAudits;
-    const content = this.dom.find('.lh-ratio__content', tmpl);
+    const fraction = numPassed / numAudits;
+    const content = this.dom.find('.lh-fraction__content', tmpl);
     const text = this.dom.createElement('span');
     text.textContent = `${numPassed}/${numAudits}`;
     content.appendChild(text);
 
-    let rating = Util.calculateRating(ratio);
+    let rating = Util.calculateRating(fraction);
 
     // If none of the available audits can affect the score, a rating isn't useful.
-    // The flow report should display the ratio with neutral icon and coloring in this case.
+    // The flow report should display the fraction with neutral icon and coloring in this case.
     if (totalWeight === 0) {
       rating = 'null';
     }
 
-    wrapper.classList.add(`lh-ratio__wrapper--${rating}`);
+    wrapper.classList.add(`lh-fraction__wrapper--${rating}`);
 
-    this.dom.find('.lh-ratio__label', tmpl).textContent = category.title;
+    this.dom.find('.lh-fraction__label', tmpl).textContent = category.title;
     return tmpl;
   }
 

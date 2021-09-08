@@ -1154,55 +1154,55 @@
   stroke: var(--color-not-applicable);
 }
 
-.lh-ratio__wrapper .lh-ratio__content::before {
+.lh-fraction__wrapper .lh-fraction__content::before {
   content: '';
   height: var(--score-icon-size);
   width: var(--score-icon-size);
   margin: var(--score-icon-margin);
   display: inline-block;
 }
-.lh-ratio__wrapper--pass .lh-ratio__content {
+.lh-fraction__wrapper--pass .lh-fraction__content {
   color: var(--color-pass);
 }
-.lh-ratio__wrapper--pass .lh-ratio__background {
+.lh-fraction__wrapper--pass .lh-fraction__background {
   background-color: var(--color-pass);
 }
-.lh-ratio__wrapper--pass .lh-ratio__content::before {
+.lh-fraction__wrapper--pass .lh-fraction__content::before {
   background-color: var(--color-pass);
   border-radius: 50%;
 }
-.lh-ratio__wrapper--average .lh-ratio__content {
+.lh-fraction__wrapper--average .lh-fraction__content {
   color: var(--color-average);
 }
-.lh-ratio__wrapper--average .lh-ratio__background {
+.lh-fraction__wrapper--average .lh-fraction__background {
   background-color: var(--color-average);
 }
-.lh-ratio__wrapper--average .lh-ratio__content::before {
+.lh-fraction__wrapper--average .lh-fraction__content::before {
   background-color: var(--color-average);
 }
-.lh-ratio__wrapper--fail .lh-ratio__content {
+.lh-fraction__wrapper--fail .lh-fraction__content {
   color: var(--color-fail);
 }
-.lh-ratio__wrapper--fail .lh-ratio__background {
+.lh-fraction__wrapper--fail .lh-fraction__background {
   background-color: var(--color-fail);
 }
-.lh-ratio__wrapper--fail .lh-ratio__content::before {
+.lh-fraction__wrapper--fail .lh-fraction__content::before {
   border-left: calc(var(--score-icon-size) / 2) solid transparent;
   border-right: calc(var(--score-icon-size) / 2) solid transparent;
   border-bottom: var(--score-icon-size) solid var(--color-fail);
 }
-.lh-ratio__wrapper--null .lh-ratio__content {
+.lh-fraction__wrapper--null .lh-fraction__content {
   color: var(--color-gray-700);
 }
-.lh-ratio__wrapper--null .lh-ratio__background {
+.lh-fraction__wrapper--null .lh-fraction__background {
   background-color: var(--color-gray-700);
 }
-.lh-ratio__wrapper--null .lh-ratio__content::before {
+.lh-fraction__wrapper--null .lh-fraction__content::before {
   border-radius: 50%;
   border: 2px solid var(--color-gray-700);
 }
 
-.lh-ratio__background {
+.lh-fraction__background {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -1211,13 +1211,13 @@
   z-index: -1;
 }
 
-.lh-ratio__content-wrapper {
+.lh-fraction__content-wrapper {
   height: var(--gauge-circle-size);
   display: flex;
   align-items: center;
 }
 
-.lh-ratio__content {
+.lh-fraction__content {
   display: flex;
   position: relative;
   align-items: center;
@@ -1256,7 +1256,7 @@
 .lh-category .lh-gauge__svg-wrapper {
   --gauge-circle-size: var(--gauge-circle-size-big);
 }
-.lh-category .lh-ratio__wrapper {
+.lh-category .lh-fraction__wrapper {
   --gauge-circle-size: var(--gauge-circle-size-big);
   --score-icon-size: var(--score-icon-size-big)
 }
@@ -1305,7 +1305,7 @@
 }
 
 .lh-gauge__wrapper,
-.lh-ratio__wrapper {
+.lh-fraction__wrapper {
   position: relative;
   display: flex;
   align-items: center;
@@ -1321,7 +1321,7 @@
 }
 
 .lh-gauge__label,
-.lh-ratio__label {
+.lh-fraction__label {
   font-size: var(--gauge-label-font-size);
   line-height: var(--gauge-label-line-height);
   margin-top: 10px;
@@ -1331,21 +1331,21 @@
 
 /* TODO(#8185) use more BEM (.lh-gauge__label--big) instead of relying on descendant selector */
 .lh-category .lh-gauge__label,
-.lh-category .lh-ratio__label {
+.lh-category .lh-fraction__label {
   --gauge-label-font-size: var(--gauge-label-font-size-big);
   --gauge-label-line-height: var(--gauge-label-line-height-big);
   margin-top: 14px;
 }
-.lh-category .lh-ratio__content {
+.lh-category .lh-fraction__content {
   --gauge-label-font-size: var(--gauge-label-font-size-big);
 }
 
 
 .lh-scores-header .lh-gauge__wrapper,
-.lh-scores-header .lh-ratio__wrapper,
+.lh-scores-header .lh-fraction__wrapper,
 .lh-scores-header .lh-gauge--pwa__wrapper,
 .lh-sticky-header .lh-gauge__wrapper,
-.lh-sticky-header .lh-ratio__wrapper,
+.lh-sticky-header .lh-fraction__wrapper,
 .lh-sticky-header .lh-gauge--pwa__wrapper {
   width: var(--gauge-wrapper-width);
 }
