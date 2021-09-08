@@ -9,7 +9,7 @@ const locales = require('../../lighthouse-core/lib/i18n/locales.js');
 
 function listLocales() {
   const localesList = Object.keys(locales);
-  process.stdout.write(JSON.stringify({localesList}, null, 2));
+  process.stdout.write(JSON.stringify({locales: localesList}, null, 2));
   process.exit(0);
 }
 

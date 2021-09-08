@@ -48,10 +48,10 @@ describe('CLI Tests', function() {
     const ret = spawnSync('node', [indexPath, '--list-locales'], {encoding: 'utf8'});
 
     const output = JSON.parse(ret.stdout);
-    assert.ok(Array.isArray(output.listLocales));
-    assert.ok(output.listLocales.length > 52);
+    assert.ok(Array.isArray(output.locales));
+    assert.ok(output.locales.length > 52);
     for (const lang of ['en', 'es', 'ru', 'zh']) {
-      assert.ok(output.includes(lang));
+      assert.ok(output.locales.includes(lang));
     }
   });
 
