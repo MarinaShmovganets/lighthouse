@@ -52,10 +52,10 @@ export class PwaCategoryRenderer extends CategoryRenderer {
    * @param {Record<string, LH.Result.ReportGroup>} groupDefinitions
    * @return {DocumentFragment}
    */
-  renderScoreGauge(category, groupDefinitions) {
+  renderCategoryScore(category, groupDefinitions) {
     // Defer to parent-gauge style if category error.
     if (category.score === null) {
-      return super.renderScoreGauge(category, groupDefinitions);
+      return super.renderCategoryScore(category, groupDefinitions);
     }
 
     const tmpl = this.dom.createComponent('gaugePwa');

@@ -177,7 +177,7 @@ export class CategoryRenderer {
     const component = this.dom.createComponent('categoryHeader');
 
     const gaugeContainerEl = this.dom.find('.lh-score__gauge', component);
-    const gaugeEl = this.renderScoreGauge(category, groupDefinitions);
+    const gaugeEl = this.renderCategoryScore(category, groupDefinitions);
     gaugeContainerEl.appendChild(gaugeEl);
 
     if (category.description) {
@@ -316,11 +316,19 @@ export class CategoryRenderer {
    * @param {Record<string, LH.Result.ReportGroup>} groupDefinitions
    * @return {DocumentFragment}
    */
-  renderScoreGauge(category, groupDefinitions) { // eslint-disable-line no-unused-vars
+  renderCategoryScore(category, groupDefinitions) {
     if (category.displayMode === 'ratio') {
       return this.renderCategoryRatio(category);
     }
+    return this.renderScoreGauge(category, groupDefinitions);
+  }
 
+  /**
+   * @param {LH.ReportResult.Category} category
+   * @param {Record<string, LH.Result.ReportGroup>} groupDefinitions
+   * @return {DocumentFragment}
+   */
+  renderScoreGauge(category, groupDefinitions) { // eslint-disable-line no-unused-vars
     const tmpl = this.dom.createComponent('gauge');
     const wrapper = this.dom.find('a.lh-gauge__wrapper', tmpl);
     this.dom.safelySetHref(wrapper, `#${category.id}`);

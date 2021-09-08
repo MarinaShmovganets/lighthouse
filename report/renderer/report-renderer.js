@@ -160,7 +160,7 @@ export class ReportRenderer {
 
     for (const category of Object.values(report.categories)) {
       const renderer = specificCategoryRenderers[category.id] || categoryRenderer;
-      const categoryGauge = renderer.renderScoreGauge(category, report.categoryGroups || {});
+      const categoryGauge = renderer.renderCategoryScore(category, report.categoryGroups || {});
 
       if (Util.isPluginCategory(category.id)) {
         pluginGauges.push(categoryGauge);
