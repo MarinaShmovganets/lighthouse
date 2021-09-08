@@ -29,7 +29,7 @@ const DEFAULT_RETRIES = 0;
  * @typedef Run
  * @property {string[] | undefined} networkRequests
  * @property {LH.Result} lhr
- * @property {LH.Artifacts} lhr
+ * @property {LH.Artifacts} artifacts
  * @property {string} lighthouseLog
  * @property {string} assertionLog
  */
