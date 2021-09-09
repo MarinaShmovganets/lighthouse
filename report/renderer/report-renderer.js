@@ -251,7 +251,6 @@ export class ReportRenderer {
       wrapper.appendChild(renderer.render(
         category,
         report.categoryGroups,
-        undefined, // environment
         categoryOptions
       ));
     }

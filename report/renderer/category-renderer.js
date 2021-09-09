@@ -487,11 +487,10 @@ export class CategoryRenderer {
    *   ⋮
    * @param {LH.ReportResult.Category} category
    * @param {Object<string, LH.Result.ReportGroup>=} groupDefinitions
-   * @param {'PSI'=} environment
-   * @param {{gatherMode: LH.Result.GatherMode}=} options
+   * @param {{environment?: 'PSI', gatherMode: LH.Result.GatherMode}=} options
    * @return {Element}
    */
-  render(category, groupDefinitions = {}, environment, options) {
+  render(category, groupDefinitions = {}, options) {
     const element = this.dom.createElement('div', 'lh-category');
     this.createPermalinkSpan(element, category.id);
     element.appendChild(this.renderCategoryHeader(category, groupDefinitions, options));

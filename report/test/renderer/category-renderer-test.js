@@ -293,7 +293,6 @@ describe('CategoryRenderer', () => {
       const categoryDOM = renderer.render(
         category,
         sampleResults.categoryGroups,
-        undefined,
         {gatherMode: 'snapshot'}
       );
 
