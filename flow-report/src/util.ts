@@ -24,16 +24,16 @@ function shortenUrl(longUrl: string) {
  * Navigation reports will never be enumerated.
  */
 function shouldEnumerate(flowResult: LH.FlowResult, index: number) {
-  const {lhrs} = flowResult;
-  if (lhrs[index].gatherMode === 'navigation') return false;
+  const {steps} = flowResult;
+  if (steps[index].lhr.gatherMode === 'navigation') return false;
 
-  for (let i = index + 1; lhrs[i] && lhrs[i].gatherMode !== 'navigation'; ++i) {
-    if (lhrs[i].gatherMode === lhrs[index].gatherMode) {
+  for (let i = index + 1; steps[i] && steps[i].lhr.gatherMode !== 'navigation'; ++i) {
+    if (steps[i].lhr.gatherMode === steps[index].lhr.gatherMode) {
       return true;
     }
   }
-  for (let i = index - 1; lhrs[i] && lhrs[i].gatherMode !== 'navigation'; --i) {
-    if (lhrs[i].gatherMode === lhrs[index].gatherMode) {
+  for (let i = index - 1; steps[i] && steps[i].lhr.gatherMode !== 'navigation'; --i) {
+    if (steps[i].lhr.gatherMode === steps[index].lhr.gatherMode) {
       return true;
     }
   }
@@ -83,7 +83,7 @@ export function useFlowResult(): LH.FlowResult {
 
 export function useLocale(): LH.Locale {
   const flowResult = useFlowResult();
-  return flowResult.lhrs[0].configSettings.locale;
+  return flowResult.steps[0].lhr.configSettings.locale;
 }
 
 export function useHashParam(param: string) {
@@ -118,7 +118,7 @@ export function useCurrentLhr(): {value: LH.Result, index: number}|null {
       return null;
     }
 
-    const value = flowResult.lhrs[index];
+    const value = flowResult.steps[index].lhr;
     if (!value) {
       console.warn(`No LHR at index ${index}`);
       return null;
@@ -136,7 +136,8 @@ export function useDerivedStepNames() {
     let numSnapshot = 1;
 
     // TODO(FR-COMPAT): Override with a provided step name.
-    return flowResult.lhrs.map((lhr, index) => {
+    return flowResult.steps.map((step, index) => {
+      const {lhr} = step;
       const shortUrl = shortenUrl(lhr.finalUrl);
 
       switch (lhr.gatherMode) {

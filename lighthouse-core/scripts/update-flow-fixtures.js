@@ -17,16 +17,16 @@ const UserFlow = require('../fraggle-rock/user-flow.js');
     const page = await browser.newPage();
     const flow = new UserFlow(page);
 
-    await flow.navigate('https://www.mikescerealshack.co');
+    await flow.navigate('https://www.mikescerealshack.co', {stepName: 'Home navigation'});
 
-    await flow.startTimespan();
+    await flow.startTimespan({stepName: 'Search input'});
     await page.type('input', 'call of duty');
     const networkQuietPromise = page.waitForNavigation({waitUntil: ['networkidle0']});
     await page.click('button[type=submit]');
     await networkQuietPromise;
     await flow.endTimespan();
 
-    await flow.snapshot();
+    await flow.snapshot({stepName: 'Search results'});
 
     await flow.navigate('https://www.mikescerealshack.co/corrections');
 

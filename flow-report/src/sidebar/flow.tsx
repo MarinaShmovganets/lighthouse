@@ -47,8 +47,9 @@ export const SidebarFlow: FunctionComponent = () => {
   return (
     <div className="SidebarFlow">
       {
-        flowResult.lhrs.map((lhr, index) => {
-          const stepName = stepNames[index];
+        flowResult.steps.map((step, index) => {
+          const {lhr, name} = step;
+          const stepName = name || stepNames[index];
           const url = new URL(location.href);
           url.hash = `#index=${index}`;
           return <>
