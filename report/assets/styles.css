@@ -678,6 +678,10 @@
 
 .lh-metric__innerwrap {
   display: grid;
+  /** 
+   * Icon -- Metric Name 
+   *      -- Metric Value
+   */
   grid-template-columns: calc(var(--score-icon-size) + var(--score-icon-margin-left) + var(--score-icon-margin-right)) 1fr;
   align-items: center;
   padding: 10px 0;
@@ -710,7 +714,7 @@
 
 .lh-metric__value {
   font-size: var(--metric-value-font-size);
-  margin: 5px 0;
+  margin: calc(var(--default-padding) / 2) 0;
   white-space: nowrap; /* No wrapping between metric value and the icon */
   font-weight: 500;
   grid-column-start: 2;
@@ -719,7 +723,10 @@
 /* Change the grid to 3 columns for narrow viewport. */
 @media screen and (max-width: 535px) {
   .lh-metric__innerwrap {
-    grid-template-columns: calc(var(--score-icon-size) + var(--score-icon-margin-left) + var(--score-icon-margin-right)) 1fr 1fr;
+  /** 
+   * Icon -- Metric Name -- Metric Value
+   */
+    grid-template-columns: calc(var(--score-icon-size) + var(--score-icon-margin-left) + var(--score-icon-margin-right)) 2fr 1fr;
   }
   .lh-metric__value {
     justify-self: end;
