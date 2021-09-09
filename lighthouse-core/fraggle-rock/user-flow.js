@@ -5,6 +5,7 @@
  */
 'use strict';
 
+const {generateFlowReportHtml} = require('../../report/generator/report-generator.js');
 const {navigation, startTimespan, snapshot} = require('./api.js');
 
 /** @typedef {{config?: LH.Config.Json, configContext?: LH.Config.FRContext}} UserFlowOptions */
@@ -36,6 +37,7 @@ class UserFlow {
       lhr: result.lhr,
       name: stepOptions && stepOptions.stepName,
     });
+    return result;
   }
 
   /**
@@ -58,6 +60,7 @@ class UserFlow {
       lhr: result.lhr,
       name: options && options.stepName,
     });
+    return result;
   }
 
   /**
@@ -72,13 +75,16 @@ class UserFlow {
       lhr: result.lhr,
       name: stepOptions && stepOptions.stepName,
     });
+    return result;
   }
 
   /**
-   * @return {LH.FlowResult}
+   * @return {{flowResult: LH.FlowResult, report: string}}
    */
-  getFlowResult() {
-    return {steps: this.steps};
+  getResult() {
+    const flowResult = {steps: this.steps};
+    const report = generateFlowReportHtml(flowResult);
+    return {flowResult, report};
   }
 }
 

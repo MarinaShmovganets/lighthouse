@@ -8,7 +8,6 @@
 const fs = require('fs');
 const open = require('open');
 const puppeteer = require('puppeteer');
-const reportGenerator = require('../../report/generator/report-generator.js');
 const UserFlow = require('../fraggle-rock/user-flow.js');
 
 (async () => {
@@ -31,16 +30,14 @@ const UserFlow = require('../fraggle-rock/user-flow.js');
 
     await flow.navigate('https://www.mikescerealshack.co/corrections');
 
-    const flowResult = flow.getFlowResult();
+    const {flowResult, report} = flow.getResult();
 
     fs.writeFileSync(
       `${__dirname}/../test/fixtures/fraggle-rock/reports/sample-lhrs.json`,
       JSON.stringify(flowResult, null, 2)
     );
 
-    const htmlReport = reportGenerator.generateFlowReportHtml(flowResult);
-
-    fs.writeFileSync(`${__dirname}/../../flow.report.html`, htmlReport);
+    fs.writeFileSync(`${__dirname}/../../flow.report.html`, report);
     open(`${__dirname}/../../flow.report.html`);
 
     process.exit(0);
