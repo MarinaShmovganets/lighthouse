@@ -28,6 +28,7 @@ class UserFlow {
    * @param {StepOptions=} overrideOptions
    */
   async navigate(url, overrideOptions) {
+    if (this.currentTimespan) throw Error('Timespan already in progress');
     const options = {url, ...this.options, ...overrideOptions};
     const result = await navigation(options);
     if (!result) throw Error('Navigation returned undefined');
@@ -41,9 +42,9 @@ class UserFlow {
    * @param {StepOptions=} overrideOptions
    */
   async startTimespan(overrideOptions) {
+    if (this.currentTimespan) throw Error('Timespan already in progress');
     const options = {...this.options, ...overrideOptions};
     const timespan = await startTimespan(options);
-    if (this.currentTimespan) throw Error('Timespan already in progress');
     this.currentTimespan = {timespan, options};
   }
 
@@ -63,6 +64,7 @@ class UserFlow {
    * @param {StepOptions=} overrideOptions
    */
   async snapshot(overrideOptions) {
+    if (this.currentTimespan) throw Error('Timespan already in progress');
     const options = {...this.options, ...overrideOptions};
     const result = await snapshot(options);
     if (!result) throw Error('Snapshot returned undefined');
