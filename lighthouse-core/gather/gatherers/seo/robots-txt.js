@@ -48,7 +48,7 @@ class RobotsTxt extends FRGatherer {
 
     const robotsUrl = new URL('/robots.txt', passContext.url).href;
     await passContext.driver.fetcher.enable();
-    return passContext.driver.fetcher.fetchResource(robotsUrl, {timeout: 1_000})
+    return passContext.driver.fetcher.fetchResource(robotsUrl)
       .catch(err => ({status: null, content: null, errorMessage: err.message}));
   }
 }
