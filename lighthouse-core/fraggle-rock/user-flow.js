@@ -25,25 +25,25 @@ class UserFlow {
 
   /**
    * @param {string} url
-   * @param {StepOptions=} overrideOptions
+   * @param {StepOptions=} stepOptions
    */
-  async navigate(url, overrideOptions) {
+  async navigate(url, stepOptions) {
     if (this.currentTimespan) throw Error('Timespan already in progress');
-    const options = {url, ...this.options, ...overrideOptions};
+    const options = {url, ...this.options, ...stepOptions};
     const result = await navigation(options);
     if (!result) throw Error('Navigation returned undefined');
     this.steps.push({
       lhr: result.lhr,
-      name: overrideOptions && overrideOptions.stepName,
+      name: stepOptions && stepOptions.stepName,
     });
   }
 
   /**
-   * @param {StepOptions=} overrideOptions
+   * @param {StepOptions=} stepOptions
    */
-  async startTimespan(overrideOptions) {
+  async startTimespan(stepOptions) {
     if (this.currentTimespan) throw Error('Timespan already in progress');
-    const options = {...this.options, ...overrideOptions};
+    const options = {...this.options, ...stepOptions};
     const timespan = await startTimespan(options);
     this.currentTimespan = {timespan, options};
   }
@@ -61,16 +61,16 @@ class UserFlow {
   }
 
   /**
-   * @param {StepOptions=} overrideOptions
+   * @param {StepOptions=} stepOptions
    */
-  async snapshot(overrideOptions) {
+  async snapshot(stepOptions) {
     if (this.currentTimespan) throw Error('Timespan already in progress');
-    const options = {...this.options, ...overrideOptions};
+    const options = {...this.options, ...stepOptions};
     const result = await snapshot(options);
     if (!result) throw Error('Snapshot returned undefined');
     this.steps.push({
       lhr: result.lhr,
-      name: overrideOptions && overrideOptions.stepName,
+      name: stepOptions && stepOptions.stepName,
     });
   }
 
