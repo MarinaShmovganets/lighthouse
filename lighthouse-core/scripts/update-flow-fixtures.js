@@ -30,7 +30,8 @@ const UserFlow = require('../fraggle-rock/user-flow.js');
 
     await flow.navigate('https://www.mikescerealshack.co/corrections');
 
-    const {flowResult, report} = flow.getResult();
+    const flowResult = flow.getFlowResult();
+    const report = flow.generateReport();
 
     fs.writeFileSync(
       `${__dirname}/../test/fixtures/fraggle-rock/reports/sample-lhrs.json`,

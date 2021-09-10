@@ -79,12 +79,18 @@ class UserFlow {
   }
 
   /**
-   * @return {{flowResult: LH.FlowResult, report: string}}
+   * @return {LH.FlowResult}
    */
-  getResult() {
-    const flowResult = {steps: this.steps};
-    const report = generateFlowReportHtml(flowResult);
-    return {flowResult, report};
+  getFlowResult() {
+    return {steps: this.steps};
+  }
+
+  /**
+   * @return {string}
+   */
+  generateReport() {
+    const flowResult = this.getFlowResult();
+    return generateFlowReportHtml(flowResult);
   }
 }
 
