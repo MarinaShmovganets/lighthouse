@@ -84,7 +84,7 @@ function getDefinitionsToRun(allTestDefns, requestedIds, {invertMatch}) {
  * Parses the cli `shardArg` flag into `shardNumber/shardTotal`. Splits
  * `testDefns` into `shardTotal` shards and returns the `shardNumber`th shard.
  * Shards will differ in size by at most 1.
- * Shard params must be 1≤shardNumber≤shardTotal.
+ * Shard params must be 1 ≤ shardNumber ≤ shardTotal.
  * @param {Array<Smokehouse.TestDfn>} testDefns
  * @param {string=} shardArg
  * @return {Array<Smokehouse.TestDfn>}
@@ -92,7 +92,8 @@ function getDefinitionsToRun(allTestDefns, requestedIds, {invertMatch}) {
 function getShardedDefinitions(testDefns, shardArg) {
   if (!shardArg) return testDefns;
 
-  const errorMessage = `'shard' must be of the form 'n/d' and n and d must be positive integers with 1≤n≤d. Got '${shardArg}'`;
+  // eslint-disable-next-line max-len
+  const errorMessage = `'shard' must be of the form 'n/d' and n and d must be positive integers with 1 ≤ n ≤ d. Got '${shardArg}'`;
   const match = /^(?<shardNumber>\d+)\/(?<shardTotal>\d+)$/.exec(shardArg);
   assert(match && match.groups, errorMessage);
   const shardNumber = Number(match.groups.shardNumber);
@@ -207,8 +208,9 @@ async function begin() {
       },
       'shard': {
         type: 'string',
-        describe: 'A argument of the form "n/d", which divides the selected tests into d groups and runs the nth group. n and d must be positive integers with 1≤n≤d.',
-      }
+        // eslint-disable-next-line max-len
+        describe: 'A argument of the form "n/d", which divides the selected tests into d groups and runs the nth group. n and d must be positive integers with 1 ≤ n ≤ d.',
+      },
     })
     .wrap(y.terminalWidth())
     .argv;
