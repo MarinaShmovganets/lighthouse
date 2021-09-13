@@ -19,6 +19,7 @@ import * as mixedContent from './issues/mixed-content-expectations.js';
 import * as offline from './offline-local/offline-expectations.js';
 import * as oopifg from './oopif/oopif-expectations.js';
 import * as perf from './perf/expectations.js';
+import * as pubads from './pubads/expectations.js';
 import * as pwa from './pwa/pwa-expectations.js';
 import * as pwa2 from './pwa/pwa2-expectations.js';
 import * as pwa3 from './pwa/pwa3-expectations.js';
@@ -39,6 +40,7 @@ import offlineConfig from './offline-local/offline-config.js';
 import oopifConfig from './oopif/oopif-config.js';
 import perfConfig from './perf/perf-config.js';
 import perfDiagnosticsConfig from './perf-diagnostics/perf-diagnostics-config.js';
+import pubadsConfig from './pubads/pubads-config.js';
 import pwaConfig from './pwa/pwa-config.js';
 import redirectsConfig from './redirects/redirects-config.js';
 import screenshotConfig from './screenshot/screenshot-config.js';
@@ -270,8 +272,8 @@ const smokeTests = [{
   config: screenshotConfig,
 }, {
   id: 'pubads',
-  expectations: require('./pubads/expectations.js'),
-  config: require('./pubads/pubads-config.js'),
+  expectations: pubads.expectations,
+  config: pubadsConfig,
 }, {
   id: 'csp-allow-all',
   expectations: csp.allowAll,
