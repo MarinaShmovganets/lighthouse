@@ -77,10 +77,8 @@ async function begin() {
   } else if (cliFlags.preset) {
     configJson = await import(`../lighthouse-core/config/${cliFlags.preset}-config.js`);
   }
-  if (configJson) {
-    // @ts-expect-error: Support commonjs.
-    configJson = configJson.default || configJson;
-  }
+  // @ts-expect-error: Support commonjs.
+  configJson = configJson.default || configJson;
 
   if (cliFlags.budgetPath) {
     cliFlags.budgetPath = path.resolve(process.cwd(), cliFlags.budgetPath);
