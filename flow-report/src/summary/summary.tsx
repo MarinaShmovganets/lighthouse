@@ -8,7 +8,7 @@ import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
 
 import {FlowSegment} from '../common';
-import {getScreenDimensions, getScreenshot, useDerivedStepNames, useFlowResult} from '../util';
+import {getScreenDimensions, getScreenshot, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 import {CategoryScore} from '../wrappers/category-score';
 
@@ -102,7 +102,6 @@ export const SummaryFlowStep: FunctionComponent<{
  */
 const SummaryFlow: FunctionComponent = () => {
   const flowResult = useFlowResult();
-  const stepNames = useDerivedStepNames();
   return (
     <div className="SummaryFlow">
       {
@@ -110,7 +109,7 @@ const SummaryFlow: FunctionComponent = () => {
           <SummaryFlowStep
             key={step.lhr.fetchTime}
             lhr={step.lhr}
-            label={step.name || stepNames[index]}
+            label={step.name}
             hashIndex={index}
           />
         )

@@ -11,6 +11,7 @@ const {navigation, startTimespan, snapshot} = require('./api.js');
 /** @typedef {Parameters<snapshot>[0]} FrOptions */
 /** @typedef {Omit<FrOptions, 'page'>} UserFlowOptions */
 /** @typedef {UserFlowOptions & {stepName?: string}} StepOptions */
+/** @typedef {Omit<LH.FlowResult.Step, 'name'> & {name?: string}} Step */
 
 class UserFlow {
   /**
@@ -20,8 +21,73 @@ class UserFlow {
   constructor(page, options) {
     /** @type {FrOptions} */
     this.options = {page, ...options};
-    /** @type {LH.FlowResult.Step[]} */
+    /** @type {Step[]} */
     this.steps = [];
+  }
+
+  /**
+   * @param {string} longUrl
+   * @returns {string}
+   */
+  _shortenUrl(longUrl) {
+    const url = new URL(longUrl);
+    return `${url.hostname}${url.pathname}`;
+  }
+
+  /**
+   * The step label should be enumerated if there is another report of the same gather mode in the same section.
+   * Navigation reports will never be enumerated.
+   *
+   * @param {number} index
+   * @return {boolean}
+   */
+  _shouldEnumerate(index) {
+    const {steps} = this;
+    if (steps[index].lhr.gatherMode === 'navigation') return false;
+
+    for (let i = index + 1; steps[i] && steps[i].lhr.gatherMode !== 'navigation'; ++i) {
+      if (steps[i].name) continue;
+      if (steps[i].lhr.gatherMode === steps[index].lhr.gatherMode) {
+        return true;
+      }
+    }
+    for (let i = index - 1; steps[i] && steps[i].lhr.gatherMode !== 'navigation'; --i) {
+      if (steps[i].name) continue;
+      if (steps[i].lhr.gatherMode === steps[index].lhr.gatherMode) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @return {string[]}
+   */
+  _getDerivedStepNames() {
+    let numTimespan = 1;
+    let numSnapshot = 1;
+
+    return this.steps.map((step, i) => {
+      const {lhr} = step;
+      const shortUrl = this._shortenUrl(lhr.finalUrl);
+
+      switch (lhr.gatherMode) {
+        case 'navigation':
+          numTimespan = 1;
+          numSnapshot = 1;
+          return `Navigation report (${shortUrl})`;
+        case 'timespan':
+          if (this._shouldEnumerate(i)) {
+            return `Timespan report ${numTimespan++} (${shortUrl})`;
+          }
+          return `Timespan report (${shortUrl})`;
+        case 'snapshot':
+          if (this._shouldEnumerate(i)) {
+            return `Snapshot report ${numSnapshot++} (${shortUrl})`;
+          }
+          return `Snapshot report (${shortUrl})`;
+      }
+    });
   }
 
   /**
@@ -82,7 +148,12 @@ class UserFlow {
    * @return {LH.FlowResult}
    */
   getFlowResult() {
-    return {steps: this.steps};
+    const defaultNames = this._getDerivedStepNames();
+    const steps = this.steps.map((step, i) => {
+      const name = step.name || defaultNames[i];
+      return {...step, name};
+    });
+    return {steps};
   }
 
   /**

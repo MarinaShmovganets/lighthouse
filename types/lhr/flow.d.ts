@@ -9,7 +9,7 @@ import Result from './lhr';
 declare module FlowResult {
   interface Step {
     lhr: Result;
-    name?: string;
+    name: string;
   }
 }
 
