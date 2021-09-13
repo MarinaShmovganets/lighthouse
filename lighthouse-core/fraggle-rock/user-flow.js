@@ -8,13 +8,13 @@
 const {generateFlowReportHtml} = require('../../report/generator/report-generator.js');
 const {navigation, startTimespan, snapshot} = require('./api.js');
 
-/** @typedef {{config?: LH.Config.Json, configContext?: LH.Config.FRContext}} UserFlowOptions */
-/** @typedef {UserFlowOptions & {page: import('puppeteer').Page}} FrOptions */
+/** @typedef {Parameters<snapshot>[0]} FrOptions */
+/** @typedef {Omit<FrOptions, 'page'>} UserFlowOptions */
 /** @typedef {UserFlowOptions & {stepName?: string}} StepOptions */
 
 class UserFlow {
   /**
-   * @param {import('puppeteer').Page} page
+   * @param {FrOptions['page']} page
    * @param {UserFlowOptions=} options
    */
   constructor(page, options) {
