@@ -68,7 +68,7 @@ class NetworkRecordsMaker {
       }
 
       if (evtBag.sendRequest.args.data.url?.startsWith('data:')) {
-        // TODO: handle the fact that data uris dont ahve a timing block at all :/
+        // TODO: handle the fact that data uris don't have a timing block at all :/
         console.log('data uri!! skipping. :(');
         continue;
       }
