@@ -78,7 +78,7 @@ async function begin() {
     configJson = await import(`../lighthouse-core/config/${cliFlags.preset}-config.js`);
   }
   // @ts-expect-error: Support commonjs.
-  configJson = configJson.default || configJson;
+  if (configJson) configJson = configJson.default || configJson;
 
   if (cliFlags.budgetPath) {
     cliFlags.budgetPath = path.resolve(process.cwd(), cliFlags.budgetPath);
