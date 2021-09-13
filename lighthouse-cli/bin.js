@@ -20,6 +20,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import * as url from 'url';
 
 import log from 'lighthouse-logger';
 import updateNotifier from 'update-notifier';
@@ -61,7 +62,7 @@ async function begin() {
     commands.listTraceCategories();
   }
 
-  const url = cliFlags._[0];
+  const urlUnderTest = cliFlags._[0];
 
   /** @type {LH.Config.Json|undefined} */
   let configJson;
@@ -72,7 +73,8 @@ async function begin() {
     if (cliFlags.configPath.endsWith('.json')) {
       configJson = JSON.parse(fs.readFileSync(cliFlags.configPath, 'utf-8'));
     } else {
-      configJson = (await import(cliFlags.configPath)).default;
+      const configModuleUrl = url.pathToFileURL(cliFlags.configPath).href;
+      configJson = (await import(configModuleUrl)).default;
     }
   } else if (cliFlags.preset) {
     configJson = (await import(`../lighthouse-core/config/${cliFlags.preset}-config.js`)).default;
@@ -127,7 +129,7 @@ async function begin() {
   }
   if (cliFlags.enableErrorReporting) {
     Sentry.init({
-      url,
+      url: urlUnderTest,
       flags: cliFlags,
       environmentData: {
         name: 'redacted', // prevent sentry from using hostname
@@ -140,7 +142,7 @@ async function begin() {
     });
   }
 
-  return runLighthouse(url, cliFlags, configJson);
+  return runLighthouse(urlUnderTest, cliFlags, configJson);
 }
 
 export {
