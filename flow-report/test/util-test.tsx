@@ -36,7 +36,7 @@ describe('useCurrentLhr', () => {
     const {result} = renderHook(() => useCurrentLhr(), {wrapper});
     expect(result.current).toEqual({
       index: 1,
-      value: flowResult.lhrs[1],
+      value: flowResult.steps[1].lhr,
     });
   });
 
@@ -46,7 +46,7 @@ describe('useCurrentLhr', () => {
 
     expect(render.result.current).toEqual({
       index: 1,
-      value: flowResult.lhrs[1],
+      value: flowResult.steps[1].lhr,
     });
 
     await act(() => {
@@ -56,7 +56,7 @@ describe('useCurrentLhr', () => {
 
     expect(render.result.current).toEqual({
       index: 2,
-      value: flowResult.lhrs[2],
+      value: flowResult.steps[2].lhr,
     });
   });
 
@@ -79,8 +79,15 @@ describe('useCurrentLhr', () => {
 });
 
 describe('useDerivedStepNames', () => {
-  it('counts up for each mode', () => {
+  it('ignores provided step name', () => {
     const {result} = renderHook(() => useDerivedStepNames(), {wrapper});
+
+    expect(flowResult.steps.map(s => s.name)).toEqual([
+      undefined,
+      'Search input',
+      'Search results',
+      undefined,
+    ]);
     expect(result.current).toEqual([
       'Navigation report (www.mikescerealshack.co/)',
       'Timespan report (www.mikescerealshack.co/search)',
@@ -89,21 +96,25 @@ describe('useDerivedStepNames', () => {
     ]);
   });
 
-  it('enumerates if multiple in same group', () => {
-    const lhrs = flowResult.lhrs;
-    lhrs[3] = lhrs[2];
-    const newFlowResult = {lhrs};
+  it('enumerates if multiple in same group with no name', () => {
+    const flowResult = {steps: [
+      {lhr: {gatherMode: 'navigation', finalUrl: 'https://example.com'}},
+      {lhr: {gatherMode: 'timespan', finalUrl: 'https://example.com'}},
+      {lhr: {gatherMode: 'snapshot', finalUrl: 'https://example.com'}},
+      {lhr: {gatherMode: 'snapshot', finalUrl: 'https://example.com'}},
+    ]} as any;
+
     const wrapper: FunctionComponent = ({children}) => (
-      <FlowResultContext.Provider value={newFlowResult}>{children}</FlowResultContext.Provider>
+      <FlowResultContext.Provider value={flowResult}>{children}</FlowResultContext.Provider>
     );
 
     const {result} = renderHook(() => useDerivedStepNames(), {wrapper});
 
     expect(result.current).toEqual([
-      'Navigation report (www.mikescerealshack.co/)',
-      'Timespan report (www.mikescerealshack.co/search)',
-      'Snapshot report 1 (www.mikescerealshack.co/search)',
-      'Snapshot report 2 (www.mikescerealshack.co/search)',
+      'Navigation report (example.com/)',
+      'Timespan report (example.com/)',
+      'Snapshot report 1 (example.com/)',
+      'Snapshot report 2 (example.com/)',
     ]);
   });
 });

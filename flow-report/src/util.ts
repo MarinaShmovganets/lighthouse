@@ -118,13 +118,13 @@ export function useCurrentLhr(): {value: LH.Result, index: number}|null {
       return null;
     }
 
-    const value = flowResult.steps[index].lhr;
-    if (!value) {
-      console.warn(`No LHR at index ${index}`);
+    const step = flowResult.steps[index];
+    if (!step) {
+      console.warn(`No flow step at index ${index}`);
       return null;
     }
 
-    return {value, index};
+    return {value: step.lhr, index};
   }, [indexString, flowResult]);
 }
 
