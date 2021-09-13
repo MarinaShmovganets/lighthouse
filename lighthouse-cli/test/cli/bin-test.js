@@ -96,8 +96,19 @@ describe('CLI bin', function() {
   });
 
   describe('config', () => {
-    it('should load the config from the path', async () => {
+    it('should load the config from the path (common js)', async () => {
+      // TODO(esmodules): change this test when config file is esm.
       const configPath = `${LH_ROOT}/lighthouse-core/config/lr-desktop-config.js`;
+      cliFlags = {...cliFlags, configPath: configPath};
+      const actualConfig = (await import(configPath)).default;
+      await bin.begin();
+
+      expect(getRunLighthouseArgs()[2]).toEqual(actualConfig);
+    });
+
+    it('should load the config from the path (es modules)', async () => {
+      const configPath =
+        `${LH_ROOT}/lighthouse-cli/test/smokehouse/test-definitions/a11y/a11y-config.js`;
       cliFlags = {...cliFlags, configPath: configPath};
       const actualConfig = (await import(configPath)).default;
       await bin.begin();

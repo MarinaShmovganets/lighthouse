@@ -72,13 +72,11 @@ async function begin() {
     if (cliFlags.configPath.endsWith('.json')) {
       configJson = JSON.parse(fs.readFileSync(cliFlags.configPath, 'utf-8'));
     } else {
-      configJson = await import(cliFlags.configPath);
+      configJson = (await import(cliFlags.configPath)).default;
     }
   } else if (cliFlags.preset) {
-    configJson = await import(`../lighthouse-core/config/${cliFlags.preset}-config.js`);
+    configJson = (await import(`../lighthouse-core/config/${cliFlags.preset}-config.js`)).default;
   }
-  // @ts-expect-error: Support commonjs.
-  if (configJson) configJson = configJson.default || configJson;
 
   if (cliFlags.budgetPath) {
     cliFlags.budgetPath = path.resolve(process.cwd(), cliFlags.budgetPath);
