@@ -15,10 +15,10 @@
 
 import path from 'path';
 import fs from 'fs';
+import url from 'url';
 
 import cloneDeep from 'lodash.clonedeep';
 import yargs from 'yargs';
-// @ts-expect-error: TODO: no types until @types/yargs 16 ... should upgrade yargs first.
 import * as yargsHelpers from 'yargs/helpers';
 import log from 'lighthouse-logger';
 
@@ -184,11 +184,7 @@ async function begin() {
   let testDefnPath = argv.testsPath || coreTestDefnsPath;
   testDefnPath = path.resolve(process.cwd(), testDefnPath);
   const requestedTestIds = argv._;
-  let rawTestDefns = await import(testDefnPath);
-  if (rawTestDefns) {
-    // Support commonjs.
-    rawTestDefns = rawTestDefns.default || rawTestDefns;
-  }
+  const {default: rawTestDefns} = await import(url.pathToFileURL(testDefnPath).href);
   const allTestDefns = updateTestDefnFormat(rawTestDefns);
   const invertMatch = argv.invertMatch;
   const testDefns = getDefinitionsToRun(allTestDefns, requestedTestIds, {invertMatch});

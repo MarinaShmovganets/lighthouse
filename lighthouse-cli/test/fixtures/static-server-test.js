@@ -9,7 +9,7 @@ import fs from 'fs';
 
 import fetch from 'node-fetch';
 
-import {server} from './fixtures/static-server.js';
+import {server} from './static-server.js';
 
 /* eslint-env jest */
 

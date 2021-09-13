@@ -10,6 +10,11 @@
  * against the results actually collected from Lighthouse.
  */
 
+import cloneDeep from 'lodash.clonedeep';
+import log from 'lighthouse-logger';
+
+import {LocalConsole} from './lib/local-console.js';
+
 /**
  * @typedef Difference
  * @property {string} path
@@ -25,11 +30,6 @@
  * @property {boolean} equal
  * @property {Difference|null} [diff]
  */
-
-import cloneDeep from 'lodash.clonedeep';
-import log from 'lighthouse-logger';
-
-import {LocalConsole} from './lib/local-console.js';
 
 const NUMBER_REGEXP = /(?:\d|\.)+/.source;
 const OPS_REGEXP = /<=?|>=?|\+\/-|±/.source;
