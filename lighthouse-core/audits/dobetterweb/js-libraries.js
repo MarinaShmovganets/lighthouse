@@ -70,6 +70,10 @@ class JsLibrariesAudit extends Audit {
       }),
     };
 
+    if (!libDetails.length) {
+      return {score: null, notApplicable: true};
+    }
+
     return {
       score: 1, // Always pass for now.
       details: {
