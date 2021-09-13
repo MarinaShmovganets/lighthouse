@@ -11,10 +11,11 @@ import * as csp from './csp/csp-expectations.js';
 import * as dbw from './dobetterweb/dbw-expectations.js';
 import * as diagnostics from './perf-diagnostics/expectations.js';
 import * as errors from './errors/error-expectations.js';
+// import * as forms from './forms/form-expectations.js';
 import * as lantern from './lantern/lantern-expectations.js';
 import * as legacyJavascript from './legacy-javascript/expectations.js';
 import * as metrics from './tricky-metrics/expectations.js';
-import * as mixedContent from './mixed-content/expectations.js';
+import * as mixedContent from './issues/mixed-content-expectations.js';
 import * as offline from './offline-local/offline-expectations.js';
 import * as oopifg from './oopif/oopif-expectations.js';
 import * as perf from './perf/expectations.js';
@@ -30,6 +31,7 @@ import byteConfig from './byte-efficiency/byte-config.js';
 import cspConfig from './csp/csp-config.js';
 import dbwConfig from './dobetterweb/dbw-config.js';
 import errorConfig from './errors/error-config.js';
+// import formConfig from './forms/form-config.js';
 import lanternConfig from './lantern/lantern-config.js';
 import legacyJavascriptConfig from './legacy-javascript/legacy-javascript-config.js';
 import noThrottlingConfig from './tricky-metrics/no-throttling-config.js';
@@ -260,8 +262,8 @@ const smokeTests = [{
 }, {
 // TODO: restore when --enable-features=AutofillShowTypePredictions is not needed.
 //   id: 'forms',
-//   expectations: require('./forms/form-expectations.js'),
-//   config: require('./forms/form-config.js'),
+//   expectations: forms.expectations,
+//   config: formConfig,
 // }, {
   id: 'screenshot',
   expectations: screenshots.expectations,
@@ -280,5 +282,4 @@ const smokeTests = [{
   config: cspConfig,
 }];
 
-// TODO: export as named objects? export {screenshot, pwa, pwa2, ...}
 export default smokeTests;

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import * as experimentalConfig from '../../../../../lighthouse-core/config/experimental-config.js';
+import experimentalConfig from '../../../../../lighthouse-core/config/experimental-config.js';
 
 /**
  * @type {LH.Config.Json}
