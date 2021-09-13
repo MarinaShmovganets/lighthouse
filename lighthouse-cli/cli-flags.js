@@ -10,7 +10,6 @@
 import * as fs from 'fs';
 
 import yargs from 'yargs';
-// @ts-expect-error: TODO: no types until @types/yargs 16 ... should upgrade yargs first.
 import * as yargsHelpers from 'yargs/helpers';
 
 import {isObjectOfUnknownValues} from '../lighthouse-core/lib/type-verifiers.js';
