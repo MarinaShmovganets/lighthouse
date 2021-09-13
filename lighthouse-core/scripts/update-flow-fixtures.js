@@ -11,13 +11,13 @@ const puppeteer = require('puppeteer');
 const UserFlow = require('../fraggle-rock/user-flow.js');
 
 (async () => {
-  const browser = await puppeteer.launch({headless: false, slowMo: 50});
+  const browser = await puppeteer.launch({headless: false});
 
   try {
     const page = await browser.newPage();
     const flow = new UserFlow(page);
 
-    await flow.navigate('https://www.mikescerealshack.co', {stepName: 'Home navigation'});
+    await flow.navigate('https://www.mikescerealshack.co');
 
     await flow.startTimespan({stepName: 'Search input'});
     await page.type('input', 'call of duty');
