@@ -31,7 +31,8 @@ fs.rmdirSync(distDir, {recursive: true});
 fs.mkdirSync(distDir, {recursive: true});
 
 writeFile('report.js', htmlReportAssets.REPORT_JAVASCRIPT);
-writeFile('report.css', htmlReportAssets.REPORT_CSS);
+// TODO: remove after devtools roll deletes file.
+writeFile('report.css', '');
 writeFile('standalone-template.html', htmlReportAssets.REPORT_TEMPLATE);
 writeFile('report.d.ts', 'export {}');
 writeFile('report-generator.d.ts', 'export {}');
