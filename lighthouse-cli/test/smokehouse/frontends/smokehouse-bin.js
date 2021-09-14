@@ -105,20 +105,24 @@ function getShardedDefinitions(testDefns, shardArg) {
   // Array is sharded with `Math.ceil(length / shardTotal)` shards first
   // and then the remaining `Math.floor(length / shardTotal) shards.
   // e.g. `[0, 1, 2, 3]` split into 3 shards is `[[0, 1], [2], [3]]`.
+  const baseSize = Math.floor(testDefns.length / shardTotal);
+  const biggerSize = baseSize + 1;
   const biggerShardCount = testDefns.length % shardTotal;
-  let shardDefns;
-  if (shardNumber <= biggerShardCount) {
-    const biggerSize = Math.ceil(testDefns.length / shardTotal);
-    const shardEnd = shardNumber * biggerSize;
-    shardDefns = testDefns.slice(shardEnd - biggerSize, shardEnd);
-  } else {
-    const baseSize = Math.floor(testDefns.length / shardTotal);
-    const shardEnd = shardNumber * baseSize + biggerShardCount;
-    shardDefns = testDefns.slice(shardEnd - baseSize, shardEnd);
+
+  // Since we don't have tests for this file, construct all shards so correct
+  // structure can be asserted.
+  const shards = [];
+  let index = 0;
+  for (let i = 0; i < shardTotal; i++) {
+    const shardSize = i < biggerShardCount ? biggerSize : baseSize;
+    shards.push(testDefns.slice(index, index + shardSize));
+    index += shardSize;
   }
+  assert.equal(shards.length, shardTotal);
+  assert.deepEqual(shards.flat(), testDefns);
 
+  const shardDefns = shards[shardNumber - 1];
   console.log(`In this shard (${shardArg}), running: ${shardDefns.map(d => d.id).join(' ')}\n`);
-
   return shardDefns;
 }
 
