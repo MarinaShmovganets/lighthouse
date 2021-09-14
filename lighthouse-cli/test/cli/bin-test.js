@@ -7,7 +7,7 @@
 
 /* eslint-env jest */
 
-import * as fs from 'fs';
+import fs from 'fs';
 
 import {jest} from '@jest/globals';
 

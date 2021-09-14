@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import * as fs from 'fs';
+import fs from 'fs';
 
 import log from 'lighthouse-logger';
 

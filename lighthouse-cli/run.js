@@ -9,7 +9,7 @@
 
 /** @typedef {Error & {code: string, friendlyMessage?: string}} ExitError */
 
-import * as path from 'path';
+import path from 'path';
 
 import psList from 'ps-list';
 import * as ChromeLauncher from 'chrome-launcher';

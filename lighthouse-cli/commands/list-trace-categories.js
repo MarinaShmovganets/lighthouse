@@ -8,7 +8,8 @@
 import lighthouse from '../../lighthouse-core/index.js';
 
 function listTraceCategories() {
-  process.stdout.write(JSON.stringify({traceCategories: lighthouse.traceCategories}));
+  const traceCategories = lighthouse.traceCategories;
+  process.stdout.write(JSON.stringify({traceCategories}));
   process.exit(0);
 }
 
