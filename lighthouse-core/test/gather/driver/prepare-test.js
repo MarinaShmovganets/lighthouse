@@ -53,7 +53,7 @@ describe('.prepareThrottlingAndNetwork()', () => {
           cpuSlowdownMultiplier: 2,
         },
       },
-      {...constants.defaultNavigationConfig}
+      constants.defaultNavigationConfig
     );
 
     expect(sessionMock.sendCommand.findInvocation('Network.emulateNetworkConditions')).toEqual({
