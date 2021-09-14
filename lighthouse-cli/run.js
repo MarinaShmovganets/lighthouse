@@ -7,8 +7,6 @@
 
 /* eslint-disable no-console */
 
-/** @typedef {Error & {code: string, friendlyMessage?: string}} ExitError */
-
 import path from 'path';
 
 import psList from 'ps-list';
@@ -23,6 +21,7 @@ import {getFilenamePrefix} from '../report/generator/file-namer.js';
 import * as assetSaver from '../lighthouse-core/lib/asset-saver.js';
 import URL from '../lighthouse-core/lib/url-shim.js';
 
+/** @typedef {Error & {code: string, friendlyMessage?: string}} ExitError */
 
 const _RUNTIME_ERROR_CODE = 1;
 const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
