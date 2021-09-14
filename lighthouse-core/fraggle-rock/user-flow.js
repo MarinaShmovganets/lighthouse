@@ -43,20 +43,23 @@ class UserFlow {
    */
   _shouldEnumerate(index) {
     const {steps} = this;
-    if (steps[index].lhr.gatherMode === 'navigation') return false;
+    const gatherMode = steps[index].lhr.gatherMode;
+    if (gatherMode === 'navigation') return false;
 
     for (let i = index + 1; steps[i] && steps[i].lhr.gatherMode !== 'navigation'; ++i) {
       if (steps[i].name) continue;
-      if (steps[i].lhr.gatherMode === steps[index].lhr.gatherMode) {
+      if (steps[i].lhr.gatherMode === gatherMode) {
         return true;
       }
     }
+
     for (let i = index - 1; steps[i] && steps[i].lhr.gatherMode !== 'navigation'; --i) {
       if (steps[i].name) continue;
-      if (steps[i].lhr.gatherMode === steps[index].lhr.gatherMode) {
+      if (steps[i].lhr.gatherMode === gatherMode) {
         return true;
       }
     }
+
     return false;
   }
 
