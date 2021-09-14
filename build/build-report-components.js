@@ -56,6 +56,9 @@ function normalizeTextNodeText(childNode) {
     textContent = textContent.replace(/\s+/g, ' ');
   }
 
+  // Somehow evil newlines get into the text on Windows. Maybe somewhere in jsdom?
+  textContent = textContent.replace(/\r\n/g, '\n');
+
   return textContent;
 }
 
