@@ -64,6 +64,8 @@ class UserFlow {
   }
 
   /**
+   * The step name will be used if it is provided. Otherwise a default name will be computed.
+   *
    * @return {string[]}
    */
   _getDerivedStepNames() {
