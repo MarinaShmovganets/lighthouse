@@ -41,6 +41,8 @@ describe('CLI run', function() {
       const flags = getFlags([
         '--output=json',
         `--output-path=${filename}`,
+        // Jest allows us to resolve this module with no setup.
+        // https://github.com/GoogleChrome/lighthouse/pull/13045#discussion_r708690607
         '--plugins=lighthouse-plugin-simple',
         // Use sample artifacts to avoid gathering during a unit test.
         `--audit-mode=${samplev2ArtifactsPath}`,
