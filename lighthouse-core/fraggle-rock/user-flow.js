@@ -36,7 +36,7 @@ class UserFlow {
 
   /**
    * The step label should be enumerated if there is another report of the same gather mode in the same section.
-   * Navigation reports will never be enumerated.
+   * Sections boundaries are defined by navigation reports. Navigation reports will never be enumerated.
    *
    * @param {number} index
    * @return {boolean}
