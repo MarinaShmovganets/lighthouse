@@ -11,7 +11,7 @@ const {navigation, startTimespan, snapshot} = require('./api.js');
 /** @typedef {Parameters<snapshot>[0]} FrOptions */
 /** @typedef {Omit<FrOptions, 'page'>} UserFlowOptions */
 /** @typedef {UserFlowOptions & {stepName?: string}} StepOptions */
-/** @typedef {Omit<LH.FlowResult.Step, 'name'> & {name?: string}} Step */
+/** @typedef {Omit<LH.FlowResult.Step, 'name'> & {name?: string}} StepOptionalName */
 
 class UserFlow {
   /**
@@ -21,7 +21,7 @@ class UserFlow {
   constructor(page, options) {
     /** @type {FrOptions} */
     this.options = {page, ...options};
-    /** @type {Step[]} */
+    /** @type {StepOptionalName[]} */
     this.steps = [];
   }
 
