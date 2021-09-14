@@ -11,7 +11,6 @@ const {navigation, startTimespan, snapshot} = require('./api.js');
 /** @typedef {Parameters<snapshot>[0]} FrOptions */
 /** @typedef {Omit<FrOptions, 'page'>} UserFlowOptions */
 /** @typedef {UserFlowOptions & {stepName?: string}} StepOptions */
-/** @typedef {Omit<LH.FlowResult.Step, 'name'> & {name?: string}} StepOptionalName */
 
 class UserFlow {
   /**
@@ -21,7 +20,7 @@ class UserFlow {
   constructor(page, options) {
     /** @type {FrOptions} */
     this.options = {page, ...options};
-    /** @type {StepOptionalName[]} */
+    /** @type {LH.FlowResult.Step[]} */
     this.steps = [];
   }
 
@@ -35,65 +34,19 @@ class UserFlow {
   }
 
   /**
-   * The step label should be enumerated if there is another report of the same gather mode in the same section.
-   * Sections boundaries are defined by navigation reports. Navigation reports will never be enumerated.
-   *
-   * @param {number} index
-   * @return {boolean}
+   * @param {LH.Result} lhr
+   * @return {string}
    */
-  _shouldEnumerate(index) {
-    const {steps} = this;
-    const gatherMode = steps[index].lhr.gatherMode;
-    if (gatherMode === 'navigation') return false;
-
-    for (let i = index + 1; steps[i] && steps[i].lhr.gatherMode !== 'navigation'; ++i) {
-      if (steps[i].name) continue;
-      if (steps[i].lhr.gatherMode === gatherMode) {
-        return true;
-      }
+  _getDefaultStepName(lhr) {
+    const shortUrl = this._shortenUrl(lhr.finalUrl);
+    switch (lhr.gatherMode) {
+      case 'navigation':
+        return `Navigation report (${shortUrl})`;
+      case 'timespan':
+        return `Timespan report (${shortUrl})`;
+      case 'snapshot':
+        return `Snapshot report (${shortUrl})`;
     }
-
-    for (let i = index - 1; steps[i] && steps[i].lhr.gatherMode !== 'navigation'; --i) {
-      if (steps[i].name) continue;
-      if (steps[i].lhr.gatherMode === gatherMode) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * The step name will be used if it is provided. Otherwise a default name will be computed.
-   *
-   * @return {string[]}
-   */
-  _getDerivedStepNames() {
-    let numTimespan = 1;
-    let numSnapshot = 1;
-
-    return this.steps.map((step, i) => {
-      const {lhr, name} = step;
-      if (name) return name;
-
-      const shortUrl = this._shortenUrl(lhr.finalUrl);
-      switch (lhr.gatherMode) {
-        case 'navigation':
-          numTimespan = 1;
-          numSnapshot = 1;
-          return `Navigation report (${shortUrl})`;
-        case 'timespan':
-          if (this._shouldEnumerate(i)) {
-            return `Timespan report ${numTimespan++} (${shortUrl})`;
-          }
-          return `Timespan report (${shortUrl})`;
-        case 'snapshot':
-          if (this._shouldEnumerate(i)) {
-            return `Snapshot report ${numSnapshot++} (${shortUrl})`;
-          }
-          return `Snapshot report (${shortUrl})`;
-      }
-    });
   }
 
   /**
@@ -102,13 +55,17 @@ class UserFlow {
    */
   async navigate(url, stepOptions) {
     if (this.currentTimespan) throw Error('Timespan already in progress');
+
     const options = {url, ...this.options, ...stepOptions};
     const result = await navigation(options);
     if (!result) throw Error('Navigation returned undefined');
+
+    const providedName = stepOptions && stepOptions.stepName;
     this.steps.push({
       lhr: result.lhr,
-      name: stepOptions && stepOptions.stepName,
+      name: providedName || this._getDefaultStepName(result.lhr),
     });
+
     return result;
   }
 
@@ -117,6 +74,7 @@ class UserFlow {
    */
   async startTimespan(stepOptions) {
     if (this.currentTimespan) throw Error('Timespan already in progress');
+
     const options = {...this.options, ...stepOptions};
     const timespan = await startTimespan(options);
     this.currentTimespan = {timespan, options};
@@ -124,14 +82,18 @@ class UserFlow {
 
   async endTimespan() {
     if (!this.currentTimespan) throw Error('No timespan in progress');
+
     const {timespan, options} = this.currentTimespan;
     const result = await timespan.endTimespan();
     this.currentTimespan = undefined;
     if (!result) throw Error('Timespan returned undefined');
+
+    const providedName = options && options.stepName;
     this.steps.push({
       lhr: result.lhr,
-      name: options && options.stepName,
+      name: providedName || this._getDefaultStepName(result.lhr),
     });
+
     return result;
   }
 
@@ -140,13 +102,17 @@ class UserFlow {
    */
   async snapshot(stepOptions) {
     if (this.currentTimespan) throw Error('Timespan already in progress');
+
     const options = {...this.options, ...stepOptions};
     const result = await snapshot(options);
     if (!result) throw Error('Snapshot returned undefined');
+
+    const providedName = stepOptions && stepOptions.stepName;
     this.steps.push({
       lhr: result.lhr,
-      name: stepOptions && stepOptions.stepName,
+      name: providedName || this._getDefaultStepName(result.lhr),
     });
+
     return result;
   }
 
@@ -154,12 +120,7 @@ class UserFlow {
    * @return {LH.FlowResult}
    */
   getFlowResult() {
-    const stepNames = this._getDerivedStepNames();
-    const steps = this.steps.map((step, i) => ({
-      ...step,
-      name: stepNames[i],
-    }));
-    return {steps};
+    return {steps: this.steps};
   }
 
   /**
