@@ -68,9 +68,10 @@ class UserFlow {
     let numSnapshot = 1;
 
     return this.steps.map((step, i) => {
-      const {lhr} = step;
-      const shortUrl = this._shortenUrl(lhr.finalUrl);
+      const {lhr, name} = step;
+      if (name) return name;
 
+      const shortUrl = this._shortenUrl(lhr.finalUrl);
       switch (lhr.gatherMode) {
         case 'navigation':
           numTimespan = 1;
@@ -148,11 +149,11 @@ class UserFlow {
    * @return {LH.FlowResult}
    */
   getFlowResult() {
-    const defaultNames = this._getDerivedStepNames();
-    const steps = this.steps.map((step, i) => {
-      const name = step.name || defaultNames[i];
-      return {...step, name};
-    });
+    const stepNames = this._getDerivedStepNames();
+    const steps = this.steps.map((step, i) => ({
+      ...step,
+      name: stepNames[i],
+    }));
     return {steps};
   }
 

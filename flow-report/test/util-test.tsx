@@ -12,7 +12,7 @@ import {renderHook} from '@testing-library/preact-hooks';
 import {FunctionComponent} from 'preact';
 import {act} from 'preact/test-utils';
 
-import {FlowResultContext, useCurrentLhr, useDerivedStepNames} from '../src/util';
+import {FlowResultContext, useCurrentLhr} from '../src/util';
 
 const flowResult: LH.FlowResult = JSON.parse(
   fs.readFileSync(
@@ -75,46 +75,5 @@ describe('useCurrentLhr', () => {
     global.location.hash = '#index=OHNO';
     const {result} = renderHook(() => useCurrentLhr(), {wrapper});
     expect(result.current).toBeNull();
-  });
-});
-
-describe('useDerivedStepNames', () => {
-  it('ignores provided step name', () => {
-    const {result} = renderHook(() => useDerivedStepNames(), {wrapper});
-
-    expect(flowResult.steps.map(s => s.name)).toEqual([
-      undefined,
-      'Search input',
-      'Search results',
-      undefined,
-    ]);
-    expect(result.current).toEqual([
-      'Navigation report (www.mikescerealshack.co/)',
-      'Timespan report (www.mikescerealshack.co/search)',
-      'Snapshot report (www.mikescerealshack.co/search)',
-      'Navigation report (www.mikescerealshack.co/corrections)',
-    ]);
-  });
-
-  it('enumerates if multiple in same group with no name', () => {
-    const flowResult = {steps: [
-      {lhr: {gatherMode: 'navigation', finalUrl: 'https://example.com'}},
-      {lhr: {gatherMode: 'timespan', finalUrl: 'https://example.com'}},
-      {lhr: {gatherMode: 'snapshot', finalUrl: 'https://example.com'}},
-      {lhr: {gatherMode: 'snapshot', finalUrl: 'https://example.com'}},
-    ]} as any;
-
-    const wrapper: FunctionComponent = ({children}) => (
-      <FlowResultContext.Provider value={flowResult}>{children}</FlowResultContext.Provider>
-    );
-
-    const {result} = renderHook(() => useDerivedStepNames(), {wrapper});
-
-    expect(result.current).toEqual([
-      'Navigation report (example.com/)',
-      'Timespan report (example.com/)',
-      'Snapshot report 1 (example.com/)',
-      'Snapshot report 2 (example.com/)',
-    ]);
   });
 });
