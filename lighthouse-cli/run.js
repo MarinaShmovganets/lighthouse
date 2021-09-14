@@ -274,5 +274,5 @@ async function runLighthouse(url, flags, config) {
 export {
   parseChromeFlags,
   saveResults,
-  runLighthouse
+  runLighthouse,
 };

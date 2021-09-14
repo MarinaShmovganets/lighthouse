@@ -505,5 +505,5 @@ function coerceScreenEmulation(value) {
 }
 
 export {
-  getFlags
+  getFlags,
 };

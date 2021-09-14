@@ -146,5 +146,5 @@ async function begin() {
 }
 
 export {
-  begin
+  begin,
 };

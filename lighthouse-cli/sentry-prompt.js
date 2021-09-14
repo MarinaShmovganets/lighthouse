@@ -75,5 +75,5 @@ function askPermission() {
 }
 
 export {
-  askPermission
+  askPermission,
 };

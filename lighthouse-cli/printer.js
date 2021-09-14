@@ -96,5 +96,5 @@ export {
   checkOutputPath,
   write,
   OutputMode,
-  getValidOutputOptions
+  getValidOutputOptions,
 };
