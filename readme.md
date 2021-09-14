@@ -363,7 +363,7 @@ This section details services that have integrated Lighthouse data. If you're wo
 
 * **[Microlink](https://microlink.io)** — Microlink is a cloud browser as API. It offers Lighthouse reports on demand, making it easy to build any service on top. Similar functionality is available via the underlying open-source project named browserless.
 
-* **[Peyk](https://peyk.com)** - Peyk is a website change detection & monitoring service with the power of an advanced correlation system and a variety of modules. Peyk can track websites cookies, network requests, technologies, local & session storage, lighthouse audits, and many more besides visual tracking. Peyk is offered via free and paid plans.
+* **[Peyk](https://peyk.com)** - Peyk is a website change detection & monitoring service. Peyk can detect changes in cookies, network requests, technologies, local & session storage, lighthouse audits, screenshots and so much more. Peyk is offered via free and paid plans.
 
 * **[Wattspeed](https://wattspeed.com/)** — Wattspeed is a free tool that generates snapshots - historical captures of your web pages that include Lighthouse scores, a list of technologies, W3C HTML validator results, DOM size, mixed content info, and more.
 
