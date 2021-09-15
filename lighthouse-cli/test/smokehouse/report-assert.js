@@ -166,7 +166,7 @@ function pruneExpectations(localConsole, lhr, expected, reportOptions) {
 
   /**
    * Lazily compute the Chrome version because some reports are explicitly asserting error conditions.
-   * @returns {number}
+   * @return {number}
    */
   function getChromeVersion() {
     const userAgent = lhr.environment.hostUserAgent;
