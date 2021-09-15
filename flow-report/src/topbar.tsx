@@ -6,7 +6,7 @@
 
 import {FunctionComponent, JSX} from 'preact';
 
-import {HamburgerIcon} from './icons';
+import {HamburgerIcon, Logo} from './icons';
 
 export const Topbar: FunctionComponent<{onMenuClick: JSX.MouseEventHandler<HTMLDivElement>}> =
 ({onMenuClick}) => {
@@ -15,7 +15,10 @@ export const Topbar: FunctionComponent<{onMenuClick: JSX.MouseEventHandler<HTMLD
       <div className="Topbar__menu" onClick={onMenuClick} role="button">
         <HamburgerIcon/>
       </div>
-      <div className="Topbar__title">Lighthouse Flow Report</div>
+      <div className="Topbar__logo">
+        <Logo/>
+      </div>
+      <div className="Topbar__title">Lighthouse User Flow Report</div>
     </div>
   );
 };

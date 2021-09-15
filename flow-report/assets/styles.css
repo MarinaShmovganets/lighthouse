@@ -58,6 +58,11 @@
   user-select: none;
 }
 
+.Topbar__logo {
+  display: flex;
+  margin-right: var(--half-base-spacing);
+}
+
 .Topbar__title {
   font-size: var(--topbar-title-font-size);
   font-weight: bold;
