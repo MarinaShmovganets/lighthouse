@@ -3,10 +3,6 @@
   "compilerOptions": {
     "outDir": "../.tmp/tsbuildinfo/flow-report",
 
-    // Project has real tsc output (and declaration was interfering with build).
-    // see https://github.com/GoogleChrome/lighthouse/pull/12929
-    "emitDeclarationOnly": false,
-
     // Limit to base JS and DOM defs.
     "lib": ["es2020", "dom", "dom.iterable"],
     // Selectively include types from node_modules/.
