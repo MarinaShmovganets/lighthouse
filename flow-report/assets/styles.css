@@ -47,7 +47,7 @@
 }
 
 .Topbar__menu {
-  padding: 18px;
+  padding: var(--base-spacing);
   cursor: pointer;
   display: flex;
   -webkit-touch-callout: none;
