@@ -1,4 +1,4 @@
-// Base compiler options and all compilation entry points.
+// Base compiler options for all tsconfig files.
 
 {
   "compilerOptions": {
@@ -21,18 +21,4 @@
     // "noErrorTruncation": true,
     "extendedDiagnostics": true,
   },
-  // `references` is not inherited by extending tsconfigs. This is a list of all
-  // project references so `tsc --build tsconfig-base.json` can type check all files.
-  "references": [
-    {"path": "./"},
-    {"path": "./types/lhr/"},
-    {"path": "./report/"},
-    {"path": "./report/generator/"},
-    {"path": "./lighthouse-viewer/"},
-    {"path": "./lighthouse-treemap/"},
-    {"path": "./flow-report/"},
-  ],
-  "files": [],
-  "include": [],
-  "exclude": [],
 }
