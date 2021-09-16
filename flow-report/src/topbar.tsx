@@ -11,7 +11,7 @@ import {HamburgerIcon} from './icons';
 /* eslint-disable max-len */
 const Logo: FunctionComponent = () => {
   return (
-    <svg height="24" width="24" viewBox="0 0 24 24">
+    <svg height="24" width="24" viewBox="0 0 24 24" role="img">
       <defs>
         <linearGradient x1="57.456%" y1="13.086%" x2="18.259%" y2="72.322%" id="Topbar__logo--a">
           <stop stop-color="#262626" stop-opacity=".1" offset="0%"/>
