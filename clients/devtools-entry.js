@@ -84,6 +84,7 @@ function analyzeTrace(trace, opts) {
     extends: 'lighthouse:default',
     settings: {
       onlyAudits: metricIds,
+      onlyCategories: ['performance'],
       output: ['json'],
       formFactor: opts.device,
       throttlingMethod: 'devtools', // can't do lantern right now, so need real throttling applied.
