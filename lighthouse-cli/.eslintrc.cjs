@@ -5,21 +5,23 @@
  */
 'use strict';
 
-const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
-
-class GatherContext extends FRGatherer {
-   /** @type {LH.Gatherer.GathererMeta} */
-   meta = {
-     supportedModes: ['snapshot', 'timespan', 'navigation'],
-   }
-
-   /**
-    * @param {LH.Gatherer.FRTransitionalContext} phaseContext
-    * @return {Promise<LH.Artifacts['GatherContext']>}
-    */
-   async getArtifact(phaseContext) {
-     return {gatherMode: phaseContext.gatherMode};
-   }
-}
-
-module.exports = GatherContext;
+module.exports = {
+  env: {
+    browser: true,
+  },
+  rules: {
+    // TODO(esmodules): move to root eslint when all code is ESM
+    // or when this is resolved: https://github.com/import-js/eslint-plugin-import/issues/2214
+    'import/order': [2, {
+      'groups': [
+        'builtin',
+        'external',
+        ['sibling', 'parent'],
+        'index',
+        'object',
+        'type',
+      ],
+      'newlines-between': 'always',
+    }],
+  },
+};
