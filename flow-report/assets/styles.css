@@ -281,11 +281,11 @@
   margin: var(--half-base-spacing);
 }
 
-.SummaryFlowStep__label--mode {
+.SummaryFlowStep__mode {
   color: var(--color-gray-700);
 }
 
-.SummaryFlowStep__label--link {
+.SummaryFlowStep__link {
   font-size: var(--summary-flow-step-label-font-size);
   color: var(--color-gray-800);
   text-decoration: underline;
