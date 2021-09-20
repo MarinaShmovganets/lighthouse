@@ -75,7 +75,7 @@ body:
     attributes:
       label: Chrome Version
       description: >
-        What version of Chrome were you using? (Only applicable if you ran locally using the CLI or DevTools) (Note: you should be using at least the Stable version of Chrome, see https://chromiumdash.appspot.com/releases. If you are not on a recent version, first try upgrading Chrome.)
+        What version of Chrome were you using? (Only applicable if you ran locally using Node, the CLI or DevTools) (Note: you should be using at least the Stable version of Chrome, see https://chromiumdash.appspot.com/releases. If you are not on a recent version, first try upgrading Chrome.)
     validations:
       required: false
   - type: input
