@@ -123,7 +123,7 @@ describe('Fraggle Rock API', () => {
     });
 
     it('should compute results from timespan after page load', async () => {
-      const {lighthouse, page, serverBaseUrl} = state;
+      const {page, serverBaseUrl} = state;
       await page.goto(`${serverBaseUrl}/onclick.html`);
       await page.waitForSelector('button');
 
@@ -154,7 +154,7 @@ describe('Fraggle Rock API', () => {
     });
 
     it('should compute both snapshot & timespan results', async () => {
-      const {lighthouse, page, serverBaseUrl} = state;
+      const {page, serverBaseUrl} = state;
       const result = await lighthouse.navigation({page, url: `${serverBaseUrl}/index.html`});
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
