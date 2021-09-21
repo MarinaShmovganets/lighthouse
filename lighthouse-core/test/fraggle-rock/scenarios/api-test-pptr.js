@@ -18,21 +18,7 @@ jest.setTimeout(90_000);
 describe('Fraggle Rock API', () => {
   const state = createTestState();
 
-  beforeAll(async () => {
-    await state.beforeAll();
-  });
-
-  beforeEach(async () => {
-    await state.beforeEach();
-  });
-
-  afterEach(async () => {
-    await state.afterEach();
-  });
-
-  afterAll(async () => {
-    await state.afterAll();
-  });
+  state.installSetupAndTeardownHooks();
 
   async function setupTestPage() {
     await state.page.goto(`${state.serverBaseUrl}/onclick.html`);

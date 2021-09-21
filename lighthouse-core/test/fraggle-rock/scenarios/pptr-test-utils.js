@@ -5,10 +5,21 @@
  */
 'use strict';
 
+import {beforeAll, beforeEach, afterAll, afterEach} from '@jest/globals';
 import puppeteer from 'puppeteer';
 import {Server} from '../../../../lighthouse-cli/test/fixtures/static-server.js';
 
 /** @typedef {InstanceType<typeof import('../../../../lighthouse-cli/test/fixtures/static-server.js').Server>} StaticServer */
+
+/**
+ * Some audits can be notApplicable based on machine timing information.
+ * Exclude these audits from applicability comparisons.
+ */
+const FLAKY_AUDIT_IDS_APPLICABILITY = new Set([
+  'long-tasks', // Depends on whether the longest task takes <50ms.
+  'screenshot-thumbnails', // Depends on OS whether frames happen to be generated on non-visual timespan changes.
+  'layout-shift-elements', // Depends on if the JS takes too long after input to be ignored for layout shift.
+]);
 
 export function createTestState() {
   /** @param {string} name @return {any} */
@@ -22,35 +33,31 @@ export function createTestState() {
     server: /** @type {StaticServer} */ (any('server')),
     serverBaseUrl: '',
 
-    async beforeAll() {
-      this.server = new Server();
-      await this.server.listen(0, '127.0.0.1');
-      this.serverBaseUrl = `http://localhost:${this.server.getPort()}`;
-      this.browser = await puppeteer.launch({
-        headless: true,
+    installSetupAndTeardownHooks() {
+      beforeAll(async () => {
+        this.server = new Server();
+        await this.server.listen(0, '127.0.0.1');
+        this.serverBaseUrl = `http://localhost:${this.server.getPort()}`;
+        this.browser = await puppeteer.launch({
+          headless: true,
+        });
       });
-    },
-    async beforeEach() {
-      this.page = await this.browser.newPage();
-    },
-    async afterEach() {
-      await this.page.close();
-    },
-    async afterAll() {
-      await this.browser.close();
-      await this.server.close();
+
+      beforeEach(async () => {
+        this.page = await this.browser.newPage();
+      });
+
+      afterEach(async () => {
+        await this.page.close();
+      });
+
+      afterAll(async () => {
+        await this.browser.close();
+        await this.server.close();
+      });
     },
   };
 }
-
-/**
- * Some audits can be notApplicable based on machine timing information.
- * Exclude these audits from applicability comparisons. */
-const FLAKY_AUDIT_IDS_APPLICABILITY = new Set([
-  'long-tasks', // Depends on whether the longest task takes <50ms.
-  'screenshot-thumbnails', // Depends on OS whether frames happen to be generated on non-visual timespan changes.
-  'layout-shift-elements', // Depends on if the JS takes too long after input to be ignored for layout shift.
-]);
 
 /**
  * @param {LH.Result} lhr

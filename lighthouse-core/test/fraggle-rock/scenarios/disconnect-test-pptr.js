@@ -19,21 +19,10 @@ jest.setTimeout(90_000);
 describe('Disconnect', () => {
   const state = createTestState();
 
+  state.installSetupAndTeardownHooks();
+
   beforeAll(async () => {
-    await state.beforeAll();
-  });
-
-  beforeEach(async () => {
-    await state.beforeEach();
     state.server.baseDir = `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/snapshot-basic`;
-  });
-
-  afterEach(async () => {
-    await state.afterEach();
-  });
-
-  afterAll(async () => {
-    await state.afterAll();
   });
 
   it('should reset the listeners/protocol when LH is done', async () => {
