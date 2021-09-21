@@ -21,7 +21,7 @@ describe('Disconnect', () => {
 
   state.installSetupAndTeardownHooks();
 
-  beforeAll(async () => {
+  beforeAll(() => {
     state.server.baseDir = `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/snapshot-basic`;
   });
 
