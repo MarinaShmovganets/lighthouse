@@ -11,10 +11,6 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 Konstantin Popov @KonstHardy
 Can Umay @canumay
 
-## Notable Changes
-
-* make metric value more prominent in table ([#13036](https://github.com/GoogleChrome/lighthouse/pull/13036))
-
 ## Core
 
 * lazy-lcp: fix failureTitle in lcp-lazy-loaded ([#13049](https://github.com/GoogleChrome/lighthouse/pull/13049))
@@ -44,6 +40,7 @@ Can Umay @canumay
 
 ## Report
 
+* make metric value more prominent in table ([#13036](https://github.com/GoogleChrome/lighthouse/pull/13036))
 * 3p-filter: drop for/id as elements are already nested ([#13067](https://github.com/GoogleChrome/lighthouse/pull/13067))
 * add gatherMode option to category score ([#13029](https://github.com/GoogleChrome/lighthouse/pull/13029))
 * add fractional category scores ([#13009](https://github.com/GoogleChrome/lighthouse/pull/13009))
