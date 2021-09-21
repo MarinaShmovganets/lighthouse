@@ -1,32 +1,42 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Konstantin Popov @KonstHardy
-Can Umay @canumay
- <a name="8.5.0"></a>
+<a name="8.5.0"></a>
 # 8.5.0 (2021-09-21)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.4.0...v8.5.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 96](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## New Contributors
+
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+Konstantin Popov @KonstHardy
+Can Umay @canumay
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
+* make metric value more prominent in table ([#13036](https://github.com/GoogleChrome/lighthouse/pull/13036))
 
 ## Core
 
-* fr: cleanup driver on run completion ([#13062](https://github.com/GoogleChrome/lighthouse/pull/13062))
-* fr: setup emulation and throttling for timespans ([#13058](https://github.com/GoogleChrome/lighthouse/pull/13058))
-* fr: support additionalTraceCategories ([#13030](https://github.com/GoogleChrome/lighthouse/pull/13030))
-* fr: add support for plugins ([#13028](https://github.com/GoogleChrome/lighthouse/pull/13028))
-* fr: move GatherContext to baseArtifacts ([#13033](https://github.com/GoogleChrome/lighthouse/pull/13033))
-* fr: preserve traces on failed page load ([#13027](https://github.com/GoogleChrome/lighthouse/pull/13027))
-* fr: move HostUserAgent/FormFactor back to base artifacts ([#12969](https://github.com/GoogleChrome/lighthouse/pull/12969))
-* fr: use devtools throttling by default in timespan mode ([#13013](https://github.com/GoogleChrome/lighthouse/pull/13013))
-* fr: collect OOPIF network data ([#12992](https://github.com/GoogleChrome/lighthouse/pull/12992))
 * lazy-lcp: fix failureTitle in lcp-lazy-loaded ([#13049](https://github.com/GoogleChrome/lighthouse/pull/13049))
 * tracing: remove cpu_profiler.hires ([#13056](https://github.com/GoogleChrome/lighthouse/pull/13056))
 * tsc: add base tsconfig for config inheritance ([#13072](https://github.com/GoogleChrome/lighthouse/pull/13072))
 * make main tsc compile cacheable ([#13069](https://github.com/GoogleChrome/lighthouse/pull/13069))
+
+## ⛏️👷 Fraggle Rock
+
+  Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
+
+* cleanup driver on run completion ([#13062](https://github.com/GoogleChrome/lighthouse/pull/13062))
+* setup emulation and throttling for timespans ([#13058](https://github.com/GoogleChrome/lighthouse/pull/13058))
+* support additionalTraceCategories ([#13030](https://github.com/GoogleChrome/lighthouse/pull/13030))
+* add support for plugins ([#13028](https://github.com/GoogleChrome/lighthouse/pull/13028))
+* move GatherContext to baseArtifacts ([#13033](https://github.com/GoogleChrome/lighthouse/pull/13033))
+* preserve traces on failed page load ([#13027](https://github.com/GoogleChrome/lighthouse/pull/13027))
+* move HostUserAgent/FormFactor back to base artifacts ([#12969](https://github.com/GoogleChrome/lighthouse/pull/12969))
+* use devtools throttling by default in timespan mode ([#13013](https://github.com/GoogleChrome/lighthouse/pull/13013))
+* collect OOPIF network data ([#12992](https://github.com/GoogleChrome/lighthouse/pull/12992))
+* flow: summary sections ([#13086](https://github.com/GoogleChrome/lighthouse/pull/13086))
+* flow: topbar ([#13065](https://github.com/GoogleChrome/lighthouse/pull/13065))
 
 ## CLI
 
@@ -35,9 +45,6 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 ## Report
 
 * 3p-filter: drop for/id as elements are already nested ([#13067](https://github.com/GoogleChrome/lighthouse/pull/13067))
-* flow: summary sections ([#13086](https://github.com/GoogleChrome/lighthouse/pull/13086))
-* flow: topbar ([#13065](https://github.com/GoogleChrome/lighthouse/pull/13065))
-* make metric value more prominent in table ([#13036](https://github.com/GoogleChrome/lighthouse/pull/13036))
 * add gatherMode option to category score ([#13029](https://github.com/GoogleChrome/lighthouse/pull/13029))
 * add fractional category scores ([#13009](https://github.com/GoogleChrome/lighthouse/pull/13009))
 
