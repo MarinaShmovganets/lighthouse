@@ -33,7 +33,6 @@ function createMockSession() {
     removeProtocolMessageListener: jest.fn(),
     addSessionAttachedListener: createMockOnFn(),
     removeSessionAttachedListener: jest.fn(),
-    dispose: jest.fn(),
 
     /** @return {LH.Gatherer.FRProtocolSession} */
     asSession() {
@@ -132,7 +131,6 @@ function createMockDriver() {
     url: () => page.url(),
     defaultSession: session,
     connect: jest.fn(),
-    disconnect: jest.fn(),
     executionContext: context.asExecutionContext(),
 
     /** @return {Driver} */

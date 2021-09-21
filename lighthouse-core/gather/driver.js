@@ -127,11 +127,6 @@ class Driver {
     return this._connection.disconnect();
   }
 
-  /** @return {Promise<void>} */
-  dispose() {
-    return this.disconnect();
-  }
-
   /**
    * Get the browser WebSocket endpoint for devtools protocol clients like Puppeteer.
    * Only works with WebSocket connection, not extension or devtools.
