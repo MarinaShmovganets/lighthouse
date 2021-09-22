@@ -43,11 +43,9 @@ class CrawlableAnchors extends Audit {
     const failingAnchors = anchorElements.filter(({
       rawHref,
       listeners = [],
-      onclick = '',
       name = '',
       role = '',
     }) => {
-      onclick = onclick.replace( /\s/g, '');
       rawHref = rawHref.replace( /\s/g, '');
       name = name.trim();
       role = role.trim();
@@ -57,12 +55,9 @@ class CrawlableAnchors extends Audit {
       if (rawHref.startsWith('mailto:')) return;
 
       const windowLocationRegExp = /window\.location=/;
-      const windowOpenRegExp = /window\.open\(/;
       const javaScriptVoidRegExp = /javascript:void(\(|)0(\)|)/;
 
       if (rawHref.startsWith('file:')) return true;
-      if (windowLocationRegExp.test(onclick)) return true;
-      if (windowOpenRegExp.test(onclick)) return true;
 
       const hasClickHandler = listeners.some(({type}) => type === 'click');
       if (hasClickHandler || name.length > 0) return;

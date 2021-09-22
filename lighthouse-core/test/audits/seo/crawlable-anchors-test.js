@@ -133,7 +133,7 @@ describe('SEO: Crawlable anchors audit', () => {
   });
 
   it('handles window.location and window.open assignments in an onclick attribute', () => {
-    const expectedAuditFailures = [
+    const expectedAuditPasses = [
       'window.location=',
       'window.location =',
       'window.open()',
@@ -141,18 +141,10 @@ describe('SEO: Crawlable anchors audit', () => {
       'window.open(`http://example.com`)',
       'window.open ( )',
       `window.open('foo', 'name', 'resizable)`,
-    ];
-
-    for (const onclickVariation of expectedAuditFailures) {
-      const auditResult = runAudit({onclick: onclickVariation});
-      assert.equal(auditResult, 0, `'${onclickVariation}' should fail the audit`);
-    }
-
-    const expectedAuditPasses = [
       'windowAlocation',
       'window.location.href',
       'window.Location =',
-      'windowLopen()',
+      'windowLopen()'
     ];
 
     for (const onclickVariation of expectedAuditPasses) {
