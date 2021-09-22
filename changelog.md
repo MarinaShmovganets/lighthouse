@@ -19,6 +19,7 @@ Thanks to our new contributor 👽🐷🐰🐯🐻!
   Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
 
 * add API for constructing flow result ([#13034](https://github.com/GoogleChrome/lighthouse/pull/13034))
+* add category tooltips to flow report ([#13043](https://github.com/GoogleChrome/lighthouse/pull/13043))
 
 <a name="8.5.0"></a>
 # 8.5.0 (2021-09-21)
