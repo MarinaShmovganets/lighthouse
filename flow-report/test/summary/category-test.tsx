@@ -24,7 +24,7 @@ const flowResult: LH.FlowResult = JSON.parse(
 describe('SummaryTooltip', () => {
   it('renders tooltip with rating', async () => {
     // Snapshot SEO
-    const reportResult = Util.prepareReportResult(flowResult.lhrs[2]);
+    const reportResult = Util.prepareReportResult(flowResult.steps[2].lhr);
     const category = reportResult.categories['seo'];
 
     const root = render(
@@ -39,7 +39,7 @@ describe('SummaryTooltip', () => {
 
   it('renders tooltip without rating', async () => {
     // Snapshot performance
-    const reportResult = Util.prepareReportResult(flowResult.lhrs[2]);
+    const reportResult = Util.prepareReportResult(flowResult.steps[2].lhr);
     const category = reportResult.categories['performance'];
 
     const root = render(
@@ -47,12 +47,12 @@ describe('SummaryTooltip', () => {
     );
 
     expect(() => root.getByTestId('SummaryTooltip__rating')).toThrow();
-    expect(root.getByText('1 audits passed / 3 audits run')).toBeTruthy();
+    expect(root.getByText('2 audits passed / 4 audits run')).toBeTruthy();
   });
 
   it('renders scored category tooltip with score', async () => {
     // Navigation performance
-    const reportResult = Util.prepareReportResult(flowResult.lhrs[0]);
+    const reportResult = Util.prepareReportResult(flowResult.steps[0].lhr);
     const category = reportResult.categories['performance'];
 
     const root = render(
@@ -61,8 +61,8 @@ describe('SummaryTooltip', () => {
 
     const rating = root.getByTestId('SummaryTooltip__rating');
     expect(rating.classList).toContain('SummaryTooltip__rating--pass');
-    expect(rating.textContent).toEqual('Good · 98');
+    expect(rating.textContent).toEqual('Good · 94');
 
-    expect(root.getByText('40 audits passed / 56 audits run')).toBeTruthy();
+    expect(root.getByText('41 audits passed / 58 audits run')).toBeTruthy();
   });
 });
