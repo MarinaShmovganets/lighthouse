@@ -6,7 +6,9 @@
 'use strict';
 
 import {initializeApp} from 'firebase/app';
-import {getAuth, onAuthStateChanged, signInWithPopup, signOut, GithubAuthProvider} from 'firebase/auth';
+import {
+  getAuth, onAuthStateChanged, signInWithPopup, signOut, GithubAuthProvider,
+} from 'firebase/auth';
 import idbKeyval from 'idb-keyval';
 
 /**
