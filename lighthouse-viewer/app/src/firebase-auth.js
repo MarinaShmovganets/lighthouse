@@ -19,11 +19,13 @@ export class FirebaseAuth {
     /** @type {?import('firebase/auth').User} */
     this._firebaseUser = null;
     this._firebaseApp = initializeApp({
-      apiKey: 'AIzaSyApMz8FHTyJNqqUtA51tik5Mro8j-2qMcM',
-      authDomain: 'lighthouse-viewer.firebaseapp.com',
-      databaseURL: 'https://lighthouse-viewer.firebaseio.com',
-      storageBucket: 'lighthouse-viewer.appspot.com',
-      messagingSenderId: '962507201498',
+      apiKey: 'AIzaSyBQEZMlX6A9B0jJ6PFGcBADbXZG9ogyCmQ',
+      authDomain: 'lighthouse-chrom-1560304954232.firebaseapp.com',
+      projectId: 'lighthouse-chrom-1560304954232',
+      storageBucket: 'lighthouse-chrom-1560304954232.appspot.com',
+      messagingSenderId: '89319782509',
+      appId: '1:89319782509:web:9ea5d8e149048c7836e764',
+      measurementId: 'G-7FMYHPW5YC',
     });
     this._auth = getAuth();
     this._provider = new GithubAuthProvider();
@@ -71,8 +73,10 @@ export class FirebaseAuth {
    */
   async signIn() {
     const result = await signInWithPopup(this._auth, this._provider);
-    /** @type {string} */
-    const accessToken = result.credential.accessToken;
+    const credential = GithubAuthProvider.credentialFromResult(result);
+    if (!credential || !credential.accessToken) throw new Error('unexpected credential');
+
+    const accessToken = credential.accessToken;
     this._accessToken = accessToken;
     this._firebaseUser = result.user;
     // A limitation of firebase auth is that it doesn't return an oauth token
