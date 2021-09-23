@@ -6,7 +6,7 @@
 'use strict';
 
 import {initializeApp} from 'firebase/app';
-import {getAuth, onAuthStateChanged, signInWithPopup, GithubAuthProvider} from 'firebase/auth';
+import {getAuth, signInWithPopup, GithubAuthProvider} from 'firebase/auth';
 import idbKeyval from 'idb-keyval';
 
 /**
@@ -30,18 +30,16 @@ export class FirebaseAuth {
     this._provider.addScope('gist');
 
     /**
-     * Promise which resolves after the first check of auth state. After this,
-     * _accessToken will be set if user is logged in and has access token.
+     * Promise which resolves after the first check of an existing access token.
      * @type {Promise<void>}
      */
-    this._ready = Promise.all([
-      new Promise(resolve => onAuthStateChanged(this._auth, resolve)),
-      idbKeyval.get('accessToken'),
-    ]).then(([user, token]) => {
-      if (user && token) {
-        this._accessToken = token;
-      }
-    });
+    this._ready = Promise.resolve(
+      idbKeyval.get('accessToken').then((token) => {
+        if (token) {
+          this._accessToken = token;
+        }
+      })
+    );
   }
 
   /**
