@@ -6,9 +6,7 @@
 'use strict';
 
 import {initializeApp} from 'firebase/app';
-import {
-  getAuth, onAuthStateChanged, signInWithPopup, signOut, GithubAuthProvider,
-} from 'firebase/auth';
+import {getAuth, onAuthStateChanged, signInWithPopup, GithubAuthProvider} from 'firebase/auth';
 import idbKeyval from 'idb-keyval';
 
 /**
@@ -18,8 +16,6 @@ export class FirebaseAuth {
   constructor() {
     /** @type {?string} */
     this._accessToken = null;
-    /** @type {?import('firebase/auth').User} */
-    this._firebaseUser = null;
     this._firebaseApp = initializeApp({
       apiKey: 'AIzaSyBQEZMlX6A9B0jJ6PFGcBADbXZG9ogyCmQ',
       authDomain: 'lighthouse-chrom-1560304954232.firebaseapp.com',
@@ -44,7 +40,6 @@ export class FirebaseAuth {
     ]).then(([user, token]) => {
       if (user && token) {
         this._accessToken = token;
-        this._firebaseUser = user;
       }
     });
   }
@@ -71,7 +66,7 @@ export class FirebaseAuth {
 
   /**
    * Signs in the user to GitHub using the Firebase API.
-   * @return {Promise<string>} The logged in user.
+   * @return {Promise<string>} accessToken
    */
   async signIn() {
     const result = await signInWithPopup(this._auth, this._provider);
@@ -80,21 +75,10 @@ export class FirebaseAuth {
 
     const accessToken = credential.accessToken;
     this._accessToken = accessToken;
-    this._firebaseUser = result.user;
     // A limitation of firebase auth is that it doesn't return an oauth token
-    // after a page refresh. We'll get a firebase token, but not an oauth token
-    // for GitHub. Since GitHub's tokens never expire, stash the access token in IDB.
+    // after a page refresh: `onAuthStateChanged` returns a firebase user, which has no knowledge
+    // of GitHub's oauth token. Since GitHub's tokens never expire, stash the access token in IDB.
     await idbKeyval.set('accessToken', accessToken);
     return accessToken;
-  }
-
-  /**
-   * Signs the user out.
-   * @return {Promise<void>}
-   */
-  async signOut() {
-    await signOut(this._auth);
-    this._accessToken = null;
-    await idbKeyval.delete('accessToken');
   }
 }
