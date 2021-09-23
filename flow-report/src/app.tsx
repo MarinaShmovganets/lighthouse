@@ -5,35 +5,36 @@
  */
 
 import {FunctionComponent} from 'preact';
+import {useState} from 'preact/hooks';
+
 import {ReportRendererProvider} from './wrappers/report-renderer';
 import {Sidebar} from './sidebar/sidebar';
 import {Summary} from './summary/summary';
-import {FlowResultContext, useCurrentLhr} from './util';
+import {classNames, FlowResultContext, useCurrentLhr} from './util';
+import {Report} from './wrappers/report';
+import {Topbar} from './topbar';
 
-const Report: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
-  // TODO(FR-COMPAT): Render an actual report here.
+const Content: FunctionComponent = () => {
+  const currentLhr = useCurrentLhr();
+
   return (
-    <div data-testid="Report">
-      <h1>{lhr.finalUrl}</h1>
+    <div className="Content">
       {
-        Object.values(lhr.categories).map((category) =>
-          <h2 key={category.id}>{category.id}: {category.score}</h2>
-        )
+        currentLhr ?
+          <Report/> :
+          <Summary/>
       }
     </div>
   );
 };
 
-const Content: FunctionComponent = () => {
-  const currentLhr = useCurrentLhr();
-  return currentLhr ? <Report lhr={currentLhr.value}/> : <Summary/>;
-};
-
 export const App: FunctionComponent<{flowResult: LH.FlowResult}> = ({flowResult}) => {
+  const [collapsed, setCollapsed] = useState(false);
   return (
     <FlowResultContext.Provider value={flowResult}>
       <ReportRendererProvider>
-        <div className="App">
+        <div className={classNames('App', {'App--collapsed': collapsed})}>
+          <Topbar onMenuClick={() => setCollapsed(c => !c)} />
           <Sidebar/>
           <Content/>
         </div>

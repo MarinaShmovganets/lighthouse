@@ -5,7 +5,7 @@
  */
 
 import {createContext} from 'preact';
-import {useContext, useEffect, useState} from 'preact/hooks';
+import {useContext, useEffect, useMemo, useState} from 'preact/hooks';
 
 export const FlowResultContext = createContext<LH.FlowResult|undefined>(undefined);
 
@@ -56,59 +56,47 @@ export function useFlowResult(): LH.FlowResult {
 
 export function useLocale(): LH.Locale {
   const flowResult = useFlowResult();
-  return flowResult.lhrs[0].configSettings.locale;
+  return flowResult.steps[0].lhr.configSettings.locale;
+}
+
+export function useHashParam(param: string) {
+  const [paramValue, setParamValue] = useState(getHashParam(param));
+
+  // Use two-way-binding on the URL hash.
+  // Triggers a re-render if the param changes.
+  useEffect(() => {
+    function hashListener() {
+      const newIndexString = getHashParam(param);
+      if (newIndexString === paramValue) return;
+      setParamValue(newIndexString);
+    }
+    window.addEventListener('hashchange', hashListener);
+    return () => window.removeEventListener('hashchange', hashListener);
+  }, [paramValue]);
+
+  return paramValue;
 }
 
 export function useCurrentLhr(): {value: LH.Result, index: number}|null {
   const flowResult = useFlowResult();
-  const [indexString, setIndexString] = useState(getHashParam('index'));
+  const indexString = useHashParam('index');
 
-  // Use two-way-binding on the URL hash.
-  // Triggers a re-render if the LHR index changes.
-  useEffect(() => {
-    function hashListener() {
-      const newIndexString = getHashParam('index');
-      if (newIndexString === indexString) return;
-      setIndexString(newIndexString);
+  // Memoize result so a new object is not created on every call.
+  return useMemo(() => {
+    if (!indexString) return null;
+
+    const index = Number(indexString);
+    if (!Number.isFinite(index)) {
+      console.warn(`Invalid hash index: ${indexString}`);
+      return null;
     }
-    window.addEventListener('hashchange', hashListener);
-    return () => window.removeEventListener('hashchange', hashListener);
-  }, [indexString]);
 
-  if (!indexString) return null;
-
-  const index = Number(indexString);
-  if (!Number.isFinite(index)) {
-    console.warn(`Invalid hash index: ${indexString}`);
-    return null;
-  }
-
-  const value = flowResult.lhrs[index];
-  if (!value) {
-    console.warn(`No LHR at index ${index}`);
-    return null;
-  }
-
-  return {value, index};
-}
-
-export function useDerivedStepNames() {
-  const flowResult = useFlowResult();
-
-  let numNavigation = 1;
-  let numTimespan = 1;
-  let numSnapshot = 1;
-
-  // TODO(FR-COMPAT): Override with a provided step name.
-  // TODO(FR-COMPAT): Add shortened URL and reset count for navigations.
-  return flowResult.lhrs.map((lhr) => {
-    switch (lhr.gatherMode) {
-      case 'navigation':
-        return `Navigation (${numNavigation++})`;
-      case 'timespan':
-        return `Timespan (${numTimespan++})`;
-      case 'snapshot':
-        return `Snapshot (${numSnapshot++})`;
+    const step = flowResult.steps[index];
+    if (!step) {
+      console.warn(`No flow step at index ${index}`);
+      return null;
     }
-  });
+
+    return {value: step.lhr, index};
+  }, [indexString, flowResult]);
 }

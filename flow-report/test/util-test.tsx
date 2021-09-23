@@ -5,12 +5,15 @@
  */
 
 import fs from 'fs';
-import {FlowResultContext, useCurrentLhr, useDerivedStepNames} from '../src/util';
+import {dirname} from 'path';
+import {fileURLToPath} from 'url';
+
+import {jest} from '@jest/globals';
 import {renderHook} from '@testing-library/preact-hooks';
 import {FunctionComponent} from 'preact';
 import {act} from 'preact/test-utils';
-import {dirname} from 'path';
-import {fileURLToPath} from 'url';
+
+import {FlowResultContext, useCurrentLhr} from '../src/util';
 
 const flowResult: LH.FlowResult = JSON.parse(
   fs.readFileSync(
@@ -23,7 +26,7 @@ const flowResult: LH.FlowResult = JSON.parse(
 let wrapper: FunctionComponent;
 
 beforeEach(() => {
-  window.location.hash = '';
+  global.console.warn = jest.fn();
   wrapper = ({children}) => (
     <FlowResultContext.Provider value={flowResult}>{children}</FlowResultContext.Provider>
   );
@@ -31,60 +34,53 @@ beforeEach(() => {
 
 describe('useCurrentLhr', () => {
   it('gets current lhr index from url hash', () => {
-    window.location.hash = '#index=1';
+    global.location.hash = '#index=1';
     const {result} = renderHook(() => useCurrentLhr(), {wrapper});
+    expect(console.warn).not.toHaveBeenCalled();
     expect(result.current).toEqual({
       index: 1,
-      value: flowResult.lhrs[1],
+      value: flowResult.steps[1].lhr,
     });
   });
 
   it('changes on navigation', async () => {
-    window.location.hash = '#index=1';
+    global.location.hash = '#index=1';
     const render = renderHook(() => useCurrentLhr(), {wrapper});
 
     expect(render.result.current).toEqual({
       index: 1,
-      value: flowResult.lhrs[1],
+      value: flowResult.steps[1].lhr,
     });
 
     await act(() => {
-      window.location.hash = '#index=2';
+      global.location.hash = '#index=2';
     });
     await render.waitForNextUpdate();
 
+    expect(console.warn).not.toHaveBeenCalled();
     expect(render.result.current).toEqual({
       index: 2,
-      value: flowResult.lhrs[2],
+      value: flowResult.steps[2].lhr,
     });
   });
 
   it('return null if lhr index is unset', () => {
     const {result} = renderHook(() => useCurrentLhr(), {wrapper});
+    expect(console.warn).not.toHaveBeenCalled();
     expect(result.current).toBeNull();
   });
 
   it('return null if lhr index is out of bounds', () => {
-    window.location.hash = '#index=5';
+    global.location.hash = '#index=5';
     const {result} = renderHook(() => useCurrentLhr(), {wrapper});
+    expect(console.warn).toHaveBeenCalled();
     expect(result.current).toBeNull();
   });
 
   it('returns null for invalid value', () => {
-    window.location.hash = '#index=OHNO';
+    global.location.hash = '#index=OHNO';
     const {result} = renderHook(() => useCurrentLhr(), {wrapper});
+    expect(console.warn).toHaveBeenCalled();
     expect(result.current).toBeNull();
-  });
-});
-
-describe('useDerivedStepNames', () => {
-  it('counts up for each mode', () => {
-    const {result} = renderHook(() => useDerivedStepNames(), {wrapper});
-    expect(result.current).toEqual([
-      'Navigation (1)',
-      'Timespan (1)',
-      'Snapshot (1)',
-      'Navigation (2)',
-    ]);
   });
 });

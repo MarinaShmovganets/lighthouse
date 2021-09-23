@@ -16,6 +16,7 @@ const throwNotConnectedFn = () => {
 
 /** @type {LH.Gatherer.FRProtocolSession} */
 const defaultSession = {
+  setTargetInfo: throwNotConnectedFn,
   hasNextProtocolTimeout: throwNotConnectedFn,
   getNextProtocolTimeout: throwNotConnectedFn,
   setNextProtocolTimeout: throwNotConnectedFn,
@@ -24,7 +25,10 @@ const defaultSession = {
   off: throwNotConnectedFn,
   addProtocolMessageListener: throwNotConnectedFn,
   removeProtocolMessageListener: throwNotConnectedFn,
+  addSessionAttachedListener: throwNotConnectedFn,
+  removeSessionAttachedListener: throwNotConnectedFn,
   sendCommand: throwNotConnectedFn,
+  dispose: throwNotConnectedFn,
 };
 
 /** @implements {LH.Gatherer.FRTransitionalDriver} */
@@ -68,6 +72,12 @@ class Driver {
     this._session = this.defaultSession = new ProtocolSession(session);
     this._executionContext = new ExecutionContext(this._session);
     this._fetcher = new Fetcher(this._session, this._executionContext);
+  }
+
+  /** @return {Promise<void>} */
+  async disconnect() {
+    if (!this._session) return;
+    await this._session.dispose();
   }
 }
 
