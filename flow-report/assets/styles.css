@@ -395,6 +395,9 @@
   grid-template-columns: 1fr 1fr auto 1fr 1fr;
   align-items: center;
 }
+.HeaderTimeline a {
+  color: var(--color-gray-800);
+}
 
 .HeaderTimeline__prev-thumbnail {
   display: flex;
@@ -456,4 +459,23 @@
   border-radius: 50%;
   transform: translate(-50%, -50%);
   color: var(--color-blue-A700)
+}
+
+.HeaderTimeline__prev-title {
+  grid-area: prevtitle;
+  text-align: left;
+}
+
+.HeaderTimeline__next-title {
+  grid-area: nexttitle;
+  text-align: right;
+  justify-self: end;
+}
+
+.HeaderTimeline__prev-title,
+.HeaderTimeline__next-title {
+  margin: var(--double-base-spacing);
+  max-width: min-content;
+  font-size: 14px;
+  overflow-x: visible;
 }

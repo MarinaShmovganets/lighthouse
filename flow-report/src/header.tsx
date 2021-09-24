@@ -5,7 +5,6 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {useMemo} from 'preact/hooks';
 
 import {Util} from '../../report/renderer/util';
 import {FlowStepIcon, FlowStepThumbnail} from './common';
@@ -13,21 +12,6 @@ import {useFlowResult} from './util';
 
 const SIDE_THUMBNAIL_WIDTH = 40;
 const MAIN_THUMBNAIL_WIDTH = 70;
-
-function useAdjacentReportResults(currentLhr: LH.FlowResult.LhrRef) {
-  const flowResult = useFlowResult();
-  const {value: lhr, index} = currentLhr;
-  const prevLhr =
-    flowResult.steps[index - 1] && flowResult.steps[index - 1].lhr as LH.Result|undefined;
-  const nextLhr =
-    flowResult.steps[index + 1] && flowResult.steps[index + 1].lhr as LH.Result|undefined;
-  return useMemo(() => {
-    const reportResult = Util.prepareReportResult(lhr);
-    const prevReportResult = prevLhr && Util.prepareReportResult(prevLhr);
-    const nextReportResult = nextLhr && Util.prepareReportResult(nextLhr);
-    return {reportResult, prevReportResult, nextReportResult};
-  }, [lhr, prevLhr, nextLhr]);
-}
 
 const HeaderThumbnail: FunctionComponent<{
   reportResult: LH.ReportResult,
@@ -47,30 +31,41 @@ const HeaderThumbnail: FunctionComponent<{
 
 const HeaderTimeline: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
 ({currentLhr}) => {
-  const {reportResult, prevReportResult, nextReportResult} = useAdjacentReportResults(currentLhr);
+  const flowResult = useFlowResult();
+  const step = flowResult.steps[currentLhr.index];
+  const prevStep = flowResult.steps[currentLhr.index - 1];
+  const nextStep = flowResult.steps[currentLhr.index + 1];
   return (
     <div className="HeaderTimeline">
-      <div className="HeaderTimeline__prev-thumbnail">
-        {
-          prevReportResult && <>
+      {
+        prevStep && <>
+          <div className="HeaderTimeline__prev-thumbnail">
             <div className="HeaderTimeline__outer-segment"/>
-            <HeaderThumbnail reportResult={prevReportResult} position="prev"/>
+            <HeaderThumbnail reportResult={Util.prepareReportResult(step.lhr)} position="prev"/>
             <div className="HeaderTimeline__inner-segment"/>
-          </>
-        }
-      </div>
+          </div>
+          <a
+            className="HeaderTimeline__prev-title"
+            href={`#index=${currentLhr.index - 1}`}
+          >{prevStep.name}</a>
+        </>
+      }
       <div className="HeaderTimeline__current-thumbnail">
-        <HeaderThumbnail reportResult={reportResult} position="main"/>
+        <HeaderThumbnail reportResult={Util.prepareReportResult(step.lhr)} position="main"/>
       </div>
-      <div className="HeaderTimeline__next-thumbnail">
-        {
-          nextReportResult && <>
+      {
+        nextStep && <>
+          <div className="HeaderTimeline__next-thumbnail">
             <div className="HeaderTimeline__inner-segment"/>
-            <HeaderThumbnail reportResult={nextReportResult} position="next"/>
+            <HeaderThumbnail reportResult={Util.prepareReportResult(step.lhr)} position="next"/>
             <div className="HeaderTimeline__outer-segment"/>
-          </>
-        }
-      </div>
+          </div>
+          <a
+            className="HeaderTimeline__next-title"
+            href={`#index=${currentLhr.index + 1}`}
+          >{nextStep.name}</a>
+        </>
+      }
     </div>
   );
 };
