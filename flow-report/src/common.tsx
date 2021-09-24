@@ -13,18 +13,26 @@ export const Separator: FunctionComponent = () => {
   return <div className="Separator" role="separator"></div>;
 };
 
+export const FlowStepIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
+  return <>
+    {
+      mode === 'navigation' && <NavigationIcon/>
+    }
+    {
+      mode === 'timespan' && <TimespanIcon/>
+    }
+    {
+      mode === 'snapshot' && <SnapshotIcon/>
+    }
+  </>;
+};
+
 export const FlowSegment: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
   return (
     <div className="FlowSegment">
       <div className="FlowSegment__top-line"/>
       {
-        mode === 'navigation' && <NavigationIcon/>
-      }
-      {
-        mode === 'timespan' && <TimespanIcon/>
-      }
-      {
-        mode === 'snapshot' && <SnapshotIcon/>
+        mode && <FlowStepIcon mode={mode}/>
       }
       <div className="FlowSegment__bottom-line"/>
     </div>

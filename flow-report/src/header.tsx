@@ -8,7 +8,7 @@ import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
 
 import {Util} from '../../report/renderer/util';
-import {FlowStepThumbnail} from './common';
+import {FlowStepIcon, FlowStepThumbnail} from './common';
 import {useFlowResult} from './util';
 
 const SIDE_THUMBNAIL_WIDTH = 40;
@@ -29,24 +29,44 @@ function useAdjacentReportResults(currentLhr: LH.FlowResult.LhrRef) {
   }, [lhr, prevLhr, nextLhr]);
 }
 
+const HeaderSideThumbnail: FunctionComponent<{reportResult: LH.ReportResult, side: 'prev'|'next'}> =
+({reportResult, side}) => {
+  return (
+    <div className={`HeaderSideThumbnail HeaderSideThumbnail--${side}`}>
+      <FlowStepThumbnail reportResult={reportResult} width={SIDE_THUMBNAIL_WIDTH}/>
+      <div className="HeaderSideThumbnail__icon">
+        <FlowStepIcon mode={reportResult.gatherMode}/>
+      </div>
+    </div>
+  );
+};
+
 const HeaderTimeline: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
 ({currentLhr}) => {
   const {reportResult, prevReportResult, nextReportResult} = useAdjacentReportResults(currentLhr);
   return (
     <div className="HeaderTimeline">
-      <div className="HeaderTimeline__segment HeaderTimeline__segment--first-outer"/>
-      {
-        prevReportResult &&
-          <FlowStepThumbnail reportResult={prevReportResult} width={SIDE_THUMBNAIL_WIDTH}/>
-      }
-      <div className="HeaderTimeline__segment HeaderTimeline__segment--first-inner"/>
-      <FlowStepThumbnail reportResult={reportResult} width={MAIN_THUMBNAIL_WIDTH}/>
-      <div className="HeaderTimeline__segment HeaderTimeline__segment--last-inner"/>
-      {
-        nextReportResult &&
-          <FlowStepThumbnail reportResult={nextReportResult} width={SIDE_THUMBNAIL_WIDTH}/>
-      }
-      <div className="HeaderTimeline__segment HeaderTimeline__segment--last-outer"/>
+      <div className="HeaderTimeline__prev-thumbnail">
+        {
+          prevReportResult && <>
+            <div className="HeaderTimeline__outer-segment"/>
+            <HeaderSideThumbnail reportResult={prevReportResult} side="prev"/>
+            <div className="HeaderTimeline__inner-segment"/>
+          </>
+        }
+      </div>
+      <div className="HeaderTimeline__current-thumbnail">
+        <FlowStepThumbnail reportResult={reportResult} width={MAIN_THUMBNAIL_WIDTH}/>
+      </div>
+      <div className="HeaderTimeline__next-thumbnail">
+        {
+          nextReportResult && <>
+            <div className="HeaderTimeline__inner-segment"/>
+            <HeaderSideThumbnail reportResult={nextReportResult} side="next"/>
+            <div className="HeaderTimeline__outer-segment"/>
+          </>
+        }
+      </div>
     </div>
   );
 };
