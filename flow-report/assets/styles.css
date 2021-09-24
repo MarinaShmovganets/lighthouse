@@ -475,7 +475,7 @@
 
 .Header__prev-title,
 .Header__next-title {
-  margin: 0px var(--double-base-spacing);
+  margin: 0px calc(var(--base-spacing) * 3);
   font-size: 14px;
   align-self: start;
 }
