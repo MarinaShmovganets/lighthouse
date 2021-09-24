@@ -7,11 +7,12 @@
 
 /**
  * @fileoverview This script computes the BenchmarkIndex and a few other related browser benchmarks.
+ * node lighthouse-core/scripts/benchmark-plus-extras.js
  */
 
 import puppeteer from 'puppeteer';
 
-import {computeBenchmarkIndex} from '../lib/page-functions.js';
+import pageFunctions from '../lib/page-functions.js';
 
 /** @param {import('puppeteer').Page} page */
 async function runOctane(page) {
@@ -79,7 +80,7 @@ async function main() {
 
   process.stdout.write(`Running BenchmarkIndex...\n`);
   for (let i = 0; i < 10; i++) {
-    const BenchmarkIndex = await page.evaluate(computeBenchmarkIndex);
+    const BenchmarkIndex = await page.evaluate(pageFunctions.computeBenchmarkIndex);
     process.stdout.write(`  ${i + 1}: BenchmarkIndex=${BenchmarkIndex}\n`);
   }
 

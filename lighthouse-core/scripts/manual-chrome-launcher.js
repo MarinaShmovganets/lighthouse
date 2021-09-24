@@ -5,6 +5,8 @@
 /**
  * @fileoverview Script to launch a clean Chrome instance on-demand.
  *
+ * node lighthouse-core/scripts/manual-chrome-launcher.js
+ *
  * Assuming Lighthouse is installed globally or `npm link`ed, use via:
  *     chrome-debug
  * Optionally enable extensions or pass a port, additional chrome flags, and/or a URL

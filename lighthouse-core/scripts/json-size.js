@@ -12,8 +12,8 @@
 
 /* eslint-disable no-console */
 
-// cat lhr.json | node lighthouse-core/scripts/json-size.js | less
-// cat lhr.json | jq .audits | node lighthouse-core/scripts/json-size.js | less
+// cat latest-run/lhr.report.json | node lighthouse-core/scripts/json-size.js | less
+// cat latest-run/lhr.report.json | jq .audits | node lighthouse-core/scripts/json-size.js | less
 
 import fs from 'fs';
 

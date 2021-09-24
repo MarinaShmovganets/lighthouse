@@ -21,6 +21,7 @@ import childProcess from 'child_process';
 
 import glob from 'glob';
 import yargs from 'yargs';
+import * as yargsHelpers from 'yargs/helpers';
 
 import {LH_ROOT} from '../../root.js';
 import {ProgressLogger} from './lantern/collect/common.js';
@@ -30,7 +31,8 @@ const execFile = util.promisify(childProcess.execFile);
 
 const ROOT_OUTPUT_DIR = `${LH_ROOT}/timings-data`;
 
-const rawArgv = yargs
+const y = yargs(yargsHelpers.hideBin(process.argv));
+const rawArgv = y
   .help('help')
   .describe({
     // common flags
@@ -67,7 +69,7 @@ const rawArgv = yargs
   .default('sort-by-absolute-value', false)
   .default('lh-flags', '')
   .strict() // fail on unknown commands
-  .wrap(yargs.terminalWidth())
+  .wrap(y.terminalWidth())
   .argv;
 
 // Augmenting yargs type with auto-camelCasing breaks in tsc@4.1.2 and @types/yargs@15.0.11,

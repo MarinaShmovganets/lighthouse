@@ -5,6 +5,8 @@
  */
 'use strict';
 
+// node lighthouse-core/scripts/print-a11y-scoring.js
+
 import Config from '../config/config.js';
 import defaultConfig from '../config/default-config.js';
 

@@ -7,13 +7,6 @@
 
 /* eslint-disable no-console */
 
-import fs from 'fs';
-import path from 'path';
-
-import log from 'lighthouse-logger';
-
-import {LH_ROOT, readJson} from '../../../root.js';
-
 /**
  * @fileoverview Used in conjunction with `./download-issues.js` to analyze our Issue and PR response times as a team.
  *
@@ -22,6 +15,12 @@ import {LH_ROOT, readJson} from '../../../root.js';
  *
  * See the download script for usage information.
  */
+
+import path from 'path';
+
+import log from 'lighthouse-logger';
+
+import {LH_ROOT, readJson} from '../../../root.js';
 
 /** @typedef {import('./download-issues.js').AugmentedGitHubIssue} AugmentedGitHubIssue */
 

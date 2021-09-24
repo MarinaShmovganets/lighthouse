@@ -5,6 +5,8 @@
  */
 'use strict';
 
+// node lighthouse-core/scripts/build-test-flow-report.js
+
 import fs from 'fs';
 import {execFileSync} from 'child_process';
 

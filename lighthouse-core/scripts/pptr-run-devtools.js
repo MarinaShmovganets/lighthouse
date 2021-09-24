@@ -19,9 +19,11 @@ import fs from 'fs';
 import readline from 'readline';
 
 import puppeteer from 'puppeteer';
-import yargs from 'yargs/yargs';
+import yargs from 'yargs';
+import * as yargsHelpers from 'yargs/helpers';
 
-const argv = yargs(process.argv.slice(2))
+const y = yargs(yargsHelpers.hideBin(process.argv));
+const argv = y
   .usage('$0 [url]')
   .help('help').alias('help', 'h')
   .option('_', {type: 'string'})
