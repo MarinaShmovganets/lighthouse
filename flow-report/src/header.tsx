@@ -29,58 +29,49 @@ const HeaderThumbnail: FunctionComponent<{
   );
 };
 
-const HeaderTimeline: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
+export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
 ({currentLhr}) => {
   const flowResult = useFlowResult();
   const step = flowResult.steps[currentLhr.index];
   const prevStep = flowResult.steps[currentLhr.index - 1];
   const nextStep = flowResult.steps[currentLhr.index + 1];
   return (
-    <div className="HeaderTimeline">
+    <div className="Header">
       {
         prevStep && <>
-          <div className="HeaderTimeline__prev-thumbnail">
-            <div className="HeaderTimeline__outer-segment"/>
+          <div className="Header__prev-thumbnail">
+            <div className="Header__outer-segment"/>
             <HeaderThumbnail reportResult={Util.prepareReportResult(prevStep.lhr)} position="prev"/>
-            <div className="HeaderTimeline__inner-segment"/>
+            <div className="Header__inner-segment"/>
           </div>
           <a
-            className="HeaderTimeline__prev-title"
+            className="Header__prev-title"
             href={`#index=${currentLhr.index - 1}`}
           >{prevStep.name}</a>
         </>
       }
-      <div className="HeaderTimeline__current-thumbnail">
+      <div className="Header__current-thumbnail">
         <HeaderThumbnail reportResult={Util.prepareReportResult(step.lhr)} position="main"/>
       </div>
-      <div className="HeaderTimeline__current-title">
+      <div className="Header__current-title">
         {step.name}
-        <div className="HeaderTimeline__current-description">
+        <div className="Header__current-description">
           {getModeDescription(step.lhr.gatherMode)}
         </div>
       </div>
       {
         nextStep && <>
-          <div className="HeaderTimeline__next-thumbnail">
-            <div className="HeaderTimeline__inner-segment"/>
+          <div className="Header__next-thumbnail">
+            <div className="Header__inner-segment"/>
             <HeaderThumbnail reportResult={Util.prepareReportResult(nextStep.lhr)} position="next"/>
-            <div className="HeaderTimeline__outer-segment"/>
+            <div className="Header__outer-segment"/>
           </div>
           <a
-            className="HeaderTimeline__next-title"
+            className="Header__next-title"
             href={`#index=${currentLhr.index + 1}`}
           >{nextStep.name}</a>
         </>
       }
-    </div>
-  );
-};
-
-export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
-({currentLhr}) => {
-  return (
-    <div className="Header">
-      <HeaderTimeline currentLhr={currentLhr}/>
     </div>
   );
 };

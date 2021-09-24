@@ -384,7 +384,7 @@
   background-color: var(--color-gray-700);
 }
 
-.HeaderTimeline {
+.Header {
   display: grid;
   grid-template-areas:
     ".         .            currenttn    .            ."
@@ -396,35 +396,35 @@
   align-items: center;
   margin: var(--double-base-spacing) 0px;
 }
-.HeaderTimeline a {
+.Header a {
   color: var(--color-gray-800);
 }
 
-.HeaderTimeline__prev-thumbnail {
+.Header__prev-thumbnail {
   display: flex;
   align-items: center;
   grid-area: prevtn;
 }
-.HeaderTimeline__current-thumbnail {
+.Header__current-thumbnail {
   display: flex;
   align-items: center;
   grid-area: currenttn;
 }
-.HeaderTimeline__next-thumbnail {
+.Header__next-thumbnail {
   display: flex;
   align-items: center;
   grid-area: nexttn;
 }
 
-.HeaderTimeline__inner-segment,
-.HeaderTimeline__outer-segment {
+.Header__inner-segment,
+.Header__outer-segment {
   height: 2px;
   background-color: var(--color-blue-A700);
 }
-.HeaderTimeline__outer-segment {
+.Header__outer-segment {
   width: var(--double-base-spacing);
 }
-.HeaderTimeline__inner-segment {
+.Header__inner-segment {
   flex-grow: 1;
 }
 
@@ -462,32 +462,32 @@
   color: var(--color-blue-A700)
 }
 
-.HeaderTimeline__prev-title {
+.Header__prev-title {
   grid-area: prevtitle;
   text-align: left;
 }
 
-.HeaderTimeline__next-title {
+.Header__next-title {
   grid-area: nexttitle;
   text-align: right;
   justify-self: end;
 }
 
-.HeaderTimeline__prev-title,
-.HeaderTimeline__next-title {
+.Header__prev-title,
+.Header__next-title {
   margin: 0px var(--double-base-spacing);
   font-size: 14px;
   align-self: start;
 }
 
-.HeaderTimeline__current-title {
+.Header__current-title {
   grid-area: currenttitle;
   text-align: center;
   font-size: 20px;
   font-weight: bold;
 }
 
-.HeaderTimeline__current-description {
+.Header__current-description {
   text-align: center;
   font-size: 12px;
   font-weight: normal;
