@@ -41,7 +41,7 @@ const HeaderTimeline: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
         prevStep && <>
           <div className="HeaderTimeline__prev-thumbnail">
             <div className="HeaderTimeline__outer-segment"/>
-            <HeaderThumbnail reportResult={Util.prepareReportResult(step.lhr)} position="prev"/>
+            <HeaderThumbnail reportResult={Util.prepareReportResult(prevStep.lhr)} position="prev"/>
             <div className="HeaderTimeline__inner-segment"/>
           </div>
           <a
@@ -63,7 +63,7 @@ const HeaderTimeline: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
         nextStep && <>
           <div className="HeaderTimeline__next-thumbnail">
             <div className="HeaderTimeline__inner-segment"/>
-            <HeaderThumbnail reportResult={Util.prepareReportResult(step.lhr)} position="next"/>
+            <HeaderThumbnail reportResult={Util.prepareReportResult(nextStep.lhr)} position="next"/>
             <div className="HeaderTimeline__outer-segment"/>
           </div>
           <a
