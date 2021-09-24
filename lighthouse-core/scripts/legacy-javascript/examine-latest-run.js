@@ -23,7 +23,7 @@ import colors from 'colors';
 
 import LegacyJavascript from '../../audits/byte-efficiency/legacy-javascript.js';
 import i18n from '../../lib/i18n/i18n.js';
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT, readJson} from '../../../root.js';
 
 const LATEST_RUN_DIR = path.join(LH_ROOT, 'latest-run');
 
@@ -42,8 +42,8 @@ function requestUrlToId(log) {
 
 async function main() {
   /** @type {LH.Artifacts} */
-  const artifacts = require(`${LATEST_RUN_DIR}/artifacts.json`);
-  const devtoolsLog = require(`${LATEST_RUN_DIR}/defaultPass.devtoolslog.json`);
+  const artifacts = readJson(`${LATEST_RUN_DIR}/artifacts.json`);
+  const devtoolsLog = readJson(`${LATEST_RUN_DIR}/defaultPass.devtoolslog.json`);
   const scripts = artifacts.ScriptElements;
   const requestUrlMap = requestUrlToId(devtoolsLog);
   artifacts.devtoolsLogs = {defaultPass: devtoolsLog};

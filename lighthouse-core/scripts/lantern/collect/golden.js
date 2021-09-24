@@ -11,7 +11,7 @@
 
 import fs from 'fs';
 
-import common from './common.js';
+import * as common from './common.js';
 
 /**
  * @template T

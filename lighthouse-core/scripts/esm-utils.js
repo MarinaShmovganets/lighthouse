@@ -5,15 +5,14 @@
  */
 'use strict';
 
-const fs = require('fs');
+import module from 'module';
 
-module.exports = {
-  LH_ROOT: __dirname,
-  /** @param {string} path */
-  readJson(path) {
-    // TODO: could be nice to accept paths relative to LH_ROOT ? this would still
-    // allow absolute paths.
-    // return JSON.parse(fs.readFileSync(path.resolve(__dirname, path), 'utf-8'));
-    return JSON.parse(fs.readFileSync(path, 'utf-8'));
-  },
-};
+const require = module.createRequire(import.meta.url);
+
+/**
+ * Commonjs equivalent of `require.resolve`.
+ * @param {string} packageName
+ */
+export function resolveModulePath(packageName) {
+  return require.resolve(packageName);
+}

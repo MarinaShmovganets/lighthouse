@@ -20,6 +20,7 @@ import path from 'path';
 import chalk from 'chalk';
 
 import constants from './constants.js';
+import {readJson} from '../../../root.js';
 
 const GOOD_DIFF_AS_PERCENT_THRESHOLD = 0.2;
 const OK_DIFF_AS_PERCENT_THRESHOLD = 0.5;
@@ -31,8 +32,8 @@ const BASELINE_PATH = constants.BASELINE_COMPUTED_PATH;
 if (!fs.existsSync(COMPUTATIONS_PATH)) throw new Error('Usage $0 <computed summary file>');
 
 /** @type {{sites: LanternSiteDefinition[]}} */
-const siteIndexWithComputed = require(COMPUTATIONS_PATH);
-const baselineLanternData = require(BASELINE_PATH);
+const siteIndexWithComputed = readJson(COMPUTATIONS_PATH);
+const baselineLanternData = readJson(BASELINE_PATH);
 
 const entries = constants.combineBaselineAndComputedDatasets(siteIndexWithComputed,
   baselineLanternData);

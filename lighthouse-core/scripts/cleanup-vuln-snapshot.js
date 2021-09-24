@@ -13,7 +13,10 @@ import {readFileSync, writeFileSync} from 'fs';
 
 import prettyJSONStringify from 'pretty-json-stringify';
 
-const libDetectorSource = readFileSync(require.resolve('js-library-detector/library/libraries.js'),
+import {resolveModulePath} from './esm-utils.js';
+
+const libDetectorSource = readFileSync(
+  resolveModulePath('js-library-detector/library/libraries.js'),
   'utf8'
 );
 

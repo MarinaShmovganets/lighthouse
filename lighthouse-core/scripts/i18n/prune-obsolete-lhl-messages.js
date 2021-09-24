@@ -12,7 +12,7 @@ import glob from 'glob';
 import MessageParser from 'intl-messageformat-parser';
 
 import {collectAllCustomElementsFromICU} from '../../lib/i18n/i18n.js';
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT, readJson} from '../../../root.js';
 
 /** @typedef {Record<string, {message: string}>} LhlMessages */
 
@@ -117,7 +117,7 @@ function getGoldenLocaleArgumentIds(goldenLhl) {
  * (e.g. by picking a new message id).
  */
 function pruneObsoleteLhlMessages() {
-  const goldenLhl = require('../../lib/i18n/locales/en-US.json');
+  const goldenLhl = readJson('../../lib/i18n/locales/en-US.json');
   const goldenLocaleArgumentIds = getGoldenLocaleArgumentIds(goldenLhl);
 
   // Find all locale files, ignoring self-generated en-US, en-XL, and ctc files.

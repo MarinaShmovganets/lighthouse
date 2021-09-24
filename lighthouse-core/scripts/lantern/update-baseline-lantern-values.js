@@ -15,7 +15,7 @@ import {execFileSync} from 'child_process';
 import prettyJSONStringify from 'pretty-json-stringify';
 
 import constants from './constants.js';
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT, readJson} from '../../../root.js';
 
 const INPUT_PATH = process.argv[2] || constants.SITE_INDEX_WITH_GOLDEN_PATH;
 const SITE_INDEX_PATH = path.resolve(process.cwd(), INPUT_PATH);
@@ -30,7 +30,7 @@ if (!fs.existsSync(HEAD_COMPUTED_PATH) || process.env.FORCE) {
   execFileSync(RUN_ALL_SCRIPT_PATH, [SITE_INDEX_PATH]);
 }
 
-const computedResults = require(HEAD_COMPUTED_PATH);
+const computedResults = readJson(HEAD_COMPUTED_PATH);
 
 const sites = [];
 for (const entry of computedResults.sites) {

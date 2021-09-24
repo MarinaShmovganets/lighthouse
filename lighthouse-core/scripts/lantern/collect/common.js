@@ -13,12 +13,13 @@
 import fs from 'fs';
 import readline from 'readline';
 import {promisify} from 'util';
+import stream from 'stream';
 
 import archiver from 'archiver';
 
 import {LH_ROOT} from '../../../../root.js';
 
-const streamFinished = promisify(require('stream').finished);
+const streamFinished = promisify(stream.finished);
 
 const collectFolder = `${LH_ROOT}/dist/collect-lantern-traces`;
 const summaryPath = `${collectFolder}/summary.json`;

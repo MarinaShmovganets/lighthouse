@@ -5,8 +5,6 @@
  */
 'use strict';
 
-/* global document */
-
 /**
  * @fileoverview This script computes the BenchmarkIndex and a few other related browser benchmarks.
  */

@@ -10,6 +10,8 @@ import path from 'path';
 
 import glob from 'glob';
 
+import {readJson} from '../../../root.js';
+
 const NEW_VERSION = process.argv[2];
 if (!/^\d+\.\d+\.\d+(-dev\.\d{8})?$/.test(NEW_VERSION)) {
   throw new Error('Usage: node bump-versions.json x.x.x');
@@ -26,7 +28,7 @@ const ignore = [
 for (const file of glob.sync('**/{package.json,*.md}', {ignore})) {
   let text;
   if (file === 'package.json') {
-    const pkg = require(path.resolve(file));
+    const pkg = readJson(path.resolve(file));
     if (pkg.version.startsWith('file')) continue;
     pkg.version = NEW_VERSION;
     text = JSON.stringify(pkg, null, 2) + '\n';

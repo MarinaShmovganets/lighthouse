@@ -26,7 +26,7 @@ import path from 'path';
 import {execFileSync} from 'child_process';
 
 import constants from './constants.js';
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT, readJson} from '../../../root.js';
 
 const INPUT_PATH = process.argv[2] || constants.SITE_INDEX_WITH_GOLDEN_PATH;
 const SITE_INDEX_PATH = path.resolve(process.cwd(), INPUT_PATH);
@@ -36,7 +36,7 @@ const RUN_ONCE_PATH = path.join(LH_ROOT, 'lighthouse-core/scripts/lantern/run-on
 if (!fs.existsSync(SITE_INDEX_PATH)) throw new Error('Usage $0 <expectations file>');
 
 /** @type {Golden} */
-const expectations = require(SITE_INDEX_PATH);
+const expectations = readJson(SITE_INDEX_PATH);
 
 for (const site of expectations.sites) {
   const trace = path.join(SITE_INDEX_DIR, site.unthrottled.tracePath);

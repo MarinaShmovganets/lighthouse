@@ -16,7 +16,7 @@ import glob from 'glob';
 import {makeHash} from './hash.js';
 import LegacyJavascript from '../../audits/byte-efficiency/legacy-javascript.js';
 import networkRecordsToDevtoolsLog from '../../test/network-records-to-devtools-log.js';
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT, readJson} from '../../../root.js';
 
 const scriptDir = `${LH_ROOT}/lighthouse-core/scripts/legacy-javascript`;
 
@@ -72,6 +72,7 @@ async function createVariant(options) {
 
   if (!fs.existsSync(`${dir}/main.bundle.js`) && (STAGE === 'build' || STAGE === 'all')) {
     fs.mkdirSync(dir, {recursive: true});
+    fs.writeFileSync(`${dir}/package.json`, JSON.stringify({type: 'commonjs'}));
     fs.writeFileSync(`${dir}/main.js`, code);
     fs.writeFileSync(`${dir}/.babelrc`, JSON.stringify(babelrc || {}, null, 2));
     // Not used in this script, but useful for running Lighthouse manually.
@@ -167,7 +168,7 @@ function makeSummary(legacyJavascriptFilename) {
   const variants = [];
   for (const dir of glob.sync('*/*', {cwd: VARIANT_DIR})) {
     /** @type {import('../../audits/byte-efficiency/legacy-javascript.js').Item[]} */
-    const legacyJavascriptItems = require(`${VARIANT_DIR}/${dir}/${legacyJavascriptFilename}`);
+    const legacyJavascriptItems = readJson(`${VARIANT_DIR}/${dir}/${legacyJavascriptFilename}`);
 
     const signals = [];
     for (const item of legacyJavascriptItems) {

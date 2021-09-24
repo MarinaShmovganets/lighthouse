@@ -14,12 +14,14 @@ import {promisify} from 'util';
 
 import fetch from 'node-fetch';
 
-const execFileAsync = promisify(execFile);
-import common from './common.js';
+import defaultTestUrls from './urls.js';
+import * as common from './common.js';
 import {LH_ROOT} from '../../../../root.js';
 
+const execFileAsync = promisify(execFile);
+
 const SAMPLES = process.env.SAMPLES ? Number(process.env.SAMPLES) : 9;
-const TEST_URLS = process.env.TEST_URLS ? process.env.TEST_URLS.split(' ') : require('./urls.js');
+const TEST_URLS = process.env.TEST_URLS ? process.env.TEST_URLS.split(' ') : defaultTestUrls;
 
 if (!process.env.WPT_KEY) throw new Error('missing WPT_KEY');
 const WPT_KEY = process.env.WPT_KEY;
