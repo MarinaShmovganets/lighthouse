@@ -431,7 +431,7 @@
 .HeaderThumbnail {
   position: relative;
   display: flex;
-  margin: var(--base-spacing);
+  margin: var(--base-spacing) 0px;
 }
 .HeaderThumbnail .FlowStepThumbnail {
   margin: 0;
@@ -475,7 +475,7 @@
 
 .Header__prev-title,
 .Header__next-title {
-  margin: 0px calc(var(--base-spacing) * 3);
+  margin: 0px var(--double-base-spacing);
   font-size: 14px;
   align-self: start;
 }
