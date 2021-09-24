@@ -7,7 +7,6 @@
 
 /** @typedef {import('../../lib/i18n/locales').LhlMessages} LhlMessages */
 
-import fs from 'fs';
 import path from 'path';
 
 import glob from 'glob';
