@@ -117,7 +117,7 @@ function getGoldenLocaleArgumentIds(goldenLhl) {
  * (e.g. by picking a new message id).
  */
 function pruneObsoleteLhlMessages() {
-  const goldenLhl = readJson('../../lib/i18n/locales/en-US.json');
+  const goldenLhl = readJson(LH_ROOT + '/lighthouse-core/lib/i18n/locales/en-US.json');
   const goldenLocaleArgumentIds = getGoldenLocaleArgumentIds(goldenLhl);
 
   // Find all locale files, ignoring self-generated en-US, en-XL, and ctc files.

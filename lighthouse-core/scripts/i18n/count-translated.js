@@ -12,11 +12,11 @@ import path from 'path';
 
 import glob from 'glob';
 
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT, readJson} from '../../../root.js';
 
 const enUsLhlFilename = LH_ROOT + '/lighthouse-core/lib/i18n/locales/en-US.json';
 /** @type {LhlMessages} */
-const enUsLhl = JSON.parse(fs.readFileSync(enUsLhlFilename, 'utf8'));
+const enUsLhl = readJson(enUsLhlFilename);
 
 /**
  * Count how many locale files have a translated version of each string found in
