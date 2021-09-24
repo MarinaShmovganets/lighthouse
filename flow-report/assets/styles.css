@@ -267,14 +267,14 @@
   grid-column: 2;
 }
 
-.SummaryFlowStep__screenshot {
+.FlowStepThumbnail {
   align-self: center;
   justify-self: center;
   margin: var(--base-spacing) var(--half-base-spacing);
   object-fit: cover;
   object-position: top left;
 }
-.SummaryFlowStep__screenshot[src] {
+.FlowStepThumbnail[src] {
   border: 1px solid var(--color-gray);
 }
 
@@ -382,4 +382,22 @@
   width: 10px;
   margin: auto;
   background-color: var(--color-gray-700);
+}
+
+.HeaderTimeline {
+  display: flex;
+  align-items: center;
+}
+
+.HeaderTimeline__segment {
+  height: 2px;
+  background-color: var(--color-blue-A700);
+}
+.HeaderTimeline__segment--first-outer,
+.HeaderTimeline__segment--last-outer {
+  width: var(--double-base-spacing);
+}
+.HeaderTimeline__segment--first-inner,
+.HeaderTimeline__segment--last-inner {
+  flex-grow: 1;
 }

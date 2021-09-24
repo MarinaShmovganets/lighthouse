@@ -5,9 +5,8 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {useEffect, useLayoutEffect, useRef} from 'preact/hooks';
+import {useLayoutEffect, useRef} from 'preact/hooks';
 
-import {useHashParam} from '../util';
 import {useReportRenderer} from './report-renderer';
 
 /**
@@ -36,7 +35,6 @@ export const Report: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
 ({currentLhr}) => {
   const {dom, reportRenderer} = useReportRenderer();
   const ref = useRef<HTMLDivElement>(null);
-  const anchor = useHashParam('anchor');
 
   useLayoutEffect(() => {
     if (ref.current) {
@@ -51,19 +49,6 @@ export const Report: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
       if (ref.current) ref.current.textContent = '';
     };
   }, [reportRenderer, currentLhr]);
-
-  useEffect(() => {
-    if (anchor) {
-      const el = document.getElementById(anchor);
-      if (el) {
-        el.scrollIntoView({behavior: 'smooth'});
-        return;
-      }
-    }
-
-    // Scroll to top no anchor is found.
-    if (ref.current) ref.current.scrollIntoView();
-  }, [anchor, currentLhr]);
 
   return (
     <div ref={ref} className="lh-root" data-testid="Report"/>

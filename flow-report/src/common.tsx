@@ -7,6 +7,7 @@
 import {FunctionComponent} from 'preact';
 
 import {NavigationIcon, SnapshotIcon, TimespanIcon} from './icons';
+import {getScreenDimensions, getScreenshot} from './util';
 
 export const Separator: FunctionComponent = () => {
   return <div className="Separator" role="separator"></div>;
@@ -27,5 +28,25 @@ export const FlowSegment: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({m
       }
       <div className="FlowSegment__bottom-line"/>
     </div>
+  );
+};
+
+export const FlowStepThumbnail: FunctionComponent<{
+  reportResult: LH.ReportResult,
+  width: number
+}> = ({reportResult, width}) => {
+  const screenshot = getScreenshot(reportResult);
+
+  // Crop the displayed image to the viewport dimensions.
+  const dimensions = getScreenDimensions(reportResult);
+  const thumbnailHeight = dimensions.height * width / dimensions.width;
+
+  return (
+    <img
+      className="FlowStepThumbnail"
+      data-testid="FlowStepThumbnail"
+      src={screenshot || undefined}
+      style={{width, maxHeight: thumbnailHeight}}
+    />
   );
 };

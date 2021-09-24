@@ -7,8 +7,8 @@
 import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
 
-import {FlowSegment, Separator} from '../common';
-import {getScreenDimensions, getScreenshot, useFlowResult} from '../util';
+import {FlowSegment, FlowStepThumbnail, Separator} from '../common';
+import {useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 import {SummaryCategory} from './category';
 
@@ -43,12 +43,6 @@ export const SummaryFlowStep: FunctionComponent<{
 }> = ({lhr, label, hashIndex}) => {
   const reportResult = useMemo(() => Util.prepareReportResult(lhr), [lhr]);
 
-  const screenshot = reportResult.gatherMode !== 'timespan' ? getScreenshot(reportResult) : null;
-
-  // Crop the displayed image to the viewport dimensions.
-  const {width, height} = getScreenDimensions(reportResult);
-  const thumbnailHeight = height * THUMBNAIL_WIDTH / width;
-
   return (
     <div className="SummaryFlowStep">
       {
@@ -59,12 +53,7 @@ export const SummaryFlowStep: FunctionComponent<{
             <Separator/>
           </div>
       }
-      <img
-        className="SummaryFlowStep__screenshot"
-        data-testid="SummaryFlowStep__screenshot"
-        src={screenshot || undefined}
-        style={{width: THUMBNAIL_WIDTH, maxHeight: thumbnailHeight}}
-      />
+      <FlowStepThumbnail reportResult={reportResult} width={THUMBNAIL_WIDTH}/>
       <FlowSegment mode={lhr.gatherMode}/>
       <div className="SummaryFlowStep__label">
         <div className="SummaryFlowStep__mode">{MODE_DESCRIPTIONS[lhr.gatherMode]}</div>
