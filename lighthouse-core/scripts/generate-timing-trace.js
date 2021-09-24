@@ -49,7 +49,7 @@ function saveTraceFromCLI() {
   const jsonStr = createTraceString(lhrObject);
 
   const pathObj = path.parse(filename);
-  const traceFilePath = path.join(path.dirname(filename), `${pathObj.name}.timing.trace.json`);
+  const traceFilePath = path.join(pathObj.dir, `${pathObj.name}.timing.trace.json`);
   fs.writeFileSync(traceFilePath, jsonStr, 'utf8');
   // eslint-disable-next-line no-console
   console.log(`
