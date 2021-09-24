@@ -8,17 +8,12 @@ import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
 
 import {FlowSegment, FlowStepThumbnail, Separator} from '../common';
-import {useFlowResult} from '../util';
+import {getModeDescription, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 import {SummaryCategory} from './category';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 const THUMBNAIL_WIDTH = 50;
-const MODE_DESCRIPTIONS: Record<LH.Result.GatherMode, string> = {
-  'navigation': 'Page load',
-  'timespan': 'User interactions',
-  'snapshot': 'Captured state of page',
-};
 
 const SummaryNavigationHeader: FunctionComponent<{url: string}> = ({url}) => {
   return (
@@ -56,7 +51,7 @@ export const SummaryFlowStep: FunctionComponent<{
       <FlowStepThumbnail reportResult={reportResult} width={THUMBNAIL_WIDTH}/>
       <FlowSegment mode={lhr.gatherMode}/>
       <div className="SummaryFlowStep__label">
-        <div className="SummaryFlowStep__mode">{MODE_DESCRIPTIONS[lhr.gatherMode]}</div>
+        <div className="SummaryFlowStep__mode">{getModeDescription(lhr.gatherMode)}</div>
         <a className="SummaryFlowStep__link" href={`#index=${hashIndex}`}>{label}</a>
       </div>
       {

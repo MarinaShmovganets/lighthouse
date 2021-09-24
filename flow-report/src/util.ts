@@ -7,6 +7,12 @@
 import {createContext} from 'preact';
 import {useContext, useEffect, useMemo, useState} from 'preact/hooks';
 
+const MODE_DESCRIPTIONS: Record<LH.Result.GatherMode, string> = {
+  'navigation': 'Page load',
+  'timespan': 'User interactions',
+  'snapshot': 'Captured state of page',
+};
+
 export const FlowResultContext = createContext<LH.FlowResult|undefined>(undefined);
 
 function getHashParam(param: string): string|null {
@@ -46,6 +52,10 @@ export function getScreenshot(reportResult: LH.ReportResult) {
     fullPageScreenshotAudit.details.screenshot.data;
 
   return fullPageScreenshot || null;
+}
+
+export function getModeDescription(mode: LH.Result.GatherMode) {
+  return MODE_DESCRIPTIONS[mode];
 }
 
 export function useFlowResult(): LH.FlowResult {

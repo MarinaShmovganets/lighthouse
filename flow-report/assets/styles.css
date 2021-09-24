@@ -486,3 +486,9 @@
   font-size: 20px;
   font-weight: bold;
 }
+
+.HeaderTimeline__current-description {
+  text-align: center;
+  font-size: 12px;
+  font-weight: normal;
+}

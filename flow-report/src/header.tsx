@@ -8,7 +8,7 @@ import {FunctionComponent} from 'preact';
 
 import {Util} from '../../report/renderer/util';
 import {FlowStepIcon, FlowStepThumbnail} from './common';
-import {useFlowResult} from './util';
+import {getModeDescription, useFlowResult} from './util';
 
 const SIDE_THUMBNAIL_WIDTH = 40;
 const MAIN_THUMBNAIL_WIDTH = 70;
@@ -55,6 +55,9 @@ const HeaderTimeline: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
       </div>
       <div className="HeaderTimeline__current-title">
         {step.name}
+        <div className="HeaderTimeline__current-description">
+          {getModeDescription(step.lhr.gatherMode)}
+        </div>
       </div>
       {
         nextStep && <>
