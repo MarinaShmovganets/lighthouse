@@ -41,20 +41,28 @@ export const FlowSegment: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({m
 
 export const FlowStepThumbnail: FunctionComponent<{
   reportResult: LH.ReportResult,
-  width: number
-}> = ({reportResult, width}) => {
+  width?: number,
+  height?: number,
+}> = ({reportResult, width, height}) => {
   const screenshot = getScreenshot(reportResult);
 
   // Crop the displayed image to the viewport dimensions.
   const dimensions = getScreenDimensions(reportResult);
-  const thumbnailHeight = dimensions.height * width / dimensions.width;
+
+  if (width) {
+    height = dimensions.height * width / dimensions.width;
+  }
+
+  if (height) {
+    width = dimensions.width * height / dimensions.height;
+  }
 
   return (
     <img
       className="FlowStepThumbnail"
       data-testid="FlowStepThumbnail"
       src={screenshot || undefined}
-      style={{width, maxHeight: thumbnailHeight}}
+      style={{width, height}}
     />
   );
 };

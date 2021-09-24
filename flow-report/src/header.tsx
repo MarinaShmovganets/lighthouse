@@ -10,18 +10,18 @@ import {Util} from '../../report/renderer/util';
 import {FlowStepIcon, FlowStepThumbnail} from './common';
 import {getModeDescription, useFlowResult} from './util';
 
-const SIDE_THUMBNAIL_WIDTH = 40;
-const MAIN_THUMBNAIL_WIDTH = 70;
+const SIDE_THUMBNAIL_HEIGHT = 74;
+const MAIN_THUMBNAIL_HEIGHT = 112;
 
 const HeaderThumbnail: FunctionComponent<{
   reportResult: LH.ReportResult,
   position: 'prev'|'next'|'main'
 }> =
 ({reportResult, position}) => {
-  const width = position === 'main' ? MAIN_THUMBNAIL_WIDTH : SIDE_THUMBNAIL_WIDTH;
+  const height = position === 'main' ? MAIN_THUMBNAIL_HEIGHT : SIDE_THUMBNAIL_HEIGHT;
   return (
     <div className={`HeaderThumbnail HeaderThumbnail--${position}`}>
-      <FlowStepThumbnail reportResult={reportResult} width={width}/>
+      <FlowStepThumbnail reportResult={reportResult} height={height}/>
       <div className="HeaderThumbnail__icon">
         <FlowStepIcon mode={reportResult.gatherMode}/>
       </div>
