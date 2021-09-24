@@ -53,6 +53,9 @@ const HeaderTimeline: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
       <div className="HeaderTimeline__current-thumbnail">
         <HeaderThumbnail reportResult={Util.prepareReportResult(step.lhr)} position="main"/>
       </div>
+      <div className="HeaderTimeline__current-title">
+        {step.name}
+      </div>
       {
         nextStep && <>
           <div className="HeaderTimeline__next-thumbnail">

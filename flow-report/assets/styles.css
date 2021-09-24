@@ -394,6 +394,7 @@
   grid-template-rows: 1fr min-content 1fr min-content;
   grid-template-columns: 1fr 1fr auto 1fr 1fr;
   align-items: center;
+  margin-bottom: var(--double-base-spacing);
 }
 .HeaderTimeline a {
   color: var(--color-gray-800);
@@ -475,7 +476,13 @@
 .HeaderTimeline__prev-title,
 .HeaderTimeline__next-title {
   margin: var(--double-base-spacing);
-  max-width: min-content;
   font-size: 14px;
   overflow-x: visible;
+}
+
+.HeaderTimeline__current-title {
+  grid-area: currenttitle;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
 }
