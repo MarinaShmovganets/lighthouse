@@ -9,11 +9,13 @@
 /* eslint-disable no-console, max-len */
 
 const fs = require('fs');
-const glob = require('glob');
 const path = require('path');
+
+const glob = require('glob');
 const expect = require('expect');
 const tsc = require('typescript');
 const MessageParser = require('intl-messageformat-parser').default;
+
 const Util = require('../../../lighthouse-core/util-commonjs.js');
 const {collectAndBakeCtcStrings} = require('./bake-ctc-to-lhl.js');
 const {pruneObsoleteLhlMessages} = require('./prune-obsolete-lhl-messages.js');

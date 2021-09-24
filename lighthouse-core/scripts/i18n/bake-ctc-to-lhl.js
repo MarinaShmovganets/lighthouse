@@ -8,9 +8,10 @@
 
 /* eslint-disable no-console */
 
-const fs = require('fs');
-const path = require('path');
-const {LH_ROOT} = require('../../../root.js');
+import fs from 'fs';
+import path from 'path';
+
+import {LH_ROOT} from '../../../root.js';
 
 /**
  * @typedef CtcMessage
@@ -137,7 +138,7 @@ function collectAndBakeCtcStrings(dir) {
   return lhlFilenames;
 }
 
-module.exports = {
+export {
   collectAndBakeCtcStrings,
   bakePlaceholders,
 };

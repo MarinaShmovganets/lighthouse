@@ -14,10 +14,12 @@
 /** @typedef {import('./constants').TargetMetrics} TargetMetrics */
 /** @typedef {import('./constants').LanternMetrics} LanternMetrics */
 
-const fs = require('fs');
-const path = require('path');
-const constants = require('./constants.js');
-const chalk = require('chalk').default;
+import fs from 'fs';
+import path from 'path';
+
+import chalk from 'chalk';
+
+import constants from './constants.js';
 
 const GOOD_DIFF_AS_PERCENT_THRESHOLD = 0.2;
 const OK_DIFF_AS_PERCENT_THRESHOLD = 0.5;

@@ -15,7 +15,8 @@
 // cat lhr.json | node lighthouse-core/scripts/json-size.js | less
 // cat lhr.json | jq .audits | node lighthouse-core/scripts/json-size.js | less
 
-const fs = require('fs');
+import fs from 'fs';
+
 const inputJson = fs.readFileSync(0, 'utf-8');
 const object = JSON.parse(inputJson);
 

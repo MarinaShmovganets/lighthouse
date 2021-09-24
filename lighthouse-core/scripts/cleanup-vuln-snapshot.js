@@ -9,8 +9,10 @@
 
 /** @fileoverview Read in the snyk snapshot, remove whatever we don't need, write it back */
 
-const {readFileSync, writeFileSync} = require('fs');
-const prettyJSONStringify = require('pretty-json-stringify');
+import {readFileSync, writeFileSync} from 'fs';
+
+import prettyJSONStringify from 'pretty-json-stringify';
+
 const libDetectorSource = readFileSync(require.resolve('js-library-detector/library/libraries.js'),
   'utf8'
 );

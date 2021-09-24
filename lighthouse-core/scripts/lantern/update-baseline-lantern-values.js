@@ -8,16 +8,20 @@
 
 /* eslint-disable no-console */
 
-const fs = require('fs');
-const path = require('path');
-const execFileSync = require('child_process').execFileSync;
-const prettyJSONStringify = require('pretty-json-stringify');
-const constants = require('./constants.js');
+import fs from 'fs';
+import path from 'path';
+import {execFileSync} from 'child_process';
+
+import prettyJSONStringify from 'pretty-json-stringify';
+
+import constants from './constants.js';
+import {LH_ROOT} from '../../../root.js';
 
 const INPUT_PATH = process.argv[2] || constants.SITE_INDEX_WITH_GOLDEN_PATH;
 const SITE_INDEX_PATH = path.resolve(process.cwd(), INPUT_PATH);
 const HEAD_COMPUTED_PATH = constants.SITE_INDEX_WITH_GOLDEN_WITH_COMPUTED_PATH;
-const RUN_ALL_SCRIPT_PATH = path.join(__dirname, 'run-on-all-assets.js');
+const RUN_ALL_SCRIPT_PATH =
+  path.join(LH_ROOT, 'lighthouse-core/scripts/lantern/run-on-all-assets.js');
 const OUTPUT_PATH = constants.BASELINE_COMPUTED_PATH;
 const OUTPUT_ACCURACY_PATH = constants.BASELINE_ACCURACY_PATH;
 

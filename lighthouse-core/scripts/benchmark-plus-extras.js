@@ -11,8 +11,9 @@
  * @fileoverview This script computes the BenchmarkIndex and a few other related browser benchmarks.
  */
 
-const puppeteer = require('puppeteer');
-const {computeBenchmarkIndex} = require('../lib/page-functions.js');
+import puppeteer from 'puppeteer';
+
+import {computeBenchmarkIndex} from '../lib/page-functions.js';
 
 /** @param {import('puppeteer').Page} page */
 async function runOctane(page) {

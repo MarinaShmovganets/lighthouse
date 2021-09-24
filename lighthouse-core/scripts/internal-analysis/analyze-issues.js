@@ -7,10 +7,12 @@
 
 /* eslint-disable no-console */
 
-const fs = require('fs');
-const path = require('path');
-const log = require('lighthouse-logger');
-const {LH_ROOT} = require('../../../root.js');
+import fs from 'fs';
+import path from 'path';
+
+import log from 'lighthouse-logger';
+
+import {LH_ROOT} from '../../../root.js';
 
 /**
  * @fileoverview Used in conjunction with `./download-issues.js` to analyze our Issue and PR response times as a team.

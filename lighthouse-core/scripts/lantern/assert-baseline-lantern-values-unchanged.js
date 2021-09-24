@@ -8,11 +8,13 @@
 
 /* eslint-disable no-console */
 
-const fs = require('fs');
-const assert = require('assert').strict;
-const path = require('path');
-const constants = require('./constants.js');
-const chalk = require('chalk').default;
+import fs from 'fs';
+import {strict as assert} from 'assert';
+import path from 'path';
+
+import chalk from 'chalk';
+
+import constants from './constants.js';
 
 const INPUT_PATH = process.argv[2] || constants.SITE_INDEX_WITH_GOLDEN_WITH_COMPUTED_PATH;
 const HEAD_PATH = path.resolve(process.cwd(), INPUT_PATH);

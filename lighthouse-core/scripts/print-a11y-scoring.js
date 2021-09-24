@@ -5,9 +5,10 @@
  */
 'use strict';
 
-const Config = require('../config/config.js');
+import Config from '../config/config.js';
+import defaultConfig from '../config/default-config.js';
 
-const config = new Config(require('../config/default-config.js'));
+const config = new Config(defaultConfig);
 if (!config.categories || !config.audits) throw new Error('wut');
 
 const auditRefs = config.categories.accessibility.auditRefs;

@@ -14,10 +14,12 @@
  * Single URL: yarn run-devtools "https://example.com"
  */
 
-const puppeteer = require('puppeteer');
-const fs = require('fs');
-const readline = require('readline');
-const yargs = require('yargs/yargs');
+
+import fs from 'fs';
+import readline from 'readline';
+
+import puppeteer from 'puppeteer';
+import yargs from 'yargs/yargs';
 
 const argv = yargs(process.argv.slice(2))
   .usage('$0 [url]')

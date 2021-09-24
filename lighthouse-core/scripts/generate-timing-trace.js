@@ -5,10 +5,6 @@
  */
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const {createTraceString} = require('../lib/timing-trace-saver.js');
-
 /**
  * @fileoverview This script takes the timing entries saved during a Lighthouse run and generates
  * a trace file that's readable in DevTools perf panel or chrome://tracing.
@@ -16,6 +12,11 @@ const {createTraceString} = require('../lib/timing-trace-saver.js');
  * input = LHR.json
  * output = LHR.timing.trace.json
  */
+
+import fs from 'fs';
+import path from 'path';
+
+import {createTraceString} from '../lib/timing-trace-saver.js';
 
 /**
  * @param {string} msg

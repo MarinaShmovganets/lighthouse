@@ -5,9 +5,10 @@
  */
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
+import fs from 'fs';
+import path from 'path';
+
+import glob from 'glob';
 
 const NEW_VERSION = process.argv[2];
 if (!/^\d+\.\d+\.\d+(-dev\.\d{8})?$/.test(NEW_VERSION)) {

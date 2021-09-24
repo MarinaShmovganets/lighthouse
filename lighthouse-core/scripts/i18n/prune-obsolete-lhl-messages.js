@@ -5,12 +5,14 @@
  */
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
-const MessageParser = require('intl-messageformat-parser').default;
-const {collectAllCustomElementsFromICU} = require('../../lib/i18n/i18n.js');
-const {LH_ROOT} = require('../../../root.js');
+import fs from 'fs';
+import path from 'path';
+
+import glob from 'glob';
+import MessageParser from 'intl-messageformat-parser';
+
+import {collectAllCustomElementsFromICU} from '../../lib/i18n/i18n.js';
+import {LH_ROOT} from '../../../root.js';
 
 /** @typedef {Record<string, {message: string}>} LhlMessages */
 
@@ -143,7 +145,7 @@ function pruneObsoleteLhlMessages() {
   }
 }
 
-module.exports = {
+export {
   pruneObsoleteLhlMessages,
 
   // Exported for testing.

@@ -15,15 +15,18 @@
 // The script will report both timings and perf metric results. View just one of them by using --filter:
 //     node lighthouse-core/scripts/compare-runs.js --summarize --name pr --filter=metric
 
-const fs = require('fs');
-const mkdir = fs.promises.mkdir;
-const glob = require('glob');
-const util = require('util');
-const execFile = util.promisify(require('child_process').execFile);
-const yargs = require('yargs');
-const {LH_ROOT} = require('../../root.js');
+import fs from 'fs';
+import util from 'util';
+import childProcess from 'child_process';
 
-const {ProgressLogger} = require('./lantern/collect/common.js');
+import glob from 'glob';
+import yargs from 'yargs';
+
+import {LH_ROOT} from '../../root.js';
+import {ProgressLogger} from './lantern/collect/common.js';
+
+const mkdir = fs.promises.mkdir;
+const execFile = util.promisify(childProcess.execFile);
 
 const ROOT_OUTPUT_DIR = `${LH_ROOT}/timings-data`;
 

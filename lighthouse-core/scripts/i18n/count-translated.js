@@ -7,10 +7,12 @@
 
 /** @typedef {import('../../lib/i18n/locales').LhlMessages} LhlMessages */
 
-const fs = require('fs');
-const glob = require('glob');
-const path = require('path');
-const {LH_ROOT} = require('../../../root.js');
+import fs from 'fs';
+import path from 'path';
+
+import glob from 'glob';
+
+import {LH_ROOT} from '../../../root.js';
 
 const enUsLhlFilename = LH_ROOT + '/lighthouse-core/lib/i18n/locales/en-US.json';
 /** @type {LhlMessages} */
@@ -67,6 +69,6 @@ function countTranslatedMessages() {
   };
 }
 
-module.exports = {
+export {
   countTranslatedMessages,
 };

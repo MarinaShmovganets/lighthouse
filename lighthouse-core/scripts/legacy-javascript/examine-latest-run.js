@@ -16,12 +16,14 @@
  *   3. Inspect output for fishy looking polyfills.
  */
 
-const path = require('path');
+import path from 'path';
+
 // @ts-expect-error - We don't really need types for this
-const colors = require('colors');
-const LegacyJavascript = require('../../audits/byte-efficiency/legacy-javascript.js');
-const i18n = require('../../lib/i18n/i18n.js');
-const {LH_ROOT} = require('../../../root.js');
+import colors from 'colors';
+
+import LegacyJavascript from '../../audits/byte-efficiency/legacy-javascript.js';
+import i18n from '../../lib/i18n/i18n.js';
+import {LH_ROOT} from '../../../root.js';
 
 const LATEST_RUN_DIR = path.join(LH_ROOT, 'latest-run');
 

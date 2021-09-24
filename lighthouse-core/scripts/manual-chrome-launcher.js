@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 'use strict';
+
 /**
  * @fileoverview Script to launch a clean Chrome instance on-demand.
  *
@@ -13,7 +14,7 @@
  *     chrome-debug --enable-extensions
  */
 
-const {Launcher, launch} = require('chrome-launcher');
+import {Launcher, launch} from 'chrome-launcher';
 
 const args = process.argv.slice(2);
 const chromeFlags = [];
