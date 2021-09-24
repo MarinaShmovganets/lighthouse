@@ -11,14 +11,12 @@ import {execFileSync} from 'child_process';
 import open from 'open';
 
 import reportGenerator from '../../report/generator/report-generator.js';
-import {LH_ROOT} from '../../root.js';
+import {LH_ROOT, readJson} from '../../root.js';
 
 execFileSync(`yarn`, ['build-report', '--standalone']);
 
-const flow = JSON.parse(fs.readFileSync(
-      `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json`,
-      'utf-8')
-);
+const flow = readJson(
+      `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json`);
 
 const htmlReport = reportGenerator.generateFlowReportHtml(flow);
 

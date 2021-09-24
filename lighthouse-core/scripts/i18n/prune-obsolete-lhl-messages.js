@@ -137,7 +137,7 @@ function pruneObsoleteLhlMessages() {
   for (const localePath of localePaths) {
     const absoluteLocalePath = path.join(LH_ROOT, localePath);
     // readFileSync so that the file is pulled again once updated by a collect-strings run
-    const localeLhl = JSON.parse(fs.readFileSync(absoluteLocalePath, 'utf-8'));
+    const localeLhl = readJson(absoluteLocalePath);
     const prunedLocale = pruneLocale(goldenLocaleArgumentIds, localeLhl, alreadyLoggedPrunes);
 
     const stringified = JSON.stringify(prunedLocale, null, 2) + '\n';

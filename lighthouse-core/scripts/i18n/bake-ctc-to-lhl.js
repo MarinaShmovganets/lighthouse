@@ -11,7 +11,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT, readJson} from '../../../root.js';
 
 /**
  * @typedef CtcMessage
@@ -103,9 +103,7 @@ function bakePlaceholders(messages) {
 function loadCtcStrings(file) {
   if (!file.endsWith('.ctc.json')) throw new Error('Can only load ctc files');
 
-  const rawdata = fs.readFileSync(file, 'utf8');
-  const messages = JSON.parse(rawdata);
-  return messages;
+  return readJson(file);
 }
 
 /**

@@ -43,7 +43,7 @@ function countTranslatedMessages() {
   for (const localeFilename of localeFilenames) {
     // Use readFileSync in case other code in this process has altered the require()d form.
     /** @type {LhlMessages} */
-    const localeLhl = JSON.parse(fs.readFileSync(path.join(LH_ROOT, localeFilename), 'utf-8'));
+    const localeLhl = readJson(path.join(LH_ROOT, localeFilename));
 
     for (const localeKey of Object.keys(localeLhl)) {
       const messageCount = countPerMessage.get(localeKey);

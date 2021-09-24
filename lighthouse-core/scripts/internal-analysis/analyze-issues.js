@@ -12,7 +12,7 @@ import path from 'path';
 
 import log from 'lighthouse-logger';
 
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT, readJson} from '../../../root.js';
 
 /**
  * @fileoverview Used in conjunction with `./download-issues.js` to analyze our Issue and PR response times as a team.
@@ -67,7 +67,7 @@ function normalizeIssue(issue) {
 
 const ISSUES_PATH = path.join(LH_ROOT, '.tmp/_issues.json');
 /** @type {Array<AugmentedGitHubIssue>} */
-const _ISSUES = JSON.parse(fs.readFileSync(ISSUES_PATH, 'utf8')).map(normalizeIssue);
+const _ISSUES = readJson(ISSUES_PATH).map(normalizeIssue);
 const _ISSUES_SINCE = _ISSUES.filter(issue => new Date(issue.created_at).getTime() > START_AT);
 const ISSUES = _ISSUES_SINCE.filter(issue => !issue.pull_request);
 
