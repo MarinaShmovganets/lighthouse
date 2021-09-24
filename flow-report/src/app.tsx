@@ -13,6 +13,7 @@ import {Summary} from './summary/summary';
 import {classNames, FlowResultContext, useCurrentLhr} from './util';
 import {Report} from './wrappers/report';
 import {Topbar} from './topbar';
+import {ReportHeader} from './report-header';
 
 const Content: FunctionComponent = () => {
   const currentLhr = useCurrentLhr();
@@ -21,7 +22,10 @@ const Content: FunctionComponent = () => {
     <div className="Content">
       {
         currentLhr ?
-          <Report/> :
+          <>
+            <ReportHeader currentLhr={currentLhr}/>
+            <Report currentLhr={currentLhr}/>
+          </> :
           <Summary/>
       }
     </div>

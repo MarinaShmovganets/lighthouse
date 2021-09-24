@@ -77,7 +77,7 @@ export function useHashParam(param: string) {
   return paramValue;
 }
 
-export function useCurrentLhr(): {value: LH.Result, index: number}|null {
+export function useCurrentLhr(): LH.FlowResult.LhrRef|null {
   const flowResult = useFlowResult();
   const indexString = useHashParam('index');
 
