@@ -29,12 +29,16 @@ function useAdjacentReportResults(currentLhr: LH.FlowResult.LhrRef) {
   }, [lhr, prevLhr, nextLhr]);
 }
 
-const HeaderSideThumbnail: FunctionComponent<{reportResult: LH.ReportResult, side: 'prev'|'next'}> =
-({reportResult, side}) => {
+const HeaderThumbnail: FunctionComponent<{
+  reportResult: LH.ReportResult,
+  position: 'prev'|'next'|'main'
+}> =
+({reportResult, position}) => {
+  const width = position === 'main' ? MAIN_THUMBNAIL_WIDTH : SIDE_THUMBNAIL_WIDTH;
   return (
-    <div className={`HeaderSideThumbnail HeaderSideThumbnail--${side}`}>
-      <FlowStepThumbnail reportResult={reportResult} width={SIDE_THUMBNAIL_WIDTH}/>
-      <div className="HeaderSideThumbnail__icon">
+    <div className={`HeaderThumbnail HeaderThumbnail--${position}`}>
+      <FlowStepThumbnail reportResult={reportResult} width={width}/>
+      <div className="HeaderThumbnail__icon">
         <FlowStepIcon mode={reportResult.gatherMode}/>
       </div>
     </div>
@@ -50,19 +54,19 @@ const HeaderTimeline: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
         {
           prevReportResult && <>
             <div className="HeaderTimeline__outer-segment"/>
-            <HeaderSideThumbnail reportResult={prevReportResult} side="prev"/>
+            <HeaderThumbnail reportResult={prevReportResult} position="prev"/>
             <div className="HeaderTimeline__inner-segment"/>
           </>
         }
       </div>
       <div className="HeaderTimeline__current-thumbnail">
-        <FlowStepThumbnail reportResult={reportResult} width={MAIN_THUMBNAIL_WIDTH}/>
+        <HeaderThumbnail reportResult={reportResult} position="main"/>
       </div>
       <div className="HeaderTimeline__next-thumbnail">
         {
           nextReportResult && <>
             <div className="HeaderTimeline__inner-segment"/>
-            <HeaderSideThumbnail reportResult={nextReportResult} side="next"/>
+            <HeaderThumbnail reportResult={nextReportResult} position="next"/>
             <div className="HeaderTimeline__outer-segment"/>
           </>
         }
