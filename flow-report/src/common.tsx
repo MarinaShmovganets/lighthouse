@@ -48,19 +48,21 @@ export const FlowStepThumbnail: FunctionComponent<{
 
   // Crop the displayed image to the viewport dimensions.
   const dimensions = getScreenDimensions(reportResult);
-
   if (width && height === undefined) {
     height = dimensions.height * width / dimensions.width;
   } else if (height && width === undefined) {
     width = dimensions.width * height / dimensions.height;
   }
 
-  return (
-    <img
-      className="FlowStepThumbnail"
-      data-testid="FlowStepThumbnail"
-      src={screenshot || undefined}
-      style={{width, height}}
-    />
-  );
+  return <>
+    {
+      screenshot &&
+        <img
+          className="FlowStepThumbnail"
+          data-testid="FlowStepThumbnail"
+          src={screenshot}
+          style={{width, height}}
+        />
+    }
+  </>;
 };
