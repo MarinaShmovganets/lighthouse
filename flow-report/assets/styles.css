@@ -10,6 +10,9 @@
   --category-summary-font-size: 18px;
   --double-base-spacing: calc(var(--base-spacing) * 2);
   --gather-mode-icon-size: 16px;
+  --header-adjacent-title-font-size: 14px;
+  --header-current-description-font-size: 12px;
+  --header-current-title-font-size: 20px;
   --half-base-spacing: calc(var(--base-spacing) / 2);
   --separator-color: var(--color-gray-300);
   --sidebar-flow-step-navigation-font-size: 14px;
@@ -452,7 +455,7 @@
 .HeaderThumbnail__icon {
   position: absolute;
   display: flex;
-  padding: 4px;
+  padding: calc(var(--base-spacing) * 0.25);
   background-color: var(--report-background-color);
   border-radius: 50%;
   transform: translate(-50%, -50%);
@@ -473,7 +476,7 @@
 .Header__prev-title,
 .Header__next-title {
   margin: 0px var(--double-base-spacing);
-  font-size: 14px;
+  font-size: var(--header-adjacent-title-font-size);
   align-self: start;
   width: fit-content;
 }
@@ -481,12 +484,12 @@
 .Header__current-title {
   grid-area: currenttitle;
   text-align: center;
-  font-size: 20px;
+  font-size: var(--header-current-title-font-size);
   font-weight: bold;
 }
 
 .Header__current-description {
   text-align: center;
-  font-size: 12px;
+  font-size: var(--header-current-description-font-size);
   font-weight: normal;
 }
