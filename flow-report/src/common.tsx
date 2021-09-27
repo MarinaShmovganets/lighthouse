@@ -59,9 +59,9 @@ export const FlowStepThumbnail: FunctionComponent<{
       screenshot &&
         <img
           className="FlowStepThumbnail"
-          data-testid="FlowStepThumbnail"
           src={screenshot}
           style={{width, height}}
+          alt="Screenshot of a page tested by Lighthouse"
         />
     }
   </>;
