@@ -10,8 +10,8 @@ import {Util} from '../../report/renderer/util';
 import {FlowStepIcon, FlowStepThumbnail} from './common';
 import {getModeDescription, useFlowResult} from './util';
 
-const SIDE_THUMBNAIL_HEIGHT = 74;
-const MAIN_THUMBNAIL_HEIGHT = 112;
+const SIDE_THUMBNAIL_HEIGHT = 80;
+const MAIN_THUMBNAIL_HEIGHT = 120;
 
 const HeaderThumbnail: FunctionComponent<{
   reportResult: LH.ReportResult,
