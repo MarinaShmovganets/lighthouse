@@ -32,9 +32,12 @@ const HeaderThumbnail: FunctionComponent<{
 export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
 ({currentLhr}) => {
   const flowResult = useFlowResult();
-  const step = flowResult.steps[currentLhr.index];
-  const prevStep = flowResult.steps[currentLhr.index - 1];
-  const nextStep = flowResult.steps[currentLhr.index + 1];
+  const {index} = currentLhr;
+
+  const step = flowResult.steps[index];
+  const prevStep = flowResult.steps[index - 1];
+  const nextStep = flowResult.steps[index + 1];
+
   return (
     <div className="Header">
       {
@@ -46,7 +49,7 @@ export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
           </div>
           <a
             className="Header__prev-title"
-            href={`#index=${currentLhr.index - 1}`}
+            href={`#index=${index - 1}`}
           >{prevStep.name}</a>
         </>
       }
@@ -68,7 +71,7 @@ export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
           </div>
           <a
             className="Header__next-title"
-            href={`#index=${currentLhr.index + 1}`}
+            href={`#index=${index + 1}`}
           >{nextStep.name}</a>
         </>
       }
