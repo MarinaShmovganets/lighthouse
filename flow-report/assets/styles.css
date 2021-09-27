@@ -13,6 +13,7 @@
   --header-adjacent-title-font-size: 14px;
   --header-current-description-font-size: 12px;
   --header-current-title-font-size: 20px;
+  --header-side-margin: calc(var(--base-spacing) * 4);
   --half-base-spacing: calc(var(--base-spacing) / 2);
   --separator-color: var(--color-gray-300);
   --sidebar-flow-step-navigation-font-size: 14px;
@@ -425,7 +426,7 @@
   background-color: var(--color-blue-A700);
 }
 .Header__outer-segment {
-  width: var(--double-base-spacing);
+  width: var(--header-side-margin);
 }
 .Header__inner-segment {
   flex-grow: 1;
@@ -464,18 +465,19 @@
 
 .Header__prev-title {
   grid-area: prev-title;
+  margin-left: var(--header-side-margin);
   text-align: left;
 }
 
 .Header__next-title {
   grid-area: next-title;
+  margin-right: var(--header-side-margin);
   text-align: right;
   justify-self: end;
 }
 
 .Header__prev-title,
 .Header__next-title {
-  margin: 0px var(--double-base-spacing);
   font-size: var(--header-adjacent-title-font-size);
   align-self: start;
   width: fit-content;
