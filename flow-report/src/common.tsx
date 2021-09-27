@@ -46,7 +46,7 @@ export const FlowStepThumbnail: FunctionComponent<{
 }> = ({reportResult, width, height}) => {
   const screenshot = getScreenshot(reportResult);
 
-  // Crop the displayed image to the viewport dimensions.
+  // Resize the image to fit the viewport aspect ratio.
   const dimensions = getScreenDimensions(reportResult);
   if (width && height === undefined) {
     height = dimensions.height * width / dimensions.width;
