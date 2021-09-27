@@ -59,6 +59,9 @@ describe('SummaryFlowStep', () => {
 
     expect(root.getByText('Navigation (1)')).toBeTruthy();
 
+    const screenshot = root.getByTestId('FlowStepThumbnail') as HTMLImageElement;
+    expect(screenshot.src).toMatch(/data:image\/jpeg;base64/);
+
     const gauges = root.getAllByTestId('CategoryScore');
     expect(gauges).toHaveLength(4);
 
@@ -82,6 +85,8 @@ describe('SummaryFlowStep', () => {
     expect(() => root.getByTestId('SummaryNavigationHeader')).toThrow();
 
     expect(root.getByText('Timespan (1)')).toBeTruthy();
+
+    expect(() => root.getByTestId('FlowStepThumbnail')).toThrow();
 
     // Accessibility and SEO are missing in timespan.
     const nullCategories = root.getAllByTestId('SummaryCategory__null');
@@ -108,6 +113,9 @@ describe('SummaryFlowStep', () => {
     expect(() => root.getByTestId('SummaryNavigationHeader')).toThrow();
 
     expect(root.getByText('Snapshot (1)')).toBeTruthy();
+
+    const screenshot = root.getByTestId('FlowStepThumbnail') as HTMLImageElement;
+    expect(screenshot.src).toMatch(/data:image\/jpeg;base64/);
 
     const gauges = root.getAllByTestId('CategoryScore');
     expect(gauges).toHaveLength(4);
