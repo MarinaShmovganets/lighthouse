@@ -475,6 +475,7 @@
   margin: 0px var(--double-base-spacing);
   font-size: 14px;
   align-self: start;
+  width: fit-content;
 }
 
 .Header__current-title {
