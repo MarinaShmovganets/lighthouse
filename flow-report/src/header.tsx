@@ -42,7 +42,9 @@ export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
     <div className="Header">
       {
         prevStep && <>
-          <div className="Header__segment"/>
+          {
+            flowResult.steps[index - 2] && <div className="Header__segment"/>
+          }
           <div className="Header__prev-thumbnail">
             <HeaderThumbnail reportResult={Util.prepareReportResult(prevStep.lhr)} position="prev"/>
             <div className="Header__segment"/>
@@ -72,7 +74,9 @@ export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
             className="Header__next-title"
             href={`#index=${index + 1}`}
           >{nextStep.name}</a>
-          <div className="Header__segment"/>
+          {
+            flowResult.steps[index + 2] && <div className="Header__segment"/>
+          }
         </>
       }
     </div>
