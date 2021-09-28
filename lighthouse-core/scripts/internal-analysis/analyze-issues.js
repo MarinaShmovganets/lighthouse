@@ -16,11 +16,9 @@
  * See the download script for usage information.
  */
 
-import path from 'path';
-
 import log from 'lighthouse-logger';
 
-import {LH_ROOT, readJson} from '../../../root.js';
+import {readJson} from '../../../root.js';
 
 /** @typedef {import('./download-issues.js').AugmentedGitHubIssue} AugmentedGitHubIssue */
 

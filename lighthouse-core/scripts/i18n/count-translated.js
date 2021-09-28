@@ -7,8 +7,6 @@
 
 /** @typedef {import('../../lib/i18n/locales').LhlMessages} LhlMessages */
 
-import path from 'path';
-
 import glob from 'glob';
 
 import {LH_ROOT, readJson} from '../../../root.js';
