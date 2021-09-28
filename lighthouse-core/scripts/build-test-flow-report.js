@@ -15,7 +15,7 @@ import open from 'open';
 import reportGenerator from '../../report/generator/report-generator.js';
 import {LH_ROOT, readJson} from '../../root.js';
 
-execFileSync(`yarn`, ['build-report', '--standalone']);
+execFileSync(`yarn`, ['build-report', '--flow']);
 
 const flow = readJson(
       `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json`);
