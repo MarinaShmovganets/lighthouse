@@ -117,7 +117,7 @@ function getGoldenLocaleArgumentIds(goldenLhl) {
  * (e.g. by picking a new message id).
  */
 function pruneObsoleteLhlMessages() {
-  const goldenLhl = readJson(LH_ROOT + '/lighthouse-core/lib/i18n/locales/en-US.json');
+  const goldenLhl = readJson('lighthouse-core/lib/i18n/locales/en-US.json');
   const goldenLocaleArgumentIds = getGoldenLocaleArgumentIds(goldenLhl);
 
   // Find all locale files, ignoring self-generated en-US, en-XL, and ctc files.
@@ -136,7 +136,7 @@ function pruneObsoleteLhlMessages() {
   const alreadyLoggedPrunes = new Set();
   for (const localePath of localePaths) {
     const absoluteLocalePath = path.join(LH_ROOT, localePath);
-    // readFileSync so that the file is pulled again once updated by a collect-strings run
+    // Re-read data so that the file is pulled again once updated by a collect-strings run.
     const localeLhl = readJson(absoluteLocalePath);
     const prunedLocale = pruneLocale(goldenLocaleArgumentIds, localeLhl, alreadyLoggedPrunes);
 

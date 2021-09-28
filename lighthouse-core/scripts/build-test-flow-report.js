@@ -17,8 +17,7 @@ import {LH_ROOT, readJson} from '../../root.js';
 
 execFileSync(`yarn`, ['build-report', '--flow']);
 
-const flow = readJson(
-      `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json`);
+const flow = readJson('lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json');
 
 const htmlReport = reportGenerator.generateFlowReportHtml(flow);
 

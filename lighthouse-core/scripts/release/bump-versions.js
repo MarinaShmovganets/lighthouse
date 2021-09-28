@@ -6,7 +6,6 @@
 'use strict';
 
 import fs from 'fs';
-import path from 'path';
 
 import glob from 'glob';
 
@@ -28,7 +27,7 @@ const ignore = [
 for (const file of glob.sync('**/{package.json,*.md}', {ignore})) {
   let text;
   if (file === 'package.json') {
-    const pkg = readJson(path.resolve(file));
+    const pkg = readJson(file);
     if (pkg.version.startsWith('file')) continue;
     pkg.version = NEW_VERSION;
     text = JSON.stringify(pkg, null, 2) + '\n';

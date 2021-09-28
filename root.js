@@ -6,14 +6,23 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
+const url = require('url');
+
+// import {dirname} from 'path';
+// import {fileURLToPath} from 'url';
 
 module.exports = {
   LH_ROOT: __dirname,
-  /** @param {string} path */
-  readJson(path) {
-    // TODO: could be nice to accept paths relative to LH_ROOT ? this would still
-    // allow absolute paths.
-    // return JSON.parse(fs.readFileSync(path.resolve(__dirname, path), 'utf-8'));
-    return JSON.parse(fs.readFileSync(path, 'utf-8'));
+  /**
+   * Return parsed json object.
+   * Resolves path relative to importMeta.url (if provided) or LH_ROOT (if not provided).
+   * @param {string} filePath Can be an absolute or relative path.
+   * @param {ImportMeta=} importMeta
+   */
+  readJson(filePath, importMeta) {
+    const dir = importMeta ? path.dirname(url.fileURLToPath(importMeta.url)) : __dirname;
+    filePath = path.resolve(dir, filePath);
+    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
   },
 };

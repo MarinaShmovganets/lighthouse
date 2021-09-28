@@ -13,9 +13,8 @@ import glob from 'glob';
 
 import {LH_ROOT, readJson} from '../../../root.js';
 
-const enUsLhlFilename = LH_ROOT + '/lighthouse-core/lib/i18n/locales/en-US.json';
 /** @type {LhlMessages} */
-const enUsLhl = readJson(enUsLhlFilename);
+const enUsLhl = readJson('lighthouse-core/lib/i18n/locales/en-US.json');
 
 /**
  * Count how many locale files have a translated version of each string found in
@@ -40,9 +39,9 @@ function countTranslatedMessages() {
   const countPerMessage = new Map(enUsEntries);
 
   for (const localeFilename of localeFilenames) {
-    // Use readFileSync in case other code in this process has altered the require()d form.
+    // Re-read data in case other code in this process has altered the require()d form.
     /** @type {LhlMessages} */
-    const localeLhl = readJson(path.join(LH_ROOT, localeFilename));
+    const localeLhl = readJson(localeFilename);
 
     for (const localeKey of Object.keys(localeLhl)) {
       const messageCount = countPerMessage.get(localeKey);

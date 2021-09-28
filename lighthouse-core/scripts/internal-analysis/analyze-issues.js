@@ -64,9 +64,8 @@ function normalizeIssue(issue) {
   return issue;
 }
 
-const ISSUES_PATH = path.join(LH_ROOT, '.tmp/_issues.json');
 /** @type {Array<AugmentedGitHubIssue>} */
-const _ISSUES = readJson(ISSUES_PATH).map(normalizeIssue);
+const _ISSUES = readJson('.tmp/_issues.json').map(normalizeIssue);
 const _ISSUES_SINCE = _ISSUES.filter(issue => new Date(issue.created_at).getTime() > START_AT);
 const ISSUES = _ISSUES_SINCE.filter(issue => !issue.pull_request);
 
