@@ -29,10 +29,6 @@ const HeaderThumbnail: FunctionComponent<{
   );
 };
 
-const HeaderSegment: FunctionComponent = () => {
-  return <div className="HeaderSegment"/>;
-};
-
 export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
 ({currentLhr}) => {
   const flowResult = useFlowResult();
@@ -46,10 +42,10 @@ export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
     <div className="Header">
       {
         prevStep && <>
-          <HeaderSegment/>
+          <div className="Header__segment"/>
           <div className="Header__prev-thumbnail">
             <HeaderThumbnail reportResult={Util.prepareReportResult(prevStep.lhr)} position="prev"/>
-            <HeaderSegment/>
+            <div className="Header__segment"/>
           </div>
           <a
             className="Header__prev-title"
@@ -69,14 +65,14 @@ export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
       {
         nextStep && <>
           <div className="Header__next-thumbnail">
-            <HeaderSegment/>
+            <div className="Header__segment"/>
             <HeaderThumbnail reportResult={Util.prepareReportResult(nextStep.lhr)} position="next"/>
           </div>
           <a
             className="Header__next-title"
             href={`#index=${index + 1}`}
           >{nextStep.name}</a>
-          <HeaderSegment/>
+          <div className="Header__segment"/>
         </>
       }
     </div>

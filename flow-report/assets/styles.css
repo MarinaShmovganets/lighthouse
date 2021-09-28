@@ -403,10 +403,10 @@
 .Header a {
   color: var(--color-gray-800);
 }
-.Header > .HeaderSegment:first-child {
+.Header > .Header__segment:first-child {
   grid-area: prev-seg;
 }
-.Header > .HeaderSegment:last-child {
+.Header > .Header__segment:last-child {
   grid-area: next-seg;
 }
 
@@ -425,12 +425,12 @@
   align-items: center;
   grid-area: next-tn;
 }
-.Header__prev-thumbnail .HeaderSegment,
-.Header__next-thumbnail .HeaderSegment {
+.Header__prev-thumbnail .Header__segment,
+.Header__next-thumbnail .Header__segment {
   flex-grow: 1;
 }
 
-.HeaderSegment {
+.Header__segment {
   height: 2px;
   background-color: var(--color-blue-A700);
 }
