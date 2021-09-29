@@ -8,22 +8,30 @@ import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
 
 import {FlowSegment, FlowStepThumbnail, Separator} from '../common';
-import {getModeDescription, useFlowResult} from '../util';
+import {useModeDescription, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 import {SummaryCategory} from './category';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 const THUMBNAIL_WIDTH = 50;
 
-const SummaryNavigationHeader: FunctionComponent<{url: string}> = ({url}) => {
+const SummaryNavigationHeader: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
   return (
     <div className="SummaryNavigationHeader" data-testid="SummaryNavigationHeader">
       <FlowSegment/>
-      <div className="SummaryNavigationHeader__url">{url}</div>
-      <div className="SummaryNavigationHeader__category">Performance</div>
-      <div className="SummaryNavigationHeader__category">Accessibility</div>
-      <div className="SummaryNavigationHeader__category">Best Practices</div>
-      <div className="SummaryNavigationHeader__category">SEO</div>
+      <div className="SummaryNavigationHeader__url">{lhr.finalUrl}</div>
+      <div className="SummaryNavigationHeader__category">
+        {lhr.categories['performance'].title}
+      </div>
+      <div className="SummaryNavigationHeader__category">
+        {lhr.categories['accessibility'].title}
+      </div>
+      <div className="SummaryNavigationHeader__category">
+        {lhr.categories['best-practices'].title}
+      </div>
+      <div className="SummaryNavigationHeader__category">
+        {lhr.categories['seo'].title}
+      </div>
     </div>
   );
 };
@@ -37,12 +45,13 @@ export const SummaryFlowStep: FunctionComponent<{
   hashIndex: number,
 }> = ({lhr, label, hashIndex}) => {
   const reportResult = useMemo(() => Util.prepareReportResult(lhr), [lhr]);
+  const modeDescription = useModeDescription(lhr.gatherMode);
 
   return (
     <div className="SummaryFlowStep">
       {
         lhr.gatherMode === 'navigation' || hashIndex === 0 ?
-          <SummaryNavigationHeader url={lhr.finalUrl}/> :
+          <SummaryNavigationHeader lhr={lhr}/> :
           <div className="SummaryFlowStep__separator">
             <FlowSegment/>
             <Separator/>
@@ -54,7 +63,7 @@ export const SummaryFlowStep: FunctionComponent<{
       }
       <FlowSegment mode={lhr.gatherMode}/>
       <div className="SummaryFlowStep__label">
-        <div className="SummaryFlowStep__mode">{getModeDescription(lhr.gatherMode)}</div>
+        <div className="SummaryFlowStep__mode">{modeDescription}</div>
         <a className="SummaryFlowStep__link" href={`#index=${hashIndex}`}>{label}</a>
       </div>
       {

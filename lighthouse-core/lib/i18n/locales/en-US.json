@@ -1,4 +1,13 @@
 {
+  "flow-report/src/i18n/ui-strings.js | navigationDescription": {
+    "message": "Page load"
+  },
+  "flow-report/src/i18n/ui-strings.js | snapshotDescription": {
+    "message": "Captured state of page"
+  },
+  "flow-report/src/i18n/ui-strings.js | timespanDescription": {
+    "message": "User interactions"
+  },
   "lighthouse-core/audits/accessibility/accesskeys.js | description": {
     "message": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more](https://web.dev/accesskeys/)."
   },

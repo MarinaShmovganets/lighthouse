@@ -5,11 +5,11 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {useMemo} from 'preact/hooks';
 
 import {Separator} from '../common';
+import {useI18n} from '../i18n/i18n';
 import {CpuIcon, EnvIcon, SummaryIcon} from '../icons';
-import {classNames, useCurrentLhr, useFlowResult, useLocale} from '../util';
+import {classNames, useCurrentLhr, useFlowResult} from '../util';
 import {SidebarFlow} from './flow';
 
 export const SidebarSummary: FunctionComponent = () => {
@@ -55,19 +55,11 @@ const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
 };
 
 export const SidebarHeader: FunctionComponent<{title: string, date: string}> = ({title, date}) => {
-  const locale = useLocale();
-  const formatter = useMemo(() => {
-    const options: Intl.DateTimeFormatOptions = {
-      month: 'short', day: 'numeric', year: 'numeric',
-      hour: 'numeric', minute: 'numeric', timeZoneName: 'short',
-    };
-    return new Intl.DateTimeFormat(locale, options);
-  }, [locale]);
-  const dateString = useMemo(() => formatter.format(new Date(date)), [date, formatter]);
+  const i18n = useI18n();
   return (
     <div className="SidebarHeader">
       <div className="SidebarHeader__title">{title}</div>
-      <div className="SidebarHeader__date">{dateString}</div>
+      <div className="SidebarHeader__date">{i18n.formatDateTime(date)}</div>
     </div>
   );
 };
