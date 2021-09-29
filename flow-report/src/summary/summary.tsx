@@ -8,7 +8,7 @@ import {FunctionComponent} from 'preact';
 import {useMemo} from 'preact/hooks';
 
 import {FlowSegment, FlowStepThumbnail, Separator} from '../common';
-import {useModeDescription, useFlowResult} from '../util';
+import {getModeDescription, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 import {SummaryCategory} from './category';
 import {useUIStrings} from '../i18n/i18n';
@@ -46,7 +46,8 @@ export const SummaryFlowStep: FunctionComponent<{
   hashIndex: number,
 }> = ({lhr, label, hashIndex}) => {
   const reportResult = useMemo(() => Util.prepareReportResult(lhr), [lhr]);
-  const modeDescription = useModeDescription(lhr.gatherMode);
+  const UIStrings = useUIStrings();
+  const modeDescription = getModeDescription(lhr.gatherMode, UIStrings);
 
   return (
     <div className="SummaryFlowStep">

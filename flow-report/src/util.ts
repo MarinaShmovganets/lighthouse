@@ -7,7 +7,7 @@
 import {createContext} from 'preact';
 import {useContext, useEffect, useMemo, useState} from 'preact/hooks';
 
-import {useUIStrings} from './i18n/i18n';
+import type {UIStringsType} from './i18n/ui-strings';
 
 export const FlowResultContext = createContext<LH.FlowResult|undefined>(undefined);
 
@@ -48,6 +48,14 @@ export function getScreenshot(reportResult: LH.ReportResult) {
     fullPageScreenshotAudit.details.screenshot.data;
 
   return fullPageScreenshot || null;
+}
+
+export function getModeDescription(mode: LH.Result.GatherMode, UIStrings: UIStringsType) {
+  switch (mode) {
+    case 'navigation': return UIStrings.navigationDescription;
+    case 'timespan': return UIStrings.timespanDescription;
+    case 'snapshot': return UIStrings.snapshotDescription;
+  }
 }
 
 export function useFlowResult(): LH.FlowResult {
@@ -101,13 +109,4 @@ export function useCurrentLhr(): LH.FlowResult.LhrRef|null {
 
     return {value: step.lhr, index};
   }, [indexString, flowResult]);
-}
-
-export function useModeDescription(mode: LH.Result.GatherMode) {
-  const UIStrings = useUIStrings();
-  switch (mode) {
-    case 'navigation': return UIStrings.navigationDescription;
-    case 'timespan': return UIStrings.timespanDescription;
-    case 'snapshot': return UIStrings.snapshotDescription;
-  }
 }

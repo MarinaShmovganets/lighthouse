@@ -4,6 +4,8 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+/** @typedef {typeof UIStrings} UIStringsType */
+
 export const UIStrings = {
   /** Description of a report that evaluates a web page as it loads, but before the user interacts with it. */
   navigationDescription: 'Page load',
