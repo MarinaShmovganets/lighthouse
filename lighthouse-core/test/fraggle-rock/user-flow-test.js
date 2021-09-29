@@ -117,6 +117,13 @@ describe('UserFlow', () => {
     });
   });
 
+  describe('.endTimespan()', () => {
+    it('should throw if a timespan has not started', async () => {
+      const flow = new UserFlow(mockPage.asPage());
+      await expect(flow.endTimespan()).rejects.toBeTruthy();
+    });
+  });
+
   describe('.snapshot()', () => {
     it('should throw if a timespan is active', async () => {
       const flow = new UserFlow(mockPage.asPage());
