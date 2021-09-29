@@ -11,6 +11,7 @@ import {FlowSegment, FlowStepThumbnail, Separator} from '../common';
 import {useModeDescription, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 import {SummaryCategory} from './category';
+import {useUIStrings} from '../i18n/i18n';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 const THUMBNAIL_WIDTH = 50;
@@ -104,6 +105,7 @@ const SummaryFlow: FunctionComponent = () => {
 
 export const SummaryHeader: FunctionComponent = () => {
   const flowResult = useFlowResult();
+  const UIStrings = useUIStrings();
 
   let numNavigation = 0;
   let numTimespan = 0;
@@ -130,7 +132,7 @@ export const SummaryHeader: FunctionComponent = () => {
 
   return (
     <div className="SummaryHeader">
-      <div className="SummaryHeader__title">Summary</div>
+      <div className="SummaryHeader__title">{UIStrings.summary}</div>
       <div className="SummaryHeader__subtitle">{subtitle}</div>
     </div>
   );
@@ -146,11 +148,13 @@ const SummarySectionHeader: FunctionComponent = ({children}) => {
 };
 
 export const Summary: FunctionComponent = () => {
+  const UIStrings = useUIStrings();
+
   return (
     <div className="Summary" data-testid="Summary">
       <SummaryHeader/>
       <Separator/>
-      <SummarySectionHeader>ALL REPORTS</SummarySectionHeader>
+      <SummarySectionHeader>{UIStrings.allReports}</SummarySectionHeader>
       <SummaryFlow/>
     </div>
   );

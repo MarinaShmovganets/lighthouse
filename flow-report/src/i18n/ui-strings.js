@@ -5,10 +5,20 @@
  */
 
 export const UIStrings = {
-  /** Shitty description */
+  /** Description of a report that evaluates a web page as it loads, but before the user interacts with it. */
   navigationDescription: 'Page load',
-  /** Shitty description */
+  /** Description of a report that evaluates a web page over a period of time where a user could have interacted with the page. */
   timespanDescription: 'User interactions',
-  /** Shitty description */
+  /** Description of a report that evaluates the state of a web page at a single point in time. */
   snapshotDescription: 'Captured state of page',
+  /** Title of a home page that summarizes and links to the other pages. */
+  summary: 'Summary',
+  /** Title of a report section lists and links to multiple sub-reports. All caps is preferred but not required. */
+  allReports: 'ALL REPORTS',
+  /** Default title of a Lighthouse report over a user flow. "User Flow" refers to a series of user interactions on a page that a site developer wants to test. "Lighthouse" is a product name https://developers.google.com/web/tools/lighthouse. */
+  title: 'Lighthouse User Flow Report',
+  /** Label for a report evaluating a web page. Label indicates that the report refers to the desktop version of the site. */
+  desktop: 'Desktop',
+  /** Label for a report evaluating a web page. Label indicates that the report refers to the mobile version of the site. */
+  mobile: 'Mobile',
 };

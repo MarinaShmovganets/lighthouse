@@ -7,13 +7,15 @@
 import {FunctionComponent} from 'preact';
 
 import {Separator} from '../common';
-import {useI18n} from '../i18n/i18n';
+import {useI18n, useUIStrings} from '../i18n/i18n';
 import {CpuIcon, EnvIcon, SummaryIcon} from '../icons';
 import {classNames, useCurrentLhr, useFlowResult} from '../util';
 import {SidebarFlow} from './flow';
 
 export const SidebarSummary: FunctionComponent = () => {
   const currentLhr = useCurrentLhr();
+  const UIStrings = useUIStrings();
+
   const url = new URL(location.href);
   url.hash = '#';
   return (
@@ -25,12 +27,14 @@ export const SidebarSummary: FunctionComponent = () => {
       <div className="SidebarSummary__icon">
         <SummaryIcon/>
       </div>
-      <div className="SidebarSummary__label">Summary</div>
+      <div className="SidebarSummary__label">{UIStrings.summary}</div>
     </a>
   );
 };
 
 const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> = ({settings}) => {
+  const UIStrings = useUIStrings();
+
   return (
     <div className="SidebarRuntimeSettings">
       <div className="SidebarRuntimeSettings__item">
@@ -38,8 +42,7 @@ const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
           <EnvIcon/>
         </div>
         {
-          `${settings.formFactor === 'desktop' ? 'Desktop' : 'Mobile'} | ` +
-          `${settings.screenEmulation.height}x${settings.screenEmulation.width}px`
+          settings.formFactor === 'desktop' ? UIStrings.desktop : UIStrings.mobile
         }
       </div>
       <div className="SidebarRuntimeSettings__item">
