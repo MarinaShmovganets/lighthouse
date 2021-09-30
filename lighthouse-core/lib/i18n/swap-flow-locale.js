@@ -13,8 +13,8 @@ const swapLocale = require('./swap-locale.js');
  */
 module.exports = function swapFlowLocale(flowResult, locale) {
   const localizedFlowResult = JSON.parse(JSON.stringify(flowResult));
-  localizedFlowResult.steps = flowResult.steps.map(s => {
-    return {...s, lhr: swapLocale(s.lhr, locale).lhr};
+  localizedFlowResult.steps = flowResult.steps.map(step => {
+    return {...step, lhr: swapLocale(step.lhr, locale).lhr};
   });
   return localizedFlowResult;
 };
