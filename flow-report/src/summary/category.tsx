@@ -13,20 +13,20 @@ import {useUIStrings} from '../i18n/i18n';
 
 import type {UIStringsType} from '../i18n/ui-strings';
 
-function getGatherModeLabel(gatherMode: LH.Result.GatherMode, UIStrings: UIStringsType) {
+function getGatherModeLabel(gatherMode: LH.Result.GatherMode, strings: UIStringsType) {
   switch (gatherMode) {
-    case 'navigation': return UIStrings.navigationReport;
-    case 'timespan': return UIStrings.timespanReport;
-    case 'snapshot': return UIStrings.snapshotReport;
+    case 'navigation': return strings.navigationReport;
+    case 'timespan': return strings.timespanReport;
+    case 'snapshot': return strings.snapshotReport;
   }
 }
 
-function getCategoryRating(rating: string, UIStrings: UIStringsType) {
+function getCategoryRating(rating: string, strings: UIStringsType) {
   switch (rating) {
-    case 'pass': return UIStrings.ratingPass;
-    case 'average': return UIStrings.ratingAverage;
-    case 'fail': return UIStrings.ratingFail;
-    case 'error': return UIStrings.ratingError;
+    case 'pass': return strings.ratingPass;
+    case 'average': return strings.ratingAverage;
+    case 'fail': return strings.ratingFail;
+    case 'error': return strings.ratingError;
   }
 }
 

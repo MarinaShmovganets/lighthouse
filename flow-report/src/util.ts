@@ -50,11 +50,11 @@ export function getScreenshot(reportResult: LH.ReportResult) {
   return fullPageScreenshot || null;
 }
 
-export function getModeDescription(mode: LH.Result.GatherMode, UIStrings: UIStringsType) {
+export function getModeDescription(mode: LH.Result.GatherMode, strings: UIStringsType) {
   switch (mode) {
-    case 'navigation': return UIStrings.navigationDescription;
-    case 'timespan': return UIStrings.timespanDescription;
-    case 'snapshot': return UIStrings.snapshotDescription;
+    case 'navigation': return strings.navigationDescription;
+    case 'timespan': return strings.timespanDescription;
+    case 'snapshot': return strings.snapshotDescription;
   }
 }
 
