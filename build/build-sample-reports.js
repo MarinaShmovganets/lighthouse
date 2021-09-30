@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const swapLocale = require('../lighthouse-core/lib/i18n/swap-locale.js');
+const swapFlowLocale = require('../lighthouse-core/lib/i18n/swap-flow-locale.js');
 const ReportGenerator = require('../report/generator/report-generator.js');
 const {defaultSettings} = require('../lighthouse-core/config/constants.js');
 const lighthouse = require('../lighthouse-core/index.js');
@@ -188,16 +189,4 @@ async function generateErrorLHR() {
 
   fs.rmdirSync(TMP, {recursive: true});
   return errorLhr;
-}
-
-/**
- * @param {LH.FlowResult} flowResult
- * @param {LH.Locale} locale
- */
-function swapFlowLocale(flowResult, locale) {
-  const localizedFlowResult = JSON.parse(JSON.stringify(flowResult));
-  localizedFlowResult.steps = flowResult.steps.map(s => {
-    return {...s, lhr: swapLocale(s.lhr, locale).lhr};
-  });
-  return localizedFlowResult;
 }
