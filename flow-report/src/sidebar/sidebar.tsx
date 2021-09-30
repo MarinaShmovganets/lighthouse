@@ -14,7 +14,7 @@ import {SidebarFlow} from './flow';
 
 export const SidebarSummary: FunctionComponent = () => {
   const currentLhr = useCurrentLhr();
-  const UIStrings = useUIStrings();
+  const strings = useUIStrings();
 
   const url = new URL(location.href);
   url.hash = '#';
@@ -27,13 +27,13 @@ export const SidebarSummary: FunctionComponent = () => {
       <div className="SidebarSummary__icon">
         <SummaryIcon/>
       </div>
-      <div className="SidebarSummary__label">{UIStrings.summary}</div>
+      <div className="SidebarSummary__label">{strings.summary}</div>
     </a>
   );
 };
 
 const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> = ({settings}) => {
-  const UIStrings = useUIStrings();
+  const strings = useUIStrings();
 
   return (
     <div className="SidebarRuntimeSettings">
@@ -42,7 +42,7 @@ const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
           <EnvIcon/>
         </div>
         {
-          settings.formFactor === 'desktop' ? UIStrings.desktop : UIStrings.mobile
+          settings.formFactor === 'desktop' ? strings.desktop : strings.mobile
         }
       </div>
       <div className="SidebarRuntimeSettings__item">

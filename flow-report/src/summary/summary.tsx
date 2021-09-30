@@ -46,8 +46,8 @@ export const SummaryFlowStep: FunctionComponent<{
   hashIndex: number,
 }> = ({lhr, label, hashIndex}) => {
   const reportResult = useMemo(() => Util.prepareReportResult(lhr), [lhr]);
-  const UIStrings = useUIStrings();
-  const modeDescription = getModeDescription(lhr.gatherMode, UIStrings);
+  const strings = useUIStrings();
+  const modeDescription = getModeDescription(lhr.gatherMode, strings);
 
   return (
     <div className="SummaryFlowStep">
@@ -106,7 +106,7 @@ const SummaryFlow: FunctionComponent = () => {
 
 export const SummaryHeader: FunctionComponent = () => {
   const flowResult = useFlowResult();
-  const UIStrings = useUIStrings();
+  const strings = useUIStrings();
 
   let numNavigation = 0;
   let numTimespan = 0;
@@ -133,7 +133,7 @@ export const SummaryHeader: FunctionComponent = () => {
 
   return (
     <div className="SummaryHeader">
-      <div className="SummaryHeader__title">{UIStrings.summary}</div>
+      <div className="SummaryHeader__title">{strings.summary}</div>
       <div className="SummaryHeader__subtitle">{subtitle}</div>
     </div>
   );
@@ -149,13 +149,13 @@ const SummarySectionHeader: FunctionComponent = ({children}) => {
 };
 
 export const Summary: FunctionComponent = () => {
-  const UIStrings = useUIStrings();
+  const strings = useUIStrings();
 
   return (
     <div className="Summary" data-testid="Summary">
       <SummaryHeader/>
       <Separator/>
-      <SummarySectionHeader>{UIStrings.allReports}</SummarySectionHeader>
+      <SummarySectionHeader>{strings.allReports}</SummarySectionHeader>
       <SummaryFlow/>
     </div>
   );

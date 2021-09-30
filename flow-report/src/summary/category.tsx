@@ -34,7 +34,7 @@ export const SummaryTooltip: FunctionComponent<{
   category: LH.ReportResult.Category,
   gatherMode: LH.Result.GatherMode
 }> = ({category, gatherMode}) => {
-  const UIStrings = useUIStrings();
+  const strings = useUIStrings();
   const {numPassed, numAudits, totalWeight} = Util.calculateCategoryFraction(category);
 
   const displayAsFraction = Util.shouldDisplayAsFraction(gatherMode);
@@ -44,7 +44,7 @@ export const SummaryTooltip: FunctionComponent<{
 
   return (
     <div className="SummaryTooltip">
-      <div className="SummaryTooltip__title">{getGatherModeLabel(gatherMode, UIStrings)}</div>
+      <div className="SummaryTooltip__title">{getGatherModeLabel(gatherMode, strings)}</div>
       <Separator/>
       <div className="SummaryTooltip__category">
         <div className="SummaryTooltip__category-title">
@@ -56,7 +56,7 @@ export const SummaryTooltip: FunctionComponent<{
               className={`SummaryTooltip__rating SummaryTooltip__rating--${rating}`}
               data-testid="SummaryTooltip__rating"
             >
-              <span>{getCategoryRating(rating, UIStrings)}</span>
+              <span>{getCategoryRating(rating, strings)}</span>
               {
                 !displayAsFraction && category.score && <>
                   <span> · </span>

@@ -39,8 +39,8 @@ export const Header: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
   const prevStep = flowResult.steps[index - 1];
   const nextStep = flowResult.steps[index + 1];
 
-  const UIStrings = useUIStrings();
-  const modeDescription = getModeDescription(step.lhr.gatherMode, UIStrings);
+  const strings = useUIStrings();
+  const modeDescription = getModeDescription(step.lhr.gatherMode, strings);
 
   return (
     <div className="Header">

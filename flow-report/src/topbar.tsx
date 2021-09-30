@@ -47,7 +47,7 @@ const Logo: FunctionComponent = () => {
 
 export const Topbar: FunctionComponent<{onMenuClick: JSX.MouseEventHandler<HTMLDivElement>}> =
 ({onMenuClick}) => {
-  const UIStrings = useUIStrings();
+  const strings = useUIStrings();
 
   return (
     <div className="Topbar">
@@ -57,7 +57,7 @@ export const Topbar: FunctionComponent<{onMenuClick: JSX.MouseEventHandler<HTMLD
       <div className="Topbar__logo">
         <Logo/>
       </div>
-      <div className="Topbar__title">{UIStrings.title}</div>
+      <div className="Topbar__title">{strings.title}</div>
     </div>
   );
 };
