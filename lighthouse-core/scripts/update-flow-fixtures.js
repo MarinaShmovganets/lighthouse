@@ -11,70 +11,33 @@ import puppeteer from 'puppeteer';
 
 import {LH_ROOT} from '../../root.js';
 import UserFlow from '../fraggle-rock/user-flow.js';
-import config from '../fraggle-rock/config/default-config.js';
-
-/**
- * @param {import('puppeteer').Browser} browser
- */
-async function buildSampleFlowResult(browser) {
-  const page = await browser.newPage();
-  const flow = new UserFlow(page);
-
-  await flow.navigate('https://www.mikescerealshack.co');
-
-  await flow.startTimespan({stepName: 'Search input'});
-  await page.type('input', 'call of duty');
-  const networkQuietPromise = page.waitForNavigation({waitUntil: ['networkidle0']});
-  await page.click('button[type=submit]');
-  await networkQuietPromise;
-  await flow.endTimespan();
-
-  await flow.snapshot({stepName: 'Search results'});
-
-  await flow.navigate('https://www.mikescerealshack.co/corrections');
-
-  const flowResult = flow.getFlowResult();
-
-  fs.writeFileSync(
-    `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.json`,
-    JSON.stringify(flowResult, null, 2)
-  );
-}
-
-/**
- * @param {import('puppeteer').Browser} browser
- */
-async function buildLocalizedFlowResult(browser) {
-  const page = await browser.newPage();
-
-  config.settings = {locale: 'en-XL'};
-  const flow = new UserFlow(page);
-
-  await flow.navigate('https://www.mikescerealshack.co');
-
-  await flow.startTimespan({stepName: 'Search input'});
-  await page.type('input', 'call of duty');
-  const networkQuietPromise = page.waitForNavigation({waitUntil: ['networkidle0']});
-  await page.click('button[type=submit]');
-  await networkQuietPromise;
-  await flow.endTimespan();
-
-  await flow.snapshot({stepName: 'Search results'});
-
-  const flowResult = flow.getFlowResult();
-
-  fs.writeFileSync(
-    `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.en-XL.json`,
-    JSON.stringify(flowResult, null, 2)
-  );
-}
 
 (async () => {
   const browser = await puppeteer.launch({headless: false});
 
   try {
-    await buildSampleFlowResult(browser);
-    await buildLocalizedFlowResult(browser);
+    const page = await browser.newPage();
+    const flow = new UserFlow(page);
+
+    await flow.navigate('https://www.mikescerealshack.co');
+
+    await flow.startTimespan({stepName: 'Search input'});
+    await page.type('input', 'call of duty');
+    const networkQuietPromise = page.waitForNavigation({waitUntil: ['networkidle0']});
+    await page.click('button[type=submit]');
+    await networkQuietPromise;
+    await flow.endTimespan();
+
+    await flow.snapshot({stepName: 'Search results'});
+
+    await flow.navigate('https://www.mikescerealshack.co/corrections');
+
+    const flowResult = flow.getFlowResult();
+
+    fs.writeFileSync(
+      `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.json`,
+      JSON.stringify(flowResult, null, 2)
+    );
 
     process.exit(0);
   } catch (err) {
