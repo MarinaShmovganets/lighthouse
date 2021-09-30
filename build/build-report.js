@@ -9,6 +9,7 @@ const rollup = require('rollup');
 const rollupPlugins = require('./rollup-plugins.js');
 const fs = require('fs');
 const {LH_ROOT} = require('../root.js');
+const {getIcuMessageIdParts} = require('../lighthouse-core/lib/i18n/i18n.js');
 
 /**
  * Extract only the strings needed for the flow report into
@@ -25,12 +26,12 @@ function buildFlowStrings() {
   for (const [locale, lhlMessages] of Object.entries(locales)) {
     const localizedStrings = Object.fromEntries(
       Object.entries(lhlMessages).map(([icuMessageId, v]) => {
-        const [filename, varName] = icuMessageId.split(' | ');
-        if (!filename.endsWith('ui-strings.js') || !(varName in UIStrings)) {
+        const {filename, key} = getIcuMessageIdParts(icuMessageId);
+        if (!filename.endsWith('ui-strings.js') || !(key in UIStrings)) {
           return [];
         }
 
-        return [varName, v.message];
+        return [key, v.message];
       })
     );
     strings[/** @type {LH.Locale} */ (locale)] = localizedStrings;
