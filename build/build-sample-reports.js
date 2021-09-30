@@ -21,10 +21,6 @@ const {LH_ROOT, readJson} = require('../root.js');
 const flowResult = readJson(
   `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.json`
 );
-/** @type {LH.FlowResult} */
-const localizedFlowResult = readJson(
-  `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.en-XL.json`
-);
 
 const DIST = path.join(LH_ROOT, 'dist');
 
@@ -61,24 +57,22 @@ const DIST = path.join(LH_ROOT, 'dist');
     }
   });
 
-  generateFlowReport();
-  generateLocalizedFlowReport();
+  generateFlowReports();
 })();
 
-function generateFlowReport() {
-  const html = ReportGenerator.generateFlowReportHtml(flowResult);
-  const filepath = `${DIST}/sample-reports/flow-report/index.html`;
-  fs.mkdirSync(path.dirname(filepath), {recursive: true});
-  fs.writeFileSync(filepath, html, {encoding: 'utf-8'});
-  console.log('✅', filepath, 'written.');
-}
+function generateFlowReports() {
+  const filenameToFlowResult = {
+    'flow-report': flowResult,
+    'xl.flow-report': swapFlowLocale(flowResult, 'en-XL'),
+  };
 
-function generateLocalizedFlowReport() {
-  const html = ReportGenerator.generateFlowReportHtml(localizedFlowResult);
-  const filepath = `${DIST}/sample-reports/flow-report_en-XL/index.html`;
-  fs.mkdirSync(path.dirname(filepath), {recursive: true});
-  fs.writeFileSync(filepath, html, {encoding: 'utf-8'});
-  console.log('✅', filepath, 'written.');
+  for (const [filename, fr] of Object.entries(filenameToFlowResult)) {
+    const html = ReportGenerator.generateFlowReportHtml(fr);
+    const filepath = `${DIST}/sample-reports/${filename}/index.html`;
+    fs.mkdirSync(path.dirname(filepath), {recursive: true});
+    fs.writeFileSync(filepath, html, {encoding: 'utf-8'});
+    console.log('✅', filepath, 'written.');
+  }
 }
 
 /**
@@ -194,4 +188,16 @@ async function generateErrorLHR() {
 
   fs.rmdirSync(TMP, {recursive: true});
   return errorLhr;
+}
+
+/**
+ * @param {LH.FlowResult} flowResult
+ * @param {LH.Locale} locale
+ */
+function swapFlowLocale(flowResult, locale) {
+  const localizedFlowResult = JSON.parse(JSON.stringify(flowResult));
+  localizedFlowResult.steps = flowResult.steps.map(s => {
+    return {...s, lhr: swapLocale(s.lhr, locale).lhr};
+  });
+  return localizedFlowResult;
 }
