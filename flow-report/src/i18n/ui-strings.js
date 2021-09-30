@@ -22,7 +22,7 @@ export const UIStrings = {
   /** Title of a home page that summarizes and links to the other pages. */
   summary: 'Summary',
   /** Title of a report section lists and links to multiple sub-reports. All caps is preferred but not required. */
-  allReports: 'ALL REPORTS',
+  allReports: 'All Reports',
   /** Default title of a Lighthouse report over a user flow. "User Flow" refers to a series of user interactions on a page that a site developer wants to test. "Lighthouse" is a product name https://developers.google.com/web/tools/lighthouse. */
   title: 'Lighthouse User Flow Report',
   /** Label for a report evaluating a web page. Label indicates that the report refers to the desktop version of the site. */
