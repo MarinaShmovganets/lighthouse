@@ -11,14 +11,35 @@
   "flow-report/src/i18n/ui-strings.js | navigationDescription": {
     "message": "P̂áĝé l̂óâd́"
   },
+  "flow-report/src/i18n/ui-strings.js | navigationReport": {
+    "message": "N̂áv̂íĝát̂íôń r̂ép̂ór̂t́"
+  },
+  "flow-report/src/i18n/ui-strings.js | ratingAverage": {
+    "message": "Âv́êŕâǵê"
+  },
+  "flow-report/src/i18n/ui-strings.js | ratingError": {
+    "message": "Êŕr̂ór̂"
+  },
+  "flow-report/src/i18n/ui-strings.js | ratingFail": {
+    "message": "P̂óôŕ"
+  },
+  "flow-report/src/i18n/ui-strings.js | ratingPass": {
+    "message": "Ĝóôd́"
+  },
   "flow-report/src/i18n/ui-strings.js | snapshotDescription": {
     "message": "Ĉáp̂t́ûŕêd́ ŝt́ât́ê óf̂ ṕâǵê"
+  },
+  "flow-report/src/i18n/ui-strings.js | snapshotReport": {
+    "message": "Ŝńâṕŝh́ôt́ r̂ép̂ór̂t́"
   },
   "flow-report/src/i18n/ui-strings.js | summary": {
     "message": "Ŝúm̂ḿâŕŷ"
   },
   "flow-report/src/i18n/ui-strings.js | timespanDescription": {
     "message": "Ûśêŕ îńt̂ér̂áĉt́îón̂ś"
+  },
+  "flow-report/src/i18n/ui-strings.js | timespanReport": {
+    "message": "T̂ím̂éŝṕâń r̂ép̂ór̂t́"
   },
   "flow-report/src/i18n/ui-strings.js | title": {
     "message": "L̂íĝh́t̂h́ôúŝé Ûśêŕ F̂ĺôẃ R̂ép̂ór̂t́"

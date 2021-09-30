@@ -11,14 +11,35 @@
   "flow-report/src/i18n/ui-strings.js | navigationDescription": {
     "message": "Page load"
   },
+  "flow-report/src/i18n/ui-strings.js | navigationReport": {
+    "message": "Navigation report"
+  },
+  "flow-report/src/i18n/ui-strings.js | ratingAverage": {
+    "message": "Average"
+  },
+  "flow-report/src/i18n/ui-strings.js | ratingError": {
+    "message": "Error"
+  },
+  "flow-report/src/i18n/ui-strings.js | ratingFail": {
+    "message": "Poor"
+  },
+  "flow-report/src/i18n/ui-strings.js | ratingPass": {
+    "message": "Good"
+  },
   "flow-report/src/i18n/ui-strings.js | snapshotDescription": {
     "message": "Captured state of page"
+  },
+  "flow-report/src/i18n/ui-strings.js | snapshotReport": {
+    "message": "Snapshot report"
   },
   "flow-report/src/i18n/ui-strings.js | summary": {
     "message": "Summary"
   },
   "flow-report/src/i18n/ui-strings.js | timespanDescription": {
     "message": "User interactions"
+  },
+  "flow-report/src/i18n/ui-strings.js | timespanReport": {
+    "message": "Timespan report"
   },
   "flow-report/src/i18n/ui-strings.js | title": {
     "message": "Lighthouse User Flow Report"
