@@ -110,7 +110,7 @@ describe('PSI', () => {
         }, /no category groups/i);
       });
 
-      it('includes custom title and description', () => {
+      it.only('includes custom title and description', () => {
         const {perfCategoryEl} = prepareLabData(sampleResultsStr, document);
         const metricsGroupEl = perfCategoryEl.querySelector('.lh-audit-group--metrics');
 
@@ -118,6 +118,12 @@ describe('PSI', () => {
         // Replacing markdown because ".textContent" will be post-markdown.
         const expectedDescription = Util.UIStrings.lsPerformanceCategoryDescription
           .replace('[Lighthouse](https://developers.google.com/web/tools/lighthouse/)', 'Lighthouse');
+
+        // Styles should be applied. We'll confirm our chevrons are a reasonable size.
+        console.log(perfCategoryEl.getBoundingClientRect())
+        const chevEl = Array.from(perfCategoryEl.querySelectorAll('.lh-chevron')).map(e => e.clientHeight);
+        expect(chevEl.clientHeight).toEqual(0);
+        expect(chevEl.clientHeight).toBeLessThan(100);
 
         // Assume using default locale.
         const title = metricsGroupEl.querySelector('.lh-audit-group__title').textContent;
