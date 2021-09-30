@@ -32,7 +32,7 @@ Navigation reports analyze a single page load. Navigation is the most common typ
 #### Use Cases
 
 - Obtain a Lighthouse Performance score.
-- Measure First Contentful Paint, Largest Contentful Paint, Speed Index, or Time to Interactive.
+- Measure Performance metrics (First Contentful Paint, Largest Contentful Paint, Speed Index, Time to Interactive, Cumulative Layout Shift, Total Blocking Time).
 - Assess Progressive Web App capabilities.
 
 #### Code
@@ -91,7 +91,7 @@ async function main() {
 
   await flow.beginTimespan();
   await page.type('#username', 'lighthouse');
-  await page.type('#password', 'LighthouseR0cks!');
+  await page.type('#password', 'L1ghth0useR0cks!');
   await page.click('#login');
   await page.waitForSelector('#dashboard');
   await flow.endTimespan();
