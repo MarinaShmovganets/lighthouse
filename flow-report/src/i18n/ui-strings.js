@@ -35,15 +35,15 @@ export const UIStrings = {
   title: 'Lighthouse User Flow Report',
   /** Label for a list of Lighthouse categories. */
   categories: 'Categories',
-  /** Name of a Lighthouse category that evaluates how fast the page is. */
+  /** Title of the Performance category of audits. Equivalent to 'Web performance', this term is inclusive of all web page speed and loading optimization topics. Also used as a label of a score gauge; try to limit to 20 characters. */
   categoryPerformance: 'Performance',
-  /** Name of a Lighthouse category that evaluates how usable the page is by users of assistive technology such as screen readers. */
+  /** Title of the Accessibility category of audits. This section contains audits focused on making web content accessible to all users. Also used as a label of a score gauge; try to limit to 20 characters. */
   categoryAccessibility: 'Accessibility',
-  /** Name of a Lighthouse category that evaluates how well the page follows industry standard patterns. */
+  /** Title of the Best Practices category of audits. This is displayed at the top of a list of audits focused on topics related to following web development best practices and accepted guidelines. Also used as a label of a score gauge; try to limit to 20 characters. */
   categoryBestPractices: 'Best Practices',
-  /** Name of a Lighthouse category that evaluates how well the page followed SEO (Search Engine Optimization) advice. */
+  /** Title of the Search Engine Optimization (SEO) category of audits. This is displayed at the top of a list of audits focused on topics related to optimizing a website for indexing by search engines. Also used as a label of a score gauge; try to limit to 20 characters. */
   categorySeo: 'SEO',
-  /** Name of a Lighthouse category that evaluates whether the page is a progressive web app. */
+  /** Title of the Progressive Web Application (PWA) category of audits. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. Also used as a label of a score gauge. */
   categoryProgressiveWebApp: 'Progressive Web App',
   /** Label for a report evaluating a web page. Label indicates that the report refers to the desktop version of the site. */
   desktop: 'Desktop',
