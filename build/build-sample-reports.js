@@ -42,7 +42,7 @@ const DIST = path.join(LH_ROOT, 'dist');
   Object.entries(filenameToLhr).forEach(([filename, lhr]) => {
     for (const variant of ['', '⌣.cdt.', '⌣.psi.']) {
       let html = variant.includes('psi') ?
-        generatePsiReportHtml() :
+        generatePsiReportHtml(lhr) :
         ReportGenerator.generateReportHtml(lhr);
 
       if (variant.includes('cdt')) {
@@ -77,9 +77,10 @@ function generateFlowReports() {
 }
 
 /**
+ * @param {LH.Result} lhr
  * @return {string}
  */
-function generatePsiReportHtml() {
+function generatePsiReportHtml(lhr) {
   const sanitizedJson = ReportGenerator.sanitizeJson(tweakLhrForPsi(lhr));
   const PSI_TEMPLATE = fs.readFileSync(
     `${LH_ROOT}/report/test-assets/faux-psi-template.html`, 'utf8');
