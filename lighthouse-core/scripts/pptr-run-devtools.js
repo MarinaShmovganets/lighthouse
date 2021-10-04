@@ -102,6 +102,18 @@ const startLighthouse = `
 `;
 
 /**
+ * @param {string} url
+ */
+function isValidUrl(url) {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * @param {import('puppeteer').Page} page
  * @param {import('puppeteer').Browser} browser
  * @param {string} url
@@ -145,8 +157,8 @@ async function testPage(page, browser, url) {
   // Verify the first parameter to `startLighthouse`, which should be a url.
   // Don't try to check the exact value (because of redirects and such), just
   // make sure it exists.
-  if (!lhStartedResponse.result.value) {
-    throw new Error(`Lighthouse did not started correctly. Got unexpected value for url: ${
+  if (!isValidUrl(lhStartedResponse.result.value)) {
+    throw new Error(`Lighthouse did not start correctly. Got unexpected value for url: ${
       lhStartedResponse.result.value}`);
   }
 
