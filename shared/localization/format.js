@@ -17,9 +17,13 @@ const LOCALE_MESSAGES = require('./locales.js');
  * The locale tags for the localized messages available to Lighthouse on disk.
  * When bundled, these will be inlined by brfs.
  */
-const DEFAULT_LOCALES = fs.readdirSync(__dirname + '/locales/')
-  .filter(basename => basename.endsWith('.json') && !basename.endsWith('.ctc.json'))
-  .map(locale => locale.replace('.json', ''));
+let DEFAULT_LOCALES = ['__availableLocales__'];
+// TODO: need brfs in gh-pages-app. For now, above is replaced, see build-i18n.module.js
+if (fs.readdirSync) {
+  DEFAULT_LOCALES = fs.readdirSync(__dirname + '/locales/')
+    .filter(basename => basename.endsWith('.json') && !basename.endsWith('.ctc.json'))
+    .map(locale => locale.replace('.json', ''));
+}
 
 /** @typedef {import('intl-messageformat-parser').Element} MessageElement */
 /** @typedef {import('intl-messageformat-parser').ArgumentElement} ArgumentElement */

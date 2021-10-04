@@ -9,7 +9,7 @@
 
 /** @typedef {import('./dom.js').DOM} DOM */
 /** @typedef {import('./report-ui-features').ReportUIFeatures} ReportUIFeatures */
-/** @typedef {import('../../lighthouse-core/lib/i18n/locales').LhlMessages} LhlMessages */
+/** @typedef {import('../../shared/localization/locales').LhlMessages} LhlMessages */
 
 export class SwapLocaleFeature {
   /**
@@ -50,7 +50,7 @@ export class SwapLocaleFeature {
       toggleEl.classList.toggle('lh-active');
     });
 
-    for (const locale of i18nModule.availableLocales) {
+    for (const locale of i18nModule.format.getAvailableLocales()) {
       const optionEl = this._dom.createChildOf(selectEl, 'option', '');
       optionEl.value = locale;
       optionEl.textContent = locale;
@@ -89,16 +89,17 @@ export class SwapLocaleFeature {
     const lhlMessages = await this._swapLocaleOptions.fetchData(locale);
     if (!lhlMessages) throw new Error(`could not fetch data for locale: ${locale}`);
 
-    i18nModule.default.registerLocaleData(locale, lhlMessages);
+    i18nModule.format.registerLocaleData(locale, lhlMessages);
     const newLhr = i18nModule.swapLocale(this._reportUIFeatures.json, locale).lhr;
     this._swapLocaleOptions.refresh(newLhr);
   }
 
   /**
-   * The i18n module is only need for the swap-locale tool option, and is ~80KB,
+   * The i18n module is only need for the swap-locale tool option, and is ~30KB,
    * so it is lazily loaded.
+   * TODO: reduce the size of the formatting code and include it always (remove lazy load).
    */
   _getI18nModule() {
-    return import('../../lighthouse-core/lib/i18n/i18n-module.js');
+    return import('../../shared/localization/i18n-module.js');
   }
 }

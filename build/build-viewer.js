@@ -12,7 +12,7 @@ const GhPagesApp = require('./gh-pages-app.js');
 const {minifyFileTransform} = require('./build-utils.js');
 const {LH_ROOT} = require('../root.js');
 
-const localeBasenames = fs.readdirSync(LH_ROOT + '/lighthouse-core/lib/i18n/locales/');
+const localeBasenames = fs.readdirSync(LH_ROOT + '/shared/localization/locales/');
 const actualLocales = localeBasenames
   .filter(basename => basename.endsWith('.json') && !basename.endsWith('.ctc.json'))
   .map(locale => locale.replace('.json', ''));
@@ -67,7 +67,7 @@ async function run() {
     assets: [
       {path: 'images/**/*', destDir: 'images'},
       {path: 'manifest.json'},
-      {path: '../../lighthouse-core/lib/i18n/locales/*.json', destDir: 'locales'},
+      {path: '../../shared/localization/locales/*.json', destDir: 'locales'},
     ],
   });
 
