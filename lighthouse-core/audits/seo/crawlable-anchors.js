@@ -31,7 +31,7 @@ class CrawlableAnchors extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['AnchorElements'],
+      requiredArtifacts: ['AnchorElements', 'URL'],
     };
   }
 
@@ -39,10 +39,9 @@ class CrawlableAnchors extends Audit {
    * @param {LH.Artifacts} artifacts
    * @return {LH.Audit.Product}
    */
-  static audit({AnchorElements: anchorElements}) {
+  static audit({AnchorElements: anchorElements, URL: url}) {
     const failingAnchors = anchorElements.filter(({
       rawHref,
-      listeners = [],
       name = '',
       role = '',
     }) => {
@@ -54,16 +53,20 @@ class CrawlableAnchors extends Audit {
       // Ignore mailto links even if they use one of the failing patterns. See https://github.com/GoogleChrome/lighthouse/issues/11443#issuecomment-694898412
       if (rawHref.startsWith('mailto:')) return;
 
-      const windowLocationRegExp = /window\.location=/;
       const javaScriptVoidRegExp = /javascript:void(\(|)0(\)|)/;
 
       if (rawHref.startsWith('file:')) return true;
-
-      const hasClickHandler = listeners.some(({type}) => type === 'click');
-      if (hasClickHandler || name.length > 0) return;
+      if (name.length > 0) return;
 
       if (rawHref === '') return true;
       if (javaScriptVoidRegExp.test(rawHref)) return true;
+
+      // checking if rawHref is a valid
+      try {
+        new URL(rawHref, url.finalUrl);
+      } catch (e) {
+        return true;
+      }
     });
 
     /** @type {LH.Audit.Details.Table['headings']} */
