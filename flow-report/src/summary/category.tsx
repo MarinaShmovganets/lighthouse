@@ -87,7 +87,7 @@ export const SummaryCategory: FunctionComponent<{
             />
             <SummaryTooltip category={category} gatherMode={gatherMode}/>
           </div> :
-          <div className="SummaryCategory__null"/>
+          <div className="SummaryCategory__null" data-testid="SummaryCategory__null"/>
       }
     </div>
   );
