@@ -48,7 +48,6 @@ const ignoredPathComponents = [
   '**/*-renderer.js',
   '**/util-commonjs.js',
   'lighthouse-treemap/app/src/main.js',
-  'lighthouse-core/lib/i18n/i18n-module.js',
 ];
 
 /**

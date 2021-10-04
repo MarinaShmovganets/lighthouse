@@ -5,8 +5,6 @@
  */
 'use strict';
 
-/* eslint-env browser */
-
 /** @typedef {import('./dom.js').DOM} DOM */
 /** @typedef {import('./report-ui-features').ReportUIFeatures} ReportUIFeatures */
 /** @typedef {import('../../shared/localization/locales').LhlMessages} LhlMessages */

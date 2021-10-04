@@ -24,9 +24,9 @@ export class ViewerUIFeatures extends ReportUIFeatures {
   constructor(dom, callbacks) {
     super(dom);
 
-    this._callbacks = callbacks;
+    this._saveGistCallback = callbacks.saveGist;
     this._swapLocales = new SwapLocaleFeature(this, this._dom, {
-      async fetchData(localeModuleName) {
+      fetchData: async (localeModuleName) => {
         const response = await fetch(`./locales/${localeModuleName}.json`);
         return response.json();
       },
@@ -42,7 +42,7 @@ export class ViewerUIFeatures extends ReportUIFeatures {
     super.initFeatures(report);
 
     // Disable option to save as gist if no callback for saving.
-    if (!this._callbacks.saveGist) {
+    if (!this._saveGistCallback) {
       const saveGistItem =
         this._dom.find('.lh-tools__dropdown a[data-action="save-gist"]', this._document);
       saveGistItem.setAttribute('disabled', 'true');
@@ -64,8 +64,8 @@ export class ViewerUIFeatures extends ReportUIFeatures {
    * @override
    */
   saveAsGist() {
-    if (this._callbacks.saveGist) {
-      this._callbacks.saveGist(this.json);
+    if (this._saveGistCallback) {
+      this._saveGistCallback(this.json);
     } else {
       // UI should prevent this from being called with no callback, but throw to be sure.
       throw new Error('Cannot save this report as a gist');
