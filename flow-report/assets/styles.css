@@ -20,6 +20,7 @@
   --sidebar-selected-bg-color: #DDEEFF;
   --sidebar-summary-font-size: 14px;
   --sidebar-title-font-size: 16px;
+  --sidebar-max-width: 400px;
   --summary-flow-step-label-font-size: 16px;
   --summary-subtitle-font-size: 16px;
   --summary-title-font-size: 32px;
@@ -104,6 +105,10 @@
 .Sidebar {
   grid-area: sidebar;
   border-right: 1px solid var(--separator-color);
+  width: min-content;
+  max-width: var(--sidebar-max-width);
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 .Sidebar a {
   color: var(--color-gray-800);
@@ -185,6 +190,8 @@
   grid-column: 2;
   margin: var(--half-base-spacing) 0px;
   justify-self: left;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 .SidebarFlowStep__label--navigation {
   font-size: var(--sidebar-flow-step-navigation-font-size);
@@ -232,10 +239,10 @@
 
 .SummaryFlow {
   width: 100%;
-  max-width: max-content;
+  max-width: var(--report-width);
   display: grid;
   grid-auto-rows: min-content;
-  grid-template-columns: min-content min-content 4fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: min-content min-content minmax(20ch, 4fr) 1fr 1fr 1fr 1fr;
   align-items: center;
   margin: var(--base-spacing) 0px;
 }
@@ -286,6 +293,9 @@
 .SummaryFlowStep__label {
   grid-column: 3;
   margin: var(--half-base-spacing);
+  width: 100%;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .SummaryFlowStep__mode {
@@ -296,6 +306,8 @@
   font-size: var(--summary-flow-step-label-font-size);
   color: var(--color-gray-800);
   text-decoration: underline;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .SummaryCategory__content {
@@ -371,6 +383,8 @@
 .SummaryNavigationHeader__url {
   justify-content: start;
   text-align: left;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .SummaryFlowStep__separator {
@@ -482,7 +496,8 @@
 .Header__next-title {
   font-size: var(--header-adjacent-title-font-size);
   align-self: start;
-  width: fit-content;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .Header__current-title {
@@ -490,6 +505,8 @@
   text-align: center;
   font-size: var(--header-current-title-font-size);
   font-weight: bold;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .Header__current-description {
