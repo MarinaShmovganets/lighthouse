@@ -9,8 +9,7 @@ const Audit = require('./audit.js');
 const BootupTime = require('./bootup-time.js');
 const i18n = require('../lib/i18n/i18n.js');
 const thirdPartyWeb = require('../lib/third-party-web.js');
-const TraceNetworkRecords = require('../computed/trace-network-records.js');
-const MainResource = require('../computed/main-resource.js');
+const NetworkRecords = require('../computed/network-records.js');
 const MainThreadTasks = require('../computed/main-thread-tasks.js');
 
 const UIStrings = {
@@ -75,7 +74,7 @@ class ThirdPartySummary extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'traces', 'URL'],
+      requiredArtifacts: ['traces', 'URL'],
     };
   }
 
@@ -196,10 +195,8 @@ class ThirdPartySummary extends Audit {
   static async audit(artifacts, context) {
     const settings = context.settings || {};
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-    const networkRecords = await TraceNetworkRecords.request(trace, context);
-    const mainResource = await MainResource.request({trace, URL: artifacts.URL}, context);
-    const mainEntity = thirdPartyWeb.getEntity(mainResource.url);
+    const networkRecords = await NetworkRecords.request(trace, context);
+    const mainEntity = thirdPartyWeb.getEntity(artifacts.URL.finalUrl);
     const tasks = await MainThreadTasks.request(trace, context);
     const multiplier = settings.throttlingMethod === 'simulate' ?
       settings.throttling.cpuSlowdownMultiplier : 1;

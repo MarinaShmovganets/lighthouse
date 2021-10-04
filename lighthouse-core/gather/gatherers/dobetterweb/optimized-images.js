@@ -15,8 +15,8 @@ const FRGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 const URL = require('../../../lib/url-shim.js');
 const NetworkRequest = require('../../../lib/network-request.js');
 const Sentry = require('../../../lib/sentry.js');
-const TraceNetworkRecords = require('../../../computed/trace-network-records.js');
-const DevtoolsLog = require('../devtools-log.js');
+const NetworkRecords = require('../../../computed/network-records.js');
+const Trace = require('../trace.js');
 
 // Image encoding can be slow and we don't want to spend forever on it.
 // Cap our encoding to 5 seconds, anything after that will be estimated.
@@ -34,10 +34,10 @@ const IMAGE_REGEX = /^image\/((x|ms|x-ms)-)?(png|bmp|jpeg)$/;
 /** @typedef {{requestId: string, url: string, mimeType: string, resourceSize: number}} SimplifiedNetworkRecord */
 
 class OptimizedImages extends FRGatherer {
-  /** @type {LH.Gatherer.GathererMeta<'DevtoolsLog'>} */
+  /** @type {LH.Gatherer.GathererMeta<'Trace'>} */
   meta = {
     supportedModes: ['timespan', 'navigation'],
-    dependencies: {DevtoolsLog: DevtoolsLog.symbol},
+    dependencies: {Trace: Trace.symbol},
   }
 
   constructor() {
@@ -62,7 +62,7 @@ class OptimizedImages extends FRGatherer {
       const isOptimizableImage = record.resourceType === NetworkRequest.TYPES.Image &&
         IMAGE_REGEX.test(record.mimeType);
 
-      const actualResourceSize = Math.min(record.resourceSize || 0, record.transferSize || 0);
+      const actualResourceSize = NetworkRequest.getResourceSizeOnNetwork(record);
       if (isOptimizableImage && actualResourceSize > MINIMUM_IMAGE_SIZE) {
         prev.push({
           requestId: record.requestId,
@@ -170,12 +170,12 @@ class OptimizedImages extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext<'DevtoolsLog'>} context
+   * @param {LH.Gatherer.FRTransitionalContext<'Trace'>} context
    * @return {Promise<LH.Artifacts['OptimizedImages']>}
    */
   async getArtifact(context) {
-    const devtoolsLog = context.dependencies.DevtoolsLog;
-    const networkRecords = await TraceNetworkRecords.request(trace, context);
+    const trace = context.dependencies.Trace;
+    const networkRecords = await NetworkRecords.request(trace, context);
     return this._getArtifact(context, networkRecords);
   }
 

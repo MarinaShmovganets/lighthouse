@@ -124,6 +124,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       assert.deepStrictEqual(result, expected);
     });
 
+    // TODO(paulirish-netreq): adapt to trace thing
     it('should work on a real devtoolsLog', () => {
       return NetworkRecords.request(devtoolsLog, {computedCache: new Map()}).then(records => {
         const result = NetworkAnalyzer.estimateIfConnectionWasReused(records);
@@ -200,6 +201,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       assert.deepStrictEqual(result.get('https://example.com'), expected);
     });
 
+    // TODO(paulirish-netreq): adapt to trace thing
     it('should work on a real devtoolsLog', () => {
       return NetworkRecords.request(devtoolsLog, {computedCache: new Map()}).then(records => {
         const result = NetworkAnalyzer.estimateRTTByOrigin(records);
@@ -209,6 +211,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       });
     });
 
+    // TODO(paulirish-netreq): adapt to trace thing
     it('should approximate well with either method', () => {
       return NetworkRecords.request(devtoolsLog, {computedCache: new Map()}).then(records => {
         const result = NetworkAnalyzer.estimateRTTByOrigin(records).get(NetworkAnalyzer.SUMMARY);
@@ -249,6 +252,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       assert.deepStrictEqual(result.get('https://example.com'), expected);
     });
 
+    // TODO(paulirish-netreq): adapt to trace thing
     it('should work on a real devtoolsLog', () => {
       return NetworkRecords.request(devtoolsLog, {computedCache: new Map()}).then(records => {
         const result = NetworkAnalyzer.estimateServerResponseTimeByOrigin(records);
@@ -258,6 +262,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       });
     });
 
+    // TODO(paulirish-netreq): adapt to trace thing
     it('should approximate well with either method', () => {
       return NetworkRecords.request(devtoolsLog, {computedCache: new Map()}).then(records => {
         const result = NetworkAnalyzer.estimateServerResponseTimeByOrigin(records).get(
@@ -377,6 +382,10 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       assert.equal(mainDocument.url, 'https://pwa.rocks/');
     });
 
+    it('should throw when it cannot be found', async () => {
+      expect(() => NetworkAnalyzer.findMainDocument([])).toThrow(/main resource/);
+    });
+
     it('should break ties using position in array', async () => {
       const records = [
         {url: 'http://example.com', resourceType: 'Other'},
@@ -386,6 +395,18 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       ];
       const mainDocument = NetworkAnalyzer.findMainDocument(records);
       assert.equal(mainDocument.url, 'https://www.example.com');
+    });
+  });
+
+  describe('#findOptionalMainDocument', () => {
+    it('should find the main document', async () => {
+      const records = await NetworkRecords.request(devtoolsLog, {computedCache: new Map()});
+      const mainDocument = NetworkAnalyzer.findOptionalMainDocument(records);
+      assert.equal(mainDocument.url, 'https://pwa.rocks/');
+    });
+
+    it('should return undefined when it cannot be found', async () => {
+      expect(NetworkAnalyzer.findOptionalMainDocument([])).toBe(undefined);
     });
   });
 

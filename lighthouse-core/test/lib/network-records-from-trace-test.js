@@ -11,19 +11,23 @@ const devtoolsLog = require('../../../latest-run/defaultPass.devtoolslog.json');
 const trace = require('../../../latest-run/defaultPass.trace.json');
 
 const NetworkRecords = require('../../computed/network-records.js');
-const NetworkRecordsFomTrace = require('../../lib/network-records-from-trace.js');
+const constructRecordsFromTrace = require('../../lib/network-records-from-trace.js');
+
+const NetworkRecorder = require('../../lib/network-recorder.js');
+
 
 /* eslint-env jest */
 describe('NetworkRecordsFromTrace', () => {
   it('works', async () => {
-    const netReqsDTL = await NetworkRecords.request(devtoolsLog, {computedCache: new Map()});
-    const netReqsTrace = NetworkRecordsFomTrace(trace);
+    const netReqsDTL = NetworkRecorder.recordsFromLogs(devtoolsLog);
+    const netReqsTrace = constructRecordsFromTrace(trace);
 
     const allReqIds = netReqsDTL.map((req) => req.requestId);
 
     console.log('Try replacing with another req Id!', allReqIds);
 
-    const pred = (nr) => nr.requestId === '27104.14';
+    // TODO this is currently testing just 1 request. ideally this "test" tries ALL requests that DTlog finds.
+    const pred = (nr) => nr.requestId === '37148.3';
 
     const dtlNR = netReqsDTL.find(pred);
     const myTraceNR = netReqsTrace.find(pred);

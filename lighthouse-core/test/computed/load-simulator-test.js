@@ -16,7 +16,7 @@ function createNetworkNode() {
   return new NetworkNode({
     requestId: '1',
     protocol: 'http',
-    parsedURL: {securityOrigin: 'https://pwa.rocks'},
+    parsedURL: {scheme: 'http', securityOrigin: 'https://pwa.rocks'},
   });
 }
 
@@ -87,7 +87,8 @@ describe('Simulator artifact', () => {
 
     const settings = {throttlingMethod: 'simulate', precomputedLanternData};
     const context = {settings, computedCache: new Map()};
-    const simulator = await LoadSimulator.request({trace, settings}, context);
+    // TODO(paul-tracenetreq). update test to use trace fixtures instead.
+    const simulator = await LoadSimulator.request({devtoolsLog, settings}, context);
     const result = simulator.simulate(createNetworkNode());
 
     const {additionalRttByOrigin, serverResponseTimeByOrigin} = simulator._connectionPool._options;

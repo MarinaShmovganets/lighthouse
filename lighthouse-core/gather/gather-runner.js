@@ -6,7 +6,7 @@
 'use strict';
 
 const log = require('lighthouse-logger');
-const TraceNetworkRecords = require('../computed/trace-network-records.js');
+const NetworkRecords = require('../computed/network-records.js');
 const {getPageLoadError} = require('../lib/navigation-error.js');
 const emulation = require('../lib/emulation.js');
 const constants = require('../config/constants.js');
@@ -74,6 +74,7 @@ class GatherRunner {
       const {finalUrl, warnings} = await navigation.gotoURL(driver, requestedUrl, {
         waitUntil: passContext.passConfig.recordTrace ?
           ['load', 'fcp'] : ['load'],
+        debugNavigation: passContext.settings.debugNavigation,
         maxWaitForFcp: passContext.settings.maxWaitForFcp,
         maxWaitForLoad: passContext.settings.maxWaitForLoad,
         ...passContext.passConfig,
@@ -154,7 +155,6 @@ class GatherRunner {
     const session = driver.defaultSession;
 
     // Assert no service workers are still installed, so we test that they would actually be installed for a new user.
-    // TODO(FR-COMPAT): re-evaluate the necessity of this check
     await GatherRunner.assertNoSameOriginServiceWorkerClients(session, options.requestedUrl);
 
     await prepare.prepareTargetForNavigationMode(driver, options.settings);
@@ -238,7 +238,7 @@ class GatherRunner {
     };
     log.time(status);
     const devtoolsLog = driver.endDevtoolsLog();
-    const networkRecords = await TraceNetworkRecords.request(trace, passContext);
+    const networkRecords = await NetworkRecords.request(trace, passContext);
     log.timeEnd(status);
 
     return {
@@ -406,6 +406,7 @@ class GatherRunner {
       traces: {},
       devtoolsLogs: {},
       settings: options.settings,
+      GatherContext: {gatherMode: 'navigation'},
       URL: {requestedUrl: options.requestedUrl, finalUrl: options.requestedUrl},
       Timing: [],
       PageLoadError: null,

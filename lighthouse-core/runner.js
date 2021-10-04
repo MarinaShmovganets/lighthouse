@@ -18,7 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const URL = require('./lib/url-shim.js');
 const Sentry = require('./lib/sentry.js');
-const generateReport = require('./report/report-generator.js').generateReport;
+const generateReport = require('../report/generator/report-generator.js').generateReport;
 const LHError = require('./lib/lh-error.js');
 
 /** @typedef {import('./gather/connections/connection.js')} Connection */
@@ -132,6 +132,7 @@ class Runner {
 
       /** @type {LH.RawIcu<LH.Result>} */
       const i18nLhr = {
+        gatherMode: artifacts.GatherContext.gatherMode,
         userAgent: artifacts.HostUserAgent,
         environment: {
           networkUserAgent: artifacts.NetworkUserAgent,
@@ -374,6 +375,7 @@ class Runner {
       // Log error if it hasn't already been logged above.
       if (err.code !== 'MISSING_REQUIRED_ARTIFACT' && err.code !== 'ERRORED_REQUIRED_ARTIFACT') {
         log.warn(audit.meta.id, `Caught exception: ${err.message}`);
+        throw err;
       }
 
       Sentry.captureException(err, {tags: {audit: audit.meta.id}, level: 'error'});
