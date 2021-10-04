@@ -15,7 +15,8 @@ const {LH_ROOT} = require('../root.js');
 const localeBasenames = fs.readdirSync(LH_ROOT + '/shared/localization/locales/');
 const actualLocales = localeBasenames
   .filter(basename => basename.endsWith('.json') && !basename.endsWith('.ctc.json'))
-  .map(locale => locale.replace('.json', ''));
+  .map(locale => locale.replace('.json', ''))
+  .sort();
 
 /**
  * Build viewer, optionally deploying to gh-pages if `--deploy` flag was set.

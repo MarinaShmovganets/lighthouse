@@ -48,7 +48,7 @@ export class SwapLocaleFeature {
       toggleEl.classList.toggle('lh-active');
     });
 
-    for (const locale of i18nModule.format.getAvailableLocales()) {
+    for (const locale of i18nModule.format.getCanonicalLocales()) {
       const optionEl = this._dom.createChildOf(selectEl, 'option', '');
       optionEl.value = locale;
       optionEl.textContent = locale;

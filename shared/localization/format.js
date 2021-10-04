@@ -22,7 +22,8 @@ let DEFAULT_LOCALES = ['__availableLocales__'];
 if (fs.readdirSync) {
   DEFAULT_LOCALES = fs.readdirSync(__dirname + '/locales/')
     .filter(basename => basename.endsWith('.json') && !basename.endsWith('.ctc.json'))
-    .map(locale => locale.replace('.json', ''));
+    .map(locale => locale.replace('.json', ''))
+    .sort();
 }
 
 /** @typedef {import('intl-messageformat-parser').Element} MessageElement */
@@ -358,6 +359,10 @@ function hasLocale(requestedLocale) {
   return hasIntlSupport && hasMessages;
 }
 
+function getCanonicalLocales() {
+  return DEFAULT_LOCALES;
+}
+
 /**
  * Returns a list of available locales.
  *  - if full build, this includes all default locales, aliases, and any locale added
@@ -409,4 +414,5 @@ module.exports = {
   _formatMessage,
   getIcuMessageIdParts,
   getAvailableLocales,
+  getCanonicalLocales,
 };
