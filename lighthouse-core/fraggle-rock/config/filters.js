@@ -309,4 +309,5 @@ module.exports = {
   filterAuditsByGatherMode,
   filterCategoriesByAvailableAudits,
   filterCategoriesByExplicitFilters,
+  filterCategoriesByGatherMode,
 };
