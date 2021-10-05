@@ -241,7 +241,6 @@
 
 .SummaryFlow {
   width: 100%;
-  max-width: var(--report-width);
   display: grid;
   grid-auto-rows: min-content;
   grid-template-columns: min-content min-content minmax(var(--min-text-width), 4fr) 1fr 1fr 1fr 1fr;
@@ -385,6 +384,9 @@
 .SummaryNavigationHeader__url {
   justify-content: start;
   text-align: left;
+}
+.SummaryNavigationHeader__url > a {
+  color: var(--color-gray-800);
   overflow-x: hidden;
   text-overflow: ellipsis;
 }
@@ -500,6 +502,7 @@
   align-self: start;
   overflow-x: hidden;
   text-overflow: ellipsis;
+  width: 100%;
 }
 
 .Header__current-title {
