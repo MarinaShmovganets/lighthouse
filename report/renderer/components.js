@@ -715,6 +715,7 @@ function createTopbarComponent(dom) {
   el32.setAttribute('id', 'lh-tools-locale__selector-wrapper');
   el32.setAttribute('role', 'menu');
   el32.setAttribute('aria-labelledby', 'lh-button__swap-locales');
+  el32.setAttribute('aria-hidden', 'true');
   el32.append(' ', ' ');
   el27.append(' ', el28, ' ', el32, ' ');
   const el33 = dom.createElement('button', 'lh-tools__button');

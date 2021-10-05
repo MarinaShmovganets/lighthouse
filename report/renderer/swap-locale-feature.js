@@ -40,8 +40,10 @@ export class SwapLocaleFeature {
     const currentLocale = this._reportUIFeatures.json.configSettings.locale;
 
     const containerEl = this._dom.find('.lh-tools-locale__selector-wrapper', this._dom.document());
+    containerEl.removeAttribute('aria-hidden');
     const selectEl = this._dom.createChildOf(containerEl, 'select', 'lh-locale-selector');
     selectEl.name = 'lh-locale-list';
+    selectEl.setAttribute('role', 'menuitem');
 
     const toggleEl = this._dom.find('.lh-tool-locale__button', this._dom.document());
     toggleEl.addEventListener('click', () => {
