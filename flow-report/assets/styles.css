@@ -378,6 +378,7 @@
   justify-content: center;
   padding: var(--half-base-spacing);
   background-color: var(--color-gray-100);
+  color: var(--color-gray-700);
   border-top: 1px solid var(--color-gray-300);
   text-align: center;
 }
@@ -386,7 +387,7 @@
   text-align: left;
 }
 .SummaryNavigationHeader__url > a {
-  color: var(--color-gray-800);
+  color: inherit;
   overflow-x: hidden;
   text-overflow: ellipsis;
 }
