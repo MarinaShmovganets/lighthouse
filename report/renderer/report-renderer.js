@@ -166,6 +166,9 @@ export class ReportRenderer {
         {gatherMode: report.gatherMode}
       );
 
+      const gaugeWrapperEl = this._dom.find('a.lh-gauge__wrapper', categoryGauge);
+      this._dom.safelySetHref(gaugeWrapperEl, `#${category.id}`);
+
       if (Util.isPluginCategory(category.id)) {
         pluginGauges.push(categoryGauge);
       } else if (renderer.renderCategoryScore === categoryRenderer.renderCategoryScore) {
