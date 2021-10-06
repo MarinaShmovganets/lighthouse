@@ -79,7 +79,6 @@ export const HelpDialog: FunctionComponent<{onClose: () => void}> = ({
             strings.helpUseCaseNavigation2,
             strings.helpUseCaseNavigation3,
           ]}
-          categoriesLabel={strings.categories}
           availableCategories={[
             strings.categoryPerformance,
             strings.categoryAccessibility,
@@ -95,7 +94,6 @@ export const HelpDialog: FunctionComponent<{onClose: () => void}> = ({
           modeDescription={strings.timespanLongDescription}
           useCaseInstruction={strings.helpUseCaseInstructionTimespan}
           useCases={[strings.helpUseCaseTimespan1, strings.helpUseCaseTimespan2]}
-          categoriesLabel={strings.categories}
           availableCategories={[
             strings.categoryPerformance,
             strings.categoryBestPractices,
@@ -109,7 +107,6 @@ export const HelpDialog: FunctionComponent<{onClose: () => void}> = ({
           modeDescription={strings.snapshotLongDescription}
           useCaseInstruction={strings.helpUseCaseInstructionSnapshot}
           useCases={[strings.helpUseCaseSnapshot1, strings.helpUseCaseSnapshot2]}
-          categoriesLabel={strings.categories}
           availableCategories={[
             strings.categoryPerformance,
             strings.categoryAccessibility,
