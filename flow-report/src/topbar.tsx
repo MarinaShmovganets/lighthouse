@@ -63,7 +63,6 @@ const Logo: FunctionComponent = () => {
 };
 /* eslint-enable max-len */
 
-
 const TopbarButton: FunctionComponent<{
   onClick: JSX.MouseEventHandler<HTMLButtonElement>,
   label: string,
