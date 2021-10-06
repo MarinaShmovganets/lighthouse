@@ -29,18 +29,6 @@ export class SwapLocaleFeature {
    * @param {Array<LH.Locale>} locales
    */
   enable(locales) {
-    try {
-      this._enable(locales);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('failed to enable swap locale feature', err);
-    }
-  }
-
-  /**
-   * @param {Array<LH.Locale>} locales
-   */
-  _enable(locales) {
     if (!this._reportUIFeatures.json.i18n.icuMessagePaths) {
       throw new Error('missing icuMessagePaths');
     }
