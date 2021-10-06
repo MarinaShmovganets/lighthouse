@@ -324,7 +324,7 @@ export class ReportUIFeatures {
   }
 
   /**
-   * DevTools uses it's own file manager to download files, so it redefines this function.
+   * DevTools uses its own file manager to download files, so it redefines this function.
    * Wrapper is necessary so DevTools can still override this function.
    *
    * @param {Blob|File} blob
