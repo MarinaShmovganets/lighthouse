@@ -5,38 +5,46 @@
  */
 'use strict';
 
+/**
+ * @fileoverview Creates a <select> element, filled with all supported locales
+ */
+
 /** @typedef {import('./dom.js').DOM} DOM */
 /** @typedef {import('./report-ui-features').ReportUIFeatures} ReportUIFeatures */
-/** @typedef {import('../../shared/localization/locales').LhlMessages} LhlMessages */
 
 export class SwapLocaleFeature {
   /**
    * @param {ReportUIFeatures} reportUIFeatures
    * @param {DOM} dom
-   * @param {{fetchData: (localeModuleName: string) => Promise<LhlMessages|undefined>, refresh: function(LH.Result): void}} options
+   * @param {{onLocaleSelected: (localeModuleName: LH.Locale) => Promise<void>}} callbacks
    *        Specifiy the URL where the i18n module script can be found, and the URLS for the locale JSON files.
    */
-  constructor(reportUIFeatures, dom, options) {
+  constructor(reportUIFeatures, dom, callbacks) {
     this._reportUIFeatures = reportUIFeatures;
     this._dom = dom;
-    this._swapLocaleOptions = options;
+    this._localeSelectedCallback = callbacks.onLocaleSelected;
   }
 
-  async enable() {
+  /**
+   * @param {Array<LH.Locale>} locales
+   */
+  enable(locales) {
     try {
-      await this._enable();
+      this._enable(locales);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error('failed to enable swap locale feature', err);
     }
   }
 
-  async _enable() {
+  /**
+   * @param {Array<LH.Locale>} locales
+   */
+  _enable(locales) {
     if (!this._reportUIFeatures.json.i18n.icuMessagePaths) {
       throw new Error('missing icuMessagePaths');
     }
 
-    const i18nModule = await this._getI18nModule();
     const currentLocale = this._reportUIFeatures.json.configSettings.locale;
 
     const containerEl = this._dom.find('.lh-tools-locale__selector-wrapper', this._dom.document());
@@ -50,10 +58,9 @@ export class SwapLocaleFeature {
       toggleEl.classList.toggle('lh-active');
     });
 
-    for (const locale of i18nModule.format.getCanonicalLocales()) {
+    for (const locale of locales) {
       const optionEl = this._dom.createChildOf(selectEl, 'option', '');
       optionEl.value = locale;
-      optionEl.textContent = locale;
       if (locale === currentLocale) optionEl.selected = true;
 
       // @ts-expect-error: waiting for typescript 4.5. Might need to add "ES2020.Intl"
@@ -72,34 +79,14 @@ export class SwapLocaleFeature {
         } else {
           optionEl.textContent = currentLocaleName;
         }
+      } else {
+        optionEl.textContent = locale;
       }
     }
 
     selectEl.addEventListener('change', () => {
       const locale = /** @type {LH.Locale} */ (selectEl.value);
-      this._swapLocale(locale);
+      this._localeSelectedCallback(locale);
     });
-  }
-
-  /**
-   * @param {LH.Locale} locale
-   */
-  async _swapLocale(locale) {
-    const i18nModule = await this._getI18nModule();
-    const lhlMessages = await this._swapLocaleOptions.fetchData(locale);
-    if (!lhlMessages) throw new Error(`could not fetch data for locale: ${locale}`);
-
-    i18nModule.format.registerLocaleData(locale, lhlMessages);
-    const newLhr = i18nModule.swapLocale(this._reportUIFeatures.json, locale).lhr;
-    this._swapLocaleOptions.refresh(newLhr);
-  }
-
-  /**
-   * The i18n module is only need for the swap-locale tool option, and is ~30KB,
-   * so it is lazily loaded.
-   * TODO: reduce the size of the formatting code and include it always (remove lazy load).
-   */
-  _getI18nModule() {
-    return import('../../shared/localization/i18n-module.js');
   }
 }
