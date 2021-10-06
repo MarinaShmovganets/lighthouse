@@ -47,7 +47,6 @@ export class ViewerUIFeatures extends ReportUIFeatures {
     }
 
     this._getI18nModule().then(async (i18nModule) => {
-      // TODO: only load this module when user first clicks to expand the feature?
       const locales = await i18nModule.format.getCanonicalLocales();
       // @ts-expect-error: force string -> LH.Locale
       this._swapLocales.enable(locales);
