@@ -8,8 +8,24 @@ import {FunctionComponent, JSX} from 'preact';
 import {useState} from 'preact/hooks';
 
 import {HelpDialog} from './help-dialog';
+import {getFilenamePrefix} from '../../report/generator/file-namer';
 import {useUIStrings} from './i18n/i18n';
 import {HamburgerIcon} from './icons';
+import {useFlowResult} from './util';
+import {useReportRenderer} from './wrappers/report-renderer';
+
+import type {DOM} from '../../report/renderer/dom';
+
+function saveHtml(flowResult: LH.FlowResult, dom: DOM) {
+  const htmlStr = document.documentElement.outerHTML;
+  const blob = new Blob([htmlStr], {type: 'text/html'});
+
+  const lhr = flowResult.steps[0].lhr;
+  const name = flowResult.name.replace(/\s/g, '-');
+  const filename = getFilenamePrefix(name, lhr.fetchTime);
+
+  dom.saveFile(blob, filename);
+}
 
 /* eslint-disable max-len */
 const Logo: FunctionComponent = () => {
@@ -47,31 +63,43 @@ const Logo: FunctionComponent = () => {
 };
 /* eslint-enable max-len */
 
-const TopbarButton: FunctionComponent<{onClick: JSX.MouseEventHandler<HTMLButtonElement>}> =
-({onClick, children}) => {
+
+const TopbarButton: FunctionComponent<{
+  onClick: JSX.MouseEventHandler<HTMLButtonElement>,
+  label: string,
+}> =
+({onClick, label, children}) => {
   return (
-    <button className="TopbarButton" onClick={onClick} data-testid="TopbarButton">
+    <button className="TopbarButton" onClick={onClick} aria-label={label}>
       {children}
     </button>
   );
 };
 
-export const Topbar: FunctionComponent<{onMenuClick: JSX.MouseEventHandler<HTMLDivElement>}> =
+export const Topbar: FunctionComponent<{onMenuClick: JSX.MouseEventHandler<HTMLButtonElement>}> =
 ({onMenuClick}) => {
+  const flowResult = useFlowResult();
+  const {dom} = useReportRenderer();
   const strings = useUIStrings();
   const [showHelpDialog, setShowHelpDialog] = useState(false);
 
   return (
     <div className="Topbar">
-      <div className="Topbar__menu" onClick={onMenuClick} role="button">
+      <TopbarButton onClick={onMenuClick} label="Button that opens and closes the sidebar">
         <HamburgerIcon/>
-      </div>
+      </TopbarButton>
       <div className="Topbar__logo">
         <Logo/>
       </div>
       <div className="Topbar__title">{strings.title}</div>
+      <TopbarButton
+        onClick={() => saveHtml(flowResult, dom)}
+        label="Button that saves the report as HTML"
+      >{strings.save}</TopbarButton>
       <div style={{flexGrow: 1}} />
-      <TopbarButton onClick={() => setShowHelpDialog(previous => !previous)}>
+      <TopbarButton
+        onClick={() => setShowHelpDialog(previous => !previous)}
+        label="Button that toggles the help dialog">
         {strings.helpLabel}
       </TopbarButton>
       {showHelpDialog ?

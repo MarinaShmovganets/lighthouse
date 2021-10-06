@@ -57,6 +57,8 @@ export const UIStrings = {
   ratingFail: 'Poor',
   /** Rating indicating that a report category rating could not be calculated because of an error. */
   ratingError: 'Error',
+  /** Label for a button that saves a Lighthouse report to disk. */
+  save: 'Save',
   /** Label for a button that toggles the help modal with explanations on how to interpret the Lighthouse flow report. */
   helpLabel: 'Understanding Flows',
   /** Title for a dialog that contains explanations on how to interpret the Lighthouse flow report. */
