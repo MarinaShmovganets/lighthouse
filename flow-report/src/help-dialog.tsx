@@ -16,9 +16,10 @@ const HelpDialogColumn: FunctionComponent<{
   modeDescription: string;
   useCaseInstruction: string;
   useCases: string[];
-  categoriesLabel: string;
   availableCategories: string[];
 }> = (props) => {
+  const strings = useUIStrings();
+
   return (
     <div className="HelpDialogColumn">
       <div className="HelpDialogColumn__legend">
@@ -41,7 +42,7 @@ const HelpDialogColumn: FunctionComponent<{
         </ul>
       </div>
       <div className="HelpDialogColumn__categories">
-        <p>{props.categoriesLabel}</p>
+        <p>{strings.categories}</p>
         <ul>
           {props.availableCategories.map((category, i) => (
             <li key={i}>{category}</li>

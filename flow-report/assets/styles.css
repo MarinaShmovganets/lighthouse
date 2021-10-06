@@ -578,10 +578,6 @@
   padding: var(--base-spacing) calc(var(--base-spacing) * 1.5);
 }
 
-.HelpDialog--hidden {
-  display: none;
-}
-
 .HelpDialog__title {
   display: flex;
   align-items: center;
@@ -596,6 +592,7 @@
   background: none;
   border: none;
   cursor: pointer;
+  line-height: 0;
 }
 
 .HelpDialog__columns {
@@ -634,7 +631,7 @@
   display: flex;
   align-items: center;
 
-  height: calc(var(--base-spacing) * 2);
+  height: var(--double-base-spacing);
   color: var(--color-blue-A700);
   margin-right: calc(var(--base-spacing) * -1);
 }
