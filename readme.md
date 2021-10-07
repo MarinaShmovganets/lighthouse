@@ -325,8 +325,6 @@ This section details services that have integrated Lighthouse data. If you're wo
 
 * **[HTTPArchive](http://httparchive.org/)** - HTTPArchive tracks how the web is built by crawling 500k pages with Web Page Test, including Lighthouse results, and stores the information in BigQuery where it is [publicly available](https://discuss.httparchive.org/t/quickstart-guide-to-exploring-the-http-archive/682).
 
-* **[Ryte](https://en.ryte.com)** - Ryte is an award-winning Platform for Website User Experience used by more then 1 Million users worldwide, simplifies your website optimization towards performance, more traffic, improved user experience, less legal risk and better conversion rates. Website-Success audits are leveraged with Lighthouse to show you in-depth performances insights for all of your URLs (Up to 10,000,000 URLs). Ryte offering free and paid plans
-
 * **[Calibre](https://calibreapp.com)** - Calibre is a comprehensive performance monitoring platform running on Lighthouse. See the performance impact of your work before it hits production with GitHub Pull Request Reviews. Track the impact of Third Party scripts. Automate your performance system with a developer-first Node.js API. Try Calibre with a free 15-day trial.
 
 * **[DebugBear](https://www.debugbear.com/)** - DebugBear is a website monitoring tool based on Lighthouse. See how your scores and metrics changed over time, with a focus on understanding what caused each change. DebugBear is a paid product with a free 30-day trial.
@@ -370,6 +368,8 @@ This section details services that have integrated Lighthouse data. If you're wo
 * **[Wattspeed](https://wattspeed.com/)** — Wattspeed is a free tool that generates snapshots - historical captures of your web pages that include Lighthouse scores, a list of technologies, W3C HTML validator results, DOM size, mixed content info, and more.
 
 * **[AwesomeTechStack](https://awesometechstack.com)** — AwesomeTechStack is a free to use website tech stack analyzer. AwesomeTechStack provides insights into the security, modernity, and performance of any website's technology stack and guidance to improve performance. Lighthouse insights are a crucial part of a website's tech stack rating.
+
+* **[Ryte](https://en.ryte.com)** - Ryte is an award-winning Platform for Website User Experience used by more then 1 Million users worldwide, simplifies your website optimization towards performance, more traffic, improved user experience, less legal risk and better conversion rates. Website-Success audits are leveraged with Lighthouse to show you in-depth performances insights for all of your URLs (Up to 10,000,000 URLs). Ryte offering free and paid plans
 
 ## Plugins
 
