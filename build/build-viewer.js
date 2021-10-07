@@ -51,9 +51,15 @@ async function run() {
       {path: require.resolve('pako/dist/pako_inflate.js')},
       {path: 'src/main.js', rollup: true, rollupPlugins: [
         rollupPlugins.replace({
+          // Default delimiters are word boundraries. Setting them to nothing (empty strings)
+          // makes this plugin replace any subtring found.
           delimiters: ['', ''],
           values: {
             '[\'__availableLocales__\']': JSON.stringify(actualLocales),
+          },
+        }),
+        rollupPlugins.replace({
+          values: {
             '__dirname': '""',
           },
         }),

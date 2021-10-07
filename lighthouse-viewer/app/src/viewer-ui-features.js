@@ -47,8 +47,8 @@ export class ViewerUIFeatures extends ReportUIFeatures {
     }
 
     this._getI18nModule().then(async (i18nModule) => {
-      const locales = await i18nModule.format.getCanonicalLocales();
-      // @ts-expect-error: force string -> LH.Locale
+      const locales = /** @type {LH.Locale[]} */ (
+        await i18nModule.format.getCanonicalLocales());
       this._swapLocales.enable(locales);
     }).catch(err => console.error(err));
   }
