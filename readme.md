@@ -325,6 +325,8 @@ This section details services that have integrated Lighthouse data. If you're wo
 
 * **[HTTPArchive](http://httparchive.org/)** - HTTPArchive tracks how the web is built by crawling 500k pages with Web Page Test, including Lighthouse results, and stores the information in BigQuery where it is [publicly available](https://discuss.httparchive.org/t/quickstart-guide-to-exploring-the-http-archive/682).
 
+* **[Ryte](https://en.ryte.com)** - Ryte is an award-winning Platform for Website User Experience used by more then 1 Million users worldwide, simplifies your website optimization towards performance, more traffic, improved user experience, less legal risk and better conversion rates. Website-Success audits are leveraged with Lighthouse to show you in-depth performances insights for all of your URLs (Up to 10,000,000 URLs). Ryte offering free and paid plans
+
 * **[Calibre](https://calibreapp.com)** - Calibre is a comprehensive performance monitoring platform running on Lighthouse. See the performance impact of your work before it hits production with GitHub Pull Request Reviews. Track the impact of Third Party scripts. Automate your performance system with a developer-first Node.js API. Try Calibre with a free 15-day trial.
 
 * **[DebugBear](https://www.debugbear.com/)** - DebugBear is a website monitoring tool based on Lighthouse. See how your scores and metrics changed over time, with a focus on understanding what caused each change. DebugBear is a paid product with a free 30-day trial.
