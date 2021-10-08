@@ -90,6 +90,9 @@ function createAxeRuleResultArtifact(result) {
     const relatedNodeDetails = [];
     for (const checkResult of [...node.any, ...node.all, ...node.none]) {
       for (const relatedNode of checkResult.relatedNodes || []) {
+        // Prevent overloading the report with way too many nodes.
+        if (relatedNodeDetails.length >= 3) break;
+
         // @ts-expect-error - getNodeDetails put into scope via stringification
         const nodeDetails = getNodeDetails(/** @type {HTMLElement} */ (relatedNode.element));
         relatedNodeDetails.push(nodeDetails);
