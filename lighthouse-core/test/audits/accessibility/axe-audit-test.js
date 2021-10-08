@@ -56,9 +56,11 @@ describe('Accessibility: axe-audit', () => {
               node: {
                 snippet: '<input id="snippet"/>',
               },
-              relatedNodes: [{
-                snippet: '<input id="snippet2"/>',
-              }],
+              relatedNodes: [
+                {snippet: '<input id="snippet1"/>'},
+                {snippet: '<input id="snippet2"/>'},
+                {snippet: '<input id="snippet3"/>'},
+              ],
             }],
             help: 'http://example.com/',
           }],
@@ -78,7 +80,19 @@ describe('Accessibility: axe-audit', () => {
             {
               relatedNode: {
                 type: 'node',
+                snippet: '<input id="snippet1"/>',
+              },
+            },
+            {
+              relatedNode: {
+                type: 'node',
                 snippet: '<input id="snippet2"/>',
+              },
+            },
+            {
+              relatedNode: {
+                type: 'node',
+                snippet: '<input id="snippet3"/>',
               },
             },
           ],
