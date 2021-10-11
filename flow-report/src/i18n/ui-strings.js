@@ -107,4 +107,28 @@ export const UIStrings = {
   helpUseCaseSnapshot1: 'Find accessibility issues in single page applications or complex forms.',
   /** Example use case for how Lighthouse can be applied in practice. Appears in a list with other examples. */
   helpUseCaseSnapshot2: 'Evaluate best practices of menus and UI elements hidden behind interaction.',
+  /**
+   * @description Label indicating the number of Lighthouse audits that passed.
+   * @example {2} numPassed
+   */
+  passedAuditCount: `{numPassed, plural,
+    =1 {{numPassed} audit passed}
+    other {{numPassed} audits passed}
+  }`,
+  /**
+   * @description Label indicating the number of Lighthouse audits that are possible to pass for a page.
+   * @example {2} numPassableAudits
+   */
+  passableAuditCount: `{numPassableAudits, plural,
+    =1 {{numPassableAudits} passable audit}
+    other {{numPassableAudits} passable audits}
+  }`,
+  /**
+   * @description Label indicating the number of Lighthouse audits that are informative.
+   * @example {2} numInformative
+   */
+  informativeAuditCount: `{numInformative, plural,
+    =1 {{numInformative} informative audit}
+    other {{numInformative} informative audits}
+  }`,
 };
