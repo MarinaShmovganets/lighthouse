@@ -70,9 +70,9 @@ export const SummaryTooltip: FunctionComponent<{
         }
       </div>
       <div className="SummaryTooltip__fraction">
-        {str_(strings.passedAuditCount, {numPassed})}
-        {' / '}
-        {str_(strings.passableAuditCount, {numPassableAudits})}
+        <span>{str_(strings.passedAuditCount, {numPassed})}</span>
+        <span> / </span>
+        <span>{str_(strings.passableAuditCount, {numPassableAudits})}</span>
       </div>
       {numInformative !== 0 &&
         <div className="SummaryTooltip__informative">
