@@ -108,6 +108,6 @@ describe('SummaryTooltip', () => {
     expect(root.getByText('Good')).toBeTruthy();
     expect(root.getByText('100')).toBeTruthy();
     expect(root.getByText('2 audits passed / 2 passable audits')).toBeTruthy();
-    expect(root.getByText('1 informative audits')).toBeTruthy();
+    expect(root.getByText('1 informative audit')).toBeTruthy();
   });
 });
