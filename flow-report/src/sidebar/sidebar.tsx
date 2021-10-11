@@ -37,15 +37,17 @@ const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
 
   return (
     <div className="SidebarRuntimeSettings">
-      <div className="SidebarRuntimeSettings__item">
+      <div className="SidebarRuntimeSettings__item" title={strings.runtimeSettingsDevice}>
         <div className="SidebarRuntimeSettings__item--icon">
           <EnvIcon/>
         </div>
         {
-          settings.formFactor === 'desktop' ? strings.desktop : strings.mobile
+          settings.formFactor === 'desktop' ?
+            strings.runtimeDesktopEmulation :
+            strings.runtimeMobileEmulation
         }
       </div>
-      <div className="SidebarRuntimeSettings__item">
+      <div className="SidebarRuntimeSettings__item" title={strings.runtimeSettingsCPUThrottling}>
         <div className="SidebarRuntimeSettings__item--icon">
           <CpuIcon/>
         </div>

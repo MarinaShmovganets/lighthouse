@@ -5,14 +5,18 @@
  */
 
 import {createContext, FunctionComponent} from 'preact';
-import {useContext, useMemo} from 'preact/hooks';
+import {useContext, useEffect, useMemo} from 'preact/hooks';
 
 import {I18n} from '../../../report/renderer/i18n';
 import {UIStrings} from './ui-strings';
-import {useLocale} from '../util';
+import {useFlowResult} from '../util';
 import strings from './localized-strings';
+import {Util} from '../../../report/renderer/util';
 
-const I18nContext = createContext<I18n<typeof UIStrings>|undefined>(undefined);
+type LhrStrings = typeof Util.UIStrings;
+type FlowStrings = typeof UIStrings;
+
+const I18nContext = createContext<I18n<LhrStrings & FlowStrings> | undefined>(undefined);
 
 export function useI18n() {
   const i18n = useContext(I18nContext);
@@ -26,13 +30,32 @@ export function useUIStrings() {
 }
 
 export const I18nProvider: FunctionComponent = ({children}) => {
-  const locale = useLocale();
-  const i18n = useMemo(() => new I18n(locale, {
-    // Set missing renderer strings to default (english) values.
-    ...UIStrings,
-    // `strings` is generated in build/build-report.js
-    ...strings[locale],
-  }), [locale]);
+  const flowResult = useFlowResult();
+  const firstLhr = flowResult.steps[0].lhr;
+  const lhrStrings = firstLhr.i18n.rendererFormattedStrings as LhrStrings;
+  const locale = firstLhr.configSettings.locale;
+
+  useEffect(() => {
+    if (flowResult.steps.some(step => step.lhr.configSettings.locale !== locale)) {
+      console.warn('LHRs do not have consistent locale');
+    }
+  }, [flowResult]);
+
+  const i18n = useMemo(() => {
+    const i18n = new I18n(locale, {
+      // Set missing lhr strings to default (english) values.
+      ...Util.UIStrings,
+      // Preload with strings from the first lhr.
+      ...lhrStrings,
+      // Set missing flow strings to default (english) values.
+      ...UIStrings,
+      // `strings` is generated in build/build-report.js
+      ...strings[locale],
+    });
+    // Initialize renderer util i18n for strings rendered in wrapped components.
+    Util.i18n = i18n;
+    return i18n;
+  }, [locale, lhrStrings]);
 
   return (
     <I18nContext.Provider value={i18n}>

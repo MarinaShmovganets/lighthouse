@@ -9,7 +9,7 @@ import {FunctionComponent} from 'preact';
 import {Util} from '../../../report/renderer/util';
 import {Separator} from '../common';
 import {CategoryScore} from '../wrappers/category-score';
-import {useUIStrings} from '../i18n/i18n';
+import {useI18n, useUIStrings} from '../i18n/i18n';
 
 import type {UIStringsType} from '../i18n/ui-strings';
 
@@ -42,10 +42,12 @@ export const SummaryTooltip: FunctionComponent<{
     totalWeight,
   } = Util.calculateCategoryFraction(category);
 
+  const i18n = useI18n();
   const displayAsFraction = Util.shouldDisplayAsFraction(gatherMode);
-  const rating = displayAsFraction ?
-    Util.calculateRating(numPassed / numPassableAudits) :
-    Util.calculateRating(category.score);
+  const score = displayAsFraction ?
+    numPassed / numPassableAudits :
+    category.score;
+  const rating = score === null ? 'error' : Util.calculateRating(score);
 
   return (
     <div className="SummaryTooltip">
@@ -60,9 +62,9 @@ export const SummaryTooltip: FunctionComponent<{
             <div className={`SummaryTooltip__rating SummaryTooltip__rating--${rating}`}>
               <span>{getCategoryRating(rating, strings)}</span>
               {
-                !displayAsFraction && category.score && <>
+                !displayAsFraction && category.score !== null && <>
                   <span> · </span>
-                  <span>{category.score * 100}</span>
+                  <span>{i18n.formatNumber(category.score * 100)}</span>
                 </>
               }
             </div>
