@@ -166,11 +166,13 @@ export class ReportRenderer {
         {gatherMode: report.gatherMode}
       );
 
-      const gaugeWrapperEl = /** @type {HTMLAnchorElement} */ (
-        categoryGauge.querySelector('a.lh-gauge__wrapper, a.lh-fraction__wrapper'));
+      const gaugeWrapperEl = this._dom.find('a.lh-gauge__wrapper, a.lh-fraction__wrapper',
+        categoryGauge);
       if (gaugeWrapperEl) {
         this._dom.safelySetHref(gaugeWrapperEl, `#${category.id}`);
-        // Handle clicks without changing the page's URL.
+        // Handle navigation clicks by scrolling to target without changing the page's URL.
+        // Why? Some report embedding clients have their own routing and updating the location.hash
+        // can introduce problems.
         gaugeWrapperEl.addEventListener('click', e => {
           if (!gaugeWrapperEl.matches('[href^="#"]')) return;
           const selector = gaugeWrapperEl.getAttribute('href');
