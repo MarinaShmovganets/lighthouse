@@ -11928,7 +11928,7 @@
                 "width": 16,
                 "height": 16
               },
-              "snippet": "<img src=\"blob:http://localhost:10200/ad70cc16-bb7f-48f6-bd9a-f5005669e5a6\">",
+              "snippet": "<img src=\"blob:http://localhost:10200/84c78bd5-a720-43b4-93e0-26591a9ff8ee\">",
               "nodeLabel": "body > img"
             },
             "relatedNodes": []
@@ -11950,7 +11950,7 @@
                 "width": 16,
                 "height": 16
               },
-              "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.9014197802517487.png\">",
+              "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.48387978403091236.png\">",
               "nodeLabel": "body > img"
             },
             "relatedNodes": []

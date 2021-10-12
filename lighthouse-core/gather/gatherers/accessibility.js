@@ -87,17 +87,21 @@ function createAxeRuleResultArtifact(result) {
     // @ts-expect-error - getNodeDetails put into scope via stringification
     const nodeDetails = getNodeDetails(/** @type {HTMLElement} */ (element));
 
-    const relatedNodeDetails = [];
+    const relatedNodeElements = new Set();
     for (const checkResult of [...node.any, ...node.all, ...node.none]) {
       for (const relatedNode of checkResult.relatedNodes || []) {
         // Prevent overloading the report with way too many nodes.
-        if (relatedNodeDetails.length >= 3) break;
+        if (relatedNodeElements.size >= 3) break;
+        // @ts-expect-error - should always exist, just being cautious.
+        if (!(relatedNode.element)) continue;
 
-        // @ts-expect-error - getNodeDetails put into scope via stringification
-        const nodeDetails = getNodeDetails(/** @type {HTMLElement} */ (relatedNode.element));
-        relatedNodeDetails.push(nodeDetails);
+        // @ts-expect-error - element will exist.
+        const element = /** @type {HTMLElement} */ (relatedNode.element);
+        relatedNodeElements.add(element);
       }
     }
+    // @ts-expect-error - getNodeDetails put into scope via stringification
+    const relatedNodeDetails = [...relatedNodeElements].map(getNodeDetails);
 
     return {
       target,

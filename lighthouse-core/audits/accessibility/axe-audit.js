@@ -79,10 +79,10 @@ class AxeAudit extends Audit {
           ...Audit.makeNodeItem(axeNode.node),
           explanation: axeNode.failureSummary,
         },
-        subItems: {
+        subItems: axeNode.relatedNodes.length ? {
           type: 'subitems',
           items: axeNode.relatedNodes.map(node => ({relatedNode: Audit.makeNodeItem(node)})),
-        },
+        } : undefined,
       }));
     }
 
