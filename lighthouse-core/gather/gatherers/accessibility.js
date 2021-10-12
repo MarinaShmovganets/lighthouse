@@ -87,6 +87,7 @@ function createAxeRuleResultArtifact(result) {
     // @ts-expect-error - getNodeDetails put into scope via stringification
     const nodeDetails = getNodeDetails(/** @type {HTMLElement} */ (element));
 
+    /** @type {Set<HTMLElement>} */
     const relatedNodeElements = new Set();
     for (const checkResult of [...node.any, ...node.all, ...node.none]) {
       for (const relatedNode of checkResult.relatedNodes || []) {
@@ -94,10 +95,11 @@ function createAxeRuleResultArtifact(result) {
         if (relatedNodeElements.size >= 3) break;
         // @ts-expect-error - should always exist, just being cautious.
         if (!(relatedNode.element)) continue;
+        // @ts-expect-error - Don't want to show the main element twice.
+        if (element === relatedNode.element) continue;
 
         // @ts-expect-error - element will exist.
-        const element = /** @type {HTMLElement} */ (relatedNode.element);
-        relatedNodeElements.add(element);
+        relatedNodeElements.add(/** @type {HTMLElement} */ (relatedNode.element));
       }
     }
     // @ts-expect-error - getNodeDetails put into scope via stringification
