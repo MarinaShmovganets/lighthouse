@@ -3573,10 +3573,6 @@
               "snippet": "<html manifest=\"clock.appcache\">",
               "nodeLabel": "html",
               "explanation": "Fix any of the following:\n  The <html> element does not have a lang attribute"
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           }
         ],
@@ -3636,10 +3632,6 @@
               "snippet": "<img src=\"lighthouse-480x318.jpg?iar1\" width=\"120\" height=\"15\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -3659,10 +3651,6 @@
               "snippet": "<img loading=\"lazy\" src=\"lighthouse-480x318.jpg?iar2\" width=\"120\" height=\"80\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -3682,10 +3670,6 @@
               "snippet": "<img src=\"lighthouse-480x318.jpg?isr1\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -3705,10 +3689,6 @@
               "snippet": "<img src=\"lighthouse-480x318.jpg?isr2\" width=\"120\" height=\"80\" style=\"position: absolute;\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -3728,10 +3708,6 @@
               "snippet": "<img src=\"lighthouse-480x318.jpg?isr3\" width=\"360\" height=\"240\" style=\"image-rendering: pixelated; position: absolute;\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -3751,10 +3727,6 @@
               "snippet": "<img src=\"http://localhost:10200/dobetterweb/lighthouse-480x318.jpg\" srcset=\"lighthouse-480x318.jpg 2x\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -3774,10 +3746,6 @@
               "snippet": "<img src=\"lighthouse-rotating.gif\" width=\"811\" height=\"462\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -3794,13 +3762,9 @@
                 "width": 16,
                 "height": 16
               },
-              "snippet": "<img src=\"blob:http://localhost:10200/ad70cc16-bb7f-48f6-bd9a-f5005669e5a6\">",
+              "snippet": "<img src=\"blob:http://localhost:10200/84c78bd5-a720-43b4-93e0-26591a9ff8ee\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -3817,13 +3781,9 @@
                 "width": 16,
                 "height": 16
               },
-              "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.9014197802517487.png\">",
+              "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.48387978403091236.png\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           }
         ],
@@ -3885,10 +3845,6 @@
               "snippet": "<input type=\"password\" onpaste=\"event.preventDefault();\">",
               "nodeLabel": "body > input",
               "explanation": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -3908,10 +3864,6 @@
               "snippet": "<input type=\"password\">",
               "nodeLabel": "body > input",
               "explanation": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -3931,10 +3883,6 @@
               "snippet": "<input type=\"password\" onpaste=\"return false;\">",
               "nodeLabel": "body > input",
               "explanation": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           }
         ],
@@ -3990,10 +3938,6 @@
               "snippet": "<a href=\"javascript:void(0)\" target=\"_blank\">",
               "nodeLabel": "body > a",
               "explanation": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -4013,10 +3957,6 @@
               "snippet": "<a href=\"mailto:inbox@email.com\" target=\"_blank\">",
               "nodeLabel": "body > a",
               "explanation": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           }
         ],
@@ -4105,10 +4045,6 @@
               "snippet": "<object id=\"5934a\">",
               "nodeLabel": "body > object#5934a",
               "explanation": "Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           },
           {
@@ -4128,10 +4064,6 @@
               "snippet": "<object id=\"5934b\">",
               "nodeLabel": "body > object#5934b",
               "explanation": "Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-            },
-            "subItems": {
-              "type": "subitems",
-              "items": []
             }
           }
         ],
