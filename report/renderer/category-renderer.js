@@ -374,12 +374,12 @@ export class CategoryRenderer {
     const tmpl = this.dom.createComponent('fraction');
     const wrapper = this.dom.find('a.lh-fraction__wrapper', tmpl);
 
-    const {numPassed, numAudits, totalWeight} = Util.calculateCategoryFraction(category);
+    const {numPassed, numPassableAudits, totalWeight} = Util.calculateCategoryFraction(category);
 
-    const fraction = numPassed / numAudits;
+    const fraction = numPassed / numPassableAudits;
     const content = this.dom.find('.lh-fraction__content', tmpl);
     const text = this.dom.createElement('span');
-    text.textContent = `${numPassed}/${numAudits}`;
+    text.textContent = `${numPassed}/${numPassableAudits}`;
     content.appendChild(text);
 
     let rating = Util.calculateRating(fraction);
