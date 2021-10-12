@@ -18,8 +18,9 @@ function rollupPluginTypeCoerce(module) {
 
 const brfs = require('./rollup-brfs.js');
 const commonjs = rollupPluginTypeCoerce(require('@rollup/plugin-commonjs'));
-const {nodeResolve} = require('@rollup/plugin-node-resolve');
 const nodePolyfills = rollupPluginTypeCoerce(require('rollup-plugin-polyfill-node'));
+const {nodeResolve} = require('@rollup/plugin-node-resolve');
+const replace = rollupPluginTypeCoerce(require('rollup-plugin-replace'));
 // @ts-expect-error: no published types.
 const shim = require('rollup-plugin-shim');
 const {terser} = require('rollup-plugin-terser');
@@ -28,8 +29,9 @@ const typescript = rollupPluginTypeCoerce(require('@rollup/plugin-typescript'));
 module.exports = {
   brfs,
   commonjs,
-  nodeResolve,
   nodePolyfills,
+  nodeResolve,
+  replace,
   shim,
   terser,
   typescript,

@@ -11,19 +11,32 @@ import {FlowSegment, FlowStepThumbnail, Separator} from '../common';
 import {getModeDescription, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 import {SummaryCategory} from './category';
+import {useUIStrings} from '../i18n/i18n';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 const THUMBNAIL_WIDTH = 50;
 
-const SummaryNavigationHeader: FunctionComponent<{url: string}> = ({url}) => {
+const SummaryNavigationHeader: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
+  const strings = useUIStrings();
+
   return (
     <div className="SummaryNavigationHeader" data-testid="SummaryNavigationHeader">
       <FlowSegment/>
-      <div className="SummaryNavigationHeader__url">{url}</div>
-      <div className="SummaryNavigationHeader__category">Performance</div>
-      <div className="SummaryNavigationHeader__category">Accessibility</div>
-      <div className="SummaryNavigationHeader__category">Best Practices</div>
-      <div className="SummaryNavigationHeader__category">SEO</div>
+      <div className="SummaryNavigationHeader__url">
+        <a rel="noopener" target="_blank" href={lhr.finalUrl}>{lhr.finalUrl}</a>
+      </div>
+      <div className="SummaryNavigationHeader__category">
+        {strings.categoryPerformance}
+      </div>
+      <div className="SummaryNavigationHeader__category">
+        {strings.categoryAccessibility}
+      </div>
+      <div className="SummaryNavigationHeader__category">
+        {strings.categoryBestPractices}
+      </div>
+      <div className="SummaryNavigationHeader__category">
+        {strings.categorySeo}
+      </div>
     </div>
   );
 };
@@ -37,24 +50,23 @@ export const SummaryFlowStep: FunctionComponent<{
   hashIndex: number,
 }> = ({lhr, label, hashIndex}) => {
   const reportResult = useMemo(() => Util.prepareReportResult(lhr), [lhr]);
+  const strings = useUIStrings();
+  const modeDescription = getModeDescription(lhr.gatherMode, strings);
 
   return (
     <div className="SummaryFlowStep">
       {
         lhr.gatherMode === 'navigation' || hashIndex === 0 ?
-          <SummaryNavigationHeader url={lhr.finalUrl}/> :
+          <SummaryNavigationHeader lhr={lhr}/> :
           <div className="SummaryFlowStep__separator">
             <FlowSegment/>
             <Separator/>
           </div>
       }
-      {
-        lhr.gatherMode !== 'timespan' &&
-          <FlowStepThumbnail reportResult={reportResult} width={THUMBNAIL_WIDTH}/>
-      }
+      <FlowStepThumbnail reportResult={reportResult} width={THUMBNAIL_WIDTH}/>
       <FlowSegment mode={lhr.gatherMode}/>
       <div className="SummaryFlowStep__label">
-        <div className="SummaryFlowStep__mode">{getModeDescription(lhr.gatherMode)}</div>
+        <div className="SummaryFlowStep__mode">{modeDescription}</div>
         <a className="SummaryFlowStep__link" href={`#index=${hashIndex}`}>{label}</a>
       </div>
       {
@@ -95,6 +107,7 @@ const SummaryFlow: FunctionComponent = () => {
 
 export const SummaryHeader: FunctionComponent = () => {
   const flowResult = useFlowResult();
+  const strings = useUIStrings();
 
   let numNavigation = 0;
   let numTimespan = 0;
@@ -113,6 +126,7 @@ export const SummaryHeader: FunctionComponent = () => {
     }
   }
 
+  // TODO(FLOW-I18N): Placeholder format.
   const subtitleCounts = [];
   if (numNavigation) subtitleCounts.push(`${numNavigation} navigation reports`);
   if (numTimespan) subtitleCounts.push(`${numTimespan} timespan reports`);
@@ -121,7 +135,7 @@ export const SummaryHeader: FunctionComponent = () => {
 
   return (
     <div className="SummaryHeader">
-      <div className="SummaryHeader__title">Summary</div>
+      <div className="SummaryHeader__title">{strings.summary}</div>
       <div className="SummaryHeader__subtitle">{subtitle}</div>
     </div>
   );
@@ -137,11 +151,13 @@ const SummarySectionHeader: FunctionComponent = ({children}) => {
 };
 
 export const Summary: FunctionComponent = () => {
+  const strings = useUIStrings();
+
   return (
     <div className="Summary" data-testid="Summary">
       <SummaryHeader/>
       <Separator/>
-      <SummarySectionHeader>ALL REPORTS</SummarySectionHeader>
+      <SummarySectionHeader>{strings.allReports}</SummarySectionHeader>
       <SummaryFlow/>
     </div>
   );

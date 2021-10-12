@@ -7,11 +7,7 @@
 import {createContext} from 'preact';
 import {useContext, useEffect, useMemo, useState} from 'preact/hooks';
 
-const MODE_DESCRIPTIONS: Record<LH.Result.GatherMode, string> = {
-  'navigation': 'Page load',
-  'timespan': 'User interactions',
-  'snapshot': 'Captured state of page',
-};
+import type {UIStringsType} from './i18n/ui-strings';
 
 export const FlowResultContext = createContext<LH.FlowResult|undefined>(undefined);
 
@@ -47,6 +43,7 @@ export function getScreenDimensions(reportResult: LH.ReportResult) {
 export function getScreenshot(reportResult: LH.ReportResult) {
   const fullPageScreenshotAudit = reportResult.audits['full-page-screenshot'];
   const fullPageScreenshot =
+    fullPageScreenshotAudit &&
     fullPageScreenshotAudit.details &&
     fullPageScreenshotAudit.details.type === 'full-page-screenshot' &&
     fullPageScreenshotAudit.details.screenshot.data;
@@ -54,8 +51,26 @@ export function getScreenshot(reportResult: LH.ReportResult) {
   return fullPageScreenshot || null;
 }
 
-export function getModeDescription(mode: LH.Result.GatherMode) {
-  return MODE_DESCRIPTIONS[mode];
+export function getFilmstripFrames(
+  reportResult: LH.ReportResult
+): Array<{data: string}> | undefined {
+  const filmstripAudit = reportResult.audits['screenshot-thumbnails'];
+  if (!filmstripAudit) return undefined;
+
+  const frameItems =
+    filmstripAudit.details &&
+    filmstripAudit.details.type === 'filmstrip' &&
+    filmstripAudit.details.items;
+
+  return frameItems || undefined;
+}
+
+export function getModeDescription(mode: LH.Result.GatherMode, strings: UIStringsType) {
+  switch (mode) {
+    case 'navigation': return strings.navigationDescription;
+    case 'timespan': return strings.timespanDescription;
+    case 'snapshot': return strings.snapshotDescription;
+  }
 }
 
 export function useFlowResult(): LH.FlowResult {
