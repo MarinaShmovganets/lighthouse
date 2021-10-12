@@ -492,28 +492,16 @@ export class DetailsRenderer {
    */
   renderNode(item) {
     const element = this._dom.createElement('span', 'lh-node');
-    const pathParts = item.path ? item.path.split(',') : undefined;
-    const tagName = pathParts ? pathParts[pathParts.length - 1] : undefined;
-
-    // We use `node` to show images in the report withhout hotlinking. In that case,
-    // we don't want to show the html alongside the node thumbnail, as that information
-    // is likely not useful and just adds noise.
-    const hasVisibleBoundingRect = item.boundingRect &&
-      item.boundingRect.width > 1 && item.boundingRect.height > 1;
-    const shouldHideSnippetAndLabel = tagName === 'IMG' && hasVisibleBoundingRect;
-
-    if (!shouldHideSnippetAndLabel) {
-      if (item.nodeLabel) {
-        const nodeLabelEl = this._dom.createElement('div');
-        nodeLabelEl.textContent = item.nodeLabel;
-        element.appendChild(nodeLabelEl);
-      }
-      if (item.snippet) {
-        const snippetEl = this._dom.createElement('div');
-        snippetEl.classList.add('lh-node__snippet');
-        snippetEl.textContent = item.snippet;
-        element.appendChild(snippetEl);
-      }
+    if (item.nodeLabel) {
+      const nodeLabelEl = this._dom.createElement('div');
+      nodeLabelEl.textContent = item.nodeLabel;
+      element.appendChild(nodeLabelEl);
+    }
+    if (item.snippet) {
+      const snippetEl = this._dom.createElement('div');
+      snippetEl.classList.add('lh-node__snippet');
+      snippetEl.textContent = item.snippet;
+      element.appendChild(snippetEl);
     }
     if (item.selector) {
       element.title = item.selector;
