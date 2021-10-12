@@ -171,13 +171,14 @@ export class CategoryRenderer {
   /**
    * @param {LH.ReportResult.Category} category
    * @param {Record<string, LH.Result.ReportGroup>} groupDefinitions
+   * @param {{gatherMode: LH.Result.GatherMode}=} options
    * @return {DocumentFragment}
    */
-  renderCategoryHeader(category, groupDefinitions) {
+  renderCategoryHeader(category, groupDefinitions, options) {
     const component = this.dom.createComponent('categoryHeader');
 
     const gaugeContainerEl = this.dom.find('.lh-score__gauge', component);
-    const gaugeEl = this.renderScoreGauge(category, groupDefinitions);
+    const gaugeEl = this.renderCategoryScore(category, groupDefinitions, options);
     gaugeContainerEl.appendChild(gaugeEl);
 
     if (category.description) {
@@ -314,12 +315,24 @@ export class CategoryRenderer {
   /**
    * @param {LH.ReportResult.Category} category
    * @param {Record<string, LH.Result.ReportGroup>} groupDefinitions
+   * @param {{gatherMode: LH.Result.GatherMode}=} options
+   * @return {DocumentFragment}
+   */
+  renderCategoryScore(category, groupDefinitions, options) {
+    if (options && Util.shouldDisplayAsFraction(options.gatherMode)) {
+      return this.renderCategoryFraction(category);
+    }
+    return this.renderScoreGauge(category, groupDefinitions);
+  }
+
+  /**
+   * @param {LH.ReportResult.Category} category
+   * @param {Record<string, LH.Result.ReportGroup>} groupDefinitions
    * @return {DocumentFragment}
    */
   renderScoreGauge(category, groupDefinitions) { // eslint-disable-line no-unused-vars
     const tmpl = this.dom.createComponent('gauge');
     const wrapper = this.dom.find('a.lh-gauge__wrapper', tmpl);
-    this.dom.safelySetHref(wrapper, `#${category.id}`);
 
     if (Util.isPluginCategory(category.id)) {
       wrapper.classList.add('lh-gauge__wrapper--plugin');
@@ -350,6 +363,37 @@ export class CategoryRenderer {
     }
 
     this.dom.find('.lh-gauge__label', tmpl).textContent = category.title;
+    return tmpl;
+  }
+
+  /**
+   * @param {LH.ReportResult.Category} category
+   * @return {DocumentFragment}
+   */
+  renderCategoryFraction(category) {
+    const tmpl = this.dom.createComponent('fraction');
+    const wrapper = this.dom.find('a.lh-fraction__wrapper', tmpl);
+    this.dom.safelySetHref(wrapper, `#${category.id}`);
+
+    const {numPassed, numPassableAudits, totalWeight} = Util.calculateCategoryFraction(category);
+
+    const fraction = numPassed / numPassableAudits;
+    const content = this.dom.find('.lh-fraction__content', tmpl);
+    const text = this.dom.createElement('span');
+    text.textContent = `${numPassed}/${numPassableAudits}`;
+    content.appendChild(text);
+
+    let rating = Util.calculateRating(fraction);
+
+    // If none of the available audits can affect the score, a rating isn't useful.
+    // The flow report should display the fraction with neutral icon and coloring in this case.
+    if (totalWeight === 0) {
+      rating = 'null';
+    }
+
+    wrapper.classList.add(`lh-fraction__wrapper--${rating}`);
+
+    this.dom.find('.lh-fraction__label', tmpl).textContent = category.title;
     return tmpl;
   }
 
@@ -434,13 +478,14 @@ export class CategoryRenderer {
    *   ├── …
    *   ⋮
    * @param {LH.ReportResult.Category} category
-   * @param {Object<string, LH.Result.ReportGroup>} [groupDefinitions]
+   * @param {Object<string, LH.Result.ReportGroup>=} groupDefinitions
+   * @param {{environment?: 'PSI', gatherMode: LH.Result.GatherMode}=} options
    * @return {Element}
    */
-  render(category, groupDefinitions = {}) {
+  render(category, groupDefinitions = {}, options) {
     const element = this.dom.createElement('div', 'lh-category');
     this.createPermalinkSpan(element, category.id);
-    element.appendChild(this.renderCategoryHeader(category, groupDefinitions));
+    element.appendChild(this.renderCategoryHeader(category, groupDefinitions, options));
 
     // Top level clumps for audits, in order they will appear in the report.
     /** @type {Map<TopLevelClumpId, Array<LH.ReportResult.AuditRef>>} */

@@ -235,7 +235,12 @@ const passing = {
         },
       },
       'crawlable-anchors': {
-        score: 1,
+        score: 0,
+        details: {
+          items: {
+            length: 2,
+          },
+        },
       },
       'link-text': {
         score: 1,
@@ -343,6 +348,7 @@ const status403 = {
     // Note: most scores are null (audit error) because the page 403ed.
     requestedUrl: BASE_URL + 'seo-failure-cases.html?status_code=403',
     finalUrl: BASE_URL + 'seo-failure-cases.html?status_code=403',
+    userAgent: /Chrom(e|ium)/, // Ensure we still collect base artifacts when page fails to load.
     runtimeError: {
       code: 'ERRORED_DOCUMENT_REQUEST',
       message: /Status code: 403/,
@@ -478,7 +484,7 @@ const tapTargets = {
   },
 };
 
-module.exports = {
+export {
   passing,
   failing,
   status403,

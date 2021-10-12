@@ -10,15 +10,10 @@
  * against the results actually collected from Lighthouse.
  */
 
-const cloneDeep = require('lodash.clonedeep');
-const log = require('lighthouse-logger');
-const LocalConsole = require('./lib/local-console.js');
+import cloneDeep from 'lodash.clonedeep';
+import log from 'lighthouse-logger';
 
-const NUMBER_REGEXP = /(?:\d|\.)+/.source;
-const OPS_REGEXP = /<=?|>=?|\+\/-|±/.source;
-// An optional number, optional whitespace, an operator, optional whitespace, a number.
-const NUMERICAL_EXPECTATION_REGEXP =
-  new RegExp(`^(${NUMBER_REGEXP})?\\s*(${OPS_REGEXP})\\s*(${NUMBER_REGEXP})$`);
+import {LocalConsole} from './lib/local-console.js';
 
 /**
  * @typedef Difference
@@ -35,6 +30,12 @@ const NUMERICAL_EXPECTATION_REGEXP =
  * @property {boolean} equal
  * @property {Difference|null} [diff]
  */
+
+const NUMBER_REGEXP = /(?:\d|\.)+/.source;
+const OPS_REGEXP = /<=?|>=?|\+\/-|±/.source;
+// An optional number, optional whitespace, an operator, optional whitespace, a number.
+const NUMERICAL_EXPECTATION_REGEXP =
+  new RegExp(`^(${NUMBER_REGEXP})?\\s*(${OPS_REGEXP})\\s*(${NUMBER_REGEXP})$`);
 
 /**
  * Checks if the actual value matches the expectation. Does not recursively search. This supports
@@ -157,9 +158,11 @@ function makeComparison(name, actualResult, expectedResult) {
  * @param {LocalConsole} localConsole
  * @param {LH.Result} lhr
  * @param {Smokehouse.ExpectedRunnerResult} expected
+ * @param {{isBundled?: boolean}=} reportOptions
  */
-function pruneExpectations(localConsole, lhr, expected) {
+function pruneExpectations(localConsole, lhr, expected, reportOptions) {
   const isFraggleRock = lhr.configSettings.channel === 'fraggle-rock-cli';
+  const isBundled = reportOptions && reportOptions.isBundled;
 
   /**
    * Lazily compute the Chrome version because some reports are explicitly asserting error conditions.
@@ -197,20 +200,42 @@ function pruneExpectations(localConsole, lhr, expected) {
           JSON.stringify(value, null, 2),
           `Actual Chromium version: ${getChromeVersion()}`,
         ].join(' '));
-        delete obj[key];
+        if (Array.isArray(obj)) {
+          obj.splice(Number(key), 1);
+        } else {
+          delete obj[key];
+        }
       } else if (value._legacyOnly && isFraggleRock) {
         localConsole.log([
           `[${key}] marked legacy only but run is Fraggle Rock, pruning expectation:`,
           JSON.stringify(value, null, 2),
         ].join(' '));
-        delete obj[key];
+        if (Array.isArray(obj)) {
+          obj.splice(Number(key), 1);
+        } else {
+          delete obj[key];
+        }
       } else if (value._fraggleRockOnly && !isFraggleRock) {
         localConsole.log([
           `[${key}] marked Fraggle Rock only but run is legacy, pruning expectation:`,
           JSON.stringify(value, null, 2),
           `Actual channel: ${lhr.configSettings.channel}`,
         ].join(' '));
-        delete obj[key];
+        if (Array.isArray(obj)) {
+          obj.splice(Number(key), 1);
+        } else {
+          delete obj[key];
+        }
+      } else if (value._skipInBundled && !isBundled) {
+        localConsole.log([
+          `[${key}] marked as skip in bundled and runner is bundled, pruning expectation:`,
+          JSON.stringify(value, null, 2),
+        ].join(' '));
+        if (Array.isArray(obj)) {
+          obj.splice(Number(key), 1);
+        } else {
+          delete obj[key];
+        }
       } else {
         pruneRecursively(value);
       }
@@ -218,6 +243,7 @@ function pruneExpectations(localConsole, lhr, expected) {
 
     delete obj._legacyOnly;
     delete obj._fraggleRockOnly;
+    delete obj._skipInBundled;
     delete obj._minChromiumMilestone;
     delete obj._maxChromiumMilestone;
   }
@@ -358,13 +384,13 @@ function reportAssertion(localConsole, assertion) {
  * summary. Returns count of passed and failed tests.
  * @param {{lhr: LH.Result, artifacts: LH.Artifacts, networkRequests?: string[]}} actual
  * @param {Smokehouse.ExpectedRunnerResult} expected
- * @param {{isDebug?: boolean}=} reportOptions
+ * @param {{isDebug?: boolean, isBundled?: boolean}=} reportOptions
  * @return {{passed: number, failed: number, log: string}}
  */
-function report(actual, expected, reportOptions = {}) {
+function getAssertionReport(actual, expected, reportOptions = {}) {
   const localConsole = new LocalConsole();
 
-  expected = pruneExpectations(localConsole, actual.lhr, expected);
+  expected = pruneExpectations(localConsole, actual.lhr, expected, reportOptions);
   const comparisons = collateResults(localConsole, actual, expected);
 
   let correctCount = 0;
@@ -389,4 +415,4 @@ function report(actual, expected, reportOptions = {}) {
   };
 }
 
-module.exports = report;
+export {getAssertionReport};

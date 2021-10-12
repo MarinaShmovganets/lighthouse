@@ -229,9 +229,9 @@ export class LighthouseReportViewer {
       renderer.renderReport(json, container);
 
       // Only give gist-saving callback if current report isn't from a gist.
-      let saveCallback = null;
+      let saveGistCallback;
       if (!this._reportIsFromGist) {
-        saveCallback = this._onSaveJson;
+        saveGistCallback = this._onSaveJson;
       }
 
       // Only clear query string if current report isn't from a gist or PSI.
@@ -239,7 +239,13 @@ export class LighthouseReportViewer {
         history.pushState({}, '', LighthouseReportViewer.APP_URL);
       }
 
-      const features = new ViewerUIFeatures(dom, saveCallback);
+      const features = new ViewerUIFeatures(dom, {
+        saveGist: saveGistCallback,
+        /** @param {LH.Result} newLhr */
+        refresh: newLhr => {
+          this._replaceReportHtml(newLhr);
+        },
+      });
       features.initFeatures(json);
     } catch (e) {
       logger.error(`Error rendering report: ${e.message}`);
@@ -305,21 +311,22 @@ export class LighthouseReportViewer {
    * @return {Promise<string|void>} id of the created gist.
    * @private
    */
-  _onSaveJson(reportJson) {
+  async _onSaveJson(reportJson) {
     if (window.ga) {
       window.ga('send', 'event', 'report', 'share');
     }
 
     // TODO: find and reuse existing json gist if one exists.
-    return this._github.createGist(reportJson).then(id => {
+    try {
+      const id = await this._github.createGist(reportJson);
       if (window.ga) {
         window.ga('send', 'event', 'report', 'created');
       }
-
       history.pushState({}, '', `${LighthouseReportViewer.APP_URL}?gist=${id}`);
-
       return id;
-    }).catch(err => logger.log(err.message));
+    } catch (err) {
+      logger.log(err.message);
+    }
   }
 
   /**

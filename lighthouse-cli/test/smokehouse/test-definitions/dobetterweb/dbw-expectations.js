@@ -314,10 +314,18 @@ const expectations = {
       'deprecations': {
         score: 0,
         details: {
-          items: {
-          // Note: HTML Imports added to deprecations in m70, so 3 before, 4 after.
-            length: '>=3',
-          },
+          items: [
+            {
+              value: /Application Cache API manifest/,
+              _maxChromiumMilestone: 94,
+            },
+            {
+              value: /'window.webkitStorageInfo' is deprecated/,
+            },
+            {
+              value: /Synchronous XMLHttpRequest on the main thread is deprecated/,
+            },
+          ],
         },
       },
       'password-inputs-can-be-pasted-into': {
@@ -365,7 +373,7 @@ const expectations = {
         },
       },
       'js-libraries': {
-        score: 1,
+        scoreDisplayMode: 'informative',
         details: {
           items: [{
             name: 'jQuery',
@@ -377,10 +385,10 @@ const expectations = {
       },
       'dom-size': {
         score: 1,
-        numericValue: 149,
+        numericValue: 153,
         details: {
           items: [
-            {statistic: 'Total DOM Elements', value: 149},
+            {statistic: 'Total DOM Elements', value: 153},
             {statistic: 'Maximum DOM Depth', value: 4},
             {
               statistic: 'Maximum Child Elements',
@@ -411,7 +419,7 @@ const expectations = {
           screenshot: {
             width: 360,
             // Allow for differences in platforms.
-            height: '1350±20',
+            height: '1350±100',
             data: /^data:image\/jpeg;.{500,}/,
           },
           nodes: {
@@ -443,4 +451,4 @@ const expectations = {
   },
 };
 
-module.exports = expectations;
+export {expectations};

@@ -115,11 +115,12 @@ class UnusedBytes extends Audit {
       settings,
     };
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
+    const hasContentfulRecords = networkRecords.some(record => record.transferSize);
 
     // Requesting load simulator requires non-empty network records.
     // Timespans are not guaranteed to have any network activity.
     // There are no bytes to be saved if no bytes were downloaded, so mark N/A if empty.
-    if (!networkRecords.length && gatherContext.gatherMode === 'timespan') {
+    if (!hasContentfulRecords && gatherContext.gatherMode === 'timespan') {
       return {
         score: 1,
         notApplicable: true,
@@ -129,7 +130,6 @@ class UnusedBytes extends Audit {
     const [result, graph, simulator] = await Promise.all([
       this.audit_(artifacts, networkRecords, context),
       // Page dependency graph is only used in navigation mode.
-      // TODO(FR-COMPAT): Use dependency graph in timespan mode.
       gatherContext.gatherMode === 'navigation' ?
         PageDependencyGraph.request({trace, devtoolsLog}, context) :
         null,
@@ -201,7 +201,6 @@ class UnusedBytes extends Audit {
   }
 
   /**
-   * TODO(FR-COMPAT): Rework opportunities to remove emphasis on `wastedMs`
    * @param {number} wastedBytes
    * @param {Simulator} simulator
    */
