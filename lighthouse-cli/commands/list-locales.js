@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import locales from '../../lighthouse-core/lib/i18n/locales.js';
+import locales from '../../shared/localization/locales.js';
 
 function listLocales() {
   const localesList = Object.keys(locales);
