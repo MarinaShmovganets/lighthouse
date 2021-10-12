@@ -172,7 +172,8 @@ export class ReportRenderer {
         this._dom.safelySetHref(gaugeWrapperEl, `#${category.id}`);
         // Handle navigation clicks by scrolling to target without changing the page's URL.
         // Why? Some report embedding clients have their own routing and updating the location.hash
-        // can introduce problems.
+        // can introduce problems. Others may have an unpredictable `<base>` URL which ensures
+        // navigation to `${baseURL}#categoryid` will be unintended.
         gaugeWrapperEl.addEventListener('click', e => {
           if (!gaugeWrapperEl.matches('[href^="#"]')) return;
           const selector = gaugeWrapperEl.getAttribute('href');
