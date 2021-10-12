@@ -81,8 +81,6 @@ describe('PSI', () => {
 
         assert.ok(result.perfCategoryEl instanceof document.defaultView.Element);
         assert.ok(result.perfCategoryEl.outerHTML.length > 50000, 'perfCategory HTML is populated');
-        assert.ok(!result.perfCategoryEl.outerHTML.includes('lh-permalink'),
-            'PSI\'s perfCategory HTML doesn\'t include a lh-permalink element');
 
         assert.equal(typeof result.finalScreenshotDataUri, 'string');
         assert.ok(result.finalScreenshotDataUri.startsWith('data:image/jpeg;base64,'));

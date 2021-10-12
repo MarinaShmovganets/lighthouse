@@ -169,7 +169,6 @@ export class ReportRenderer {
       const gaugeWrapperEl = /** @type {HTMLAnchorElement} */ (
         categoryGauge.querySelector('a.lh-gauge__wrapper, a.lh-fraction__wrapper'));
       if (gaugeWrapperEl) {
-        // Set the gauge href to link to the category.
         this._dom.safelySetHref(gaugeWrapperEl, `#${category.id}`);
         // Handle clicks without changing the page's URL.
         gaugeWrapperEl.addEventListener('click', e => {
