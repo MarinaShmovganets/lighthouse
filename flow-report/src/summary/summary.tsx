@@ -63,10 +63,7 @@ export const SummaryFlowStep: FunctionComponent<{
             <Separator/>
           </div>
       }
-      {
-        lhr.gatherMode !== 'timespan' &&
-          <FlowStepThumbnail reportResult={reportResult} width={THUMBNAIL_WIDTH}/>
-      }
+      <FlowStepThumbnail reportResult={reportResult} width={THUMBNAIL_WIDTH}/>
       <FlowSegment mode={lhr.gatherMode}/>
       <div className="SummaryFlowStep__label">
         <div className="SummaryFlowStep__mode">{modeDescription}</div>
@@ -129,6 +126,7 @@ export const SummaryHeader: FunctionComponent = () => {
     }
   }
 
+  // TODO(FLOW-I18N): Placeholder format.
   const subtitleCounts = [];
   if (numNavigation) subtitleCounts.push(`${numNavigation} navigation reports`);
   if (numTimespan) subtitleCounts.push(`${numTimespan} timespan reports`);
