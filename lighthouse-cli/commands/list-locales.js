@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const locales = require('../../lighthouse-core/lib/i18n/locales.js');
+import locales from '../../lighthouse-core/lib/i18n/locales.js';
 
 function listLocales() {
   const localesList = Object.keys(locales);
@@ -13,4 +13,4 @@ function listLocales() {
   process.exit(0);
 }
 
-module.exports = listLocales;
+export {listLocales};
