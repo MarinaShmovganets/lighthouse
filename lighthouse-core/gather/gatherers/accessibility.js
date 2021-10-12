@@ -89,7 +89,13 @@ function createAxeRuleResultArtifact(result) {
 
     /** @type {Set<HTMLElement>} */
     const relatedNodeElements = new Set();
-    for (const checkResult of [...node.any, ...node.all, ...node.none]) {
+    /** @param {import('axe-core/axe').ImpactValue} impact */
+    const impactToNumber =
+      (impact) => [null, 'minor', 'moderate', 'serious', 'critical'].indexOf(impact);
+    const checkResults = [...node.any, ...node.all, ...node.none]
+      // @ts-expect-error CheckResult.impact is a string ...
+      .sort((a, b) => impactToNumber(a.impact) - impactToNumber(b.impact));
+    for (const checkResult of checkResults) {
       for (const relatedNode of checkResult.relatedNodes || []) {
         // Prevent overloading the report with way too many nodes.
         if (relatedNodeElements.size >= 3) break;
