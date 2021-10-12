@@ -93,19 +93,21 @@ function createAxeRuleResultArtifact(result) {
     const impactToNumber =
       (impact) => [null, 'minor', 'moderate', 'serious', 'critical'].indexOf(impact);
     const checkResults = [...node.any, ...node.all, ...node.none]
-      // @ts-expect-error CheckResult.impact is a string ...
+      // @ts-expect-error CheckResult.impact is a string, even though ImpactValue is a thing.
       .sort((a, b) => impactToNumber(a.impact) - impactToNumber(b.impact));
     for (const checkResult of checkResults) {
       for (const relatedNode of checkResult.relatedNodes || []) {
+        /** @type {HTMLElement} */
+        // @ts-expect-error - should always exist, just being cautious.
+        const relatedElement = relatedNode.element;
+
         // Prevent overloading the report with way too many nodes.
         if (relatedNodeElements.size >= 3) break;
-        // @ts-expect-error - should always exist, just being cautious.
-        if (!(relatedNode.element)) continue;
-        // @ts-expect-error - Don't want to show the main element twice.
-        if (element === relatedNode.element) continue;
+        // Should always exist, just being cautious.
+        if (!relatedElement) continue;
+        if (element === relatedElement) continue;
 
-        // @ts-expect-error - element will exist.
-        relatedNodeElements.add(/** @type {HTMLElement} */ (relatedNode.element));
+        relatedNodeElements.add(relatedElement);
       }
     }
     // @ts-expect-error - getNodeDetails put into scope via stringification
