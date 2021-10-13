@@ -23,7 +23,7 @@ npm install "$LH_ROOT/lighthouse-$VERSION.tgz"
 npm explore lighthouse -- npm run fast -- http://example.com
 
 # Packaged smokehouse/lighthouse using root's static-server and test fixtures.
-yarn smokehouse --tests-path="$LH_ROOT/lighthouse-cli/test/smokehouse/test-definitions/core-tests.js" --retries=2
+CI="" yarn smokehouse --tests-path="$LH_ROOT/lighthouse-cli/test/smokehouse/test-definitions/core-tests.js" --retries=2
 
 cd "$LH_ROOT"
 rm -rf /tmp/lighthouse-local-test
