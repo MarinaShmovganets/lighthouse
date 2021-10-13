@@ -24,14 +24,9 @@ jobs:
         node-version: 12.x
 
     - run: yarn install --frozen-lockfile --network-timeout 1000000
-
     - run: sudo apt-get install xvfb
-    - name: Run smoke tests
-      run: |
-        xvfb-run --auto-servernum yarn c8 yarn smoke --debug -j=1 --retries=2 --shard=${{ matrix.smoke-test-shard }}/$SHARD_TOTAL
-        yarn c8 report --reporter text-lcov > smoke-coverage.lcov
 
-    - run: bash lighthouse-core/scripts/release/package-test.sh
+    - run: xvfb-run --auto-servernum bash lighthouse-core/scripts/release/package-test.sh
 
     # Fail if any changes were written to source files.
     - run: git diff --exit-code
