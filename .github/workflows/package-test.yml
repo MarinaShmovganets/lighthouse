@@ -5,7 +5,7 @@ on:
 
 jobs:
   package-test:
-    if: startsWith(github.context.payload.pull_request.title, 'v')
+    if: startsWith(github.event.pull_request.title, 'v')
     runs-on: ubuntu-latest
     name: Package Test
 
