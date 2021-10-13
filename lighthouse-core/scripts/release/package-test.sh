@@ -12,7 +12,7 @@ npm pack
 # Start pristine's static-server for smokehouse run below.
 yarn static-server &
 # Kill static-server on exit (see https://github.com/GoogleChrome/lighthouse/pull/12446#discussion_r627589729).
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+trap "trap - SIGTERM && kill -- -$$ || true" SIGINT SIGTERM EXIT
 
 rm -rf /tmp/lighthouse-local-test || true
 mkdir -p /tmp/lighthouse-local-test
@@ -24,6 +24,7 @@ npm install lighthouse-plugin-publisher-ads
 npm explore lighthouse -- npm run fast -- http://example.com
 
 # Packaged smokehouse/lighthouse using root's static-server and test fixtures.
+# This is because we don't have access to any of the dev dependencies.
 CI="" yarn smokehouse --tests-path="$LH_ROOT/lighthouse-cli/test/smokehouse/test-definitions/core-tests.js" --retries=2
 
 cd "$LH_ROOT"
