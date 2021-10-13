@@ -9,10 +9,17 @@ const path = require('path');
 
 const format = require('../../localization/format.js');
 const i18n = require('../../../lighthouse-core/lib/i18n/i18n.js');
+const constants = require('../../../lighthouse-core/config/constants.js');
 
 /* eslint-env jest */
 
 describe('format', () => {
+  describe('DEFAULT_LOCALE', () => {
+    it('is the same as the default config locale', () => {
+      expect(format.DEFAULT_LOCALE).toBe(constants.defaultSettings.locale);
+    });
+  });
+
   describe('#_formatPathAsString', () => {
     it('handles simple paths', () => {
       expect(format._formatPathAsString(['foo'])).toBe('foo');
