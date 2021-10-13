@@ -1,17 +1,13 @@
-name: smoke
+name: package-test
 
 on:
-  push:
-    # branches: [master]
+  push: # TODO: remove before merge.
   pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:
-  # `smoke` runs as a matrix across 4 jobs:
-  #  * The smoke tests are split into two batches, to parallelize.
-  #  * Then, those are run with both Chrome stable and ToT Chromium, in parallel
-  smoke:
+  if: contains(github.context.payload.pull_request.title, '/^v\d+\.\d+\.\d+/')
+  package-test:
     runs-on: ubuntu-latest
-    # Job named e.g. "Chrome stable, batch 1".
     name: Package Test
 
     steps:
