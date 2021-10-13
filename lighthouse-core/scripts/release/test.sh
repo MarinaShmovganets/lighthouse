@@ -11,45 +11,6 @@ set -euxo pipefail
 
 bash "$DIRNAME/prepare-pristine.sh"
 
-cd "$LH_PRISTINE_ROOT"
-
-# Install deps
-yarn --check-files
-
-# Test err'thing
-echo "${TXT_BOLD}Building all the clients..."
-yarn build-all
-
-echo "Running the standard test suite..."
-yarn test
-
-echo "Testing the CLI..."
-node ./lighthouse-cli/index.js "https://example.com" --view
-
-echo "Testing a fresh local install..."
-VERSION=$(node -e "console.log(require('./package.json').version)")
-npm pack
-
-# Start pristine's static-server for smokehouse run below.
-yarn static-server &
-# Kill static-server on exit (see https://github.com/GoogleChrome/lighthouse/pull/12446#discussion_r627589729).
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
-
-rm -rf /tmp/lighthouse-local-test || true
-mkdir -p /tmp/lighthouse-local-test
-cd /tmp/lighthouse-local-test
-
-npm init -y
-npm install "$LH_PRISTINE_ROOT/lighthouse-$VERSION.tgz"
-npm explore lighthouse -- npm run fast -- http://example.com
-
-# Packaged smokehouse/lighthouse using pristine's static-server and test fixtures.
-yarn smokehouse --tests-path="$LH_PRISTINE_ROOT/lighthouse-cli/test/smokehouse/test-definitions/core-tests.js" --retries=2
-
-cd "$LH_PRISTINE_ROOT"
-rm -rf /tmp/lighthouse-local-test
-rm "lighthouse-$VERSION.tgz"
-
 set +x
 
 echo "${TXT_BOLD}Now manually...${TXT_RESET}"
