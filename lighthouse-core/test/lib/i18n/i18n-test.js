@@ -68,9 +68,9 @@ describe('i18n', () => {
     });
 
     it('falls back to root tag prefix if specific locale not available', () => {
-      // COMPAT: Node 12 only has 'en' by default.
+      // COMPAT: Node 12 only has 'en-US' by default.
       if (isNode12SmallIcu()) {
-        expect(i18n.lookupLocale('es-JKJK')).toEqual('en');
+        expect(i18n.lookupLocale('es-JKJK')).toEqual('en-US');
         return;
       }
 
