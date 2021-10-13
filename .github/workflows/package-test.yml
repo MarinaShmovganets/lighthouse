@@ -4,8 +4,8 @@ on:
   pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:
-  if: startsWith(github.context.payload.pull_request.title, 'v')
   package-test:
+    if: startsWith(github.context.payload.pull_request.title, 'v')
     runs-on: ubuntu-latest
     name: Package Test
 
