@@ -12,7 +12,7 @@ const lookupClosestLocale = require('lookup-closest-locale');
 const {getAvailableLocales} = require('../../../shared/localization/format.js');
 const log = require('lighthouse-logger');
 const {LH_ROOT} = require('../../../root.js');
-const {isIcuMessage, _formatMessage} = require('../../../shared/localization/format.js');
+const {isIcuMessage, formatMessage} = require('../../../shared/localization/format.js');
 
 const DEFAULT_LOCALE = 'en';
 
@@ -182,7 +182,7 @@ function createIcuMessageFn(filename, fileStrings) {
     return {
       i18nId,
       values,
-      formattedDefault: _formatMessage(message, values, DEFAULT_LOCALE),
+      formattedDefault: formatMessage(message, values, DEFAULT_LOCALE),
     };
   };
 
