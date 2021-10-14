@@ -5,7 +5,7 @@
  */
 
 import {createContext, FunctionComponent} from 'preact';
-import {useContext, useEffect, useMemo} from 'preact/hooks';
+import {useContext, useMemo} from 'preact/hooks';
 
 import {formatMessage} from '../../../shared/localization/format';
 import {I18n} from '../../../report/renderer/i18n';
@@ -19,6 +19,21 @@ type FlowStrings = typeof UIStrings;
 
 const I18nContext = createContext<I18n<LhrStrings & FlowStrings> | undefined>(undefined);
 
+function useLhrLocale() {
+  const flowResult = useFlowResult();
+  const firstLhr = flowResult.steps[0].lhr;
+  const locale = firstLhr.configSettings.locale;
+
+  if (flowResult.steps.some(step => step.lhr.configSettings.locale !== locale)) {
+    console.warn('LHRs have inconsistent locales');
+  }
+
+  return {
+    locale,
+    lhrStrings: firstLhr.i18n.rendererFormattedStrings,
+  };
+}
+
 export function useI18n() {
   const i18n = useContext(I18nContext);
   if (!i18n) throw Error('i18n was not initialized');
@@ -31,23 +46,14 @@ export function useUIStrings() {
 }
 
 export function useStringFormatter() {
-  const locale = useLocale();
+  const {locale} = useLhrLocale();
   return (str: string, values?: Record<string, string|number>) => {
     return formatMessage(str, values, locale);
   };
 }
 
 export const I18nProvider: FunctionComponent = ({children}) => {
-  const flowResult = useFlowResult();
-  const firstLhr = flowResult.steps[0].lhr;
-  const lhrStrings = firstLhr.i18n.rendererFormattedStrings as LhrStrings;
-  const locale = firstLhr.configSettings.locale;
-
-  useEffect(() => {
-    if (flowResult.steps.some(step => step.lhr.configSettings.locale !== locale)) {
-      console.warn('LHRs do not have consistent locale');
-    }
-  }, [flowResult]);
+  const {locale, lhrStrings} = useLhrLocale();
 
   const i18n = useMemo(() => {
     const i18n = new I18n(locale, {
@@ -60,8 +66,10 @@ export const I18nProvider: FunctionComponent = ({children}) => {
       // `strings` is generated in build/build-report.js
       ...strings[locale],
     });
+
     // Initialize renderer util i18n for strings rendered in wrapped components.
     Util.i18n = i18n;
+
     return i18n;
   }, [locale, lhrStrings]);
 
