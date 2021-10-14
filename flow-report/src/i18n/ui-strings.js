@@ -58,7 +58,7 @@ export const UIStrings = {
   /** Rating indicating that a report category rating could not be calculated because of an error. */
   ratingError: 'Error',
   /**
-   * @description Label indicating the number of Lighthouse reports that evaluate a web page as it loads, but before the user interacts with it.
+   * @description Label indicating the number of Lighthouse reports that evaluate a web page as it loads.
    * @example {2} numNavigation
    */
   navigationReportCount: `{numNavigation, plural,
@@ -66,7 +66,7 @@ export const UIStrings = {
     other {{numNavigation} navigation reports}
   }`,
   /**
-   * @description Label indicating the number of Lighthouse reports that evaluate a web page over a period of time where the user could have interacted with the page.
+   * @description Label indicating the number of Lighthouse reports that evaluate a web page over a period of time.
    * @example {2} numTimespan
    */
   timespanReportCount: `{numTimespan, plural,
