@@ -87,6 +87,13 @@ describe('i18n', () => {
       });
 
       it('takes multiple locale strings and returns a possible, canonicalized one', () => {
+        // COMPAT: Node 12 only has 'en-US' by default.
+        if (isNode12SmallIcu()) {
+          expect(i18n.lookupLocale([invalidLocale, 'eN-uS', 'en-xa'], ['ar', 'es', 'en-US']))
+            .toEqual('en-US');
+          return;
+        }
+
         expect(i18n.lookupLocale([invalidLocale, 'eS', 'en-xa'], ['ar', 'es']))
             .toEqual('es');
       });
