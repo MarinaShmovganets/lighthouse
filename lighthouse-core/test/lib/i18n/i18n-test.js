@@ -80,5 +80,24 @@ describe('i18n', () => {
     it('falls back to en-US if no match is available', () => {
       expect(i18n.lookupLocale(invalidLocale)).toEqual('en-US');
     });
+
+    describe('possibleLocales option', () => {
+      it('canonicalizes from the possible locales', () => {
+        expect(i18n.lookupLocale('en-xa', ['ar', 'en-XA'])).toEqual('en-XA');
+      });
+
+      it('takes multiple locale strings and returns a possible, canonicalized one', () => {
+        expect(i18n.lookupLocale([invalidLocale, 'eS', 'en-xa'], ['ar', 'es']))
+            .toEqual('es');
+      });
+
+      it('falls back to en-US if no possible match is available', () => {
+        expect(i18n.lookupLocale('es', ['en-US', 'ru', 'zh'])).toEqual('en-US');
+      });
+
+      it('falls back to en-US if no possible matchs are available at all', () => {
+        expect(i18n.lookupLocale('ru', [])).toEqual('en-US');
+      });
+    });
   });
 });
