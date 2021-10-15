@@ -52,11 +52,12 @@ export const I18nProvider: FunctionComponent = ({children}) => {
 
   const i18n = useMemo(() => {
     const i18n = new I18n(locale, {
-      // Set missing lhr strings to default (english) values.
+      // Set any missing lhr strings to default (english) values.
       ...Util.UIStrings,
       // Preload with strings from the first lhr.
+      // Used for legacy report components imported into the flow report.
       ...lhrStrings,
-      // Set missing flow strings to default (english) values.
+      // Set any missing flow strings to default (english) values.
       ...UIStrings,
       // `strings` is generated in build/build-report.js
       ...strings[locale],
