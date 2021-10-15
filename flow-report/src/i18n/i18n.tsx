@@ -14,10 +14,7 @@ import {useFlowResult} from '../util';
 import strings from './localized-strings';
 import {Util} from '../../../report/renderer/util';
 
-type LhrStrings = typeof Util.UIStrings;
-type FlowStrings = typeof UIStrings;
-
-const I18nContext = createContext<I18n<LhrStrings & FlowStrings> | undefined>(undefined);
+const I18nContext = createContext(new I18n('en-US', {...Util.UIStrings, ...UIStrings}));
 
 function useLhrLocale() {
   const flowResult = useFlowResult();
@@ -35,9 +32,7 @@ function useLhrLocale() {
 }
 
 export function useI18n() {
-  const i18n = useContext(I18nContext);
-  if (!i18n) throw Error('i18n was not initialized');
-  return i18n;
+  return useContext(I18nContext);
 }
 
 export function useUIStrings() {
