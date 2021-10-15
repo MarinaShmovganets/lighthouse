@@ -9,7 +9,7 @@ import {FunctionComponent} from 'preact';
 import {Util} from '../../../report/renderer/util';
 import {Separator} from '../common';
 import {CategoryScore} from '../wrappers/category-score';
-import {useI18n, useStringFormatter, useUIStrings} from '../i18n/i18n';
+import {useI18n, useStringFormatter, useLocalizedStrings} from '../i18n/i18n';
 
 import type {UIStringsType} from '../i18n/ui-strings';
 
@@ -34,7 +34,7 @@ export const SummaryTooltip: FunctionComponent<{
   category: LH.ReportResult.Category,
   gatherMode: LH.Result.GatherMode
 }> = ({category, gatherMode}) => {
-  const strings = useUIStrings();
+  const strings = useLocalizedStrings();
   const str_ = useStringFormatter();
   const {
     numPassed,

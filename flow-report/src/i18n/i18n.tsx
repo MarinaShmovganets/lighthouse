@@ -35,7 +35,7 @@ export function useI18n() {
   return useContext(I18nContext);
 }
 
-export function useUIStrings() {
+export function useLocalizedStrings() {
   const i18n = useI18n();
   return i18n.strings;
 }

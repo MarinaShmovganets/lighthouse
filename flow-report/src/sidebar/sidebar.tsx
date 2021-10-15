@@ -7,14 +7,14 @@
 import {FunctionComponent} from 'preact';
 
 import {Separator} from '../common';
-import {useI18n, useUIStrings} from '../i18n/i18n';
+import {useI18n, useLocalizedStrings} from '../i18n/i18n';
 import {CpuIcon, EnvIcon, SummaryIcon} from '../icons';
 import {classNames, useCurrentLhr, useFlowResult} from '../util';
 import {SidebarFlow} from './flow';
 
 export const SidebarSummary: FunctionComponent = () => {
   const currentLhr = useCurrentLhr();
-  const strings = useUIStrings();
+  const strings = useLocalizedStrings();
 
   const url = new URL(location.href);
   url.hash = '#';
@@ -33,7 +33,7 @@ export const SidebarSummary: FunctionComponent = () => {
 };
 
 const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> = ({settings}) => {
-  const strings = useUIStrings();
+  const strings = useLocalizedStrings();
 
   return (
     <div className="SidebarRuntimeSettings">
