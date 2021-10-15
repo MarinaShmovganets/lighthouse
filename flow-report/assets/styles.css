@@ -121,6 +121,14 @@
   margin-right: var(--double-base-spacing);
 }
 
+.Topbar__help-label {
+  display: flex;
+  align-items: center;
+}
+.Topbar__help-label > :first-child {
+  margin-right: var(--half-base-spacing);
+}
+
 .Content {
   grid-area: content;
   overflow-y: auto;

@@ -514,7 +514,7 @@
 }
 .lh-audit--manual .lh-audit__score-icon,
 .lh-audit--notapplicable .lh-audit__score-icon {
-  border: 2px solid var(--color-gray-400);
+  border: calc(0.2 * var(--score-icon-size)) solid var(--color-gray-400);
   border-radius: 100%;
   background: none;
 }
@@ -524,7 +524,7 @@
 }
 
 .lh-audit--informative .lh-audit__score-icon {
-  border: 2px solid var(--color-gray-400);
+  border: calc(0.2 * var(--score-icon-size)) solid var(--color-gray-400);
   border-radius: 100%;
 }
 
@@ -1228,7 +1228,7 @@
 }
 .lh-fraction__wrapper--null .lh-fraction__content::before {
   border-radius: 50%;
-  border: 2px solid var(--color-gray-700);
+  border: calc(0.2 * var(--score-icon-size)) solid var(--color-gray-700);
 }
 
 .lh-fraction__background {
