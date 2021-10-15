@@ -50,6 +50,10 @@ class Util {
     return `%10d${NBSP}ms`;
   }
 
+  /** @type {I18n<typeof Util['UIStrings']>} */
+  // @ts-expect-error: Is set in report renderer.
+  static i18n = null;
+
   /**
    * Returns a new LHR that's reshaped for slightly better ergonomics within the report rendereer.
    * Also, sets up the localized UI strings used within renderer and makes changes to old LHRs to be
@@ -567,10 +571,6 @@ Util.getUniqueSuffix = (() => {
     return svgSuffix++;
   };
 })();
-
-/** @type {I18n<typeof Util['UIStrings']>} */
-// @ts-expect-error: Is set in report renderer.
-Util.i18n = null;
 
 /**
  * Report-renderer-specific strings.
