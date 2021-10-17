@@ -53,8 +53,11 @@ describe('Images: size audit', () => {
       });
       let details = '';
       if (result.score === 0) {
-        const {displayedSize: displayed, actualSize: actual, expectedSize: expected} =
-            result.details.items[0];
+        const {
+          displayedSize: displayed,
+          actualSize: actual,
+          expectedSize: expected,
+        } = result.details.items[0];
         details = ` (displayed: ${displayed}, actual: ${actual}, expected: ${expected})`;
       }
       assert.strictEqual(result.score, data.score, `score does not match${details}`);
@@ -187,7 +190,7 @@ describe('Images: size audit', () => {
       naturalSize: [5, 5],
       props: {
         clientRect: {
-          top: - 100,
+          top: -100,
           bottom: 0,
           left: 0,
           right: 100,
@@ -343,7 +346,6 @@ describe('Images: size audit', () => {
         clientSize: [64, 64],
         naturalSize: [128, 128],
         devicePixelRatio: 2.625,
-
       });
 
       testImage('is an icon with right size', {
@@ -386,18 +388,9 @@ describe('Images: size audit', () => {
   it('de-dupes images', () => {
     const result = ImageSizeResponsiveAudit.audit({
       ImageElements: [
-        generateImage(
-          {displayedWidth: 80, displayedHeight: 40},
-          {width: 40, height: 20}
-        ),
-        generateImage(
-          {displayedWidth: 160, displayedHeight: 80},
-          {width: 40, height: 20}
-        ),
-        generateImage(
-          {displayedWidth: 60, displayedHeight: 30},
-          {width: 40, height: 20}
-        ),
+        generateImage({displayedWidth: 80, displayedHeight: 40}, {width: 40, height: 20}),
+        generateImage({displayedWidth: 160, displayedHeight: 80}, {width: 40, height: 20}),
+        generateImage({displayedWidth: 60, displayedHeight: 30}, {width: 40, height: 20}),
       ],
       ViewportDimensions: {
         innerWidth: WIDTH,
@@ -438,17 +431,14 @@ describe('Images: size audit', () => {
       },
     });
     assert.equal(result.details.items.length, 3);
-    const srcs = result.details.items.map(item => item.url);
+    const srcs = result.details.items.map((item) => item.url);
     assert.deepEqual(srcs, ['image2.png', 'image3.png', 'image1.png']);
   });
 
   it('shows the right expected size', () => {
     const result = ImageSizeResponsiveAudit.audit({
       ImageElements: [
-        generateImage(
-          {displayedWidth: 80, displayedHeight: 40},
-          {width: 40, height: 20}
-        ),
+        generateImage({displayedWidth: 80, displayedHeight: 40}, {width: 40, height: 20}),
       ],
       ViewportDimensions: {
         innerWidth: WIDTH,

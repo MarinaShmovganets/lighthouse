@@ -9,7 +9,7 @@
       "axe-core": "4.2.3"
     }
   },
-  "lighthouseVersion": "8.6.0",
+  "lighthouseVersion": "8.5.1",
   "fetchTime": "2021-09-07T20:11:11.853Z",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -841,9 +841,7 @@
         "type": "debugdata",
         "items": [
           {
-            "failures": [
-              "No manifest was fetched"
-            ],
+            "failures": ["No manifest was fetched"],
             "isParseFailure": true,
             "parseFailureReason": "No manifest was fetched"
           }
@@ -861,10 +859,7 @@
         "type": "debugdata",
         "items": [
           {
-            "failures": [
-              "No manifest was fetched",
-              "No `<meta name=\"theme-color\">` tag found"
-            ],
+            "failures": ["No manifest was fetched", "No `<meta name=\"theme-color\">` tag found"],
             "themeColor": null,
             "isParseFailure": true,
             "parseFailureReason": "No manifest was fetched"
@@ -938,11 +933,6 @@
         "headings": [
           {
             "key": "url",
-            "itemType": "thumbnail",
-            "text": ""
-          },
-          {
-            "key": "elidedUrl",
             "itemType": "url",
             "text": "URL"
           },
@@ -965,7 +955,6 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
-            "elidedUrl": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
             "displayedSize": "360 x 240",
             "actualSize": "480 x 318",
             "actualPixels": 152640,
@@ -3575,12 +3564,7 @@
         "debugData": {
           "type": "debugdata",
           "impact": "serious",
-          "tags": [
-            "cat.language",
-            "wcag2a",
-            "wcag311",
-            "ACT"
-          ]
+          "tags": ["cat.language", "wcag2a", "wcag311", "ACT"]
         }
       }
     },
@@ -4050,13 +4034,7 @@
         "debugData": {
           "type": "debugdata",
           "impact": "serious",
-          "tags": [
-            "cat.text-alternatives",
-            "wcag2a",
-            "wcag111",
-            "section508",
-            "section508.22.a"
-          ]
+          "tags": ["cat.text-alternatives", "wcag2a", "wcag111", "section508", "section508.22.a"]
         }
       }
     },
@@ -5692,9 +5670,7 @@
     }
   },
   "configSettings": {
-    "output": [
-      "json"
-    ],
+    "output": ["json"],
     "maxWaitForFcp": 30000,
     "maxWaitForLoad": 45000,
     "formFactor": "mobile",
@@ -5831,11 +5807,7 @@
   "categories": {
     "performance": {
       "title": "Performance",
-      "supportedModes": [
-        "navigation",
-        "timespan",
-        "snapshot"
-      ],
+      "supportedModes": ["navigation", "timespan", "snapshot"],
       "auditRefs": [
         {
           "id": "first-contentful-paint",
@@ -5914,11 +5886,7 @@
           "weight": 15,
           "group": "metrics",
           "acronym": "CLS",
-          "relevantAudits": [
-            "layout-shift-elements",
-            "non-composited-animations",
-            "unsized-images"
-          ]
+          "relevantAudits": ["layout-shift-elements", "non-composited-animations", "unsized-images"]
         },
         {
           "id": "max-potential-fid",
@@ -6178,10 +6146,7 @@
       "title": "Accessibility",
       "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developers.google.com/web/fundamentals/accessibility). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.",
       "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://developers.google.com/web/fundamentals/accessibility/how-to-review).",
-      "supportedModes": [
-        "navigation",
-        "snapshot"
-      ],
+      "supportedModes": ["navigation", "snapshot"],
       "auditRefs": [
         {
           "id": "accesskeys",
@@ -6449,11 +6414,7 @@
     },
     "best-practices": {
       "title": "Best Practices",
-      "supportedModes": [
-        "navigation",
-        "timespan",
-        "snapshot"
-      ],
+      "supportedModes": ["navigation", "timespan", "snapshot"],
       "auditRefs": [
         {
           "id": "is-on-https",
@@ -6558,10 +6519,7 @@
       "title": "SEO",
       "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/learn-web-vitals/). [Learn more](https://support.google.com/webmasters/answer/35769).",
       "manualDescription": "Run these additional validators on your site to check additional SEO best practices.",
-      "supportedModes": [
-        "navigation",
-        "snapshot"
-      ],
+      "supportedModes": ["navigation", "snapshot"],
       "auditRefs": [
         {
           "id": "viewport",
@@ -6645,9 +6603,7 @@
       "title": "Progressive Web App",
       "description": "These checks validate the aspects of a Progressive Web App. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist).",
       "manualDescription": "These checks are required by the baseline [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
-      "supportedModes": [
-        "navigation"
-      ],
+      "supportedModes": ["navigation"],
       "auditRefs": [
         {
           "id": "installable-manifest",
@@ -8087,12 +8043,8 @@
       "warningHeader": "Warnings: "
     },
     "icuMessagePaths": {
-      "lighthouse-core/audits/is-on-https.js | failureTitle": [
-        "audits[is-on-https].title"
-      ],
-      "lighthouse-core/audits/is-on-https.js | description": [
-        "audits[is-on-https].description"
-      ],
+      "lighthouse-core/audits/is-on-https.js | failureTitle": ["audits[is-on-https].title"],
+      "lighthouse-core/audits/is-on-https.js | description": ["audits[is-on-https].description"],
       "lighthouse-core/audits/is-on-https.js | displayValue": [
         {
           "values": {
@@ -8110,24 +8062,16 @@
       "lighthouse-core/audits/is-on-https.js | allowed": [
         "audits[is-on-https].details.items[0].resolution"
       ],
-      "lighthouse-core/audits/redirects-http.js | title": [
-        "audits[redirects-http].title"
-      ],
+      "lighthouse-core/audits/redirects-http.js | title": ["audits[redirects-http].title"],
       "lighthouse-core/audits/redirects-http.js | description": [
         "audits[redirects-http].description"
       ],
-      "lighthouse-core/audits/service-worker.js | failureTitle": [
-        "audits[service-worker].title"
-      ],
+      "lighthouse-core/audits/service-worker.js | failureTitle": ["audits[service-worker].title"],
       "lighthouse-core/audits/service-worker.js | description": [
         "audits[service-worker].description"
       ],
-      "lighthouse-core/audits/viewport.js | title": [
-        "audits.viewport.title"
-      ],
-      "lighthouse-core/audits/viewport.js | description": [
-        "audits.viewport.description"
-      ],
+      "lighthouse-core/audits/viewport.js | title": ["audits.viewport.title"],
+      "lighthouse-core/audits/viewport.js | description": ["audits.viewport.description"],
       "lighthouse-core/lib/i18n/i18n.js | firstContentfulPaintMetric": [
         "audits[first-contentful-paint].title",
         "audits[timing-budget].details.items[2].label"
@@ -8192,9 +8136,7 @@
       "lighthouse-core/audits/metrics/first-meaningful-paint.js | description": [
         "audits[first-meaningful-paint].description"
       ],
-      "lighthouse-core/lib/i18n/i18n.js | speedIndexMetric": [
-        "audits[speed-index].title"
-      ],
+      "lighthouse-core/lib/i18n/i18n.js | speedIndexMetric": ["audits[speed-index].title"],
       "lighthouse-core/audits/metrics/speed-index.js | description": [
         "audits[speed-index].description"
       ],
@@ -8310,12 +8252,8 @@
       "lighthouse-core/audits/metrics/interactive.js | description": [
         "audits.interactive.description"
       ],
-      "lighthouse-core/audits/user-timings.js | title": [
-        "audits[user-timings].title"
-      ],
-      "lighthouse-core/audits/user-timings.js | description": [
-        "audits[user-timings].description"
-      ],
+      "lighthouse-core/audits/user-timings.js | title": ["audits[user-timings].title"],
+      "lighthouse-core/audits/user-timings.js | description": ["audits[user-timings].description"],
       "lighthouse-core/audits/user-timings.js | displayValue": [
         {
           "values": {
@@ -8354,12 +8292,8 @@
           "path": "audits[critical-request-chains].displayValue"
         }
       ],
-      "lighthouse-core/audits/redirects.js | title": [
-        "audits.redirects.title"
-      ],
-      "lighthouse-core/audits/redirects.js | description": [
-        "audits.redirects.description"
-      ],
+      "lighthouse-core/audits/redirects.js | title": ["audits.redirects.title"],
+      "lighthouse-core/audits/redirects.js | description": ["audits.redirects.description"],
       "lighthouse-core/audits/installable-manifest.js | failureTitle": [
         "audits[installable-manifest].title"
       ],
@@ -8383,27 +8317,19 @@
       "lighthouse-core/audits/apple-touch-icon.js | description": [
         "audits[apple-touch-icon].description"
       ],
-      "lighthouse-core/audits/splash-screen.js | failureTitle": [
-        "audits[splash-screen].title"
-      ],
+      "lighthouse-core/audits/splash-screen.js | failureTitle": ["audits[splash-screen].title"],
       "lighthouse-core/audits/splash-screen.js | description": [
         "audits[splash-screen].description"
       ],
-      "lighthouse-core/audits/themed-omnibox.js | failureTitle": [
-        "audits[themed-omnibox].title"
-      ],
+      "lighthouse-core/audits/themed-omnibox.js | failureTitle": ["audits[themed-omnibox].title"],
       "lighthouse-core/audits/themed-omnibox.js | description": [
         "audits[themed-omnibox].description"
       ],
-      "lighthouse-core/audits/maskable-icon.js | failureTitle": [
-        "audits[maskable-icon].title"
-      ],
+      "lighthouse-core/audits/maskable-icon.js | failureTitle": ["audits[maskable-icon].title"],
       "lighthouse-core/audits/maskable-icon.js | description": [
         "audits[maskable-icon].description"
       ],
-      "lighthouse-core/audits/content-width.js | title": [
-        "audits[content-width].title"
-      ],
+      "lighthouse-core/audits/content-width.js | title": ["audits[content-width].title"],
       "lighthouse-core/audits/content-width.js | description": [
         "audits[content-width].description"
       ],
@@ -8434,18 +8360,12 @@
       "lighthouse-core/audits/image-size-responsive.js | columnExpected": [
         "audits[image-size-responsive].details.headings[4].text"
       ],
-      "lighthouse-core/audits/preload-fonts.js | title": [
-        "audits[preload-fonts].title"
-      ],
+      "lighthouse-core/audits/preload-fonts.js | title": ["audits[preload-fonts].title"],
       "lighthouse-core/audits/preload-fonts.js | description": [
         "audits[preload-fonts].description"
       ],
-      "lighthouse-core/audits/deprecations.js | failureTitle": [
-        "audits.deprecations.title"
-      ],
-      "lighthouse-core/audits/deprecations.js | description": [
-        "audits.deprecations.description"
-      ],
+      "lighthouse-core/audits/deprecations.js | failureTitle": ["audits.deprecations.title"],
+      "lighthouse-core/audits/deprecations.js | description": ["audits.deprecations.description"],
       "lighthouse-core/audits/deprecations.js | displayValue": [
         {
           "values": {
@@ -8466,12 +8386,8 @@
       "lighthouse-core/audits/mainthread-work-breakdown.js | columnCategory": [
         "audits[mainthread-work-breakdown].details.headings[0].text"
       ],
-      "lighthouse-core/audits/bootup-time.js | failureTitle": [
-        "audits[bootup-time].title"
-      ],
-      "lighthouse-core/audits/bootup-time.js | description": [
-        "audits[bootup-time].description"
-      ],
+      "lighthouse-core/audits/bootup-time.js | failureTitle": ["audits[bootup-time].title"],
+      "lighthouse-core/audits/bootup-time.js | description": ["audits[bootup-time].description"],
       "lighthouse-core/audits/bootup-time.js | columnTotal": [
         "audits[bootup-time].details.headings[1].text"
       ],
@@ -8481,9 +8397,7 @@
       "lighthouse-core/audits/bootup-time.js | columnScriptParse": [
         "audits[bootup-time].details.headings[3].text"
       ],
-      "lighthouse-core/audits/uses-rel-preload.js | title": [
-        "audits[uses-rel-preload].title"
-      ],
+      "lighthouse-core/audits/uses-rel-preload.js | title": ["audits[uses-rel-preload].title"],
       "lighthouse-core/audits/uses-rel-preload.js | description": [
         "audits[uses-rel-preload].description"
       ],
@@ -8493,27 +8407,17 @@
       "lighthouse-core/audits/uses-rel-preconnect.js | description": [
         "audits[uses-rel-preconnect].description"
       ],
-      "lighthouse-core/audits/font-display.js | title": [
-        "audits[font-display].title"
-      ],
-      "lighthouse-core/audits/font-display.js | description": [
-        "audits[font-display].description"
-      ],
-      "lighthouse-core/audits/network-rtt.js | title": [
-        "audits[network-rtt].title"
-      ],
-      "lighthouse-core/audits/network-rtt.js | description": [
-        "audits[network-rtt].description"
-      ],
+      "lighthouse-core/audits/font-display.js | title": ["audits[font-display].title"],
+      "lighthouse-core/audits/font-display.js | description": ["audits[font-display].description"],
+      "lighthouse-core/audits/network-rtt.js | title": ["audits[network-rtt].title"],
+      "lighthouse-core/audits/network-rtt.js | description": ["audits[network-rtt].description"],
       "lighthouse-core/audits/network-server-latency.js | title": [
         "audits[network-server-latency].title"
       ],
       "lighthouse-core/audits/network-server-latency.js | description": [
         "audits[network-server-latency].description"
       ],
-      "lighthouse-core/audits/performance-budget.js | title": [
-        "audits[performance-budget].title"
-      ],
+      "lighthouse-core/audits/performance-budget.js | title": ["audits[performance-budget].title"],
       "lighthouse-core/audits/performance-budget.js | description": [
         "audits[performance-budget].description"
       ],
@@ -8602,9 +8506,7 @@
         "audits[performance-budget].details.items[8].label",
         "audits[resource-summary].details.items[7].label"
       ],
-      "lighthouse-core/audits/timing-budget.js | title": [
-        "audits[timing-budget].title"
-      ],
+      "lighthouse-core/audits/timing-budget.js | title": ["audits[timing-budget].title"],
       "lighthouse-core/audits/timing-budget.js | description": [
         "audits[timing-budget].description"
       ],
@@ -8614,9 +8516,7 @@
       "lighthouse-core/audits/timing-budget.js | columnMeasurement": [
         "audits[timing-budget].details.headings[1].text"
       ],
-      "lighthouse-core/audits/resource-summary.js | title": [
-        "audits[resource-summary].title"
-      ],
+      "lighthouse-core/audits/resource-summary.js | title": ["audits[resource-summary].title"],
       "lighthouse-core/audits/resource-summary.js | description": [
         "audits[resource-summary].description"
       ],
@@ -8681,9 +8581,7 @@
         "audits[non-composited-animations].details.headings[0].text",
         "audits[dom-size].details.headings[1].text"
       ],
-      "lighthouse-core/audits/lcp-lazy-loaded.js | title": [
-        "audits[lcp-lazy-loaded].title"
-      ],
+      "lighthouse-core/audits/lcp-lazy-loaded.js | title": ["audits[lcp-lazy-loaded].title"],
       "lighthouse-core/audits/lcp-lazy-loaded.js | description": [
         "audits[lcp-lazy-loaded].description"
       ],
@@ -8696,12 +8594,8 @@
       "lighthouse-core/audits/layout-shift-elements.js | columnContribution": [
         "audits[layout-shift-elements].details.headings[1].text"
       ],
-      "lighthouse-core/audits/long-tasks.js | title": [
-        "audits[long-tasks].title"
-      ],
-      "lighthouse-core/audits/long-tasks.js | description": [
-        "audits[long-tasks].description"
-      ],
+      "lighthouse-core/audits/long-tasks.js | title": ["audits[long-tasks].title"],
+      "lighthouse-core/audits/long-tasks.js | description": ["audits[long-tasks].description"],
       "lighthouse-core/audits/long-tasks.js | displayValue": [
         {
           "values": {
@@ -8739,9 +8633,7 @@
           "path": "audits[non-composited-animations].details.items[0].subItems.items[0].failureReason"
         }
       ],
-      "lighthouse-core/audits/unsized-images.js | failureTitle": [
-        "audits[unsized-images].title"
-      ],
+      "lighthouse-core/audits/unsized-images.js | failureTitle": ["audits[unsized-images].title"],
       "lighthouse-core/audits/unsized-images.js | description": [
         "audits[unsized-images].description"
       ],
@@ -8754,24 +8646,16 @@
         "audits[object-alt].details.headings[0].text",
         "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
       ],
-      "lighthouse-core/audits/valid-source-maps.js | title": [
-        "audits[valid-source-maps].title"
-      ],
+      "lighthouse-core/audits/valid-source-maps.js | title": ["audits[valid-source-maps].title"],
       "lighthouse-core/audits/valid-source-maps.js | description": [
         "audits[valid-source-maps].description"
       ],
-      "lighthouse-core/audits/preload-lcp-image.js | title": [
-        "audits[preload-lcp-image].title"
-      ],
+      "lighthouse-core/audits/preload-lcp-image.js | title": ["audits[preload-lcp-image].title"],
       "lighthouse-core/audits/preload-lcp-image.js | description": [
         "audits[preload-lcp-image].description"
       ],
-      "lighthouse-core/audits/csp-xss.js | title": [
-        "audits[csp-xss].title"
-      ],
-      "lighthouse-core/audits/csp-xss.js | description": [
-        "audits[csp-xss].description"
-      ],
+      "lighthouse-core/audits/csp-xss.js | title": ["audits[csp-xss].title"],
+      "lighthouse-core/audits/csp-xss.js | description": ["audits[csp-xss].description"],
       "lighthouse-core/audits/csp-xss.js | columnDirective": [
         "audits[csp-xss].details.headings[1].text"
       ],
@@ -8781,9 +8665,7 @@
       "lighthouse-core/lib/i18n/i18n.js | itemSeverityHigh": [
         "audits[csp-xss].details.items[0].severity"
       ],
-      "lighthouse-core/audits/csp-xss.js | noCsp": [
-        "audits[csp-xss].details.items[0].description"
-      ],
+      "lighthouse-core/audits/csp-xss.js | noCsp": ["audits[csp-xss].details.items[0].description"],
       "lighthouse-core/audits/manual/pwa-cross-browser.js | title": [
         "audits[pwa-cross-browser].title"
       ],
@@ -8802,9 +8684,7 @@
       "lighthouse-core/audits/manual/pwa-each-page-has-url.js | description": [
         "audits[pwa-each-page-has-url].description"
       ],
-      "lighthouse-core/audits/accessibility/accesskeys.js | title": [
-        "audits.accesskeys.title"
-      ],
+      "lighthouse-core/audits/accessibility/accesskeys.js | title": ["audits.accesskeys.title"],
       "lighthouse-core/audits/accessibility/accesskeys.js | description": [
         "audits.accesskeys.description"
       ],
@@ -8868,9 +8748,7 @@
       "lighthouse-core/audits/accessibility/aria-required-parent.js | description": [
         "audits[aria-required-parent].description"
       ],
-      "lighthouse-core/audits/accessibility/aria-roles.js | title": [
-        "audits[aria-roles].title"
-      ],
+      "lighthouse-core/audits/accessibility/aria-roles.js | title": ["audits[aria-roles].title"],
       "lighthouse-core/audits/accessibility/aria-roles.js | description": [
         "audits[aria-roles].description"
       ],
@@ -8904,18 +8782,12 @@
       "lighthouse-core/audits/accessibility/aria-valid-attr.js | description": [
         "audits[aria-valid-attr].description"
       ],
-      "lighthouse-core/audits/accessibility/button-name.js | title": [
-        "audits[button-name].title"
-      ],
+      "lighthouse-core/audits/accessibility/button-name.js | title": ["audits[button-name].title"],
       "lighthouse-core/audits/accessibility/button-name.js | description": [
         "audits[button-name].description"
       ],
-      "lighthouse-core/audits/accessibility/bypass.js | title": [
-        "audits.bypass.title"
-      ],
-      "lighthouse-core/audits/accessibility/bypass.js | description": [
-        "audits.bypass.description"
-      ],
+      "lighthouse-core/audits/accessibility/bypass.js | title": ["audits.bypass.title"],
+      "lighthouse-core/audits/accessibility/bypass.js | description": ["audits.bypass.description"],
       "lighthouse-core/audits/accessibility/color-contrast.js | title": [
         "audits[color-contrast].title"
       ],
@@ -8928,12 +8800,8 @@
       "lighthouse-core/audits/accessibility/definition-list.js | description": [
         "audits[definition-list].description"
       ],
-      "lighthouse-core/audits/accessibility/dlitem.js | title": [
-        "audits.dlitem.title"
-      ],
-      "lighthouse-core/audits/accessibility/dlitem.js | description": [
-        "audits.dlitem.description"
-      ],
+      "lighthouse-core/audits/accessibility/dlitem.js | title": ["audits.dlitem.title"],
+      "lighthouse-core/audits/accessibility/dlitem.js | description": ["audits.dlitem.description"],
       "lighthouse-core/audits/accessibility/document-title.js | title": [
         "audits[document-title].title"
       ],
@@ -8958,9 +8826,7 @@
       "lighthouse-core/audits/accessibility/form-field-multiple-labels.js | description": [
         "audits[form-field-multiple-labels].description"
       ],
-      "lighthouse-core/audits/accessibility/frame-title.js | title": [
-        "audits[frame-title].title"
-      ],
+      "lighthouse-core/audits/accessibility/frame-title.js | title": ["audits[frame-title].title"],
       "lighthouse-core/audits/accessibility/frame-title.js | description": [
         "audits[frame-title].description"
       ],
@@ -8994,27 +8860,17 @@
       "lighthouse-core/audits/accessibility/input-image-alt.js | description": [
         "audits[input-image-alt].description"
       ],
-      "lighthouse-core/audits/accessibility/label.js | failureTitle": [
-        "audits.label.title"
-      ],
-      "lighthouse-core/audits/accessibility/label.js | description": [
-        "audits.label.description"
-      ],
+      "lighthouse-core/audits/accessibility/label.js | failureTitle": ["audits.label.title"],
+      "lighthouse-core/audits/accessibility/label.js | description": ["audits.label.description"],
       "lighthouse-core/audits/accessibility/link-name.js | failureTitle": [
         "audits[link-name].title"
       ],
       "lighthouse-core/audits/accessibility/link-name.js | description": [
         "audits[link-name].description"
       ],
-      "lighthouse-core/audits/accessibility/list.js | title": [
-        "audits.list.title"
-      ],
-      "lighthouse-core/audits/accessibility/list.js | description": [
-        "audits.list.description"
-      ],
-      "lighthouse-core/audits/accessibility/listitem.js | title": [
-        "audits.listitem.title"
-      ],
+      "lighthouse-core/audits/accessibility/list.js | title": ["audits.list.title"],
+      "lighthouse-core/audits/accessibility/list.js | description": ["audits.list.description"],
+      "lighthouse-core/audits/accessibility/listitem.js | title": ["audits.listitem.title"],
       "lighthouse-core/audits/accessibility/listitem.js | description": [
         "audits.listitem.description"
       ],
@@ -9036,9 +8892,7 @@
       "lighthouse-core/audits/accessibility/object-alt.js | description": [
         "audits[object-alt].description"
       ],
-      "lighthouse-core/audits/accessibility/tabindex.js | title": [
-        "audits.tabindex.title"
-      ],
+      "lighthouse-core/audits/accessibility/tabindex.js | title": ["audits.tabindex.title"],
       "lighthouse-core/audits/accessibility/tabindex.js | description": [
         "audits.tabindex.description"
       ],
@@ -9054,9 +8908,7 @@
       "lighthouse-core/audits/accessibility/th-has-data-cells.js | description": [
         "audits[th-has-data-cells].description"
       ],
-      "lighthouse-core/audits/accessibility/valid-lang.js | title": [
-        "audits[valid-lang].title"
-      ],
+      "lighthouse-core/audits/accessibility/valid-lang.js | title": ["audits[valid-lang].title"],
       "lighthouse-core/audits/accessibility/valid-lang.js | description": [
         "audits[valid-lang].description"
       ],
@@ -9256,21 +9108,11 @@
           "path": "audits[appcache-manifest].displayValue"
         }
       ],
-      "lighthouse-core/audits/dobetterweb/doctype.js | title": [
-        "audits.doctype.title"
-      ],
-      "lighthouse-core/audits/dobetterweb/doctype.js | description": [
-        "audits.doctype.description"
-      ],
-      "lighthouse-core/audits/dobetterweb/charset.js | title": [
-        "audits.charset.title"
-      ],
-      "lighthouse-core/audits/dobetterweb/charset.js | description": [
-        "audits.charset.description"
-      ],
-      "lighthouse-core/audits/dobetterweb/dom-size.js | title": [
-        "audits[dom-size].title"
-      ],
+      "lighthouse-core/audits/dobetterweb/doctype.js | title": ["audits.doctype.title"],
+      "lighthouse-core/audits/dobetterweb/doctype.js | description": ["audits.doctype.description"],
+      "lighthouse-core/audits/dobetterweb/charset.js | title": ["audits.charset.title"],
+      "lighthouse-core/audits/dobetterweb/charset.js | description": ["audits.charset.description"],
+      "lighthouse-core/audits/dobetterweb/dom-size.js | title": ["audits[dom-size].title"],
       "lighthouse-core/audits/dobetterweb/dom-size.js | description": [
         "audits[dom-size].description"
       ],
@@ -9358,9 +9200,7 @@
       "lighthouse-core/lib/i18n/i18n.js | itemSeverityMedium": [
         "audits[no-vulnerable-libraries].details.items[0].highestSeverity"
       ],
-      "lighthouse-core/audits/dobetterweb/js-libraries.js | title": [
-        "audits[js-libraries].title"
-      ],
+      "lighthouse-core/audits/dobetterweb/js-libraries.js | title": ["audits[js-libraries].title"],
       "lighthouse-core/audits/dobetterweb/js-libraries.js | description": [
         "audits[js-libraries].description"
       ],
@@ -9379,9 +9219,7 @@
       "lighthouse-core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | description": [
         "audits[password-inputs-can-be-pasted-into].description"
       ],
-      "lighthouse-core/audits/dobetterweb/uses-http2.js | title": [
-        "audits[uses-http2].title"
-      ],
+      "lighthouse-core/audits/dobetterweb/uses-http2.js | title": ["audits[uses-http2].title"],
       "lighthouse-core/audits/dobetterweb/uses-http2.js | description": [
         "audits[uses-http2].description"
       ],
@@ -9397,18 +9235,12 @@
       "lighthouse-core/audits/seo/meta-description.js | description": [
         "audits[meta-description].description"
       ],
-      "lighthouse-core/audits/seo/http-status-code.js | title": [
-        "audits[http-status-code].title"
-      ],
+      "lighthouse-core/audits/seo/http-status-code.js | title": ["audits[http-status-code].title"],
       "lighthouse-core/audits/seo/http-status-code.js | description": [
         "audits[http-status-code].description"
       ],
-      "lighthouse-core/audits/seo/font-size.js | title": [
-        "audits[font-size].title"
-      ],
-      "lighthouse-core/audits/seo/font-size.js | description": [
-        "audits[font-size].description"
-      ],
+      "lighthouse-core/audits/seo/font-size.js | title": ["audits[font-size].title"],
+      "lighthouse-core/audits/seo/font-size.js | description": ["audits[font-size].description"],
       "lighthouse-core/audits/seo/font-size.js | displayValue": [
         {
           "values": {
@@ -9429,12 +9261,8 @@
       "lighthouse-core/audits/seo/font-size.js | legibleText": [
         "audits[font-size].details.items[0].source.value"
       ],
-      "lighthouse-core/audits/seo/link-text.js | title": [
-        "audits[link-text].title"
-      ],
-      "lighthouse-core/audits/seo/link-text.js | description": [
-        "audits[link-text].description"
-      ],
+      "lighthouse-core/audits/seo/link-text.js | title": ["audits[link-text].title"],
+      "lighthouse-core/audits/seo/link-text.js | description": ["audits[link-text].description"],
       "lighthouse-core/audits/seo/crawlable-anchors.js | failureTitle": [
         "audits[crawlable-anchors].title"
       ],
@@ -9444,21 +9272,13 @@
       "lighthouse-core/audits/seo/crawlable-anchors.js | columnFailingLink": [
         "audits[crawlable-anchors].details.headings[0].text"
       ],
-      "lighthouse-core/audits/seo/is-crawlable.js | title": [
-        "audits[is-crawlable].title"
-      ],
+      "lighthouse-core/audits/seo/is-crawlable.js | title": ["audits[is-crawlable].title"],
       "lighthouse-core/audits/seo/is-crawlable.js | description": [
         "audits[is-crawlable].description"
       ],
-      "lighthouse-core/audits/seo/robots-txt.js | title": [
-        "audits[robots-txt].title"
-      ],
-      "lighthouse-core/audits/seo/robots-txt.js | description": [
-        "audits[robots-txt].description"
-      ],
-      "lighthouse-core/audits/seo/tap-targets.js | failureTitle": [
-        "audits[tap-targets].title"
-      ],
+      "lighthouse-core/audits/seo/robots-txt.js | title": ["audits[robots-txt].title"],
+      "lighthouse-core/audits/seo/robots-txt.js | description": ["audits[robots-txt].description"],
+      "lighthouse-core/audits/seo/tap-targets.js | failureTitle": ["audits[tap-targets].title"],
       "lighthouse-core/audits/seo/tap-targets.js | description": [
         "audits[tap-targets].description"
       ],
@@ -9479,24 +9299,12 @@
       "lighthouse-core/audits/seo/tap-targets.js | overlappingTargetHeader": [
         "audits[tap-targets].details.headings[2].text"
       ],
-      "lighthouse-core/audits/seo/hreflang.js | title": [
-        "audits.hreflang.title"
-      ],
-      "lighthouse-core/audits/seo/hreflang.js | description": [
-        "audits.hreflang.description"
-      ],
-      "lighthouse-core/audits/seo/plugins.js | title": [
-        "audits.plugins.title"
-      ],
-      "lighthouse-core/audits/seo/plugins.js | description": [
-        "audits.plugins.description"
-      ],
-      "lighthouse-core/audits/seo/canonical.js | title": [
-        "audits.canonical.title"
-      ],
-      "lighthouse-core/audits/seo/canonical.js | description": [
-        "audits.canonical.description"
-      ],
+      "lighthouse-core/audits/seo/hreflang.js | title": ["audits.hreflang.title"],
+      "lighthouse-core/audits/seo/hreflang.js | description": ["audits.hreflang.description"],
+      "lighthouse-core/audits/seo/plugins.js | title": ["audits.plugins.title"],
+      "lighthouse-core/audits/seo/plugins.js | description": ["audits.plugins.description"],
+      "lighthouse-core/audits/seo/canonical.js | title": ["audits.canonical.title"],
+      "lighthouse-core/audits/seo/canonical.js | description": ["audits.canonical.description"],
       "lighthouse-core/audits/seo/manual/structured-data.js | title": [
         "audits[structured-data].title"
       ],
@@ -9518,18 +9326,14 @@
       "lighthouse-core/config/default-config.js | bestPracticesCategoryTitle": [
         "categories[best-practices].title"
       ],
-      "lighthouse-core/config/default-config.js | seoCategoryTitle": [
-        "categories.seo.title"
-      ],
+      "lighthouse-core/config/default-config.js | seoCategoryTitle": ["categories.seo.title"],
       "lighthouse-core/config/default-config.js | seoCategoryDescription": [
         "categories.seo.description"
       ],
       "lighthouse-core/config/default-config.js | seoCategoryManualDescription": [
         "categories.seo.manualDescription"
       ],
-      "lighthouse-core/config/default-config.js | pwaCategoryTitle": [
-        "categories.pwa.title"
-      ],
+      "lighthouse-core/config/default-config.js | pwaCategoryTitle": ["categories.pwa.title"],
       "lighthouse-core/config/default-config.js | pwaCategoryDescription": [
         "categories.pwa.description"
       ],
