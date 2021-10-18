@@ -33,9 +33,6 @@ function getCategoryRating(rating: string, strings: UIStringsType) {
   }
 }
 
-type ScoredAudit = LH.ReportResult.AuditRef['result'] & {score: number};
-type ScoredAuditRef = LH.ReportResult.AuditRef & {result: ScoredAudit};
-
 const TooltipAudit: FunctionComponent<{audit: LH.ReportResult.AuditRef}> = ({audit}) => {
   const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
   return (
@@ -44,6 +41,8 @@ const TooltipAudit: FunctionComponent<{audit: LH.ReportResult.AuditRef}> = ({aud
     </div>
   );
 };
+
+type ScoredAuditRef = LH.ReportResult.AuditRef & {result: {score: number}};
 
 const TooltipAudits: FunctionComponent<{category: LH.ReportResult.Category}> = ({category}) => {
   const strings = useLocalizedStrings();
