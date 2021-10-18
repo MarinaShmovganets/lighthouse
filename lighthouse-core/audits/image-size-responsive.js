@@ -8,29 +8,29 @@
  *   the page are large enough with respect to the pixel ratio. The
  *   audit will list all visible images that are too small.
  */
-"use strict";
+'use strict';
 
-const Audit = require("./audit.js");
-const URL = require("../lib/url-shim.js");
-const i18n = require("../lib/i18n/i18n.js");
+const Audit = require('./audit.js');
+const URL = require('../lib/url-shim.js');
+const i18n = require('../lib/i18n/i18n.js');
 
 /** @typedef {LH.Artifacts.ImageElement & Required<Pick<LH.Artifacts.ImageElement, 'naturalDimensions'>>} ImageWithNaturalDimensions */
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on the size of visible images on the page. This descriptive title is shown to users when all images have correct sizes. */
-  title: "Serves images with appropriate resolution",
+  title: 'Serves images with appropriate resolution',
   /** Title of a Lighthouse audit that provides detail on the size of visible images on the page. This descriptive title is shown to users when not all images have correct sizes. */
-  failureTitle: "Serves images with low resolution",
+  failureTitle: 'Serves images with low resolution',
   /** Description of a Lighthouse audit that tells the user why they should maintain an appropriate size for all images. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description:
-    "Image natural dimensions should be proportional to the display size and the " +
-    "pixel ratio to maximize image clarity. [Learn more](https://web.dev/serve-responsive-images/).",
+    'Image natural dimensions should be proportional to the display size and the ' +
+    'pixel ratio to maximize image clarity. [Learn more](https://web.dev/serve-responsive-images/).',
   /**  Label for a column in a data table; entries in the column will be a string representing the displayed size of the image. */
-  columnDisplayed: "Displayed size",
+  columnDisplayed: 'Displayed size',
   /**  Label for a column in a data table; entries in the column will be a string representing the actual size of the image. */
-  columnActual: "Actual size",
+  columnActual: 'Actual size',
   /**  Label for a column in a data table; entries in the column will be a string representing the expected size of the image. */
-  columnExpected: "Expected size",
+  columnExpected: 'Expected size',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -84,7 +84,7 @@ function isCandidate(image) {
   /** image-rendering solution for pixel art scaling.
    * https://developer.mozilla.org/en-US/docs/Games/Techniques/Crisp_pixel_art_look
    */
-  const artisticImageRenderingValues = ["pixelated", "crisp-edges"];
+  const artisticImageRenderingValues = ['pixelated', 'crisp-edges'];
   // https://html.spec.whatwg.org/multipage/images.html#pixel-density-descriptor
   const densityDescriptorRegex = / \d+(\.\d+)?x/;
   if (image.displayedWidth <= 1 || image.displayedHeight <= 1) {
@@ -97,13 +97,13 @@ function isCandidate(image) {
   ) {
     return false;
   }
-  if (image.mimeType === "image/svg+xml") {
+  if (image.mimeType === 'image/svg+xml') {
     return false;
   }
   if (image.isCss) {
     return false;
   }
-  if (image.computedStyles.objectFit !== "fill") {
+  if (image.computedStyles.objectFit !== 'fill') {
     return false;
   }
   // Check if pixel art scaling is used.
@@ -254,11 +254,11 @@ class ImageSizeResponsive extends Audit {
    */
   static get meta() {
     return {
-      id: "image-size-responsive",
+      id: 'image-size-responsive',
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ["ImageElements", "ViewportDimensions"],
+      requiredArtifacts: ['ImageElements', 'ViewportDimensions'],
     };
   }
 
@@ -283,20 +283,20 @@ class ImageSizeResponsive extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      { key: "url", itemType: "url", text: str_(i18n.UIStrings.columnURL) },
+      {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
       {
-        key: "displayedSize",
-        itemType: "text",
+        key: 'displayedSize',
+        itemType: 'text',
         text: str_(UIStrings.columnDisplayed),
       },
       {
-        key: "actualSize",
-        itemType: "text",
+        key: 'actualSize',
+        itemType: 'text',
         text: str_(UIStrings.columnActual),
       },
       {
-        key: "expectedSize",
-        itemType: "text",
+        key: 'expectedSize',
+        itemType: 'text',
         text: str_(UIStrings.columnExpected),
       },
     ];
