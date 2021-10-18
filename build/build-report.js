@@ -83,20 +83,6 @@ async function buildFlowReport() {
   });
 }
 
-async function buildPsiReport() {
-  const bundle = await rollup.rollup({
-    input: 'report/clients/psi.js',
-    plugins: [
-      rollupPlugins.commonjs(),
-    ],
-  });
-
-  await bundle.write({
-    file: 'dist/report/psi.js',
-    format: 'esm',
-  });
-}
-
 async function buildEsModulesBundle() {
   const bundle = await rollup.rollup({
     input: 'report/clients/bundle.js',
@@ -136,7 +122,6 @@ if (require.main === module) {
     buildStandaloneReport();
     buildFlowReport();
     buildEsModulesBundle();
-    buildPsiReport();
     buildUmdBundle();
   }
 
@@ -161,6 +146,5 @@ if (require.main === module) {
 module.exports = {
   buildStandaloneReport,
   buildFlowReport,
-  buildPsiReport,
   buildUmdBundle,
 };
