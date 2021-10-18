@@ -141,7 +141,7 @@ if (require.main === module) {
   }
 
   if (process.argv.includes('--psi')) {
-    console.error('--psi build removed. use --umd instead.')
+    console.error('--psi build removed. use --umd instead.');
     process.exit(1);
   }
   if (process.argv.includes('--standalone')) {
