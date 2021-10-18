@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | passedAuditsGroupTitle": {
     "message": "Passed audits"
   },
+  "report/renderer/util.js | runtimeAnalysisWindow": {
+    "message": "Initial page load"
+  },
   "report/renderer/util.js | runtimeDesktopEmulation": {
     "message": "Emulated Desktop"
   },
@@ -2475,7 +2478,7 @@
     "message": "Single page load"
   },
   "report/renderer/util.js | runtimeSingleLoadTooltip": {
-    "message": "This data represents a single page load. Field data often summarizes many sessions."
+    "message": "This data is taken from a single page load, as opposed to field data summarizing many sessions."
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Unknown"

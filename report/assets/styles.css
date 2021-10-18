@@ -1788,10 +1788,12 @@
   list-style-type: none;
   position: relative;
   padding: calc(var(--default-padding) / 2) 0 0 calc(var(--default-padding) * 3);
+  cursor: unset; /* disable pointer cursor from report-icon */
 }
 
 .lh-meta__item.lh-tooltip-boundary {
   text-decoration: dotted underline var(--color-gray-500);
+  cursor: help;
 }
 
 .lh-meta__item.lh-report-icon::before {

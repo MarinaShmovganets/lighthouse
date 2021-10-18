@@ -104,32 +104,29 @@ export class ReportRenderer {
     const chromeVer = Array.isArray(match)
       ? match[1].replace('/', ' ').replace('Chrome', 'Chromium')
       : 'Chromium';
-    const entry = report.timing.entries.find(e => e.name === 'lh:gather:loadPage-defaultPass');
-    const loadPage = entry ? entry.duration : 0;
-    const tti = report.audits && report.audits.interactive &&
-      report.audits.interactive.numericValue || 0;
-    const pageloadDurationMs = Math.max(loadPage, tti);
     const channel = report.configSettings.channel;
     const benchmarkIndex = report.environment.benchmarkIndex.toFixed(0);
     const axeVersion = report.environment.credits['axe-core'];
 
     // [CSS icon class, textContent, tooltipText]
     const metaItems = [
-      ['date', `Captured at ${Util.i18n.formatDateTime(report.fetchTime)}`],
-      [
-        'devices',
+      ['date',
+        `Captured at ${Util.i18n.formatDateTime(report.fetchTime)}`],
+      ['devices',
         `${envValues.deviceEmulation} with Lighthouse ${report.lighthouseVersion}`,
         `${Util.i18n.strings.runtimeSettingsBenchmark}: ${benchmarkIndex}` +
             `\n${Util.i18n.strings.runtimeSettingsCPUThrottling}: ${envValues.cpuThrottling}` +
-            (axeVersion ? `\n${Util.i18n.strings.runtimeSettingsAxeVersion}: ${axeVersion}` : ''),
-      ],
-      ['samples-one', Util.i18n.strings.runtimeSingleLoad,
+            (axeVersion ? `\n${Util.i18n.strings.runtimeSettingsAxeVersion}: ${axeVersion}` : '')],
+      ['samples-one',
+        Util.i18n.strings.runtimeSingleLoad,
         Util.i18n.strings.runtimeSingleLoadTooltip],
-
-      ['stopwatch', `${Util.i18n.formatSeconds(pageloadDurationMs)} of load`],
-      ['networkspeed', `${envValues.summary}`,
+      ['stopwatch',
+        Util.i18n.strings.runtimeAnalysisWindow],
+      ['networkspeed',
+        `${envValues.summary}`,
         `${Util.i18n.strings.runtimeSettingsNetworkThrottling}: ${envValues.networkThrottling}`],
-      ['chrome', `Using ${chromeVer}` + (channel ? ` with ${channel}` : ''),
+      ['chrome',
+        `Using ${chromeVer}` + (channel ? ` with ${channel}` : ''),
         `${Util.i18n.strings.runtimeSettingsUANetwork}: "${report.environment.networkUserAgent}"`],
     ];
 

@@ -415,8 +415,12 @@ class Util {
           `${Util.i18n.formatNumber(throttling.downloadThroughputKbps)}${NBSP}Kbps down, ` +
           `${Util.i18n.formatNumber(throttling.uploadThroughputKbps)}${NBSP}Kbps up (DevTools)`;
 
-        const isSlow4G = requestLatencyMs === 150 * 3.75;
-        summary = `${isSlow4G ? 'Slow 4G' : 'Custom'} throttling by DevTools`;
+        const isSlow4G = () => {
+          return requestLatencyMs === 150 * 3.75 &&
+            throttling.downloadThroughputKbps === 1.6 * 1024 * 0.9 &&
+            throttling.uploadThroughputKbps === 750 * 0.9;
+        };
+        summary = `${isSlow4G() ? 'Slow 4G' : 'Custom'} throttling by DevTools`;
         break;
       }
       case 'simulate': {
@@ -424,8 +428,11 @@ class Util {
         cpuThrottling = `${Util.i18n.formatNumber(cpuSlowdownMultiplier)}x slowdown (Simulated)`;
         networkThrottling = `${Util.i18n.formatNumber(rttMs)}${NBSP}ms TCP RTT, ` +
           `${Util.i18n.formatNumber(throughputKbps)}${NBSP}Kbps throughput (Simulated)`;
-        const isSlow4G = rttMs === 150;
-        summary = isSlow4G ? 'Simulated slow 4G' : 'Custom simulated throttling';
+
+        const isSlow4G = () => {
+          return rttMs === 150 && throughputKbps === 1.6 * 1024;
+        };
+        summary = isSlow4G() ? 'Simulated slow 4G' : 'Custom simulated throttling';
         break;
       }
       default:
@@ -649,8 +656,10 @@ Util.UIStrings = {
   runtimeUnknown: 'Unknown',
   /** Descriptive label that this analysis run was from a single pageload of a browser (not a summary of hundreds of loads) */
   runtimeSingleLoad: 'Single page load',
+  /** Descriptive label that this analysis only considers the initial load of the page, and no interaction beyond when the page had "fully loaded" */
+  runtimeAnalysisWindow: 'Initial page load',
   /** Descriptive explanation that this analysis run was from a single pageload of a browser, whereas field data often summarizes hundreds+ of page loads */
-  runtimeSingleLoadTooltip: 'This data represents a single page load. Field data often summarizes many sessions.', // eslint-disable-line max-len
+  runtimeSingleLoadTooltip: 'This data is taken from a single page load, as opposed to field data summarizing many sessions.', // eslint-disable-line max-len
 
   /** Descriptive explanation for environment throttling that was provided by the runtime environment instead of provided by Lighthouse throttling. */
   throttlingProvided: 'Provided by environment',
