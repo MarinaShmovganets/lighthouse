@@ -116,6 +116,11 @@ async function buildUmdBundle() {
     input: 'report/clients/bundle.js',
     plugins: [
       rollupPlugins.commonjs(),
+      rollupPlugins.terser({
+        format: {
+          beautify: true,
+        },
+      }),
     ],
   });
 
@@ -136,7 +141,8 @@ if (require.main === module) {
   }
 
   if (process.argv.includes('--psi')) {
-    buildPsiReport();
+    console.error('--psi build removed. use --umd instead.')
+    process.exit(1);
   }
   if (process.argv.includes('--standalone')) {
     buildStandaloneReport();
