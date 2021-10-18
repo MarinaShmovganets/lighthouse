@@ -10,8 +10,11 @@ import {Util} from '../../../report/renderer/util';
 import {Separator} from '../common';
 import {CategoryScore} from '../wrappers/category-score';
 import {useI18n, useStringFormatter, useLocalizedStrings} from '../i18n/i18n';
+import {Markdown} from '../wrappers/markdown';
 
 import type {UIStringsType} from '../i18n/ui-strings';
+
+const MAX_TOOLTIP_AUDITS = 2;
 
 function getGatherModeLabel(gatherMode: LH.Result.GatherMode, strings: UIStringsType) {
   switch (gatherMode) {
@@ -30,10 +33,53 @@ function getCategoryRating(rating: string, strings: UIStringsType) {
   }
 }
 
+type ScoredAudit = LH.ReportResult.AuditRef['result'] & {score: number};
+type ScoredAuditRef = LH.ReportResult.AuditRef & {result: ScoredAudit};
+
+const TooltipAudit: FunctionComponent<{audit: LH.ReportResult.AuditRef}> = ({audit}) => {
+  const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
+  return (
+    <div className={`TooltipAudit TooltipAudit--${rating}`}>
+      <Markdown text={audit.result.title}/>
+    </div>
+  );
+};
+
+const TooltipAudits: FunctionComponent<{category: LH.ReportResult.Category}> = ({category}) => {
+  const strings = useLocalizedStrings();
+
+  function isRelevantAudit(audit: LH.ReportResult.AuditRef): audit is ScoredAuditRef {
+    const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
+    return audit.result.score !== null &&
+      audit.result.score < 1 &&
+      (audit.group !== undefined || category.id !== 'performance') &&
+      rating !== 'pass';
+  }
+
+  const audits = category.auditRefs
+    .filter(isRelevantAudit)
+    .sort((a, b) => {
+      if (a.weight === b.weight) return b.result.score - a.result.score;
+      return b.weight * (1 - b.result.score) - a.weight * (1 - a.result.score);
+    })
+    .splice(0, MAX_TOOLTIP_AUDITS);
+  if (!audits.length) return null;
+
+  return (
+    <div className="TooltipAudits">
+      <div className="TooltipAudits__title">{strings.highestImpact}</div>
+      {
+        audits.map(audit => <TooltipAudit key={audit.id} audit={audit}/>)
+      }
+    </div>
+  );
+};
+
 export const SummaryTooltip: FunctionComponent<{
   category: LH.ReportResult.Category,
-  gatherMode: LH.Result.GatherMode
-}> = ({category, gatherMode}) => {
+  gatherMode: LH.Result.GatherMode,
+  url: string,
+}> = ({category, gatherMode, url}) => {
   const strings = useLocalizedStrings();
   const str_ = useStringFormatter();
   const {
@@ -53,6 +99,7 @@ export const SummaryTooltip: FunctionComponent<{
   return (
     <div className="SummaryTooltip">
       <div className="SummaryTooltip__title">{getGatherModeLabel(gatherMode, strings)}</div>
+      <div className="SummaryTooltip__url">{url}</div>
       <Separator/>
       <div className="SummaryTooltip__category">
         <div className="SummaryTooltip__category-title">
@@ -81,6 +128,7 @@ export const SummaryTooltip: FunctionComponent<{
           {str_(strings.informativeAuditCount, {numInformative})}
         </div>
       }
+      <TooltipAudits category={category}/>
     </div>
   );
 };
@@ -89,7 +137,8 @@ export const SummaryCategory: FunctionComponent<{
   category: LH.ReportResult.Category|undefined,
   href: string,
   gatherMode: LH.Result.GatherMode,
-}> = ({category, href, gatherMode}) => {
+  finalUrl: string,
+}> = ({category, href, gatherMode, finalUrl}) => {
   return (
     <div className="SummaryCategory">
       {
@@ -100,7 +149,7 @@ export const SummaryCategory: FunctionComponent<{
               href={href}
               gatherMode={gatherMode}
             />
-            <SummaryTooltip category={category} gatherMode={gatherMode}/>
+            <SummaryTooltip category={category} gatherMode={gatherMode} url={finalUrl}/>
           </div> :
           <div className="SummaryCategory__null" data-testid="SummaryCategory__null"/>
       }
