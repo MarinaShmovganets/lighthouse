@@ -515,7 +515,9 @@ message I18n {
     // of a browser, whereas field data often summarizes hundreds+ of page loads
     string runtime_single_load_tooltip = 50;
 
-
+    // Descriptive label that this analysis only considers the initial load of the page,
+    // and no interaction beyond when the page had "fully loaded"
+    string runtime_analysis_window = 51;
   }
 
   // The message holding all formatted strings used in the renderer.
