@@ -9,7 +9,7 @@ import {FunctionComponent} from 'preact';
 import {Util} from '../../../report/renderer/util';
 import {Separator} from '../common';
 import {CategoryScore} from '../wrappers/category-score';
-import {useUIStrings} from '../i18n/i18n';
+import {useI18n, useStringFormatter, useLocalizedStrings} from '../i18n/i18n';
 
 import type {UIStringsType} from '../i18n/ui-strings';
 
@@ -34,13 +34,21 @@ export const SummaryTooltip: FunctionComponent<{
   category: LH.ReportResult.Category,
   gatherMode: LH.Result.GatherMode
 }> = ({category, gatherMode}) => {
-  const strings = useUIStrings();
-  const {numPassed, numAudits, totalWeight} = Util.calculateCategoryFraction(category);
+  const strings = useLocalizedStrings();
+  const str_ = useStringFormatter();
+  const {
+    numPassed,
+    numPassableAudits,
+    numInformative,
+    totalWeight,
+  } = Util.calculateCategoryFraction(category);
 
+  const i18n = useI18n();
   const displayAsFraction = Util.shouldDisplayAsFraction(gatherMode);
-  const rating = displayAsFraction ?
-    Util.calculateRating(numPassed / numAudits) :
-    Util.calculateRating(category.score);
+  const score = displayAsFraction ?
+    numPassed / numPassableAudits :
+    category.score;
+  const rating = score === null ? 'error' : Util.calculateRating(score);
 
   return (
     <div className="SummaryTooltip">
@@ -55,17 +63,24 @@ export const SummaryTooltip: FunctionComponent<{
             <div className={`SummaryTooltip__rating SummaryTooltip__rating--${rating}`}>
               <span>{getCategoryRating(rating, strings)}</span>
               {
-                !displayAsFraction && category.score && <>
+                !displayAsFraction && category.score !== null && <>
                   <span> · </span>
-                  <span>{category.score * 100}</span>
+                  <span>{i18n.formatNumber(category.score * 100)}</span>
                 </>
               }
             </div>
         }
       </div>
       <div className="SummaryTooltip__fraction">
-        {`${numPassed} audits passed / ${numAudits} audits run`}
+        <span>{str_(strings.passedAuditCount, {numPassed})}</span>
+        <span> / </span>
+        <span>{str_(strings.passableAuditCount, {numPassableAudits})}</span>
       </div>
+      {numInformative !== 0 &&
+        <div className="SummaryTooltip__informative">
+          {str_(strings.informativeAuditCount, {numInformative})}
+        </div>
+      }
     </div>
   );
 };
