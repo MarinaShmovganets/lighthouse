@@ -13,13 +13,22 @@ const {isObjectOfUnknownValues, isObjectOrArrayOfUnknownValues} = require('../ty
 /** Contains available locales with messages. May be an empty object if bundled. */
 const LOCALE_MESSAGES = require('./locales.js');
 
+const DEFAULT_LOCALE = 'en-US';
+
 /**
  * The locale tags for the localized messages available to Lighthouse on disk.
  * When bundled, these will be inlined by brfs.
+ * These locales are considered the "canonical" locales. We support other locales which
+ * are simply aliases to one of these. ex: es-AR (alias) -> es-419 (canonical)
  */
-const DEFAULT_LOCALES = fs.readdirSync(__dirname + '/locales/')
-  .filter(basename => basename.endsWith('.json') && !basename.endsWith('.ctc.json'))
-  .map(locale => locale.replace('.json', ''));
+let CANONICAL_LOCALES = ['__availableLocales__'];
+// TODO: need brfs in gh-pages-app. For now, above is replaced, see build-i18n.module.js
+if (fs.readdirSync) {
+  CANONICAL_LOCALES = fs.readdirSync(__dirname + '/locales/')
+    .filter(basename => basename.endsWith('.json') && !basename.endsWith('.ctc.json'))
+    .map(locale => locale.replace('.json', ''))
+    .sort();
+}
 
 /** @typedef {import('intl-messageformat-parser').Element} MessageElement */
 /** @typedef {import('intl-messageformat-parser').ArgumentElement} ArgumentElement */
@@ -162,7 +171,7 @@ function _preformatValues(messageFormatter, values, lhlMessage) {
  * @param {LH.Locale} locale
  * @return {string}
  */
-function _formatMessage(message, values = {}, locale) {
+function formatMessage(message, values = {}, locale) {
   // When using accented english, force the use of a different locale for number formatting.
   const localeForMessageFormat = (locale === 'en-XA' || locale === 'en-XL') ? 'de-DE' : locale;
 
@@ -182,19 +191,21 @@ function _formatMessage(message, values = {}, locale) {
  * @return {string}
  */
 function _localizeIcuMessage(icuMessage, locale) {
-  const localeMessages = LOCALE_MESSAGES[locale];
-  if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
+  const localeMessages = _getLocaleMessages(locale);
   const localeMessage = localeMessages[icuMessage.i18nId];
 
-  // Fall back to the default (usually the original english message) if we couldn't find a
-  // message in the specified locale. This could be because of string drift between
-  // Lighthouse versions or because new strings haven't been updated yet. Better to have
-  // an english message than no message at all; in some cases it won't even matter.
+  // Use the DEFAULT_LOCALE fallback (usually the original english message) if we couldn't
+  // find a message in the specified locale. Possible reasons:
+  //  - string drift between Lighthouse versions
+  //  - in a bundle stripped of locale files but running in the DEFAULT_LOCALE
+  //  - new strings haven't been updated yet in a local dev run
+  // Better to have an english message than no message at all; in some cases it
+  // won't even matter.
   if (!localeMessage) {
     return icuMessage.formattedDefault;
   }
 
-  return _formatMessage(localeMessage.message, icuMessage.values, locale);
+  return formatMessage(localeMessage.message, icuMessage.values, locale);
 }
 
 /**
@@ -202,9 +213,10 @@ function _localizeIcuMessage(icuMessage, locale) {
  * @return {Record<string, string>}
  */
 function getRendererFormattedStrings(locale) {
-  const localeMessages = LOCALE_MESSAGES[locale];
-  if (!localeMessages) throw new Error(`Unsupported locale '${locale}'`);
+  const localeMessages = _getLocaleMessages(locale);
 
+  // If `localeMessages` is empty in the bundled and DEFAULT_LOCALE case, this
+  // will be empty and the report will fall back to the util UIStrings for these.
   const icuMessageIds = Object.keys(localeMessages).filter(f => f.startsWith('report/'));
   /** @type {Record<string, string>} */
   const strings = {};
@@ -343,11 +355,37 @@ function replaceIcuMessages(inputObject, locale) {
 }
 
 /**
+ * Returns the locale messages for the given `locale`, if they exist.
+ * Throws if an unsupported locale.
+ *
+ * NOTE: If DEFAULT_LOCALE is requested and this is inside a bundle with locale
+ * messages stripped, an empty object will be returned. Default fallbacks will need to handle that case.
+ * @param {LH.Locale} locale
+ * @return {import('./locales').LhlMessages}
+ */
+function _getLocaleMessages(locale) {
+  const localeMessages = LOCALE_MESSAGES[locale];
+  if (!localeMessages) {
+    if (locale === DEFAULT_LOCALE) {
+      // If the default locale isn't in LOCALE_MESSAGES, this is likely executing
+      // in a bundle. Let the caller use the fallbacks available.
+      return {};
+    }
+    throw new Error(`Unsupported locale '${locale}'`);
+  }
+
+  return localeMessages;
+}
+
+/**
  * Returns whether the `requestedLocale` can be used.
  * @param {LH.Locale} requestedLocale
  * @return {boolean}
  */
 function hasLocale(requestedLocale) {
+  // The default locale is always supported through `IcuMessage.formattedDefault`.
+  if (requestedLocale === DEFAULT_LOCALE) return true;
+
   const hasIntlSupport = Intl.NumberFormat.supportedLocalesOf([requestedLocale]).length > 0;
   const hasMessages = Boolean(LOCALE_MESSAGES[requestedLocale]);
 
@@ -355,20 +393,27 @@ function hasLocale(requestedLocale) {
 }
 
 /**
+ * Returns a list of canonical locales, as defined by the existent message files.
+ * In practice, each of these may have aliases in the full list returned by
+ * `getAvailableLocales()`.
+ * TODO: create a CanonicalLocale type
+ * @return {Array<string>}
+ */
+function getCanonicalLocales() {
+  return CANONICAL_LOCALES;
+}
+
+/**
  * Returns a list of available locales.
- *  - if full build, this includes all default locales, aliases, and any locale added
+ *  - if full build, this includes all canonical locales, aliases, and any locale added
  *      via `registerLocaleData`.
- *  - if bundled and locale messages have been stripped, this includes default locales
- *      (perhaps available in a separate bundle) and any locales from `registerLocaleData`.
+ *  - if bundled and locale messages have been stripped (locales.js shimmed), this includes
+ *      only DEFAULT_LOCALE and any locales from `registerLocaleData`.
  * @return {Array<LH.Locale>}
  */
 function getAvailableLocales() {
-  // Take union of DEFAULT_LOCALES and keys of LOCALE_MESSAGES. This means that
-  // the default locales will always be included (even if trimmed by a bundler)
-  // as well as those added by `registerLocaleData`.
-  const allLocales = new Set([...DEFAULT_LOCALES, ...Object.keys(LOCALE_MESSAGES)]);
-  // Note: cast because this is in theory correct, but not tested at runtime.
-  return /** @type {Array<LH.Locale>} */ ([...allLocales].sort());
+  const localesWithMessages = new Set([...Object.keys(LOCALE_MESSAGES), DEFAULT_LOCALE]);
+  return /** @type {Array<LH.Locale>} */ ([...localesWithMessages].sort());
 }
 
 /**
@@ -394,6 +439,7 @@ function getIcuMessageIdParts(i18nMessageId) {
 }
 
 module.exports = {
+  DEFAULT_LOCALE,
   _formatPathAsString,
   collectAllCustomElementsFromICU,
   isIcuMessage,
@@ -402,7 +448,8 @@ module.exports = {
   replaceIcuMessages,
   hasLocale,
   registerLocaleData,
-  _formatMessage,
+  formatMessage,
   getIcuMessageIdParts,
   getAvailableLocales,
+  getCanonicalLocales,
 };
