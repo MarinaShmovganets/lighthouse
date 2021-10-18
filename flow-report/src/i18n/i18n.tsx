@@ -64,6 +64,8 @@ export const I18nProvider: FunctionComponent = ({children}) => {
     });
 
     // Initialize renderer util i18n for strings rendered in wrapped components.
+    // TODO: Don't attach global i18n to `Util`.
+    // @ts-ignore TS reports as read-only.
     Util.i18n = i18n;
 
     return i18n;
