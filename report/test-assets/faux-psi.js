@@ -9,10 +9,9 @@
 
 /** @typedef {import('../clients/bundle.js')} lighthouseRenderer */
 
-// @ts-expect-error
-const bundleObj = window['report'];
 /** @type {lighthouseRenderer} */
-const lighthouseRenderer = bundleObj;
+// @ts-expect-error
+const lighthouseRenderer = window['report'];
 
 (async function __initPsiReports__() {
   // @ts-expect-error
