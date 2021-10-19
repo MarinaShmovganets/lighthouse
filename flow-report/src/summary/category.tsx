@@ -33,10 +33,10 @@ function getCategoryRating(rating: string, strings: UIStringsType) {
   }
 }
 
-const TooltipAudit: FunctionComponent<{audit: LH.ReportResult.AuditRef}> = ({audit}) => {
+const SummaryTooltipAudit: FunctionComponent<{audit: LH.ReportResult.AuditRef}> = ({audit}) => {
   const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
   return (
-    <div className={`TooltipAudit TooltipAudit--${rating}`}>
+    <div className={`SummaryTooltipAudit SummaryTooltipAudit--${rating}`}>
       <Markdown text={audit.result.title}/>
     </div>
   );
@@ -44,7 +44,8 @@ const TooltipAudit: FunctionComponent<{audit: LH.ReportResult.AuditRef}> = ({aud
 
 type ScoredAuditRef = LH.ReportResult.AuditRef & {result: {score: number}};
 
-const TooltipAudits: FunctionComponent<{category: LH.ReportResult.Category}> = ({category}) => {
+const SummaryTooltipAudits: FunctionComponent<{category: LH.ReportResult.Category}> =
+({category}) => {
   const strings = useLocalizedStrings();
 
   function isRelevantAudit(audit: LH.ReportResult.AuditRef): audit is ScoredAuditRef {
@@ -65,10 +66,10 @@ const TooltipAudits: FunctionComponent<{category: LH.ReportResult.Category}> = (
   if (!audits.length) return null;
 
   return (
-    <div className="TooltipAudits">
-      <div className="TooltipAudits__title">{strings.highestImpact}</div>
+    <div className="SummaryTooltipAudits">
+      <div className="SummaryTooltipAudits__title">{strings.highestImpact}</div>
       {
-        audits.map(audit => <TooltipAudit key={audit.id} audit={audit}/>)
+        audits.map(audit => <SummaryTooltipAudit key={audit.id} audit={audit}/>)
       }
     </div>
   );
@@ -127,7 +128,7 @@ export const SummaryTooltip: FunctionComponent<{
           {str_(strings.informativeAuditCount, {numInformative})}
         </div>
       }
-      <TooltipAudits category={category}/>
+      <SummaryTooltipAudits category={category}/>
     </div>
   );
 };

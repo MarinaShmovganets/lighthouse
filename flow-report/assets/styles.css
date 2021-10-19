@@ -445,36 +445,36 @@
   color: var(--color-gray-700);
 }
 
-.TooltipAudits__title {
+.SummaryTooltipAudits__title {
   line-height: 24px;
   margin-top: calc(0.75 * var(--base-spacing));
   font-weight: var(--bold-weight);
 }
 
-.TooltipAudit {
+.SummaryTooltipAudit {
   display: flex;
   margin: calc(0.25 * var(--base-spacing)) 0px;
   color: var(--color-gray-700);
   --score-icon-size: 10px;
 }
-.TooltipAudit code {
+.SummaryTooltipAudit code {
   color: var(--snippet-color);
 }
-.TooltipAudit::before {
+.SummaryTooltipAudit::before {
   content: '';
   height: var(--score-icon-size);
   width: var(--score-icon-size);
   margin-top: calc((var(--summary-tooltip-line-height) - var(--score-icon-size)) / 2);
   margin-right: var(--half-base-spacing);
 }
-.TooltipAudit--pass::before {
+.SummaryTooltipAudit--pass::before {
   background-color: var(--color-pass);
   border-radius: 50%;
 }
-.TooltipAudit--average::before {
+.SummaryTooltipAudit--average::before {
   background-color: var(--color-average);
 }
-.TooltipAudit--fail::before {
+.SummaryTooltipAudit--fail::before {
   border-left: calc(var(--score-icon-size) / 2) solid transparent;
   border-right: calc(var(--score-icon-size) / 2) solid transparent;
   border-bottom: var(--score-icon-size) solid var(--color-fail);
