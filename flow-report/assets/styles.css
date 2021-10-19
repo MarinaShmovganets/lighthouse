@@ -448,7 +448,7 @@
 .TooltipAudits__title {
   line-height: 24px;
   margin-top: var(--half-base-spacing);
-  font-weight: bold;
+  font-weight: var(--bold-weight);
 }
 
 .TooltipAudit {
