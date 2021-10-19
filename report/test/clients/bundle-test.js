@@ -54,7 +54,7 @@ describe('lighthouseRenderer bundle', () => {
     // Check that the report exists and has some content.
     expect(reportContainer instanceof document.defaultView.Element).toBeTruthy();
     expect(reportContainer.outerHTML.length).toBeGreaterThan(50000);
-    // fs.writeFileSync('./supp.html', reportContainer.outerHTML, 'utf-8');
+
     const title = reportContainer.querySelector('.lh-audit-group--metrics')
       .querySelector('.lh-audit-group__title');
     expect(title.textContent).toEqual('Metrics');
