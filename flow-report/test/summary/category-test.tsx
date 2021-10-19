@@ -112,7 +112,7 @@ describe('SummaryTooltip', () => {
         /* eslint-disable max-len */
         {result: {score: 1, scoreDisplayMode: 'binary', title: 'Audit 1'}, weight: 1, group: 'diagnostics'},
         {result: {score: 1, scoreDisplayMode: 'binary', title: 'Audit 2'}, weight: 1, group: 'diagnostics'},
-        {result: {score: 0, scoreDisplayMode: 'informative', title: 'Audit 3'}, weight: 1, group: 'diagnostics'},
+        {result: {score: null, scoreDisplayMode: 'informative', title: 'Audit 3'}, weight: 1, group: 'diagnostics'},
         /* eslint-enable max-len */
       ],
     };
@@ -128,5 +128,54 @@ describe('SummaryTooltip', () => {
     expect(root.getByText('2 passable audits')).toBeTruthy();
     expect(root.getByText('1 informative audit')).toBeTruthy();
     expect(root.getByText('https://example.com'));
+  });
+
+  it('renders highest impact audits', async () => {
+    const category: any = {
+      id: 'performance',
+      score: 1,
+      auditRefs: [
+        /* eslint-disable max-len */
+        {result: {score: 0, scoreDisplayMode: 'binary', title: 'Audit 1'}, weight: 1, group: 'diagnostics'},
+        {result: {score: 0, scoreDisplayMode: 'binary', title: 'Audit 2'}, weight: 2, group: 'diagnostics'},
+        {result: {score: 0, scoreDisplayMode: 'binary', title: 'Audit 3'}, weight: 3, group: 'diagnostics'},
+        /* eslint-enable max-len */
+      ],
+    };
+
+    const root = render(
+      <SummaryTooltip category={category} gatherMode="navigation" url="https://example.com"/>,
+      {wrapper}
+    );
+
+    const audits = root.getAllByText(/^Audit [0-9]$/);
+
+    expect(root.getByText('Highest impact')).toBeTruthy();
+    expect(audits.map(a => a.textContent)).toEqual([
+      'Audit 3',
+      'Audit 2',
+    ]);
+  });
+
+  it('hides highest impact if nothing to show', async () => {
+    const category: any = {
+      id: 'performance',
+      score: 1,
+      auditRefs: [
+        /* eslint-disable max-len */
+        {result: {score: 1, scoreDisplayMode: 'binary', title: 'Audit 1'}, weight: 1, group: 'diagnostics'},
+        {result: {score: 0, scoreDisplayMode: 'binary', title: 'Audit 2'}, weight: 1},
+        {result: {score: null, scoreDisplayMode: 'informative', title: 'Audit 3'}, weight: 1, group: 'diagnostics'},
+        /* eslint-enable max-len */
+      ],
+    };
+
+    const root = render(
+      <SummaryTooltip category={category} gatherMode="navigation" url="https://example.com"/>,
+      {wrapper}
+    );
+
+    expect(() => root.getByText('Highest impact')).toThrow();
+    expect(() => root.getByText(/^Audit [0-9]$/)).toThrow();
   });
 });
