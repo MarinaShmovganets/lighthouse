@@ -16,5 +16,4 @@ node node_modules/.bin/c8 \
   --exclude '**/test/' \
   --exclude '**/scripts/' \
   --exclude 'lighthouse-core/lib/page-functions.js' \
-  --temp-directory 'coverage/tmp' \
   $*
