@@ -10,7 +10,6 @@
 'use strict';
 
 const ByteEfficiencyAudit = require('./byte-efficiency-audit.js');
-const Audit = require('../audit.js');
 const NetworkRequest = require('../../lib/network-request.js');
 const Sentry = require('../../lib/sentry.js');
 const URL = require('../../lib/url-shim.js');
@@ -101,7 +100,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
     }
 
     return {
-      node: Audit.makeNodeItem(image.node),
+      node: ByteEfficiencyAudit.makeNodeItem(image.node),
       url,
       requestStartTime: networkRecord.startTime,
       totalBytes,

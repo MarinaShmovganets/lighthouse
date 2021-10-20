@@ -18,7 +18,6 @@ const NetworkRequest = require('../../lib/network-request.js');
 const ImageRecords = require('../../computed/image-records.js');
 const URL = require('../../lib/url-shim.js');
 const i18n = require('../../lib/i18n/i18n.js');
-const Audit = require('../audit.js');
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to resize images to match the display dimensions. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -105,7 +104,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
     const wastedBytes = Math.round(totalBytes * wastedRatio);
 
     return {
-      node: Audit.makeNodeItem(image.node),
+      node: ByteEfficiencyAudit.makeNodeItem(image.node),
       url,
       totalBytes,
       wastedBytes,
