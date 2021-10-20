@@ -138,12 +138,6 @@ export class Util {
           });
         }
       });
-
-      if (category.id !== 'performance') {
-        category.auditRefs.sort((a, b) => {
-          return b.weight - a.weight;
-        });
-      }
     }
 
     return clone;
