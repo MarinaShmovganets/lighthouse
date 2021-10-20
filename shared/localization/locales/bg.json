@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Ограничаване на процесора"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Устройство"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Ограничаване на мрежата"
   },

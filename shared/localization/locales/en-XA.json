@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "[ÇÞÛ ţĥŕöţţļîñĝ one two]"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "[Ðévîçé one]"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "[Ñéţŵöŕķ ţĥŕöţţļîñĝ one two three]"
   },

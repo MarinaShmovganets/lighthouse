@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU த்ராட்லிங்"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "சாதனம்"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "நெட்வொர்க் த்ராட்லிங்"
   },

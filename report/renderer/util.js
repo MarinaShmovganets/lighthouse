@@ -629,6 +629,8 @@ Util.UIStrings = {
   /** Option in a dropdown menu that toggles the themeing of the report between Light(default) and Dark themes. */
   dropdownDarkTheme: 'Toggle Dark Theme',
 
+  /** Label for a row in a table that describes the kind of device that was emulated for the Lighthouse run.  Example values for row elements: 'No Emulation', 'Emulated Desktop', etc. */
+  runtimeSettingsDevice: 'Device',
   /** Label for a row in a table that describes the network throttling conditions that were used during a Lighthouse run, if any. */
   runtimeSettingsNetworkThrottling: 'Network throttling',
   /** Label for a row in a table that describes the CPU throttling conditions that were used during a Lighthouse run, if any.*/

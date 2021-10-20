@@ -414,7 +414,7 @@ message I18n {
     // Label for a row in a table that describes the kind of device that was
     // emulated for the Lighthouse run.  Example values for row elements: 'No
     // Emulation', 'Emulated Desktop', etc.
-    string runtime_settings_device = 26 [deprecated = true];
+    string runtime_settings_device = 26;
 
     // Label for a row in a table that shows the time at which a Lighthouse run
     // was conducted; formatted as a timestamp, e.g. Jan 1, 1970 12:00 AM UTC.

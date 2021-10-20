@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU 제한"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "기기"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "네트워크 제한"
   },

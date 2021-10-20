@@ -8067,6 +8067,7 @@
       "runtimeSettingsAxeVersion": "Axe version",
       "runtimeSettingsBenchmark": "CPU/Memory Power",
       "runtimeSettingsCPUThrottling": "CPU throttling",
+      "runtimeSettingsDevice": "Device",
       "runtimeSettingsNetworkThrottling": "Network throttling",
       "runtimeSettingsUANetwork": "User agent (network)",
       "runtimeSingleLoad": "Single page load",

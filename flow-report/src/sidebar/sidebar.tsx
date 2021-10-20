@@ -37,7 +37,7 @@ const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
 
   return (
     <div className="SidebarRuntimeSettings">
-      <div className="SidebarRuntimeSettings__item">
+      <div className="SidebarRuntimeSettings__item" title={strings.runtimeSettingsDevice}>
         <div className="SidebarRuntimeSettings__item--icon">
           <EnvIcon/>
         </div>

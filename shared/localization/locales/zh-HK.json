@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU 節流"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "裝置"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "網絡節流"
   },

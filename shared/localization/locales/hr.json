@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Potiskivanje procesora"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Uređaj"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Ograničavanje podatkovnog prometa mreže"
   },

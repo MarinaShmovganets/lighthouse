@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Suorittimen rajoittaminen"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Laite"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Verkon hidastaminen"
   },

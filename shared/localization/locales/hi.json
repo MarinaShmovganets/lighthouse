@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "सीपीयू थ्रॉटलिंग"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "डिवाइस"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "नेटवर्क थ्रॉटलिंग"
   },

@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Limitação da CPU"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Dispositivo"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Limitação de rede"
   },

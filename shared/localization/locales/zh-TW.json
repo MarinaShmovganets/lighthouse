@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU 溫控降頻"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "裝置"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "網路節流"
   },

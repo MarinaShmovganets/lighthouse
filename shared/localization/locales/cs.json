@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Omezení procesoru"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Zařízení"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Omezení sítě"
   },

@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Περιορισμός CPU"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Συσκευή"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Περιορισμός δικτύου"
   },

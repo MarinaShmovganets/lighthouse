@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Prosessorstruping"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Enhet"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Struping av nettverkshastighet"
   },

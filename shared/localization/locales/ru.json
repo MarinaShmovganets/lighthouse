@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Ограничение пропускной способности ЦП"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Устройство"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Ограничение пропускной способности сети"
   },

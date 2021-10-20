@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "‏‮CPU‬‏ ‏‮throttling‬‏"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "‏‮Device‬‏"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "‏‮Network‬‏ ‏‮throttling‬‏"
   },

@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Điều tiết CPU"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Thiết bị"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Hạn chế băng thông mạng"
   },

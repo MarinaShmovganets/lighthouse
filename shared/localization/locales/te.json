@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU త్రోట్లింగ్"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "పరికరం"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "నెట్‌వర్క్ త్రోట్లింగ్"
   },

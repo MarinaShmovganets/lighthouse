@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Centrinio procesoriaus pralaidumo ribojimas"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Įrenginys"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Tinklo pralaidumo ribojimas"
   },

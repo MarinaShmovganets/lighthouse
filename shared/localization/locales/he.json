@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "ויסות נתונים (throttle) של יחידת עיבוד מרכזית (CPU)"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "מכשיר"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "הגבלת רוחב פס"
   },

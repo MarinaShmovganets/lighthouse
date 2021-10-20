@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU スロットリング"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "デバイス"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "ネットワーク スロットリング"
   },

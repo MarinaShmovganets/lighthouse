@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Obmedzenie rýchlosti procesora"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Zariadenie"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Obmedzovanie rýchlosti"
   },

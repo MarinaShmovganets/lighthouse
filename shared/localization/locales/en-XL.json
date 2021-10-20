@@ -2468,6 +2468,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "ĈṔÛ t́ĥŕôt́t̂ĺîńĝ"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "D̂év̂íĉé"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "N̂ét̂ẃôŕk̂ t́ĥŕôt́t̂ĺîńĝ"
   },

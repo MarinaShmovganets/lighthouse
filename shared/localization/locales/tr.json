@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU kısıtlaması"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Cihaz"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Ağ sınırlama"
   },

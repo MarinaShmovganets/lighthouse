@@ -2447,6 +2447,9 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Limitation du processeur"
   },
+  "report/renderer/util.js | runtimeSettingsDevice": {
+    "message": "Appareil"
+  },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Limitation de bande passante réseau"
   },
