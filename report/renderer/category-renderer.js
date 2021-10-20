@@ -159,6 +159,7 @@ export class CategoryRenderer {
     const imgEl = this.dom.createElement('img', 'lh-final-ss-image');
     const finalScreenshotDataUri = audit.details.data;
     imgEl.src = finalScreenshotDataUri;
+    imgEl.alt = audit.title;
 
     const firstCatHeaderEl = this.dom.find('.lh-category .lh-category-header', categoriesEl);
     const leftColEl = this.dom.createElement('div', 'lh-category-headercol');
