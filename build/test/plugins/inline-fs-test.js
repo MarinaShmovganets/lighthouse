@@ -46,7 +46,7 @@ describe('inline-fs', () => {
       expect(code).toBe(`const myTextContent = "template literal text content";`);
     });
 
-    it('warns and skips unsupported syntax but inlines subsequent fs method calls', async () => {
+    it('warns and skips unsupported construct but inlines subsequent fs method calls', async () => {
       fs.writeFileSync(tmpPath, 'template literal text content');
 
       // eslint-disable-next-line max-len
