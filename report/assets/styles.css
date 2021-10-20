@@ -92,6 +92,7 @@
   --footer-padding-vertical: 16px;
   --gauge-circle-size-big: 112px;
   --gauge-circle-size: 80px;
+  --gauge-circle-size-sm: 36px;
   --gauge-label-font-size-big: 28px;
   --gauge-label-font-size: 20px;
   --gauge-label-line-height-big: 36px;
@@ -513,7 +514,7 @@
 }
 .lh-audit--manual .lh-audit__score-icon,
 .lh-audit--notapplicable .lh-audit__score-icon {
-  border: 2px solid var(--color-gray-400);
+  border: calc(0.2 * var(--score-icon-size)) solid var(--color-gray-400);
   border-radius: 100%;
   background: none;
 }
@@ -523,7 +524,7 @@
 }
 
 .lh-audit--informative .lh-audit__score-icon {
-  border: 2px solid var(--color-gray-400);
+  border: calc(0.2 * var(--score-icon-size)) solid var(--color-gray-400);
   border-radius: 100%;
 }
 
@@ -686,8 +687,8 @@
 
 .lh-metric__innerwrap {
   display: grid;
-  /** 
-   * Icon -- Metric Name 
+  /**
+   * Icon -- Metric Name
    *      -- Metric Value
    */
   grid-template-columns: calc(var(--score-icon-size) + var(--score-icon-margin-left) + var(--score-icon-margin-right)) 1fr;
@@ -731,7 +732,7 @@
 /* Change the grid to 3 columns for narrow viewport. */
 @media screen and (max-width: 535px) {
   .lh-metric__innerwrap {
-  /** 
+  /**
    * Icon -- Metric Name -- Metric Value
    */
     grid-template-columns: calc(var(--score-icon-size) + var(--score-icon-margin-left) + var(--score-icon-margin-right)) 2fr 1fr;
@@ -1227,7 +1228,7 @@
 }
 .lh-fraction__wrapper--null .lh-fraction__content::before {
   border-radius: 50%;
-  border: 2px solid var(--color-gray-700);
+  border: calc(0.2 * var(--score-icon-size)) solid var(--color-gray-700);
 }
 
 .lh-fraction__background {
@@ -1250,10 +1251,13 @@
   position: relative;
   align-items: center;
   justify-content: center;
-  font-size: var(--gauge-label-font-size);
+  font-size: calc(0.3 * var(--gauge-circle-size));
+  line-height: calc(0.4 * var(--gauge-circle-size));
   width: max-content;
-  padding: 1em;
-  min-width: 6em;
+  min-width: calc(1.5 * var(--gauge-circle-size));
+  padding: calc(0.1 * var(--gauge-circle-size)) calc(0.2 * var(--gauge-circle-size));
+  --score-icon-size: calc(0.21 * var(--gauge-circle-size));
+  --score-icon-margin: 0 calc(0.15 * var(--gauge-circle-size)) 0 0;
 }
 
 .lh-gauge {
@@ -1281,12 +1285,9 @@
   position: relative;
   height: var(--gauge-circle-size);
 }
-.lh-category .lh-gauge__svg-wrapper {
-  --gauge-circle-size: var(--gauge-circle-size-big);
-}
+.lh-category .lh-gauge__svg-wrapper,
 .lh-category .lh-fraction__wrapper {
   --gauge-circle-size: var(--gauge-circle-size-big);
-  --score-icon-size: var(--score-icon-size-big)
 }
 
 /* The plugin badge overlay */
@@ -1364,10 +1365,6 @@
   --gauge-label-line-height: var(--gauge-label-line-height-big);
   margin-top: 14px;
 }
-.lh-category .lh-fraction__content {
-  --gauge-label-font-size: var(--gauge-label-font-size-big);
-}
-
 
 .lh-scores-header .lh-gauge__wrapper,
 .lh-scores-header .lh-fraction__wrapper,
@@ -1409,6 +1406,10 @@
   padding: var(--category-padding);
   max-width: var(--report-width);
   margin: 0 auto;
+
+  --sticky-header-height: calc(var(--gauge-circle-size-sm) + var(--score-container-padding) * 2);
+  --topbar-plus-sticky-header: calc(var(--topbar-height) + var(--sticky-header-height));
+  scroll-margin-top: var(--topbar-plus-sticky-header);
 }
 
 .lh-category-wrapper {
@@ -1417,18 +1418,6 @@
 
 .lh-category-wrapper:first-of-type {
   border-top: 1px solid var(--color-gray-200);
-}
-
-/* section hash link jump should preserve fixed header
-   https://css-tricks.com/hash-tag-links-padding/
-*/
-.lh-category > .lh-permalink {
-  --sticky-header-height: calc(var(--gauge-circle-size) + var(--score-container-padding) * 2);
-  --topbar-plus-header: calc(var(--topbar-height) + var(--sticky-header-height));
-  margin-top: calc(var(--topbar-plus-header) * -1);
-  padding-bottom: var(--topbar-plus-header);
-  display: block;
-  visibility: hidden;
 }
 
 .lh-category-header {
@@ -1446,31 +1435,6 @@
 .lh-category-header .lh-audit__title {
   font-size: var(--category-header-font-size);
   line-height: var(--header-line-height);
-}
-
-#lh-log {
-  position: fixed;
-  background-color: #323232;
-  color: #fff;
-  min-height: 48px;
-  min-width: 288px;
-  padding: 16px 24px;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  border-radius: 2px;
-  margin: 12px;
-  font-size: 14px;
-  cursor: default;
-  transition: transform 0.3s, opacity 0.3s;
-  transform: translateY(100px);
-  opacity: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 3;
-}
-
-#lh-log.lh-show {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* 964 fits the min-width of the filmstrip */
