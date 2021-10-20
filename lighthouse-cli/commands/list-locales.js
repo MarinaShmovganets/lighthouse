@@ -1,14 +1,16 @@
 /**
- * @license Copyright 2020 The Lighthouse Authors. All Rights Reserved.
+ * @license Copyright 2021 The Lighthouse Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
-/** @fileoverview Needed for the generated/SourceMap.js file */
+import locales from '../../shared/localization/locales.js';
 
-const Common = {
-  console,
-};
+function listLocales() {
+  const localesList = Object.keys(locales);
+  process.stdout.write(JSON.stringify({locales: localesList}, null, 2));
+  process.exit(0);
+}
 
-module.exports = Common;
+export {listLocales};
