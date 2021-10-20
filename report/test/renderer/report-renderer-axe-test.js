@@ -71,7 +71,6 @@ describe('ReportRendererAxe', () => {
       };
 
       const axeResults = await axe.run(output, config);
-      expect(axeResults).not.toBeInstanceOf(Error);
       expect(axeResults.violations).toEqual([]);
     },
     // This test takes 40s on fast hardware, and 50-60s on GHA.
