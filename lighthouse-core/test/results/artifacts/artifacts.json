@@ -13036,8 +13036,5 @@
   "ServiceWorker": {
     "versions": [],
     "registrations": []
-  },
-  "HTTPRedirect": {
-    "value": false
   }
 }
