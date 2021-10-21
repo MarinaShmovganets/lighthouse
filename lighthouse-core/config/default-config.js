@@ -407,6 +407,7 @@ const defaultConfig = {
     'best-practices-general': {
       title: str_(UIStrings.bestPracticesGeneralGroupTitle),
     },
+    // Group for audits that should not be displayed.
     'hidden': {title: ''},
   },
   categories: {
@@ -421,10 +422,11 @@ const defaultConfig = {
         {id: 'total-blocking-time', weight: 30, group: 'metrics', acronym: 'TBT', relevantAudits: m2a.tbtRelevantAudits},
         {id: 'cumulative-layout-shift', weight: 15, group: 'metrics', acronym: 'CLS', relevantAudits: m2a.clsRelevantAudits},
 
-        // These are our "invisible" metrics. Not displayed, but still in the LHR
+        // These are our "invisible" metrics. Not displayed, but still in the LHR.
         {id: 'max-potential-fid', weight: 0, group: 'hidden'},
         {id: 'first-meaningful-paint', weight: 0, acronym: 'FMP', group: 'hidden'},
 
+        // These audits will be put in "load-opportunities" or "diagnostics" based on their details type.
         {id: 'render-blocking-resources', weight: 0},
         {id: 'uses-responsive-images', weight: 0},
         {id: 'offscreen-images', weight: 0},
@@ -466,7 +468,8 @@ const defaultConfig = {
         {id: 'non-composited-animations', weight: 0},
         {id: 'unsized-images', weight: 0},
         {id: 'viewport', weight: 0},
-        // Audits past this point don't belong to a group and will not be shown automatically
+
+        // Audits past this point contain useful data but are not displayed with other audits.
         {id: 'network-requests', weight: 0, group: 'hidden'},
         {id: 'network-rtt', weight: 0, group: 'hidden'},
         {id: 'network-server-latency', weight: 0, group: 'hidden'},
