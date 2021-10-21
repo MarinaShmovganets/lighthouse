@@ -154,18 +154,16 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
 
   /**
    * @param {LH.ReportResult.AuditRef} audit
-   * @return {boolean}
+   * @return {'load-opportunity'|'diagnostic'|null}
    */
-  _isOpportunity(audit) {
-    return Boolean(audit.result.details && audit.result.details.type === 'opportunity');
-  }
-
-  /**
-   * @param {LH.ReportResult.AuditRef} audit
-   * @return {boolean}
-   */
-  _isDiagnostic(audit) {
-    return !audit.group && !this._isOpportunity(audit);
+  _classifyPerformanceAudit(audit) {
+    if (audit.result.details && audit.result.details.type === 'opportunity') {
+      return 'load-opportunity';
+    }
+    if (!audit.group) {
+      return 'diagnostic';
+    }
+    return null;
   }
 
   /**
@@ -224,7 +222,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
 
     // Opportunities
     const opportunityAudits = category.auditRefs
-        .filter(audit => this._isOpportunity(audit))
+        .filter(audit => this._classifyPerformanceAudit(audit) === 'load-opportunity')
         .filter(audit => !Util.showAsPassed(audit.result))
         .sort((auditA, auditB) => this._getWastedMs(auditB) - this._getWastedMs(auditA));
 
@@ -257,7 +255,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
 
     // Diagnostics
     const diagnosticAudits = category.auditRefs
-        .filter(audit => this._isDiagnostic(audit))
+        .filter(audit => this._classifyPerformanceAudit(audit) === 'diagnostic')
         .filter(audit => !Util.showAsPassed(audit.result))
         .sort((a, b) => {
           const scoreA = a.result.scoreDisplayMode === 'informative' ? 100 : Number(a.result.score);
@@ -274,8 +272,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
 
     // Passed audits
     const passedAudits = category.auditRefs
-        .filter(audit => (this._isOpportunity(audit) || this._isDiagnostic(audit)) &&
-            Util.showAsPassed(audit.result));
+        .filter(audit => this._classifyPerformanceAudit(audit) && Util.showAsPassed(audit.result));
 
     if (!passedAudits.length) return element;
 
