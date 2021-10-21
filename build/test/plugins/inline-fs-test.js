@@ -30,22 +30,30 @@ describe('inline-fs', () => {
     it('returns null for content with no fs calls', async () => {
       const content = 'const val = 1;';
       const result = await inlineFs(content, filepath);
-      expect(result).toEqual({code: null});
+      expect(result).toEqual({
+        code: null,
+        warnings: [],
+      });
     });
 
     it('returns null for non-call references to fs methods', async () => {
       const content = 'const val = fs.readFileSync ? 1 : 2;';
       const result = await inlineFs(content, filepath);
-      expect(result).toEqual({code: null});
+      expect(result).toEqual({
+        code: null,
+        warnings: [],
+      });
     });
 
     it('evaluates an fs.readFileSync call and inlines the contents', async () => {
       fs.writeFileSync(tmpPath, 'template literal text content');
 
       const content = `const myTextContent = fs.readFileSync('${tmpPath}', 'utf8');`;
-      const {code, warnings} = await inlineFs(content, filepath);
-      expect(code).toBe(`const myTextContent = "template literal text content";`);
-      expect(warnings).toEqual([]);
+      const result = await inlineFs(content, filepath);
+      expect(result).toEqual({
+        code: `const myTextContent = "template literal text content";`,
+        warnings: [],
+      });
     });
 
     it('warns and skips unsupported construct but inlines subsequent fs method calls', async () => {

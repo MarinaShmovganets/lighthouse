@@ -32,7 +32,7 @@ class AstError extends Error {
  * Returns `null` as code if no changes were made.
  * @param {string} code
  * @param {string} filepath
- * @return {Promise<{code: string|null, warnings?: Array<Warning>}>}
+ * @return {Promise<{code: string|null, warnings: Array<Warning>}>}
  */
 async function inlineFs(code, filepath) {
   // Approach:
@@ -48,7 +48,7 @@ async function inlineFs(code, filepath) {
   const foundIndices = [...code.matchAll(fsSearch)].map(e => e.index);
 
   // Return null for not-applicable files with as little work as possible.
-  if (foundIndices.length === 0) return {code: null};
+  if (foundIndices.length === 0) return {code: null, warnings: []};
 
   const output = new MagicString(code);
   let madeChange = false;
