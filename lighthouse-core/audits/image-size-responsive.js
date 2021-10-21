@@ -81,7 +81,7 @@ function isSmallerThanViewport(imageRect, viewportDimensions) {
 function isCandidate(image) {
   /** image-rendering solution for pixel art scaling.
    * https://developer.mozilla.org/en-US/docs/Games/Techniques/Crisp_pixel_art_look
-   */
+  */
   const artisticImageRenderingValues = ['pixelated', 'crisp-edges'];
   // https://html.spec.whatwg.org/multipage/images.html#pixel-density-descriptor
   const densityDescriptorRegex = / \d+(\.\d+)?x/;
@@ -170,10 +170,7 @@ function getResult(image, DPR) {
  */
 function allowedImageSize(displayedWidth, displayedHeight, DPR) {
   let factor = SMALL_IMAGE_FACTOR;
-  if (
-    displayedWidth > SMALL_IMAGE_THRESHOLD ||
-    displayedHeight > SMALL_IMAGE_THRESHOLD
-  ) {
+  if (displayedWidth > SMALL_IMAGE_THRESHOLD || displayedHeight > SMALL_IMAGE_THRESHOLD) {
     factor = LARGE_IMAGE_FACTOR;
   }
   const requiredDpr = quantizeDpr(DPR);
