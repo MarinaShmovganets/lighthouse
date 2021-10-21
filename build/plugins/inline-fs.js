@@ -63,6 +63,7 @@ async function inlineFs(code, filepath) {
     try {
       parsed = parseExpressionAt(code, foundIndex, {ecmaVersion: 'latest'});
     } catch (err) {
+      // `err.loc` added by acorn.
       warnings.push(createWarning(err, filepath, err.loc));
       continue;
     }
