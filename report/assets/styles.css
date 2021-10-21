@@ -219,7 +219,7 @@
 @media only screen and (max-width: 480px) {
   .lh-vars {
     --audit-group-margin-bottom: 20px;
-    --category-padding: 24px;
+    --category-padding: 12px;
     --env-name-min-width: 120px;
     --gauge-circle-size-big: 96px;
     --gauge-circle-size: 72px;
@@ -400,7 +400,7 @@
 }
 
 .lh-audit__stackpack__img {
-  max-width: 50px;
+  max-width: 30px;
   margin-right: var(--default-padding)
 }
 
@@ -950,10 +950,11 @@
 }
 
 .lh-filmstrip {
-  display: flex;
-  flex-direction: row;
+  display: grid;
   justify-content: space-between;
   padding-bottom: var(--default-padding);
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, 60px);
 }
 
 .lh-filmstrip__frame {
@@ -965,20 +966,6 @@
   border: 1px solid var(--report-border-color-secondary);
   max-height: 100px;
   max-width: 60px;
-}
-
-@media screen and (max-width: 750px) {
-  .lh-filmstrip {
-    flex-wrap: wrap;
-  }
-  .lh-filmstrip__frame {
-    width: 20%;
-    margin-bottom: 5px;
-  }
-  .lh-filmstrip__thumbnail {
-    display: block;
-    margin: auto;
-  }
 }
 
 /* Audit */
@@ -1033,9 +1020,9 @@
   text-align: right;
 }
 
-.lh-details--budget {
+.lh-audit-group--budgets .lh-details--budget {
   width: 100%;
-  margin-bottom: var(--default-padding);
+  margin: 0 0 var(--default-padding);
 }
 
 .lh-audit-group--pwa-installable .lh-audit-group__header::before {
@@ -1721,6 +1708,13 @@
   to {
    outline: 1px solid;
    box-shadow: 0 2px 4px rgba(0, 0, 0, .24);
+  }
+}
+
+@media screen and (max-width: 780px) {
+  /* no black outline if we're not confident the entire table can be displayed within bounds */
+  .lh-expandable-details[open] {
+    animation: none;
   }
 }
 
