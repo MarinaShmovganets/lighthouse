@@ -454,8 +454,6 @@ const defaultConfig = {
         {id: 'bootup-time', weight: 0},
         {id: 'mainthread-work-breakdown', weight: 0},
         {id: 'font-display', weight: 0},
-        {id: 'performance-budget', weight: 0},
-        {id: 'timing-budget', weight: 0},
         {id: 'resource-summary', weight: 0},
         {id: 'third-party-summary', weight: 0},
         {id: 'third-party-facades', weight: 0},
@@ -468,6 +466,10 @@ const defaultConfig = {
         {id: 'non-composited-animations', weight: 0},
         {id: 'unsized-images', weight: 0},
         {id: 'viewport', weight: 0},
+
+        // Budget audits.
+        {id: 'performance-budget', weight: 0, group: 'budgets'},
+        {id: 'timing-budget', weight: 0, group: 'budgets'},
 
         // Audits past this point contain useful data but are not displayed with other audits.
         {id: 'network-requests', weight: 0, group: 'hidden'},
