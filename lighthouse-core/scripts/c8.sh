@@ -16,7 +16,7 @@ node node_modules/.bin/c8 \
   --exclude '**/test/' \
   --exclude '**/scripts/' \
   --exclude 'lighthouse-core/lib/page-functions.js' \
-  --exclude 'lighthouse-core/util-commonjs.js' \ # See below
+  --exclude 'lighthouse-core/util-commonjs.js' \
   $*
 
 # util-commonjs is a copy of renderer/util, which has its own test coverage.
