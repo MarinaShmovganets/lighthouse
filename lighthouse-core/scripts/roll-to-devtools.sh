@@ -22,11 +22,7 @@ set -euo pipefail
 
 check="\033[96m ✓\033[39m"
 
-if [[ -n "$1" ]]; then
-  dt_dir="$1"
-else
-  dt_dir="$HOME/src/devtools/devtools-frontend"
-fi
+dt_dir="${1:-$HOME/src/devtools/devtools-frontend}"
 
 if [[ ! -d "$dt_dir" || ! -a "$dt_dir/front_end/OWNERS" ]]; then
   echo -e "\033[31m✖ Error!\033[39m"
