@@ -1048,14 +1048,6 @@ Object {
           "weight": 0,
         },
         Object {
-          "id": "performance-budget",
-          "weight": 0,
-        },
-        Object {
-          "id": "timing-budget",
-          "weight": 0,
-        },
-        Object {
           "id": "resource-summary",
           "weight": 0,
         },
@@ -1101,6 +1093,16 @@ Object {
         },
         Object {
           "id": "viewport",
+          "weight": 0,
+        },
+        Object {
+          "group": "budgets",
+          "id": "performance-budget",
+          "weight": 0,
+        },
+        Object {
+          "group": "budgets",
+          "id": "timing-budget",
           "weight": 0,
         },
         Object {
