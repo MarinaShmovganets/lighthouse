@@ -96,6 +96,16 @@ describe('PerfCategoryRenderer', () => {
     assert.strictEqual(new URL(calcLink.href).hostname, 'googlechrome.github.io');
   });
 
+  it('ignores hidden audits', () => {
+    const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
+
+    const hiddenAudits = category.auditRefs.filter(audit => audit.group === 'hidden');
+    const auditElements = [...categoryDOM.querySelectorAll('.lh-audit')];
+    const matchingElements = auditElements
+      .filter(el => hiddenAudits.some(audit => audit.id === el.id));
+    expect(matchingElements).toHaveLength(0);
+  });
+
   it('renders the failing performance opportunities', () => {
     const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
 
