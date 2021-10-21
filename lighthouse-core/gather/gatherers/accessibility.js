@@ -94,7 +94,7 @@ function createAxeRuleResultArtifact(result) {
       (impact) => [null, 'minor', 'moderate', 'serious', 'critical'].indexOf(impact);
     const checkResults = [...node.any, ...node.all, ...node.none]
       // @ts-expect-error CheckResult.impact is a string, even though ImpactValue is a thing.
-      .sort((a, b) => impactToNumber(a.impact) - impactToNumber(b.impact));
+      .sort((a, b) => impactToNumber(b.impact) - impactToNumber(a.impact));
     for (const checkResult of checkResults) {
       for (const relatedNode of checkResult.relatedNodes || []) {
         /** @type {HTMLElement} */
