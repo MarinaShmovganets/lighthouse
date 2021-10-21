@@ -31,9 +31,9 @@ describe('SummaryTooltip', () => {
       id: 'performance',
       score: 1,
       auditRefs: [
-        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'diagnostics'},
-        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'diagnostics'},
-        {result: {score: 0, scoreDisplayMode: 'binary'}, weight: 1, group: 'diagnostics'},
+        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'metrics'},
+        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'metrics'},
+        {result: {score: 0, scoreDisplayMode: 'binary'}, weight: 1, group: 'metrics'},
       ],
     };
 
@@ -53,9 +53,9 @@ describe('SummaryTooltip', () => {
       id: 'performance',
       score: 1,
       auditRefs: [
-        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 0, group: 'diagnostics'},
-        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 0, group: 'diagnostics'},
-        {result: {score: 0, scoreDisplayMode: 'binary'}, weight: 0, group: 'diagnostics'},
+        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 0, group: 'metrics'},
+        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 0, group: 'metrics'},
+        {result: {score: 0, scoreDisplayMode: 'binary'}, weight: 0, group: 'metrics'},
       ],
     };
 
@@ -75,9 +75,9 @@ describe('SummaryTooltip', () => {
       id: 'performance',
       score: 1,
       auditRefs: [
-        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'diagnostics'},
-        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'diagnostics'},
-        {result: {score: 0, scoreDisplayMode: 'binary'}, weight: 1, group: 'diagnostics'},
+        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'metrics'},
+        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'metrics'},
+        {result: {score: 0, scoreDisplayMode: 'binary'}, weight: 1, group: 'metrics'},
       ],
     };
 
@@ -97,9 +97,9 @@ describe('SummaryTooltip', () => {
       id: 'performance',
       score: 1,
       auditRefs: [
-        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'diagnostics'},
-        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'diagnostics'},
-        {result: {score: 0, scoreDisplayMode: 'informative'}, weight: 1, group: 'diagnostics'},
+        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'metrics'},
+        {result: {score: 1, scoreDisplayMode: 'binary'}, weight: 1, group: 'metrics'},
+        {result: {score: 0, scoreDisplayMode: 'informative'}, weight: 1, group: 'metrics'},
       ],
     };
 

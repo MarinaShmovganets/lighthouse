@@ -153,6 +153,22 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
   }
 
   /**
+   * @param {LH.ReportResult.AuditRef} audit
+   * @return {boolean}
+   */
+  _isOpportunity(audit) {
+    return Boolean(audit.result.details && audit.result.details.type === 'opportunity');
+  }
+
+  /**
+   * @param {LH.ReportResult.AuditRef} audit
+   * @return {boolean}
+   */
+  _isDiagnostic(audit) {
+    return !audit.group && !this._isOpportunity(audit);
+  }
+
+  /**
    * @param {LH.ReportResult.Category} category
    * @param {Object<string, LH.Result.ReportGroup>} groups
    * @param {{gatherMode: LH.Result.GatherMode}=} options
@@ -208,9 +224,9 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
 
     // Opportunities
     const opportunityAudits = category.auditRefs
-        .filter(audit => audit.group === 'load-opportunities' && !Util.showAsPassed(audit.result))
+        .filter(audit => this._isOpportunity(audit))
+        .filter(audit => !Util.showAsPassed(audit.result))
         .sort((auditA, auditB) => this._getWastedMs(auditB) - this._getWastedMs(auditA));
-
 
     const filterableMetrics = metricAudits.filter(a => !!a.relevantAudits);
     // TODO: only add if there are opportunities & diagnostics rendered.
@@ -241,7 +257,8 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
 
     // Diagnostics
     const diagnosticAudits = category.auditRefs
-        .filter(audit => audit.group === 'diagnostics' && !Util.showAsPassed(audit.result))
+        .filter(audit => this._isDiagnostic(audit))
+        .filter(audit => !Util.showAsPassed(audit.result))
         .sort((a, b) => {
           const scoreA = a.result.scoreDisplayMode === 'informative' ? 100 : Number(a.result.score);
           const scoreB = b.result.scoreDisplayMode === 'informative' ? 100 : Number(b.result.score);
@@ -257,7 +274,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
 
     // Passed audits
     const passedAudits = category.auditRefs
-        .filter(audit => (audit.group === 'load-opportunities' || audit.group === 'diagnostics') &&
+        .filter(audit => (this._isOpportunity(audit) || this._isDiagnostic(audit)) &&
             Util.showAsPassed(audit.result));
 
     if (!passedAudits.length) return element;

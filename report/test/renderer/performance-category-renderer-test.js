@@ -99,8 +99,10 @@ describe('PerfCategoryRenderer', () => {
   it('renders the failing performance opportunities', () => {
     const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
 
-    const oppAudits = category.auditRefs.filter(audit => audit.group === 'load-opportunities' &&
-        !Util.showAsPassed(audit.result));
+    const oppAudits = category.auditRefs.filter(audit =>
+      audit.result.details &&
+      audit.result.details.type === 'opportunity' &&
+      !Util.showAsPassed(audit.result));
     const oppElements = [...categoryDOM.querySelectorAll('.lh-audit--load-opportunity')];
     expect(oppElements.map(e => e.id).sort()).toEqual(oppAudits.map(a => a.id).sort());
     expect(oppElements.length).toBeGreaterThan(0);
@@ -120,10 +122,14 @@ describe('PerfCategoryRenderer', () => {
   it('renders performance opportunities with an errorMessage', () => {
     const auditWithError = {
       score: 0,
-      group: 'load-opportunities',
       result: {
         score: null, scoreDisplayMode: 'error', errorMessage: 'Yikes!!', title: 'Bug #2',
         description: '',
+        details: {
+          overallSavingsMs: 0,
+          items: [],
+          type: 'opportunity',
+        },
       },
     };
 
@@ -137,10 +143,14 @@ describe('PerfCategoryRenderer', () => {
   it('renders performance opportunities\' explanation', () => {
     const auditWithExplanation = {
       score: 0,
-      group: 'load-opportunities',
       result: {
         score: 0, scoreDisplayMode: 'numeric',
         numericValue: 100, explanation: 'Yikes!!', title: 'Bug #2', description: '',
+        details: {
+          overallSavingsMs: 0,
+          items: [],
+          type: 'opportunity',
+        },
       },
     };
 
@@ -159,7 +169,9 @@ describe('PerfCategoryRenderer', () => {
         '.lh-category > .lh-audit-group.lh-audit-group--diagnostics');
 
     const diagnosticAuditIds = category.auditRefs.filter(audit => {
-      return audit.group === 'diagnostics' && !Util.showAsPassed(audit.result);
+      return !audit.group &&
+        !(audit.result.details && audit.result.details.type === 'opportunity') &&
+        !Util.showAsPassed(audit.result);
     }).map(audit => audit.id).sort();
     assert.ok(diagnosticAuditIds.length > 0);
 
@@ -173,8 +185,8 @@ describe('PerfCategoryRenderer', () => {
     const passedSection = categoryDOM.querySelector('.lh-category > .lh-clump--passed');
 
     const passedAudits = category.auditRefs.filter(audit =>
-      audit.group && audit.group !== 'metrics' && audit.id !== 'performance-budget'
-        && Util.showAsPassed(audit.result));
+      !audit.group &&
+      Util.showAsPassed(audit.result));
     const passedElements = passedSection.querySelectorAll('.lh-audit');
     assert.equal(passedElements.length, passedAudits.length);
   });
@@ -187,10 +199,14 @@ describe('PerfCategoryRenderer', () => {
     it('handles erroring opportunities', () => {
       const auditWithDebug = {
         score: 0,
-        group: 'load-opportunities',
         result: {
           error: true, score: 0,
           numericValue: 100, explanation: 'Yikes!!', title: 'Bug #2',
+          details: {
+            overallSavingsMs: 0,
+            items: [],
+            type: 'opportunity',
+          },
         },
       };
       const wastedMs = renderer._getWastedMs(auditWithDebug);
