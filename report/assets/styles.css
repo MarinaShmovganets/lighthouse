@@ -137,8 +137,6 @@
   --score-icon-size: 12px;
   --score-icon-size-big: 16px;
   --scores-container-padding: 20px 0 20px 0;
-  --scorescale-height: 6px;
-  --scorescale-width: 18px;
   --screenshot-overlay-background: rgba(0, 0, 0, 0.3);
   --section-padding-vertical: 12px;
   --snippet-background-color: var(--color-gray-50);
@@ -1410,7 +1408,6 @@
 
   gap: calc(var(--default-padding) * 4);
   margin: 16px auto 0 auto;
-  padding: 2px var(--default-padding);
   font-size: var(--report-font-size-secondary);
   color: var(--color-gray-700);
 
@@ -1419,14 +1416,12 @@
 .lh-scorescale-range {
   display: flex;
   align-items: center;
-  margin: 0 12px;
   font-family: var(--report-font-family-monospace);
   white-space: nowrap;
 }
 
 .lh-category-header__finalscreenshot .lh-scorescale {
   border: 0;
-  padding: 0;
   display: flex;
   justify-content: center;
 }
@@ -1843,6 +1838,7 @@ details[open] .lh-clump-toggle::before {content: 'Hide';}
 
 
 .lh-meta__items {
+  --meta-icon-size: calc(var(--report-icon-size) * 0.8);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   background-color: var(--env-item-background-color);
@@ -1850,13 +1846,14 @@ details[open] .lh-clump-toggle::before {content: 'Hide';}
   padding: 0;
   font-size: 13px;
   padding-bottom: calc(var(--default-padding) / 2);
+  gap: var(--default-padding);
 }
 
 .lh-meta__item {
   display: block;
   list-style-type: none;
   position: relative;
-  padding: calc(var(--default-padding) / 2) 0 0 calc(var(--default-padding) * 3);
+  padding: calc(var(--default-padding) / 2) 0 0 calc(var(--meta-icon-size) + var(--default-padding) * 2);
   cursor: unset; /* disable pointer cursor from report-icon */
 }
 
@@ -1868,8 +1865,8 @@ details[open] .lh-clump-toggle::before {content: 'Hide';}
 .lh-meta__item.lh-report-icon::before {
   position: absolute;
   left: var(--default-padding);
-  width: calc(var(--report-icon-size) * 0.8);
-  height: calc(var(--report-icon-size) * 0.8);
+  width: var(--meta-icon-size);
+  height: var(--meta-icon-size);
 }
 
 .lh-meta__item.lh-report-icon:hover::before {
