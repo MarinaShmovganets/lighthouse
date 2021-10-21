@@ -151,7 +151,6 @@ export class CategoryRenderer {
    * @param {Element} scoreScaleEl
    */
   injectFinalScreenshot(categoriesEl, audits, scoreScaleEl) {
-    // TODO: Use full-page-screenshot instead as that's always gathered, regardless of category filter
     const audit = audits['final-screenshot'];
     if (!audit || audit.scoreDisplayMode === 'error') return null;
     if (!audit.details || audit.details.type !== 'screenshot') return null;
