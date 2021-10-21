@@ -17,6 +17,9 @@
 # with a custom devtools location (could be path to standalone checkout):
 #   yarn devtools ~/code/devtools/devtools-frontend
 
+
+set -euo pipefail
+
 check="\033[96m ✓\033[39m"
 
 if [[ -n "$1" ]]; then
@@ -49,9 +52,9 @@ echo -e "$check lighthouse-dt-bundle copied."
 # generate bundle.d.ts
 npx tsc --allowJs --declaration --emitDeclarationOnly dist/report/bundle.esm.js
 # Exports of report/clients/bundle.js can possibly be mistakenly overriden by tsc.
-sed -i '' 's/export type DOM = any;//' dist/report/bundle.esm.d.ts
-sed -i '' 's/export type ReportRenderer = any;//' dist/report/bundle.esm.d.ts
-sed -i '' 's/export type ReportUIFeatures = any;//' dist/report/bundle.esm.d.ts
+sed -i 's/export type DOM = any;//' dist/report/bundle.esm.d.ts
+sed -i 's/export type ReportRenderer = any;//' dist/report/bundle.esm.d.ts
+sed -i 's/export type ReportUIFeatures = any;//' dist/report/bundle.esm.d.ts
 
 # copy report code $fe_lh_dir
 fe_lh_report_dir="$fe_lh_dir/report/"
