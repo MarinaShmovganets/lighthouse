@@ -1080,8 +1080,11 @@
   margin-top: var(--audit-group-padding-vertical);
 }
 
+/* Our report design omits the header 'Metrics', as they're clearly the metrics.
+   It's more straightforward to hide w/ CSS vs change categoryRenderer.renderAuditGroup for this case. */
 .lh-audit-group--metrics > .lh-audit-group__header {
-  visibility: hidden; /* Superfluous, because obviously perf metrics */
+  /* Also, it's vis hidden (and not display:none) because of spacing regarding the pill. */
+  visibility: hidden;
 }
 
 .lh-audit-explanation {
