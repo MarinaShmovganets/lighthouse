@@ -321,7 +321,7 @@ function collapseToStringLiteral(node, filepath) {
  */
 function evaluateCallExpression(node, filepath) {
   // eslint-disable-next-line max-len
-  const unsupportedMsg = 'Only `require.resolve()` and `path` methods are supported as arguments to `fs` function calls';
+  const unsupportedMsg = 'only `require.resolve()` and `path` methods are supported as arguments to `fs` function calls';
 
   if (node.callee.type !== 'MemberExpression') throw new AstError(unsupportedMsg, node);
   if (node.callee.object.type !== 'Identifier') throw new AstError(unsupportedMsg, node);
