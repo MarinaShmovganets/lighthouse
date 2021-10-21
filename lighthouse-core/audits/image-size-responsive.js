@@ -205,7 +205,7 @@ function expectedImageSize(displayedWidth, displayedHeight, DPR) {
  * @return {Result[]}
  */
 function deduplicateResultsByUrl(results) {
-  results.sort((a, b) => (a.url === b.url ? 0 : a.url < b.url ? -1 : 1));
+  results.sort((a, b) => a.url === b.url ? 0 : (a.url < b.url ? -1 : 1));
   /** @type {Result[]} */
   const deduplicated = [];
   for (const r of results) {
@@ -230,9 +230,7 @@ function deduplicateResultsByUrl(results) {
  */
 function sortResultsBySizeDelta(results) {
   return results.sort(
-    (a, b) =>
-      b.expectedPixels - b.actualPixels - (a.expectedPixels - a.actualPixels)
-  );
+    (a, b) => (b.expectedPixels - b.actualPixels) - (a.expectedPixels - a.actualPixels));
 }
 
 class ImageSizeResponsive extends Audit {
@@ -256,17 +254,14 @@ class ImageSizeResponsive extends Audit {
   static audit(artifacts) {
     const DPR = artifacts.ViewportDimensions.devicePixelRatio;
 
-    const results = Array.from(artifacts.ImageElements)
+    const results = Array
+      .from(artifacts.ImageElements)
       .filter(isCandidate)
       .filter(imageHasNaturalDimensions)
-      .filter((image) => !imageHasRightSize(image, DPR))
-      .filter((image) =>
-        isVisible(image.clientRect, artifacts.ViewportDimensions)
-      )
-      .filter((image) =>
-        isSmallerThanViewport(image.clientRect, artifacts.ViewportDimensions)
-      )
-      .map((image) => getResult(image, DPR));
+      .filter(image => !imageHasRightSize(image, DPR))
+      .filter(image => isVisible(image.clientRect, artifacts.ViewportDimensions))
+      .filter(image => isSmallerThanViewport(image.clientRect, artifacts.ViewportDimensions))
+      .map(image => getResult(image, DPR));
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
@@ -276,9 +271,7 @@ class ImageSizeResponsive extends Audit {
       { key: 'expectedSize', itemType: 'text', text: str_(UIStrings.columnExpected) },
     ];
 
-    const finalResults = sortResultsBySizeDelta(
-      deduplicateResultsByUrl(results)
-    );
+    const finalResults = sortResultsBySizeDelta(deduplicateResultsByUrl(results));
 
     return {
       score: Number(results.length === 0),
