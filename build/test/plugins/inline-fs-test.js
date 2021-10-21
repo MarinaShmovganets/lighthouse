@@ -66,7 +66,7 @@ describe('inline-fs', () => {
         // eslint-disable-next-line max-len
         code: `const myContent = fs.readFileSync(filePathVar, 'utf8');\nconst replacedContent = "template literal text content";`,
         warnings: [{
-          text: `unsupported node: Identifier`,
+          text: `unsupported identifier 'filePathVar'`,
           location: {
             file: filepath,
             line: 1,
@@ -76,23 +76,15 @@ describe('inline-fs', () => {
       });
     });
 
-    // TODO: this will work
-    it('skips `__dirname`', async () => {
+    it('substitutes `__dirname`', async () => {
       fs.writeFileSync(tmpPath, '__dirname text content');
 
       const dirnamePath = `__dirname + '/../.tmp/inline-fs/test.txt'`;
       const content = `const myTextContent = fs.readFileSync(${dirnamePath}, 'utf8');`;
       const result = await inlineFs(content, filepath);
       expect(result).toEqual({
-        code: null,
-        warnings: [{
-          text: `unsupported node: BinaryExpression`,
-          location: {
-            file: filepath,
-            line: 1,
-            column: 38,
-          },
-        }],
+        code: `const myTextContent = "__dirname text content";`,
+        warnings: [],
       });
     });
 
