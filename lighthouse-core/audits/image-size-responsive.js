@@ -132,7 +132,7 @@ function imageHasNaturalDimensions(image) {
  */
 function imageHasRightSize(image, DPR) {
   const [expectedWidth, expectedHeight] =
-   allowedImageSize(image.displayedWidth, image.displayedHeight, DPR);
+    allowedImageSize(image.displayedWidth, image.displayedHeight, DPR);
   return image.naturalDimensions.width >= expectedWidth &&
     image.naturalDimensions.height >= expectedHeight;
 }
@@ -144,7 +144,7 @@ function imageHasRightSize(image, DPR) {
  */
 function getResult(image, DPR) {
   const [expectedWidth, expectedHeight] =
-  expectedImageSize(image.displayedWidth, image.displayedHeight, DPR);
+    expectedImageSize(image.displayedWidth, image.displayedHeight, DPR);
   return {
     url: URL.elideDataURI(image.src),
     displayedSize: `${image.displayedWidth} x ${image.displayedHeight}`,
@@ -227,7 +227,7 @@ function deduplicateResultsByUrl(results) {
  */
 function sortResultsBySizeDelta(results) {
   return results.sort(
-  (a, b) => (b.expectedPixels - b.actualPixels) - (a.expectedPixels - a.actualPixels));
+    (a, b) => (b.expectedPixels - b.actualPixels) - (a.expectedPixels - a.actualPixels));
 }
 
 class ImageSizeResponsive extends Audit {
