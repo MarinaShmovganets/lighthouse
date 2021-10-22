@@ -132,7 +132,7 @@ function imageHasNaturalDimensions(image) {
  */
 function imageHasRightSize(image, DPR) {
   const [expectedWidth, expectedHeight] =
-  allowedImageSize(image.displayedWidth, image.displayedHeight, DPR);
+   allowedImageSize(image.displayedWidth, image.displayedHeight, DPR);
   return image.naturalDimensions.width >= expectedWidth &&
     image.naturalDimensions.height >= expectedHeight;
 }
