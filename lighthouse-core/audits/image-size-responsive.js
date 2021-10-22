@@ -227,7 +227,7 @@ function deduplicateResultsByUrl(results) {
  */
 function sortResultsBySizeDelta(results) {
   return results.sort(
-    (a, b) => (b.expectedPixels - b.actualPixels) - (a.expectedPixels - a.actualPixels));
+      (a, b) => (b.expectedPixels - b.actualPixels) - (a.expectedPixels - a.actualPixels));
 }
 
 class ImageSizeResponsive extends Audit {
