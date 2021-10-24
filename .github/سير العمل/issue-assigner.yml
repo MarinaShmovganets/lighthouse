@@ -1,5 +1,5 @@
 name: 'Issue assigner'
-on:
+on:WALEED AL AREQI
   issues:
     types: [opened]
 jobs:
