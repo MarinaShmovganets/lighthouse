@@ -16,6 +16,8 @@ import type {UIStringsType} from '../i18n/ui-strings';
 
 const MAX_TOOLTIP_AUDITS = 2;
 
+type ScoredAuditRef = LH.ReportResult.AuditRef & {result: {score: number}};
+
 function getGatherModeLabel(gatherMode: LH.Result.GatherMode, strings: UIStringsType) {
   switch (gatherMode) {
     case 'navigation': return strings.navigationReport;
@@ -33,6 +35,18 @@ function getCategoryRating(rating: string, strings: UIStringsType) {
   }
 }
 
+function getScoreToBeGained(audit: ScoredAuditRef): number {
+  return audit.weight * (1 - audit.result.score);
+}
+
+function getOverallSavings(audit: LH.ReportResult.AuditRef): number {
+  return (
+    audit.result.details &&
+    audit.result.details.type === 'opportunity' &&
+    audit.result.details.overallSavingsMs
+  ) || 0;
+}
+
 const SummaryTooltipAudit: FunctionComponent<{audit: LH.ReportResult.AuditRef}> = ({audit}) => {
   const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
   return (
@@ -42,8 +56,6 @@ const SummaryTooltipAudit: FunctionComponent<{audit: LH.ReportResult.AuditRef}> 
   );
 };
 
-type ScoredAuditRef = LH.ReportResult.AuditRef & {result: {score: number}};
-
 const SummaryTooltipAudits: FunctionComponent<{category: LH.ReportResult.Category}> =
 ({category}) => {
   const strings = useLocalizedStrings();
@@ -51,16 +63,22 @@ const SummaryTooltipAudits: FunctionComponent<{category: LH.ReportResult.Categor
   function isRelevantAudit(audit: LH.ReportResult.AuditRef): audit is ScoredAuditRef {
     const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
     return audit.result.score !== null &&
-      audit.result.score < 1 &&
+      // Metrics should not be displayed in this group.
+      audit.group !== 'metrics' &&
+      // Audits in performance without a group are hidden.
       (audit.group !== undefined || category.id !== 'performance') &&
+      // We don't want unweighted audits except for opportunities with potential savings.
+      (audit.weight > 0 || getOverallSavings(audit) > 0) &&
       rating !== 'pass';
   }
 
   const audits = category.auditRefs
     .filter(isRelevantAudit)
     .sort((a, b) => {
-      if (a.weight === b.weight) return b.result.score - a.result.score;
-      return b.weight * (1 - b.result.score) - a.weight * (1 - a.result.score);
+      const remainingScoreA = getScoreToBeGained(a);
+      const remainingScoreB = getScoreToBeGained(b);
+      if (remainingScoreA !== remainingScoreB) return remainingScoreB - remainingScoreA;
+      return getOverallSavings(b) - getOverallSavings(a);
     })
     .splice(0, MAX_TOOLTIP_AUDITS);
   if (!audits.length) return null;
