@@ -77,8 +77,10 @@ describe('Fraggle Rock Config', () => {
   });
 
   it('should throw on invalid artifact definitions', () => {
-    const configJson = {artifacts: [{id: 'HTTPRedirect', gatherer: 'http-redirect'}]};
-    expect(() => initializeConfig(configJson, {gatherMode})).toThrow(/HTTPRedirect gatherer/);
+    const nonFRGatherer = new BaseGatherer();
+    nonFRGatherer.getArtifact = jest.fn();
+    const configJson = {artifacts: [{id: 'LegacyGather', gatherer: {instance: nonFRGatherer}}]};
+    expect(() => initializeConfig(configJson, {gatherMode})).toThrow(/FRGatherer gatherer/);
   });
 
   it('should filter configuration by gatherMode', () => {
@@ -343,6 +345,7 @@ describe('Fraggle Rock Config', () => {
           return {
             id: 'extra-audit',
             title: 'Extra',
+            failureTitle: 'Extra',
             description: 'Extra',
             requiredArtifacts: /** @type {*} */ (['ExtraArtifact']),
           };

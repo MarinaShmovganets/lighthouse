@@ -7,9 +7,13 @@
 
 /* eslint-disable max-len */
 
-const yargs = require('yargs');
-const fs = require('fs');
-const {isObjectOfUnknownValues} = require('../lighthouse-core/lib/type-verifiers.js');
+import fs from 'fs';
+
+import yargs from 'yargs';
+import * as yargsHelpers from 'yargs/helpers';
+
+import {LH_ROOT} from '../root.js';
+import {isObjectOfUnknownValues} from '../shared/type-verifiers.js';
 
 /**
  * @param {string=} manualArgv
@@ -17,10 +21,13 @@ const {isObjectOfUnknownValues} = require('../lighthouse-core/lib/type-verifiers
  * @return {LH.CliFlags}
  */
 function getFlags(manualArgv, options = {}) {
-  // @ts-expect-error - undocumented, but yargs() supports parsing a single `string`.
-  const y = manualArgv ? yargs(manualArgv) : yargs;
+  const y = manualArgv ?
+    // @ts-expect-error - undocumented, but yargs() supports parsing a single `string`.
+    yargs(manualArgv) :
+    yargs(yargsHelpers.hideBin(process.argv));
 
   let parser = y.help('help')
+      .version(JSON.parse(fs.readFileSync(`${LH_ROOT}/package.json`, 'utf-8')).version)
       .showHelpOnFail(false, 'Specify --help for available options')
 
       .usage('lighthouse <url> <options>')
@@ -97,6 +104,11 @@ function getFlags(manualArgv, options = {}) {
           type: 'boolean',
           default: false,
           describe: 'Prints a list of all available audits and exits',
+        },
+        'list-locales': {
+          type: 'boolean',
+          default: false,
+          describe: 'Prints a list of all supported locales and exits',
         },
         'list-trace-categories': {
           type: 'boolean',
@@ -203,7 +215,7 @@ function getFlags(manualArgv, options = {}) {
         },
       })
       .group([
-        'save-assets', 'list-all-audits', 'list-trace-categories', 'print-config', 'additional-trace-categories',
+        'save-assets', 'list-all-audits', 'list-locales', 'list-trace-categories', 'print-config', 'additional-trace-categories',
         'config-path', 'preset', 'chrome-flags', 'port', 'hostname', 'form-factor', 'screenEmulation', 'emulatedUserAgent',
         'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
         'only-audits', 'only-categories', 'skip-audits', 'budget-path',
@@ -307,7 +319,7 @@ function getFlags(manualArgv, options = {}) {
         //   - We're just printing the config.
         //   - We're in auditMode (and we have artifacts already)
         // If one of these don't apply, if no URL, stop the program and ask for one.
-        const isPrintSomethingMode = argv.listAllAudits || argv.listTraceCategories || argv.printConfig;
+        const isPrintSomethingMode = argv.listAllAudits || argv.listLocales || argv.listTraceCategories || argv.printConfig;
         const isOnlyAuditMode = !!argv.auditMode && !argv.gatherMode;
         if (isPrintSomethingMode || isOnlyAuditMode) {
           return true;
@@ -318,7 +330,7 @@ function getFlags(manualArgv, options = {}) {
         throw new Error('Please provide a url');
       })
       .epilogue('For more information on Lighthouse, see https://developers.google.com/web/tools/lighthouse/.')
-      .wrap(yargs.terminalWidth());
+      .wrap(y.terminalWidth());
 
   if (options.noExitOnFailure) {
     // Silence console.error() logging and don't process.exit().
@@ -499,6 +511,6 @@ function coerceScreenEmulation(value) {
   return screenEmulationSettings;
 }
 
-module.exports = {
+export {
   getFlags,
 };
