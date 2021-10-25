@@ -69,7 +69,7 @@ const SummaryTooltipAudits: FunctionComponent<{category: LH.ReportResult.Categor
       // We don't want unweighted audits except for opportunities with potential savings.
       (audit.weight > 0 || getOverallSavings(audit) > 0) &&
       // Passing audits should never be high impact.
-      Util.showAsPassed(audit.result);
+      !Util.showAsPassed(audit.result);
   }
 
   const audits = category.auditRefs
