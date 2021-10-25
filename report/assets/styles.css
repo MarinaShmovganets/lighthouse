@@ -81,7 +81,7 @@
   --audit-group-padding-vertical: 8px;
   --audit-margin-horizontal: 5px;
   --audit-padding-vertical: 8px;
-  --category-padding: 40px;
+  --category-padding: 40px; /* todo change to.... calc(var(--default-padding) * 2)   ? */
   --chevron-line-stroke: var(--color-gray-600);
   --chevron-size: 12px;
   --default-padding: 8px;
@@ -136,7 +136,6 @@
   --score-icon-margin: 0 var(--score-icon-margin-right) 0 var(--score-icon-margin-left);
   --score-icon-size: 12px;
   --score-icon-size-big: 16px;
-  --scores-container-padding: 20px 0 20px 0;
   --screenshot-overlay-background: rgba(0, 0, 0, 0.3);
   --section-padding-vertical: 12px;
   --snippet-background-color: var(--color-gray-50);
