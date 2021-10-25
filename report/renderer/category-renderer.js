@@ -512,14 +512,11 @@ export class CategoryRenderer {
       clumps.set(clumpId, clump);
     }
 
-    // Sort audits by weight (except for the performance category, because
-    // we value keeping those in an explicit order).
-    if (category.id !== 'performance') {
-      for (const auditRefs of clumps.values()) {
-        auditRefs.sort((a, b) => {
-          return b.weight - a.weight;
-        });
-      }
+    // Sort audits by weight.
+    for (const auditRefs of clumps.values()) {
+      auditRefs.sort((a, b) => {
+        return b.weight - a.weight;
+      });
     }
 
     // Render each clump.
