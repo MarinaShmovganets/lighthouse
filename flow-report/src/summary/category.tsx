@@ -61,7 +61,6 @@ const SummaryTooltipAudits: FunctionComponent<{category: LH.ReportResult.Categor
   const strings = useLocalizedStrings();
 
   function isRelevantAudit(audit: LH.ReportResult.AuditRef): audit is ScoredAuditRef {
-    const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
     return audit.result.score !== null &&
       // Metrics should not be displayed in this group.
       audit.group !== 'metrics' &&
@@ -69,7 +68,8 @@ const SummaryTooltipAudits: FunctionComponent<{category: LH.ReportResult.Categor
       (audit.group !== undefined || category.id !== 'performance') &&
       // We don't want unweighted audits except for opportunities with potential savings.
       (audit.weight > 0 || getOverallSavings(audit) > 0) &&
-      rating !== 'pass';
+      // Passing audits should never be high impact.
+      Util.showAsPassed(audit.result);
   }
 
   const audits = category.auditRefs
