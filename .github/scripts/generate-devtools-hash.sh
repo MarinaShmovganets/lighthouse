@@ -12,7 +12,7 @@ cd "$LH_ROOT"
 
 mkdir -p .tmp
 bash .github/scripts/print-devtools-relevant-commits.sh > .tmp/cdt-git-md5-hash
-md5 -q \
+md5 \
   .tmp/cdt-git-md5-hash \
   .github/workflows/devtools.yml \
   build/build-bundle.js \
@@ -21,6 +21,6 @@ md5 -q \
   clients/devtools-report-assets.js \
   lighthouse-core/test/chromium-web-tests/* \
   third-party/chromium-webtests/webtests/http/tests/devtools/lighthouse/*.js \
-  > .tmp/devtools-md5-hash
-md5 -q .tmp/devtools-md5-hash
-rm .tmp/devtools-md5-hash .tmp/cdt-git-md5-hash
+  | md5
+
+rm .tmp/cdt-git-md5-hash
