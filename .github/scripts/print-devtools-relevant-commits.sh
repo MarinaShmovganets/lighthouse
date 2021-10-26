@@ -24,5 +24,3 @@ git fetch
 git --no-pager log -1 origin/main -- front_end/panels/lighthouse
 git --no-pager log -1 origin/main -- front_end/third_party/lighthouse
 git --no-pager log -1 origin/main -- front_end/entrypoints/lighthouse_worker
-
-rm -rf "$LH_ROOT/.tmp/cdt-repo-for-hash"
