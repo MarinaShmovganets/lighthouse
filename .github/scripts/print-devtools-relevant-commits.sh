@@ -13,7 +13,7 @@ CDT_DIR="$LH_ROOT/.tmp/chromium-web-tests/devtools/devtools-frontend"
 if [ -d "$CDT_DIR" ]
 then
   cd "$CDT_DIR"
-elif [ -d "$LH_ROOT/.tmp/cdt-repo-for-hash" ]
+elif [ -d "$LH_ROOT/.tmp/cdt-repo-for-hash/devtools-frontend" ]
 then
   cd "$LH_ROOT/.tmp/cdt-repo-for-hash/devtools-frontend"
 else
