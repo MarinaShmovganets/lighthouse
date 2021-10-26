@@ -10,14 +10,19 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$SCRIPT_DIR/../.."
 CDT_DIR="$LH_ROOT/.tmp/chromium-web-tests/devtools/devtools-frontend"
 
-if [ ! -d "$CDT_DIR" ] 
-then
-  echo "Repo has not been cloned yet."
-  exit 0
+if [ -d "$CDT_DIR" ]
+  cd "$CDT_DIR"
+elif [ -d "$LH_ROOT/.tmp/cdt-repo-for-hash" ]
+  cd "$LH_ROOT/.tmp/cdt-repo-for-hash"
+else
+  mkdir -p "$LH_ROOT/.tmp/cdt-repo-for-hash"
+  cd "$LH_ROOT/.tmp/cdt-repo-for-hash"
+  git clone --depth=1 https://chromium.googlesource.com/devtools/devtools-frontend.git
 fi
 
-cd "$CDT_DIR"
 git fetch
 git --no-pager log -1 origin/main -- front_end/panels/lighthouse
 git --no-pager log -1 origin/main -- front_end/third_party/lighthouse
 git --no-pager log -1 origin/main -- front_end/entrypoints/lighthouse_worker
+
+rm -rf "$LH_ROOT/.tmp/cdt-repo-for-hash"

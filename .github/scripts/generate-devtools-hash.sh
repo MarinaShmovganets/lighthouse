@@ -13,7 +13,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$SCRIPT_DIR/../.."
 cd "$LH_ROOT"
 
-mkdir -p .tmp
 bash .github/scripts/print-devtools-relevant-commits.sh
 md5 \
   .github/workflows/devtools.yml \
