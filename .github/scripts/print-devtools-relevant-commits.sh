@@ -9,7 +9,6 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$SCRIPT_DIR/../.."
 CDT_DIR="$LH_ROOT/.tmp/chromium-web-tests/devtools/devtools-frontend"
-cd "$CDT_DIR"
 
 if [ ! -d "$CDT_DIR" ] 
 then
@@ -17,6 +16,7 @@ then
   exit 0
 fi
 
+cd "$CDT_DIR"
 git fetch
 git --no-pager log -1 origin/main -- front_end/panels/lighthouse
 git --no-pager log -1 origin/main -- front_end/third_party/lighthouse
