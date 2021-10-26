@@ -20,7 +20,6 @@ md5 \
   clients/devtools-entry.js \
   clients/devtools-report-assets.js \
   lighthouse-core/test/chromium-web-tests/* \
-  third-party/chromium-webtests/webtests/http/tests/devtools/lighthouse/*.js \
-  | md5
+  third-party/chromium-webtests/webtests/http/tests/devtools/lighthouse/*.js
 
 rm .tmp/cdt-git-md5-hash
