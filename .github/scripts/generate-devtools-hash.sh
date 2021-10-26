@@ -11,7 +11,9 @@ LH_ROOT="$SCRIPT_DIR/../.."
 cd "$LH_ROOT"
 
 mkdir -p .tmp
+bash .github/scripts/print-devtools-relevant-commits.sh > .tmp/cdt-git-md5-hash
 md5 -q \
+  .tmp/cdt-git-md5-hash \
   .github/workflows/devtools.yml \
   build/build-bundle.js \
   build/build-dt-report-resources.js \
@@ -21,4 +23,4 @@ md5 -q \
   third-party/chromium-webtests/webtests/http/tests/devtools/lighthouse/*.js \
   > .tmp/devtools-md5-hash
 md5 -q .tmp/devtools-md5-hash
-rm .tmp/devtools-md5-hash
+rm .tmp/devtools-md5-hash .tmp/cdt-git-md5-hash
