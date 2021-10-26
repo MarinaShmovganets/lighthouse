@@ -6,14 +6,16 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 ##
 
+# Prints to stdout text that, when it changes, indicates that the devtools tests
+# should be run again.
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$SCRIPT_DIR/../.."
 cd "$LH_ROOT"
 
 mkdir -p .tmp
-bash .github/scripts/print-devtools-relevant-commits.sh > .tmp/cdt-git-md5-hash
+bash .github/scripts/print-devtools-relevant-commits.sh
 md5 \
-  .tmp/cdt-git-md5-hash \
   .github/workflows/devtools.yml \
   build/build-bundle.js \
   build/build-dt-report-resources.js \
@@ -21,5 +23,3 @@ md5 \
   clients/devtools-report-assets.js \
   lighthouse-core/test/chromium-web-tests/* \
   third-party/chromium-webtests/webtests/http/tests/devtools/lighthouse/*.js
-
-rm .tmp/cdt-git-md5-hash
