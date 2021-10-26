@@ -168,16 +168,22 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
     // Metrics.
     const metricAudits = category.auditRefs.filter(audit => audit.group === 'metrics');
     if (metricAudits.length) {
-      const [metricAuditsEl, metricsFooterEl] = this.renderAuditGroup(groups.metrics);
+      const [metricsGroupEl, metricsFooterEl] = this.renderAuditGroup(groups.metrics);
 
       // Metric descriptions toggle.
-      const toggleTmpl = this.dom.createComponent('metricsToggle');
-      const _toggleEl = this.dom.find('.lh-metrics-toggle', toggleTmpl);
-      metricAuditsEl.append(..._toggleEl.childNodes);
+      const checkboxEl = this.dom.createElement('input', 'lh-metrics-toggle__input');
+      const checkboxId = `lh-metrics-toggle${Util.getUniqueSuffix()}`;
+      checkboxEl.setAttribute('aria-label', 'Toggle the display of metric descriptions');
+      checkboxEl.type = 'checkbox';
+      checkboxEl.id = checkboxId;
+      metricsGroupEl.prepend(checkboxEl);
+      const metricHeaderEl = this.dom.find('.lh-audit-group__header', metricsGroupEl);
+      const labelEl = this.dom.createChildOf(metricHeaderEl, 'label', 'lh-metrics-toggle__label');
+      labelEl.htmlFor = checkboxId;
 
       const metricAudits = category.auditRefs.filter(audit => audit.group === 'metrics');
       const metricsBoxesEl = this.dom.createElement('div', 'lh-metrics-container');
-      metricAuditsEl.insertBefore(metricsBoxesEl, metricsFooterEl);
+      metricsGroupEl.insertBefore(metricsBoxesEl, metricsFooterEl);
       metricAudits.forEach(item => {
         metricsBoxesEl.appendChild(this._renderMetric(item));
       });
@@ -194,8 +200,8 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
       this.dom.safelySetHref(calculatorLink, this._getScoringCalculatorHref(category.auditRefs));
 
 
-      metricAuditsEl.classList.add('lh-audit-group--metrics');
-      element.appendChild(metricAuditsEl);
+      metricsGroupEl.classList.add('lh-audit-group--metrics');
+      element.appendChild(metricsGroupEl);
     }
 
     // Filmstrip
