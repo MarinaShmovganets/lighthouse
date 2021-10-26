@@ -132,13 +132,13 @@ describe('SummaryTooltip', () => {
 
   it('renders highest impact audits', async () => {
     const category: any = {
-      id: 'performance',
+      id: 'seo',
       score: 1,
       auditRefs: [
         /* eslint-disable max-len */
-        {result: {score: 0, scoreDisplayMode: 'binary', title: 'Audit 1'}, weight: 1, group: 'diagnostics'},
-        {result: {score: 0, scoreDisplayMode: 'binary', title: 'Audit 2'}, weight: 2, group: 'diagnostics'},
-        {result: {score: 0, scoreDisplayMode: 'binary', title: 'Audit 3'}, weight: 3, group: 'diagnostics'},
+        {result: {score: 0, scoreDisplayMode: 'binary', title: 'Audit 1'}, weight: 1, group: 'group'},
+        {result: {score: 0, scoreDisplayMode: 'binary', title: 'Audit 2'}, weight: 2, group: 'group'},
+        {result: {score: 0, scoreDisplayMode: 'binary', title: 'Audit 3'}, weight: 3, group: 'group'},
         /* eslint-enable max-len */
       ],
     };
@@ -154,6 +154,34 @@ describe('SummaryTooltip', () => {
     expect(audits.map(a => a.textContent)).toEqual([
       'Audit 3',
       'Audit 2',
+    ]);
+  });
+
+  it('renders highest impact audits in performance', async () => {
+    const category: any = {
+      id: 'performance',
+      score: 0.75,
+      auditRefs: [
+        /* eslint-disable max-len */
+        {result: {score: 0.75, scoreDisplayMode: 'numeric', title: 'Metric 1'}, weight: 1, group: 'metrics'},
+        {result: {score: 0, scoreDisplayMode: 'numeric', title: 'Audit 1', details: {type: 'opportunity', overallSavingsMs: 500}}, weight: 0, group: 'opportunities'},
+        {result: {score: 0, scoreDisplayMode: 'numeric', title: 'Audit 2', details: {type: 'opportunity', overallSavingsMs: 1000}}, weight: 0, group: 'opportunities'},
+        {result: {score: 0, scoreDisplayMode: 'numeric', title: 'Audit 3', details: {type: 'opportunity', overallSavingsMs: 100}}, weight: 0, group: 'opportunities'},
+        /* eslint-enable max-len */
+      ],
+    };
+
+    const root = render(
+      <SummaryTooltip category={category} gatherMode="navigation" url="https://example.com"/>,
+      {wrapper}
+    );
+
+    const audits = root.getAllByText(/^(Audit|Metric) [0-9]$/);
+
+    expect(root.getByText('Highest impact')).toBeTruthy();
+    expect(audits.map(a => a.textContent)).toEqual([
+      'Audit 2',
+      'Audit 1',
     ]);
   });
 
