@@ -30,18 +30,6 @@ Release manager is appointed, according to the list below. However, if the appoi
 
     @cjamcl, @adamraine
 
-Release manager follows the below _Release Process_.
-
-### Release publicity
-
-Note: actively undergoing changes by @exterkamp and @egsweeny.
-Note 2: Not really. Ignore this.
-
-1. Release mgr copies changelog to a new [Releases](https://github.com/GoogleChrome/lighthouse/releases). Tags and ships it.
-1. Release mgr tells the _LH public_ Hangout chat about the new version.
-1. V & Kayce write and publish the [/updates](https://developers.google.com/web/updates/) blog post
-1. Addy writes the tweet (linking the /updates post) and sends it on [@____lighthouse](https://twitter.com/____lighthouse).
-
 ### Versioning
 
 We follow [semver](https://semver.org/) versioning semantics (`vMajor.Minor.Patch`). Breaking changes will bump the major version. New features or bug fixes will bump the minor version. If a release contains no new features, then we'll only bump the patch version.
