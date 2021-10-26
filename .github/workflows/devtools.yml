@@ -26,7 +26,6 @@ jobs:
 
     - name: Generate cache hash
       run: bash $GITHUB_WORKSPACE/lighthouse/.github/scripts/generate-devtools-hash.sh > cdt-test-hash.txt
-    - run: cat cdt-test-hash.txt
     - name: Cache depot tools, devtools, blink tools and content shell
       uses: actions/cache@v2
       with:
