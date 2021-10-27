@@ -81,7 +81,7 @@
   --audit-group-padding-vertical: 8px;
   --audit-margin-horizontal: 5px;
   --audit-padding-vertical: 8px;
-  --category-padding: 40px; /* todo change to.... calc(var(--default-padding) * 2)   ? */
+  --category-padding: calc(var(--default-padding) * 6) calc(var(--default-padding) * 4) calc(var(--default-padding) * 4);
   --chevron-line-stroke: var(--color-gray-600);
   --chevron-size: 12px;
   --default-padding: 8px;
@@ -113,7 +113,7 @@
   --plugin-badge-size-big: calc(var(--gauge-circle-size-big) / 2.7);
   --plugin-badge-size: calc(var(--gauge-circle-size) / 2.7);
   --plugin-icon-size: 65%;
-  --pwa-icon-margin: 0 6px 0 -2px;
+  --pwa-icon-margin: 0 var(--default-padding);
   --pwa-icon-size: var(--topbar-logo-size);
   --report-background-color: #fff;
   --report-border-color-secondary: #ebebeb;
@@ -137,7 +137,7 @@
   --score-icon-size: 12px;
   --score-icon-size-big: 16px;
   --screenshot-overlay-background: rgba(0, 0, 0, 0.3);
-  --section-padding-vertical: 12px;
+  --section-padding-vertical: calc(var(--default-padding) * 6);;
   --snippet-background-color: var(--color-gray-50);
   --snippet-color: #0938C2;
   --sparkline-height: 5px;
@@ -145,7 +145,7 @@
   --sticky-header-background-color: var(--report-background-color);
   --table-higlight-background-color: hsla(210, 17%, 77%, 0.1);
   --tools-icon-color: var(--color-gray-600);
-  --topbar-background-color: var(--color-gray-100);
+  --topbar-background-color: var(--color-white);
   --topbar-height: 32px;
   --topbar-logo-size: 24px;
   --topbar-padding: 0 8px;
@@ -416,7 +416,7 @@
 
 .lh-report-icon::before {
   content: "";
-  margin-right: 5px;
+  margin: 4px;
   background-repeat: no-repeat;
   width: var(--report-icon-size);
   height: var(--report-icon-size);
@@ -728,7 +728,6 @@
 
 .lh-metrics__disclaimer {
   color: var(--color-gray-600);
-  margin: var(--section-padding-vertical) 0;
 }
 
 .lh-calclink {
@@ -1479,6 +1478,8 @@
   justify-items: center;
   align-items: center;
   gap: var(--report-line-height);
+  min-height: 288px;
+  margin-bottom: var(--default-padding);
 }
 
 .lh-final-ss-image {
@@ -1488,6 +1489,7 @@
   border: 1px solid var(--color-gray-200);
   padding: 4px;
   border-radius: 3px;
+  display: block;
 }
 
 .lh-category-headercol--separator {
@@ -1837,21 +1839,23 @@ details[open] .lh-clump-toggle::before {content: 'Hide';}
 
 
 .lh-meta__items {
-  --meta-icon-size: calc(var(--report-icon-size) * 0.8);
+  --meta-icon-size: calc(var(--report-icon-size) * 0.667);
+  padding: var(--default-padding);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   background-color: var(--env-item-background-color);
   border-radius: 3px;
-  padding: 0;
-  font-size: 13px;
-  gap: var(--default-padding);
+  margin: 0 0 var(--default-padding) 0;
+  font-size: 12px;
+  column-gap: var(--default-padding);
+  color: var(--color-gray-700);
 }
 
 .lh-meta__item {
   display: block;
   list-style-type: none;
   position: relative;
-  padding: calc(var(--default-padding) / 2) 0 0 calc(var(--meta-icon-size) + var(--default-padding) * 2);
+  padding: 0 0 0 calc(var(--meta-icon-size) + var(--default-padding) * 2);
   cursor: unset; /* disable pointer cursor from report-icon */
 }
 
