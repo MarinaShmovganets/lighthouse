@@ -1277,15 +1277,6 @@
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "Precarica l'immagine Largest Contentful Paint"
   },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "Se hai già configurato HTTPS, assicurati di reindirizzare tutto il traffico HTTP a HTTPS per attivare funzionalità web sicure per tutti i tuoi utenti. [Ulteriori informazioni](https://web.dev/redirects-http/)."
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "Non reindirizza il traffico HTTP a HTTPS"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "Reindirizza il traffico HTTP a HTTPS"
-  },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "I reindirizzamenti comportano ulteriori ritardi prima del caricamento della pagina. [Ulteriori informazioni](https://web.dev/redirects/)."
   },
@@ -2078,28 +2069,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "L'URL fornito non è valido."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "Tutto"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "Tutti gli script"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "Copertura"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "Moduli duplicati"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "Byte risorsa"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "Nome"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "Mostra/nascondi tabella"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "Byte non utilizzati"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2438,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Limitazione CPU"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "Canale"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "Dispositivo"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "Data/ora recupero"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Limitazione della larghezza di banda della rete"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "Impostazioni runtime"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "User-agent (host)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "User-agent (rete)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Valore sconosciuto"

@@ -1277,15 +1277,6 @@
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "Pré-carregar imagem de Maior exibição de conteúdo"
   },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "Se você já definiu o HTTPS, redirecione todo o tráfego HTTP para HTTPS para garantir recursos da Web para todos os seus usuários. [Saiba mais](https://web.dev/redirects-http/)."
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "O tráfego HTTP não é redirecionado para HTTPS"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "O tráfego HTTP é redirecionado para HTTPS"
-  },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "Os redirecionamentos causam mais atrasos antes do carregamento da página. [Saiba mais](https://web.dev/redirects/)."
   },
@@ -2078,28 +2069,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "O URL informado parece ser inválido."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "Tudo"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "Todos os scripts"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "Cobertura"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "Módulos duplicados"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "Bytes de recursos"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "Nome"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "Alternar tabela"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "Bytes não usados"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2438,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Limitação de CPU"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "Canal"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "Dispositivo"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "Horário da busca"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Limitação de rede"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "Configurações de ambiente de execução"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "User agent (host)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "User agent (rede)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Desconhecida"
