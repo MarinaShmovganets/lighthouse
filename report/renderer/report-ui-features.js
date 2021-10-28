@@ -282,7 +282,7 @@ export class ReportUIFeatures {
   /**
    * @param {Element} el
    */
-  _setupElementScreenshotOverlay(el) {
+   _setupElementScreenshotOverlay(el) {
     const fullPageScreenshot =
       this.json.audits['full-page-screenshot'] &&
       this.json.audits['full-page-screenshot'].details &&
@@ -293,7 +293,7 @@ export class ReportUIFeatures {
     ElementScreenshotRenderer.installOverlayFeature({
       dom: this._dom,
       reportEl: el,
-      overlayContainerEl: el,
+      overlayContainerEl: this._opts.overlayParentEl || el,
       fullPageScreenshot,
     });
   }

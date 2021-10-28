@@ -33,6 +33,7 @@ const lighthouseRenderer = window['report'];
       const reportRootEl = lighthouseRenderer.renderReport(lhr, {
         omitTopbar: true,
         disableAutoDarkModeAndFireworks: true,
+        overlayParentEl: container, // scope the overlay inside of the tabs.
       });
       // TODO: display warnings if appropriate.
       for (const el of reportRootEl.querySelectorAll('.lh-warnings')) {

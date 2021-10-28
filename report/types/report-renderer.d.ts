@@ -21,6 +21,13 @@ declare module Renderer {
 
     /** Disable the topbar UI component */
     omitTopbar?: boolean;
+
+    /**
+     * DOM element that will the overlay DOM should be a child of.
+     * Between stacking contexts and z-index, the overlayParentEl should have a stacking/paint order high enough to cover all elements that the overlay should paint above.
+     * Defaults to the containerEl, but will be set in PSI to avoid being under the sticky header.
+     * @see https://philipwalton.com/articles/what-no-one-told-you-about-z-index/ */
+    overlayParentEl?: HTMLElement;
   }
 }
 
