@@ -1182,7 +1182,7 @@
 .lh-fraction__wrapper--average .lh-fraction__content {
   color: var(--color-average-text);
 }
-.lh-fraction__wrapper--average .lh-fraction__background
+.lh-fraction__wrapper--average .lh-fraction__background,
 .lh-fraction__wrapper--average .lh-fraction__content::before {
   background-color: var(--color-average);
 }
