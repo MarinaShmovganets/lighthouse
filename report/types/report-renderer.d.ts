@@ -15,28 +15,12 @@ declare module Renderer {
 
   interface Options {
     /**
-     * DOM element that will the overlay DOM should be a child of.
-     * Between stacking contexts and z-index, the overlayParentEl should have a stacking/paint order high enough to cover all elements that the overlay should paint above.
-     * Defaults to the containerEl, but will be set in PSI to avoid being under the sticky header.
-     * @see https://philipwalton.com/articles/what-no-one-told-you-about-z-index/ */
-    overlayParentEl?: HTMLElement;
-
-    /** Callback running after a DOM element (like .lh-node or .lh-source-location) has been created */
-    onDetailsItemRendered?: (type: LH.Audit.Details['type'], el: HTMLElement, value: LH.Audit.Details) => void;
-
-    /**
      * Don't automatically apply dark-mode to dark based on (prefers-color-scheme: dark). (DevTools and PSI don't want this.)
      * Also, the fireworks easter-egg will want to flip to dark, so this setting will also disable chance of fireworks. */
     disableAutoDarkModeAndFireworks?: boolean;
 
     /** Disable the topbar UI component */
     omitTopbar?: boolean;
-
-    /** If defined, the 'Save as Gist' item in the topbar dropdown will be shown and when clicked, will run this function. */
-    onSaveGist?: (lhr: LH.Result) => string;
-
-    /** If defined, when the 'Save/Copy as HTML' items are clicked, this fn will be used instead of `documentElement.outerHTML`. */
-    getStandaloneReportHTML?: () => string;
   }
 }
 
