@@ -17,6 +17,8 @@ const {LH_ROOT} = require('../../root.js');
  */
 
 /**
+ * An inline-fs plugin for rollup.
+ * @see {@link inlineFs inline-fs}
  * @param {Options} [options]
  * @return {RollupPlugin}
  */
