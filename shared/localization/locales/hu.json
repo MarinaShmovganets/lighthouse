@@ -2069,28 +2069,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "Úgy tűnik, a megadott URL érvénytelen."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "Összes"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "Minden szkript"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "Lefedettség"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "Ismétlődő modulok"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "Forrásfájl mérete bájtokban"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "Név"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "Táblázat elrejtése/megjelenítése"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "Fel nem használt bájtok"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2438,29 +2438,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU-korlátozás"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "Csatorna"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "Eszköz"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "Lekérdezési idő"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Hálózatkorlátozás"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "Futási időre vonatkozó beállítások"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "Felhasználói ügynök (gazdagép)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "Felhasználói ügynök (hálózat)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Ismeretlen"

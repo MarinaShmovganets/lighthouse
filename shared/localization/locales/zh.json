@@ -2069,28 +2069,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "您提供的网址似乎无效。"
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "全部"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "所有脚本"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "覆盖率"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "重复的模块"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "资源字节数"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "名称"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "显示/隐藏表格"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "未使用的字节数"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2438,29 +2438,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU 节流"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "所用工具"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "设备"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "提取时间"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "网络节流"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "运行时设置"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "用户代理（主机）"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "用户代理（网络）"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "网址"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "不明"

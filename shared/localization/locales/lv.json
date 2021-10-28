@@ -2069,28 +2069,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "Šķiet, ka jūsu norādītais URL nav derīgs."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "Visi"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "Visi skripti"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "Tvērums"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "Dublēti moduļi"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "Faila lielums baitos"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "Nosaukums"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "Pārslēgt tabulu"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "Neizmantotais apjoms baitos"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2438,29 +2438,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Centrālā procesora ierobežošana"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "Kanāls"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "Ierīce"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "Izgūšanas laiks"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Tīkla ierobežošana"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "Izpildlaika iestatījumi"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "Lietotāja aģents (saimniekdators)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "Lietotāja aģents (tīkls)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Nezināms"
