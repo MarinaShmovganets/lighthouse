@@ -5,18 +5,11 @@
  */
 'use strict';
 
-const fs = require('fs');
 const browserify = require('browserify');
 const rollupPlugins = require('./rollup-plugins.js');
 const GhPagesApp = require('./gh-pages-app.js');
 const {LH_ROOT} = require('../root.js');
 const inlineFs = require('./plugins/browserify-inline-fs.js');
-
-const localeBasenames = fs.readdirSync(LH_ROOT + '/shared/localization/locales/');
-const actualLocales = localeBasenames
-  .filter(basename => basename.endsWith('.json') && !basename.endsWith('.ctc.json'))
-  .map(locale => locale.replace('.json', ''))
-  .sort();
 
 /**
  * Build viewer, optionally deploying to gh-pages if `--deploy` flag was set.
@@ -49,21 +42,14 @@ async function run() {
       await generatorJsPromise,
       {path: require.resolve('pako/dist/pako_inflate.js')},
       {path: 'src/main.js', rollup: true, rollupPlugins: [
-        rollupPlugins.replace({
-          // Default delimiters are word boundraries. Setting them to nothing (empty strings)
-          // makes this plugin replace any subtring found.
-          delimiters: ['', ''],
-          values: {
-            '[\'__availableLocales__\']': JSON.stringify(actualLocales),
-          },
+        rollupPlugins.shim({
+          './locales.js': 'export default {}',
         }),
+        rollupPlugins.inlineFs({verbose: false}),
         rollupPlugins.replace({
           values: {
             '__dirname': '""',
           },
-        }),
-        rollupPlugins.shim({
-          './locales.js': 'export default {}',
         }),
         rollupPlugins.commonjs(),
         rollupPlugins.nodePolyfills(),
