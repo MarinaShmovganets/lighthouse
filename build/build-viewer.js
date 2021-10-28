@@ -21,7 +21,7 @@ async function run() {
     // Flow report is not used in report viewer, so don't include flow assets.
     .ignore(require.resolve('../report/generator/flow-report-assets.js'))
     // Transform `fs.readFileSync`, etc into inline strings.
-    .transform(inlineFs({verbose: false}));
+    .transform(inlineFs({verbose: Boolean(process.env.DEBUG)}));
 
   /** @type {Promise<string>} */
   const generatorJsPromise = new Promise((resolve, reject) => {
@@ -45,7 +45,7 @@ async function run() {
         rollupPlugins.shim({
           './locales.js': 'export default {}',
         }),
-        rollupPlugins.inlineFs({verbose: false}),
+        rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
         rollupPlugins.replace({
           values: {
             '__dirname': '""',

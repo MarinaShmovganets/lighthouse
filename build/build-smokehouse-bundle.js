@@ -23,7 +23,7 @@ async function build() {
         [smokehouseCliFilename]:
           'export function runLighthouse() { throw new Error("not supported"); }',
       }),
-      rollupPlugins.inlineFs({verbose: false}),
+      rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
       rollupPlugins.commonjs(),
       rollupPlugins.nodePolyfills(),
       rollupPlugins.nodeResolve(),

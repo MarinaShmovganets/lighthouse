@@ -42,7 +42,7 @@ function buildReportGenerator() {
     // Flow report is not used in LR, so don't include flow assets.
     .ignore(require.resolve('../report/generator/flow-report-assets.js'))
     // Transform `fs.readFileSync`, etc into inline strings.
-    .transform(inlineFs({verbose: false}))
+    .transform(inlineFs({verbose: Boolean(process.env.DEBUG)}))
     .bundle((err, src) => {
       if (err) throw err;
       fs.writeFileSync(bundleOutFile, src.toString());
