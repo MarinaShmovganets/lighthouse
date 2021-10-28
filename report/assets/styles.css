@@ -137,7 +137,7 @@
   --score-icon-size: 12px;
   --score-icon-size-big: 16px;
   --screenshot-overlay-background: rgba(0, 0, 0, 0.3);
-  --section-padding-vertical: calc(var(--default-padding) * 6);;
+  --section-padding-vertical: calc(var(--default-padding) * 6);
   --snippet-background-color: var(--color-gray-50);
   --snippet-color: #0938C2;
   --sparkline-height: 5px;
