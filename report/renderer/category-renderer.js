@@ -320,10 +320,6 @@ export class CategoryRenderer {
       clumpElement.setAttribute('open', '');
     }
 
-    const summaryInnerEl = this.dom.find('div.lh-audit-group__summary', clumpElement);
-    // const chevContainer = this.dom.createChildOf(summaryInnerEl, 'div', 'lh-chevron-container');
-    // chevContainer.appendChild(this._createChevron());
-
     const headerEl = this.dom.find('.lh-audit-group__header', clumpElement);
     const title = this._clumpTitles[clumpId];
     this.dom.find('.lh-audit-group__title', headerEl).textContent = title;
