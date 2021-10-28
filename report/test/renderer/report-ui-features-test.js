@@ -92,7 +92,7 @@ describe('ReportUIFeatures', () => {
       assert.equal(dom.findAll('.lh-category', container).length, 1);
     });
 
-    describe('third-party filtering', () => {
+    describe.only('third-party filtering', () => {
       let container;
 
       beforeAll(() => {
@@ -257,14 +257,14 @@ describe('ReportUIFeatures', () => {
       });
 
       it('filter is hidden when just third party resources', () => {
-        const filterCheckbox =
-          dom.find('#render-blocking-resources .lh-3p-filter-input', container);
-        expect(filterCheckbox.hidden).toEqual(true);
+        const filterControl =
+          dom.find('#render-blocking-resources .lh-3p-filter', container);
+        expect(filterControl.hidden).toEqual(true);
       });
 
       it('filter is hidden for just first party resources', () => {
-        const filterCheckbox = dom.find('#uses-text-compression .lh-3p-filter-input', container);
-        expect(filterCheckbox.hidden).toEqual(true);
+        const filterControl = dom.find('#uses-text-compression .lh-3p-filter', container);
+        expect(filterControl.hidden).toEqual(true);
       });
     });
   });
