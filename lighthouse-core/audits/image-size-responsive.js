@@ -263,8 +263,8 @@ class ImageSizeResponsive extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
       {key: 'node', itemType: 'node', text: ''},
+      {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
       {key: 'displayedSize', itemType: 'text', text: str_(UIStrings.columnDisplayed)},
       {key: 'actualSize', itemType: 'text', text: str_(UIStrings.columnActual)},
       {key: 'expectedSize', itemType: 'text', text: str_(UIStrings.columnExpected)},
