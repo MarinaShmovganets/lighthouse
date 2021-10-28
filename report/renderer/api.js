@@ -12,7 +12,7 @@ import {ReportUIFeatures} from '../renderer/report-ui-features.js';
 
 /**
  * @param {LH.Result} lhr
- * @param {LH.ReportRendererOptions} opts
+ * @param {LH.Renderer.Options} opts
  * @return {HTMLElement}
  */
 export function renderReport(lhr, opts = {}) {

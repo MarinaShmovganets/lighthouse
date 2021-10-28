@@ -36,25 +36,20 @@ export class ReportRenderer {
   constructor(dom) {
     /** @type {DOM} */
     this._dom = dom;
-    /** @type {{omitTopbar?: Boolean}} */
+    /** @type {LH.Renderer.Options} */
     this._opts = {};
   }
 
   /**
    * @param {LH.Result} lhr
    * @param {HTMLElement} rootEl Report root element containing the report
-   * @param {{omitTopbar?: Boolean}=} opts
+   * @param {LH.Renderer.Options=} opts
    * @return {!Element}
    */
   renderReport(lhr, rootEl, opts) {
     // Allow old report rendering API
     if (!this._dom.rootEl) {
-      // @ts-expect-error
-      const isUnderTest = () => !!process.env.CI || process.env.NODE_ENV === 'test';
-
-      if (!isUnderTest()) {
-        console.warn('Please adopt the new report API in renderer/api.js.');
-      }
+      console.warn('Please adopt the new report API in renderer/api.js.');
       const closestRoot = rootEl.closest('.lh-vars');
       if (!closestRoot) {
         rootEl.classList.add('lh-root', 'lh-vars');

@@ -40,7 +40,7 @@ function getTableRows(tableEl) {
 export class ReportUIFeatures {
   /**
    * @param {DOM} dom
-   * @param {{omitTopbar?: Boolean}} opts
+   * @param {LH.Renderer.Options} opts
    */
   constructor(dom, opts = {}) {
     /** @type {LH.Result} */

@@ -10,6 +10,7 @@
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
+import {jest} from '@jest/globals';
 
 import {Util} from '../../renderer/util.js';
 import URL from '../../../lighthouse-core/lib/url-shim.js';
@@ -26,12 +27,16 @@ describe('ReportRenderer', () => {
   let sampleResults;
 
   beforeAll(() => {
+    global.console.warn = jest.fn();
+
     // Stub out matchMedia for Node.
     global.matchMedia = function() {
       return {
         addListener: function() {},
       };
     };
+
+    // global.console.warn = jest.fn();
 
     const {window} = new jsdom.JSDOM();
     global.self = window;

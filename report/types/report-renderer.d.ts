@@ -4,15 +4,16 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-declare global {
-  module LH.Renderer {
-    export function renderReport(lhr: LH.Result, options?: ReportRendererOptions): HTMLElement;
 
-    // Extra convience if you have just a category score.
-    export function renderGaugeForScore(num0to1: number): HTMLElement;
-  }
+ import {Result as AuditResult}  from '../../types/lhr/audit-result';
 
-  interface ReportRendererOptions {
+declare module Renderer {
+  function renderReport(lhr: AuditResult, options?: Options): HTMLElement;
+
+  // Extra convience if you have just a category score.
+  function renderGaugeForScore(num0to1: number): HTMLElement;
+
+  interface Options {
     /**
      * DOM element that will the overlay DOM should be a child of.
      * Between stacking contexts and z-index, the overlayParentEl should have a stacking/paint order high enough to cover all elements that the overlay should paint above.
@@ -29,7 +30,7 @@ declare global {
     disableAutoDarkModeAndFireworks?: boolean;
 
     /** Disable the topbar UI component */
-    disableTopBar: boolean;
+    omitTopbar?: boolean;
 
     /** If defined, the 'Save as Gist' item in the topbar dropdown will be shown and when clicked, will run this function. */
     onSaveGist?: (lhr: LH.Result) => string;
@@ -39,5 +40,5 @@ declare global {
   }
 }
 
-// empty export to keep file a module
-export {};
+
+export default Renderer;

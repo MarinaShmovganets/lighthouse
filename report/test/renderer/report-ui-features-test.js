@@ -10,6 +10,7 @@
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
+import {jest} from '@jest/globals';
 
 import reportAssets from '../../generator/report-assets.js';
 import {Util} from '../../renderer/util.js';
@@ -40,6 +41,8 @@ describe('ReportUIFeatures', () => {
   }
 
   beforeAll(() => {
+    global.console.warn = jest.fn();
+
     // Stub out matchMedia for Node.
     global.matchMedia = function() {
       return {
