@@ -14,7 +14,6 @@ const fs = require('fs');
 const path = require('path');
 const rollup = require('rollup');
 const rollupPlugins = require('./rollup-plugins.js');
-const {minifyFileTransform} = require('./build-utils.js');
 const Runner = require('../lighthouse-core/runner.js');
 const {LH_ROOT} = require('../root.js');
 
@@ -160,13 +159,7 @@ async function build(entryPath, distPath, opts = {minify: true}) {
         `,
       }),
       rollupPlugins.json(),
-      // Currently must run before commonjs (brfs does not support import).
-      // This currenty messes up source maps.
-      rollupPlugins.brfs({
-        readFileTransform: minifyFileTransform,
-        global: true,
-        parserOpts: {ecmaVersion: 12, sourceType: 'module'},
-      }),
+      rollupPlugins.inlineFs({verbose: false}),
       rollupPlugins.commonjs({
         // https://github.com/rollup/plugins/issues/922
         ignoreGlobal: true,

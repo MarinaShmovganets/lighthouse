@@ -19,18 +19,14 @@ const DEFAULT_LOCALE = 'en-US';
 
 /**
  * The locale tags for the localized messages available to Lighthouse on disk.
- * When bundled, these will be inlined by brfs.
+ * When bundled, these will be inlined by `inline-fs`.
  * These locales are considered the "canonical" locales. We support other locales which
  * are simply aliases to one of these. ex: es-AR (alias) -> es-419 (canonical)
  */
-let CANONICAL_LOCALES = ['__availableLocales__'];
-// TODO: need brfs in gh-pages-app. For now, above is replaced, see build-i18n.module.js
-if (fs.readdirSync) {
-  CANONICAL_LOCALES = fs.readdirSync(__dirname + '/locales/')
-    .filter(basename => basename.endsWith('.json') && !basename.endsWith('.ctc.json'))
-    .map(locale => locale.replace('.json', ''))
-    .sort();
-}
+const CANONICAL_LOCALES = fs.readdirSync(__dirname + '/locales/')
+  .filter(basename => basename.endsWith('.json') && !basename.endsWith('.ctc.json'))
+  .map(locale => locale.replace('.json', ''))
+  .sort();
 
 /** @typedef {import('intl-messageformat-parser').Element} MessageElement */
 /** @typedef {import('intl-messageformat-parser').ArgumentElement} ArgumentElement */

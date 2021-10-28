@@ -17,7 +17,6 @@ function rollupPluginTypeCoerce(module) {
 }
 
 const alias = rollupPluginTypeCoerce(require('@rollup/plugin-alias'));
-const brfs = require('./rollup-brfs.js');
 const commonjs = rollupPluginTypeCoerce(require('@rollup/plugin-commonjs'));
 const json = rollupPluginTypeCoerce(require('@rollup/plugin-json'));
 const nodePolyfills = rollupPluginTypeCoerce(require('rollup-plugin-polyfill-node'));
@@ -29,10 +28,12 @@ const shim = require('rollup-plugin-shim');
 const {terser} = require('rollup-plugin-terser');
 const typescript = rollupPluginTypeCoerce(require('@rollup/plugin-typescript'));
 
+const inlineFs = require('./plugins/rollup-plugin-inline-fs.js');
+
 module.exports = {
   alias,
-  brfs,
   commonjs,
+  inlineFs,
   json,
   nodePolyfills,
   nodeResolve,
