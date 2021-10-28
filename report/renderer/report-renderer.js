@@ -42,13 +42,13 @@ export class ReportRenderer {
 
   /**
    * @param {LH.Result} lhr
-   * @param {HTMLElement} rootEl Report root element containing the report
+   * @param {HTMLElement?} rootEl Report root element containing the report
    * @param {LH.Renderer.Options=} opts
    * @return {!Element}
    */
   renderReport(lhr, rootEl, opts) {
     // Allow old report rendering API
-    if (!this._dom.rootEl) {
+    if (!this._dom.rootEl && rootEl) {
       console.warn('Please adopt the new report API in renderer/api.js.');
       const closestRoot = rootEl.closest('.lh-vars');
       if (!closestRoot) {
@@ -64,10 +64,10 @@ export class ReportRenderer {
 
     const report = Util.prepareReportResult(lhr);
 
-    rootEl.textContent = ''; // Remove previous report.
-    rootEl.appendChild(this._renderReport(report));
+    this._dom.rootEl.textContent = ''; // Remove previous report.
+    this._dom.rootEl.appendChild(this._renderReport(report));
 
-    return rootEl;
+    return this._dom.rootEl;
   }
 
   /**
