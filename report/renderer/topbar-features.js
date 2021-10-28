@@ -31,7 +31,7 @@ export class TopbarFeatures {
     /** @type {HTMLElement} */
     this.topbarEl; // eslint-disable-line no-unused-expressions
     /** @type {HTMLElement} */
-    this.scoreScaleEl; // eslint-disable-line no-unused-expressions
+    this.categoriesEl; // eslint-disable-line no-unused-expressions
     /** @type {HTMLElement} */
     this.stickyHeaderEl; // eslint-disable-line no-unused-expressions
     /** @type {HTMLElement} */
@@ -56,24 +56,30 @@ export class TopbarFeatures {
     const topbarLogo = this._dom.find('.lh-topbar__logo', this._document);
     topbarLogo.addEventListener('click', () => toggleDarkTheme(this._dom));
 
-    // There is only a sticky header when at least 2 categories are present.
-    if (Object.keys(this.lhr.categories).length >= 2) {
+    try {
+      this.stickyHeaderEl = this._dom.find('div.lh-sticky-header', this._document);
+    } catch (e) {}
+    if (this.stickyHeaderEl) {
       this._setupStickyHeaderElements();
       const containerEl = this._dom.find('.lh-container', this._document);
-      const elToAddScrollListener = this._getScrollParent(containerEl);
-      elToAddScrollListener.addEventListener('scroll', this._updateStickyHeaderOnScroll);
 
-      // Use ResizeObserver where available.
-      // TODO: there is an issue with incorrect position numbers and, as a result, performance
-      // issues due to layout thrashing.
-      // See https://github.com/GoogleChrome/lighthouse/pull/9023/files#r288822287 for details.
-      // For now, limit to DevTools.
-      if (this._dom.isDevTools()) {
-        const resizeObserver = new window.ResizeObserver(this._updateStickyHeaderOnScroll);
-        resizeObserver.observe(containerEl);
-      } else {
-        window.addEventListener('resize', this._updateStickyHeaderOnScroll);
-      }
+      // Defer behind rAF to avoid forcing layout
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const elToAddScrollListener = this._getScrollParent(containerEl);
+        elToAddScrollListener.addEventListener('scroll', this._updateStickyHeaderOnScroll);
+
+        // Use ResizeObserver where available.
+        // TODO: there is an issue with incorrect position numbers and, as a result, performance
+        // issues due to layout thrashing.
+        // See https://github.com/GoogleChrome/lighthouse/pull/9023/files#r288822287 for details.
+        // For now, limit to DevTools.
+        if (this._dom.isDevTools()) {
+          const resizeObserver = new window.ResizeObserver(this._updateStickyHeaderOnScroll);
+          resizeObserver.observe(containerEl);
+        } else {
+          window.addEventListener('resize', this._updateStickyHeaderOnScroll);
+        }
+      }));
     }
   }
 
@@ -275,18 +281,17 @@ export class TopbarFeatures {
 
   _setupStickyHeaderElements() {
     this.topbarEl = this._dom.find('div.lh-topbar', this._document);
-    this.scoreScaleEl = this._dom.find('div.lh-scorescale', this._document);
-    this.stickyHeaderEl = this._dom.find('div.lh-sticky-header', this._document);
+    this.categoriesEl = this._dom.find('div.lh-categories', this._document);
 
     // Highlighter will be absolutely positioned at first gauge, then transformed on scroll.
     this.highlightEl = this._dom.createChildOf(this.stickyHeaderEl, 'div', 'lh-highlighter');
   }
 
   _updateStickyHeaderOnScroll() {
-    // Show sticky header when the score scale begins to go underneath the topbar.
+    // Show sticky header when the main 5 gauges clear the topbar.
     const topbarBottom = this.topbarEl.getBoundingClientRect().bottom;
-    const scoreScaleTop = this.scoreScaleEl.getBoundingClientRect().top;
-    const showStickyHeader = topbarBottom >= scoreScaleTop;
+    const categoriesTop = this.categoriesEl.getBoundingClientRect().top;
+    const showStickyHeader = topbarBottom >= categoriesTop;
 
     // Highlight mini gauge when section is in view.
     // In view = the last category that starts above the middle of the window.
