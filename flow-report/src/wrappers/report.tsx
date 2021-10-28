@@ -16,7 +16,7 @@ import {useReportRenderer} from './report-renderer';
  * This function converts any anchor links under the provided element to a flow report link.
  * e.g. <a href="#link"> -> <a href="#index=0&anchor=link">
  */
-export function convertChildAnchors(element: HTMLElement, index: number) {
+function convertChildAnchors(element: HTMLElement, index: number) {
   const links = element.querySelectorAll('a[href]') as NodeListOf<HTMLAnchorElement>;
   for (const link of links) {
     // Check if the link destination is in the report.
@@ -33,7 +33,7 @@ export function convertChildAnchors(element: HTMLElement, index: number) {
   }
 }
 
-export const Report: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
+const Report: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
 ({currentLhr}) => {
   const {dom, reportRenderer} = useReportRenderer();
   const ref = useRef<HTMLDivElement>(null);
@@ -65,4 +65,9 @@ export const Report: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
   return (
     <div ref={ref} className="lh-root" data-testid="Report"/>
   );
+};
+
+export {
+  convertChildAnchors,
+  Report,
 };
