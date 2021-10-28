@@ -1277,15 +1277,6 @@
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "Pramuat gambar Largest Contentful Paint (LCP)"
   },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "Jika Anda sudah menyiapkan HTTPS, pastikan mengalihkan semua traffic HTTP ke HTTPS agar dapat menyediakan fitur web yang aman bagi semua pengguna. [Pelajari lebih lanjut](https://web.dev/redirects-http/)."
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "Tidak mengalihkan traffic HTTP ke HTTPS"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "Mengalihkan traffic HTTP ke HTTPS"
-  },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "Pengalihan mencakup penundaan tambahan sebelum halaman dapat dimuat. [Pelajari lebih lanjut](https://web.dev/redirects/)."
   },
@@ -2078,28 +2069,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "URL yang Anda berikan tampaknya tidak valid."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "Semua"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "Semua Skrip"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "Cakupan"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "Modul Duplikat"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "Byte Resource"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "Nama"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "Tampilkan/Sembunyikan Tabel"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "Byte yang Tidak Digunakan"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2438,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Throttling CPU"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "Saluran"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "Perangkat"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "Waktu Pengambilan"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Throttling jaringan"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "Setelan Runtime"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "Agen pengguna (host)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "Agen pengguna (jaringan)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Tidak dikenal"

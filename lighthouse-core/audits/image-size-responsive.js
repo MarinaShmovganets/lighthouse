@@ -45,7 +45,7 @@ const LARGE_IMAGE_FACTOR = 0.75;
 // considered SMALL.
 const SMALL_IMAGE_THRESHOLD = 64;
 
-/** @typedef {{url: string, displayedSize: string, actualSize: string, actualPixels: number, expectedSize: string, expectedPixels: number}} Result */
+/** @typedef {{url: string,  node: LH.Audit.Details.NodeValue, displayedSize: string, actualSize: string, actualPixels: number, expectedSize: string, expectedPixels: number}} Result */
 
 /**
  * @param {{top: number, bottom: number, left: number, right: number}} imageRect
@@ -132,7 +132,7 @@ function imageHasNaturalDimensions(image) {
  */
 function imageHasRightSize(image, DPR) {
   const [expectedWidth, expectedHeight] =
-      allowedImageSize(image.displayedWidth, image.displayedHeight, DPR);
+    allowedImageSize(image.displayedWidth, image.displayedHeight, DPR);
   return image.naturalDimensions.width >= expectedWidth &&
     image.naturalDimensions.height >= expectedHeight;
 }
@@ -144,9 +144,10 @@ function imageHasRightSize(image, DPR) {
  */
 function getResult(image, DPR) {
   const [expectedWidth, expectedHeight] =
-      expectedImageSize(image.displayedWidth, image.displayedHeight, DPR);
+    expectedImageSize(image.displayedWidth, image.displayedHeight, DPR);
   return {
     url: URL.elideDataURI(image.src),
+    node: Audit.makeNodeItem(image.node),
     displayedSize: `${image.displayedWidth} x ${image.displayedHeight}`,
     actualSize: `${image.naturalDimensions.width} x ${image.naturalDimensions.height}`,
     actualPixels: image.naturalDimensions.width * image.naturalDimensions.height,
@@ -202,7 +203,7 @@ function expectedImageSize(displayedWidth, displayedHeight, DPR) {
  * @return {Result[]}
  */
 function deduplicateResultsByUrl(results) {
-  results.sort((a, b) => a.url === b.url ? 0 : (a.url < b. url ? -1 : 1));
+  results.sort((a, b) => a.url === b.url ? 0 : (a.url < b.url ? -1 : 1));
   /** @type {Result[]} */
   const deduplicated = [];
   for (const r of results) {
@@ -227,7 +228,7 @@ function deduplicateResultsByUrl(results) {
  */
 function sortResultsBySizeDelta(results) {
   return results.sort(
-      (a, b) => (b.expectedPixels - b.actualPixels) - (a.expectedPixels - a.actualPixels));
+    (a, b) => (b.expectedPixels - b.actualPixels) - (a.expectedPixels - a.actualPixels));
 }
 
 class ImageSizeResponsive extends Audit {
@@ -263,6 +264,7 @@ class ImageSizeResponsive extends Audit {
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
+      {key: 'node', itemType: 'node', text: ''},
       {key: 'displayedSize', itemType: 'text', text: str_(UIStrings.columnDisplayed)},
       {key: 'actualSize', itemType: 'text', text: str_(UIStrings.columnActual)},
       {key: 'expectedSize', itemType: 'text', text: str_(UIStrings.columnExpected)},

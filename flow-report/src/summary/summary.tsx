@@ -11,13 +11,13 @@ import {FlowSegment, FlowStepThumbnail, Separator} from '../common';
 import {getModeDescription, useFlowResult} from '../util';
 import {Util} from '../../../report/renderer/util';
 import {SummaryCategory} from './category';
-import {useStringFormatter, useUIStrings} from '../i18n/i18n';
+import {useStringFormatter, useLocalizedStrings} from '../i18n/i18n';
 
 const DISPLAYED_CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
-const THUMBNAIL_WIDTH = 50;
+const THUMBNAIL_WIDTH = 40;
 
 const SummaryNavigationHeader: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
-  const strings = useUIStrings();
+  const strings = useLocalizedStrings();
 
   return (
     <div className="SummaryNavigationHeader" data-testid="SummaryNavigationHeader">
@@ -50,7 +50,7 @@ export const SummaryFlowStep: FunctionComponent<{
   hashIndex: number,
 }> = ({lhr, label, hashIndex}) => {
   const reportResult = useMemo(() => Util.prepareReportResult(lhr), [lhr]);
-  const strings = useUIStrings();
+  const strings = useLocalizedStrings();
   const modeDescription = getModeDescription(lhr.gatherMode, strings);
 
   return (
@@ -63,7 +63,7 @@ export const SummaryFlowStep: FunctionComponent<{
             <Separator/>
           </div>
       }
-      <FlowStepThumbnail reportResult={reportResult} width={THUMBNAIL_WIDTH}/>
+      <FlowStepThumbnail lhr={lhr} width={THUMBNAIL_WIDTH}/>
       <FlowSegment mode={lhr.gatherMode}/>
       <div className="SummaryFlowStep__label">
         <div className="SummaryFlowStep__mode">{modeDescription}</div>
@@ -76,6 +76,7 @@ export const SummaryFlowStep: FunctionComponent<{
             category={reportResult.categories[c]}
             href={`#index=${hashIndex}&anchor=${c}`}
             gatherMode={lhr.gatherMode}
+            finalUrl={lhr.finalUrl}
           />
         ))
       }
@@ -107,7 +108,7 @@ const SummaryFlow: FunctionComponent = () => {
 
 export const SummaryHeader: FunctionComponent = () => {
   const flowResult = useFlowResult();
-  const strings = useUIStrings();
+  const strings = useLocalizedStrings();
   const str_ = useStringFormatter();
 
   let numNavigation = 0;
@@ -151,7 +152,7 @@ const SummarySectionHeader: FunctionComponent = ({children}) => {
 };
 
 export const Summary: FunctionComponent = () => {
-  const strings = useUIStrings();
+  const strings = useLocalizedStrings();
 
   return (
     <div className="Summary" data-testid="Summary">
