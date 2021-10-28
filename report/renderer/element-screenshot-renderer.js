@@ -157,7 +157,7 @@ export class ElementScreenshotRenderer {
       const el = /** @type {?HTMLElement} */ (target.closest('.lh-node > .lh-element-screenshot'));
       if (!el) return;
 
-      const overlay = dom.createElement('div', 'lh-element-screenshot__overlay lh-vars');
+      const overlay = dom.createElement('div', 'lh-element-screenshot__overlay');
       overlayContainerEl.append(overlay);
 
       // The newly-added overlay has the dimensions we need.

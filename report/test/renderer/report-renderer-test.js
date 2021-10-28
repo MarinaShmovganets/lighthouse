@@ -36,8 +36,6 @@ describe('ReportRenderer', () => {
       };
     };
 
-    // global.console.warn = jest.fn();
-
     const {window} = new jsdom.JSDOM();
     global.self = window;
 
