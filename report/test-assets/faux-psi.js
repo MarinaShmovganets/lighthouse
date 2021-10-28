@@ -30,7 +30,10 @@ const lighthouseRenderer = window['report'];
     if (!container) throw new Error('Unexpected DOM. Bailing.');
 
     try {
-      const reportRootEl = lighthouseRenderer.renderReport(lhr, {omitTopbar: true});
+      const reportRootEl = lighthouseRenderer.renderReport(lhr, {
+        omitTopbar: true,
+        disableAutoDarkModeAndFireworks: true,
+      });
       // TODO: display warnings if appropriate.
       for (const el of reportRootEl.querySelectorAll('.lh-warnings')) {
         el.setAttribute('hidden', 'true');

@@ -48,6 +48,8 @@ export class ReportUIFeatures {
     /** @type {DOM} */
     this._dom = dom;
 
+    this._opts = opts;
+
     this._topbar = opts.omitTopbar ? null : new TopbarFeatures(this, dom);
     this.onMediaQueryChange = this.onMediaQueryChange.bind(this);
   }
@@ -71,7 +73,8 @@ export class ReportUIFeatures {
     let turnOffTheLights = false;
     // Do not query the system preferences for DevTools - DevTools should only apply dark theme
     // if dark is selected in the settings panel.
-    if (!this._dom.isDevTools() && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    const disableDarkMode = this._dom.isDevTools() || this._opts.disableAutoDarkModeAndFireworks;
+    if (!disableDarkMode && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       turnOffTheLights = true;
     }
 
