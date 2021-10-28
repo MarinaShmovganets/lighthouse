@@ -40,13 +40,13 @@ export function getScreenDimensions(reportResult: LH.ReportResult) {
   return {width, height};
 }
 
-export function getScreenshot(reportResult: LH.ReportResult) {
+export function getFullPageScreenshot(reportResult: LH.Result) {
   const fullPageScreenshotAudit = reportResult.audits['full-page-screenshot'];
   const fullPageScreenshot =
     fullPageScreenshotAudit &&
     fullPageScreenshotAudit.details &&
     fullPageScreenshotAudit.details.type === 'full-page-screenshot' &&
-    fullPageScreenshotAudit.details.screenshot.data;
+    fullPageScreenshotAudit.details;
 
   return fullPageScreenshot || null;
 }
