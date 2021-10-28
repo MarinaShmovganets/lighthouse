@@ -1546,7 +1546,6 @@
 
 .lh-table .lh-table-column--thumbnail {
   width: var(--image-preview-size);
-  padding: 0;
 }
 
 .lh-table-column--url {
