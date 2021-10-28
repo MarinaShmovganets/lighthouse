@@ -946,14 +946,14 @@
         "type": "table",
         "headings": [
           {
+            "key": "url",
+            "itemType": "url",
+            "text": "URL"
+          },
+          {
             "key": "node",
             "itemType": "node",
             "text": ""
-          },
-          {
-            "key": "elidedUrl",
-            "itemType": "url",
-            "text": "URL"
           },
           {
             "key": "displayedSize",
@@ -990,7 +990,6 @@
               "snippet": "<img src=\"lighthouse-480x318.jpg?isr1\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
               "nodeLabel": "body > img"
             },
-            "elidedUrl": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
             "displayedSize": "360 x 240",
             "actualSize": "480 x 318",
             "actualPixels": 152640,
@@ -8445,7 +8444,7 @@
       "lighthouse-core/lib/i18n/i18n.js | columnURL": [
         "audits[server-response-time].details.headings[0].label",
         "audits[image-aspect-ratio].details.headings[1].text",
-        "audits[image-size-responsive].details.headings[1].text",
+        "audits[image-size-responsive].details.headings[0].text",
         "audits[bootup-time].details.headings[0].text",
         "audits[network-rtt].details.headings[0].text",
         "audits[network-server-latency].details.headings[0].text",
