@@ -36,22 +36,43 @@ export class ReportRenderer {
   constructor(dom) {
     /** @type {DOM} */
     this._dom = dom;
+    /** @type {{omitTopbar?: Boolean}} */
+    this._opts = {};
   }
 
   /**
    * @param {LH.Result} lhr
-   * @param {Element} container Parent element to render the report into.
+   * @param {HTMLElement} rootEl Report root element containing the report
+   * @param {{omitTopbar?: Boolean}=} opts
    * @return {!Element}
    */
-  renderReport(lhr, container) {
+  renderReport(lhr, rootEl, opts) {
+    // Allow old report rendering API
+    if (!this._dom.rootEl) {
+      // @ts-expect-error
+      const isUnderTest = () => !!process.env.CI || process.env.NODE_ENV === 'test';
+
+      if (!isUnderTest()) {
+        console.warn('Please adopt the new report API in renderer/api.js.');
+      }
+      const closestRoot = rootEl.closest('.lh-vars');
+      if (!closestRoot) {
+        rootEl.classList.add('lh-root', 'lh-vars');
+      }
+      this._dom.rootEl = /** @type {HTMLElement} */ (closestRoot);
+    }
+    if (opts) {
+      this._opts = opts;
+    }
+
     this._dom.setLighthouseChannel(lhr.configSettings.channel || 'unknown');
 
     const report = Util.prepareReportResult(lhr);
 
-    container.textContent = ''; // Remove previous report.
-    container.appendChild(this._renderReport(report));
+    rootEl.textContent = ''; // Remove previous report.
+    rootEl.appendChild(this._renderReport(report));
 
-    return container;
+    return rootEl;
   }
 
   /**
@@ -85,42 +106,62 @@ export class ReportRenderer {
   _renderReportFooter(report) {
     const footer = this._dom.createComponent('footer');
 
-    const env = this._dom.find('.lh-env__items', footer);
-    env.id = 'runtime-settings';
-    this._dom.find('.lh-env__title', footer).textContent = Util.i18n.strings.runtimeSettingsTitle;
-
-    const envValues = Util.getEnvironmentDisplayValues(report.configSettings || {});
-    const runtimeValues = [
-      {name: Util.i18n.strings.runtimeSettingsUrl, description: report.finalUrl},
-      {name: Util.i18n.strings.runtimeSettingsFetchTime,
-        description: Util.i18n.formatDateTime(report.fetchTime)},
-      ...envValues,
-      {name: Util.i18n.strings.runtimeSettingsChannel, description: report.configSettings.channel},
-      {name: Util.i18n.strings.runtimeSettingsUA, description: report.userAgent},
-      {name: Util.i18n.strings.runtimeSettingsUANetwork, description: report.environment &&
-        report.environment.networkUserAgent},
-      {name: Util.i18n.strings.runtimeSettingsBenchmark, description: report.environment &&
-        report.environment.benchmarkIndex.toFixed(0)},
-    ];
-    if (report.environment.credits && report.environment.credits['axe-core']) {
-      runtimeValues.push({
-        name: Util.i18n.strings.runtimeSettingsAxeVersion,
-        description: report.environment.credits['axe-core'],
-      });
-    }
-
-    for (const runtime of runtimeValues) {
-      if (!runtime.description) continue;
-
-      const item = this._dom.createComponent('envItem');
-      this._dom.find('.lh-env__name', item).textContent = runtime.name;
-      this._dom.find('.lh-env__description', item).textContent = runtime.description;
-      env.appendChild(item);
-    }
+    this._renderMetaBlock(report, footer);
 
     this._dom.find('.lh-footer__version_issue', footer).textContent = Util.i18n.strings.footerIssue;
     this._dom.find('.lh-footer__version', footer).textContent = report.lighthouseVersion;
     return footer;
+  }
+
+  /**
+   * @param {LH.ReportResult} report
+   * @param {DocumentFragment} footer
+   */
+  _renderMetaBlock(report, footer) {
+    const envValues = Util.getEmulationDescriptions(report.configSettings || {});
+
+
+    const match = report.userAgent.match(/(\w*Chrome\/[\d.]+)/); // \w* to include 'HeadlessChrome'
+    const chromeVer = Array.isArray(match)
+      ? match[1].replace('/', ' ').replace('Chrome', 'Chromium')
+      : 'Chromium';
+    const channel = report.configSettings.channel;
+    const benchmarkIndex = report.environment.benchmarkIndex.toFixed(0);
+    const axeVersion = report.environment.credits['axe-core'];
+
+    // [CSS icon class, textContent, tooltipText]
+    const metaItems = [
+      ['date',
+        `Captured at ${Util.i18n.formatDateTime(report.fetchTime)}`],
+      ['devices',
+        `${envValues.deviceEmulation} with Lighthouse ${report.lighthouseVersion}`,
+        `${Util.i18n.strings.runtimeSettingsBenchmark}: ${benchmarkIndex}` +
+            `\n${Util.i18n.strings.runtimeSettingsCPUThrottling}: ${envValues.cpuThrottling}` +
+            (axeVersion ? `\n${Util.i18n.strings.runtimeSettingsAxeVersion}: ${axeVersion}` : '')],
+      ['samples-one',
+        Util.i18n.strings.runtimeSingleLoad,
+        Util.i18n.strings.runtimeSingleLoadTooltip],
+      ['stopwatch',
+        Util.i18n.strings.runtimeAnalysisWindow],
+      ['networkspeed',
+        `${envValues.summary}`,
+        `${Util.i18n.strings.runtimeSettingsNetworkThrottling}: ${envValues.networkThrottling}`],
+      ['chrome',
+        `Using ${chromeVer}` + (channel ? ` with ${channel}` : ''),
+        `${Util.i18n.strings.runtimeSettingsUANetwork}: "${report.environment.networkUserAgent}"`],
+    ];
+
+    const metaItemsEl = this._dom.find('.lh-meta__items', footer);
+    for (const [iconname, text, tooltip] of metaItems) {
+      const itemEl = this._dom.createChildOf(metaItemsEl, 'li', 'lh-meta__item');
+      itemEl.textContent = text;
+      if (tooltip) {
+        itemEl.classList.add('lh-tooltip-boundary');
+        const tooltipEl = this._dom.createChildOf(itemEl, 'div', 'lh-tooltip');
+        tooltipEl.textContent = tooltip;
+      }
+      itemEl.classList.add('lh-report-icon', `lh-report-icon--${iconname}`);
+    }
   }
 
   /**
@@ -177,7 +218,7 @@ export class ReportRenderer {
         gaugeWrapperEl.addEventListener('click', e => {
           if (!gaugeWrapperEl.matches('[href^="#"]')) return;
           const selector = gaugeWrapperEl.getAttribute('href');
-          const reportRoot = gaugeWrapperEl.closest('.lh-vars');
+          const reportRoot = this._dom.rootEl;
           if (!selector || !reportRoot) return;
           const destEl = this._dom.find(selector, reportRoot);
           e.preventDefault();
@@ -247,8 +288,9 @@ export class ReportRenderer {
       headerContainer.classList.add('lh-header--solo-category');
     }
 
+    const scoreScale = this._dom.createElement('div');
+    scoreScale.append(this._dom.createComponent('scorescale'));
     if (scoreHeader) {
-      const scoreScale = this._dom.createComponent('scorescale');
       const scoresContainer = this._dom.find('.lh-scores-container', headerContainer);
       scoreHeader.append(
         ...this._renderScoreGauges(report, categoryRenderer, specificCategoryRenderers));
@@ -275,11 +317,15 @@ export class ReportRenderer {
       ));
     }
 
+    categoryRenderer.injectFinalScreenshot(categories, report.audits, scoreScale);
+
     const reportFragment = this._dom.createFragment();
     reportFragment.append(this._dom.createComponent('styles'));
-    const topbarDocumentFragment = this._renderReportTopbar(report);
 
-    reportFragment.appendChild(topbarDocumentFragment);
+    if (!this._opts.omitTopbar) {
+      reportFragment.appendChild(this._renderReportTopbar(report));
+    }
+
     reportFragment.appendChild(reportContainer);
     reportContainer.appendChild(headerContainer);
     reportContainer.appendChild(reportSection);

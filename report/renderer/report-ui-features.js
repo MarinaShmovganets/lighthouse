@@ -40,16 +40,15 @@ function getTableRows(tableEl) {
 export class ReportUIFeatures {
   /**
    * @param {DOM} dom
+   * @param {{omitTopbar?: Boolean}} opts
    */
-  constructor(dom) {
+  constructor(dom, opts = {}) {
     /** @type {LH.Result} */
     this.json; // eslint-disable-line no-unused-expressions
     /** @type {DOM} */
     this._dom = dom;
-    /** @type {Document} */
-    this._document = this._dom.document();
-    this._topbar = new TopbarFeatures(this, dom);
 
+    this._topbar = opts.omitTopbar ? null : new TopbarFeatures(this, dom);
     this.onMediaQueryChange = this.onMediaQueryChange.bind(this);
   }
 
@@ -61,11 +60,13 @@ export class ReportUIFeatures {
   initFeatures(lhr) {
     this.json = lhr;
 
-    this._topbar.enable(lhr);
-    this._topbar.resetUIState();
+    if (this._topbar) {
+      this._topbar.enable(lhr);
+      this._topbar.resetUIState();
+    }
     this._setupMediaQueryListeners();
     this._setupThirdPartyFilter();
-    this._setupElementScreenshotOverlay(this._dom.find('.lh-container', this._document));
+    this._setupElementScreenshotOverlay(this._dom.rootEl);
 
     let turnOffTheLights = false;
     // Do not query the system preferences for DevTools - DevTools should only apply dark theme
@@ -94,7 +95,7 @@ export class ReportUIFeatures {
     const hasMetricError = lhr.categories.performance && lhr.categories.performance.auditRefs
       .some(audit => Boolean(audit.group === 'metrics' && lhr.audits[audit.id].errorMessage));
     if (hasMetricError) {
-      const toggleInputEl = this._dom.find('input.lh-metrics-toggle__input', this._document);
+      const toggleInputEl = this._dom.find('input.lh-metrics-toggle__input', this._dom.rootEl);
       toggleInputEl.checked = true;
     }
 
@@ -109,7 +110,7 @@ export class ReportUIFeatures {
     }
 
     // Fill in all i18n data.
-    for (const node of this._dom.findAll('[data-i18n]', this._dom.document())) {
+    for (const node of this._dom.findAll('[data-i18n]', this._dom.rootEl)) {
       // These strings are guaranteed to (at least) have a default English string in Util.UIStrings,
       // so this cannot be undefined as long as `report-ui-features.data-i18n` test passes.
       const i18nKey = node.getAttribute('data-i18n');
@@ -119,18 +120,15 @@ export class ReportUIFeatures {
   }
 
   /**
-   * @param {{container?: Element, text: string, icon?: string, onClick: () => void}} opts
+   * @param {{text: string, icon?: string, onClick: () => void}} opts
    */
   addButton(opts) {
-    // report-ui-features doesn't have a reference to the root report el, and PSI has
-    // 2 reports on the page (and not even attached to DOM when installFeatures is called..)
-    // so we need a container option to specify where the element should go.
-    const metricsEl = this._document.querySelector('.lh-audit-group--metrics');
-    const containerEl = opts.container || metricsEl;
-    if (!containerEl) return;
+    // Use qSA directly to as we don't want to throw (if this element is missing).
+    const metricsEl = this._dom.rootEl.querySelector('.lh-audit-group--metrics');
+    if (!metricsEl) return;
 
-    let buttonsEl = containerEl.querySelector('.lh-buttons');
-    if (!buttonsEl) buttonsEl = this._dom.createChildOf(containerEl, 'div', 'lh-buttons');
+    let buttonsEl = metricsEl.querySelector('.lh-buttons');
+    if (!buttonsEl) buttonsEl = this._dom.createChildOf(metricsEl, 'div', 'lh-buttons');
 
     const classes = [
       'lh-button',
@@ -150,8 +148,10 @@ export class ReportUIFeatures {
    * @return {string}
    */
   getReportHtml() {
-    this._topbar.resetUIState();
-    return this._document.documentElement.outerHTML;
+    if (this._topbar) {
+      this._topbar.resetUIState();
+    }
+    return `<!doctype html><body>${this._dom.rootEl.outerHTML}`;
   }
 
   /**
@@ -163,7 +163,7 @@ export class ReportUIFeatures {
   }
 
   _enableFireworks() {
-    const scoresContainer = this._dom.find('.lh-scores-container', this._document);
+    const scoresContainer = this._dom.find('.lh-scores-container', this._dom.rootEl);
     scoresContainer.classList.add('lh-score100');
     scoresContainer.addEventListener('click', _ => {
       scoresContainer.classList.toggle('lh-fireworks-paused');
@@ -183,7 +183,9 @@ export class ReportUIFeatures {
    * be in their closed state (not opened) and the templates should be unstamped.
    */
   _resetUIState() {
-    this._topbar.resetUIState();
+    if (this._topbar) {
+      this._topbar.resetUIState();
+    }
   }
 
   /**
@@ -191,8 +193,7 @@ export class ReportUIFeatures {
    * @param {MediaQueryList|MediaQueryListEvent} mql
    */
   onMediaQueryChange(mql) {
-    const root = this._dom.find('.lh-root', this._document);
-    root.classList.toggle('lh-narrow', mql.matches);
+    this._dom.rootEl.classList.toggle('lh-narrow', mql.matches);
   }
 
   _setupThirdPartyFilter() {
@@ -209,7 +210,7 @@ export class ReportUIFeatures {
     ];
 
     // Get all tables with a text url column.
-    const tables = Array.from(this._document.querySelectorAll('table.lh-table'));
+    const tables = Array.from(this._dom.rootEl.querySelectorAll('table.lh-table'));
     const tablesWithUrls = tables
       .filter(el =>
         el.querySelector('td.lh-table-column--url, td.lh-table-column--source-location'))

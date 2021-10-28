@@ -88,20 +88,6 @@ async function buildFlowReport() {
   });
 }
 
-async function buildPsiReport() {
-  const bundle = await rollup.rollup({
-    input: 'report/clients/psi.js',
-    plugins: [
-      rollupPlugins.commonjs(),
-    ],
-  });
-
-  await bundle.write({
-    file: 'dist/report/psi.js',
-    format: 'esm',
-  });
-}
-
 async function buildEsModulesBundle() {
   const bundle = await rollup.rollup({
     input: 'report/clients/bundle.js',
@@ -121,6 +107,11 @@ async function buildUmdBundle() {
     input: 'report/clients/bundle.js',
     plugins: [
       rollupPlugins.commonjs(),
+      rollupPlugins.terser({
+        format: {
+          beautify: true,
+        },
+      }),
     ],
   });
 
@@ -134,14 +125,14 @@ async function buildUmdBundle() {
 if (require.main === module) {
   if (process.argv.length <= 2) {
     buildStandaloneReport();
-    buildFlowReport();
+    // buildFlowReport();
     buildEsModulesBundle();
-    buildPsiReport();
     buildUmdBundle();
   }
 
   if (process.argv.includes('--psi')) {
-    buildPsiReport();
+    console.error('--psi build removed. use --umd instead.');
+    process.exit(1);
   }
   if (process.argv.includes('--standalone')) {
     buildStandaloneReport();
@@ -160,6 +151,5 @@ if (require.main === module) {
 module.exports = {
   buildStandaloneReport,
   buildFlowReport,
-  buildPsiReport,
   buildUmdBundle,
 };

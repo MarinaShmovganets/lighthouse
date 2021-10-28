@@ -133,7 +133,7 @@ export class CategoryRenderer {
     const warningsEl = this.dom.createChildOf(summaryEl, 'div', 'lh-warnings');
     this.dom.createChildOf(warningsEl, 'span').textContent = strings.warningHeader;
     if (warnings.length === 1) {
-      warningsEl.appendChild(this.dom.document().createTextNode(warnings.join('')));
+      warningsEl.appendChild(this.dom.createTextNode(warnings.join('')));
     } else {
       const warningsUl = this.dom.createChildOf(warningsEl, 'ul');
       for (const warning of warnings) {
@@ -142,6 +142,35 @@ export class CategoryRenderer {
       }
     }
     return auditEl;
+  }
+
+  /**
+   * Inject the final screenshot next to the score gauge of the first category (likely Performance)
+   * @param {HTMLElement} categoriesEl
+   * @param {LH.ReportResult['audits']} audits
+   * @param {Element} scoreScaleEl
+   */
+  injectFinalScreenshot(categoriesEl, audits, scoreScaleEl) {
+    const audit = audits['final-screenshot'];
+    if (!audit || audit.scoreDisplayMode === 'error') return null;
+    if (!audit.details || audit.details.type !== 'screenshot') return null;
+
+    const imgEl = this.dom.createElement('img', 'lh-final-ss-image');
+    const finalScreenshotDataUri = audit.details.data;
+    imgEl.src = finalScreenshotDataUri;
+    imgEl.alt = audit.title;
+
+    const firstCatHeaderEl = this.dom.find('.lh-category .lh-category-header', categoriesEl);
+    const leftColEl = this.dom.createElement('div', 'lh-category-headercol');
+    const separatorEl = this.dom.createElement('div',
+        'lh-category-headercol lh-category-headercol--separator');
+    const rightColEl = this.dom.createElement('div', 'lh-category-headercol');
+
+    leftColEl.append(...firstCatHeaderEl.childNodes);
+    leftColEl.append(scoreScaleEl);
+    rightColEl.append(imgEl);
+    firstCatHeaderEl.append(leftColEl, separatorEl, rightColEl);
+    firstCatHeaderEl.classList.add('lh-category-header__finalscreenshot');
   }
 
   /**
@@ -478,7 +507,7 @@ export class CategoryRenderer {
    *   ⋮
    * @param {LH.ReportResult.Category} category
    * @param {Object<string, LH.Result.ReportGroup>=} groupDefinitions
-   * @param {{environment?: 'PSI', gatherMode: LH.Result.GatherMode}=} options
+   * @param {{gatherMode: LH.Result.GatherMode}=} options
    * @return {Element}
    */
   render(category, groupDefinitions = {}, options) {

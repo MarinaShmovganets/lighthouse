@@ -331,7 +331,7 @@ describe('ReportUIFeatures', () => {
     let dropDown;
 
     beforeEach(() => {
-      window = dom.document().defaultView;
+      window = dom._document.defaultView;
       const features = new ReportUIFeatures(dom);
       features.initFeatures(sampleResults);
       dropDown = features._topbar._dropDownMenu;
@@ -369,7 +369,7 @@ describe('ReportUIFeatures', () => {
       const arrowUp = new window.KeyboardEvent('keydown', {bubbles: true, code: 'ArrowUp'});
       dropDown._menuEl.firstElementChild.dispatchEvent(arrowUp);
 
-      assert.strictEqual(dom.document().activeElement, dropDown._menuEl.lastElementChild);
+      assert.strictEqual(dom._document.activeElement, dropDown._menuEl.lastElementChild);
     });
 
     it('ArrowDown on the first menu element should focus the second element', () => {
@@ -379,7 +379,7 @@ describe('ReportUIFeatures', () => {
       const arrowDown = new window.KeyboardEvent('keydown', {bubbles: true, code: 'ArrowDown'});
       dropDown._menuEl.firstElementChild.dispatchEvent(arrowDown);
 
-      assert.strictEqual(dom.document().activeElement, nextElementSibling);
+      assert.strictEqual(dom._document.activeElement, nextElementSibling);
     });
 
     it('Home on the last menu element should focus the first element', () => {
@@ -389,7 +389,7 @@ describe('ReportUIFeatures', () => {
       const home = new window.KeyboardEvent('keydown', {bubbles: true, code: 'Home'});
       dropDown._menuEl.lastElementChild.dispatchEvent(home);
 
-      assert.strictEqual(dom.document().activeElement, firstElementChild);
+      assert.strictEqual(dom._document.activeElement, firstElementChild);
     });
 
     it('End on the first menu element should focus the last element', () => {
@@ -399,14 +399,14 @@ describe('ReportUIFeatures', () => {
       const end = new window.KeyboardEvent('keydown', {bubbles: true, code: 'End'});
       dropDown._menuEl.firstElementChild.dispatchEvent(end);
 
-      assert.strictEqual(dom.document().activeElement, lastElementChild);
+      assert.strictEqual(dom._document.activeElement, lastElementChild);
     });
 
     describe('_getNextSelectableNode', () => {
       let createDiv;
 
       beforeAll(() => {
-        createDiv = () => dom.document().createElement('div');
+        createDiv = () => dom._document.createElement('div');
       });
 
       it('should return undefined when nodes is empty', () => {
@@ -482,7 +482,7 @@ describe('ReportUIFeatures', () => {
       });
 
       it('should toggle active class when focus relatedTarget is document.body', () => {
-        const relatedTarget = dom.document().body;
+        const relatedTarget = dom._document.body;
         const event = new window.FocusEvent('focusout', {relatedTarget});
         dropDown.onMenuFocusOut(event);
 
