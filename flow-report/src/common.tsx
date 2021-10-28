@@ -72,15 +72,15 @@ const FlowStepAnimatedThumbnail: FunctionComponent<{
 };
 
 export const FlowStepThumbnail: FunctionComponent<{
-  reportResult: LH.ReportResult,
+  lhr: LH.Result,
   width?: number,
   height?: number,
-}> = ({reportResult, width, height}) => {
-  const screenshot = getFullPageScreenshot(reportResult);
-  const frames = getFilmstripFrames(reportResult);
+}> = ({lhr, width, height}) => {
+  const screenshot = getFullPageScreenshot(lhr);
+  const frames = getFilmstripFrames(lhr);
 
   // Resize the image to fit the viewport aspect ratio.
-  const dimensions = getScreenDimensions(reportResult);
+  const dimensions = getScreenDimensions(lhr);
   if (width && height === undefined) {
     height = dimensions.height * width / dimensions.width;
   } else if (height && width === undefined) {
@@ -92,7 +92,7 @@ export const FlowStepThumbnail: FunctionComponent<{
     return <></>;
   }
 
-  if (reportResult.gatherMode === 'timespan' && frames && frames.length) {
+  if (lhr.gatherMode === 'timespan' && frames && frames.length) {
     return <FlowStepAnimatedThumbnail frames={frames} width={width} height={height} />;
   }
 

@@ -35,7 +35,7 @@ export function classNames(...args: Array<string|undefined|Record<string, boolea
   return classes.join(' ');
 }
 
-export function getScreenDimensions(reportResult: LH.ReportResult) {
+export function getScreenDimensions(reportResult: LH.Result) {
   const {width, height} = reportResult.configSettings.screenEmulation;
   return {width, height};
 }
@@ -52,7 +52,7 @@ export function getFullPageScreenshot(reportResult: LH.Result) {
 }
 
 export function getFilmstripFrames(
-  reportResult: LH.ReportResult
+  reportResult: LH.Result
 ): Array<{data: string}> | undefined {
   const filmstripAudit = reportResult.audits['screenshot-thumbnails'];
   if (!filmstripAudit) return undefined;
