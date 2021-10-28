@@ -170,7 +170,7 @@ describe('PerfCategoryRenderer', () => {
 
   it('renders the passed audits', () => {
     const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
-    const passedSection = categoryDOM.querySelector('.lh-category > .lh-clump--passed');
+    const passedSection = categoryDOM.querySelector('.lh-clump--passed');
 
     const passedAudits = category.auditRefs.filter(audit =>
       audit.group && audit.group !== 'metrics' && audit.id !== 'performance-budget'
