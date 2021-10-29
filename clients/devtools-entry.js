@@ -5,6 +5,8 @@
  */
 'use strict';
 
+/* global globalThis */
+
 const lighthouse = require('../lighthouse-core/index.js');
 const RawProtocol = require('../lighthouse-core/gather/connections/raw.js');
 const log = require('lighthouse-logger');
@@ -16,7 +18,8 @@ const constants = require('../lighthouse-core/config/constants.js');
 
 // Rollup seems to overlook some references to `Buffer`, so it must be made explicit.
 // (`parseSourceMapFromDataUrl` breaks without this)
-global.Buffer = require('buffer').Buffer;
+// @ts-expect-error
+globalThis.Buffer = require('buffer').Buffer;
 
 /**
  * Returns a config, which runs only certain categories.
