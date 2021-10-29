@@ -388,9 +388,6 @@ Object {
       "path": "byte-efficiency/legacy-javascript",
     },
     Object {
-      "path": "dobetterweb/appcache-manifest",
-    },
-    Object {
       "path": "dobetterweb/doctype",
     },
     Object {
@@ -1457,9 +1454,6 @@ Object {
         },
         Object {
           "path": "global-listeners",
-        },
-        Object {
-          "path": "dobetterweb/appcache",
         },
         Object {
           "path": "dobetterweb/doctype",
