@@ -15,6 +15,7 @@ function generateImage(clientSize, naturalDimensions, props, src = 'https://goog
     src,
     computedStyles: {objectFit: 'fill'},
     naturalDimensions,
+    node: {devtoolsNodePath: '1,HTML,1,IMG'},
     ...clientSize,
     ...props,
   };

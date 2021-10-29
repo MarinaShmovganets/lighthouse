@@ -26,6 +26,7 @@ function generateImage(clientSize, naturalDimensions, props, src) {
     computedStyles: {objectFit: 'fill'},
     src,
     naturalDimensions,
+    node: {devtoolsNodePath: '1,HTML,1,IMG'},
     ...clientSize,
     ...clientRect,
     ...props,
