@@ -313,7 +313,6 @@ Auditing: Remove duplicate modules in JavaScript bundles
 Computing artifact: ModuleDuplication
 Computing artifact: JSBundles
 Auditing: Avoid serving legacy JavaScript to modern browsers
-Auditing: Avoids Application Cache
 Auditing: Page has the HTML doctype
 Auditing: Properly defines charset
 Auditing: Avoids an excessive DOM size

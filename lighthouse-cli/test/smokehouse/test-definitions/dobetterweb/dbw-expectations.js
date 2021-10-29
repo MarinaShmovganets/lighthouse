@@ -311,10 +311,6 @@ const expectations = {
         details: {
           items: [
             {
-              value: /Application Cache API manifest/,
-              _maxChromiumMilestone: 94,
-            },
-            {
               value: /'window.webkitStorageInfo' is deprecated/,
             },
             {
