@@ -19,6 +19,10 @@ const LR_PRESETS = {
 
 /** @typedef {import('../../lighthouse-core/gather/connections/connection.js')} Connection */
 
+// Rollup seems to overlook some references to `Buffer`, so it must be made explicit.
+// (`parseSourceMapFromDataUrl` breaks without this)
+global.Buffer = require('buffer').Buffer;
+
 /**
  * Run lighthouse for connection and provide similar results as in CLI.
  *
