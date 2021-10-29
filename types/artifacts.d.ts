@@ -872,7 +872,10 @@ declare module Artifacts {
 
   type ConsoleMessage = ConsoleAPICall | ConsoleException | ConsoleProtocolLog;
 
-  type ImageElementRecord = ImageElement & {mimeType?: string};
+  interface ImageElementRecord extends ImageElement {
+    /** The MIME type of the underlying image file. */
+    mimeType?: string;
+  }
 }
 
 export interface Trace {
