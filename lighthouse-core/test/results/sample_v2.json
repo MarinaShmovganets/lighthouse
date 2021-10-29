@@ -3589,7 +3589,7 @@
                 "width": 360,
                 "height": 1365
               },
-              "snippet": "<html manifest=\"clock.appcache\">",
+              "snippet": "<html>",
               "nodeLabel": "html",
               "explanation": "Fix any of the following:\n  The <html> element does not have a lang attribute"
             }
@@ -5124,14 +5124,6 @@
         "overallSavingsMs": 150,
         "overallSavingsBytes": 21189
       }
-    },
-    "appcache-manifest": {
-      "id": "appcache-manifest",
-      "title": "Uses Application Cache",
-      "description": "Application Cache is deprecated. [Learn more](https://web.dev/appcache-manifest/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "displayValue": "Found \"clock.appcache\""
     },
     "doctype": {
       "id": "doctype",
@@ -6704,11 +6696,6 @@
           "group": "best-practices-general"
         },
         {
-          "id": "appcache-manifest",
-          "weight": 1,
-          "group": "best-practices-general"
-        },
-        {
           "id": "js-libraries",
           "weight": 0,
           "group": "best-practices-general"
@@ -6735,7 +6722,7 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.2
+      "score": 0.21
     },
     "seo": {
       "title": "SEO",
@@ -8041,12 +8028,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:legacy-javascript",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:appcache-manifest",
         "duration": 100,
         "entryType": "measure"
       },
@@ -9404,20 +9385,6 @@
       ],
       "lighthouse-core/audits/byte-efficiency/legacy-javascript.js | description": [
         "audits[legacy-javascript].description"
-      ],
-      "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": [
-        "audits[appcache-manifest].title"
-      ],
-      "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": [
-        "audits[appcache-manifest].description"
-      ],
-      "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": [
-        {
-          "values": {
-            "AppCacheManifest": "clock.appcache"
-          },
-          "path": "audits[appcache-manifest].displayValue"
-        }
       ],
       "lighthouse-core/audits/dobetterweb/doctype.js | title": [
         "audits.doctype.title"

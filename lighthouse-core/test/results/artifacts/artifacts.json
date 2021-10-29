@@ -362,13 +362,6 @@
     },
     {
       "startTime": 0,
-      "name": "lh:gather:beforePass:AppCacheManifest",
-      "duration": 1,
-      "entryType": "measure",
-      "gather": true
-    },
-    {
-      "startTime": 0,
       "name": "lh:gather:beforePass:Doctype",
       "duration": 1,
       "entryType": "measure",
@@ -615,13 +608,6 @@
     {
       "startTime": 0,
       "name": "lh:gather:afterPass:GlobalListeners",
-      "duration": 1,
-      "entryType": "measure",
-      "gather": true
-    },
-    {
-      "startTime": 0,
-      "name": "lh:gather:afterPass:AppCacheManifest",
       "duration": 1,
       "entryType": "measure",
       "gather": true
@@ -11291,7 +11277,6 @@
       "columnNumber": 36
     }
   ],
-  "AppCacheManifest": "clock.appcache",
   "Doctype": {
     "name": "html",
     "publicId": "",
@@ -11738,7 +11723,7 @@
                 "width": 360,
                 "height": 1365
               },
-              "snippet": "<html manifest=\"clock.appcache\">",
+              "snippet": "<html>",
               "nodeLabel": "html"
             },
             "relatedNodes": []
