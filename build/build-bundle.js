@@ -107,13 +107,8 @@ async function build(entryPath, distPath, opts = {minify: true}) {
   }
 
   // Don't include locales in DevTools.
-  // TODO: can remove when we have rollup brfs.
   if (isDevtools(entryPath)) {
-    const localeKeys = Object.keys(require('../shared/localization/locales.js'));
-    /** @type {Record<string, {}>} */
-    const localesShim = {};
-    for (const key of localeKeys) localesShim[key] = {};
-    shimsObj['./locales.js'] = `export default ${JSON.stringify(localesShim)}`;
+    shimsObj['./locales.js'] = 'export default {}';
   }
 
   for (const modulePath of modulesToIgnore) {
@@ -183,7 +178,7 @@ async function build(entryPath, distPath, opts = {minify: true}) {
           comments: (node, comment) => {
             const text = comment.value;
             if (text.includes('The Lighthouse Authors') && comment.line > 1) return false;
-            return /@ts-nocheck - Prevent tsc|@preserve|@license|@cc_on/i.test(text);
+            return /@ts-nocheck - Prevent tsc|@preserve|@license|@cc_on|^!/i.test(text);
           },
           max_line_len: 1000,
         },
