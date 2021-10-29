@@ -4,14 +4,10 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-
- import {Result as AuditResult}  from '../../types/lhr/audit-result';
+import { Result as AuditResult } from "../../types/lhr/audit-result";
 
 declare module Renderer {
   function renderReport(lhr: AuditResult, options?: Options): HTMLElement;
-
-  // Extra convience if you have just a category score.
-  function renderGaugeForScore(num0to1: number): HTMLElement;
 
   interface Options {
     /**
@@ -23,6 +19,5 @@ declare module Renderer {
     omitTopbar?: boolean;
   }
 }
-
 
 export default Renderer;
