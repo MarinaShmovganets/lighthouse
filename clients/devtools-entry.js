@@ -18,7 +18,7 @@ const constants = require('../lighthouse-core/config/constants.js');
 
 // Rollup seems to overlook some references to `Buffer`, so it must be made explicit.
 // (`parseSourceMapFromDataUrl` breaks without this)
-// @ts-expect-error
+/** @type {BufferConstructor} */
 globalThis.Buffer = require('buffer').Buffer;
 
 /**
