@@ -32,7 +32,7 @@ export class TopbarFeatures {
     this.topbarEl; // eslint-disable-line no-unused-expressions
     /** @type {HTMLElement} */
     this.categoriesEl; // eslint-disable-line no-unused-expressions
-    /** @type {HTMLElement} */
+    /** @type {HTMLElement?} */
     this.stickyHeaderEl; // eslint-disable-line no-unused-expressions
     /** @type {HTMLElement} */
     this.highlightEl; // eslint-disable-line no-unused-expressions
@@ -40,7 +40,6 @@ export class TopbarFeatures {
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onCopy = this.onCopy.bind(this);
     this.collapseAllDetails = this.collapseAllDetails.bind(this);
-    this._updateStickyHeaderOnScroll = this._updateStickyHeaderOnScroll.bind(this);
   }
 
   /**
@@ -56,31 +55,7 @@ export class TopbarFeatures {
     const topbarLogo = this._dom.find('.lh-topbar__logo', this._document);
     topbarLogo.addEventListener('click', () => toggleDarkTheme(this._dom));
 
-    try {
-      this.stickyHeaderEl = this._dom.find('div.lh-sticky-header', this._document);
-    } catch (e) {}
-    if (this.stickyHeaderEl) {
-      this._setupStickyHeaderElements();
-      const containerEl = this._dom.find('.lh-container', this._document);
-
-      // Defer behind rAF to avoid forcing layout
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        const elToAddScrollListener = this._getScrollParent(containerEl);
-        elToAddScrollListener.addEventListener('scroll', this._updateStickyHeaderOnScroll);
-
-        // Use ResizeObserver where available.
-        // TODO: there is an issue with incorrect position numbers and, as a result, performance
-        // issues due to layout thrashing.
-        // See https://github.com/GoogleChrome/lighthouse/pull/9023/files#r288822287 for details.
-        // For now, limit to DevTools.
-        if (this._dom.isDevTools()) {
-          const resizeObserver = new window.ResizeObserver(this._updateStickyHeaderOnScroll);
-          resizeObserver.observe(containerEl);
-        } else {
-          window.addEventListener('resize', this._updateStickyHeaderOnScroll);
-        }
-      }));
-    }
+    this._setupStickyHeader();
   }
 
   /**
@@ -241,7 +216,7 @@ export class TopbarFeatures {
   /**
    * Finds the first scrollable ancestor of `element`. Falls back to the document.
    * @param {Element} element
-   * @return {Node}
+   * @return {Element | Document}
    */
   _getScrollParent(element) {
     const {overflowY} = window.getComputedStyle(element);
@@ -279,15 +254,35 @@ export class TopbarFeatures {
     }
   }
 
-  _setupStickyHeaderElements() {
+  _setupStickyHeader() {
+    // Cache these elements to avoid qSA on each onscroll.
     this.topbarEl = this._dom.find('div.lh-topbar', this._document);
     this.categoriesEl = this._dom.find('div.lh-categories', this._document);
 
+    // Only present in the DOM if it'll be used (>=2 categories)
+    try {
+      this.stickyHeaderEl = this._dom.find('div.lh-sticky-header', this._document);
+    } catch (e) {}
+
+    if (!this.stickyHeaderEl) return;
+
     // Highlighter will be absolutely positioned at first gauge, then transformed on scroll.
     this.highlightEl = this._dom.createChildOf(this.stickyHeaderEl, 'div', 'lh-highlighter');
+
+    // Defer behind rAF to avoid forcing layout
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const scrollParent = this._getScrollParent(this.stickyHeaderEl);
+      scrollParent.addEventListener('scroll', e => this._updateStickyHeader(e));
+      // 'scroll' handler must be Element | Document, but resizeObserve can't be Document.
+      new window.ResizeObserver(e => this._updateStickyHeader(e))
+        .observe(scrollParent === document ? document.scrollingElement : scrollParent);
+    }));
   }
 
-  _updateStickyHeaderOnScroll() {
+  /**
+   * Toggle visibility and update highlighter position
+   */
+  _updateStickyHeader() {
     // Show sticky header when the main 5 gauges clear the topbar.
     const topbarBottom = this.topbarEl.getBoundingClientRect().bottom;
     const categoriesTop = this.categoriesEl.getBoundingClientRect().top;
