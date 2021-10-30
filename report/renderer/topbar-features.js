@@ -40,6 +40,7 @@ export class TopbarFeatures {
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onCopy = this.onCopy.bind(this);
     this.collapseAllDetails = this.collapseAllDetails.bind(this);
+    this._updateStickyHeaderOnScroll = this._updateStickyHeaderOnScroll.bind(this);
   }
 
   /**
@@ -61,25 +62,23 @@ export class TopbarFeatures {
     if (this.stickyHeaderEl) {
       this._setupStickyHeaderElements();
       const containerEl = this._dom.find('.lh-container', this._document);
-      const gaugesNavEl = this._dom.find('.lh-header-container', this._document); // height terminates at gray line.
 
       // Defer behind rAF to avoid forcing layout
       requestAnimationFrame(() => requestAnimationFrame(() => {
-        const scrollParent = this._getScrollParent(containerEl);
+        const elToAddScrollListener = this._getScrollParent(containerEl);
+        elToAddScrollListener.addEventListener('scroll', this._updateStickyHeaderOnScroll);
 
-        new IntersectionObserver(entries => {
-          for (const entry of entries) {
-            console.log(entry);
-            // Show sticky header when the main 5 gauges clear the topbar.
-            this._updateStickyHeader(!entry.isIntersecting);
-          }
-        }, {
-          root: scrollParent,
-          // and rootMargin is `-${topbar height + stickyheader height}px`
-          // BUT we can't get stickyheader height without making it visible or making it fixed height
-          rootMargin: `-97px 0px 0px 0px`,
-          threshold: [0],
-        }).observe(gaugesNavEl);
+        // Use ResizeObserver where available.
+        // TODO: there is an issue with incorrect position numbers and, as a result, performance
+        // issues due to layout thrashing.
+        // See https://github.com/GoogleChrome/lighthouse/pull/9023/files#r288822287 for details.
+        // For now, limit to DevTools.
+        if (this._dom.isDevTools()) {
+          const resizeObserver = new window.ResizeObserver(this._updateStickyHeaderOnScroll);
+          resizeObserver.observe(containerEl);
+        } else {
+          window.addEventListener('resize', this._updateStickyHeaderOnScroll);
+        }
       }));
     }
   }
@@ -288,7 +287,12 @@ export class TopbarFeatures {
     this.highlightEl = this._dom.createChildOf(this.stickyHeaderEl, 'div', 'lh-highlighter');
   }
 
-  _updateStickyHeader(showStickyHeader) {
+  _updateStickyHeaderOnScroll() {
+    // Show sticky header when the main 5 gauges clear the topbar.
+    const topbarBottom = this.topbarEl.getBoundingClientRect().bottom;
+    const categoriesTop = this.categoriesEl.getBoundingClientRect().top;
+    const showStickyHeader = topbarBottom >= categoriesTop;
+
     // Highlight mini gauge when section is in view.
     // In view = the last category that starts above the middle of the window.
     const categoryEls = Array.from(this._document.querySelectorAll('.lh-category'));
