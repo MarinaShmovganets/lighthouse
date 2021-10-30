@@ -27,7 +27,7 @@ import {createComponent} from './components.js';
 export class DOM {
   /**
    * @param {Document} document
-   * @param {HTMLElement=} rootEl
+   * @param {HTMLElement} rootEl
    */
   constructor(document, rootEl) {
     /** @type {Document} */
@@ -37,7 +37,7 @@ export class DOM {
     /** @type {Map<string, DocumentFragment>} */
     this._componentCache = new Map();
     /** @type {HTMLElement} */
-    // @ts-expect-error For legacy Report API users, this'll be undefined, but set in renderReport
+    // For legacy Report API users, this'll be undefined, but set in renderReport
     this.rootEl = rootEl;
   }
 
