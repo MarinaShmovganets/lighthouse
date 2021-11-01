@@ -210,7 +210,7 @@ class UsesHTTP2Audit extends Audit {
       displayValue = str_(UIStrings.displayValue, {itemCount: resources.length});
     }
 
-    // TODO(FR-COMPAT): Compute actual savings for timespan mode.
+    // TODO: Compute actual savings for timespan mode.
     if (artifacts.GatherContext.gatherMode === 'timespan') {
       /** @type {LH.Audit.Details.Table['headings']} */
       const headings = [
