@@ -173,30 +173,6 @@ describe('PerfCategoryRenderer', () => {
     assert.ok(/Yikes!!/.test(tooltipEl.textContent));
   });
 
-  it('renders performance opportunities without opportunity details type', () => {
-    const auditWithExplanation = {
-      score: 0,
-      group: 'load-opportunities',
-      result: {
-        score: 0,
-        title: 'Audit',
-        description: 'description',
-        scoreDisplayMode: 'binary',
-        details: {
-          type: 'table',
-          items: [],
-        },
-      },
-    };
-
-    const fakeCategory = Object.assign({}, category, {auditRefs: [auditWithExplanation]});
-    const categoryDOM = renderer.render(fakeCategory, sampleResults.categoryGroups);
-
-    const element = categoryDOM.querySelector('.lh-audit');
-    assert.ok(element, 'did not render audit');
-    assert.equal(categoryDOM.querySelector('.lh-audit--load-opportunity'), null);
-  });
-
   it('renders the failing diagnostics', () => {
     const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
     const diagnosticSection = categoryDOM.querySelector(
