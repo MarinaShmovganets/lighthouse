@@ -316,7 +316,6 @@ Auditing: Avoid serving legacy JavaScript to modern browsers
 Auditing: Page has the HTML doctype
 Auditing: Properly defines charset
 Auditing: Avoids an excessive DOM size
-Auditing: Links to cross-origin destinations are safe
 Auditing: Avoids requesting the geolocation permission on page load
 Auditing: No issues in the `Issues` panel in Chrome Devtools
 Auditing: Avoids `document.write()`
