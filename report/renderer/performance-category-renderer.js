@@ -153,17 +153,18 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
   }
 
   /**
+   * For performance, audits with no group should be a diagnostic or opportunity.
+   * The audit details type will determine which of the two groups an audit is in.
+   *
    * @param {LH.ReportResult.AuditRef} audit
    * @return {'load-opportunity'|'diagnostic'|null}
    */
   _classifyPerformanceAudit(audit) {
+    if (audit.group) return null;
     if (audit.result.details && audit.result.details.type === 'opportunity') {
       return 'load-opportunity';
     }
-    if (!audit.group) {
-      return 'diagnostic';
-    }
-    return null;
+    return 'diagnostic';
   }
 
   /**
