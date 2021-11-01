@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "[Åvöîðš ðéþŕéçåţéð ÅÞÎš one two three]"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "[Åþþļîçåţîöñ Çåçĥé îš ðéþŕéçåţéð. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/appcache-manifest/)ᐊ. one two three four five six seven eight nine ten eleven]"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "[Föûñð \"ᐅ{AppCacheManifest}ᐊ\" one two three]"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "[Ûšéš Åþþļîçåţîöñ Çåçĥé one two three]"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "[Åvöîðš Åþþļîçåţîöñ Çåçĥé one two three]"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "[Å çĥåŕåçţéŕ éñçöðîñĝ ðéçļåŕåţîöñ îš ŕéqûîŕéð. Îţ çåñ бé ðöñé ŵîţĥ å ᐅ`<meta>`ᐊ ţåĝ îñ ţĥé ƒîŕšţ 1024 бýţéš öƒ ţĥé ĤŢMĻ öŕ îñ ţĥé Çöñţéñţ-Ţýþé ĤŢŢÞ ŕéšþöñšé ĥéåðéŕ. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/charset/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour]"
   },
@@ -1276,15 +1264,6 @@
   },
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "[Þŕéļöåð Ļåŕĝéšţ Çöñţéñţƒûļ Þåîñţ îmåĝé one two three four five six seven eight]"
-  },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "[Îƒ ýöû'vé åļŕéåðý šéţ ûþ ĤŢŢÞŠ, måķé šûŕé ţĥåţ ýöû ŕéðîŕéçţ åļļ ĤŢŢÞ ţŕåƒƒîç ţö ĤŢŢÞŠ îñ öŕðéŕ ţö éñåбļé šéçûŕé ŵéб ƒéåţûŕéš ƒöŕ åļļ ýöûŕ ûšéŕš. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/redirects-http/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree]"
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "[Ðöéš ñöţ ŕéðîŕéçţ ĤŢŢÞ ţŕåƒƒîç ţö ĤŢŢÞŠ one two three four five six seven eight]"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "[Ŕéðîŕéçţš ĤŢŢÞ ţŕåƒƒîç ţö ĤŢŢÞŠ one two three four five six seven]"
   },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "[Ŕéðîŕéçţš îñţŕöðûçé åððîţîöñåļ ðéļåýš бéƒöŕé ţĥé þåĝé çåñ бé ļöåðéð. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/redirects/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen]"
@@ -2078,28 +2057,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "[Ţĥé ÛŔĻ ýöû ĥåvé þŕövîðéð åþþéåŕš ţö бé îñvåļîð. one two three four five six seven eight nine ten]"
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "[Åļļ one]"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "[Åļļ Šçŕîþţš one two]"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "[Çövéŕåĝé one]"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "[Ðûþļîçåţé Möðûļéš one two three]"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "[Ŕéšöûŕçé Бýţéš one two]"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "[Ñåmé one]"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "[Ţöĝĝļé Ţåбļé one two]"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "[Ûñûšéð Бýţéš one two]"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2426,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "[ÇÞÛ ţĥŕöţţļîñĝ one two]"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "[Çĥåññéļ one]"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "[Ðévîçé one]"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "[Féţçĥ Ţîmé one two]"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "[Ñéţŵöŕķ ţĥŕöţţļîñĝ one two three]"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "[Ŕûñţîmé Šéţţîñĝš one two]"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "[Ûšéŕ åĝéñţ (ĥöšţ) one two three]"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "[Ûšéŕ åĝéñţ (ñéţŵöŕķ) one two three]"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "[ÛŔĻ one]"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "[Ûñķñöŵñ one]"

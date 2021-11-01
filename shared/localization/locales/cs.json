@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "Nepoužívá zastaralá rozhraní API"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "Mezipaměť aplikace je zastaralá technologie. [Další informace](https://web.dev/appcache-manifest/)"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "Nalezeno „{AppCacheManifest}“"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "Používá mezipaměť aplikace"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "Nepoužívá mezipaměť aplikace"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "Je požadována deklarace kódování znaků. Lze ho deklarovat pomocí značky `<meta>` v prvních 1024 bajtech kódu HTML nebo pomocí záhlaví Content-Type odpovědi HTTP. [Další informace](https://web.dev/charset/)"
   },
@@ -1276,15 +1264,6 @@
   },
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "Předběžné načtení obrázku s vykreslením největšího obsahu"
-  },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "Pokud jste protokol HTTPS už nastavili, nezapomeňte veškerý provoz přes protokol HTTP přesměrovat na HTTPS, aby všichni vaši uživatelé měli k dispozici funkce zabezpečeného webu. [Další informace](https://web.dev/redirects-http/)"
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "Nepřesměrovává provoz přes protokol HTTP na HTTPS"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "Přesměrovává provoz přes protokol HTTP na HTTPS"
   },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "Přesměrování způsobují další prodlevy před načtením stránky. [Další informace](https://web.dev/redirects/)"
@@ -2078,28 +2057,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "Adresa URL, kterou jste poskytli, se zdá být neplatná."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "Vše"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "Všechna písma"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "Pokrytí"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "Duplicitní moduly"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "Počet bajtů zdroje"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "Název"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "Zobrazit nebo skrýt tabulku"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "Nevyužité bajty"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2426,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Omezení procesoru"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "Kanál"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "Zařízení"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "Čas načtení"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Omezení sítě"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "Nastavení za běhu"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "User agent (hostitel)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "User agent (síť)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Není známo"

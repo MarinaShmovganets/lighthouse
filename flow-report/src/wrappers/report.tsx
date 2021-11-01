@@ -7,6 +7,8 @@
 import {FunctionComponent} from 'preact';
 import {useLayoutEffect, useRef} from 'preact/hooks';
 
+import {ElementScreenshotRenderer} from '../../../report/renderer/element-screenshot-renderer';
+import {getFullPageScreenshot} from '../util';
 import {useReportRenderer} from './report-renderer';
 
 /**
@@ -46,6 +48,16 @@ export const Report: FunctionComponent<{hashState: LH.FlowResult.HashState}> =
       dom.clearComponentCache();
       reportRenderer.renderReport(hashState.currentLhr, ref.current);
       convertChildAnchors(ref.current, hashState.index);
+      const fullPageScreenshot = getFullPageScreenshot(hashState.currentLhr);
+      if (fullPageScreenshot) {
+        const container = dom.find('.lh-container', ref.current);
+        ElementScreenshotRenderer.installOverlayFeature({
+          dom,
+          reportEl: container,
+          overlayContainerEl: container,
+          fullPageScreenshot,
+        });
+      }
       const topbar = ref.current.querySelector('.lh-topbar');
       if (topbar) topbar.remove();
     }

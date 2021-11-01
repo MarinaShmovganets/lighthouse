@@ -44,13 +44,6 @@
         ]
       }
     },
-    "redirects-http": {
-      "id": "redirects-http",
-      "title": "Redirects HTTP traffic to HTTPS",
-      "description": "If you've already set up HTTPS, make sure that you redirect all HTTP traffic to HTTPS in order to enable secure web features for all your users. [Learn more](https://web.dev/redirects-http/).",
-      "score": null,
-      "scoreDisplayMode": "notApplicable"
-    },
     "service-worker": {
       "id": "service-worker",
       "title": "Does not register a service worker that controls page and `start_url`",
@@ -245,7 +238,6 @@
           {
             "source": "exception",
             "description": "Error: A distinctive error\n    at http://localhost:10200/dobetterweb/dbw_tester.html:56:54",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -257,7 +249,6 @@
           {
             "source": "exception",
             "description": "Error: An ignored error\n    at http://localhost:10200/dobetterweb/dbw_tester.html:59:38",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -269,7 +260,6 @@
           {
             "source": "console.error",
             "description": "Error! Error!",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -281,7 +271,6 @@
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
@@ -293,7 +282,6 @@
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000",
@@ -305,7 +293,6 @@
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/favicon.ico",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/favicon.ico",
@@ -317,7 +304,6 @@
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
@@ -897,8 +883,8 @@
         "type": "table",
         "headings": [
           {
-            "key": "url",
-            "itemType": "thumbnail",
+            "key": "node",
+            "itemType": "node",
             "text": ""
           },
           {
@@ -920,6 +906,22 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar1",
+            "node": {
+              "type": "node",
+              "lhId": "page-0-IMG",
+              "path": "3,HTML,1,BODY,14,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 639,
+                "bottom": 654,
+                "left": 8,
+                "right": 128,
+                "width": 120,
+                "height": 15
+              },
+              "snippet": "<img src=\"lighthouse-480x318.jpg?iar1\" width=\"120\" height=\"15\">",
+              "nodeLabel": "body > img"
+            },
             "displayedAspectRatio": "120 x 15\n        (8.00)",
             "actualAspectRatio": "480 x 318\n        (1.51)",
             "doRatiosMatch": false
@@ -937,12 +939,12 @@
         "type": "table",
         "headings": [
           {
-            "key": "url",
-            "itemType": "thumbnail",
+            "key": "node",
+            "itemType": "node",
             "text": ""
           },
           {
-            "key": "elidedUrl",
+            "key": "url",
             "itemType": "url",
             "text": "URL"
           },
@@ -965,7 +967,22 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
-            "elidedUrl": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
+            "node": {
+              "type": "node",
+              "lhId": "page-2-IMG",
+              "path": "3,HTML,1,BODY,19,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 574,
+                "bottom": 814,
+                "left": 252,
+                "right": 612,
+                "width": 360,
+                "height": 240
+              },
+              "snippet": "<img src=\"lighthouse-480x318.jpg?isr1\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
+              "nodeLabel": "body > img"
+            },
             "displayedSize": "360 x 240",
             "actualSize": "480 x 318",
             "actualPixels": 152640,
@@ -988,7 +1005,7 @@
       "description": "Deprecated APIs will eventually be removed from the browser. [Learn more](https://web.dev/deprecations/).",
       "score": 0,
       "scoreDisplayMode": "binary",
-      "displayValue": "3 warnings found",
+      "displayValue": "2 warnings found",
       "details": {
         "type": "table",
         "headings": [
@@ -1004,16 +1021,6 @@
           }
         ],
         "items": [
-          {
-            "value": "Application Cache API manifest selection is deprecated and will be removed in M85, around August 2020. See https://www.chromestatus.com/features/6192449487634432 for more details.",
-            "source": {
-              "type": "source-location",
-              "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
-              "urlProvider": "network",
-              "line": 8,
-              "column": 0
-            }
-          },
           {
             "value": "'window.webkitStorageInfo' is deprecated. Please use 'navigator.webkitTemporaryStorage' or 'navigator.webkitPersistentStorage' instead.",
             "source": {
@@ -2459,19 +2466,14 @@
         "type": "table",
         "headings": [
           {
-            "key": "url",
-            "itemType": "thumbnail",
+            "key": "node",
+            "itemType": "node",
             "text": ""
           },
           {
             "key": "url",
             "itemType": "url",
             "text": "URL"
-          },
-          {
-            "key": "node",
-            "itemType": "node",
-            "text": "Failing Elements"
           }
         ],
         "items": [
@@ -3548,6 +3550,10 @@
           {
             "key": "node",
             "itemType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "itemType": "node"
+            },
             "text": "Failing Elements"
           }
         ],
@@ -3566,7 +3572,7 @@
                 "width": 360,
                 "height": 1365
               },
-              "snippet": "<html manifest=\"clock.appcache\">",
+              "snippet": "<html>",
               "nodeLabel": "html",
               "explanation": "Fix any of the following:\n  The <html> element does not have a lang attribute"
             }
@@ -3603,6 +3609,10 @@
           {
             "key": "node",
             "itemType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "itemType": "node"
+            },
             "text": "Failing Elements"
           }
         ],
@@ -3754,7 +3764,7 @@
                 "width": 16,
                 "height": 16
               },
-              "snippet": "<img src=\"blob:http://localhost:10200/3f2bc9df-684b-4541-837c-1590152ef65d\">",
+              "snippet": "<img src=\"blob:http://localhost:10200/84c78bd5-a720-43b4-93e0-26591a9ff8ee\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -3773,7 +3783,7 @@
                 "width": 16,
                 "height": 16
               },
-              "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.43448333410631723.png\">",
+              "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.48387978403091236.png\">",
               "nodeLabel": "body > img",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -3812,6 +3822,10 @@
           {
             "key": "node",
             "itemType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "itemType": "node"
+            },
             "text": "Failing Elements"
           }
         ],
@@ -3901,6 +3915,10 @@
           {
             "key": "node",
             "itemType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "itemType": "node"
+            },
             "text": "Failing Elements"
           }
         ],
@@ -4004,6 +4022,10 @@
           {
             "key": "node",
             "itemType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "itemType": "node"
+            },
             "text": "Failing Elements"
           }
         ],
@@ -4622,8 +4644,8 @@
         "type": "opportunity",
         "headings": [
           {
-            "key": "url",
-            "valueType": "thumbnail",
+            "key": "node",
+            "valueType": "node",
             "label": ""
           },
           {
@@ -4644,6 +4666,22 @@
         ],
         "items": [
           {
+            "node": {
+              "type": "node",
+              "lhId": "page-0-IMG",
+              "path": "3,HTML,1,BODY,14,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 639,
+                "bottom": 654,
+                "left": 8,
+                "right": 128,
+                "width": 120,
+                "height": 15
+              },
+              "snippet": "<img src=\"lighthouse-480x318.jpg?iar1\" width=\"120\" height=\"15\">",
+              "nodeLabel": "body > img"
+            },
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar1",
             "fromProtocol": true,
             "isCrossOrigin": false,
@@ -4652,6 +4690,22 @@
             "wastedWebpBytes": 9002
           },
           {
+            "node": {
+              "type": "node",
+              "lhId": "page-2-IMG",
+              "path": "3,HTML,1,BODY,19,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 574,
+                "bottom": 814,
+                "left": 252,
+                "right": 612,
+                "width": 360,
+                "height": 240
+              },
+              "snippet": "<img src=\"lighthouse-480x318.jpg?isr1\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
+              "nodeLabel": "body > img"
+            },
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
             "fromProtocol": true,
             "isCrossOrigin": false,
@@ -4660,6 +4714,22 @@
             "wastedWebpBytes": 9002
           },
           {
+            "node": {
+              "type": "node",
+              "lhId": "page-3-IMG",
+              "path": "3,HTML,1,BODY,21,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 574,
+                "bottom": 654,
+                "left": 252,
+                "right": 372,
+                "width": 120,
+                "height": 80
+              },
+              "snippet": "<img src=\"lighthouse-480x318.jpg?isr2\" width=\"120\" height=\"80\" style=\"position: absolute;\">",
+              "nodeLabel": "body > img"
+            },
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr2",
             "fromProtocol": true,
             "isCrossOrigin": false,
@@ -4668,6 +4738,22 @@
             "wastedWebpBytes": 9002
           },
           {
+            "node": {
+              "type": "node",
+              "lhId": "page-4-IMG",
+              "path": "3,HTML,1,BODY,23,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 574,
+                "bottom": 814,
+                "left": 252,
+                "right": 612,
+                "width": 360,
+                "height": 240
+              },
+              "snippet": "<img src=\"lighthouse-480x318.jpg?isr3\" width=\"360\" height=\"240\" style=\"image-rendering: pixelated; position: absolute;\">",
+              "nodeLabel": "body > img"
+            },
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr3",
             "fromProtocol": true,
             "isCrossOrigin": false,
@@ -4676,6 +4762,22 @@
             "wastedWebpBytes": 9002
           },
           {
+            "node": {
+              "type": "node",
+              "lhId": "page-5-IMG",
+              "path": "3,HTML,1,BODY,25,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 574,
+                "bottom": 814,
+                "left": 252,
+                "right": 612,
+                "width": 360,
+                "height": 240
+              },
+              "snippet": "<img src=\"http://localhost:10200/dobetterweb/lighthouse-480x318.jpg\" srcset=\"lighthouse-480x318.jpg 2x\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
+              "nodeLabel": "body > img"
+            },
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
             "fromProtocol": true,
             "isCrossOrigin": false,
@@ -4684,6 +4786,22 @@
             "wastedWebpBytes": 9002
           },
           {
+            "node": {
+              "type": "node",
+              "lhId": "page-1-IMG",
+              "path": "3,HTML,1,BODY,17,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 574,
+                "bottom": 654,
+                "left": 132,
+                "right": 252,
+                "width": 120,
+                "height": 80
+              },
+              "snippet": "<img loading=\"lazy\" src=\"lighthouse-480x318.jpg?iar2\" width=\"120\" height=\"80\">",
+              "nodeLabel": "body > img"
+            },
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar2",
             "fromProtocol": true,
             "isCrossOrigin": false,
@@ -4771,8 +4889,8 @@
         "type": "opportunity",
         "headings": [
           {
-            "key": "url",
-            "valueType": "thumbnail",
+            "key": "node",
+            "valueType": "node",
             "label": ""
           },
           {
@@ -4793,18 +4911,66 @@
         ],
         "items": [
           {
+            "node": {
+              "type": "node",
+              "lhId": "page-0-IMG",
+              "path": "3,HTML,1,BODY,14,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 639,
+                "bottom": 654,
+                "left": 8,
+                "right": 128,
+                "width": 120,
+                "height": 15
+              },
+              "snippet": "<img src=\"lighthouse-480x318.jpg?iar1\" width=\"120\" height=\"15\">",
+              "nodeLabel": "body > img"
+            },
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar1",
             "totalBytes": 24620,
             "wastedBytes": 22619,
             "wastedPercent": 91.87426297169812
           },
           {
+            "node": {
+              "type": "node",
+              "lhId": "page-1-IMG",
+              "path": "3,HTML,1,BODY,17,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 574,
+                "bottom": 654,
+                "left": 132,
+                "right": 252,
+                "width": 120,
+                "height": 80
+              },
+              "snippet": "<img loading=\"lazy\" src=\"lighthouse-480x318.jpg?iar2\" width=\"120\" height=\"80\">",
+              "nodeLabel": "body > img"
+            },
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar2",
             "totalBytes": 24620,
             "wastedBytes": 13950,
             "wastedPercent": 56.66273584905661
           },
           {
+            "node": {
+              "type": "node",
+              "lhId": "page-3-IMG",
+              "path": "3,HTML,1,BODY,21,IMG",
+              "selector": "body > img",
+              "boundingRect": {
+                "top": 574,
+                "bottom": 654,
+                "left": 252,
+                "right": 372,
+                "width": 120,
+                "height": 80
+              },
+              "snippet": "<img src=\"lighthouse-480x318.jpg?isr2\" width=\"120\" height=\"80\" style=\"position: absolute;\">",
+              "nodeLabel": "body > img"
+            },
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr2",
             "totalBytes": 24620,
             "wastedBytes": 13950,
@@ -4941,14 +5107,6 @@
         "overallSavingsMs": 150,
         "overallSavingsBytes": 21189
       }
-    },
-    "appcache-manifest": {
-      "id": "appcache-manifest",
-      "title": "Uses Application Cache",
-      "description": "Application Cache is deprecated. [Learn more](https://web.dev/appcache-manifest/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "displayValue": "Found \"clock.appcache\""
     },
     "doctype": {
       "id": "doctype",
@@ -6521,11 +6679,6 @@
           "group": "best-practices-general"
         },
         {
-          "id": "appcache-manifest",
-          "weight": 1,
-          "group": "best-practices-general"
-        },
-        {
           "id": "js-libraries",
           "weight": 0,
           "group": "best-practices-general"
@@ -6552,7 +6705,7 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.2
+      "score": 0.21
     },
     "seo": {
       "title": "SEO",
@@ -6657,11 +6810,6 @@
         {
           "id": "service-worker",
           "weight": 1,
-          "group": "pwa-optimized"
-        },
-        {
-          "id": "redirects-http",
-          "weight": 0,
           "group": "pwa-optimized"
         },
         {
@@ -6837,12 +6985,6 @@
       {
         "startTime": 0,
         "name": "lh:computed:NetworkRecords",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:redirects-http",
         "duration": 100,
         "entryType": "measure"
       },
@@ -7874,12 +8016,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:appcache-manifest",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:doctype",
         "duration": 100,
         "entryType": "measure"
@@ -8060,20 +8196,18 @@
       "opportunityResourceColumnLabel": "Opportunity",
       "opportunitySavingsColumnLabel": "Estimated Savings",
       "passedAuditsGroupTitle": "Passed audits",
+      "runtimeAnalysisWindow": "Initial page load",
       "runtimeDesktopEmulation": "Emulated Desktop",
       "runtimeMobileEmulation": "Emulated Moto G4",
       "runtimeNoEmulation": "No emulation",
       "runtimeSettingsAxeVersion": "Axe version",
       "runtimeSettingsBenchmark": "CPU/Memory Power",
-      "runtimeSettingsChannel": "Channel",
       "runtimeSettingsCPUThrottling": "CPU throttling",
       "runtimeSettingsDevice": "Device",
-      "runtimeSettingsFetchTime": "Fetch Time",
       "runtimeSettingsNetworkThrottling": "Network throttling",
-      "runtimeSettingsTitle": "Runtime Settings",
-      "runtimeSettingsUA": "User agent (host)",
       "runtimeSettingsUANetwork": "User agent (network)",
-      "runtimeSettingsUrl": "URL",
+      "runtimeSingleLoad": "Single page load",
+      "runtimeSingleLoadTooltip": "This data is taken from a single page load, as opposed to field data summarizing many sessions.",
       "runtimeUnknown": "Unknown",
       "showRelevantAudits": "Show audits relevant to:",
       "snippetCollapseButtonLabel": "Collapse snippet",
@@ -8109,12 +8243,6 @@
       ],
       "lighthouse-core/audits/is-on-https.js | allowed": [
         "audits[is-on-https].details.items[0].resolution"
-      ],
-      "lighthouse-core/audits/redirects-http.js | title": [
-        "audits[redirects-http].title"
-      ],
-      "lighthouse-core/audits/redirects-http.js | description": [
-        "audits[redirects-http].description"
       ],
       "lighthouse-core/audits/service-worker.js | failureTitle": [
         "audits[service-worker].title"
@@ -8449,7 +8577,7 @@
       "lighthouse-core/audits/deprecations.js | displayValue": [
         {
           "values": {
-            "itemCount": 3
+            "itemCount": 2
           },
           "path": "audits.deprecations.displayValue"
         }
@@ -8745,15 +8873,6 @@
       "lighthouse-core/audits/unsized-images.js | description": [
         "audits[unsized-images].description"
       ],
-      "lighthouse-core/lib/i18n/i18n.js | columnFailingElem": [
-        "audits[unsized-images].details.headings[2].text",
-        "audits[html-has-lang].details.headings[0].text",
-        "audits[image-alt].details.headings[0].text",
-        "audits.label.details.headings[0].text",
-        "audits[link-name].details.headings[0].text",
-        "audits[object-alt].details.headings[0].text",
-        "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
-      ],
       "lighthouse-core/audits/valid-source-maps.js | title": [
         "audits[valid-source-maps].title"
       ],
@@ -8975,6 +9094,14 @@
       ],
       "lighthouse-core/audits/accessibility/html-has-lang.js | description": [
         "audits[html-has-lang].description"
+      ],
+      "lighthouse-core/lib/i18n/i18n.js | columnFailingElem": [
+        "audits[html-has-lang].details.headings[0].text",
+        "audits[image-alt].details.headings[0].text",
+        "audits.label.details.headings[0].text",
+        "audits[link-name].details.headings[0].text",
+        "audits[object-alt].details.headings[0].text",
+        "audits[password-inputs-can-be-pasted-into].details.headings[0].text"
       ],
       "lighthouse-core/audits/accessibility/html-lang-valid.js | title": [
         "audits[html-lang-valid].title"
@@ -9241,20 +9368,6 @@
       ],
       "lighthouse-core/audits/byte-efficiency/legacy-javascript.js | description": [
         "audits[legacy-javascript].description"
-      ],
-      "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": [
-        "audits[appcache-manifest].title"
-      ],
-      "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": [
-        "audits[appcache-manifest].description"
-      ],
-      "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": [
-        {
-          "values": {
-            "AppCacheManifest": "clock.appcache"
-          },
-          "path": "audits[appcache-manifest].displayValue"
-        }
       ],
       "lighthouse-core/audits/dobetterweb/doctype.js | title": [
         "audits.doctype.title"

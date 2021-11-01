@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "நிறுத்தப்பட்டுள்ள APIகளைத் தவிர்க்கும்"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "ஆப்ஸின் தற்காலிக சேமிப்பு நிறுத்தப்பட்டுள்ளது. [மேலும் அறிக](https://web.dev/appcache-manifest/)."
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "\"{AppCacheManifest}\" கண்டறியப்பட்டது"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "ஆப்ஸின் தற்காலிக சேமிப்பைப் பயன்படுத்துகிறது"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "ஆப்ஸின் தற்காலிக சேமிப்பைத் தவிர்க்கும்"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "எழுத்துக்குறிக் குறியாக்கத்தை வரையறுக்க வேண்டும். HTMLலின் முதல் 1024 பைட்டுகளிலோ Content-Type HTTP பதில் தலைப்பிலோ `<meta>` குறிச்சொல்லைக் குறிப்பிட்டு இதைச் செய்யலாம். [மேலும் அறிக](https://web.dev/charset/)."
   },
@@ -1276,15 +1264,6 @@
   },
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "பெரிய பகுதியைக் காண்பிக்கும் படத்தை முன்கூட்டியே ஏற்றுதல்"
-  },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "HTTPSஐ ஏற்கனவே நீங்கள் அமைத்திருந்தால் உங்களின் அனைத்துப் பயனர்களுக்கும் பாதுகாப்பான இணைய அம்சங்களைச் செயல்படுத்தும் வகையில் எல்லா HTTP ட்ராஃபிக்கையும் HTTPSக்குத் திசைதிருப்பவும். [மேலும் அறிக](https://web.dev/redirects-http/)."
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "HTTP ட்ராஃபிக் HTTPSக்குத் திசைதிருப்பப்படவில்லை"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "HTTPSக்கு HTTP ட்ராஃபிக்கைத் திசைதிருப்பும்"
   },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "'திசைதிருப்புதல்கள்' பக்கம் ஏற்றப்படுவதற்கு முன்பு கூடுதல் தாமதங்களை ஏற்படுத்தலாம். [மேலும் அறிக](https://web.dev/redirects/)."
@@ -2078,28 +2057,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "நீங்கள் அளித்துள்ள URL செல்லாததெனத் தோன்றுகிறது."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "எல்லாம்"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "எல்லா ஸ்கிரிப்ட்டுகளும்"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "கவரேஜ்"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "நகல் மாடியூல்கள்"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "ஃபைலின் அளவு (பைட்டுகள்)"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "பெயர்"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "டேபிளைக் காட்டு/மறை"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "பயன்படுத்தப்படாத பைட்டுகள்"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2426,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU த்ராட்லிங்"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "இயங்கும் கருவி"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "சாதனம்"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "எடுக்கப்பட்ட நேரம்"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "நெட்வொர்க் த்ராட்லிங்"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "இயக்க நேர அமைப்புகள்"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "பயனர் ஏஜெண்ட் (ஹோஸ்ட்)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "பயனர் ஏஜெண்ட் (நெட்வொர்க்)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "தெரியவில்லை"

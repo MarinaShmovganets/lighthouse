@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "Устаревшие API не используются"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "Application Cache больше не поддерживается. [Подробнее…](https://web.dev/appcache-manifest/)"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "Обнаружен манифест {AppCacheManifest}"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "Используется Application Cache"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "Application Cache не используется"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "Требуется задать кодировку символов. Это можно сделать с помощью тега `<meta>` в первых 1024 байтах HTML-страницы или в заголовке ответа HTTP Content-Type. [Подробнее…](https://web.dev/charset/)"
   },
@@ -1276,15 +1264,6 @@
   },
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "Предзагрузите изображение для элемента \"Отрисовка самого крупного контента\""
-  },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "Если у вас уже настроен протокол HTTPS, убедитесь, что весь трафик перенаправляется с HTTP на HTTPS, чтобы обеспечить безопасность для всех своих пользователей. [Подробнее…](https://web.dev/redirects-http/)"
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "Не перенаправляет трафик с HTTP на HTTPS"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "Перенаправляет трафик с HTTP на HTTPS"
   },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "Переадресации могут стать причиной дополнительных задержек при загрузке страницы. [Подробнее…](https://web.dev/redirects/)"
@@ -2078,28 +2057,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "Недействительный URL."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "Все"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "Все скрипты"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "Доля использования"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "Повторяющиеся модули"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "Размер в байтах"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "Название"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "Показать/скрыть таблицу"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "Неиспользуемые байты"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2426,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Ограничение пропускной способности ЦП"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "Канал"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "Устройство"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "Время запуска"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Ограничение пропускной способности сети"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "Настройки среды выполнения"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "Агент пользователя (хост)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "Агент пользователя (сеть)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Неизвестно"

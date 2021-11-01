@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "避免使用已淘汰的 API"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "應用程式快取已被淘汰。[瞭解詳情](https://web.dev/appcache-manifest/)。"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "已找到「{AppCacheManifest}」"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "使用應用程式快取"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "避免使用應用程式快取"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "需要字元編碼宣告。可以在 HTML 的前 1024 個字節或 Content-Type HTTP 回應標題中使用 `<meta>` 標記宣告。[瞭解詳情](https://web.dev/charset/)。"
   },
@@ -1276,15 +1264,6 @@
   },
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "預先載入「最大內容繪製」圖片"
-  },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "如果您已設定 HTTPS，請確認是否已將所有 HTTP 流量重新導向至 HTTPS，以便為所有使用者提供安全的網絡功能。[瞭解詳情](https://web.dev/redirects-http/)。"
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "尚未將 HTTP 流量重新導向至 HTTPS"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "將 HTTP 流量重新導向至 HTTPS"
   },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "重新導向會導致頁面延遲載入。[瞭解詳情](https://web.dev/redirects/)。"
@@ -2078,28 +2057,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "您提供的網址無效。"
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "所有"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "所有指令碼"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "覆蓋率"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "重複的模組"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "資源字節"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "名稱"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "顯示/隱藏表格"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "未使用的字節"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2426,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU 節流"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "渠道"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "裝置"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "擷取時間"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "網絡節流"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "執行階段設定"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "用戶代理程式 (主機)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "用戶代理程式 (網絡)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "網址"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "不明"

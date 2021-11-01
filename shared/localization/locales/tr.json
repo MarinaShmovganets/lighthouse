@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "Kullanımdan kaldırılan API'leri içermiyor"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "Application Cache API'si kullanımdan kaldırılmıştır. [Daha fazla bilgi](https://web.dev/appcache-manifest/)."
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "\"{AppCacheManifest}\" bulundu"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "Uygulama Önbelleği Kullanma"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "Uygulama Önbelleği Kullanılmıyor"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "Karakter kodlama tanımlaması gerekiyor. Bu, HTML'nin ilk 1.024 baytı içinde veya İçerik Türü HTTP yanıt başlığında bir `<meta>` etiketi ile yapılabilir. [Daha fazla bilgi edinin](https://web.dev/charset/)."
   },
@@ -1276,15 +1264,6 @@
   },
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "Largest Contentful Paint resmi önceden yükleme"
-  },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "Zaten HTTPS kurduysanız kullanıcılarınıza güvenli web özellikleri sağlayabilmek için tüm HTTP trafiğini HTTPS'ye yönlendirdiğinizden emin olun. [Daha fazla bilgi](https://web.dev/redirects-http/)."
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "HTTP trafiğini HTTPS'ye yönlendirmiyor"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "HTTP trafiğini HTTPS'ye yönlendiriyor"
   },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "Yönlendirmeler, sayfanın yüklenmesinden önce ek gecikmelere neden olur. [Daha fazla bilgi](https://web.dev/redirects/)."
@@ -2078,28 +2057,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "Sağladığınız URL'nin geçersiz olduğu anlaşılıyor."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "Tümü"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "Tüm Alfabeler"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "Kapsam"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "Yinelenen Modüller"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "Kaynak Baytları"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "Ad"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "Tabloyu Aç/Kapat"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "Kullanılmayan Baytlar"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2426,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU kısıtlaması"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "Kanal"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "Cihaz"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "Alınma Zamanı"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Ağ sınırlama"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "Çalışma Zamanı Ayarları"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "Kullanıcı aracısı (ana makine)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "Kullanıcı aracısı (ağ)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Bilinmiyor"

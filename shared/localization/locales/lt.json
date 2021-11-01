@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "Vengiama nebenaudojamų API"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "Programos talpykla nebenaudojama. [Sužinokite daugiau](https://web.dev/appcache-manifest/)."
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "Rastas elementas „{AppCacheManifest}“"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "Naudojama programos talpykla"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "Vengiama naudoti programos talpyklą"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "Reikalinga ženklų koduotės deklaracija. Tai galima atlikti naudojant žymą „`<meta>`“ pirmuose 1 024 HTML baituose arba turinio tipo HTTP atsako antraštėje. [Sužinokite daugiau](https://web.dev/charset/)."
   },
@@ -1276,15 +1264,6 @@
   },
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "Iš anksto įkelkite didžiausio turiningo žymėjimo vaizdą"
-  },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "Jei jau nustatėte HTTPS, būtinai peradresuokite visą HTTP srautą į HTTPS, kad visi naudotojai galėtų naudotis saugiomis žiniatinklio funkcijomis. [Sužinokite daugiau](https://web.dev/redirects-http/)"
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "Nenukreipia HTTP srauto į HTTPS"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "Nukreipia HTTP srautą į HTTPS"
   },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "Peradresuojant puslapio įkėlimo delsos laikas dar labiau pailgėja. [Sužinokite daugiau](https://web.dev/redirects/)."
@@ -2078,28 +2057,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "Panašu, kad pateiktas URL netinkamas."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "Viskas"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "Visi scenarijai"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "Aprėptis"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "Tikslios modulių kopijos"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "Šaltinių baitai"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "Pavadinimas"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "Perjungti lentelę"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "Nenaudojami baitai"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2426,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "Centrinio procesoriaus pralaidumo ribojimas"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "Kanalas"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "Įrenginys"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "Gavimo laikas"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Tinklo pralaidumo ribojimas"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "Vykdymo laiko nustatymai"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "Naudotojo priemonė (priegloba)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "Naudotojo priemonė (tinklas)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Nežinoma"

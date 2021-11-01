@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "‏‮Avoids‬‏ ‏‮deprecated‬‏ ‏‮APIs‬‏"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "‏‮Application‬‏ ‏‮Cache‬‏ ‏‮is‬‏ ‏‮deprecated‬‏. [‏‮Learn‬‏ ‏‮more‬‏](https://web.dev/appcache-manifest/)."
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "‏‮Found‬‏ \"{AppCacheManifest}\""
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "‏‮Uses‬‏ ‏‮Application‬‏ ‏‮Cache‬‏"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "‏‮Avoids‬‏ ‏‮Application‬‏ ‏‮Cache‬‏"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "‏‮A‬‏ ‏‮character‬‏ ‏‮encoding‬‏ ‏‮declaration‬‏ ‏‮is‬‏ ‏‮required‬‏. ‏‮It‬‏ ‏‮can‬‏ ‏‮be‬‏ ‏‮done‬‏ ‏‮with‬‏ ‏‮a‬‏ `<meta>` ‏‮tag‬‏ ‏‮in‬‏ ‏‮the‬‏ ‏‮first‬‏ 1024 ‏‮bytes‬‏ ‏‮of‬‏ ‏‮the‬‏ ‏‮HTML‬‏ ‏‮or‬‏ ‏‮in‬‏ ‏‮the‬‏ ‏‮Content‬‏-‏‮Type‬‏ ‏‮HTTP‬‏ ‏‮response‬‏ ‏‮header‬‏. [‏‮Learn‬‏ ‏‮more‬‏](https://web.dev/charset/)."
   },
@@ -1276,15 +1264,6 @@
   },
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "‏‮Preload‬‏ ‏‮Largest‬‏ ‏‮Contentful‬‏ ‏‮Paint‬‏ ‏‮image‬‏"
-  },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "‏‮If‬‏ ‏‮you‬‏'‏‮ve‬‏ ‏‮already‬‏ ‏‮set‬‏ ‏‮up‬‏ ‏‮HTTPS‬‏, ‏‮make‬‏ ‏‮sure‬‏ ‏‮that‬‏ ‏‮you‬‏ ‏‮redirect‬‏ ‏‮all‬‏ ‏‮HTTP‬‏ ‏‮traffic‬‏ ‏‮to‬‏ ‏‮HTTPS‬‏ ‏‮in‬‏ ‏‮order‬‏ ‏‮to‬‏ ‏‮enable‬‏ ‏‮secure‬‏ ‏‮web‬‏ ‏‮features‬‏ ‏‮for‬‏ ‏‮all‬‏ ‏‮your‬‏ ‏‮users‬‏. [‏‮Learn‬‏ ‏‮more‬‏](https://web.dev/redirects-http/)."
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "‏‮Does‬‏ ‏‮not‬‏ ‏‮redirect‬‏ ‏‮HTTP‬‏ ‏‮traffic‬‏ ‏‮to‬‏ ‏‮HTTPS‬‏"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "‏‮Redirects‬‏ ‏‮HTTP‬‏ ‏‮traffic‬‏ ‏‮to‬‏ ‏‮HTTPS‬‏"
   },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "‏‮Redirects‬‏ ‏‮introduce‬‏ ‏‮additional‬‏ ‏‮delays‬‏ ‏‮before‬‏ ‏‮the‬‏ ‏‮page‬‏ ‏‮can‬‏ ‏‮be‬‏ ‏‮loaded‬‏. [‏‮Learn‬‏ ‏‮more‬‏](https://web.dev/redirects/)."
@@ -2078,28 +2057,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "‏‮The‬‏ ‏‮URL‬‏ ‏‮you‬‏ ‏‮have‬‏ ‏‮provided‬‏ ‏‮appears‬‏ ‏‮to‬‏ ‏‮be‬‏ ‏‮invalid‬‏."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "‏‮All‬‏"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "‏‮All‬‏ ‏‮Scripts‬‏"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "‏‮Coverage‬‏"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "‏‮Duplicate‬‏ ‏‮Modules‬‏"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "‏‮Resource‬‏ ‏‮Bytes‬‏"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "‏‮Name‬‏"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "‏‮Toggle‬‏ ‏‮Table‬‏"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "‏‮Unused‬‏ ‏‮Bytes‬‏"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2426,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "‏‮CPU‬‏ ‏‮throttling‬‏"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "‏‮Channel‬‏"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "‏‮Device‬‏"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "‏‮Fetch‬‏ ‏‮Time‬‏"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "‏‮Network‬‏ ‏‮throttling‬‏"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "‏‮Runtime‬‏ ‏‮Settings‬‏"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "‏‮User‬‏ ‏‮agent‬‏ (‏‮host‬‏)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "‏‮User‬‏ ‏‮agent‬‏ (‏‮network‬‏)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "‏‮URL‬‏"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "‏‮Unknown‬‏"

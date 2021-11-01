@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "يتم تجنّب واجهات برمجة التطبيقات المتوقفة"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "تم إيقاف ذاكرة التخزين المؤقت للتطبيق. [مزيد من المعلومات](https://web.dev/appcache-manifest/)"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "تم العثور على \"{AppCacheManifest}\""
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "يتم استخدام ذاكرة التخزين المؤقت للتطبيق"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "يتم تجنُب ذاكرة التخزين المؤقت للتطبيق"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "تعريف ترميز الأحرف مطلوب. ويمكن إجراء ذلك باستخدام علامة `<meta>` في أول 1024 وحدة بايت من عنوان HTML أو في عنوان الاستجابة Content-Type في HTTP. [مزيد من المعلومات](https://web.dev/charset/)"
   },
@@ -1276,15 +1264,6 @@
   },
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "التحميل المُسبَق لصورة المقياس \"سرعة عرض أكبر جزء من المحتوى على الصفحة\""
-  },
-  "lighthouse-core/audits/redirects-http.js | description": {
-    "message": "في حال أعددت HTTPS مسبقًا، تأكّد من إعادة توجيه جميع زيارات HTTP إلى HTTPS من أجل تفعيل ميزات الويب الآمنة لجميع المستخدمين. [مزيد من المعلومات](https://web.dev/redirects-http/)"
-  },
-  "lighthouse-core/audits/redirects-http.js | failureTitle": {
-    "message": "عدم إعادة توجيه زيارات HTTP إلى HTTPS"
-  },
-  "lighthouse-core/audits/redirects-http.js | title": {
-    "message": "إعادة توجيه زيارات HTTP إلى HTTPS"
   },
   "lighthouse-core/audits/redirects.js | description": {
     "message": "تؤدي عمليات إعادة التوجيه إلى حدوث تأخيرات إضافية قبل أن يتم تحميل الصفحة. [مزيد من المعلومات](https://web.dev/redirects/)"
@@ -2078,28 +2057,28 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "يبدو أن عنوان URL الذي قدمته غير صحيح."
   },
-  "lighthouse-treemap/app/src/util.js | allLabel": {
+  "treemap/app/src/util.js | allLabel": {
     "message": "الكل"
   },
-  "lighthouse-treemap/app/src/util.js | allScriptsDropdownLabel": {
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
     "message": "جميع النصوص البرمجية"
   },
-  "lighthouse-treemap/app/src/util.js | coverageColumnName": {
+  "treemap/app/src/util.js | coverageColumnName": {
     "message": "التغطية"
   },
-  "lighthouse-treemap/app/src/util.js | duplicateModulesLabel": {
+  "treemap/app/src/util.js | duplicateModulesLabel": {
     "message": "الوحدات المكرَّرة"
   },
-  "lighthouse-treemap/app/src/util.js | resourceBytesLabel": {
+  "treemap/app/src/util.js | resourceBytesLabel": {
     "message": "حجم الموارد بوحدة البايت"
   },
-  "lighthouse-treemap/app/src/util.js | tableColumnName": {
+  "treemap/app/src/util.js | tableColumnName": {
     "message": "الاسم"
   },
-  "lighthouse-treemap/app/src/util.js | toggleTableButtonLabel": {
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
     "message": "تبديل الجدول"
   },
-  "lighthouse-treemap/app/src/util.js | unusedBytesLabel": {
+  "treemap/app/src/util.js | unusedBytesLabel": {
     "message": "وحدات بايت غير المستخدمة"
   },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
@@ -2447,29 +2426,14 @@
   "report/renderer/util.js | runtimeSettingsCPUThrottling": {
     "message": "تقييد وحدة المعالجة المركزية (CPU)"
   },
-  "report/renderer/util.js | runtimeSettingsChannel": {
-    "message": "قناة"
-  },
   "report/renderer/util.js | runtimeSettingsDevice": {
     "message": "جهاز"
-  },
-  "report/renderer/util.js | runtimeSettingsFetchTime": {
-    "message": "وقت الإجراء"
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "ضبط الحد الأقصى المسموح لعرض نطاق الشبكة"
   },
-  "report/renderer/util.js | runtimeSettingsTitle": {
-    "message": "إعدادات وقت التشغيل"
-  },
-  "report/renderer/util.js | runtimeSettingsUA": {
-    "message": "وكيل المستخدم (مضيف)"
-  },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "وكيل المستخدم (شبكة)"
-  },
-  "report/renderer/util.js | runtimeSettingsUrl": {
-    "message": "عنوان URL"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "غير معروف"
