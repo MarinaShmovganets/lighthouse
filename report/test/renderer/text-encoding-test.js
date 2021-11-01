@@ -6,7 +6,9 @@
 'use strict';
 
 import fs from 'fs';
+
 import pako from 'pako';
+
 import {TextEncoding} from '../../renderer/text-encoding.js';
 import {LH_ROOT} from '../../../root.js';
 
@@ -39,6 +41,6 @@ describe('TextEncoding', () => {
     await test('Some examples of emoji are 😃, 🧘🏻‍♂️, 🌍, 🍞, 🚗, 📞, 🎉, ♥️, 🍆, and 🏁.');
     await test('.'.repeat(125183));
     await test('😃'.repeat(125183));
-    await test(fs.readFileSync(LH_ROOT + '/lighthouse-treemap/app/debug.json', 'utf-8'));
+    await test(fs.readFileSync(LH_ROOT + '/treemap/app/debug.json', 'utf-8'));
   });
 });

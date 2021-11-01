@@ -7,7 +7,8 @@
 
 /** @fileoverview Expected Lighthouse audit values for various sites with stable(ish) PWA results. */
 
-const pwaDetailsExpectations = require('./pwa-expectations-details.js');
+import pwaDetailsExpectations from './pwa-expectations-details.js';
+
 const jakeExpectations = {...pwaDetailsExpectations, hasShortName: false};
 
 /**
@@ -19,9 +20,6 @@ const svgomg = {
     requestedUrl: 'https://jakearchibald.github.io/svgomg/',
     finalUrl: 'https://jakearchibald.github.io/svgomg/',
     audits: {
-      'redirects-http': {
-        score: 1,
-      },
       'service-worker': {
         score: 1,
       },
@@ -45,9 +43,6 @@ const svgomg = {
       },
       'apple-touch-icon': {
         score: 1,
-        warnings: [
-          /apple-touch-icon-precomposed/,
-        ],
       },
 
       // "manual" audits. Just verify in the results.
@@ -76,9 +71,6 @@ const caltrain = {
     requestedUrl: 'https://caltrainschedule.io/',
     finalUrl: 'https://caltrainschedule.io/',
     audits: {
-      'redirects-http': {
-        score: 1,
-      },
       'service-worker': {
         score: 1,
       },
@@ -120,7 +112,7 @@ const caltrain = {
   },
 };
 
-module.exports = {
+export {
   svgomg,
   caltrain,
 };

@@ -16,10 +16,13 @@
  */
 'use strict';
 
+/* eslint-env browser */
+
 /** @typedef {HTMLElementTagNameMap & {[id: string]: HTMLElement}} HTMLElementByTagName */
 /** @template {string} T @typedef {import('typed-query-selector/parser').ParseSelector<T, Element>} ParseSelector */
 
 import {Util} from './util.js';
+import {createComponent} from './components.js';
 
 export class DOM {
   /**
@@ -30,6 +33,8 @@ export class DOM {
     this._document = document;
     /** @type {string} */
     this._lighthouseChannel = 'unknown';
+    /** @type {Map<string, DocumentFragment>} */
+    this._componentCache = new Map();
   }
 
   /**
@@ -41,7 +46,9 @@ export class DOM {
   createElement(name, className) {
     const element = this._document.createElement(name);
     if (className) {
-      element.className = className;
+      for (const token of className.split(/\s+/)) {
+        if (token) element.classList.add(token);
+      }
     }
     return element;
   }
@@ -55,7 +62,9 @@ export class DOM {
   createElementNS(namespaceURI, name, className) {
     const element = this._document.createElementNS(namespaceURI, name);
     if (className) {
-      element.className = className;
+      for (const token of className.split(/\s+/)) {
+        if (token) element.classList.add(token);
+      }
     }
     return element;
   }
@@ -81,36 +90,27 @@ export class DOM {
   }
 
   /**
-   * @param {string} selector
-   * @param {ParentNode} context
-   * @return {!DocumentFragment} A clone of the template content.
-   * @throws {Error}
+   * @param {import('./components.js').ComponentName} componentName
+   * @return {!DocumentFragment} A clone of the cached component.
    */
-  cloneTemplate(selector, context) {
-    const template = /** @type {?HTMLTemplateElement} */ (context.querySelector(selector));
-    if (!template) {
-      throw new Error(`Template not found: template${selector}`);
+  createComponent(componentName) {
+    let component = this._componentCache.get(componentName);
+    if (component) {
+      const cloned = /** @type {DocumentFragment} */ (component.cloneNode(true));
+      // Prevent duplicate styles in the DOM. After a template has been stamped
+      // for the first time, remove the clone's styles so they're not re-added.
+      this.findAll('style', cloned).forEach(style => style.remove());
+      return cloned;
     }
 
-    const clone = this._document.importNode(template.content, true);
-
-    // Prevent duplicate styles in the DOM. After a template has been stamped
-    // for the first time, remove the clone's styles so they're not re-added.
-    if (template.hasAttribute('data-stamped')) {
-      this.findAll('style', clone).forEach(style => style.remove());
-    }
-    template.setAttribute('data-stamped', 'true');
-
-    return clone;
+    component = createComponent(this, componentName);
+    this._componentCache.set(componentName, component);
+    const cloned = /** @type {DocumentFragment} */ (component.cloneNode(true));
+    return cloned;
   }
 
-  /**
-   * Resets the "stamped" state of the templates.
-   */
-  resetTemplates() {
-    this.findAll('template[data-stamped]', this._document).forEach(t => {
-      t.removeAttribute('data-stamped');
-    });
+  clearComponentCache() {
+    this._componentCache.clear();
   }
 
   /**
@@ -154,6 +154,9 @@ export class DOM {
    * @param {string} url
    */
   safelySetHref(elem, url) {
+    // Defaults to '' to fix proto roundtrip issue. See https://github.com/GoogleChrome/lighthouse/issues/12868
+    url = url || '';
+
     // In-page anchor links are safe.
     if (url.startsWith('#')) {
       elem.href = url;
@@ -256,5 +259,35 @@ export class DOM {
   findAll(query, context) {
     const elements = Array.from(context.querySelectorAll(query));
     return elements;
+  }
+
+  /**
+   * Fires a custom DOM event on target.
+   * @param {string} name Name of the event.
+   * @param {Node=} target DOM node to fire the event on.
+   * @param {*=} detail Custom data to include.
+   */
+  fireEventOn(name, target = this._document, detail) {
+    const event = new CustomEvent(name, detail ? {detail} : undefined);
+    target.dispatchEvent(event);
+  }
+
+  /**
+   * Downloads a file (blob) using a[download].
+   * @param {Blob|File} blob The file to save.
+   * @param {string} filename
+   */
+  saveFile(blob, filename) {
+    const ext = blob.type.match('json') ? '.json' : '.html';
+
+    const a = this.createElement('a');
+    a.download = `${filename}${ext}`;
+    this.safelySetBlobHref(a, blob);
+    this._document.body.appendChild(a); // Firefox requires anchor to be in the DOM.
+    a.click();
+
+    // cleanup.
+    this._document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 500);
   }
 }

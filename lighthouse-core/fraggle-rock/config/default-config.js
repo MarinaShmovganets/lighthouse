@@ -15,7 +15,7 @@ const frAudits = [
 /** @type {Record<string, LH.Config.AuditRefJson[]>} */
 const frCategoryAuditRefExtensions = {
   'performance': [
-    {id: 'uses-responsive-images-snapshot', weight: 0, group: 'diagnostics'},
+    {id: 'uses-responsive-images-snapshot', weight: 0},
   ],
 };
 
@@ -37,7 +37,6 @@ const artifacts = {
   Trace: '',
   Accessibility: '',
   AnchorElements: '',
-  AppCacheManifest: '',
   CacheContents: '',
   ConsoleMessages: '',
   CSSUsage: '',
@@ -47,10 +46,7 @@ const artifacts = {
   FontSize: '',
   FormElements: '',
   FullPageScreenshot: '',
-  GatherContext: '',
   GlobalListeners: '',
-  HostFormFactor: '',
-  HostUserAgent: '',
   IFrameElements: '',
   ImageElements: '',
   InstallabilityErrors: '',
@@ -85,15 +81,12 @@ for (const key of Object.keys(artifacts)) {
 const defaultConfig = {
   artifacts: [
     // Artifacts which can be depended on come first.
-    {id: artifacts.HostUserAgent, gatherer: 'host-user-agent'},
-    {id: artifacts.HostFormFactor, gatherer: 'host-form-factor'},
     {id: artifacts.DevtoolsLog, gatherer: 'devtools-log'},
     {id: artifacts.Trace, gatherer: 'trace'},
 
     /* eslint-disable max-len */
     {id: artifacts.Accessibility, gatherer: 'accessibility'},
     {id: artifacts.AnchorElements, gatherer: 'anchor-elements'},
-    {id: artifacts.AppCacheManifest, gatherer: 'dobetterweb/appcache'},
     {id: artifacts.CacheContents, gatherer: 'cache-contents'},
     {id: artifacts.ConsoleMessages, gatherer: 'console-messages'},
     {id: artifacts.CSSUsage, gatherer: 'css-usage'},
@@ -103,7 +96,6 @@ const defaultConfig = {
     {id: artifacts.FontSize, gatherer: 'seo/font-size'},
     {id: artifacts.FormElements, gatherer: 'form-elements'},
     {id: artifacts.FullPageScreenshot, gatherer: 'full-page-screenshot'},
-    {id: artifacts.GatherContext, gatherer: 'gather-context'},
     {id: artifacts.GlobalListeners, gatherer: 'global-listeners'},
     {id: artifacts.IFrameElements, gatherer: 'iframe-elements'},
     {id: artifacts.ImageElements, gatherer: 'image-elements'},
@@ -142,14 +134,11 @@ const defaultConfig = {
       cpuQuietThresholdMs: 1000,
       artifacts: [
         // Artifacts which can be depended on come first.
-        artifacts.HostUserAgent,
-        artifacts.HostFormFactor,
         artifacts.DevtoolsLog,
         artifacts.Trace,
 
         artifacts.Accessibility,
         artifacts.AnchorElements,
-        artifacts.AppCacheManifest,
         artifacts.CacheContents,
         artifacts.ConsoleMessages,
         artifacts.CSSUsage,
@@ -158,8 +147,6 @@ const defaultConfig = {
         artifacts.EmbeddedContent,
         artifacts.FontSize,
         artifacts.FormElements,
-        artifacts.FullPageScreenshot,
-        artifacts.GatherContext,
         artifacts.GlobalListeners,
         artifacts.IFrameElements,
         artifacts.ImageElements,
@@ -187,11 +174,20 @@ const defaultConfig = {
         // Compat artifacts come last.
         artifacts.devtoolsLogs,
         artifacts.traces,
+
+        // FullPageScreenshot comes at the very end so all other node analysis is captured.
+        artifacts.FullPageScreenshot,
       ],
     },
   ],
   settings: legacyDefaultConfig.settings,
-  audits: [...(legacyDefaultConfig.audits || []), ...frAudits],
+  audits: [
+    ...(legacyDefaultConfig.audits || []).map(audit => {
+      if (typeof audit === 'string') return {path: audit};
+      return audit;
+    }),
+    ...frAudits,
+  ],
   categories: mergeCategories(),
   groups: legacyDefaultConfig.groups,
 };

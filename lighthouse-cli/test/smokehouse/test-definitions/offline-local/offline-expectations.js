@@ -20,9 +20,6 @@ const onlineOnly = {
       'external-anchors-use-rel-noopener': {
         score: 1,
       },
-      'appcache-manifest': {
-        score: 1,
-      },
       'geolocation-on-start': {
         score: 1,
       },
@@ -31,10 +28,6 @@ const onlineOnly = {
       },
       'password-inputs-can-be-pasted-into': {
         score: 1,
-      },
-      'redirects-http': {
-        score: null,
-        scoreDisplayMode: 'notApplicable',
       },
       'service-worker': {
         score: 0,
@@ -120,10 +113,6 @@ const ready = {
     audits: {
       'is-on-https': {
         score: 1,
-      },
-      'redirects-http': {
-        score: null,
-        scoreDisplayMode: 'notApplicable',
       },
       'service-worker': {
         score: 1,
@@ -232,7 +221,7 @@ const swSlow = {
   },
 };
 
-module.exports = {
+export {
   onlineOnly,
   ready,
   swBroken,

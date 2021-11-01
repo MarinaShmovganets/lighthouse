@@ -7,7 +7,7 @@
 
 /** @fileoverview Expected Lighthouse audit values for various sites with stable(ish) PWA results. */
 
-const pwaDetailsExpectations = require('./pwa-expectations-details.js');
+import pwaDetailsExpectations from './pwa-expectations-details.js';
 
 /**
  * @type {Smokehouse.ExpectedRunnerResult}
@@ -18,9 +18,6 @@ const airhorner = {
     requestedUrl: 'https://airhorner.com',
     finalUrl: 'https://airhorner.com/',
     audits: {
-      'redirects-http': {
-        score: 1,
-      },
       'service-worker': {
         score: 1,
       },
@@ -72,9 +69,6 @@ const chromestatus = {
     requestedUrl: 'https://www.chromestatus.com/features',
     finalUrl: 'https://www.chromestatus.com/features',
     audits: {
-      'redirects-http': {
-        score: 1,
-      },
       'service-worker': {
         score: 0,
       },
@@ -115,7 +109,7 @@ const chromestatus = {
   },
 };
 
-module.exports = {
+export {
   airhorner,
   chromestatus,
 };

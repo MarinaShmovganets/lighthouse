@@ -7,7 +7,8 @@
 
 /** @fileoverview Expected Lighthouse audit values for various sites with stable(ish) PWA results. */
 
-const pwaDetailsExpectations = require('./pwa-expectations-details.js');
+import pwaDetailsExpectations from './pwa-expectations-details.js';
+
 const pwaRocksExpectations = {...pwaDetailsExpectations, hasIconsAtLeast512px: false};
 
 /**
@@ -21,9 +22,6 @@ const pwarocks = {
     requestedUrl: 'https://connorjclark.github.io/pwa.rocks/',
     finalUrl: 'https://connorjclark.github.io/pwa.rocks/',
     audits: {
-      'redirects-http': {
-        score: 1,
-      },
       'service-worker': {
         score: 1,
       },
@@ -66,6 +64,6 @@ const pwarocks = {
   },
 };
 
-module.exports = {
+export {
   pwarocks,
 };

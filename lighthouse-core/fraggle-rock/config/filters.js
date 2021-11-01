@@ -16,6 +16,9 @@ const baseArtifactKeySource = {
   Timing: '',
   URL: '',
   PageLoadError: '',
+  HostFormFactor: '',
+  HostUserAgent: '',
+  GatherContext: '',
 };
 
 const baseArtifactKeys = Object.keys(baseArtifactKeySource);
@@ -23,6 +26,10 @@ const baseArtifactKeys = Object.keys(baseArtifactKeySource);
 // Some audits are used by the report for additional information.
 // Keep these audits unless they are *directly* skipped with `skipAudits`.
 const filterResistantAuditIds = ['full-page-screenshot'];
+
+// Some artifacts are used by the report for additional information.
+// Always run these artifacts even if audits do not request them.
+const filterResistantArtifactIds = ['HostUserAgent', 'HostFormFactor', 'Stacks', 'GatherContext'];
 
 /**
  * Returns the set of audit IDs used in the list of categories.
@@ -56,9 +63,10 @@ function filterArtifactsByAvailableAudits(artifacts, audits) {
   const artifactsById = new Map(artifacts.map(artifact => [artifact.id, artifact]));
 
   /** @type {Set<string>} */
-  const artifactIdsToKeep = new Set(
-    audits.flatMap(audit => audit.implementation.meta.requiredArtifacts)
-  );
+  const artifactIdsToKeep = new Set([
+    ...filterResistantArtifactIds,
+    ...audits.flatMap(audit => audit.implementation.meta.requiredArtifacts),
+  ]);
 
   // Keep all artifacts in the dependency tree of required artifacts.
   // Iterate through all kept artifacts, adding their dependencies along the way, until the set does not change.
@@ -155,6 +163,23 @@ function filterAuditsByGatherMode(audits, mode) {
 }
 
 /**
+ * Optional `supportedModes` property can explicitly exclude a category even if some audits are available.
+ *
+ * @param {LH.Config.Config['categories']} categories
+ * @param {LH.Gatherer.GatherMode} mode
+ * @return {LH.Config.Config['categories']}
+ */
+function filterCategoriesByGatherMode(categories, mode) {
+  if (!categories) return null;
+
+  const categoriesToKeep = Object.entries(categories)
+    .filter(([_, category]) => {
+      return !category.supportedModes || category.supportedModes.includes(mode);
+    });
+  return Object.fromEntries(categoriesToKeep);
+}
+
+/**
  * Filters a categories object and their auditRefs down to the specified category ids.
  *
  * @param {LH.Config.Config['categories']} categories
@@ -217,9 +242,10 @@ function filterCategoriesByAvailableAudits(categories, availableAudits) {
  */
 function filterConfigByGatherMode(config, mode) {
   const artifacts = filterArtifactsByGatherMode(config.artifacts, mode);
-  const availableAudits = filterAuditsByAvailableArtifacts(config.audits, artifacts || []);
-  const audits = filterAuditsByGatherMode(availableAudits, mode);
-  const categories = filterCategoriesByAvailableAudits(config.categories, audits || []);
+  const supportedAudits = filterAuditsByGatherMode(config.audits, mode);
+  const audits = filterAuditsByAvailableArtifacts(supportedAudits, artifacts || []);
+  const supportedCategories = filterCategoriesByGatherMode(config.categories, mode);
+  const categories = filterCategoriesByAvailableAudits(supportedCategories, audits || []);
 
   return {
     ...config,
@@ -283,4 +309,5 @@ module.exports = {
   filterAuditsByGatherMode,
   filterCategoriesByAvailableAudits,
   filterCategoriesByExplicitFilters,
+  filterCategoriesByGatherMode,
 };

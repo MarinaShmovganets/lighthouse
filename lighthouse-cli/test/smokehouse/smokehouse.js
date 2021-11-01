@@ -11,26 +11,37 @@
  * smoke tests passed.
  */
 
-const log = require('lighthouse-logger');
-const cliLighthouseRunner = require('./lighthouse-runners/cli.js').runLighthouse;
-const getAssertionReport = require('./report-assert.js');
-const LocalConsole = require('./lib/local-console.js');
-const ConcurrentMapper = require('./lib/concurrent-mapper.js');
-
 /* eslint-disable no-console */
 
-/** @typedef {import('./lib/child-process-error.js')} ChildProcessError */
+/** @typedef {import('./lib/child-process-error.js').ChildProcessError} ChildProcessError */
 
-// The number of concurrent (`!runSerially`) tests to run if `jobs` isn't set.
-const DEFAULT_CONCURRENT_RUNS = 5;
-const DEFAULT_RETRIES = 0;
+/**
+ * @typedef Run
+ * @property {string[] | undefined} networkRequests
+ * @property {LH.Result} lhr
+ * @property {LH.Artifacts} artifacts
+ * @property {string} lighthouseLog
+ * @property {string} assertionLog
+ */
 
 /**
  * @typedef SmokehouseResult
  * @property {string} id
  * @property {number} passed
  * @property {number} failed
+ * @property {Run[]} runs
  */
+
+import log from 'lighthouse-logger';
+
+import {runLighthouse as cliLighthouseRunner} from './lighthouse-runners/cli.js';
+import {getAssertionReport} from './report-assert.js';
+import {LocalConsole} from './lib/local-console.js';
+import {ConcurrentMapper} from './lib/concurrent-mapper.js';
+
+// The number of concurrent (`!runSerially`) tests to run if `jobs` isn't set.
+const DEFAULT_CONCURRENT_RUNS = 5;
+const DEFAULT_RETRIES = 0;
 
 /**
  * Runs the selected smoke tests. Returns whether all assertions pass.
@@ -41,6 +52,7 @@ const DEFAULT_RETRIES = 0;
 async function runSmokehouse(smokeTestDefns, smokehouseOptions) {
   const {
     isDebug,
+    useFraggleRock,
     jobs = DEFAULT_CONCURRENT_RUNS,
     retries = DEFAULT_RETRIES,
     lighthouseRunner = cliLighthouseRunner,
@@ -52,7 +64,7 @@ async function runSmokehouse(smokeTestDefns, smokehouseOptions) {
   // Run each testDefn in parallel based on the concurrencyLimit.
   const concurrentMapper = new ConcurrentMapper();
 
-  const testOptions = {isDebug, retries, lighthouseRunner, takeNetworkRequestUrls};
+  const testOptions = {isDebug, useFraggleRock, retries, lighthouseRunner, takeNetworkRequestUrls};
   const smokePromises = smokeTestDefns.map(testDefn => {
     // If defn is set to `runSerially`, we'll run it in succession with other tests, not parallel.
     const concurrency = testDefn.runSerially ? 1 : jobs;
@@ -108,17 +120,19 @@ function purpleify(str) {
 /**
  * Run Lighthouse in the selected runner.
  * @param {Smokehouse.TestDfn} smokeTestDefn
- * @param {{isDebug?: boolean, retries: number, lighthouseRunner: Smokehouse.LighthouseRunner, takeNetworkRequestUrls?: () => string[]}} testOptions
+ * @param {{isDebug?: boolean, useFraggleRock?: boolean, retries: number, lighthouseRunner: Smokehouse.LighthouseRunner, takeNetworkRequestUrls?: () => string[]}} testOptions
  * @return {Promise<SmokehouseResult>}
  */
 async function runSmokeTest(smokeTestDefn, testOptions) {
   const {id, config: configJson, expectations} = smokeTestDefn;
-  const {lighthouseRunner, retries, isDebug, takeNetworkRequestUrls} = testOptions;
+  const {lighthouseRunner, retries, isDebug, useFraggleRock, takeNetworkRequestUrls} = testOptions;
   const requestedUrl = expectations.lhr.requestedUrl;
 
   console.log(`${purpleify(id)} smoketest starting…`);
 
   // Rerun test until there's a passing result or retries are exhausted to prevent flakes.
+  /** @type {Run[]} */
+  const runs = [];
   let result;
   let report;
   const bufferedConsole = new LocalConsole();
@@ -131,7 +145,7 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
     // Run Lighthouse.
     try {
       result = {
-        ...await lighthouseRunner(requestedUrl, configJson, {isDebug}),
+        ...await lighthouseRunner(requestedUrl, configJson, {isDebug, useFraggleRock}),
         networkRequests: takeNetworkRequestUrls ? takeNetworkRequestUrls() : undefined,
       };
     } catch (e) {
@@ -144,6 +158,13 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
 
     // Assert result.
     report = getAssertionReport(result, expectations, {isDebug});
+
+    runs.push({
+      ...result,
+      lighthouseLog: result.log,
+      assertionLog: report.log,
+    });
+
     if (report.failed) {
       bufferedConsole.log(`  ${getAssertionLog(report.failed)} failed.`);
       continue; // Retry, if possible.
@@ -179,6 +200,7 @@ async function runSmokeTest(smokeTestDefn, testOptions) {
     id,
     passed,
     failed,
+    runs,
   };
 }
 
@@ -193,7 +215,7 @@ function logChildProcessError(localConsole, err) {
     localConsole.adoptStdStrings(err);
   }
 
-  localConsole.log(log.redify('Error: ') + err.message);
+  localConsole.log(log.redify('Error: ') + err + '\n' + err.stack);
 }
 
 /**
@@ -205,6 +227,6 @@ function getAssertionLog(count) {
   return `${count} assertion${plural}`;
 }
 
-module.exports = {
+export {
   runSmokehouse,
 };

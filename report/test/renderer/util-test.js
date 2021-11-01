@@ -6,6 +6,7 @@
 'use strict';
 
 import {strict as assert} from 'assert';
+
 import {Util} from '../../renderer/util.js';
 import {I18n} from '../../renderer/i18n.js';
 import sampleResult from '../../../lighthouse-core/test/results/sample_v2.json';
@@ -383,6 +384,74 @@ describe('util helpers', () => {
         {isLink: true, text: 'second link', linkHref: 'https://second.com'},
         {isLink: false, text: ' and scene'},
       ]);
+    });
+  });
+
+  describe('#shouldDisplayAsFraction', () => {
+    it('returns true for timespan and snapshot', () => {
+      expect(Util.shouldDisplayAsFraction('navigation')).toEqual(false);
+      expect(Util.shouldDisplayAsFraction('timespan')).toEqual(true);
+      expect(Util.shouldDisplayAsFraction('snapshot')).toEqual(true);
+      expect(Util.shouldDisplayAsFraction(undefined)).toEqual(false);
+    });
+  });
+
+  describe('#calculateCategoryFraction', () => {
+    it('returns passed audits and total audits', () => {
+      const category = {
+        id: 'performance',
+        auditRefs: [
+          {weight: 3, result: {score: 1, scoreDisplayMode: 'binary'}, group: 'metrics'},
+          {weight: 2, result: {score: 1, scoreDisplayMode: 'binary'}, group: 'metrics'},
+          {weight: 0, result: {score: 1, scoreDisplayMode: 'binary'}, group: 'metrics'},
+          {weight: 1, result: {score: 0, scoreDisplayMode: 'binary'}, group: 'metrics'},
+        ],
+      };
+      const fraction = Util.calculateCategoryFraction(category);
+      expect(fraction).toEqual({
+        numPassableAudits: 4,
+        numPassed: 3,
+        numInformative: 0,
+        totalWeight: 6,
+      });
+    });
+
+    it('ignores manual audits, N/A audits, and hidden audits', () => {
+      const category = {
+        id: 'performance',
+        auditRefs: [
+          {weight: 1, result: {score: 1, scoreDisplayMode: 'binary'}, group: 'metrics'},
+          {weight: 1, result: {score: 1, scoreDisplayMode: 'binary'}, group: 'hidden'},
+          {weight: 1, result: {score: 0, scoreDisplayMode: 'manual'}, group: 'metrics'},
+          {weight: 1, result: {score: 0, scoreDisplayMode: 'notApplicable'}, group: 'metrics'},
+        ],
+      };
+      const fraction = Util.calculateCategoryFraction(category);
+      expect(fraction).toEqual({
+        numPassableAudits: 1,
+        numPassed: 1,
+        numInformative: 0,
+        totalWeight: 1,
+      });
+    });
+
+    it('tracks informative audits separately', () => {
+      const category = {
+        id: 'performance',
+        auditRefs: [
+          {weight: 1, result: {score: 1, scoreDisplayMode: 'binary'}, group: 'metrics'},
+          {weight: 1, result: {score: 1, scoreDisplayMode: 'binary'}, group: 'metrics'},
+          {weight: 0, result: {score: 1, scoreDisplayMode: 'informative'}, group: 'metrics'},
+          {weight: 1, result: {score: 0, scoreDisplayMode: 'informative'}, group: 'metrics'},
+        ],
+      };
+      const fraction = Util.calculateCategoryFraction(category);
+      expect(fraction).toEqual({
+        numPassableAudits: 2,
+        numPassed: 2,
+        numInformative: 2,
+        totalWeight: 2,
+      });
     });
   });
 });
