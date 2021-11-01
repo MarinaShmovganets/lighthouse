@@ -4,29 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import Result from './lhr';
-
-declare module FlowResult {
-  interface Step {
-    lhr: Result;
-    name: string;
-  }
-
-  interface HashState {
-    currentLhr: Result;
-    index: number;
-    anchor: string|null;
-  }
+declare module '@stadtlandnetz/rollup-plugin-postprocess' {
+  function postprocess(args: Array<[RegExp, string]>): void;
+  export = postprocess;
 }
-
-/**
- * The full output of a Lighthouse flow. Includes a series of Lighthouse runs.
- */
-interface FlowResult {
-  /** Ordered list of flow steps, each corresponding to a navigation, timespan, or snapshot. */
-  steps: FlowResult.Step[];
-  /** Name given to this user flow. */
-  name: string;
-}
-
-export default FlowResult;

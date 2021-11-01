@@ -79,27 +79,27 @@ function useFlowResult(): LH.FlowResult {
   return flowResult;
 }
 
-function useHashParam(param: string) {
-  const [paramValue, setParamValue] = useState(getHashParam(param));
+function useHashParams(...params: string[]) {
+  const [paramValues, setParamValues] = useState(params.map(getHashParam));
 
   // Use two-way-binding on the URL hash.
-  // Triggers a re-render if the param changes.
+  // Triggers a re-render if any param changes.
   useEffect(() => {
     function hashListener() {
-      const newIndexString = getHashParam(param);
-      if (newIndexString === paramValue) return;
-      setParamValue(newIndexString);
+      const newParamValues = params.map(getHashParam);
+      if (newParamValues.every((value, i) => value === paramValues[i])) return;
+      setParamValues(newParamValues);
     }
     window.addEventListener('hashchange', hashListener);
     return () => window.removeEventListener('hashchange', hashListener);
-  }, [paramValue]);
+  }, [paramValues]);
 
-  return paramValue;
+  return paramValues;
 }
 
-function useCurrentLhr(): LH.FlowResult.LhrRef|null {
+function useHashState(): LH.FlowResult.HashState|null {
   const flowResult = useFlowResult();
-  const indexString = useHashParam('index');
+  const [indexString, anchor] = useHashParams('index', 'anchor');
 
   // Memoize result so a new object is not created on every call.
   return useMemo(() => {
@@ -117,8 +117,8 @@ function useCurrentLhr(): LH.FlowResult.LhrRef|null {
       return null;
     }
 
-    return {value: step.lhr, index};
-  }, [indexString, flowResult]);
+    return {currentLhr: step.lhr, index, anchor};
+  }, [indexString, flowResult, anchor]);
 }
 
 export {
@@ -129,6 +129,6 @@ export {
   getFilmstripFrames,
   getModeDescription,
   useFlowResult,
-  useHashParam,
-  useCurrentLhr,
+  useHashParams,
+  useHashState,
 };
