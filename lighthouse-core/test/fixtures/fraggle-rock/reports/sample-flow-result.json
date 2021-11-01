@@ -3402,6 +3402,19 @@
               ]
             }
           },
+          "external-anchors-use-rel-noopener": {
+            "id": "external-anchors-use-rel-noopener",
+            "title": "Links to cross-origin destinations are safe",
+            "description": "Add `rel=\"noopener\"` or `rel=\"noreferrer\"` to any external links to improve performance and prevent security vulnerabilities. [Learn more](https://web.dev/external-anchors-use-rel-noopener/).",
+            "score": 1,
+            "scoreDisplayMode": "binary",
+            "warnings": [],
+            "details": {
+              "type": "table",
+              "headings": [],
+              "items": []
+            }
+          },
           "geolocation-on-start": {
             "id": "geolocation-on-start",
             "title": "Avoids requesting the geolocation permission on page load",
