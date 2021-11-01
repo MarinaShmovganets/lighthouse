@@ -92,7 +92,7 @@ describe('ReportUIFeatures', () => {
       assert.equal(dom.findAll('.lh-category', container).length, 1);
     });
 
-    describe.only('third-party filtering', () => {
+    describe('third-party filtering', () => {
       let container;
 
       beforeAll(() => {
