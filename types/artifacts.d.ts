@@ -122,8 +122,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   Accessibility: Artifacts.Accessibility;
   /** Array of all anchors on the page. */
   AnchorElements: Artifacts.AnchorElement[];
-  /** The value of the page's <html> manifest attribute, or null if not defined */
-  AppCacheManifest: string | null;
   /** Array of all URLs cached in CacheStorage. */
   CacheContents: string[];
   /** CSS coverage information for styles used by page's final state. */
@@ -489,8 +487,6 @@ declare module Artifacts {
     isPicture: boolean;
     /** Flags whether this element was contained within a ShadowRoot */
     isInShadowDOM: boolean;
-    /** The MIME type of the underlying image file. */
-    mimeType?: string;
     /** Details for node in DOM for the image element */
     node: NodeDetails;
     /** The loading attribute of the image. */
@@ -873,6 +869,11 @@ declare module Artifacts {
   }
 
   type ConsoleMessage = ConsoleAPICall | ConsoleException | ConsoleProtocolLog;
+
+  interface ImageElementRecord extends ImageElement {
+    /** The MIME type of the underlying image file. */
+    mimeType?: string;
+  }
 }
 
 export interface Trace {
