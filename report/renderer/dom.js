@@ -229,8 +229,8 @@ export class DOM {
   }
 
   /**
-   * ONLY use if `dom.rootEl` isn't sufficient for your needs. It is preferred for all scoping,
-   * as a document can have multiple reports within it.
+   * ONLY use if `dom.rootEl` isn't sufficient for your needs. `dom.rootEl` is preferred
+   * for all scoping, because a document can have multiple reports within it.
    * @return {Document}
    */
   document() {
