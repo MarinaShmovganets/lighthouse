@@ -162,22 +162,22 @@ message LighthouseResult {
     // Next ID: 7
     message ThrottlingSettings {
       // The round trip time in milliseconds.
-      google.protobuf.Int64Value rttMs = 1;
+      double rttMs = 1;
 
       // The network throughput in kilobits per second.
-      google.protobuf.DoubleValue throughputKbps = 2;
+      double throughputKbps = 2;
 
       // The network request latency in milliseconds.
-      google.protobuf.DoubleValue requestLatencyMs = 3;
+      double requestLatencyMs = 3;
 
       // The network download throughput in kilobits per second.
-      google.protobuf.DoubleValue downloadThroughputKbps = 4;
+      double downloadThroughputKbps = 4;
 
       // The network upload throughput in kilobits per second.
-      google.protobuf.DoubleValue uploadThroughputKbps = 5;
+      double uploadThroughputKbps = 5;
 
       // The amount of slowdown applied to the cpu (1/<cpuSlowdownMultiplier>).
-      google.protobuf.Int64Value cpuSlowdownMultiplier = 6;
+      double cpuSlowdownMultiplier = 6;
     }
 
     // The throttling config settings.
