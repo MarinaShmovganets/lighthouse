@@ -162,22 +162,22 @@ message LighthouseResult {
     // Next ID: 7
     message ThrottlingSettings {
       // The round trip time in milliseconds.
-      double rttMs = 1;
+      double rtt_ms = 1;
 
       // The network throughput in kilobits per second.
-      double throughputKbps = 2;
+      double throughput_kbps = 2;
 
       // The network request latency in milliseconds.
-      double requestLatencyMs = 3;
+      double request_latency_ms = 3;
 
       // The network download throughput in kilobits per second.
-      double downloadThroughputKbps = 4;
+      double download_throughput_kbps = 4;
 
       // The network upload throughput in kilobits per second.
-      double uploadThroughputKbps = 5;
+      double upload_throughput_kbps = 5;
 
       // The amount of slowdown applied to the cpu (1/<cpuSlowdownMultiplier>).
-      double cpuSlowdownMultiplier = 6;
+      double cpu_slowdown_multiplier = 6;
     }
 
     // The throttling config settings.
