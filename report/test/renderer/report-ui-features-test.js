@@ -55,11 +55,9 @@ describe('ReportUIFeatures', () => {
       };
     };
 
-
     global.HTMLElement = document.window.HTMLElement;
     global.HTMLInputElement = document.window.HTMLInputElement;
     global.HTMLInputElement = document.window.HTMLInputElement;
-
 
     global.window = document.window;
     global.window.requestAnimationFrame = fn => fn();

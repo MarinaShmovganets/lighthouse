@@ -293,7 +293,6 @@ export class TopbarFeatures {
     const topbarBottom = this.topbarEl.getBoundingClientRect().bottom;
     const categoriesTop = this.categoriesEl.getBoundingClientRect().top;
     const showStickyHeader = topbarBottom >= categoriesTop;
-    console.log('showstickyheader', showStickyHeader, topbarBottom, categoriesTop);
 
     // Highlight mini gauge when section is in view.
     // In view = the last category that starts above the middle of the window.
