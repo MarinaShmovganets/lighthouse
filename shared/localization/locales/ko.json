@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "지원 중단 API 사용하지 않기"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "애플리케이션 캐시는 지원이 중단되었습니다. [자세히 알아보기](https://web.dev/appcache-manifest/)"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "검색된 ‘{AppCacheManifest}’"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "애플리케이션 캐시 사용"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "애플리케이션 캐시 사용하지 않기"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "문자 인코딩 선언이 필요합니다. HTML의 첫 1,024바이트 또는 Content-Type HTTP 응답 헤더에서 `<meta>` 태그를 사용하여 선언할 수 있습니다. [자세히 알아보기](https://web.dev/charset/)"
   },
@@ -811,21 +799,6 @@
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | title": {
     "message": "과도한 DOM 크기 지양하기"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | columnFailingAnchors": {
-    "message": "통과하지 못한 앵커"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | description": {
-    "message": "성능을 개선하고 보안 취약점을 예방하려면 `rel=\"noopener\"` 또는 `rel=\"noreferrer\"`을(를) 외부 링크에 추가합니다. [자세히 알아보기](https://web.dev/external-anchors-use-rel-noopener/)"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | failureTitle": {
-    "message": "교차 도메인 대상 링크가 안전하지 않음"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | title": {
-    "message": "교차 도메인 대상 링크가 안전함"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | warning": {
-    "message": "앵커({anchorHTML})의 대상을 확인하지 못했습니다. 하이퍼링크로 사용되지 않는 경우 target=_blank를 삭제하는 것이 좋습니다."
   },
   "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | description": {
     "message": "사용자가 컨텍스트 없이 위치 정보를 요청한 사이트를 신뢰할 수 없거나 이로 인해 혼란스러운 상태입니다. 대신 사용자 작업 요청 입력을 고려해 보세요. [자세히 알아보기](https://web.dev/geolocation-on-start/)"

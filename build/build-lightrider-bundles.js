@@ -11,8 +11,8 @@ const rollupPlugins = require('./rollup-plugins.js');
 const fs = require('fs');
 const path = require('path');
 const bundleBuilder = require('./build-bundle.js');
-const {minifyFileTransform} = require('./build-utils.js');
 const {LH_ROOT} = require('../root.js');
+const inlineFs = require('./plugins/browserify-inline-fs.js');
 
 const distDir = path.join(LH_ROOT, 'dist', 'lightrider');
 const sourceDir = path.join(LH_ROOT, 'clients', 'lightrider');
@@ -23,15 +23,12 @@ const generatorFilename = `./report/generator/report-generator.js`;
 const entrySourceName = 'lightrider-entry.js';
 const entryDistName = 'lighthouse-lr-bundle.js';
 
-fs.mkdirSync(path.dirname(distDir), {recursive: true});
+fs.mkdirSync(distDir, {recursive: true});
 
-/**
- * Browserify and minify entry point.
- */
 function buildEntryPoint() {
   const inFile = `${sourceDir}/${entrySourceName}`;
   const outFile = `${distDir}/${entryDistName}`;
-  return bundleBuilder.build(inFile, outFile);
+  return bundleBuilder.build(inFile, outFile, {minify: false});
 }
 
 /**
@@ -41,12 +38,8 @@ function buildReportGenerator() {
   browserify(generatorFilename, {standalone: 'ReportGenerator'})
     // Flow report is not used in LR, so don't include flow assets.
     .ignore(require.resolve('../report/generator/flow-report-assets.js'))
-    // Transform the fs.readFile etc into inline strings.
-    .transform('@wardpeet/brfs', {
-      readFileTransform: minifyFileTransform,
-      global: true,
-      parserOpts: {ecmaVersion: 12},
-    })
+    // Transform `fs.readFileSync`, etc into inline strings.
+    .transform(inlineFs({verbose: Boolean(process.env.DEBUG)}))
     .bundle((err, src) => {
       if (err) throw err;
       fs.writeFileSync(bundleOutFile, src.toString());
