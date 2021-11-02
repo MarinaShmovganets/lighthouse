@@ -105,6 +105,17 @@ export class Util {
     const relevantAuditToMetricsMap = new Map();
 
     for (const category of Object.values(clone.categories)) {
+      const majorVersion = Number(clone.lighthouseVersion.split('.')[0]);
+      if (majorVersion < 9) {
+        for (const auditRef of category.auditRefs) {
+          if (!auditRef.group) {
+            auditRef.group = 'hidden';
+          } else if (['load-opportunity', 'diagnostic'].includes(auditRef.group)) {
+            delete auditRef.group;
+          }
+        }
+      }
+
       // Make basic lookup table for relevantAudits
       category.auditRefs.forEach(metricRef => {
         if (!metricRef.relevantAudits) return;
