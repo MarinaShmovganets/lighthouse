@@ -55,7 +55,7 @@
   --color-green: #0c6;
   --color-lime-400: #D3E156;
   --color-orange-50: #FFF3E0;
-  --color-orange-700: #D04900;
+  --color-orange-700: #C33300;
   --color-orange: #fa3;
   --color-red-700: #c00;
   --color-red: #f33;
@@ -65,7 +65,6 @@
   /* Context-specific colors */
   --color-average-secondary: var(--color-orange-700);
   --color-average: var(--color-orange);
-  --color-average-text: #C33300;
   --color-fail-secondary: var(--color-red-700);
   --color-fail: var(--color-red);
   --color-hover: var(--color-gray-50);
@@ -150,7 +149,7 @@
   --topbar-logo-size: 24px;
   --topbar-padding: 0 8px;
   --toplevel-warning-background-color: hsla(30, 100%, 75%, 10%);
-  --toplevel-warning-message-text-color: var(--color-average-text);
+  --toplevel-warning-message-text-color: var(--color-average-secondary);
   --toplevel-warning-padding: 18px;
   --toplevel-warning-text-color: var(--report-text-color);
 
@@ -202,7 +201,7 @@
     --report-text-color: var(--color-gray-100);
     --snippet-color: var(--color-cyan-500);
     --topbar-background-color: var(--color-gray);
-    --toplevel-warning-background-color: #544B40;
+    --toplevel-warning-background-color: hsl(33deg 14% 18%);
     --toplevel-warning-message-text-color: var(--color-orange-700);
     --toplevel-warning-text-color: var(--color-gray-100);
 
@@ -305,7 +304,6 @@
 
 .lh-root *, .lh-root *::before, .lh-root *::after {
   box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
 }
 
 .lh-root {
@@ -368,10 +366,6 @@
 .lh-warnings a,
 .lh-footer a,
 .lh-table-column--link a {
-  color: var(--color-informative);
-}
-
-.lh-audit-group a {
   color: var(--color-blue-primary);
 }
 
@@ -975,7 +969,6 @@
   color: var(--color-red-700);
 }
 
-
 /* Align the "over budget request count" text to be close to the "over budget bytes" column. */
 .lh-audit-group--budgets .lh-table tbody tr td:nth-child(4){
   text-align: right;
@@ -1030,7 +1023,7 @@
 
 .lh-audit-group__title {
   text-transform: uppercase;
-	font-weight: 500;
+  font-weight: 500;
 }
 
 .lh-audit-group__itemcount {
@@ -1047,8 +1040,8 @@
 .lh-category-header__description,
 .lh-load-opportunity__header,
 .lh-audit-group__footer {
-	font-size: var(--report-font-size-secondary);
-	line-height: var(--report-line-height-secondary);
+  font-size: var(--report-font-size-secondary);
+  line-height: var(--report-line-height-secondary);
 }
 
 .lh-audit-explanation {
@@ -1089,7 +1082,7 @@
 
 .lh-warnings {
   --item-margin: calc(var(--report-line-height) / 6);
-  color: var(--color-average-text);
+  color: var(--color-average-secondary);
   margin: var(--audit-padding-vertical) 0;
   padding: var(--default-padding)
     var(--default-padding)
@@ -1145,7 +1138,7 @@
 }
 
 .lh-gauge__wrapper--average {
-  color: var(--color-average-text);
+  color: var(--color-average-secondary);
   fill: var(--color-average);
   stroke: var(--color-average);
 }
@@ -1180,7 +1173,7 @@
   border-radius: 50%;
 }
 .lh-fraction__wrapper--average .lh-fraction__content {
-  color: var(--color-average-text);
+  color: var(--color-average-secondary);
 }
 .lh-fraction__wrapper--average .lh-fraction__background,
 .lh-fraction__wrapper--average .lh-fraction__content::before {
