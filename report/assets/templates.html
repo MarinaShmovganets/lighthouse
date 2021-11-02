@@ -331,13 +331,15 @@ limitations under the License.
       max-width: 200px;
     }
     .lh-button.lh-tool-locale__button {
-      height: unset;
+      height: var(--topbar-height);
       color: var(--tools-icon-color);
+      padding: calc(var(--default-padding) / 2);
     }
     .lh-tool-locale__button.lh-active + .lh-tools-locale__selector-wrapper {
       opacity: 1;
       clip: rect(-1px, 194px, 242px, -3px);
       visibility: visible;
+      margin: 0 4px;
     }
 
     @media screen and (max-width: 964px) {
