@@ -5198,94 +5198,6 @@
         ]
       }
     },
-    "external-anchors-use-rel-noopener": {
-      "id": "external-anchors-use-rel-noopener",
-      "title": "Links to cross-origin destinations are unsafe",
-      "description": "Add `rel=\"noopener\"` or `rel=\"noreferrer\"` to any external links to improve performance and prevent security vulnerabilities. [Learn more](https://web.dev/external-anchors-use-rel-noopener/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "warnings": [
-        "Unable to determine the destination for anchor (<a target=\"_blank\">). If not used as a hyperlink, consider removing target=_blank."
-      ],
-      "details": {
-        "type": "table",
-        "headings": [
-          {
-            "key": "node",
-            "itemType": "node",
-            "text": "Failing Anchors"
-          }
-        ],
-        "items": [
-          {
-            "node": {
-              "type": "node",
-              "lhId": "5-0-A",
-              "path": "3,HTML,1,BODY,39,A",
-              "selector": "body > a",
-              "boundingRect": {
-                "top": 1166,
-                "bottom": 1184,
-                "left": 91,
-                "right": 171,
-                "width": 80,
-                "height": 18
-              },
-              "snippet": "<a href=\"https://www.google.com/\" target=\"_blank\">",
-              "nodeLabel": "external link"
-            },
-            "href": "https://www.google.com/",
-            "target": "_blank",
-            "rel": "",
-            "outerHTML": "<a href=\"https://www.google.com/\" target=\"_blank\">"
-          },
-          {
-            "node": {
-              "type": "node",
-              "lhId": "5-1-A",
-              "path": "3,HTML,1,BODY,41,A",
-              "selector": "body > a",
-              "boundingRect": {
-                "top": 1166,
-                "bottom": 1184,
-                "left": 175,
-                "right": 255,
-                "width": 80,
-                "height": 18
-              },
-              "snippet": "<a target=\"_blank\">",
-              "nodeLabel": "external link"
-            },
-            "href": "Unknown",
-            "target": "_blank",
-            "rel": "",
-            "outerHTML": "<a target=\"_blank\">"
-          },
-          {
-            "node": {
-              "type": "node",
-              "lhId": "5-2-A",
-              "path": "3,HTML,1,BODY,43,A",
-              "selector": "body > a",
-              "boundingRect": {
-                "top": 1166,
-                "bottom": 1184,
-                "left": 259,
-                "right": 340,
-                "width": 80,
-                "height": 18
-              },
-              "snippet": "<a href=\"https://www.google.com/\" target=\"_blank\" rel=\"nofollow\">",
-              "nodeLabel": "external link"
-            },
-            "href": "https://www.google.com/",
-            "target": "_blank",
-            "rel": "nofollow",
-            "outerHTML": "<a href=\"https://www.google.com/\" target=\"_blank\" rel=\"nofollow\">"
-          }
-        ]
-      }
-    },
     "geolocation-on-start": {
       "id": "geolocation-on-start",
       "title": "Requests the geolocation permission on page load",
@@ -6080,147 +5992,170 @@
         },
         {
           "id": "max-potential-fid",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "first-meaningful-paint",
           "weight": 0,
-          "acronym": "FMP"
+          "acronym": "FMP",
+          "group": "hidden"
         },
         {
           "id": "render-blocking-resources",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-responsive-images",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "offscreen-images",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "unminified-css",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "unminified-javascript",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "unused-css-rules",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "unused-javascript",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-optimized-images",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "modern-image-formats",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-text-compression",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-rel-preconnect",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "server-response-time",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "redirects",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-rel-preload",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-http2",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "efficient-animated-content",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "duplicated-javascript",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "legacy-javascript",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "preload-lcp-image",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "total-byte-weight",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "uses-long-cache-ttl",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "dom-size",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "critical-request-chains",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "user-timings",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "bootup-time",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "mainthread-work-breakdown",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "font-display",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
+        },
+        {
+          "id": "resource-summary",
+          "weight": 0
+        },
+        {
+          "id": "third-party-summary",
+          "weight": 0
+        },
+        {
+          "id": "third-party-facades",
+          "weight": 0
+        },
+        {
+          "id": "largest-contentful-paint-element",
+          "weight": 0
+        },
+        {
+          "id": "lcp-lazy-loaded",
+          "weight": 0
+        },
+        {
+          "id": "layout-shift-elements",
+          "weight": 0
+        },
+        {
+          "id": "uses-passive-event-listeners",
+          "weight": 0
+        },
+        {
+          "id": "no-document-write",
+          "weight": 0
+        },
+        {
+          "id": "long-tasks",
+          "weight": 0
+        },
+        {
+          "id": "non-composited-animations",
+          "weight": 0
+        },
+        {
+          "id": "unsized-images",
+          "weight": 0
+        },
+        {
+          "id": "viewport",
+          "weight": 0
         },
         {
           "id": "performance-budget",
@@ -6233,100 +6168,49 @@
           "group": "budgets"
         },
         {
-          "id": "resource-summary",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "third-party-summary",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "third-party-facades",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "largest-contentful-paint-element",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "lcp-lazy-loaded",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "layout-shift-elements",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "uses-passive-event-listeners",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "no-document-write",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "long-tasks",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "non-composited-animations",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "unsized-images",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "viewport",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
           "id": "network-requests",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "network-rtt",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "network-server-latency",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "main-thread-tasks",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "diagnostics",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "metrics",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "screenshot-thumbnails",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "final-screenshot",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "script-treemap-data",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         }
       ],
       "id": "performance",
@@ -6619,11 +6503,6 @@
           "group": "best-practices-trust-safety"
         },
         {
-          "id": "external-anchors-use-rel-noopener",
-          "weight": 1,
-          "group": "best-practices-trust-safety"
-        },
-        {
           "id": "geolocation-on-start",
           "weight": 1,
           "group": "best-practices-trust-safety"
@@ -6705,7 +6584,7 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.21
+      "score": 0.23
     },
     "seo": {
       "title": "SEO",
@@ -6795,7 +6674,7 @@
       "score": 0.67
     },
     "pwa": {
-      "title": "Progressive Web App",
+      "title": "PWA",
       "description": "These checks validate the aspects of a Progressive Web App. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist).",
       "manualDescription": "These checks are required by the baseline [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
       "supportedModes": [
@@ -6936,6 +6815,9 @@
     },
     "best-practices-general": {
       "title": "General"
+    },
+    "hidden": {
+      "title": ""
     }
   },
   "timing": {
@@ -8029,12 +7911,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:dom-size",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:external-anchors-use-rel-noopener",
         "duration": 100,
         "entryType": "measure"
       },
@@ -9409,23 +9285,6 @@
       ],
       "lighthouse-core/audits/dobetterweb/dom-size.js | statisticDOMWidth": [
         "audits[dom-size].details.items[2].statistic"
-      ],
-      "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | failureTitle": [
-        "audits[external-anchors-use-rel-noopener].title"
-      ],
-      "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | description": [
-        "audits[external-anchors-use-rel-noopener].description"
-      ],
-      "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | warning": [
-        {
-          "values": {
-            "anchorHTML": "<a target=\"_blank\">"
-          },
-          "path": "audits[external-anchors-use-rel-noopener].warnings[0]"
-        }
-      ],
-      "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | columnFailingAnchors": [
-        "audits[external-anchors-use-rel-noopener].details.headings[0].text"
       ],
       "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | failureTitle": [
         "audits[geolocation-on-start].title"
