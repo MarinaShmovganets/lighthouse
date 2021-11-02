@@ -26,6 +26,8 @@ describe('lighthouseRenderer bundle', () => {
     document = window.document;
 
     global.window = global.self = window;
+    global.requestAnimationFrame = document.window.requestAnimationFrame;
+
     // Stub out matchMedia for Node.
     global.self.matchMedia = function() {
       return {
@@ -36,6 +38,7 @@ describe('lighthouseRenderer bundle', () => {
 
   afterAll(() => {
     global.window = global.self = undefined;
+    global.requestAnimationFrame = undefined;
   });
 
 

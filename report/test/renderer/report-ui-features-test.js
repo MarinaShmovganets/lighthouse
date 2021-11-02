@@ -57,6 +57,8 @@ describe('ReportUIFeatures', () => {
 
     global.HTMLElement = document.window.HTMLElement;
     global.HTMLInputElement = document.window.HTMLInputElement;
+    global.HTMLInputElement = document.window.HTMLInputElement;
+    global.requestAnimationFrame = document.window.requestAnimationFrame;
 
     global.window = document.window;
     global.window.getComputedStyle = function() {
@@ -75,6 +77,7 @@ describe('ReportUIFeatures', () => {
     global.window = undefined;
     global.HTMLElement = undefined;
     global.HTMLInputElement = undefined;
+    global.requestAnimationFrame = undefined;
   });
 
   describe('initFeatures', () => {

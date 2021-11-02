@@ -259,23 +259,27 @@ export class TopbarFeatures {
     this.topbarEl = this._dom.find('div.lh-topbar', this._document);
     this.categoriesEl = this._dom.find('div.lh-categories', this._document);
 
-    // Only present in the DOM if it'll be used (>=2 categories)
-    try {
-      this.stickyHeaderEl = this._dom.find('div.lh-sticky-header', this._document);
-    } catch (e) {}
-
-    if (!this.stickyHeaderEl) return;
-
-    // Highlighter will be absolutely positioned at first gauge, then transformed on scroll.
-    this.highlightEl = this._dom.createChildOf(this.stickyHeaderEl, 'div', 'lh-highlighter');
-
-    // Defer behind rAF to avoid forcing layout
+    // Defer behind rAF to avoid forcing layout.
     requestAnimationFrame(() => requestAnimationFrame(() => {
+      // Only present in the DOM if it'll be used (>=2 categories)
+      try {
+        this.stickyHeaderEl = this._dom.find('div.lh-sticky-header', this._document);
+      } catch {
+        return;
+      }
+
+      // Highlighter will be absolutely positioned at first gauge, then transformed on scroll.
+      this.highlightEl = this._dom.createChildOf(this.stickyHeaderEl, 'div', 'lh-highlighter');
+
+      // Update sticky header visibility and highlight when page scrolls/resizes.
       const scrollParent = this._getScrollParent(this.stickyHeaderEl);
-      scrollParent.addEventListener('scroll', e => this._updateStickyHeader(e));
-      // 'scroll' handler must be Element | Document, but resizeObserve can't be Document.
-      new window.ResizeObserver(e => this._updateStickyHeader(e))
-        .observe(scrollParent === document ? document.scrollingElement : scrollParent);
+      // The 'scroll' handler must be should be on {Element | Document}...
+      scrollParent.addEventListener('scroll', () => this._updateStickyHeader());
+      // However resizeObserver needs an element, *not* the document.
+      const resizeTarget = scrollParent instanceof window.Document
+        ? document.documentElement
+        : scrollParent;
+      new window.ResizeObserver(() => this._updateStickyHeader()).observe(resizeTarget);
     }));
   }
 
@@ -283,6 +287,8 @@ export class TopbarFeatures {
    * Toggle visibility and update highlighter position
    */
   _updateStickyHeader() {
+    if (!this.stickyHeaderEl) return;
+
     // Show sticky header when the main 5 gauges clear the topbar.
     const topbarBottom = this.topbarEl.getBoundingClientRect().bottom;
     const categoriesTop = this.categoriesEl.getBoundingClientRect().top;
