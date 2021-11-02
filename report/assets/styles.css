@@ -104,6 +104,7 @@
   --highlighter-background-color: var(--report-text-color);
   --icon-square-size: calc(var(--score-icon-size) * 0.88);
   --image-preview-size: 48px;
+  --link-color: var(--color-blue-primary);
   --locale-selector-background-color: var(--color-white);
   --metric-toggle-lines-fill: #7F7F7F;
   --metric-value-font-size: calc(var(--report-font-size) * 1.8);
@@ -193,6 +194,7 @@
 
     /* Component variables */
     --env-item-background-color: #393535;
+    --link-color: var(--color-blue-200);
     --locale-selector-background-color: var(--color-gray-200);
     --plugin-badge-background-color: var(--color-gray-800);
     --report-background-color: var(--color-gray-900);
@@ -366,7 +368,7 @@
 .lh-warnings a,
 .lh-footer a,
 .lh-table-column--link a {
-  color: var(--color-blue-primary);
+  color: var(--link-color);
 }
 
 .lh-audit__description, .lh-audit__stackpack {
@@ -478,7 +480,7 @@
   height: 32px;
   border: 1px solid var(--report-border-color-secondary);
   border-radius: 3px;
-  color: var(--color-blue-primary);
+  color: var(--link-color);
   background-color: var(--report-background-color);
   padding: var(--default-padding);
   font-size: var(--report-font-size-secondary);
@@ -487,9 +489,6 @@
 
 .lh-button:first-of-type {
   margin-left: 0;
-}
-.lh-dark .lh-button {
-  color: var(--color-blue-200);
 }
 
 /* Node */
