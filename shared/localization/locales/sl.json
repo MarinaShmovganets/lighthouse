@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "Izogiba se zastarelim API-jem"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "Predpomnilnik aplikacij je zastarel. [Več o tem](https://web.dev/appcache-manifest/)."
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "Najdeno – »{AppCacheManifest}«"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "Uporablja predpomnilnik aplikacij"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "Izogiba se predpomnilniku aplikacij"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "Izjava glede kodiranja znakov je obvezna. Izvedete jo lahko z oznako `<meta>` v prvih 1024 B HTML-ja ali v glavi odziva HTTP-ja glede vrste vsebine. [Več o tem](https://web.dev/charset/)."
   },
@@ -811,21 +799,6 @@
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | title": {
     "message": "Izogiba se prekomerni velikosti DOM-a"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | columnFailingAnchors": {
-    "message": "Neuspešna sidra"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | description": {
-    "message": "Zunanjim povezavam dodajte `rel=\"noopener\"` ali `rel=\"noreferrer\"` zaradi izboljšanja delovanja in preprečevanja varnostnih ranljivosti. [Več o tem](https://web.dev/external-anchors-use-rel-noopener/)"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | failureTitle": {
-    "message": "Povezave do ciljev iz več izvorov niso varne"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | title": {
-    "message": "Povezave do ciljev iz več izvorov so varne"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | warning": {
-    "message": "Ni mogoče določiti cilja za sidro ({anchorHTML}). Če se ne uporablja kot hiperpovezava, lahko odstranite target=_blank."
   },
   "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | description": {
     "message": "Uporabniki so nezaupljivi do spletnih mest oziroma jih begajo spletna mesta, ki zahtevajo njihovo lokacijo brez konteksta. Razmislite o tem, da bi zahtevo povezali z uporabniškim dejanjem. [Več o tem](https://web.dev/geolocation-on-start/)."

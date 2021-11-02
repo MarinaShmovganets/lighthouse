@@ -743,18 +743,6 @@
   "lighthouse-core/audits/deprecations.js | title": {
     "message": "Evită API-urile învechite"
   },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": {
-    "message": "Memoria cache a aplicației este învechită. [Află mai multe](https://web.dev/appcache-manifest/)."
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": {
-    "message": "Am găsit „{AppCacheManifest}”"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": {
-    "message": "Folosește memoria cache de aplicație"
-  },
-  "lighthouse-core/audits/dobetterweb/appcache-manifest.js | title": {
-    "message": "Evită memoria cache a aplicației"
-  },
   "lighthouse-core/audits/dobetterweb/charset.js | description": {
     "message": "Este necesară o declarație privind codificarea caracterelor. Aceasta se poate face folosind o etichetă `<meta>` în primii 1.024 de byți din HTML sau în antetul de răspuns Content-Type din HTTP. [Află mai multe](https://web.dev/charset/)."
   },
@@ -811,21 +799,6 @@
   },
   "lighthouse-core/audits/dobetterweb/dom-size.js | title": {
     "message": "Evită o dimensiune DOM excesivă"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | columnFailingAnchors": {
-    "message": "Ancore cu probleme"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | description": {
-    "message": "Adaugă `rel=\"noopener\"` sau `rel=\"noreferrer\"` la orice linkuri externe pentru a îmbunătăți rezultatele și a preveni vulnerabilitățile de securitate. [Află mai multe](https://web.dev/external-anchors-use-rel-noopener/)."
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | failureTitle": {
-    "message": "Linkurile spre destinații cu mai multe origini sunt nesigure"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | title": {
-    "message": "Linkurile spre destinații cu mai multe origini sunt sigure"
-  },
-  "lighthouse-core/audits/dobetterweb/external-anchors-use-rel-noopener.js | warning": {
-    "message": "Nu se poate determina destinația pentru ancora ({anchorHTML}). Dacă nu se folosește ca hyperlink, elimină target=_blank."
   },
   "lighthouse-core/audits/dobetterweb/geolocation-on-start.js | description": {
     "message": "Utilizatorii nu au încredere sau sunt derutați de site-urile care le solicită locația fără context. Asociază solicitarea cu o acțiune a utilizatorilor. [Află mai multe](https://web.dev/geolocation-on-start/)."
