@@ -107,18 +107,23 @@ class Util {
     /** @type {Map<string, Array<LH.ReportResult.AuditRef>>} */
     const relevantAuditToMetricsMap = new Map();
 
-    for (const category of Object.values(clone.categories)) {
-      const majorVersion = Number(clone.lighthouseVersion.split('.')[0]);
-      if (majorVersion < 9) {
-        for (const auditRef of category.auditRefs) {
-          if (!auditRef.group) {
-            auditRef.group = 'hidden';
-          } else if (['load-opportunity', 'diagnostic'].includes(auditRef.group)) {
-            delete auditRef.group;
-          }
+    // Old LHR versions (<9.0.0) do not have the "hidden" group.
+    // This backcompat converts the LHR to use the new "hidden" group.
+    const perfCategory = clone.categories['performance'];
+    const isOldLhr = perfCategory && !perfCategory.auditRefs.some(a => a.group === 'hidden');
+    if (isOldLhr && clone.categoryGroups) {
+      clone.categoryGroups['hidden'] = {title: ''};
+      for (const auditRef of perfCategory.auditRefs) {
+        if (!auditRef.group) {
+          auditRef.group = 'hidden';
+        } else if (['load-opportunities', 'diagnostics'].includes(auditRef.group)) {
+          auditRef.group = undefined;
         }
       }
+    }
 
+
+    for (const category of Object.values(clone.categories)) {
       // Make basic lookup table for relevantAudits
       category.auditRefs.forEach(metricRef => {
         if (!metricRef.relevantAudits) return;
