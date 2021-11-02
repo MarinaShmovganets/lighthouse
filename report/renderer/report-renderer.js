@@ -50,7 +50,7 @@ export class ReportRenderer {
     // Allow old report rendering API
     if (!this._dom.rootEl && rootEl) {
       console.warn('Please adopt the new report API in renderer/api.js.');
-      const closestRoot = rootEl.closest('.lh-vars');
+      const closestRoot = rootEl.closest('.lh-root');
       if (closestRoot) {
         this._dom.rootEl = /** @type {HTMLElement} */ (closestRoot);
       } else {

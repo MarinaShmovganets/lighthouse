@@ -50,11 +50,10 @@ export const Report: FunctionComponent<{hashState: LH.FlowResult.HashState}> =
       convertChildAnchors(ref.current, hashState.index);
       const fullPageScreenshot = getFullPageScreenshot(hashState.currentLhr);
       if (fullPageScreenshot) {
-        const container = dom.find('.lh-container', ref.current);
         ElementScreenshotRenderer.installOverlayFeature({
           dom,
-          reportEl: container,
-          overlayContainerEl: container,
+          reportEl: ref.current,
+          overlayContainerEl: ref.current,
           fullPageScreenshot,
         });
       }
