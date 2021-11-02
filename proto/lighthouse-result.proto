@@ -126,7 +126,7 @@ message LighthouseResult {
   map<string, CategoryGroup> category_groups = 11;
 
   // Message containing the configuration settings for the LH run
-  // Next field number: 6
+  // Next field number: 8
   message ConfigSettings {
     // The possible form factors an audit can be run in.
     // This enum served the emulated_form_factor field, but in v7, that field
@@ -158,6 +158,23 @@ message LighthouseResult {
     // How Lighthouse was run, e.g. from the Chrome extension or from the npm
     // module
     string channel = 4;
+
+    // Next ID: 7
+    message ThrottlingSettings {
+      google.protobuf.Int64Value rttMs = 1;
+
+      google.protobuf.Int64Value throughputKbps = 2;
+
+      google.protobuf.Int64Value requestLatencyMs = 3;
+
+      google.protobuf.Int64Value downloadThroughputKbps = 4;
+
+      google.protobuf.Int64Value uploadThroughputKbps = 5;
+
+      google.protobuf.Int64Value cpuSlowdownMultiplier = 6;
+    }
+
+    ThrottlingSettings throttling = 7;
   }
 
   // The settings that were used to run this audit
