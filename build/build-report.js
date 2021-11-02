@@ -53,7 +53,6 @@ async function buildStandaloneReport() {
     file: 'dist/report/standalone.js',
     format: 'iife',
   });
-
   await bundle.close();
 }
 
@@ -89,7 +88,6 @@ async function buildFlowReport() {
     file: 'dist/report/flow.js',
     format: 'iife',
   });
-
   await bundle.close();
 }
 
@@ -105,7 +103,6 @@ async function buildEsModulesBundle() {
     file: 'dist/report/bundle.esm.js',
     format: 'esm',
   });
-
   await bundle.close();
 }
 
@@ -127,7 +124,6 @@ async function buildUmdBundle() {
     format: 'umd',
     name: 'report',
   });
-
   await bundle.close();
 }
 
