@@ -51,10 +51,12 @@ export class ReportRenderer {
     if (!this._dom.rootEl && rootEl) {
       console.warn('Please adopt the new report API in renderer/api.js.');
       const closestRoot = rootEl.closest('.lh-vars');
-      if (!closestRoot) {
+      if (closestRoot) {
+        this._dom.rootEl = /** @type {HTMLElement} */ (closestRoot);
+      } else {
         rootEl.classList.add('lh-root', 'lh-vars');
+        this._dom.rootEl = rootEl;
       }
-      this._dom.rootEl = /** @type {HTMLElement} */ (closestRoot);
     }
     if (opts) {
       this._opts = opts;
