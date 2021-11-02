@@ -260,7 +260,7 @@ export class TopbarFeatures {
     this.categoriesEl = this._dom.find('div.lh-categories', this._document);
 
     // Defer behind rAF to avoid forcing layout.
-    requestAnimationFrame(() => requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
       // Only present in the DOM if it'll be used (>=2 categories)
       try {
         this.stickyHeaderEl = this._dom.find('div.lh-sticky-header', this._document);
@@ -293,6 +293,7 @@ export class TopbarFeatures {
     const topbarBottom = this.topbarEl.getBoundingClientRect().bottom;
     const categoriesTop = this.categoriesEl.getBoundingClientRect().top;
     const showStickyHeader = topbarBottom >= categoriesTop;
+    console.log('showstickyheader', showStickyHeader, topbarBottom, categoriesTop);
 
     // Highlight mini gauge when section is in view.
     // In view = the last category that starts above the middle of the window.
