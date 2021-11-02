@@ -163,13 +163,13 @@ message LighthouseResult {
     message ThrottlingSettings {
       google.protobuf.Int64Value rttMs = 1;
 
-      google.protobuf.Int64Value throughputKbps = 2;
+      google.protobuf.DoubleValue throughputKbps = 2;
 
-      google.protobuf.Int64Value requestLatencyMs = 3;
+      google.protobuf.DoubleValue requestLatencyMs = 3;
 
-      google.protobuf.Int64Value downloadThroughputKbps = 4;
+      google.protobuf.DoubleValue downloadThroughputKbps = 4;
 
-      google.protobuf.Int64Value uploadThroughputKbps = 5;
+      google.protobuf.DoubleValue uploadThroughputKbps = 5;
 
       google.protobuf.Int64Value cpuSlowdownMultiplier = 6;
     }
