@@ -20,11 +20,9 @@ function __initLighthouseReport__() {
   /** @type {LH.Result} */
   // @ts-expect-error
   const lhr = window.__LIGHTHOUSE_JSON__;
-  const mainEl = document.querySelector('main');
-  if (!mainEl) return;
 
   const reportRootEl = renderReport(lhr);
-  mainEl.append(reportRootEl);
+  document.body.append(reportRootEl);
 
   document.addEventListener('lh-analytics', /** @param {Event} e */ e => {
     // @ts-expect-error

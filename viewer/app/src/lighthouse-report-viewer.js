@@ -221,10 +221,11 @@ export class LighthouseReportViewer {
       return;
     }
 
+    // @ts-expect-error Legacy use of report renderer
     const dom = new DOM(document);
     const renderer = new ReportRenderer(dom);
 
-    const container = find('main', document);
+    const container = find('div.renderer-container', document);
     try {
       renderer.renderReport(json, container);
 
