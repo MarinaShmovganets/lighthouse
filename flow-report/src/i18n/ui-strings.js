@@ -133,4 +133,8 @@ export const UIStrings = {
   }`,
   /** Label for a list of Lighthouse audits that are the most impactful. */
   highestImpact: 'Highest impact',
+  /** Label indicating that Lighthouse throttled the page to emulate a slow 4G network connection. */
+  runtimeSlow4g: 'Slow 4G',
+  /** Label indicating that Lighthouse throttled the page using custom throttling settings. */
+  runtimeCustom: 'Custom throttling',
 };

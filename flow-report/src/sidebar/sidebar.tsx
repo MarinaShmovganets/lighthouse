@@ -8,9 +8,24 @@ import {FunctionComponent} from 'preact';
 
 import {Separator} from '../common';
 import {useI18n, useLocalizedStrings} from '../i18n/i18n';
-import {CpuIcon, EnvIcon, SummaryIcon} from '../icons';
+import {CpuIcon, EnvIcon, NetworkIcon, SummaryIcon} from '../icons';
 import {classNames, useHashState, useFlowResult} from '../util';
 import {SidebarFlow} from './flow';
+
+function isSlow4g(settings: LH.ConfigSettings) {
+  const throttling = settings.throttling;
+  switch (settings.throttlingMethod) {
+    case 'devtools':
+      return throttling.requestLatencyMs === 150 * 3.75 &&
+        throttling.downloadThroughputKbps === 1.6 * 1024 * 0.9 &&
+        throttling.uploadThroughputKbps === 750 * 0.9;
+    case 'simulate':
+      return throttling.rttMs === 150 &&
+       throttling.throughputKbps === 1.6 * 1024;
+    default:
+      return false;
+  }
+}
 
 export const SidebarSummary: FunctionComponent = () => {
   const hashState = useHashState();
@@ -32,7 +47,8 @@ export const SidebarSummary: FunctionComponent = () => {
   );
 };
 
-const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> = ({settings}) => {
+export const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
+({settings}) => {
   const strings = useLocalizedStrings();
 
   return (
@@ -45,6 +61,17 @@ const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
           settings.formFactor === 'desktop' ?
             strings.runtimeDesktopEmulation :
             strings.runtimeMobileEmulation
+        }
+      </div>
+      <div
+        className="SidebarRuntimeSettings__item"
+        title={strings.runtimeSettingsNetworkThrottling}
+      >
+        <div className="SidebarRuntimeSettings__item--icon">
+          <NetworkIcon/>
+        </div>
+        {
+          isSlow4g(settings) ? strings.runtimeSlow4g : strings.runtimeCustom
         }
       </div>
       <div className="SidebarRuntimeSettings__item" title={strings.runtimeSettingsCPUThrottling}>
