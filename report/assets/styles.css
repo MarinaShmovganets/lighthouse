@@ -127,7 +127,7 @@
   --report-monospace-font-size: calc(var(--report-font-size) * 0.85);
   --report-text-color-secondary: var(--color-gray-800);
   --report-text-color: var(--color-gray-900);
-  --report-max-width: calc(60 * var(--report-font-size));
+  --report-content-width: calc(60 * var(--report-font-size));
   --score-container-padding: 8px;
   --score-icon-background-size: 24px;
   --score-icon-margin-left: 6px;
@@ -1099,7 +1099,7 @@
   color: var(--toplevel-warning-text-color);
   margin-left: auto;
   margin-right: auto;
-  max-width: calc(var(--report-max-width) - var(--category-padding) * 2);
+  max-width: calc(var(--report-content-width) - var(--category-padding) * 2);
   padding: var(--toplevel-warning-padding);
   border-radius: 8px;
 }
@@ -1391,7 +1391,7 @@
 
 .lh-category {
   padding: var(--category-padding);
-  max-width: var(--report-max-width);
+  max-width: var(--report-content-width);
   margin: 0 auto;
 
   --sticky-header-height: calc(var(--gauge-circle-size-sm) + var(--score-container-padding) * 2);
