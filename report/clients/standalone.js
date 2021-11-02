@@ -20,8 +20,11 @@ function __initLighthouseReport__() {
   /** @type {LH.Result} */
   // @ts-expect-error
   const lhr = window.__LIGHTHOUSE_JSON__;
+  const mainEl = document.querySelector('main');
+  if (!mainEl) return;
+
   const reportRootEl = renderReport(lhr);
-  document.querySelector('main').append(reportRootEl);
+  mainEl.append(reportRootEl);
 
   document.addEventListener('lh-analytics', /** @param {Event} e */ e => {
     // @ts-expect-error
@@ -30,6 +33,7 @@ function __initLighthouseReport__() {
 
   document.addEventListener('lh-log', /** @param {Event} e */ e => {
     const el = document.querySelector('div#lh-log');
+    if (!el) return;
 
     const logger = new Logger(el);
     // @ts-expect-error
