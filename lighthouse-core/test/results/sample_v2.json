@@ -8052,6 +8052,7 @@
   "i18n": {
     "rendererFormattedStrings": {
       "calculatorLink": "See calculator.",
+      "collapseView": "Collapse view",
       "crcInitialNavigation": "Initial Navigation",
       "crcLongestDurationLabel": "Maximum critical path latency:",
       "dropdownCopyJSON": "Copy JSON",
@@ -8064,6 +8065,7 @@
       "dropdownViewer": "Open in Viewer",
       "errorLabel": "Error!",
       "errorMissingAuditInfo": "Report error: no audit information",
+      "expandView": "Expand view",
       "footerIssue": "File an issue",
       "hide": "Hide",
       "labDataTitle": "Lab Data",

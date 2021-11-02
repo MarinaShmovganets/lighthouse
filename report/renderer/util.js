@@ -665,6 +665,10 @@ Util.UIStrings = {
   show: 'Show',
   /** Label for an interactive control that will reveal or hide a group of content. This control toggles between the text 'Show' and 'Hide'. */
   hide: 'Hide',
+  /** Label for an interactive control that will reveal or hide a group of content. This control toggles between the text 'Expand view' and 'Collapse view'. */
+  expandView: 'Expand view',
+  /** Label for an interactive control that will reveal or hide a group of content. This control toggles between the text 'Expand view' and 'Collapse view'. */
+  collapseView: 'Collapse view',
 };
 
 export const UIStrings = Util.UIStrings;

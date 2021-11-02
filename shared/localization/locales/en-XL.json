@@ -2330,6 +2330,9 @@
   "report/renderer/util.js | calculatorLink": {
     "message": "Ŝéê ćâĺĉúl̂át̂ór̂."
   },
+  "report/renderer/util.js | collapseView": {
+    "message": "Ĉól̂ĺâṕŝé v̂íêẃ"
+  },
   "report/renderer/util.js | crcInitialNavigation": {
     "message": "Îńît́îál̂ Ńâv́îǵât́îón̂"
   },
@@ -2365,6 +2368,9 @@
   },
   "report/renderer/util.js | errorMissingAuditInfo": {
     "message": "R̂ép̂ór̂t́ êŕr̂ór̂: ńô áûd́ît́ îńf̂ór̂ḿât́îón̂"
+  },
+  "report/renderer/util.js | expandView": {
+    "message": "Êx́p̂án̂d́ v̂íêẃ"
   },
   "report/renderer/util.js | footerIssue": {
     "message": "F̂íl̂é âń îśŝúê"
