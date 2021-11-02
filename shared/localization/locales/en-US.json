@@ -2402,6 +2402,9 @@
   "report/renderer/util.js | runtimeAnalysisWindow": {
     "message": "Initial page load"
   },
+  "report/renderer/util.js | runtimeCustom": {
+    "message": "Custom throttling"
+  },
   "report/renderer/util.js | runtimeDesktopEmulation": {
     "message": "Emulated Desktop"
   },
@@ -2434,6 +2437,9 @@
   },
   "report/renderer/util.js | runtimeSingleLoadTooltip": {
     "message": "This data is taken from a single page load, as opposed to field data summarizing many sessions."
+  },
+  "report/renderer/util.js | runtimeSlow4g": {
+    "message": "Slow 4G throttling"
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Unknown"
