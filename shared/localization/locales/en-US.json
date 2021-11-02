@@ -2369,6 +2369,9 @@
   "report/renderer/util.js | footerIssue": {
     "message": "File an issue"
   },
+  "report/renderer/util.js | hide": {
+    "message": "Hide"
+  },
   "report/renderer/util.js | labDataTitle": {
     "message": "Lab Data"
   },
@@ -2428,6 +2431,9 @@
   },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Unknown"
+  },
+  "report/renderer/util.js | show": {
+    "message": "Show"
   },
   "report/renderer/util.js | showRelevantAudits": {
     "message": "Show audits relevant to:"

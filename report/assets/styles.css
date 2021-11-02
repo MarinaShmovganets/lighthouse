@@ -1671,8 +1671,9 @@ details.lh-clump[open] > summary {
 
 
 
-details .lh-clump-toggle::before {content: 'Show';}
-details[open] .lh-clump-toggle::before {content: 'Hide';}
+details .lh-clump-toggletext--hide,
+details[open] .lh-clump-toggletext--show { display: none; }
+details[open] .lh-clump-toggletext--hide { display: block;}
 
 
 /* Tooltip */
