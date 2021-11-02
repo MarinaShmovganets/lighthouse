@@ -7,6 +7,8 @@
 import {FunctionComponent} from 'preact';
 import {useLayoutEffect, useRef} from 'preact/hooks';
 
+import {ElementScreenshotRenderer} from '../../../report/renderer/element-screenshot-renderer';
+import {getFullPageScreenshot} from '../util';
 import {useReportRenderer} from './report-renderer';
 
 /**
@@ -28,19 +30,34 @@ export function convertChildAnchors(element: HTMLElement, index: number) {
 
     const nodeId = link.hash.substr(1);
     link.hash = `#index=${index}&anchor=${nodeId}`;
+    link.onclick = e => {
+      e.preventDefault();
+      const el = document.getElementById(nodeId);
+      if (el) el.scrollIntoView();
+    };
   }
 }
 
-export const Report: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
-({currentLhr}) => {
+export const Report: FunctionComponent<{hashState: LH.FlowResult.HashState}> =
+({hashState}) => {
   const {dom, reportRenderer} = useReportRenderer();
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     if (ref.current) {
       dom.clearComponentCache();
-      reportRenderer.renderReport(currentLhr.value, ref.current);
-      convertChildAnchors(ref.current, currentLhr.index);
+      reportRenderer.renderReport(hashState.currentLhr, ref.current);
+      convertChildAnchors(ref.current, hashState.index);
+      const fullPageScreenshot = getFullPageScreenshot(hashState.currentLhr);
+      if (fullPageScreenshot) {
+        const container = dom.find('.lh-container', ref.current);
+        ElementScreenshotRenderer.installOverlayFeature({
+          dom,
+          reportEl: container,
+          overlayContainerEl: container,
+          fullPageScreenshot,
+        });
+      }
       const topbar = ref.current.querySelector('.lh-topbar');
       if (topbar) topbar.remove();
     }
@@ -48,7 +65,7 @@ export const Report: FunctionComponent<{currentLhr: LH.FlowResult.LhrRef}> =
     return () => {
       if (ref.current) ref.current.textContent = '';
     };
-  }, [reportRenderer, currentLhr]);
+  }, [reportRenderer, hashState]);
 
   return (
     <div ref={ref} className="lh-root" data-testid="Report"/>

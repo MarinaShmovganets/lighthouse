@@ -16,8 +16,6 @@
 import {renderReport} from '../renderer/api.js';
 import {Logger} from '../renderer/logger.js';
 
-// Used by standalone.html
-// eslint-disable-next-line no-unused-vars
 function __initLighthouseReport__() {
   /** @type {LH.Result} */
   // @ts-expect-error

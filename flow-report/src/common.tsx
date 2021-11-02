@@ -8,7 +8,7 @@ import {FunctionComponent} from 'preact';
 import {useEffect, useState} from 'preact/hooks';
 
 import {NavigationIcon, SnapshotIcon, TimespanIcon} from './icons';
-import {getFilmstripFrames, getScreenDimensions, getScreenshot} from './util';
+import {getFilmstripFrames, getScreenDimensions, getFullPageScreenshot} from './util';
 
 const ANIMATION_FRAME_DURATION_MS = 500;
 
@@ -72,15 +72,15 @@ const FlowStepAnimatedThumbnail: FunctionComponent<{
 };
 
 export const FlowStepThumbnail: FunctionComponent<{
-  reportResult: LH.ReportResult,
+  lhr: LH.Result,
   width?: number,
   height?: number,
-}> = ({reportResult, width, height}) => {
-  const screenshot = getScreenshot(reportResult);
-  const frames = getFilmstripFrames(reportResult);
+}> = ({lhr, width, height}) => {
+  const fullPageScreenshot = getFullPageScreenshot(lhr);
+  const frames = getFilmstripFrames(lhr);
 
   // Resize the image to fit the viewport aspect ratio.
-  const dimensions = getScreenDimensions(reportResult);
+  const dimensions = getScreenDimensions(lhr);
   if (width && height === undefined) {
     height = dimensions.height * width / dimensions.width;
   } else if (height && width === undefined) {
@@ -92,16 +92,22 @@ export const FlowStepThumbnail: FunctionComponent<{
     return <></>;
   }
 
-  if (reportResult.gatherMode === 'timespan' && frames && frames.length) {
-    return <FlowStepAnimatedThumbnail frames={frames} width={width} height={height} />;
+  let thumbnail;
+  if (frames && frames.length) {
+    thumbnail = frames[frames.length - 1].data;
+    if (lhr.gatherMode === 'timespan') {
+      return <FlowStepAnimatedThumbnail frames={frames} width={width} height={height} />;
+    }
+  } else {
+    thumbnail = fullPageScreenshot?.screenshot.data;
   }
 
   return <>
     {
-      screenshot &&
+      thumbnail &&
         <img
           className="FlowStepThumbnail"
-          src={screenshot}
+          src={thumbnail}
           style={{width, height}}
           alt="Screenshot of a page tested by Lighthouse"
         />

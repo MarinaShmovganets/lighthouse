@@ -35,24 +35,24 @@ export function classNames(...args: Array<string|undefined|Record<string, boolea
   return classes.join(' ');
 }
 
-export function getScreenDimensions(reportResult: LH.ReportResult) {
+export function getScreenDimensions(reportResult: LH.Result) {
   const {width, height} = reportResult.configSettings.screenEmulation;
   return {width, height};
 }
 
-export function getScreenshot(reportResult: LH.ReportResult) {
+export function getFullPageScreenshot(reportResult: LH.Result) {
   const fullPageScreenshotAudit = reportResult.audits['full-page-screenshot'];
   const fullPageScreenshot =
     fullPageScreenshotAudit &&
     fullPageScreenshotAudit.details &&
     fullPageScreenshotAudit.details.type === 'full-page-screenshot' &&
-    fullPageScreenshotAudit.details.screenshot.data;
+    fullPageScreenshotAudit.details;
 
   return fullPageScreenshot || null;
 }
 
 export function getFilmstripFrames(
-  reportResult: LH.ReportResult
+  reportResult: LH.Result
 ): Array<{data: string}> | undefined {
   const filmstripAudit = reportResult.audits['screenshot-thumbnails'];
   if (!filmstripAudit) return undefined;
@@ -79,27 +79,27 @@ export function useFlowResult(): LH.FlowResult {
   return flowResult;
 }
 
-export function useHashParam(param: string) {
-  const [paramValue, setParamValue] = useState(getHashParam(param));
+export function useHashParams(...params: string[]) {
+  const [paramValues, setParamValues] = useState(params.map(getHashParam));
 
   // Use two-way-binding on the URL hash.
-  // Triggers a re-render if the param changes.
+  // Triggers a re-render if any param changes.
   useEffect(() => {
     function hashListener() {
-      const newIndexString = getHashParam(param);
-      if (newIndexString === paramValue) return;
-      setParamValue(newIndexString);
+      const newParamValues = params.map(getHashParam);
+      if (newParamValues.every((value, i) => value === paramValues[i])) return;
+      setParamValues(newParamValues);
     }
     window.addEventListener('hashchange', hashListener);
     return () => window.removeEventListener('hashchange', hashListener);
-  }, [paramValue]);
+  }, [paramValues]);
 
-  return paramValue;
+  return paramValues;
 }
 
-export function useCurrentLhr(): LH.FlowResult.LhrRef|null {
+export function useHashState(): LH.FlowResult.HashState|null {
   const flowResult = useFlowResult();
-  const indexString = useHashParam('index');
+  const [indexString, anchor] = useHashParams('index', 'anchor');
 
   // Memoize result so a new object is not created on every call.
   return useMemo(() => {
@@ -117,6 +117,6 @@ export function useCurrentLhr(): LH.FlowResult.LhrRef|null {
       return null;
     }
 
-    return {value: step.lhr, index};
-  }, [indexString, flowResult]);
+    return {currentLhr: step.lhr, index, anchor};
+  }, [indexString, flowResult, anchor]);
 }

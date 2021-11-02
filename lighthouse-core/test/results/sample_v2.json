@@ -238,7 +238,6 @@
           {
             "source": "exception",
             "description": "Error: A distinctive error\n    at http://localhost:10200/dobetterweb/dbw_tester.html:56:54",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -250,7 +249,6 @@
           {
             "source": "exception",
             "description": "Error: An ignored error\n    at http://localhost:10200/dobetterweb/dbw_tester.html:59:38",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -262,7 +260,6 @@
           {
             "source": "console.error",
             "description": "Error! Error!",
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -274,7 +271,6 @@
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
@@ -286,7 +282,6 @@
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000",
@@ -298,7 +293,6 @@
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/favicon.ico",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/favicon.ico",
@@ -310,7 +304,6 @@
           {
             "source": "network",
             "description": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-            "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
             "sourceLocation": {
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
@@ -951,7 +944,7 @@
             "text": ""
           },
           {
-            "key": "elidedUrl",
+            "key": "url",
             "itemType": "url",
             "text": "URL"
           },
@@ -990,7 +983,6 @@
               "snippet": "<img src=\"lighthouse-480x318.jpg?isr1\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
               "nodeLabel": "body > img"
             },
-            "elidedUrl": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
             "displayedSize": "360 x 240",
             "actualSize": "480 x 318",
             "actualPixels": 152640,
@@ -1013,7 +1005,7 @@
       "description": "Deprecated APIs will eventually be removed from the browser. [Learn more](https://web.dev/deprecations/).",
       "score": 0,
       "scoreDisplayMode": "binary",
-      "displayValue": "3 warnings found",
+      "displayValue": "2 warnings found",
       "details": {
         "type": "table",
         "headings": [
@@ -1029,16 +1021,6 @@
           }
         ],
         "items": [
-          {
-            "value": "Application Cache API manifest selection is deprecated and will be removed in M85, around August 2020. See https://www.chromestatus.com/features/6192449487634432 for more details.",
-            "source": {
-              "type": "source-location",
-              "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
-              "urlProvider": "network",
-              "line": 8,
-              "column": 0
-            }
-          },
           {
             "value": "'window.webkitStorageInfo' is deprecated. Please use 'navigator.webkitTemporaryStorage' or 'navigator.webkitPersistentStorage' instead.",
             "source": {
@@ -3590,7 +3572,7 @@
                 "width": 360,
                 "height": 1365
               },
-              "snippet": "<html manifest=\"clock.appcache\">",
+              "snippet": "<html>",
               "nodeLabel": "html",
               "explanation": "Fix any of the following:\n  The <html> element does not have a lang attribute"
             }
@@ -5126,14 +5108,6 @@
         "overallSavingsBytes": 21189
       }
     },
-    "appcache-manifest": {
-      "id": "appcache-manifest",
-      "title": "Uses Application Cache",
-      "description": "Application Cache is deprecated. [Learn more](https://web.dev/appcache-manifest/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "displayValue": "Found \"clock.appcache\""
-    },
     "doctype": {
       "id": "doctype",
       "title": "Page has the HTML doctype",
@@ -6106,147 +6080,170 @@
         },
         {
           "id": "max-potential-fid",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "first-meaningful-paint",
           "weight": 0,
-          "acronym": "FMP"
+          "acronym": "FMP",
+          "group": "hidden"
         },
         {
           "id": "render-blocking-resources",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-responsive-images",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "offscreen-images",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "unminified-css",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "unminified-javascript",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "unused-css-rules",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "unused-javascript",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-optimized-images",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "modern-image-formats",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-text-compression",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-rel-preconnect",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "server-response-time",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "redirects",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-rel-preload",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "uses-http2",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "efficient-animated-content",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "duplicated-javascript",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "legacy-javascript",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "preload-lcp-image",
-          "weight": 0,
-          "group": "load-opportunities"
+          "weight": 0
         },
         {
           "id": "total-byte-weight",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "uses-long-cache-ttl",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "dom-size",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "critical-request-chains",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "user-timings",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "bootup-time",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "mainthread-work-breakdown",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
         },
         {
           "id": "font-display",
-          "weight": 0,
-          "group": "diagnostics"
+          "weight": 0
+        },
+        {
+          "id": "resource-summary",
+          "weight": 0
+        },
+        {
+          "id": "third-party-summary",
+          "weight": 0
+        },
+        {
+          "id": "third-party-facades",
+          "weight": 0
+        },
+        {
+          "id": "largest-contentful-paint-element",
+          "weight": 0
+        },
+        {
+          "id": "lcp-lazy-loaded",
+          "weight": 0
+        },
+        {
+          "id": "layout-shift-elements",
+          "weight": 0
+        },
+        {
+          "id": "uses-passive-event-listeners",
+          "weight": 0
+        },
+        {
+          "id": "no-document-write",
+          "weight": 0
+        },
+        {
+          "id": "long-tasks",
+          "weight": 0
+        },
+        {
+          "id": "non-composited-animations",
+          "weight": 0
+        },
+        {
+          "id": "unsized-images",
+          "weight": 0
+        },
+        {
+          "id": "viewport",
+          "weight": 0
         },
         {
           "id": "performance-budget",
@@ -6259,100 +6256,49 @@
           "group": "budgets"
         },
         {
-          "id": "resource-summary",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "third-party-summary",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "third-party-facades",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "largest-contentful-paint-element",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "lcp-lazy-loaded",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "layout-shift-elements",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "uses-passive-event-listeners",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "no-document-write",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "long-tasks",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "non-composited-animations",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "unsized-images",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
-          "id": "viewport",
-          "weight": 0,
-          "group": "diagnostics"
-        },
-        {
           "id": "network-requests",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "network-rtt",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "network-server-latency",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "main-thread-tasks",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "diagnostics",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "metrics",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "screenshot-thumbnails",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "final-screenshot",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         },
         {
           "id": "script-treemap-data",
-          "weight": 0
+          "weight": 0,
+          "group": "hidden"
         }
       ],
       "id": "performance",
@@ -6705,11 +6651,6 @@
           "group": "best-practices-general"
         },
         {
-          "id": "appcache-manifest",
-          "weight": 1,
-          "group": "best-practices-general"
-        },
-        {
           "id": "js-libraries",
           "weight": 0,
           "group": "best-practices-general"
@@ -6736,7 +6677,7 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.2
+      "score": 0.21
     },
     "seo": {
       "title": "SEO",
@@ -6826,7 +6767,7 @@
       "score": 0.67
     },
     "pwa": {
-      "title": "Progressive Web App",
+      "title": "PWA",
       "description": "These checks validate the aspects of a Progressive Web App. [Learn more](https://developers.google.com/web/progressive-web-apps/checklist).",
       "manualDescription": "These checks are required by the baseline [PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
       "supportedModes": [
@@ -6967,6 +6908,9 @@
     },
     "best-practices-general": {
       "title": "General"
+    },
+    "hidden": {
+      "title": ""
     }
   },
   "timing": {
@@ -8047,12 +7991,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:appcache-manifest",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:doctype",
         "duration": 100,
         "entryType": "measure"
@@ -8614,7 +8552,7 @@
       "lighthouse-core/audits/deprecations.js | displayValue": [
         {
           "values": {
-            "itemCount": 3
+            "itemCount": 2
           },
           "path": "audits.deprecations.displayValue"
         }
@@ -9405,20 +9343,6 @@
       ],
       "lighthouse-core/audits/byte-efficiency/legacy-javascript.js | description": [
         "audits[legacy-javascript].description"
-      ],
-      "lighthouse-core/audits/dobetterweb/appcache-manifest.js | failureTitle": [
-        "audits[appcache-manifest].title"
-      ],
-      "lighthouse-core/audits/dobetterweb/appcache-manifest.js | description": [
-        "audits[appcache-manifest].description"
-      ],
-      "lighthouse-core/audits/dobetterweb/appcache-manifest.js | displayValue": [
-        {
-          "values": {
-            "AppCacheManifest": "clock.appcache"
-          },
-          "path": "audits[appcache-manifest].displayValue"
-        }
       ],
       "lighthouse-core/audits/dobetterweb/doctype.js | title": [
         "audits.doctype.title"
