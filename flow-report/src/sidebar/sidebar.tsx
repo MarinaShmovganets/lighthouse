@@ -13,7 +13,7 @@ import {CpuIcon, EnvIcon, NetworkIcon, SummaryIcon} from '../icons';
 import {classNames, useHashState, useFlowResult} from '../util';
 import {SidebarFlow} from './flow';
 
-export const SidebarSummary: FunctionComponent = () => {
+const SidebarSummary: FunctionComponent = () => {
   const hashState = useHashState();
   const strings = useLocalizedStrings();
 
@@ -71,7 +71,7 @@ export const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSetti
   );
 };
 
-export const SidebarHeader: FunctionComponent<{title: string, date: string}> = ({title, date}) => {
+const SidebarHeader: FunctionComponent<{title: string, date: string}> = ({title, date}) => {
   const i18n = useI18n();
   return (
     <div className="SidebarHeader">
@@ -81,7 +81,7 @@ export const SidebarHeader: FunctionComponent<{title: string, date: string}> = (
   );
 };
 
-export const Sidebar: FunctionComponent = () => {
+const Sidebar: FunctionComponent = () => {
   const flowResult = useFlowResult();
   const firstLhr = flowResult.steps[0].lhr;
   return (
@@ -95,4 +95,10 @@ export const Sidebar: FunctionComponent = () => {
       <SidebarRuntimeSettings settings={firstLhr.configSettings}/>
     </div>
   );
+};
+
+export {
+  SidebarSummary,
+  SidebarHeader,
+  Sidebar,
 };
