@@ -5,7 +5,7 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {useLayoutEffect, useRef, useState} from 'preact/hooks';
+import {useEffect, useLayoutEffect, useRef, useState} from 'preact/hooks';
 
 import {ReportRendererProvider} from './wrappers/report-renderer';
 import {Sidebar} from './sidebar/sidebar';
@@ -16,21 +16,27 @@ import {Topbar} from './topbar';
 import {Header} from './header';
 import {I18nProvider} from './i18n/i18n';
 
+function getAnchorElement(hashState: LH.FlowResult.HashState|null) {
+  if (!hashState || !hashState.anchor) return null;
+  return document.getElementById(hashState.anchor);
+}
+
 const Content: FunctionComponent = () => {
   const hashState = useHashState();
   const ref = useRef<HTMLDivElement>(null);
 
+  // Scroll to top if no anchor is found.
+  // Done with `useLayoutEffect` to prevent a flash of the destination scrolled down.
   useLayoutEffect(() => {
-    if (hashState && hashState.anchor) {
-      const el = document.getElementById(hashState.anchor);
-      if (el) {
-        el.scrollIntoView({behavior: 'smooth'});
-        return;
-      }
-    }
+    const el = getAnchorElement(hashState);
+    if (ref.current && !el) ref.current.scrollTop = 0;
+  }, [hashState]);
 
-    // Scroll to top no anchor is found.
-    if (ref.current) ref.current.scrollTop = 0;
+  // Scroll to anchor element if it is found.
+  // Done with `useEffect` to prevent a bug where Chrome scrolls too far.
+  useEffect(() => {
+    const el = getAnchorElement(hashState);
+    if (el) el.scrollIntoView({behavior: 'smooth'});
   }, [hashState]);
 
   return (
