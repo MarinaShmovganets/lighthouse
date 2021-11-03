@@ -433,7 +433,8 @@ class GatherRunner {
       baseArtifacts.WebAppManifest = await WebAppManifest.getWebAppManifest(
         passContext.driver.defaultSession, passContext.url);
     } catch (err) {
-      baseArtifacts.WebAppManifest = err;
+      log.error('GatherRunner WebAppManifest', err);
+      baseArtifacts.WebAppManifest = null;
     }
 
     try {
@@ -442,13 +443,22 @@ class GatherRunner {
           passContext.driver.defaultSession);
       }
     } catch (err) {
-      baseArtifacts.InstallabilityErrors = err;
+      log.error('GatherRunner InstallabilityErrors', err);
+      baseArtifacts.InstallabilityErrors = {
+        errors: [
+          {
+            errorId: 'no-matching-service-worker',
+            errorArguments: [],
+          },
+        ],
+      };
     }
 
     try {
       baseArtifacts.Stacks = await Stacks.collectStacks(passContext.driver.executionContext);
     } catch (err) {
-      baseArtifacts.Stacks = err;
+      log.error('GatherRunner Stacks', err);
+      baseArtifacts.Stacks = [];
     }
 
     // Find the NetworkUserAgent actually used in the devtoolsLogs.
