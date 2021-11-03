@@ -133,7 +133,7 @@ export class CategoryRenderer {
     const warningsEl = this.dom.createChildOf(summaryEl, 'div', 'lh-warnings');
     this.dom.createChildOf(warningsEl, 'span').textContent = strings.warningHeader;
     if (warnings.length === 1) {
-      warningsEl.appendChild(this.dom.document().createTextNode(warnings.join('')));
+      warningsEl.appendChild(this.dom.createTextNode(warnings.join('')));
     } else {
       const warningsUl = this.dom.createChildOf(warningsEl, 'ul');
       for (const warning of warnings) {
@@ -337,6 +337,9 @@ export class CategoryRenderer {
       descriptionEl.classList.add('lh-audit-group__description', 'lh-audit-group__footer');
       el.appendChild(descriptionEl);
     }
+
+    this.dom.find('.lh-clump-toggletext--show', el).textContent = Util.i18n.strings.show;
+    this.dom.find('.lh-clump-toggletext--hide', el).textContent = Util.i18n.strings.hide;
 
     clumpElement.classList.add(`lh-clump--${clumpId.toLowerCase()}`);
     return el;
