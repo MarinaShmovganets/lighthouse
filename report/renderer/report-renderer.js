@@ -334,7 +334,7 @@ export class ReportRenderer {
 
     if (fullPageScreenshot) {
       ElementScreenshotRenderer.installFullPageScreenshot(
-        reportContainer, fullPageScreenshot.screenshot);
+        this._dom.rootEl, fullPageScreenshot.screenshot);
     }
 
     return reportFragment;
