@@ -33,7 +33,7 @@ const SidebarSummary: FunctionComponent = () => {
   );
 };
 
-export const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
+const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
 ({settings}) => {
   const strings = useLocalizedStrings();
   const env = Util.getEmulationDescriptions(settings);
@@ -99,6 +99,7 @@ const Sidebar: FunctionComponent = () => {
 
 export {
   SidebarSummary,
+  SidebarRuntimeSettings,
   SidebarHeader,
   Sidebar,
 };
