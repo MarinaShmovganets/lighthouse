@@ -422,21 +422,34 @@ class GatherRunner {
   static async populateBaseArtifacts(passContext) {
     const status = {msg: 'Populate base artifacts', id: 'lh:gather:populateBaseArtifacts'};
     log.time(status);
+
     const baseArtifacts = passContext.baseArtifacts;
 
     // Copy redirected URL to artifact.
     baseArtifacts.URL.finalUrl = passContext.url;
 
     // Fetch the manifest, if it exists.
-    baseArtifacts.WebAppManifest = await WebAppManifest.getWebAppManifest(
-      passContext.driver.defaultSession, passContext.url);
-
-    if (baseArtifacts.WebAppManifest) {
-      baseArtifacts.InstallabilityErrors = await InstallabilityErrors.getInstallabilityErrors(
-        passContext.driver.defaultSession);
+    try {
+      baseArtifacts.WebAppManifest = await WebAppManifest.getWebAppManifest(
+        passContext.driver.defaultSession, passContext.url);
+    } catch (err) {
+      baseArtifacts.WebAppManifest = err;
     }
 
-    baseArtifacts.Stacks = await Stacks.collectStacks(passContext.driver.executionContext);
+    try {
+      if (baseArtifacts.WebAppManifest && !(baseArtifacts.WebAppManifest instanceof Error)) {
+        baseArtifacts.InstallabilityErrors = await InstallabilityErrors.getInstallabilityErrors(
+          passContext.driver.defaultSession);
+      }
+    } catch (err) {
+      baseArtifacts.InstallabilityErrors = err;
+    }
+
+    try {
+      baseArtifacts.Stacks = await Stacks.collectStacks(passContext.driver.executionContext);
+    } catch (err) {
+      baseArtifacts.Stacks = err;
+    }
 
     // Find the NetworkUserAgent actually used in the devtoolsLogs.
     const devtoolsLog = baseArtifacts.devtoolsLogs[passContext.passConfig.passName];
