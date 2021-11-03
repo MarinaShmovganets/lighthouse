@@ -8,6 +8,7 @@
 /* eslint-env jest */
 
 import jsdom from 'jsdom';
+import {jest} from '@jest/globals';
 
 import {Util} from '../../renderer/util.js';
 import {DOM} from '../../renderer/dom.js';

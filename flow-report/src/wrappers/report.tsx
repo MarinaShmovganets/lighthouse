@@ -52,7 +52,7 @@ const Report: FunctionComponent<{hashState: LH.FlowResult.HashState}> =
       if (fullPageScreenshot) {
         ElementScreenshotRenderer.installOverlayFeature({
           dom,
-          reportEl: ref.current,
+          rootEl: ref.current,
           overlayContainerEl: ref.current,
           fullPageScreenshot,
         });
