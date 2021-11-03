@@ -63,7 +63,7 @@ describe('SidebarRuntimeSettings', () => {
     const root = render(<SidebarRuntimeSettings settings={settings}/>, {wrapper});
 
     expect(root.getByText('Emulated Moto G4')).toBeTruthy();
-    expect(root.getByText('Slow 4G')).toBeTruthy();
+    expect(root.getByText('Slow 4G throttling')).toBeTruthy();
     expect(root.getByText('4x slowdown'));
   });
 
