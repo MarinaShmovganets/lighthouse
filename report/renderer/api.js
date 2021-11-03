@@ -16,7 +16,7 @@ import {ReportUIFeatures} from '../renderer/report-ui-features.js';
  * @return {HTMLElement}
  */
 export function renderReport(lhr, opts = {}) {
-  const rootEl = document.createElement('main');
+  const rootEl = document.createElement('article');
   rootEl.classList.add('lh-root', 'lh-vars');
 
   const dom = new DOM(rootEl.ownerDocument, rootEl);
