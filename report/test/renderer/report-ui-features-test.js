@@ -34,7 +34,7 @@ describe('ReportUIFeatures', () => {
     const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
     const renderer = new ReportRenderer(dom, categoryRenderer);
     const reportUIFeatures = new ReportUIFeatures(dom);
-    const container = dom.find('main', dom.document());
+    const container = dom.find('body', dom.document());
     renderer.renderReport(lhr, container);
     reportUIFeatures.initFeatures(lhr);
     return container;

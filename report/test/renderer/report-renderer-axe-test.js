@@ -23,6 +23,8 @@ describe('ReportRendererAxe', () => {
     let sampleResults;
 
     beforeAll(async () => {
+      global.console.warn = jest.fn();
+
       const {window} = new jsdom.JSDOM();
       const dom = new DOM(window.document);
       const detailsRenderer = new DetailsRenderer(dom);
