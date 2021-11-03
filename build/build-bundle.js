@@ -136,6 +136,8 @@ async function build(entryPath, distPath, opts = {minify: true}) {
           // TODO: Use globalThis directly.
           'global.isLightrider': 'globalThis.isLightrider',
           'global.isDevtools': 'globalThis.isDevtools',
+          // Prevents `runBundledLighthouse` from being bundled.
+          'typeof module !== \'undefined\' && module.exports': 'false',
         },
       }),
       rollupPlugins.alias({
