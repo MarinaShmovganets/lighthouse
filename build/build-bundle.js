@@ -198,6 +198,7 @@ async function build(entryPath, distPath, opts = {minify: true}) {
     format: 'iife',
     sourcemap: DEBUG,
   });
+  await bundle.close();
 }
 
 /**
