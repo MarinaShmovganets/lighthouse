@@ -47,7 +47,7 @@ export class ReportRenderer {
    * @return {!Element}
    */
   renderReport(lhr, rootEl, opts) {
-    // Allow old report rendering API
+    // Allow legacy report rendering API
     if (!this._dom.rootEl && rootEl) {
       console.warn('Please adopt the new report API in renderer/api.js.');
       const closestRoot = rootEl.closest('.lh-root');
@@ -57,6 +57,9 @@ export class ReportRenderer {
         rootEl.classList.add('lh-root', 'lh-vars');
         this._dom.rootEl = rootEl;
       }
+    } else if (this._dom.rootEl && rootEl) {
+      // Handle legacy flow-report case
+      this._dom.rootEl = rootEl;
     }
     if (opts) {
       this._opts = opts;
