@@ -168,6 +168,24 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
   }
 
   /**
+   * @param {LH.ReportResult.AuditRef[]} metrics
+   */
+  _reorderMetrics(metrics) {
+    const col1 = metrics
+      .splice(0, Math.floor(metrics.length / 2))
+      .reverse();
+    const col2 = metrics.reverse();
+    const result = [];
+    while (col1.length || col2.length) {
+      const metric1 = col1.pop();
+      const metric2 = col2.pop();
+      if (metric1) result.push(metric1);
+      if (metric2) result.push(metric2);
+    }
+    return result;
+  }
+
+  /**
    * @param {LH.ReportResult.Category} category
    * @param {Object<string, LH.Result.ReportGroup>} groups
    * @param {{gatherMode: LH.Result.GatherMode}=} options
@@ -181,7 +199,9 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
     element.appendChild(this.renderCategoryHeader(category, groups, options));
 
     // Metrics.
-    const metricAudits = category.auditRefs.filter(audit => audit.group === 'metrics');
+    const unorderedMetrics = category.auditRefs.filter(audit => audit.group === 'metrics');
+    const metricAudits = this._reorderMetrics(unorderedMetrics);
+
     if (metricAudits.length) {
       const [metricsGroupEl, metricsFooterEl] = this.renderAuditGroup(groups.metrics);
 
@@ -200,7 +220,6 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
       showEl.textContent = Util.i18n.strings.expandView;
       hideEl.textContent = Util.i18n.strings.collapseView;
 
-      const metricAudits = category.auditRefs.filter(audit => audit.group === 'metrics');
       const metricsBoxesEl = this.dom.createElement('div', 'lh-metrics-container');
       metricsGroupEl.insertBefore(metricsBoxesEl, metricsFooterEl);
       metricAudits.forEach(item => {
