@@ -63,8 +63,13 @@ class LoadSimulator {
         break;
       default:
         // intentionally fallback to simulator defaults
-        break;
+        return new Simulator(options);
     }
+
+    // 0 should be interpreted as "unset" for these values.
+    // Fallback to environment values in this case.
+    if (options.rtt === 0) options.rtt = networkAnalysis.rtt;
+    if (options.throughput === 0) options.throughput = networkAnalysis.throughput;
 
     return new Simulator(options);
   }
