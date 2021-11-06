@@ -195,9 +195,7 @@ class Fetcher {
     /** @type {NodeJS.Timeout} */
     let timeoutHandle;
     const timeoutPromise = new Promise((_, reject) => {
-      timeoutHandle = setTimeout(() => {
-        reject(new Error('Timed out fetching resource'));
-      }, options.timeout);
+      timeoutHandle = setTimeout(reject, options.timeout, new Error('Timed out fetching resource'));
     });
 
     const responsePromise = this._loadNetworkResource(url);
@@ -286,8 +284,7 @@ class Fetcher {
     let timeoutHandle;
     /** @type {Promise<never>} */
     const timeoutPromise = new Promise((_, reject) => {
-      const errorMessage = 'Timed out fetching resource.';
-      timeoutHandle = setTimeout(() => reject(new Error(errorMessage)), options.timeout);
+      timeoutHandle = setTimeout(reject, options.timeout, new Error('Timed out fetching resource.'));
     });
 
     const racePromise = Promise.race([
