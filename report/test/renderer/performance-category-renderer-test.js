@@ -360,4 +360,26 @@ Array [
       });
     });
   });
+
+  describe('_reorderMetrics', () => {
+    it('orders metrics by row', () => {
+      const metrics = [
+        {id: 'first-contentful-paint'},
+        {id: 'speed-index'},
+        {id: 'largest-contentful-paint'},
+        {id: 'interactive'},
+        {id: 'total-blocking-time'},
+        {id: 'cumulative-layout-shift'},
+      ];
+      const orderedMetrics = renderer._reorderMetrics(metrics);
+      assert.deepStrictEqual(orderedMetrics, [
+        {id: 'first-contentful-paint'},
+        {id: 'interactive'},
+        {id: 'speed-index'},
+        {id: 'total-blocking-time'},
+        {id: 'largest-contentful-paint'},
+        {id: 'cumulative-layout-shift'},
+      ]);
+    });
+  });
 });
