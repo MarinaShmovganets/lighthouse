@@ -5,6 +5,8 @@
  */
 'use strict';
 
+const {version: lighthouseVersion} = require('../../package.json');
+
 const NO_THROTTLING_METRICS = {
   latency: 0,
   downloadThroughput: 0,
@@ -24,10 +26,11 @@ const NO_CPU_THROTTLE_METRICS = {
 function parseUseragentIntoMetadata(userAgent, formFactor) {
   const match = userAgent.match(/Chrome\/([\d.]+)/); // eg 'Chrome/(71.0.3577.0)'
   const fullVersion = (match && match[1]) || '99.0.1234.0';
-  const version = fullVersion.split('.', 1)[0];
+  const [version] = fullVersion.split('.', 1);
   const brands = [
     {brand: 'Chromium', version},
     {brand: 'Google Chrome', version},
+    {brand: 'Lighthouse', version: lighthouseVersion},
   ];
 
   const motoG4Details = {
