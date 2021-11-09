@@ -168,30 +168,6 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
   }
 
   /**
-   * Config order of metrics assumes they will fill the grid column by column, but CSS will order metrics row by row.
-   * This function adjusts metric order to meet the config expectation.
-   *
-   * @param {LH.ReportResult.AuditRef[]} metrics
-   */
-  _reorderMetrics(metrics) {
-    // Clone input to avoid changes.
-    metrics = [...metrics];
-
-    const halfway = Math.ceil(metrics.length / 2);
-    const col1 = metrics.slice(0, halfway).reverse();
-    const col2 = metrics.slice(halfway).reverse();
-
-    const result = [];
-    while (col1.length || col2.length) {
-      const metric1 = col1.pop();
-      const metric2 = col2.pop();
-      if (metric1) result.push(metric1);
-      if (metric2) result.push(metric2);
-    }
-    return result;
-  }
-
-  /**
    * @param {LH.ReportResult.Category} category
    * @param {Object<string, LH.Result.ReportGroup>} groups
    * @param {{gatherMode: LH.Result.GatherMode}=} options
@@ -205,8 +181,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
     element.appendChild(this.renderCategoryHeader(category, groups, options));
 
     // Metrics.
-    const unorderedMetrics = category.auditRefs.filter(audit => audit.group === 'metrics');
-    const metricAudits = this._reorderMetrics(unorderedMetrics);
+    const metricAudits = category.auditRefs.filter(audit => audit.group === 'metrics');
 
     if (metricAudits.length) {
       const [metricsGroupEl, metricsFooterEl] = this.renderAuditGroup(groups.metrics);
