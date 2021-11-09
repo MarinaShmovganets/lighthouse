@@ -182,7 +182,6 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
 
     // Metrics.
     const metricAudits = category.auditRefs.filter(audit => audit.group === 'metrics');
-
     if (metricAudits.length) {
       const [metricsGroupEl, metricsFooterEl] = this.renderAuditGroup(groups.metrics);
 
