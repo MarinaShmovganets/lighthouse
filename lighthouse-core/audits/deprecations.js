@@ -11,6 +11,8 @@
  * that contain deprecated API warnings sent by Chrome.
  */
 
+// TODO: when M97 is sufficiently old, drop support for console messages
+
 const Audit = require('./audit.js');
 const i18n = require('../lib/i18n/i18n.js');
 
@@ -58,7 +60,7 @@ class Deprecations extends Audit {
 
     let deprecations;
 
-    if (artifacts.InspectorIssues.deprecations?.length) {
+    if (artifacts.InspectorIssues.deprecations.length) {
       deprecations = artifacts.InspectorIssues.deprecations
         .map(deprecation => {
           return {
@@ -69,6 +71,8 @@ class Deprecations extends Audit {
               url: deprecation.sourceCodeLocation.url,
               urlProvider: 'network',
               line: deprecation.sourceCodeLocation.lineNumber,
+              // Protocol.Audits.SourceCodeLocation.columnNumber is 1-indexed,
+              // but we use 0-indexed.
               column: deprecation.sourceCodeLocation.columnNumber - 1,
             },
           };
