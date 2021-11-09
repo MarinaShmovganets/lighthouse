@@ -67,6 +67,17 @@ describe('PerfCategoryRenderer', () => {
     const timelineElements = metricsSection.querySelectorAll('.lh-metric');
     const nontimelineElements = metricsSection.querySelectorAll('.lh-audit');
     assert.equal(timelineElements.length + nontimelineElements.length, metricAudits.length);
+    assert.deepStrictEqual(
+      Array.from(timelineElements).map(el => el.id),
+      [
+        'first-contentful-paint',
+        'interactive',
+        'speed-index',
+        'total-blocking-time',
+        'largest-contentful-paint',
+        'cumulative-layout-shift',
+      ]
+    );
   });
 
   it('does not render metrics section if no metric group audits', () => {
