@@ -10,6 +10,7 @@
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
+import {jest} from '@jest/globals';
 
 import reportAssets from '../../generator/report-assets.js';
 import {Util} from '../../renderer/util.js';
@@ -33,13 +34,15 @@ describe('ReportUIFeatures', () => {
     const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
     const renderer = new ReportRenderer(dom, categoryRenderer);
     const reportUIFeatures = new ReportUIFeatures(dom);
-    const container = dom.find('main', dom._document);
+    const container = dom.find('body', dom.document());
     renderer.renderReport(lhr, container);
     reportUIFeatures.initFeatures(lhr);
     return container;
   }
 
   beforeAll(() => {
+    global.console.warn = jest.fn();
+
     // Stub out matchMedia for Node.
     global.matchMedia = function() {
       return {
@@ -57,13 +60,19 @@ describe('ReportUIFeatures', () => {
 
     global.HTMLElement = document.window.HTMLElement;
     global.HTMLInputElement = document.window.HTMLInputElement;
+    global.HTMLInputElement = document.window.HTMLInputElement;
 
     global.window = document.window;
+    global.window.requestAnimationFrame = fn => fn();
     global.window.getComputedStyle = function() {
       return {
         marginTop: '10px',
         height: '10px',
       };
+    };
+    global.window.ResizeObserver = class ResizeObserver {
+      observe() { }
+      unobserve() { }
     };
 
     dom = new DOM(document.window.document);
