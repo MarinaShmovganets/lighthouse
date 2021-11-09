@@ -168,17 +168,18 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
   }
 
   /**
+   * Config order of metrics assumes they will fill the grid column by column, but CSS will order metrics row by row.
+   * This function adjusts metric order to meet the config expectation.
+   *
    * @param {LH.ReportResult.AuditRef[]} metrics
    */
   _reorderMetrics(metrics) {
     // Clone input to avoid changes.
     metrics = [...metrics];
 
-    const col1 = metrics
-      .splice(0, Math.floor(metrics.length / 2))
-      .reverse();
-    // First half of array was removed by splice.
-    const col2 = metrics.reverse();
+    const halfway = Math.ceil(metrics.length / 2);
+    const col1 = metrics.slice(0, halfway).reverse();
+    const col2 = metrics.slice(halfway).reverse();
 
     const result = [];
     while (col1.length || col2.length) {
