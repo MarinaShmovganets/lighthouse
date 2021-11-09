@@ -447,7 +447,7 @@ class GatherRunner {
       baseArtifacts.InstallabilityErrors = {
         errors: [
           {
-            errorId: 'no-matching-service-worker',
+            errorId: 'protocol-timeout',
             errorArguments: [],
           },
         ],
