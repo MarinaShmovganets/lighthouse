@@ -237,15 +237,6 @@ const expectations = {
           ],
         },
       },
-      'external-anchors-use-rel-noopener': {
-        score: 0,
-        warnings: [/Unable to determine.*<a target="_blank">/],
-        details: {
-          items: {
-            length: 3,
-          },
-        },
-      },
       'geolocation-on-start': {
         score: 0,
       },
@@ -312,9 +303,23 @@ const expectations = {
           items: [
             {
               value: /'window.webkitStorageInfo' is deprecated/,
+              source: {
+                type: 'source-location',
+                url: 'http://localhost:10200/dobetterweb/dbw_tester.js',
+                urlProvider: 'network',
+                line: '>0',
+                column: 9,
+              },
             },
             {
               value: /Synchronous XMLHttpRequest on the main thread is deprecated/,
+              source: {
+                type: 'source-location',
+                url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                urlProvider: 'network',
+                line: '>0',
+                column: 6,
+              },
             },
           ],
         },

@@ -397,9 +397,6 @@ Object {
       "path": "dobetterweb/dom-size",
     },
     Object {
-      "path": "dobetterweb/external-anchors-use-rel-noopener",
-    },
-    Object {
       "path": "dobetterweb/geolocation-on-start",
     },
     Object {
@@ -740,11 +737,6 @@ Object {
         Object {
           "group": "best-practices-trust-safety",
           "id": "is-on-https",
-          "weight": 1,
-        },
-        Object {
-          "group": "best-practices-trust-safety",
-          "id": "external-anchors-use-rel-noopener",
           "weight": 1,
         },
         Object {
@@ -1505,7 +1497,7 @@ Object {
     "channel": "cli",
     "debugNavigation": false,
     "disableStorageReset": false,
-    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4590.2 Mobile Safari/537.36 Chrome-Lighthouse",
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4695.0 Mobile Safari/537.36 Chrome-Lighthouse",
     "extraHeaders": null,
     "formFactor": "mobile",
     "gatherMode": false,
@@ -1668,7 +1660,7 @@ Object {
     "channel": "cli",
     "debugNavigation": false,
     "disableStorageReset": false,
-    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4590.2 Mobile Safari/537.36 Chrome-Lighthouse",
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4695.0 Mobile Safari/537.36 Chrome-Lighthouse",
     "extraHeaders": null,
     "formFactor": "mobile",
     "gatherMode": false,
