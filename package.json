@@ -3,14 +3,6 @@
   "version": "8.6.0",
   "description": "Automated auditing, performance metrics, and best practices for the web.",
   "main": "./lighthouse-core/index.js",
-  "exports": {
-    ".": "./lighthouse-core/index.js",
-    "./renderer": "./dist/report/bundle.esm.js",
-    "./lighthouse-core/*": "./lighthouse-core/*.js",
-    "./lighthouse-core/*.js": "./lighthouse-core/*",
-    "./lighthouse-cli/bin.js": "./lighthouse-cli/bin.js",
-    "./types/*": "./types/*"
-  },
   "bin": {
     "lighthouse": "./lighthouse-cli/index.js",
     "chrome-debug": "./lighthouse-core/scripts/manual-chrome-launcher.js",
