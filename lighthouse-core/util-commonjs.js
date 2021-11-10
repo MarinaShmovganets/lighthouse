@@ -111,7 +111,8 @@ class Util {
     /** @type {Map<string, Array<LH.ReportResult.AuditRef>>} */
     const relevantAuditToMetricsMap = new Map();
 
-    // Old LHR versions (<=8.6.0) do not have the "hidden" group.
+    // Old LHR versions (<9.0.0-alpha.0) do not have the "hidden" group.
+    // Instead, old LHRs used "no group" to identify audits that should be hidden in performance.
     // This backcompat converts the LHR to use the new "hidden" group.
     const [major, minor] = clone.lighthouseVersion.split('.').map(Number);
     const perfCategory = clone.categories['performance'];
