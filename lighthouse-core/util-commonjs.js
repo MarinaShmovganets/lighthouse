@@ -111,7 +111,7 @@ class Util {
     /** @type {Map<string, Array<LH.ReportResult.AuditRef>>} */
     const relevantAuditToMetricsMap = new Map();
 
-    // This backcompat converts old LHRs (<9.0.0-alpha.0) to use the new "hidden" group.
+    // This backcompat converts old LHRs (<9.0.0) to use the new "hidden" group.
     // Old LHRs used "no group" to identify audits that should be hidden in performance instead of the "hidden" group.
     // Newer LHRs use "no group" to identify opportunities and diagnostics whose groups are assigned by details type.
     const [major, minor] = clone.lighthouseVersion.split('.').map(Number);
