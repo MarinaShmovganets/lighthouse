@@ -6,7 +6,8 @@
   "exports": {
     ".": "./lighthouse-core/index.js",
     "./renderer": "./dist/report/bundle.esm.js",
-    "./lighthouse-core/*": "./lighthouse-core/*",
+    "./lighthouse-core/*": "./lighthouse-core/*.js",
+    "./lighthouse-core/*.js": "./lighthouse-core/*",
     "./lighthouse-cli/bin.js": "./lighthouse-cli/bin.js",
     "./types/*": "./types/*"
   },
