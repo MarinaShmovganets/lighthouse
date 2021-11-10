@@ -5,7 +5,10 @@
   "main": "./lighthouse-core/index.js",
   "exports": {
     ".": "./lighthouse-core/index.js",
-    "./renderer": "./dist/report/bundle.esm.js"
+    "./renderer": "./dist/report/bundle.esm.js",
+    "./lighthouse-core/*": "./lighthouse-core/*",
+    "./lighthouse-cli/bin.js": "./lighthouse-cli/bin.js",
+    "./types/*": "./types/*"
   },
   "bin": {
     "lighthouse": "./lighthouse-cli/index.js",
