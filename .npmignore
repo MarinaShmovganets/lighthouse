@@ -56,7 +56,6 @@ results.html
 dist/**
 !dist/report/standalone.js
 !dist/report/flow.js
-!dist/report/bundle.umd.js
 
 # large files
 changelog.md
