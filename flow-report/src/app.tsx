@@ -5,7 +5,7 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {useEffect, useLayoutEffect, useRef, useState} from 'preact/hooks';
+import {useLayoutEffect, useRef, useState} from 'preact/hooks';
 
 import {ReportRendererProvider} from './wrappers/report-renderer';
 import {Sidebar} from './sidebar/sidebar';
@@ -25,18 +25,13 @@ const Content: FunctionComponent = () => {
   const hashState = useHashState();
   const ref = useRef<HTMLDivElement>(null);
 
-  // Scroll to top if no anchor is found.
-  // Done with `useLayoutEffect` to prevent a flash of the destination scrolled down.
   useLayoutEffect(() => {
     const el = getAnchorElement(hashState);
-    if (ref.current && !el) ref.current.scrollTop = 0;
-  }, [hashState]);
-
-  // Scroll to anchor element if it is found.
-  // Done with `useEffect` to prevent a bug where Chrome scrolls too far.
-  useEffect(() => {
-    const el = getAnchorElement(hashState);
-    if (el) el.scrollIntoView({behavior: 'smooth'});
+    if (el) {
+      el.scrollIntoView();
+    } else if (ref.current) {
+      ref.current.scrollTop = 0;
+    }
   }, [hashState]);
 
   return (
