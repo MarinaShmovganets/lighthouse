@@ -1,6 +1,6 @@
 {
   "name": "lighthouse",
-  "version": "8.6.0",
+  "version": "9.0.0-alpha.0",
   "description": "Automated auditing, performance metrics, and best practices for the web.",
   "main": "./lighthouse-core/index.js",
   "bin": {
@@ -146,7 +146,7 @@
     "cpy": "^7.0.1",
     "cross-env": "^7.0.2",
     "csv-validator": "^0.0.3",
-    "devtools-protocol": "0.0.901419",
+    "devtools-protocol": "0.0.939404",
     "es-main": "^1.0.2",
     "eslint": "^7.23.0",
     "eslint-config-google": "^0.9.1",
@@ -162,7 +162,7 @@
     "jsdom": "^12.2.0",
     "jsonld": "^5.2.0",
     "jsonlint-mod": "^1.7.6",
-    "lighthouse-plugin-publisher-ads": "^1.4.1",
+    "lighthouse-plugin-publisher-ads": "^1.5.4",
     "magic-string": "^0.25.7",
     "mime-types": "^2.1.30",
     "node-fetch": "^2.6.1",
@@ -217,6 +217,9 @@
     "ws": "^7.0.0",
     "yargs": "^16.1.1",
     "yargs-parser": "^20.2.4"
+  },
+  "resolutions": {
+    "puppeteer/**/devtools-protocol": "0.0.939404"
   },
   "repository": "GoogleChrome/lighthouse",
   "keywords": [

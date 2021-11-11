@@ -2,14 +2,14 @@
   "gatherMode": "navigation",
   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4635.0 Safari/537.36",
   "environment": {
-    "networkUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4590.2 Mobile Safari/537.36 Chrome-Lighthouse",
+    "networkUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4695.0 Mobile Safari/537.36 Chrome-Lighthouse",
     "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4635.0 Safari/537.36",
     "benchmarkIndex": 1549,
     "credits": {
       "axe-core": "4.2.3"
     }
   },
-  "lighthouseVersion": "8.6.0",
+  "lighthouseVersion": "9.0.0-alpha.0",
   "fetchTime": "2021-09-07T20:11:11.853Z",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -1037,7 +1037,7 @@
               "type": "source-location",
               "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
               "urlProvider": "network",
-              "line": 380,
+              "line": 369,
               "column": 6
             }
           }
@@ -5784,7 +5784,7 @@
       "deviceScaleFactor": 2.625,
       "disabled": false
     },
-    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4590.2 Mobile Safari/537.36 Chrome-Lighthouse",
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4695.0 Mobile Safari/537.36 Chrome-Lighthouse",
     "auditMode": true,
     "gatherMode": false,
     "disableStorageReset": false,
@@ -5927,10 +5927,33 @@
           ]
         },
         {
+          "id": "interactive",
+          "weight": 10,
+          "group": "metrics",
+          "acronym": "TTI"
+        },
+        {
           "id": "speed-index",
           "weight": 10,
           "group": "metrics",
           "acronym": "SI"
+        },
+        {
+          "id": "total-blocking-time",
+          "weight": 30,
+          "group": "metrics",
+          "acronym": "TBT",
+          "relevantAudits": [
+            "long-tasks",
+            "third-party-summary",
+            "third-party-facades",
+            "bootup-time",
+            "mainthread-work-breakdown",
+            "dom-size",
+            "duplicated-javascript",
+            "legacy-javascript",
+            "viewport"
+          ]
         },
         {
           "id": "largest-contentful-paint",
@@ -5954,29 +5977,6 @@
             "unused-javascript",
             "efficient-animated-content",
             "total-byte-weight"
-          ]
-        },
-        {
-          "id": "interactive",
-          "weight": 10,
-          "group": "metrics",
-          "acronym": "TTI"
-        },
-        {
-          "id": "total-blocking-time",
-          "weight": 30,
-          "group": "metrics",
-          "acronym": "TBT",
-          "relevantAudits": [
-            "long-tasks",
-            "third-party-summary",
-            "third-party-facades",
-            "bootup-time",
-            "mainthread-work-breakdown",
-            "dom-size",
-            "duplicated-javascript",
-            "legacy-javascript",
-            "viewport"
           ]
         },
         {
