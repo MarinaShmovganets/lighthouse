@@ -5,7 +5,7 @@
  */
 
 import {createContext} from 'preact';
-import {useContext, useEffect, useMemo, useState} from 'preact/hooks';
+import {useContext, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'preact/hooks';
 
 import type {UIStringsType} from './i18n/ui-strings';
 
@@ -121,6 +121,26 @@ function useHashState(): LH.FlowResult.HashState|null {
   }, [indexString, flowResult, anchor]);
 }
 
+function useExternalRenderer<T extends Element>(
+  render: () => Node,
+  inputs?: ReadonlyArray<unknown>
+) {
+  const ref = useRef<T>(null);
+
+  useLayoutEffect(() => {
+    if (ref.current) {
+      const root = render();
+      ref.current.appendChild(root);
+    }
+
+    return () => {
+      if (ref.current) ref.current.innerHTML = '';
+    };
+  }, inputs);
+
+  return ref;
+}
+
 export {
   FlowResultContext,
   classNames,
@@ -131,4 +151,5 @@ export {
   useFlowResult,
   useHashParams,
   useHashState,
+  useExternalRenderer,
 };

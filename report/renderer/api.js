@@ -9,13 +9,19 @@
 import {DOM} from '../renderer/dom.js';
 import {ReportRenderer} from '../renderer/report-renderer.js';
 import {ReportUIFeatures} from '../renderer/report-ui-features.js';
+import {CategoryRenderer} from './category-renderer.js';
+import {DetailsRenderer} from './details-renderer.js';
+
+const dom = new DOM(document, document.documentElement);
+const detailsRenderer = new DetailsRenderer(dom);
+const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
 
 /**
  * @param {LH.Result} lhr
  * @param {LH.Renderer.Options} opts
  * @return {HTMLElement}
  */
-export function renderReport(lhr, opts = {}) {
+function renderReport(lhr, opts = {}) {
   const rootEl = document.createElement('article');
   rootEl.classList.add('lh-root', 'lh-vars');
 
@@ -30,3 +36,30 @@ export function renderReport(lhr, opts = {}) {
   features.initFeatures(lhr);
   return rootEl;
 }
+
+/**
+ * @param {LH.ReportResult.Category} category
+ * @param {Parameters<CategoryRenderer['renderCategoryScore']>[2]=} options
+ * @return {DocumentFragment}
+ */
+function renderCategoryScore(category, options) {
+  return categoryRenderer.renderCategoryScore(category, {}, options);
+}
+
+/**
+ * @param {Blob} blob
+ * @param {string} filename
+ */
+function saveFile(blob, filename) {
+  dom.saveFile(blob, filename);
+}
+
+/**
+ * @param {string} markdownText
+ * @return {Element}
+ */
+function convertMarkdownCodeSnippets(markdownText) {
+  return dom.convertMarkdownCodeSnippets(markdownText);
+}
+
+export {renderReport, renderCategoryScore, saveFile, convertMarkdownCodeSnippets};

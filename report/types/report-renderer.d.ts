@@ -17,6 +17,11 @@ declare module Renderer {
 
     /** Disable the topbar UI component */
     omitTopbar?: boolean;
+    /**
+     * Transform category score links to a new format.
+     * Flow report uses this to convert `#seo` to `#index=0&anchor=seo`.
+     */
+    categoryScoreTransform?: (categoryScore: HTMLAnchorElement) => HTMLAnchorElement;
   }
 }
 
