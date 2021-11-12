@@ -121,20 +121,26 @@ function useHashState(): LH.FlowResult.HashState|null {
   }, [indexString, flowResult, anchor]);
 }
 
+/**
+ * Creates a DOM subtree from non-preact code (e.g. LH report renderer).
+ * @param renderCallback Callback that renders a DOM subtree.
+ * @param inputs Changes to these values will trigger a re-render of the DOM subtree.
+ * @return Reference to the element that will contain the DOM subtree.
+ */
 function useExternalRenderer<T extends Element>(
-  render: () => Node,
+  renderCallback: () => Node,
   inputs?: ReadonlyArray<unknown>
 ) {
   const ref = useRef<T>(null);
 
   useLayoutEffect(() => {
-    if (ref.current) {
-      const root = render();
-      ref.current.appendChild(root);
-    }
+    if (!ref.current) return;
+
+    const root = renderCallback();
+    ref.current.appendChild(root);
 
     return () => {
-      if (ref.current) ref.current.innerHTML = '';
+      if (ref.current?.contains(root)) ref.current.removeChild(root);
     };
   }, inputs);
 
