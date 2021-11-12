@@ -7,7 +7,7 @@
 import {FunctionComponent} from 'preact';
 
 import {renderReport} from '../../../report/renderer/api.js';
-import {useExternalRenderer} from '../util.js';
+import {useExternalRenderer} from '../util';
 
 /**
  * The default behavior of anchor links is not compatible with the flow report's hash navigation.

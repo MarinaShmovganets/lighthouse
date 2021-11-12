@@ -12,9 +12,12 @@ import {ReportUIFeatures} from '../renderer/report-ui-features.js';
 import {CategoryRenderer} from './category-renderer.js';
 import {DetailsRenderer} from './details-renderer.js';
 
-const dom = new DOM(document, document.documentElement);
-const detailsRenderer = new DetailsRenderer(dom);
-const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
+/** @type {DOM} */
+let dom;
+/** @type {DetailsRenderer} */
+let detailsRenderer;
+/** @type {CategoryRenderer} */
+let categoryRenderer;
 
 /**
  * @param {LH.Result} lhr
@@ -25,6 +28,7 @@ function renderReport(lhr, opts = {}) {
   const rootEl = document.createElement('article');
   rootEl.classList.add('lh-root', 'lh-vars');
 
+  // Reports require a DOM initialized with a rootEl.
   const dom = new DOM(rootEl.ownerDocument, rootEl);
   const renderer = new ReportRenderer(dom);
 
@@ -43,6 +47,9 @@ function renderReport(lhr, opts = {}) {
  * @return {DocumentFragment}
  */
 function renderCategoryScore(category, options) {
+  if (!dom) dom = new DOM(document, document.documentElement);
+  if (!detailsRenderer) detailsRenderer = new DetailsRenderer(dom);
+  if (!categoryRenderer) categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
   return categoryRenderer.renderCategoryScore(category, {}, options);
 }
 
@@ -51,6 +58,7 @@ function renderCategoryScore(category, options) {
  * @param {string} filename
  */
 function saveFile(blob, filename) {
+  if (!dom) dom = new DOM(document, document.documentElement);
   dom.saveFile(blob, filename);
 }
 
@@ -59,6 +67,7 @@ function saveFile(blob, filename) {
  * @return {Element}
  */
 function convertMarkdownCodeSnippets(markdownText) {
+  if (!dom) dom = new DOM(document, document.documentElement);
   return dom.convertMarkdownCodeSnippets(markdownText);
 }
 
