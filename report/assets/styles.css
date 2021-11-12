@@ -482,9 +482,7 @@
   border-radius: 3px;
   color: var(--link-color);
   background-color: var(--report-background-color);
-  padding: var(--default-padding);
-  font-size: var(--report-font-size-secondary);
-  line-height: var(--report-line-height-secondary);
+  margin: 5px;
 }
 
 .lh-button:first-of-type {
