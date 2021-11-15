@@ -53,8 +53,8 @@ Lighthouse now offers auditing user flows, scripted with Puppeteer, via the Node
 * order metrics by row ([#13328](https://github.com/GoogleChrome/lighthouse/pull/13328))
 * sort audits by weight ([#13053](https://github.com/GoogleChrome/lighthouse/pull/13053))
 * translate newly added report strings ([#13308](https://github.com/GoogleChrome/lighthouse/pull/13308))
-* [BREAKING] group perf audits by details type ([#13241](https://github.com/GoogleChrome/lighthouse/pull/13241), [#13310](https://github.com/GoogleChrome/lighthouse/pull/13310))
-* [BREAKING] pwa: remove gauge alias ([#13269](https://github.com/GoogleChrome/lighthouse/pull/13269))
+* [BREAKING] group perf audits by details type. change the meaning of an audit whose group is not defined–before no group implied an audit would not be renderered, but now an explicit `hidden` group is used ([#13241](https://github.com/GoogleChrome/lighthouse/pull/13241), [#13310](https://github.com/GoogleChrome/lighthouse/pull/13310))
+* [BREAKING] pwa: remove `renderScoreGauge`, replaced with `renderCategoryScore` ([#13269](https://github.com/GoogleChrome/lighthouse/pull/13269))
 
 ## ⛏️👷 Fraggle Rock
 
