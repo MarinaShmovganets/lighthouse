@@ -18,7 +18,7 @@ jest.unstable_mockModule('../../../report/renderer/api.js', () => ({
 
 let Topbar: typeof import('../src/topbar').Topbar;
 beforeAll(async () => {
-  Topbar = await import('../src/topbar').then(module => module.Topbar);
+  Topbar = (await import('../src/topbar')).Topbar;
 });
 
 const flowResult = {
