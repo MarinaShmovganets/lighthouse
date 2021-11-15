@@ -224,8 +224,8 @@ export class ReportRenderer {
           e.preventDefault();
           destEl.scrollIntoView();
         });
-        if (this._opts.categoryScoreTransform) {
-          const newGauge = this._opts.categoryScoreTransform(gaugeWrapperEl);
+        if (this._opts.anchorTransform) {
+          const newGauge = this._opts.anchorTransform(gaugeWrapperEl);
           categoryGauge.replaceChild(newGauge, gaugeWrapperEl);
         }
       }
