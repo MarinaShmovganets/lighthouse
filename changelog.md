@@ -4,7 +4,7 @@
 
 We expect this release to ship in the DevTools of [Chrome 98](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
-See the [What's new in Lighthouse 9.0 blog post](https://web.dev/blog/lighthouse-9-0/). Continue for the changelog.
+See the [What's new in Lighthouse 9.0 blog post](https://developer.chrome.com/blog/lighthouse-9-0/). Continue for the changelog.
 
 ## New Contributors
 
