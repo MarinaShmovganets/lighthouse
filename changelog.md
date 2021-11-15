@@ -76,6 +76,7 @@ Lighthouse now offers auditing user flows, scripted with Puppeteer, via the Node
 ## Deps
 
 * bump lighthouse-plugin-publisher-ads ([#13339](https://github.com/GoogleChrome/lighthouse/pull/13339))
+* deps: update chrome-launcher to 0.15.0 ([#13353](https://github.com/GoogleChrome/lighthouse/pull/13353))
 
 ## Clients
 
