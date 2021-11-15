@@ -1,5 +1,5 @@
 <a name="9.0.0"></a>
-# 9.0.0 (2021-11-12)
+# 9.0.0 (2021-11-15)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v8.6.0...v9.0.0)
 
 We expect this release to ship in the DevTools of [Chrome 98](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
