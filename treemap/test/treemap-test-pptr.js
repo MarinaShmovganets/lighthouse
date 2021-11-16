@@ -140,6 +140,7 @@ describe('Lighthouse Treemap', () => {
           expect(optionsInPage).toBeUndefined();
           const error = await page.evaluate(() => document.querySelector('#lh-log').textContent);
           expect(error).toBe(testCase.error);
+          pageErrors = [];
         });
       }
     });
