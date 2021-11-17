@@ -1076,6 +1076,9 @@
   "lighthouse-core/audits/installable-manifest.js | warn-not-offline-capable": {
     "message": "Page does not work offline. The page will not be regarded as installable after Chrome 93, stable release August 2021."
   },
+  "lighthouse-core/audits/installable-manifest.js | pipeline-restarted": {
+    "message": "PWA has been uninstalled and installability checks resetting."
+  },
   "lighthouse-core/audits/is-on-https.js | allowed": {
     "message": "Allowed"
   },
