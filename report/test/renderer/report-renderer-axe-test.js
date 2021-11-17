@@ -78,7 +78,7 @@ describe('ReportRendererAxe', () => {
     },
     // This test takes 40s on fast hardware, and 50-60s on GHA (but can take longer).
     // https://github.com/dequelabs/axe-core/tree/b573b1c1/doc/examples/jest_react#timeout-issues
-    /* timeout= */ process.env.CI ? 200 * 1000 : 60 * 1000
+    /* timeout= */ process.env.CI ? 200_000 : 60_000
     );
   });
 });
