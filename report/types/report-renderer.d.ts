@@ -21,7 +21,7 @@ declare module Renderer {
      * Convert report anchor links to a different format.
      * Flow report uses this to convert `#seo` to `#index=0&anchor=seo`.
      */
-    anchorTransform?: (categoryScore: HTMLAnchorElement) => HTMLAnchorElement;
+    onPageAnchorRendered?: (link: HTMLAnchorElement) => void;
   }
 }
 

@@ -26,7 +26,7 @@ function convertAnchor(link: HTMLAnchorElement, index: number) {
     const el = document.getElementById(nodeId);
     if (el) el.scrollIntoView();
   };
-  return newLink;
+  link.replaceWith(newLink);
 }
 
 export const Report: FunctionComponent<{hashState: LH.FlowResult.HashState}> =
@@ -35,7 +35,7 @@ export const Report: FunctionComponent<{hashState: LH.FlowResult.HashState}> =
     return renderReport(hashState.currentLhr, {
       disableAutoDarkModeAndFireworks: true,
       omitTopbar: true,
-      anchorTransform: link => convertAnchor(link, hashState.index),
+      onPageAnchorRendered: link => convertAnchor(link, hashState.index),
     });
   }, [hashState]);
 
