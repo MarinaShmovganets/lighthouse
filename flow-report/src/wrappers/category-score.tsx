@@ -18,7 +18,7 @@ export const CategoryScore: FunctionComponent<{
     return renderCategoryScore(category, {
       gatherMode,
       omitLabel: true,
-      hrefOverride: href,
+      onPageAnchorRendered: link => link.href = href,
     });
   }, [category, href]);
 

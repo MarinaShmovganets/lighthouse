@@ -348,7 +348,7 @@ export class CategoryRenderer {
   /**
    * @param {LH.ReportResult.Category} category
    * @param {Record<string, LH.Result.ReportGroup>} groupDefinitions
-   * @param {{gatherMode: LH.Result.GatherMode, omitLabel?: boolean, hrefOverride?: string}=} options
+   * @param {{gatherMode: LH.Result.GatherMode, omitLabel?: boolean, onPageAnchorRendered?: (link: HTMLAnchorElement) => void}=} options
    * @return {DocumentFragment}
    */
   renderCategoryScore(category, groupDefinitions, options) {
@@ -364,9 +364,9 @@ export class CategoryRenderer {
       label.remove();
     }
 
-    if (options?.hrefOverride) {
+    if (options?.onPageAnchorRendered) {
       const anchor = this.dom.find('a', categoryScore);
-      anchor.href = options.hrefOverride;
+      options.onPageAnchorRendered(anchor);
     }
 
     return categoryScore;
