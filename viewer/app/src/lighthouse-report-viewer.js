@@ -269,6 +269,10 @@ export class LighthouseReportViewer {
   _renderFlowResult(json) {
     const container = find('main', document);
     renderFlowReport(json, container);
+    // Install as global for easier debugging.
+    window.__LIGHTHOUSE_FLOW_JSON__ = json;
+    // eslint-disable-next-line no-console
+    console.log('window.__LIGHTHOUSE_FLOW_JSON__', json);
   }
 
   /**
