@@ -9,15 +9,13 @@
  * The renderer code is bundled and injected into the report HTML along with the JSON report.
  */
 
-import {render} from 'preact';
-
-import {App} from './src/app';
+import {renderFlowReport} from '../api';
 
 function __initLighthouseFlowReport__() {
   const container = document.body.querySelector('main');
   if (!container) throw Error('Container element not found');
   container.classList.add('flow-vars', 'lh-root', 'lh-vars');
-  render(<App flowResult={window.__LIGHTHOUSE_FLOW_JSON__} />, container);
+  renderFlowReport(window.__LIGHTHOUSE_FLOW_JSON__, container);
 }
 
 window.__initLighthouseFlowReport__ = __initLighthouseFlowReport__;
