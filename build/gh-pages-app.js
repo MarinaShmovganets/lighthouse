@@ -84,14 +84,14 @@ class GhPagesApp {
   async build() {
     fs.rmSync(this.distDir, {recursive: true, force: true});
 
+    const bundledJs = await this._compileJs();
+    safeWriteFile(`${this.distDir}/src/bundled.js`, bundledJs);
+
     const html = await this._compileHtml();
     safeWriteFile(`${this.distDir}/index.html`, html);
 
     const css = await this._compileCss();
     safeWriteFile(`${this.distDir}/styles/bundled.css`, css);
-
-    const bundledJs = await this._compileJs();
-    safeWriteFile(`${this.distDir}/src/bundled.js`, bundledJs);
 
     for (const {path, destDir, rename} of this.opts.assets) {
       const dir = destDir ? `${this.distDir}/${destDir}` : this.distDir;
@@ -167,6 +167,7 @@ class GhPagesApp {
         safeWriteFile(`${this.distDir}/src/${output[i].fileName}`, code);
       }
     }
+    this.preloadScripts = output[0].imports.map(fileName => `src/${fileName}`);
     return output[0].code;
   }
 
@@ -177,6 +178,16 @@ class GhPagesApp {
     if (this.opts.htmlReplacements) {
       for (const [key, value] of Object.entries(this.opts.htmlReplacements)) {
         htmlSrc = htmlSrc.replace(key, value);
+      }
+    }
+
+    if (this.preloadScripts?.length) {
+      const preloads = this.preloadScripts.map(fileName =>
+        `<link rel="preload" href="${fileName}" as="script" crossorigin="anonymous" />`
+      ).join('\n');
+      const endHeadIndex = htmlSrc.indexOf('</head>');
+      if (endHeadIndex !== -1) {
+        htmlSrc = htmlSrc.slice(0, endHeadIndex) + preloads + htmlSrc.slice(endHeadIndex);
       }
     }
 
