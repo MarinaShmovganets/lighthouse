@@ -16,7 +16,6 @@ const distDir = path.join(LH_ROOT, 'dist', 'dt-report-resources');
 const bundleOutFile = `${distDir}/report-generator.js`;
 
 /**
- * Used to save cached resources (Runtime.cachedResources).
  * @param {string} name
  * @param {string} content
  */
