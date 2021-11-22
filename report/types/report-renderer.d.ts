@@ -17,7 +17,7 @@ declare module Renderer {
 
     /** Disable the topbar UI component */
     omitTopbar?: boolean;
-    /** Prevent injection of report styles if they are already included by the environment. */
+    /** Prevent injection of report styles. Set to true if these styles are already included by the environment. */
     omitGlobalStyles?: boolean;
     /**
      * Convert report anchor links to a different format.
