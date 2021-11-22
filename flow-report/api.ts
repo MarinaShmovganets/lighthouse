@@ -8,11 +8,7 @@ import {render, h} from 'preact';
 
 import {App} from './src/app';
 
-/**
- * @param {LH.FlowResult} flowResult
- * @param {HTMLElement} root
- */
-export function renderFlowReport(flowResult, root) {
+export function renderFlowReport(flowResult: LH.FlowResult, root: HTMLElement) {
   root.classList.add('flow-vars', 'lh-vars', 'lh-root');
   render(h(App, {flowResult}), root);
 }

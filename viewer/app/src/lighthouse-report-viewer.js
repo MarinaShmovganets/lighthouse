@@ -14,7 +14,7 @@ import {ViewerUIFeatures} from './viewer-ui-features.js';
 import {DOM} from '../../../report/renderer/dom.js';
 import {ReportRenderer} from '../../../report/renderer/report-renderer.js';
 import {TextEncoding} from '../../../report/renderer/text-encoding.js';
-import {renderFlowReport} from '../../../flow-report/api.js';
+import {renderFlowReport} from '../../../flow-report/api';
 
 /* global logger */
 
