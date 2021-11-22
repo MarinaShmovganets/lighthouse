@@ -200,8 +200,9 @@ export class LighthouseReportViewer {
 
   /**
    * @param {LH.Result} json
+   * @param {HTMLElement} root
    */
-  _renderLhr(json) {
+  _renderLhr(json, root) {
     // Allow users to view the runnerResult
     if ('lhr' in json) {
       const runnerResult = /** @type {{lhr: LH.Result}} */ (/** @type {unknown} */ (json));
@@ -231,9 +232,8 @@ export class LighthouseReportViewer {
     const dom = new DOM(document);
     const renderer = new ReportRenderer(dom);
 
-    const container = find('main', document);
     try {
-      renderer.renderReport(json, container);
+      renderer.renderReport(json, root);
 
       // Only give gist-saving callback if current report isn't from a gist.
       let saveGistCallback;
@@ -256,7 +256,7 @@ export class LighthouseReportViewer {
       features.initFeatures(json);
     } catch (e) {
       logger.error(`Error rendering report: ${e.message}`);
-      container.textContent = '';
+      root.textContent = '';
       throw e;
     } finally {
       this._reportIsFromGist = this._reportIsFromPSI = this._reportIsFromJSON = false;
@@ -265,10 +265,10 @@ export class LighthouseReportViewer {
 
   /**
    * @param {LH.FlowResult} json
+   * @param {HTMLElement} root
    */
-  _renderFlowResult(json) {
-    const container = find('main', document);
-    renderFlowReport(json, container);
+  _renderFlowResult(json, root) {
+    renderFlowReport(json, root);
     // Install as global for easier debugging.
     window.__LIGHTHOUSE_FLOW_JSON__ = json;
     // eslint-disable-next-line no-console
@@ -282,10 +282,17 @@ export class LighthouseReportViewer {
   // TODO: Really, `json` should really have type `unknown` and
   // we can have _validateReportJson verify that it's an LH.Result
   _replaceReportHtml(json) {
+    const container = find('main', document);
+
+    // Reset container content.
+    container.innerHTML = '';
+    const root = document.createElement('div');
+    container.appendChild(root);
+
     if (this._isFlowReport(json)) {
-      this._renderFlowResult(json);
+      this._renderFlowResult(json, root);
     } else {
-      this._renderLhr(json);
+      this._renderLhr(json, root);
     }
 
     // Remove the placeholder UI once the user has loaded a report.

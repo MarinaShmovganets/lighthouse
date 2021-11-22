@@ -14,7 +14,6 @@ import {renderFlowReport} from '../api';
 function __initLighthouseFlowReport__() {
   const container = document.body.querySelector('main');
   if (!container) throw Error('Container element not found');
-  container.classList.add('flow-vars', 'lh-root', 'lh-vars');
   renderFlowReport(window.__LIGHTHOUSE_FLOW_JSON__, container);
 }
 

@@ -10,8 +10,9 @@ import {App} from './src/app';
 
 /**
  * @param {LH.FlowResult} flowResult
- * @param {HTMLElement} container
+ * @param {HTMLElement} root
  */
-export function renderFlowReport(flowResult, container) {
-  render(h(App, {flowResult}), container);
+export function renderFlowReport(flowResult, root) {
+  root.classList.add('flow-vars', 'lh-vars', 'lh-root');
+  render(h(App, {flowResult}), root);
 }
