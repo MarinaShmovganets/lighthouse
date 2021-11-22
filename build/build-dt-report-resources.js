@@ -42,7 +42,7 @@ async function buildReportGenerator() {
       }),
       rollupPlugins.commonjs(),
       rollupPlugins.nodeResolve(),
-      rollupPlugins.inlineFs({verbose: false}),
+      rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
     ],
   });
 
