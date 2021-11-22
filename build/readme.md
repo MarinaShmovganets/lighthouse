@@ -33,6 +33,7 @@ dist
 1. the biggest file is `lighthouse-dt-bundle.js`. This is a bundle of `lighthouse-core`, and is run inside a worker in CDT.
 1. the much smaller `report-generator.js` bundle. This is assigned to the global object as `Lighthouse.ReportGenerator`
     - This bundle has inlined the `dist/report/standalone.js` and `standalone-template.html` files (these are not transformed in any way). We call these the report generator assets.
+    - `report-generator.d.ts` is an empty type definition file to make the CDT build happy
 1. Finally, `report/bundle.esm.js` is an ES modules bundle of the report code (note: this is copied to CDT as `report/bundle.js`).
 
 ### How the Lighthouse Panel uses the Lighthouse CDT build artifacts
