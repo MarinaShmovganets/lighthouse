@@ -200,9 +200,9 @@ export class LighthouseReportViewer {
 
   /**
    * @param {LH.Result} json
-   * @param {HTMLElement} root
+   * @param {HTMLElement} rootEl
    */
-  _renderLhr(json, root) {
+  _renderLhr(json, rootEl) {
     // Allow users to view the runnerResult
     if ('lhr' in json) {
       const runnerResult = /** @type {{lhr: LH.Result}} */ (/** @type {unknown} */ (json));
@@ -233,7 +233,7 @@ export class LighthouseReportViewer {
     const renderer = new ReportRenderer(dom);
 
     try {
-      renderer.renderReport(json, root);
+      renderer.renderReport(json, rootEl);
 
       // Only give gist-saving callback if current report isn't from a gist.
       let saveGistCallback;
@@ -256,7 +256,7 @@ export class LighthouseReportViewer {
       features.initFeatures(json);
     } catch (e) {
       logger.error(`Error rendering report: ${e.message}`);
-      root.textContent = '';
+      rootEl.textContent = '';
       throw e;
     } finally {
       this._reportIsFromGist = this._reportIsFromPSI = this._reportIsFromJSON = false;
@@ -265,10 +265,10 @@ export class LighthouseReportViewer {
 
   /**
    * @param {LH.FlowResult} json
-   * @param {HTMLElement} root
+   * @param {HTMLElement} rootEl
    */
-  _renderFlowResult(json, root) {
-    renderFlowReport(json, root);
+  _renderFlowResult(json, rootEl) {
+    renderFlowReport(json, rootEl);
     // Install as global for easier debugging.
     window.__LIGHTHOUSE_FLOW_JSON__ = json;
     // eslint-disable-next-line no-console
@@ -286,13 +286,13 @@ export class LighthouseReportViewer {
 
     // Reset container content.
     container.innerHTML = '';
-    const root = document.createElement('div');
-    container.appendChild(root);
+    const rootEl = document.createElement('div');
+    container.appendChild(rootEl);
 
     if (this._isFlowReport(json)) {
-      this._renderFlowResult(json, root);
+      this._renderFlowResult(json, rootEl);
     } else {
-      this._renderLhr(json, root);
+      this._renderLhr(json, rootEl);
     }
 
     // Remove the placeholder UI once the user has loaded a report.
