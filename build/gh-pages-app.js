@@ -79,6 +79,8 @@ class GhPagesApp {
   constructor(opts) {
     this.opts = opts;
     this.distDir = `${ghPagesDistDir}/${opts.name}`;
+    /** @type {string[]} */
+    this.preloadScripts = [];
   }
 
   async build() {
@@ -167,7 +169,8 @@ class GhPagesApp {
         safeWriteFile(`${this.distDir}/src/${output[i].fileName}`, code);
       }
     }
-    this.preloadScripts = output[0].imports.map(fileName => `src/${fileName}`);
+    const scripts = output[0].imports.map(fileName => `src/${fileName}`);
+    this.preloadScripts.push(...scripts);
     return output[0].code;
   }
 
@@ -181,14 +184,15 @@ class GhPagesApp {
       }
     }
 
-    if (this.preloadScripts?.length) {
+    if (this.preloadScripts.length) {
       const preloads = this.preloadScripts.map(fileName =>
         `<link rel="preload" href="${fileName}" as="script" crossorigin="anonymous" />`
       ).join('\n');
       const endHeadIndex = htmlSrc.indexOf('</head>');
-      if (endHeadIndex !== -1) {
-        htmlSrc = htmlSrc.slice(0, endHeadIndex) + preloads + htmlSrc.slice(endHeadIndex);
+      if (endHeadIndex === -1) {
+        throw new Error('HTML file needs a <head> element to inject preloads');
       }
+      htmlSrc = htmlSrc.slice(0, endHeadIndex) + preloads + htmlSrc.slice(endHeadIndex);
     }
 
     return htmlSrc;
