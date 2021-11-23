@@ -150,8 +150,8 @@ class Runner {
         configSettings: settings,
         categories,
         categoryGroups: runOpts.config.groups || undefined,
-        timing: this._getTiming(artifacts),
         stackPacks: stackPacks.getStackPacks(artifacts.Stacks),
+        timing: this._getTiming(artifacts),
         i18n: {
           rendererFormattedStrings: format.getRendererFormattedStrings(settings.locale),
           icuMessagePaths: {},
