@@ -16,7 +16,7 @@ import {ReportRenderer} from '../../../report/renderer/report-renderer.js';
 import {TextEncoding} from '../../../report/renderer/text-encoding.js';
 import {renderFlowReport} from '../../../flow-report/api';
 
-/* global logger ReportGenerator */
+/* global logger */
 
 /** @typedef {import('./psi-api').PSIParams} PSIParams */
 
@@ -272,11 +272,9 @@ export class LighthouseReportViewer {
    * @param {HTMLElement} rootEl
    */
   _renderFlowResult(json, rootEl) {
+    // TODO: Add save HTML functionality with ReportGenerator loaded async.
     renderFlowReport(json, rootEl, {
       saveAsGist: () => this._onSaveJson(json),
-      getReportHtml: () => {
-        return ReportGenerator.generateFlowReportHtml(json);
-      },
     });
     // Install as global for easier debugging.
     window.__LIGHTHOUSE_FLOW_JSON__ = json;
