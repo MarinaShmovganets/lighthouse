@@ -1,33 +1,40 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-@whitep4nth3r @whitep4nth3r
-Adam Read @adamread
- <a name="9.1.0"></a>
+<a name="9.1.0"></a>
 # 9.1.0 (2021-11-24)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v9.0.0...v9.1.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 98](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## New Contributors
+
+Thanks to our new contributors 👽🐷🐰🐯🐻! 
+
+- @whitep4nth3r @whitep4nth3r
+- Adam Read @adamread
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
+* If using Next.js, you will now see advice specific to it some audits ([#13424](https://github.com/GoogleChrome/lighthouse/pull/13424))
 
 ## Core
 
-* stacks: add next.js ([#13424](https://github.com/GoogleChrome/lighthouse/pull/13424))
-* mindfully order properties in the lhr ([#13418](https://github.com/GoogleChrome/lighthouse/pull/13418))
-* add original location to most usages of source-location ([#13393](https://github.com/GoogleChrome/lighthouse/pull/13393))
 * canonical: remove cross-origin check ([#13412](https://github.com/GoogleChrome/lighthouse/pull/13412))
+* add original location to most usages of source-location ([#13393](https://github.com/GoogleChrome/lighthouse/pull/13393))
+* mindfully order properties in the lhr ([#13418](https://github.com/GoogleChrome/lighthouse/pull/13418))
 * ensure log-normal score is always in correct range ([#13392](https://github.com/GoogleChrome/lighthouse/pull/13392))
 * installable-manifest: pipeline-restarted check ([#13365](https://github.com/GoogleChrome/lighthouse/pull/13365))
 
 ## Report
 
-* flow: rebaseline sample ([#13358](https://github.com/GoogleChrome/lighthouse/pull/13358))
 * remove margin when saving html in standalone report ([#13409](https://github.com/GoogleChrome/lighthouse/pull/13409))
-* flow: report api ([#13374](https://github.com/GoogleChrome/lighthouse/pull/13374))
 * consistent red display text ([#13391](https://github.com/GoogleChrome/lighthouse/pull/13391))
 * treemap: correct percentages when 0 bytes JS ([#13382](https://github.com/GoogleChrome/lighthouse/pull/13382))
+
+## ⛏️👷 Fraggle Rock
+
+  Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
+
+* rebaseline sample ([#13358](https://github.com/GoogleChrome/lighthouse/pull/13358))
+* report api ([#13374](https://github.com/GoogleChrome/lighthouse/pull/13374))
 
 ## Deps
 
@@ -57,10 +64,7 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 
 ## Misc
 
-* build: use rollup to create lr report generator ([#13416](https://github.com/GoogleChrome/lighthouse/pull/13416))
-* build: inline report generator resources for devtools ([#13406](https://github.com/GoogleChrome/lighthouse/pull/13406))
-* build: use rollup to create viewer report generator ([#13407](https://github.com/GoogleChrome/lighthouse/pull/13407))
-* build: use rollup to create extension bundle ([#13408](https://github.com/GoogleChrome/lighthouse/pull/13408))
+* build: replace browserify with rollup ([#13416](https://github.com/GoogleChrome/lighthouse/pull/13416), [#13406](https://github.com/GoogleChrome/lighthouse/pull/13406), [#13407](https://github.com/GoogleChrome/lighthouse/pull/13407), [#13408](https://github.com/GoogleChrome/lighthouse/pull/13408))
 * build: prevent over optimization of computeBenchmarkIndex ([#13366](https://github.com/GoogleChrome/lighthouse/pull/13366))
 * treemap: remove postMessage. refactor options input ([#13356](https://github.com/GoogleChrome/lighthouse/pull/13356))
 
