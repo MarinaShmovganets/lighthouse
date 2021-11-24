@@ -30,7 +30,7 @@ describe('lighthouseRenderer bundle', () => {
 
     global.window = global.self = window;
     global.window.requestAnimationFrame = fn => fn();
-    // global.HTMLInputElement = window.HTMLInputElement;
+    global.HTMLInputElement = window.HTMLInputElement;
     // Stub out matchMedia for Node.
     global.self.matchMedia = function() {
       return {
