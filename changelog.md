@@ -13,7 +13,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## Notable Changes
 
-* If using Next.js, you will now see advice specific to it some audits ([#13424](https://github.com/GoogleChrome/lighthouse/pull/13424))
+* If using Next.js, you will now see advice specific to it in some audits ([#13424](https://github.com/GoogleChrome/lighthouse/pull/13424))
 
 ## Core
 
