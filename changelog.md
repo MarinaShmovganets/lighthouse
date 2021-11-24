@@ -8,7 +8,7 @@ We expect this release to ship in the DevTools of [Chrome 98](https://chromiumda
 
 Thanks to our new contributors 👽🐷🐰🐯🐻! 
 
-- @whitep4nth3r @whitep4nth3r
+- @whitep4nth3r
 - Adam Read @adamread
 
 ## Notable Changes
