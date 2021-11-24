@@ -7213,12 +7213,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:computed:JSBundles",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:mainthread-work-breakdown",
         "duration": 100,
         "entryType": "measure"
@@ -7375,12 +7369,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:computed:JSBundles",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:non-composited-animations",
         "duration": 100,
         "entryType": "measure"
@@ -7418,12 +7406,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:script-treemap-data",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:computed:JSBundles",
         "duration": 100,
         "entryType": "measure"
       },
@@ -7867,12 +7849,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:computed:JSBundles",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:computed:UnusedJavascriptSummary",
         "duration": 100,
         "entryType": "measure"
@@ -7922,12 +7898,6 @@
       {
         "startTime": 0,
         "name": "lh:computed:ModuleDuplication",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:computed:JSBundles",
         "duration": 100,
         "entryType": "measure"
       },

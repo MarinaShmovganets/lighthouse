@@ -12,9 +12,11 @@ const log = require('lighthouse-logger');
  * Decorate computableArtifact with a caching `request()` method which will
  * automatically call `computableArtifact.compute_()` under the hood.
  * @template {{name: string, compute_(artifacts: unknown, context: LH.Artifacts.ComputedContext): Promise<unknown>}} C
+ * @template {Array<keyof FirstParamType<C['compute_']>>} K
  * @param {C} computableArtifact
+ * @param {K & ([keyof FirstParamType<C['compute_']>] extends [K[number]] ? unknown : never)} [keys]
  */
-function makeComputedArtifact(computableArtifact) {
+function makeComputedArtifact(computableArtifact, keys) {
   // tsc (3.1) has more difficulty with template inter-references in jsdoc, so
   // give types to params and return value the long way, essentially recreating
   // polymorphic-this behavior for C.
@@ -30,6 +32,15 @@ function makeComputedArtifact(computableArtifact) {
     const computedName = computableArtifact.name;
 
     const cache = computedCache.get(computedName) || new ArbitraryEqualityMap();
+    if (keys) {
+      cache.setEqualityFn((a, b) => {
+        for (const key of keys) {
+          if (ArbitraryEqualityMap.deepEquals(a[key], b[key])) continue;
+          return false;
+        }
+        return true;
+      });
+    }
     computedCache.set(computedName, cache);
 
     const computed = /** @type {ReturnType<C['compute_']>|undefined} */ (cache.get(artifacts));
