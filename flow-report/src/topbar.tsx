@@ -99,7 +99,7 @@ export const Topbar: FunctionComponent<{onMenuClick: JSX.MouseEventHandler<HTMLB
           <TopbarButton
             onClick={() => saveAsGist(flowResult)}
             label="Button that saves the report to a gist"
-          >Save as Gist</TopbarButton>
+          >{strings.dropdownSaveGist}</TopbarButton>
       }
       <div style={{flexGrow: 1}} />
       <TopbarButton
