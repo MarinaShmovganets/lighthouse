@@ -272,7 +272,10 @@ export class LighthouseReportViewer {
    * @param {HTMLElement} rootEl
    */
   _renderFlowResult(json, rootEl) {
-    renderFlowReport(json, rootEl);
+    // TODO: Add save HTML functionality with ReportGenerator loaded async.
+    renderFlowReport(json, rootEl, {
+      saveAsGist: () => this._onSaveJson(json),
+    });
     // Install as global for easier debugging.
     window.__LIGHTHOUSE_FLOW_JSON__ = json;
     // eslint-disable-next-line no-console
@@ -351,7 +354,7 @@ export class LighthouseReportViewer {
 
   /**
    * Saves the current report by creating a gist on GitHub.
-   * @param {LH.Result} reportJson
+   * @param {LH.Result|LH.FlowResult} reportJson
    * @return {Promise<string|void>} id of the created gist.
    * @private
    */

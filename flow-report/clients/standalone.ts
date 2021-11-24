@@ -14,7 +14,9 @@ import {renderFlowReport} from '../api';
 function __initLighthouseFlowReport__() {
   const container = document.body.querySelector('main');
   if (!container) throw Error('Container element not found');
-  renderFlowReport(window.__LIGHTHOUSE_FLOW_JSON__, container);
+  renderFlowReport(window.__LIGHTHOUSE_FLOW_JSON__, container, {
+    getReportHtml: () => document.documentElement.outerHTML,
+  });
 }
 
 window.__initLighthouseFlowReport__ = __initLighthouseFlowReport__;

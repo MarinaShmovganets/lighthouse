@@ -5,11 +5,11 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {useLayoutEffect, useRef, useState} from 'preact/hooks';
+import {useLayoutEffect, useMemo, useRef, useState} from 'preact/hooks';
 
 import {Sidebar} from './sidebar/sidebar';
 import {Summary} from './summary/summary';
-import {classNames, FlowResultContext, useHashState} from './util';
+import {classNames, FlowResultContext, OptionsContext, useHashState} from './util';
 import {Report} from './wrappers/report';
 import {Topbar} from './topbar';
 import {Header} from './header';
@@ -48,18 +48,24 @@ const Content: FunctionComponent = () => {
   );
 };
 
-export const App: FunctionComponent<{flowResult: LH.FlowResult}> = ({flowResult}) => {
+export const App: FunctionComponent<{
+  flowResult: LH.FlowResult,
+  options?: LH.FlowReportOptions
+}> = ({flowResult, options}) => {
   const [collapsed, setCollapsed] = useState(false);
+  const optionsValue = useMemo(() => options || {}, [options]);
   return (
-    <FlowResultContext.Provider value={flowResult}>
-      <I18nProvider>
-        <Styles/>
-        <div className={classNames('App', {'App--collapsed': collapsed})} data-testid="App">
-          <Topbar onMenuClick={() => setCollapsed(c => !c)} />
-          <Sidebar/>
-          <Content/>
-        </div>
-      </I18nProvider>
-    </FlowResultContext.Provider>
+    <OptionsContext.Provider value={optionsValue}>
+      <FlowResultContext.Provider value={flowResult}>
+        <I18nProvider>
+          <Styles/>
+          <div className={classNames('App', {'App--collapsed': collapsed})} data-testid="App">
+            <Topbar onMenuClick={() => setCollapsed(c => !c)} />
+            <Sidebar/>
+            <Content/>
+          </div>
+        </I18nProvider>
+      </FlowResultContext.Provider>
+    </OptionsContext.Provider>
   );
 };
