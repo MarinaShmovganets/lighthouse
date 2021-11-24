@@ -567,7 +567,6 @@ async function collectAllStringsInDir(dir) {
     if (!exportedUIStrings) {
       throw new Error('UIStrings defined in file but not exported');
     }
-    if (relativeToRootPath.includes('third')) console.log(regexMatch)
 
     // just parse the UIStrings substring to avoid ES version issues, save time, etc
     const justUIStrings = 'const ' + regexMatch[0];
