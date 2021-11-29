@@ -178,8 +178,6 @@ class LegacyJavascript extends ByteEfficiencyAudit {
       ['Array.isArray', 'es6.array.is-array'],
       ['Array.prototype.map', 'es6.array.map'],
       ['Array.of', 'es6.array.of'],
-      ['Array.prototype.reduce', 'es6.array.reduce'],
-      ['Array.prototype.reduceRight', 'es6.array.reduce-right'],
       ['Array.prototype.some', 'es6.array.some'],
       ['Date.now', 'es6.date.now'],
       ['Date.prototype.toISOString', 'es6.date.to-iso-string'],

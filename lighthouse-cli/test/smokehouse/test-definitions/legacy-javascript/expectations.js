@@ -19,7 +19,7 @@ const expectations = {
           items: [
             {
               url: 'http://localhost:10200/legacy-javascript.js',
-              wastedBytes: '78000 +/- 2000',
+              wastedBytes: '76000 +/- 2000',
               subItems: {
                 items: [
                   {signal: 'Array.prototype.fill'},
@@ -32,8 +32,6 @@ const expectations = {
                   {signal: 'Array.isArray'},
                   {signal: 'Array.prototype.map'},
                   {signal: 'Array.of'},
-                  {signal: 'Array.prototype.reduceRight'},
-                  {signal: 'Array.prototype.reduce'},
                   {signal: 'Array.prototype.some'},
                   {signal: 'Date.now'},
                   {signal: 'Date.prototype.toISOString'},
