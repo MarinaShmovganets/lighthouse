@@ -38,7 +38,6 @@ const expectations = {
                   {signal: 'Date.prototype.toJSON'},
                   {signal: 'Number.isInteger'},
                   {signal: 'Number.isSafeInteger'},
-                  {signal: 'Number.parseInt'},
                   {signal: 'Object.defineProperties'},
                   {signal: 'Object.defineProperty'},
                   {signal: 'Object.entries'},
