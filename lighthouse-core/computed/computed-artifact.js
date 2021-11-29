@@ -14,7 +14,7 @@ const log = require('lighthouse-logger');
  * @template {{name: string, compute_(artifacts: unknown, context: LH.Artifacts.ComputedContext): Promise<unknown>}} C
  * @template {Array<keyof FirstParamType<C['compute_']>>} K
  * @param {C} computableArtifact
- * @param {K & ([keyof FirstParamType<C['compute_']>] extends [K[number]] ? unknown : never)} [keys]
+ * @param {(K & ([keyof FirstParamType<C['compute_']>] extends [K[number]] ? unknown : never)) | null} keys
  */
 function makeComputedArtifact(computableArtifact, keys) {
   // tsc (3.1) has more difficulty with template inter-references in jsdoc, so

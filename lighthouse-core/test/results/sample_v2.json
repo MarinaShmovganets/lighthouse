@@ -7159,19 +7159,7 @@
       },
       {
         "startTime": 0,
-        "name": "lh:computed:ManifestValues",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:themed-omnibox",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:computed:ManifestValues",
         "duration": 100,
         "entryType": "measure"
       },
@@ -7892,12 +7880,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:duplicated-javascript",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:computed:ModuleDuplication",
         "duration": 100,
         "entryType": "measure"
       },
