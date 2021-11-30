@@ -40,9 +40,11 @@ describe('ComputedArtifact base class', () => {
   });
 
   it('caches by strict equality on key list if provided', async () => {
+    const keys = ['x'];
     let computeCounter = 0;
     class RawTestComputedArtifact {
-      static async compute_() {
+      static async compute_(dependencies) {
+        assert.deepEqual(Object.keys(dependencies), keys);
         return computeCounter++;
       }
     }
@@ -51,7 +53,7 @@ describe('ComputedArtifact base class', () => {
       computedCache: new Map(),
     };
 
-    const TestComputedArtifact = makeComputedArtifact(RawTestComputedArtifact, ['x']);
+    const TestComputedArtifact = makeComputedArtifact(RawTestComputedArtifact, keys);
     let result = await TestComputedArtifact.request({x: 1, y: 100}, context);
     assert.equal(result, 0);
 
