@@ -32,7 +32,7 @@
  * @property {Run[]} runs
  */
 
-import assert from 'assert';
+import {strict as assert} from 'assert';
 
 import log from 'lighthouse-logger';
 
