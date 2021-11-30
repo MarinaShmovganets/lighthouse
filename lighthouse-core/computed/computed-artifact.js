@@ -11,10 +11,10 @@ const log = require('lighthouse-logger');
 /**
  * Decorate computableArtifact with a caching `request()` method which will
  * automatically call `computableArtifact.compute_()` under the hood.
- * @template {{name: string, compute_(artifacts: unknown, context: LH.Artifacts.ComputedContext): Promise<unknown>}} C
+ * @template {{name: string, compute_(dependencies: unknown, context: LH.Artifacts.ComputedContext): Promise<unknown>}} C
  * @template {Array<keyof FirstParamType<C['compute_']>>} K
  * @param {C} computableArtifact
- * @param {(K & ([keyof FirstParamType<C['compute_']>] extends [K[number]] ? unknown : never)) | null} keys List of artifacts that will be checked for equality when caching. Use `null` to check all artifacts.
+ * @param {(K & ([keyof FirstParamType<C['compute_']>] extends [K[number]] ? unknown : never)) | null} keys List of dependencies that will be checked for equality when caching. Use `null` to check all dependencies.
  */
 function makeComputedArtifact(computableArtifact, keys) {
   // tsc (3.1) has more difficulty with template inter-references in jsdoc, so
@@ -22,14 +22,14 @@ function makeComputedArtifact(computableArtifact, keys) {
   // polymorphic-this behavior for C.
   /**
    * Return an automatically cached result from the computed artifact.
-   * @param {FirstParamType<C['compute_']>} artifacts
+   * @param {FirstParamType<C['compute_']>} dependencies
    * @param {LH.Artifacts.ComputedContext} context
    * @return {ReturnType<C['compute_']>}
    */
-  const request = (artifacts, context) => {
-    const pickedArtifacts = keys ?
-      Object.fromEntries(keys.map(key => [key, artifacts[key]])) :
-      artifacts;
+  const request = (dependencies, context) => {
+    const pickedDependencies = keys ?
+      Object.fromEntries(keys.map(key => [key, dependencies[key]])) :
+      dependencies;
 
     // NOTE: break immutability solely for this caching-controller function.
     const computedCache = /** @type {Map<string, ArbitraryEqualityMap>} */ (context.computedCache);
@@ -39,7 +39,7 @@ function makeComputedArtifact(computableArtifact, keys) {
     computedCache.set(computedName, cache);
 
     /** @type {ReturnType<C['compute_']>|undefined} */
-    const computed = cache.get(pickedArtifacts);
+    const computed = cache.get(pickedDependencies);
     if (computed) {
       return computed;
     }
@@ -48,8 +48,8 @@ function makeComputedArtifact(computableArtifact, keys) {
     log.time(status, 'verbose');
 
     const artifactPromise = /** @type {ReturnType<C['compute_']>} */
-        (computableArtifact.compute_(pickedArtifacts, context));
-    cache.set(pickedArtifacts, artifactPromise);
+        (computableArtifact.compute_(pickedDependencies, context));
+    cache.set(pickedDependencies, artifactPromise);
 
     artifactPromise.then(() => log.timeEnd(status)).catch(() => log.timeEnd(status));
 
