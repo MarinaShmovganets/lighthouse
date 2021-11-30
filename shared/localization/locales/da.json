@@ -59,6 +59,12 @@
   "flow-report/src/i18n/ui-strings.js | helpUseCaseTimespan2": {
     "message": "Discover performance opportunities to improve the experience for long-lived pages and single-page applications."
   },
+  "flow-report/src/i18n/ui-strings.js | highestImpact": {
+    "message": "Størst indflydelse"
+  },
+  "flow-report/src/i18n/ui-strings.js | informativeAuditCount": {
+    "message": "{numInformative,plural, =1{{numInformative} informativ gennemgang}one{{numInformative} informativ gennemgang}other{{numInformative} informative gennemgange}}"
+  },
   "flow-report/src/i18n/ui-strings.js | mobile": {
     "message": "Mobil"
   },
@@ -70,6 +76,15 @@
   },
   "flow-report/src/i18n/ui-strings.js | navigationReport": {
     "message": "Rapport over navigation"
+  },
+  "flow-report/src/i18n/ui-strings.js | navigationReportCount": {
+    "message": "{numNavigation,plural, =1{{numNavigation} navigationsrapportering}one{{numNavigation} navigationsrapportering}other{{numNavigation} navigationsrapporteringer}}"
+  },
+  "flow-report/src/i18n/ui-strings.js | passableAuditCount": {
+    "message": "{numPassableAudits,plural, =1{{numPassableAudits} gennemgang, der kan godkendes}one{{numPassableAudits} gennemgang, der kan godkendes}other{{numPassableAudits} gennemgange, der kan godkendes}}"
+  },
+  "flow-report/src/i18n/ui-strings.js | passedAuditCount": {
+    "message": "{numPassed,plural, =1{{numPassed} gennemgang blev godkendt}one{{numPassed} gennemgang blev godkendt}other{{numPassed} gennemgange blev godkendt}}"
   },
   "flow-report/src/i18n/ui-strings.js | ratingAverage": {
     "message": "Gennemsnit"
@@ -95,6 +110,9 @@
   "flow-report/src/i18n/ui-strings.js | snapshotReport": {
     "message": "Rapport med øjebliksbillede"
   },
+  "flow-report/src/i18n/ui-strings.js | snapshotReportCount": {
+    "message": "{numSnapshot,plural, =1{{numSnapshot} rapportering af øjebliksbillede}one{{numSnapshot} rapportering af øjebliksbillede}other{{numSnapshot} rapporteringer af øjebliksbillede}}"
+  },
   "flow-report/src/i18n/ui-strings.js | summary": {
     "message": "Oversigt"
   },
@@ -106,6 +124,9 @@
   },
   "flow-report/src/i18n/ui-strings.js | timespanReport": {
     "message": "Rapport over tidsperiode"
+  },
+  "flow-report/src/i18n/ui-strings.js | timespanReportCount": {
+    "message": "{numTimespan,plural, =1{{numTimespan} perioderapportering}one{{numTimespan} perioderapportering}other{{numTimespan} perioderapporteringer}}"
   },
   "flow-report/src/i18n/ui-strings.js | title": {
     "message": "Rapport over brugerflow i Lighthouse"
@@ -1271,9 +1292,6 @@
   "lighthouse-core/audits/seo/canonical.js | explanationConflict": {
     "message": "Flere webadresser ({urlList}) er modstridende"
   },
-  "lighthouse-core/audits/seo/canonical.js | explanationDifferentDomain": {
-    "message": "Peger på et andet domæne ({url})"
-  },
   "lighthouse-core/audits/seo/canonical.js | explanationInvalid": {
     "message": "Ugyldig webadresse ({url})"
   },
@@ -1740,7 +1758,7 @@
     "message": "Disse tjek kræves af den grundlæggende [tjekliste til progressive webapps](https://developers.google.com/web/progressive-web-apps/checklist), men de udføres ikke automatisk af Lighthouse. De påvirker ikke dine resultater, men det er vigtigt, at du bekræfter dem manuelt."
   },
   "lighthouse-core/config/default-config.js | pwaCategoryTitle": {
-    "message": "Progressiv webapp"
+    "message": "PWA"
   },
   "lighthouse-core/config/default-config.js | pwaInstallableGroupTitle": {
     "message": "Websitet kan installeres"
@@ -2042,30 +2060,6 @@
   "lighthouse-core/lib/lh-error.js | urlInvalid": {
     "message": "Den angivne webadresse lader til at være ugyldig."
   },
-  "treemap/app/src/util.js | allLabel": {
-    "message": "Alle"
-  },
-  "treemap/app/src/util.js | allScriptsDropdownLabel": {
-    "message": "Alle scripts"
-  },
-  "treemap/app/src/util.js | coverageColumnName": {
-    "message": "Dækning"
-  },
-  "treemap/app/src/util.js | duplicateModulesLabel": {
-    "message": "Identiske moduler"
-  },
-  "treemap/app/src/util.js | resourceBytesLabel": {
-    "message": "Bytes i ressourcefil"
-  },
-  "treemap/app/src/util.js | tableColumnName": {
-    "message": "Navn"
-  },
-  "treemap/app/src/util.js | toggleTableButtonLabel": {
-    "message": "Vis/skjul tabel"
-  },
-  "treemap/app/src/util.js | unusedBytesLabel": {
-    "message": "Ubrugte bytes"
-  },
   "node_modules/lighthouse-stack-packs/packs/amp.js | efficient-animated-content": {
     "message": "Ved animeret indhold bør du bruge [`amp-anim`](https://amp.dev/documentation/components/amp-anim/) til at minimere brugen af CPU, når indholdet er uden for skærmbilledet."
   },
@@ -2333,6 +2327,9 @@
   "report/renderer/util.js | calculatorLink": {
     "message": "Se beregner."
   },
+  "report/renderer/util.js | collapseView": {
+    "message": "Skjul visning"
+  },
   "report/renderer/util.js | crcInitialNavigation": {
     "message": "Indledende navigation"
   },
@@ -2369,8 +2366,14 @@
   "report/renderer/util.js | errorMissingAuditInfo": {
     "message": "Rapportfejl: Der er ingen revisionsoplysninger"
   },
+  "report/renderer/util.js | expandView": {
+    "message": "Udvid visning"
+  },
   "report/renderer/util.js | footerIssue": {
     "message": "Indsend et problem"
+  },
+  "report/renderer/util.js | hide": {
+    "message": "Skjul"
   },
   "report/renderer/util.js | labDataTitle": {
     "message": "Laboratoriedata"
@@ -2392,6 +2395,12 @@
   },
   "report/renderer/util.js | passedAuditsGroupTitle": {
     "message": "Beståede revisioner"
+  },
+  "report/renderer/util.js | runtimeAnalysisWindow": {
+    "message": "Oprindelig sideindlæsning"
+  },
+  "report/renderer/util.js | runtimeCustom": {
+    "message": "Tilpasset begrænsning"
   },
   "report/renderer/util.js | runtimeDesktopEmulation": {
     "message": "Emuleret computer"
@@ -2420,8 +2429,20 @@
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "Brugeragent (netværk)"
   },
+  "report/renderer/util.js | runtimeSingleLoad": {
+    "message": "Enkeltstående sideindlæsning"
+  },
+  "report/renderer/util.js | runtimeSingleLoadTooltip": {
+    "message": "Disse data stammer fra en enkelt sideindlæsning i modsætning til feltdata, der omfatter flere sessioner."
+  },
+  "report/renderer/util.js | runtimeSlow4g": {
+    "message": "Begrænsning til langsom 4G-forbindelse"
+  },
   "report/renderer/util.js | runtimeUnknown": {
     "message": "Ukendt"
+  },
+  "report/renderer/util.js | show": {
+    "message": "Vis"
   },
   "report/renderer/util.js | showRelevantAudits": {
     "message": "Vis gennemgange, som er relevante for:"
@@ -2452,5 +2473,29 @@
   },
   "report/renderer/util.js | warningHeader": {
     "message": "Advarsler! "
+  },
+  "treemap/app/src/util.js | allLabel": {
+    "message": "Alle"
+  },
+  "treemap/app/src/util.js | allScriptsDropdownLabel": {
+    "message": "Alle scripts"
+  },
+  "treemap/app/src/util.js | coverageColumnName": {
+    "message": "Dækning"
+  },
+  "treemap/app/src/util.js | duplicateModulesLabel": {
+    "message": "Identiske moduler"
+  },
+  "treemap/app/src/util.js | resourceBytesLabel": {
+    "message": "Bytes i ressourcefil"
+  },
+  "treemap/app/src/util.js | tableColumnName": {
+    "message": "Navn"
+  },
+  "treemap/app/src/util.js | toggleTableButtonLabel": {
+    "message": "Vis/skjul tabel"
+  },
+  "treemap/app/src/util.js | unusedBytesLabel": {
+    "message": "Ubrugte bytes"
   }
 }
