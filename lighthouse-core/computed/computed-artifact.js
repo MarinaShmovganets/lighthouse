@@ -14,7 +14,7 @@ const log = require('lighthouse-logger');
  * @template {{name: string, compute_(artifacts: unknown, context: LH.Artifacts.ComputedContext): Promise<unknown>}} C
  * @template {Array<keyof FirstParamType<C['compute_']>>} K
  * @param {C} computableArtifact
- * @param {(K & ([keyof FirstParamType<C['compute_']>] extends [K[number]] ? unknown : never)) | null} keys
+ * @param {(K & ([keyof FirstParamType<C['compute_']>] extends [K[number]] ? unknown : never)) | null} keys List of artifacts that will be checked for equality when caching. Use `null` to check all artifacts.
  */
 function makeComputedArtifact(computableArtifact, keys) {
   // tsc (3.1) has more difficulty with template inter-references in jsdoc, so
@@ -27,23 +27,19 @@ function makeComputedArtifact(computableArtifact, keys) {
    * @return {ReturnType<C['compute_']>}
    */
   const request = (artifacts, context) => {
+    const pickedArtifacts = keys ?
+      Object.fromEntries(keys.map(key => [key, artifacts[key]])) :
+      artifacts;
+
     // NOTE: break immutability solely for this caching-controller function.
     const computedCache = /** @type {Map<string, ArbitraryEqualityMap>} */ (context.computedCache);
     const computedName = computableArtifact.name;
 
     const cache = computedCache.get(computedName) || new ArbitraryEqualityMap();
-    if (keys) {
-      cache.setEqualityFn((a, b) => {
-        for (const key of keys) {
-          if (ArbitraryEqualityMap.deepEquals(a[key], b[key])) continue;
-          return false;
-        }
-        return true;
-      });
-    }
     computedCache.set(computedName, cache);
 
-    const computed = /** @type {ReturnType<C['compute_']>|undefined} */ (cache.get(artifacts));
+    /** @type {ReturnType<C['compute_']>|undefined} */
+    const computed = cache.get(pickedArtifacts);
     if (computed) {
       return computed;
     }
@@ -52,8 +48,8 @@ function makeComputedArtifact(computableArtifact, keys) {
     log.time(status, 'verbose');
 
     const artifactPromise = /** @type {ReturnType<C['compute_']>} */
-        (computableArtifact.compute_(artifacts, context));
-    cache.set(artifacts, artifactPromise);
+        (computableArtifact.compute_(pickedArtifacts, context));
+    cache.set(pickedArtifacts, artifactPromise);
 
     artifactPromise.then(() => log.timeEnd(status)).catch(() => log.timeEnd(status));
 
