@@ -14,7 +14,7 @@ const log = require('lighthouse-logger');
  * @template {{name: string, compute_(dependencies: unknown, context: LH.Artifacts.ComputedContext): Promise<unknown>}} C
  * @template {Array<keyof FirstParamType<C['compute_']>>} K
  * @param {C} computableArtifact
- * @param {(K & ([keyof FirstParamType<C['compute_']>] extends [K[number]] ? unknown : never)) | null} keys List of dependencies that will be checked for equality when caching. Use `null` to check all dependencies.
+ * @param {(K & ([keyof FirstParamType<C['compute_']>] extends [K[number]] ? unknown : never)) | null} keys List of properties of `dependencies` used by `compute_`; other properties are filtered out. Use `null` to allow all properties. Ensures that only required properties are used for caching result.
  */
 function makeComputedArtifact(computableArtifact, keys) {
   // tsc (3.1) has more difficulty with template inter-references in jsdoc, so
