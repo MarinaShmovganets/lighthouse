@@ -30,6 +30,7 @@ describe('ReportRendererAxe', () => {
       const htmlReport = reportGenerator.generateReportHtml(sampleResults);
       await page.setContent(htmlReport);
 
+      // Superset of Lighthouse's aXe config
       const config = {
         runOnly: {
           type: 'tag',
@@ -45,7 +46,6 @@ describe('ReportRendererAxe', () => {
           'heading-order': {enabled: true},
           'meta-viewport': {enabled: true},
           'aria-treeitem-name': {enabled: true},
-          // https://github.com/dequelabs/axe-core/issues/2958
         },
       };
 
@@ -53,13 +53,13 @@ describe('ReportRendererAxe', () => {
       // eslint-disable-next-line no-undef
       const axeResults = await page.evaluate(config => axe.run(config), config);
 
-      expect(axeResults.violations.map(v => v.id)).toMatchInlineSnapshot([]);
       expect(axeResults.violations).toMatchObject([
-        {
-          // 27 current color-contrast failures, primarily audit display text and explanations.
-          // TODO: fix these failures.
-          id: 'color-contrast',
-        },
+        // Color contrast failure only pops up if this pptr is run headfully.
+        // There are currently 27 problematic nodes, primarily audit display text and explanations.
+        // TODO: fix these failures, regardless.
+        // {
+        //   id: 'color-contrast',
+        // },
         {
           id: 'duplicate-id',
           nodes: [
