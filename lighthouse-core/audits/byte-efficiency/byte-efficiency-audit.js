@@ -201,14 +201,6 @@ class UnusedBytes extends Audit {
   }
 
   /**
-   * @param {number} wastedBytes
-   * @param {Simulator} simulator
-   */
-  static computeWastedMsWithWastedBytes(wastedBytes, simulator) {
-    return simulator.simulateTimespan(wastedBytes);
-  }
-
-  /**
    * @param {ByteEfficiencyProduct} result
    * @param {Node|null} graph
    * @param {Simulator} simulator
@@ -227,7 +219,7 @@ class UnusedBytes extends Audit {
         providedWastedBytesByUrl: result.wastedBytesByUrl,
       });
     } else {
-      wastedMs = this.computeWastedMsWithWastedBytes(wastedBytes, simulator);
+      wastedMs = simulator.computedWastedMsFromWastedBytes(wastedBytes);
     }
 
     let displayValue = result.displayValue || '';
