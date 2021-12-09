@@ -495,7 +495,7 @@ class Simulator {
     // https://github.com/GoogleChrome/lighthouse/pull/13323#issuecomment-962031709
     // 0 throughput means the no (additional) throttling is expected.
     // This is common for desktop + devtools throttling where throttling is additive and we don't want any additional.
-    const bitsPerSecond = throughput || observedThroughput;
+    const bitsPerSecond = throughput === 0 ? observedThroughput : throughput;
     if (bitsPerSecond === 0) return 0;
 
     const wastedBits = wastedBytes * 8;
