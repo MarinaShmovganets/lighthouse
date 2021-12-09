@@ -204,13 +204,8 @@ class UnusedBytes extends Audit {
    * @param {number} wastedBytes
    * @param {Simulator} simulator
    */
-  static computeWastedMsWithThroughput(wastedBytes, simulator) {
-    const bitsPerSecond = simulator.getOptions().throughput;
-    // https://github.com/GoogleChrome/lighthouse/pull/13323#issuecomment-962031709
-    if (bitsPerSecond === 0) return 0;
-    const wastedBits = wastedBytes * 8;
-    const wastedMs = wastedBits / bitsPerSecond * 1000;
-    return wastedMs;
+  static computeWastedMsWithWastedBytes(wastedBytes, simulator) {
+    return simulator.simulateTimespan(wastedBytes);
   }
 
   /**
@@ -232,7 +227,7 @@ class UnusedBytes extends Audit {
         providedWastedBytesByUrl: result.wastedBytesByUrl,
       });
     } else {
-      wastedMs = this.computeWastedMsWithThroughput(wastedBytes, simulator);
+      wastedMs = this.computeWastedMsWithWastedBytes(wastedBytes, simulator);
     }
 
     let displayValue = result.displayValue || '';

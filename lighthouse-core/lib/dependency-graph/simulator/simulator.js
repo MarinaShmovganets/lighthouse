@@ -486,6 +486,22 @@ class Simulator {
     };
   }
 
+  /**
+   * @param {number} wastedBytes
+   */
+  simulateTimespan(wastedBytes) {
+    const {throughput, observedThroughput} = this._options;
+
+    // https://github.com/GoogleChrome/lighthouse/pull/13323#issuecomment-962031709
+    // 0 throughput means the throttling is unset. Use the observed throughput in this case.
+    const bitsPerSecond = throughput || observedThroughput;
+    if (bitsPerSecond === 0) return 0;
+
+    const wastedBits = wastedBytes * 8;
+    const wastedMs = wastedBits / bitsPerSecond * 1000;
+    return wastedMs;
+  }
+
   /** @return {Map<string, LH.Gatherer.Simulation.Result['nodeTimings']>} */
   static get ALL_NODE_TIMINGS() {
     return ALL_SIMULATION_NODE_TIMINGS;
