@@ -15,22 +15,19 @@ set -euo pipefail
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$SCRIPT_DIR/../.."
-TEST_DIR="$LH_ROOT/.tmp/chromium-web-tests"
-DEFAULT_DEVTOOLS_PATH="$TEST_DIR/devtools/devtools-frontend"
-DEVTOOLS_PATH=${DEVTOOLS_PATH:-"$DEFAULT_DEVTOOLS_PATH"}
 
 if [ -z "${CHROME_PATH:-}" ]; then
   echo 'Must set $CHROME_PATH'
   exit 1
 fi
 
-if [ "$DEFAULT_DEVTOOLS_PATH" == "$DEVTOOLS_PATH" ]; then
-  bash "$LH_ROOT/lighthouse-core/test/chromium-web-tests/setup.sh"
+# If using the default .tmp devtools checkout, make sure it's up to date first.
+if [ -z "${DEVTOOLS_PATH:-}" ]; then
+  source "$LH_ROOT/lighthouse-core/test/chromium-web-tests/setup.sh"
 fi
 
 echo "CHROME_PATH: $CHROME_PATH"
 
-export DEVTOOLS_PATH
-bash "$SCRIPT_DIR/build-devtools.sh"
+bash "$LH_ROOT/lighthouse-core/scripts/build-devtools.sh"
 
 "$CHROME_PATH" --custom-devtools-frontend=file://"$DEVTOOLS_PATH"/out/Default/gen/front_end $*
