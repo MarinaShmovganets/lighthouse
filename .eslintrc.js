@@ -80,7 +80,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['lighthouse-cli/test/smokehouse/**/*expectations.js'],
+      files: ['lighthouse-cli/test/smokehouse/test-definitions/*.js'],
       rules: {
         'max-len': 0,
       },
@@ -88,7 +88,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2019,
+    ecmaVersion: 2020,
     ecmaFeatures: {
       globalReturn: true,
       jsx: false,
