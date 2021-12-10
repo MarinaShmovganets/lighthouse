@@ -116,7 +116,7 @@
     "@types/gh-pages": "^2.0.0",
     "@types/google.analytics": "0.0.39",
     "@types/jest": "^24.0.9",
-    "@types/jpeg-js": "^0.3.0",
+    "@types/jpeg-js": "^0.3.7",
     "@types/jsdom": "^16.2.13",
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/lodash.get": "^4.4.6",

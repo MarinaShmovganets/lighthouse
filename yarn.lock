@@ -1556,12 +1556,12 @@
   dependencies:
     jest-diff "^24.3.0"
 
-"@types/jpeg-js@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@types/jpeg-js/-/jpeg-js-0.3.0.tgz#5971f0aa50900194e9565711c265c10027385e89"
-  integrity sha512-S6bajx+UpnHzh/nFgGOJ8uvDCElV+eGvljDpJKHK2FW53erZxhX+CitbUFbrsmZi1h/I+DzvGp0MWyKl3dF1yw==
+"@types/jpeg-js@^0.3.7":
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/@types/jpeg-js/-/jpeg-js-0.3.7.tgz#efe18ac0078c09bae5fa1d58941b53799e7bbf1c"
+  integrity sha512-v3FEzt2TXOOIgvwwOqMoeEhqYqUoK4wcV/K7JbKj8CzwDE9sSuor8EZpSJKaOnuEtyO0W+Nd2uKk8MbtusYpEg==
   dependencies:
-    "@types/node" "*"
+    jpeg-js "*"
 
 "@types/jsdom@^16.2.13":
   version "16.2.13"
@@ -5472,6 +5472,11 @@ jest@27.1.1:
     "@jest/core" "^27.1.1"
     import-local "^3.0.2"
     jest-cli "^27.1.1"
+
+jpeg-js@*, jpeg-js@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/jpeg-js/-/jpeg-js-0.4.3.tgz#6158e09f1983ad773813704be80680550eff977b"
+  integrity sha512-ru1HWKek8octvUHFHvE5ZzQ1yAsJmIvRdGWvSoKV52XKyuyYA437QWDttXT8eZXDSbuMpHlLzPDZUPd6idIz+Q==
 
 jpeg-js@^0.4.1:
   version "0.4.1"
