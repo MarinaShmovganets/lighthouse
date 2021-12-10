@@ -69,6 +69,7 @@ module.exports = {
       exports: 'always-multiline',
       functions: 'never',
     }],
+    'operator-linebreak': 0, // disable temporarily
 
     // Custom lighthouse rules
     'local-rules/require-file-extension': 2,
