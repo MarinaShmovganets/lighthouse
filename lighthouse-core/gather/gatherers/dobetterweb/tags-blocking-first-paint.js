@@ -119,7 +119,7 @@ class TagsBlockingFirstPaint extends FRGatherer {
   meta = {
     supportedModes: ['navigation'],
     dependencies: {DevtoolsLog: DevtoolsLog.symbol},
-  }
+  };
 
   /**
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords

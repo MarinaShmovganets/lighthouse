@@ -89,7 +89,7 @@ class FormElements extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['snapshot', 'navigation'],
-  }
+  };
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
