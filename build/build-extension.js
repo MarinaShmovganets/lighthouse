@@ -53,7 +53,7 @@ async function buildEntryPoint() {
 }
 
 /**
- * @return {Promise<void>}
+ * @return {Promise<string[]>}
  */
 function copyAssets() {
   return cpy([
