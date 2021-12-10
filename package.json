@@ -139,7 +139,7 @@
     "c8": "^7.4.0",
     "chalk": "^2.4.1",
     "chrome-devtools-frontend": "1.0.922924",
-    "cpy": "^7.0.1",
+    "cpy": "^8.1.2",
     "cross-env": "^7.0.2",
     "csv-validator": "^0.0.3",
     "devtools-protocol": "0.0.939404",
