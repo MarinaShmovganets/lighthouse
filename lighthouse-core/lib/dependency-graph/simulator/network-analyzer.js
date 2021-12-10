@@ -199,7 +199,8 @@ class NetworkAnalyzer {
       if (!record.resourceType) return;
 
       const serverResponseTimePercentage =
-      SERVER_RESPONSE_PERCENTAGE_OF_TTFB[record.resourceType] || DEFAULT_SERVER_RESPONSE_PERCENTAGE;
+        SERVER_RESPONSE_PERCENTAGE_OF_TTFB[record.resourceType] ||
+        DEFAULT_SERVER_RESPONSE_PERCENTAGE;
       const estimatedServerResponseTime = timing.receiveHeadersEnd * serverResponseTimePercentage;
 
       // When connection was reused...
