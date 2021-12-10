@@ -7166,10 +7166,10 @@ rimraf@^2.7.1:
   dependencies:
     glob "^7.1.3"
 
-robots-parser@^2.0.1:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/robots-parser/-/robots-parser-2.1.0.tgz#d16b78ce34e861ab6afbbf0aac65974dbe01566e"
-  integrity sha512-k07MeDS1Tl1zjoYs5bHfUbgQ0MfaeTOepDcjZFxdYXd84p6IeLDQyUwlMk2AZ9c2yExA30I3ayWhmqz9tg0DzQ==
+robots-parser@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/robots-parser/-/robots-parser-2.3.0.tgz#d79e86e26e13fa0a806adbc37f4cf1b96aebc8c3"
+  integrity sha512-RvuCITckrHM9k8DxCCU9rqWpuuKRfVX9iHG751dC3/EdERxp9gJATxYYdYOT3L0T+TAT4+27lENisk/VbHm47A==
 
 rollup-plugin-node-resolve@^5.2.0:
   version "5.2.0"
