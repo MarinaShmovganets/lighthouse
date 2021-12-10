@@ -108,7 +108,6 @@
     "@testing-library/preact": "^2.0.1",
     "@testing-library/preact-hooks": "^1.1.0",
     "@types/archiver": "^2.1.2",
-    "@types/chrome": "^0.0.154",
     "@types/configstore": "^4.0.0",
     "@types/cpy": "^5.1.0",
     "@types/eslint": "^4.16.6",
