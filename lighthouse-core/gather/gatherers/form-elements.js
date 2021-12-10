@@ -49,8 +49,8 @@ function collectFormElements() {
       forms.set(parentFormElement, newFormObj);
     }
     const formObj = forms.get(parentFormElement) || formlessObj;
-    if (child instanceof HTMLInputElement || child instanceof HTMLTextAreaElement
-      || child instanceof HTMLSelectElement) {
+    if (child instanceof HTMLInputElement || child instanceof HTMLTextAreaElement ||
+      child instanceof HTMLSelectElement) {
       formObj.inputs.push({
         id: child.id,
         name: child.name,
