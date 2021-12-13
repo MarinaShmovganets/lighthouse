@@ -592,7 +592,6 @@ describe('PageDependencyGraph computed artifact:', () => {
       assert.deepEqual(nodes[2].getDependencies(), [nodes[0]]);
     });
 
-
     it('should find root if it is not the first node', () => {
       const request1 = createRequest(1, '1', 0, null, NetworkRequest.TYPES.Other);
       const request2 = createRequest(2, '2', 5, null, NetworkRequest.TYPES.Document);

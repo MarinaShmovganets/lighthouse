@@ -399,14 +399,21 @@ class PageDependencyGraph {
     const mainDocumentRequest = NetworkAnalyzer.findMainDocument(networkRecords);
     const mainDocumentNode = networkNodeOutput.idToNodeMap.get(mainDocumentRequest.requestId);
     if (!mainDocumentNode) {
-      // Should always be found.
-      throw new Error(`mainDocumentNode not found.`);
+      // mainDocumentNode should always be found.
+      throw new Error('mainDocumentNode not found.');
     }
 
     // The root request is the earliest request in the main document redirect chain.
+    // Will be undefined if there were no redirects.
     const rootRequest = mainDocumentNode.record.redirects && mainDocumentNode.record.redirects[0];
-    let rootNode = rootRequest && networkNodeOutput.idToNodeMap.get(rootRequest.requestId);
-    if (!rootNode) {
+
+    let rootNode;
+    if (rootRequest) {
+      // rootNode should always be found.
+      rootNode = rootRequest && networkNodeOutput.idToNodeMap.get(rootRequest.requestId);
+      if (!rootNode) throw new Error('rootNode not found');
+    } else {
+      // Use main document as root if there were no redirects.
       rootNode = mainDocumentNode;
     }
 
