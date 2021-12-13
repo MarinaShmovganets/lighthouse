@@ -219,7 +219,7 @@ class UnusedBytes extends Audit {
         providedWastedBytesByUrl: result.wastedBytesByUrl,
       });
     } else {
-      wastedMs = simulator.computedWastedMsFromWastedBytes(wastedBytes);
+      wastedMs = simulator.computeWastedMsFromWastedBytes(wastedBytes);
     }
 
     let displayValue = result.displayValue || '';

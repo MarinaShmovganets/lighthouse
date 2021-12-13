@@ -489,7 +489,7 @@ class Simulator {
   /**
    * @param {number} wastedBytes
    */
-  computedWastedMsFromWastedBytes(wastedBytes) {
+  computeWastedMsFromWastedBytes(wastedBytes) {
     const {throughput, observedThroughput} = this._options;
 
     // https://github.com/GoogleChrome/lighthouse/pull/13323#issuecomment-962031709
