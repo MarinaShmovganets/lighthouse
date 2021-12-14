@@ -45,7 +45,7 @@ function getAuditIdsInCategories(allCategories, onlyCategories) {
 
   onlyCategories = onlyCategories || Object.keys(allCategories);
   const categories = onlyCategories.map(categoryId => allCategories[categoryId]);
-  const auditRefs = categories.flatMap(category => category.auditRefs);
+  const auditRefs = categories.flatMap(category => category?.auditRefs || []);
   return new Set(auditRefs.map(auditRef => auditRef.id));
 }
 

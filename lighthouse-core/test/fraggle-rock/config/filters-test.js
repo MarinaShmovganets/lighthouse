@@ -457,6 +457,24 @@ describe('Fraggle Rock Config Filtering', () => {
       });
     });
 
+    it('should warn and drop unknown onlyCategories entries', () => {
+      const filtered = filters.filterConfigByExplicitFilters(config, {
+        onlyAudits: null,
+        onlyCategories: ['timespan', 'thisIsNotACategory'],
+        skipAudits: null,
+      });
+
+      if (!filtered.categories) throw new Error('Failed to keep any categories');
+      expect(Object.keys(filtered.categories)).toEqual(['timespan']);
+      expect(filtered).toMatchObject({
+        artifacts: [{id: 'Timespan'}],
+        audits: [{implementation: TimespanAudit}],
+        categories: {
+          timespan: {},
+        },
+      });
+    });
+
     it('should filter via a combination of filters', () => {
       const filtered = filters.filterConfigByExplicitFilters(config, {
         onlyCategories: ['mixed'],
