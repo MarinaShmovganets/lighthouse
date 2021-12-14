@@ -198,6 +198,33 @@ describe('Font size gatherer', () => {
       expect(compute('h1 > p.other > span#the-text')).toEqual(113);
     });
 
+    it('should ignore the univeral selector', () => {
+      expect(compute('.foo')).toEqual(10);
+      expect(compute('* .foo')).toEqual(10);
+      expect(compute('.foo *')).toEqual(10);
+    });
+
+    // Examples https://drafts.csswg.org/selectors-3/#specificity
+    it('should handle l3 spec selectors', () => {
+      expect(compute('*')).toEqual(0);
+      expect(compute('LI')).toEqual(1);
+      expect(compute('UL LI')).toEqual(2);
+      expect(compute('UL OL+LI')).toEqual(3);
+      // expect(compute('H1 + *[REL=up]')).toEqual(11); // TODO: Handle attribute selectors
+      expect(compute('UL OL LI.red')).toEqual(13);
+      expect(compute('LI.red.level')).toEqual(21);
+      expect(compute('#x34y')).toEqual(100);
+      // expect(compute('#s12:not(FOO)')).toEqual(101); // TODO: Handle pseudo selectors
+    });
+
+    // Examples from https://drafts.csswg.org/selectors-4/#specificity-rules
+    it('should handle l4 spec selectors', () => {
+      expect(compute(':is(em, #foo)')).toEqual(100);
+      // expect(compute('.qux:where(em, #foo#bar#baz)')).toEqual(10); // TODO: Handle pseudo selectors
+      // expect(compute(':nth-child(even of li, .item)')).toEqual(20); // TODO: Handle pseudo selectors
+      // expect(compute(':not(em, strong#foo)')).toEqual(101); // TODO: Handle pseudo selectors
+    });
+
     it('should cap the craziness', () => {
       expect(compute('h1.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p')).toEqual(91);
     });
