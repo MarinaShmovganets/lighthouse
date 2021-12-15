@@ -1,27 +1,28 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-
- <a name="9.2.0"></a>
+ <a name="9.2.0"></>
 # 9.2.0 (2021-12-15)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v9.1.0...v9.2.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 99](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
+* move no-unload-listeners to perf category ([#13497](https://github.com/GoogleChrome/lighthouse/pull/13497))
 
 ## Core
 
 * font-size: fix CSS selector regex ([#13455](https://github.com/GoogleChrome/lighthouse/pull/13455))
-* fr: compute timespan saving with observed throughput ([#13478](https://github.com/GoogleChrome/lighthouse/pull/13478))
-* move no-unload-listeners to perf category ([#13497](https://github.com/GoogleChrome/lighthouse/pull/13497))
 * fcp: handle negative request `endTime` ([#13452](https://github.com/GoogleChrome/lighthouse/pull/13452))
-* fr: option to skip about:blank jumps ([#13375](https://github.com/GoogleChrome/lighthouse/pull/13375))
 * legacy-javascript: latest polyfilling, drop some signals ([#13482](https://github.com/GoogleChrome/lighthouse/pull/13482))
 * cache fetch to avoid bad polyfills ([#13476](https://github.com/GoogleChrome/lighthouse/pull/13476))
 * computed artifact keys ([#13430](https://github.com/GoogleChrome/lighthouse/pull/13430))
 * legacy-javascript: remove Object.getOwnPropertyNames signal ([#13442](https://github.com/GoogleChrome/lighthouse/pull/13442))
+
+## ⛏️👷 Fraggle Rock
+
+  Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
+
+* fr: compute timespan saving with observed throughput ([#13478](https://github.com/GoogleChrome/lighthouse/pull/13478))
+* fr: option to skip about:blank jumps ([#13375](https://github.com/GoogleChrome/lighthouse/pull/13375))
 
 ## Report
 
@@ -53,7 +54,7 @@ We expect this release to ship in the DevTools of [Chrome 98](https://chromiumda
 
 ## New Contributors
 
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 - @whitep4nth3r
 - Adam Read @adamread
@@ -125,7 +126,7 @@ See the [What's new in Lighthouse 9.0 blog post](https://developer.chrome.com/bl
 
 ## New Contributors
 
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 - Sergii Bondarenko @BR0kEN-
 - Prerana Nawar @prerana1821
@@ -244,7 +245,7 @@ We expect this release to ship in the DevTools of [Chrome 97](https://chromiumda
 
 ## New Contributors
 
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 - meehawk @meehawk
 - Edwin Gustafson @edwingustafson
