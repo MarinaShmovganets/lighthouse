@@ -1,4 +1,4 @@
- <a name="9.2.0"></>
+<a name="9.2.0"></>
 # 9.2.0 (2021-12-15)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v9.1.0...v9.2.0)
 
