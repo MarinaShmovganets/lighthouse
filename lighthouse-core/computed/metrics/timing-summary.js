@@ -128,7 +128,7 @@ class TimingSummary {
 
     /** @type {Record<string,boolean>} */
     const debugInfo = {
-      lcpInvalidated: !!(processedNavigation?.lcpInvalidated),
+      lcpInvalidated: !!processedNavigation?.lcpInvalidated,
     };
 
     return {metrics, debugInfo};

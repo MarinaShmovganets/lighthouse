@@ -561,9 +561,8 @@ class CpuProfilerModel {
 
       // `Profile` or `ProfileChunk` can partially define these across multiple events.
       // We'll fallback to empty values and worry about validation in the `synthesizeTraceEvents` phase.
-      const cpuProfileArg = (event.args.data?.cpuProfile) || {};
-      const timeDeltas =
-        (event.args.data?.timeDeltas) || cpuProfileArg.timeDeltas;
+      const cpuProfileArg = event.args.data?.cpuProfile || {};
+      const timeDeltas = event.args.data?.timeDeltas || cpuProfileArg.timeDeltas;
       let profile = profiles.get(event.id);
 
       if (event.name === 'Profile') {
@@ -571,7 +570,7 @@ class CpuProfilerModel {
           id: event.id,
           pid: event.pid,
           tid: event.tid,
-          startTime: (event.args.data?.startTime) || event.ts,
+          startTime: event.args.data?.startTime || event.ts,
           nodes: cpuProfileArg.nodes || [],
           samples: cpuProfileArg.samples || [],
           timeDeltas: timeDeltas || [],

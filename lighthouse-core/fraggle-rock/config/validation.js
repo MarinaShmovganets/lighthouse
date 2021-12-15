@@ -123,7 +123,7 @@ function assertValidFRNavigations(navigationsDefn) {
 function assertValidAudit(auditDefinition) {
   const {implementation, path: auditPath} = auditDefinition;
   const auditName = auditPath ||
-    (implementation?.meta?.id) ||
+    implementation?.meta?.id ||
     'Unknown audit';
 
   if (typeof implementation.audit !== 'function' || implementation.audit === Audit.audit) {

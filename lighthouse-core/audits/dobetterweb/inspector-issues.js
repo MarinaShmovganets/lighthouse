@@ -58,7 +58,7 @@ class IssuesPanelEntries extends Audit {
   static getMixedContentRow(mixedContentIssues) {
     const requestUrls = new Set();
     for (const issue of mixedContentIssues) {
-      const requestUrl = (issue.request?.url) || issue.mainResourceURL;
+      const requestUrl = issue.request?.url || issue.mainResourceURL;
       requestUrls.add(requestUrl);
     }
     return {
