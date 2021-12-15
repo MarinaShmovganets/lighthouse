@@ -7,7 +7,7 @@
 
 /** @param {LH.Result} lhr @param {string} auditName */
 const getNumericValue = (lhr, auditName) =>
-  (lhr.audits[auditName] && lhr.audits[auditName].numericValue) || NaN;
+  (lhr.audits[auditName]?.numericValue) || NaN;
 
 /**
  * @param {Array<number>} numbers

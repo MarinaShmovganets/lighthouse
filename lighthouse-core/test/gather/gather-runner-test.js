@@ -959,21 +959,21 @@ describe('GatherRunner', function() {
         }(),
 
         // async
-        new class BeforePromise extends Gatherer {
+        new (class BeforePromise extends Gatherer {
           beforePass() {
             return Promise.resolve(this.name);
           }
-        }(),
-        new class PassPromise extends Gatherer {
+        })(),
+        new (class PassPromise extends Gatherer {
           pass() {
             return Promise.resolve(this.name);
           }
-        }(),
-        new class AfterPromise extends Gatherer {
+        })(),
+        new (class AfterPromise extends Gatherer {
           afterPass() {
             return Promise.resolve(this.name);
           }
-        }(),
+        })(),
       ].map(instance => ({instance}));
       const gathererNames = gatherers.map(gatherer => gatherer.instance.name);
       const config = makeConfig({
@@ -1104,24 +1104,24 @@ describe('GatherRunner', function() {
         }(),
 
         // async
-        new class BeforePromise extends Gatherer {
+        new (class BeforePromise extends Gatherer {
           beforePass() {
             const err = new Error(this.name);
             return Promise.reject(err);
           }
-        }(),
-        new class PassPromise extends Gatherer {
+        })(),
+        new (class PassPromise extends Gatherer {
           pass() {
             const err = new Error(this.name);
             return Promise.reject(err);
           }
-        }(),
-        new class AfterPromise extends Gatherer {
+        })(),
+        new (class AfterPromise extends Gatherer {
           afterPass() {
             const err = new Error(this.name);
             return Promise.reject(err);
           }
-        }(),
+        })(),
       ].map(instance => ({instance}));
       const gathererNames = gatherers.map(gatherer => gatherer.instance.name);
       const config = makeConfig({

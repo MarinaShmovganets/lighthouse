@@ -65,8 +65,7 @@ class TraceElements extends FRGatherer {
    * @return {number | undefined}
    */
   static getNodeIDFromTraceEvent(event) {
-    return event && event.args &&
-      event.args.data && event.args.data.nodeId;
+    return event?.args?.data?.nodeId;
   }
 
   /**
@@ -74,8 +73,7 @@ class TraceElements extends FRGatherer {
    * @return {string | undefined}
    */
   static getAnimationIDFromTraceEvent(event) {
-    return event && event.args &&
-      event.args.data && event.args.data.id;
+    return event?.args?.data?.id;
   }
 
   /**
@@ -83,8 +81,7 @@ class TraceElements extends FRGatherer {
    * @return {number | undefined}
    */
   static getFailureReasonsFromTraceEvent(event) {
-    return event && event.args &&
-      event.args.data && event.args.data.compositeFailed;
+    return event?.args?.data?.compositeFailed;
   }
 
   /**
@@ -92,8 +89,7 @@ class TraceElements extends FRGatherer {
    * @return {string[] | undefined}
    */
   static getUnsupportedPropertiesFromTraceEvent(event) {
-    return event && event.args &&
-      event.args.data && event.args.data.unsupportedProperties;
+    return event?.args?.data?.unsupportedProperties;
   }
 
   /**
@@ -124,7 +120,7 @@ class TraceElements extends FRGatherer {
     const clsPerNode = new Map();
     const shiftEvents = mainThreadEvents
       .filter(e => e.name === 'LayoutShift')
-      .map(e => e.args && e.args.data);
+      .map(e => e.args?.data);
     const indexFirstEventWithoutInput =
       shiftEvents.findIndex(event => event && !event.had_recent_input);
 
@@ -308,7 +304,7 @@ class TraceElements extends FRGatherer {
           continue;
         }
 
-        if (response && response.result && response.result.value) {
+        if (response?.result?.value) {
           traceElements.push({
             traceEventType,
             ...response.result.value,
