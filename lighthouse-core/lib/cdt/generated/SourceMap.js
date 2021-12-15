@@ -202,7 +202,7 @@ mappings() {
         for (let i = 0; i < sourceMap.sources.length; ++i) {
             const href = sourceRoot + sourceMap.sources[i];
             let url = '' || href;
-            const source = sourceMap.sourcesContent?.[i];
+            const source = sourceMap.sourcesContent && sourceMap.sourcesContent[i];
             if (url === this.compiledURLInternal && source) {
             }
             this.sourceInfos.set(url, new TextSourceMap.SourceInfo(source || null, null));
@@ -224,7 +224,7 @@ mappings() {
         const sources = sourceMapToSourceList.get(map);
         const names = map.names || [];
         const stringCharIterator = new TextSourceMap.StringCharIterator(map.mappings);
-        let sourceURL = sources?.[sourceIndex];
+        let sourceURL = sources && sources[sourceIndex];
         while (true) {
             if (stringCharIterator.peek() === ',') {
                 stringCharIterator.next();
