@@ -50,6 +50,7 @@ yarn build-all
 
 # Verify the viewer will work.
 yarn serve-viewer
+# Works with v4 report? http://localhost:8000/viewer?gist=7251f9eba409f385e4c0424515fe8009
 # Works with v5 report? http://localhost:8000/viewer?gist=6093e41b9b50c8d642a7e6bbc784e32f
 # Works with v6 report? http://localhost:8000/viewer?gist=94722e917a507feb5371ad51be6c3334
 # Works with v8 report? http://localhost:8000/viewer?gist=18d523b86779185ecfd376d58f891e1d
