@@ -12,9 +12,9 @@ We expect this release to ship in the DevTools of [Chrome 99](https://chromiumda
 
 * font-size: fix CSS selector regex ([#13455](https://github.com/GoogleChrome/lighthouse/pull/13455))
 * fcp: handle negative request `endTime` ([#13452](https://github.com/GoogleChrome/lighthouse/pull/13452))
-* legacy-javascript: latest polyfilling, drop some signals ([#13482](https://github.com/GoogleChrome/lighthouse/pull/13482), [#13442](https://github.com/GoogleChrome/lighthouse/pull/13442))
+* legacy-javascript: update polyfilling, drop some signals ([#13482](https://github.com/GoogleChrome/lighthouse/pull/13482), [#13442](https://github.com/GoogleChrome/lighthouse/pull/13442))
 * cache fetch to avoid bad polyfills ([#13476](https://github.com/GoogleChrome/lighthouse/pull/13476))
-* computed artifact keys ([#13430](https://github.com/GoogleChrome/lighthouse/pull/13430))
+* check equality of computed artifacts using dependency keys ([#13430](https://github.com/GoogleChrome/lighthouse/pull/13430))
 
 ## ⛏️👷 Fraggle Rock
 
