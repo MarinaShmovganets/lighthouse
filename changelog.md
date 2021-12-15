@@ -12,22 +12,20 @@ We expect this release to ship in the DevTools of [Chrome 99](https://chromiumda
 
 * font-size: fix CSS selector regex ([#13455](https://github.com/GoogleChrome/lighthouse/pull/13455))
 * fcp: handle negative request `endTime` ([#13452](https://github.com/GoogleChrome/lighthouse/pull/13452))
-* legacy-javascript: latest polyfilling, drop some signals ([#13482](https://github.com/GoogleChrome/lighthouse/pull/13482))
+* legacy-javascript: latest polyfilling, drop some signals ([#13482](https://github.com/GoogleChrome/lighthouse/pull/13482), [#13442](https://github.com/GoogleChrome/lighthouse/pull/13442))
 * cache fetch to avoid bad polyfills ([#13476](https://github.com/GoogleChrome/lighthouse/pull/13476))
 * computed artifact keys ([#13430](https://github.com/GoogleChrome/lighthouse/pull/13430))
-* legacy-javascript: remove Object.getOwnPropertyNames signal ([#13442](https://github.com/GoogleChrome/lighthouse/pull/13442))
 
 ## ⛏️👷 Fraggle Rock
 
   Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighthouse/issues/11313))
 
-* fr: compute timespan saving with observed throughput ([#13478](https://github.com/GoogleChrome/lighthouse/pull/13478))
-* fr: option to skip about:blank jumps ([#13375](https://github.com/GoogleChrome/lighthouse/pull/13375))
+* compute timespan saving with observed throughput ([#13478](https://github.com/GoogleChrome/lighthouse/pull/13478))
+* option to skip about:blank jumps ([#13375](https://github.com/GoogleChrome/lighthouse/pull/13375))
 
 ## Report
 
 * psi: update styles for tighter fit in narrow viewports ([#13355](https://github.com/GoogleChrome/lighthouse/pull/13355))
-* port axe test to pptr ([#13450](https://github.com/GoogleChrome/lighthouse/pull/13450))
 
 ## Deps
 
@@ -40,6 +38,7 @@ We expect this release to ship in the DevTools of [Chrome 99](https://chromiumda
 * split smoke tests into one test per file ([#13461](https://github.com/GoogleChrome/lighthouse/pull/13461))
 * fix devtools build command ([#13457](https://github.com/GoogleChrome/lighthouse/pull/13457))
 * move sharding higher so smokehouse-bundle can also shard ([#13387](https://github.com/GoogleChrome/lighthouse/pull/13387))
+* port axe test to pptr ([#13450](https://github.com/GoogleChrome/lighthouse/pull/13450))
 
 ## Misc
 
