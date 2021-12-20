@@ -4012,7 +4012,7 @@
     },
     "object-alt": {
       "id": "object-alt",
-      "title": "`<object>` elements do not have `[alt]` text",
+      "title": "`<object>` elements do not have alt text",
       "description": "Screen readers cannot translate non-text content. Adding alt text to `<object>` elements helps screen readers convey meaning to users. [Learn more](https://web.dev/object-alt/).",
       "score": 0,
       "scoreDisplayMode": "binary",
