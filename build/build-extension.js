@@ -52,9 +52,6 @@ async function buildEntryPoint() {
   await bundle.close();
 }
 
-/**
- * @return {Promise<void>}
- */
 function copyAssets() {
   cpy([
     '*.html',
