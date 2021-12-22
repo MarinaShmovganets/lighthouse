@@ -3,6 +3,7 @@
   "version": "9.2.0",
   "description": "Automated auditing, performance metrics, and best practices for the web.",
   "main": "./lighthouse-core/index.js",
+  "types": "./types/lighthouse.js",
   "bin": {
     "lighthouse": "./lighthouse-cli/index.js",
     "chrome-debug": "./lighthouse-core/scripts/manual-chrome-launcher.js",
