@@ -10,8 +10,6 @@
 
 set -euo pipefail
 
-echo 0
-
 unameOut="$(uname -s)"
 case "${unameOut}" in
   Linux*)     machine=Linux;;
@@ -31,12 +29,8 @@ else
   exit 1
 fi
 
-echo 1
 if [ -e "$CHROME_PATH" ]; then
-  echo 2
   echo "cached chrome found"
 else
-  echo 3
   wget "$url" --no-check-certificate -q -O chrome.zip && unzip -q chrome.zip
 fi
-echo 4

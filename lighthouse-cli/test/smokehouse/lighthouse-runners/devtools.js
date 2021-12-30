@@ -41,6 +41,7 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
   const args = [
     'run-devtools',
     url,
+    // --custom-devtools-frontend=file://$PWD/.tmp/chromium-web-tests/devtools/devtools-frontend/out/Default/gen/front_end
     '--output-dir', outputDir,
   ];
   if (configJson) {
