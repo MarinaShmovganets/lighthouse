@@ -80,9 +80,12 @@ jobs:
     - run: echo bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh
     - run: ls $GITHUB_WORKSPACE
     - run: ls $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/
+    - name: Install Chrome ToT 0
+      working-directory: /home/runner
+      run: ls
     - name: Install Chrome ToT 1
       working-directory: /home/runner
-      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh && ls
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh
     - name: Install Chrome ToT
       working-directory: /home/runner
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh && mv chrome-linux chrome-linux-tot
