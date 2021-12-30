@@ -80,9 +80,13 @@ jobs:
     - name: Install Chrome ToT
       working-directory: /Users/runner
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh && mv chrome-mac chrome-mac-tot
+    - run: mkdir latest-run
+      working-directory: ${{ github.workspace }}/lighthouse
     # just testing
     - run: yarn run-devtools https://www.example.com
       working-directory: ${{ github.workspace }}/lighthouse
+    - run: cat latest-run/devtools-lhrs/lhr-0.json
+    
     - name: yarn smoke --runner devtools
       # TODO: run on all tests.
       # - Current DevTools hangs on any page with a service worker.
