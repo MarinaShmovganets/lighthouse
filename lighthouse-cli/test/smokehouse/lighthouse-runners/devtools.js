@@ -14,6 +14,8 @@ import os from 'os';
 import util from 'util';
 import {execFile} from 'child_process';
 
+import {LH_ROOT} from '../../../../root.js';
+
 const execFilePromise = util.promisify(execFile);
 
 /** @type {Promise<void>} */
@@ -41,12 +43,11 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
   const args = [
     'run-devtools',
     url,
-    // --custom-devtools-frontend=file://$PWD/.tmp/chromium-web-tests/devtools/devtools-frontend/out/Default/gen/front_end
+    `--custom-devtools-frontend=file://${LH_ROOT}/.tmp/chromium-web-tests/devtools/devtools-frontend/out/Default/gen/front_end`,
     '--output-dir', outputDir,
   ];
   if (configJson) {
-    args.push('--config');
-    args.push(JSON.stringify(configJson));
+    args.push('--config', JSON.stringify(configJson));
   }
   await execFilePromise('yarn', args);
 

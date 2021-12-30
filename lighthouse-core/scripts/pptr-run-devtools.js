@@ -170,15 +170,12 @@ function isValidUrl(url) {
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts}>}
  */
 async function testPage(page, browser, url, config) {
-  console.log('run-devtools 0');
   const targets = await browser.targets();
   const inspectorTarget = targets.filter(t => t.url().includes('devtools'))[1];
   if (!inspectorTarget) throw new Error('No inspector found.');
-  console.log('run-devtools 1');
 
   const session = await inspectorTarget.createCDPSession();
   await session.send('Runtime.enable');
-  console.log('run-devtools 2');
 
   // Navigate to page and wait for initial HTML to be parsed before trying to start LH.
   await new Promise((resolve, reject) => {
@@ -191,7 +188,6 @@ async function testPage(page, browser, url, config) {
       })
       .catch(reject);
   });
-  console.log('run-devtools 3');
 
   if (config) {
     session.send('Target.setAutoAttach', {
@@ -223,7 +219,6 @@ async function testPage(page, browser, url, config) {
   /** @type {Omit<puppeteer.Protocol.Runtime.EvaluateResponse, 'result'>|undefined} */
   let startLHResponse;
   while (!startLHResponse || startLHResponse.exceptionDetails) {
-    console.log('run-devtools 4');
     if (startLHResponse) console.log(startLHResponse.exceptionDetails);
     if (startLHResponse) await new Promise(resolve => setTimeout(resolve, 1000));
     startLHResponse = await session.send('Runtime.evaluate', {
@@ -231,7 +226,6 @@ async function testPage(page, browser, url, config) {
       awaitPromise: true,
     }).catch(err => ({exceptionDetails: err}));
   }
-  console.log('run-devtools 5');
 
   /** @type {puppeteer.Protocol.Runtime.EvaluateResponse} */
   const lhStartedResponse = await session.send('Runtime.evaluate', {
@@ -246,7 +240,6 @@ async function testPage(page, browser, url, config) {
     throw new Error(`Lighthouse did not start correctly. Got unexpected value for url: ${
       JSON.stringify(lhStartedResponse.result.value)}`);
   }
-  console.log('run-devtools 6');
 
   /** @type {puppeteer.Protocol.Runtime.EvaluateResponse} */
   const remoteLhrResponse = await session.send('Runtime.evaluate', {
@@ -254,7 +247,6 @@ async function testPage(page, browser, url, config) {
     awaitPromise: true,
     returnByValue: true,
   }).catch(err => err);
-  console.log('run-devtools 7');
 
   if (!remoteLhrResponse.result?.value?.lhr) {
     throw new Error('Problem sniffing LHR.');

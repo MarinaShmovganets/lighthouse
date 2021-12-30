@@ -49,30 +49,30 @@ jobs:
     - run: yarn build-devtools
       working-directory: ${{ github.workspace }}/lighthouse
 
-    # - name: Download depot tools
-    #   run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-depot-tools.sh
-    # - name: Download DevTools Frontend
-    #   run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-devtools.sh
-    # - name: Download Blink Tools
-    #   run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-blink-tools.sh
-    # - name: Download Content Shell
-    #   run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-content-shell.sh
+    - name: Download depot tools
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-depot-tools.sh
+    - name: Download DevTools Frontend
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-devtools.sh
+    - name: Download Blink Tools
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-blink-tools.sh
+    - name: Download Content Shell
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-content-shell.sh
 
-    # - name: Install python deps
-    #   run: pip install six requests
+    - name: Install python deps
+      run: pip install six requests
 
-    # - name: Run Web Tests
-    #   run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/run-web-tests.sh
+    - name: Run Web Tests
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/run-web-tests.sh
 
-    # - name: Print diff
-    #   if: failure()
-    #   run: find "$GITHUB_WORKSPACE/lighthouse/.tmp/layout-test-results/retry_3" -name '*-diff.txt' -exec cat {} \;
-    # - name: Upload results
-    #   uses: actions/upload-artifact@v2
-    #   if: failure()
-    #   with:
-    #     name: results
-    #     path: ${{ github.workspace }}/lighthouse/.tmp/layout-test-results
+    - name: Print diff
+      if: failure()
+      run: find "$GITHUB_WORKSPACE/lighthouse/.tmp/layout-test-results/retry_3" -name '*-diff.txt' -exec cat {} \;
+    - name: Upload results
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: results
+        path: ${{ github.workspace }}/lighthouse/.tmp/layout-test-results
     
     # Run smoke tests via DevTools
     - name: Define ToT chrome path
@@ -82,11 +82,6 @@ jobs:
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh && mv chrome-mac chrome-mac-tot
     - run: mkdir latest-run
       working-directory: ${{ github.workspace }}/lighthouse
-    # just testing
-    - run: yarn run-devtools https://www.example.com
-      working-directory: ${{ github.workspace }}/lighthouse
-    - run: cat latest-run/devtools-lhrs/lhr-0.json
-
     - name: yarn smoke --runner devtools
       # TODO: run on all tests.
       # - Current DevTools hangs on any page with a service worker.
