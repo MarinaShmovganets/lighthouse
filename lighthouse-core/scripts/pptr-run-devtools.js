@@ -125,6 +125,12 @@ const startLighthouse = `
 
   // Give the main target model a moment to be available.
   // Otherwise, 'SDK.TargetManager.TargetManager.instance().mainTarget()' is null.
+  if (self.runtime && self.runtime.loadLegacyModule) {
+    // This exposes TargetManager via self.SDK.
+    try {
+      await self.runtime.loadLegacyModule('core/sdk/sdk-legacy.js');
+    } catch {}
+  }
   const targetManager =
     SDK.targetManager || (SDK.TargetManager.TargetManager || SDK.TargetManager).instance();
   if (targetManager.mainTarget() === null) {
