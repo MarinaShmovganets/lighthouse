@@ -76,7 +76,7 @@ jobs:
     
     # Run smoke tests via DevTools
     - name: Define ToT chrome path
-      run: echo "CHROME_PATH=/Users/runner/chrome-mac-tot/chrome" >> $GITHUB_ENV
+      run: echo "CHROME_PATH=/Users/runner/chrome-mac-tot/Chromium.app/Contents/MacOS/Chromium" >> $GITHUB_ENV
     - run: echo bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh
     - run: ls $GITHUB_WORKSPACE
     - run: ls $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/
