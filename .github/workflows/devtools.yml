@@ -76,7 +76,7 @@ jobs:
     
     # Run smoke tests via DevTools
     - name: Define ToT chrome path
-      run: echo "CHROME_PATH=/Users/runner/chrome-linux-tot/chrome" >> $GITHUB_ENV
+      run: echo "CHROME_PATH=/Users/runner/chrome-mac-tot/chrome" >> $GITHUB_ENV
     - run: echo bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh
     - run: ls $GITHUB_WORKSPACE
     - run: ls $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/
@@ -88,7 +88,7 @@ jobs:
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh
     - name: Install Chrome ToT
       working-directory: /Users/runner
-      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh && mv chrome-linux chrome-linux-tot
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh && mv chrome-mac chrome-mac-tot
     - run: sudo apt-get install xvfb
     - name: yarn smoke --runner devtools
       # TODO: run on all tests.
