@@ -86,10 +86,10 @@ jobs:
     - name: Install Chrome ToT
       working-directory: /Users/runner
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh && mv chrome-mac chrome-mac-tot
-    - run: sudo apt-get install xvfb
+    # - run: sudo apt-get install xvfb
     - name: yarn smoke --runner devtools
       # TODO: run on all tests.
       # - Current DevTools hangs on any page with a service worker.
       #   https://github.com/GoogleChrome/lighthouse/issues/13396
       # - Various other issues that needed investigation.
-      run: xvfb-run --auto-servernum yarn smoke --runner devtools --invert-match a11y byte-efficiency byte-gzip dbw errors-expired-ssl errors-infinite-loop legacy-javascript metrics-tricky-tti metrics-tricky-tti-late-fcp offline-ready offline-sw-broken offline-sw-slow perf-budgets perf-fonts perf-frame-metrics perf-preload perf-trace-elements pwa redirects-client-paint-server redirects-multiple-server redirects-single-server screenshot seo-tap-targets
+      run: yarn smoke --runner devtools --invert-match a11y byte-efficiency byte-gzip dbw errors-expired-ssl errors-infinite-loop legacy-javascript metrics-tricky-tti metrics-tricky-tti-late-fcp offline-ready offline-sw-broken offline-sw-slow perf-budgets perf-fonts perf-frame-metrics perf-preload perf-trace-elements pwa redirects-client-paint-server redirects-multiple-server redirects-single-server screenshot seo-tap-targets
