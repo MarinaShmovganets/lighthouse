@@ -83,9 +83,6 @@ jobs:
     - name: Install Chrome ToT 0
       working-directory: /Users/runner
       run: ls
-    - name: Install Chrome ToT 1
-      working-directory: /Users/runner
-      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh
     - name: Install Chrome ToT
       working-directory: /Users/runner
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/scripts/download-chrome.sh && mv chrome-mac chrome-mac-tot
