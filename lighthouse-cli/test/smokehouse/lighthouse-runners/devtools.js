@@ -11,12 +11,9 @@
 
 import fs from 'fs';
 import os from 'os';
-import util from 'util';
-import {execFile} from 'child_process';
+import {spawn} from 'child_process';
 
 import {LH_ROOT} from '../../../../root.js';
-
-const execFilePromise = util.promisify(execFile);
 
 /** @type {Promise<void>} */
 let setupPromise;
@@ -49,7 +46,21 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
   if (configJson) {
     args.push('--config', JSON.stringify(configJson));
   }
-  await execFilePromise('yarn', args);
+
+  let log = '';
+  await new Promise((resolve, reject) => {
+    const spawnHandle = spawn('yarn', args);
+    spawnHandle.on('close', resolve);
+    spawnHandle.on('error', reject);
+    spawnHandle.stdout.on('data', data => {
+      console.log(data.toString());
+      log += `STDOUT: ${data.toString()}`;
+    });
+    spawnHandle.stderr.on('data', data => {
+      console.log(data.toString());
+      log += `STDERR: ${data.toString()}`;
+    });
+  });
 
   const lhr = JSON.parse(fs.readFileSync(`${outputDir}/lhr-0.json`, 'utf-8'));
   const artifacts = JSON.parse(fs.readFileSync(`${outputDir}/artifacts-0.json`, 'utf-8'));
@@ -60,7 +71,7 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
     fs.rmSync(outputDir, {recursive: true, force: true});
   }
 
-  return {lhr, artifacts, log: ''};
+  return {lhr, artifacts, log};
 }
 
 export {
