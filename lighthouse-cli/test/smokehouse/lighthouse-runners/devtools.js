@@ -37,10 +37,12 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
   await setup();
 
   const outputDir = fs.mkdtempSync(os.tmpdir() + '/lh-smoke-cdt-runner-');
+  const devtoolsDir =
+    process.env.DEVTOOLS_PATH || `${LH_ROOT}/.tmp/chromium-web-tests/devtools/devtools-frontend`;
   const args = [
     'run-devtools',
     url,
-    `--custom-devtools-frontend=file://${LH_ROOT}/.tmp/chromium-web-tests/devtools/devtools-frontend/out/Default/gen/front_end`,
+    `--custom-devtools-frontend=file://${devtoolsDir}/out/Default/gen/front_end`,
     '--output-dir', outputDir,
   ];
   if (configJson) {
