@@ -308,6 +308,10 @@ async function run() {
     devtools: true,
   });
 
+  if ((await browser.version()).startsWith('Headless')) {
+    throw new Error('You cannot use headless');
+  }
+
   let errorCount = 0;
   const urlList = await readUrlList();
   for (let i = 0; i < urlList.length; ++i) {
