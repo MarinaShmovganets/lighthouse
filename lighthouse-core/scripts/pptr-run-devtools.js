@@ -176,6 +176,9 @@ async function testPage(page, browser, url, config) {
   if (!inspectorTarget) throw new Error('No inspector found.');
   console.log('run-devtools 1');
 
+  (await inspectorTarget.page())?.on('console', e => console.log('console', e));
+  (await inspectorTarget.page())?.on('error', e => console.log('error', e));
+
   const session = await inspectorTarget.createCDPSession();
   await session.send('Runtime.enable');
   console.log('run-devtools 2');
