@@ -191,6 +191,8 @@ async function testPage(page, browser, url, config) {
   });
 
   if (config) {
+    // Must attach to the Lighthouse worker target and override the `self.createConfig`
+    // function, allowing us to use any config we want.
     session.send('Target.setAutoAttach', {
       autoAttach: true, flatten: true, waitForDebuggerOnStart: false,
     });
