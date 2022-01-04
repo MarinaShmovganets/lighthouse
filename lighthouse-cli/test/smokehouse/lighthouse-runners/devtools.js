@@ -15,15 +15,42 @@ import {spawn} from 'child_process';
 
 import {LH_ROOT} from '../../../../root.js';
 
-/** @type {Promise<void>} */
-let setupPromise;
-async function setup() {
-  if (setupPromise) return setupPromise;
+/**
+ * @param {string} command
+ * @param {string[]} args
+ */
+async function spawnAndLog(command, args) {
+  let log = '';
 
-  setupPromise = new Promise(resolve => {
-    // execFileSync('yarn', ['open-devtools']);
-    resolve();
+  /** @type {Promise<void>} */
+  const promise = new Promise((resolve, reject) => {
+    const spawnHandle = spawn(command, args);
+    spawnHandle.on('close', code => {
+      if (code === 0) resolve();
+      else reject(new Error(`Command exited with code ${code}`));
+    });
+    spawnHandle.on('error', reject);
+    spawnHandle.stdout.on('data', data => {
+      console.log(data.toString());
+      log += `STDOUT: ${data.toString()}`;
+    });
+    spawnHandle.stderr.on('data', data => {
+      console.log(data.toString());
+      log += `STDERR: ${data.toString()}`;
+    });
   });
+  await promise;
+
+  return log;
+}
+
+async function beforeAll() {
+  if (process.env.CI) return;
+
+  process.env.DEVTOOLS_PATH =
+    process.env.DEVTOOLS_PATH || '.tmp/chromium-web-tests/devtools/devtools-frontend';
+  await spawnAndLog('bash', ['lighthouse-core/test/chromium-web-tests/download-devtools.sh']);
+  await spawnAndLog('bash', ['lighthouse-core/test/chromium-web-tests/roll-devtools.sh']);
 }
 
 /**
@@ -34,8 +61,6 @@ async function setup() {
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */
 async function runLighthouse(url, configJson, testRunnerOptions = {}) {
-  await setup();
-
   const outputDir = fs.mkdtempSync(os.tmpdir() + '/lh-smoke-cdt-runner-');
   const devtoolsDir =
     process.env.DEVTOOLS_PATH || `${LH_ROOT}/.tmp/chromium-web-tests/devtools/devtools-frontend`;
@@ -49,21 +74,7 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
     args.push('--config', JSON.stringify(configJson));
   }
 
-  let log = '';
-  await new Promise((resolve, reject) => {
-    const spawnHandle = spawn('yarn', args);
-    spawnHandle.on('close', resolve);
-    spawnHandle.on('error', reject);
-    spawnHandle.stdout.on('data', data => {
-      console.log(data.toString());
-      log += `STDOUT: ${data.toString()}`;
-    });
-    spawnHandle.stderr.on('data', data => {
-      console.log(data.toString());
-      log += `STDERR: ${data.toString()}`;
-    });
-  });
-
+  const log = await spawnAndLog('yarn', args);
   const lhr = JSON.parse(fs.readFileSync(`${outputDir}/lhr-0.json`, 'utf-8'));
   const artifacts = JSON.parse(fs.readFileSync(`${outputDir}/artifacts-0.json`, 'utf-8'));
 
@@ -77,5 +88,6 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
 }
 
 export {
+  beforeAll,
   runLighthouse,
 };

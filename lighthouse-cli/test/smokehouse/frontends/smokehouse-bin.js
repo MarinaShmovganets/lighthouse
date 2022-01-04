@@ -184,7 +184,7 @@ async function begin() {
   if (argv.runner === 'bundle') {
     console.log('\n✨ Be sure to have recently run this: yarn build-all');
   }
-  const {runLighthouse} = await import(runnerPath);
+  const {runLighthouse, beforeAll} = await import(runnerPath);
 
   // Find test definition file and filter by requestedTestIds.
   let testDefnPath = argv.testsPath || coreTestDefnsPath;
@@ -217,6 +217,7 @@ async function begin() {
       isDebug: argv.debug,
       useFraggleRock: argv.fraggleRock,
       lighthouseRunner: runLighthouse,
+      beforeAll,
       takeNetworkRequestUrls,
     };
 

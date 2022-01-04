@@ -58,10 +58,15 @@ async function runSmokehouse(smokeTestDefns, smokehouseOptions) {
     jobs = DEFAULT_CONCURRENT_RUNS,
     retries = DEFAULT_RETRIES,
     lighthouseRunner = cliLighthouseRunner,
+    beforeAll,
     takeNetworkRequestUrls,
   } = smokehouseOptions;
   assertPositiveInteger('jobs', jobs);
   assertNonNegativeInteger('retries', retries);
+
+  if (beforeAll) {
+    await beforeAll();
+  }
 
   // Run each testDefn in parallel based on the concurrencyLimit.
   const concurrentMapper = new ConcurrentMapper();
