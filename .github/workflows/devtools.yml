@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: macos-latest # while macbots are much slower, linux reliably crashes running this
 
-  steps:
+    steps:
     - name: Set $DEPOT_TOOLS_PATH
       run: echo "DEPOT_TOOLS_PATH=$GITHUB_WORKSPACE/depot-tools" >> $GITHUB_ENV
     - name: Set $DEVTOOLS_PATH
