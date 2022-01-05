@@ -15,6 +15,9 @@ import {spawn} from 'child_process';
 
 import {LH_ROOT} from '../../../../root.js';
 
+const devtoolsDir =
+  process.env.DEVTOOLS_PATH || `${LH_ROOT}/.tmp/chromium-web-tests/devtools/devtools-frontend`;
+
 /**
  * @param {string} command
  * @param {string[]} args
@@ -44,11 +47,12 @@ async function spawnAndLog(command, args) {
   return log;
 }
 
+/** @type {Promise<void>} */
+let beforeAllPromise;
 async function beforeAll() {
   if (process.env.CI) return;
 
-  process.env.DEVTOOLS_PATH =
-    process.env.DEVTOOLS_PATH || '.tmp/chromium-web-tests/devtools/devtools-frontend';
+  process.env.DEVTOOLS_PATH = devtoolsDir;
   await spawnAndLog('bash', ['lighthouse-core/test/chromium-web-tests/download-devtools.sh']);
   await spawnAndLog('bash', ['lighthouse-core/test/chromium-web-tests/roll-devtools.sh']);
 }
@@ -61,9 +65,10 @@ async function beforeAll() {
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */
 async function runLighthouse(url, configJson, testRunnerOptions = {}) {
+  if (!beforeAllPromise) beforeAllPromise = beforeAll();
+  await beforeAllPromise;
+
   const outputDir = fs.mkdtempSync(os.tmpdir() + '/lh-smoke-cdt-runner-');
-  const devtoolsDir =
-    process.env.DEVTOOLS_PATH || `${LH_ROOT}/.tmp/chromium-web-tests/devtools/devtools-frontend`;
   const args = [
     'run-devtools',
     url,
