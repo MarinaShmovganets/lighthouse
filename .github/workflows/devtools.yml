@@ -26,6 +26,11 @@ jobs:
 
     - name: Generate cache hash
       run: bash $GITHUB_WORKSPACE/lighthouse/.github/scripts/generate-devtools-hash.sh > cdt-test-hash.txt
+    - name: Set week of the year
+      run: echo "WEEK_OF_THE_YEAR=$(date +%V)" >> $GITHUB_ENV
+    # Caches are invalidated at least once a week, so that's the max time between testing
+    # with the latest dependencies. Any commit to the DevTools repo touching Lighthouse
+    # code will invalidate the cache sooner.
     - name: Cache depot tools, devtools, blink tools and content shell
       uses: actions/cache@v2
       with:
@@ -34,8 +39,13 @@ jobs:
           ${{ env.DEVTOOLS_PATH }}
           ${{ env.BLINK_TOOLS_PATH }}
           ${{ github.workspace }}/lighthouse/.tmp/chromium-web-tests/content-shells
+        # This hash key changes:
+        # 1) every monday (so invalidates once a week)
+        # 2) every commit to CDT touching files important to Lighthouse web tests
+        # 3) every change to file in Lighthouse repo important to running these tests.
+        #
         # The number is how many times this hash key was manually updated to break the cache.
-        key: ${{ runner.os }}-2-${{ hashFiles('cdt-test-hash.txt') }}
+        key: ${{ runner.os }}-2-${{ env.WEEK_OF_THE_YEAR }}-${{ hashFiles('cdt-test-hash.txt') }}
 
     - name: Use Node.js 14.x
       uses: actions/setup-node@v1
@@ -53,7 +63,7 @@ jobs:
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-blink-tools.sh
     - name: Download Content Shell
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-content-shell.sh
-    
+
     - name: Roll Lighthouse + build DevTools
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/roll-devtools.sh
 
@@ -91,23 +101,12 @@ jobs:
         # The number is how many times this hash key was manually updated to break the cache.
         key: ${{ runner.os }}-2-${{ hashFiles('cdt-test-hash.txt') }}
 
-    - name: Use Node.js 14.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14.x
-
-    # - run: yarn --frozen-lockfile
-    #   working-directory: ${{ github.workspace }}/lighthouse
-
     - name: Install python deps
       run: pip install six requests
 
     - name: Run Web Tests
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/run-web-tests.sh
 
-    - name: Print diff
-      if: failure()
-      run: find "$GITHUB_WORKSPACE/lighthouse/.tmp/layout-test-results/retry_3" -name '*-diff.txt' -exec cat {} \;
     - name: Upload results
       uses: actions/upload-artifact@v2
       if: failure()
@@ -163,9 +162,6 @@ jobs:
     - run: yarn --frozen-lockfile
       working-directory: ${{ github.workspace }}/lighthouse
 
-    # - name: Run Web Tests
-    #   run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/run-web-tests.sh
-    
     # Run smoke tests via DevTools
     - name: Define ToT chrome path
       run: echo "CHROME_PATH=/Users/runner/chrome-mac-tot/Chromium.app/Contents/MacOS/Chromium" >> $GITHUB_ENV
