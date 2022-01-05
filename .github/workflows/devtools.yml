@@ -58,6 +58,7 @@ jobs:
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/roll-devtools.sh
 
   web-tests:
+    needs: [build]
     runs-on: macos-latest
 
     steps:
@@ -124,6 +125,7 @@ jobs:
         path: ${{ github.workspace }}/lighthouse/.tmp/layout-test-results
 
   smoke:
+    needs: [build]
     runs-on: macos-latest
 
     steps:
