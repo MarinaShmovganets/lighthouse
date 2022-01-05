@@ -99,6 +99,5 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
 }
 
 export {
-  beforeAll,
   runLighthouse,
 };
