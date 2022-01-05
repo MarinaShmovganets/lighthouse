@@ -26,7 +26,9 @@ jobs:
 
     - name: Generate cache hash
       run: bash $GITHUB_WORKSPACE/lighthouse/.github/scripts/generate-devtools-hash.sh > cdt-test-hash.txt
-    # Caches are invalidated by GH after 7 days, so that's the max time between testing
+    - name: Set week of the year
+      run: echo "WEEK_OF_THE_YEAR=$(date +%U)" >> $GITHUB_ENV
+    # Caches are invalidated at least once a week, so that's the max time between testing
     # with the latest dependencies. Any commit to the DevTools repo touching Lighthouse
     # code will invalidate the cache sooner.
     - name: Cache depot tools, devtools, blink tools and content shell
@@ -43,7 +45,7 @@ jobs:
         # 3) every change to file in Lighthouse repo important to running these tests.
         #
         # The number is how many times this hash key was manually updated to break the cache.
-        key: ${{ runner.os }}-2-${{ hashFiles('cdt-test-hash.txt') }}
+        key: ${{ runner.os }}-2-${{ env.WEEK_OF_THE_YEAR }}-${{ hashFiles('cdt-test-hash.txt') }}
 
     - name: Use Node.js 14.x
       uses: actions/setup-node@v1
