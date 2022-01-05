@@ -41,7 +41,7 @@ jobs:
           ${{ github.workspace }}/lighthouse/.tmp/chromium-web-tests/content-shells
         # This hash key changes:
         # 1) every monday (so invalidates once a week)
-        # 2) every commit to CDT to files important to Lighthouse
+        # 2) every commit to CDT touching files important to Lighthouse web tests
         # 3) every change to file in Lighthouse repo important to running these tests.
         #
         # The number is how many times this hash key was manually updated to break the cache.
