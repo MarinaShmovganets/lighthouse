@@ -37,6 +37,11 @@ jobs:
           ${{ env.DEVTOOLS_PATH }}
           ${{ env.BLINK_TOOLS_PATH }}
           ${{ github.workspace }}/lighthouse/.tmp/chromium-web-tests/content-shells
+        # The `cdt-test-hash.txt` hash file changes when:
+        # 1) every monday (so invalidates once a week)
+        # 2) every commit to CDT to files important to Lighthouse
+        # 3) every change to file in Lighthouse repo important to running these tests.
+        #
         # The number is how many times this hash key was manually updated to break the cache.
         key: ${{ runner.os }}-2-${{ hashFiles('cdt-test-hash.txt') }}
 

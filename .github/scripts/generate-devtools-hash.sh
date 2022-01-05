@@ -11,9 +11,28 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$SCRIPT_DIR/../.."
-cd "$LH_ROOT"
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+  Linux*)     machine=Linux;;
+  Darwin*)    machine=Mac;;
+  MINGW*)     machine=MinGw;;
+  *)          machine="UNKNOWN:${unameOut}"
+esac
+
+cd "$LH_ROOT"
 bash .github/scripts/print-devtools-relevant-commits.sh
 md5 \
   lighthouse-core/test/chromium-web-tests/* \
   third-party/chromium-webtests/webtests/http/tests/devtools/lighthouse/**/*.*
+
+# Print something that changes once a week.
+echo "Most recent Monday:"
+if [ "$machine" == "Linux" ]; then
+  date -dmonday "+%Y%m%d"
+elif [ "$machine" == "Mac" ]; then
+  date -v -Mon "+%Y%m%d"
+else
+  echo "unsupported platform"
+  exit 1
+fi
