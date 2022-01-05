@@ -62,8 +62,6 @@ declare global {
       retries?: number;
       /** A function that runs Lighthouse with the given options. Defaults to running Lighthouse via the CLI. */
       lighthouseRunner?: LighthouseRunner;
-      /** A function that runs once before all smoke tests. */
-      beforeAll?: () => Promise<void> | void;
       /** A function that gets a list of URLs requested to the server since the last fetch. */
       takeNetworkRequestUrls?: () => string[];
     }

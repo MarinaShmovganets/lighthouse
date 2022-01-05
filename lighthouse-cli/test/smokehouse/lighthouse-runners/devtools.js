@@ -48,8 +48,11 @@ async function spawnAndLog(command, args) {
 }
 
 /** @type {Promise<void>} */
-let beforeAllPromise;
-async function beforeAll() {
+let buildDevtoolsPromise;
+/**
+ * Download/pull latest DevTools, build Lighthouse for DevTools, roll to DevTools, and build DevTools.
+ */
+async function buildDevtools() {
   if (process.env.CI) return;
 
   process.env.DEVTOOLS_PATH = devtoolsDir;
@@ -59,14 +62,17 @@ async function beforeAll() {
 
 /**
  * Launch Chrome and do a full Lighthouse run via DevTools.
+ * By default, the latest DevTools frontend is used (.tmp/chromium-web-tests/devtools/devtools-frontend)
+ * unless DEVTOOLS_PATH is set.
+ * CHROME_PATH determines which Chrome is used–otherwise the default is puppeteer's chrome binary.
  * @param {string} url
  * @param {LH.Config.Json=} configJson
  * @param {{isDebug?: boolean}=} testRunnerOptions
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */
 async function runLighthouse(url, configJson, testRunnerOptions = {}) {
-  if (!beforeAllPromise) beforeAllPromise = beforeAll();
-  await beforeAllPromise;
+  if (!buildDevtoolsPromise) buildDevtoolsPromise = buildDevtools();
+  await buildDevtoolsPromise;
 
   const outputDir = fs.mkdtempSync(os.tmpdir() + '/lh-smoke-cdt-runner-');
   const args = [
