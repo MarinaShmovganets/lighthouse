@@ -27,7 +27,7 @@ jobs:
     - name: Generate cache hash
       run: bash $GITHUB_WORKSPACE/lighthouse/.github/scripts/generate-devtools-hash.sh > cdt-test-hash.txt
     - name: Set week of the year
-      run: echo "WEEK_OF_THE_YEAR=$(date +%U)" >> $GITHUB_ENV
+      run: echo "WEEK_OF_THE_YEAR=$(date +%V)" >> $GITHUB_ENV
     # Caches are invalidated at least once a week, so that's the max time between testing
     # with the latest dependencies. Any commit to the DevTools repo touching Lighthouse
     # code will invalidate the cache sooner.
@@ -39,7 +39,7 @@ jobs:
           ${{ env.DEVTOOLS_PATH }}
           ${{ env.BLINK_TOOLS_PATH }}
           ${{ github.workspace }}/lighthouse/.tmp/chromium-web-tests/content-shells
-        # The `cdt-test-hash.txt` hash file changes when:
+        # This hash key changes:
         # 1) every monday (so invalidates once a week)
         # 2) every commit to CDT to files important to Lighthouse
         # 3) every change to file in Lighthouse repo important to running these tests.
