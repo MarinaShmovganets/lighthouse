@@ -104,6 +104,9 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: devtools-build
+        path: ${{ env.DEVTOOLS_PATH }}/out/Default/gen/front_end
+    # Just need this folder to exist, web-test-server.sh makes a symbolic link to it.
+    - run: mkdir -p $DEVTOOLS_PATH/test/webtests/http/tests/inspector-sources
 
     - name: Download Blink Tools
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-blink-tools.sh
@@ -159,6 +162,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: devtools-build
+        path: ${{ env.DEVTOOLS_PATH }}/out/Default/gen/front_end
     
     - name: Download Blink Tools
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-blink-tools.sh
