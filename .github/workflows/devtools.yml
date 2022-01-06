@@ -79,7 +79,7 @@ jobs:
         path: |
           ${{ env.DEVTOOLS_PATH }}/out/Default/gen/front_end
           ${{ env.DEVTOOLS_PATH }}/test/webtests/http/tests
-          ${{ github.workspace }}/lighthouse/.gclient
+          ${{ github.workspace }}/.gclient
         retention-days: 1
 
   web-tests:
