@@ -24,6 +24,11 @@ jobs:
       with:
         path: lighthouse
 
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+
     - name: Generate cache hash
       run: bash $GITHUB_WORKSPACE/lighthouse/.github/scripts/generate-devtools-hash.sh > cdt-test-hash.txt
     - name: Set week of the year
@@ -47,11 +52,6 @@ jobs:
         # The number is how many times this hash key was manually updated to break the cache.
         key: ${{ runner.os }}-2-${{ env.WEEK_OF_THE_YEAR }}-${{ hashFiles('cdt-test-hash.txt') }}
 
-    - name: Use Node.js 14.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14.x
-
     - run: yarn --frozen-lockfile
       working-directory: ${{ github.workspace }}/lighthouse
 
@@ -71,10 +71,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: devtools-build
-        path: |
-          ${{ env.DEVTOOLS_PATH }}
-          ${{ env.BLINK_TOOLS_PATH }}
-          ${{ github.workspace }}/lighthouse/.tmp/chromium-web-tests/content-shells
+        path: ${{ env.DEVTOOLS_PATH }}/out/Default/gen/front_end
         retention-days: 1
 
   web-tests:
@@ -84,24 +81,34 @@ jobs:
     steps:
     - run: echo "DEVTOOLS_PATH is $DEVTOOLS_PATH"
 
-    - name: Set $DEPOT_TOOLS_PATH
-      run: echo "DEPOT_TOOLS_PATH=$GITHUB_WORKSPACE/depot-tools" >> $GITHUB_ENV
+    # - name: Set $DEPOT_TOOLS_PATH
+    #   run: echo "DEPOT_TOOLS_PATH=$GITHUB_WORKSPACE/depot-tools" >> $GITHUB_ENV
     - name: Set $DEVTOOLS_PATH
       run: echo "DEVTOOLS_PATH=$GITHUB_WORKSPACE/devtools-frontend" >> $GITHUB_ENV
     - name: Set $BLINK_TOOLS_PATH
       run: echo "BLINK_TOOLS_PATH=$GITHUB_WORKSPACE/blink_tools" >> $GITHUB_ENV
-    - name: Set $PATH
-      run: echo "$DEPOT_TOOLS_PATH" >> $GITHUB_PATH
+    # - name: Set $PATH
+    #   run: echo "$DEPOT_TOOLS_PATH" >> $GITHUB_PATH
 
     - name: git clone
       uses: actions/checkout@v2
       with:
         path: lighthouse
+    
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
 
     - name: Download artifact
       uses: actions/download-artifact@v2
       with:
         name: devtools-build
+
+    - name: Download Blink Tools
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-blink-tools.sh
+    - name: Download Content Shell
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-content-shell.sh
 
     - name: Install python deps
       run: pip install six requests
@@ -129,29 +136,34 @@ jobs:
     name: Smoke batch ${{ matrix.smoke-test-shard }}
 
     steps:
-    - name: Set $DEPOT_TOOLS_PATH
-      run: echo "DEPOT_TOOLS_PATH=$GITHUB_WORKSPACE/depot-tools" >> $GITHUB_ENV
+    # - name: Set $DEPOT_TOOLS_PATH
+    #   run: echo "DEPOT_TOOLS_PATH=$GITHUB_WORKSPACE/depot-tools" >> $GITHUB_ENV
     - name: Set $DEVTOOLS_PATH
       run: echo "DEVTOOLS_PATH=$GITHUB_WORKSPACE/devtools-frontend" >> $GITHUB_ENV
     - name: Set $BLINK_TOOLS_PATH
       run: echo "BLINK_TOOLS_PATH=$GITHUB_WORKSPACE/blink_tools" >> $GITHUB_ENV
-    - name: Set $PATH
-      run: echo "$DEPOT_TOOLS_PATH" >> $GITHUB_PATH
+    # - name: Set $PATH
+    #   run: echo "$DEPOT_TOOLS_PATH" >> $GITHUB_PATH
 
     - name: git clone
       uses: actions/checkout@v2
       with:
         path: lighthouse
 
-    - name: Download artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: devtools-build
-
     - name: Use Node.js 14.x
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
+
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: devtools-build
+    
+    - name: Download Blink Tools
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-blink-tools.sh
+    - name: Download Content Shell
+      run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-content-shell.sh
 
     - run: yarn --frozen-lockfile
       working-directory: ${{ github.workspace }}/lighthouse
