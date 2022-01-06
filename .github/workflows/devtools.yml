@@ -78,7 +78,7 @@ jobs:
         name: devtools-build
         path: |
           ${{ env.DEVTOOLS_PATH }}/out/Default/gen/front_end
-          ${{ env.DEVTOOLS_PATH }}/test/webtests/http/tests
+          ${{ env.DEVTOOLS_PATH }}/test/webtests
           ${{ github.workspace }}/.gclient
         retention-days: 1
 
@@ -114,7 +114,7 @@ jobs:
         name: devtools-build
         path: ${{ github.workspace }}
     # Just need this folder to exist, web-test-server.sh makes a symbolic link inside it.
-    - run: mkdir -p $DEVTOOLS_PATH/test/webtests/http/tests
+    # - run: mkdir -p $DEVTOOLS_PATH/test/webtests/http/tests
     - run: ls $DEVTOOLS_PATH
     - run: ls $DEVTOOLS_PATH/test/webtests/http/tests/
 
