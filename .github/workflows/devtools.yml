@@ -45,6 +45,7 @@ jobs:
           ${{ env.DEVTOOLS_PATH }}
           ${{ env.BLINK_TOOLS_PATH }}
           ${{ github.workspace }}/lighthouse/.tmp/chromium-web-tests/content-shells
+          ${{ github.workspace }}/.gclient
         # This hash key changes:
         # 1) every monday (so invalidates once a week)
         # 2) every commit to CDT touching files important to Lighthouse web tests
@@ -52,7 +53,7 @@ jobs:
         #
         # The number is how many times this hash key was manually updated to break the cache.
         key: ${{ runner.os }}-2-${{ env.WEEK_OF_THE_YEAR }}-${{ hashFiles('cdt-test-hash.txt') }}
-        restore-keys: ${{ runner.os }}-
+        # restore-keys: ${{ runner.os }}-
     - name: Set GHA_DEVTOOLS_CACHE_HIT
       if: steps.devtools-cache.outputs.cache-hit == 'true'
       run: echo "GHA_DEVTOOLS_CACHE_HIT=1" >> $GITHUB_ENV
