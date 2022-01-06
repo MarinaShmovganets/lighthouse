@@ -76,7 +76,9 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: devtools-build
-        path: ${{ env.DEVTOOLS_PATH }}/out/Default/gen/front_end
+        path: |
+          ${{ env.DEVTOOLS_PATH }}/out/Default/gen/front_end
+          ${{ env.DEVTOOLS_PATH }}/../.gclient
         retention-days: 1
 
   web-tests:
