@@ -228,10 +228,7 @@ function createMockContext() {
 }
 
 function mockDriverSubmodules() {
-  const navigationMock = {
-    normalizeUrl: jest.fn(),
-    gotoURL: jest.fn(),
-  };
+  const navigationMock = {gotoURL: jest.fn()};
   const prepareMock = {
     prepareThrottlingAndNetwork: jest.fn(),
     prepareTargetForTimespanMode: jest.fn(),
@@ -259,11 +256,6 @@ function mockDriverSubmodules() {
     emulationMock.emulate = jest.fn();
     networkMock.fetchResponseBodyFromCache = jest.fn().mockResolvedValue('');
     targetManagerMock.reset();
-
-    // Import any references to the actual implementation after initial mock.
-    /** @type {import('../../../gather/driver/navigation.js')} */
-    const navigationActual = jest.requireActual('../../../gather/driver/navigation.js');
-    navigationMock.normalizeUrl.mockImplementation(navigationActual.normalizeUrl);
   }
 
   /**

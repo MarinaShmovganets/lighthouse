@@ -14,7 +14,7 @@ const {
   awaitArtifacts,
 } = require('./runner-helpers.js');
 const prepare = require('../../gather/driver/prepare.js');
-const {gotoURL, normalizeUrl} = require('../../gather/driver/navigation.js');
+const {gotoURL} = require('../../gather/driver/navigation.js');
 const storage = require('../../gather/driver/storage.js');
 const emulation = require('../../lib/emulation.js');
 const {defaultNavigationConfig} = require('../../config/constants.js');
@@ -22,6 +22,7 @@ const {initializeConfig} = require('../config/config.js');
 const {getBaseArtifacts, finalizeArtifacts} = require('./base-artifacts.js');
 const format = require('../../../shared/localization/format.js');
 const LighthouseError = require('../../lib/lh-error.js');
+const URL = require('../../lib/url-shim.js');
 const {getPageLoadError} = require('../../lib/navigation-error.js');
 const Trace = require('../../gather/gatherers/trace.js');
 const DevtoolsLog = require('../../gather/gatherers/devtools-log.js');
@@ -289,7 +290,7 @@ async function navigation(options) {
   return Runner.run(
     async () => {
       const driver = new Driver(page);
-      const requestedUrl = normalizeUrl(url);
+      const requestedUrl = URL.normalizeUrl(url);
       const context = {driver, config, requestedUrl, options: internalOptions};
       const {baseArtifacts} = await _setup(context);
       const {artifacts} = await _navigations({...context, baseArtifacts, computedCache});

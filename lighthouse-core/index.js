@@ -9,7 +9,7 @@ const Runner = require('./runner.js');
 const log = require('lighthouse-logger');
 const ChromeProtocol = require('./gather/connections/cri.js');
 const Config = require('./config/config.js');
-const {normalizeUrl} = require('./gather/driver/navigation.js');
+const URL = require('./lib/url-shim.js');
 
 /** @typedef {import('./gather/connections/connection.js')} Connection */
 
@@ -48,7 +48,7 @@ async function lighthouse(url, flags = {}, configJSON, userConnection) {
 
   // kick off a lighthouse run
   const gatherFn = () => {
-    const requestedUrl = normalizeUrl(url);
+    const requestedUrl = URL.normalizeUrl(url);
     return Runner._gatherArtifactsFromBrowser(requestedUrl, options, connection);
   };
   return Runner.run(gatherFn, options);
