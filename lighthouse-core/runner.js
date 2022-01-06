@@ -157,7 +157,7 @@ class Runner {
     const settings = options.config.settings;
 
     // Gather phase
-    // Either load saved artifacts off disk or from the browser
+    // Either load saved artifacts from disk or from the browser.
     let artifacts;
     if (settings.auditMode && !settings.gatherMode) {
       // No browser required, just load the artifacts from disk.
@@ -174,7 +174,7 @@ class Runner {
         driverMock: options.driverMock,
       });
 
-      // -G means save these to ./latest-run, etc.
+      // -G means save these to disk (e.g. ./latest-run).
       if (settings.gatherMode) {
         const path = this._getDataSavePath(settings);
         await assetSaver.saveArtifacts(artifacts, path);
