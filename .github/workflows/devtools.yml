@@ -37,6 +37,7 @@ jobs:
     # with the latest dependencies. Any commit to the DevTools repo touching Lighthouse
     # code will invalidate the cache sooner.
     - name: Cache depot tools, devtools, blink tools and content shell
+      id: devtools-cache
       uses: actions/cache@v2
       with:
         path: |
@@ -51,6 +52,10 @@ jobs:
         #
         # The number is how many times this hash key was manually updated to break the cache.
         key: ${{ runner.os }}-2-${{ env.WEEK_OF_THE_YEAR }}-${{ hashFiles('cdt-test-hash.txt') }}
+        restore-keys: ${{ runner.os }}-
+    - name: Set GHA_DEVTOOLS_CACHE_HIT
+      if: steps.devtools-cache.outputs.cache-hit == 'true'
+      run: echo "GHA_DEVTOOLS_CACHE_HIT=1" >> $GITHUB_ENV
 
     - run: yarn --frozen-lockfile
       working-directory: ${{ github.workspace }}/lighthouse
