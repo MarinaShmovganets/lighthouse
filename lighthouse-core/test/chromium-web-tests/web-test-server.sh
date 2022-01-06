@@ -26,6 +26,10 @@ cleanup() {
 }
 trap 'cleanup' EXIT
 
+echo "server at"
+echo "$DEVTOOLS_PATH/test/webtests/http/tests"
+ls "$DEVTOOLS_PATH/test/webtests/http/tests"
+
 # Serve from devtools frontend webtests folder.
 (npx http-server@0.12.3 "$DEVTOOLS_PATH/test/webtests/http/tests" -p 8000 --cors > /dev/null 2>&1) &
 SERVER_PID=$!

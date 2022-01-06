@@ -107,6 +107,8 @@ jobs:
         path: ${{ env.DEVTOOLS_PATH }}/out/Default/gen/front_end
     # Just need this folder to exist, web-test-server.sh makes a symbolic link to it.
     - run: mkdir -p $DEVTOOLS_PATH/test/webtests/http/tests/inspector-sources
+    - run: ls $DEVTOOLS_PATH
+    - run: ls $DEVTOOLS_PATH/test/webtests/http/tests/
 
     - name: Download Blink Tools
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/download-blink-tools.sh
