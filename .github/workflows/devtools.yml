@@ -52,7 +52,7 @@ jobs:
         #
         # The number is how many times this hash key was manually updated to break the cache.
         key: ${{ runner.os }}-2-${{ env.WEEK_OF_THE_YEAR }}-${{ hashFiles('cdt-test-hash.txt') }}
-        restore-keys: ${{ runner.os }}-
+        # restore-keys: ${{ runner.os }}-
     - name: Set GHA_DEVTOOLS_CACHE_HIT
       if: steps.devtools-cache.outputs.cache-hit == 'true'
       run: echo "GHA_DEVTOOLS_CACHE_HIT=1" >> $GITHUB_ENV
