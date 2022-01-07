@@ -5,17 +5,16 @@ on:
     branches: [master]
   pull_request: # run on all PRs, not just PRs to a particular branch
 
+env:
+  DEPOT_TOOLS_PATH: $GITHUB_WORKSPACE/depot-tools
+  DEVTOOLS_PATH: $GITHUB_WORKSPACE/devtools-frontend
+  BLINK_TOOLS_PATH: $GITHUB_WORKSPACE/blink_tools
+
 jobs:
   build:
     runs-on: macos-latest # while macbots are much slower, linux reliably crashes running this
 
     steps:
-    - name: Set $DEPOT_TOOLS_PATH
-      run: echo "DEPOT_TOOLS_PATH=$GITHUB_WORKSPACE/depot-tools" >> $GITHUB_ENV
-    - name: Set $DEVTOOLS_PATH
-      run: echo "DEVTOOLS_PATH=$GITHUB_WORKSPACE/devtools-frontend" >> $GITHUB_ENV
-    - name: Set $BLINK_TOOLS_PATH
-      run: echo "BLINK_TOOLS_PATH=$GITHUB_WORKSPACE/blink_tools" >> $GITHUB_ENV
     - name: Set $PATH
       run: echo "$DEPOT_TOOLS_PATH" >> $GITHUB_PATH
 
@@ -84,11 +83,6 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - name: Set $DEVTOOLS_PATH
-      run: echo "DEVTOOLS_PATH=$GITHUB_WORKSPACE/devtools-frontend" >> $GITHUB_ENV
-    - name: Set $BLINK_TOOLS_PATH
-      run: echo "BLINK_TOOLS_PATH=$GITHUB_WORKSPACE/blink_tools" >> $GITHUB_ENV
-
     - name: git clone
       uses: actions/checkout@v2
       with:
@@ -128,6 +122,8 @@ jobs:
     strategy:
       matrix:
         smoke-test-shard: [1, 2]
+      # e.g. if set 1 fails, continue with set 2 anyway
+      fail-fast: false
     runs-on: macos-latest
     env:
       # The total number of shards. Set dynamically when length of single matrix variable is
@@ -136,11 +132,6 @@ jobs:
     name: Smoke batch ${{ matrix.smoke-test-shard }}
 
     steps:
-    - name: Set $DEVTOOLS_PATH
-      run: echo "DEVTOOLS_PATH=$GITHUB_WORKSPACE/devtools-frontend" >> $GITHUB_ENV
-    - name: Set $BLINK_TOOLS_PATH
-      run: echo "BLINK_TOOLS_PATH=$GITHUB_WORKSPACE/blink_tools" >> $GITHUB_ENV
-
     - name: git clone
       uses: actions/checkout@v2
       with:
