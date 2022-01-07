@@ -17,6 +17,9 @@ jobs:
     steps:
     - name: Set $PATH
       run: echo "$DEPOT_TOOLS_PATH" >> $GITHUB_PATH
+    - run: echo DEVTOOLS_PATH $DEVTOOLS_PATH
+    - run: echo DEPOT_TOOLS_PATH $DEPOT_TOOLS_PATH
+    - run: echo PATH $PATH
 
     - name: git clone
       uses: actions/checkout@v2
