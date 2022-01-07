@@ -2,8 +2,8 @@ name: DevTools
 
 on:
   push:
-    # branches: [master]
-  # pull_request: # run on all PRs, not just PRs to a particular branch
+    branches: [master]
+  pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:
   build:
