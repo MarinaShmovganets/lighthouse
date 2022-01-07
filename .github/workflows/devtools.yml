@@ -6,9 +6,9 @@ on:
   pull_request: # run on all PRs, not just PRs to a particular branch
 
 env:
-  DEPOT_TOOLS_PATH: $GITHUB_WORKSPACE/depot-tools
-  DEVTOOLS_PATH: $GITHUB_WORKSPACE/devtools-frontend
-  BLINK_TOOLS_PATH: $GITHUB_WORKSPACE/blink_tools
+  DEPOT_TOOLS_PATH: ${{ github.workspace }}/depot-tools
+  DEVTOOLS_PATH: ${{ github.workspace }}/devtools-frontend
+  BLINK_TOOLS_PATH: ${{ github.workspace }}/blink_tools
 
 jobs:
   build:
