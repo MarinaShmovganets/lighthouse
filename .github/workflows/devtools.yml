@@ -125,7 +125,7 @@ jobs:
       # e.g. if set 1 fails, continue with set 2 anyway
       fail-fast: false
     runs-on: macos-latest
-    name: Smoke DevTools ${{ matrix.smoke-test-shard }}
+    name: DevTools smoke ${{ matrix.smoke-test-shard }}
 
     steps:
     - name: git clone
