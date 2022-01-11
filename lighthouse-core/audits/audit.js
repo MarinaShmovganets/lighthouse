@@ -87,9 +87,6 @@ class Audit {
    * @return {number}
    */
   static computeLogNormalScore(controlPoints, value) {
-    // Value should not be < 0, but prevent any issues by always returning 1.
-    if (value <= 0) return 1;
-
     let percentile = statistics.getLogNormalScore(controlPoints, value);
     // Add a boost to scores of 90+, linearly ramping from 0 at 0.9 to half a
     // point (0.005) at 1. Expands scores in (0.9, 1] to (0.9, 1.005], so more top
