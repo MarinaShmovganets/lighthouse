@@ -232,6 +232,7 @@ describe('_getArtifact', () => {
       }],
       deprecationIssue: [{
         message: 'some warning',
+        deprecationType: 'test',
         sourceCodeLocation: {
           url: 'https://www.example.com',
           columnNumber: 10,
