@@ -141,6 +141,7 @@ function mockDeprecation(text) {
     details: {
       deprecationIssueDetails: {
         message: text,
+        deprecationType: 'test',
         sourceCodeLocation: {
           url: 'https://www.example.com',
           lineNumber: 10,
