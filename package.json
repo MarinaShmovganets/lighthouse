@@ -14,7 +14,7 @@
   "scripts": {
     "prepack": "yarn build-report --standalone --flow --esm",
     "build-all": "npm-run-posix-or-windows build-all:task",
-    "build-all:task": "yarn build-report && yarn build-cdt-lib && yarn build-devtools && (yarn build-extension & yarn build-lr & yarn build-viewer & yarn build-treemap & yarn build-smokehouse-bundle & wait) && yarn build-pack",
+    "build-all:task": "yarn build-report && yarn build-cdt-lib && yarn build-devtools && concurrently 'yarn build-extension' 'yarn build-lr' 'yarn build-viewer' 'yarn build-treemap' 'yarn build-smokehouse-bundle' && yarn build-pack",
     "build-all:task:windows": "yarn build-report && yarn build-cdt-lib && yarn build-extension && yarn build-devtools && yarn build-lr && yarn build-viewer && yarn build-treemap && yarn build-smokehouse-bundle",
     "build-cdt-lib": "node ./build/build-cdt-lib.js",
     "build-extension": "yarn build-extension-chrome && yarn build-extension-firefox",
@@ -137,11 +137,12 @@
     "c8": "^7.4.0",
     "chalk": "^2.4.1",
     "chrome-devtools-frontend": "1.0.922924",
+    "concurrently": "^6.4.0",
     "conventional-changelog-cli": "^2.1.1",
     "cpy": "^8.1.2",
     "cross-env": "^7.0.2",
     "csv-validator": "^0.0.3",
-    "devtools-protocol": "0.0.939404",
+    "devtools-protocol": "0.0.963043",
     "es-main": "^1.0.2",
     "eslint": "^8.4.1",
     "eslint-config-google": "^0.14.0",
@@ -205,7 +206,7 @@
     "parse-cache-control": "1.0.1",
     "ps-list": "^8.0.0",
     "raven": "^2.2.1",
-    "robots-parser": "^2.3.0",
+    "robots-parser": "^3.0.0",
     "semver": "^5.3.0",
     "speedline-core": "^1.4.3",
     "third-party-web": "^0.12.7",
@@ -215,7 +216,7 @@
     "yargs-parser": "^20.2.4"
   },
   "resolutions": {
-    "puppeteer/**/devtools-protocol": "0.0.939404"
+    "puppeteer/**/devtools-protocol": "0.0.963043"
   },
   "repository": "GoogleChrome/lighthouse",
   "keywords": [
