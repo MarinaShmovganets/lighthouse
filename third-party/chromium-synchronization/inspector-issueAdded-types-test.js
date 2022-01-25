@@ -36,6 +36,7 @@ describe('issueAdded types', () => {
 Array [
   "attributionReportingIssueDetails",
   "blockedByResponseIssueDetails",
+  "clientHintIssueDetails",
   "contentSecurityPolicyIssueDetails",
   "corsIssueDetails",
   "deprecationIssueDetails",
@@ -48,7 +49,6 @@ Array [
   "sameSiteCookieIssueDetails",
   "sharedArrayBufferIssueDetails",
   "twaQualityEnforcementDetails",
-  "wasmCrossOriginModuleSharingIssue",
 ]
 `);
   });

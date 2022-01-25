@@ -22,6 +22,7 @@ const {initializeConfig} = require('../config/config.js');
 const {getBaseArtifacts, finalizeArtifacts} = require('./base-artifacts.js');
 const format = require('../../../shared/localization/format.js');
 const LighthouseError = require('../../lib/lh-error.js');
+const URL = require('../../lib/url-shim.js');
 const {getPageLoadError} = require('../../lib/navigation-error.js');
 const Trace = require('../../gather/gatherers/trace.js');
 const DevtoolsLog = require('../../gather/gatherers/devtools-log.js');
@@ -136,11 +137,11 @@ async function _collectDebugData(navigationContext, phaseState) {
   await collectPhaseArtifacts({...phaseState, phase: 'getArtifact', artifactDefinitions});
   const getArtifactState = phaseState.artifactState.getArtifact;
 
-  const devtoolsLogArtifactId = devtoolsLogArtifactDefn && devtoolsLogArtifactDefn.id;
+  const devtoolsLogArtifactId = devtoolsLogArtifactDefn?.id;
   const devtoolsLog = devtoolsLogArtifactId && await getArtifactState[devtoolsLogArtifactId];
   const records = devtoolsLog && await NetworkRecords.request(devtoolsLog, navigationContext);
 
-  const traceArtifactId = traceArtifactDefn && traceArtifactDefn.id;
+  const traceArtifactId = traceArtifactDefn?.id;
   const trace = traceArtifactId && await getArtifactState[traceArtifactId];
 
   return {devtoolsLog, records, trace};
@@ -279,7 +280,7 @@ async function _cleanup({requestedUrl, driver, config}) {
  * @return {Promise<LH.RunnerResult|undefined>}
  */
 async function navigation(options) {
-  const {url: requestedUrl, page, configContext = {}} = options;
+  const {url, page, configContext = {}} = options;
   const {config} = initializeConfig(options.config, {...configContext, gatherMode: 'navigation'});
   const computedCache = new Map();
   const internalOptions = {
@@ -289,6 +290,7 @@ async function navigation(options) {
   return Runner.run(
     async () => {
       const driver = new Driver(page);
+      const requestedUrl = URL.normalizeUrl(url);
       const context = {driver, config, requestedUrl, options: internalOptions};
       const {baseArtifacts} = await _setup(context);
       const {artifacts} = await _navigations({...context, baseArtifacts, computedCache});
@@ -297,7 +299,6 @@ async function navigation(options) {
       return finalizeArtifacts(baseArtifacts, artifacts);
     },
     {
-      url: requestedUrl,
       config,
       computedCache: new Map(),
     }
