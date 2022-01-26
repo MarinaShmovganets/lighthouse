@@ -364,7 +364,7 @@ function getFlags(manualArgv, options = {}) {
  * @return {Array<string>=}
  */
 function splitCommaSeparatedValues(strings) {
-  if (!strings) return undefined;
+  if (!strings) return;
 
   return strings.flatMap(value => value.split(','));
 }
