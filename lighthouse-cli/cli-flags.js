@@ -178,7 +178,6 @@ function getFlags(manualArgv, options = {}) {
         },
         'enable-error-reporting': {
           type: 'boolean',
-          default: undefined, // Explicitly `undefined` so prompted by default.
           describe: 'Enables error reporting, overriding any saved preference. --no-enable-error-reporting will do the opposite. More: https://git.io/vFFTO',
         },
         'gather-mode': {
@@ -350,8 +349,6 @@ function getFlags(manualArgv, options = {}) {
   // are not actually present in the user input. Instead of passing properties
   // explicitly set to undefined, delete them from the flags object.
   for (const [k, v] of Object.entries(cliFlags)) {
-    // This property is meant to possibly be explicitly undefined.
-    if (k === 'enable-error-reporting' || k === 'enableErrorReporting') continue;
     if (v === undefined) delete cliFlags[k];
   }
 
