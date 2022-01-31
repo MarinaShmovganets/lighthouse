@@ -1,5 +1,5 @@
 <a name="9.3.0"></a>
-# 9.3.0 (2022-01-28)
+# 9.3.0 (2022-01-31)
 [Full Changelog](https://github.com/compare/v9.2.0...v9.3.0)
 
 We expect this release to ship in the DevTools of [Chrome 100](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
