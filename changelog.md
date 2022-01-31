@@ -1,15 +1,8 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-
- <a name="9.3.1"></a>
+<a name="9.3.1"></a>
 # 9.3.1 (2022-01-31)
 [Full Changelog](https://github.com/compare/v9.3.0...v9.3.1)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
-
-## Notable Changes
-~~ TODO: Move notable changes here ~~
-
+We expect this release to ship in the DevTools of [Chrome 100](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
 ## Report
 
