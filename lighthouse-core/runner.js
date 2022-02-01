@@ -145,9 +145,6 @@ class Runner {
 
     // Either load saved artifacts from disk or from the browser.
     try {
-      const runnerStatus = {msg: 'Gather phase', id: 'lh:runner:gather'};
-      log.time(runnerStatus, 'verbose');
-
       const sentryContext = Sentry.getContext();
       Sentry.captureBreadcrumb({
         message: 'Run started',
@@ -167,10 +164,21 @@ class Runner {
           throw new Error('Cannot run audit mode on empty URL');
         }
       } else {
+        const runnerStatus = {msg: 'Gather phase', id: 'lh:runner:gather'};
+        log.time(runnerStatus, 'verbose');
+
         artifacts = await gatherFn({
           config: options.config,
           driverMock: options.driverMock,
         });
+
+        // Calling log.timeEnd here will retroactively update artifacts.Timing.
+        // Must end time here so this timing entry can be stored on saved artifacts.
+        log.timeEnd(runnerStatus);
+
+        // If `gather` is run multiple times before `audit`, the timing entries for each `gather` can pollute one another.
+        // Timing entries are stored in artifacts.Timing, so we can clear the timing entries here.
+        log.takeTimeEntries();
 
         // -G means save these to disk (e.g. ./latest-run).
         if (settings.gatherMode) {
@@ -178,12 +186,6 @@ class Runner {
           await assetSaver.saveArtifacts(artifacts, path);
         }
       }
-
-      log.timeEnd(runnerStatus);
-
-      // If `gather` is run multiple times before `audit`, the timing entries for each `gather` can pollute one another.
-      // Timing entries are stored in artifacts.Timing, so we can clear the timing entries here.
-      log.takeTimeEntries();
 
       return artifacts;
     } catch (err) {
