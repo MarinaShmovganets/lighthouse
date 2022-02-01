@@ -121,8 +121,12 @@ function findDifference(path, actual, expected) {
         };
       }
 
+      const actualCopy = [...actual];
       for (const expectedEntry of expectedValue) {
-        if (actual.find(actualEntry => !findDifference(keyPath, actualEntry, expectedEntry))) {
+        const matchingIndex =
+          actualCopy.find(actualEntry => !findDifference(keyPath, actualEntry, expectedEntry));
+        if (matchingIndex !== -1) {
+          actualCopy.splice(matchingIndex, 1);
           continue;
         }
 
