@@ -305,7 +305,11 @@ function collateResults(localConsole, actual, expected) {
     return makeComparison(auditName + ' audit', actualResult, expectedResult);
   });
 
-  const timingAssertion = makeComparison('timing', actual.lhr.timing, expected.lhr.timing);
+  const timingAssertions = [];
+  if (expected.lhr.timing) {
+    const comparison = makeComparison('timing', actual.lhr.timing, expected.lhr.timing);
+    timingAssertions.push(comparison);
+  }
 
   /** @type {Comparison[]} */
   const requestCountAssertion = [];
@@ -321,7 +325,7 @@ function collateResults(localConsole, actual, expected) {
     makeComparison('final url', actual.lhr.finalUrl, expected.lhr.finalUrl),
     runtimeErrorAssertion,
     runWarningsAssertion,
-    timingAssertion,
+    ...timingAssertions,
     ...requestCountAssertion,
     ...artifactAssertions,
     ...auditAssertions,
