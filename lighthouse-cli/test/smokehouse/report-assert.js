@@ -111,6 +111,31 @@ function findDifference(path, actual, expected) {
     const keyPath = path + keyAccessor;
     const expectedValue = expected[key];
 
+    if (key === '_includes') {
+      if (!Array.isArray(expectedValue)) throw new Error('Array subset must be array');
+      if (!Array.isArray(actual)) {
+        return {
+          path,
+          actual: 'Actual value is not an array',
+          expected,
+        };
+      }
+
+      for (const expectedEntry of expectedValue) {
+        if (actual.find(actualEntry => !findDifference(keyPath, actualEntry, expectedEntry))) {
+          continue;
+        }
+
+        return {
+          path,
+          actual: 'Item not found in array',
+          expected: expectedEntry,
+        };
+      }
+
+      return null;
+    }
+
     const actualValue = actual[key];
     const subDifference = findDifference(keyPath, actualValue, expectedValue);
 

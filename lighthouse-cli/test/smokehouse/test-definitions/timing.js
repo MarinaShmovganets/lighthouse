@@ -19,9 +19,11 @@ const config = {
 const expectations = {
   artifacts: {
     Timing: {
-      3: {
-        name: 'lh:runner:gather',
-      },
+      _includes: [
+        {
+          name: 'lh:runner:gather',
+        },
+      ],
     },
   },
   lhr: {
@@ -29,12 +31,15 @@ const expectations = {
     finalUrl: 'http://localhost:10200/simple-page.html',
     audits: {},
     timing: {
-      // TODO: Check for existence of lh:runner:audit.
-      // The exact position of lh:runner:audit can vary depending on runner.
       entries: {
-        3: {
-          name: 'lh:runner:gather',
-        },
+        _includes: [
+          {
+            name: 'lh:runner:gather',
+          },
+          {
+            name: 'lh:runner:audit',
+          },
+        ],
       },
     },
   },
