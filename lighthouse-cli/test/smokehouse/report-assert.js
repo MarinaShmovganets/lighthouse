@@ -305,6 +305,8 @@ function collateResults(localConsole, actual, expected) {
     return makeComparison(auditName + ' audit', actualResult, expectedResult);
   });
 
+  const timingAssertion = makeComparison('timing', actual.lhr.timing, expected.lhr.timing);
+
   /** @type {Comparison[]} */
   const requestCountAssertion = [];
   if (expected.networkRequests) {
@@ -319,6 +321,7 @@ function collateResults(localConsole, actual, expected) {
     makeComparison('final url', actual.lhr.finalUrl, expected.lhr.finalUrl),
     runtimeErrorAssertion,
     runWarningsAssertion,
+    timingAssertion,
     ...requestCountAssertion,
     ...artifactAssertions,
     ...auditAssertions,
