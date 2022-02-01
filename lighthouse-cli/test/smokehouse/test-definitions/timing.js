@@ -141,8 +141,8 @@ const expectations = {
     Timing: gatherTimings,
   },
   lhr: {
-    requestedUrl: 'https://example.com/',
-    finalUrl: 'https://example.com/',
+    requestedUrl: 'http://localhost:10200/simple-page.html',
+    finalUrl: 'http://localhost:10200/simple-page.html',
     audits: {},
     timing: {
       entries: [
