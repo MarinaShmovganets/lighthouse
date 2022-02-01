@@ -21,7 +21,7 @@ declare global {
         message?: any;
       };
       timing?: {
-        entries?: any[]
+        entries?: any
       }
     }
 

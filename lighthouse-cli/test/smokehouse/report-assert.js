@@ -325,10 +325,10 @@ function collateResults(localConsole, actual, expected) {
     makeComparison('final url', actual.lhr.finalUrl, expected.lhr.finalUrl),
     runtimeErrorAssertion,
     runWarningsAssertion,
-    ...timingAssertions,
     ...requestCountAssertion,
     ...artifactAssertions,
     ...auditAssertions,
+    ...timingAssertions,
   ];
 }
 

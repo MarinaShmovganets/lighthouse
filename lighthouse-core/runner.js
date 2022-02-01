@@ -219,8 +219,11 @@ class Runner {
     const timingEntriesKeyValues = [
       ...timingEntriesFromArtifacts,
       ...timingEntriesFromRunner,
-      // As entries can share a name, dedupe based on the startTime timestamp
-    ].map(entry => /** @type {[number, PerformanceEntry]} */ ([entry.startTime, entry]));
+    ].map(entry => /** @type {[string, PerformanceEntry]} */ ([
+      // As entries can share a name and start time, dedupe based on the name, startTime and duration
+      `${entry.startTime}-${entry.name}-${entry.duration}`,
+      entry,
+    ]));
     const timingEntries = Array.from(new Map(timingEntriesKeyValues).values())
     // Truncate timestamps to hundredths of a millisecond saves ~4KB. No need for microsecond
     // resolution.

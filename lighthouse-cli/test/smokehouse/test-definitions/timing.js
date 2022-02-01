@@ -13,142 +13,29 @@ const config = {
   },
 };
 
-const gatherTimings = [
-  {
-    'name': 'lh:init:config',
-  },
-  {
-    'name': 'lh:config:requireGatherers',
-  },
-  {
-    'name': 'lh:config:requireAudits',
-  },
-  {
-    'name': 'lh:runner:gather',
-  },
-  {
-    'name': 'lh:init:connect',
-  },
-  {
-    'name': 'lh:gather:loadBlank',
-  },
-  {
-    'name': 'lh:driver:navigate',
-  },
-  {
-    'name': 'lh:gather:getVersion',
-  },
-  {
-    'name': 'lh:gather:getBenchmarkIndex',
-  },
-  {
-    'name': 'lh:gather:setupDriver',
-  },
-  {
-    'name': 'lh:prepare:navigationMode',
-  },
-  {
-    'name': 'lh:gather:runPass-defaultPass',
-  },
-  {
-    'name': 'lh:gather:loadBlank',
-  },
-  {
-    'name': 'lh:driver:navigate',
-  },
-  {
-    'name': 'lh:prepare:navigation',
-  },
-  {
-    'name': 'lh:storage:clearDataForOrigin',
-  },
-  {
-    'name': 'lh:storage:clearBrowserCaches',
-  },
-  {
-    'name': 'lh:gather:prepareThrottlingAndNetwork',
-  },
-  {
-    'name': 'lh:gather:beforePass',
-  },
-  {
-    'name': 'lh:gather:beforePass:MetaElements',
-  },
-  {
-    'name': 'lh:gather:beginRecording',
-  },
-  {
-    'name': 'lh:gather:loadPage-defaultPass',
-  },
-  {
-    'name': 'lh:driver:navigate',
-  },
-  {
-    'name': 'lh:gather:pass',
-  },
-  {
-    'name': 'lh:gather:getDevtoolsLog',
-  },
-  {
-    'name': 'lh:computed:NetworkRecords',
-  },
-  {
-    'name': 'lh:gather:afterPass',
-  },
-  {
-    'name': 'lh:gather:afterPass:MetaElements',
-  },
-  {
-    'name': 'lh:gather:populateBaseArtifacts',
-  },
-  {
-    'name': 'lh:gather:collectStacks',
-  },
-  {
-    'name': 'lh:gather:disconnect',
-  },
-  {
-    'name': 'lh:storage:clearDataForOrigin',
-  },
-];
-
-const auditTimings = [
-  {
-    'name': 'lh:assetSaver:saveArtifacts',
-  },
-  {
-    'name': 'lh:runner:audit',
-  },
-  {
-    'name': 'lh:runner:auditing',
-  },
-  {
-    'name': 'lh:audit:viewport',
-  },
-  {
-    'name': 'lh:computed:ViewportMeta',
-  },
-  {
-    'name': 'lh:runner:generate',
-  },
-];
-
 /**
  * @type {Smokehouse.ExpectedRunnerResult}
  */
 const expectations = {
   artifacts: {
-    Timing: gatherTimings,
+    Timing: {
+      3: {
+        name: 'lh:runner:gather',
+      },
+    },
   },
   lhr: {
     requestedUrl: 'http://localhost:10200/simple-page.html',
     finalUrl: 'http://localhost:10200/simple-page.html',
     audits: {},
     timing: {
-      entries: [
-        ...gatherTimings,
-        ...auditTimings,
-      ],
+      // TODO: Check for existence of lh:runner:audit.
+      // The exact position of lh:runner:audit can vary depending on runner.
+      entries: {
+        3: {
+          name: 'lh:runner:gather',
+        },
+      },
     },
   },
 };
