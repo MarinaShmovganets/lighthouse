@@ -172,13 +172,12 @@ class Runner {
           driverMock: options.driverMock,
         });
 
-        // Calling log.timeEnd here will retroactively update artifacts.Timing.
-        // Must end time here so this timing entry can be stored on saved artifacts.
         log.timeEnd(runnerStatus);
 
         // If `gather` is run multiple times before `audit`, the timing entries for each `gather` can pollute one another.
-        // Timing entries are stored in artifacts.Timing, so we can clear the timing entries here.
-        log.takeTimeEntries();
+        // We need to clear the timing entries at the end of gathering.
+        // Set artifacts.Timing again to ensure lh:runner:gather is included.
+        artifacts.Timing = log.takeTimeEntries();
 
         // -G means save these to disk (e.g. ./latest-run).
         if (settings.gatherMode) {
@@ -219,8 +218,11 @@ class Runner {
     const timingEntriesKeyValues = [
       ...timingEntriesFromArtifacts,
       ...timingEntriesFromRunner,
-      // As entries can share a name, dedupe based on the startTime timestamp
-    ].map(entry => /** @type {[number, PerformanceEntry]} */ ([entry.startTime, entry]));
+    ].map(entry => /** @type {[string, PerformanceEntry]} */ ([
+      // As entries can share a name and start time, dedupe based on the name, startTime and duration
+      `${entry.startTime}-${entry.name}-${entry.duration}`,
+      entry,
+    ]));
     const timingEntries = Array.from(new Map(timingEntriesKeyValues).values())
     // Truncate timestamps to hundredths of a millisecond saves ~4KB. No need for microsecond
     // resolution.
