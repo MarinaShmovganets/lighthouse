@@ -47,7 +47,7 @@
     }
   }
 
-  // Turn off legacy navigation.
+  // Enable FR navigation.
   containerElement.querySelector('.lighthouse-settings-pane > div').shadowRoot
                .querySelectorAll('span')[0].shadowRoot
                .querySelector('input').click();
