@@ -1,4 +1,4 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
+// Copyright 2022 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -32,13 +32,13 @@
     'modern-image-formats',
   ];
 
-  TestRunner.addResult('Tests that audits panel works.\n');
+  TestRunner.addResult('Tests that FR navigation mode works correctly.\n');
   await TestRunner.navigatePromise('resources/lighthouse-basic.html');
 
   await TestRunner.loadTestModule('lighthouse_test_runner');
   await TestRunner.showPanel('lighthouse');
 
-  // Use all the default settings, but also enable a plugin.
+  // Enable Publisher Ads.
   const containerElement = LighthouseTestRunner.getContainerElement();
   const checkboxes = containerElement.querySelectorAll('.checkbox');
   for (const checkbox of checkboxes) {
