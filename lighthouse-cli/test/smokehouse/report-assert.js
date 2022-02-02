@@ -137,7 +137,7 @@ function findDifference(path, actual, expected) {
         };
       }
 
-      return null;
+      continue;
     }
 
     const actualValue = actual[key];
