@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "license": "MPL-2.0",
   "//": "Any directory that uses `import ... from` or `export ...` must be type module. Temporary file until root package.json is type: module"
 }

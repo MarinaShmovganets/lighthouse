@@ -11,6 +11,7 @@
 
 const Audit = require('../audit.js');
 const i18n = require('../../lib/i18n/i18n.js');
+const {isValidLang} = require('../../../third-party/axe/valid-langs.js');
 
 const NO_LANGUAGE = 'x-default';
 
@@ -41,10 +42,9 @@ function isFullyQualified(href) {
 
 /**
  * @param {string} hreflang
- * @param {(lang: string) => boolean} isValidLang From axe.
  * @return {boolean}
  */
-function isExpectedLanguageCode(hreflang, isValidLang) {
+function isExpectedLanguageCode(hreflang) {
   if (hreflang.toLowerCase() === NO_LANGUAGE) {
     return true;
   }
@@ -74,8 +74,6 @@ class Hreflang extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit({LinkElements}) {
-    const isValidLang = (await import('../../../third-party/axe/valid-langs.js')).default;
-
     /** @type {InvalidHreflang[]} */
     const invalidHreflangs = [];
 
@@ -92,7 +90,7 @@ class Hreflang extends Audit {
       /** @type {Source} */
       let source;
 
-      if (!isExpectedLanguageCode(link.hreflang, isValidLang)) {
+      if (!isExpectedLanguageCode(link.hreflang)) {
         reasons.push(str_(UIStrings.unexpectedLanguage));
       }
 
