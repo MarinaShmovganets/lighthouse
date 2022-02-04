@@ -71,9 +71,9 @@ class Hreflang extends Audit {
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @return {Promise<LH.Audit.Product>}
+   * @return {LH.Audit.Product}
    */
-  static async audit({LinkElements}) {
+  static audit({LinkElements}) {
     /** @type {InvalidHreflang[]} */
     const invalidHreflangs = [];
 
