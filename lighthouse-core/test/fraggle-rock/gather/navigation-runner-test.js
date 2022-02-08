@@ -521,8 +521,8 @@ describe('NavigationRunner', () => {
   describe('navigation', () => {
     it('should throw on invalid URL', async () => {
       const runnerActual = jest.requireActual('../../../runner.js');
-      mockRunner.run.mockImplementation(runnerActual.run);
-      mockRunner.gatherAndManageArtifacts.mockImplementation(runnerActual.gatherAndManageArtifacts);
+      mockRunner.gather.mockImplementation(runnerActual.gather);
+      mockRunner.audit.mockImplementation(runnerActual.audit);
 
       const navigatePromise = runner.navigation({
         requestor: '',
@@ -546,7 +546,7 @@ describe('NavigationRunner', () => {
         configContext,
       });
 
-      expect(mockRunner.run.mock.calls[0][1]).toMatchObject({
+      expect(mockRunner.gather.mock.calls[0][1]).toMatchObject({
         config: {
           settings: settingsOverrides,
         },
