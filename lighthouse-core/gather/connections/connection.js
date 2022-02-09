@@ -53,13 +53,10 @@ class Connection {
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
    * @param {string|undefined} sessionId
-   * @param {LH.CrdpCommands[C]['paramsType']} paramArgs,
+   * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
-  sendCommand(method, sessionId, ...paramArgs) {
-    // Reify params since we need it as a property so can't just spread again.
-    const params = paramArgs.length ? paramArgs[0] : undefined;
-
+  sendCommand(method, sessionId, params) {
     log.formatProtocol('method => browser', {method, params}, 'verbose');
     const id = ++this._lastCommandId;
     const message = JSON.stringify({id, sessionId, method, params});
