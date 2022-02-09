@@ -47,7 +47,14 @@ async function main() {
   const page = await browser.newPage();
   const flow = await lighthouse.startFlow(page);
 
+  // Navigate with a URL
   await flow.navigate('https://example.com');
+
+  // Navigate with a callback function
+  await flow.navigate(async () => {
+    await page.click('button');
+  });
+
   await browser.close();
 
   writeFileSync('report.html', flow.generateReport());
@@ -55,6 +62,8 @@ async function main() {
 
 main();
 ```
+
+> Aside: Navigating with a callback function means Lighthouse does not know the requested URL before starting the navigation, so Lighthouse cannot clear storage for it. This means that configuring `disableStorageReset` will not affect anything, and the storage will not be cleared.
 
 ### Timespan
 

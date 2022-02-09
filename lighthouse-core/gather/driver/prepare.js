@@ -204,6 +204,7 @@ async function prepareTargetForIndividualNavigation(session, settings, navigatio
   const shouldResetStorage =
     !settings.disableStorageReset &&
     !navigation.disableStorageReset &&
+    // Without prior knowledge of the destination, we cannot know which URL to clear storage for.
     typeof requestor === 'string';
   if (shouldResetStorage) {
     const {warnings: storageWarnings} = await resetStorageForUrl(session, requestor);
