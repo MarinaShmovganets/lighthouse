@@ -330,7 +330,7 @@ class Driver {
    * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
-  sendCommandToSession(method, sessionId, ...params) {
+  sendCommandToSession(method, sessionId, params) {
     const timeout = this._nextProtocolTimeout;
     this._nextProtocolTimeout = DEFAULT_PROTOCOL_TIMEOUT;
 
@@ -344,7 +344,7 @@ class Driver {
     });
 
     return Promise.race([
-      this._innerSendCommand(method, sessionId, ...params),
+      this._innerSendCommand(method, sessionId, params),
       timeoutPromise,
     ]).finally(() => {
       asyncTimeout && clearTimeout(asyncTimeout);
@@ -352,14 +352,14 @@ class Driver {
   }
 
   /**
-   * Alias for 'sendCommandToSession(method, undefined, ...params)'
+   * Alias for 'sendCommandToSession(method, undefined, params)'
    * @template {keyof LH.CrdpCommands} C
    * @param {C} method
    * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
-  sendCommand(method, ...params) {
-    return this.sendCommandToSession(method, undefined, ...params);
+  sendCommand(method, params) {
+    return this.sendCommandToSession(method, undefined, params);
   }
 
   /**
@@ -371,7 +371,7 @@ class Driver {
    * @param {LH.CrdpCommands[C]['paramsType']} params
    * @return {Promise<LH.CrdpCommands[C]['returnType']>}
    */
-  _innerSendCommand(method, sessionId, ...params) {
+  _innerSendCommand(method, sessionId, params) {
     const domainCommand = /^(\w+)\.(enable|disable)$/.exec(method);
     if (domainCommand) {
       const enable = domainCommand[2] === 'enable';
@@ -379,7 +379,7 @@ class Driver {
         return Promise.resolve();
       }
     }
-    return this._connection.sendCommand(method, sessionId, ...params);
+    return this._connection.sendCommand(method, sessionId, params);
   }
 
   /**
