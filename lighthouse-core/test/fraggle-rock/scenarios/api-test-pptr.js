@@ -168,9 +168,11 @@ describe('Fraggle Rock API', () => {
     it('should compute results with callback requestor', async () => {
       const {page, serverBaseUrl} = state;
       await page.goto(`${serverBaseUrl}/landing.html`);
-      const requestor = async () => {
-        page.click('a');
-      };
+
+      const requestor = jest.fn(async () => {
+        await page.click('a');
+      });
+
       const result = await lighthouse.navigation({
         page,
         requestor,
@@ -178,7 +180,12 @@ describe('Fraggle Rock API', () => {
       });
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
+      expect(requestor).toHaveBeenCalled();
+
       const {lhr} = result;
+      expect(lhr.requestedUrl).toEqual(`${serverBaseUrl}/index.html`);
+      expect(lhr.finalUrl).toEqual(`${serverBaseUrl}/index.html`);
+
       const {auditResults, failedAudits, erroredAudits} = getAuditsBreakdown(lhr);
       // TODO(FR-COMPAT): This assertion can be removed when full compatibility is reached.
       expect(auditResults.length).toMatchInlineSnapshot(`152`);
