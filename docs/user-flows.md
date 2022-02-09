@@ -26,7 +26,6 @@ Navigation reports analyze a single page load. Navigation is the most common typ
 #### Limitations
 
 - Cannot analyze form submissions or single page app transitions.
-- Cannot analyze user interactions.
 - Cannot analyze content that isn't available immediately on page load.
 
 #### Use Cases
@@ -34,6 +33,14 @@ Navigation reports analyze a single page load. Navigation is the most common typ
 - Obtain a Lighthouse Performance score.
 - Measure Performance metrics (First Contentful Paint, Largest Contentful Paint, Speed Index, Time to Interactive, Cumulative Layout Shift, Total Blocking Time).
 - Assess Progressive Web App capabilities.
+
+#### Triggering a navigation via user interactions
+
+Instead of providing a URL to navigate to, you can provide a callback function. This is useful when you want to audit a navigation where the destination is unknown before navigating.
+
+> Aside: Since the requested URL is not known before starting the navigation, Lighthouse cannot clear storage for it. This means that configuring `disableStorageReset` will not affect anything, and the storage will not be cleared if a callback function is used.
+
+This callback function _must_ perform an action that will trigger a navigation. Any interactions completed before the callback promise resolves will be captured by the navigation.
 
 #### Code
 
@@ -52,7 +59,7 @@ async function main() {
 
   // Navigate with a callback function
   await flow.navigate(async () => {
-    await page.click('button');
+    await page.click('a.link');
   });
 
   await browser.close();
@@ -62,8 +69,6 @@ async function main() {
 
 main();
 ```
-
-> Aside: Navigating with a callback function means Lighthouse does not know the requested URL before starting the navigation, so Lighthouse cannot clear storage for it. This means that configuring `disableStorageReset` will not affect anything, and the storage will not be cleared.
 
 ### Timespan
 
