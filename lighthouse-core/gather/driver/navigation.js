@@ -96,13 +96,13 @@ async function gotoURL(driver, requestor, options) {
   await session.sendCommand('Page.enable');
   await session.sendCommand('Page.setLifecycleEventsEnabled', {enabled: true});
 
-  let waitForPageNavigateCmd;
+  let waitForNavigationTriggered;
   if (typeof requestor === 'string') {
     // No timeout needed for Page.navigate. See https://github.com/GoogleChrome/lighthouse/pull/6413
     session.setNextProtocolTimeout(Infinity);
-    waitForPageNavigateCmd = session.sendCommand('Page.navigate', {url: requestor});
+    waitForNavigationTriggered = session.sendCommand('Page.navigate', {url: requestor});
   } else {
-    waitForPageNavigateCmd = requestor();
+    waitForNavigationTriggered = requestor();
   }
 
   const waitForNavigated = options.waitUntil.includes('navigated');
@@ -132,7 +132,7 @@ async function gotoURL(driver, requestor, options) {
   const finalUrl = navigationUrls.finalUrl || requestedUrl;
 
   // Bring `Page.navigate` errors back into the promise chain. See https://github.com/GoogleChrome/lighthouse/pull/6739.
-  await waitForPageNavigateCmd;
+  await waitForNavigationTriggered;
   await networkMonitor.disable();
 
   if (options.debugNavigation) {
