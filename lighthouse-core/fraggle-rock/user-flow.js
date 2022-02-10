@@ -54,11 +54,10 @@ class UserFlow {
   }
 
   /**
-   * @param {LH.NavigationRequestor} requestor
    * @param {StepOptions=} stepOptions
    */
-  _getNextNavigationOptions(requestor, stepOptions) {
-    const options = {requestor, ...this.options, ...stepOptions};
+  _getNextNavigationOptions(stepOptions) {
+    const options = {...this.options, ...stepOptions};
     const configContext = {...options.configContext};
     const settingsOverrides = {...configContext.settingsOverrides};
 
@@ -87,7 +86,10 @@ class UserFlow {
   async navigate(requestor, stepOptions) {
     if (this.currentTimespan) throw Error('Timespan already in progress');
 
-    const result = await navigation(this._getNextNavigationOptions(requestor, stepOptions));
+    const result = await navigation(
+      requestor,
+      this._getNextNavigationOptions(stepOptions)
+    );
     if (!result) throw Error('Navigation returned undefined');
 
     const providedName = stepOptions?.stepName;

@@ -286,11 +286,12 @@ async function _cleanup({requestedUrl, driver, config}) {
 }
 
 /**
- * @param {{requestor: LH.NavigationRequestor, page: import('puppeteer').Page, config?: LH.Config.Json, configContext?: LH.Config.FRContext}} options
+ * @param {LH.NavigationRequestor} requestor
+ * @param {{page: import('puppeteer').Page, config?: LH.Config.Json, configContext?: LH.Config.FRContext}} options
  * @return {Promise<LH.RunnerResult|undefined>}
  */
-async function navigation(options) {
-  const {requestor, page, configContext = {}} = options;
+async function navigation(requestor, options) {
+  const {page, configContext = {}} = options;
   const {config} = initializeConfig(options.config, {...configContext, gatherMode: 'navigation'});
   const computedCache = new Map();
   const internalOptions = {

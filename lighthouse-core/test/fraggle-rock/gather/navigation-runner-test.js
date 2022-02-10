@@ -529,10 +529,10 @@ describe('NavigationRunner', () => {
       mockRunner.gather.mockImplementation(runnerActual.gather);
       mockRunner.audit.mockImplementation(runnerActual.audit);
 
-      const navigatePromise = runner.navigation({
-        requestor: '',
-        page: mockDriver._page.asPage(),
-      });
+      const navigatePromise = runner.navigation(
+        '',
+        {page: mockDriver._page.asPage()}
+      );
 
       await expect(navigatePromise).rejects.toThrow('INVALID_URL');
     });
@@ -545,11 +545,13 @@ describe('NavigationRunner', () => {
       };
 
       const configContext = {settingsOverrides};
-      await runner.navigation({
-        requestor: 'http://example.com',
-        page: mockDriver._page.asPage(),
-        configContext,
-      });
+      await runner.navigation(
+        'http://example.com',
+        {
+          page: mockDriver._page.asPage(),
+          configContext,
+        }
+      );
 
       expect(mockRunner.gather.mock.calls[0][1]).toMatchObject({
         config: {

@@ -141,7 +141,7 @@ describe('Fraggle Rock API', () => {
 
     it('should compute both snapshot & timespan results', async () => {
       const {page, serverBaseUrl} = state;
-      const result = await lighthouse.navigation({page, requestor: `${serverBaseUrl}/index.html`});
+      const result = await lighthouse.navigation(`${serverBaseUrl}/index.html`, {page});
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
       const {lhr} = result;
@@ -173,11 +173,13 @@ describe('Fraggle Rock API', () => {
         await page.click('a');
       });
 
-      const result = await lighthouse.navigation({
-        page,
+      const result = await lighthouse.navigation(
         requestor,
-        configContext: {skipAboutBlank: true},
-      });
+        {
+          page,
+          configContext: {skipAboutBlank: true},
+        }
+      );
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
       expect(requestor).toHaveBeenCalled();
