@@ -27,8 +27,12 @@ declare module Renderer {
     onPageAnchorRendered?: (link: HTMLAnchorElement) => void;
     /** If defined, `Save as HTML` option is shown in dropdown menu. */
     getStandaloneReportHTML?: () => string;
-    /** Adds buttons to the report, under the performance category metrics. */
-    _internalButtons?: Array<Parameters<ReportUIFeatures['addButton']>[0]>;
+    /**
+     * If defined, adds a `View Trace` button to the report, and calls this callback when clicked.
+     * The callback should do something to present the user with a visualization of the trace
+     * data, which can be gotten from the artifacts.
+     */
+    onViewTrace?: () => void;
   }
 }
 

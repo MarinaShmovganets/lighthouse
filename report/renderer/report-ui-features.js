@@ -112,8 +112,13 @@ export class ReportUIFeatures {
       });
     }
 
-    for (const params of this._opts._internalButtons || []) {
-      this.addButton(params);
+    if (this._opts.onViewTrace) {
+      this.addButton({
+        text: lhr.configSettings.throttlingMethod === 'simulate' ?
+          Util.i18n.strings.viewOriginalTraceLabel :
+          Util.i18n.strings.viewTraceLabel,
+        onClick: () => this._opts.onViewTrace?.(),
+      });
     }
 
     if (this._opts.getStandaloneReportHTML) {
