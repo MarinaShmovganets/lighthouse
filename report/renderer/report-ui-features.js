@@ -112,6 +112,10 @@ export class ReportUIFeatures {
       });
     }
 
+    for (const params of this._opts._internalButtons || []) {
+      this.addButton(params);
+    }
+
     if (this._opts.getStandaloneReportHTML) {
       this._dom.find('a[data-action="save-html"]', this._dom.rootEl).classList.remove('lh-hidden');
     }

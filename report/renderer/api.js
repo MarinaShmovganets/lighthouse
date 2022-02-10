@@ -12,9 +12,6 @@ import {ReportUIFeatures} from '../renderer/report-ui-features.js';
 import {CategoryRenderer} from './category-renderer.js';
 import {DetailsRenderer} from './details-renderer.js';
 
-/** @type {WeakMap<HTMLElement, ReportUIFeatures>} */
-const rootElToReportUIFeatures = new WeakMap();
-
 /**
  * @param {LH.Result} lhr
  * @param {LH.Renderer.Options} opts
@@ -33,7 +30,6 @@ function renderReport(lhr, opts = {}) {
   // is in the document.
   const features = new ReportUIFeatures(dom, opts);
   features.initFeatures(lhr);
-  rootElToReportUIFeatures.set(rootEl, features);
   return rootEl;
 }
 
@@ -75,22 +71,10 @@ function createStylesElement() {
   return dom.createComponent('styles');
 }
 
-/**
- * @param {HTMLElement} rootEl
- * @param {Parameters<ReportUIFeatures['addButton']>[0]} opts
- */
-function addButton(rootEl, opts) {
-  const features = rootElToReportUIFeatures.get(rootEl);
-  if (!features) throw new Error('rootEl is not a Lighthouse report');
-
-  return features.addButton(opts);
-}
-
 export {
   renderReport,
   renderCategoryScore,
   saveFile,
   convertMarkdownCodeSnippets,
   createStylesElement,
-  addButton,
 };

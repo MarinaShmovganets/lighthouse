@@ -5,6 +5,7 @@
  */
 
 import { Result as AuditResult } from "../../types/lhr/audit-result";
+import { ReportUIFeatures } from "../renderer/report-ui-features.js";
 
 declare module Renderer {
   function renderReport(lhr: AuditResult, options?: Options): HTMLElement;
@@ -26,6 +27,8 @@ declare module Renderer {
     onPageAnchorRendered?: (link: HTMLAnchorElement) => void;
     /** If defined, `Save as HTML` option is shown in dropdown menu. */
     getStandaloneReportHTML?: () => string;
+    /** Adds buttons to the report, under the performance category metrics. */
+    _internalButtons?: Array<Parameters<ReportUIFeatures['addButton']>[0]>;
   }
 }
 
