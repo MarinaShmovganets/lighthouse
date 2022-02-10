@@ -115,12 +115,12 @@ describe('NavigationRunner', () => {
     });
 
     it('should connect the driver', async () => {
-      await runner._setup({driver, config, requestor});
+      await runner._setup({driver, config, requestor: requestedUrl});
       expect(mockDriver.connect).toHaveBeenCalled();
     });
 
     it('should navigate to the blank page', async () => {
-      await runner._setup({driver, config, requestor});
+      await runner._setup({driver, config, requestor: requestedUrl});
       expect(mocks.navigationMock.gotoURL).toHaveBeenCalledTimes(1);
       expect(mocks.navigationMock.gotoURL).toHaveBeenCalledWith(
         expect.anything(),
@@ -130,12 +130,17 @@ describe('NavigationRunner', () => {
     });
 
     it('skip about:blank if option is true', async () => {
-      await runner._setup({driver, config, requestor, options: {skipAboutBlank: true}});
+      await runner._setup({
+        driver,
+        config,
+        requestor: requestedUrl,
+        options: {skipAboutBlank: true},
+      });
       expect(mocks.navigationMock.gotoURL).not.toHaveBeenCalled();
     });
 
     it('should collect base artifacts', async () => {
-      const {baseArtifacts} = await runner._setup({driver, config, requestor});
+      const {baseArtifacts} = await runner._setup({driver, config, requestor: requestedUrl});
       expect(baseArtifacts).toMatchObject({URL: {requestedUrl}});
     });
 
@@ -145,14 +150,14 @@ describe('NavigationRunner', () => {
     });
 
     it('should prepare the target for navigation', async () => {
-      await runner._setup({driver, config, requestor});
+      await runner._setup({driver, config, requestor: requestedUrl});
       expect(mocks.prepareMock.prepareTargetForNavigationMode).toHaveBeenCalledTimes(1);
     });
 
     it('should prepare the target for navigation *after* base artifact collection', async () => {
       mockDriver._executionContext.evaluate.mockReset();
       mockDriver._executionContext.evaluate.mockRejectedValue(new Error('Not available'));
-      const setupPromise = runner._setup({driver, config, requestor});
+      const setupPromise = runner._setup({driver, config, requestor: requestedUrl});
       await expect(setupPromise).rejects.toThrowError(/Not available/);
       expect(mocks.prepareMock.prepareTargetForNavigationMode).not.toHaveBeenCalled();
     });
@@ -188,8 +193,8 @@ describe('NavigationRunner', () => {
     });
 
     it('should backfill requested URL using a callback requestor', async () => {
-      requestor = () => {};
       requestedUrl = 'https://backfill.example.com';
+      requestor = () => {};
       config = initializeConfig(
         {
           ...config,
@@ -286,7 +291,7 @@ describe('NavigationRunner', () => {
         driver,
         config,
         navigation,
-        requestor,
+        requestor: requestedUrl,
         computedCache,
         baseArtifacts,
         options: {skipAboutBlank: true},
@@ -426,7 +431,7 @@ describe('NavigationRunner', () => {
       await runner._setupNavigation({
         driver,
         navigation,
-        requestor,
+        requestor: requestedUrl,
         config,
         computedCache,
         baseArtifacts,
@@ -442,7 +447,7 @@ describe('NavigationRunner', () => {
       await runner._setupNavigation({
         driver,
         navigation,
-        requestor,
+        requestor: requestedUrl,
         config,
         computedCache,
         baseArtifacts,
@@ -456,7 +461,7 @@ describe('NavigationRunner', () => {
       const result = await runner._setupNavigation({
         driver,
         navigation,
-        requestor,
+        requestor: requestedUrl,
         config,
         computedCache,
         baseArtifacts,
