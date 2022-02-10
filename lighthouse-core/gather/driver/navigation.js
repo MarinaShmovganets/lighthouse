@@ -127,8 +127,16 @@ async function gotoURL(driver, requestor, options) {
   const waitConditions = await Promise.all(waitConditionPromises);
   const timedOut = waitConditions.some(condition => condition.timedOut);
   const navigationUrls = await networkMonitor.getNavigationUrls();
-  const requestedUrl = typeof requestor === 'string' ? requestor : navigationUrls.requestedUrl;
+
+  let requestedUrl = navigationUrls.requestedUrl;
+  if (typeof requestor === 'string') {
+    if (requestor !== requestedUrl) {
+      log.error('Navigation', 'Provided URL did not match initial navigation URL');
+    }
+    requestedUrl = requestor;
+  }
   if (!requestedUrl) throw Error('No navigations detected when running user defined requestor.');
+
   const finalUrl = navigationUrls.finalUrl || requestedUrl;
 
   // Bring `Page.navigate` errors back into the promise chain. See https://github.com/GoogleChrome/lighthouse/pull/6739.
