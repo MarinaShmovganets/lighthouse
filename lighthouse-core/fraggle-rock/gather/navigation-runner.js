@@ -298,6 +298,11 @@ async function navigation(requestor, options) {
     skipAboutBlank: configContext.skipAboutBlank,
   };
 
+  // We can't trigger the navigation through user interaction if we reset the page before starting.
+  if (typeof requestor !== 'string') {
+    internalOptions.skipAboutBlank = true;
+  }
+
   const runnerOptions = {config, computedCache};
   const artifacts = await Runner.gather(
     async () => {

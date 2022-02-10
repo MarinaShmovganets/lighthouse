@@ -173,13 +173,7 @@ describe('Fraggle Rock API', () => {
         await page.click('a');
       });
 
-      const result = await lighthouse.navigation(
-        requestor,
-        {
-          page,
-          configContext: {skipAboutBlank: true},
-        }
-      );
+      const result = await lighthouse.navigation(requestor, {page});
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
       expect(requestor).toHaveBeenCalled();
