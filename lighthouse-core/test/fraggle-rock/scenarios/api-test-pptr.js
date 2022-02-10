@@ -167,7 +167,7 @@ describe('Fraggle Rock API', () => {
 
     it('should compute results with callback requestor', async () => {
       const {page, serverBaseUrl} = state;
-      await page.goto(`${serverBaseUrl}/landing.html`);
+      await page.goto(`${serverBaseUrl}/links-to-index.html`);
 
       const requestor = jest.fn(async () => {
         await page.click('a');
