@@ -5,11 +5,13 @@
  */
 'use strict';
 
-/* globals window document getBoundingClientRect */
+/* globals window document getBoundingClientRect requestAnimationFrame */
 
 const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 const emulation = require('../../lib/emulation.js');
 const pageFunctions = require('../../lib/page-functions.js');
+const NetworkMonitor = require('../driver/network-monitor.js');
+const {waitForNetworkIdle} = require('../driver/wait-for-condition.js');
 
 // JPEG quality setting
 // Exploration and examples of reports using different quality settings: https://docs.google.com/document/d/1ZSffucIca9XDW2eEwfoevrk-OTl7WQFeMf0CgeJAA8M/edit#
@@ -89,9 +91,27 @@ class FullPageScreenshot extends FRGatherer {
       screenOrientation: {angle: 0, type: 'portraitPrimary'},
     });
 
-    // TODO: elements collected earlier in gathering are likely to have been shifted by now.
-    // The lower in the page, the more likely (footer elements especially).
-    // https://github.com/GoogleChrome/lighthouse/issues/11118
+    // Now that the viewport is taller, give the page some time to fetch new resources that
+    // are now in view.
+    const networkMonitor = new NetworkMonitor(context.driver.defaultSession);
+    const waitForNetworkIdleResult = waitForNetworkIdle(session, networkMonitor, {
+      networkQuietThresholdMs: 1000,
+      busyEvent: 'network-2-busy',
+      idleEvent: 'network-2-idle',
+      isIdle: recorder => recorder.is2Idle(),
+    });
+    await Promise.race([
+      new Promise(resolve => setTimeout(resolve, 1000 * 10)),
+      waitForNetworkIdleResult.promise,
+    ]);
+    waitForNetworkIdleResult.cancel();
+
+    // Now that new resources are (probably) fetched, wait long enough for a layout.
+    await context.driver.executionContext.evaluate(() => {
+      return new Promise((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
+      });
+    }, {args: []});
 
     const result = await session.sendCommand('Page.captureScreenshot', {
       format: 'jpeg',
