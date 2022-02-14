@@ -791,7 +791,7 @@ declare module Artifacts {
     id: string;
     name: string;
     autocomplete: string;
-    node: NodeDetails | null;
+    node: NodeDetails;
   }
 
   /** Attributes collected for every input element in the inputs array from the forms interface. */

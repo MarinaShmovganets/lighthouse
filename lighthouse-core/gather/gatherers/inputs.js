@@ -55,14 +55,16 @@ function collectElements() {
     // If the input element is in a form (either because an ancestor element is <form> or the
     // form= attribute is associated with a <form> element's id), this will be set.
     const parentFormEl = inputEl.form;
+    const parentFormIndex = parentFormEl ?
+      [...formElToArtifact.keys()].indexOf(parentFormEl) :
+      undefined;
+    const labelIndicies = [...inputEl.labels || []].map((labelEl) => {
+      return [...labelElToArtifact.keys()].indexOf(labelEl);
+    });
 
     inputArtifacts.push({
-      parentFormIndex: parentFormEl ?
-        [...formElToArtifact.keys()].indexOf(parentFormEl) :
-        undefined,
-      labelIndicies: [...inputEl.labels || []].map((labelEl) => {
-        return [...labelElToArtifact.keys()].indexOf(labelEl);
-      }),
+      parentFormIndex,
+      labelIndicies,
       id: inputEl.id,
       name: inputEl.name,
       type: inputEl.type,
