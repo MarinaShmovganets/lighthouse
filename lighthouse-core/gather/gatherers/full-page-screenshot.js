@@ -55,7 +55,7 @@ class FullPageScreenshot extends FRGatherer {
    * @return {Promise<number>}
    * @see https://bugs.chromium.org/p/chromium/issues/detail?id=770769
    */
-  async getMaxScreenshotHeight(context) {
+  async getMaxTextureSize(context) {
     return await context.driver.executionContext.evaluate(pageFunctions.getMaxTextureSize, {
       args: [],
       useIsolation: true,
@@ -69,7 +69,7 @@ class FullPageScreenshot extends FRGatherer {
    */
   async _takeScreenshot(context) {
     const session = context.driver.defaultSession;
-    const maxScreenshotHeight = await this.getMaxScreenshotHeight(context);
+    const maxTextureSize = await this.getMaxTextureSize(context);
     const metrics = await session.sendCommand('Page.getLayoutMetrics');
 
     // Width should match emulated width, without considering content overhang.
@@ -78,8 +78,19 @@ class FullPageScreenshot extends FRGatherer {
     // Note: If the page is zoomed, many assumptions fail.
     //
     // Height should be as tall as the content. So we use contentSize.height
-    const width = Math.min(metrics.layoutViewport.clientWidth, maxScreenshotHeight);
-    const height = Math.min(metrics.contentSize.height, maxScreenshotHeight);
+    const width = Math.min(metrics.layoutViewport.clientWidth, maxTextureSize);
+    const height = Math.min(metrics.contentSize.height, maxTextureSize);
+
+    // Setup network monitor before we change the viewport.
+    const networkMonitor = new NetworkMonitor(session);
+    const waitForNetworkIdleResult = waitForNetworkIdle(session, networkMonitor, {
+      pretendDCLAlreadyFired: true,
+      networkQuietThresholdMs: 1000,
+      busyEvent: 'network-critical-busy',
+      idleEvent: 'network-critical-idle',
+      isIdle: recorder => recorder.isCriticalIdle(),
+    });
+    await networkMonitor.enable();
 
     await session.sendCommand('Emulation.setDeviceMetricsOverride', {
       // If we're gathering with mobile screenEmulation on (overlay scrollbars, etc), continue to use that for this screenshot.
@@ -93,21 +104,14 @@ class FullPageScreenshot extends FRGatherer {
 
     // Now that the viewport is taller, give the page some time to fetch new resources that
     // are now in view.
-    const networkMonitor = new NetworkMonitor(context.driver.defaultSession);
-    const waitForNetworkIdleResult = waitForNetworkIdle(session, networkMonitor, {
-      networkQuietThresholdMs: 1000,
-      busyEvent: 'network-2-busy',
-      idleEvent: 'network-2-idle',
-      isIdle: recorder => recorder.is2Idle(),
-    });
     await Promise.race([
-      new Promise(resolve => setTimeout(resolve, 1000 * 10)),
+      new Promise(resolve => setTimeout(resolve, 1000 * 5)),
       waitForNetworkIdleResult.promise,
     ]);
     waitForNetworkIdleResult.cancel();
 
     // Now that new resources are (probably) fetched, wait long enough for a layout.
-    await context.driver.executionContext.evaluate(() => {
+    await context.driver.executionContext.evaluate(function waitForDoubleRaf() {
       return new Promise((resolve) => {
         requestAnimationFrame(() => requestAnimationFrame(resolve));
       });
