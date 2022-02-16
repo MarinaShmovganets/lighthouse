@@ -1,20 +1,16 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-
- <a name="9.4.0"></a>
+<a name="9.4.0"></a>
 # 9.4.0 (2022-02-16)
 [Full Changelog](https://github.com/compare/v9.3.1...v9.4.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 100](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
+* fr: user triggered navigations ([#13496](https://github.com/GoogleChrome/lighthouse/pull/13496))
 
 ## Core
 
 * a11y: change link in category description to web.dev ([#13638](https://github.com/GoogleChrome/lighthouse/pull/13638))
-* fr: user triggered navigations ([#13496](https://github.com/GoogleChrome/lighthouse/pull/13496))
 * full-page-screenshot: wait for doubleraf, network quiet ([#13663](https://github.com/GoogleChrome/lighthouse/pull/13663))
 * hreflang: remove eval, import axe valid-langs.js directly ([#13385](https://github.com/GoogleChrome/lighthouse/pull/13385))
 * inputs: fix typo in artifact ([#13671](https://github.com/GoogleChrome/lighthouse/pull/13671))
@@ -34,9 +30,7 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 ## Deps
 
 * sentry: move from raven to @sentry/node ([#9325](https://github.com/GoogleChrome/lighthouse/pull/9325))
-* snyk: update snyk snapshot ([#13669](https://github.com/GoogleChrome/lighthouse/pull/13669))
-* snyk: update snyk snapshot ([#13644](https://github.com/GoogleChrome/lighthouse/pull/13644))
-* snyk: update snyk snapshot ([#13616](https://github.com/GoogleChrome/lighthouse/pull/13616))
+* snyk: update snyk snapshot ([#13669](https://github.com/GoogleChrome/lighthouse/pull/13669), [#13644](https://github.com/GoogleChrome/lighthouse/pull/13644), [#13616](https://github.com/GoogleChrome/lighthouse/pull/13616))
 
 ## Tests
 
