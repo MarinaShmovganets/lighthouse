@@ -27,7 +27,6 @@ function kebabCaseToCamelCase(str) {
 
 /* c8 ignore start */
 
-// eslint-disable-next-line no-inner-declarations
 function getObservedDeviceMetrics() {
   // Convert the Web API's kebab case (landscape-primary) to camel case (landscapePrimary).
   const screenOrientationType = kebabCaseToCamelCase(window.screen.orientation.type);
@@ -40,6 +39,12 @@ function getObservedDeviceMetrics() {
     },
     deviceScaleFactor: window.devicePixelRatio,
   };
+}
+
+function waitForDoubleRaf() {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(resolve));
+  });
 }
 
 /* c8 ignore stop */
@@ -109,13 +114,10 @@ class FullPageScreenshot extends FRGatherer {
       waitForNetworkIdleResult.promise,
     ]);
     waitForNetworkIdleResult.cancel();
+    await networkMonitor.disable();
 
     // Now that new resources are (probably) fetched, wait long enough for a layout.
-    await context.driver.executionContext.evaluate(function waitForDoubleRaf() {
-      return new Promise((resolve) => {
-        requestAnimationFrame(() => requestAnimationFrame(resolve));
-      });
-    }, {args: []});
+    await context.driver.executionContext.evaluate(waitForDoubleRaf, {args: []});
 
     const result = await session.sendCommand('Page.captureScreenshot', {
       format: 'jpeg',
