@@ -6,15 +6,14 @@ We expect this release to ship in the DevTools of [Chrome 100](https://chromiumd
 
 ## Notable Changes
 
-* fr: user triggered navigations ([#13496](https://github.com/GoogleChrome/lighthouse/pull/13496))
+* Allow auditing of navigations triggered by user interactions in user flows. See our [user flow docs](https://github.com/GoogleChrome/lighthouse/blob/master/docs/user-flows.md) for more info. ([#13496](https://github.com/GoogleChrome/lighthouse/pull/13496))
 
 ## Core
 
 * a11y: change link in category description to web.dev ([#13638](https://github.com/GoogleChrome/lighthouse/pull/13638))
 * full-page-screenshot: wait for doubleraf, network quiet ([#13663](https://github.com/GoogleChrome/lighthouse/pull/13663))
 * hreflang: remove eval, import axe valid-langs.js directly ([#13385](https://github.com/GoogleChrome/lighthouse/pull/13385))
-* inputs: fix typo in artifact ([#13671](https://github.com/GoogleChrome/lighthouse/pull/13671))
-* inputs: refactor form-elements gatherer ([#13662](https://github.com/GoogleChrome/lighthouse/pull/13662))
+* inputs: refactor form-elements gatherer ([#13662](https://github.com/GoogleChrome/lighthouse/pull/13662), [#13671](https://github.com/GoogleChrome/lighthouse/pull/13671))
 * page-functions: set style in getOuterHTMLSnippet without violating CSP ([#13636](https://github.com/GoogleChrome/lighthouse/pull/13636))
 * runner: independent gather and audit functions ([#13569](https://github.com/GoogleChrome/lighthouse/pull/13569))
 * uses-long-cache-ttl: ignore `stale-while-revalidate` ([#13612](https://github.com/GoogleChrome/lighthouse/pull/13612))
