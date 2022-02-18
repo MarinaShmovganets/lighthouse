@@ -32,7 +32,7 @@
     'modern-image-formats',
   ];
 
-  TestRunner.addResult('Tests that FR navigation mode works correctly.\n');
+  TestRunner.addResult('Tests that navigation mode works correctly.\n');
   await TestRunner.navigatePromise('resources/lighthouse-basic.html');
 
   await TestRunner.loadTestModule('lighthouse_test_runner');

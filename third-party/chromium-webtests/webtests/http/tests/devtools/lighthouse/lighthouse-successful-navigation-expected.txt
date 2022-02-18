@@ -1,4 +1,4 @@
-Tests that FR navigation mode works correctly.
+Tests that navigation mode works correctly.
 
 
 ========== Lighthouse Start Audit State ==========
