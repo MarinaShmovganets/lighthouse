@@ -1740,7 +1740,7 @@
     "message": "Verbesserungen beim Zeichnen der ersten Inhalte"
   },
   "lighthouse-core/config/default-config.js | loadOpportunitiesGroupDescription": {
-    "message": "Mithilfe diese Empfehlungen lässt sich die Ladezeit Ihrer Seite möglicherweise verkürzen. Sie haben keinen [direkten Einfluss](https://web.dev/performance-scoring/) auf die Leistungsbewertung."
+    "message": "Mithilfe dieser Empfehlungen lässt sich die Ladezeit Ihrer Seite möglicherweise verkürzen. Sie haben keinen [direkten Einfluss](https://web.dev/performance-scoring/) auf die Leistungsbewertung."
   },
   "lighthouse-core/config/default-config.js | loadOpportunitiesGroupTitle": {
     "message": "Empfehlungen"
