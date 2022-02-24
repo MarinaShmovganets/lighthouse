@@ -26,7 +26,7 @@ import {runSmokehouse, getShardedDefinitions} from '../smokehouse.js';
 import {updateTestDefnFormat} from './back-compat-util.js';
 import {LH_ROOT} from '../../../../root.js';
 
-const { cloneDeep } = _;
+const {cloneDeep} = _;
 
 const coreTestDefnsPath =
   path.join(LH_ROOT, 'lighthouse-cli/test/smokehouse/core-tests.js');

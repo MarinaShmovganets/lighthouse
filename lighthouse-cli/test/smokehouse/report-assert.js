@@ -15,7 +15,7 @@ import log from 'lighthouse-logger';
 
 import {LocalConsole} from './lib/local-console.js';
 
-const { cloneDeep } = _;
+const {cloneDeep} = _;
 
 /**
  * @typedef Difference
