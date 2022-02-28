@@ -83,7 +83,7 @@ class IssuesPanelEntries extends Audit {
       }
     }
     return {
-      issueType: ' cookie',
+      issueType: 'Cookie',
       subItems: {
         type: 'subitems',
         items: Array.from(requestUrls).map(url => {
