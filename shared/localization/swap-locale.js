@@ -5,8 +5,7 @@
  */
 'use strict';
 
-const {set: _set} = require('lodash');
-const {get: _get} = require('lodash');
+const {set: _set, get: _get} = require('lodash');
 
 const format = require('./format.js');
 
