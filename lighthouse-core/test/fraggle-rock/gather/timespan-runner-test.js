@@ -90,11 +90,11 @@ describe('Timespan Runner', () => {
   });
 
   it('should collect base artifacts', async () => {
-    mockPage.url.mockResolvedValue('https://start.example.com/');
+    mockDriver.url.mockResolvedValue('https://start.example.com/');
 
     const timespan = await startTimespanGather({page, config});
 
-    mockPage.url.mockResolvedValue('https://end.example.com/');
+    mockDriver.url.mockResolvedValue('https://end.example.com/');
 
     await timespan.endTimespanGather();
     const artifacts = await mockRunner.gather.mock.calls[0][0]();
