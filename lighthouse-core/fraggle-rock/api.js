@@ -8,6 +8,7 @@
 const {snapshotGather} = require('./gather/snapshot-runner.js');
 const {startTimespanGather} = require('./gather/timespan-runner.js');
 const {navigationGather} = require('./gather/navigation-runner.js');
+const {generateFlowReportHtml} = require('../../report/generator/report-generator.js');
 const Runner = require('../runner.js');
 const UserFlow = require('./user-flow.js');
 
@@ -50,9 +51,17 @@ async function startTimespan(...params) {
   return {endTimespan};
 }
 
+/**
+ * @param {LH.FlowResult} flowResult
+ */
+async function generateFlowReport(flowResult) {
+  return generateFlowReportHtml(flowResult);
+}
+
 module.exports = {
   snapshot,
   startTimespan,
   navigation,
   startFlow,
+  generateFlowReport,
 };

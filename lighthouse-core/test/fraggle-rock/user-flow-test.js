@@ -207,7 +207,7 @@ describe('UserFlow', () => {
   describe('.getFlowResult', () => {
     it('should throw if no flow steps have been run', async () => {
       const flow = new UserFlow(mockPage.asPage());
-      const flowResultPromise = flow.getFlowResult();
+      const flowResultPromise = flow.createFlowResult();
       await expect(flowResultPromise).rejects.toThrow(/Need at least one step/);
     });
 
@@ -225,7 +225,7 @@ describe('UserFlow', () => {
       await flow.endTimespan();
       await flow.snapshot({stepName: 'My Snapshot'});
 
-      const flowResult = await flow.getFlowResult();
+      const flowResult = await flow.createFlowResult();
       expect(flowResult).toMatchObject({
         steps: [
           {

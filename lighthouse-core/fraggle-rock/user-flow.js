@@ -5,7 +5,6 @@
  */
 'use strict';
 
-const {generateFlowReportHtml} = require('../../report/generator/report-generator.js');
 const {snapshotGather} = require('./gather/snapshot-runner.js');
 const {startTimespanGather} = require('./gather/timespan-runner.js');
 const {navigationGather} = require('./gather/navigation-runner.js');
@@ -28,8 +27,6 @@ class UserFlow {
     this.name = options?.name;
     /** @type {StepArtifact[]} */
     this.stepArtifacts = [];
-    /** @type {LH.FlowResult|undefined} */
-    this.flowResult = undefined;
   }
 
   /**
@@ -89,7 +86,7 @@ class UserFlow {
    * @param {StepOptions=} stepOptions
    */
   async navigate(requestor, stepOptions) {
-    if (this.currentTimespan) throw Error('Timespan already in progress');
+    if (this.currentTimespan) throw new Error('Timespan already in progress');
 
     const gatherResult = await navigationGather(
       requestor,
@@ -109,7 +106,7 @@ class UserFlow {
    * @param {StepOptions=} stepOptions
    */
   async startTimespan(stepOptions) {
-    if (this.currentTimespan) throw Error('Timespan already in progress');
+    if (this.currentTimespan) throw new Error('Timespan already in progress');
 
     const options = {...this.options, ...stepOptions};
     const timespan = await startTimespanGather(options);
@@ -117,7 +114,7 @@ class UserFlow {
   }
 
   async endTimespan() {
-    if (!this.currentTimespan) throw Error('No timespan in progress');
+    if (!this.currentTimespan) throw new Error('No timespan in progress');
 
     const {timespan, options} = this.currentTimespan;
     const gatherResult = await timespan.endTimespanGather();
@@ -136,7 +133,7 @@ class UserFlow {
    * @param {StepOptions=} stepOptions
    */
   async snapshot(stepOptions) {
-    if (this.currentTimespan) throw Error('Timespan already in progress');
+    if (this.currentTimespan) throw new Error('Timespan already in progress');
 
     const options = {...this.options, ...stepOptions};
     const gatherResult = await snapshotGather(options);
@@ -153,10 +150,9 @@ class UserFlow {
   /**
    * @returns {Promise<LH.FlowResult>}
    */
-  async getFlowResult() {
-    if (this.flowResult) return this.flowResult;
+  async createFlowResult() {
     if (!this.stepArtifacts.length) {
-      throw Error('Need at least one step before getting the result');
+      throw new Error('Need at least one step before getting the result');
     }
     const url = new URL(this.stepArtifacts[0].gatherResult.artifacts.URL.finalUrl);
     const flowName = this.name || `User flow (${url.hostname})`;
@@ -169,16 +165,7 @@ class UserFlow {
       steps.push({lhr: result.lhr, name});
     }
 
-    this.flowResult = {steps, name: flowName};
-    return this.flowResult;
-  }
-
-  /**
-   * @return {Promise<string>}
-   */
-  async generateReport() {
-    const flowResult = await this.getFlowResult();
-    return generateFlowReportHtml(flowResult);
+    return {steps, name: flowName};
   }
 }
 
