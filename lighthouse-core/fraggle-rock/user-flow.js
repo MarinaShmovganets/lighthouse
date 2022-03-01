@@ -5,6 +5,7 @@
  */
 'use strict';
 
+const {generateFlowReportHtml} = require('../../report/generator/report-generator.js');
 const {snapshotGather} = require('./gather/snapshot-runner.js');
 const {startTimespanGather} = require('./gather/timespan-runner.js');
 const {navigationGather} = require('./gather/navigation-runner.js');
@@ -166,6 +167,14 @@ class UserFlow {
     }
 
     return {steps, name: flowName};
+  }
+
+  /**
+   * @return {Promise<string>}
+   */
+  async generateReport() {
+    const flowResult = await this.createFlowResult();
+    return generateFlowReportHtml(flowResult);
   }
 }
 
