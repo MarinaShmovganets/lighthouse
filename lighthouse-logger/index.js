@@ -55,7 +55,7 @@ const loggersByTitle = {};
 const loggingBufferColumns = 25;
 let level_;
 
-export class Log {
+export default class Log {
   static _logToStdErr(title, argsArray) {
     const log = Log.loggerfn(title);
     log(...argsArray);
