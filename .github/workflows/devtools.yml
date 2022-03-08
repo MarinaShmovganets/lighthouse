@@ -155,6 +155,7 @@ jobs:
     # This is only done because the import of `parseChromeFlags` in pptr-run-devtool.js triggers imports that eventually
     # fail because of how report-assets.js reads generated files.
     - run: yarn build-report
+      working-directory: ${{ github.workspace }}/lighthouse
 
     - name: Define ToT chrome path
       run: echo "CHROME_PATH=/Users/runner/chrome-mac-tot/Chromium.app/Contents/MacOS/Chromium" >> $GITHUB_ENV
