@@ -129,7 +129,7 @@ function createMockDriver() {
     _page: page,
     _executionContext: context,
     _session: session,
-    url: () => page.url(),
+    url: jest.fn(() => page.url()),
     defaultSession: session,
     connect: jest.fn(),
     disconnect: jest.fn(),
@@ -145,9 +145,10 @@ function createMockDriver() {
 
 function mockRunnerModule() {
   const runnerModule = {
+    getAuditList: jest.fn().mockReturnValue([]),
     getGathererList: jest.fn().mockReturnValue([]),
-    gatherAndManageArtifacts: jest.fn(),
-    run: jest.fn(),
+    audit: jest.fn(),
+    gather: jest.fn(),
     reset,
   };
 
@@ -155,8 +156,9 @@ function mockRunnerModule() {
 
   function reset() {
     runnerModule.getGathererList.mockReturnValue([]);
-    runnerModule.gatherAndManageArtifacts.mockReset();
-    runnerModule.run.mockReset();
+    runnerModule.getAuditList.mockReturnValue([]);
+    runnerModule.audit.mockReset();
+    runnerModule.gather.mockReset();
   }
 
   return runnerModule;

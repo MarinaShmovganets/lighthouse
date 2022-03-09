@@ -36,13 +36,7 @@ async function update(artifactName) {
 
   let newArtifacts = assetSaver.loadArtifacts(artifactPath);
 
-  // Normalize some data so it doesn't change on every update.
-  for (const timing of newArtifacts.Timing) {
-    // @ts-expect-error: Value actually is writeable at this point.
-    timing.startTime = 0;
-    // @ts-expect-error: Value actually is writeable at this point.
-    timing.duration = 1;
-  }
+  assetSaver.normalizeTimingEntries(newArtifacts.Timing);
 
   if (artifactName) {
     // Revert everything except the one artifact
