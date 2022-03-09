@@ -10,9 +10,6 @@ Thanks to our new contributor 👽🐷🐰🐯🐻!
 
 - Marc Hassan @mhassan1
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
-
 ## Core
 
 * full-page-screenshot: leave emulated width unchanged ([#13643](https://github.com/GoogleChrome/lighthouse/pull/13643))
