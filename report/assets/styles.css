@@ -1301,12 +1301,13 @@
 
 .lh-gauge__percentage {
   width: 100%;
+  height: var(--gauge-circle-size);
   position: absolute;
   font-family: var(--report-font-family-monospace);
   font-size: calc(var(--gauge-circle-size) * 0.34 + 1.3px);
   line-height: 0;
   text-align: center;
-  top: 50%;
+  top: calc(var(--score-container-padding) + var(--gauge-circle-size) / 2);
 }
 
 .lh-category .lh-gauge__percentage {
@@ -1351,14 +1352,11 @@
 
 .lh-scores-header .lh-gauge__wrapper,
 .lh-scores-header .lh-fraction__wrapper,
-.lh-scores-header .lh-gauge--pwa__wrapper {
-  width: var(--gauge-wrapper-width);
-}
-
+.lh-scores-header .lh-gauge--pwa__wrapper,
 .lh-sticky-header .lh-gauge__wrapper,
 .lh-sticky-header .lh-fraction__wrapper,
 .lh-sticky-header .lh-gauge--pwa__wrapper {
-  flex-direction: row;
+  width: var(--gauge-wrapper-width);
 }
 
 .lh-scorescale {
