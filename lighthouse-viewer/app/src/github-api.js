@@ -1,18 +1,23 @@
 /**
- * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
 
-/* global logger, FirebaseAuth, idbKeyval, getFilenamePrefix */
+/* global logger */
 
 /** @typedef {{etag: ?string, content: LH.Result}} CachableGist */
+
+import idbKeyval from 'idb-keyval';
+
+import {FirebaseAuth} from './firebase-auth.js';
+import {getFilenamePrefix} from '../../../report/generator/file-namer.js';
 
 /**
  * Wrapper around the GitHub API for reading/writing gists.
  */
-class GithubApi {
+export class GithubApi {
   constructor() {
     this._auth = new FirebaseAuth();
     this._saving = false;
@@ -20,6 +25,10 @@ class GithubApi {
 
   static get LH_JSON_EXT() {
     return '.lighthouse.report.json';
+  }
+
+  getFirebaseAuth() {
+    return this._auth;
   }
 
   /**
@@ -143,14 +152,9 @@ class GithubApi {
       // not return a 304 and so will be overwritten.
       return idbKeyval.set(id, response).then(_ => {
         logger.hide();
-        // @ts-ignore - TODO(bckenny): tsc unable to flatten promise chain here
+        // @ts-expect-error - TODO(bckenny): tsc unable to flatten promise chain here
         return response.content;
       });
     });
   }
-}
-
-// node export for testing.
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = GithubApi;
 }

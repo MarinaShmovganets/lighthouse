@@ -1,5 +1,5 @@
 /**
- * @license Copyright 2016 Google Inc. All Rights Reserved.
+ * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
@@ -8,7 +8,7 @@
 /* eslint-env jest */
 
 const pkg = require('../../package.json');
-const assert = require('assert');
+const assert = require('assert').strict;
 const lighthouse = require('../index.js');
 
 describe('Module Tests', function() {
@@ -92,8 +92,7 @@ describe('Module Tests', function() {
     try {
       await lighthouse('i-am-not-valid', {}, {});
     } catch (err) {
-      expect(err.friendlyMessage)
-          .toBeDisplayString('The URL you have provided appears to be invalid.');
+      expect(err.friendlyMessage).toBe('The URL you have provided appears to be invalid.');
       expect(err.code).toEqual('INVALID_URL');
     }
   });
@@ -103,8 +102,7 @@ describe('Module Tests', function() {
     try {
       await lighthouse('file:///a/fake/index.html', {}, {});
     } catch (err) {
-      expect(err.friendlyMessage)
-          .toBeDisplayString('The URL you have provided appears to be invalid.');
+      expect(err.friendlyMessage).toBe('The URL you have provided appears to be invalid.');
       expect(err.code).toEqual('INVALID_URL');
     }
   });
@@ -116,6 +114,7 @@ describe('Module Tests', function() {
     }, {
       settings: {
         auditMode: __dirname + '/fixtures/artifacts/perflog/',
+        formFactor: 'mobile',
       },
       audits: [
         'viewport',
@@ -141,6 +140,7 @@ describe('Module Tests', function() {
     const results = await lighthouse(exampleUrl, {}, {
       settings: {
         auditMode: __dirname + '/fixtures/artifacts/perflog/',
+        formFactor: 'mobile',
       },
       audits: [],
     });
@@ -152,6 +152,7 @@ describe('Module Tests', function() {
     const results = await lighthouse(exampleUrl, {}, {
       settings: {
         auditMode: __dirname + '/fixtures/artifacts/perflog/',
+        formFactor: 'mobile',
         channel: 'custom',
       },
       audits: [],

@@ -1,5 +1,5 @@
 /**
- * @license Copyright 2019 Google Inc. All Rights Reserved.
+ * @license Copyright 2019 The Lighthouse Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
@@ -9,8 +9,8 @@ const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 const MessageParser = require('intl-messageformat-parser').default;
-
 const {collectAllCustomElementsFromICU} = require('../../lib/i18n/i18n.js');
+const {LH_ROOT} = require('../../../root.js');
 
 /** @typedef {Record<string, {message: string}>} LhlMessages */
 
@@ -125,16 +125,15 @@ function pruneObsoleteLhlMessages() {
     '**/en-XL.json',
   ];
   const globPattern = 'lighthouse-core/lib/i18n/locales/**/+([-a-zA-Z0-9]).json';
-  const lhRoot = `${__dirname}/../../../`;
   const localePaths = glob.sync(globPattern, {
     ignore,
-    cwd: lhRoot,
+    cwd: LH_ROOT,
   });
 
   /** @type {Set<string>} */
   const alreadyLoggedPrunes = new Set();
   for (const localePath of localePaths) {
-    const absoluteLocalePath = path.join(lhRoot, localePath);
+    const absoluteLocalePath = path.join(LH_ROOT, localePath);
     // readFileSync so that the file is pulled again once updated by a collect-strings run
     const localeLhl = JSON.parse(fs.readFileSync(absoluteLocalePath, 'utf-8'));
     const prunedLocale = pruneLocale(goldenLocaleArgumentIds, localeLhl, alreadyLoggedPrunes);
