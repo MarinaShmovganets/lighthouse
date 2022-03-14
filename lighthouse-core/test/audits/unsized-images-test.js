@@ -78,7 +78,7 @@ describe('Sized images audit', () => {
     expect(result.score).toEqual(1);
   });
 
-  it('passes when an image is a non-network SVG base64', async () => {
+  it('passes when an image is a non-network SVG data url base64', async () => {
     const result = await runAudit({
       attributeWidth: '',
       attributeHeight: '',
@@ -91,7 +91,7 @@ describe('Sized images audit', () => {
     expect(result.score).toEqual(1);
   });
 
-  it('passes when an image is a non-network SVG encoded', async () => {
+  it('passes when an image is a non-network SVG data url with encoded characters', async () => {
     const result = await runAudit({
       attributeWidth: '',
       attributeHeight: '',
