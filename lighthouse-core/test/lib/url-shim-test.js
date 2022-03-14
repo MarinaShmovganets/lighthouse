@@ -349,6 +349,7 @@ describe('URL Shim', () => {
       expect(URL.guessMimeType('data:image/png;DATA')).toEqual('image/png');
       expect(URL.guessMimeType('data:image/jpeg;DATA')).toEqual('image/jpeg');
       expect(URL.guessMimeType('data:image/svg+xml;DATA')).toEqual('image/svg+xml');
+      expect(URL.guessMimeType('data:image/svg+xml,DATA')).toEqual('image/svg+xml');
       expect(URL.guessMimeType('data:text/html;DATA')).toEqual(undefined);
       expect(URL.guessMimeType('data:image/jpg;DATA')).toEqual(undefined);
     });
