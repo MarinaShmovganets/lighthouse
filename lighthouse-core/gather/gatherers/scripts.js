@@ -91,8 +91,9 @@ class Scripts extends FRGatherer {
 
     session.removeProtocolMessageListener(this.onProtocolMessage);
 
-    // Without this line the Debugger domain will be off in FR runner.
-    // Odd, because `startInstrumentation` enabled it...
+    // Without this line the Debugger domain will be off in FR runner,
+    // because only the legacy gatherer has special handling for multiple,
+    // overlapped enabled/disable calls.
     await session.sendCommand('Debugger.enable');
 
     // If run on a mobile device, be sensitive to memory limitations and only

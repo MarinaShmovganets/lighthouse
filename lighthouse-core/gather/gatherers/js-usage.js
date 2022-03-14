@@ -73,19 +73,11 @@ class JsUsage extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
    * @return {Promise<LH.Artifacts['JsUsage']>}
    */
-  async getArtifact(context) {
+  async getArtifact() {
     /** @type {Record<string, LH.Crdp.Profiler.ScriptCoverage>} */
     const usageByScriptId = {};
-
-    // TODO: remove?
-    // Force `Debugger.scriptParsed` events for url to scriptId mappings in snapshot mode.
-    if (context.gatherMode === 'snapshot') {
-      await this.startSensitiveInstrumentation(context);
-      await this.stopSensitiveInstrumentation(context);
-    }
 
     for (const scriptUsage of this._scriptUsages) {
       // If `url` is blank, that means the script was anonymous (eval, new Function, onload, ...).
