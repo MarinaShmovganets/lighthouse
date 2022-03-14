@@ -352,6 +352,7 @@ describe('URL Shim', () => {
       expect(URL.guessMimeType('data:image/svg+xml,DATA')).toEqual('image/svg+xml');
       expect(URL.guessMimeType('data:text/html;DATA')).toEqual(undefined);
       expect(URL.guessMimeType('data:image/jpg;DATA')).toEqual(undefined);
+      expect(URL.guessMimeType('data:text/plain,image/png;base64,DATA')).toEqual(undefined);
     });
 
     it('uses path extension for normal files', () => {
