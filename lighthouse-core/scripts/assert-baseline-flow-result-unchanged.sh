@@ -1,3 +1,13 @@
+#!/usr/bin/env bash
+
+##
+# @license Copyright 2022 The Lighthouse Authors. All Rights Reserved.
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+##
+
+set -e
+
 PWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT="$PWD/../.."
 BASELINE_RESULT_PATH="$LH_ROOT/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.json"
@@ -15,10 +25,12 @@ colorText "Generating fresh flow result" "$purple"
 yarn update:flow-sample-json --output-path "$TMP_PATH/fresh_flow_result.json"
 
 colorText "Diff'ing baseline flow result against the fresh flow result" "$purple"
-git --no-pager diff --color=always --no-index "$BASELINE_RESULT_PATH" "$FRESH_RESULT_PATH"
 
-# Use the return value from last command
+set +e
+git --no-pager diff --color=always --no-index "$BASELINE_RESULT_PATH" "$FRESH_RESULT_PATH"
 retVal=$?
+set -e
+
 if [ $retVal -eq 0 ]; then
   colorText "✅  PASS. No change in the flow result." "$green"
 else
