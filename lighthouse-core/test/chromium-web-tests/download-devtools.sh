@@ -30,7 +30,7 @@ then
     # Do the same as for local, but don't clean! That would toss out all the
     # (stale, but still useful) build artifacts.
     git reset --hard
-    git clean -fd
+    rm test/webtests/http/tests/devtools/lighthouse/lighthouse-successful-navigation-expected.txt test/webtests/http/tests/devtools/lighthouse/lighthouse-successful-navigation.js
     git pull --ff-only -f origin main
     gclient sync --delete_unversioned_trees --reset
   fi
