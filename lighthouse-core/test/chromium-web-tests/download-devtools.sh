@@ -30,6 +30,7 @@ then
     # Do the same as for local, but don't clean! That would toss out all the
     # (stale, but still useful) build artifacts.
     git reset --hard
+    git clean -d -n
     git pull --ff-only -f origin main
     gclient sync --delete_unversioned_trees --reset
   fi
