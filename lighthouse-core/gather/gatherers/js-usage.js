@@ -52,7 +52,7 @@ class JsUsage extends FRGatherer {
     for (const scriptUsage of this._scriptUsages) {
       // If `url` is blank, that means the script was dynamically
       // created (eval, new Function, onload, ...)
-      if (scriptUsage.url === '' || scriptUsage.url === 'lighthouse-eval.js') {
+      if (scriptUsage.url === '' || scriptUsage.url === '_lighthouse-eval.js') {
         // We currently don't consider coverage of dynamic scripts, and we definitely don't want
         // coverage of code Lighthouse ran to inspect the page, so we ignore this ScriptCoverage.
         // Audits would work the same without this, it is only an optimization (not tracking coverage

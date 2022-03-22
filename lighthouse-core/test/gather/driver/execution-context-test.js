@@ -242,7 +242,7 @@ const fetch = globalThis.__nativeFetch || globalThis.fetch;
             .then(resolve);
         });
       }())
-      //# sourceURL=lighthouse-eval.js`.trim();
+      //# sourceURL=_lighthouse-eval.js`.trim();
     expect(trimTrailingWhitespace(expression)).toBe(trimTrailingWhitespace(expected));
     expect(await eval(expression)).toBe(1);
   });

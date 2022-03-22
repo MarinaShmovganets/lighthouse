@@ -42,7 +42,7 @@ function isLighthouseRuntimeEvaluateScript(script) {
   // Otherwise, when running our own code inside other frames, the embedderName
   // is set to the frame's url. In that case, we rely on the special sourceURL that
   // we set.
-  return script.hasSourceURL && script.url === 'lighthouse-eval.js';
+  return script.hasSourceURL && script.url === '_lighthouse-eval.js';
 }
 
 /**
