@@ -373,35 +373,12 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
   describe('#findMainDocument', () => {
     it('should find the main document', async () => {
       const records = await NetworkRecords.request(devtoolsLog, {computedCache: new Map()});
-      const mainDocument = NetworkAnalyzer.findMainDocument(records);
+      const mainDocument = NetworkAnalyzer.findMainDocument(records, 'https://pwa.rocks/');
       assert.equal(mainDocument.url, 'https://pwa.rocks/');
     });
 
     it('should throw when it cannot be found', async () => {
       expect(() => NetworkAnalyzer.findMainDocument([])).toThrow(/main resource/);
-    });
-
-    it('should break ties using position in array', async () => {
-      const records = [
-        {url: 'http://example.com', resourceType: 'Other'},
-        {url: 'https://example.com', resourceType: 'Other'},
-        {url: 'https://www.example.com', resourceType: 'Document', startTime: 0},
-        {url: 'https://www.iframe.com', resourceType: 'Document', startTime: 0},
-      ];
-      const mainDocument = NetworkAnalyzer.findMainDocument(records);
-      assert.equal(mainDocument.url, 'https://www.example.com');
-    });
-  });
-
-  describe('#findOptionalMainDocument', () => {
-    it('should find the main document', async () => {
-      const records = await NetworkRecords.request(devtoolsLog, {computedCache: new Map()});
-      const mainDocument = NetworkAnalyzer.findOptionalMainDocument(records);
-      assert.equal(mainDocument.url, 'https://pwa.rocks/');
-    });
-
-    it('should return undefined when it cannot be found', async () => {
-      expect(NetworkAnalyzer.findOptionalMainDocument([])).toBe(undefined);
     });
   });
 

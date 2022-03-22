@@ -8,7 +8,6 @@
 const makeComputedArtifact = require('./computed-artifact.js');
 const NetworkNode = require('../lib/dependency-graph/network-node.js');
 const CPUNode = require('../lib/dependency-graph/cpu-node.js');
-const NetworkAnalyzer = require('../lib/dependency-graph/simulator/network-analyzer.js');
 const TracingProcessor = require('../lib/tracehouse/trace-processor.js');
 const NetworkRequest = require('../lib/network-request.js');
 const ProcessedTrace = require('./processed-trace.js');
@@ -388,37 +387,23 @@ class PageDependencyGraph {
   /**
    * @param {LH.Artifacts.ProcessedTrace} processedTrace
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
+   * @param {{requestedUrl: string, mainDocumentUrl: string}} documentUrls
    * @return {Node}
    */
-  static createGraph(processedTrace, networkRecords) {
+  static createGraph(processedTrace, networkRecords, documentUrls) {
     const networkNodeOutput = PageDependencyGraph.getNetworkNodeOutput(networkRecords);
     const cpuNodes = PageDependencyGraph.getCPUNodes(processedTrace);
+    const {requestedUrl, mainDocumentUrl} = documentUrls;
 
-    // TODO: Remove this usage of `findMainDocument` and create a new function to get the first document request.
-    // https://github.com/GoogleChrome/lighthouse/issues/8984
-    //
-    // The main document request is the earliest network request *of type document*.
-    // This will be different from the root request when there are server redirects.
-    const mainDocumentRequest = NetworkAnalyzer.findMainDocument(networkRecords);
+    const rootRequest = networkRecords.find(request => request.url === requestedUrl);
+    if (!rootRequest) throw new Error('rootRequest not found');
+    const rootNode = networkNodeOutput.idToNodeMap.get(rootRequest.requestId);
+    if (!rootNode) throw new Error('rootNode not found');
+
+    const mainDocumentRequest = networkRecords.find(request => request.url === mainDocumentUrl);
+    if (!mainDocumentRequest) throw new Error('mainDocumentRequest not found');
     const mainDocumentNode = networkNodeOutput.idToNodeMap.get(mainDocumentRequest.requestId);
-    if (!mainDocumentNode) {
-      // mainDocumentNode should always be found.
-      throw new Error('mainDocumentNode not found.');
-    }
-
-    // The root request is the earliest request in the main document redirect chain.
-    // Will be undefined if there were no redirects.
-    const rootRequest = mainDocumentNode.record.redirects?.[0];
-
-    let rootNode;
-    if (rootRequest) {
-      // rootNode should always be found.
-      rootNode = rootRequest && networkNodeOutput.idToNodeMap.get(rootRequest.requestId);
-      if (!rootNode) throw new Error('rootNode not found');
-    } else {
-      // Use main document as root if there were no redirects.
-      rootNode = mainDocumentNode;
-    }
+    if (!mainDocumentNode) throw new Error('mainDocumentNode not found');
 
     PageDependencyGraph.linkNetworkNodes(rootNode, networkNodeOutput);
     PageDependencyGraph.linkCPUNodes(rootNode, networkNodeOutput, cpuNodes);
@@ -464,6 +449,34 @@ class PageDependencyGraph {
   }
 
   /**
+   * Should provide the same urls found on `artifacts.URL`.
+   * TODO: make `artifacts.URL` a dependency for this computed artifact.
+   *
+   * @param {LH.DevtoolsLog} devtoolsLog
+   * @param {LH.Artifacts.ProcessedTrace} processedTrace
+   * @return {{requestedUrl: string, mainDocumentUrl: string}}
+   */
+  static getDocumentUrls(devtoolsLog, processedTrace) {
+    const mainFrameId = processedTrace.mainFrameIds.frameId;
+
+    /** @type {string|undefined} */
+    let requestedUrl;
+    /** @type {string|undefined} */
+    let mainDocumentUrl;
+    for (const event of devtoolsLog) {
+      if (event.method === 'Page.frameNavigated' && event.params.frame.id === mainFrameId) {
+        const {url} = event.params.frame;
+        // Only set requestedUrl on the first main frame navigation.
+        if (!requestedUrl) requestedUrl = url;
+        mainDocumentUrl = url;
+      }
+    }
+    if (!requestedUrl || !mainDocumentUrl) throw new Error('No main frame navigations found');
+
+    return {requestedUrl, mainDocumentUrl};
+  }
+
+  /**
    * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog}} data
    * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<Node>}
@@ -475,8 +488,9 @@ class PageDependencyGraph {
       ProcessedTrace.request(trace, context),
       NetworkRecords.request(devtoolsLog, context),
     ]);
+    const documentUrls = PageDependencyGraph.getDocumentUrls(devtoolsLog, processedTrace);
 
-    return PageDependencyGraph.createGraph(processedTrace, networkRecords);
+    return PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
   }
 }
 
