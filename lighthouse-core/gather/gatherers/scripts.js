@@ -36,6 +36,7 @@ async function runInSeriesOrParallel(values, promiseMapper, runInSeries) {
 function isLighthouseRuntimeEvaluateScript(script) {
   // Scripts created by Runtime.evaluate that run on the main session/frame
   // result in an empty string for the embedderName.
+  // Or, it means the script was dynamically created (eval, new Function, onload, ...)
   if (!script.embedderName) return true;
 
   // Otherwise, when running our own code inside other frames, the embedderName
