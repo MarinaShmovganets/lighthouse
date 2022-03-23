@@ -144,7 +144,7 @@ function getLegacyJavascriptResults(code, map, {sourceMaps}) {
 
   /** @type {Pick<LH.Artifacts, 'devtoolsLogs'|'URL'|'Scripts'|'SourceMaps'>} */
   const artifacts = {
-    URL: {finalUrl: documentUrl, requestedUrl: documentUrl},
+    URL: {initialUrl: 'about:blank', finalUrl: documentUrl, requestedUrl: documentUrl},
     devtoolsLogs: {
       [LegacyJavascript.DEFAULT_PASS]: devtoolsLogs,
     },
