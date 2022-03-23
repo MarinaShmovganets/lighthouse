@@ -7,6 +7,7 @@
 
 const LHError = require('./lh-error.js');
 const NetworkAnalyzer = require('./dependency-graph/simulator/network-analyzer.js');
+const NetworkRequest = require('./network-request.js');
 
 /**
  * Returns an error if the original network request failed or wasn't found.
@@ -103,7 +104,14 @@ function getPageLoadError(navigationError, context) {
   let mainRecord;
   try {
     mainRecord = NetworkAnalyzer.findMainDocument(networkRecords, url);
-  } catch (_) {}
+  } catch {
+    // If the url doesn't give us a network request, it's possible we landed on a chrome-error:// page
+    // In this case, just get the first document request.
+    const documentRequests = networkRecords.filter(record =>
+      record.resourceType === NetworkRequest.TYPES.Document
+    );
+    mainRecord = documentRequests.reduce((min, r) => (r.startTime < min.startTime ? r : min));
+  }
 
   // MIME Type is only set on the final redirected document request. Use this for the HTML check instead of root.
   let finalRecord;
