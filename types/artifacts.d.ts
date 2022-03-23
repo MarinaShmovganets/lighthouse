@@ -66,7 +66,7 @@ interface UniversalBaseArtifacts {
  */
 interface ContextualBaseArtifacts {
   /** The URL initially requested and the post-redirects URL that was actually loaded. */
-  URL: {requestedUrl: string, finalUrl: string};
+  URL: Artifacts.URL;
   /** If loading the page failed, value is the error that caused it. Otherwise null. */
   PageLoadError: LighthouseError | null;
 }
@@ -186,6 +186,18 @@ declare module Artifacts {
   type NetworkRequest = _NetworkRequest;
   type TaskNode = _TaskNode;
   type MetaElement = Artifacts['MetaElements'][0];
+
+  // TODO: Make `requestedUrl` optional.
+  interface URL {
+    /** URL of the main frame before Lighthouse starts. */
+    initialUrl: string;
+    /** URL of the first document request during a Lighthouse navigation. */
+    requestedUrl: string;
+    /** URL of the last document request during a Lighthouse navigation. */
+    mainDocumentUrl?: string;
+    /** URL of the main frame after Lighthouse finishes. */
+    finalUrl: string;
+  }
 
   interface NodeDetails {
     lhId: string,
