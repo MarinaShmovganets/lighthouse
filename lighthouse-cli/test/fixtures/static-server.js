@@ -110,6 +110,8 @@ class Server {
       // see https://github.com/jshttp/mime-types/issues/66
       if (contentType) headers['Content-Type'] = mime.contentType(contentType);
 
+      headers['origin-agent-cluster'] = ['?1'];
+
       let delay = 0;
       let useGzip = false;
       if (queryString) {
