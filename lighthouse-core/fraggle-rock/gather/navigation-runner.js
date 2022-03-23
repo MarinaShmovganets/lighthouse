@@ -38,7 +38,6 @@ const NetworkRecords = require('../../computed/network-records.js');
  * @property {LH.NavigationRequestor} requestor
  * @property {LH.FRBaseArtifacts} baseArtifacts
  * @property {Map<string, LH.ArbitraryEqualityMap>} computedCache
- * @property {boolean} isFirst
  * @property {InternalOptions} [options]
  */
 
@@ -226,7 +225,11 @@ async function _navigation(navigationContext) {
   await collectPhaseArtifacts({phase: 'startInstrumentation', ...phaseState});
   await collectPhaseArtifacts({phase: 'startSensitiveInstrumentation', ...phaseState});
   const navigateResult = await _navigate(navigationContext);
-  if (navigationContext.isFirst) {
+
+  // Every required url is initialized to an empty string in `getBaseArtifacts`.
+  // If we haven't set the required urls yet, set them here.
+  const {URL} = phaseState.baseArtifacts;
+  if (!URL.finalUrl || !URL.initialUrl) {
     phaseState.baseArtifacts.URL = {
       initialUrl,
       requestedUrl: navigateResult.requestedUrl,
@@ -235,6 +238,7 @@ async function _navigation(navigationContext) {
     };
   }
   phaseState.url = navigateResult.mainDocumentUrl;
+
   await collectPhaseArtifacts({phase: 'stopSensitiveInstrumentation', ...phaseState});
   await collectPhaseArtifacts({phase: 'stopInstrumentation', ...phaseState});
   await _cleanupNavigation(navigationContext);
@@ -253,7 +257,6 @@ async function _navigations({driver, config, requestor, baseArtifacts, computedC
   const artifacts = {};
   /** @type {Array<LH.IcuMessage>} */
   const LighthouseRunWarnings = [];
-  let isFirst = true;
 
   for (const navigation of config.navigations) {
     const navigationContext = {
@@ -263,7 +266,6 @@ async function _navigations({driver, config, requestor, baseArtifacts, computedC
       config,
       baseArtifacts,
       computedCache,
-      isFirst,
       options,
     };
 
@@ -275,8 +277,6 @@ async function _navigations({driver, config, requestor, baseArtifacts, computedC
         shouldHaltNavigations = true;
       }
     }
-
-    isFirst = false;
 
     LighthouseRunWarnings.push(...navigationResult.warnings);
     Object.assign(artifacts, navigationResult.artifacts);

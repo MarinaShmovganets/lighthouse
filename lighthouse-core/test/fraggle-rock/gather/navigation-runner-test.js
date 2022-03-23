@@ -99,6 +99,8 @@ describe('NavigationRunner', () => {
     navigation = createNavigation().navigation;
     computedCache = new Map();
     baseArtifacts = createMockBaseArtifacts();
+    // TODO: Make `requestedUrl` optional.
+    baseArtifacts.URL = {initialUrl: '', requestedUrl: '', finalUrl: ''};
 
     mockDriver = createMockDriver();
     mockDriver.url.mockReturnValue('about:blank');
@@ -289,7 +291,6 @@ describe('NavigationRunner', () => {
       requestor,
       computedCache,
       baseArtifacts,
-      isFirst: true,
     });
 
     it('completes an end-to-end navigation', async () => {
@@ -311,7 +312,6 @@ describe('NavigationRunner', () => {
         computedCache,
         baseArtifacts,
         options: {skipAboutBlank: true},
-        isFirst: true,
       });
       const artifactIds = Object.keys(artifacts);
       expect(artifactIds).toContain('Timespan');
@@ -452,7 +452,6 @@ describe('NavigationRunner', () => {
         config,
         computedCache,
         baseArtifacts,
-        isFirst: true,
       });
       expect(mocks.navigationMock.gotoURL).toHaveBeenCalledWith(
         expect.anything(),
@@ -469,7 +468,6 @@ describe('NavigationRunner', () => {
         config,
         computedCache,
         baseArtifacts,
-        isFirst: true,
       });
       expect(mocks.prepareMock.prepareTargetForIndividualNavigation).toHaveBeenCalled();
     });
@@ -484,7 +482,6 @@ describe('NavigationRunner', () => {
         config,
         computedCache,
         baseArtifacts,
-        isFirst: true,
       });
       expect(result).toEqual({warnings});
     });
@@ -499,7 +496,6 @@ describe('NavigationRunner', () => {
         config,
         computedCache,
         baseArtifacts,
-        isFirst: true,
       });
 
     it('should navigate the page', async () => {

@@ -35,6 +35,7 @@ async function getBaseArtifacts(config, driver, context) {
     HostFormFactor: userAgent.includes('Android') || userAgent.includes('Mobile') ?
       'mobile' : 'desktop',
     // Contextual artifacts whose collection changes based on gather mode.
+    // TODO: Make `requestedUrl` optional in timespan and snapshot modes.
     URL: {
       initialUrl: '',
       requestedUrl: '',
