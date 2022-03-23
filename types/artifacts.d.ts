@@ -139,16 +139,17 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   Fonts: Artifacts.Font[];
   /** Information on poorly sized font usage and the text affected by it. */
   FontSize: Artifacts.FontSize;
-  /** All the form elements in the page and formless inputs. */
-  FormElements: Artifacts.Form[];
+  /** All the input elements, including associated form and label elements. */
+  Inputs: {inputs: Artifacts.InputElement[]; forms: Artifacts.FormElement[]; labels: Artifacts.LabelElement[]};
   /** Screenshot of the entire page (rather than just the above the fold content). */
   FullPageScreenshot: Artifacts.FullPageScreenshot | null;
   /** Information about event listeners registered on the global object. */
   GlobalListeners: Array<Artifacts.GlobalListener>;
   /** The issues surfaced in the devtools Issues panel */
   InspectorIssues: Artifacts.InspectorIssues;
-  /** JS coverage information for code used during page load. Keyed by network URL. */
-  JsUsage: Record<string, Array<Omit<LH.Crdp.Profiler.ScriptCoverage, 'url'>>>;
+  /** JS coverage information for code used during audit. Keyed by script id. */
+  // 'url' is excluded because it can be overriden by a magic sourceURL= comment, which makes keeping it a dangerous footgun!
+  JsUsage: Record<string, Omit<LH.Crdp.Profiler.ScriptCoverage, 'url'>>;
   /** Parsed version of the page's Web App Manifest, or null if none found. */
   Manifest: Artifacts.Manifest | null;
   /** The URL loaded with interception */
@@ -161,6 +162,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   ResponseCompression: {requestId: string, url: string, mimeType: string, transferSize: number, resourceSize: number, gzipSize?: number}[];
   /** Information on fetching and the content of the /robots.txt file. */
   RobotsTxt: {status: number|null, content: string|null, errorMessage?: string};
+  /** Information on all scripts in the page. */
+  Scripts: Artifacts.Script[];
   /** Version information for all ServiceWorkers active after the first page load. */
   ServiceWorker: {versions: LH.Crdp.ServiceWorker.ServiceWorkerVersion[], registrations: LH.Crdp.ServiceWorker.ServiceWorkerRegistration[]};
   /** Source maps of scripts executed in the page. */
@@ -287,6 +290,16 @@ declare module Artifacts {
 
   interface PasswordInputsWithPreventedPaste {node: NodeDetails}
 
+  interface Script extends Omit<LH.Crdp.Debugger.ScriptParsedEvent, 'url'|'embedderName'> {
+    /**
+     * Set by a sourceURL= magic comment if present, otherwise this is the same as the URL.
+     * Use this field for presentational purposes only.
+     */
+    name: string;
+    url: string;
+    content?: string;
+  }
+  
   interface ScriptElement {
     type: string | null
     src: string | null
@@ -298,10 +311,6 @@ declare module Artifacts {
     node: NodeDetails | null
     /** Where the script was discovered, either in the head, the body, or network records. */
     source: 'head'|'body'|'network'
-    /** The content of the inline script or the network record with the matching URL, null if the script had a src and no network record could be found. */
-    content: string | null
-    /** The ID of the network request that matched the URL of the src or the main document if inline, null if no request could be found. */
-    requestId: string | null
   }
 
   /** @see https://sourcemaps.info/spec.html#h.qz3o9nc69um5 */
@@ -333,6 +342,8 @@ declare module Artifacts {
    * parsing the map, errorMessage will be defined instead of map.
    */
   type SourceMap = {
+    /** The DevTools protocol script identifier. */
+    scriptId: string;
     /** URL of code that source map applies to. */
     scriptUrl: string
     /** URL of the source map. undefined if from data URL. */
@@ -340,6 +351,8 @@ declare module Artifacts {
     /** Source map data structure. */
     map: RawSourceMap
   } | {
+    /** The DevTools protocol script identifier. */
+    scriptId: string;
     /** URL of code that source map applies to. */
     scriptUrl: string
     /** URL of the source map. undefined if from data URL. */
@@ -352,7 +365,7 @@ declare module Artifacts {
 
   interface Bundle {
     rawMap: RawSourceMap;
-    script: ScriptElement;
+    script: LH.Artifacts.Script;
     map: TextSourceMap;
     sizes: {
       // TODO(cjamcl): Rename to `sources`.
@@ -566,7 +579,7 @@ declare module Artifacts {
     mixedContentIssue: LH.Crdp.Audits.MixedContentIssueDetails[];
     navigatorUserAgentIssue: LH.Crdp.Audits.NavigatorUserAgentIssueDetails[];
     quirksModeIssue: LH.Crdp.Audits.QuirksModeIssueDetails[];
-    sameSiteCookieIssue: LH.Crdp.Audits.SameSiteCookieIssueDetails[];
+    cookieIssue: LH.Crdp.Audits.CookieIssueDetails[];
     sharedArrayBufferIssue: LH.Crdp.Audits.SharedArrayBufferIssueDetails[];
     twaQualityEnforcement: LH.Crdp.Audits.TrustedWebActivityIssueDetails[];
   }
@@ -787,22 +800,22 @@ declare module Artifacts {
     observedSpeedIndexTs: number;
   }
 
-  interface Form {
-    /** If attributes is missing that means this is a formless set of elements. */
-    attributes?: {
-      id: string;
-      name: string;
-      autocomplete: string;
-    };
-    node: NodeDetails | null;
-    inputs: Array<FormInput>;
-    labels: Array<FormLabel>;
+  interface FormElement {
+    id: string;
+    name: string;
+    autocomplete: string;
+    node: NodeDetails;
   }
 
   /** Attributes collected for every input element in the inputs array from the forms interface. */
-  interface FormInput {
+  interface InputElement {
+    /** If set, the parent form is the index into the associated FormElement array. Otherwise, the input element has no parent form. */
+    parentFormIndex?: number;
+    /** Array of indices into associated LabelElement array. */
+    labelIndices: number[];
     id: string;
     name: string;
+    type: string;
     placeholder?: string;
     autocomplete: {
       property: string;
@@ -813,7 +826,7 @@ declare module Artifacts {
   }
 
   /** Attributes collected for every label element in the labels array from the forms interface */
-  interface FormLabel {
+  interface LabelElement {
     for: string;
     node: NodeDetails;
   }
@@ -848,6 +861,8 @@ declare module Artifacts {
     stackTrace?: LH.Crdp.Runtime.StackTrace;
     /** The URL of the log/exception, if known. */
     url?: string;
+    /** The script id of the log/exception, if known. */
+    scriptId?: string;
     /** Line number in the script (0-indexed), if known. */
     lineNumber?: number;
     /** Column number in the script (0-indexed), if known. */

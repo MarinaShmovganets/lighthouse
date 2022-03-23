@@ -80,6 +80,7 @@ class GatherRunner {
         ...passContext.passConfig,
       });
       passContext.url = finalUrl;
+      passContext.baseArtifacts.URL.finalUrl = finalUrl;
       if (passContext.passConfig.loadFailureMode === 'fatal') {
         passContext.LighthouseRunWarnings.push(...warnings);
       }
@@ -570,7 +571,7 @@ class GatherRunner {
       driver.defaultSession,
       passContext.settings,
       {
-        url: passContext.url,
+        requestor: passContext.url,
         disableStorageReset: !passConfig.useThrottling,
         disableThrottling: !passConfig.useThrottling,
         blockedUrlPatterns: passConfig.blockedUrlPatterns,
