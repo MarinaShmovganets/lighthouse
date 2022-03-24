@@ -192,12 +192,13 @@ declare module Artifacts {
     initialUrl: string;
     /**
      * URL of the first document request during a Lighthouse navigation.
-     * TODO: Make this property undefined in timespan/snapshot.
+     * Will be the same as `initialUrl` in timespan/snapshot.
+     * TODO: Make this property `undefined` in timespan/snapshot.
      */
     requestedUrl: string;
     /**
      * URL of the last document request during a Lighthouse navigation.
-     * Will be undefined in timespan/snapshot.
+     * Will be `undefined` in timespan/snapshot.
      */
     mainDocumentUrl?: string;
     /**
