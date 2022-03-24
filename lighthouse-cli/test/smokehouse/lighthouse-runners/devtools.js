@@ -33,13 +33,15 @@ async function spawnAndLog(command, args) {
       else reject(new Error(`Command exited with code ${code}`));
     });
     spawnHandle.on('error', reject);
+    spawnHandle.stdout.setEncoding('utf8');
     spawnHandle.stdout.on('data', data => {
-      console.log(data.toString());
-      log += `STDOUT: ${data.toString()}`;
+      console.log(data);
+      log += `STDOUT: ${data}`;
     });
+    spawnHandle.stderr.setEncoding('utf8');
     spawnHandle.stderr.on('data', data => {
-      console.log(data.toString());
-      log += `STDERR: ${data.toString()}`;
+      console.log(data);
+      log += `STDERR: ${data}`;
     });
   });
   await promise;
