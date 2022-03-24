@@ -80,8 +80,11 @@ class GatherRunner {
         ...passContext.passConfig,
       });
       passContext.url = mainDocumentUrl;
-      passContext.baseArtifacts.URL.finalUrl = mainDocumentUrl;
-      passContext.baseArtifacts.URL.mainDocumentUrl = mainDocumentUrl;
+      const {URL} = passContext.baseArtifacts;
+      if (!URL.finalUrl || !URL.mainDocumentUrl) {
+        URL.finalUrl = mainDocumentUrl;
+        URL.mainDocumentUrl = mainDocumentUrl;
+      }
       if (passContext.passConfig.loadFailureMode === 'fatal') {
         passContext.LighthouseRunWarnings.push(...warnings);
       }
@@ -412,8 +415,8 @@ class GatherRunner {
       URL: {
         initialUrl: await options.driver.url(),
         requestedUrl: options.requestedUrl,
-        mainDocumentUrl: options.requestedUrl,
-        finalUrl: options.requestedUrl,
+        mainDocumentUrl: '',
+        finalUrl: '',
       },
       Timing: [],
       PageLoadError: null,
@@ -431,10 +434,6 @@ class GatherRunner {
     log.time(status);
 
     const baseArtifacts = passContext.baseArtifacts;
-
-    // Copy redirected URL to artifact.
-    baseArtifacts.URL.mainDocumentUrl = passContext.url;
-    baseArtifacts.URL.finalUrl = passContext.url;
 
     // Fetch the manifest, if it exists.
     try {
