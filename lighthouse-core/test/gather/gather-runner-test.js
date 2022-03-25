@@ -195,7 +195,7 @@ describe('GatherRunner', function() {
   it('collects benchmark as an artifact', async () => {
     const requestedUrl = 'https://example.com';
     const driver = fakeDriver;
-    const config = makeConfig({passes: []});
+    const config = makeConfig({passes: [{passName: 'defaultPass'}]});
     const options = {requestedUrl, driver, settings: config.settings, computedCache: new Map()};
 
     const results = await GatherRunner.run(config.passes, options);
@@ -205,7 +205,7 @@ describe('GatherRunner', function() {
   it('collects host user agent as an artifact', async () => {
     const requestedUrl = 'https://example.com';
     const driver = fakeDriver;
-    const config = makeConfig({passes: []});
+    const config = makeConfig({passes: [{passName: 'defaultPass'}]});
     const options = {requestedUrl, driver, settings: config.settings, computedCache: new Map()};
 
     const results = await GatherRunner.run(config.passes, options);
@@ -260,7 +260,7 @@ describe('GatherRunner', function() {
           },
         });
         const config = makeConfig({
-          passes: [],
+          passes: [{passName: 'defaultPass'}],
           settings: {},
         });
         const options = {requestedUrl, driver, settings: config.settings, computedCache: new Map()};
