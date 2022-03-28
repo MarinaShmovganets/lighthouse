@@ -454,7 +454,7 @@ class PageDependencyGraph {
    *
    * @param {LH.DevtoolsLog} devtoolsLog
    * @param {LH.Artifacts.ProcessedTrace} processedTrace
-   * @return {{requestedUrl: string, mainDocumentUrl: string}}
+   * @return {LH.Artifacts['URL']}}
    */
   static getDocumentUrls(devtoolsLog, processedTrace) {
     const mainFrameId = processedTrace.mainFrameIds.frameId;
@@ -473,7 +473,7 @@ class PageDependencyGraph {
     }
     if (!requestedUrl || !mainDocumentUrl) throw new Error('No main frame navigations found');
 
-    return {requestedUrl, mainDocumentUrl};
+    return {requestedUrl, finalUrl: mainDocumentUrl};
   }
 
   /**
@@ -490,14 +490,7 @@ class PageDependencyGraph {
 
     // COMPAT: Backport for pre-10.0 clients that don't pass the URL artifact here (e.g. pubads).
     // Calculates the URL artifact from the processed trace and DT log.
-    let URL = data.URL;
-    if (!URL) {
-      const documentUrls = PageDependencyGraph.getDocumentUrls(devtoolsLog, processedTrace);
-      URL = {
-        requestedUrl: documentUrls.requestedUrl,
-        finalUrl: documentUrls.mainDocumentUrl,
-      };
-    }
+    const URL = data.URL || PageDependencyGraph.getDocumentUrls(devtoolsLog, processedTrace);
 
     return PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
   }
