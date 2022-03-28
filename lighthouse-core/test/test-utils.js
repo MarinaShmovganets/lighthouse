@@ -12,6 +12,7 @@ const format = require('../../shared/localization/format.js');
 const mockCommands = require('./gather/mock-commands.js');
 const {default: {toBeCloseTo}} = require('expect/build/matchers.js');
 const {LH_ROOT} = require('../../root.js');
+const NetworkRecorder = require('../lib/network-recorder.js');
 
 expect.extend({
   toBeDisplayString(received, expected) {
@@ -287,6 +288,35 @@ function createScript(script) {
   };
 }
 
+/**
+ * @param {LH.DevtoolsLog} devtoolsLog
+ * @return {LH.Artifacts['URL']}
+ */
+function getURLFromDevtoolsLog(devtoolsLog) {
+  /** @type {string|undefined} */
+  let requestedUrl;
+  /** @type {string|undefined} */
+  let mainDocumentUrl;
+  for (const event of devtoolsLog) {
+    if (event.method === 'Page.frameNavigated' && !event.params.frame.parentId) {
+      const {url} = event.params.frame;
+      // Only set requestedUrl on the first main frame navigation.
+      if (!requestedUrl) requestedUrl = url;
+      mainDocumentUrl = url;
+    }
+  }
+  const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
+  let initialRequest = networkRecords.find(r => r.url === requestedUrl);
+  while (initialRequest?.redirectSource) {
+    initialRequest = initialRequest.redirectSource;
+    requestedUrl = initialRequest.url;
+  }
+  if (!requestedUrl || !mainDocumentUrl) throw new Error('No main frame navigations found');
+
+
+  return {requestedUrl, finalUrl: mainDocumentUrl};
+}
+
 module.exports = {
   getProtoRoundTrip,
   loadSourceMapFixture,
@@ -297,5 +327,6 @@ module.exports = {
   flushAllTimersAndMicrotasks,
   makeMocksForGatherRunner,
   createScript,
+  getURLFromDevtoolsLog,
   ...mockCommands,
 };

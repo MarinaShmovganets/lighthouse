@@ -387,20 +387,20 @@ class PageDependencyGraph {
   /**
    * @param {LH.Artifacts.ProcessedTrace} processedTrace
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
-   * @param {{requestedUrl: string, mainDocumentUrl: string}} documentUrls
+   * @param {LH.Artifacts['URL']} URL
    * @return {Node}
    */
-  static createGraph(processedTrace, networkRecords, documentUrls) {
+  static createGraph(processedTrace, networkRecords, URL) {
     const networkNodeOutput = PageDependencyGraph.getNetworkNodeOutput(networkRecords);
     const cpuNodes = PageDependencyGraph.getCPUNodes(processedTrace);
-    const {requestedUrl, mainDocumentUrl} = documentUrls;
+    const {requestedUrl, finalUrl} = URL;
 
     const rootRequest = networkRecords.find(request => request.url === requestedUrl);
     if (!rootRequest) throw new Error('rootRequest not found');
     const rootNode = networkNodeOutput.idToNodeMap.get(rootRequest.requestId);
     if (!rootNode) throw new Error('rootNode not found');
 
-    const mainDocumentRequest = networkRecords.find(request => request.url === mainDocumentUrl);
+    const mainDocumentRequest = networkRecords.find(request => request.url === finalUrl);
     if (!mainDocumentRequest) throw new Error('mainDocumentRequest not found');
     const mainDocumentNode = networkNodeOutput.idToNodeMap.get(mainDocumentRequest.requestId);
     if (!mainDocumentNode) throw new Error('mainDocumentNode not found');
@@ -449,52 +449,22 @@ class PageDependencyGraph {
   }
 
   /**
-   * Should provide the same urls found on `artifacts.URL`.
-   * TODO: make `artifacts.URL` a dependency for this computed artifact.
-   *
-   * @param {LH.DevtoolsLog} devtoolsLog
-   * @param {LH.Artifacts.ProcessedTrace} processedTrace
-   * @return {{requestedUrl: string, mainDocumentUrl: string}}
-   */
-  static getDocumentUrls(devtoolsLog, processedTrace) {
-    const mainFrameId = processedTrace.mainFrameIds.frameId;
-
-    /** @type {string|undefined} */
-    let requestedUrl;
-    /** @type {string|undefined} */
-    let mainDocumentUrl;
-    for (const event of devtoolsLog) {
-      if (event.method === 'Page.frameNavigated' && event.params.frame.id === mainFrameId) {
-        const {url} = event.params.frame;
-        // Only set requestedUrl on the first main frame navigation.
-        if (!requestedUrl) requestedUrl = url;
-        mainDocumentUrl = url;
-      }
-    }
-    if (!requestedUrl || !mainDocumentUrl) throw new Error('No main frame navigations found');
-
-    return {requestedUrl, mainDocumentUrl};
-  }
-
-  /**
-   * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog}} data
+   * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog, URL: LH.Artifacts['URL']}} data
    * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<Node>}
    */
   static async compute_(data, context) {
-    const trace = data.trace;
-    const devtoolsLog = data.devtoolsLog;
+    const {trace, devtoolsLog, URL} = data;
     const [processedTrace, networkRecords] = await Promise.all([
       ProcessedTrace.request(trace, context),
       NetworkRecords.request(devtoolsLog, context),
     ]);
-    const documentUrls = PageDependencyGraph.getDocumentUrls(devtoolsLog, processedTrace);
 
-    return PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+    return PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
   }
 }
 
-module.exports = makeComputedArtifact(PageDependencyGraph, ['devtoolsLog', 'trace']);
+module.exports = makeComputedArtifact(PageDependencyGraph, ['devtoolsLog', 'trace', 'URL']);
 
 /**
  * @typedef {Object} NetworkNodeOutput

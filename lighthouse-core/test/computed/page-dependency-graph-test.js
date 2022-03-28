@@ -13,6 +13,7 @@ const sampleTrace = require('../fixtures/traces/iframe-m79.trace.json');
 const sampleDevtoolsLog = require('../fixtures/traces/iframe-m79.devtoolslog.json');
 
 const assert = require('assert').strict;
+const {getURLFromDevtoolsLog} = require('../test-utils.js');
 
 function createRequest(
   requestId,
@@ -31,7 +32,7 @@ const TOPLEVEL_TASK_NAME = 'TaskQueueManager::ProcessTaskFromWorkQueue';
 /* eslint-env jest */
 describe('PageDependencyGraph computed artifact:', () => {
   let processedTrace;
-  let documentUrls;
+  let URL;
 
   function addTaskEvents(startTs, duration, evts) {
     const mainEvent = {
@@ -57,7 +58,7 @@ describe('PageDependencyGraph computed artifact:', () => {
 
   beforeEach(() => {
     processedTrace = {mainThreadEvents: []};
-    documentUrls = {requestedUrl: '1', mainDocumentUrl: '1'};
+    URL = {requestedUrl: '1', finalUrl: '1'};
   });
 
   describe('#compute_', () => {
@@ -66,6 +67,7 @@ describe('PageDependencyGraph computed artifact:', () => {
       return PageDependencyGraph.request({
         trace: sampleTrace,
         devtoolsLog: sampleDevtoolsLog,
+        URL: getURLFromDevtoolsLog(sampleDevtoolsLog),
       }, context).then(output => {
         assert.ok(output instanceof BaseNode, 'did not return a graph');
 
@@ -174,7 +176,7 @@ describe('PageDependencyGraph computed artifact:', () => {
 
       addTaskEvents(0, 0, []);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -203,7 +205,7 @@ describe('PageDependencyGraph computed artifact:', () => {
         {name: 'XHRReadyStateChange', data: {readyState: 4, url: '4'}},
       ]);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -229,7 +231,7 @@ describe('PageDependencyGraph computed artifact:', () => {
 
       addTaskEvents(0, 0, []);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -268,7 +270,7 @@ describe('PageDependencyGraph computed artifact:', () => {
         {name: 'ResourceSendRequest', data: {requestId: 5}},
       ]);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -296,7 +298,7 @@ describe('PageDependencyGraph computed artifact:', () => {
         {name: 'TimerFire', data: {timerId: 'timer1'}},
       ]);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -314,7 +316,7 @@ describe('PageDependencyGraph computed artifact:', () => {
       const request3 = createRequest(3, '3', 300, null, NetworkRequest.TYPES.Script);
       const request4 = createRequest(4, '4', 400, null, NetworkRequest.TYPES.XHR);
       const networkRecords = [request0, request1, request2, request3, request4];
-      documentUrls = {requestedUrl: '0', mainDocumentUrl: '0'};
+      URL = {requestedUrl: '0', finalUrl: '0'};
 
       // Long task, should be kept in the output.
       addTaskEvents(120, 50, [
@@ -330,7 +332,7 @@ describe('PageDependencyGraph computed artifact:', () => {
         {name: 'XHRReadyStateChange', data: {readyState: 4, url: '4'}},
       ]);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -363,7 +365,7 @@ describe('PageDependencyGraph computed artifact:', () => {
       const request3 = createRequest(3, '3', 300, null, NetworkRequest.TYPES.XHR);
       const request4 = createRequest(4, '4', 400, null, NetworkRequest.TYPES.XHR);
       const networkRecords = [request0, request1, request2, request3, request4];
-      documentUrls = {requestedUrl: '0', mainDocumentUrl: '0'};
+      URL = {requestedUrl: '0', finalUrl: '0'};
 
       // Short task, evaluates script (2) and sends two XHRs.
       addTaskEvents(220, 5, [
@@ -376,7 +378,7 @@ describe('PageDependencyGraph computed artifact:', () => {
         {name: 'XHRReadyStateChange', data: {readyState: 4, url: '4'}},
       ]);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -397,7 +399,7 @@ describe('PageDependencyGraph computed artifact:', () => {
     it('should not prune short, first tasks of critical events', () => {
       const request0 = createRequest(0, '0', 0);
       const networkRecords = [request0];
-      documentUrls = {requestedUrl: '0', mainDocumentUrl: '0'};
+      URL = {requestedUrl: '0', finalUrl: '0'};
 
       const makeShortEvent = firstEventName => {
         const startTs = processedTrace.mainThreadEvents.length * 100;
@@ -416,7 +418,7 @@ describe('PageDependencyGraph computed artifact:', () => {
         makeShortEvent(eventName);
       }
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const cpuNodes = [];
       graph.traverse(node => node.type === 'cpu' && cpuNodes.push(node));
 
@@ -442,18 +444,18 @@ describe('PageDependencyGraph computed artifact:', () => {
       ]);
     });
 
-    it('should set isMainDocument on request with mainDocumentUrl', () => {
+    it('should set isMainDocument on request with finalUrl', () => {
       const request1 = createRequest(1, '1', 0, null, NetworkRequest.TYPES.Other);
       const request2 = createRequest(2, '2', 5, null, NetworkRequest.TYPES.Document);
       // Add in another unrelated + early request to make sure we pick the correct chain
       const request3 = createRequest(3, '3', 0, null, NetworkRequest.TYPES.Other);
       request2.redirects = [request1];
       const networkRecords = [request1, request2, request3];
-      documentUrls = {requestedUrl: '1', mainDocumentUrl: '2'};
+      URL = {requestedUrl: '1', finalUrl: '2'};
 
       addTaskEvents(0, 0, []);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -481,7 +483,7 @@ describe('PageDependencyGraph computed artifact:', () => {
 
       addTaskEvents(0, 0, []);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -506,7 +508,7 @@ describe('PageDependencyGraph computed artifact:', () => {
 
       addTaskEvents(0, 0, []);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -531,11 +533,11 @@ describe('PageDependencyGraph computed artifact:', () => {
       // Set the initiatorRequest that it should fallback to.
       request3.initiatorRequest = request2Fetch;
       const networkRecords = [request1, request2Prefetch, request2Fetch, request3];
-      documentUrls = {requestedUrl: 'a.com/1', mainDocumentUrl: 'a.com/1'};
+      URL = {requestedUrl: 'a.com/1', finalUrl: 'a.com/1'};
 
       addTaskEvents(0, 0, []);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 
@@ -555,11 +557,11 @@ describe('PageDependencyGraph computed artifact:', () => {
       const jsRequest1 = createRequest(2, 'a.com/js1', 1, {url: 'a.com/js2'});
       const jsRequest2 = createRequest(3, 'a.com/js2', 1, {url: 'a.com/js1'});
       const networkRecords = [rootRequest, jsRequest1, jsRequest2];
-      documentUrls = {requestedUrl: 'a.com', mainDocumentUrl: 'a.com'};
+      URL = {requestedUrl: 'a.com', finalUrl: 'a.com'};
 
       addTaskEvents(0, 0, []);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
       nodes.sort((a, b) => a.id - b.id);
@@ -585,11 +587,11 @@ describe('PageDependencyGraph computed artifact:', () => {
       jsRequest1.initiatorRequest = jsRequest2;
       jsRequest2.initiatorRequest = jsRequest1;
       const networkRecords = [rootRequest, jsRequest1, jsRequest2];
-      documentUrls = {requestedUrl: 'a.com', mainDocumentUrl: 'a.com'};
+      URL = {requestedUrl: 'a.com', finalUrl: 'a.com'};
 
       addTaskEvents(0, 0, []);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
       nodes.sort((a, b) => a.id - b.id);
@@ -605,14 +607,14 @@ describe('PageDependencyGraph computed artifact:', () => {
       const request1 = createRequest(1, '1', 0, null, NetworkRequest.TYPES.Other);
       const request2 = createRequest(2, '2', 5, null, NetworkRequest.TYPES.Document);
       const networkRecords = [request1, request2];
-      documentUrls = {requestedUrl: '2', mainDocumentUrl: '2'};
+      URL = {requestedUrl: '2', finalUrl: '2'};
 
       // Evaluated before root request.
       addTaskEvents(0.1, 50, [
         {name: 'EvaluateScript'},
       ]);
 
-      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, documentUrls);
+      const graph = PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
       const nodes = [];
       graph.traverse(node => nodes.push(node));
 

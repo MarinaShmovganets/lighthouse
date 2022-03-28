@@ -10,7 +10,7 @@
 const DuplicatedJavascript = require('../../../audits/byte-efficiency/duplicated-javascript.js');
 const trace = require('../../fixtures/traces/lcp-m78.json');
 const devtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
-const {loadSourceMapFixture, createScript} = require('../../test-utils.js');
+const {loadSourceMapFixture, createScript, getURLFromDevtoolsLog} = require('../../test-utils.js');
 
 
 describe('DuplicatedJavascript computed artifact', () => {
@@ -321,7 +321,7 @@ describe('DuplicatedJavascript computed artifact', () => {
     const bundleData1 = loadSourceMapFixture('coursehero-bundle-1');
     const bundleData2 = loadSourceMapFixture('coursehero-bundle-2');
     const artifacts = {
-      URL: {finalUrl: 'https://www.paulirish.com'},
+      URL: getURLFromDevtoolsLog(devtoolsLog),
       GatherContext: {gatherMode: 'navigation'},
       devtoolsLogs: {
         [DuplicatedJavascript.DEFAULT_PASS]: devtoolsLog,

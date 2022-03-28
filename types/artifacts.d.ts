@@ -299,7 +299,7 @@ declare module Artifacts {
     url: string;
     content?: string;
   }
-  
+
   interface ScriptElement {
     type: string | null
     src: string | null
@@ -619,6 +619,7 @@ declare module Artifacts {
     settings: Immutable<Config.Settings>;
     gatherContext: Artifacts['GatherContext'];
     simulator?: InstanceType<typeof LanternSimulator>;
+    URL: Artifacts['URL'];
   }
 
   interface MetricComputationData extends MetricComputationDataInput {
