@@ -110,7 +110,9 @@ function getPageLoadError(navigationError, context) {
     const documentRequests = networkRecords.filter(record =>
       record.resourceType === NetworkRequest.TYPES.Document
     );
-    mainRecord = documentRequests.reduce((min, r) => (r.startTime < min.startTime ? r : min));
+    if (documentRequests.length) {
+      mainRecord = documentRequests.reduce((min, r) => (r.startTime < min.startTime ? r : min));
+    }
   }
 
   // MIME Type is only set on the final redirected document request. Use this for the HTML check instead of root.
