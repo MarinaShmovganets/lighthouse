@@ -488,7 +488,7 @@ class PageDependencyGraph {
       NetworkRecords.request(devtoolsLog, context),
     ]);
 
-    // Backport for pre-10.0 clients that don't pass the URL artifact here (e.g. pubads).
+    // COMPAT: Backport for pre-10.0 clients that don't pass the URL artifact here (e.g. pubads).
     // Calculates the URL artifact from the processed trace and DT log.
     let URL = data.URL;
     if (!URL) {
