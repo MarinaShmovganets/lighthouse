@@ -449,7 +449,7 @@ class PageDependencyGraph {
   }
 
   /**
-   * Recalculate `artifacts.URL` for clients that don't pass it in.
+   * Recalculate `artifacts.URL` for clients that don't provide it.
    *
    * @param {LH.DevtoolsLog} devtoolsLog
    * @param {LH.Artifacts.ProcessedTrace} processedTrace
