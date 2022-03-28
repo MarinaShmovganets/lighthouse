@@ -449,16 +449,55 @@ class PageDependencyGraph {
   }
 
   /**
+   * Should provide the same urls found on `artifacts.URL`.
+   * TODO: make `artifacts.URL` a dependency for this computed artifact.
+   *
+   * @param {LH.DevtoolsLog} devtoolsLog
+   * @param {LH.Artifacts.ProcessedTrace} processedTrace
+   * @return {{requestedUrl: string, mainDocumentUrl: string}}
+   */
+  static getDocumentUrls(devtoolsLog, processedTrace) {
+    const mainFrameId = processedTrace.mainFrameIds.frameId;
+
+    /** @type {string|undefined} */
+    let requestedUrl;
+    /** @type {string|undefined} */
+    let mainDocumentUrl;
+    for (const event of devtoolsLog) {
+      if (event.method === 'Page.frameNavigated' && event.params.frame.id === mainFrameId) {
+        const {url} = event.params.frame;
+        // Only set requestedUrl on the first main frame navigation.
+        if (!requestedUrl) requestedUrl = url;
+        mainDocumentUrl = url;
+      }
+    }
+    if (!requestedUrl || !mainDocumentUrl) throw new Error('No main frame navigations found');
+
+    return {requestedUrl, mainDocumentUrl};
+  }
+
+  /**
    * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog, URL: LH.Artifacts['URL']}} data
    * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<Node>}
    */
   static async compute_(data, context) {
-    const {trace, devtoolsLog, URL} = data;
+    const {trace, devtoolsLog} = data;
     const [processedTrace, networkRecords] = await Promise.all([
       ProcessedTrace.request(trace, context),
       NetworkRecords.request(devtoolsLog, context),
     ]);
+
+    // Backport for pre-10.0 clients that don't pass the URL artifact here (e.g. pubads).
+    // Calculates the URL artifact from the processed trace and DT log.
+    let URL = data.URL;
+    if (!URL) {
+      const documentUrls = PageDependencyGraph.getDocumentUrls(devtoolsLog, processedTrace);
+      URL = {
+        requestedUrl: documentUrls.requestedUrl,
+        finalUrl: documentUrls.mainDocumentUrl,
+      };
+    }
 
     return PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
   }
