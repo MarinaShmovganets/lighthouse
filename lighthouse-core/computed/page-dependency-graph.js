@@ -449,8 +449,7 @@ class PageDependencyGraph {
   }
 
   /**
-   * Should provide the same urls found on `artifacts.URL`.
-   * TODO: make `artifacts.URL` a dependency for this computed artifact.
+   * Recalculate `artifacts.URL` for clients that don't pass it in.
    *
    * @param {LH.DevtoolsLog} devtoolsLog
    * @param {LH.Artifacts.ProcessedTrace} processedTrace
