@@ -6,8 +6,8 @@ on:
   pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:
-  # `smoke` runs as a matrix across 4 jobs:
-  #  * The smoke tests are split into two batches, to parallelize.
+  # `smoke` runs as a matrix across 6 jobs:
+  #  * The smoke tests are split into 3 batches, to parallelize.
   #  * Then, those are run with both Chrome stable and ToT Chromium, in parallel
   smoke:
     strategy:
