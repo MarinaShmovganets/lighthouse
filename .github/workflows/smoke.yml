@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         chrome-channel: ['stable', 'ToT']
-        smoke-test-shard: [1, 2]
+        smoke-test-shard: [1, 2, 3]
       # e.g. if set 1 fails, continue with set 2 anyway
       fail-fast: false
     runs-on: ubuntu-latest
