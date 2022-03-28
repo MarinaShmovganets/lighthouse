@@ -177,7 +177,7 @@ describe('Fraggle Rock API', () => {
       expect(requestor).toHaveBeenCalled();
 
       const {lhr} = result;
-      expect(lhr.requestedUrl).toEqual(`${serverBaseUrl}/index.html`);
+      expect(lhr.requestedUrl).toEqual(`${serverBaseUrl}/?redirect=/index.html`);
       expect(lhr.finalUrl).toEqual(`${serverBaseUrl}/index.html`);
 
       const {auditResults, failedAudits, erroredAudits} = getAuditsBreakdown(lhr);
@@ -193,7 +193,10 @@ describe('Fraggle Rock API', () => {
       expect(lhr.audits).toHaveProperty('total-byte-weight');
       const details = lhr.audits['total-byte-weight'].details;
       if (!details || details.type !== 'table') throw new Error('Unexpected byte weight details');
-      expect(details.items).toMatchObject([{url: `${serverBaseUrl}/index.html`}]);
+      expect(details.items).toMatchObject([
+        {url: `${serverBaseUrl}/index.html`},
+        {url: `${serverBaseUrl}/?redirect=/index.html`},
+      ]);
 
       // Check that performance metrics were computed.
       expect(lhr.audits).toHaveProperty('first-contentful-paint');
