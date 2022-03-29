@@ -51,6 +51,7 @@ class ServiceWorker extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
+      supportedModes: ['navigation'],
       requiredArtifacts: ['URL', 'ServiceWorker', 'WebAppManifest'],
     };
   }
@@ -129,7 +130,9 @@ class ServiceWorker extends Audit {
    */
   static audit(artifacts) {
     // Match against artifacts.URL.finalUrl so audit accounts for any redirects.
-    const pageUrl = new URL(artifacts.URL.finalUrl);
+    const {mainDocumentUrl} = artifacts.URL;
+    if (!mainDocumentUrl) throw new Error('mainDocumentUrl must exist in navigation mode');
+    const pageUrl = new URL(mainDocumentUrl);
     const {versions, registrations} = artifacts.ServiceWorker;
 
     const versionsForOrigin = ServiceWorker.getVersionsForOrigin(versions, pageUrl);

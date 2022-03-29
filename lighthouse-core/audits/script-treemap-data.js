@@ -166,26 +166,32 @@ class ScriptTreemapDataAudit extends Audit {
     /** @type {LH.Treemap.Node[]} */
     const nodes = [];
 
+    const {mainDocumentUrl} = artifacts.URL;
+
     let inlineScriptLength = 0;
-    for (const script of artifacts.Scripts) {
-      // Combine so that inline scripts show up as a single root node.
-      if (script.url === artifacts.URL.finalUrl) {
-        inlineScriptLength += (script.content || '').length;
+
+    // In timespan mode, we may not know what the main document URL is.
+    // In that case, handle inline scripts like all other scripts.
+    if (mainDocumentUrl) {
+      for (const script of artifacts.Scripts) {
+        // Combine so that inline scripts show up as a single root node.
+        if (script.url === mainDocumentUrl) {
+          inlineScriptLength += (script.content || '').length;
+        }
       }
-    }
-    if (inlineScriptLength) {
-      const name = artifacts.URL.finalUrl;
-      nodes.push({
-        name,
-        resourceBytes: inlineScriptLength,
-      });
+      if (inlineScriptLength) {
+        nodes.push({
+          name: mainDocumentUrl,
+          resourceBytes: inlineScriptLength,
+        });
+      }
     }
 
     const bundles = await JsBundles.request(artifacts, context);
     const duplicationByPath = await ModuleDuplication.request(artifacts, context);
 
     for (const script of artifacts.Scripts) {
-      if (script.url === artifacts.URL.finalUrl) continue; // Handled above.
+      if (mainDocumentUrl && script.url === mainDocumentUrl) continue; // Handled above.
 
       const name = script.url;
       const bundle = bundles.find(bundle => script.scriptId === bundle.script.scriptId);

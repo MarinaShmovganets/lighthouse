@@ -83,7 +83,7 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
       if (!script.content) continue;
 
       const networkRecord = getRequestForScript(networkRecords, script);
-      const displayUrl = script.name === artifacts.URL.finalUrl ?
+      const displayUrl = script.url === artifacts.URL.mainDocumentUrl ?
         `inline: ${script.content.substring(0, 40)}...` :
         script.url;
       try {
