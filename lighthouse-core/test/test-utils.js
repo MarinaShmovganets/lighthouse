@@ -289,6 +289,9 @@ function createScript(script) {
 }
 
 /**
+ * This has a slightly different, less strict implementation than `PageDependencyGraph`.
+ * It's a convenience function so we don't have to dig through the log and determine the URL artifact manually.
+ *
  * @param {LH.DevtoolsLog} devtoolsLog
  * @return {LH.Artifacts['URL']}
  */

@@ -8,12 +8,14 @@
 const PageDependencyGraph = require('../../computed/page-dependency-graph.js');
 const BaseNode = require('../../lib/dependency-graph/base-node.js');
 const NetworkRequest = require('../../lib/network-request.js');
+const NetworkRecorder = require('../../lib/network-recorder.js');
 
 const sampleTrace = require('../fixtures/traces/iframe-m79.trace.json');
 const sampleDevtoolsLog = require('../fixtures/traces/iframe-m79.devtoolslog.json');
 
 const assert = require('assert').strict;
 const {getURLFromDevtoolsLog} = require('../test-utils.js');
+const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
 function createRequest(
   requestId,
@@ -74,6 +76,63 @@ describe('PageDependencyGraph computed artifact:', () => {
         const dependents = output.getDependents();
         const nodeWithNestedDependents = dependents.find(node => node.getDependents().length);
         assert.ok(nodeWithNestedDependents, 'did not link initiators');
+      });
+    });
+
+    it('should compute the dependency graph with URL backport', () => {
+      const context = {computedCache: new Map()};
+      return PageDependencyGraph.request({
+        trace: sampleTrace,
+        devtoolsLog: sampleDevtoolsLog,
+      }, context).then(output => {
+        assert.ok(output instanceof BaseNode, 'did not return a graph');
+
+        const dependents = output.getDependents();
+        const nodeWithNestedDependents = dependents.find(node => node.getDependents().length);
+        assert.ok(nodeWithNestedDependents, 'did not link initiators');
+      });
+    });
+  });
+
+  describe('#getDocumentUrls', () => {
+    it('should resolve redirects', () => {
+      const processedTrace = {
+        mainFrameIds: {
+          frameId: 'FRAMEID',
+        },
+      };
+      const devtoolsLog = networkRecordsToDevtoolsLog([
+        {requestId: '0', url: 'http://example.com/'},
+        {requestId: '0:redirect', url: 'https://example.com/'},
+        {requestId: '0:redirect:redirect', url: 'https://www.example.com/'},
+        {requestId: '1', url: 'https://page.example.com/'},
+      ]);
+      devtoolsLog.push({
+        method: 'Page.frameNavigated',
+        params: {
+          frame: {
+            id: 'FRAMEID',
+            url: 'https://www.example.com/',
+          },
+        },
+      });
+      devtoolsLog.push({
+        method: 'Page.frameNavigated',
+        params: {
+          frame: {
+            id: 'FRAMEID',
+            url: 'https://page.example.com/',
+          },
+        },
+      });
+
+      // Round trip the network records to fill in redirect info.
+      const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
+
+      const URL = PageDependencyGraph.getDocumentUrls(devtoolsLog, networkRecords, processedTrace);
+      expect(URL).toEqual({
+        requestedUrl: 'http://example.com/',
+        finalUrl: 'https://page.example.com/',
       });
     });
   });
