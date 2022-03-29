@@ -32,6 +32,7 @@ class ScriptTreemapDataAudit extends Audit {
       description: 'Used for treemap app',
       requiredArtifacts:
         ['traces', 'devtoolsLogs', 'SourceMaps', 'Scripts', 'JsUsage', 'URL'],
+      supportedModes: ['navigation'],
     };
   }
 
@@ -166,32 +167,30 @@ class ScriptTreemapDataAudit extends Audit {
     /** @type {LH.Treemap.Node[]} */
     const nodes = [];
 
+    // TODO: Determine inline scripts in timespan mode.
     const {mainDocumentUrl} = artifacts.URL;
+    if (!mainDocumentUrl) throw new Error('mainDocumentUrl must be available to get treemap data');
 
     let inlineScriptLength = 0;
 
-    // In timespan mode, we may not know what the main document URL is.
-    // In that case, handle inline scripts like all other scripts.
-    if (mainDocumentUrl) {
-      for (const script of artifacts.Scripts) {
-        // Combine so that inline scripts show up as a single root node.
-        if (script.url === mainDocumentUrl) {
-          inlineScriptLength += (script.content || '').length;
-        }
+    for (const script of artifacts.Scripts) {
+      // Combine so that inline scripts show up as a single root node.
+      if (script.url === mainDocumentUrl) {
+        inlineScriptLength += (script.content || '').length;
       }
-      if (inlineScriptLength) {
-        nodes.push({
-          name: mainDocumentUrl,
-          resourceBytes: inlineScriptLength,
-        });
-      }
+    }
+    if (inlineScriptLength) {
+      nodes.push({
+        name: mainDocumentUrl,
+        resourceBytes: inlineScriptLength,
+      });
     }
 
     const bundles = await JsBundles.request(artifacts, context);
     const duplicationByPath = await ModuleDuplication.request(artifacts, context);
 
     for (const script of artifacts.Scripts) {
-      if (mainDocumentUrl && script.url === mainDocumentUrl) continue; // Handled above.
+      if (script.url === mainDocumentUrl) continue; // Handled above.
 
       const name = script.url;
       const bundle = bundles.find(bundle => script.scriptId === bundle.script.scriptId);

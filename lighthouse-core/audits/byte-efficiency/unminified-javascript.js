@@ -83,6 +83,11 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
       if (!script.content) continue;
 
       const networkRecord = getRequestForScript(networkRecords, script);
+
+      // The script URL will match the main document URL if it is inline.
+      // It will not necessarily match the frame URL.
+      // For timespan mode, this means we can't use this fancy display URL for inline scripts.
+      // TODO: Determine inline scripts in timespan mode.
       const displayUrl = script.url === artifacts.URL.mainDocumentUrl ?
         `inline: ${script.content.substring(0, 40)}...` :
         script.url;
