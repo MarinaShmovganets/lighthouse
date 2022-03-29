@@ -11,6 +11,7 @@ import assert from 'assert';
 import open from 'open';
 import waitForExpect from 'wait-for-expect';
 import puppeteer from 'puppeteer';
+import yargs from 'yargs';
 
 import {LH_ROOT} from '../../root.js';
 import api from '../fraggle-rock/api.js';
@@ -21,6 +22,22 @@ const ARTIFACTS_PATH =
 const FLOW_RESULT_PATH =
   `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.json`;
 const FLOW_REPORT_PATH = `${LH_ROOT}/dist/sample-reports/flow-report/index.html`;
+
+const args = yargs(process.argv.slice(2))
+  .options({
+    'view': {
+      type: 'boolean',
+      default: false,
+    },
+    'rebaseline-artifacts': {
+      type: 'array',
+    },
+    'output-path': {
+      type: 'string',
+      default: FLOW_RESULT_PATH,
+    },
+  })
+  .parseSync();
 
 /** @param {puppeteer.Page} page */
 async function waitForImagesToLoad(page) {
@@ -59,7 +76,10 @@ const config = {
   },
 };
 
-async function rebaselineArtifacts() {
+/**
+ * @param {(string|number)[]} artifactKeys
+ */
+async function rebaselineArtifacts(artifactKeys) {
   const browser = await puppeteer.launch({
     ignoreDefaultArgs: ['--enable-automation'],
     executablePath: process.env.CHROME_PATH,
@@ -85,11 +105,25 @@ async function rebaselineArtifacts() {
 
   await browser.close();
 
-  const flowArtifacts = flow.createArtifactsJson();
+  let flowArtifacts = flow.createArtifactsJson();
 
   // Normalize some data so it doesn't change on every update.
   for (const {artifacts} of flowArtifacts.gatherSteps) {
     assetSaver.normalizeTimingEntries(artifacts.Timing);
+  }
+
+  if (artifactKeys.length) {
+    const newFlowArtifacts = flowArtifacts;
+    flowArtifacts = JSON.parse(fs.readFileSync(ARTIFACTS_PATH, 'utf-8'));
+    for (let i = 0; i < flowArtifacts.gatherSteps.length; ++i) {
+      const gatherStep = flowArtifacts.gatherSteps[i];
+      const newGatherStep = newFlowArtifacts.gatherSteps[i];
+      for (const key of artifactKeys) {
+        // @ts-expect-error
+        gatherStep.artifacts[key] = newGatherStep.artifacts[key];
+      }
+      flowArtifacts.gatherSteps[i] = gatherStep;
+    }
   }
 
   fs.writeFileSync(ARTIFACTS_PATH, JSON.stringify(flowArtifacts, null, 2));
@@ -106,9 +140,9 @@ async function generateFlowResult() {
     lhr.timing.total = lhr.timing.entries.length;
   }
 
-  fs.writeFileSync(FLOW_RESULT_PATH, JSON.stringify(flowResult, null, 2));
+  fs.writeFileSync(args.outputPath, JSON.stringify(flowResult, null, 2));
 
-  if (process.argv.includes('--view')) {
+  if (args.view) {
     const htmlReport = await api.generateFlowReport(flowResult);
     fs.writeFileSync(FLOW_REPORT_PATH, htmlReport);
     open(FLOW_REPORT_PATH);
@@ -117,8 +151,8 @@ async function generateFlowResult() {
 
 (async () => {
   try {
-    if (process.argv.includes('--rebaseline-artifacts')) {
-      await rebaselineArtifacts();
+    if (args.rebaselineArtifacts) {
+      await rebaselineArtifacts(args.rebaselineArtifacts);
     }
     await generateFlowResult();
   } catch (err) {
