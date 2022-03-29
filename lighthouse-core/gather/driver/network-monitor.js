@@ -133,7 +133,7 @@ class NetworkMonitor {
     this._sessions = new Map();
   }
 
-  /** @return {Promise<{requestedUrl?: string, finalUrl?: string}>} */
+  /** @return {Promise<{requestedUrl?: string, mainDocumentUrl?: string}>} */
   async getNavigationUrls() {
     const frameNavigations = this._frameNavigations;
     if (!frameNavigations.length) return {};
@@ -158,7 +158,7 @@ class NetworkMonitor {
 
     return {
       requestedUrl,
-      finalUrl: mainFrameNavigations[mainFrameNavigations.length - 1]?.url,
+      mainDocumentUrl: mainFrameNavigations[mainFrameNavigations.length - 1]?.url,
     };
   }
 
