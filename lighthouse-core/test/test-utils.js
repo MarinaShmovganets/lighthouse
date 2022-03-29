@@ -284,6 +284,7 @@ function createScript(script) {
     ...script,
     length: script.content?.length ?? script.length,
     name: script.name ?? script.url ?? '<no name>',
+    scriptLanguage: 'JavaScript',
   };
 }
 

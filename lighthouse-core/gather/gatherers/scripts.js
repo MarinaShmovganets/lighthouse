@@ -64,7 +64,10 @@ class Scripts extends FRGatherer {
       sessionId = undefined;
     }
 
-    if (event.method === 'Debugger.scriptParsed') {
+    // We want to ignore scripts from OOPIFs. In reality, this does more than block just OOPIFs,
+    // it also blocks scripts from the same origin but that happen to run in a different process,
+    // like a worker.
+    if (event.method === 'Debugger.scriptParsed' && !sessionId) {
       // Events without an embedderName (read: a url) are for JS that we ran over the protocol.
       if (event.params.embedderName) this._scriptParsedEvents.push(event.params);
     }
