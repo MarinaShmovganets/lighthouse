@@ -14,7 +14,7 @@ const sampleTrace = require('../fixtures/traces/iframe-m79.trace.json');
 const sampleDevtoolsLog = require('../fixtures/traces/iframe-m79.devtoolslog.json');
 
 const assert = require('assert').strict;
-const {getURLFromDevtoolsLog} = require('../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../test-utils.js');
 const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 
 function createRequest(
@@ -69,7 +69,7 @@ describe('PageDependencyGraph computed artifact:', () => {
       return PageDependencyGraph.request({
         trace: sampleTrace,
         devtoolsLog: sampleDevtoolsLog,
-        URL: getURLFromDevtoolsLog(sampleDevtoolsLog),
+        URL: getURLArtifactFromDevtoolsLog(sampleDevtoolsLog),
       }, context).then(output => {
         assert.ok(output instanceof BaseNode, 'did not return a graph');
 

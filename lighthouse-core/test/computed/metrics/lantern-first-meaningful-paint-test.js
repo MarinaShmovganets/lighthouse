@@ -11,8 +11,8 @@ const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 const LanternFirstMeaningfulPaint =
   require('../../../computed/metrics/lantern-first-meaningful-paint.js');
-const {getURLFromDevtoolsLog} = require('../../test-utils.js');
-const URL = getURLFromDevtoolsLog(devtoolsLog);
+const {getURLArtifactFromDevtoolsLog} = require('../../test-utils.js');
+const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
 
 /* eslint-env jest */
 describe('Metrics: Lantern FMP', () => {

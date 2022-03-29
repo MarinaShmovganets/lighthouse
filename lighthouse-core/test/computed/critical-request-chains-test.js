@@ -12,7 +12,7 @@ const CriticalRequestChains = require('../../computed/critical-request-chains.js
 const NetworkRequest = require('../../lib/network-request.js');
 const createTestTrace = require('../create-test-trace.js');
 const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
-const {getURLFromDevtoolsLog} = require('../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../test-utils.js');
 
 const HIGH = 'High';
 const VERY_HIGH = 'VeryHigh';
@@ -89,7 +89,7 @@ describe('CriticalRequestChain computed artifact', () => {
 
     const trace = createTestTrace({topLevelTasks: [{ts: 0}]});
     const devtoolsLog = require('../fixtures/wikipedia-redirect.devtoolslog.json');
-    const URL = getURLFromDevtoolsLog(devtoolsLog);
+    const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
 
     const context = {computedCache: new Map()};
     const chains = await CriticalRequestChains.request({trace, devtoolsLog, URL}, context);

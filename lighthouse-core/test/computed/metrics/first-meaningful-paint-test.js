@@ -17,7 +17,7 @@ const lateTracingStartedTrace = require(`${TRACE_FIXTURES}/tracingstarted-after-
 const preactTrace = require(`${TRACE_FIXTURES}/preactjs.com_ts_of_undefined.json`);
 const noFMPtrace = require(`${TRACE_FIXTURES}/no_fmp_event.json`);
 
-const {getURLFromDevtoolsLog} = require('../../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../../test-utils.js');
 
 /* eslint-env jest */
 
@@ -45,7 +45,7 @@ describe('Metrics: FMP', () => {
     settings = {throttlingMethod: 'simulate'};
     trace = pwaTrace;
     devtoolsLog = pwaDevtoolsLog;
-    const URL = getURLFromDevtoolsLog(devtoolsLog);
+    const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
 
     const context = {computedCache: new Map()};
     const result = await FirstMeaningfulPaint.request(

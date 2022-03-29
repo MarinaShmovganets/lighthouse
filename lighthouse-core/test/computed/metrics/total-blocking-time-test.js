@@ -9,9 +9,9 @@ const TotalBlockingTime = require('../../../computed/metrics/total-blocking-time
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 const {calculateSumOfBlockingTime} = require('../../../computed/metrics/tbt-utils.js');
-const {getURLFromDevtoolsLog} = require('../../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../../test-utils.js');
 
-const URL = getURLFromDevtoolsLog(devtoolsLog);
+const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
 
 /* eslint-env jest */
 

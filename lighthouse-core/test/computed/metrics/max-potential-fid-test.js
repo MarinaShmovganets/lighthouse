@@ -10,9 +10,9 @@ const assert = require('assert').strict;
 const MaxPotentialFID = require('../../../computed/metrics/max-potential-fid.js');
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
-const {getURLFromDevtoolsLog} = require('../../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../../test-utils.js');
 
-const URL = getURLFromDevtoolsLog(devtoolsLog);
+const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
 
 /* eslint-env jest */
 

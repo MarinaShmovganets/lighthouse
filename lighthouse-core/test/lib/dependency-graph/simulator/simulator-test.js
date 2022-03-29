@@ -12,7 +12,7 @@ const DNSCache = require('../../../../lib/dependency-graph/simulator/dns-cache.j
 const PageDependencyGraph = require('../../../../computed/page-dependency-graph.js');
 
 const assert = require('assert').strict;
-const {getURLFromDevtoolsLog} = require('../../../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../../../test-utils.js');
 let nextRequestId = 1;
 let nextTid = 1;
 
@@ -361,7 +361,7 @@ describe('DependencyGraph/Simulator', () => {
     describe('on a real trace', () => {
       const trace = require('../../../fixtures/traces/progressive-app-m60.json');
       const devtoolsLog = require('../../../fixtures/traces/progressive-app-m60.devtools.log.json');
-      const URL = getURLFromDevtoolsLog(devtoolsLog);
+      const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
 
       it('should compute a timeInMs', async () => {
         const computedCache = new Map();

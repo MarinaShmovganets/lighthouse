@@ -10,8 +10,8 @@ const assert = require('assert').strict;
 const trace = require('../../fixtures/traces/lcp-m78.json');
 const devtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
 const LanternLargestContentfulPaint = require('../../../computed/metrics/lantern-largest-contentful-paint.js'); // eslint-disable-line max-len
-const {getURLFromDevtoolsLog} = require('../../test-utils.js');
-const URL = getURLFromDevtoolsLog(devtoolsLog);
+const {getURLArtifactFromDevtoolsLog} = require('../../test-utils.js');
+const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
 
 /* eslint-env jest */
 describe('Metrics: Lantern LCP', () => {

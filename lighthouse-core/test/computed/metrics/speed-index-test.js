@@ -12,7 +12,7 @@ const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 const trace1msLayout = require('../../fixtures/traces/speedindex-1ms-layout-m84.trace.json');
 const devtoolsLog1msLayout = require('../../fixtures/traces/speedindex-1ms-layout-m84.devtoolslog.json'); // eslint-disable-line max-len
-const {getURLFromDevtoolsLog} = require('../../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../../test-utils.js');
 
 /* eslint-env jest */
 
@@ -22,7 +22,7 @@ describe('Metrics: Speed Index', () => {
   it('should compute a simulated value', async () => {
     const settings = {throttlingMethod: 'simulate'};
     const context = {settings, computedCache: new Map()};
-    const URL = getURLFromDevtoolsLog(devtoolsLog);
+    const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
     const result = await SpeedIndex.request({trace, devtoolsLog, gatherContext, settings, URL},
       context);
 
@@ -49,7 +49,7 @@ describe('Metrics: Speed Index', () => {
       },
     };
 
-    const URL = getURLFromDevtoolsLog(devtoolsLog1msLayout);
+    const URL = getURLArtifactFromDevtoolsLog(devtoolsLog1msLayout);
     const context = {settings, computedCache: new Map()};
     const result = await SpeedIndex.request(
       {
@@ -78,7 +78,7 @@ describe('Metrics: Speed Index', () => {
   it('should compute an observed value (desktop)', async () => {
     const settings = {throttlingMethod: 'provided', formFactor: 'desktop'};
     const context = {settings, computedCache: new Map()};
-    const URL = getURLFromDevtoolsLog(devtoolsLog);
+    const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
     const result = await SpeedIndex.request({trace, devtoolsLog, gatherContext, settings, URL},
       context);
 
@@ -89,7 +89,7 @@ describe('Metrics: Speed Index', () => {
   it('should compute an observed value (mobile)', async () => {
     const settings = {throttlingMethod: 'provided', formFactor: 'mobile'};
     const context = {settings, computedCache: new Map()};
-    const URL = getURLFromDevtoolsLog(devtoolsLog);
+    const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
     const result = await SpeedIndex.request({trace, devtoolsLog, gatherContext, settings, URL},
       context);
 

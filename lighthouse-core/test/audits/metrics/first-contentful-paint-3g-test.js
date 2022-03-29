@@ -10,7 +10,7 @@ const options = FCP3G.defaultOptions;
 
 const pwaTrace = require('../../fixtures/traces/progressive-app-m60.json');
 const pwaDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
-const {getURLFromDevtoolsLog} = require('../../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../../test-utils.js');
 
 /* eslint-env jest */
 
@@ -24,7 +24,7 @@ describe('Performance: first-contentful-paint-3g audit', () => {
       devtoolsLogs: {
         [FCP3G.DEFAULT_PASS]: pwaDevtoolsLog,
       },
-      URL: getURLFromDevtoolsLog(pwaDevtoolsLog),
+      URL: getURLArtifactFromDevtoolsLog(pwaDevtoolsLog),
     };
 
     const result = await FCP3G.audit(artifacts, {settings: {}, options, computedCache: new Map()});

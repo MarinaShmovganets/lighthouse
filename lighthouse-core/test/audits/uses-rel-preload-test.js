@@ -15,7 +15,7 @@ const pwaTrace = require('../fixtures/traces/progressive-app-m60.json');
 const pwaDevtoolsLog = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
 const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
 const createTestTrace = require('../create-test-trace.js');
-const {getURLFromDevtoolsLog} = require('../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../test-utils.js');
 
 const defaultMainResourceUrl = 'http://www.example.com/';
 const defaultMainResource = {
@@ -328,7 +328,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
   it('does not throw on a real trace/devtools log', async () => {
     const artifacts = {
-      URL: getURLFromDevtoolsLog(pwaDevtoolsLog),
+      URL: getURLArtifactFromDevtoolsLog(pwaDevtoolsLog),
       traces: {
         [UsesRelPreload.DEFAULT_PASS]: pwaTrace,
       },

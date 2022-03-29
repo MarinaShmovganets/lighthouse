@@ -295,7 +295,7 @@ function createScript(script) {
  * @param {LH.DevtoolsLog} devtoolsLog
  * @return {LH.Artifacts['URL']}
  */
-function getURLFromDevtoolsLog(devtoolsLog) {
+function getURLArtifactFromDevtoolsLog(devtoolsLog) {
   /** @type {string|undefined} */
   let requestedUrl;
   /** @type {string|undefined} */
@@ -330,6 +330,6 @@ module.exports = {
   flushAllTimersAndMicrotasks,
   makeMocksForGatherRunner,
   createScript,
-  getURLFromDevtoolsLog,
+  getURLArtifactFromDevtoolsLog,
   ...mockCommands,
 };

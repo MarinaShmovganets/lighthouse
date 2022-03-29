@@ -10,8 +10,8 @@ const LanternSpeedIndex = require('../../../computed/metrics/lantern-speed-index
 
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
-const {getURLFromDevtoolsLog} = require('../../test-utils.js');
-const URL = getURLFromDevtoolsLog(devtoolsLog);
+const {getURLArtifactFromDevtoolsLog} = require('../../test-utils.js');
+const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
 
 /* eslint-env jest */
 describe('Metrics: Lantern Speed Index', () => {

@@ -14,7 +14,7 @@ const pwaDevtoolsLog = require('../fixtures/traces/progressive-app-m60.devtools.
 const videoEmbedsTrace = require('../fixtures/traces/video-embeds-m84.json');
 const videoEmbedsDevtolsLog = require('../fixtures/traces/video-embeds-m84.devtools.log.json');
 const noThirdPartyTrace = require('../fixtures/traces/no-tracingstarted-m74.json');
-const {getURLFromDevtoolsLog} = require('../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../test-utils.js');
 
 function intercomProductUrl(id) {
   return `https://widget.intercom.io/widget/${id}`;
@@ -220,7 +220,7 @@ describe('Third party facades audit', () => {
       // This devtools log has third party requests but none have facades
       devtoolsLogs: {defaultPass: pwaDevtoolsLog},
       traces: {defaultPass: pwaTrace},
-      URL: getURLFromDevtoolsLog(pwaDevtoolsLog),
+      URL: getURLArtifactFromDevtoolsLog(pwaDevtoolsLog),
     };
 
     const settings = {throttlingMethod: 'simulate', throttling: {cpuSlowdownMultiplier: 4}};
@@ -256,7 +256,7 @@ describe('Third party facades audit', () => {
     const artifacts = {
       devtoolsLogs: {defaultPass: videoEmbedsDevtolsLog},
       traces: {defaultPass: videoEmbedsTrace},
-      URL: getURLFromDevtoolsLog(videoEmbedsDevtolsLog),
+      URL: getURLArtifactFromDevtoolsLog(videoEmbedsDevtolsLog),
     };
 
     const settings = {throttlingMethod: 'simulate', throttling: {cpuSlowdownMultiplier: 4}};

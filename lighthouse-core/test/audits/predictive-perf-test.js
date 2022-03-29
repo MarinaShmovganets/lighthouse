@@ -9,13 +9,13 @@ const PredictivePerf = require('../../audits/predictive-perf.js');
 
 const acceptableTrace = require('../fixtures/traces/lcp-m78.json');
 const acceptableDevToolsLog = require('../fixtures/traces/lcp-m78.devtools.log.json');
-const {getURLFromDevtoolsLog} = require('../test-utils.js');
+const {getURLArtifactFromDevtoolsLog} = require('../test-utils.js');
 
 /* eslint-env jest */
 describe('Performance: predictive performance audit', () => {
   it('should compute the predicted values', async () => {
     const artifacts = {
-      URL: getURLFromDevtoolsLog(acceptableDevToolsLog),
+      URL: getURLArtifactFromDevtoolsLog(acceptableDevToolsLog),
       GatherContext: {gatherMode: 'navigation'},
       traces: {
         [PredictivePerf.DEFAULT_PASS]: acceptableTrace,
