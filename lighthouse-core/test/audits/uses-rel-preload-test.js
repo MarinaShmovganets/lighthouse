@@ -42,7 +42,7 @@ describe('Performance: uses-rel-preload audit', () => {
       URL: {
         initialUrl: 'about:blank',
         requestedUrl: finalUrl,
-        mainDocumentURl: finalUrl,
+        mainDocumentUrl: finalUrl,
         finalUrl,
       },
     };

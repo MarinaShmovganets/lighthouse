@@ -62,6 +62,7 @@ describe('Metrics: Lantern FCP', () => {
     const trace = createTestTrace({timeOrigin: 0, traceEnd: 2000});
     const URL = {
       requestedUrl: 'https://example.com/',
+      mainDocumentUrl: 'https://example.com/',
       finalUrl: 'https://example.com/',
     };
     const artifacts = {
