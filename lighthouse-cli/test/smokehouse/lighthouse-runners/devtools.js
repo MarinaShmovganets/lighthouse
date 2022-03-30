@@ -46,7 +46,7 @@ async function spawnAndLog(logs, command, args) {
     spawnHandle.stderr.setEncoding('utf8');
     spawnHandle.stderr.on('data', data => {
       process.stderr.write(data);
-      logs.push(`STDERR: ${data.toString()}`);
+      logs.push(`STDERR: ${data}`);
     });
   });
   await promise;
