@@ -14,6 +14,7 @@ const ProcessedTrace = require('./processed-trace.js');
 const NetworkRecords = require('./network-records.js');
 
 /** @typedef {import('../lib/dependency-graph/base-node.js').Node} Node */
+/** @typedef {Omit<LH.Artifacts['URL'], 'initialUrl'>} URLArtifact */
 
 // Shorter tasks have negligible impact on simulation results.
 const SIGNIFICANT_DUR_THRESHOLD_MS = 10;
@@ -387,7 +388,7 @@ class PageDependencyGraph {
   /**
    * @param {LH.Artifacts.ProcessedTrace} processedTrace
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
-   * @param {LH.Artifacts['URL']} URL
+   * @param {URLArtifact} URL
    * @return {Node}
    */
   static createGraph(processedTrace, networkRecords, URL) {
@@ -454,7 +455,7 @@ class PageDependencyGraph {
    * @param {LH.DevtoolsLog} devtoolsLog
    * @param {LH.Artifacts.NetworkRequest[]} networkRecords
    * @param {LH.Artifacts.ProcessedTrace} processedTrace
-   * @return {LH.Artifacts['URL']}}
+   * @return {URLArtifact}}
    */
   static getDocumentUrls(devtoolsLog, networkRecords, processedTrace) {
     const mainFrameId = processedTrace.mainFrameIds.frameId;
@@ -476,7 +477,7 @@ class PageDependencyGraph {
     const initialRequest = networkRecords.find(request => request.url === requestedUrl);
     if (initialRequest?.redirects?.length) requestedUrl = initialRequest.redirects[0].url;
 
-    return {requestedUrl, finalUrl: mainDocumentUrl};
+    return {requestedUrl, mainDocumentUrl, finalUrl: mainDocumentUrl};
   }
 
   /**

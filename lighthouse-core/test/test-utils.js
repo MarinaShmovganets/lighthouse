@@ -316,8 +316,7 @@ function getURLArtifactFromDevtoolsLog(devtoolsLog) {
   }
   if (!requestedUrl || !mainDocumentUrl) throw new Error('No main frame navigations found');
 
-
-  return {requestedUrl, finalUrl: mainDocumentUrl};
+  return {initialUrl: 'about:blank', requestedUrl, mainDocumentUrl, finalUrl: mainDocumentUrl};
 }
 
 module.exports = {
