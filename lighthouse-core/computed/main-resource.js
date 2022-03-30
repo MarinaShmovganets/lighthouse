@@ -23,7 +23,7 @@ class MainResource {
     const {mainDocumentUrl} = data.URL;
     if (!mainDocumentUrl) throw new Error('mainDocumentUrl must exist to get the main resource');
     const requests = await NetworkRecords.request(data.devtoolsLog, context);
-    const mainResource = NetworkAnalyzer.findMainDocument(requests, mainDocumentUrl);
+    const mainResource = NetworkAnalyzer.findResourceForUrl(requests, mainDocumentUrl);
     if (!mainResource) {
       throw new Error('Unable to identify the main resource');
     }
