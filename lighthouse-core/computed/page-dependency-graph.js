@@ -12,9 +12,10 @@ const TracingProcessor = require('../lib/tracehouse/trace-processor.js');
 const NetworkRequest = require('../lib/network-request.js');
 const ProcessedTrace = require('./processed-trace.js');
 const NetworkRecords = require('./network-records.js');
+const NetworkAnalyzer = require('../lib/dependency-graph/simulator/network-analyzer.js');
 
 /** @typedef {import('../lib/dependency-graph/base-node.js').Node} Node */
-/** @typedef {Omit<LH.Artifacts['URL'], 'initialUrl'>} URLArtifact */
+/** @typedef {Omit<LH.Artifacts['URL'], 'initialUrl'|'finalUrl'>} URLArtifact */
 
 // Shorter tasks have negligible impact on simulation results.
 const SIGNIFICANT_DUR_THRESHOLD_MS = 10;
@@ -394,14 +395,15 @@ class PageDependencyGraph {
   static createGraph(processedTrace, networkRecords, URL) {
     const networkNodeOutput = PageDependencyGraph.getNetworkNodeOutput(networkRecords);
     const cpuNodes = PageDependencyGraph.getCPUNodes(processedTrace);
-    const {requestedUrl, finalUrl} = URL;
+    const {requestedUrl, mainDocumentUrl} = URL;
+    if (!mainDocumentUrl) throw new Error('mainDocumentUrl is required to get the main resource');
 
-    const rootRequest = networkRecords.find(request => request.url === requestedUrl);
+    const rootRequest = NetworkAnalyzer.findResourceForUrl(networkRecords, requestedUrl);
     if (!rootRequest) throw new Error('rootRequest not found');
     const rootNode = networkNodeOutput.idToNodeMap.get(rootRequest.requestId);
     if (!rootNode) throw new Error('rootNode not found');
 
-    const mainDocumentRequest = networkRecords.find(request => request.url === finalUrl);
+    const mainDocumentRequest = NetworkAnalyzer.findResourceForUrl(networkRecords, mainDocumentUrl);
     if (!mainDocumentRequest) throw new Error('mainDocumentRequest not found');
     const mainDocumentNode = networkNodeOutput.idToNodeMap.get(mainDocumentRequest.requestId);
     if (!mainDocumentNode) throw new Error('mainDocumentNode not found');
@@ -455,7 +457,7 @@ class PageDependencyGraph {
    * @param {LH.DevtoolsLog} devtoolsLog
    * @param {LH.Artifacts.NetworkRequest[]} networkRecords
    * @param {LH.Artifacts.ProcessedTrace} processedTrace
-   * @return {URLArtifact}}
+   * @return {URLArtifact}
    */
   static getDocumentUrls(devtoolsLog, networkRecords, processedTrace) {
     const mainFrameId = processedTrace.mainFrameIds.frameId;
@@ -474,10 +476,10 @@ class PageDependencyGraph {
     }
     if (!requestedUrl || !mainDocumentUrl) throw new Error('No main frame navigations found');
 
-    const initialRequest = networkRecords.find(request => request.url === requestedUrl);
+    const initialRequest = NetworkAnalyzer.findResourceForUrl(networkRecords, requestedUrl);
     if (initialRequest?.redirects?.length) requestedUrl = initialRequest.redirects[0].url;
 
-    return {requestedUrl, mainDocumentUrl, finalUrl: mainDocumentUrl};
+    return {requestedUrl, mainDocumentUrl};
   }
 
   /**

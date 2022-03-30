@@ -433,22 +433,20 @@ class NetworkAnalyzer {
 
   /**
    * @param {Array<LH.Artifacts.NetworkRequest>} records
-   * @param {string} mainDocumentUrl
-   * @return {LH.Artifacts.NetworkRequest}
+   * @param {string} resourceUrl
+   * @return {LH.Artifacts.NetworkRequest|undefined}
    */
-  static findMainDocument(records, mainDocumentUrl) {
-    // equalWithExcludedFragments is expensive, so check that the finalUrl starts with the request first
-    const mainDocument = records.find(request =>
-      mainDocumentUrl.startsWith(request.url) &&
-      URL.equalWithExcludedFragments(request.url, mainDocumentUrl)
+  static findResourceForUrl(records, resourceUrl) {
+    // equalWithExcludedFragments is expensive, so check that the resourceUrl starts with the request url first
+    return records.find(request =>
+      resourceUrl.startsWith(request.url) &&
+      URL.equalWithExcludedFragments(request.url, resourceUrl)
     );
-    if (!mainDocument) throw new Error('Unable to identify the main resource');
-    return mainDocument;
   }
 
   /**
    * Resolves redirect chain given a main document.
-   * See: {@link NetworkAnalyzer.findMainDocument}) for how to retrieve main document.
+   * See: {@link NetworkAnalyzer.findResourceForUrl}) for how to retrieve main document.
    *
    * @param {LH.Artifacts.NetworkRequest} request
    * @return {LH.Artifacts.NetworkRequest}
