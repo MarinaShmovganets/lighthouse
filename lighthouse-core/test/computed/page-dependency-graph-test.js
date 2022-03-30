@@ -132,6 +132,7 @@ describe('PageDependencyGraph computed artifact:', () => {
       const URL = PageDependencyGraph.getDocumentUrls(devtoolsLog, networkRecords, processedTrace);
       expect(URL).toEqual({
         requestedUrl: 'http://example.com/',
+        mainDocumentUrl: 'https://page.example.com/',
         finalUrl: 'https://page.example.com/',
       });
     });
