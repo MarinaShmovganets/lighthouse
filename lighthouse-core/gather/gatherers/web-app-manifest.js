@@ -12,7 +12,7 @@ const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 class WebAppManifest extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
-    supportedModes: ['snapshot', 'navigation'],
+    supportedModes: ['navigation'],
   };
 
   /**
@@ -94,8 +94,10 @@ class WebAppManifest extends FRGatherer {
    */
   getArtifact(context) {
     const driver = context.driver;
+    const {mainDocumentUrl} = context.baseArtifacts.URL;
+    if (!mainDocumentUrl) throw new Error('mainDocumentUrl is needed to get the web app manifest');
 
-    return WebAppManifest.getWebAppManifest(driver.defaultSession, context.url);
+    return WebAppManifest.getWebAppManifest(driver.defaultSession, mainDocumentUrl);
   }
 }
 
