@@ -33,7 +33,6 @@ class ScriptTreemapDataAudit extends Audit {
       description: 'Used for treemap app',
       requiredArtifacts:
         ['traces', 'devtoolsLogs', 'SourceMaps', 'Scripts', 'JsUsage', 'URL'],
-      supportedModes: ['navigation'],
     };
   }
 
