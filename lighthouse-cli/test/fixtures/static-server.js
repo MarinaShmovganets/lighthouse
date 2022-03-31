@@ -100,7 +100,10 @@ class Server {
       // Used by Smokerider.
       if (this._dataTransformer) data = this._dataTransformer(data);
 
-      const headers = {'Access-Control-Allow-Origin': '*'};
+      const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Origin-Agent-Cluster': '?1',
+      };
 
       const contentType = mime.lookup(filePath);
       const charset = mime.lookup(contentType);
@@ -109,8 +112,6 @@ class Server {
       // svgs to fallback to binary encoding. `Content-Type: image/svg+xml` is sufficient for our use case.
       // see https://github.com/jshttp/mime-types/issues/66
       if (contentType) headers['Content-Type'] = mime.contentType(contentType);
-
-      headers['origin-agent-cluster'] = ['?1'];
 
       let delay = 0;
       let useGzip = false;
