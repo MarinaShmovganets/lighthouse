@@ -251,7 +251,9 @@ class ScriptTreemapDataAudit extends Audit {
         }
         htmlNode.resourceBytes += node.resourceBytes;
         if (node.unusedBytes) htmlNode.unusedBytes = (htmlNode.unusedBytes || 0) + node.unusedBytes;
-        node.name = '(inline)';
+        node.name = script.content ?
+          '(inline) ' + script.content.trimStart().substring(0, 15) + '…' :
+          '(inline)';
         htmlNode.children?.push(node);
       } else {
         // Non-inline scripts each have their own top-level node.
