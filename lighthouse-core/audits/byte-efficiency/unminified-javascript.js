@@ -8,7 +8,7 @@
 const ByteEfficiencyAudit = require('./byte-efficiency-audit.js');
 const i18n = require('../../lib/i18n/i18n.js');
 const computeTokenLength = require('../../lib/minification-estimator.js').computeJSTokenLength;
-const {getRequestForScript} = require('../../lib/script-helpers.js');
+const {getRequestForScript, isInline} = require('../../lib/script-helpers.js');
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to minify the page’s JS code to reduce file size. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -88,7 +88,7 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
       // It will not necessarily match the frame URL.
       // For timespan mode, this means we can't use this fancy display URL for inline scripts.
       // TODO: Determine inline scripts in timespan mode.
-      const displayUrl = script.url === artifacts.URL.mainDocumentUrl ?
+      const displayUrl = isInline(script) ?
         `inline: ${script.content.substring(0, 40)}...` :
         script.url;
       try {
