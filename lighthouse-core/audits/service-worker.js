@@ -59,13 +59,13 @@ class ServiceWorker extends Audit {
   /**
    * Find active service workers for this origin.
    * @param {Array<LH.Crdp.ServiceWorker.ServiceWorkerVersion>} versions
-   * @param {string} mainDocumentUrl
+   * @param {URL} pageUrl
    * @return {Array<LH.Crdp.ServiceWorker.ServiceWorkerVersion>}
    */
-  static getVersionsForOrigin(versions, mainDocumentUrl) {
+  static getVersionsForOrigin(versions, pageUrl) {
     return versions
       .filter(v => v.status === 'activated')
-      .filter(v => new URL(v.scriptURL).origin === new URL(mainDocumentUrl).origin);
+      .filter(v => new URL(v.scriptURL).origin === pageUrl.origin);
   }
 
   /**
@@ -73,10 +73,10 @@ class ServiceWorker extends Audit {
    * and return its scope URL.
    * @param {Array<LH.Crdp.ServiceWorker.ServiceWorkerVersion>} matchingSWVersions
    * @param {Array<LH.Crdp.ServiceWorker.ServiceWorkerRegistration>} registrations
-   * @param {string} mainDocumentUrl
+   * @param {URL} pageUrl
    * @return {{scopeUrl: string; scriptUrl: string} | undefined}
    */
-  static getControllingServiceWorker(matchingSWVersions, registrations, mainDocumentUrl) {
+  static getControllingServiceWorker(matchingSWVersions, registrations, pageUrl) {
     // Find the normalized scope URLs of possibly-controlling SWs.
     /** @type {Array<{scopeUrl: string; scriptUrl: string}>} */
     const scriptByScopeUrlList = [];
@@ -96,7 +96,7 @@ class ServiceWorker extends Audit {
     // Find most-specific applicable scope, the one controlling the page.
     // See https://w3c.github.io/ServiceWorker/v1/#scope-match-algorithm
     const pageControllingUrls = scriptByScopeUrlList
-      .filter(ss => mainDocumentUrl.startsWith(ss.scopeUrl))
+      .filter(ss => pageUrl.href.startsWith(ss.scopeUrl))
       .sort((ssA, ssB) => ssA.scopeUrl.length - ssB.scopeUrl.length)
       .pop();
 
@@ -129,14 +129,13 @@ class ServiceWorker extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    // Match against `artifacts.URL.mainDocumentUrl` so audit accounts for any redirects.
-    // Service workers won't control network requests if the page uses `history.pushState` to "enter" the SW scope.
-    // For this reason it is better to evaluate the SW in relation to the main document url rather than the final frame url.
+    // Match against artifacts.URL.finalUrl so audit accounts for any redirects.
     const {mainDocumentUrl} = artifacts.URL;
     if (!mainDocumentUrl) throw new Error('mainDocumentUrl must exist in navigation mode');
+    const pageUrl = new URL(mainDocumentUrl);
     const {versions, registrations} = artifacts.ServiceWorker;
 
-    const versionsForOrigin = ServiceWorker.getVersionsForOrigin(versions, mainDocumentUrl);
+    const versionsForOrigin = ServiceWorker.getVersionsForOrigin(versions, pageUrl);
     if (versionsForOrigin.length === 0) {
       return {
         score: 0,
@@ -144,11 +143,11 @@ class ServiceWorker extends Audit {
     }
 
     const serviceWorkerUrls = ServiceWorker.getControllingServiceWorker(versionsForOrigin,
-        registrations, mainDocumentUrl);
+        registrations, pageUrl);
     if (!serviceWorkerUrls) {
       return {
         score: 0,
-        explanation: str_(UIStrings.explanationOutOfScope, {pageUrl: mainDocumentUrl}),
+        explanation: str_(UIStrings.explanationOutOfScope, {pageUrl: pageUrl.href}),
       };
     }
 
