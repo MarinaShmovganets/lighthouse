@@ -129,7 +129,9 @@ class ServiceWorker extends Audit {
    * @return {LH.Audit.Product}
    */
   static audit(artifacts) {
-    // Match against artifacts.URL.finalUrl so audit accounts for any redirects.
+    // Match against `artifacts.URL.mainDocumentUrl` so audit accounts for any redirects.
+    // Service workers won't control network requests if the page uses `history.pushState` to "enter" the SW scope.
+    // For this reason it is better to evaluate the SW in relation to the main document url rather than the final frame url.
     const {mainDocumentUrl} = artifacts.URL;
     if (!mainDocumentUrl) throw new Error('mainDocumentUrl must exist in navigation mode');
     const pageUrl = new URL(mainDocumentUrl);
