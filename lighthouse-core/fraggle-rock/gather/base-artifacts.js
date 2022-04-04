@@ -86,7 +86,7 @@ function finalizeArtifacts(baseArtifacts, gathererArtifacts) {
   artifacts.LighthouseRunWarnings = deduplicateWarnings(warnings);
 
   if (artifacts.PageLoadError && !artifacts.URL.finalUrl) {
-    artifacts.URL.finalUrl = artifacts.URL.initialUrl;
+    artifacts.URL.finalUrl = (artifacts.URL.requestedUrl || artifacts.URL.initialUrl);
   }
 
   // Check that the runner remembered to mutate the special-case URL artifact.
