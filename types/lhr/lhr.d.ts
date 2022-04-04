@@ -13,7 +13,7 @@ import {ConfigSettings} from './settings';
 interface Result {
   /** Gather mode used to collect artifacts for this result. */
   gatherMode: Result.GatherMode;
-  /** The URL that initially navigated to. Will be `undefined` in timespan/snapshot. */
+  /** The URL that Lighthouse initially navigated to. Will be `undefined` in timespan/snapshot. */
   requestedUrl?: string;
   /** The post-redirects URL that Lighthouse loaded. */
   finalUrl: string;
