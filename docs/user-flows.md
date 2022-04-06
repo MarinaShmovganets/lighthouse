@@ -211,12 +211,6 @@ async function search(page) {
   ]);
 }
 
-async function getDetailsHref(page) {
-  const $document = await getDocument(page);
-  const $link = await queries.getByText($document, /Xbox Series X 1TB Console/);
-  return $link.evaluate(node => node.href);
-}
-
 async function main() {
   // Setup the browser and Lighthouse.
   const browser = await puppeteer.launch();
@@ -235,7 +229,11 @@ async function main() {
   await flow.snapshot();
 
   // Phase 4 - Navigate to a detail page.
-  await flow.navigate(await getDetailsHref(page));
+  await flow.navigate(async () => {
+    const $document = await getDocument(page);
+    const $link = await queries.getByText($document, /Xbox Series X 1TB Console/);
+    $link.click();
+  });
 
   // Get the comprehensive flow report.
   writeFileSync('report.html', await flow.generateReport());
