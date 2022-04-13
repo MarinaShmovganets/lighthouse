@@ -20,13 +20,14 @@ describe('Has inspector issues audit', () => {
       contentSecurityPolicyIssue: [],
       corsIssue: [],
       deprecationIssue: [],
+      federatedAuthRequestIssue: [],
       genericIssue: [],
       heavyAdIssue: [],
       lowTextContrastIssue: [],
       mixedContentIssue: [],
       navigatorUserAgentIssue: [],
       quirksModeIssue: [],
-      sameSiteCookieIssue: [],
+      cookieIssue: [],
       sharedArrayBufferIssue: [],
       twaQualityEnforcement: [],
     };
@@ -80,8 +81,8 @@ describe('Has inspector issues audit', () => {
     });
   });
 
-  it('correctly displays SameSite cookie issues', () => {
-    const samesiteIssues = [
+  it('correctly displays cookie issues', () => {
+    const cookieIssues = [
       {
         cookieUrl: 'www.samesitecookies.com',
       },
@@ -92,14 +93,14 @@ describe('Has inspector issues audit', () => {
         },
       },
     ];
-    issues.sameSiteCookieIssue.push(...samesiteIssues);
+    issues.cookieIssue.push(...cookieIssues);
 
     const auditResult = InspectorIssuesAudit.audit({
       InspectorIssues: issues,
     });
     expect(auditResult.score).toBe(0);
     expect(auditResult.details.items[0]).toMatchObject({
-      issueType: 'SameSite cookie',
+      issueType: 'Cookie',
       subItems: {
         type: 'subitems',
         items: [

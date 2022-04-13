@@ -8,12 +8,36 @@
 import fs from 'fs';
 import assert from 'assert';
 
+import open from 'open';
 import waitForExpect from 'wait-for-expect';
 import puppeteer from 'puppeteer';
+import yargs from 'yargs';
 
 import {LH_ROOT} from '../../root.js';
-import UserFlow from '../fraggle-rock/user-flow.js';
+import api from '../fraggle-rock/api.js';
+import assetSaver from '../lib/asset-saver.js';
 
+const ARTIFACTS_PATH =
+  `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/artifacts/sample-flow-artifacts.json`;
+const FLOW_RESULT_PATH =
+  `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.json`;
+const FLOW_REPORT_PATH = `${LH_ROOT}/dist/sample-reports/flow-report/index.html`;
+
+const args = yargs(process.argv.slice(2))
+  .options({
+    'view': {
+      type: 'boolean',
+      default: false,
+    },
+    'rebaseline-artifacts': {
+      type: 'array',
+    },
+    'output-path': {
+      type: 'string',
+      default: FLOW_RESULT_PATH,
+    },
+  })
+  .parseSync();
 
 /** @param {puppeteer.Page} page */
 async function waitForImagesToLoad(page) {
@@ -44,42 +68,96 @@ async function waitForImagesToLoad(page) {
   }, TIMEOUT);
 }
 
-(async () => {
+/** @type {LH.Config.Json} */
+const config = {
+  extends: 'lighthouse:default',
+  settings: {
+    skipAudits: ['uses-http2'],
+  },
+};
+
+/**
+ * @param {(string|number)[]} artifactKeys
+ */
+async function rebaselineArtifacts(artifactKeys) {
   const browser = await puppeteer.launch({
     ignoreDefaultArgs: ['--enable-automation'],
     executablePath: process.env.CHROME_PATH,
     headless: false,
   });
 
+  const page = await browser.newPage();
+  const flow = await api.startFlow(page, {config});
+
+  await flow.navigate('https://www.mikescerealshack.co');
+
+  await flow.startTimespan({stepName: 'Search input'});
+  await page.type('input', 'call of duty');
+  const networkQuietPromise = page.waitForNavigation({waitUntil: ['networkidle0']});
+  await page.click('button[type=submit]');
+  await networkQuietPromise;
+  await waitForImagesToLoad(page);
+  await flow.endTimespan();
+
+  await flow.snapshot({stepName: 'Search results'});
+
+  await flow.navigate('https://www.mikescerealshack.co/corrections');
+
+  await browser.close();
+
+  let flowArtifacts = flow.createArtifactsJson();
+
+  // Normalize some data so it doesn't change on every update.
+  for (const {artifacts} of flowArtifacts.gatherSteps) {
+    assetSaver.normalizeTimingEntries(artifacts.Timing);
+  }
+
+  if (artifactKeys.length) {
+    const newFlowArtifacts = flowArtifacts;
+    flowArtifacts = JSON.parse(fs.readFileSync(ARTIFACTS_PATH, 'utf-8'));
+    for (let i = 0; i < flowArtifacts.gatherSteps.length; ++i) {
+      const gatherStep = flowArtifacts.gatherSteps[i];
+      const newGatherStep = newFlowArtifacts.gatherSteps[i];
+      for (const key of artifactKeys) {
+        // @ts-expect-error
+        gatherStep.artifacts[key] = newGatherStep.artifacts[key];
+      }
+      flowArtifacts.gatherSteps[i] = gatherStep;
+    }
+  }
+
+  fs.writeFileSync(ARTIFACTS_PATH, JSON.stringify(flowArtifacts, null, 2));
+}
+
+async function generateFlowResult() {
+  /** @type {LH.UserFlow.FlowArtifacts} */
+  const flowArtifacts = JSON.parse(fs.readFileSync(ARTIFACTS_PATH, 'utf-8'));
+  const flowResult = await api.auditFlowArtifacts(flowArtifacts, config);
+
+  // Normalize some data so it doesn't change on every update.
+  for (const {lhr} of flowResult.steps) {
+    assetSaver.normalizeTimingEntries(lhr.timing.entries);
+    lhr.timing.total = lhr.timing.entries.length;
+  }
+
+  fs.writeFileSync(args.outputPath, JSON.stringify(flowResult, null, 2));
+
+  if (args.view) {
+    const htmlReport = await api.generateFlowReport(flowResult);
+    fs.writeFileSync(FLOW_REPORT_PATH, htmlReport);
+    open(FLOW_REPORT_PATH);
+  }
+}
+
+(async () => {
   try {
-    const page = await browser.newPage();
-    const flow = new UserFlow(page);
-
-    await flow.navigate('https://www.mikescerealshack.co');
-
-    await flow.startTimespan({stepName: 'Search input'});
-    await page.type('input', 'call of duty');
-    const networkQuietPromise = page.waitForNavigation({waitUntil: ['networkidle0']});
-    await page.click('button[type=submit]');
-    await networkQuietPromise;
-    await waitForImagesToLoad(page);
-    await flow.endTimespan();
-
-    await flow.snapshot({stepName: 'Search results'});
-
-    await flow.navigate('https://www.mikescerealshack.co/corrections');
-
-    const flowResult = flow.getFlowResult();
-
-    fs.writeFileSync(
-      `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.json`,
-      JSON.stringify(flowResult, null, 2)
-    );
-
-    process.exit(0);
+    if (args.rebaselineArtifacts) {
+      await rebaselineArtifacts(args.rebaselineArtifacts);
+    }
+    await generateFlowResult();
   } catch (err) {
     console.error(err);
-    await browser.close();
     process.exit(1);
   }
 })();
+
