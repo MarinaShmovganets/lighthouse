@@ -87,8 +87,8 @@ class TraceProcessor {
   static _isNavigationStartOfInterest(event) {
     if (event.name !== 'navigationStart') return false;
     // COMPAT: support pre-m67 test traces before `args.data` added to all navStart events.
-    // TODO: remove next line when old test traces (progressive-app-m60.json) are updated.
-    if (!event.args.data) return true;
+    // TODO: remove next line when old test traces (e.g. progressive-app-m60.json) are updated.
+    if (event.args.data?.documentLoaderURL === undefined) return true;
     if (!event.args.data?.documentLoaderURL) return false;
     return ACCEPTABLE_NAVIGATION_URL_REGEX.test(event.args.data.documentLoaderURL);
   }
