@@ -1067,6 +1067,9 @@
   "lighthouse-core/audits/installable-manifest.js | protocol-timeout": {
     "message": "L̂íĝh́t̂h́ôúŝé ĉóûĺd̂ ńôt́ d̂ét̂ér̂ḿîńê íf̂ t́ĥér̂é ŵáŝ á ŝér̂v́îćê ẃôŕk̂ér̂. Ṕl̂éâśê t́r̂ý ŵít̂h́ â ńêẃêŕ v̂ér̂śîón̂ óf̂ Ćĥŕôḿê."
   },
+  "lighthouse-core/audits/installable-manifest.js | scheme-not-supported-for-webapk": {
+    "message": "T̂h́ê ḿâńîf́êśt̂ ÚR̂Ĺ ŝćĥém̂é ({scheme}) îś n̂ót̂ śûṕp̂ór̂t́êd́ ôń Âńd̂ŕôíd̂."
+  },
   "lighthouse-core/audits/installable-manifest.js | start-url-not-valid": {
     "message": "M̂án̂íf̂éŝt́ ŝt́âŕt̂ ÚR̂Ĺ îś n̂ót̂ v́âĺîd́"
   },
@@ -1272,7 +1275,7 @@
     "message": "F̂ón̂t́ŝ ẃît́ĥ `font-display: optional` ár̂é p̂ŕêĺôád̂éd̂"
   },
   "lighthouse-core/audits/preload-lcp-image.js | description": {
-    "message": "P̂ŕêĺôád̂ t́ĥé îḿâǵê úŝéd̂ b́ŷ t́ĥé L̂ĆP̂ él̂ém̂én̂t́ îń ôŕd̂ér̂ t́ô ím̂ṕr̂óv̂é ŷóûŕ L̂ĆP̂ t́îḿê. [Ĺêár̂ń m̂ór̂é](https://web.dev/optimize-lcp/#preload-important-resources)."
+    "message": "Îf́ t̂h́ê ĹĈṔ êĺêḿêńt̂ íŝ d́ŷńâḿîćâĺl̂ý âd́d̂éd̂ t́ô t́ĥé p̂áĝé, ŷóû śĥóûĺd̂ ṕr̂él̂óâd́ t̂h́ê ím̂áĝé îń ôŕd̂ér̂ t́ô ím̂ṕr̂óv̂é L̂ĆP̂. [Ĺêár̂ń m̂ór̂é](https://web.dev/optimize-lcp/#preload-important-resources)."
   },
   "lighthouse-core/audits/preload-lcp-image.js | title": {
     "message": "P̂ŕêĺôád̂ Ĺâŕĝéŝt́ Ĉón̂t́êńt̂f́ûĺ P̂áîńt̂ ím̂áĝé"

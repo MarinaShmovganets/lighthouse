@@ -99,8 +99,7 @@ describe('NavigationRunner', () => {
     navigation = createNavigation().navigation;
     computedCache = new Map();
     baseArtifacts = createMockBaseArtifacts();
-    // TODO: Make `requestedUrl` optional.
-    baseArtifacts.URL = {initialUrl: '', requestedUrl: '', finalUrl: ''};
+    baseArtifacts.URL = {initialUrl: '', finalUrl: ''};
 
     mockDriver = createMockDriver();
     mockDriver.url.mockReturnValue('about:blank');
@@ -146,7 +145,6 @@ describe('NavigationRunner', () => {
       expect(baseArtifacts).toMatchObject({
         URL: {
           initialUrl: '',
-          requestedUrl: '',
           finalUrl: '',
         },
       });
@@ -416,7 +414,7 @@ describe('NavigationRunner', () => {
 
     it('finds page load errors in network records when available', async () => {
       const {navigation, gatherers} = createNavigation();
-      mocks.navigationMock.gotoURL.mockResolvedValue({finalUrl: requestedUrl, warnings: []});
+      mocks.navigationMock.gotoURL.mockResolvedValue({mainDocumentUrl: requestedUrl, warnings: []});
       const devtoolsLog = toDevtoolsLog([{url: requestedUrl, failed: true}]);
       gatherers.timespan.meta.symbol = DevtoolsLogGatherer.symbol;
       gatherers.timespan.getArtifact = jest.fn().mockResolvedValue(devtoolsLog);

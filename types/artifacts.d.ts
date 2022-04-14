@@ -191,11 +191,10 @@ declare module Artifacts {
     /** URL of the main frame before Lighthouse starts. */
     initialUrl: string;
     /**
-     * URL of the first document request during a Lighthouse navigation.
-     * Will be the same as `initialUrl` in timespan/snapshot.
-     * TODO: Make this property `undefined` in timespan/snapshot.
+     * URL of the initially requested URL during a Lighthouse navigation.
+     * Will be `undefined` in timespan/snapshot.
      */
-    requestedUrl: string;
+    requestedUrl?: string;
     /**
      * URL of the last document request during a Lighthouse navigation.
      * Will be `undefined` in timespan/snapshot.
@@ -641,6 +640,7 @@ declare module Artifacts {
     settings: Immutable<Config.Settings>;
     gatherContext: Artifacts['GatherContext'];
     simulator?: InstanceType<typeof LanternSimulator>;
+    URL: Artifacts['URL'];
   }
 
   interface MetricComputationData extends MetricComputationDataInput {
