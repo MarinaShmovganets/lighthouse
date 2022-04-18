@@ -29,7 +29,7 @@ const {snapshotGather} = require('../../../fraggle-rock/gather/snapshot-runner.j
 describe('Snapshot Runner', () => {
   /** @type {ReturnType<typeof createMockPage>} */
   let mockPage;
-  /** @type {import('puppeteer').Page} */
+  /** @type {LH.Puppeteer.Page} */
   let page;
   /** @type {ReturnType<typeof createMockGathererInstance>} */
   let gathererA;
@@ -79,7 +79,6 @@ describe('Snapshot Runner', () => {
       fetchTime: expect.any(String),
       URL: {
         initialUrl: 'https://lighthouse.example.com/',
-        requestedUrl: 'https://lighthouse.example.com/',
         finalUrl: 'https://lighthouse.example.com/',
       },
     });

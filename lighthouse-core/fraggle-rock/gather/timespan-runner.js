@@ -18,7 +18,7 @@ const {initializeConfig} = require('../config/config.js');
 const {getBaseArtifacts, finalizeArtifacts} = require('./base-artifacts.js');
 
 /**
- * @param {{page: import('puppeteer').Page, config?: LH.Config.Json, configContext?: LH.Config.FRContext}} options
+ * @param {{page: LH.Puppeteer.Page, config?: LH.Config.Json, configContext?: LH.Config.FRContext}} options
  * @return {Promise<{endTimespanGather(): Promise<LH.Gatherer.FRGatherResult>}>}
  */
 async function startTimespanGather(options) {
@@ -37,7 +37,6 @@ async function startTimespanGather(options) {
   const artifactState = getEmptyArtifactState();
   /** @type {Omit<import('./runner-helpers.js').CollectPhaseArtifactOptions, 'phase'>} */
   const phaseOptions = {
-    url: initialUrl,
     driver,
     artifactDefinitions,
     artifactState,
@@ -54,15 +53,12 @@ async function startTimespanGather(options) {
   return {
     async endTimespanGather() {
       const finalUrl = await driver.url();
-      phaseOptions.url = finalUrl;
 
       const runnerOptions = {config, computedCache};
       const artifacts = await Runner.gather(
         async () => {
           baseArtifacts.URL = {
             initialUrl,
-            // TODO: Remove requestedUrl from timespan mode
-            requestedUrl: initialUrl,
             finalUrl,
           };
 

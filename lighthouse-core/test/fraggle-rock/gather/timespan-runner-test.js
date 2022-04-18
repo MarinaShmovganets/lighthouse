@@ -31,7 +31,7 @@ const {startTimespanGather} = require('../../../fraggle-rock/gather/timespan-run
 describe('Timespan Runner', () => {
   /** @type {ReturnType<typeof createMockPage>} */
   let mockPage;
-  /** @type {import('puppeteer').Page} */
+  /** @type {LH.Puppeteer.Page} */
   let page;
   /** @type {ReturnType<typeof createMockGathererInstance>} */
   let gathererA;
@@ -102,7 +102,6 @@ describe('Timespan Runner', () => {
       fetchTime: expect.any(String),
       URL: {
         initialUrl: 'https://start.example.com/',
-        requestedUrl: 'https://start.example.com/',
         finalUrl: 'https://end.example.com/',
       },
     });

@@ -17,7 +17,7 @@ const {initializeConfig} = require('../config/config.js');
 const {getBaseArtifacts, finalizeArtifacts} = require('./base-artifacts.js');
 
 /**
- * @param {{page: import('puppeteer').Page, config?: LH.Config.Json, configContext?: LH.Config.FRContext}} options
+ * @param {{page: LH.Puppeteer.Page, config?: LH.Config.Json, configContext?: LH.Config.FRContext}} options
  * @return {Promise<LH.Gatherer.FRGatherResult>}
  */
 async function snapshotGather(options) {
@@ -38,15 +38,12 @@ async function snapshotGather(options) {
       const baseArtifacts = await getBaseArtifacts(config, driver, {gatherMode: 'snapshot'});
       baseArtifacts.URL = {
         initialUrl: url,
-        // TODO: Remove `requestedUrl` from snapshot mode.
-        requestedUrl: url,
         finalUrl: url,
       };
 
       const artifactDefinitions = config.artifacts || [];
       const artifactState = getEmptyArtifactState();
       await collectPhaseArtifacts({
-        url,
         phase: 'getArtifact',
         gatherMode: 'snapshot',
         driver,
