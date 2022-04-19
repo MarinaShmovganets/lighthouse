@@ -38,12 +38,12 @@ export class I18n {
   _formatNumberWithGranularity(number, granularity, opts = {}) {
     if (granularity !== undefined) {
       opts = {...opts};
-      const log10 = -Math.log10(granularity);
-      if (!Number.isFinite(log10) || (granularity > 1 && Math.floor(log10) !== log10)) {
+      if (!Number.isFinite(granularity) || granularity <= 0) {
         throw new Error(`granularity of ${granularity} is invalid`);
       }
 
       if (granularity < 1) {
+        const log10 = -Math.log10(granularity);
         opts.minimumFractionDigits = opts.maximumFractionDigits = Math.ceil(log10);
       }
 

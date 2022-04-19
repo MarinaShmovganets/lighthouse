@@ -38,6 +38,10 @@ describe('util helpers', () => {
     assert.strictEqual(i18n.formatNumber(0.000001, 0.1), '0.0');
     assert.strictEqual(i18n.formatNumber(-0.000001, 0.1), '0.0');
 
+    assert.strictEqual(i18n.formatNumber(10), '10');
+    assert.strictEqual(i18n.formatNumber(100.01), '100.01');
+    assert.strictEqual(i18n.formatNumber(13000.456, 0.1), '13,000.5');
+
     assert.strictEqual(i18n.formatInteger(10), '10');
     assert.strictEqual(i18n.formatInteger(100.01), '100');
     assert.strictEqual(i18n.formatInteger(13000.6), '13,001');
@@ -145,10 +149,9 @@ describe('util helpers', () => {
 
     const i18n = new I18n('de', {...Util.UIStrings});
     assert.strictEqual(i18n.formatNumber(number), '12.346,859');
-    assert.strictEqual(i18n.formatNumber(number, 0.1), '12.346,9');
     assert.strictEqual(i18n.formatBytesToKiB(number, 0.1), `12,1${NBSP}KiB`);
     assert.strictEqual(i18n.formatMilliseconds(number, 10), `12.350${NBSP}ms`);
-    assert.strictEqual(i18n.formatSeconds(number, 0.1), `12,3${NBSP}Sek.`);
+    assert.strictEqual(i18n.formatSeconds(number), `12,347${NBSP}Sek.`);
   });
 
   it('uses decimal comma with en-XA test locale', () => {
@@ -157,10 +160,9 @@ describe('util helpers', () => {
 
     const i18n = new I18n('en-XA', {...Util.UIStrings});
     assert.strictEqual(i18n.formatNumber(number), '12.346,859');
-    assert.strictEqual(i18n.formatNumber(number, 0.1), '12.346,9');
     assert.strictEqual(i18n.formatBytesToKiB(number, 0.1), `12,1${NBSP}KiB`);
-    assert.strictEqual(i18n.formatMilliseconds(number, 10), `12.350${NBSP}ms`);
-    assert.strictEqual(i18n.formatSeconds(number, 0.1), `12,3${NBSP}Sek.`);
+    assert.strictEqual(i18n.formatMilliseconds(number, 50), `12.350${NBSP}ms`);
+    assert.strictEqual(i18n.formatSeconds(number, 1), `12${NBSP}Sek.`);
   });
 
   it('should not crash on unknown locales', () => {
