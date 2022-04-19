@@ -1418,6 +1418,9 @@
 .lh-category-wrapper {
   border-bottom: 1px solid var(--color-gray-200);
 }
+.lh-category-wrapper:last-of-type {
+  border-bottom: 0;
+}
 
 .lh-category-header {
   margin-bottom: var(--section-padding-vertical);
