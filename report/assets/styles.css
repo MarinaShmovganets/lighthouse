@@ -695,10 +695,9 @@
   border-top: 1px solid var(--report-border-color-secondary);
 }
 
-.lh-metric:nth-last-child(-n+2) {
+:not(.lh--hoisted-meta) .lh-metric:nth-last-child(-n+2) {
   border-bottom: 1px solid var(--report-border-color-secondary);
 }
-
 
 .lh-metric__innerwrap {
   display: grid;
@@ -746,7 +745,7 @@
   .lh-metric {
     border-bottom: none !important;
   }
-  .lh-metric:nth-last-child(1) {
+  :not(.lh--hoisted-meta) .lh-metric:nth-last-child(1) {
     border-bottom: 1px solid var(--report-border-color-secondary) !important;
   }
 
