@@ -56,7 +56,7 @@ class Doctype extends Audit {
     }
 
     // only set constants once we know there is a doctype
-    const doctypeName = artifacts.Doctype.name.trim();
+    const doctypeName = artifacts.Doctype.name;
     const doctypePublicId = artifacts.Doctype.publicId;
     const doctypeSystemId = artifacts.Doctype.systemId;
 
