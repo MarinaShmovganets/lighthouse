@@ -40,7 +40,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'xml',
         publicId: '',
         systemId: '',
-        documentCompatMode: 'CSS1Compat',
+        documentCompatMode: 'BackCompat',
       },
     });
     assert.equal(auditResult.score, 0);
@@ -54,7 +54,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'html',
         publicId: '189655',
         systemId: '',
-        documentCompatMode: 'CSS1Compat',
+        documentCompatMode: 'BackCompat',
       },
     });
     assert.equal(auditResult.score, 0);
@@ -67,7 +67,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'html',
         publicId: '',
         systemId: '189655',
-        documentCompatMode: 'CSS1Compat',
+        documentCompatMode: 'BackCompat',
       },
     });
     assert.equal(auditResult.score, 0);
