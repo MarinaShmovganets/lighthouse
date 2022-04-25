@@ -63,13 +63,6 @@ class Doctype extends Audit {
     const doctypeSystemId = artifacts.Doctype.systemId;
     const compatMode = artifacts.Doctype.documentCompatMode;
 
-    if (compatMode === 'BackCompat') {
-      return {
-        score: 0,
-        explanation: str_(UIStrings.explanationWrongDoctype),
-      };
-    }
-
     if (doctypePublicId !== '') {
       return {
         score: 0,
@@ -81,6 +74,13 @@ class Doctype extends Audit {
       return {
         score: 0,
         explanation: str_(UIStrings.explanationSystemId),
+      };
+    }
+
+    if (compatMode === 'BackCompat') {
+      return {
+        score: 0,
+        explanation: str_(UIStrings.explanationWrongDoctype),
       };
     }
 

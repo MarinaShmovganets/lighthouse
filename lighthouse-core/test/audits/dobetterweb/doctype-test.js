@@ -19,10 +19,14 @@ describe('DOBETTERWEB: doctype audit', () => {
     expect(auditResult.explanation).toBeDisplayString('Document must contain a doctype');
   });
 
-  it('fails when document is in quirks-mode', () => {
+  it('fails when document is in quirks-mode (but passes other checks)', () => {
     const auditResult = Audit.audit({
+      // eg `<!DOCTYPE html foo>`. https://github.com/GoogleChrome/lighthouse/issues/10030
       Doctype: {
-        compatMode: 'BackCompat',
+        name: 'html',
+        publicId: '',
+        systemId: '',
+        documentCompatMode: 'BackCompat',
       },
     });
     assert.equal(auditResult.score, 0);
