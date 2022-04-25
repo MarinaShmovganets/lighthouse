@@ -160,7 +160,7 @@ class Accessibility extends FRGatherer {
   static pageFns = {
     runA11yChecks,
     createAxeRuleResultArtifact,
-  }
+  };
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
