@@ -30,7 +30,8 @@ describe('DOBETTERWEB: doctype audit', () => {
       },
     });
     assert.equal(auditResult.score, 0);
-    expect(auditResult.explanation).toBeDisplayString('Document contains wrong doctype');
+    expect(auditResult.explanation)
+        .toBeDisplayString('Document contains a doctype that triggers quirks-mode');
   });
 
   it('fails when the value of the name attribute is a value other than "html"', () => {

@@ -20,7 +20,7 @@ const UIStrings = {
   /** Explanatory message stating that the document has no doctype. */
   explanationNoDoctype: 'Document must contain a doctype',
   /** Explanatory message stating that the document has wrong doctype */
-  explanationWrongDoctype: 'Document contains doctype that triggers quirks-mode',
+  explanationWrongDoctype: 'Document contains a doctype that triggers quirks-mode',
   /** Explanatory message stating that the publicId field is not empty. */
   explanationPublicId: 'Expected publicId to be an empty string',
   /** Explanatory message stating that the systemId field is not empty. */
