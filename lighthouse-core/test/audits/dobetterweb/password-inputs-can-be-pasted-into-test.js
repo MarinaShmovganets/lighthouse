@@ -17,16 +17,14 @@ describe('Password inputs can be pasted into', () => {
       PasswordInputsWithPreventedPaste: [],
     });
     assert.equal(auditResult.score, 1);
-    assert.equal(auditResult.extendedInfo.value.length, 0);
     assert.equal(auditResult.details.items.length, 0);
   });
 
   it('fails when there are password inputs preventing paste', () => {
     const auditResult = PasswordInputsCanBePastedIntoAudit.audit({
-      PasswordInputsWithPreventedPaste: [{snippet: ''}, {snippet: ''}],
+      PasswordInputsWithPreventedPaste: [{node: {snippet: ''}}, {node: {snippet: ''}}],
     });
     assert.equal(auditResult.score, 0);
-    assert.equal(auditResult.extendedInfo.value.length, 2);
     assert.equal(auditResult.details.items.length, 2);
   });
 });

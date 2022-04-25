@@ -12,7 +12,7 @@ const Interactive = require('../../computed/metrics/interactive.js');
 const UIStrings = {
   /** Description of the Time to Interactive (TTI) metric, which evaluates when a page has completed its primary network activity and main thread work. This is displayed within a tooltip when the user hovers on the metric name to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Time to interactive is the amount of time it takes for the page to become fully ' +
-    'interactive. [Learn more](https://web.dev/interactive).',
+    'interactive. [Learn more](https://web.dev/interactive/).',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -33,7 +33,8 @@ class InteractiveMetric extends Audit {
       title: str_(i18n.UIStrings.interactiveMetric),
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'TestedAsMobileDevice'],
+      supportedModes: ['navigation'],
+      requiredArtifacts: ['traces', 'devtoolsLogs', 'GatherContext', 'URL'],
     };
   }
 
@@ -69,19 +70,13 @@ class InteractiveMetric extends Audit {
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-    const metricComputationData = {trace, devtoolsLog, settings: context.settings};
+    const gatherContext = artifacts.GatherContext;
+    const metricComputationData = {trace, devtoolsLog, gatherContext,
+      settings: context.settings, URL: artifacts.URL};
     const metricResult = await Interactive.request(metricComputationData, context);
     const timeInMs = metricResult.timing;
-    const isDesktop = artifacts.TestedAsMobileDevice === false;
-    const options = isDesktop ? context.options.desktop : context.options.mobile;
-    const extendedInfo = {
-      timeInMs,
-      timestamp: metricResult.timestamp,
-      // @ts-ignore - TODO(bckenny): make lantern metric/metric a discriminated union.
-      optimistic: metricResult.optimisticEstimate && metricResult.optimisticEstimate.timeInMs,
-      // @ts-ignore
-      pessimistic: metricResult.pessimisticEstimate && metricResult.pessimisticEstimate.timeInMs,
-    };
+    const options = context.options[context.settings.formFactor];
+
 
     return {
       score: Audit.computeLogNormalScore(
@@ -91,9 +86,6 @@ class InteractiveMetric extends Audit {
       numericValue: timeInMs,
       numericUnit: 'millisecond',
       displayValue: str_(i18n.UIStrings.seconds, {timeInMs}),
-      extendedInfo: {
-        value: extendedInfo,
-      },
     };
   }
 }

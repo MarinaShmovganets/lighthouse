@@ -237,11 +237,9 @@ describe('Budget', () => {
       budgets[0].timings = [{metric: 'blah', budget: 0}];
       const metrics = [
         'first-contentful-paint',
-        'first-cpu-idle',
         'interactive',
         'first-meaningful-paint',
         'max-potential-fid',
-        'estimated-input-latency',
         'total-blocking-time',
         'speed-index',
         'largest-contentful-paint',
@@ -261,8 +259,8 @@ describe('Budget', () => {
     });
 
     it('throws when an invalid budget is supplied', () => {
-      budgets[0].timings[0].budget = '100KB';
-      assert.throws(_ => Budget.initializeBudget(budgets), /Invalid budget: 100KB/);
+      budgets[0].timings[0].budget = '100KiB';
+      assert.throws(_ => Budget.initializeBudget(budgets), /Invalid budget: 100KiB/);
     });
 
     it('throws when a tolerance is supplied', () => {

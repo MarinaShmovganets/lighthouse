@@ -5,7 +5,10 @@
  */
 'use strict';
 
-const Gatherer = require('./gatherer.js');
+/* global getNodeDetails */
+
+const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
+const dom = require('../driver/dom.js');
 const pageFunctions = require('../../lib/page-functions.js');
 
 /* eslint-env browser, node */
@@ -19,7 +22,7 @@ const pageFunctions = require('../../lib/page-functions.js');
  *
  * @return {LH.Artifacts['AnchorElements']}
  */
-/* istanbul ignore next */
+/* c8 ignore start */
 function collectAnchorElements() {
   /** @param {string} url */
   const resolveURLOrEmpty = url => {
@@ -30,65 +33,100 @@ function collectAnchorElements() {
     }
   };
 
+  /** @param {HTMLAnchorElement|SVGAElement} node */
+  function getTruncatedOnclick(node) {
+    const onclick = node.getAttribute('onclick') || '';
+    return onclick.slice(0, 1024);
+  }
+
   /** @type {Array<HTMLAnchorElement|SVGAElement>} */
-  // @ts-ignore - put into scope via stringification
+  // @ts-expect-error - put into scope via stringification
   const anchorElements = getElementsInDocument('a'); // eslint-disable-line no-undef
 
   return anchorElements.map(node => {
-    // @ts-ignore - put into scope via stringification
-    const outerHTML = getOuterHTMLSnippet(node); // eslint-disable-line no-undef
-    // @ts-ignore - put into scope via stringification
-    const nodePath = getNodePath(node); // eslint-disable-line no-undef
-    // @ts-ignore - getNodeSelector put into scope via stringification
-    const selector = getNodeSelector(node); // eslint-disable-line no-undef
-    // @ts-ignore - getNodeLabel put into scope via stringification
-    const nodeLabel = getNodeLabel(node); // eslint-disable-line no-undef
-
     if (node instanceof HTMLAnchorElement) {
       return {
         href: node.href,
+        rawHref: node.getAttribute('href') || '',
+        onclick: getTruncatedOnclick(node),
+        role: node.getAttribute('role') || '',
+        name: node.name,
         text: node.innerText, // we don't want to return hidden text, so use innerText
         rel: node.rel,
         target: node.target,
-        devtoolsNodePath: nodePath,
-        selector,
-        nodeLabel,
-        outerHTML,
+        // @ts-expect-error - getNodeDetails put into scope via stringification
+        node: getNodeDetails(node),
       };
     }
 
     return {
       href: resolveURLOrEmpty(node.href.baseVal),
+      rawHref: node.getAttribute('href') || '',
+      onclick: getTruncatedOnclick(node),
+      role: node.getAttribute('role') || '',
       text: node.textContent || '',
       rel: '',
       target: node.target.baseVal || '',
-      devtoolsNodePath: nodePath,
-      selector,
-      nodeLabel,
-      outerHTML,
+      // @ts-expect-error - getNodeDetails put into scope via stringification
+      node: getNodeDetails(node),
     };
   });
 }
+/* c8 ignore stop */
 
-class AnchorElements extends Gatherer {
+/**
+ * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {string} devtoolsNodePath
+ * @return {Promise<Array<{type: string}>>}
+ */
+async function getEventListeners(session, devtoolsNodePath) {
+  const objectId = await dom.resolveDevtoolsNodePathToObjectId(session, devtoolsNodePath);
+  if (!objectId) return [];
+
+  const response = await session.sendCommand('DOMDebugger.getEventListeners', {
+    objectId,
+  });
+
+  return response.listeners.map(({type}) => ({type}));
+}
+
+class AnchorElements extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['snapshot', 'navigation'],
+  };
+
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['AnchorElements']>}
    */
-  async afterPass(passContext) {
-    const driver = passContext.driver;
-    const expression = `(() => {
-      ${pageFunctions.getOuterHTMLSnippetString};
-      ${pageFunctions.getElementsInDocumentString};
-      ${pageFunctions.getNodePathString};
-      ${pageFunctions.getNodeSelectorString};
-      ${pageFunctions.getNodeLabelString};
+  async getArtifact(passContext) {
+    const session = passContext.driver.defaultSession;
 
-      return (${collectAnchorElements})();
-    })()`;
+    const anchors = await passContext.driver.executionContext.evaluate(collectAnchorElements, {
+      args: [],
+      useIsolation: true,
+      deps: [
+        pageFunctions.getElementsInDocumentString,
+        pageFunctions.getNodeDetailsString,
+      ],
+    });
+    await session.sendCommand('DOM.enable');
 
-    /** @type {Array<LH.Artifacts.AnchorElement>} */
-    return driver.evaluateAsync(expression, {useIsolation: true});
+    // DOM.getDocument is necessary for pushNodesByBackendIdsToFrontend to properly retrieve nodeIds if the `DOM` domain was enabled before this gatherer, invoke it to be safe.
+    await session.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
+    const anchorsWithEventListeners = anchors.map(async anchor => {
+      const listeners = await getEventListeners(session, anchor.node.devtoolsNodePath);
+
+      return {
+        ...anchor,
+        listeners,
+      };
+    });
+
+    const result = await Promise.all(anchorsWithEventListeners);
+    await session.sendCommand('DOM.disable');
+    return result;
   }
 }
 

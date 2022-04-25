@@ -3,49 +3,48 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 /* eslint-disable no-console */
 
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
-const {execFileSync} = require('child_process');
-const crypto = require('crypto');
-const LegacyJavascript = require('../../audits/legacy-javascript.js');
-const networkRecordsToDevtoolsLog = require('../../test/network-records-to-devtools-log.js');
+import fs from 'fs';
+import path from 'path';
+import {execFileSync} from 'child_process';
+
+import glob from 'glob';
+
+import {makeHash} from './hash.js';
+import LegacyJavascript from '../../audits/byte-efficiency/legacy-javascript.js';
+import networkRecordsToDevtoolsLog from '../../test/network-records-to-devtools-log.js';
+import {LH_ROOT, readJson} from '../../../root.js';
+
+const scriptDir = `${LH_ROOT}/lighthouse-core/scripts/legacy-javascript`;
 
 // Create variants in a directory named-cached by contents of this script and the lockfile.
 // This folder is in the CI cache, so that the time consuming part of this test only runs if
 // the output would change.
 removeCoreJs(); // (in case the script was canceled halfway - there shouldn't be a core-js dep checked in.)
 
-const hash = crypto
-  .createHash('sha256')
-  .update(fs.readFileSync(`${__dirname}/yarn.lock`, 'utf8'))
-  .update(fs.readFileSync(`${__dirname}/run.js`, 'utf8'))
-  .update(fs.readFileSync(`${__dirname}/main.js`, 'utf8'))
-  .digest('hex');
-const VARIANT_DIR = `${__dirname}/variants/${hash}`;
+const hash = makeHash();
+const VARIANT_DIR = `${scriptDir}/variants/${hash}`;
 
 // build, audit, all.
 const STAGE = process.env.STAGE || 'all';
 
-const mainCode = fs.readFileSync(`${__dirname}/main.js`, 'utf-8');
+const mainCode = fs.readFileSync(`${scriptDir}/main.js`, 'utf-8');
 
 const plugins = LegacyJavascript.getTransformPatterns().map(pattern => pattern.name);
-const polyfills = LegacyJavascript.getPolyfillData().map(d => d.module);
+const polyfills = LegacyJavascript.getPolyfillData();
 
 /**
  * @param {string} command
  * @param {string[]} args
  */
 function runCommand(command, args) {
-  execFileSync(command, args, {cwd: __dirname});
+  execFileSync(command, args, {cwd: scriptDir});
 }
 
 /**
- * @param {number} version
+ * @param {string} version
  */
 function installCoreJs(version) {
   runCommand('yarn', [
@@ -72,6 +71,7 @@ async function createVariant(options) {
 
   if (!fs.existsSync(`${dir}/main.bundle.js`) && (STAGE === 'build' || STAGE === 'all')) {
     fs.mkdirSync(dir, {recursive: true});
+    fs.writeFileSync(`${dir}/package.json`, JSON.stringify({type: 'commonjs'}));
     fs.writeFileSync(`${dir}/main.js`, code);
     fs.writeFileSync(`${dir}/.babelrc`, JSON.stringify(babelrc || {}, null, 2));
     // Not used in this script, but useful for running Lighthouse manually.
@@ -95,6 +95,7 @@ async function createVariant(options) {
       `${dir}/main.transpiled.js`,
       '-o', `${dir}/main.bundle.js`,
       '--debug', // source maps
+      '--full-paths=false',
     ]);
 
     // Minify.
@@ -114,13 +115,11 @@ async function createVariant(options) {
 
     legacyJavascriptResults = await getLegacyJavascriptResults(code, map, {sourceMaps: true});
     fs.writeFileSync(`${dir}/legacy-javascript.json`,
-      // @ts-ignore: Items will exist.
-      JSON.stringify(legacyJavascriptResults.details.items, null, 2));
+      JSON.stringify(legacyJavascriptResults.items, null, 2));
 
     legacyJavascriptResults = await getLegacyJavascriptResults(code, map, {sourceMaps: false});
     fs.writeFileSync(`${dir}/legacy-javascript-nomaps.json`,
-      // @ts-ignore: Items will exist.
-      JSON.stringify(legacyJavascriptResults.details.items, null, 2));
+      JSON.stringify(legacyJavascriptResults.items, null, 2));
   }
 }
 
@@ -128,39 +127,40 @@ async function createVariant(options) {
  * @param {string} code
  * @param {LH.Artifacts.RawSourceMap} map
  * @param {{sourceMaps: boolean}} _
- * @return {Promise<LH.Audit.Product>}
+ * @return {Promise<import('../../audits/byte-efficiency/byte-efficiency-audit.js').ByteEfficiencyProduct>}
  */
 function getLegacyJavascriptResults(code, map, {sourceMaps}) {
   // Instead of running Lighthouse, use LegacyJavascript directly. Requires some setup.
   // Much faster than running Lighthouse.
   const documentUrl = 'http://localhost/index.html'; // These URLs don't matter.
   const scriptUrl = 'https://localhost/main.bundle.min.js';
+  const scriptId = '10001';
   const networkRecords = [
-    {url: documentUrl},
-    {url: scriptUrl},
+    {url: documentUrl, requestId: '1000.1', resourceType: /** @type {const} */ ('Document')},
+    {url: scriptUrl, requestId: '1000.2'},
   ];
   const devtoolsLogs = networkRecordsToDevtoolsLog(networkRecords);
-  const jsRequestWillBeSentEvent = devtoolsLogs.find(e =>
-    e.method === 'Network.requestWillBeSent' && e.params.request.url === scriptUrl);
-  if (!jsRequestWillBeSentEvent) throw new Error('jsRequestWillBeSentEvent is undefined');
-  // @ts-ignore - the log event is not narrowed to 'Network.requestWillBeSent' event from find
-  const jsRequestId = jsRequestWillBeSentEvent.params.requestId;
 
-  /** @type {Pick<LH.Artifacts, 'devtoolsLogs'|'URL'|'ScriptElements'|'SourceMaps'>} */
+  /** @type {Pick<LH.Artifacts, 'devtoolsLogs'|'URL'|'Scripts'|'SourceMaps'>} */
   const artifacts = {
-    URL: {finalUrl: documentUrl, requestedUrl: documentUrl},
+    URL: {
+      initialUrl: 'about:blank',
+      requestedUrl: documentUrl,
+      mainDocumentUrl: documentUrl,
+      finalUrl: documentUrl,
+    },
     devtoolsLogs: {
       [LegacyJavascript.DEFAULT_PASS]: devtoolsLogs,
     },
-    ScriptElements: [
-      // @ts-ignore - partial ScriptElement excluding unused DOM properties
-      {src: scriptUrl, requestId: jsRequestId, content: code},
+    Scripts: [
+      // @ts-expect-error - partial Script excluding unused properties
+      {scriptId, url: scriptUrl, content: code},
     ],
     SourceMaps: [],
   };
-  if (sourceMaps) artifacts.SourceMaps = [{scriptUrl, map}];
-  // @ts-ignore: partial Artifacts.
-  return LegacyJavascript.audit(artifacts, {
+  if (sourceMaps) artifacts.SourceMaps = [{scriptId, scriptUrl, map}];
+  // @ts-expect-error: partial Artifacts.
+  return LegacyJavascript.audit_(artifacts, networkRecords, {
     computedCache: new Map(),
   });
 }
@@ -172,13 +172,17 @@ function makeSummary(legacyJavascriptFilename) {
   let totalSignals = 0;
   const variants = [];
   for (const dir of glob.sync('*/*', {cwd: VARIANT_DIR})) {
-    /** @type {Array<{signals: string[]}>} */
-    const legacyJavascriptItems = require(`${VARIANT_DIR}/${dir}/${legacyJavascriptFilename}`);
-    const signals = legacyJavascriptItems.reduce((acc, cur) => {
-      totalSignals += cur.signals.length;
-      return acc.concat(cur.signals);
-    }, /** @type {string[]} */ ([])).join(', ');
-    variants.push({name: dir, signals});
+    /** @type {import('../../audits/byte-efficiency/legacy-javascript.js').Item[]} */
+    const legacyJavascriptItems = readJson(`${VARIANT_DIR}/${dir}/${legacyJavascriptFilename}`);
+
+    const signals = [];
+    for (const item of legacyJavascriptItems) {
+      for (const subItem of item.subItems.items) {
+        signals.push(subItem.signal);
+      }
+    }
+    totalSignals += signals.length;
+    variants.push({name: dir, signals: signals.join(', ')});
   }
   return {
     totalSignals,
@@ -214,30 +218,48 @@ function createSummarySizes() {
     lines.push('');
   }
 
-  fs.writeFileSync(`${__dirname}/summary-sizes.txt`, lines.join('\n'));
+  fs.writeFileSync(`${scriptDir}/summary-sizes.txt`, lines.join('\n'));
+}
+
+/**
+ * @param {string} module
+ */
+function makeRequireCodeForPolyfill(module) {
+  return `require("../../../../node_modules/core-js/modules/${module}")`;
 }
 
 async function main() {
-  for (const plugin of plugins) {
+  const pluginGroups = [
+    ...plugins.map(plugin => [plugin]),
+    ['@babel/plugin-transform-regenerator', '@babel/transform-async-to-generator'],
+  ];
+  for (const pluginGroup of pluginGroups) {
     await createVariant({
       group: 'only-plugin',
-      name: plugin,
+      name: pluginGroup.join('_'),
       code: mainCode,
       babelrc: {
-        plugins: [plugin],
+        plugins: pluginGroup,
       },
     });
   }
 
-  for (const coreJsVersion of [2, 3]) {
+  for (const coreJsVersion of ['2.6.12', '3.19.1']) {
+    const major = coreJsVersion.split('.')[0];
     removeCoreJs();
     installCoreJs(coreJsVersion);
 
-    for (const esmodules of [true, false]) {
+    const moduleOptions = [
+      {esmodules: false},
+      // Output: https://gist.github.com/connorjclark/515d05094ffd1fc038894a77156bf226
+      {esmodules: true},
+      {esmodules: true, bugfixes: true},
+    ];
+    for (const {esmodules, bugfixes} of moduleOptions) {
       await createVariant({
-        group: `core-js-${coreJsVersion}-preset-env-esmodules`,
-        name: String(esmodules),
-        code: mainCode,
+        group: `core-js-${major}-preset-env-esmodules`,
+        name: String(esmodules) + (bugfixes ? '_and_bugfixes' : ''),
+        code: `require('core-js');\n${mainCode}`,
         babelrc: {
           presets: [
             [
@@ -245,7 +267,8 @@ async function main() {
               {
                 targets: {esmodules},
                 useBuiltIns: 'entry',
-                corejs: coreJsVersion,
+                corejs: major,
+                bugfixes,
               },
             ],
           ],
@@ -254,12 +277,23 @@ async function main() {
     }
 
     for (const polyfill of polyfills) {
+      const module = major === '2' ? polyfill.coreJs2Module : polyfill.coreJs3Module;
       await createVariant({
-        group: `core-js-${coreJsVersion}-only-polyfill`,
-        name: polyfill,
-        code: `require("core-js/modules/${polyfill}")`,
+        group: `core-js-${major}-only-polyfill`,
+        name: module,
+        code: makeRequireCodeForPolyfill(module),
       });
     }
+
+    const allPolyfillCode = polyfills.map(polyfill => {
+      const module = major === '2' ? polyfill.coreJs2Module : polyfill.coreJs3Module;
+      return makeRequireCodeForPolyfill(module);
+    }).join('\n');
+    await createVariant({
+      group: 'all-legacy-polyfills',
+      name: `all-legacy-polyfills-core-js-${major}`,
+      code: allPolyfillCode,
+    });
   }
 
   removeCoreJs();
@@ -268,18 +302,25 @@ async function main() {
 
   // Summary of using source maps and pattern matching.
   summary = makeSummary('legacy-javascript.json');
-  fs.writeFileSync(`${__dirname}/summary-signals.json`, JSON.stringify(summary, null, 2));
+  fs.writeFileSync(`${scriptDir}/summary-signals.json`, JSON.stringify(summary, null, 2));
+
+  // Summary of using only pattern matching.
+  summary = makeSummary('legacy-javascript-nomaps.json');
+  fs.writeFileSync(`${scriptDir}/summary-signals-nomaps.json`, JSON.stringify(summary, null, 2));
   console.log({
     totalSignals: summary.totalSignals,
     variantsMissingSignals: summary.variantsMissingSignals,
   });
-  console.table(summary.variants);
-
-  // Summary of using only pattern matching.
-  summary = makeSummary('legacy-javascript-nomaps.json');
-  fs.writeFileSync(`${__dirname}/summary-signals-nomaps.json`, JSON.stringify(summary, null, 2));
+  console.table(summary.variants.filter(variant => {
+    // Too many signals, break layout.
+    if (variant.name.includes('all-legacy-polyfills')) return false;
+    return true;
+  }));
 
   createSummarySizes();
 }
 
-main();
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
+});

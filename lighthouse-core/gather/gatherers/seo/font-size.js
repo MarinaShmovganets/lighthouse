@@ -16,7 +16,7 @@
  * This gatherer collects stylesheet metadata by itself, instead of relying on the styles gatherer which is slow (because it parses the stylesheet content).
  */
 
-const Gatherer = require('../gatherer.js');
+const FRGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 const FONT_SIZE_PROPERTY_NAME = 'font-size';
 const MINIMAL_LEGIBLE_FONT_SIZE_PX = 12;
 // limit number of protocol calls to make sure that gatherer doesn't take more than 1-2s
@@ -24,37 +24,7 @@ const MAX_NODES_SOURCE_RULE_FETCHED = 50; // number of nodes to fetch the source
 
 /** @typedef {import('../../driver.js')} Driver */
 /** @typedef {LH.Artifacts.FontSize['analyzedFailingNodesData'][0]} NodeFontData */
-/** @typedef {LH.Artifacts.FontSize.DomNodeMaybeWithParent} DomNodeMaybeWithParent*/
 /** @typedef {Map<number, {fontSize: number, textLength: number}>} BackendIdsToFontData */
-
-/**
- * @param {LH.Artifacts.FontSize.DomNodeMaybeWithParent=} node
- * @returns {node is LH.Artifacts.FontSize.DomNodeWithParent}
- */
-function nodeInBody(node) {
-  if (!node) {
-    return false;
-  }
-  if (node.nodeName === 'BODY') {
-    return true;
-  }
-  return nodeInBody(node.parentNode);
-}
-
-/**
- * Get list of all nodes from the document body.
- *
- * @param {Driver} driver
- * @returns {Promise<LH.Artifacts.FontSize.DomNodeWithParent[]>}
- */
-async function getAllNodesFromBody(driver) {
-  const nodes = /** @type {DomNodeMaybeWithParent[]} */ (await driver.getNodesInDocument());
-  /** @type {Map<number|undefined, LH.Artifacts.FontSize.DomNodeMaybeWithParent>} */
-  const nodeMap = new Map();
-  nodes.forEach(node => nodeMap.set(node.nodeId, node));
-  nodes.forEach(node => (node.parentNode = nodeMap.get(node.parentId)));
-  return nodes.filter(nodeInBody);
-}
 
 /**
  * @param {LH.Crdp.CSS.CSSStyle} [style]
@@ -66,25 +36,28 @@ function hasFontSizeDeclaration(style) {
 
 /**
  * Computes the CSS specificity of a given selector, i.e. #id > .class > div
+ * TODO: Handle pseudo selectors (:not(), :where, :nth-child) and attribute selectors
  * LIMITATION: !important is not respected
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
  * @see https://www.smashingmagazine.com/2010/04/css-specificity-and-inheritance/
+ * @see https://drafts.csswg.org/selectors-4/#specificity-rules
  *
  * @param {string} selector
  * @return {number}
  */
 function computeSelectorSpecificity(selector) {
-  const tokens = selector.split(' ');
+  // Remove universal selector and separator characters, then split.
+  const tokens = selector.replace(/[*\s+>~]/g, ' ').split(' ');
 
   let numIDs = 0;
   let numClasses = 0;
   let numTypes = 0;
 
   for (const token of tokens) {
-    const ids = token.match(/\b#[a-z0-9]+/g) || [];
-    const classes = token.match(/\b\.[a-z0-9]+/g) || [];
-    const types = token.match(/^[a-z]+/) ? [1] : [];
+    const ids = token.match(/(\b|^)#[a-z0-9_-]+/gi) || [];
+    const classes = token.match(/(\b|^)\.[a-z0-9_-]+/gi) || [];
+    const types = token.match(/^[a-z]+/i) ? [1] : [];
     numIDs += ids.length;
     numClasses += classes.length;
     numTypes += types.length;
@@ -96,16 +69,17 @@ function computeSelectorSpecificity(selector) {
 /**
  * Finds the most specific directly matched CSS font-size rule from the list.
  *
- * @param {Array<LH.Crdp.CSS.RuleMatch>} [matchedCSSRules]
- * @returns {NodeFontData['cssRule']|undefined}
+ * @param {Array<LH.Crdp.CSS.RuleMatch>} matchedCSSRules
+ * @param {function(LH.Crdp.CSS.CSSStyle):boolean|string|undefined} isDeclarationOfInterest
+ * @return {NodeFontData['cssRule']|undefined}
  */
-function findMostSpecificMatchedCSSRule(matchedCSSRules = []) {
+function findMostSpecificMatchedCSSRule(matchedCSSRules = [], isDeclarationOfInterest) {
   let maxSpecificity = -Infinity;
   /** @type {LH.Crdp.CSS.CSSRule|undefined} */
   let maxSpecificityRule;
 
   for (const {rule, matchingSelectors} of matchedCSSRules) {
-    if (hasFontSizeDeclaration(rule.style)) {
+    if (isDeclarationOfInterest(rule.style)) {
       const specificities = matchingSelectors.map(idx =>
         computeSelectorSpecificity(rule.selectorList.selectors[idx].text)
       );
@@ -134,7 +108,7 @@ function findMostSpecificMatchedCSSRule(matchedCSSRules = []) {
  * Finds the most specific directly matched CSS font-size rule from the list.
  *
  * @param {Array<LH.Crdp.CSS.InheritedStyleEntry>} [inheritedEntries]
- * @returns {NodeFontData['cssRule']|undefined}
+ * @return {NodeFontData['cssRule']|undefined}
  */
 function findInheritedCSSRule(inheritedEntries = []) {
   // The inherited array contains the array of matched rules for all parents in ascending tree order.
@@ -144,7 +118,7 @@ function findInheritedCSSRule(inheritedEntries = []) {
   for (const {inlineStyle, matchedCSSRules} of inheritedEntries) {
     if (hasFontSizeDeclaration(inlineStyle)) return {type: 'Inline', ...inlineStyle};
 
-    const directRule = findMostSpecificMatchedCSSRule(matchedCSSRules);
+    const directRule = findMostSpecificMatchedCSSRule(matchedCSSRules, hasFontSizeDeclaration);
     if (directRule) return directRule;
   }
 }
@@ -155,14 +129,14 @@ function findInheritedCSSRule(inheritedEntries = []) {
  *
  * @see https://cs.chromium.org/chromium/src/third_party/blink/renderer/devtools/front_end/sdk/CSSMatchedStyles.js?q=CSSMatchedStyles+f:devtools+-f:out&sq=package:chromium&dr=C&l=59-134
  * @param {LH.Crdp.CSS.GetMatchedStylesForNodeResponse} matched CSS rules
- * @returns {NodeFontData['cssRule']|undefined}
+ * @return {NodeFontData['cssRule']|undefined}
  */
 function getEffectiveFontRule({attributesStyle, inlineStyle, matchedCSSRules, inherited}) {
   // Inline styles have highest priority
   if (hasFontSizeDeclaration(inlineStyle)) return {type: 'Inline', ...inlineStyle};
 
   // Rules directly referencing the node come next
-  const matchedRule = findMostSpecificMatchedCSSRule(matchedCSSRules);
+  const matchedRule = findMostSpecificMatchedCSSRule(matchedCSSRules, hasFontSizeDeclaration);
   if (matchedRule) return matchedRule;
 
   // Then comes attributes styles (<font size="1">)
@@ -177,7 +151,7 @@ function getEffectiveFontRule({attributesStyle, inlineStyle, matchedCSSRules, in
 
 /**
  * @param {string} text
- * @returns {number}
+ * @return {number}
  */
 function getTextLength(text) {
   // Array.from to count symbols not unicode code points. See: #6973
@@ -185,13 +159,13 @@ function getTextLength(text) {
 }
 
 /**
- * @param {Driver} driver
- * @param {LH.Crdp.DOM.Node} node text node
- * @returns {Promise<NodeFontData['cssRule']|undefined>}
+ * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {number} nodeId text node
+ * @return {Promise<NodeFontData['cssRule']|undefined>}
  */
-async function fetchSourceRule(driver, node) {
-  const matchedRules = await driver.sendCommand('CSS.getMatchedStylesForNode', {
-    nodeId: node.nodeId,
+async function fetchSourceRule(session, nodeId) {
+  const matchedRules = await session.sendCommand('CSS.getMatchedStylesForNode', {
+    nodeId,
   });
   const sourceRule = getEffectiveFontRule(matchedRules);
   if (!sourceRule) return undefined;
@@ -207,18 +181,33 @@ async function fetchSourceRule(driver, node) {
   };
 }
 
-class FontSize extends Gatherer {
+class FontSize extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['snapshot', 'navigation'],
+  };
+
   /**
-   * @param {LH.Gatherer.PassContext['driver']} driver
+   * @param {LH.Gatherer.FRProtocolSession} session
    * @param {Array<NodeFontData>} failingNodes
    */
-  static async fetchFailingNodeSourceRules(driver, failingNodes) {
-    const analysisPromises = failingNodes
+  static async fetchFailingNodeSourceRules(session, failingNodes) {
+    const nodesToAnalyze = failingNodes
       .sort((a, b) => b.textLength - a.textLength)
-      .slice(0, MAX_NODES_SOURCE_RULE_FETCHED)
-      .map(async failingNode => {
+      .slice(0, MAX_NODES_SOURCE_RULE_FETCHED);
+
+    // DOM.getDocument is necessary for pushNodesByBackendIdsToFrontend to properly retrieve nodeIds if the `DOM` domain was enabled before this gatherer, invoke it to be safe.
+    await session.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
+
+    const {nodeIds} = await session.sendCommand('DOM.pushNodesByBackendIdsToFrontend', {
+      backendNodeIds: nodesToAnalyze.map(node => node.parentNode.backendNodeId),
+    });
+
+    const analysisPromises = nodesToAnalyze
+      .map(async (failingNode, i) => {
+        failingNode.nodeId = nodeIds[i];
         try {
-          const cssRule = await fetchSourceRule(driver, failingNode.node);
+          const cssRule = await fetchSourceRule(session, nodeIds[i]);
           failingNode.cssRule = cssRule;
         } catch (err) {
           // The node was deleted. We don't need to distinguish between lack-of-rule
@@ -239,25 +228,35 @@ class FontSize extends Gatherer {
   }
 
   /**
-   * Maps backendNodeId of TextNodes to {fontSize, textLength}.
-   *
+   * Returns the TextNodes in a DOM Snapshot.
+   * Every entry is associated with a TextNode in the layout tree (not display: none).
    * @param {LH.Crdp.DOMSnapshot.CaptureSnapshotResponse} snapshot
-   * @return {BackendIdsToFontData}
    */
-  calculateBackendIdsToFontData(snapshot) {
+  getTextNodesInLayoutFromSnapshot(snapshot) {
     const strings = snapshot.strings;
+    /** @param {number} index */
+    const getString = (index) => strings[index];
+    /** @param {number} index */
+    const getFloat = (index) => parseFloat(strings[index]);
 
-    /** @type {BackendIdsToFontData} */
-    const backendIdsToFontData = new Map();
-
+    const textNodesData = [];
     for (let j = 0; j < snapshot.documents.length; j++) {
       // `doc` is a flattened property list describing all the Nodes in a document, with all string
       // values deduped in the `strings` array.
       const doc = snapshot.documents[j];
 
-      if (!doc.nodes.backendNodeId) {
+      if (!doc.nodes.backendNodeId || !doc.nodes.parentIndex ||
+          !doc.nodes.attributes || !doc.nodes.nodeName) {
         throw new Error('Unexpected response from DOMSnapshot.captureSnapshot.');
       }
+      const nodes = /** @type {Required<typeof doc['nodes']>} */ (doc.nodes);
+
+      /** @param {number} parentIndex */
+      const getParentData = (parentIndex) => ({
+        backendNodeId: nodes.backendNodeId[parentIndex],
+        attributes: nodes.attributes[parentIndex].map(getString),
+        nodeName: getString(nodes.nodeName[parentIndex]),
+      });
 
       for (const layoutIndex of doc.textBoxes.layoutIndex) {
         const text = strings[doc.layout.text[layoutIndex]];
@@ -266,45 +265,50 @@ class FontSize extends Gatherer {
         const nodeIndex = doc.layout.nodeIndex[layoutIndex];
         const styles = doc.layout.styles[layoutIndex];
         const [fontSizeStringId] = styles;
+        const fontSize = getFloat(fontSizeStringId);
 
-        const fontSize = parseFloat(strings[fontSizeStringId]);
-        backendIdsToFontData.set(doc.nodes.backendNodeId[nodeIndex], {
+        const parentIndex = nodes.parentIndex[nodeIndex];
+        const grandParentIndex = nodes.parentIndex[parentIndex];
+        const parentNode = getParentData(parentIndex);
+        const grandParentNode =
+          grandParentIndex !== undefined ? getParentData(grandParentIndex) : undefined;
+
+        textNodesData.push({
+          nodeIndex,
+          backendNodeId: nodes.backendNodeId[nodeIndex],
           fontSize,
           textLength: getTextLength(text),
+          parentNode: {
+            ...parentNode,
+            parentNode: grandParentNode,
+          },
         });
       }
     }
 
-    return backendIdsToFontData;
+    return textNodesData;
   }
 
   /**
-   * The only connection between a snapshot Node and an actual Protocol Node is backendId,
-   * so that is used to join the two data structures. DOMSnapshot.captureSnapshot doesn't
-   * give the entire Node object, so DOM.getFlattenedDocument is used.
-   * @param {BackendIdsToFontData} backendIdsToFontData
-   * @param {LH.Artifacts.FontSize.DomNodeWithParent[]} crdpNodes
+   * Get all the failing text nodes that don't meet the legible text threshold.
+   * @param {LH.Crdp.DOMSnapshot.CaptureSnapshotResponse} snapshot
    */
-  findFailingNodes(backendIdsToFontData, crdpNodes) {
+  findFailingNodes(snapshot) {
     /** @type {NodeFontData[]} */
     const failingNodes = [];
     let totalTextLength = 0;
     let failingTextLength = 0;
 
-    for (const crdpNode of crdpNodes) {
-      const partialFontData = backendIdsToFontData.get(crdpNode.backendNodeId);
-      if (!partialFontData) continue;
-      // `crdpNode` is a non-empty TextNode that is in the layout tree (not display: none).
-
-      const {fontSize, textLength} = partialFontData;
-      totalTextLength += textLength;
-      if (fontSize < MINIMAL_LEGIBLE_FONT_SIZE_PX) {
+    for (const textNodeData of this.getTextNodesInLayoutFromSnapshot(snapshot)) {
+      totalTextLength += textNodeData.textLength;
+      if (textNodeData.fontSize < MINIMAL_LEGIBLE_FONT_SIZE_PX) {
         // Once a bad TextNode is identified, its parent Node is needed.
-        failingTextLength += textLength;
+        failingTextLength += textNodeData.textLength;
         failingNodes.push({
-          node: crdpNode.parentNode,
-          textLength,
-          fontSize,
+          nodeId: 0, // Set later in fetchFailingNodeSourceRules.
+          parentNode: textNodeData.parentNode,
+          textLength: textNodeData.textLength,
+          fontSize: textNodeData.fontSize,
         });
       }
     }
@@ -313,55 +317,52 @@ class FontSize extends Gatherer {
   }
 
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts.FontSize>} font-size analysis
    */
-  async afterPass(passContext) {
+  async getArtifact(passContext) {
+    const session = passContext.driver.defaultSession;
+
     /** @type {Map<string, LH.Crdp.CSS.CSSStyleSheetHeader>} */
     const stylesheets = new Map();
     /** @param {LH.Crdp.CSS.StyleSheetAddedEvent} sheet */
     const onStylesheetAdded = sheet => stylesheets.set(sheet.header.styleSheetId, sheet.header);
-    passContext.driver.on('CSS.styleSheetAdded', onStylesheetAdded);
+    session.on('CSS.styleSheetAdded', onStylesheetAdded);
 
     await Promise.all([
-      passContext.driver.sendCommand('DOMSnapshot.enable'),
-      passContext.driver.sendCommand('DOM.enable'),
-      passContext.driver.sendCommand('CSS.enable'),
+      session.sendCommand('DOMSnapshot.enable'),
+      session.sendCommand('DOM.enable'),
+      session.sendCommand('CSS.enable'),
     ]);
 
     // Get the computed font-size style of every node.
-    const snapshotPromise = passContext.driver.sendCommand('DOMSnapshot.captureSnapshot', {
+    const snapshot = await session.sendCommand('DOMSnapshot.captureSnapshot', {
       computedStyles: ['font-size'],
     });
-    const allNodesPromise = getAllNodesFromBody(passContext.driver);
-    const [snapshot, crdpNodes] = await Promise.all([snapshotPromise, allNodesPromise]);
-    const backendIdsToFontData = this.calculateBackendIdsToFontData(snapshot);
-    // `backendIdsToFontData` will include all non-empty TextNodes.
-    // `crdpNodes` will only contain the body node and its descendants.
 
     const {
       totalTextLength,
       failingTextLength,
       failingNodes,
-    } = this.findFailingNodes(backendIdsToFontData, crdpNodes);
+    } = this.findFailingNodes(snapshot);
     const {
       analyzedFailingNodesData,
       analyzedFailingTextLength,
-    } = await FontSize.fetchFailingNodeSourceRules(passContext.driver, failingNodes);
+    } = await FontSize.fetchFailingNodeSourceRules(session, failingNodes);
 
-    passContext.driver.off('CSS.styleSheetAdded', onStylesheetAdded);
+    session.off('CSS.styleSheetAdded', onStylesheetAdded);
 
     // For the nodes whose computed style we could attribute to a stylesheet, assign
     // the stylsheet to the data.
     analyzedFailingNodesData
-      .filter(data => data.cssRule && data.cssRule.styleSheetId)
-      // @ts-ignore - guaranteed to exist from the filter immediately above
+      .filter(data => data.cssRule?.styleSheetId)
+      // @ts-expect-error - guaranteed to exist from the filter immediately above
       .forEach(data => (data.cssRule.stylesheet = stylesheets.get(data.cssRule.styleSheetId)));
 
     await Promise.all([
-      passContext.driver.sendCommand('DOMSnapshot.disable'),
-      passContext.driver.sendCommand('DOM.disable'),
-      passContext.driver.sendCommand('CSS.disable'),
+      session.sendCommand('DOMSnapshot.disable'),
+      session.sendCommand('DOM.disable'),
+      session.sendCommand('CSS.disable'),
     ]);
 
     return {
@@ -376,3 +377,4 @@ class FontSize extends Gatherer {
 module.exports = FontSize;
 module.exports.computeSelectorSpecificity = computeSelectorSpecificity;
 module.exports.getEffectiveFontRule = getEffectiveFontRule;
+module.exports.findMostSpecificMatchedCSSRule = findMostSpecificMatchedCSSRule;

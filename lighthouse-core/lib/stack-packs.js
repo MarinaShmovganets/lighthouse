@@ -5,8 +5,9 @@
  */
 'use strict';
 
-const stackPacks = require('../../stack-packs/index.js');
 const log = require('lighthouse-logger');
+const stackPacks = require('lighthouse-stack-packs');
+const i18n = require('./i18n/i18n.js');
 
 /**
  * Pairs consisting of a stack pack's ID and the set of stacks needed to be
@@ -18,13 +19,14 @@ const stackPacksToInclude = [
     packId: 'wordpress',
     requiredStacks: ['js:wordpress'],
   },
+  // waiting for https://github.com/johnmichel/Library-Detector-for-Chrome/pull/193
+  // {
+  //   packId: 'ezoic',
+  //   requiredStacks: ['js:ezoic'],
+  // },
   {
-    packId: 'react',
-    requiredStacks: ['js:react'],
-  },
-  {
-    packId: 'angular',
-    requiredStacks: ['js:@angular/core'],
+    packId: 'drupal',
+    requiredStacks: ['js:drupal'],
   },
   {
     packId: 'amp',
@@ -34,15 +36,39 @@ const stackPacksToInclude = [
     packId: 'magento',
     requiredStacks: ['js:magento'],
   },
+  {
+    packId: 'octobercms',
+    requiredStacks: ['js:octobercms'],
+  },
+  {
+    packId: 'joomla',
+    requiredStacks: ['js:joomla'],
+  },
+  {
+    packId: 'next.js',
+    requiredStacks: ['js:next'],
+  },
+  {
+    packId: 'nuxt',
+    requiredStacks: ['js:nuxt'],
+  },
+  {
+    packId: 'angular',
+    requiredStacks: ['js:@angular/core'],
+  },
+  {
+    packId: 'react',
+    requiredStacks: ['js:react'],
+  },
 ];
 
 /**
  * Returns all packs that match the stacks found in the page.
  * @param {LH.Artifacts['Stacks']} pageStacks
- * @return {Array<LH.Result.StackPack>}
+ * @return {LH.RawIcu<Array<LH.Result.StackPack>>}
  */
 function getStackPacks(pageStacks) {
-  /** @type {Array<LH.Result.StackPack>} */
+  /** @type {LH.RawIcu<Array<LH.Result.StackPack>>} */
   const packs = [];
 
   for (const pageStack of pageStacks) {
@@ -52,7 +78,7 @@ function getStackPacks(pageStacks) {
       continue;
     }
 
-    // Grab the full pack definition
+    // Grab the full pack definition.
     const matchedPack = stackPacks.find(pack => pack.id === stackPackToIncl.packId);
     if (!matchedPack) {
       log.warn('StackPacks',
@@ -60,11 +86,29 @@ function getStackPacks(pageStacks) {
       continue;
     }
 
+    // Create i18n handler to get translated strings.
+    const str_ = i18n.createMessageInstanceIdFn(
+      `node_modules/lighthouse-stack-packs/packs/${matchedPack.id}.js`,
+      matchedPack.UIStrings
+    );
+
+    /** @type {Record<string, LH.IcuMessage>} */
+    const descriptions = {};
+    /** @type {Record<string, string>} */
+    const UIStrings = matchedPack.UIStrings;
+
+    // Convert all strings into the correct translation.
+    for (const key in UIStrings) {
+      if (UIStrings[key]) {
+        descriptions[key] = str_(UIStrings[key]);
+      }
+    }
+
     packs.push({
       id: matchedPack.id,
       title: matchedPack.title,
-      iconDataURL: matchedPack.iconDataURL,
-      descriptions: matchedPack.descriptions,
+      iconDataURL: matchedPack.icon,
+      descriptions,
     });
   }
 
@@ -73,4 +117,5 @@ function getStackPacks(pageStacks) {
 
 module.exports = {
   getStackPacks,
+  stackPacksToInclude,
 };

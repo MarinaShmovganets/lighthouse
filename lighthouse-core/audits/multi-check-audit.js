@@ -35,7 +35,7 @@ class MultiCheckAudit extends Audit {
       allChecks: undefined,
     };
 
-    if (result.manifestValues && result.manifestValues.allChecks) {
+    if (result.manifestValues?.allChecks) {
       result.manifestValues.allChecks.forEach(check => {
         detailsItem[check.id] = check.passing;
       });
@@ -53,7 +53,7 @@ class MultiCheckAudit extends Audit {
     if (result.failures.length > 0) {
       return {
         score: 0,
-        // TODO(#7238): make this i18n-able.
+        // TODO(#11495): make this i18n-able.
         explanation: `Failures: ${result.failures.join(',\n')}.`,
         details,
       };

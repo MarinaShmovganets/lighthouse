@@ -8,13 +8,14 @@
 const makeComputedArtifact = require('./computed-artifact.js');
 const NetworkNode = require('../lib/dependency-graph/network-node.js');
 const CPUNode = require('../lib/dependency-graph/cpu-node.js');
-const NetworkAnalyzer = require('../lib/dependency-graph/simulator/network-analyzer.js');
 const TracingProcessor = require('../lib/tracehouse/trace-processor.js');
 const NetworkRequest = require('../lib/network-request.js');
-const TraceOfTab = require('./trace-of-tab.js');
+const ProcessedTrace = require('./processed-trace.js');
 const NetworkRecords = require('./network-records.js');
+const NetworkAnalyzer = require('../lib/dependency-graph/simulator/network-analyzer.js');
 
 /** @typedef {import('../lib/dependency-graph/base-node.js').Node} Node */
+/** @typedef {Omit<LH.Artifacts['URL'], 'initialUrl'|'finalUrl'>} URLArtifact */
 
 // Shorter tasks have negligible impact on simulation results.
 const SIGNIFICANT_DUR_THRESHOLD_MS = 10;
@@ -102,18 +103,18 @@ class PageDependencyGraph {
   }
 
   /**
-   * @param {LH.Artifacts.TraceOfTab} traceOfTab
+   * @param {LH.Artifacts.ProcessedTrace} processedTrace
    * @return {Array<CPUNode>}
    */
-  static getCPUNodes(traceOfTab) {
+  static getCPUNodes({mainThreadEvents}) {
     /** @type {Array<CPUNode>} */
     const nodes = [];
     let i = 0;
 
-    TracingProcessor.assertHasToplevelEvents(traceOfTab.mainThreadEvents);
+    TracingProcessor.assertHasToplevelEvents(mainThreadEvents);
 
-    while (i < traceOfTab.mainThreadEvents.length) {
-      const evt = traceOfTab.mainThreadEvents[i];
+    while (i < mainThreadEvents.length) {
+      const evt = mainThreadEvents[i];
       i++;
 
       // Skip all trace events that aren't schedulable tasks with sizable duration
@@ -126,10 +127,10 @@ class PageDependencyGraph {
       const children = [];
       for (
         const endTime = evt.ts + evt.dur;
-        i < traceOfTab.mainThreadEvents.length && traceOfTab.mainThreadEvents[i].ts < endTime;
+        i < mainThreadEvents.length && mainThreadEvents[i].ts < endTime;
         i++
       ) {
-        children.push(traceOfTab.mainThreadEvents[i]);
+        children.push(mainThreadEvents[i]);
       }
 
       nodes.push(new CPUNode(evt, children));
@@ -147,19 +148,29 @@ class PageDependencyGraph {
       const directInitiatorRequest = node.record.initiatorRequest || rootNode.record;
       const directInitiatorNode =
         networkNodeOutput.idToNodeMap.get(directInitiatorRequest.requestId) || rootNode;
+      const canDependOnInitiator =
+        !directInitiatorNode.isDependentOn(node) &&
+        node.canDependOn(directInitiatorNode);
       const initiators = PageDependencyGraph.getNetworkInitiators(node.record);
       if (initiators.length) {
         initiators.forEach(initiator => {
           const parentCandidates = networkNodeOutput.urlToNodeMap.get(initiator) || [];
-          // Only add the edge if the parent is unambiguous with valid timing.
-          if (parentCandidates.length === 1 && parentCandidates[0].startTime <= node.startTime) {
+          // Only add the edge if the parent is unambiguous with valid timing and isn't circular.
+          if (parentCandidates.length === 1 &&
+              parentCandidates[0].startTime <= node.startTime &&
+              !parentCandidates[0].isDependentOn(node)) {
             node.addDependency(parentCandidates[0]);
-          } else {
+          } else if (canDependOnInitiator) {
             directInitiatorNode.addDependent(node);
           }
         });
-      } else if (node !== directInitiatorNode) {
+      } else if (canDependOnInitiator) {
         directInitiatorNode.addDependent(node);
+      }
+
+      // Make sure the nodes are attached to the graph if the initiator information was invalid.
+      if (node !== rootNode && node.getDependencies().length === 0 && node.canDependOn(rootNode)) {
+        node.addDependency(rootNode);
       }
 
       if (!node.record.redirects) return;
@@ -181,15 +192,26 @@ class PageDependencyGraph {
    * @param {Array<CPUNode>} cpuNodes
    */
   static linkCPUNodes(rootNode, networkNodeOutput, cpuNodes) {
+    /** @type {Set<LH.Crdp.Network.ResourceType|undefined>} */
+    const linkableResourceTypes = new Set([
+      NetworkRequest.TYPES.XHR, NetworkRequest.TYPES.Fetch, NetworkRequest.TYPES.Script,
+    ]);
+
     /** @param {CPUNode} cpuNode @param {string} reqId */
     function addDependentNetworkRequest(cpuNode, reqId) {
       const networkNode = networkNodeOutput.idToNodeMap.get(reqId);
       if (!networkNode ||
-          // Ignore all non-XHRs
-          networkNode.record.resourceType !== NetworkRequest.TYPES.XHR ||
           // Ignore all network nodes that started before this CPU task started
           // A network request that started earlier could not possibly have been started by this task
           networkNode.startTime <= cpuNode.startTime) return;
+      const {record} = networkNode;
+      const resourceType = record.resourceType ||
+        record.redirectDestination?.resourceType;
+      if (!linkableResourceTypes.has(resourceType)) {
+        // We only link some resources to CPU nodes because we observe LCP simulation
+        // regressions when including images, etc.
+        return;
+      }
       cpuNode.addDependent(networkNode);
     }
 
@@ -248,12 +270,12 @@ class PageDependencyGraph {
 
         switch (evt.name) {
           case 'TimerInstall':
-            // @ts-ignore - 'TimerInstall' event means timerId exists.
+            // @ts-expect-error - 'TimerInstall' event means timerId exists.
             timers.set(evt.args.data.timerId, node);
             stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
             break;
           case 'TimerFire': {
-            // @ts-ignore - 'TimerFire' event means timerId exists.
+            // @ts-expect-error - 'TimerFire' event means timerId exists.
             const installer = timers.get(evt.args.data.timerId);
             if (!installer || installer.endTime > node.startTime) break;
             installer.addDependent(node);
@@ -268,17 +290,17 @@ class PageDependencyGraph {
 
           case 'EvaluateScript':
             addDependencyOnFrame(node, evt.args.data.frame);
-            // @ts-ignore - 'EvaluateScript' event means argsUrl is defined.
+            // @ts-expect-error - 'EvaluateScript' event means argsUrl is defined.
             addDependencyOnUrl(node, argsUrl);
             stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
             break;
 
           case 'XHRReadyStateChange':
             // Only create the dependency if the request was completed
-            // @ts-ignore - 'XHRReadyStateChange' event means readyState is defined.
+            // 'XHRReadyStateChange' event means readyState is defined.
             if (evt.args.data.readyState !== 4) break;
 
-            // @ts-ignore - 'XHRReadyStateChange' event means argsUrl is defined.
+            // @ts-expect-error - 'XHRReadyStateChange' event means argsUrl is defined.
             addDependencyOnUrl(node, argsUrl);
             stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
             break;
@@ -286,26 +308,27 @@ class PageDependencyGraph {
           case 'FunctionCall':
           case 'v8.compile':
             addDependencyOnFrame(node, evt.args.data.frame);
-            // @ts-ignore - events mean argsUrl is defined.
+            // @ts-expect-error - events mean argsUrl is defined.
             addDependencyOnUrl(node, argsUrl);
             break;
 
           case 'ParseAuthorStyleSheet':
             addDependencyOnFrame(node, evt.args.data.frame);
-            // @ts-ignore - 'ParseAuthorStyleSheet' event means styleSheetUrl is defined.
+            // @ts-expect-error - 'ParseAuthorStyleSheet' event means styleSheetUrl is defined.
             addDependencyOnUrl(node, evt.args.data.styleSheetUrl);
             break;
 
           case 'ResourceSendRequest':
             addDependencyOnFrame(node, evt.args.data.frame);
-            // @ts-ignore - 'ResourceSendRequest' event means requestId is defined.
+            // @ts-expect-error - 'ResourceSendRequest' event means requestId is defined.
             addDependentNetworkRequest(node, evt.args.data.requestId);
             stackTraceUrls.forEach(url => addDependencyOnUrl(node, url));
             break;
         }
       }
 
-      if (node.getNumberOfDependencies() === 0) {
+      // Nodes starting before the root node cannot depend on it.
+      if (node.getNumberOfDependencies() === 0 && node.canDependOn(rootNode)) {
         node.addDependency(rootNode);
       }
     }
@@ -364,32 +387,27 @@ class PageDependencyGraph {
   }
 
   /**
-   * @param {LH.Artifacts.TraceOfTab} traceOfTab
+   * @param {LH.Artifacts.ProcessedTrace} processedTrace
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
+   * @param {URLArtifact} URL
    * @return {Node}
    */
-  static createGraph(traceOfTab, networkRecords) {
+  static createGraph(processedTrace, networkRecords, URL) {
     const networkNodeOutput = PageDependencyGraph.getNetworkNodeOutput(networkRecords);
-    const cpuNodes = PageDependencyGraph.getCPUNodes(traceOfTab);
+    const cpuNodes = PageDependencyGraph.getCPUNodes(processedTrace);
+    const {requestedUrl, mainDocumentUrl} = URL;
+    if (!requestedUrl) throw new Error('requestedUrl is required to get the root request');
+    if (!mainDocumentUrl) throw new Error('mainDocumentUrl is required to get the main resource');
 
-    // The root request is the earliest network request, using position in networkRecords array to break ties.
-    const rootRequest = networkRecords.reduce((min, r) => (r.startTime < min.startTime ? r : min));
+    const rootRequest = NetworkAnalyzer.findResourceForUrl(networkRecords, requestedUrl);
+    if (!rootRequest) throw new Error('rootRequest not found');
     const rootNode = networkNodeOutput.idToNodeMap.get(rootRequest.requestId);
-    // The main document request is the earliest network request *of type document*.
-    // This will be different from the root request when there are server redirects.
-    const mainDocumentRequest = NetworkAnalyzer.findMainDocument(networkRecords);
+    if (!rootNode) throw new Error('rootNode not found');
+
+    const mainDocumentRequest = NetworkAnalyzer.findResourceForUrl(networkRecords, mainDocumentUrl);
+    if (!mainDocumentRequest) throw new Error('mainDocumentRequest not found');
     const mainDocumentNode = networkNodeOutput.idToNodeMap.get(mainDocumentRequest.requestId);
-
-    if (!rootNode || !mainDocumentNode) {
-      // Should always be found.
-      throw new Error(`${rootNode ? 'mainDocument' : 'root'}Node not found.`);
-    }
-
-    if (mainDocumentNode !== rootNode &&
-        (!mainDocumentNode.record.redirects ||
-        !mainDocumentNode.record.redirects.includes(rootNode.record))) {
-      throw new Error('Root node was not in redirect chain of mainDocument');
-    }
+    if (!mainDocumentNode) throw new Error('mainDocumentNode not found');
 
     PageDependencyGraph.linkNetworkNodes(rootNode, networkNodeOutput);
     PageDependencyGraph.linkCPUNodes(rootNode, networkNodeOutput, cpuNodes);
@@ -427,7 +445,7 @@ class PageDependencyGraph {
       const length = Math.ceil((node.endTime - node.startTime) / timePerCharacter);
       const bar = padRight('', offset) + padRight('', length, '=');
 
-      // @ts-ignore -- disambiguate displayName from across possible Node types.
+      // @ts-expect-error -- disambiguate displayName from across possible Node types.
       const displayName = node.record ? node.record.url : node.type;
       // eslint-disable-next-line
       console.log(padRight(bar, widthInCharacters), `| ${displayName.slice(0, 30)}`);
@@ -435,23 +453,58 @@ class PageDependencyGraph {
   }
 
   /**
-   * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog}} data
-   * @param {LH.Audit.Context} context
+   * Recalculate `artifacts.URL` for clients that don't provide it.
+   *
+   * @param {LH.DevtoolsLog} devtoolsLog
+   * @param {LH.Artifacts.NetworkRequest[]} networkRecords
+   * @param {LH.Artifacts.ProcessedTrace} processedTrace
+   * @return {URLArtifact}
+   */
+  static getDocumentUrls(devtoolsLog, networkRecords, processedTrace) {
+    const mainFrameId = processedTrace.mainFrameIds.frameId;
+
+    /** @type {string|undefined} */
+    let requestedUrl;
+    /** @type {string|undefined} */
+    let mainDocumentUrl;
+    for (const event of devtoolsLog) {
+      if (event.method === 'Page.frameNavigated' && event.params.frame.id === mainFrameId) {
+        const {url} = event.params.frame;
+        // Only set requestedUrl on the first main frame navigation.
+        if (!requestedUrl) requestedUrl = url;
+        mainDocumentUrl = url;
+      }
+    }
+    if (!requestedUrl || !mainDocumentUrl) throw new Error('No main frame navigations found');
+
+    const initialRequest = NetworkAnalyzer.findResourceForUrl(networkRecords, requestedUrl);
+    if (initialRequest?.redirects?.length) requestedUrl = initialRequest.redirects[0].url;
+
+    return {requestedUrl, mainDocumentUrl};
+  }
+
+  /**
+   * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog, URL: LH.Artifacts['URL']}} data
+   * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<Node>}
    */
   static async compute_(data, context) {
-    const trace = data.trace;
-    const devtoolsLog = data.devtoolsLog;
-    const [traceOfTab, networkRecords] = await Promise.all([
-      TraceOfTab.request(trace, context),
+    const {trace, devtoolsLog} = data;
+    const [processedTrace, networkRecords] = await Promise.all([
+      ProcessedTrace.request(trace, context),
       NetworkRecords.request(devtoolsLog, context),
     ]);
 
-    return PageDependencyGraph.createGraph(traceOfTab, networkRecords);
+    // COMPAT: Backport for pre-10.0 clients that don't pass the URL artifact here (e.g. pubads).
+    // Calculates the URL artifact from the processed trace and DT log.
+    const URL = data.URL ||
+      PageDependencyGraph.getDocumentUrls(devtoolsLog, networkRecords, processedTrace);
+
+    return PageDependencyGraph.createGraph(processedTrace, networkRecords, URL);
   }
 }
 
-module.exports = makeComputedArtifact(PageDependencyGraph);
+module.exports = makeComputedArtifact(PageDependencyGraph, ['devtoolsLog', 'trace', 'URL']);
 
 /**
  * @typedef {Object} NetworkNodeOutput

@@ -5,41 +5,65 @@
  */
 'use strict';
 
-const Gatherer = require('./gatherer.js');
+const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 
 /**
  * @fileoverview Tracks unused JavaScript
  */
-class JsUsage extends Gatherer {
-  /**
-   * @param {LH.Gatherer.PassContext} passContext
-   */
-  async beforePass(passContext) {
-    await passContext.driver.sendCommand('Profiler.enable');
-    await passContext.driver.sendCommand('Profiler.startPreciseCoverage', {detailed: false});
+class JsUsage extends FRGatherer {
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['snapshot', 'timespan', 'navigation'],
+  };
+
+  constructor() {
+    super();
+    /** @type {LH.Crdp.Profiler.ScriptCoverage[]} */
+    this._scriptUsages = [];
   }
 
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Gatherer.FRTransitionalContext} context
+   */
+  async startInstrumentation(context) {
+    const session = context.driver.defaultSession;
+    await session.sendCommand('Profiler.enable');
+    await session.sendCommand('Profiler.startPreciseCoverage', {detailed: false});
+  }
+
+  /**
+   * @param {LH.Gatherer.FRTransitionalContext} context
+   */
+  async stopInstrumentation(context) {
+    const session = context.driver.defaultSession;
+    const coverageResponse = await session.sendCommand('Profiler.takePreciseCoverage');
+    this._scriptUsages = coverageResponse.result;
+    await session.sendCommand('Profiler.stopPreciseCoverage');
+    await session.sendCommand('Profiler.disable');
+  }
+
+  /**
    * @return {Promise<LH.Artifacts['JsUsage']>}
    */
-  async afterPass(passContext) {
-    const driver = passContext.driver;
+  async getArtifact() {
+    /** @type {Record<string, LH.Crdp.Profiler.ScriptCoverage>} */
+    const usageByScriptId = {};
 
-    const coverageResponse = await driver.sendCommand('Profiler.takePreciseCoverage');
-    const scriptUsages = coverageResponse.result;
-    await driver.sendCommand('Profiler.stopPreciseCoverage');
-    await driver.sendCommand('Profiler.disable');
+    for (const scriptUsage of this._scriptUsages) {
+      // If `url` is blank, that means the script was dynamically
+      // created (eval, new Function, onload, ...)
+      if (scriptUsage.url === '' || scriptUsage.url === '_lighthouse-eval.js') {
+        // We currently don't consider coverage of dynamic scripts, and we definitely don't want
+        // coverage of code Lighthouse ran to inspect the page, so we ignore this ScriptCoverage.
+        // Audits would work the same without this, it is only an optimization (not tracking coverage
+        // for scripts we don't care about).
+        continue;
+      }
 
-    /** @type {Record<string, Array<LH.Crdp.Profiler.ScriptCoverage>>} */
-    const usageByUrl = {};
-    for (const scriptUsage of scriptUsages) {
-      const scripts = usageByUrl[scriptUsage.url] || [];
-      scripts.push(scriptUsage);
-      usageByUrl[scriptUsage.url] = scripts;
+      usageByScriptId[scriptUsage.scriptId] = scriptUsage;
     }
 
-    return usageByUrl;
+    return usageByScriptId;
   }
 }
 

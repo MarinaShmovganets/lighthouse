@@ -26,7 +26,7 @@ describe('Performance: Resource summary audit', () => {
           {url: 'http://third-party.com/file.jpg', resourceType: 'Image', transferSize: 70},
         ]),
       },
-      URL: {requestedUrl: 'http://example.com', finalUrl: 'http://example.com'},
+      URL: {requestedUrl: 'http://example.com', mainDocumentUrl: 'http://example.com', finalUrl: 'http://example.com'},
     };
   });
   it('has three table columns', async () => {
@@ -41,7 +41,7 @@ describe('Performance: Resource summary audit', () => {
 
   it('has the correct display value', async () => {
     const result = await ResourceSummaryAudit.audit(artifacts, context);
-    expect(result.displayValue).toBeDisplayString('5 requests • 0 KB');
+    expect(result.displayValue).toBeDisplayString('5 requests • 0 KiB');
   });
 
   it('includes the correct properties for each table item', async () => {

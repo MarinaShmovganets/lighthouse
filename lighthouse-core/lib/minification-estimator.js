@@ -7,7 +7,7 @@
 
 // https://www.ecma-international.org/ecma-262/9.0/index.html#sec-punctuators
 // eslint-disable-next-line max-len
-const PUNCTUATOR_REGEX = /(return|{|\(|\[|\.\.\.|;|,|<|>|<=|>=|==|!=|===|!==|\+|-|\*|%|\*\*|\+\+|--|<<|>>|>>>|&|\||\^|!|~|&&|\|\||\?|:|=|\+=|-=|\*=|%=|\*\*=|<<=|>>=|>>>=|&=|\|=|\^=|=>|\/|\/=|\})$/;
+const PUNCTUATOR_REGEX = /(return|case|{|\(|\[|\.\.\.|;|,|<|>|<=|>=|==|!=|===|!==|\+|-|\*|%|\*\*|\+\+|--|<<|>>|>>>|&|\||\^|!|~|&&|\|\||\?|:|=|\+=|-=|\*=|%=|\*\*=|<<=|>>=|>>>=|&=|\|=|\^=|=>|\/|\/=|\})$/;
 const WHITESPACE_REGEX = /( |\n|\t)+$/;
 
 /**
@@ -50,6 +50,12 @@ function computeTokenLength(content, features) {
   let isInRegexCharacterClass = false;
   let stringOpenChar = null;
 
+  /**
+   * Acts as stack for brace tracking.
+   * @type {('templateBrace'|'normalBrace')[]}
+   */
+  const templateLiteralDepth = [];
+
   for (let i = 0; i < content.length; i++) {
     const twoChars = content.substr(i, 2);
     const char = twoChars.charAt(0);
@@ -78,7 +84,13 @@ function computeTokenLength(content, features) {
       // String characters count
       totalTokenLength++;
 
-      if (char === '\\') {
+      if (stringOpenChar === '`' && twoChars === '${') {
+        // Start new template literal
+        templateLiteralDepth.push('templateBrace');
+        isInString = false;
+        totalTokenLength++;
+        i++;
+      } else if (char === '\\') {
         // Skip over any escaped characters
         totalTokenLength++;
         i++;
@@ -128,6 +140,18 @@ function computeTokenLength(content, features) {
         // Start the regex
         isInRegex = true;
         // Regex characters count
+        totalTokenLength++;
+      } else if (char === '{' && templateLiteralDepth.length) {
+        // Start normal code brace if inside a template literal
+        templateLiteralDepth.push('normalBrace');
+        totalTokenLength++;
+      } else if (char === '}' && templateLiteralDepth.length) {
+        // End one template literal if closing brace is for a template literal
+        if (templateLiteralDepth[templateLiteralDepth.length - 1] === 'templateBrace') {
+          isInString = true;
+          stringOpenChar = '`';
+        }
+        templateLiteralDepth.pop();
         totalTokenLength++;
       } else if (isAStringOpenChar) {
         // Start the string

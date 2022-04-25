@@ -3,21 +3,18 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 /**
  * @fileoverview An assertion library for comparing smoke-test expectations
  * against the results actually collected from Lighthouse.
  */
 
-const log = require('lighthouse-logger');
-const LocalConsole = require('./lib/local-console.js');
+import _ from 'lodash';
+import log from 'lighthouse-logger';
 
-const NUMBER_REGEXP = /(?:\d|\.)+/.source;
-const OPS_REGEXP = /<=?|>=?|\+\/-|±/.source;
-// An optional number, optional whitespace, an operator, optional whitespace, a number.
-const NUMERICAL_EXPECTATION_REGEXP =
-  new RegExp(`^(${NUMBER_REGEXP})?\\s*(${OPS_REGEXP})\\s*(${NUMBER_REGEXP})$`);
+import {LocalConsole} from './lib/local-console.js';
+
+const {cloneDeep} = _;
 
 /**
  * @typedef Difference
@@ -34,6 +31,12 @@ const NUMERICAL_EXPECTATION_REGEXP =
  * @property {boolean} equal
  * @property {Difference|null} [diff]
  */
+
+const NUMBER_REGEXP = /(?:\d|\.)+/.source;
+const OPS_REGEXP = /<=?|>=?|\+\/-|±/.source;
+// An optional number, optional whitespace, an operator, optional whitespace, a number.
+const NUMERICAL_EXPECTATION_REGEXP =
+  new RegExp(`^(${NUMBER_REGEXP})?\\s*(${OPS_REGEXP})\\s*(${NUMBER_REGEXP})$`);
 
 /**
  * Checks if the actual value matches the expectation. Does not recursively search. This supports
@@ -101,6 +104,8 @@ function findDifference(path, actual, expected) {
     };
   }
 
+  let inclExclCopy;
+
   // We only care that all expected's own properties are on actual (and not the other way around).
   // Note an expected `undefined` can match an actual that is either `undefined` or not defined.
   for (const key of Object.keys(expected)) {
@@ -108,6 +113,64 @@ function findDifference(path, actual, expected) {
     const keyAccessor = /^\d+$/.test(key) ? `[${key}]` : `.${key}`;
     const keyPath = path + keyAccessor;
     const expectedValue = expected[key];
+
+    if (key === '_includes') {
+      inclExclCopy = [...actual];
+
+      if (!Array.isArray(expectedValue)) throw new Error('Array subset must be array');
+      if (!Array.isArray(actual)) {
+        return {
+          path,
+          actual: 'Actual value is not an array',
+          expected,
+        };
+      }
+
+      for (const expectedEntry of expectedValue) {
+        const matchingIndex =
+          inclExclCopy.findIndex(actualEntry =>
+            !findDifference(keyPath, actualEntry, expectedEntry));
+        if (matchingIndex !== -1) {
+          inclExclCopy.splice(matchingIndex, 1);
+          continue;
+        }
+
+        return {
+          path,
+          actual: 'Item not found in array',
+          expected: expectedEntry,
+        };
+      }
+
+      continue;
+    }
+
+    if (key === '_excludes') {
+      // Re-use state from `_includes` check, if there was one.
+      /** @type {any[]} */
+      const arrToCheckAgainst = inclExclCopy || actual;
+
+      if (!Array.isArray(expectedValue)) throw new Error('Array subset must be array');
+      if (!Array.isArray(actual)) continue;
+
+      const expectedExclusions = expectedValue;
+      for (const expectedExclusion of expectedExclusions) {
+        const matchingIndex = arrToCheckAgainst.findIndex(actualEntry =>
+            !findDifference(keyPath, actualEntry, expectedExclusion));
+        if (matchingIndex !== -1) {
+          return {
+            path,
+            actual: arrToCheckAgainst[matchingIndex],
+            expected: {
+              message: 'Expected to not find matching entry via _excludes',
+              expectedExclusion,
+            },
+          };
+        }
+      }
+
+      continue;
+    }
 
     const actualValue = actual[key];
     const subDifference = findDifference(keyPath, actualValue, expectedValue);
@@ -152,9 +215,113 @@ function makeComparison(name, actualResult, expectedResult) {
 }
 
 /**
+ * Delete expectations that don't match environment criteria.
+ * @param {LocalConsole} localConsole
+ * @param {LH.Result} lhr
+ * @param {Smokehouse.ExpectedRunnerResult} expected
+ * @param {{runner?: string, isBundled?: boolean, useFraggleRock?: boolean}=} reportOptions
+ */
+function pruneExpectations(localConsole, lhr, expected, reportOptions) {
+  const isFraggleRock = reportOptions?.useFraggleRock;
+  const isBundled = reportOptions?.isBundled;
+
+  /**
+   * Lazily compute the Chrome version because some reports are explicitly asserting error conditions.
+   * @returns {number}
+   */
+  function getChromeVersion() {
+    const userAgent = lhr.environment.hostUserAgent;
+    const userAgentMatch = /Chrome\/(\d+)/.exec(userAgent); // Chrome/85.0.4174.0
+    if (!userAgentMatch) throw new Error('Could not get chrome version.');
+    return Number(userAgentMatch[1]);
+  }
+
+  /**
+   * @param {*} obj
+   */
+  function failsChromeVersionCheck(obj) {
+    if (obj._minChromiumMilestone && getChromeVersion() < obj._minChromiumMilestone) return true;
+    if (obj._maxChromiumMilestone && getChromeVersion() > obj._maxChromiumMilestone) return true;
+    return false;
+  }
+
+  /**
+   * @param {*} obj
+   */
+  function pruneRecursively(obj) {
+    /**
+     * @param {string} key
+     */
+    const remove = (key) => {
+      if (Array.isArray(obj)) {
+        obj.splice(Number(key), 1);
+      } else {
+        delete obj[key];
+      }
+    };
+
+    // Because we may be deleting keys, we should iterate the keys backwards
+    // otherwise arrays with multiple pruning checks will skip elements.
+    for (const [key, value] of Object.entries(obj).reverse()) {
+      if (!value || typeof value !== 'object') {
+        continue;
+      }
+
+      if (failsChromeVersionCheck(value)) {
+        localConsole.log([
+          `[${key}] failed chrome version check, pruning expectation:`,
+          JSON.stringify(value, null, 2),
+          `Actual Chromium version: ${getChromeVersion()}`,
+        ].join(' '));
+        remove(key);
+      } else if (value._legacyOnly && isFraggleRock) {
+        localConsole.log([
+          `[${key}] marked legacy only but run is Fraggle Rock, pruning expectation:`,
+          JSON.stringify(value, null, 2),
+        ].join(' '));
+        remove(key);
+      } else if (value._fraggleRockOnly && !isFraggleRock) {
+        localConsole.log([
+          `[${key}] marked Fraggle Rock only but run is legacy, pruning expectation:`,
+          JSON.stringify(value, null, 2),
+          `Actual channel: ${lhr.configSettings.channel}`,
+        ].join(' '));
+        remove(key);
+      } else if (value._skipInBundled && !isBundled) {
+        localConsole.log([
+          `[${key}] marked as skip in bundled and runner is bundled, pruning expectation:`,
+          JSON.stringify(value, null, 2),
+        ].join(' '));
+        remove(key);
+      } else if (value._runner && reportOptions?.runner !== value._runner) {
+        localConsole.log([
+          `[${key}] is only for runner ${value._runner}, pruning expectation:`,
+          JSON.stringify(value, null, 2),
+        ].join(' '));
+        remove(key);
+      } else {
+        pruneRecursively(value);
+      }
+    }
+
+    delete obj._legacyOnly;
+    delete obj._fraggleRockOnly;
+    delete obj._skipInBundled;
+    delete obj._minChromiumMilestone;
+    delete obj._maxChromiumMilestone;
+    delete obj._runner;
+  }
+
+  const cloned = cloneDeep(expected);
+
+  pruneRecursively(cloned);
+  return cloned;
+}
+
+/**
  * Collate results into comparisons of actual and expected scores on each audit/artifact.
  * @param {LocalConsole} localConsole
- * @param {Smokehouse.ExpectedRunnerResult} actual
+ * @param {{lhr: LH.Result, artifacts: LH.Artifacts, networkRequests?: string[]}} actual
  * @param {Smokehouse.ExpectedRunnerResult} expected
  * @return {Comparison[]}
  */
@@ -164,8 +331,11 @@ function collateResults(localConsole, actual, expected) {
   const runtimeErrorAssertion = makeComparison('runtimeError', actual.lhr.runtimeError,
       expected.lhr.runtimeError);
 
-  // Same for warnings.
-  const runWarningsAssertion = makeComparison('runWarnings', actual.lhr.runWarnings,
+  // Same for warnings, exclude the slow CPU warning which is flaky and differs between CI machines.
+  const warnings = actual.lhr.runWarnings
+    .filter(warning => !warning.includes('loaded too slowly'))
+    .filter(warning => !warning.includes('a slower CPU'));
+  const runWarningsAssertion = makeComparison('runWarnings', warnings,
       expected.lhr.runWarnings || []);
 
   /** @type {Comparison[]} */
@@ -173,13 +343,14 @@ function collateResults(localConsole, actual, expected) {
   if (expected.artifacts) {
     const expectedArtifacts = expected.artifacts;
     const artifactNames = /** @type {(keyof LH.Artifacts)[]} */ (Object.keys(expectedArtifacts));
+    const actualArtifacts = actual.artifacts || {};
     artifactAssertions = artifactNames.map(artifactName => {
-      const actualResult = (actual.artifacts || {})[artifactName];
-      if (!actualResult) {
+      if (!(artifactName in actualArtifacts)) {
         localConsole.log(log.redify('Error: ') +
           `Config run did not generate artifact ${artifactName}`);
       }
 
+      const actualResult = actualArtifacts[artifactName];
       const expectedResult = expectedArtifacts[artifactName];
       return makeComparison(artifactName + ' artifact', actualResult, expectedResult);
     });
@@ -198,17 +369,30 @@ function collateResults(localConsole, actual, expected) {
     return makeComparison(auditName + ' audit', actualResult, expectedResult);
   });
 
+  const timingAssertions = [];
+  if (expected.lhr.timing) {
+    const comparison = makeComparison('timing', actual.lhr.timing, expected.lhr.timing);
+    timingAssertions.push(comparison);
+  }
+
+  /** @type {Comparison[]} */
+  const requestCountAssertion = [];
+  if (expected.networkRequests) {
+    requestCountAssertion.push(makeComparison(
+      'Requests',
+      actual.networkRequests,
+      expected.networkRequests
+    ));
+  }
+
   return [
-    {
-      name: 'final url',
-      actual: actual.lhr.finalUrl,
-      expected: expected.lhr.finalUrl,
-      equal: actual.lhr.finalUrl === expected.lhr.finalUrl,
-    },
+    makeComparison('final url', actual.lhr.finalUrl, expected.lhr.finalUrl),
     runtimeErrorAssertion,
     runWarningsAssertion,
+    ...requestCountAssertion,
     ...artifactAssertions,
     ...auditAssertions,
+    ...timingAssertions,
   ];
 }
 
@@ -226,9 +410,9 @@ function isPlainObject(obj) {
  * @param {Comparison} assertion
  */
 function reportAssertion(localConsole, assertion) {
-  // @ts-ignore - this doesn't exist now but could one day, so try not to break the future
+  // @ts-expect-error - this doesn't exist now but could one day, so try not to break the future
   const _toJSON = RegExp.prototype.toJSON;
-  // @ts-ignore
+  // @ts-expect-error
   // eslint-disable-next-line no-extend-native
   RegExp.prototype.toJSON = RegExp.prototype.toString;
 
@@ -261,31 +445,23 @@ function reportAssertion(localConsole, assertion) {
     }
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   // eslint-disable-next-line no-extend-native
   RegExp.prototype.toJSON = _toJSON;
 }
 
 /**
- * @param {number} count
- * @return {string}
- */
-function assertLogString(count) {
-  const plural = count === 1 ? '' : 's';
-  return `${count} assertion${plural}`;
-}
-
-/**
  * Log all the comparisons between actual and expected test results, then print
  * summary. Returns count of passed and failed tests.
- * @param {{lhr: LH.Result, artifacts: LH.Artifacts}} actual
+ * @param {{lhr: LH.Result, artifacts: LH.Artifacts, networkRequests?: string[]}} actual
  * @param {Smokehouse.ExpectedRunnerResult} expected
- * @param {{isDebug?: boolean}=} reportOptions
+ * @param {{runner?: string, isDebug?: boolean, isBundled?: boolean, useFraggleRock?: boolean}=} reportOptions
  * @return {{passed: number, failed: number, log: string}}
  */
-function report(actual, expected, reportOptions = {}) {
+function getAssertionReport(actual, expected, reportOptions = {}) {
   const localConsole = new LocalConsole();
 
+  expected = pruneExpectations(localConsole, actual.lhr, expected, reportOptions);
   const comparisons = collateResults(localConsole, actual, expected);
 
   let correctCount = 0;
@@ -303,17 +479,6 @@ function report(actual, expected, reportOptions = {}) {
     }
   });
 
-  const correctStr = assertLogString(correctCount);
-  const colorFn = correctCount === 0 ? log.redify : log.greenify;
-  localConsole.log(`  Correctly passed ${colorFn(correctStr)}`);
-
-  if (failedCount) {
-    const failedString = assertLogString(failedCount);
-    const failedColorFn = failedCount === 0 ? log.greenify : log.redify;
-    localConsole.log(`  Failed ${failedColorFn(failedString)}`);
-  }
-  localConsole.write('\n');
-
   return {
     passed: correctCount,
     failed: failedCount,
@@ -321,4 +486,4 @@ function report(actual, expected, reportOptions = {}) {
   };
 }
 
-module.exports = report;
+export {getAssertionReport};

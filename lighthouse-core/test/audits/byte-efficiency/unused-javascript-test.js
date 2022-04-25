@@ -6,43 +6,40 @@
 'use strict';
 
 const assert = require('assert').strict;
-const fs = require('fs');
 const UnusedJavaScript = require('../../../audits/byte-efficiency/unused-javascript.js');
 const networkRecordsToDevtoolsLog = require('../../network-records-to-devtools-log.js');
-
-function load(name) {
-  const dir = `${__dirname}/../../fixtures/source-maps`;
-  const mapJson = fs.readFileSync(`${dir}/${name}.js.map`, 'utf-8');
-  const content = fs.readFileSync(`${dir}/${name}.js`, 'utf-8');
-  const usageJson = fs.readFileSync(`${dir}/${name}.usage.json`, 'utf-8');
-  const exportedUsage = JSON.parse(usageJson);
-
-  // Usage is exported from DevTools, which simplifies the real format of the
-  // usage protocol.
-  const usage = {
-    url: exportedUsage.url,
-    functions: [
-      {
-        ranges: exportedUsage.ranges.map((range, i) => {
-          return {
-            startOffset: range.start,
-            endOffset: range.end,
-            count: i % 2 === 0 ? 0 : 1,
-          };
-        }),
-      },
-    ],
-  };
-
-  return {map: JSON.parse(mapJson), content, usage};
-}
+const {loadSourceMapAndUsageFixture, createScript} = require('../../test-utils.js');
 
 /* eslint-env jest */
 
+const scriptUrlToId = new Map();
+
+/**
+ * @param {string} url
+ */
+function getScriptId(url) {
+  let id = scriptUrlToId.get(url);
+  if (!id) {
+    id = String(scriptUrlToId.size + 1);
+    scriptUrlToId.set(url, id);
+  }
+  return id;
+}
+
+/**
+ * @param {string} url
+ * @param {number} transferSize
+ * @param {LH.Crdp.Network.ResourceType} resourceType
+ */
 function generateRecord(url, transferSize, resourceType) {
   return {url, transferSize, resourceType};
 }
 
+/**
+ * @param {string} url
+ * @param {Array<[number, number, number]>} ranges
+ * @return {Crdp.Profiler.ScriptCoverage}
+ */
 function generateUsage(url, ranges) {
   const functions = ranges.map(range => {
     return {
@@ -56,13 +53,12 @@ function generateUsage(url, ranges) {
     };
   });
 
-  return {url, functions};
+  return {scriptId: getScriptId(url), url, functions};
 }
 
 function makeJsUsage(...usages) {
   return usages.reduce((acc, cur) => {
-    acc[cur.url] = acc[cur.url] || [];
-    acc[cur.url].push(cur);
+    acc[cur.scriptId] = cur;
     return acc;
   }, {});
 }
@@ -78,10 +74,18 @@ describe('UnusedJavaScript audit', () => {
   const recordB = generateRecord(`${domain}/scriptB.js`, 50000, 'Script');
   const recordInline = generateRecord(`${domain}/inline.html`, 1000000, 'Document');
 
-  it('should merge duplicates', async () => {
-    const context = {computedCache: new Map()};
+  it('should work', async () => {
+    const context = {
+      computedCache: new Map(),
+      options: {
+        // Lower the threshold so we don't need huge resources to make a test.
+        unusedThreshold: 2000,
+      },
+    };
     const networkRecords = [recordA, recordB, recordInline];
     const artifacts = {
+      Scripts: [scriptA, scriptB, scriptUnknown, inlineA, inlineB]
+        .map((usage) => createScript({...usage, functions: undefined})),
       JsUsage: makeJsUsage(scriptA, scriptB, scriptUnknown, inlineA, inlineB),
       devtoolsLogs: {defaultPass: networkRecordsToDevtoolsLog(networkRecords)},
       SourceMaps: [],
@@ -92,61 +96,77 @@ describe('UnusedJavaScript audit', () => {
       'https://www.google.com/inline.html',
     ]);
 
+    // Only two scripts should meet the unused bytes threshold.
+    expect(result.items).toHaveLength(2);
+
     const scriptBWaste = result.items[0];
+    assert.equal(scriptBWaste.url, `${domain}/scriptB.js`);
     assert.equal(scriptBWaste.totalBytes, 50000);
     assert.equal(scriptBWaste.wastedBytes, 12500);
     assert.equal(scriptBWaste.wastedPercent, 25);
 
-    const inlineWaste = result.items[1];
-    assert.equal(inlineWaste.totalBytes, 21000);
-    assert.equal(inlineWaste.wastedBytes, 6000);
-    assert.equal(Math.round(inlineWaste.wastedPercent), 29);
+    const inlineBWaste = result.items[1];
+    assert.equal(inlineBWaste.url, `${domain}/inline.html`);
+    assert.equal(inlineBWaste.totalBytes, 15000);
+    assert.equal(inlineBWaste.wastedBytes, 5000);
+    assert.equal(Math.round(inlineBWaste.wastedPercent), 33);
   });
 
   it('should augment when provided source maps', async () => {
     const context = {
       computedCache: new Map(),
       options: {
+        // Lower the threshold so we don't need huge resources to make a test.
+        unusedThreshold: 2000,
         // Default threshold is 512, but is lowered here so that squoosh generates more
         // results.
         bundleSourceUnusedThreshold: 100,
       },
     };
-    const {map, content, usage} = load('squoosh');
+    const {map, content, usage} = loadSourceMapAndUsageFixture('squoosh');
     const url = 'https://squoosh.app/main-app.js';
     const networkRecords = [generateRecord(url, content.length, 'Script')];
     const artifacts = {
       JsUsage: makeJsUsage(usage),
       devtoolsLogs: {defaultPass: networkRecordsToDevtoolsLog(networkRecords)},
-      SourceMaps: [{scriptUrl: url, map}],
-      ScriptElements: [{src: url, content}],
+      SourceMaps: [{scriptId: 'squoosh', scriptUrl: url, map}],
+      Scripts: [{scriptId: 'squoosh', url, content}].map(createScript),
     };
     const result = await UnusedJavaScript.audit_(artifacts, networkRecords, context);
 
     expect(result.items).toMatchInlineSnapshot(`
       Array [
         Object {
-          "sourceBytes": Array [
-            10062,
-            660,
-            4043,
-            2138,
-            4117,
-          ],
-          "sourceWastedBytes": Array [
-            3760,
-            660,
-            500,
-            293,
-            256,
-          ],
-          "sources": Array [
-            "(unmapped)",
-            "…src/codecs/webp/encoder-meta.ts",
-            "…src/lib/util.ts",
-            "…src/custom-els/RangeInput/index.ts",
-            "…node_modules/comlink/comlink.js",
-          ],
+          "subItems": Object {
+            "items": Array [
+              Object {
+                "source": "(unmapped)",
+                "sourceBytes": 10062,
+                "sourceWastedBytes": 3760,
+              },
+              Object {
+                "source": "…src/codecs/webp/encoder-meta.ts",
+                "sourceBytes": 660,
+                "sourceWastedBytes": 660,
+              },
+              Object {
+                "source": "…src/lib/util.ts",
+                "sourceBytes": 4043,
+                "sourceWastedBytes": 500,
+              },
+              Object {
+                "source": "…src/custom-els/RangeInput/index.ts",
+                "sourceBytes": 2138,
+                "sourceWastedBytes": 293,
+              },
+              Object {
+                "source": "…node_modules/comlink/comlink.js",
+                "sourceBytes": 4117,
+                "sourceWastedBytes": 256,
+              },
+            ],
+            "type": "subitems",
+          },
           "totalBytes": 83748,
           "url": "https://squoosh.app/main-app.js",
           "wastedBytes": 6961,

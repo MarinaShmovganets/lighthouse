@@ -21,7 +21,7 @@ const UIStrings = {
   /** Description of a Lighthouse audit that tells the user *why* they need to adopt a long cache lifetime policy. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description:
     'A long cache lifetime can speed up repeat visits to your page. ' +
-    '[Learn more](https://web.dev/uses-long-cache-ttl).',
+    '[Learn more](https://web.dev/uses-long-cache-ttl/).',
   /** [ICU Syntax] Label for the audit identifying network resources with inefficient cache values. Clicking this will expand the audit to show the resources. */
   displayValue: `{itemCount, plural,
     =1 {1 resource found}
@@ -45,7 +45,7 @@ class CacheHeaders extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['devtoolsLogs', 'traces'],
+      requiredArtifacts: ['devtoolsLogs'],
     };
   }
 
@@ -154,7 +154,8 @@ class CacheHeaders extends Audit {
     ]);
 
     // It's not a request loaded over the network, caching makes no sense
-    if (URL.NON_NETWORK_PROTOCOLS.includes(record.protocol)) return false;
+    if (NetworkRequest.isNonNetworkRequest(record)) return false;
+
 
     return (
       CACHEABLE_STATUS_CODES.has(record.statusCode) &&
@@ -166,7 +167,7 @@ class CacheHeaders extends Audit {
    * Returns true if headers suggest a record should not be cached for a long time.
    * @param {Map<string, string>} headers
    * @param {ReturnType<typeof parseCacheControl>} cacheControl
-   * @returns {boolean}
+   * @return {boolean}
    */
   static shouldSkipRecord(headers, cacheControl) {
     // The HTTP/1.0 Pragma header can disable caching if cache-control is not set, see https://tools.ietf.org/html/rfc7234#section-5.4
@@ -180,6 +181,7 @@ class CacheHeaders extends Audit {
         cacheControl['must-revalidate'] ||
         cacheControl['no-cache'] ||
         cacheControl['no-store'] ||
+        cacheControl['stale-while-revalidate'] ||
         cacheControl['private'])) {
       return true;
     }
@@ -196,7 +198,6 @@ class CacheHeaders extends Audit {
     const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     return NetworkRecords.request(devtoolsLogs, context).then(records => {
       const results = [];
-      let queryStringCount = 0;
       let totalWastedBytes = 0;
 
       for (const record of records) {
@@ -237,7 +238,6 @@ class CacheHeaders extends Audit {
         const wastedBytes = (1 - cacheHitProbability) * totalBytes;
 
         totalWastedBytes += wastedBytes;
-        if (url.includes('?')) queryStringCount++;
 
         // Include cacheControl info (if it exists) per url as a diagnostic.
         /** @type {LH.Audit.Details.DebugData|undefined} */
@@ -288,12 +288,6 @@ class CacheHeaders extends Audit {
         numericValue: totalWastedBytes,
         numericUnit: 'byte',
         displayValue: str_(UIStrings.displayValue, {itemCount: results.length}),
-        extendedInfo: {
-          value: {
-            results,
-            queryStringCount,
-          },
-        },
         details,
       };
     });

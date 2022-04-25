@@ -16,7 +16,7 @@ const UIStrings = {
   /** Description of a Lighthouse audit that tells the user why they should care that a site's content size should match its viewport size, which is the size of the screen the site is displayed on. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'If the width of your app\'s content doesn\'t match the width ' +
     'of the viewport, your app might not be optimized for mobile screens. ' +
-    '[Learn more](https://web.dev/content-width).',
+    '[Learn more](https://web.dev/content-width/).',
   /**
    * @description Explanatory message stating that the viewport size and window size differ.
    * @example {100} innerWidth
@@ -38,28 +38,28 @@ class ContentWidth extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['ViewportDimensions', 'TestedAsMobileDevice'],
+      requiredArtifacts: ['ViewportDimensions'],
     };
   }
 
   /**
    * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
    * @return {LH.Audit.Product}
    */
-  static audit(artifacts) {
-    const IsMobile = artifacts.TestedAsMobileDevice;
+  static audit(artifacts, context) {
     const viewportWidth = artifacts.ViewportDimensions.innerWidth;
     const windowWidth = artifacts.ViewportDimensions.outerWidth;
     const widthsMatch = viewportWidth === windowWidth;
 
-    if (!IsMobile) {
+    if (context.settings.formFactor === 'desktop') {
       return {
         score: 1,
         notApplicable: true,
       };
     }
 
-    let explanation = '';
+    let explanation;
     if (!widthsMatch) {
       explanation = str_(UIStrings.explanation,
         {innerWidth: artifacts.ViewportDimensions.innerWidth,

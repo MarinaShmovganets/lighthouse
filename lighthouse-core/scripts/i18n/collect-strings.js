@@ -4,33 +4,52 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 /* eslint-disable no-console, max-len */
 
-const fs = require('fs');
-const glob = require('glob');
-const path = require('path');
-const assert = require('assert').strict;
-const tsc = require('typescript');
-const Util = require('../../report/html/renderer/util.js');
-const {collectAndBakeCtcStrings} = require('./bake-ctc-to-lhl.js');
-const {pruneObsoleteLhlMessages} = require('./prune-obsolete-lhl-messages.js');
+import fs from 'fs';
+import path from 'path';
 
-const LH_ROOT = path.join(__dirname, '../../../');
-const UISTRINGS_REGEX = /UIStrings = .*?\};\n/s;
+import glob from 'glob';
+import expect from 'expect';
+import tsc from 'typescript';
+import MessageParser from 'intl-messageformat-parser';
+import esMain from 'es-main';
+
+import {Util} from '../../../lighthouse-core/util-commonjs.js';
+import {collectAndBakeCtcStrings} from './bake-ctc-to-lhl.js';
+import {pruneObsoleteLhlMessages} from './prune-obsolete-lhl-messages.js';
+import {countTranslatedMessages} from './count-translated.js';
+import {LH_ROOT} from '../../../root.js';
+import {resolveModulePath} from '../esm-utils.js';
+
+// Match declarations of UIStrings, terminating in either a `};\n` (very likely to always be right)
+// or `}\n\n` (allowing semicolon to be optional, but insisting on a double newline so that an
+// closing brace in the middle of the declaration does not prematurely end the pattern)
+const UISTRINGS_REGEX = /UIStrings = .*?\}(;|\n)\n/s;
 
 /** @typedef {import('./bake-ctc-to-lhl.js').CtcMessage} CtcMessage */
 /** @typedef {Required<Pick<CtcMessage, 'message'|'placeholders'>>} IncrementalCtc */
 /** @typedef {{message: string, description: string, examples: Record<string, string>}} ParsedUIString */
 
+const foldersWithStrings = [
+  `${LH_ROOT}/lighthouse-core`,
+  `${LH_ROOT}/report/renderer`,
+  `${LH_ROOT}/treemap`,
+  `${LH_ROOT}/flow-report`,
+  path.dirname(resolveModulePath('lighthouse-stack-packs')) + '/packs',
+];
+
 const ignoredPathComponents = [
   '**/.git/**',
   '**/scripts/**',
-  '**/node_modules/**',
+  '**/node_modules/!(lighthouse-stack-packs)/**', // ignore all node modules *except* stack packs
+  '**/lighthouse-core/lib/stack-packs.js',
   '**/test/**',
   '**/*-test.js',
   '**/*-renderer.js',
+  '**/util-commonjs.js',
+  'treemap/app/src/main.js',
 ];
 
 /**
@@ -78,10 +97,16 @@ function computeDescription(ast, message) {
 
 /**
  * Collapses a jsdoc comment into a single line and trims whitespace.
- * @param {string=} comment
+ * @param {import('typescript').JSDoc['comment']} comment
  * @return {string}
  */
 function coerceToSingleLineAndTrim(comment = '') {
+  // The non-string types were introduced in https://github.com/microsoft/TypeScript/pull/41877
+  // Not currently used, but utility `getTextOfJSDocComment` will convert if the types switch over.
+  if (typeof comment !== 'string') {
+    throw new Error(`unsupported JSDoc comment: ${JSON.stringify(comment)}`);
+  }
+
   // Line breaks within a jsdoc comment should always be replaceable with a space.
   return comment.replace(/\n+/g, ' ').trim();
 }
@@ -126,16 +151,18 @@ function parseExampleJsDoc(rawExample) {
  *  },
  * }
  *
- * Throws if the message violates some basic sanity checking.
+ * Throws if the message violates some basic validity checking.
  *
- * @param {string} message
+ * @param {string} lhlMessage
  * @param {Record<string, string>} examples
  * @return {IncrementalCtc}
  */
-function convertMessageToCtc(message, examples = {}) {
+function convertMessageToCtc(lhlMessage, examples = {}) {
+  _lhlValidityChecks(lhlMessage);
+
   /** @type {IncrementalCtc} */
   const ctc = {
-    message,
+    message: lhlMessage,
     placeholders: {},
   };
 
@@ -148,9 +175,48 @@ function convertMessageToCtc(message, examples = {}) {
 
   _processPlaceholderDirectIcu(ctc, examples);
 
-  _ctcSanityChecks(ctc);
+  _ctcValidityChecks(ctc);
 
   return ctc;
+}
+
+/**
+ * Do some basic checks on an lhl message to confirm that it is valid. Future
+ * lhl regression catching should go here.
+ *
+ * @param {string} lhlMessage
+ */
+function _lhlValidityChecks(lhlMessage) {
+  let parsedMessage;
+  try {
+    parsedMessage = MessageParser.parse(lhlMessage);
+  } catch (err) {
+    if (err.name !== 'SyntaxError') throw err;
+    // Improve the intl-messageformat-parser syntax error output.
+    /** @type {Array<{text: string}>} */
+    const expected = err.expected;
+    const expectedStr = expected.map(exp => `'${exp.text}'`).join(', ');
+    throw new Error(`Did not find the expected syntax (one of ${expectedStr}) in message "${lhlMessage}"`);
+  }
+
+  for (const element of parsedMessage.elements) {
+    if (element.type !== 'argumentElement' || !element.format) continue;
+
+    if (element.format.type === 'pluralFormat' || element.format.type === 'selectFormat') {
+      // `plural`/`select` arguments can't have content before or after them.
+      // See http://userguide.icu-project.org/formatparse/messages#TOC-Complex-Argument-Types
+      // e.g. https://github.com/GoogleChrome/lighthouse/pull/11068#discussion_r451682796
+      if (parsedMessage.elements.length > 1) {
+        throw new Error(`Content cannot appear outside plural or select ICU messages. Instead, repeat that content in each option (message: '${lhlMessage}')`);
+      }
+
+      // Each option value must also be a valid lhlMessage.
+      for (const option of element.format.options) {
+        const optionStr = lhlMessage.slice(option.value.location.start.offset, option.value.location.end.offset);
+        _lhlValidityChecks(optionStr);
+      }
+    }
+  }
 }
 
 /**
@@ -335,15 +401,21 @@ function _processPlaceholderDirectIcu(icu, examples) {
 }
 
 /**
- * Do some basic sanity checks to a ctc object to confirm that it is valid. Future
+ * Do some basic checks on a ctc object to confirm that it is valid. Future
  * ctc regression catching should go here.
  *
  * @param {IncrementalCtc} icu the ctc output message to verify
  */
-function _ctcSanityChecks(icu) {
+function _ctcValidityChecks(icu) {
   // '$$' i.e. "Double Dollar" is always invalid in ctc.
-  if (icu.message.match(/\$\$/)) {
-    throw new Error(`Ctc messages cannot contain double dollar: ${icu.message}`);
+  const regex = /\$([^$]*?)\$/g;
+  const matches = regex.exec(icu.message);
+  if (Array.isArray(matches)) {
+    matches.forEach(function(value) {
+      if (!value) {
+        throw new Error(`Ctc messages cannot contain double dollar: ${icu.message}`);
+      }
+    });
   }
 }
 
@@ -409,7 +481,9 @@ function createPsuedoLocaleStrings(messages) {
  * @return {string}
  */
 function getIdentifier(node) {
-  if (!node.name || !tsc.isIdentifier(node.name)) throw new Error('no Identifier found');
+  if (!node.name || !(tsc.isIdentifier(node.name) || tsc.isStringLiteral(node.name))) {
+    throw new Error('no Identifier found');
+  }
 
   return node.name.text;
 }
@@ -443,7 +517,7 @@ function parseUIStrings(sourceStr, liveUIStrings) {
     // Use live message to avoid having to e.g. concat strings broken into parts.
     const message = liveUIStrings[key];
 
-    // @ts-ignore - Not part of the public tsc interface yet.
+    // @ts-expect-error - Not part of the public tsc interface yet.
     const jsDocComments = tsc.getJSDocCommentsAndTags(property);
     const {description, examples} = computeDescription(jsDocComments[0], message);
 
@@ -457,22 +531,13 @@ function parseUIStrings(sourceStr, liveUIStrings) {
   return parsedMessages;
 }
 
-/** @type {Map<string, string>} */
-const seenStrings = new Map();
-
-/** @type {number} */
-let collisions = 0;
-
-/** @type {Array<string>} */
-const collisionStrings = [];
-
 /**
  * Collects all LHL messsages defined in UIString from Javascript files in dir,
  * and converts them into CTC.
  * @param {string} dir absolute path
- * @return {Record<string, CtcMessage>}
+ * @return {Promise<Record<string, CtcMessage>>}
  */
-function collectAllStringsInDir(dir) {
+async function collectAllStringsInDir(dir) {
   /** @type {Record<string, CtcMessage>} */
   const strings = {};
 
@@ -481,20 +546,21 @@ function collectAllStringsInDir(dir) {
     cwd: LH_ROOT,
     ignore: ignoredPathComponents,
   });
+
   for (const relativeToRootPath of files) {
     const absolutePath = path.join(LH_ROOT, relativeToRootPath);
     if (!process.env.CI) console.log('Collecting from', relativeToRootPath);
 
     const content = fs.readFileSync(absolutePath, 'utf8');
-    const exportVars = require(absolutePath);
+    const exportVars = await import(absolutePath);
     const regexMatch = content.match(UISTRINGS_REGEX);
-    const exportedUIStrings = exportVars.UIStrings;
+    const exportedUIStrings = exportVars.UIStrings || exportVars.default?.UIStrings;
 
     if (!regexMatch) {
       // No UIStrings found in the file text or exports, so move to the next.
       if (!exportedUIStrings) continue;
 
-      throw new Error('UIStrings exported but no definition found');
+      throw new Error('UIStrings exported but no definition found: ' + relativeToRootPath);
     }
 
     if (!exportedUIStrings) {
@@ -523,21 +589,6 @@ function collectAllStringsInDir(dir) {
 
       const messageKey = `${relativeToRootPath} | ${key}`;
       strings[messageKey] = ctc;
-
-      // check for duplicates, if duplicate, add @description as @meaning to both
-      if (seenStrings.has(ctc.message)) {
-        ctc.meaning = ctc.description;
-        const seenId = seenStrings.get(ctc.message);
-        if (seenId) {
-          if (!strings[seenId].meaning) {
-            strings[seenId].meaning = strings[seenId].description;
-            collisions++;
-          }
-          collisionStrings.push(ctc.message);
-          collisions++;
-        }
-      }
-      seenStrings.set(ctc.message, messageKey);
     }
   }
 
@@ -549,7 +600,7 @@ function collectAllStringsInDir(dir) {
  * @param {Record<string, CtcMessage>} strings
  */
 function writeStringsToCtcFiles(locale, strings) {
-  const fullPath = path.join(LH_ROOT, `lighthouse-core/lib/i18n/locales/${locale}.ctc.json`);
+  const fullPath = path.join(LH_ROOT, `shared/localization/locales/${locale}.ctc.json`);
   /** @type {Record<string, CtcMessage>} */
   const output = {};
   const sortedEntries = Object.entries(strings).sort(([keyA], [keyB]) => keyA.localeCompare(keyB));
@@ -560,20 +611,91 @@ function writeStringsToCtcFiles(locale, strings) {
   fs.writeFileSync(fullPath, JSON.stringify(output, null, 2) + '\n');
 }
 
-// @ts-ignore Test if called from the CLI or as a module.
-if (require.main === module) {
-  const coreStrings = collectAllStringsInDir(path.join(LH_ROOT, 'lighthouse-core'));
-  console.log('Collected from LH core!');
+/**
+ * This function does two things:
+ *
+ *    - Add `meaning` property to ctc messages that have the same message but different descriptions so TC can disambiguate.
+ *    - Throw if the known collisions has changed at all.
+ *
+ * @param {Record<string, CtcMessage>} strings
+ */
+function resolveMessageCollisions(strings) {
+  /** @type {Map<string, Array<CtcMessage>>} */
+  const stringsByMessage = new Map();
 
-  const stackPackStrings = collectAllStringsInDir(path.join(LH_ROOT, 'stack-packs/packs'));
-  console.log('Collected from Stack Packs!');
-
-  if ((collisions) > 0) {
-    console.log(`MEANING COLLISION: ${collisions} string(s) have the same content.`);
-    assert.equal(collisions, 16, `The number of duplicate strings have changed, update this assertion if that is expected, or reword strings. Collisions: ${collisionStrings}`);
+  // Group all the strings by their message.
+  for (const ctc of Object.values(strings)) {
+    const collisions = stringsByMessage.get(ctc.message) || [];
+    collisions.push(ctc);
+    stringsByMessage.set(ctc.message, collisions);
   }
 
-  const strings = {...coreStrings, ...stackPackStrings};
+  /** @type {Array<CtcMessage>} */
+  const allCollisions = [];
+  for (const messageGroup of stringsByMessage.values()) {
+    // If this message didn't collide with anything else, skip it.
+    if (messageGroup.length <= 1) continue;
+
+    // If group shares both message and description, they can be translated as if a single string.
+    const descriptions = new Set(messageGroup.map(ctc => ctc.description));
+    if (descriptions.size <= 1) continue;
+
+    // We have duplicate messages with different descriptions. Disambiguate using `meaning` for TC.
+    for (const ctc of messageGroup) {
+      ctc.meaning = ctc.description;
+    }
+    allCollisions.push(...messageGroup);
+  }
+
+  // Check that the known collisions match our known list.
+  const collidingMessages = allCollisions.map(collision => collision.message).sort();
+
+  try {
+    expect(collidingMessages).toEqual([
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'ARIA $MARKDOWN_SNIPPET_0$ elements have accessible names',
+      'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
+      'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
+      'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
+      'Consider using a $LINK_START_0$plugin$LINK_END_0$ or service that will automatically convert your uploaded images to the optimal formats.',
+      'Consider using a $LINK_START_0$plugin$LINK_END_0$ or service that will automatically convert your uploaded images to the optimal formats.',
+      'Document has a valid $MARKDOWN_SNIPPET_0$',
+      'Document has a valid $MARKDOWN_SNIPPET_0$',
+      'Failing Elements',
+      'Failing Elements',
+      'Name',
+      'Name',
+      'Potential Savings',
+      'Potential Savings',
+      'Use the $MARKDOWN_SNIPPET_0$ component and set the appropriate $MARKDOWN_SNIPPET_1$. $LINK_START_0$Learn more$LINK_END_0$.',
+      'Use the $MARKDOWN_SNIPPET_0$ component and set the appropriate $MARKDOWN_SNIPPET_1$. $LINK_START_0$Learn more$LINK_END_0$.',
+    ]);
+  } catch (err) {
+    console.log('The number of duplicate strings has changed. Consider duplicating the `description` to match existing strings so they\'re translated together or update this assertion if they must absolutely be translated separately');
+    console.log('copy/paste this to pass check:');
+    console.log(collidingMessages);
+    throw new Error(err.message);
+  }
+}
+
+async function main() {
+  /** @type {Record<string, CtcMessage>} */
+  const strings = {};
+
+  for (const folderWithStrings of foldersWithStrings) {
+    console.log(`\n====\nCollecting strings from ${folderWithStrings}\n====`);
+    const moreStrings = await collectAllStringsInDir(folderWithStrings);
+    Object.assign(strings, moreStrings);
+  }
+
+  resolveMessageCollisions(strings);
+
   writeStringsToCtcFiles('en-US', strings);
   console.log('Written to disk!', 'en-US.ctc.json');
   // Generate local pseudolocalized files for debugging while translating
@@ -581,8 +703,7 @@ if (require.main === module) {
   console.log('Written to disk!', 'en-XL.ctc.json');
 
   // Bake the ctc en-US and en-XL files into en-US and en-XL LHL format
-  const lhl = collectAndBakeCtcStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/'),
-      path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/'));
+  const lhl = collectAndBakeCtcStrings(path.join(LH_ROOT, 'shared/localization/locales/'));
   lhl.forEach(function(locale) {
     console.log(`Baked ${locale} into LHL format.`);
   });
@@ -590,9 +711,28 @@ if (require.main === module) {
   // Remove any obsolete strings in existing LHL files.
   console.log('Checking for out-of-date LHL messages...');
   pruneObsoleteLhlMessages();
+
+  // Report on translation progress.
+  const progress = countTranslatedMessages();
+  console.log(`  ${progress.localeCount} translated locale files`);
+  console.log(`  ${progress.translatedCount}/${progress.messageCount} fully translated messages`);
+  if (progress.partiallyTranslatedCount) {
+    console.log(`  ${progress.partiallyTranslatedCount}/${progress.messageCount} partially translated messages`);
+  }
+  console.log(`  ${progress.notTranslatedCount}/${progress.messageCount} untranslated messages`);
+
+  console.log('✨ Complete!');
 }
 
-module.exports = {
+// Test if called from the CLI or as a module.
+if (esMain(import.meta)) {
+  main().catch(err => {
+    console.error(err.stack);
+    process.exit(1);
+  });
+}
+
+export {
   parseUIStrings,
   createPsuedoLocaleStrings,
   convertMessageToCtc,

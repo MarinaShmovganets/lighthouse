@@ -1,55 +1,40 @@
 ### Release guide for maintainers
 
-This doc is only relevant to core member.
+This doc is only relevant to core members.
 
 ## Release Policy
 
 ### Cadence
 
-We aim to release every 3 weeks. Our schedule is set as follows: One day before the [expected Chromium branch point](https://www.chromium.org/developers/calendar) (which is every six weeks) and again exactly 3 weeks after that day.
+We aim to release every 3 weeks. Our schedule is set as follows: Two days before the [expected Chromium branch point](https://www.chromium.org/developers/calendar) (which is every six weeks) and again exactly 3 weeks after that day. These are Tuesdays.
 
 For example, following this schedule, we will attempt a release on these dates:
 
-* _Oct 15 2019_
-* Nov 5 2019
-* _Nov 26 2019_
-* Dec 17 2019
+* _Sep 29 2020_ (M87)
+* Oct 20 2020
+* _Nov 10 2020_ (M88)
+* Dec 1 2020
 * ...
 
-Italicized dates are the day before the expected Chromium branch point.
+Italicized dates are two days before the expected Chromium branch point.
 
 The planned ship dates are added to the internal Lighthouse calendar.
 
 If a release is necessary outside these scheduled dates, we may choose to skip the next scheduled release.
 
-In general, the above release dates are when new versions will be available in npm. About a week later, it will be reflected in LR / PSI. Some 10 weeks later, it will be available in Stable Chrome.
+In general, the above release dates are when new versions will be available in npm. Within 2 weeks, it will be reflected in LR / PSI. Some 10 weeks later, it will be available in Stable Chrome.
 
 ### Release manager
 
 Release manager is appointed, according to the list below. However, if the appointed manager is absent, the next engineer in line in the list would own it.
 
-    bckenny, paulirish, patrickhulce
-
-Release manager follows the below _Release Process_.
-
-### Release publicity
-
-Note: actively undergoing changes by @exterkamp and @egsweeny.
-
-1. Release mgr copies changelog to a new [Releases](https://github.com/GoogleChrome/lighthouse/releases). Tags and ships it.
-1. Release mgr tells the _LH public_ Hangout chat about the new version.
-1. V & Kayce write and publish the [/updates](https://developers.google.com/web/updates/) blog post
-1. Paul writes the tweet (linking the /updates post) and sends it on [@____lighthouse](https://twitter.com/____lighthouse).
-1. Paul prepares a roll for DevTools frontend
+    @cjamcl, @adamraine
 
 ### Versioning
 
 We follow [semver](https://semver.org/) versioning semantics (`vMajor.Minor.Patch`). Breaking changes will bump the major version. New features or bug fixes will bump the minor version. If a release contains no new features, then we'll only bump the patch version.
 
-
 ## Release Process
-
-Note: You'll wanna be on a Linux machine, since the Lightrider step will require that.
 
 ### On the scheduled release date
 
@@ -57,77 +42,61 @@ Before starting, you should announce to the LH eng channel that you are releasin
 and that no new PRs should be merged until you are done.
 
 ```sh
-# Run the tests.
-bash ./lighthouse-core/scripts/release/test.sh
-# Change into the newly-created pristine folder.
+# Make pristine folder.
+bash ./lighthouse-core/scripts/release/prepare-pristine.sh
 cd ../lighthouse-pristine
+yarn
+yarn build-all
+
+# Verify the viewer will work.
+yarn serve-viewer
+# Works with v4 report? http://localhost:8000/viewer?gist=7251f9eba409f385e4c0424515fe8009
+# Works with v5 report? http://localhost:8000/viewer?gist=6093e41b9b50c8d642a7e6bbc784e32f
+# Works with v6 report? http://localhost:8000/viewer?gist=94722e917a507feb5371ad51be6c3334
+# Works with v8 report? http://localhost:8000/viewer?gist=18d523b86779185ecfd376d58f891e1d
+# Current production viewer (https://googlechrome.github.io/lighthouse/viewer/) has forward compat with next major LHR?
+
+# Confirm DevTools integration will work: Do some manual testing on a number of sites.
+yarn test-devtools
+yarn open-devtools
+
+# Leave pristine folder.
+cd ../lighthouse
 ```
 
-Confirm DevTools integration will work:
-```sh
-# You should have Chromium already checked out at ~/chromium/src
-# See: https://www.chromium.org/developers/how-tos/get-the-code
+### Lightrider
 
-# Roll to Chromium folder.
-yarn devtools
+There is a cron that rolls the latest Lighthouse to the Lightrider canary feed.
+Make sure it has run recently, and there were no errors that require an upstream
+fix in Lighthouse
 
-# Checkout latest Chromium code.
-cd ~/chromium/src
-git pull
-git new-branch lh-roll-x.x.x
-gclient sync
-autoninja -C out/Release chrome blink_tests
+For more, see the internal README for updating Lighthouse: go/lightrider-doc
 
-# Run tests and rebase.
-yarn --cwd ~/chromium/src/third_party/blink/renderer/devtools test 'http/tests/devtools/audits/*.js' --reset-results
-# Verify the changes are expected.
-git diff
+Hold on submitting a CL until after cutting a release.
 
-# Verify that the Audits panel still works. Consider the new features that have been added.
-# If anything is wrong, stop releasing, investigate, land a fix and start over.
-
-# For bonus points, add some tests covering new features. Either a new test, or an extra
-# assertion in an existing test.
-
-git cl upload --bypass-hooks
-# Go to Gerrit, run CQ dry run, ensure the tests all pass.
-```
-
-Confirm Lightrider integration will work:
-```sh
-# See the internal README for updating Lighthouse.
-
-# Test things out locally, if happy, deploy to canary and see how the graphs react. 20 minutes should be enough time.
-
-# Do the stuff in "Test LR changes in Canary".
-# go/lightrider-doc#test-lr-changes-in-canary
-
-# Verify that Lightrider works properly, and is generating reports fully. Consider the new features that have been added.
-# Note: if the changes include proto changes make sure that the API has those new fields.
-# If anything is wrong, stop releasing, investigate, land a fix and start over.
-
-# For bonus points, add some tests covering new features. Either a new test, or an extra
-# assertion in an existing test.
-```
+### Open the PR
 
 Now that the integrations are confirmed to work, go back to `lighthouse` folder.
 
 ```sh
 # Prepare the commit, replace x.x.x with the desired version
 bash ./lighthouse-core/scripts/release/prepare-commit.sh x.x.x
+```
 
-# Open the PR and await merge...
-echo "It's been merged! 🎉"
+1. Edit changelog.md before opening the PR
+1. Open the PR with title `vx.x.x`
+1. Hold until approved and merged
 
-# One last test (this script uses origin/master, so we also get the commit with the new changelog - that commit should be HEAD).
-bash ./lighthouse-core/scripts/release/test.sh
-# Package everything for publishing
+### Cut the release
+
+```sh
+# Package everything for publishing.
 bash ./lighthouse-core/scripts/release/prepare-package.sh
 
-# Make sure you're in the Lighthouse pristine repo we just tested.
+# Make sure you're in the Lighthouse pristine repo.
 cd ../lighthouse-pristine
 
-# Sanity check: last chance to abort.
+# Last chance to abort.
 git status
 git log
 
@@ -137,9 +106,26 @@ git push --follow-tags
 # Publish to npm.
 npm publish
 
-# Publish viewer.
+# Publish viewer and treemap.
 yarn deploy-viewer
+yarn deploy-treemap
+```
 
+### Extensions
+
+The extensions rarely change. Run `git log clients/extension` to see the latest changes,
+and re-publish them to the Chrome and Firefox extension stores if necessary.
+
+To test:
+
+- run `yarn build-extension`
+- go to chrome://extensions/
+- click "load packed", select `dist/extension-chrome-package`
+- manually test it
+
+To publish:
+
+```sh
 # Publish the extensions (if it changed).
 open https://chrome.google.com/webstore/developer/edit/blipmdconlkpinefehnmjammfjpmpbjk
 cd dist/extension-package/
@@ -152,20 +138,24 @@ echo "Upload the package zip to CWS dev dashboard..."
 # _Publish_ at the bottom
 
 # For Firefox: https://addons.mozilla.org/en-US/developers/addon/google-lighthouse/versions/submit/
-
-# * Tell the world!!! *
-echo "Complete the _Release publicity_ tasks documented above"
-
-# Roll the tagged commit to Chromium and update the CL you made. Do not land, see next section.
-# Roll the tagged commit to LR and land the CL.
 ```
 
 ### Chromium CL
 
-If this is a branching week, wait until _after_ the branch point email, then land the CL.
+```sh
+git checkout vx.x.x # Checkout the specific version.
+yarn devtools ~/src/devtools/devtools-frontend
 
-Otherwise, you can land it immediately.
+cd ~/src/devtools/devtools-frontend
+git new-branch rls
+git commit -am "[Lighthouse] Roll Lighthouse x.x.x"
+git cl upload -b 772558
+```
 
-### The following Monday
+### Lightrider
 
-Evaluate LR staging, if all looks good, promote to production!
+Roll to Lightrider canary, and alert LR team that the next version is ready to be rolled to stable.
+
+### Done
+
+Yay!

@@ -12,7 +12,7 @@ const i18n = require('../../lib/i18n/i18n.js');
 const UIStrings = {
   /** Description of the Cumulative Layout Shift metric that indicates how much the page changes its layout while it loads. If big segments of the page shift their location during load, the Cumulative Layout Shift will be higher. This description is displayed within a tooltip when the user hovers on the metric name to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Cumulative Layout Shift measures the movement of visible ' +
-               'elements within the viewport. [Learn more](https://web.dev/cls).',
+               'elements within the viewport. [Learn more](https://web.dev/cls/).',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -54,22 +54,22 @@ class CumulativeLayoutShift extends Audit {
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const metricResult = await ComputedCLS.request(trace, context);
+    const {cumulativeLayoutShift, ...rest} = await ComputedCLS.request(trace, context);
 
     /** @type {LH.Audit.Details.DebugData} */
     const details = {
       type: 'debugdata',
-      items: [metricResult.debugInfo],
+      items: [rest],
     };
 
     return {
       score: Audit.computeLogNormalScore(
         {p10: context.options.p10, median: context.options.median},
-        metricResult.value
+        cumulativeLayoutShift
       ),
-      numericValue: metricResult.value,
+      numericValue: cumulativeLayoutShift,
       numericUnit: 'unitless',
-      displayValue: metricResult.value.toLocaleString(context.settings.locale),
+      displayValue: cumulativeLayoutShift.toLocaleString(context.settings.locale),
       details,
     };
   }

@@ -41,7 +41,7 @@ const UIStrings = {
   /** Description of a Lighthouse audit that tells the user *why* they need to avoid using browser plugins in their content. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Search engines can\'t index plugin content, and ' +
     'many devices restrict plugins or don\'t support them. ' +
-    '[Learn more](https://web.dev/plugins).',
+    '[Learn more](https://web.dev/plugins/).',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -73,7 +73,7 @@ function isPluginURL(url) {
     if (parts.length < 2) {
       return false;
     }
-    const part = /** @type {string} */(parts.pop());
+    const part = parts[parts.length - 1];
     return FILE_EXTENSION_BLOCKLIST.has(part.trim().toLowerCase());
   } catch (e) {
     return false;
@@ -129,26 +129,8 @@ class Plugins extends Audit {
         return failingParams.length > 0;
       })
       .map(plugin => {
-        const tagName = plugin.tagName.toLowerCase();
-        /** @type {Array<keyof LH.Artifacts.EmbeddedContentInfo>} */
-        const attributeKeys = ['src', 'data', 'code', 'type'];
-        const attributes = attributeKeys
-          .reduce((result, attr) => {
-            if (plugin[attr] !== null) {
-              result += ` ${attr}="${plugin[attr]}"`;
-            }
-            return result;
-          }, '');
-        const params = plugin.params
-          .filter(param => SOURCE_PARAMS.has(param.name.trim().toLowerCase()))
-          .map(param => `<param ${param.name}="${param.value}" />`)
-          .join('');
-
         return {
-          source: {
-            type: /** @type {'node'} */ ('node'),
-            snippet: `<${tagName}${attributes}>${params}</${tagName}>`,
-          },
+          source: Audit.makeNodeItem(plugin.node),
         };
       });
 

@@ -8,14 +8,24 @@
 
 # Download chrome inside of our CI env.
 
-if [ "$APPVEYOR" == "True" ]; then
-  url="https://download-chromium.appspot.com/dl/Win?type=snapshots"
-else
-  url="https://download-chromium.appspot.com/dl/Linux_x64?type=snapshots"
-fi
+set -euo pipefail
 
-if [ x"$CHROME_PATH" == x ]; then
-  echo "Error: Environment variable CHROME_PATH not set"
+unameOut="$(uname -s)"
+case "${unameOut}" in
+  Linux*)     machine=Linux;;
+  Darwin*)    machine=Mac;;
+  MINGW*)     machine=MinGw;;
+  *)          machine="UNKNOWN:${unameOut}"
+esac
+
+if [ "$machine" == "MinGw" ]; then
+  url="https://download-chromium.appspot.com/dl/Win?type=snapshots"
+elif [ "$machine" == "Linux" ]; then
+  url="https://download-chromium.appspot.com/dl/Linux_x64?type=snapshots"
+elif [ "$machine" == "Mac" ]; then
+  url="https://download-chromium.appspot.com/dl/Mac?type=snapshots"
+else
+  echo "unsupported platform"
   exit 1
 fi
 

@@ -18,31 +18,43 @@ const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on the font sizes used on the page. This descriptive title is shown to users when there is a font that may be too small to be read by users. */
   failureTitle: 'Document doesn\'t use legible font sizes',
   /** Description of a Lighthouse audit that tells the user *why* they need to use a larger font size. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'Font sizes less than 12px are too small to be legible and require mobile visitors to “pinch to zoom” in order to read. Strive to have >60% of page text ≥12px. [Learn more](https://web.dev/font-size).',
+  description: 'Font sizes less than 12px are too small to be legible and require mobile visitors to “pinch to zoom” in order to read. Strive to have >60% of page text ≥12px. [Learn more](https://web.dev/font-size/).',
   /** Label for the audit identifying font sizes that are too small. */
   displayValue: '{decimalProportion, number, extendedPercent} legible text',
   /** Explanatory message stating that there was a failure in an audit caused by a missing page viewport meta tag configuration. "viewport" and "meta" are HTML terms and should not be translated. */
   explanationViewport: 'Text is illegible because there\'s no viewport meta tag optimized ' +
     'for mobile screens.',
+  /** Label for the table row which summarizes all failing nodes that were not fully analyzed. "Add'l" is shorthand for "Additional" */
+  additionalIllegibleText: 'Add\'l illegible text',
+  /** Label for the table row which displays the percentage of nodes that have proper font size. */
+  legibleText: 'Legible text',
+  /** Label for a column in a data table; entries will be css style rule selectors. */
+  columnSelector: 'Selector',
+  /** Label for a column in a data table; entries will be the percent of page text a specific CSS rule applies to. */
+  columnPercentPageText: '% of Page Text',
+  /** Label for a column in a data table; entries will be text font sizes. */
+  columnFontSize: 'Font Size',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 
 /**
  * @param {Array<FailingNodeData>} fontSizeArtifact
- * @returns {Array<FailingNodeData>}
+ * @return {Array<FailingNodeData>}
  */
 function getUniqueFailingRules(fontSizeArtifact) {
   /** @type {Map<string, FailingNodeData>} */
   const failingRules = new Map();
 
-  fontSizeArtifact.forEach(({cssRule, fontSize, textLength, node}) => {
-    const artifactId = getFontArtifactId(cssRule, node);
+  fontSizeArtifact.forEach((failingNodeData) => {
+    const {nodeId, cssRule, fontSize, textLength, parentNode} = failingNodeData;
+    const artifactId = getFontArtifactId(cssRule, nodeId);
     const failingRule = failingRules.get(artifactId);
 
     if (!failingRule) {
       failingRules.set(artifactId, {
-        node,
+        nodeId,
+        parentNode,
         cssRule,
         fontSize,
         textLength,
@@ -56,18 +68,21 @@ function getUniqueFailingRules(fontSizeArtifact) {
 }
 
 /**
- * @param {Array<string>=} attributes
- * @returns {Map<string, string>}
+ * @param {Array<string|undefined>=} attributes
+ * @return {Map<string, string>}
  */
 function getAttributeMap(attributes = []) {
   const map = new Map();
 
   for (let i = 0; i < attributes.length; i += 2) {
-    const name = attributes[i].toLowerCase();
-    const value = attributes[i + 1].trim();
+    const name = attributes[i];
+    const value = attributes[i + 1];
+    if (!name || !value) continue;
 
-    if (value) {
-      map.set(name, value);
+    const normalizedValue = value.trim();
+
+    if (normalizedValue) {
+      map.set(name.toLowerCase(), normalizedValue);
     }
   }
 
@@ -76,11 +91,11 @@ function getAttributeMap(attributes = []) {
 
 /**
  * TODO: return unique selector, like axe-core does, instead of just id/class/name of a single node
- * @param {FailingNodeData['node']} node
- * @returns {string}
+ * @param {FailingNodeData['parentNode']} parentNode
+ * @return {string}
  */
-function getSelector(node) {
-  const attributeMap = getAttributeMap(node.attributes);
+function getSelector(parentNode) {
+  const attributeMap = getAttributeMap(parentNode.attributes);
 
   if (attributeMap.has('id')) {
     return '#' + attributeMap.get('id');
@@ -91,40 +106,40 @@ function getSelector(node) {
     }
   }
 
-  return node.localName.toLowerCase();
+  return parentNode.nodeName.toLowerCase();
 }
 
 /**
- * @param {FailingNodeData['node']} node
- * @return {{type: 'node', selector: string, snippet: string}}
+ * @param {FailingNodeData['parentNode']} parentNode
+ * @return {LH.Audit.Details.NodeValue}
  */
-function nodeToTableNode(node) {
-  const attributes = node.attributes || [];
+function nodeToTableNode(parentNode) {
+  const attributes = parentNode.attributes || [];
   const attributesString = attributes.map((value, idx) =>
     (idx % 2 === 0) ? ` ${value}` : `="${value}"`
   ).join('');
 
   return {
     type: 'node',
-    selector: node.parentNode ? getSelector(node.parentNode) : '',
-    snippet: `<${node.localName}${attributesString}>`,
+    selector: parentNode.parentNode ? getSelector(parentNode.parentNode) : '',
+    snippet: `<${parentNode.nodeName.toLowerCase()}${attributesString}>`,
   };
 }
 
 /**
  * @param {string} baseURL
  * @param {FailingNodeData['cssRule']} styleDeclaration
- * @param {FailingNodeData['node']} node
- * @returns {{source: LH.Audit.Details.UrlValue | LH.Audit.Details.SourceLocationValue | LH.Audit.Details.CodeValue, selector: string | LH.Audit.Details.NodeValue}}
+ * @param {FailingNodeData['parentNode']} parentNode
+ * @return {{source: LH.Audit.Details.UrlValue | LH.Audit.Details.SourceLocationValue | LH.Audit.Details.CodeValue, selector: string | LH.Audit.Details.NodeValue}}
  */
-function findStyleRuleSource(baseURL, styleDeclaration, node) {
+function findStyleRuleSource(baseURL, styleDeclaration, parentNode) {
   if (!styleDeclaration ||
     styleDeclaration.type === 'Attributes' ||
     styleDeclaration.type === 'Inline'
   ) {
     return {
       source: {type: 'url', value: baseURL},
-      selector: nodeToTableNode(node),
+      selector: nodeToTableNode(parentNode),
     };
   }
 
@@ -181,9 +196,11 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
       }
     }
 
-    const url = stylesheet.sourceURL;
+    const source = Audit.makeSourceLocation(stylesheet.sourceURL, line, column);
+    source.urlProvider = urlProvider;
+
     return {
-      source: {type: 'source-location', url, urlProvider, line, column},
+      source,
       selector,
     };
   }
@@ -198,16 +215,16 @@ function findStyleRuleSource(baseURL, styleDeclaration, node) {
 
 /**
  * @param {FailingNodeData['cssRule']} styleDeclaration
- * @param {FailingNodeData['node']} node
+ * @param {number} textNodeId
  * @return {string}
  */
-function getFontArtifactId(styleDeclaration, node) {
+function getFontArtifactId(styleDeclaration, textNodeId) {
   if (styleDeclaration && styleDeclaration.type === 'Regular') {
     const startLine = styleDeclaration.range ? styleDeclaration.range.startLine : 0;
     const startColumn = styleDeclaration.range ? styleDeclaration.range.startColumn : 0;
     return `${styleDeclaration.styleSheetId}@${startLine}:${startColumn}`;
   } else {
-    return `node_${node.nodeId}`;
+    return `node_${textNodeId}`;
   }
 }
 
@@ -221,7 +238,7 @@ class FontSize extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['FontSize', 'URL', 'MetaElements', 'TestedAsMobileDevice'],
+      requiredArtifacts: ['FontSize', 'URL', 'MetaElements'],
     };
   }
 
@@ -231,7 +248,7 @@ class FontSize extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    if (!artifacts.TestedAsMobileDevice) {
+    if (context.settings.formFactor === 'desktop') {
       // Font size isn't important to desktop SEO
       return {
         score: 1,
@@ -267,16 +284,16 @@ class FontSize extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'source', itemType: 'source-location', text: 'Source'},
-      {key: 'selector', itemType: 'code', text: 'Selector'},
-      {key: 'coverage', itemType: 'text', text: '% of Page Text'},
-      {key: 'fontSize', itemType: 'text', text: 'Font Size'},
+      {key: 'source', itemType: 'source-location', text: str_(i18n.UIStrings.columnSource)},
+      {key: 'selector', itemType: 'code', text: str_(UIStrings.columnSelector)},
+      {key: 'coverage', itemType: 'text', text: str_(UIStrings.columnPercentPageText)},
+      {key: 'fontSize', itemType: 'text', text: str_(UIStrings.columnFontSize)},
     ];
 
     const tableData = failingRules.sort((a, b) => b.textLength - a.textLength)
-      .map(({cssRule, textLength, fontSize, node}) => {
+      .map(({cssRule, textLength, fontSize, parentNode}) => {
         const percentageOfAffectedText = textLength / totalTextLength * 100;
-        const origin = findStyleRuleSource(pageUrl, cssRule, node);
+        const origin = findStyleRuleSource(pageUrl, cssRule, parentNode);
 
         return {
           source: origin.source,
@@ -293,7 +310,7 @@ class FontSize extends Audit {
 
       tableData.push({
         // Overrides default `source-location`
-        source: {type: 'code', value: 'Add\'l illegible text'},
+        source: {type: 'code', value: str_(UIStrings.additionalIllegibleText)},
         selector: '',
         coverage: `${percentageOfUnanalyzedFailingText.toFixed(2)}%`,
         fontSize: '< 12px',
@@ -303,7 +320,7 @@ class FontSize extends Audit {
     if (percentageOfPassingText > 0) {
       tableData.push({
         // Overrides default `source-location`
-        source: {type: 'code', value: 'Legible text'},
+        source: {type: 'code', value: str_(UIStrings.legibleText)},
         selector: '',
         coverage: `${percentageOfPassingText.toFixed(2)}%`,
         fontSize: '≥ 12px',
