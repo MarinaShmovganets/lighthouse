@@ -61,7 +61,7 @@ class Doctype extends Audit {
     const doctypeName = artifacts.Doctype.name;
     const doctypePublicId = artifacts.Doctype.publicId;
     const doctypeSystemId = artifacts.Doctype.systemId;
-    const compatMode = artifacts.Doctype.compatMode;
+    const compatMode = artifacts.Doctype.documentCompatMode;
 
     if (compatMode === 'BackCompat') {
       return {

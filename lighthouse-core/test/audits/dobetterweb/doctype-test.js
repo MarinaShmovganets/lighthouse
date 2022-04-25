@@ -35,26 +35,12 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'xml',
         publicId: '',
         systemId: '',
-        compatMode: 'CSS1Compat',
+        documentCompatMode: 'CSS1Compat',
       },
     });
     assert.equal(auditResult.score, 0);
     expect(auditResult.explanation).toBeDisplayString(
-      'Doctype name must be the lowercase string `html`');
-  });
-
-  it('fails when the value of the name attribute is not the lowercase string "html"', () => {
-    const auditResult = Audit.audit({
-      Doctype: {
-        name: 'HTML',
-        publicId: '',
-        systemId: '',
-        compatMode: 'CSS1Compat',
-      },
-    });
-    assert.equal(auditResult.score, 0);
-    expect(auditResult.explanation).toBeDisplayString(
-      'Doctype name must be the lowercase string `html`');
+      'Doctype name must be the string `html`');
   });
 
   it('fails when the publicId attribute is not an empty string', () => {
@@ -63,7 +49,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'html',
         publicId: '189655',
         systemId: '',
-        compatMode: 'CSS1Compat',
+        documentCompatMode: 'CSS1Compat',
       },
     });
     assert.equal(auditResult.score, 0);
@@ -76,7 +62,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'html',
         publicId: '',
         systemId: '189655',
-        compatMode: 'CSS1Compat',
+        documentCompatMode: 'CSS1Compat',
       },
     });
     assert.equal(auditResult.score, 0);
@@ -89,7 +75,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         name: 'html',
         publicId: '',
         systemId: '',
-        compatMode: 'CSS1Compat',
+        documentCompatMode: 'CSS1Compat',
       },
     });
     assert.equal(auditResult.score, 1);
