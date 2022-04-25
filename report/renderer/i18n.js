@@ -37,13 +37,14 @@ export class I18n {
    */
   _formatNumberWithGranularity(number, granularity, opts = {}) {
     if (granularity !== undefined) {
-      opts = {...opts};
-      if (!Number.isFinite(granularity) || granularity <= 0) {
-        throw new Error(`granularity of ${granularity} is invalid`);
+      const log10 = -Math.log10(granularity);
+      if (!Number.isInteger(log10)) {
+        console.warn(`granularity of ${granularity} is invalid. Using 1 instead`);
+        granularity = 1;
       }
 
       if (granularity < 1) {
-        const log10 = -Math.log10(granularity);
+        opts = {...opts};
         opts.minimumFractionDigits = opts.maximumFractionDigits = Math.ceil(log10);
       }
 

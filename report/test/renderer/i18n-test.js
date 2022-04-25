@@ -78,11 +78,6 @@ describe('util helpers', () => {
     assert.strictEqual(i18n.formatBytes(15.12345, granularity), `15${NBSP}bytes`);
     assert.strictEqual(i18n.formatBytes(15.54321, granularity), `16${NBSP}bytes`);
 
-    granularity = 0.5;
-    assert.strictEqual(i18n.formatBytes(15.0, granularity), `15.0${NBSP}bytes`);
-    assert.strictEqual(i18n.formatBytes(15.12345, granularity), `15.0${NBSP}bytes`);
-    assert.strictEqual(i18n.formatBytes(15.54321, granularity), `15.5${NBSP}bytes`);
-
     granularity = 0.1;
     assert.strictEqual(i18n.formatBytes(15.0, granularity), `15.0${NBSP}bytes`);
     assert.strictEqual(i18n.formatBytes(15.12345, granularity), `15.1${NBSP}bytes`);
@@ -92,6 +87,21 @@ describe('util helpers', () => {
     assert.strictEqual(i18n.formatBytes(15.0, granularity), `15.00${NBSP}bytes`);
     assert.strictEqual(i18n.formatBytes(15.12345, granularity), `15.12${NBSP}bytes`);
     assert.strictEqual(i18n.formatBytes(15.19999, granularity), `15.20${NBSP}bytes`);
+  });
+
+  it('formats bytes with invalid granularity', () => {
+    const i18n = new I18n('en', {...Util.UIStrings});
+    const granularity = 0.5;
+    const originalWarn = console.warn;
+
+    try {
+      console.warn = () => {};
+      assert.strictEqual(i18n.formatBytes(15.0, granularity), `15${NBSP}bytes`);
+      assert.strictEqual(i18n.formatBytes(15.12345, granularity), `15${NBSP}bytes`);
+      assert.strictEqual(i18n.formatBytes(15.54321, granularity), `16${NBSP}bytes`);
+    } finally {
+      console.warn = originalWarn;
+    }
   });
 
   it('formats kibibytes with different granularities', () => {
@@ -161,7 +171,7 @@ describe('util helpers', () => {
     const i18n = new I18n('en-XA', {...Util.UIStrings});
     assert.strictEqual(i18n.formatNumber(number), '12.346,859');
     assert.strictEqual(i18n.formatBytesToKiB(number, 0.1), `12,1${NBSP}KiB`);
-    assert.strictEqual(i18n.formatMilliseconds(number, 50), `12.350${NBSP}ms`);
+    assert.strictEqual(i18n.formatMilliseconds(number, 100), `12.300${NBSP}ms`);
     assert.strictEqual(i18n.formatSeconds(number, 1), `12${NBSP}Sek.`);
   });
 

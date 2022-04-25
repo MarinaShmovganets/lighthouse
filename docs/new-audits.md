@@ -42,7 +42,7 @@ The following detail types accept a `granularity` field:
 - `ms`
 - `numeric`
 
-`granularity` must either be between 0 - 1 (excluding zero), or any positive integer power of 10. Some examples of valid values for `granularity`:
+`granularity` must be an integer power of 10. Some examples of valid values for `granularity`:
 
 - 0.001
 - 0.01
