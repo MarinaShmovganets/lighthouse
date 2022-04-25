@@ -343,7 +343,7 @@ Array [
       lcp.result.numericValue = null;  // In LR, undefined becomes null
       lcp.result.score = null;
       const href = renderer._getScoringCalculatorHref(categoryClone.auditRefs);
-      expect(href).toContain('largest-contentful-paint=null');
+      expect(href).toContain('LCP=null');
     });
   });
 
