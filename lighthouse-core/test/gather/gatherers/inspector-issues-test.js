@@ -239,6 +239,7 @@ describe('_getArtifact', () => {
           columnNumber: 10,
           lineNumber: 10,
         },
+        type: 'Untranslated',
       }],
       attributionReportingIssue: [],
       clientHintIssue: [],
