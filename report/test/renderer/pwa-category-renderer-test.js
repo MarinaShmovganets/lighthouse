@@ -3,13 +3,13 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 /* eslint-env jest */
 
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
+
 import {Util} from '../../renderer/util.js';
 import {I18n} from '../../renderer/i18n.js';
 import {DOM} from '../../renderer/dom.js';
@@ -106,12 +106,12 @@ describe('PwaCategoryRenderer', () => {
       const clone = JSON.parse(JSON.stringify(sampleResults));
       const category = clone.categories.pwa;
 
-      // Set everything to passing, except redirects-http set to n/a (as it is on localhost)
+      // Set everything to passing, except for one. (themed-omnibox chosen randomly)
       for (const auditRef of category.auditRefs) {
         auditRef.result.score = 1;
         auditRef.result.scoreDisplayMode = 'binary';
       }
-      const audit = category.auditRefs.find(ref => ref.id === 'redirects-http');
+      const audit = category.auditRefs.find(ref => ref.id === 'themed-omnibox');
       audit.result.scoreDisplayMode = 'notApplicable';
       audit.result.score = null;
 
@@ -248,10 +248,10 @@ describe('PwaCategoryRenderer', () => {
     });
   });
 
-  describe('#renderScoreGauge', () => {
+  describe('#renderCategoryScore', () => {
     it('renders an error score gauge in case of category error', () => {
       category.score = null;
-      const badgeGauge = pwaRenderer.renderScoreGauge(category, sampleResults.categoryGroups);
+      const badgeGauge = pwaRenderer.renderCategoryScore(category, sampleResults.categoryGroups);
 
       // Not a PWA gauge.
       assert.strictEqual(badgeGauge.querySelector('.lh-gauge--pwa__wrapper'), null);
@@ -262,11 +262,11 @@ describe('PwaCategoryRenderer', () => {
     });
 
     it('renders score gauges with unique ids for items in <defs>', () => {
-      const gauge1 = pwaRenderer.renderScoreGauge(category, sampleResults.categoryGroups);
+      const gauge1 = pwaRenderer.renderCategoryScore(category, sampleResults.categoryGroups);
       const gauge1Ids = [...gauge1.querySelectorAll('defs [id]')].map(el => el.id);
       assert.ok(gauge1Ids.length > 2);
 
-      const gauge2 = pwaRenderer.renderScoreGauge(category, sampleResults.categoryGroups);
+      const gauge2 = pwaRenderer.renderCategoryScore(category, sampleResults.categoryGroups);
       const gauge2Ids = [...gauge2.querySelectorAll('defs [id]')].map(el => el.id);
       assert.ok(gauge2Ids.length === gauge1Ids.length);
 

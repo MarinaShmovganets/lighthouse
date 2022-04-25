@@ -3,13 +3,13 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 /* eslint-env jest */
 
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
+
 import {Util} from '../../renderer/util.js';
 import {I18n} from '../../renderer/i18n.js';
 import {DOM} from '../../renderer/dom.js';
@@ -196,8 +196,8 @@ describe('CategoryRenderer', () => {
         'score shows informative and dash icon');
 
     assert.ok(pwaCategory.manualDescription);
-    const description = categoryDOM
-      .querySelector('.lh-clump--manual .lh-audit-group__description').textContent;
+    const description = categoryDOM.querySelector('.lh-clump--manual').closest('.lh-audit-group')
+      .querySelector('.lh-audit-group__description').textContent;
     // may need to be adjusted if description includes a link at the beginning
     assert.ok(description.startsWith(pwaCategory.manualDescription.substring(0, 20)),
         'no manual description');
@@ -255,7 +255,9 @@ describe('CategoryRenderer', () => {
       const categoryDOM = renderer.render(a11yCategory, sampleResults.categoryGroups);
       const percentageEl = categoryDOM.querySelectorAll('.lh-gauge__percentage');
 
-      assert.equal(percentageEl[0].textContent, '81', 'score shows a non-dash value');
+      const scoreText = percentageEl[0].textContent;
+      assert(!scoreText.includes('.'), 'score is integer');
+      assert(Number(scoreText) >= 0 && Number(scoreText) <= 100, 'score is 0-100');
     });
   });
 
@@ -270,7 +272,9 @@ describe('CategoryRenderer', () => {
       const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
 
       const gauge = categoryDOM.querySelector('.lh-gauge__percentage');
-      assert.equal(gauge.textContent.trim(), '81', 'score is 0-100');
+      const scoreText = gauge.textContent.trim();
+      assert(!scoreText.includes('.'), 'score is integer');
+      assert(Number(scoreText) >= 0 && Number(scoreText) <= 100, 'score is 0-100');
 
       const score = categoryDOM.querySelector('.lh-category-header');
       const value = categoryDOM.querySelector('.lh-gauge__percentage');
@@ -280,6 +284,25 @@ describe('CategoryRenderer', () => {
       assert.deepEqual(score, score.firstElementChild, 'first child is a score');
       const scoreInDom = Number(value.textContent);
       assert.ok(Number.isInteger(scoreInDom) && scoreInDom > 10, 'score is rounded out of 100');
+      assert.equal(title.textContent, category.title, 'title is set');
+      assert.ok(description.querySelector('a'), 'description contains converted markdown links');
+    });
+
+    it('renders the category header with fraction', () => {
+      const categoryDOM = renderer.render(
+        category,
+        sampleResults.categoryGroups,
+        {gatherMode: 'snapshot'}
+      );
+
+      const gauge = categoryDOM.querySelector('.lh-fraction__content');
+      assert.equal(gauge.textContent.trim(), '13/18', 'fraction is included');
+
+      const score = categoryDOM.querySelector('.lh-category-header');
+      const title = score.querySelector('.lh-fraction__label');
+      const description = score.querySelector('.lh-category-header__description');
+
+      assert.deepEqual(score, score.firstElementChild, 'first child is a score');
       assert.equal(title.textContent, category.title, 'title is set');
       assert.ok(description.querySelector('a'), 'description contains converted markdown links');
     });
@@ -385,6 +408,10 @@ describe('CategoryRenderer', () => {
       const passingRefs = categoryClone.auditRefs.filter(ref => ref.result.score === 1);
       passingRefs[0].result.warnings = ['Some warning'];
       passingRefs[1].result.warnings = ['Some warning'];
+      // Make one audit n/a
+      const audit = categoryClone.auditRefs.find(ref => ref.id === 'themed-omnibox');
+      audit.result.scoreDisplayMode = 'notApplicable';
+      audit.result.score = null;
 
       const elem = renderer.render(categoryClone, sampleResults.categoryGroups);
       const passedAudits = elem.querySelectorAll('.lh-clump--passed .lh-audit');
@@ -394,7 +421,7 @@ describe('CategoryRenderer', () => {
       const naAudits = elem.querySelectorAll('.lh-clump--notapplicable .lh-audit');
 
       assert.equal(passedAudits.length, 0);
-      assert.equal(failedAudits.length, 6);
+      assert.equal(failedAudits.length, 5);
       assert.equal(warningAudits.length, 2);
       assert.equal(manualAudits.length, 3);
       assert.equal(naAudits.length, 1);
@@ -470,5 +497,74 @@ describe('CategoryRenderer', () => {
       assert.strictEqual(shouldBeWarning[0].id, 'passing');
       assert.ok(shouldBeWarning[0].textContent.includes(passingWarning));
     });
+  });
+
+  describe('renderCategoryScore', () => {
+    it('removes label if omitLabel is true', () => {
+      const options = {omitLabel: true};
+      const categoryScore = renderer.renderCategoryScore(
+        sampleResults.categories.performance,
+        {},
+        options
+      );
+      const label = categoryScore.querySelector('.lh-gauge__label,.lh-fraction__label');
+      assert.ok(!label);
+    });
+
+    it('uses custom callback if present', () => {
+      const options = {
+        onPageAnchorRendered: link => {
+          link.href = '#index=0&anchor=performance';
+        },
+      };
+      const categoryScore = renderer.renderCategoryScore(
+        sampleResults.categories.performance,
+        {},
+        options
+      );
+      const link = categoryScore.querySelector('a');
+      assert.equal(link.hash, '#index=0&anchor=performance');
+    });
+  });
+
+  it('renders audits by weight', () => {
+    const defaultAuditRef = {
+      title: '',
+      description: '',
+      scoreDisplayMode: 'numeric',
+      score: 0,
+      warnings: [],
+    };
+    const category = {
+      id: 'test',
+      title: 'Test',
+      score: 0,
+      auditRefs: [{
+        id: 'audit-1',
+        weight: 0,
+        result: {
+          id: 'audit-1',
+          ...defaultAuditRef,
+        },
+      }, {
+        id: 'audit-2',
+        weight: 1,
+        result: {
+          id: 'audit-2',
+          ...defaultAuditRef,
+        },
+      }, {
+        id: 'audit-3',
+        weight: 0.5,
+        result: {
+          id: 'audit-3',
+          ...defaultAuditRef,
+        },
+      }],
+    };
+    const categoryDOM = renderer.render(category);
+
+    const auditEls = [...categoryDOM.querySelectorAll('.lh-audit')];
+    expect(auditEls.map(el => el.id)).toEqual(['audit-2', 'audit-3', 'audit-1']);
   });
 });

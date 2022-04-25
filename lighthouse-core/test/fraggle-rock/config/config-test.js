@@ -9,6 +9,7 @@ const BaseAudit = require('../../../audits/audit.js');
 const {nonSimulatedPassConfigOverrides} = require('../../../config/constants.js');
 const BaseGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 const {initializeConfig} = require('../../../fraggle-rock/config/config.js');
+const {LH_ROOT} = require('../../../../root.js');
 
 /* eslint-env jest */
 
@@ -55,6 +56,17 @@ describe('Fraggle Rock Config', () => {
     });
   });
 
+  it('should override throttlingMethod in timespan mode', () => {
+    const {config} = initializeConfig(
+      undefined,
+      {settingsOverrides: {throttlingMethod: 'simulate'}, gatherMode: 'timespan'}
+    );
+
+    expect(config.settings).toMatchObject({
+      throttlingMethod: 'devtools',
+    });
+  });
+
   it('should resolve artifact definitions', () => {
     const configJson = {artifacts: [{id: 'Accessibility', gatherer: 'accessibility'}]};
     const {config} = initializeConfig(configJson, {gatherMode});
@@ -65,8 +77,10 @@ describe('Fraggle Rock Config', () => {
   });
 
   it('should throw on invalid artifact definitions', () => {
-    const configJson = {artifacts: [{id: 'HTTPRedirect', gatherer: 'http-redirect'}]};
-    expect(() => initializeConfig(configJson, {gatherMode})).toThrow(/HTTPRedirect gatherer/);
+    const nonFRGatherer = new BaseGatherer();
+    nonFRGatherer.getArtifact = jest.fn();
+    const configJson = {artifacts: [{id: 'LegacyGather', gatherer: {instance: nonFRGatherer}}]};
+    expect(() => initializeConfig(configJson, {gatherMode})).toThrow(/FRGatherer gatherer/);
   });
 
   it('should filter configuration by gatherMode', () => {
@@ -102,6 +116,23 @@ describe('Fraggle Rock Config', () => {
     expect(auditIds).toContain('document-title'); // from onlyCategories
     expect(auditIds).not.toContain('first-contentful-paint'); // from onlyCategories
     expect(auditIds).not.toContain('robots-txt'); // from skipAudits
+  });
+
+  it('should support plugins', () => {
+    const {config} = initializeConfig(undefined, {
+      gatherMode: 'navigation',
+      configPath: `${LH_ROOT}/lighthouse-core/test/fixtures/config-plugins/`,
+      settingsOverrides: {plugins: ['lighthouse-plugin-simple']},
+    });
+
+    expect(config).toMatchObject({
+      categories: {
+        'lighthouse-plugin-simple': {title: 'Simple'},
+      },
+      groups: {
+        'lighthouse-plugin-simple-new-group': {title: 'New Group'},
+      },
+    });
   });
 
   describe('resolveArtifactDependencies', () => {
@@ -314,6 +345,7 @@ describe('Fraggle Rock Config', () => {
           return {
             id: 'extra-audit',
             title: 'Extra',
+            failureTitle: 'Extra',
             description: 'Extra',
             requiredArtifacts: /** @type {*} */ (['ExtraArtifact']),
           };
@@ -449,7 +481,4 @@ describe('Fraggle Rock Config', () => {
     const invocation = () => initializeConfig(extensionConfig, {gatherMode: 'navigation'});
     expect(invocation).toThrow(/did not support any gather modes/);
   });
-
-  it.todo('should support plugins');
-  it.todo('should adjust default pass options for throttling method');
 });

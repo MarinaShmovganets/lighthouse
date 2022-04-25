@@ -34,6 +34,7 @@ class Metric {
       devtoolsLog: data.devtoolsLog,
       gatherContext: data.gatherContext,
       settings: data.settings,
+      URL: data.URL,
     };
   }
 
@@ -69,7 +70,8 @@ class Metric {
     }
 
     const processedTrace = await ProcessedTrace.request(trace, context);
-    const processedNavigation = await ProcessedNavigation.request(processedTrace, context);
+    const processedNavigation = gatherContext.gatherMode === 'timespan' ?
+      undefined : await ProcessedNavigation.request(processedTrace, context);
 
     const augmentedData = Object.assign({
       networkRecords: await NetworkRecords.request(devtoolsLog, context),

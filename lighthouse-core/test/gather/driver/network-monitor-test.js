@@ -5,6 +5,9 @@
  */
 'use strict';
 
+const {mockDriverSubmodules} = require('../../fraggle-rock/gather/mock-driver.js');
+const mocks = mockDriverSubmodules();
+
 const NetworkMonitor = require('../../../gather/driver/network-monitor.js');
 const NetworkRequest = require('../../../lib/network-request.js');
 const networkRecordsToDevtoolsLog = require('../../network-records-to-devtools-log.js');
@@ -66,6 +69,13 @@ describe('NetworkMonitor', () => {
     monitor.on('network-2-idle', () => statusLog.push('network-2-idle'));
     monitor.on('network-critical-busy', () => statusLog.push('network-critical-busy'));
     monitor.on('network-critical-idle', () => statusLog.push('network-critical-idle'));
+
+    mocks.targetManagerMock.enable.mockImplementation(async () => {
+      for (const call of mocks.targetManagerMock.addTargetAttachedListener.mock.calls) {
+        await call[0]({target: {type: 'page', targetId: 'page'}, session: sessionMock});
+      }
+    });
+
     const log = networkRecordsToDevtoolsLog([
       {url: 'http://example.com', priority: 'VeryHigh'},
       {url: 'http://example.com/xhr', priority: 'High'},
@@ -76,6 +86,10 @@ describe('NetworkMonitor', () => {
     const startEvents = log.filter(m => m.method === 'Network.requestWillBeSent');
     const restEvents = log.filter(m => !startEvents.includes(m));
     devtoolsLog = [...startEvents, ...restEvents];
+  });
+
+  afterEach(() => {
+    mocks.targetManagerMock.reset();
   });
 
   describe('.enable() / .disable()', () => {
@@ -89,6 +103,7 @@ describe('NetworkMonitor', () => {
       for (const message of devtoolsLog) sessionMock.dispatch(message);
       expect(sessionMock.on).toHaveBeenCalled();
       expect(sessionMock.addProtocolMessageListener).toHaveBeenCalled();
+      expect(mocks.targetManagerMock.enable).toHaveBeenCalled();
       expect(statusLog.length).toBeGreaterThan(0);
     });
 
@@ -101,7 +116,35 @@ describe('NetworkMonitor', () => {
       expect(sessionMock.off).toHaveBeenCalled();
       expect(sessionMock.addProtocolMessageListener).toHaveBeenCalled();
       expect(sessionMock.removeProtocolMessageListener).toHaveBeenCalled();
+      expect(mocks.targetManagerMock.enable).toHaveBeenCalled();
+      expect(mocks.targetManagerMock.disable).toHaveBeenCalled();
       expect(statusLog).toEqual([]);
+    });
+
+    it('should listen on every unique target', async () => {
+      await monitor.enable();
+      expect(mocks.targetManagerMock.addTargetAttachedListener).toHaveBeenCalledTimes(1);
+      expect(mocks.targetManagerMock.enable).toHaveBeenCalledTimes(1);
+
+      const targetListener = mocks.targetManagerMock.addTargetAttachedListener.mock.calls[0][0];
+      expect(sessionMock.addProtocolMessageListener).toHaveBeenCalledTimes(1);
+      expect(sendCommandMock).toHaveBeenCalledTimes(2);
+      sendCommandMock
+        .mockResponse('Network.enable')
+        .mockResponse('Network.enable')
+        .mockResponse('Network.enable');
+
+      targetListener({target: {type: 'page', targetId: 'page-2'}, session: sessionMock}); // new
+      expect(sessionMock.addProtocolMessageListener).toHaveBeenCalledTimes(2);
+      expect(sendCommandMock).toHaveBeenCalledTimes(3);
+
+      targetListener({target: {type: 'page', targetId: 'page-3'}, session: sessionMock}); // new
+      expect(sessionMock.addProtocolMessageListener).toHaveBeenCalledTimes(3);
+      expect(sendCommandMock).toHaveBeenCalledTimes(4);
+
+      expect(sessionMock.removeProtocolMessageListener).toHaveBeenCalledTimes(0);
+      await monitor.disable();
+      expect(sessionMock.removeProtocolMessageListener).toHaveBeenCalledTimes(3);
     });
 
     it('should have idempotent enable', async () => {
@@ -114,33 +157,66 @@ describe('NetworkMonitor', () => {
     });
   });
 
-  describe('.getFinalNavigationUrl()', () => {
+  describe('.getNavigationUrls()', () => {
     it('should handle the empty case', async () => {
-      expect(await monitor.getFinalNavigationUrl()).toBe(undefined);
+      expect(await monitor.getNavigationUrls()).toEqual({});
     });
 
-    it('should return the last navigation', async () => {
+    it('should return the first and last navigation', async () => {
       sendCommandMock.mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1'}}});
       await monitor.enable();
 
+      const type = 'Navigation';
       const frame = /** @type {*} */ ({id: '1', url: 'https://page.example.com'});
-      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: {...frame, url: '1'}}});
-      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: {...frame, url: '2'}}});
-      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame}});
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: {...frame, url: 'https://example.com'}, type}}); // eslint-disable-line max-len
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: {...frame, url: 'https://intermediate.example.com'}, type}}); // eslint-disable-line max-len
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame, type}});
 
-      expect(await monitor.getFinalNavigationUrl()).toEqual('https://page.example.com');
+      expect(await monitor.getNavigationUrls()).toEqual({
+        requestedUrl: 'https://example.com',
+        mainDocumentUrl: 'https://page.example.com',
+      });
+    });
+
+    it('should handle server redirects', async () => {
+      sendCommandMock.mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1'}}});
+      await monitor.enable();
+
+      // One server redirect followed by a client redirect
+      const devtoolsLog = networkRecordsToDevtoolsLog([
+        {requestId: '1', startTime: 100, url: 'https://example.com', priority: 'VeryHigh'},
+        {requestId: '1:redirect', startTime: 200, url: 'https://intermediate.example.com', priority: 'VeryHigh'},
+        {requestId: '2', startTime: 300, url: 'https://page.example.com', priority: 'VeryHigh'},
+      ]);
+      for (const event of devtoolsLog) {
+        sessionMock.dispatch(event);
+      }
+
+      const type = 'Navigation';
+      const frame = /** @type {*} */ ({id: '1', url: 'https://page.example.com'});
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: {...frame, url: 'https://intermediate.example.com'}, type}}); // eslint-disable-line max-len
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame, type}});
+
+      expect(await monitor.getNavigationUrls()).toEqual({
+        requestedUrl: 'https://example.com',
+        mainDocumentUrl: 'https://page.example.com',
+      });
     });
 
     it('should ignore non-main-frame navigations', async () => {
       sendCommandMock.mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1'}}});
       await monitor.enable();
 
+      const type = 'Navigation';
       const frame = /** @type {*} */ ({id: '1', url: 'https://page.example.com'});
-      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame}});
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame, type}});
       const iframe = /** @type {*} */ ({id: '2', url: 'https://iframe.example.com'});
-      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: iframe}});
+      sessionMock.dispatch({method: 'Page.frameNavigated', params: {frame: iframe, type}});
 
-      expect(await monitor.getFinalNavigationUrl()).toEqual('https://page.example.com');
+      expect(await monitor.getNavigationUrls()).toEqual({
+        requestedUrl: 'https://page.example.com',
+        mainDocumentUrl: 'https://page.example.com',
+      });
     });
   });
 

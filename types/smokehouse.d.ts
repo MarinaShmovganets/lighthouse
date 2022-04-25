@@ -14,16 +14,20 @@ declare global {
       audits: Record<string, any>;
       requestedUrl: string;
       finalUrl: string | RegExp;
-      runWarnings?: Array<string|RegExp>;
+      userAgent?: string | RegExp;
+      runWarnings?: Array<string|RegExp> | {length: string | number};
       runtimeError?: {
         code?: any;
         message?: any;
       };
+      timing?: {
+        entries?: any
+      }
     }
 
     export type ExpectedRunnerResult = {
       lhr: ExpectedLHR,
-      artifacts?: Partial<Record<keyof Artifacts|'_maxChromiumMilestone'|'_minChromiumMilestone', any>>
+      artifacts?: Partial<Record<keyof Artifacts|'_maxChromiumVersion'|'_minChromiumVersion', any>>
       networkRequests?: {length: number, _legacyOnly?: boolean, _fraggleRockOnly?: boolean};
     }
 
@@ -48,7 +52,7 @@ declare global {
       {expectations: Smokehouse.ExpectedRunnerResult | Array<Smokehouse.ExpectedRunnerResult>}
 
     export type LighthouseRunner =
-      (url: string, configJson?: Config.Json, runnerOptions?: {isDebug?: boolean; useFraggleRock?: boolean}) => Promise<{lhr: LHResult, artifacts: Artifacts, log: string}>;
+      {runnerName?: string} & ((url: string, configJson?: Config.Json, runnerOptions?: {isDebug?: boolean; useFraggleRock?: boolean}) => Promise<{lhr: LHResult, artifacts: Artifacts, log: string}>);
 
     export interface SmokehouseOptions {
       /** If true, performs extra logging from the test runs. */
@@ -69,6 +73,8 @@ declare global {
       urlFilterRegex?: RegExp;
       skip?: (test: TestDfn, expectation: ExpectedRunnerResult) => string | false;
       modify?: (test: TestDfn, expectation: ExpectedRunnerResult) => void;
+      /** String of form `shardNumber/shardTotal`, e.g. `'1/4'`. */
+      shardArg: string | undefined;
     }
   }
 }

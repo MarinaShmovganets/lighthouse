@@ -62,9 +62,12 @@ declare module Config {
    * This information is typically set by the CLI or other channel integrations.
    */
   interface FRContext {
-    gatherMode?: Gatherer.GatherMode;
     configPath?: string;
-    settingsOverrides?: SharedFlagsSettings;
+    settingsOverrides?: SharedFlagsSettings & Pick<LH.Flags, 'plugins'>;
+    skipAboutBlank?: boolean;
+    logLevel?: string;
+    hostname?: string;
+    port?: number;
   }
 
   interface SharedPassNavigationJson {
@@ -134,6 +137,7 @@ declare module Config {
     auditRefs: AuditRefJson[];
     description?: string | IcuMessage;
     manualDescription?: string | IcuMessage;
+    supportedModes?:  Gatherer.GatherMode[];
   }
 
   interface GroupJson {

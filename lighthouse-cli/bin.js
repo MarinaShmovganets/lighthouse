@@ -3,7 +3,6 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 /**
  * @fileoverview The relationship between these CLI modules:
@@ -18,19 +17,26 @@
  *               cli-flags        lh-core/index
  */
 
-const fs = require('fs');
-const path = require('path');
-const commands = require('./commands/commands.js');
-const printer = require('./printer.js');
-const {getFlags} = require('./cli-flags.js');
-const {runLighthouse} = require('./run.js');
-const {generateConfig} = require('../lighthouse-core/index.js');
-const log = require('lighthouse-logger');
-const pkg = require('../package.json');
+import fs from 'fs';
+import path from 'path';
+import url from 'url';
+import module from 'module';
+
+import log from 'lighthouse-logger';
+
+import * as commands from './commands/commands.js';
+import * as Printer from './printer.js';
+import {getFlags} from './cli-flags.js';
+import {runLighthouse} from './run.js';
+import lighthouse from '../lighthouse-core/index.js';
+import {askPermission} from './sentry-prompt.js';
+import {LH_ROOT} from '../root.js';
+
+const pkg = JSON.parse(fs.readFileSync(LH_ROOT + '/package.json', 'utf-8'));
+
+// TODO(esmodules): use regular import when this file is esm.
+const require = module.createRequire(import.meta.url);
 const Sentry = require('../lighthouse-core/lib/sentry.js');
-const updateNotifier = require('update-notifier');
-const {askPermission} = require('./sentry-prompt.js');
-const {LH_ROOT} = require('../root.js');
 
 /**
  * @return {boolean}
@@ -43,9 +49,6 @@ function isDev() {
  * @return {Promise<LH.RunnerResult|void>}
  */
 async function begin() {
-  // Tell user if there's a newer version of LH.
-  updateNotifier({pkg}).notify();
-
   const cliFlags = getFlags();
 
   // Process terminating command
@@ -54,20 +57,31 @@ async function begin() {
   }
 
   // Process terminating command
+  if (cliFlags.listLocales) {
+    commands.listLocales();
+  }
+
+  // Process terminating command
   if (cliFlags.listTraceCategories) {
     commands.listTraceCategories();
   }
 
-  const url = cliFlags._[0];
+  const urlUnderTest = cliFlags._[0];
 
   /** @type {LH.Config.Json|undefined} */
   let configJson;
   if (cliFlags.configPath) {
     // Resolve the config file path relative to where cli was called.
     cliFlags.configPath = path.resolve(process.cwd(), cliFlags.configPath);
-    configJson = require(cliFlags.configPath);
+
+    if (cliFlags.configPath.endsWith('.json')) {
+      configJson = JSON.parse(fs.readFileSync(cliFlags.configPath, 'utf-8'));
+    } else {
+      const configModuleUrl = url.pathToFileURL(cliFlags.configPath).href;
+      configJson = (await import(configModuleUrl)).default;
+    }
   } else if (cliFlags.preset) {
-    configJson = require(`../lighthouse-core/config/${cliFlags.preset}-config.js`);
+    configJson = (await import(`../lighthouse-core/config/${cliFlags.preset}-config.js`)).default;
   }
 
   if (cliFlags.budgetPath) {
@@ -88,7 +102,7 @@ async function begin() {
 
   if (
     cliFlags.output.length === 1 &&
-    cliFlags.output[0] === printer.OutputMode.json &&
+    cliFlags.output[0] === Printer.OutputMode.json &&
     !cliFlags.outputPath
   ) {
     cliFlags.outputPath = 'stdout';
@@ -106,7 +120,7 @@ async function begin() {
   }
 
   if (cliFlags.printConfig) {
-    const config = generateConfig(configJson, cliFlags);
+    const config = lighthouse.generateConfig(configJson, cliFlags);
     process.stdout.write(config.getPrintString());
     return;
   }
@@ -119,22 +133,19 @@ async function begin() {
   }
   if (cliFlags.enableErrorReporting) {
     Sentry.init({
-      url,
+      url: urlUnderTest,
       flags: cliFlags,
       environmentData: {
-        name: 'redacted', // prevent sentry from using hostname
+        serverName: 'redacted', // prevent sentry from using hostname
         environment: isDev() ? 'development' : 'production',
         release: pkg.version,
-        tags: {
-          channel: 'cli',
-        },
       },
     });
   }
 
-  return runLighthouse(url, cliFlags, configJson);
+  return runLighthouse(urlUnderTest, cliFlags, configJson);
 }
 
-module.exports = {
+export {
   begin,
 };

@@ -19,11 +19,11 @@ const DELEGATED_FUNCTIONS = [
   'sendCommand',
 ];
 
-/** @type {import('puppeteer').Page} */
+/** @type {LH.Puppeteer.Page} */
 let page;
-/** @type {import('puppeteer').Target} */
+/** @type {LH.Puppeteer.Target} */
 let pageTarget;
-/** @type {import('puppeteer').CDPSession} */
+/** @type {LH.Puppeteer.CDPSession} */
 let puppeteerSession;
 /** @type {Driver} */
 let driver;
@@ -86,5 +86,18 @@ describe('.fetcher', () => {
   it('should create a fetcher on connect', async () => {
     await driver.connect();
     expect(driver.fetcher).toBeTruthy();
+  });
+});
+
+describe('.disconnect', () => {
+  it('should do nothing if called before connect', async () => {
+    await driver.disconnect();
+  });
+
+  it('should invoke session dispose', async () => {
+    await driver.connect();
+    const dispose = driver.defaultSession.dispose = jest.fn();
+    await driver.disconnect();
+    expect(dispose).toHaveBeenCalled();
   });
 });

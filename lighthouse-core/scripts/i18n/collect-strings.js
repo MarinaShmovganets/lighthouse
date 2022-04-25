@@ -4,23 +4,29 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 /* eslint-disable no-console, max-len */
 
-const fs = require('fs');
-const glob = require('glob');
-const path = require('path');
-const expect = require('expect');
-const tsc = require('typescript');
-const MessageParser = require('intl-messageformat-parser').default;
-const Util = require('../../../lighthouse-core/util-commonjs.js');
-const {collectAndBakeCtcStrings} = require('./bake-ctc-to-lhl.js');
-const {pruneObsoleteLhlMessages} = require('./prune-obsolete-lhl-messages.js');
-const {countTranslatedMessages} = require('./count-translated.js');
-const {LH_ROOT} = require('../../../root.js');
+import fs from 'fs';
+import path from 'path';
 
-const UISTRINGS_REGEX = /UIStrings = .*?\};\n/s;
+import glob from 'glob';
+import expect from 'expect';
+import tsc from 'typescript';
+import MessageParser from 'intl-messageformat-parser';
+import esMain from 'es-main';
+
+import {Util} from '../../../lighthouse-core/util-commonjs.js';
+import {collectAndBakeCtcStrings} from './bake-ctc-to-lhl.js';
+import {pruneObsoleteLhlMessages} from './prune-obsolete-lhl-messages.js';
+import {countTranslatedMessages} from './count-translated.js';
+import {LH_ROOT} from '../../../root.js';
+import {resolveModulePath} from '../esm-utils.js';
+
+// Match declarations of UIStrings, terminating in either a `};\n` (very likely to always be right)
+// or `}\n\n` (allowing semicolon to be optional, but insisting on a double newline so that an
+// closing brace in the middle of the declaration does not prematurely end the pattern)
+const UISTRINGS_REGEX = /UIStrings = .*?\}(;|\n)\n/s;
 
 /** @typedef {import('./bake-ctc-to-lhl.js').CtcMessage} CtcMessage */
 /** @typedef {Required<Pick<CtcMessage, 'message'|'placeholders'>>} IncrementalCtc */
@@ -29,8 +35,9 @@ const UISTRINGS_REGEX = /UIStrings = .*?\};\n/s;
 const foldersWithStrings = [
   `${LH_ROOT}/lighthouse-core`,
   `${LH_ROOT}/report/renderer`,
-  `${LH_ROOT}/lighthouse-treemap`,
-  path.dirname(require.resolve('lighthouse-stack-packs')) + '/packs',
+  `${LH_ROOT}/treemap`,
+  `${LH_ROOT}/flow-report`,
+  path.dirname(resolveModulePath('lighthouse-stack-packs')) + '/packs',
 ];
 
 const ignoredPathComponents = [
@@ -42,7 +49,7 @@ const ignoredPathComponents = [
   '**/*-test.js',
   '**/*-renderer.js',
   '**/util-commonjs.js',
-  'lighthouse-treemap/app/src/main.js',
+  'treemap/app/src/main.js',
 ];
 
 /**
@@ -547,13 +554,13 @@ async function collectAllStringsInDir(dir) {
     const content = fs.readFileSync(absolutePath, 'utf8');
     const exportVars = await import(absolutePath);
     const regexMatch = content.match(UISTRINGS_REGEX);
-    const exportedUIStrings = exportVars.UIStrings || (exportVars.default && exportVars.default.UIStrings);
+    const exportedUIStrings = exportVars.UIStrings || exportVars.default?.UIStrings;
 
     if (!regexMatch) {
       // No UIStrings found in the file text or exports, so move to the next.
       if (!exportedUIStrings) continue;
 
-      throw new Error('UIStrings exported but no definition found');
+      throw new Error('UIStrings exported but no definition found: ' + relativeToRootPath);
     }
 
     if (!exportedUIStrings) {
@@ -593,7 +600,7 @@ async function collectAllStringsInDir(dir) {
  * @param {Record<string, CtcMessage>} strings
  */
 function writeStringsToCtcFiles(locale, strings) {
-  const fullPath = path.join(LH_ROOT, `lighthouse-core/lib/i18n/locales/${locale}.ctc.json`);
+  const fullPath = path.join(LH_ROOT, `shared/localization/locales/${locale}.ctc.json`);
   /** @type {Record<string, CtcMessage>} */
   const output = {};
   const sortedEntries = Object.entries(strings).sort(([keyA], [keyB]) => keyA.localeCompare(keyB));
@@ -645,10 +652,6 @@ function resolveMessageCollisions(strings) {
 
   try {
     expect(collidingMessages).toEqual([
-      '$MARKDOWN_SNIPPET_0$ elements do not have $MARKDOWN_SNIPPET_1$ text',
-      '$MARKDOWN_SNIPPET_0$ elements do not have $MARKDOWN_SNIPPET_1$ text',
-      '$MARKDOWN_SNIPPET_0$ elements have $MARKDOWN_SNIPPET_1$ text',
-      '$MARKDOWN_SNIPPET_0$ elements have $MARKDOWN_SNIPPET_1$ text',
       'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
       'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
       'ARIA $MARKDOWN_SNIPPET_0$ elements do not have accessible names.',
@@ -670,8 +673,8 @@ function resolveMessageCollisions(strings) {
       'Name',
       'Potential Savings',
       'Potential Savings',
-      'URL',
-      'URL',
+      'Use the $MARKDOWN_SNIPPET_0$ component and set the appropriate $MARKDOWN_SNIPPET_1$. $LINK_START_0$Learn more$LINK_END_0$.',
+      'Use the $MARKDOWN_SNIPPET_0$ component and set the appropriate $MARKDOWN_SNIPPET_1$. $LINK_START_0$Learn more$LINK_END_0$.',
     ]);
   } catch (err) {
     console.log('The number of duplicate strings has changed. Consider duplicating the `description` to match existing strings so they\'re translated together or update this assertion if they must absolutely be translated separately');
@@ -700,7 +703,7 @@ async function main() {
   console.log('Written to disk!', 'en-XL.ctc.json');
 
   // Bake the ctc en-US and en-XL files into en-US and en-XL LHL format
-  const lhl = collectAndBakeCtcStrings(path.join(LH_ROOT, 'lighthouse-core/lib/i18n/locales/'));
+  const lhl = collectAndBakeCtcStrings(path.join(LH_ROOT, 'shared/localization/locales/'));
   lhl.forEach(function(locale) {
     console.log(`Baked ${locale} into LHL format.`);
   });
@@ -722,14 +725,14 @@ async function main() {
 }
 
 // Test if called from the CLI or as a module.
-if (require.main === module) {
+if (esMain(import.meta)) {
   main().catch(err => {
     console.error(err.stack);
     process.exit(1);
   });
 }
 
-module.exports = {
+export {
   parseUIStrings,
   createPsuedoLocaleStrings,
   convertMessageToCtc,

@@ -12,7 +12,7 @@ import ExecutionContext = require('../lighthouse-core/gather/driver/execution-co
 import Fetcher = require('../lighthouse-core/gather/fetcher');
 import ArbitraryEqualityMap = require('../lighthouse-core/lib/arbitrary-equality-map');
 
-import {Artifacts, BaseArtifacts, GathererArtifacts} from './artifacts';
+import {Artifacts, BaseArtifacts, FRBaseArtifacts, GathererArtifacts} from './artifacts';
 import Config from './config';
 import {IcuMessage} from './lhr/i18n';
 import Result from './lhr/lhr';
@@ -22,6 +22,7 @@ import {Trace, DevtoolsLog} from './artifacts';
 declare module Gatherer {
   /** The Lighthouse wrapper around a raw CDP session. */
   interface FRProtocolSession {
+    setTargetInfo(targetInfo: LH.Crdp.Target.TargetInfo): void;
     hasNextProtocolTimeout(): boolean;
     getNextProtocolTimeout(): number;
     setNextProtocolTimeout(ms: number): void;
@@ -29,8 +30,11 @@ declare module Gatherer {
     once<TEvent extends keyof LH.CrdpEvents>(event: TEvent, callback: (...args: LH.CrdpEvents[TEvent]) => void): void;
     addProtocolMessageListener(callback: (payload: Protocol.RawEventMessage) => void): void
     removeProtocolMessageListener(callback: (payload: Protocol.RawEventMessage) => void): void
+    addSessionAttachedListener(callback: (session: FRProtocolSession) => void): void
+    removeSessionAttachedListener(callback: (session: FRProtocolSession) => void): void
     off<TEvent extends keyof LH.CrdpEvents>(event: TEvent, callback: (...args: LH.CrdpEvents[TEvent]) => void): void;
     sendCommand<TMethod extends keyof LH.CrdpCommands>(method: TMethod, ...params: LH.CrdpCommands[TMethod]['paramsType']): Promise<LH.CrdpCommands[TMethod]['returnType']>;
+    dispose(): Promise<void>;
   }
 
   /** The limited driver interface shared between pre and post Fraggle Rock Lighthouse. */
@@ -38,22 +42,31 @@ declare module Gatherer {
     defaultSession: FRProtocolSession;
     executionContext: ExecutionContext;
     fetcher: Fetcher;
+    url: () => Promise<string>;
   }
 
   /** The limited context interface shared between pre and post Fraggle Rock Lighthouse. */
   interface FRTransitionalContext<TDependencies extends DependencyKey = DefaultDependenciesKey> {
-    /** The URL of the page that is currently active. Might be `about:blank` in the before phases */
-    url: string;
     /** The gather mode Lighthouse is currently in. */
     gatherMode: GatherMode;
     /** The connection to the page being analyzed. */
     driver: FRTransitionalDriver;
+    /** The set of base artifacts that are always collected. */
+    baseArtifacts: FRBaseArtifacts;
     /** The cached results of computed artifacts. */
     computedCache: Map<string, ArbitraryEqualityMap>;
     /** The set of available dependencies requested by the current gatherer. */
     dependencies: Pick<GathererArtifacts, Exclude<TDependencies, DefaultDependenciesKey>>;
     /** The settings used for gathering. */
     settings: Config.Settings;
+  }
+
+  interface FRGatherResult {
+    artifacts: Artifacts;
+    runnerOptions: {
+      config: Config.FRConfig;
+      computedCache: Map<string, ArbitraryEqualityMap>
+    }
   }
 
   interface PassContext {
@@ -147,6 +160,7 @@ declare module Gatherer {
     interface Options {
       rtt?: number;
       throughput?: number;
+      observedThroughput: number;
       maximumConcurrentRequests?: number;
       cpuSlowdownMultiplier?: number;
       layoutTaskMultiplier?: number;

@@ -5,39 +5,67 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {ReportRendererProvider} from './wrappers/report-renderer';
+import {useLayoutEffect, useMemo, useRef, useState} from 'preact/hooks';
+
 import {Sidebar} from './sidebar/sidebar';
 import {Summary} from './summary/summary';
-import {FlowResultContext, useCurrentLhr} from './util';
+import {classNames, FlowResultContext, OptionsContext, useHashState} from './util';
+import {Report} from './wrappers/report';
+import {Topbar} from './topbar';
+import {Header} from './header';
+import {I18nProvider} from './i18n/i18n';
+import {Styles} from './wrappers/styles';
 
-const Report: FunctionComponent<{lhr: LH.Result}> = ({lhr}) => {
-  // TODO(FR-COMPAT): Render an actual report here.
+function getAnchorElement(hashState: LH.FlowResult.HashState|null) {
+  if (!hashState || !hashState.anchor) return null;
+  return document.getElementById(hashState.anchor);
+}
+
+const Content: FunctionComponent = () => {
+  const hashState = useHashState();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const el = getAnchorElement(hashState);
+    if (el) {
+      el.scrollIntoView();
+    } else if (ref.current) {
+      ref.current.scrollTop = 0;
+    }
+  }, [hashState]);
+
   return (
-    <div data-testid="Report">
-      <h1>{lhr.finalUrl}</h1>
+    <div ref={ref} className="Content">
       {
-        Object.values(lhr.categories).map((category) =>
-          <h2 key={category.id}>{category.id}: {category.score}</h2>
-        )
+        hashState ?
+          <>
+            <Header hashState={hashState}/>
+            <Report hashState={hashState}/>
+          </> :
+          <Summary/>
       }
     </div>
   );
 };
 
-const Content: FunctionComponent = () => {
-  const currentLhr = useCurrentLhr();
-  return currentLhr ? <Report lhr={currentLhr.value}/> : <Summary/>;
-};
-
-export const App: FunctionComponent<{flowResult: LH.FlowResult}> = ({flowResult}) => {
+export const App: FunctionComponent<{
+  flowResult: LH.FlowResult,
+  options?: LH.FlowReportOptions
+}> = ({flowResult, options}) => {
+  const [collapsed, setCollapsed] = useState(false);
+  const optionsValue = useMemo(() => options || {}, [options]);
   return (
-    <FlowResultContext.Provider value={flowResult}>
-      <ReportRendererProvider>
-        <div className="App">
-          <Sidebar/>
-          <Content/>
-        </div>
-      </ReportRendererProvider>
-    </FlowResultContext.Provider>
+    <OptionsContext.Provider value={optionsValue}>
+      <FlowResultContext.Provider value={flowResult}>
+        <I18nProvider>
+          <Styles/>
+          <div className={classNames('App', {'App--collapsed': collapsed})} data-testid="App">
+            <Topbar onMenuClick={() => setCollapsed(c => !c)} />
+            <Sidebar/>
+            <Content/>
+          </div>
+        </I18nProvider>
+      </FlowResultContext.Provider>
+    </OptionsContext.Provider>
   );
 };

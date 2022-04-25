@@ -5,8 +5,10 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {FlowStepIcon} from '../common';
-import {classNames, useCurrentLhr, useDerivedStepNames, useFlowResult} from '../util';
+
+import {FlowSegment} from '../common';
+import {classNames, useHashState, useFlowResult} from '../util';
+import {Separator} from '../common';
 
 const SidebarFlowStep: FunctionComponent<{
   mode: LH.Result.GatherMode,
@@ -20,34 +22,46 @@ const SidebarFlowStep: FunctionComponent<{
       href={href}
     >
       <div>
-        <FlowStepIcon mode={mode}/>
+        <FlowSegment mode={mode}/>
       </div>
       <div className={`SidebarFlowStep__label SidebarFlowStep__label--${mode}`}>{label}</div>
     </a>
   );
 };
 
+const SidebarFlowSeparator: FunctionComponent = () => {
+  return (
+    <div className="SidebarFlowSeparator">
+      <FlowSegment/>
+      <Separator/>
+      <FlowSegment/>
+    </div>
+  );
+};
+
 export const SidebarFlow: FunctionComponent = () => {
   const flowResult = useFlowResult();
-  const currentLhr = useCurrentLhr();
-  const stepNames = useDerivedStepNames();
+  const hashState = useHashState();
 
   return (
     <div className="SidebarFlow">
       {
-        flowResult.lhrs.map((lhr, index) => {
-          const stepName = stepNames[index];
-          const url = new URL(location.href);
-          url.hash = `#index=${index}`;
-          return (
+        flowResult.steps.map((step, index) => {
+          const {lhr, name} = step;
+          return <>
+            {
+              lhr.gatherMode === 'navigation' && index !== 0 ?
+                <SidebarFlowSeparator/> :
+                undefined
+            }
             <SidebarFlowStep
               key={lhr.fetchTime}
               mode={lhr.gatherMode}
-              href={url.href}
-              label={stepName}
-              isCurrent={index === (currentLhr && currentLhr.index)}
+              href={`#index=${index}`}
+              label={name}
+              isCurrent={index === hashState?.index}
             />
-          );
+          </>;
         })
       }
     </div>

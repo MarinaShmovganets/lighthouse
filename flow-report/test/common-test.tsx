@@ -4,127 +4,101 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {CategoryRatio} from '../src/common';
-import {render} from '@testing-library/preact';
+import {jest} from '@jest/globals';
+import {act, render} from '@testing-library/preact';
 
-describe('CategoryRatio', () => {
-  it('renders passed audit count', async () => {
-    const audits = {
-      'audit1': {score: 1},
-      'audit2': {score: 1},
-      'audit3': {score: 0},
+import {FlowStepThumbnail} from '../src/common';
+
+let lhr: LH.Result;
+
+jest.useFakeTimers();
+
+describe('FlowStepThumbnail', () => {
+  beforeEach(() => {
+    global.console.warn = jest.fn();
+
+    lhr = {
+      gatherMode: 'navigation',
+      configSettings: {screenEmulation: {width: 400, height: 600}},
+      audits: {
+        'full-page-screenshot': {
+          details: {
+            type: 'full-page-screenshot',
+            screenshot: {data: 'FPS', width: 400, height: 600},
+            nodes: {},
+          },
+        },
+        'screenshot-thumbnails': {
+          details: {
+            type: 'filmstrip',
+            items: [
+              {data: 'frame1'},
+              {data: 'frame2'},
+            ],
+          },
+        },
+      },
     } as any;
-    const category = {
-      auditRefs: [
-        {id: 'audit1', weight: 1},
-        {id: 'audit2', weight: 0},
-        {id: 'audit3', weight: 1},
-      ],
-    } as any;
-
-    const root = render(<CategoryRatio
-      audits={audits}
-      category={category}
-      href="index=0&achor=seo"
-    />);
-    const link = await root.findByRole('link');
-
-    expect(link.className).toEqual('CategoryRatio CategoryRatio--average');
-    expect(link.textContent).toEqual('2/3');
   });
 
-  it('renders passed audit count with fail rating', async () => {
-    const audits = {
-      'audit1': {score: 0},
-      'audit2': {score: 0},
-      'audit3': {score: 0},
-    } as any;
-    const category = {
-      auditRefs: [
-        {id: 'audit1', weight: 1},
-        {id: 'audit2', weight: 1},
-        {id: 'audit3', weight: 1},
-      ],
-    } as any;
+  it('renders a thumbnail', () => {
+    const root = render(<FlowStepThumbnail lhr={lhr} width={200} height={200} />);
 
-    const root = render(<CategoryRatio
-      audits={audits}
-      category={category}
-      href="index=0&achor=seo"
-    />);
-    const link = await root.findByRole('link');
-
-    expect(link.className).toEqual('CategoryRatio CategoryRatio--fail');
-    expect(link.textContent).toEqual('0/3');
+    const thumbnail = root.getByAltText(/Screenshot/);
+    expect(thumbnail.style.width).toEqual('200px');
+    expect(thumbnail.style.height).toEqual('200px');
   });
 
-  it('renders passed audit count with pass rating', async () => {
-    const audits = {
-      'audit1': {score: 1},
-      'audit2': {score: 1},
-      'audit3': {score: 1},
-    } as any;
-    const category = {
-      auditRefs: [
-        {id: 'audit1', weight: 1},
-        {id: 'audit2', weight: 1},
-        {id: 'audit3', weight: 1},
-      ],
-    } as any;
+  it('renders nothing without dimensions', () => {
+    const root = render(<FlowStepThumbnail lhr={lhr} />);
 
-    const root = render(<CategoryRatio
-      audits={audits}
-      category={category}
-      href="index=0&achor=seo"
-    />);
-    const link = await root.findByRole('link');
-
-    expect(link.className).toEqual('CategoryRatio CategoryRatio--pass');
-    expect(link.textContent).toEqual('3/3');
+    expect(() => root.getByAltText(/Screenshot/)).toThrow();
+    expect(global.console.warn).toHaveBeenCalled();
   });
 
-  it('uses null rating of no audits have weight', async () => {
-    const audits = {
-      'audit1': {score: 1},
-      'audit2': {score: 0},
-    } as any;
-    const category = {
-      auditRefs: [
-        {id: 'audit1', weight: 0},
-        {id: 'audit2', weight: 0},
-      ],
-    } as any;
+  it('interpolates height', () => {
+    const root = render(<FlowStepThumbnail lhr={lhr} width={200} />);
 
-    const root = render(<CategoryRatio
-      audits={audits}
-      category={category}
-      href="index=0&achor=seo"
-    />);
-    const link = await root.findByRole('link');
-
-    expect(link.className).toEqual('CategoryRatio CategoryRatio--null');
-    expect(link.textContent).toEqual('1/2');
+    const thumbnail = root.getByAltText(/Screenshot/);
+    expect(thumbnail.style.width).toEqual('200px');
+    expect(thumbnail.style.height).toEqual('300px');
   });
 
-  it('treats audit ref with no matching score as fail', async () => {
-    const audits = {
-      'audit1': {score: 1},
-    } as any;
-    const category = {
-      auditRefs: [
-        {id: 'audit1', weight: 1},
-        {id: 'audit2', weight: 1},
-      ],
-    } as any;
+  it('interpolates width', () => {
+    const root = render(<FlowStepThumbnail lhr={lhr} height={150} />);
 
-    const root = render(<CategoryRatio
-      audits={audits}
-      category={category}
-      href="index=0&achor=seo"
-    />);
-    const link = await root.findByRole('link');
+    const thumbnail = root.getByAltText(/Screenshot/);
+    expect(thumbnail.style.width).toEqual('100px');
+    expect(thumbnail.style.height).toEqual('150px');
+  });
 
-    expect(link.className).toEqual('CategoryRatio CategoryRatio--average');
-    expect(link.textContent).toEqual('1/2');
+  it('uses last filmstrip thumbnail', () => {
+    const root = render(<FlowStepThumbnail lhr={lhr} height={150} />);
+
+    const thumbnail = root.getByAltText(/Screenshot/) as HTMLImageElement;
+    expect(thumbnail.src).toContain('frame2');
+  });
+
+  it('uses full page screenshot if filmstrip unavailable', () => {
+    delete lhr.audits['screenshot-thumbnails'];
+    const root = render(<FlowStepThumbnail lhr={lhr} height={150} />);
+
+    const thumbnail = root.getByAltText(/Screenshot/) as HTMLImageElement;
+    expect(thumbnail.src).toContain('FPS');
+  });
+
+  it('renders animated thumbnail for timespan', async () => {
+    lhr.gatherMode = 'timespan';
+    const root = render(<FlowStepThumbnail lhr={lhr} height={150} />);
+
+    const thumbnail = root.getByAltText(/Animated/) as HTMLImageElement;
+    expect(thumbnail.style.width).toEqual('100px');
+    expect(thumbnail.style.height).toEqual('150px');
+
+    expect(thumbnail.src).toContain('frame1');
+    await act(() => {
+      jest.advanceTimersByTime(501);
+    });
+    expect(thumbnail.src).toContain('frame2');
   });
 });

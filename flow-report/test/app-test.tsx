@@ -4,87 +4,49 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import fs from 'fs';
+import {act, render} from '@testing-library/preact';
+
 import {App} from '../src/app';
-import {render} from '@testing-library/preact';
-import {dirname} from 'path';
-import {fileURLToPath} from 'url';
-
-const flowResult = JSON.parse(
-  fs.readFileSync(
-    // eslint-disable-next-line max-len
-    `${dirname(fileURLToPath(import.meta.url))}/../../lighthouse-core/test/fixtures/fraggle-rock/reports/sample-lhrs.json`,
-    'utf-8'
-  )
-);
-
-let mockLocation: URL;
-
-beforeEach(() => {
-  mockLocation = new URL('file:///Users/example/report.html');
-  Object.defineProperty(window, 'location', {
-    get: () => mockLocation,
-  });
-});
+import {flowResult} from './sample-flow';
 
 it('renders a standalone report with summary', async () => {
   const root = render(<App flowResult={flowResult}/>);
 
-  await expect(root.findByTestId('Summary')).resolves.toBeTruthy();
+  expect(root.getByTestId('Summary')).toBeTruthy();
 });
 
 it('renders the navigation step', async () => {
-  mockLocation.hash = '#index=0';
+  global.location.hash = '#index=0';
   const root = render(<App flowResult={flowResult}/>);
 
-  await expect(root.findByTestId('Report')).resolves.toBeTruthy();
-
-  const link = await root.findByText(/https:/);
-  expect(link.textContent).toEqual('https://www.mikescerealshack.co/');
-
-  const scores = await root.findAllByText(/^\S+: [0-9.]+/);
-  expect(scores.map(s => s.textContent)).toEqual([
-    'performance: 0.98',
-    'accessibility: 1',
-    'best-practices: 1',
-    'seo: 1',
-    'pwa: 0.3',
-  ]);
+  expect(root.getByTestId('Report')).toBeTruthy();
 });
 
 it('renders the timespan step', async () => {
-  mockLocation.hash = '#index=1';
+  global.location.hash = '#index=1';
   const root = render(<App flowResult={flowResult}/>);
 
-  await expect(root.findByTestId('Report')).resolves.toBeTruthy();
-
-  const link = await root.findByText(/https:/);
-  expect(link.textContent).toEqual('https://www.mikescerealshack.co/search?q=call+of+duty');
-
-  const scores = await root.findAllByText(/^\S+: [0-9.]+/);
-  expect(scores.map(s => s.textContent)).toEqual([
-    'performance: 1',
-    'best-practices: 0.71',
-    'seo: 0',
-    'pwa: 1',
-  ]);
+  expect(root.getByTestId('Report')).toBeTruthy();
 });
 
 it('renders the snapshot step', async () => {
-  mockLocation.hash = '#index=2';
+  global.location.hash = '#index=2';
   const root = render(<App flowResult={flowResult}/>);
 
-  await expect(root.findByTestId('Report')).resolves.toBeTruthy();
+  expect(root.getByTestId('Report')).toBeTruthy();
+});
 
-  const link = await root.findByText(/https:/);
-  expect(link.textContent).toEqual('https://www.mikescerealshack.co/search?q=call+of+duty');
+it('toggles collapsed mode when hamburger button clicked', async () => {
+  const root = render(<App flowResult={flowResult}/>);
 
-  const scores = await root.findAllByText(/^\S+: [0-9.]+/);
-  expect(scores.map(s => s.textContent)).toEqual([
-    'performance: 0',
-    'accessibility: 0.9',
-    'best-practices: 0.88',
-    'seo: 0.86',
-    'pwa: 1',
-  ]);
+  const app = root.getByTestId('App');
+  const hamburgerButton = root.getByLabelText('Button that opens and closes the sidebar');
+
+  expect(app.classList).not.toContain('App--collapsed');
+
+  await act(() => {
+    hamburgerButton.click();
+  });
+
+  expect(app.classList).toContain('App--collapsed');
 });

@@ -8,14 +8,15 @@
 /* eslint-env jest */
 
 const fs = require('fs');
-const i18n = require('../lib/i18n/i18n.js');
+const format = require('../../shared/localization/format.js');
 const mockCommands = require('./gather/mock-commands.js');
 const {default: {toBeCloseTo}} = require('expect/build/matchers.js');
 const {LH_ROOT} = require('../../root.js');
+const NetworkRecorder = require('../lib/network-recorder.js');
 
 expect.extend({
   toBeDisplayString(received, expected) {
-    if (!i18n.isIcuMessage(received)) {
+    if (!format.isIcuMessage(received)) {
       const message = () =>
       [
         `${this.utils.matcherHint('.toBeDisplayString')}\n`,
@@ -27,7 +28,7 @@ expect.extend({
       return {message, pass: false};
     }
 
-    const actual = i18n.getFormatted(received, 'en-US');
+    const actual = format.getFormatted(received, 'en-US');
     const pass = expected instanceof RegExp ?
       expected.test(actual) :
       actual === expected;
@@ -139,7 +140,7 @@ function loadSourceMapAndUsageFixture(name) {
   /** @type {{url: string, ranges: Array<{start: number, end: number, count: number}>}} */
   const exportedUsage = JSON.parse(usageJson);
   const usage = {
-    scriptId: 'FakeId', // Not used.
+    scriptId: name,
     url: exportedUsage.url,
     functions: [
       {
@@ -266,22 +267,57 @@ function makeMocksForGatherRunner() {
   }));
   jest.mock('../gather/driver/navigation.js', () => ({
     gotoURL: jest.fn().mockResolvedValue({
-      finalUrl: 'http://example.com',
+      mainDocumentUrl: 'http://example.com',
       warnings: [],
     }),
   }));
 }
 
 /**
- * Returns whether this is running in Node 12 with what we suspect is the default
- * `small-icu` build. Limited to Node 12 so it's not accidentally hitting this
- * path in Node 13+ in CI and we can be certain the `full-icu` path is being exercised.
- * @return {boolean}
+ * @param {Partial<LH.Artifacts.Script>} script
+ * @return {LH.Artifacts.Script} script
  */
-function isNode12SmallIcu() {
-  // COMPAT: Remove when Node 12 is retired and `full-icu` is the default everywhere.
-  return process.versions.node.startsWith('12') &&
-    Intl.NumberFormat.supportedLocalesOf('es').length === 0;
+function createScript(script) {
+  if (!script.scriptId) throw new Error('Must include a scriptId');
+
+  // @ts-expect-error For testing purposes we assume the test set all valid properties.
+  return {
+    ...script,
+    length: script.content?.length ?? script.length,
+    name: script.name ?? script.url ?? '<no name>',
+    scriptLanguage: 'JavaScript',
+  };
+}
+
+/**
+ * This has a slightly different, less strict implementation than `PageDependencyGraph`.
+ * It's a convenience function so we don't have to dig through the log and determine the URL artifact manually.
+ *
+ * @param {LH.DevtoolsLog} devtoolsLog
+ * @return {LH.Artifacts['URL']}
+ */
+function getURLArtifactFromDevtoolsLog(devtoolsLog) {
+  /** @type {string|undefined} */
+  let requestedUrl;
+  /** @type {string|undefined} */
+  let mainDocumentUrl;
+  for (const event of devtoolsLog) {
+    if (event.method === 'Page.frameNavigated' && !event.params.frame.parentId) {
+      const {url} = event.params.frame;
+      // Only set requestedUrl on the first main frame navigation.
+      if (!requestedUrl) requestedUrl = url;
+      mainDocumentUrl = url;
+    }
+  }
+  const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
+  let initialRequest = networkRecords.find(r => r.url === requestedUrl);
+  while (initialRequest?.redirectSource) {
+    initialRequest = initialRequest.redirectSource;
+    requestedUrl = initialRequest.url;
+  }
+  if (!requestedUrl || !mainDocumentUrl) throw new Error('No main frame navigations found');
+
+  return {initialUrl: 'about:blank', requestedUrl, mainDocumentUrl, finalUrl: mainDocumentUrl};
 }
 
 module.exports = {
@@ -293,6 +329,7 @@ module.exports = {
   createDecomposedPromise,
   flushAllTimersAndMicrotasks,
   makeMocksForGatherRunner,
-  isNode12SmallIcu,
+  createScript,
+  getURLArtifactFromDevtoolsLog,
   ...mockCommands,
 };

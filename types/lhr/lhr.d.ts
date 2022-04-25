@@ -13,8 +13,8 @@ import {ConfigSettings} from './settings';
 interface Result {
   /** Gather mode used to collect artifacts for this result. */
   gatherMode: Result.GatherMode;
-  /** The URL that was supplied to Lighthouse and initially navigated to. */
-  requestedUrl: string;
+  /** The URL that Lighthouse initially navigated to. Will be `undefined` in timespan/snapshot. */
+  requestedUrl?: string;
   /** The post-redirects URL that Lighthouse loaded. */
   finalUrl: string;
   /** The ISO-8601 timestamp of when the results were generated. */
@@ -41,7 +41,11 @@ interface Result {
   /** Execution timings for the Lighthouse run */
   timing: Result.Timing;
   /** Strings for the report and the record of all formatted string locations in the LHR and their corresponding source values. */
-  i18n: {rendererFormattedStrings: Record<string, string>, icuMessagePaths?: Result.IcuMessagePaths};
+  i18n: {
+    rendererFormattedStrings: Record<string, string>;
+    /** Optional because LR has many old LHRs that return nothing for this property. */
+    icuMessagePaths?: Result.IcuMessagePaths;
+  };
   /** An array containing the result of all stack packs. */
   stackPacks?: Result.StackPack[];
 }
@@ -56,7 +60,7 @@ declare module Result {
     /** The benchmark index number that indicates rough device class. */
     benchmarkIndex: number;
     /** The version of libraries with which these results were generated. Ex: axe-core. */
-    credits: Record<string, string>,
+    credits?: Record<string, string|undefined>,
   }
 
   interface Timing {

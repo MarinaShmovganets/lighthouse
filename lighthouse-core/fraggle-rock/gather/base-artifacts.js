@@ -6,8 +6,9 @@
 'use strict';
 
 const log = require('lighthouse-logger');
-const isEqual = require('lodash.isequal');
+const {isEqual} = require('lodash');
 const {
+  getBrowserVersion,
   getBenchmarkIndex,
   getEnvironmentWarnings,
 } = require('../../gather/driver/environment.js');
@@ -15,10 +16,12 @@ const {
 /**
  * @param {LH.Config.FRConfig} config
  * @param {LH.Gatherer.FRTransitionalDriver} driver
+ * @param {{gatherMode: LH.Gatherer.GatherMode}} context
  * @return {Promise<LH.BaseArtifacts>}
  */
-async function getBaseArtifacts(config, driver) {
+async function getBaseArtifacts(config, driver, context) {
   const BenchmarkIndex = await getBenchmarkIndex(driver.executionContext);
+  const {userAgent} = await getBrowserVersion(driver.defaultSession);
 
   return {
     // Meta artifacts.
@@ -28,12 +31,17 @@ async function getBaseArtifacts(config, driver) {
     settings: config.settings,
     // Environment artifacts that can always be computed.
     BenchmarkIndex,
+    HostUserAgent: userAgent,
+    HostFormFactor: userAgent.includes('Android') || userAgent.includes('Mobile') ?
+      'mobile' : 'desktop',
     // Contextual artifacts whose collection changes based on gather mode.
-    URL: {requestedUrl: '', finalUrl: ''},
+    URL: {
+      initialUrl: '',
+      finalUrl: '',
+    },
     PageLoadError: null,
+    GatherContext: context,
     // Artifacts that have been replaced by regular gatherers in Fraggle Rock.
-    HostFormFactor: 'mobile',
-    HostUserAgent: '',
     Stacks: [],
     NetworkUserAgent: '',
     WebAppManifest: null,
@@ -78,11 +86,11 @@ function finalizeArtifacts(baseArtifacts, gathererArtifacts) {
   artifacts.LighthouseRunWarnings = deduplicateWarnings(warnings);
 
   if (artifacts.PageLoadError && !artifacts.URL.finalUrl) {
-    artifacts.URL.finalUrl = artifacts.URL.requestedUrl;
+    artifacts.URL.finalUrl = artifacts.URL.requestedUrl || artifacts.URL.initialUrl;
   }
 
   // Check that the runner remembered to mutate the special-case URL artifact.
-  if (!artifacts.URL.requestedUrl) throw new Error('Runner did not set requestedUrl');
+  if (!artifacts.URL.initialUrl) throw new Error('Runner did not set initialUrl');
   if (!artifacts.URL.finalUrl) throw new Error('Runner did not set finalUrl');
 
   return artifacts;

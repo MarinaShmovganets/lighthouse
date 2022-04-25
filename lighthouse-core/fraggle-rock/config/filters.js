@@ -5,6 +5,8 @@
  */
 'use strict';
 
+const log = require('lighthouse-logger');
+
 const Audit = require('../../audits/audit.js');
 
 /** @type {Record<keyof LH.FRBaseArtifacts, string>} */
@@ -16,6 +18,9 @@ const baseArtifactKeySource = {
   Timing: '',
   URL: '',
   PageLoadError: '',
+  HostFormFactor: '',
+  HostUserAgent: '',
+  GatherContext: '',
 };
 
 const baseArtifactKeys = Object.keys(baseArtifactKeySource);
@@ -42,7 +47,7 @@ function getAuditIdsInCategories(allCategories, onlyCategories) {
 
   onlyCategories = onlyCategories || Object.keys(allCategories);
   const categories = onlyCategories.map(categoryId => allCategories[categoryId]);
-  const auditRefs = categories.flatMap(category => category.auditRefs);
+  const auditRefs = categories.flatMap(category => category?.auditRefs || []);
   return new Set(auditRefs.map(auditRef => auditRef.id));
 }
 
@@ -160,6 +165,23 @@ function filterAuditsByGatherMode(audits, mode) {
 }
 
 /**
+ * Optional `supportedModes` property can explicitly exclude a category even if some audits are available.
+ *
+ * @param {LH.Config.Config['categories']} categories
+ * @param {LH.Gatherer.GatherMode} mode
+ * @return {LH.Config.Config['categories']}
+ */
+function filterCategoriesByGatherMode(categories, mode) {
+  if (!categories) return null;
+
+  const categoriesToKeep = Object.entries(categories)
+    .filter(([_, category]) => {
+      return !category.supportedModes || category.supportedModes.includes(mode);
+    });
+  return Object.fromEntries(categoriesToKeep);
+}
+
+/**
  * Filters a categories object and their auditRefs down to the specified category ids.
  *
  * @param {LH.Config.Config['categories']} categories
@@ -172,6 +194,24 @@ function filterCategoriesByExplicitFilters(categories, onlyCategories) {
   const categoriesToKeep = Object.entries(categories)
     .filter(([categoryId]) => onlyCategories.includes(categoryId));
   return Object.fromEntries(categoriesToKeep);
+}
+
+/**
+ * Logs a warning if any specified onlyCategory is not a known category that can
+ * be included.
+ *
+ * @param {LH.Config.Config['categories']} allCategories
+ * @param {string[] | null} onlyCategories
+ * @return {void}
+ */
+function warnOnUnknownOnlyCategories(allCategories, onlyCategories) {
+  if (!onlyCategories) return;
+
+  for (const onlyCategoryId of onlyCategories) {
+    if (!allCategories?.[onlyCategoryId]) {
+      log.warn('config', `unrecognized category in 'onlyCategories': ${onlyCategoryId}`);
+    }
+  }
 }
 
 /**
@@ -222,9 +262,10 @@ function filterCategoriesByAvailableAudits(categories, availableAudits) {
  */
 function filterConfigByGatherMode(config, mode) {
   const artifacts = filterArtifactsByGatherMode(config.artifacts, mode);
-  const availableAudits = filterAuditsByAvailableArtifacts(config.audits, artifacts || []);
-  const audits = filterAuditsByGatherMode(availableAudits, mode);
-  const categories = filterCategoriesByAvailableAudits(config.categories, audits || []);
+  const supportedAudits = filterAuditsByGatherMode(config.audits, mode);
+  const audits = filterAuditsByAvailableArtifacts(supportedAudits, artifacts || []);
+  const supportedCategories = filterCategoriesByGatherMode(config.categories, mode);
+  const categories = filterCategoriesByAvailableAudits(supportedCategories, audits || []);
 
   return {
     ...config,
@@ -244,6 +285,8 @@ function filterConfigByGatherMode(config, mode) {
  */
 function filterConfigByExplicitFilters(config, filters) {
   const {onlyAudits, onlyCategories, skipAudits} = filters;
+
+  warnOnUnknownOnlyCategories(config.categories, onlyCategories);
 
   let baseAuditIds = getAuditIdsInCategories(config.categories, undefined);
   if (onlyCategories) {
@@ -288,4 +331,5 @@ module.exports = {
   filterAuditsByGatherMode,
   filterCategoriesByAvailableAudits,
   filterCategoriesByExplicitFilters,
+  filterCategoriesByGatherMode,
 };

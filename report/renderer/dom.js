@@ -14,7 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
+
+/* eslint-env browser */
 
 /** @typedef {HTMLElementTagNameMap & {[id: string]: HTMLElement}} HTMLElementByTagName */
 /** @template {string} T @typedef {import('typed-query-selector/parser').ParseSelector<T, Element>} ParseSelector */
@@ -25,14 +26,18 @@ import {createComponent} from './components.js';
 export class DOM {
   /**
    * @param {Document} document
+   * @param {HTMLElement} rootEl
    */
-  constructor(document) {
+  constructor(document, rootEl) {
     /** @type {Document} */
     this._document = document;
     /** @type {string} */
     this._lighthouseChannel = 'unknown';
     /** @type {Map<string, DocumentFragment>} */
     this._componentCache = new Map();
+    /** @type {HTMLElement} */
+    // For legacy Report API users, this'll be undefined, but set in renderReport
+    this.rootEl = rootEl;
   }
 
   /**
@@ -75,6 +80,15 @@ export class DOM {
   }
 
   /**
+   * @param {string} data
+   * @return {!Node}
+   */
+  createTextNode(data) {
+    return this._document.createTextNode(data);
+  }
+
+
+  /**
    * @template {string} T
    * @param {Element} parentElem
    * @param {T} elementName
@@ -105,6 +119,10 @@ export class DOM {
     this._componentCache.set(componentName, component);
     const cloned = /** @type {DocumentFragment} */ (component.cloneNode(true));
     return cloned;
+  }
+
+  clearComponentCache() {
+    this._componentCache.clear();
   }
 
   /**
@@ -210,6 +228,8 @@ export class DOM {
   }
 
   /**
+   * ONLY use if `dom.rootEl` isn't sufficient for your needs. `dom.rootEl` is preferred
+   * for all scoping, because a document can have multiple reports within it.
    * @return {Document}
    */
   document() {
@@ -253,5 +273,33 @@ export class DOM {
   findAll(query, context) {
     const elements = Array.from(context.querySelectorAll(query));
     return elements;
+  }
+
+  /**
+   * Fires a custom DOM event on target.
+   * @param {string} name Name of the event.
+   * @param {Node=} target DOM node to fire the event on.
+   * @param {*=} detail Custom data to include.
+   */
+  fireEventOn(name, target = this._document, detail) {
+    const event = new CustomEvent(name, detail ? {detail} : undefined);
+    target.dispatchEvent(event);
+  }
+
+  /**
+   * Downloads a file (blob) using a[download].
+   * @param {Blob|File} blob The file to save.
+   * @param {string} filename
+   */
+  saveFile(blob, filename) {
+    const a = this.createElement('a');
+    a.download = filename;
+    this.safelySetBlobHref(a, blob);
+    this._document.body.appendChild(a); // Firefox requires anchor to be in the DOM.
+    a.click();
+
+    // cleanup.
+    this._document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 500);
   }
 }

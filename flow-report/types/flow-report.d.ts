@@ -7,6 +7,8 @@
 import FlowResult_ from '../../types/lhr/flow';
 import * as Settings from '../../types/lhr/settings';
 
+// Import to augment querySelector/querySelectorAll with stricter type checking.
+import '../../types/query-selector';
 import '../../report/types/html-renderer';
 
 declare global {
@@ -17,8 +19,13 @@ declare global {
 
   // Expose global types in LH namespace.
   module LH {
-    export type FlowResult = FlowResult_;
     export type ConfigSettings = Settings.ConfigSettings;
+    export interface FlowReportOptions {
+      getReportHtml?: (flowResult: FlowResult_) => string;
+      saveAsGist?: (flowResult: FlowResult_) => void;
+    }
+
+    export import FlowResult = FlowResult_;
   }
 }
 

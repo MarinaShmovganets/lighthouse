@@ -5,66 +5,119 @@
  */
 
 import {FunctionComponent} from 'preact';
-import {Util} from '../../report/renderer/util';
+import {useEffect, useState} from 'preact/hooks';
 
-const GatherModeIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
-  return (
-    <div
-      className={`GatherModeIcon GatherModeIcon--${mode}`}
-      role="img"
-      aria-label={`Icon representing a ${mode} report`}
-    />
-  );
+import {NavigationIcon, SnapshotIcon, TimespanIcon} from './icons';
+import {getFilmstripFrames, getScreenDimensions, getFullPageScreenshot} from './util';
+
+const ANIMATION_FRAME_DURATION_MS = 500;
+
+const Separator: FunctionComponent = () => {
+  return <div className="Separator" role="separator"></div>;
 };
 
-export const FlowStepIcon: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
+const FlowStepIcon: FunctionComponent<{mode: LH.Result.GatherMode}> = ({mode}) => {
+  return <>
+    {
+      mode === 'navigation' && <NavigationIcon/>
+    }
+    {
+      mode === 'timespan' && <TimespanIcon/>
+    }
+    {
+      mode === 'snapshot' && <SnapshotIcon/>
+    }
+  </>;
+};
+
+const FlowSegment: FunctionComponent<{mode?: LH.Result.GatherMode}> = ({mode}) => {
   return (
-    <div className="FlowStepIcon">
-      <div className="FlowStepIcon__top-line"/>
+    <div className="FlowSegment">
+      <div className="FlowSegment__top-line"/>
       {
-        mode && <GatherModeIcon mode={mode}/>
+        mode && <FlowStepIcon mode={mode}/>
       }
-      <div className="FlowStepIcon__bottom-line"/>
+      <div className="FlowSegment__bottom-line"/>
     </div>
   );
 };
 
-/**
- * Summarizes the category as a ratio of passed audits to total audits.
- * The rating color and icon are calculated from the passed/total ratio, not the category score.
- * A category will be given a null rating and color if none of its audits are weighted.
- */
-export const CategoryRatio: FunctionComponent<{
-  category: LH.ReportResult.Category,
-  audits: LH.Result['audits'],
-  href: string,
-}> = ({category, audits, href}) => {
-  const numAudits = category.auditRefs.length;
+const FlowStepAnimatedThumbnail: FunctionComponent<{
+  frames: Array<{data: string}>,
+  width: number,
+  height: number,
+}> = ({frames, width, height}) => {
+  const [frameIndex, setFrameIndex] = useState(0);
+  // Handle a frame array of a different length being set.
+  const effectiveFrameIndex = frameIndex % frames.length;
 
-  let numPassed = 0;
-  let totalWeight = 0;
-  for (const auditRef of category.auditRefs) {
-    totalWeight += auditRef.weight;
-    const audit = audits[auditRef.id];
-    if (!audit) {
-      console.warn(`Could not find score for audit '${auditRef.id}', treating as failed.`);
-      continue;
-    }
-    if (Util.showAsPassed(audit)) numPassed++;
-  }
+  useEffect(() => {
+    const interval = setInterval(
+      () => setFrameIndex(i => (i + 1) % frames.length),
+      ANIMATION_FRAME_DURATION_MS
+    );
 
-  const ratio = numPassed / numAudits;
-  let rating = Util.calculateRating(ratio);
-
-  // If none of the available audits can affect the score, a rating isn't useful.
-  // The flow report should display the ratio with neutral icon and coloring in this case.
-  if (totalWeight === 0) {
-    rating = 'null';
-  }
+    return () => clearInterval(interval);
+  }, [frames.length]);
 
   return (
-    <a href={href} className={`CategoryRatio CategoryRatio--${rating}`} data-testid="CategoryRatio">
-      {`${numPassed}/${numAudits}`}
-    </a>
+    <img
+      className="FlowStepThumbnail"
+      data-testid="FlowStepAnimatedThumbnail"
+      src={frames[effectiveFrameIndex].data}
+      style={{width, height}}
+      alt="Animated screenshots of a page tested by Lighthouse"
+    />
   );
+};
+
+const FlowStepThumbnail: FunctionComponent<{
+  lhr: LH.Result,
+  width?: number,
+  height?: number,
+}> = ({lhr, width, height}) => {
+  const fullPageScreenshot = getFullPageScreenshot(lhr);
+  const frames = getFilmstripFrames(lhr);
+
+  // Resize the image to fit the viewport aspect ratio.
+  const dimensions = getScreenDimensions(lhr);
+  if (width && height === undefined) {
+    height = dimensions.height * width / dimensions.width;
+  } else if (height && width === undefined) {
+    width = dimensions.width * height / dimensions.height;
+  }
+
+  if (!width || !height) {
+    console.warn(new Error('FlowStepThumbnail requested without any dimensions').stack);
+    return <></>;
+  }
+
+  let thumbnail;
+  if (frames?.length) {
+    thumbnail = frames[frames.length - 1].data;
+    if (lhr.gatherMode === 'timespan') {
+      return <FlowStepAnimatedThumbnail frames={frames} width={width} height={height} />;
+    }
+  } else {
+    thumbnail = fullPageScreenshot?.screenshot.data;
+  }
+
+  return <>
+    {
+      thumbnail &&
+        <img
+          className="FlowStepThumbnail"
+          src={thumbnail}
+          style={{width, height}}
+          alt="Screenshot of a page tested by Lighthouse"
+        />
+    }
+  </>;
+};
+
+export {
+  Separator,
+  FlowStepIcon,
+  FlowSegment,
+  FlowStepThumbnail,
 };

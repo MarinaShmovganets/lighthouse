@@ -29,7 +29,7 @@ describe('DOBETTERWEB: doctype audit', () => {
     expect(auditResult.explanation).toBeDisplayString('Document contains wrong doctype');
   });
 
-  it('fails when the value of the name attribute is a value other then lowercase "html"', () => {
+  it('fails when the value of the name attribute is a value other than "html"', () => {
     const auditResult = Audit.audit({
       Doctype: {
         name: 'xml',

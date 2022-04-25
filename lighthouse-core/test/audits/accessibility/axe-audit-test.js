@@ -7,6 +7,9 @@
 
 const AxeAudit = require('../../../audits/accessibility/axe-audit.js');
 const assert = require('assert').strict;
+const axeCore = require('axe-core');
+const Accesskeys = require('../../../audits/accessibility/accesskeys.js');
+const format = require('../../../../shared/localization/format.js');
 
 /* eslint-env jest */
 
@@ -34,6 +37,70 @@ describe('Accessibility: axe-audit', () => {
 
       const output = FakeA11yAudit.audit(artifacts);
       assert.equal(output.score, 0);
+    });
+
+    it('generates node details', () => {
+      class FakeA11yAudit extends AxeAudit {
+        static get meta() {
+          return {
+            id: 'fake-axe-failure-case',
+            title: 'Example title',
+            scoreDisplayMode: 'informative',
+            requiredArtifacts: ['Accessibility'],
+          };
+        }
+      }
+      const artifacts = {
+        Accessibility: {
+          incomplete: [{
+            id: 'fake-axe-failure-case',
+            nodes: [{
+              html: '<input id="multi-label-form-element" />',
+              node: {
+                snippet: '<input id="snippet"/>',
+              },
+              relatedNodes: [
+                {snippet: '<input id="snippet1"/>'},
+                {snippet: '<input id="snippet2"/>'},
+                {snippet: '<input id="snippet3"/>'},
+              ],
+            }],
+            help: 'http://example.com/',
+          }],
+          violations: [],
+        },
+      };
+
+      const output = FakeA11yAudit.audit(artifacts);
+      expect(output.details.items[0]).toMatchObject({
+        node: {
+          type: 'node',
+          snippet: '<input id="snippet"/>',
+        },
+        subItems: {
+          type: 'subitems',
+          items: [
+            {
+              relatedNode: {
+                type: 'node',
+                snippet: '<input id="snippet1"/>',
+              },
+            },
+            {
+              relatedNode: {
+                type: 'node',
+                snippet: '<input id="snippet2"/>',
+              },
+            },
+            {
+              relatedNode: {
+                type: 'node',
+                snippet: '<input id="snippet3"/>',
+              },
+            },
+          ],
+        },
+      });
     });
 
     it('returns axe error message to the caller when present', () => {
@@ -130,6 +197,7 @@ describe('Accessibility: axe-audit', () => {
             nodes: [{
               html: '<input id="multi-label-form-element" />',
               node: {},
+              relatedNodes: [],
             }],
             help: 'http://example.com/',
           }],
@@ -188,6 +256,7 @@ describe('Accessibility: axe-audit', () => {
               node: {
                 snippet: '<input id="snippet"/>',
               },
+              relatedNodes: [],
             }],
             help: 'http://example.com/',
           },
@@ -197,5 +266,13 @@ describe('Accessibility: axe-audit', () => {
 
     const output = FakeA11yAudit.audit(artifacts);
     expect(output.details.items[0].node.snippet).toMatch(`<input id="snippet"/>`);
+  });
+
+  it('has description links to axe-core docs matching the current axe-core version', () => {
+    const {axeVersion} = /(?<axeVersion>\d+\.\d+)/.exec(axeCore.version).groups;
+
+    // Check the docs for a single audit as a stand-in for all axe audits.
+    const accesskeysDescription = format.getFormatted(Accesskeys.meta.description, 'en-US');
+    expect(accesskeysDescription).toContain(`https://dequeuniversity.com/rules/axe/${axeVersion}/accesskeys`);
   });
 });

@@ -26,7 +26,7 @@ const UIStrings = {
   /** Explanatory message stating that the systemId field is not empty. */
   explanationSystemId: 'Expected systemId to be an empty string',
   /** Explanatory message stating that the doctype is set, but is not "html" and is therefore invalid. */
-  explanationBadDoctype: 'Doctype name must be the lowercase string `html`',
+  explanationBadDoctype: 'Doctype name must be the string `html`',
 };
 
 const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
@@ -58,7 +58,7 @@ class Doctype extends Audit {
     }
 
     // only set constants once we know there is a doctype
-    const doctypeName = artifacts.Doctype.name.trim();
+    const doctypeName = artifacts.Doctype.name;
     const doctypePublicId = artifacts.Doctype.publicId;
     const doctypeSystemId = artifacts.Doctype.systemId;
     const compatMode = artifacts.Doctype.compatMode;
@@ -84,9 +84,8 @@ class Doctype extends Audit {
       };
     }
 
-    /* Note that the value for name is case sensitive,
-       and must be the string `html`. For details see:
-       https://html.spec.whatwg.org/multipage/parsing.html#the-initial-insertion-mode */
+    /* Note that the casing of this property is normalized to be lowercase.
+       see: https://html.spec.whatwg.org/#doctype-name-state */
     if (doctypeName === 'html') {
       return {
         score: 1,

@@ -6,9 +6,10 @@
 'use strict';
 
 const path = require('path');
-const isDeepEqual = require('lodash.isequal');
+const {isEqual: isDeepEqual} = require('lodash');
 const constants = require('./constants.js');
 const Budget = require('./budget.js');
+const ConfigPlugin = require('./config-plugin.js');
 const Runner = require('../runner.js');
 const i18n = require('../lib/i18n/i18n.js');
 const validation = require('../fraggle-rock/config/validation.js');
@@ -16,6 +17,21 @@ const validation = require('../fraggle-rock/config/validation.js');
 /** @typedef {typeof import('../gather/gatherers/gatherer.js')} GathererConstructor */
 /** @typedef {typeof import('../audits/audit.js')} Audit */
 /** @typedef {InstanceType<GathererConstructor>} Gatherer */
+
+function isBundledEnvironment() {
+  // If we're in DevTools or LightRider, we are definitely bundled.
+  // TODO: refactor and delete `global.isDevtools`.
+  if (global.isDevtools || global.isLightrider) return true;
+
+  try {
+    // Not foolproof, but `lighthouse-logger` is a dependency of lighthouse that should always be resolvable.
+    // `require.resolve` will only throw in atypical/bundled environments.
+    require.resolve('lighthouse-logger');
+    return false;
+  } catch (err) {
+    return true;
+  }
+}
 
 /**
  * If any items with identical `path` properties are found in the input array,
@@ -187,6 +203,18 @@ function expandAuditShorthand(audit) {
   }
 }
 
+/** @type {Map<string, any>} */
+const bundledModules = new Map(/* BUILD_REPLACE_BUNDLED_MODULES */);
+
+/**
+ * Wraps `require` with an entrypoint for bundled dynamic modules.
+ * See build-bundle.js
+ * @param {string} requirePath
+ */
+function requireWrapper(requirePath) {
+  return bundledModules.get(requirePath) || require(requirePath);
+}
+
 /**
  * @param {string} gathererPath
  * @param {Array<string>} coreGathererList
@@ -202,7 +230,7 @@ function requireGatherer(gathererPath, coreGathererList, configDir) {
     requirePath = resolveModulePath(gathererPath, configDir, 'gatherer');
   }
 
-  const GathererClass = /** @type {GathererConstructor} */ (require(requirePath));
+  const GathererClass = /** @type {GathererConstructor} */ (requireWrapper(requirePath));
 
   return {
     instance: new GathererClass(),
@@ -212,31 +240,29 @@ function requireGatherer(gathererPath, coreGathererList, configDir) {
 }
 
 /**
- *
  * @param {string} auditPath
  * @param {Array<string>} coreAuditList
  * @param {string=} configDir
  * @return {LH.Config.AuditDefn['implementation']}
  */
 function requireAudit(auditPath, coreAuditList, configDir) {
-// See if the audit is a Lighthouse core audit.
+  // See if the audit is a Lighthouse core audit.
   const auditPathJs = `${auditPath}.js`;
   const coreAudit = coreAuditList.find(a => a === auditPathJs);
   let requirePath = `../audits/${auditPath}`;
   if (!coreAudit) {
-  // TODO: refactor and delete `global.isDevtools`.
-    if (global.isDevtools || global.isLightrider) {
-    // This is for pubads bundling.
+    if (isBundledEnvironment()) {
+      // This is for pubads bundling.
       requirePath = auditPath;
     } else {
-    // Otherwise, attempt to find it elsewhere. This throws if not found.
+      // Otherwise, attempt to find it elsewhere. This throws if not found.
       const absolutePath = resolveModulePath(auditPath, configDir, 'audit');
       // Use a relative path so bundler can easily expose it.
       requirePath = path.relative(__dirname, absolutePath);
     }
   }
 
-  return require(requirePath);
+  return requireWrapper(requirePath);
 }
 
 /**
@@ -268,7 +294,8 @@ function resolveSettings(settingsJson = {}, overrides = undefined) {
   // If a locale is requested in flags or settings, use it. A typical CLI run will not have one,
   // however `lookupLocale` will always determine which of our supported locales to use (falling
   // back if necessary).
-  const locale = i18n.lookupLocale((overrides && overrides.locale) || settingsJson.locale);
+  // TODO: could do more work to sniff out the user's locale
+  const locale = i18n.lookupLocale(overrides?.locale || settingsJson.locale);
 
   // Fill in missing settings with defaults
   const {defaultSettings} = constants;
@@ -295,6 +322,33 @@ function resolveSettings(settingsJson = {}, overrides = undefined) {
 
   validation.assertValidSettings(settingsWithFlags);
   return settingsWithFlags;
+}
+
+/**
+ * @param {LH.Config.Json} configJSON
+ * @param {string | undefined} configDir
+ * @param {{plugins?: string[]} | undefined} flags
+ * @return {LH.Config.Json}
+ */
+function mergePlugins(configJSON, configDir, flags) {
+  const configPlugins = configJSON.plugins || [];
+  const flagPlugins = flags?.plugins || [];
+  const pluginNames = new Set([...configPlugins, ...flagPlugins]);
+
+  for (const pluginName of pluginNames) {
+    validation.assertValidPluginName(configJSON, pluginName);
+
+    // In bundled contexts, `resolveModulePath` will fail, so use the raw pluginName directly.
+    const pluginPath = isBundledEnvironment() ?
+        pluginName :
+        resolveModulePath(pluginName, configDir, 'plugin');
+    const rawPluginJson = requireWrapper(pluginPath);
+    const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
+
+    configJSON = mergeConfigFragment(configJSON, pluginJson);
+  }
+
+  return configJSON;
 }
 
 
@@ -525,11 +579,12 @@ function deepCloneConfigJson(json) {
 module.exports = {
   deepClone,
   deepCloneConfigJson,
-  mergeOptionsOfItems,
   mergeConfigFragment,
   mergeConfigFragmentArrayByKey,
-  resolveSettings,
-  resolveGathererToDefn,
+  mergeOptionsOfItems,
+  mergePlugins,
   resolveAuditsToDefns,
+  resolveGathererToDefn,
   resolveModulePath,
+  resolveSettings,
 };
