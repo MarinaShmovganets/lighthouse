@@ -77,23 +77,25 @@ class Doctype extends Audit {
       };
     }
 
+    /* Note that the casing of this property is normalized to be lowercase.
+       see: https://html.spec.whatwg.org/#doctype-name-state */
+    if (doctypeName !== 'html') {
+      return {
+        score: 0,
+        explanation: str_(UIStrings.explanationBadDoctype),
+      };
+    }
+
+    // Catch-all for any quirks-mode situations the above checks didn't get.
+    // https://github.com/GoogleChrome/lighthouse/issues/10030
     if (compatMode === 'BackCompat') {
       return {
         score: 0,
         explanation: str_(UIStrings.explanationWrongDoctype),
       };
-    }
-
-    /* Note that the casing of this property is normalized to be lowercase.
-       see: https://html.spec.whatwg.org/#doctype-name-state */
-    if (doctypeName === 'html') {
-      return {
-        score: 1,
-      };
     } else {
       return {
-        score: 0,
-        explanation: str_(UIStrings.explanationBadDoctype),
+        score: 1,
       };
     }
   }
