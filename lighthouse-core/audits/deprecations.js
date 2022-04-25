@@ -56,15 +56,20 @@ class Deprecations extends Audit {
   static async audit(artifacts, context) {
     const bundles = await JsBundles.request(artifacts, context);
 
-    const deprecations = artifacts.InspectorIssues.deprecationIssue.map(deprecation => {
-      const {scriptId, url, lineNumber, columnNumber} = deprecation.sourceCodeLocation;
-      const bundle = bundles.find(bundle => bundle.script.scriptId === scriptId);
-      return {
-        value: deprecation.message || '',
-        // Protocol.Audits.SourceCodeLocation.columnNumber is 1-indexed, but we use 0-indexed.
-        source: Audit.makeSourceLocation(url, lineNumber, columnNumber - 1, bundle),
-      };
-    });
+    const deprecations = artifacts.InspectorIssues.deprecationIssue
+      // TODO: translate these strings.
+      // see https://github.com/GoogleChrome/lighthouse/issues/13895
+      // @ts-expect-error: .type hasn't released to npm yet
+      .filter(deprecation => !deprecation.type || deprecation.type === 'Untranslated')
+      .map(deprecation => {
+        const {scriptId, url, lineNumber, columnNumber} = deprecation.sourceCodeLocation;
+        const bundle = bundles.find(bundle => bundle.script.scriptId === scriptId);
+        return {
+          value: deprecation.message || '',
+          // Protocol.Audits.SourceCodeLocation.columnNumber is 1-indexed, but we use 0-indexed.
+          source: Audit.makeSourceLocation(url, lineNumber, columnNumber - 1, bundle),
+        };
+      });
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
