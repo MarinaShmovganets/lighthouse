@@ -155,7 +155,7 @@ class Accessibility extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['snapshot', 'navigation'],
-  }
+  };
 
   static pageFns = {
     runA11yChecks,
