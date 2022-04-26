@@ -630,7 +630,7 @@ class TraceProcessor {
     }
 
     // Update known frames if FrameCommittedInBrowser events come in, typically
-    // with updated `url` (as well as pid, etc). Some traces (like timespans) may
+    // with updated `url`, as well as pid, etc. Some traces (like timespans) may
     // not have any committed frames.
     keyEvents
       .filter(/** @return {evt is FrameCommittedEvent} */ evt => {
@@ -653,18 +653,18 @@ class TraceProcessor {
     const frameEvents = keyEvents.filter(e => e.args.frame === mainFrameIds.frameId);
 
     // Filter to just events matching the main frame ID or any child frame IDs.
-    // In practice, there should always be FrameCommittedInBrowser events to define the frame tree.
-    // Unfortunately, many test traces do not include FrameCommittedInBrowser events due to minification.
-    // This ensures there is always a minimal frame tree and events so those tests don't fail.
     let frameTreeEvents = [];
     if (frameIdToRootFrameId.has(mainFrameIds.frameId)) {
       frameTreeEvents = keyEvents.filter(e => {
         return e.args.frame && frameIdToRootFrameId.get(e.args.frame) === mainFrameIds.frameId;
       });
     } else {
+      // In practice, there should always be TracingStartedInBrowser/FrameCommittedInBrowser events to
+      // define the frame tree. Unfortunately, many test traces do not that frame info due to minification.
+      // This ensures there is always a minimal frame tree and events so those tests don't fail.
       log.warn(
         'trace-of-tab',
-        'frameTreeEvents may be incomplete, make sure the trace has FrameCommittedInBrowser events'
+        'frameTreeEvents may be incomplete, make sure the trace has frame events'
       );
       frameIdToRootFrameId.set(mainFrameIds.frameId, mainFrameIds.frameId);
       frameTreeEvents = frameEvents;
