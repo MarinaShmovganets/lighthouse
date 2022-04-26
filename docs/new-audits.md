@@ -47,7 +47,6 @@ The following detail types accept a `granularity` field:
 - 0.001
 - 0.01
 - 0.1
-- 0.5
 - 1
 - 10
 - 100
