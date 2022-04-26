@@ -32,7 +32,7 @@ export class I18n {
   /**
    * @param {number} number
    * @param {number|undefined} granularity
-   * @param {Intl.NumberFormatOptions} opts
+   * @param {Intl.NumberFormatOptions=} opts
    * @return {string}
    */
   _formatNumberWithGranularity(number, granularity, opts = {}) {
