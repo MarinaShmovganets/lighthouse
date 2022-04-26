@@ -6,7 +6,7 @@
 'use strict';
 
 const InteractionToNextPaint = require('../../../audits/metrics/interaction-to-next-paint.js');
-const interactionTrace = require('../../fixtures/traces/timespan-responsiveness-full.trace.json');
+const interactionTrace = require('../../fixtures/traces/timespan-responsiveness.trace.json');
 const noInteractionTrace = require('../../fixtures/traces/jumpy-cls-m90.json');
 
 /* eslint-env jest */

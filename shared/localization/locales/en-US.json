@@ -1196,6 +1196,9 @@
   "lighthouse-core/audits/metrics/first-meaningful-paint.js | description": {
     "message": "First Meaningful Paint measures when the primary content of a page is visible. [Learn more](https://web.dev/first-meaningful-paint/)."
   },
+  "lighthouse-core/audits/metrics/interaction-to-next-paint.js | description": {
+    "message": "Interaction to Next Paint measures page responsiveness, how long it takes the page to visibly respond to user input. [Learn more](https://web.dev/inp/)."
+  },
   "lighthouse-core/audits/metrics/interactive.js | description": {
     "message": "Time to interactive is the amount of time it takes for the page to become fully interactive. [Learn more](https://web.dev/interactive/)."
   },
@@ -1960,6 +1963,9 @@
   },
   "lighthouse-core/lib/i18n/i18n.js | imageResourceType": {
     "message": "Image"
+  },
+  "lighthouse-core/lib/i18n/i18n.js | interactionToNextPaint": {
+    "message": "Interaction to Next Paint"
   },
   "lighthouse-core/lib/i18n/i18n.js | interactiveMetric": {
     "message": "Time to Interactive"

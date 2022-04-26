@@ -3653,6 +3653,13 @@
             "description": "Run the [Structured Data Testing Tool](https://search.google.com/structured-data/testing-tool/) and the [Structured Data Linter](http://linter.structured-data.org/) to validate structured data. [Learn more](https://web.dev/structured-data/).",
             "score": null,
             "scoreDisplayMode": "manual"
+          },
+          "interaction-to-next-paint": {
+            "id": "interaction-to-next-paint",
+            "title": "Interaction to Next Paint",
+            "description": "Interaction to Next Paint measures page responsiveness, how long it takes the page to visibly respond to user input. [Learn more](https://web.dev/inp/).",
+            "score": null,
+            "scoreDisplayMode": "notApplicable"
           }
         },
         "configSettings": {
@@ -4007,6 +4014,12 @@
                 "id": "script-treemap-data",
                 "weight": 0,
                 "group": "hidden"
+              },
+              {
+                "id": "interaction-to-next-paint",
+                "weight": 0,
+                "group": "metrics",
+                "acronym": "INP"
               }
             ],
             "id": "performance",
@@ -6018,12 +6031,18 @@
             },
             {
               "startTime": 228,
+              "name": "lh:audit:interaction-to-next-paint",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 229,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 229
+          "total": 230
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -7234,6 +7253,12 @@
             ],
             "lighthouse-core/audits/seo/manual/structured-data.js | description": [
               "audits[structured-data].description"
+            ],
+            "lighthouse-core/lib/i18n/i18n.js | interactionToNextPaint": [
+              "audits[interaction-to-next-paint].title"
+            ],
+            "lighthouse-core/audits/metrics/interaction-to-next-paint.js | description": [
+              "audits[interaction-to-next-paint].description"
             ],
             "lighthouse-core/config/default-config.js | performanceCategoryTitle": [
               "categories.performance.title"
@@ -9087,6 +9112,16 @@
               "headings": [],
               "items": []
             }
+          },
+          "interaction-to-next-paint": {
+            "id": "interaction-to-next-paint",
+            "title": "Interaction to Next Paint",
+            "description": "Interaction to Next Paint measures page responsiveness, how long it takes the page to visibly respond to user input. [Learn more](https://web.dev/inp/).",
+            "score": 1,
+            "scoreDisplayMode": "numeric",
+            "numericValue": 60,
+            "numericUnit": "millisecond",
+            "displayValue": "60 ms"
           }
         },
         "configSettings": {
@@ -9299,6 +9334,12 @@
                 "id": "script-treemap-data",
                 "weight": 0,
                 "group": "hidden"
+              },
+              {
+                "id": "interaction-to-next-paint",
+                "weight": 30,
+                "group": "metrics",
+                "acronym": "INP"
               }
             ],
             "id": "performance",
@@ -9912,12 +9953,24 @@
             },
             {
               "startTime": 78,
+              "name": "lh:audit:interaction-to-next-paint",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 79,
+              "name": "lh:computed:Responsiveness",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 80,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 79
+          "total": 81
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -10005,6 +10058,12 @@
                   "timeInMs": 539.765
                 },
                 "path": "audits[network-server-latency].displayValue"
+              },
+              {
+                "values": {
+                  "timeInMs": 60
+                },
+                "path": "audits[interaction-to-next-paint].displayValue"
               }
             ],
             "lighthouse-core/lib/i18n/i18n.js | cumulativeLayoutShiftMetric": [
@@ -10391,6 +10450,12 @@
             ],
             "lighthouse-core/audits/dobetterweb/uses-passive-event-listeners.js | description": [
               "audits[uses-passive-event-listeners].description"
+            ],
+            "lighthouse-core/lib/i18n/i18n.js | interactionToNextPaint": [
+              "audits[interaction-to-next-paint].title"
+            ],
+            "lighthouse-core/audits/metrics/interaction-to-next-paint.js | description": [
+              "audits[interaction-to-next-paint].description"
             ],
             "lighthouse-core/config/default-config.js | performanceCategoryTitle": [
               "categories.performance.title"
@@ -17795,6 +17860,13 @@
             "description": "Run the [Structured Data Testing Tool](https://search.google.com/structured-data/testing-tool/) and the [Structured Data Linter](http://linter.structured-data.org/) to validate structured data. [Learn more](https://web.dev/structured-data/).",
             "score": null,
             "scoreDisplayMode": "manual"
+          },
+          "interaction-to-next-paint": {
+            "id": "interaction-to-next-paint",
+            "title": "Interaction to Next Paint",
+            "description": "Interaction to Next Paint measures page responsiveness, how long it takes the page to visibly respond to user input. [Learn more](https://web.dev/inp/).",
+            "score": null,
+            "scoreDisplayMode": "notApplicable"
           }
         },
         "configSettings": {
@@ -18149,6 +18221,12 @@
                 "id": "script-treemap-data",
                 "weight": 0,
                 "group": "hidden"
+              },
+              {
+                "id": "interaction-to-next-paint",
+                "weight": 0,
+                "group": "metrics",
+                "acronym": "INP"
               }
             ],
             "id": "performance",
@@ -20142,12 +20220,18 @@
             },
             {
               "startTime": 225,
+              "name": "lh:audit:interaction-to-next-paint",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 226,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 226
+          "total": 227
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -21374,6 +21458,12 @@
             ],
             "lighthouse-core/audits/seo/manual/structured-data.js | description": [
               "audits[structured-data].description"
+            ],
+            "lighthouse-core/lib/i18n/i18n.js | interactionToNextPaint": [
+              "audits[interaction-to-next-paint].title"
+            ],
+            "lighthouse-core/audits/metrics/interaction-to-next-paint.js | description": [
+              "audits[interaction-to-next-paint].description"
             ],
             "lighthouse-core/config/default-config.js | performanceCategoryTitle": [
               "categories.performance.title"

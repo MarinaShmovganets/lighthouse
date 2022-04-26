@@ -10,7 +10,7 @@ const assert = require('assert').strict;
 const Responsiveness = require('../../../computed/metrics/responsiveness.js');
 const createTestTrace = require('../../create-test-trace.js');
 
-const interactionTrace = require('../../fixtures/traces/timespan-responsiveness-full.trace.json');
+const interactionTrace = require('../../fixtures/traces/timespan-responsiveness.trace.json');
 const noInteractionTrace = require('../../fixtures/traces/frame-metrics-m89.json');
 
 /* eslint-env jest */
