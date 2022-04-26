@@ -9088,8 +9088,8 @@
               "items": []
             }
           },
-          "interaction-to-next-paint": {
-            "id": "interaction-to-next-paint",
+          "experimental-interaction-to-next-paint": {
+            "id": "experimental-interaction-to-next-paint",
             "title": "Interaction to Next Paint",
             "description": "Interaction to Next Paint measures page responsiveness, how long it takes the page to visibly respond to user input. [Learn more](https://web.dev/inp/).",
             "score": 1,
@@ -9311,7 +9311,7 @@
                 "group": "hidden"
               },
               {
-                "id": "interaction-to-next-paint",
+                "id": "experimental-interaction-to-next-paint",
                 "weight": 30,
                 "group": "metrics",
                 "acronym": "INP"
@@ -9928,7 +9928,7 @@
             },
             {
               "startTime": 78,
-              "name": "lh:audit:interaction-to-next-paint",
+              "name": "lh:audit:experimental-interaction-to-next-paint",
               "duration": 1,
               "entryType": "measure"
             },
@@ -10038,7 +10038,7 @@
                 "values": {
                   "timeInMs": 60
                 },
-                "path": "audits[interaction-to-next-paint].displayValue"
+                "path": "audits[experimental-interaction-to-next-paint].displayValue"
               }
             ],
             "lighthouse-core/lib/i18n/i18n.js | cumulativeLayoutShiftMetric": [
@@ -10427,10 +10427,10 @@
               "audits[uses-passive-event-listeners].description"
             ],
             "lighthouse-core/lib/i18n/i18n.js | interactionToNextPaint": [
-              "audits[interaction-to-next-paint].title"
+              "audits[experimental-interaction-to-next-paint].title"
             ],
-            "lighthouse-core/audits/metrics/interaction-to-next-paint.js | description": [
-              "audits[interaction-to-next-paint].description"
+            "lighthouse-core/audits/metrics/experimental-interaction-to-next-paint.js | description": [
+              "audits[experimental-interaction-to-next-paint].description"
             ],
             "lighthouse-core/config/default-config.js | performanceCategoryTitle": [
               "categories.performance.title"

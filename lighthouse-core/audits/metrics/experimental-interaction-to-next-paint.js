@@ -20,13 +20,13 @@ const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
 /**
  * @fileoverview This metric gives a high-percentile measure of responsiveness to input.
  */
-class InteractionToNextPaint extends Audit {
+class ExperimentalInteractionToNextPaint extends Audit {
   /**
    * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      id: 'interaction-to-next-paint',
+      id: 'experimental-interaction-to-next-paint',
       title: str_(i18n.UIStrings.interactionToNextPaint),
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
@@ -80,5 +80,5 @@ class InteractionToNextPaint extends Audit {
   }
 }
 
-module.exports = InteractionToNextPaint;
+module.exports = ExperimentalInteractionToNextPaint;
 module.exports.UIStrings = UIStrings;

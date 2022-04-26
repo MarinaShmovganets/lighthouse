@@ -11,14 +11,14 @@ const {deepClone} = require('../../config/config-helpers.js');
 /** @type {LH.Config.AuditJson[]} */
 const frAudits = [
   'byte-efficiency/uses-responsive-images-snapshot',
-  'metrics/interaction-to-next-paint',
+  'metrics/experimental-interaction-to-next-paint',
 ];
 
 /** @type {Record<string, LH.Config.AuditRefJson[]>} */
 const frCategoryAuditRefExtensions = {
   'performance': [
     {id: 'uses-responsive-images-snapshot', weight: 0},
-    {id: 'interaction-to-next-paint', weight: 30, group: 'metrics', acronym: 'INP'},
+    {id: 'experimental-interaction-to-next-paint', weight: 30, group: 'metrics', acronym: 'INP'},
   ],
 };
 

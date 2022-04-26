@@ -5,7 +5,8 @@
  */
 'use strict';
 
-const InteractionToNextPaint = require('../../../audits/metrics/interaction-to-next-paint.js');
+const ExperimentalInteractionToNextPaint =
+    require('../../../audits/metrics/experimental-interaction-to-next-paint.js');
 const interactionTrace = require('../../fixtures/traces/timespan-responsiveness.trace.json');
 const noInteractionTrace = require('../../fixtures/traces/jumpy-cls-m90.json');
 
@@ -15,14 +16,14 @@ describe('Interaction to Next Paint', () => {
   function getTestData() {
     const artifacts = {
       traces: {
-        [InteractionToNextPaint.DEFAULT_PASS]: interactionTrace,
+        [ExperimentalInteractionToNextPaint.DEFAULT_PASS]: interactionTrace,
       },
     };
 
     const context = {
       settings: {throttlingMethod: 'devtools'},
       computedCache: new Map(),
-      options: InteractionToNextPaint.defaultOptions,
+      options: ExperimentalInteractionToNextPaint.defaultOptions,
     };
 
     return {artifacts, context};
@@ -30,7 +31,7 @@ describe('Interaction to Next Paint', () => {
 
   it('evaluates INP correctly', async () => {
     const {artifacts, context} = getTestData();
-    const result = await InteractionToNextPaint.audit(artifacts, context);
+    const result = await ExperimentalInteractionToNextPaint.audit(artifacts, context);
     expect(result).toEqual({
       score: 0.63,
       numericValue: 392,
@@ -42,7 +43,7 @@ describe('Interaction to Next Paint', () => {
   it('is not applicable if using simulated throttling', async () => {
     const {artifacts, context} = getTestData();
     context.settings.throttlingMethod = 'simulate';
-    const result = await InteractionToNextPaint.audit(artifacts, context);
+    const result = await ExperimentalInteractionToNextPaint.audit(artifacts, context);
     expect(result).toMatchObject({
       score: null,
       notApplicable: true,
@@ -51,8 +52,8 @@ describe('Interaction to Next Paint', () => {
 
   it('is not applicable if no interactions occurred in trace', async () => {
     const {artifacts, context} = getTestData();
-    artifacts.traces[InteractionToNextPaint.DEFAULT_PASS] = noInteractionTrace;
-    const result = await InteractionToNextPaint.audit(artifacts, context);
+    artifacts.traces[ExperimentalInteractionToNextPaint.DEFAULT_PASS] = noInteractionTrace;
+    const result = await ExperimentalInteractionToNextPaint.audit(artifacts, context);
     expect(result).toMatchObject({
       score: null,
       notApplicable: true,
