@@ -14,7 +14,6 @@ const noInteractionTrace = require('../../fixtures/traces/jumpy-cls-m90.json');
 describe('Interaction to Next Paint', () => {
   function getTestData() {
     const artifacts = {
-      GatherContext: {gatherMode: 'timespan'},
       traces: {
         [InteractionToNextPaint.DEFAULT_PASS]: interactionTrace,
       },
@@ -38,16 +37,6 @@ describe('Interaction to Next Paint', () => {
       numericValue: 237,
       numericUnit: 'millisecond',
       displayValue: expect.toBeDisplayString('240 ms'),
-    });
-  });
-
-  it('is not applicable if not measured in a timespan', async () => {
-    const {artifacts, context} = getTestData();
-    artifacts.GatherContext.gatherMode = 'navigation';
-    const result = await InteractionToNextPaint.audit(artifacts, context);
-    expect(result).toMatchObject({
-      score: null,
-      notApplicable: true,
     });
   });
 

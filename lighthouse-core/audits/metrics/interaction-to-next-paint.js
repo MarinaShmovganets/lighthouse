@@ -30,7 +30,8 @@ class InteractionToNextPaint extends Audit {
       title: str_(i18n.UIStrings.interactionToNextPaint),
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['traces', 'GatherContext'],
+      supportedModes: ['timespan'],
+      requiredArtifacts: ['traces'],
     };
   }
 
@@ -54,12 +55,9 @@ class InteractionToNextPaint extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const gatherContext = artifacts.GatherContext;
     const {settings} = context;
-    // TODO: only timespan currently supported.
-    if (gatherContext.gatherMode !== 'timespan' ||
-        // TODO: simulated timespan isn't supported by lantern.
-        settings.throttlingMethod === 'simulate') {
+    // TODO: responsiveness isn't yet supported by lantern.
+    if (settings.throttlingMethod === 'simulate') {
       return {score: null, notApplicable: true};
     }
 
