@@ -612,21 +612,41 @@ class TraceProcessor {
     // Find the inspected frame
     const mainFrameIds = this.findMainFrameIds(keyEvents);
 
-    const frames = keyEvents
+    /** @type {Map<string, {id: string, url: string, parent?: string}>} */
+    const framesById = new Map();
+
+    // Begin collection of frame tree information with TracingStartedInBrowser,
+    // which should be present even without navigations.
+    const tracingStartedFrames = keyEvents
+        .find(e => e.name === 'TracingStartedInBrowser')?.args?.data?.frames;
+    if (tracingStartedFrames) {
+      for (const frame of tracingStartedFrames) {
+        framesById.set(frame.frame, {
+          id: frame.frame,
+          url: frame.url,
+          parent: frame.parent,
+        });
+      }
+    }
+
+    // Update known frames if FrameCommittedInBrowser events come in, typically
+    // with updated `url` (as well as pid, etc). Some traces (like timespans) may
+    // not have any committed frames.
+    keyEvents
       .filter(/** @return {evt is FrameCommittedEvent} */ evt => {
         return Boolean(
           evt.name === 'FrameCommittedInBrowser' &&
           evt.args.data?.frame &&
           evt.args.data.url
         );
-      })
-      .map(evt => {
-        return {
+      }).forEach(evt => {
+        framesById.set(evt.args.data.frame, {
           id: evt.args.data.frame,
           url: evt.args.data.url,
           parent: evt.args.data.parent,
-        };
+        });
       });
+    const frames = [...framesById.values()];
     const frameIdToRootFrameId = this.resolveRootFrames(frames);
 
     // Filter to just events matching the main frame ID, just to make sure.
