@@ -71,6 +71,9 @@ describe('Fraggle Rock API', () => {
 
       await setupTestPage();
 
+      // Wait long enough to ensure a paint after button interaction.
+      await state.page.waitForTimeout(200);
+
       const result = await run.endTimespan();
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
@@ -128,6 +131,9 @@ describe('Fraggle Rock API', () => {
 
       await page.click('button');
       await page.waitForSelector('input');
+
+      // Wait long enough to ensure a paint after button interaction.
+      await page.waitForTimeout(200);
 
       const result = await run.endTimespan();
 
