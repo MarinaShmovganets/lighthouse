@@ -151,8 +151,7 @@ describe('Metric: Responsiveness', () => {
     };
     const context = {computedCache: new Map()};
     const result = await Responsiveness.request(metricInputData, context);
-    // TODO: this is incorrect, only looking at main frame events right now.
-    expect(result).toEqual({timing: 237});
+    expect(result).toEqual({timing: 392});
   });
 
   it('evaluates from a real trace with no interaction events', async () => {

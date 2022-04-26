@@ -32,11 +32,10 @@ describe('Interaction to Next Paint', () => {
     const {artifacts, context} = getTestData();
     const result = await InteractionToNextPaint.audit(artifacts, context);
     expect(result).toEqual({
-      // TODO: this is incorrect, only looking at main frame events right now.
-      score: 0.85,
-      numericValue: 237,
+      score: 0.63,
+      numericValue: 392,
       numericUnit: 'millisecond',
-      displayValue: expect.toBeDisplayString('240 ms'),
+      displayValue: expect.toBeDisplayString('390 ms'),
     });
   });
 
