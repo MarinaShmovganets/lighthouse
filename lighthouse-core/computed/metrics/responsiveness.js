@@ -6,7 +6,7 @@
 'use strict';
 
 /**
- * @fileoverview Returns a high-percentle (usually 98th) measure of how ong it
+ * @fileoverview Returns a high-percentle (usually 98th) measure of how long it
  * takes the page to visibly respond to user input (or null, if there was no
  * user input in the provided trace).
  */

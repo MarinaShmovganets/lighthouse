@@ -24,7 +24,7 @@ function makeTrace(interactionEventsData) {
   let needsChildFrame = false;
   let lastTs = 0;
   for (const evtData of interactionEventsData) {
-    needsChildFrame = needsChildFrame || !!evtData.inChildFrame;
+    if (evtData.isChildFrame) needsChildFrame = true;
     lastTs = Math.max(lastTs, evtData.ts);
   }
 
