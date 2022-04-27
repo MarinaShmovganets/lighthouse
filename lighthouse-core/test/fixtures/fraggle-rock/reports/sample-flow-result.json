@@ -9312,7 +9312,7 @@
               },
               {
                 "id": "experimental-interaction-to-next-paint",
-                "weight": 30,
+                "weight": 0,
                 "group": "metrics",
                 "acronym": "INP"
               }
