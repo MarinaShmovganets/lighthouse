@@ -64,10 +64,11 @@ export class I18n {
    * Format number.
    * @param {number} number
    * @param {number=} granularity Controls how coarse the displayed value is.
-   *                              If undefined, the number will be displayed in full.
+   *                              If undefined, the number will be displayed as described
+   *                              by the Intl defaults: tinyurl.com/7s67w5x7
    * @return {string}
    */
-  formatNumber(number, granularity = undefined) {
+  formatNumber(number, granularity) {
     return this._formatNumberWithGranularity(number, granularity);
   }
 
