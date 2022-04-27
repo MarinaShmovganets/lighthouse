@@ -64,6 +64,9 @@ class Deprecations extends Audit {
     let deprecations;
     if (artifacts.InspectorIssues.deprecationIssue.length) {
       deprecations = artifacts.InspectorIssues.deprecationIssue
+        // TODO: translate these strings.
+        // see https://github.com/GoogleChrome/lighthouse/issues/13895
+        .filter(deprecation => !deprecation.type || deprecation.type === 'Untranslated')
         .map(deprecation => {
           const {scriptId, url, lineNumber, columnNumber} = deprecation.sourceCodeLocation;
           const bundle = bundles.find(bundle => bundle.script.scriptId === scriptId);
