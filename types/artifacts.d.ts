@@ -252,6 +252,7 @@ declare module Artifacts {
     name: string;
     publicId: string;
     systemId: string;
+    documentCompatMode: string;
   }
 
   interface DOMStats {
@@ -961,6 +962,7 @@ export interface TraceEvent {
       documentLoaderURL?: string;
       frames?: {
         frame: string;
+        url: string;
         parent?: string;
         processId?: number;
       }[];
