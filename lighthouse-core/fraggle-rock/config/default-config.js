@@ -18,7 +18,7 @@ const frAudits = [
 const frCategoryAuditRefExtensions = {
   'performance': [
     {id: 'uses-responsive-images-snapshot', weight: 0},
-    {id: 'experimental-interaction-to-next-paint', weight: 30, group: 'metrics', acronym: 'INP'},
+    {id: 'experimental-interaction-to-next-paint', weight: 0, group: 'metrics', acronym: 'INP'},
   ],
 };
 
