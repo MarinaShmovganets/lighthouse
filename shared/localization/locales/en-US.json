@@ -777,7 +777,7 @@
     "message": "Specifying a doctype prevents the browser from switching to quirks-mode. [Learn more](https://web.dev/doctype/)."
   },
   "lighthouse-core/audits/dobetterweb/doctype.js | explanationBadDoctype": {
-    "message": "Doctype name must be the lowercase string `html`"
+    "message": "Doctype name must be the string `html`"
   },
   "lighthouse-core/audits/dobetterweb/doctype.js | explanationNoDoctype": {
     "message": "Document must contain a doctype"
@@ -787,6 +787,9 @@
   },
   "lighthouse-core/audits/dobetterweb/doctype.js | explanationSystemId": {
     "message": "Expected systemId to be an empty string"
+  },
+  "lighthouse-core/audits/dobetterweb/doctype.js | explanationWrongDoctype": {
+    "message": "Document contains a doctype that triggers quirks-mode"
   },
   "lighthouse-core/audits/dobetterweb/doctype.js | failureTitle": {
     "message": "Page lacks the HTML doctype, thus triggering quirks-mode"
