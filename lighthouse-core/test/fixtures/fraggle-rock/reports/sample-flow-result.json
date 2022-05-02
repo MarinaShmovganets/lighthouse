@@ -7850,7 +7850,7 @@
             "description": "Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. [Learn more](https://web.dev/bootup-time/).",
             "score": 1,
             "scoreDisplayMode": "numeric",
-            "numericValue": 274.5320000000002,
+            "numericValue": 275.90400000000034,
             "numericUnit": "millisecond",
             "displayValue": "0.3 s",
             "details": {
@@ -7882,20 +7882,26 @@
               ],
               "items": [
                 {
+                  "url": "https://www.mikescerealshack.co/",
+                  "total": 298.1560000000002,
+                  "scripting": 115.99500000000005,
+                  "scriptParseCompile": 0
+                },
+                {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/framework.9d524150d48315f49e80.js",
-                  "total": 340.90100000000024,
-                  "scripting": 254.67600000000022,
+                  "total": 169.22000000000028,
+                  "scripting": 150.88400000000027,
                   "scriptParseCompile": 0
                 },
                 {
                   "url": "Unattributable",
-                  "total": 237.62699999999987,
-                  "scripting": 19.855999999999998,
+                  "total": 114.66900000000017,
+                  "scripting": 9.024999999999997,
                   "scriptParseCompile": 0
                 }
               ],
               "summary": {
-                "wastedMs": 274.5320000000002
+                "wastedMs": 275.90400000000034
               }
             }
           },
@@ -8537,12 +8543,12 @@
               ],
               "items": [
                 {
-                  "url": "https://www.mikescerealshack.co/_next/static/chunks/framework.9d524150d48315f49e80.js",
+                  "url": "https://www.mikescerealshack.co/",
                   "duration": 75.734,
                   "startTime": 1765.511
                 },
                 {
-                  "url": "https://www.mikescerealshack.co/_next/static/chunks/framework.9d524150d48315f49e80.js",
+                  "url": "https://www.mikescerealshack.co/",
                   "duration": 55.073,
                   "startTime": 11.328
                 }
@@ -9081,6 +9087,16 @@
               "headings": [],
               "items": []
             }
+          },
+          "experimental-interaction-to-next-paint": {
+            "id": "experimental-interaction-to-next-paint",
+            "title": "Interaction to Next Paint",
+            "description": "Interaction to Next Paint measures page responsiveness, how long it takes the page to visibly respond to user input. [Learn more](https://web.dev/inp/).",
+            "score": 1,
+            "scoreDisplayMode": "numeric",
+            "numericValue": 60,
+            "numericUnit": "millisecond",
+            "displayValue": "60 ms"
           }
         },
         "configSettings": {
@@ -9293,6 +9309,12 @@
                 "id": "script-treemap-data",
                 "weight": 0,
                 "group": "hidden"
+              },
+              {
+                "id": "experimental-interaction-to-next-paint",
+                "weight": 0,
+                "group": "metrics",
+                "acronym": "INP"
               }
             ],
             "id": "performance",
@@ -9906,12 +9928,24 @@
             },
             {
               "startTime": 78,
+              "name": "lh:audit:experimental-interaction-to-next-paint",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 79,
+              "name": "lh:computed:Responsiveness",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 80,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 79
+          "total": 81
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -9999,6 +10033,12 @@
                   "timeInMs": 539.765
                 },
                 "path": "audits[network-server-latency].displayValue"
+              },
+              {
+                "values": {
+                  "timeInMs": 60
+                },
+                "path": "audits[experimental-interaction-to-next-paint].displayValue"
               }
             ],
             "lighthouse-core/lib/i18n/i18n.js | cumulativeLayoutShiftMetric": [
@@ -10099,7 +10139,7 @@
               },
               {
                 "values": {
-                  "timeInMs": 274.5320000000002
+                  "timeInMs": 275.90400000000034
                 },
                 "path": "audits[bootup-time].displayValue"
               }
@@ -10385,6 +10425,12 @@
             ],
             "lighthouse-core/audits/dobetterweb/uses-passive-event-listeners.js | description": [
               "audits[uses-passive-event-listeners].description"
+            ],
+            "lighthouse-core/lib/i18n/i18n.js | interactionToNextPaint": [
+              "audits[experimental-interaction-to-next-paint].title"
+            ],
+            "lighthouse-core/audits/metrics/experimental-interaction-to-next-paint.js | description": [
+              "audits[experimental-interaction-to-next-paint].description"
             ],
             "lighthouse-core/config/default-config.js | performanceCategoryTitle": [
               "categories.performance.title"
