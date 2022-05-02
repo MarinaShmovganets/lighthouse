@@ -13,8 +13,7 @@ const assert = require('assert').strict;
 const WIDTH = 800;
 const HEIGHT = 600;
 
-function generateImage(clientSize, naturalSize, props, src = 'https://google.com/logo.png') {
-  const image = {src, mimeType: 'image/png'};
+function generateImage(clientSize, naturalDimensions, props, src) {
   const clientRect = {
     clientRect: {
       top: 0,
@@ -23,20 +22,28 @@ function generateImage(clientSize, naturalSize, props, src = 'https://google.com
       right: clientSize.displayedWidth,
     },
   };
-  Object.assign(image, clientSize, naturalSize, clientRect, props);
-  return image;
+  return {
+    computedStyles: {objectFit: 'fill'},
+    src,
+    naturalDimensions,
+    node: {devtoolsNodePath: '1,HTML,1,IMG'},
+    ...clientSize,
+    ...clientRect,
+    ...props,
+  };
 }
 
 describe('Images: size audit', () => {
-  function testImage(condition, data) {
+  function testImage(condition, data, src = 'https://google.com/logo.png') {
     const description = `identifies when an image ${condition}`;
     it(description, () => {
       const result = ImageSizeResponsiveAudit.audit({
         ImageElements: [
           generateImage(
             {displayedWidth: data.clientSize[0], displayedHeight: data.clientSize[1]},
-            {naturalWidth: data.naturalSize[0], naturalHeight: data.naturalSize[1]},
-            data.props
+            {width: data.naturalSize[0], height: data.naturalSize[1]},
+            data.props,
+            src
           ),
         ],
         ViewportDimensions: {
@@ -93,10 +100,7 @@ describe('Images: size audit', () => {
     score: 1,
     clientSize: [100, 100],
     naturalSize: [5, 5],
-    props: {
-      mimeType: 'image/svg+xml',
-    },
-  });
+  }, 'https://google.com/logo.svg');
 
   testImage('is a css image', {
     score: 1,
@@ -112,7 +116,7 @@ describe('Images: size audit', () => {
     clientSize: [100, 100],
     naturalSize: [5, 5],
     props: {
-      usesObjectFit: true,
+      computedStyles: {objectFit: 'cover'},
     },
   });
 
@@ -121,7 +125,7 @@ describe('Images: size audit', () => {
     clientSize: [100, 100],
     naturalSize: [5, 5],
     props: {
-      usesPixelArtScaling: true,
+      computedStyles: {imageRendering: 'pixelated'},
     },
   });
 
@@ -130,8 +134,20 @@ describe('Images: size audit', () => {
     clientSize: [100, 100],
     naturalSize: [5, 5],
     props: {
-      usesSrcSetDensityDescriptor: true,
+      srcset: 'https://google.com/logo.png 1x',
     },
+  });
+
+  testImage('wider than the viewport', {
+    score: 1,
+    clientSize: [1000, 100],
+    naturalSize: [5, 5],
+  });
+
+  testImage('taller than the viewport', {
+    score: 1,
+    clientSize: [100, 1000],
+    naturalSize: [5, 5],
   });
 
   describe('visibility', () => {
@@ -319,12 +335,20 @@ describe('Images: size audit', () => {
       });
     });
 
-    describe('DPR = 2.625', () => {
+    describe('DPR = higher than 2', () => {
       testImage('is an icon with right size', {
         score: 1,
         clientSize: [64, 64],
         naturalSize: [128, 128],
         devicePixelRatio: 2.625,
+
+      });
+
+      testImage('is an icon with right size', {
+        score: 1,
+        clientSize: [64, 64],
+        naturalSize: [128, 128],
+        devicePixelRatio: 3,
       });
 
       testImage('is an icon with an invalid size', {
@@ -341,6 +365,13 @@ describe('Images: size audit', () => {
         devicePixelRatio: 2.625,
       });
 
+      testImage('has right size', {
+        score: 1,
+        clientSize: [65, 65],
+        naturalSize: [98, 98],
+        devicePixelRatio: 3,
+      });
+
       testImage('has an invalid size', {
         score: 0,
         clientSize: [65, 65],
@@ -355,15 +386,15 @@ describe('Images: size audit', () => {
       ImageElements: [
         generateImage(
           {displayedWidth: 80, displayedHeight: 40},
-          {naturalWidth: 40, naturalHeight: 20}
+          {width: 40, height: 20}
         ),
         generateImage(
           {displayedWidth: 160, displayedHeight: 80},
-          {naturalWidth: 40, naturalHeight: 20}
+          {width: 40, height: 20}
         ),
         generateImage(
           {displayedWidth: 60, displayedHeight: 30},
-          {naturalWidth: 40, naturalHeight: 20}
+          {width: 40, height: 20}
         ),
       ],
       ViewportDimensions: {
@@ -381,19 +412,19 @@ describe('Images: size audit', () => {
       ImageElements: [
         generateImage(
           {displayedWidth: 80, displayedHeight: 40},
-          {naturalWidth: 40, naturalHeight: 20},
+          {width: 40, height: 20},
           {},
           'image1.png'
         ),
         generateImage(
           {displayedWidth: 120, displayedHeight: 60},
-          {naturalWidth: 40, naturalHeight: 20},
+          {width: 40, height: 20},
           {},
           'image2.png'
         ),
         generateImage(
           {displayedWidth: 90, displayedHeight: 45},
-          {naturalWidth: 40, naturalHeight: 20},
+          {width: 40, height: 20},
           {},
           'image3.png'
         ),
@@ -414,7 +445,7 @@ describe('Images: size audit', () => {
       ImageElements: [
         generateImage(
           {displayedWidth: 80, displayedHeight: 40},
-          {naturalWidth: 40, naturalHeight: 20}
+          {width: 40, height: 20}
         ),
       ],
       ViewportDimensions: {
@@ -424,6 +455,6 @@ describe('Images: size audit', () => {
       },
     });
     assert.equal(result.details.items.length, 1);
-    assert.equal(result.details.items[0].expectedSize, '217 x 109');
+    assert.equal(result.details.items[0].expectedSize, '160 x 80');
   });
 });

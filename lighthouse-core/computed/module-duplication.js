@@ -15,7 +15,7 @@ class ModuleDuplication {
   /**
    * @param {string} source
    */
-  static _normalizeSource(source) {
+  static normalizeSource(source) {
     // Trim trailing question mark - b/c webpack.
     source = source.replace(/\?$/, '');
 
@@ -43,7 +43,7 @@ class ModuleDuplication {
   }
 
   /**
-   * @param {Map<string, Array<{scriptUrl: string, resourceSize: number}>>} moduleNameToSourceData
+   * @param {Map<string, Array<{scriptId: string, resourceSize: number}>>} moduleNameToSourceData
    */
   static _normalizeAggregatedData(moduleNameToSourceData) {
     for (const [key, originalSourceData] of moduleNameToSourceData.entries()) {
@@ -74,8 +74,8 @@ class ModuleDuplication {
   }
 
   /**
-   * @param {LH.Artifacts} artifacts
-   * @param {LH.Audit.Context} context
+   * @param {Pick<LH.Artifacts, 'Scripts'|'SourceMaps'>} artifacts
+   * @param {LH.Artifacts.ComputedContext} context
    */
   static async compute_(artifacts, context) {
     const bundles = await JsBundles.request(artifacts, context);
@@ -91,6 +91,8 @@ class ModuleDuplication {
 
     // Determine size of each `sources` entry.
     for (const {rawMap, sizes} of bundles) {
+      if ('errorMessage' in sizes) continue;
+
       /** @type {SourceData[]} */
       const sourceDataArray = [];
       sourceDatasMap.set(rawMap, sourceDataArray);
@@ -101,13 +103,13 @@ class ModuleDuplication {
         const sourceKey = (rawMap.sourceRoot || '') + rawMap.sources[i];
         const sourceSize = sizes.files[sourceKey];
         sourceDataArray.push({
-          source: ModuleDuplication._normalizeSource(rawMap.sources[i]),
+          source: ModuleDuplication.normalizeSource(rawMap.sources[i]),
           resourceSize: sourceSize,
         });
       }
     }
 
-    /** @type {Map<string, Array<{scriptUrl: string, resourceSize: number}>>} */
+    /** @type {Map<string, Array<{scriptId: string, scriptUrl: string, resourceSize: number}>>} */
     const moduleNameToSourceData = new Map();
     for (const {rawMap, script} of bundles) {
       const sourceDataArray = sourceDatasMap.get(rawMap);
@@ -120,7 +122,8 @@ class ModuleDuplication {
           moduleNameToSourceData.set(sourceData.source, data);
         }
         data.push({
-          scriptUrl: script.src || '',
+          scriptId: script.scriptId,
+          scriptUrl: script.url,
           resourceSize: sourceData.resourceSize,
         });
       }
@@ -131,4 +134,4 @@ class ModuleDuplication {
   }
 }
 
-module.exports = makeComputedArtifact(ModuleDuplication);
+module.exports = makeComputedArtifact(ModuleDuplication, ['Scripts', 'SourceMaps']);
