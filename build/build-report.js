@@ -96,6 +96,11 @@ async function buildEsModulesBundle() {
     input: 'report/clients/bundle.js',
     plugins: [
       rollupPlugins.commonjs(),
+      // Exclude this 30kb from the devtools bundle for now.
+      rollupPlugins.shim({
+        [`${LH_ROOT}/shared/localization/i18n-module.js`]:
+            'export const swapLocale = _ => {}; export const format = _ => {};',
+      }),
     ],
   });
 
