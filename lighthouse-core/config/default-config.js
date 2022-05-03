@@ -41,39 +41,13 @@ const UIStrings = {
   /** Description of the Accessibility category. This is displayed at the top of a list of audits focused on making web content accessible to all users. No character length limits. 'improve the accessibility of your web app' becomes link text to additional documentation. */
   a11yCategoryDescription: 'These checks highlight opportunities to [improve the accessibility of your web app](https://web.dev/lighthouse-accessibility/). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.',
   /** Description of the Accessibility manual checks category. This description is displayed above a list of accessibility audits that currently have no automated test and so must be verified manually by the user. No character length limits. 'conducting an accessibility review' becomes link text to additional documentation. */
-  a11yCategoryManualDescription: 'These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).',
-  /** Title of the best practices section of the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices. */
-  a11yBestPracticesGroupTitle: 'Best practices',
-  /** Description of the best practices section within the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices. */
-  a11yBestPracticesGroupDescription: 'These items highlight common accessibility best practices.',
-  /** Title of the color contrast section within the Accessibility category. Within this section are audits with descriptive titles that highlight the color and vision aspects of the page's accessibility that are passing or failing. */
-  a11yColorContrastGroupTitle: 'Contrast',
-  /** Description of the color contrast section within the Accessibility category. Within this section are audits with descriptive titles that highlight the color and vision aspects of the page's accessibility that are passing or failing. */
-  a11yColorContrastGroupDescription: 'These are opportunities to improve the legibility of your content.',
-  /** Title of the HTML element naming section within the Accessibility category. Within this section are audits with descriptive titles that highlight if the non-textual HTML elements on the page have names discernible by a screen reader. */
-  a11yNamesLabelsGroupTitle: 'Names and labels',
-  /** Description of the HTML element naming section within the Accessibility category. Within this section are audits with descriptive titles that highlight if the non-textual HTML elements on the page have names discernible by a screen reader. */
-  a11yNamesLabelsGroupDescription: 'These are opportunities to improve the semantics of the controls in your application. This may enhance the experience for users of assistive technology, like a screen reader.',
-  /** Title of the navigation section within the Accessibility category. Within this section are audits with descriptive titles that highlight opportunities to improve keyboard navigation. */
-  a11yNavigationGroupTitle: 'Navigation',
-  /** Description of the navigation section within the Accessibility category. Within this section are audits with descriptive titles that highlight opportunities to improve keyboard navigation. */
-  a11yNavigationGroupDescription: 'These are opportunities to improve keyboard navigation in your application.',
-  /** Title of the ARIA validity section within the Accessibility category. Within this section are audits with descriptive titles that highlight if whether all the aria-* HTML attributes have been used properly. */
-  a11yAriaGroupTitle: 'ARIA',
-  /** Description of the ARIA validity section within the Accessibility category. Within this section are audits with descriptive titles that highlight if whether all the aria-* HTML attributes have been used properly. */
-  a11yAriaGroupDescription: 'These are opportunities to improve the usage of ARIA in your application which may enhance the experience for users of assistive technology, like a screen reader.',
-  /** Title of the language section within the Accessibility category. Within this section are audits with descriptive titles that highlight if the language has been annotated in the correct HTML attributes on the page. */
-  a11yLanguageGroupTitle: 'Internationalization and localization',
-  /** Description of the language section within the Accessibility category. Within this section are audits with descriptive titles that highlight if the language has been annotated in the correct HTML attributes on the page. */
-  a11yLanguageGroupDescription: 'These are opportunities to improve the interpretation of your content by users in different locales.',
-  /** Title of the navigation section within the Accessibility category. Within this section are audits with descriptive titles that highlight opportunities to provide alternative content for audio and video. */
-  a11yAudioVideoGroupTitle: 'Audio and video',
-  /** Description of the navigation section within the Accessibility category. Within this section are audits with descriptive titles that highlight opportunities to provide alternative content for audio and video. */
-  a11yAudioVideoGroupDescription: 'These are opportunities to provide alternative content for audio and video. This may improve the experience for users with hearing or vision impairments.',
-  /** Title of the navigation section within the Accessibility category. Within this section are audits with descriptive titles that highlight opportunities to improve the experience of reading tabular or list data using assistive technology. */
-  a11yTablesListsVideoGroupTitle: 'Tables and lists',
-  /** Description of the navigation section within the Accessibility category. Within this section are audits with descriptive titles that highlight opportunities to improve the experience of reading tabular or list data using assistive technology. */
-  a11yTablesListsVideoGroupDescription: 'These are opportunities to improve the experience of reading tabular or list data using assistive technology, like a screen reader.',
+  a11yCategoryManualDescription: 'These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://developers.google.com/web/fundamentals/accessibility/how-to-review).',
+  /** Title of a section within the Accessibility category. Within this section are audits with descriptive titles that highlight if the page has critical (worst of three descriptors, the others being: serious and moderate) accessibility issues. */
+  a11yCriticalTitle: 'Critical accessibility problems',
+  /** Title of a section within the Accessibility category. Within this section are audits with descriptive titles that highlight if the page has serious (second worst of three descriptors, the others being: critical and moderate) accessibility issues. */
+  a11ySeriousTitle: 'Serious accessibility problems',
+  /** Title of a section within the Accessibility category. Within this section are audits with descriptive titles that highlight if the page has moderate (least worst of three descriptors, the others being: critical and serious) accessibility issues. */
+  a11yModerateTitle: 'Moderate accessibility problems',
   /** Title of the Search Engine Optimization (SEO) category of audits. This is displayed at the top of a list of audits focused on topics related to optimizing a website for indexing by search engines. Also used as a label of a score gauge; try to limit to 20 characters. */
   seoCategoryTitle: 'SEO',
   /** Description of the Search Engine Optimization (SEO) category. This is displayed at the top of a list of audits focused on optimizing a website for indexing by search engines. No character length limits. 'Learn More' becomes link text to additional documentation. */
@@ -349,37 +323,14 @@ const defaultConfig = {
     'pwa-optimized': {
       title: str_(UIStrings.pwaOptimizedGroupTitle),
     },
-    'a11y-best-practices': {
-      title: str_(UIStrings.a11yBestPracticesGroupTitle),
-      description: str_(UIStrings.a11yBestPracticesGroupDescription),
+    'a11y-critical': {
+      title: str_(UIStrings.a11yCriticalTitle),
     },
-    'a11y-color-contrast': {
-      title: str_(UIStrings.a11yColorContrastGroupTitle),
-      description: str_(UIStrings.a11yColorContrastGroupDescription),
+    'a11y-serious': {
+      title: str_(UIStrings.a11ySeriousTitle),
     },
-    'a11y-names-labels': {
-      title: str_(UIStrings.a11yNamesLabelsGroupTitle),
-      description: str_(UIStrings.a11yNamesLabelsGroupDescription),
-    },
-    'a11y-navigation': {
-      title: str_(UIStrings.a11yNavigationGroupTitle),
-      description: str_(UIStrings.a11yNavigationGroupDescription),
-    },
-    'a11y-aria': {
-      title: str_(UIStrings.a11yAriaGroupTitle),
-      description: str_(UIStrings.a11yAriaGroupDescription),
-    },
-    'a11y-language': {
-      title: str_(UIStrings.a11yLanguageGroupTitle),
-      description: str_(UIStrings.a11yLanguageGroupDescription),
-    },
-    'a11y-audio-video': {
-      title: str_(UIStrings.a11yAudioVideoGroupTitle),
-      description: str_(UIStrings.a11yAudioVideoGroupDescription),
-    },
-    'a11y-tables-lists': {
-      title: str_(UIStrings.a11yTablesListsVideoGroupTitle),
-      description: str_(UIStrings.a11yTablesListsVideoGroupDescription),
+    'a11y-moderate': {
+      title: str_(UIStrings.a11yModerateTitle),
     },
     'seo-mobile': {
       title: str_(UIStrings.seoMobileGroupTitle),
@@ -492,50 +443,53 @@ const defaultConfig = {
       // See the audits listed at dequeuniversity.com/rules/axe/4.1.
       // Click on an audit and check the right hand column to see its severity.
       auditRefs: [
-        {id: 'accesskeys', weight: 3, group: 'a11y-navigation'},
-        {id: 'aria-allowed-attr', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-command-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-hidden-body', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-hidden-focus', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-input-field-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-meter-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-progressbar-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-required-attr', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-required-children', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-required-parent', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-roles', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-toggle-field-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-tooltip-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-treeitem-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-valid-attr-value', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-valid-attr', weight: 10, group: 'a11y-aria'},
-        {id: 'button-name', weight: 10, group: 'a11y-names-labels'},
-        {id: 'bypass', weight: 3, group: 'a11y-navigation'},
-        {id: 'color-contrast', weight: 3, group: 'a11y-color-contrast'},
-        {id: 'definition-list', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'dlitem', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'document-title', weight: 3, group: 'a11y-names-labels'},
-        {id: 'duplicate-id-active', weight: 3, group: 'a11y-navigation'},
-        {id: 'duplicate-id-aria', weight: 10, group: 'a11y-aria'},
-        {id: 'form-field-multiple-labels', weight: 2, group: 'a11y-names-labels'},
-        {id: 'frame-title', weight: 3, group: 'a11y-names-labels'},
-        {id: 'heading-order', weight: 2, group: 'a11y-navigation'},
-        {id: 'html-has-lang', weight: 3, group: 'a11y-language'},
-        {id: 'html-lang-valid', weight: 3, group: 'a11y-language'},
-        {id: 'image-alt', weight: 10, group: 'a11y-names-labels'},
-        {id: 'input-image-alt', weight: 10, group: 'a11y-names-labels'},
-        {id: 'label', weight: 10, group: 'a11y-names-labels'},
-        {id: 'link-name', weight: 3, group: 'a11y-names-labels'},
-        {id: 'list', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'listitem', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'meta-refresh', weight: 10, group: 'a11y-best-practices'},
-        {id: 'meta-viewport', weight: 10, group: 'a11y-best-practices'},
-        {id: 'object-alt', weight: 3, group: 'a11y-names-labels'},
-        {id: 'tabindex', weight: 3, group: 'a11y-navigation'},
-        {id: 'td-headers-attr', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'th-has-data-cells', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'valid-lang', weight: 3, group: 'a11y-language'},
-        {id: 'video-caption', weight: 10, group: 'a11y-audio-video'},
+        {id: 'aria-allowed-attr', weight: 10, group: 'a11y-critical'},
+        {id: 'aria-hidden-body', weight: 10, group: 'a11y-critical'},
+        {id: 'aria-required-attr', weight: 10, group: 'a11y-critical'},
+        {id: 'aria-required-children', weight: 10, group: 'a11y-critical'},
+        {id: 'aria-required-parent', weight: 10, group: 'a11y-critical'},
+        {id: 'aria-roles', weight: 10, group: 'a11y-critical'},
+        {id: 'aria-valid-attr-value', weight: 10, group: 'a11y-critical'},
+        {id: 'aria-valid-attr', weight: 10, group: 'a11y-critical'},
+        {id: 'button-name', weight: 10, group: 'a11y-critical'},
+        {id: 'duplicate-id-aria', weight: 10, group: 'a11y-critical'},
+        {id: 'image-alt', weight: 10, group: 'a11y-critical'},
+        {id: 'input-image-alt', weight: 10, group: 'a11y-critical'},
+        {id: 'label', weight: 10, group: 'a11y-critical'},
+        {id: 'meta-refresh', weight: 10, group: 'a11y-critical'},
+        {id: 'meta-viewport', weight: 10, group: 'a11y-critical'},
+        {id: 'video-caption', weight: 10, group: 'a11y-critical'},
+
+        {id: 'accesskeys', weight: 3, group: 'a11y-serious'},
+        {id: 'aria-command-name', weight: 3, group: 'a11y-serious'},
+        {id: 'aria-hidden-focus', weight: 3, group: 'a11y-serious'},
+        {id: 'aria-input-field-name', weight: 3, group: 'a11y-serious'},
+        {id: 'aria-meter-name', weight: 3, group: 'a11y-serious'},
+        {id: 'aria-progressbar-name', weight: 3, group: 'a11y-serious'},
+        {id: 'aria-toggle-field-name', weight: 3, group: 'a11y-serious'},
+        {id: 'aria-tooltip-name', weight: 3, group: 'a11y-serious'},
+        {id: 'aria-treeitem-name', weight: 3, group: 'a11y-serious'},
+        {id: 'bypass', weight: 3, group: 'a11y-serious'},
+        {id: 'color-contrast', weight: 3, group: 'a11y-serious'},
+        {id: 'definition-list', weight: 3, group: 'a11y-serious'},
+        {id: 'dlitem', weight: 3, group: 'a11y-serious'},
+        {id: 'document-title', weight: 3, group: 'a11y-serious'},
+        {id: 'duplicate-id-active', weight: 3, group: 'a11y-serious'},
+        {id: 'frame-title', weight: 3, group: 'a11y-serious'},
+        {id: 'html-has-lang', weight: 3, group: 'a11y-serious'},
+        {id: 'html-lang-valid', weight: 3, group: 'a11y-serious'},
+        {id: 'link-name', weight: 3, group: 'a11y-serious'},
+        {id: 'list', weight: 3, group: 'a11y-serious'},
+        {id: 'listitem', weight: 3, group: 'a11y-serious'},
+        {id: 'object-alt', weight: 3, group: 'a11y-serious'},
+        {id: 'tabindex', weight: 3, group: 'a11y-serious'},
+        {id: 'td-headers-attr', weight: 3, group: 'a11y-serious'},
+        {id: 'th-has-data-cells', weight: 3, group: 'a11y-serious'},
+        {id: 'valid-lang', weight: 3, group: 'a11y-serious'},
+
+        {id: 'form-field-multiple-labels', weight: 2, group: 'a11y-moderate'},
+        {id: 'heading-order', weight: 2, group: 'a11y-moderate'},
+
         // Manual audits
         {id: 'logical-tab-order', weight: 0},
         {id: 'focusable-controls', weight: 0},
