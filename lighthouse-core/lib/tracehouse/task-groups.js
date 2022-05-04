@@ -50,7 +50,7 @@ const taskGroups = {
       'UpdateLayer',
       'UpdateLayerTree',
       'CompositeLayers',
-      'PrePaint',
+      'PrePaint', // New name for UpdateLayerTree: https://crrev.com/c/3519012
     ],
   },
   scriptParseCompile: {
