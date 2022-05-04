@@ -28,14 +28,6 @@ beforeAll(async () => {
   Fetcher = (await import('../../gather/fetcher.js')).default;
 });
 
-/** @type {number} */
-let browserMilestone;
-jest.mock('../../gather/driver/environment.js', () => ({
-  getBrowserVersion: fnAny().mockImplementation(() => {
-    return Promise.resolve({milestone: browserMilestone});
-  }),
-}));
-
 /** @type {Connection} */
 let connectionStub;
 /** @type {Driver} */
