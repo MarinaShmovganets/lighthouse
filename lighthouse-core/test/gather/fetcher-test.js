@@ -7,7 +7,6 @@
 
 /* eslint-env jest */
 
-import {jest} from '@jest/globals';
 import Connection from '../../gather/connections/connection.js';
 import {fnAny, mockCommands} from '../test-utils.js';
 

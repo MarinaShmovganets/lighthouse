@@ -49,7 +49,7 @@ describe('SourceMaps gatherer', () => {
       .mockResponse('Debugger.enable', {})
       .mockResponse('Debugger.disable', {})
       .mockResponse('Network.enable', {});
-    const fetchMock = jest.fn();
+    const fetchMock = fnAny();
 
     for (const mapAndEvents of mapsAndEvents) {
       const {
