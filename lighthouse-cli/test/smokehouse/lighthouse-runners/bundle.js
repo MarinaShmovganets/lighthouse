@@ -14,6 +14,7 @@
 import fs from 'fs';
 import os from 'os';
 import {Worker, isMainThread, parentPort, workerData} from 'worker_threads';
+import {once} from 'events';
 
 import puppeteer from 'puppeteer-core';
 import ChromeLauncher from 'chrome-launcher';
@@ -127,17 +128,14 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
     process.stderr.write(data);
     logs.push(`STDERR: ${data}`);
   });
-  const promise = new Promise((resolve, reject) => {
-    worker.on('message', (message) => {
-      if (message.type === 'result') {
-        resolve(message.value);
-      } else if (message.type === 'error') {
-        reject(message.value);
-      }
-    });
-  });
+  const [workerResponse] = await once(worker, 'message');
+  const log = logs.join('') + '\n';
 
-  const result = await promise;
+  if (workerResponse.type === 'error') {
+    new Error(`Worker returned an error: ${workerResponse.value}\nLog:\n${log}`);
+  }
+
+  const result = workerResponse.value;
   if (!result.lhr || !result.assetsDir) {
     throw new Error(`invalid response from worker:\n${JSON.stringify(result, null, 2)}`);
   }
@@ -145,7 +143,6 @@ async function runLighthouse(url, configJson, testRunnerOptions = {}) {
   const artifacts = loadArtifacts(result.assetsDir);
   fs.rmSync(result.assetsDir, {recursive: true});
 
-  const log = logs.join('') + '\n';
   return {
     lhr: result.lhr,
     artifacts,
