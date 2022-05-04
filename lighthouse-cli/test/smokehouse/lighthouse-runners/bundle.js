@@ -112,8 +112,7 @@ async function runBundledLighthouse(url, configJson, testRunnerOptions) {
 async function runLighthouse(url, configJson, testRunnerOptions = {}) {
   /** @type {string[]} */
   const logs = [];
-  const workerFilename = `${LH_ROOT}/lighthouse-cli/test/smokehouse/lighthouse-runners/bundle.js`;
-  const worker = new Worker(workerFilename, {
+  const worker = new Worker(new URL(import.meta.url), {
     stdout: true,
     stderr: true,
     workerData: {url, configJson, testRunnerOptions},
