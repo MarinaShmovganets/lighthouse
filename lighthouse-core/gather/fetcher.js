@@ -44,7 +44,6 @@ class Fetcher {
    * @return {Promise<FetchResponse>}
    */
   async _fetchWithFetchApi(url) {
-    // eslint-disable-next-line no-undef
     const response = await fetch(url);
 
     let content = null;
