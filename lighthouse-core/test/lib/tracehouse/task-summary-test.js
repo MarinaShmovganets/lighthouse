@@ -34,10 +34,10 @@ describe('Task Summaries', () => {
     it('returns the script URLs from a set of network records', () => {
       const records = NetworkRecorder.recordsFromLogs(ampDevtoolsLog);
       const urls = getJavaScriptURLs(records);
-      expect(urls.size).toEqual(13);
       for (const url of urls) {
         expect(url).toMatch(/^https:\/\/cdn.ampproject.org.*js$/);
       }
+      expect(urls.size).toEqual(13);
     });
   });
 
