@@ -3,15 +3,13 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const assert = require('assert').strict;
+import {strict as assert} from 'assert';
 
-const Responsiveness = require('../../../computed/metrics/responsiveness.js');
-const createTestTrace = require('../../create-test-trace.js');
-
-const interactionTrace = require('../../fixtures/traces/timespan-responsiveness-m103.trace.json');
-const noInteractionTrace = require('../../fixtures/traces/frame-metrics-m89.json');
+import Responsiveness from '../../../computed/metrics/responsiveness.js';
+import createTestTrace from '../../create-test-trace.js';
+import interactionTrace from '../../fixtures/traces/timespan-responsiveness-m103.trace.json';
+import noInteractionTrace from '../../fixtures/traces/frame-metrics-m89.json';
 
 const childFrameId = 'CAF4634127666E186C9C8B35627DBF0B';
 
@@ -74,8 +72,8 @@ describe('Metric: Responsiveness', () => {
       settings: {throttlingMethod: 'provided'},
     };
     const context = {computedCache: new Map()};
-    const result = await Responsiveness.request(metricInputData, context);
-    expect(result).toEqual(null);
+    const event = await Responsiveness.request(metricInputData, context);
+    expect(event).toEqual(null);
   });
 
   it('should select the 98th percentile interaction', async () => {
@@ -100,8 +98,8 @@ describe('Metric: Responsiveness', () => {
       }
 
       const context = {computedCache: new Map()};
-      const result = await Responsiveness.request(metricInputData, context);
-      assert.equal(result.timing, expectedTiming, `error at ${eventCount} events`);
+      const event = await Responsiveness.request(metricInputData, context);
+      assert.equal(event.args.data.maxDuration, expectedTiming, `error at ${eventCount} events`);
     }
   });
 
@@ -129,8 +127,8 @@ describe('Metric: Responsiveness', () => {
       settings: {throttlingMethod: 'provided'},
     };
     const context = {computedCache: new Map()};
-    const result = await Responsiveness.request(metricInputData, context);
-    expect(result).toEqual({timing: 49});
+    const event = await Responsiveness.request(metricInputData, context);
+    expect(event.args.data).toMatchObject({maxDuration: 49});
   });
 
   it('should throw on attempting with a simulated timespan', async () => {
@@ -148,8 +146,8 @@ describe('Metric: Responsiveness', () => {
       settings: {throttlingMethod: 'provided'},
     };
     const context = {computedCache: new Map()};
-    const result = await Responsiveness.request(metricInputData, context);
-    expect(result).toEqual({timing: 392});
+    const event = await Responsiveness.request(metricInputData, context);
+    expect(event.args.data).toMatchObject({maxDuration: 392});
   });
 
   it('evaluates from a real trace with no interaction events', async () => {
@@ -158,7 +156,7 @@ describe('Metric: Responsiveness', () => {
       settings: {throttlingMethod: 'provided'},
     };
     const context = {computedCache: new Map()};
-    const result = await Responsiveness.request(metricInputData, context);
-    expect(result).toEqual(null);
+    const event = await Responsiveness.request(metricInputData, context);
+    expect(event).toEqual(null);
   });
 });
