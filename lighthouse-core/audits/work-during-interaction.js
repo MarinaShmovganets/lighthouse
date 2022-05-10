@@ -149,12 +149,8 @@ class WorkDuringInteraction extends Audit {
 
       const results = [];
       for (const [url, timingByGroupId] of executionTimings) {
-        let totalExecutionTimeForURL = 0;
-        for (const [groupId, timespanMs] of Object.entries(timingByGroupId)) {
-          if (timespanMs === 0) continue;
-          timingByGroupId[groupId] = timespanMs;
-          totalExecutionTimeForURL += timespanMs;
-        }
+        const totalExecutionTimeForURL = Object.values(timingByGroupId)
+            .reduce((total, timespanMs) => total + timespanMs);
 
         const scriptingTotal = timingByGroupId[taskGroups.scriptEvaluation.id] || 0;
         const layoutTotal = timingByGroupId[taskGroups.styleLayout.id] || 0;
