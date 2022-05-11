@@ -480,7 +480,7 @@ export class DetailsRenderer {
     details.items.forEach(item => {
       const listItem = this.render(item);
       if (!listItem) return;
-      listContainer.appendChild(listItem);
+      listContainer.append(listItem);
     });
 
     return listContainer;

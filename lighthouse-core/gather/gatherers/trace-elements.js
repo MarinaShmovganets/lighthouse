@@ -146,17 +146,17 @@ class TraceElements extends FRGatherer {
   /**
    * @param {LH.Trace} trace
    * @param {LH.Gatherer.FRTransitionalContext} context
-   * @return {Promise<Array<TraceElementData>>}
+   * @return {Promise<TraceElementData|undefined>}
    */
   static async getResponsivenessElement(trace, context) {
     const {settings} = context;
     try {
       const responsivenessEvent = await ComputedResponsivenes.request({trace, settings}, context);
-      if (!responsivenessEvent) return [];
-      return [{nodeId: responsivenessEvent.args.data.nodeId}];
+      if (!responsivenessEvent || responsivenessEvent.name === 'FallbackTiming') return;
+      return {nodeId: responsivenessEvent.args.data.nodeId};
     } catch {
       // Don't let responsiveness errors sink the rest of the gatherer.
-      return [];
+      return;
     }
   }
 
@@ -263,7 +263,7 @@ class TraceElements extends FRGatherer {
       ['largest-contentful-paint', lcpNodeId ? [{nodeId: lcpNodeId}] : []],
       ['layout-shift', clsNodeData],
       ['animation', animatedElementData],
-      ['responsiveness', responsivenessElementData],
+      ['responsiveness', responsivenessElementData ? [responsivenessElementData] : []],
     ]);
 
     const traceElements = [];
