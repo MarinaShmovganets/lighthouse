@@ -207,7 +207,6 @@ class WorkDuringInteraction extends Audit {
     const responsivenessElement = traceElements.find(el => el.traceEventType === 'responsiveness');
     if (!responsivenessElement) return;
 
-
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'node', itemType: 'node', text: str_(UIStrings.eventTarget)},
