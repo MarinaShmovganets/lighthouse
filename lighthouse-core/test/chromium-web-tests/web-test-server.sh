@@ -57,6 +57,7 @@ set -x
 python3 \
   "$BLINK_TOOLS_PATH/latest/third_party/blink/tools/run_web_tests.py" \
   --layout-tests-directory="$DEVTOOLS_PATH/test/webtests" \
+  --additional-platform-directory="$DEVTOOLS_PATH/test/webtests/platform/generic" \
   --build-directory="$latest_content_shell/out" \
   $*
 status=$?
