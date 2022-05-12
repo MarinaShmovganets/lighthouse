@@ -6,6 +6,7 @@
 
 
 import LargestContentfulPaintLazyLoaded from '../../audits/lcp-lazy-loaded.js';
+
 const SAMPLE_NODE = {
   devtoolsNodePath: '1,HTML,1,BODY,3,DIV,2,IMG',
   selector: 'div.l-header > div.chorus-emc__content',

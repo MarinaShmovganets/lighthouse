@@ -8,6 +8,7 @@
 import {strict as assert} from 'assert';
 
 import DOMSize from '../../../audits/dobetterweb/dom-size.js';
+
 const options = DOMSize.defaultOptions;
 
 describe('DOMSize audit', () => {

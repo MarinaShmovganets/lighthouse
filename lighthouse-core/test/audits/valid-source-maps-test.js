@@ -7,6 +7,7 @@
 
 import {createScript, loadSourceMapFixture} from '../test-utils.js';
 import ValidSourceMaps from '../../audits/valid-source-maps.js';
+
 const largeBundle = loadSourceMapFixture('coursehero-bundle-1');
 const smallBundle = loadSourceMapFixture('coursehero-bundle-2');
 const LARGE_JS_BYTE_THRESHOLD = 500 * 1024;
