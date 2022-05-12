@@ -4,9 +4,9 @@ Tests that audits panel renders View Trace button.
 ========== Lighthouse Start Audit State ==========
 [x] Performance
 [ ] Accessibility
-[x] Best practices
-[x] SEO
-[x] Progressive Web App
+[ ] Best practices
+[ ] SEO
+[ ] Progressive Web App
 [ ] Publisher Ads
 [x] Legacy navigation
 [x] Clear storage
@@ -14,53 +14,28 @@ Tests that audits panel renders View Trace button.
 Analyze page load: enabled visible
 
 =============== Audits run ===============
-apple-touch-icon
 bootup-time
-canonical
-charset
-content-width
-crawlable-anchors
 critical-request-chains
-csp-xss
 cumulative-layout-shift
-deprecations
 diagnostics
-doctype
-document-title
 dom-size
 duplicated-javascript
 efficient-animated-content
-errors-in-console
 final-screenshot
 first-contentful-paint
 first-meaningful-paint
 font-display
-font-size
 full-page-screenshot
-geolocation-on-start
-hreflang
-http-status-code
-image-alt
-image-aspect-ratio
-image-size-responsive
-inspector-issues
-installable-manifest
 interactive
-is-crawlable
-is-on-https
-js-libraries
 largest-contentful-paint
 largest-contentful-paint-element
 layout-shift-elements
 lcp-lazy-loaded
 legacy-javascript
-link-text
 long-tasks
 main-thread-tasks
 mainthread-work-breakdown
-maskable-icon
 max-potential-fid
-meta-description
 metrics
 modern-image-formats
 network-requests
@@ -68,31 +43,17 @@ network-rtt
 network-server-latency
 no-document-write
 no-unload-listeners
-no-vulnerable-libraries
 non-composited-animations
-notification-on-start
 offscreen-images
-password-inputs-can-be-pasted-into
 performance-budget
-plugins
-preload-fonts
 preload-lcp-image
-pwa-cross-browser
-pwa-each-page-has-url
-pwa-page-transitions
 redirects
 render-blocking-resources
 resource-summary
-robots-txt
 screenshot-thumbnails
 script-treemap-data
 server-response-time
-service-worker
 speed-index
-splash-screen
-structured-data
-tap-targets
-themed-omnibox
 third-party-facades
 third-party-summary
 timing-budget
@@ -112,7 +73,6 @@ uses-rel-preconnect
 uses-rel-preload
 uses-responsive-images
 uses-text-compression
-valid-source-maps
 viewport
 
 View Trace Button Text: "View Original Trace"

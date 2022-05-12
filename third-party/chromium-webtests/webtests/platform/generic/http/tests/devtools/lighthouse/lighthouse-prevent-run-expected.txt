@@ -6,25 +6,26 @@ Tests that audits panel prevents run of unauditable pages.
 
 ========== Lighthouse Start Audit State ==========
 [ ] Performance
-[x] Accessibility
-[x] Best practices
-[x] SEO
-[x] Progressive Web App
+[ ] Accessibility
+[ ] Best practices
+[ ] SEO
+[ ] Progressive Web App
 [ ] Publisher Ads
 [x] Legacy navigation
 [x] Clear storage
 [x] Simulated throttling
-Analyze page load: enabled visible
+Help text: At least one category must be selected.
+Analyze page load: disabled visible
 
 
 **Allows audit with a single category**
 
 ========== Lighthouse Start Audit State ==========
-[ ] Performance
-[x] Accessibility
-[x] Best practices
-[x] SEO
-[x] Progressive Web App
+[x] Performance
+[ ] Accessibility
+[ ] Best practices
+[ ] SEO
+[ ] Progressive Web App
 [ ] Publisher Ads
 [x] Legacy navigation
 [x] Clear storage
@@ -35,11 +36,11 @@ Analyze page load: enabled visible
 **Allows audit on undockable page**
 
 ========== Lighthouse Start Audit State ==========
-[ ] Performance
-[x] Accessibility
-[x] Best practices
-[x] SEO
-[x] Progressive Web App
+[x] Performance
+[ ] Accessibility
+[ ] Best practices
+[ ] SEO
+[ ] Progressive Web App
 [ ] Publisher Ads
 [x] Legacy navigation
 [x] Clear storage
@@ -51,11 +52,11 @@ Analyze page load: enabled visible
 URL: about:blank
 
 ========== Lighthouse Start Audit State ==========
-[ ] Performance
-[x] Accessibility
-[x] Best practices
-[x] SEO
-[x] Progressive Web App
+[x] Performance
+[ ] Accessibility
+[ ] Best practices
+[ ] SEO
+[ ] Progressive Web App
 [ ] Publisher Ads
 [x] Legacy navigation
 [x] Clear storage

@@ -4,9 +4,9 @@ Tests that Lighthouse report is translated.
 ========== Lighthouse Start Audit State ==========
 [x] Performance
 [ ] Accessibility
-[x] Best practices
-[x] SEO
-[x] Progressive Web App
+[ ] Best practices
+[ ] SEO
+[ ] Progressive Web App
 [ ] Publisher Ads
 [x] Legacy navigation
 [x] Clear storage

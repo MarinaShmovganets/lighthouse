@@ -3,9 +3,9 @@ Tests that audits panel works when only the pwa category is selected.
 
 ========== Lighthouse Start Audit State ==========
 [ ] Performance
-[x] Accessibility
-[x] Best practices
-[x] SEO
+[ ] Accessibility
+[ ] Best practices
+[ ] SEO
 [x] Progressive Web App
 [ ] Publisher Ads
 [x] Legacy navigation
@@ -14,98 +14,16 @@ Tests that audits panel works when only the pwa category is selected.
 Analyze page load: enabled visible
 
 =============== Audits run ===============
-accesskeys
 apple-touch-icon
-aria-allowed-attr
-aria-command-name
-aria-hidden-body
-aria-hidden-focus
-aria-input-field-name
-aria-meter-name
-aria-progressbar-name
-aria-required-attr
-aria-required-children
-aria-required-parent
-aria-roles
-aria-toggle-field-name
-aria-tooltip-name
-aria-treeitem-name
-aria-valid-attr
-aria-valid-attr-value
-button-name
-bypass
-canonical
-charset
-color-contrast
 content-width
-crawlable-anchors
-csp-xss
-custom-controls-labels
-custom-controls-roles
-definition-list
-deprecations
-dlitem
-doctype
-document-title
-duplicate-id-active
-duplicate-id-aria
-errors-in-console
-focus-traps
-focusable-controls
-font-size
-form-field-multiple-labels
-frame-title
 full-page-screenshot
-geolocation-on-start
-heading-order
-hreflang
-html-has-lang
-html-lang-valid
-http-status-code
-image-alt
-image-aspect-ratio
-image-size-responsive
-input-image-alt
-inspector-issues
 installable-manifest
-interactive-element-affordance
-is-crawlable
-is-on-https
-js-libraries
-label
-link-name
-link-text
-list
-listitem
-logical-tab-order
-managed-focus
 maskable-icon
-meta-description
-meta-refresh
-meta-viewport
-no-vulnerable-libraries
-notification-on-start
-object-alt
-offscreen-content-hidden
-password-inputs-can-be-pasted-into
-plugins
-preload-fonts
 pwa-cross-browser
 pwa-each-page-has-url
 pwa-page-transitions
-robots-txt
 service-worker
 splash-screen
-structured-data
-tabindex
-tap-targets
-td-headers-attr
-th-has-data-cells
 themed-omnibox
-use-landmarks
-valid-lang
-valid-source-maps
-video-caption
 viewport
-visual-order-follows-dom
 
