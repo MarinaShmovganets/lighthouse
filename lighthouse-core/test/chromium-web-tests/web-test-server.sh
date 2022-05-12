@@ -67,6 +67,6 @@ set -e
 
 rm -rf "$LH_ROOT/.tmp/layout-test-results"
 cp -r "$latest_content_shell/out/Release/layout-test-results" "$LH_ROOT/.tmp/layout-test-results"
-cp "$DEVTOOLS_PATH/test/webtests/http/tests/devtools/lighthouse/"*-expected.txt "$LH_ROOT/third-party/chromium-webtests/webtests/http/tests/devtools/lighthouse"
+cp "$DEVTOOLS_PATH/test/webtests/platform/generic/http/tests/devtools/lighthouse/"*-expected.txt "$LH_ROOT/third-party/chromium-webtests/webtests/platform/generic/http/tests/devtools/lighthouse"
 
 exit $status
