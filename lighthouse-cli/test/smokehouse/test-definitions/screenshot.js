@@ -49,7 +49,7 @@ const expectations = {
       nodes: {
         // Gathered with no execution context isolation, shared between both FR and legacy.
         'page-0-P': {...elements.p},
-        
+
         // Legacy execution context IDs.
         // Note: The first number (5) in these ids comes from an executionContextId, and has the potential to change.
         // The following P is the same element as above but from a different JS context. This element
