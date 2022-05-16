@@ -59,7 +59,7 @@
     "watch": "yarn unit-core --watch",
     "unit:cicoverage": "yarn c8 --all yarn unit:ci",
     "coverage": "yarn unit:cicoverage && c8 report --reporter html",
-    "coverage:smoke": "yarn c8 yarn smoke -j=1 && c8 report --reporter html",
+    "coverage:smoke": "yarn c8 yarn smoke && c8 report --reporter html",
     "devtools": "bash lighthouse-core/scripts/roll-to-devtools.sh",
     "chrome": "node lighthouse-core/scripts/manual-chrome-launcher.js",
     "fast": "node ./lighthouse-cli/index.js --preset=desktop --throttlingMethod=provided",
