@@ -16,7 +16,7 @@ Analyze page load: enabled visible
 =============== Lighthouse Results ===============
 formFactor: desktop
 disableStorageReset: false
-throttlingMethod: simulated
+throttlingMethod: devtools
 
 View Trace Button Text: "View Trace"
 View Trace Button Title: ""
