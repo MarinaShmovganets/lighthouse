@@ -10,11 +10,14 @@
   await TestRunner.showPanel('lighthouse');
 
   const dialogElement = LighthouseTestRunner.getContainerElement();
-  dialogElement.querySelector('input[name="lighthouse.device_type"][value="desktop"]').click();
+
   // Turn off simulated throttling.
   dialogElement.querySelector('.lighthouse-settings-pane .toolbar')
       .shadowRoot.querySelector('option[value="devtools"]')
       .selected = true;
+
+  // Use desktop environment
+  dialogElement.querySelector('input[name="lighthouse.device_type"][value="desktop"]').click();
 
   LighthouseTestRunner.dumpStartAuditState();
   LighthouseTestRunner.getRunButton().click();
