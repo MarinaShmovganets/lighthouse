@@ -12,9 +12,12 @@
   const dialogElement = LighthouseTestRunner.getContainerElement();
 
   // Turn off simulated throttling.
-  dialogElement.querySelector('.lighthouse-settings-pane .toolbar')
-      .shadowRoot.querySelector('option[value="devtools"]')
-      .selected = true;
+  const select = dialogElement.querySelector('.lighthouse-settings-pane .toolbar')
+      .shadowRoot.querySelector('select')
+  select.querySelector('option[value="devtools"]').selected = true;
+
+  // Change event is not emitted automatically when updating select element programatically.
+  select.dispatchEvent(new Event('change'));
 
   // Use desktop environment
   dialogElement.querySelector('input[name="lighthouse.device_type"][value="desktop"]').click();
