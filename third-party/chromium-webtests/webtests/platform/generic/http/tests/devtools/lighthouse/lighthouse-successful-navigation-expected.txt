@@ -46,20 +46,30 @@ Auditing: Has a `<meta name="viewport">` tag with `width` or `initial-scale`
 Computing artifact: ViewportMeta
 Auditing: First Contentful Paint
 Computing artifact: FirstContentfulPaint$3
+Computing artifact: LanternFirstContentfulPaint$6
+Computing artifact: PageDependencyGraph$a
+Computing artifact: LoadSimulator$a
+Computing artifact: NetworkAnalysis$1
 Auditing: Largest Contentful Paint
 Computing artifact: LargestContentfulPaint$2
+Computing artifact: LanternLargestContentfulPaint$1
 Auditing: First Meaningful Paint
 Computing artifact: FirstMeaningfulPaint$2
+Computing artifact: LanternFirstMeaningfulPaint$2
 Auditing: Speed Index
 Computing artifact: SpeedIndex$2
-Auditing: Screenshot Thumbnails
+Computing artifact: LanternSpeedIndex$2
 Computing artifact: Speedline$4
+Auditing: Screenshot Thumbnails
 Auditing: Final Screenshot
 Computing artifact: Screenshots$1
 Auditing: Total Blocking Time
 Computing artifact: TotalBlockingTime$2
+Computing artifact: LanternTotalBlockingTime$1
+Computing artifact: LanternInteractive$4
 Auditing: Max Potential First Input Delay
 Computing artifact: MaxPotentialFID$2
+Computing artifact: LanternMaxPotentialFID$1
 Auditing: Cumulative Layout Shift
 Computing artifact: CumulativeLayoutShift$2
 Auditing: No browser errors logged to the console
@@ -71,13 +81,7 @@ Auditing: User Timing marks and measures
 Computing artifact: UserTimings$1
 Auditing: Avoid chaining critical requests
 Computing artifact: CriticalRequestChains$2
-Computing artifact: PageDependencyGraph$a
 Auditing: Avoid multiple page redirects
-Computing artifact: LanternInteractive$4
-Computing artifact: LanternFirstMeaningfulPaint$2
-Computing artifact: LanternFirstContentfulPaint$6
-Computing artifact: LoadSimulator$a
-Computing artifact: NetworkAnalysis$1
 Auditing: Web app manifest and service worker meet the installability requirements
 Computing artifact: ManifestValues$4
 Auditing: Provides a valid `apple-touch-icon`
@@ -117,7 +121,6 @@ Auditing: Avoid non-composited animations
 Auditing: Image elements have explicit `width` and `height`
 Auditing: Page has valid source maps
 Auditing: Preload Largest Contentful Paint image
-Computing artifact: LanternLargestContentfulPaint$1
 Auditing: Ensure CSP is effective against XSS attacks
 Auditing: Full-page screenshot
 Auditing: Script Treemap Data
@@ -185,8 +188,6 @@ Auditing: Defer offscreen images
 Auditing: Eliminate render-blocking resources
 Computing artifact: UnusedCSS$3
 Computing artifact: FirstContentfulPaint$3
-Computing artifact: LanternFirstContentfulPaint$6
-Computing artifact: LoadSimulator$a
 Auditing: Minify CSS
 Auditing: Minify JavaScript
 Auditing: Reduce unused CSS
@@ -225,12 +226,15 @@ Auditing: Document has a valid `rel=canonical`
 Auditing: Structured data is valid
 Auditing: No long tasks blocking ad-related network requests
 Computing artifact: LongTasks$2
+Computing artifact: PageDependencyGraph$a
 Auditing: Minimal render-blocking resources found
 Auditing: Ad request waterfall
 Auditing: First bid request time
 Computing artifact: BidRequestTime
+Computing artifact: LanternBidRequestTime
 Auditing: First ad request time
 Computing artifact: AdRequestTime$1
+Computing artifact: LanternAdRequestTime
 Auditing: No ad found at the very top of the viewport
 Auditing: Few or no ads loaded outside viewport
 Auditing: Ad tag is loaded asynchronously
@@ -240,6 +244,7 @@ Auditing: No bottleneck requests found
 Auditing: No duplicate tags found
 Auditing: Latency of first ad render
 Computing artifact: AdRenderTime
+Computing artifact: LanternAdRenderTime
 Auditing: GPT and bids loaded in parallel
 Auditing: GPT tag is loaded from an official source
 Auditing: Ad tag is loaded over HTTPS
@@ -247,6 +252,7 @@ Auditing: Ad scripts are loaded statically
 Auditing: Header bidding is parallelized
 Auditing: Tag load time
 Computing artifact: TagLoadTime$1
+Computing artifact: LanternTagLoadTime
 Auditing: Ads to page-height ratio is within recommended range
 Auditing: Cumulative ad shift
 Auditing: Deprecated GPT API Usage
@@ -270,7 +276,7 @@ accesskeys: notApplicable
 ad-blocking-tasks: notApplicable
 ad-render-blocking-resources: notApplicable
 ad-request-critical-path: notApplicable
-ad-request-from-page-start: ERROR Unrecognized throttling method: simulated
+ad-request-from-page-start: notApplicable
 ad-top-of-viewport: notApplicable
 ads-in-viewport: notApplicable
 apple-touch-icon: fail
@@ -291,7 +297,7 @@ aria-treeitem-name: notApplicable
 aria-valid-attr: notApplicable
 aria-valid-attr-value: notApplicable
 async-ad-tags: notApplicable
-bid-request-from-page-start: ERROR Unrecognized throttling method: simulated
+bid-request-from-page-start: notApplicable
 blocking-load-events: notApplicable
 bootup-time: flaky
 bottleneck-requests: notApplicable
@@ -323,7 +329,7 @@ duplicated-javascript: numeric
 efficient-animated-content: flaky
 errors-in-console: pass
 final-screenshot: ERROR Chrome didn't collect any screenshots during the page load. Please make sure there is content visible on the page, and then try re-running Lighthouse. (NO_SCREENSHOTS)
-first-ad-render: ERROR Unrecognized throttling method: simulated
+first-ad-render: notApplicable
 first-contentful-paint: flaky
 first-meaningful-paint: flaky
 focus-traps: manual
@@ -353,7 +359,7 @@ is-crawlable: pass
 is-on-https: pass
 js-libraries: notApplicable
 label: notApplicable
-largest-contentful-paint: ERROR Unrecognized throttling method: simulated
+largest-contentful-paint: numeric
 largest-contentful-paint-element: informative
 layout-shift-elements: notApplicable
 lcp-lazy-loaded: notApplicable
@@ -370,7 +376,7 @@ main-thread-tasks: informative
 mainthread-work-breakdown: numeric
 managed-focus: manual
 maskable-icon: fail
-max-potential-fid: ERROR Unrecognized throttling method: simulated
+max-potential-fid: numeric
 meta-description: fail
 meta-refresh: notApplicable
 meta-viewport: notApplicable
@@ -409,7 +415,7 @@ speed-index: flaky
 splash-screen: fail
 structured-data: manual
 tabindex: notApplicable
-tag-load-time: ERROR Unrecognized throttling method: simulated
+tag-load-time: notApplicable
 tap-targets: fail
 td-headers-attr: notApplicable
 th-has-data-cells: notApplicable
@@ -418,7 +424,7 @@ third-party-facades: notApplicable
 third-party-summary: notApplicable
 timing-budget: ERROR Chrome didn't collect any screenshots during the page load. Please make sure there is content visible on the page, and then try re-running Lighthouse. (NO_SCREENSHOTS)
 total-ad-blocking-time: notApplicable
-total-blocking-time: ERROR Unrecognized throttling method: simulated
+total-blocking-time: numeric
 total-byte-weight: numeric
 unminified-css: flaky
 unminified-javascript: flaky
