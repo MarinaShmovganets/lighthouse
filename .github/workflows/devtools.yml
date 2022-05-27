@@ -51,8 +51,8 @@ jobs:
         # 3) every change to file in Lighthouse repo important to running these tests.
         #
         # The number is how many times this hash key was manually updated to break the cache.
-        key: ${{ runner.os }}-4-${{ env.WEEK_OF_THE_YEAR }}-${{ hashFiles('cdt-test-hash.txt') }}
-        restore-keys: ${{ runner.os }}-
+        key: ${{ runner.os }}-5-${{ env.WEEK_OF_THE_YEAR }}-${{ hashFiles('cdt-test-hash.txt') }}
+        restore-keys: ${{ runner.os }}-5
     - name: Set GHA_DEVTOOLS_CACHE_HIT
       if: steps.devtools-cache.outputs.cache-hit == 'true'
       run: echo "GHA_DEVTOOLS_CACHE_HIT=1" >> $GITHUB_ENV
@@ -67,8 +67,6 @@ jobs:
 
     - name: Roll Lighthouse + build DevTools
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/roll-devtools.sh
-
-    - run: cat $DEVTOOLS_PATH/front_end/panels/lighthouse/LighthouseController.ts
 
     - name: Cache build artifacts
       id: devtools-build-artifacts
