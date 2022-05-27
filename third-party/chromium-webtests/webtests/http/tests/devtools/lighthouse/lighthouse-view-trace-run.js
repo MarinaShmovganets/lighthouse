@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 (async function() {
-  window.localStorage.clear();
   TestRunner.addResult('Tests that audits panel renders View Trace button.\n');
   await TestRunner.navigatePromise('resources/lighthouse-basic.html');
 

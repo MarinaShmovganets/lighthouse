@@ -68,6 +68,8 @@ jobs:
     - name: Roll Lighthouse + build DevTools
       run: bash $GITHUB_WORKSPACE/lighthouse/lighthouse-core/test/chromium-web-tests/roll-devtools.sh
 
+    - run: cat $DEVTOOLS_PATH/front_end/panels/lighthouse/LighthouseController.ts
+
     - name: Cache build artifacts
       id: devtools-build-artifacts
       uses: actions/cache@v3
