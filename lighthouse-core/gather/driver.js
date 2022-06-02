@@ -304,20 +304,20 @@ class Driver {
       return;
     }
 
-    // Events from subtargets will be stringified and sent back on `Target.receivedMessageFromTarget`.
-    // We want to receive information about network requests from iframes, so enable the Network domain.
-    await this.sendCommandToSession('Network.enable', event.sessionId);
-
-    // We also want to receive information about subtargets of subtargets, so make sure we autoattach recursively.
-    await this.sendCommandToSession('Target.setAutoAttach', event.sessionId, {
-      autoAttach: true,
-      flatten: true,
-      // Pause targets on startup so we don't miss anything
-      waitForDebuggerOnStart: true,
-    });
-
-    // We suspended the target when we auto-attached, so make sure it goes back to being normal.
-    await this.sendCommandToSession('Runtime.runIfWaitingForDebugger', event.sessionId);
+    await Promise.all([
+      // Events from subtargets will be stringified and sent back on `Target.receivedMessageFromTarget`.
+      // We want to receive information about network requests from iframes, so enable the Network domain.
+      this.sendCommandToSession('Network.enable', event.sessionId),
+      // We also want to receive information about subtargets of subtargets, so make sure we autoattach recursively.
+      this.sendCommandToSession('Target.setAutoAttach', event.sessionId, {
+        autoAttach: true,
+        flatten: true,
+        // Pause targets on startup so we don't miss anything
+        waitForDebuggerOnStart: true,
+      }),
+      // We suspended the target when we auto-attached, so make sure it goes back to being normal.
+      this.sendCommandToSession('Runtime.runIfWaitingForDebugger', event.sessionId),
+    ]);
   }
 
   /**
