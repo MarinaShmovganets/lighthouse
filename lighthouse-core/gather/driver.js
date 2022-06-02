@@ -304,6 +304,10 @@ class Driver {
       return;
     }
 
+    // Note: This is only reached for _out of process_ iframes (OOPIFs).
+    // If the iframe is in the same process as its embedding document, that means they
+    // share the same target.
+
     await Promise.all([
       // Events from subtargets will be stringified and sent back on `Target.receivedMessageFromTarget`.
       // We want to receive information about network requests from iframes, so enable the Network domain.
