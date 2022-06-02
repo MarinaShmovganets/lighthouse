@@ -308,6 +308,9 @@ class Driver {
     // If the iframe is in the same process as its embedding document, that means they
     // share the same target.
 
+    // A target won't acknowledge/respond to protocol methods (or, at least for Network.enable)
+    // until it is resumed. But also we're paranoid about sending Network.enable _slightly_ too late,
+    // so we issue that method first. Therefore, we don't await on this serially, but await all at once.
     await Promise.all([
       // Events from subtargets will be stringified and sent back on `Target.receivedMessageFromTarget`.
       // We want to receive information about network requests from iframes, so enable the Network domain.
