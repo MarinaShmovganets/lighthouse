@@ -39,8 +39,6 @@ class Driver {
    */
   constructor(page) {
     this._page = page;
-    /** @type {LH.Gatherer.FRProtocolSession|undefined} */
-    this._session = undefined;
     /** @type {ExecutionContext|undefined} */
     this._executionContext = undefined;
     /** @type {Fetcher|undefined} */
@@ -68,20 +66,20 @@ class Driver {
 
   /** @return {Promise<void>} */
   async connect() {
-    if (this._session) return;
+    if (this._defaultSession) return;
     const status = {msg: 'Connecting to browser', id: 'lh:driver:connect'};
     log.time(status);
     const session = await this._page.target().createCDPSession();
-    this._session = this.defaultSession = new ProtocolSession(session);
-    this._executionContext = new ExecutionContext(this._session);
-    this._fetcher = new Fetcher(this._session);
+    this._defaultSession = new ProtocolSession(session);
+    this._executionContext = new ExecutionContext(this._defaultSession);
+    this._fetcher = new Fetcher(this._defaultSession);
     log.timeEnd(status);
   }
 
   /** @return {Promise<void>} */
   async disconnect() {
-    if (!this._session) return;
-    await this._session.dispose();
+    if (!this._defaultSession) return;
+    await this._defaultSession.dispose();
   }
 }
 
