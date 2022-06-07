@@ -138,9 +138,9 @@ class NetworkMonitor {
       for (const session of this._sessions.values()) {
         session.removeProtocolMessageListener(this._onProtocolMessage);
       }
-    }
 
-    if (!isLegacyRunner) await this._targetManager.disable();
+      await this._targetManager.disable();
+    }
 
     this._frameNavigations = [];
     this._networkRecorder = undefined;
