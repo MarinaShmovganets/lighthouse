@@ -16,7 +16,7 @@ const throwNotConnectedFn = () => {
 };
 
 /** @type {LH.Gatherer.FRProtocolSession} */
-const defaultSession = {
+const throwingSession = {
   setTargetInfo: throwNotConnectedFn,
   hasNextProtocolTimeout: throwNotConnectedFn,
   getNextProtocolTimeout: throwNotConnectedFn,
@@ -44,7 +44,7 @@ class Driver {
     /** @type {Fetcher|undefined} */
     this._fetcher = undefined;
 
-    this.defaultSession = defaultSession;
+    this.defaultSession = throwingSession;
   }
 
   /** @return {LH.Gatherer.FRTransitionalDriver['executionContext']} */
@@ -66,20 +66,20 @@ class Driver {
 
   /** @return {Promise<void>} */
   async connect() {
-    if (this._defaultSession) return;
+    if (this.defaultSession !== throwingSession) return;
     const status = {msg: 'Connecting to browser', id: 'lh:driver:connect'};
     log.time(status);
     const session = await this._page.target().createCDPSession();
-    this._defaultSession = new ProtocolSession(session);
-    this._executionContext = new ExecutionContext(this._defaultSession);
-    this._fetcher = new Fetcher(this._defaultSession);
+    this.defaultSession = new ProtocolSession(session);
+    this._executionContext = new ExecutionContext(this.defaultSession);
+    this._fetcher = new Fetcher(this.defaultSession);
     log.timeEnd(status);
   }
 
   /** @return {Promise<void>} */
   async disconnect() {
-    if (!this._defaultSession) return;
-    await this._defaultSession.dispose();
+    if (this.defaultSession === throwingSession) return;
+    await this.defaultSession?.dispose();
   }
 }
 
