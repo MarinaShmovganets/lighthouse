@@ -14,10 +14,10 @@ const DEFAULT_PROTOCOL_TIMEOUT = 30000;
 /** @implements {LH.Gatherer.FRProtocolSession} */
 class ProtocolSession {
   /**
-   * @param {LH.Puppeteer.CDPSession} session
+   * @param {LH.Puppeteer.CDPSession} cdpSession
    */
-  constructor(session) {
-    this._session = session;
+  constructor(cdpSession) {
+    this._cdpSession = cdpSession;
     /** @type {LH.Crdp.Target.TargetInfo|undefined} */
     this._targetInfo = undefined;
     /** @type {number|undefined} */
@@ -27,19 +27,19 @@ class ProtocolSession {
 
     // FIXME: Monkeypatch puppeteer to be able to listen to *all* protocol events.
     // This patched method will now emit a copy of every event on `*`.
-    const originalEmit = session.emit;
+    const originalEmit = cdpSession.emit;
     // @ts-expect-error - Test for the monkeypatch.
     if (originalEmit[SessionEmitMonkeypatch]) return;
-    session.emit = (method, ...args) => {
+    cdpSession.emit = (method, ...args) => {
       // OOPIF sessions need to emit their sessionId so downstream processors can recognize
       // the target the event came from.
       const sessionId = this._targetInfo && this._targetInfo.type === 'iframe' ?
         this._targetInfo.targetId : undefined;
-      originalEmit.call(session, '*', {method, params: args[0], sessionId});
-      return originalEmit.call(session, method, ...args);
+      originalEmit.call(cdpSession, '*', {method, params: args[0], sessionId});
+      return originalEmit.call(cdpSession, method, ...args);
     };
     // @ts-expect-error - It's monkeypatching 🤷‍♂️.
-    session.emit[SessionEmitMonkeypatch] = true;
+    cdpSession.emit[SessionEmitMonkeypatch] = true;
   }
 
   /** @param {LH.Crdp.Target.TargetInfo} targetInfo */
@@ -75,7 +75,7 @@ class ProtocolSession {
    * @param {(...args: LH.CrdpEvents[E]) => void} callback
    */
   on(eventName, callback) {
-    this._session.on(eventName, /** @type {*} */ (callback));
+    this._cdpSession.on(eventName, /** @type {*} */ (callback));
   }
 
   /**
@@ -85,7 +85,7 @@ class ProtocolSession {
    * @param {(...args: LH.CrdpEvents[E]) => void} callback
    */
   once(eventName, callback) {
-    this._session.once(eventName, /** @type {*} */ (callback));
+    this._cdpSession.once(eventName, /** @type {*} */ (callback));
   }
 
   /**
@@ -114,7 +114,7 @@ class ProtocolSession {
    * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
    */
   addProtocolMessageListener(callback) {
-    this._session.on('*', /** @type {*} */ (callback));
+    this._cdpSession.on('*', /** @type {*} */ (callback));
   }
 
   /**
@@ -122,7 +122,7 @@ class ProtocolSession {
    * @param {(payload: LH.Protocol.RawEventMessage) => void} callback
    */
   removeProtocolMessageListener(callback) {
-    this._session.off('*', /** @type {*} */ (callback));
+    this._cdpSession.off('*', /** @type {*} */ (callback));
   }
 
   /**
@@ -132,7 +132,7 @@ class ProtocolSession {
    * @param {(...args: LH.CrdpEvents[E]) => void} callback
    */
   off(eventName, callback) {
-    this._session.off(eventName, /** @type {*} */ (callback));
+    this._cdpSession.off(eventName, /** @type {*} */ (callback));
   }
 
   /**
@@ -155,7 +155,7 @@ class ProtocolSession {
       }));
     });
 
-    const resultPromise = this._session.send(method, ...params);
+    const resultPromise = this._cdpSession.send(method, ...params);
     const resultWithTimeoutPromise = Promise.race([resultPromise, timeoutPromise]);
 
     return resultWithTimeoutPromise.finally(() => {
@@ -168,12 +168,12 @@ class ProtocolSession {
    * @return {Promise<void>}
    */
   async dispose() {
-    this._session.removeAllListeners();
-    await this._session.detach();
+    this._cdpSession.removeAllListeners();
+    await this._cdpSession.detach();
   }
 
   _getConnection() {
-    const connection = this._session.connection();
+    const connection = this._cdpSession.connection();
     if (!connection) throw new Error('Connection has been closed.');
     return connection;
   }
