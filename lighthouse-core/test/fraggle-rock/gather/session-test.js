@@ -27,7 +27,7 @@ describe('ProtocolSession', () => {
 
   beforeEach(() => {
     // @ts-expect-error - Individual mock functions are applied as necessary.
-    puppeteerSession = new CDPSession();
+    puppeteerSession = new CDPSession({_rawSend: fnAny()});
     session = new ProtocolSession(puppeteerSession);
   });
 
