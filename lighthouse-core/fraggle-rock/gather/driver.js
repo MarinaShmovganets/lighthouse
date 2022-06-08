@@ -79,7 +79,7 @@ class Driver {
   /** @return {Promise<void>} */
   async disconnect() {
     if (this.defaultSession === throwingSession) return;
-    await this.defaultSession?.dispose();
+    await this.defaultSession.dispose();
   }
 }
 
