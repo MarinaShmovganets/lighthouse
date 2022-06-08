@@ -92,7 +92,7 @@ class NetworkMonitor {
     this._networkRecorder = new NetworkRecorder();
     /** @type {LH.Puppeteer.CDPSession} */
     // @ts-expect-error - temporarily reach in to get CDPSession
-    const rootCdpSession = this._session._session;
+    const rootCdpSession = this._session._cdpSession;
     this._targetManager = new TargetManager(rootCdpSession);
 
     /**
