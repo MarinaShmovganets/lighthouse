@@ -30,9 +30,10 @@ import {getModuleDirectory} from '../../../esm-utils.mjs';
 const require = createRequire(import.meta.url);
 const moduleDir = getModuleDirectory(import.meta);
 
-jest.mock('process', () => ({
-  cwd: () => jest.fn(),
-}));
+const originalCwd = process.cwd;
+afterAll(() => {
+  process.cwd = originalCwd;
+});
 
 describe('.mergeConfigFragment', () => {
   it('should merge properties in like Object.assign', () => {

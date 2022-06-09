@@ -12,7 +12,6 @@ import {jest} from '@jest/globals';
 import Gatherer from '../../gather/gatherers/gatherer.js';
 // import GathererRunner_ from '../../gather/gather-runner.js';
 // import Config from '../../config/config.js';
-import unresolvedPerfLog from './../fixtures/unresolved-perflog.json';
 import LHError from '../../lib/lh-error.js';
 import networkRecordsToDevtoolsLog from '../network-records-to-devtools-log.js';
 // import Driver from '../../gather/driver.js';
@@ -26,6 +25,9 @@ import {
   fnAny,
 } from '../test-utils.js';
 import fakeDriver from './fake-driver.js';
+import {readJson} from '../../../root.js';
+
+const unresolvedPerfLog = readJson('./../fixtures/unresolved-perflog.json', import.meta);
 
 const require = createRequire(import.meta.url);
 
