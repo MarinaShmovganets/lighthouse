@@ -29,7 +29,7 @@ class DevtoolsLog extends FRGatherer {
     /** @type {NetworkMonitor|undefined} */
     this._networkMonitor = undefined;
 
-    this._messageLog = new DevtoolsMessageLog(/^(Page|Network)\./);
+    this._messageLog = new DevtoolsMessageLog(/^(Page|Network|Target|Runtime)\./);
 
     /** @param {LH.Protocol.RawEventMessage} e */
     this._onProtocolMessage = e => this._messageLog.record(e);
