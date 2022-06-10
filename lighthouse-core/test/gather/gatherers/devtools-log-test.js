@@ -6,15 +6,15 @@
 
 import {strict as assert} from 'assert';
 
-import {DevToolsMessageLog} from '../../../gather/gatherers/devtools-log.js';
+import {DevtoolsMessageLog} from '../../../gather/gatherers/devtools-log.js';
 
-describe('DevToolsMessageLog', () => {
+describe('DevtoolsMessageLog', () => {
   let messageLog;
   const pageMsg = {method: 'Page.frameStartedLoading'};
   const networkMsg = {method: 'Network.requestWillBeSent'};
   const otherMsg = {method: 'Storage.cleared'};
 
-  beforeEach(() => messageLog = new DevToolsMessageLog(/^(Page|Network)/));
+  beforeEach(() => messageLog = new DevtoolsMessageLog(/^(Page|Network)/));
 
   it('returns an array', () => {
     assert.deepEqual(messageLog.messages, []);
@@ -51,7 +51,7 @@ describe('DevToolsMessageLog', () => {
   });
 
   it('records everything when no filter provided', () => {
-    messageLog = new DevToolsMessageLog();
+    messageLog = new DevtoolsMessageLog();
     messageLog.beginRecording();
     messageLog.record(pageMsg);
     messageLog.record(networkMsg);

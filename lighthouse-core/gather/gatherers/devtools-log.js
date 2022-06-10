@@ -29,7 +29,7 @@ class DevtoolsLog extends FRGatherer {
     /** @type {NetworkMonitor|undefined} */
     this._networkMonitor = undefined;
 
-    this._messageLog = new DevToolsMessageLog(/^(Page|Network)\./);
+    this._messageLog = new DevtoolsMessageLog(/^(Page|Network)\./);
 
     /** @param {LH.Protocol.RawEventMessage} e */
     this._onProtocolMessage = e => this._messageLog.record(e);
@@ -65,10 +65,10 @@ class DevtoolsLog extends FRGatherer {
 
 /**
  * This class saves all protocol messages whose method match a particular
- *    regex filter. Used when saving assets for later analysis by another tool such as
- *    Webpagetest.
+ * regex filter. Used when saving assets for later analysis by another tool such as
+ * Webpagetest.
  */
-class DevToolsMessageLog {
+class DevtoolsMessageLog {
   /**
    * @param {RegExp=} regexFilter
    */
@@ -117,4 +117,4 @@ class DevToolsMessageLog {
 }
 
 module.exports = DevtoolsLog;
-module.exports.DevToolsMessageLog = DevToolsMessageLog;
+module.exports.DevtoolsMessageLog = DevtoolsMessageLog;
