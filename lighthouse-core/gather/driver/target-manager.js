@@ -20,8 +20,8 @@ const ProtocolSession = require('../../fraggle-rock/gather/session.js');
 
 // Add protocol event types to EventEmitter.
 /** @typedef {{'protocolevent': [LH.Protocol.RawEventMessage]}} ProtocolEventRecord */
-/** @typedef {new () => LH.Protocol.StrictEventEmitter<ProtocolEventRecord>} CrdpEventMessageEmitter */
-const ProtocolEventEmitter = /** @type {CrdpEventMessageEmitter} */ (EventEmitter);
+/** @typedef {new () => LH.Protocol.StrictEventEmitter<ProtocolEventRecord>} ProtocolEventMessageEmitter */
+const ProtocolEventEmitter = /** @type {ProtocolEventMessageEmitter} */ (EventEmitter);
 
 /**
  * Tracks targets (the page itself, its iframes, their iframes, etc) as they
@@ -39,7 +39,7 @@ class TargetManager extends ProtocolEventEmitter {
      * A map of target id to target/session information. Used to ensure unique
      * attached targets.
      * @type {Map<string, TargetWithSession>}
-     * */
+     */
     this._targetIdToTargets = new Map();
 
     this._onSessionAttached = this._onSessionAttached.bind(this);
@@ -72,7 +72,7 @@ class TargetManager extends ProtocolEventEmitter {
       if (cdpSession.id() === sessionId) return session;
     }
 
-    throw new Error(`session not found`);
+    throw new Error(`session ${sessionId} not found`);
   }
 
   /**

@@ -13,8 +13,6 @@
 
 const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
 
-/** @typedef {import('../driver/target-manager.js')} TargetManager */
-
 class DevtoolsLog extends FRGatherer {
   static symbol = Symbol('DevtoolsLog');
 

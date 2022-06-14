@@ -97,7 +97,8 @@ class Driver {
     /** @private @deprecated Only available for plugin backcompat. */
     this.evaluateAsync = this.executionContext.evaluateAsync.bind(this.executionContext);
 
-    // A shim for sufficient coverage of targetManager functionality.
+    // A shim for sufficient coverage of targetManager functionality. Exposes the target
+    // management that legacy driver already handles (see this._handleTargetAttached).
     this.targetManager = {
       rootSession: () => {
         return this.defaultSession;
