@@ -130,9 +130,9 @@ class UserFlow {
 
     // This promise will resolve once the setup is done
     // and Lighthouse is waiting for a page navigation to be triggered.
-    const navigationSetupPromise = new Promise((res, rej) => {
-      completeSetup = res;
-      rejectDuringSetup = rej;
+    const navigationSetupPromise = new Promise((resolve, reject) => {
+      completeSetup = resolve;
+      rejectDuringSetup = reject;
     });
 
     // The promise in this callback will not resolve until `continueNavigation` is invoked,
@@ -143,10 +143,10 @@ class UserFlow {
       stepOptions
     ).catch(err => {
       if (this.currentNavigation) {
-        // If the navigation already started, re-throw the error so it is emitted when `navigatePromise` is awaited.
+        // If the navigation already started, re-throw the error so it is emitted when `navigationResultPromise` is awaited.
         throw err;
       } else {
-        // If the navigation has not started, reject the `setupPromise` so the error throws when it is awaited in `startNavigation`.
+        // If the navigation has not started, reject the `navigationSetupPromise` so the error throws when it is awaited in `startNavigation`.
         rejectDuringSetup(err);
       }
     });
