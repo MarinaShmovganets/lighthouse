@@ -43,10 +43,14 @@ function createMockSession() {
   };
 }
 
-function createMockCdpSession() {
+/**
+ * @param {string} sessionId
+ */
+function createMockCdpSession(sessionId = 'DEFAULT_ID') {
   const connection = createMockCdpConnection();
 
   return {
+    id: () => sessionId,
     send: createMockSendCommandFn({useSessionId: false}),
     once: createMockOnceFn(),
     on: createMockOnFn(),
