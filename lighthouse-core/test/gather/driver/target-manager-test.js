@@ -4,16 +4,16 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {jest} from '@jest/globals';
+import {EventEmitter} from 'events';
+
+import {CDPSession} from 'puppeteer-core/lib/cjs/puppeteer/common/Connection.js';
 
 import TargetManager from '../../../gather/driver/target-manager.js';
 import {createMockCdpSession} from '../../fraggle-rock/gather/mock-driver.js';
+import {createMockSendCommandFn} from '../../gather/mock-commands.js';
 import {fnAny} from '../../test-utils.js';
 
-jest.useFakeTimers();
-
 /**
- *
  * @param {{type?: string, targetId?: string}} [overrides]
  * @return {LH.Crdp.Target.TargetInfo}
  */
@@ -218,6 +218,120 @@ describe('TargetManager', () => {
 
       expect(sessionMock.off).toHaveBeenCalled();
       expect(sessionMock.connection().off).toHaveBeenCalled();
+    });
+  });
+
+  describe('protocolevent emit', () => {
+    /** @param {string} sessionId */
+    function createCdpSession(sessionId) {
+      class MockCdpConnection extends EventEmitter {
+        constructor() {
+          super();
+
+          this._rawSend = fnAny();
+        }
+      }
+
+      const mockCdpConnection = new MockCdpConnection();
+      /** @type {LH.Puppeteer.CDPSession} */
+      // @ts-expect-error - close enough to the real thing.
+      const cdpSession = new CDPSession(mockCdpConnection, '', sessionId);
+      return cdpSession;
+    }
+
+    it('should listen for and re-emit protocol events across sessions', async () => {
+      const rootSession = createCdpSession('root');
+
+      const rootTargetInfo = createTargetInfo();
+      // Still mock command responses at session level.
+      rootSession.send = createMockSendCommandFn({useSessionId: false})
+        .mockResponse('Page.enable')
+        .mockResponse('Target.getTargetInfo', {targetInfo: rootTargetInfo})
+        .mockResponse('Network.enable')
+        .mockResponse('Target.setAutoAttach')
+        .mockResponse('Runtime.runIfWaitingForDebugger');
+
+      const targetManager = new TargetManager(rootSession);
+      await targetManager.enable();
+
+      // Attach an iframe session.
+      const iframeSession = createCdpSession('iframe');
+      const iframeTargetInfo = createTargetInfo({type: 'iframe', targetId: 'iframe'});
+      // Still mock command responses at session level.
+      iframeSession.send = createMockSendCommandFn({useSessionId: false})
+        .mockResponse('Target.getTargetInfo', {targetInfo: iframeTargetInfo})
+        .mockResponse('Network.enable')
+        .mockResponse('Target.setAutoAttach')
+        .mockResponse('Runtime.runIfWaitingForDebugger');
+
+      const rootConnection = rootSession.connection();
+      if (!rootConnection) throw new Error('no connection');
+      rootConnection.emit('sessionattached', iframeSession);
+
+      // Wait for iframe session to be attached.
+      await new Promise(resolve => setTimeout(resolve, 0));
+
+      const rootListener = fnAny();
+      const iframeListener = fnAny();
+      const allListener = fnAny();
+      rootSession.on('DOM.documentUpdated', rootListener);
+      iframeSession.on('Animation.animationCreated', iframeListener);
+      targetManager.on('protocolevent', allListener);
+
+      // @ts-expect-error - types for _onMessage are wrong.
+      rootSession._onMessage({method: 'DOM.documentUpdated'});
+      // @ts-expect-error - types for _onMessage are wrong.
+      rootSession._onMessage({method: 'Debugger.scriptParsed', params: {script: 'details'}});
+      // @ts-expect-error - types for _onMessage are wrong.
+      iframeSession._onMessage({method: 'Animation.animationCreated', params: {id: 'animated'}});
+
+      expect(rootListener).toHaveBeenCalledTimes(1);
+      expect(rootListener).toHaveBeenCalledWith(undefined);
+
+      expect(iframeListener).toHaveBeenCalledTimes(1);
+      expect(iframeListener).toHaveBeenCalledWith({id: 'animated'});
+
+      expect(allListener).toHaveBeenCalledTimes(3);
+      expect(allListener).toHaveBeenCalledWith({
+        method: 'DOM.documentUpdated',
+        params: undefined,
+        sessionId: 'root',
+      });
+      expect(allListener).toHaveBeenCalledWith({
+        method: 'Debugger.scriptParsed',
+        params: {script: 'details'},
+        sessionId: 'root',
+      });
+      expect(allListener).toHaveBeenCalledWith({
+        method: 'Animation.animationCreated',
+        params: {id: 'animated'},
+        sessionId: 'iframe',
+      });
+    });
+
+    it('should stop listening for protocol events', async () => {
+      const rootSession = createCdpSession('root');
+      // Still mock command responses at session level.
+      rootSession.send = createMockSendCommandFn({useSessionId: false})
+        .mockResponse('Page.enable')
+        .mockResponse('Target.getTargetInfo', {targetInfo})
+        .mockResponse('Network.enable')
+        .mockResponse('Target.setAutoAttach')
+        .mockResponse('Runtime.runIfWaitingForDebugger');
+
+      const targetManager = new TargetManager(rootSession);
+      await targetManager.enable();
+
+      const allListener = fnAny();
+      targetManager.on('protocolevent', allListener);
+
+      // @ts-expect-error - types for _onMessage are wrong.
+      rootSession._onMessage({method: 'DOM.documentUpdated'});
+      expect(allListener).toHaveBeenCalled();
+      targetManager.off('protocolevent', allListener);
+      // @ts-expect-error - types for _onMessage are wrong.
+      rootSession._onMessage({method: 'DOM.documentUpdated'});
+      expect(allListener).toHaveBeenCalledTimes(1);
     });
   });
 });
