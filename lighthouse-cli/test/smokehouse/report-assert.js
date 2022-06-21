@@ -28,7 +28,7 @@ import {chromiumVersionCheck} from './version-check.js';
  * @property {any} actual
  * @property {any} expected
  * @property {boolean} equal
- * @property {Difference[]|null} diff
+ * @property {Difference[]|null} diffs
  */
 
 const NUMBER_REGEXP = /(?:\d|\.)+/.source;
@@ -88,7 +88,7 @@ function matchesExpectation(actual, expected) {
  * @param {*} expected
  * @return {Difference[]|null}
  */
-function findDifference(path, actual, expected) {
+function findDifferences(path, actual, expected) {
   if (matchesExpectation(actual, expected)) {
     return null;
   }
@@ -103,7 +103,8 @@ function findDifference(path, actual, expected) {
     }];
   }
 
-  const diff = [];
+  /** @type {Difference[]} */
+  const diffs = [];
   let inclExclCopy;
 
   // We only care that all expected's own properties are on actual (and not the other way around).
@@ -119,7 +120,7 @@ function findDifference(path, actual, expected) {
 
       if (!Array.isArray(expectedValue)) throw new Error('Array subset must be array');
       if (!Array.isArray(actual)) {
-        diff.push({
+        diffs.push({
           path,
           actual: 'Actual value is not an array',
           expected,
@@ -129,13 +130,13 @@ function findDifference(path, actual, expected) {
       for (const expectedEntry of expectedValue) {
         const matchingIndex =
           inclExclCopy.findIndex(actualEntry =>
-            !findDifference(keyPath, actualEntry, expectedEntry));
+            !findDifferences(keyPath, actualEntry, expectedEntry));
         if (matchingIndex !== -1) {
           inclExclCopy.splice(matchingIndex, 1);
           continue;
         }
 
-        diff.push({
+        diffs.push({
           path,
           actual: 'Item not found in array',
           expected: expectedEntry,
@@ -156,16 +157,16 @@ function findDifference(path, actual, expected) {
       const expectedExclusions = expectedValue;
       for (const expectedExclusion of expectedExclusions) {
         const matchingIndex = arrToCheckAgainst.findIndex(actualEntry =>
-            !findDifference(keyPath, actualEntry, expectedExclusion));
+            !findDifferences(keyPath, actualEntry, expectedExclusion));
         if (matchingIndex !== -1) {
-          return [{
+          diffs.push({
             path,
             actual: arrToCheckAgainst[matchingIndex],
             expected: {
               message: 'Expected to not find matching entry via _excludes',
               expectedExclusion,
             },
-          }];
+          });
         }
       }
 
@@ -173,8 +174,8 @@ function findDifference(path, actual, expected) {
     }
 
     const actualValue = actual[key];
-    const subDifferences = findDifference(keyPath, actualValue, expectedValue);
-    if (subDifferences) diff.push(...subDifferences);
+    const subDifferences = findDifferences(keyPath, actualValue, expectedValue);
+    if (subDifferences) diffs.push(...subDifferences);
   }
 
   // If the expected value is an array, assert the length as well.
@@ -182,15 +183,15 @@ function findDifference(path, actual, expected) {
   // but requires using an object literal (ex: {0: x, 1: y, 2: z} matches [x, y, z, q, w, e] and
   // {0: x, 1: y, 2: z, length: 5} does not match [x, y, z].
   if (Array.isArray(expected) && actual.length !== expected.length) {
-    diff.push({
+    diffs.push({
       path: `${path}.length`,
       actual,
       expected,
     });
   }
 
-  if (diff.length === 0) return null;
-  return diff;
+  if (diffs.length === 0) return null;
+  return diffs;
 }
 
 /**
@@ -200,14 +201,14 @@ function findDifference(path, actual, expected) {
  * @return {Comparison}
  */
 function makeComparison(name, actualResult, expectedResult) {
-  const diff = findDifference(name, actualResult, expectedResult);
+  const diffs = findDifferences(name, actualResult, expectedResult);
 
   return {
     name,
     actual: actualResult,
     expected: expectedResult,
-    equal: !diff,
-    diff,
+    equal: !diffs,
+    diffs,
   };
 }
 
@@ -425,8 +426,8 @@ function reportAssertion(localConsole, assertion) {
           log.greenify(assertion.actual));
     }
   } else {
-    if (assertion.diff?.length) {
-      for (const diff of assertion.diff) {
+    if (assertion.diffs?.length) {
+      for (const diff of assertion.diffs) {
         const msg = `
   ${log.redify(log.cross)} difference at ${log.bold}${diff.path}${log.reset}
               expected: ${JSON.stringify(diff.expected)}
@@ -434,8 +435,9 @@ function reportAssertion(localConsole, assertion) {
         localConsole.log(msg);
       }
 
-      const fullActual =
-        JSON.stringify(assertion.actual, null, 2).replace(/\n/g, '\n      ');
+      const fullActual = assertion.actual !== undefined ?
+        JSON.stringify(assertion.actual, null, 2).replace(/\n/g, '\n      ') :
+        'undefined\n      ';
       localConsole.log(`          found result:
       ${log.redify(fullActual)}
   `);
@@ -490,5 +492,5 @@ function getAssertionReport(actual, expected, reportOptions = {}) {
 
 export {
   getAssertionReport,
-  findDifference,
+  findDifferences,
 };
