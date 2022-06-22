@@ -122,10 +122,10 @@ async function begin() {
 
   if (cliFlags.printConfig) {
     if (cliFlags.legacyNavigation) {
-      const config = lighthouse.generateLegacyConfig(configJson, cliFlags);
+      const config = await lighthouse.generateLegacyConfig(configJson, cliFlags);
       process.stdout.write(config.getPrintString());
     } else {
-      const config = lighthouse.generateConfig(configJson, cliFlags);
+      const config = await lighthouse.generateConfig(configJson, cliFlags);
       process.stdout.write(getConfigDisplayString(config));
     }
     return;

@@ -61,7 +61,7 @@ async function legacyNavigation(url, flags = {}, configJSON, userConnection) {
   flags.logLevel = flags.logLevel || 'error';
   log.setLevel(flags.logLevel);
 
-  const config = generateLegacyConfig(configJSON, flags);
+  const config = await generateLegacyConfig(configJSON, flags);
   const computedCache = new Map();
   const options = {config, computedCache};
   const connection = userConnection || new ChromeProtocol(flags.port, flags.hostname);
@@ -82,11 +82,12 @@ async function legacyNavigation(url, flags = {}, configJSON, userConnection) {
  *   they will override any settings in the config.
  * @param {LH.Gatherer.GatherMode=} gatherMode Gather mode used to collect artifacts. If present
  *   the config may override certain settings based on the mode.
- * @return {LH.Config.FRConfig}
+ * @return {Promise<LH.Config.FRConfig>}
  */
-function generateConfig(configJson, flags = {}, gatherMode = 'navigation') {
+async function generateConfig(configJson, flags = {}, gatherMode = 'navigation') {
   const configContext = flagsToFRContext(flags);
-  return initializeConfig(configJson, {...configContext, gatherMode}).config;
+  const {config} = await initializeConfig(configJson, {...configContext, gatherMode});
+  return config;
 }
 
 /**
@@ -96,10 +97,10 @@ function generateConfig(configJson, flags = {}, gatherMode = 'navigation') {
  *   not present, the default config is used.
  * @param {LH.Flags=} flags Optional settings for the Lighthouse run. If present,
  *   they will override any settings in the config.
- * @return {Config}
+ * @return {Promise<Config>}
  */
-function generateLegacyConfig(configJson, flags) {
-  return new Config(configJson, flags);
+async function generateLegacyConfig(configJson, flags) {
+  return Config.fromJson(configJson, flags);
 }
 
 lighthouse.legacyNavigation = legacyNavigation;
