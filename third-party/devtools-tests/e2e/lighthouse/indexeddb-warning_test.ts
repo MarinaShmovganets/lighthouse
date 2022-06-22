@@ -8,7 +8,9 @@ import {waitFor} from '../../shared/helper.js';
 import {describe, it} from '../../shared/mocha-extensions.js';
 import {navigateToLighthouseTab} from '../helpers/lighthouse-helpers.js';
 
-describe('IndexedDB warning', async function() {
+describe('IndexedDB warning', function() {
+  this.timeout(20_000);
+
   it('displays when important data may affect performance', async () => {
     await navigateToLighthouseTab('empty.html');
 
