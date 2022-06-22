@@ -151,14 +151,15 @@ describe('NetworkMonitor', () => {
     });
 
     it('should have idempotent enable', async () => {
-      // Two initial calls for TargetManager.enable().
-      expect(rootCdpSessionMock.on).toHaveBeenCalledTimes(2);
+      // Initial calls for session and TargetManager setup.
+      const invocationCount = rootCdpSessionMock.on.mock.calls.length;
+      expect(invocationCount).toBeGreaterThan(0);
       await monitor.enable();
       await monitor.enable();
       await monitor.enable();
       await monitor.enable();
-      // Only one more call.
-      expect(rootCdpSessionMock.on).toHaveBeenCalledTimes(3);
+      // Only one call happened for `monitor.enable()`.
+      expect(rootCdpSessionMock.on).toHaveBeenCalledTimes(invocationCount + 1);
     });
   });
 
