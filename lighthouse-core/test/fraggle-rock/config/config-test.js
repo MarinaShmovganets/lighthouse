@@ -486,7 +486,7 @@ describe('Fraggle Rock Config', () => {
 });
 
 describe('getConfigDisplayString', () => {
-  it('doesn\'t include empty audit options in output', () => {
+  it('doesn\'t include empty audit options in output', async () => {
     const aOpt = 'auditOption';
     const configJson = {
       extends: 'lighthouse:default',
@@ -502,7 +502,7 @@ describe('getConfigDisplayString', () => {
       ],
     };
 
-    const {config} = initializeConfig(configJson, {gatherMode: 'navigation'});
+    const {config} = await initializeConfig(configJson, {gatherMode: 'navigation'});
     const printed = getConfigDisplayString(config);
     const printedConfig = JSON.parse(printed);
 
@@ -517,13 +517,13 @@ describe('getConfigDisplayString', () => {
     }
   });
 
-  it('returns localized category titles', () => {
-    const {config} = initializeConfig(undefined, {gatherMode: 'navigation'});
+  it('returns localized category titles', async () => {
+    const {config} = await initializeConfig(undefined, {gatherMode: 'navigation'});
     const printed = getConfigDisplayString(config);
     const printedConfig = JSON.parse(printed);
     let localizableCount = 0;
 
-    Object.entries(printedConfig.categories).forEach(([printedCategoryId, printedCategory]) => {
+    for (const [printedCategoryId, printedCategory] of Object.entries(printedConfig.categories)) {
       if (!defaultConfig.categories) throw new Error('Default config will have categories');
       if (!defaultConfig.settings?.locale) throw new Error('Default config will have a locale');
       const origTitle = defaultConfig.categories[printedCategoryId].title;
@@ -531,19 +531,19 @@ describe('getConfigDisplayString', () => {
       const i18nOrigTitle = format.getFormatted(origTitle, defaultConfig.settings.locale);
 
       expect(printedCategory.title).toStrictEqual(i18nOrigTitle);
-    });
+    }
 
     // Should have localized at least one string.
     expect(localizableCount).toBeGreaterThan(0);
   });
 
-  it('returns a valid ConfigJson that can make an identical Config', () => {
+  it('returns a valid ConfigJson that can make an identical Config', async () => {
     // depends on defaultConfig having a `path` for all gatherers and audits.
-    const {config: firstConfig} = initializeConfig(undefined, {gatherMode: 'navigation'});
+    const {config: firstConfig} = await initializeConfig(undefined, {gatherMode: 'navigation'});
     const firstPrint = getConfigDisplayString(firstConfig);
 
     const {config: secondConfig} =
-      initializeConfig(JSON.parse(firstPrint), {gatherMode: 'navigation'});
+      await initializeConfig(JSON.parse(firstPrint), {gatherMode: 'navigation'});
     const secondPrint = getConfigDisplayString(secondConfig);
 
     expect(firstPrint).toEqual(secondPrint);
