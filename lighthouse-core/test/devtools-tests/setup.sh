@@ -6,7 +6,7 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 ##
 
-# Setup dependencies for devtools e22 tests.
+# Setup dependencies for devtools e2e tests.
 # Set SKIP_DOWNLOADS to skip all the downloading and just export variables.
 
 set -euo pipefail
