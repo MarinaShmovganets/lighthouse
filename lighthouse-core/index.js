@@ -99,7 +99,7 @@ async function generateConfig(configJson, flags = {}, gatherMode = 'navigation')
  *   they will override any settings in the config.
  * @return {Promise<Config>}
  */
-async function generateLegacyConfig(configJson, flags) {
+function generateLegacyConfig(configJson, flags) {
   return Config.fromJson(configJson, flags);
 }
 
