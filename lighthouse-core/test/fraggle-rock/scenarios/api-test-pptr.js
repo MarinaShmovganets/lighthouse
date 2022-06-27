@@ -50,8 +50,7 @@ describe('Fraggle Rock API', function() {
       expect(accessibility.score).toBeLessThan(1);
 
       const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-      // TODO(FR-COMPAT): This assertion can be removed when full compatibility is reached.
-      expect(auditResults.length).toMatchInlineSnapshot(`73`);
+      expect(auditResults.map(audit => audit.id).sort()).toMatchSnapshot();
 
       expect(erroredAudits).toHaveLength(0);
       expect(failedAudits.map(audit => audit.id)).toContain('label');
@@ -90,10 +89,9 @@ describe('Fraggle Rock API', function() {
         failedAudits,
         notApplicableAudits,
       } = getAuditsBreakdown(lhr);
-      // TODO(FR-COMPAT): This assertion can be removed when full compatibility is reached.
-      expect(auditResults.length).toMatchInlineSnapshot(`46`);
+      expect(auditResults.map(audit => audit.id).sort()).toMatchSnapshot();
 
-      expect(notApplicableAudits.length).toMatchInlineSnapshot(`5`);
+      expect(notApplicableAudits.map(audit => audit.id).sort()).toMatchSnapshot();
       expect(notApplicableAudits.map(audit => audit.id)).not.toContain('total-blocking-time');
 
       expect(erroredAudits).toHaveLength(0);
@@ -143,9 +141,9 @@ describe('Fraggle Rock API', function() {
       });
 
       const {auditResults, erroredAudits, notApplicableAudits} = getAuditsBreakdown(result.lhr);
-      expect(auditResults.length).toMatchInlineSnapshot(`46`);
+      expect(auditResults.map(audit => audit.id).sort()).toMatchSnapshot();
 
-      expect(notApplicableAudits.length).toMatchInlineSnapshot(`18`);
+      expect(notApplicableAudits.map(audit => audit.id).sort()).toMatchSnapshot();
       expect(notApplicableAudits.map(audit => audit.id)).not.toContain('total-blocking-time');
 
       expect(erroredAudits).toHaveLength(0);
@@ -173,8 +171,7 @@ describe('Fraggle Rock API', function() {
       });
 
       const {auditResults, failedAudits, erroredAudits} = getAuditsBreakdown(lhr);
-      // TODO(FR-COMPAT): This assertion can be removed when full compatibility is reached.
-      expect(auditResults.length).toMatchInlineSnapshot(`152`);
+      expect(auditResults.map(audit => audit.id).sort()).toMatchSnapshot();
       expect(erroredAudits).toHaveLength(0);
 
       const failedAuditIds = failedAudits.map(audit => audit.id);
@@ -219,8 +216,7 @@ describe('Fraggle Rock API', function() {
       });
 
       const {auditResults, failedAudits, erroredAudits} = getAuditsBreakdown(lhr);
-      // TODO(FR-COMPAT): This assertion can be removed when full compatibility is reached.
-      expect(auditResults.length).toMatchInlineSnapshot(`152`);
+      expect(auditResults.map(audit => audit.id).sort()).toMatchSnapshot();
       expect(erroredAudits).toHaveLength(0);
 
       const failedAuditIds = failedAudits.map(audit => audit.id);

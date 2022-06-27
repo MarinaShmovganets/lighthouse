@@ -4,7 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {createMockDriver, mockTargetManagerModule} from '../../fraggle-rock/gather/mock-driver.js';
+import {createMockDriver} from '../../fraggle-rock/gather/mock-driver.js';
 import {
   mockCommands,
   makePromiseInspectable,
@@ -27,8 +27,6 @@ before(async () => {
   ({gotoURL, getNavigationWarnings} = (await import('../../../gather/driver/navigation.js')));
 });
 
-const targetManagerMock = mockTargetManagerModule();
-
 timers.useFakeTimers();
 
 describe('.gotoURL', () => {
@@ -40,7 +38,6 @@ describe('.gotoURL', () => {
   beforeEach(() => {
     mockDriver = createMockDriver();
     driver = mockDriver.asDriver();
-    targetManagerMock.mockEnable(driver.defaultSession);
 
     mockDriver.defaultSession.sendCommand
       .mockResponse('Page.enable') // network monitor's Page.enable
@@ -50,10 +47,6 @@ describe('.gotoURL', () => {
       .mockResponse('Page.navigate')
       .mockResponse('Runtime.evaluate')
       .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: 'ABC'}}});
-  });
-
-  afterEach(() => {
-    targetManagerMock.reset();
   });
 
   it('will track redirects through gotoURL load with warning', async () => {
