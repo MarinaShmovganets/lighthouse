@@ -52,12 +52,11 @@ function getFailedTests() {
 //    yarn mocha --no-parallel lighthouse-core/test
 const testsToIsolate = new Set([
   // grep -lRE '^timers\.useFakeTimers' --include='*-test.*' --exclude-dir=node_modules
+  'flow-report/test/common-test.tsx',
   'lighthouse-core/test/fraggle-rock/gather/session-test.js',
   'lighthouse-core/test/gather/driver-test.js',
   'lighthouse-core/test/gather/driver/execution-context-test.js',
   'lighthouse-core/test/gather/driver/navigation-test.js',
-  'lighthouse-core/test/gather/driver/network-monitor-test.js',
-  'lighthouse-core/test/gather/driver/target-manager-test.js',
   'lighthouse-core/test/gather/driver/wait-for-condition-test.js',
   'lighthouse-core/test/gather/gatherers/css-usage-test.js',
   'lighthouse-core/test/gather/gatherers/image-elements-test.js',
@@ -68,7 +67,6 @@ const testsToIsolate = new Set([
   'lighthouse-core/test/gather/gatherers/trace-test.js',
 
   // grep -lRE '^td\.replace' --include='*-test.*' --exclude-dir=node_modules
-  'flow-report/test/topbar-test.tsx',
   'lighthouse-core/test/fraggle-rock/gather/navigation-runner-test.js',
   'lighthouse-core/test/fraggle-rock/gather/snapshot-runner-test.js',
   'lighthouse-core/test/fraggle-rock/gather/timespan-runner-test.js',
@@ -84,10 +82,8 @@ const testsToIsolate = new Set([
   'lighthouse-core/test/fraggle-rock/gather/snapshot-runner-test.js',
   'lighthouse-core/test/fraggle-rock/gather/timespan-runner-test.js',
   'lighthouse-core/test/fraggle-rock/user-flow-test.js',
-  'lighthouse-core/test/gather/driver/network-monitor-test.js',
   'lighthouse-core/test/gather/gather-runner-test.js',
   'lighthouse-core/test/gather/gatherers/dobetterweb/response-compression-test.js',
-  'lighthouse-core/test/gather/gatherers/full-page-screenshot-test.js',
   'lighthouse-core/test/gather/gatherers/script-elements-test.js',
   'lighthouse-core/test/runner-test.js',
 
@@ -103,6 +99,8 @@ const testsToIsolate = new Set([
   'lighthouse-core/test/fraggle-rock/config/config-test.js',
   'lighthouse-core/test/lib/emulation-test.js',
   'report/test/clients/bundle-test.js',
+  'report/test/clients/bundle-test.js',
+  'shared/test/localization/format-test.js',
 ]);
 
 const y = yargs(yargsHelpers.hideBin(process.argv));
