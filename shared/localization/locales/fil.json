@@ -2304,7 +2304,7 @@
     "message": "Kung gumagamit ka ng Router ng React, bawasan ang paggamit ng bahaging `<Redirect>` para sa [mga pag-navigate sa ruta](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Kung may nire-render ka sa server-side na anumang bahagi ng React, pag-isipang gamitin ang `renderToNodeStream()` o `renderToStaticNodeStream()` para payagan ang client na makatanggap at mag-hydrate ng iba't ibang bahagi ng markup sa halip na sabay-sabay. [Matuto pa](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Kung may nire-render ka sa server-side na anumang bahagi ng React, pag-isipang gamitin ang `renderToPipeableStream()` o `renderToStaticNodeStream()` para payagan ang client na makatanggap at mag-hydrate ng iba't ibang bahagi ng markup sa halip na sabay-sabay. [Matuto pa](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Kung awtomatikong pinapaliit ng iyong system ng build ang mga CSS file, tiyaking ide-deploy mo ang build ng produksyon ng iyong application. Puwede mo itong suriin sa pamamagitan ng extension na Mga Tool ng Developer ng React. [Matuto pa](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

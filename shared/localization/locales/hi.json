@@ -2304,7 +2304,7 @@
     "message": "अगर आप React Router इस्तेमाल कर रहे हैं, तो [रूट नेविगेशन](https://reacttraining.com/react-router/web/api/Redirect) के लिए `<Redirect>` कॉम्पोनेंट का इस्तेमाल कम करें."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "अगर आप सर्वर-साइड पर किसी React कॉम्पोनेंट को रेंडर कर रहे हैं, तो `renderToNodeStream()` या `renderToStaticNodeStream()` का इस्तेमाल करें. इससे क्लाइंट को एक साथ पूरे मार्कअप के बजाय, उसके अलग-अलग हिस्से मिलेंगे और वह उन्हें अलग-अलग हाइड्रेट कर पाएगा. [ज़्यादा जानें](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "अगर आप सर्वर-साइड पर किसी React कॉम्पोनेंट को रेंडर कर रहे हैं, तो `renderToPipeableStream()` या `renderToStaticNodeStream()` का इस्तेमाल करें. इससे क्लाइंट को एक साथ पूरे मार्कअप के बजाय, उसके अलग-अलग हिस्से मिलेंगे और वह उन्हें अलग-अलग हाइड्रेट कर पाएगा. [ज़्यादा जानें](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "अगर बिल्ड सिस्टम आपकी सीएसएस फ़ाइलों को अपने-आप छोटा कर देता है, तो पक्का करें कि आप अपने ऐप्लिकेशन के प्रोडक्शन बिल्ड को डिप्लॉय कर रहे हैं. आप React डेवलपर टूल एक्सटेंशन की मदद से इसकी पुष्टि कर सकते हैं. [ज़्यादा जानें](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

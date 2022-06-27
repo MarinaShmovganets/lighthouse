@@ -2304,7 +2304,7 @@
     "message": "Jos käytät React Routeria, minimoi `<Redirect>`-komponentin käyttö [reittinavigoinnissa](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Jos renderöit React-komponentteja palvelinpuolella, `renderToNodeStream()` tai `renderToStaticNodeStream()` voi auttaa niin, että asiakas saa vastaanottaa ja aktivoida merkintöjen eri kohtia kerralla käsittelyn sijaan. [Lue lisää](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Jos renderöit React-komponentteja palvelinpuolella, `renderToPipeableStream()` tai `renderToStaticNodeStream()` voi auttaa niin, että asiakas saa vastaanottaa ja aktivoida merkintöjen eri kohtia kerralla käsittelyn sijaan. [Lue lisää](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Jos versiojärjestelmäsi kutistaa CSS-tiedostoja automaattisesti, varmista että käyttöönotto koskee sovelluksen tuotantoversiota. Voit tarkistaa tämän Reactin kehittäjätyökalut ‑laajennuksella. [Lue lisää](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

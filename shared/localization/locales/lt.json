@@ -2304,7 +2304,7 @@
     "message": "Jei naudojate „React“ maršruto parinktuvą, sumažinkite komponento „`<Redirect>`“ naudojimą [parenkant maršrutą](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Jei serveryje pateikiate „React“ komponentų, apsvarstykite galimybę naudoti „`renderToNodeStream()`“ arba „`renderToStaticNodeStream()`“, kad klientas galėtų gauti ir užpildyti skirtingas žymėjimo dalis, o ne viską iš karto. [Sužinokite daugiau](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)"
+    "message": "Jei serveryje pateikiate „React“ komponentų, apsvarstykite galimybę naudoti „`renderToPipeableStream()`“ arba „`renderToStaticNodeStream()`“, kad klientas galėtų gauti ir užpildyti skirtingas žymėjimo dalis, o ne viską iš karto. [Sužinokite daugiau](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Jei versijų sistemoje iš CSS failų nereikalingi duomenys pašalinami automatiškai, įsitikinkite, kad pritaikote gamybinę programos versiją. Galite tai patikrinti naudodami „React“ kūrėjo įrankių plėtinį. [Sužinokite daugiau](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

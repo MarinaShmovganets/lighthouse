@@ -2304,7 +2304,7 @@
     "message": "Om du använder React Router minimerar du användningen av komponenten `<Redirect>` för [navigering av dirigeringar](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Om du renderar React-komponenter på serversidan rekommenderar vi att du använder `renderToNodeStream()` eller `renderToStaticNodeStream()` till att tillåta att klienten tar emot och hydrerar olika delar av uppmärkningen i stället för alla på en gång. [Läs mer](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Om du renderar React-komponenter på serversidan rekommenderar vi att du använder `renderToPipeableStream()` eller `renderToStaticNodeStream()` till att tillåta att klienten tar emot och hydrerar olika delar av uppmärkningen i stället för alla på en gång. [Läs mer](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Om versionssystemet minifierar CSS-filerna automatiskt kontrollerar du att du implementerar appens produktionsversion. Du kan kontrollera detta med tillägget React Developer Tools. [Läs mer](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

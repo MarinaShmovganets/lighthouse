@@ -2304,7 +2304,7 @@
     "message": "如果您使用了 React Router，请尽量避免使用 `<Redirect>` 组件进行[路径导航](https://reacttraining.com/react-router/web/api/Redirect)。"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "如果您在服务器端呈现任何 React 组件，不妨使用 `renderToNodeStream()` 或 `renderToStaticNodeStream()` 来允许客户端接收并合成标记的各个不同部分，而不是一次性接收整个标记。[了解详情](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)。"
+    "message": "如果您在服务器端呈现任何 React 组件，不妨使用 `renderToPipeableStream()` 或 `renderToStaticNodeStream()` 来允许客户端接收并合成标记的各个不同部分，而不是一次性接收整个标记。[了解详情](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)。"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "如果您的构建系统可自动压缩 CSS 文件大小，请确保您部署的是正式版应用。您可以通过 React Developer Tools 扩展程序执行此项检查。[了解详情](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)。"

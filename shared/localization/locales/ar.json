@@ -2304,7 +2304,7 @@
     "message": "في حال استخدام React Router، عليك تقليل استخدام المكوّن `<Redirect>` في [عمليات تنقل المسار](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "في حال كنت تعرض من جانب الخادم أي مكوّنات React، عليك استخدام `renderToNodeStream()` أو `renderToStaticNodeStream()` للسماح للعميل بتلقي أجزاء مختلفة من الترميز ودمجها بدلاً من جميع الأجزاء دفعة واحدة. [مزيد من المعلومات](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)"
+    "message": "في حال كنت تعرض من جانب الخادم أي مكوّنات React، عليك استخدام `renderToPipeableStream()` أو `renderToStaticNodeStream()` للسماح للعميل بتلقي أجزاء مختلفة من الترميز ودمجها بدلاً من جميع الأجزاء دفعة واحدة. [مزيد من المعلومات](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "في حال تصغير نظام الإصدار لملفات CSS تلقائيًا، يُرجى التأكد من أنك تنشر إصدار الإنتاج لتطبيقك. يمكنك التحقّق من ذلك باستخدام إضافة React Developer Tools. [مزيد من المعلومات](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)"

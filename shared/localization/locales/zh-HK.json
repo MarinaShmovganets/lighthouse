@@ -2304,7 +2304,7 @@
     "message": "如果使用 React Router，請盡量避免在[路線導航](https://reacttraining.com/react-router/web/api/Redirect)使用 `<Redirect>` 組件。"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "如果您在伺服器端輸出任何 React 組件，建議使用 `renderToNodeStream()` 或 `renderToStaticNodeStream()`，允許用戶端接收並混合標記的不同部分，而非同時完成。[瞭解詳情](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)。"
+    "message": "如果您在伺服器端輸出任何 React 組件，建議使用 `renderToPipeableStream()` 或 `renderToStaticNodeStream()`，允許用戶端接收並混合標記的不同部分，而非同時完成。[瞭解詳情](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)。"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "如果您建立自動壓縮 CSS 檔案的系統，請確定部署的應用程式為正式版本。您可以使用 React Developer Tools 擴充程式執行這項檢查。[瞭解詳情](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)。"

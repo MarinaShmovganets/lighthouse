@@ -2304,7 +2304,7 @@
     "message": "Če uporabljate React Router, karseda omejite uporabo komponente `<Redirect>` za[krmarjenje po poteh](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Če na strežniški strani upodabljate morebitne komponente React, razmislite o uporabi elementa `renderToNodeStream()` ali `renderToStaticNodeStream()`, da bi odjemalcu dovolili prejemanje in hidriranje različnih delov oznak, namesto vseh hkrati. [Preberite več o tem](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Če na strežniški strani upodabljate morebitne komponente React, razmislite o uporabi elementa `renderToPipeableStream()` ali `renderToStaticNodeStream()`, da bi odjemalcu dovolili prejemanje in hidriranje različnih delov oznak, namesto vseh hkrati. [Preberite več o tem](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Če vaš sistem gradnje samodejno pomanjša datoteke CSS, se prepričajte, da uvajate gradnjo aplikacije za splošno razpoložljivost. To lahko preverite z razširitvijo React Developer Tools. [Več o tem](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

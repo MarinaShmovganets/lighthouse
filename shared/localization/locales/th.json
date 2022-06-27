@@ -2304,7 +2304,7 @@
     "message": "หากคุณกำลังใช้ React Router ให้ลดการใช้ของคอมโพเนนต์ `<Redirect>` ในการ[ไปยังเส้นทางต่างๆ](https://reacttraining.com/react-router/web/api/Redirect)"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "หากคุณกำลังแสดงคอมโพเนนต์ของ React ใดๆ บนฝั่งเซิร์ฟเวอร์ ให้ลองใช้ `renderToNodeStream()` หรือ `renderToStaticNodeStream()` เพื่อให้ลูกค้าได้รับและรวมส่วนต่างๆ ของมาร์กอัปแทนที่จะรวมทั้งหมดในคราวเดียว [ดูข้อมูลเพิ่มเติม](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)"
+    "message": "หากคุณกำลังแสดงคอมโพเนนต์ของ React ใดๆ บนฝั่งเซิร์ฟเวอร์ ให้ลองใช้ `renderToPipeableStream()` หรือ `renderToStaticNodeStream()` เพื่อให้ลูกค้าได้รับและรวมส่วนต่างๆ ของมาร์กอัปแทนที่จะรวมทั้งหมดในคราวเดียว [ดูข้อมูลเพิ่มเติม](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "หากระบบในรุ่นของคุณลดขนาดไฟล์ CSS โดยอัตโนมัติ โปรดตรวจสอบว่าคุณทำให้รุ่นที่ใช้งานจริงของแอปพลิเคชันใช้งานได้ โดยใช้ส่วนขยาย React Developer Tools [ดูข้อมูลเพิ่มเติม](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)"

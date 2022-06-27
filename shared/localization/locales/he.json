@@ -2304,7 +2304,7 @@
     "message": "אם בחרת להשתמש ב-React Router, יש לצמצם את השימוש ברכיב `<Redirect>` בשביל [ניווט במסלול](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "אם מתבצע רינדור בצד השרת של רכיבי React כלשהם, כדאי לשקול להשתמש ב-`renderToNodeStream()` או `renderToStaticNodeStream()` כדי לאפשר ללקוח לקבל ולמלא חלקים שונים של הסימון, במקום את הכול בבת אחת. [מידע נוסף](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "אם מתבצע רינדור בצד השרת של רכיבי React כלשהם, כדאי לשקול להשתמש ב-`renderToPipeableStream()` או `renderToStaticNodeStream()` כדי לאפשר ללקוח לקבל ולמלא חלקים שונים של הסימון, במקום את הכול בבת אחת. [מידע נוסף](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "אם מערכת ה-build שלך מקטינה את קובצי ה-CSS באופן אוטומטי, יש להקפיד לפרוס את גרסת ה-build של סביבת הייצור של האפליקציה. אפשר לבדוק זאת עם תוסף הכלים למפתחים של React. [מידע נוסף](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

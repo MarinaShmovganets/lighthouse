@@ -2304,7 +2304,7 @@
     "message": "Si usas React Router, minimiza el uso del componente `<Redirect>` en el caso de las [navegaciones de ruta](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Si estás renderizando componentes React en el servidor, puedes usar `renderToNodeStream()` o `renderToStaticNodeStream()` para permitir al cliente recibir e hidratar distintas partes de las etiquetas en vez de todas a la vez. [Más información](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)"
+    "message": "Si estás renderizando componentes React en el servidor, puedes usar `renderToPipeableStream()` o `renderToStaticNodeStream()` para permitir al cliente recibir e hidratar distintas partes de las etiquetas en vez de todas a la vez. [Más información](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Si tu sistema de compilación minifica los archivos CSS automáticamente, comprueba que estés implementando la compilación de producción de tu aplicación. Puedes comprobarlo con la extensión de las herramientas de desarrollo de React. [Más información](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)"

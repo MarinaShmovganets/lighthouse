@@ -2304,7 +2304,7 @@
     "message": "நீங்கள் ரியாக்ட் ரூட்டரைப் பயன்படுத்தினால் [ரூட் வழிசெலுத்தல்களுக்கு](https://reacttraining.com/react-router/web/api/Redirect) `<Redirect>` உறுப்பைப் பயன்படுத்துவதைக் குறைத்துக்கொள்ளவும்."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "நீங்கள் சேவையகம் தரப்பாக இருந்து ரியாக்ட் கூறுகளை ரெண்டரிங் செய்பவராக இருந்தால் அனைத்தையும் ஒரே நேரத்தில் அல்லாமல் மார்க் அப்பின் வெவ்வேறு பகுதிகளைப் பெறவும் ஹைட்ரேட் செய்யவும் கிளையண்ட்டை அனுமதிப்பதற்கு `renderToNodeStream()` அல்லது `renderToStaticNodeStream()`ஐப் பயன்படுத்துவதைப் பரிசீலிக்கவும். [மேலும் அறிக](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "நீங்கள் சேவையகம் தரப்பாக இருந்து ரியாக்ட் கூறுகளை ரெண்டரிங் செய்பவராக இருந்தால் அனைத்தையும் ஒரே நேரத்தில் அல்லாமல் மார்க் அப்பின் வெவ்வேறு பகுதிகளைப் பெறவும் ஹைட்ரேட் செய்யவும் கிளையண்ட்டை அனுமதிப்பதற்கு `renderToPipeableStream()` அல்லது `renderToStaticNodeStream()`ஐப் பயன்படுத்துவதைப் பரிசீலிக்கவும். [மேலும் அறிக](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "உங்கள் பதிப்பு சிஸ்டம் உங்கள் CSS ஃபைல்களைத் தானாகவே சிறிதாக்கினால் உங்கள் ஆப்ஸின் தயாரிப்புப் பதிப்பைப் பயன்படுத்துவதை உறுதிசெய்துகொள்ளவும். React Developer Tools நீட்டிப்பில் இதைப் பார்க்கலாம். [மேலும் அறிக](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

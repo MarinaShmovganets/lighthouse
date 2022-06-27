@@ -2304,7 +2304,7 @@
     "message": "Ako koristite React ruter, smanjite korišćenje komponente `<Redirect>` za [navigacije pomoću rute](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Ako prikazujete bilo kakve React komponente na serveru, razmislite o tome da koristite `renderToNodeStream()` ili `renderToStaticNodeStream()` kako biste omogućili klijentu da prima i popunjava različite delove oznake umesto svih delova odjednom. [Saznajte više](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Ako prikazujete bilo kakve React komponente na serveru, razmislite o tome da koristite `renderToPipeableStream()` ili `renderToStaticNodeStream()` kako biste omogućili klijentu da prima i popunjava različite delove oznake umesto svih delova odjednom. [Saznajte više](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Ako sistem za prevođenje i povezivanje automatski umanjuje CSS fajlove, uverite se da primenjujete proizvodnu verziju aplikacije. To možete da proverite pomoću dodatka React Developer Tools. [Saznajte više](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

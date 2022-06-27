@@ -2304,7 +2304,7 @@
     "message": "మీరు 'రియాక్ట్ రూటర్'ను ఉపయోగిస్తున్నట్లయితే, [మార్గం నావిగేషన్‌ల](https://reacttraining.com/react-router/web/api/Redirect) కోసం `<Redirect>` కాంపొనెంట్ వినియోగాన్ని కనీస స్థాయికి తగ్గించండి."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "మీరు సర్వర్ వైపు నుండి ఏవైనా 'రియాక్ట్' కాంపొనెంట్‌లను అమలు చేస్తున్నట్లయితే, `renderToNodeStream()` లేదా `renderToStaticNodeStream()`ను వినియోగించడానికి ప్రయత్నించడం ద్వారా మార్క్అప్‌లో ఉండే విభాగాలన్నీ ఒకేసారి కాకుండా, వివిధ భాగాలుగా అందుకోవడానికి, హైడ్రేట్ చేయడానికి క్లయింట్‌ను అనుమతించండి. [మరింత తెలుసుకోండి](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "మీరు సర్వర్ వైపు నుండి ఏవైనా 'రియాక్ట్' కాంపొనెంట్‌లను అమలు చేస్తున్నట్లయితే, `renderToPipeableStream()` లేదా `renderToStaticNodeStream()`ను వినియోగించడానికి ప్రయత్నించడం ద్వారా మార్క్అప్‌లో ఉండే విభాగాలన్నీ ఒకేసారి కాకుండా, వివిధ భాగాలుగా అందుకోవడానికి, హైడ్రేట్ చేయడానికి క్లయింట్‌ను అనుమతించండి. [మరింత తెలుసుకోండి](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "మీ బిల్డ్ సిస్టమ్, CSS ఫైళ్ల సైజును ఆటోమేటిక్‌గా తగ్గిస్తున్నట్లయితే, మీ అప్లికేషన్ ప్రొడక్షన్ బిల్డ్‌ను మీరు అమలు చేస్తున్నట్లు నిర్ధారించుకోండి. React Developer Tools ఎక్స్‌టెన్షన్ సహాయంతో మీరు దీనిని చెక్ చేయవచ్చు. [మరింత తెలుసుకోండి](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

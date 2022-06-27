@@ -2304,7 +2304,7 @@
     "message": "Ak používate React Router, minimalizujte používanie komponentu `<Redirect>` na [určenie smerovania](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Ak na strane servera vykresľujete komponenty knižnice React, zvážte použitie funkcie `renderToNodeStream()` alebo `renderToStaticNodeStream()`, aby ste klientovi umožnili prijať a spracovať rôzne časti značiek namiesto všetkých naraz. [Ďalšie informácie](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)"
+    "message": "Ak na strane servera vykresľujete komponenty knižnice React, zvážte použitie funkcie `renderToPipeableStream()` alebo `renderToStaticNodeStream()`, aby ste klientovi umožnili prijať a spracovať rôzne časti značiek namiesto všetkých naraz. [Ďalšie informácie](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Ak vaša zostava automaticky minifikuje súbory CSS, mali by ste nasadzovať ostrú verziu zostavy aplikácie. Môžete to skontrolovať pomocou rozšírenia React Developer Tools. [Ďalšie informácie](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)"

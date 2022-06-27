@@ -2304,7 +2304,7 @@
     "message": "Hvis du bruger React Router, bør du minimere brugen af komponenten `<Redirect>` til [rutenavigationer](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Hvis du gengiver React-komponenter på serveren, bør du overveje at bruge `renderToNodeStream()` eller `renderToStaticNodeStream()` for at give klienten mulighed for at modtage og hydrere forskellige dele af opmærkningen i stedet for det hele på én gang. [Få flere oplysninger](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Hvis du gengiver React-komponenter på serveren, bør du overveje at bruge `renderToPipeableStream()` eller `renderToStaticNodeStream()` for at give klienten mulighed for at modtage og hydrere forskellige dele af opmærkningen i stedet for det hele på én gang. [Få flere oplysninger](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Hvis dit buildsystem formindsker CSS-filer automatisk, skal du sørge for, at du implementerer produktionsbuildet af din app. Du kan tjekke dette med udvidelsen React Developer Tools. [Få flere oplysninger](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

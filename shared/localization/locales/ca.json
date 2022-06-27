@@ -2304,7 +2304,7 @@
     "message": "Si estàs utilitzant un encaminador de React, redueix l'ús del component `<Redirect>` a les [navegacions per rutes](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Si estàs renderitzant qualsevol component de React des del servidor, pots optar per utilitzar `renderToNodeStream()` o `renderToStaticNodeStream()` per permetre que el client rebi i hidrati diferents parts de l'etiquetatge en lloc de fer-ho amb tots a la vegada. [Obtén més informació](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Si estàs renderitzant qualsevol component de React des del servidor, pots optar per utilitzar `renderToPipeableStream()` o `renderToStaticNodeStream()` per permetre que el client rebi i hidrati diferents parts de l'etiquetatge en lloc de fer-ho amb tots a la vegada. [Obtén més informació](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Si el sistema de compilació redueix automàticament els fitxers CSS, comprova que estiguis implementant la compilació de producció de l'aplicació. Pots comprovar-ho amb l'extensió React Developer Tools. [Obtén més informació](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

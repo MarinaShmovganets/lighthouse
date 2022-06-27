@@ -2304,7 +2304,7 @@
     "message": "Εάν χρησιμοποιείτε το React Router, ελαχιστοποιήστε τη χρήση του στοιχείου `<Redirect>` για [πλοηγήσεις διαδρομής](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Εάν πραγματοποιείτε απόδοση στοιχείων React στον διακομιστή, μπορείτε να χρησιμοποιήσετε το `renderToNodeStream()` ή το `renderToStaticNodeStream()` για να επιτρέψετε στον υπολογιστή-πελάτη να λαμβάνει και να ενισχύει διαφορετικά μέρη της σήμανσης, αντί για όλα μαζί. [Μάθετε περισσότερα](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Εάν πραγματοποιείτε απόδοση στοιχείων React στον διακομιστή, μπορείτε να χρησιμοποιήσετε το `renderToPipeableStream()` ή το `renderToStaticNodeStream()` για να επιτρέψετε στον υπολογιστή-πελάτη να λαμβάνει και να ενισχύει διαφορετικά μέρη της σήμανσης, αντί για όλα μαζί. [Μάθετε περισσότερα](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Εάν το σύστημα έκδοσής σας ελαχιστοποιεί τα αρχεία CSS αυτόματα, βεβαιωθείτε ότι αναπτύσσετε την έκδοση παραγωγής της εφαρμογής σας. Μπορείτε να το ελέγξετε αυτό από την επέκταση React Developer Tools. [Μάθετε περισσότερα](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

@@ -2304,7 +2304,7 @@
     "message": "Nếu bạn đang dùng React Router, hãy giảm thiểu mức sử dụng thành phần `<Redirect>` để [định tuyến](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Nếu bạn đang hiển thị bất kỳ thành phần React nào ở phía máy chủ, hãy cân nhắc dùng `renderToNodeStream()` hoặc `renderToStaticNodeStream()` để cho phép ứng dụng nhận và nhập những phần khác nhau của mục đánh dấu thay vì tất cả cùng lúc. [Tìm hiểu thêm](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Nếu bạn đang hiển thị bất kỳ thành phần React nào ở phía máy chủ, hãy cân nhắc dùng `renderToPipeableStream()` hoặc `renderToStaticNodeStream()` để cho phép ứng dụng nhận và nhập những phần khác nhau của mục đánh dấu thay vì tất cả cùng lúc. [Tìm hiểu thêm](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Nếu hệ thống bản dựng của bạn tự động giảm kích thước tệp CSS, hãy đảm bảo rằng bạn đang triển khai bản phát hành chính thức của ứng dụng. Bạn có thể kiểm tra điều này bằng tiện ích React Developer Tools. [Tìm hiểu thêm](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

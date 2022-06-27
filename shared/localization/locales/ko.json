@@ -2304,7 +2304,7 @@
     "message": "React Router를 사용하는 경우 [경로 탐색](https://reacttraining.com/react-router/web/api/Redirect)의 `<Redirect>` 구성요소 사용량을 축소합니다."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "서버 측에서 React 구성요소를 렌더링하는 경우 `renderToNodeStream()` 또는 `renderToStaticNodeStream()`을(를) 사용하여 클라이언트가 모든 마크업이 아닌 마크업의 서로 다른 부분을 받아서 하이드레이션할 수 있도록 허용해 보세요. [자세히 알아보기](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)"
+    "message": "서버 측에서 React 구성요소를 렌더링하는 경우 `renderToPipeableStream()` 또는 `renderToStaticNodeStream()`을(를) 사용하여 클라이언트가 모든 마크업이 아닌 마크업의 서로 다른 부분을 받아서 하이드레이션할 수 있도록 허용해 보세요. [자세히 알아보기](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "빌드 시스템에서 CSS 파일을 자동으로 축소하는 경우 애플리케이션의 프로덕션 빌드를 배포하고 있는지 확인하세요. 이는 React 개발자 도구 확장 프로그램으로 확인할 수 있습니다. [자세히 알아보기](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)"

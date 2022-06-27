@@ -2304,7 +2304,7 @@
     "message": "Jika Anda menggunakan React Router, minimalkan penggunaan komponen `<Redirect>` untuk [navigasi rute](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Jika Anda merender komponen React pada sistem server, pertimbangkan untuk menggunakan `renderToNodeStream()` atau `renderToStaticNodeStream()` agar klien dapat menerima dan mengisi beberapa bagian markup yang berbeda, bukan sekaligus. [Pelajari lebih lanjut](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Jika Anda merender komponen React pada sistem server, pertimbangkan untuk menggunakan `renderToPipeableStream()` atau `renderToStaticNodeStream()` agar klien dapat menerima dan mengisi beberapa bagian markup yang berbeda, bukan sekaligus. [Pelajari lebih lanjut](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Jika sistem build otomatis meminifikasi file CSS, pastikan Anda men-deploy build produksi aplikasi Anda. Anda dapat memeriksanya dengan ekstensi React Developer Tools. [Pelajari lebih lanjut](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

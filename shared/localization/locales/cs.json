@@ -2304,7 +2304,7 @@
     "message": "Pokud používáte React Router, minimalizujte použití komponenty `<Redirect>` k [navigaci po trase](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Pokud některé komponenty React vykreslujete na straně serveru, zvažte použití metody `renderToNodeStream()` nebo `renderToStaticNodeStream()`, která klientovi umožní přijímat různé části označení a dosazovat do nich data samostatně namísto všech najednou. [Další informace](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)"
+    "message": "Pokud některé komponenty React vykreslujete na straně serveru, zvažte použití metody `renderToPipeableStream()` nebo `renderToStaticNodeStream()`, která klientovi umožní přijímat různé části označení a dosazovat do nich data samostatně namísto všech najednou. [Další informace](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)"
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Pokud váš sestavovací systém minifikuje soubory CSS automaticky, dejte pozor, abyste implementovali produkční sestavení aplikace. Můžete to zkontrolovat pomocí rozšíření React Developer Tools. [Další informace](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)"

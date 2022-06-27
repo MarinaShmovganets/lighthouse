@@ -2304,7 +2304,7 @@
     "message": "Dacă folosești React Router, minimalizează folosirea componentei `<Redirect>` pentru [navigările pe traseu](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Dacă redai componente React pe server, poți folosi `renderToNodeStream()` sau `renderToStaticNodeStream()` ca să-i permiți clientului să primească și să completeze diferite părți ale codului de markup, nu pe tot deodată. [Află mai multe](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Dacă redai componente React pe server, poți folosi `renderToPipeableStream()` sau `renderToStaticNodeStream()` ca să-i permiți clientului să primească și să completeze diferite părți ale codului de markup, nu pe tot deodată. [Află mai multe](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Dacă sistemul de versiuni minimalizează automat fișierele CSS, verifică dacă implementezi versiunea de producție a aplicației. Poți face verificarea cu extensia React Developer Tools. [Află mai multe](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

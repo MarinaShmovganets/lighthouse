@@ -2304,7 +2304,7 @@
     "message": "Ha a React Routert használja, csökkentse minimálisra a `<Redirect>` komponens használatát az [útválasztási navigációban](https://reacttraining.com/react-router/web/api/Redirect)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Ha szerveroldali renderelést alkalmaz bármilyen React-összetevőnél, fontolja meg a következők valamelyikének használatát: `renderToNodeStream()` vagy `renderToStaticNodeStream()`. Ezekkel engedélyezheti az ügyfél számára, hogy a markupot ne egyben, hanem részletekben kapja meg és hidratálja. [További információ](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Ha szerveroldali renderelést alkalmaz bármilyen React-összetevőnél, fontolja meg a következők valamelyikének használatát: `renderToPipeableStream()` vagy `renderToStaticNodeStream()`. Ezekkel engedélyezheti az ügyfél számára, hogy a markupot ne egyben, hanem részletekben kapja meg és hidratálja. [További információ](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Ha a buildrendszere automatikusan kicsinyíti a CSS-fájlokat, akkor ügyeljen arra, hogy az alkalmazás éles buildjét telepítse. Ezt a React Developer Tools bővítménnyel ellenőrizheti. [További információ](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."

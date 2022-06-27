@@ -2304,7 +2304,7 @@
     "message": "React Router kullanıyorsanız [rota gezinmeleri](https://reacttraining.com/react-router/web/api/Redirect) için `<Redirect>` bileşeninin kullanımını en aza indirin."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": {
-    "message": "Sunucu tarafında React bileşenleri oluşturuyorsanız istemcinin tüm işaretleme parçalarını bir defada alması yerine farklı parçaları alıp birleştirmesine izin vermek için `renderToNodeStream()` veya `renderToStaticNodeStream()` kullanmayı düşünün. [Daha fazla bilgi](https://reactjs.org/docs/react-dom-server.html#rendertonodestream)."
+    "message": "Sunucu tarafında React bileşenleri oluşturuyorsanız istemcinin tüm işaretleme parçalarını bir defada alması yerine farklı parçaları alıp birleştirmesine izin vermek için `renderToPipeableStream()` veya `renderToStaticNodeStream()` kullanmayı düşünün. [Daha fazla bilgi](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream)."
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": {
     "message": "Derleme sisteminiz CSS dosyalarını otomatik olarak küçültüyorsa uygulamanızın üretim derlemesini dağıttığınızdan emin olun. Bunu React Geliştirici Araçları uzantısıyla kontrol edebilirsiniz. [Daha fazla bilgi edinin](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build)."
