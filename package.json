@@ -51,7 +51,7 @@
     "unit-treemap": "yarn mocha --testMatch 'treemap/**/*-test.js'",
     "unit-viewer": "yarn mocha --testMatch 'viewer/**/*-test.js'",
     "unit-flow": "sh flow-report/test/run-flow-report-tests.sh",
-    "unit": "yarn mocha",
+    "unit": "yarn unit-flow && yarn mocha",
     "unit:ci": "NODE_OPTIONS=--max-old-space-size=8192 npm run unit --forbid-only",
     "core-unit": "yarn unit-core",
     "cli-unit": "yarn unit-cli",
