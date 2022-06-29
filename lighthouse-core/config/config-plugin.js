@@ -158,7 +158,10 @@ class ConfigPlugin {
       throw new Error(`${pluginName} has an invalid category manualDescription.`);
     }
     if (!isArrayOfGatherModes(supportedModes) && supportedModes !== undefined) {
-      throw new Error(`${pluginName} has an invalid category supportedModes.`);
+      throw new Error(
+        `${pluginName} supportedModes must be an array, ` +
+        `valid array values are "navigation", "timespan", and "snapshot".`
+      );
     }
     const auditRefs = ConfigPlugin._parseAuditRefsList(auditRefsJson, pluginName);
 
