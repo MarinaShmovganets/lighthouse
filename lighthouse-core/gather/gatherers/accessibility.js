@@ -12,9 +12,6 @@ const axeLibSource = require('../../lib/axe.js').source;
 const pageFunctions = require('../../lib/page-functions.js');
 
 /**
- * This is run in the page, not Lighthouse itself.
- * axe.run returns a promise which fulfills with a results object
- * containing any violations.
  * @return {Promise<LH.Artifacts.Accessibility>}
  */
 /* c8 ignore start */
@@ -38,8 +35,11 @@ async function runA11yChecks() {
         'wcag2aa',
       ],
     },
+    // resultTypes doesn't limit the output of the axeResults object. Instead, if it's defined,
+    // some expensive element identification is done only for the respective types. https://github.com/dequelabs/axe-core/blob/f62f0cf18f7b69b247b0b6362cf1ae71ffbf3a1b/lib/core/reporters/helpers/process-aggregate.js#L61-L97
     resultTypes: ['violations', 'inapplicable'],
     rules: {
+      // Consider http://go/prcpg for expert review of the aXe rules.
       'tabindex': {enabled: true},
       'accesskeys': {enabled: true},
       'heading-order': {enabled: true},
@@ -57,6 +57,15 @@ async function runA11yChecks() {
       'svg-img-alt': {enabled: false},
       'audio-caption': {enabled: false},
       'aria-treeitem-name': {enabled: true},
+      // https://github.com/dequelabs/axe-core/issues/2958
+      'nested-interactive': {enabled: false},
+      'frame-focusable-content': {enabled: false},
+      'aria-roledescription': {enabled: false},
+      'scrollable-region-focusable': {enabled: false},
+      // TODO(paulirish): create audits and enable these 3.
+      'input-button-name': {enabled: false},
+      'role-img-alt': {enabled: false},
+      'select-name': {enabled: false},
     },
   });
 
@@ -67,7 +76,8 @@ async function runA11yChecks() {
   return {
     violations: axeResults.violations.map(createAxeRuleResultArtifact),
     incomplete: axeResults.incomplete.map(createAxeRuleResultArtifact),
-    notApplicable: axeResults.inapplicable.map(result => ({id: result.id})),
+    notApplicable: axeResults.inapplicable.map(result => ({id: result.id})), // FYI: inapplicable => notApplicable!
+    passes: axeResults.passes.map(result => ({id: result.id})),
     version: axeResults.testEngine.version,
   };
 }
@@ -84,10 +94,37 @@ function createAxeRuleResultArtifact(result) {
     // @ts-expect-error - getNodeDetails put into scope via stringification
     const nodeDetails = getNodeDetails(/** @type {HTMLElement} */ (element));
 
+    /** @type {Set<HTMLElement>} */
+    const relatedNodeElements = new Set();
+    /** @param {import('axe-core/axe').ImpactValue} impact */
+    const impactToNumber =
+      (impact) => [null, 'minor', 'moderate', 'serious', 'critical'].indexOf(impact);
+    const checkResults = [...node.any, ...node.all, ...node.none]
+      // @ts-expect-error CheckResult.impact is a string, even though ImpactValue is a thing.
+      .sort((a, b) => impactToNumber(b.impact) - impactToNumber(a.impact));
+    for (const checkResult of checkResults) {
+      for (const relatedNode of checkResult.relatedNodes || []) {
+        /** @type {HTMLElement} */
+        // @ts-expect-error - should always exist, just being cautious.
+        const relatedElement = relatedNode.element;
+
+        // Prevent overloading the report with way too many nodes.
+        if (relatedNodeElements.size >= 3) break;
+        // Should always exist, just being cautious.
+        if (!relatedElement) continue;
+        if (element === relatedElement) continue;
+
+        relatedNodeElements.add(relatedElement);
+      }
+    }
+    // @ts-expect-error - getNodeDetails put into scope via stringification
+    const relatedNodeDetails = [...relatedNodeElements].map(getNodeDetails);
+
     return {
       target,
       failureSummary,
       node: nodeDetails,
+      relatedNodes: relatedNodeDetails,
     };
   });
 
@@ -118,13 +155,18 @@ class Accessibility extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['snapshot', 'navigation'],
-  }
+  };
+
+  static pageFns = {
+    runA11yChecks,
+    createAxeRuleResultArtifact,
+  };
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts.Accessibility>}
    */
-  snapshot(passContext) {
+  getArtifact(passContext) {
     const driver = passContext.driver;
 
     return driver.executionContext.evaluate(runA11yChecks, {

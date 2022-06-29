@@ -3,15 +3,13 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const UnusedImages =
-    require('../../../audits/byte-efficiency/offscreen-images.js');
-const assert = require('assert').strict;
-const createTestTrace = require('../../create-test-trace.js');
-const networkRecordsToDevtoolsLog = require('../../network-records-to-devtools-log.js');
+import {strict as assert} from 'assert';
 
-/* eslint-env jest */
+import UnusedImages from '../../../audits/byte-efficiency/offscreen-images.js';
+import createTestTrace from '../../create-test-trace.js';
+import networkRecordsToDevtoolsLog from '../../network-records-to-devtools-log.js';
+
 function generateRecord({
   resourceSizeInKb,
   url = 'https://google.com/logo.png',
@@ -55,6 +53,7 @@ function generateImage({
     src,
     clientRect,
     loading,
+    node: {devtoolsNodePath: '1,HTML,1,IMG'},
     ...networkRecord,
     ...size,
   };
@@ -72,6 +71,7 @@ describe('OffscreenImages audit', () => {
     const topLevelTasks = [{ts: 1900, duration: 100}];
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         generateImage({size: generateSize(100, 100), x: 0, y: 0}),
       ],
@@ -93,6 +93,7 @@ describe('OffscreenImages audit', () => {
     const topLevelTasks = [{ts: 1900, duration: 100}];
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         generateImage({
           size: generateSize(200, 200),
@@ -137,6 +138,7 @@ describe('OffscreenImages audit', () => {
     ];
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         // Offscreen to the right.
         generateImage({
@@ -218,6 +220,7 @@ describe('OffscreenImages audit', () => {
     ];
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         // Offscreen to the right, but lazy loaded.
         generateImage({
@@ -256,6 +259,7 @@ describe('OffscreenImages audit', () => {
     ];
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         // Offscreen to the right with auto loading (same as not specifying the attribute).
         generateImage({
@@ -290,6 +294,7 @@ describe('OffscreenImages audit', () => {
     const networkRecord = generateRecord({resourceSizeInKb: 100});
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         generateImage({size: generateSize(0, 0), x: 0, y: 0, networkRecord}),
       ],
@@ -314,6 +319,7 @@ describe('OffscreenImages audit', () => {
     ];
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         generateImage({
           size: generateSize(50, 50),
@@ -356,6 +362,7 @@ describe('OffscreenImages audit', () => {
     const networkRecord = generateRecord({resourceSizeInKb: 100, startTime: 3});
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         // Offscreen to the right.
         generateImage({size: generateSize(200, 200), x: 3000, y: 0, networkRecord}),
@@ -373,6 +380,7 @@ describe('OffscreenImages audit', () => {
     const networkRecord = generateRecord({resourceSizeInKb: 100, startTime: 3});
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         // Offscreen to the right.
         generateImage({size: generateSize(200, 200), x: 3000, y: 0, networkRecord}),
@@ -390,6 +398,7 @@ describe('OffscreenImages audit', () => {
     const networkRecord = generateRecord({resourceSizeInKb: 100});
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         // Offscreen to the bottom.
         generateImage({size: generateSize(100, 100), x: 0, y: 5000, networkRecord}),
@@ -431,6 +440,7 @@ describe('OffscreenImages audit', () => {
     ];
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         generateImage({
           size: generateSize(0, 0),
@@ -449,6 +459,12 @@ describe('OffscreenImages audit', () => {
       ],
       traces: {defaultPass: createTestTrace({topLevelTasks})},
       devtoolsLogs: {defaultPass: devtoolsLog},
+      URL: {
+        initialUrl: 'about:blank',
+        requestedUrl: recordA.url,
+        mainDocumentUrl: recordA.url,
+        finalUrl: recordA.url,
+      },
     };
 
     return UnusedImages.audit_(artifacts, [recordA, recordB], context).then(auditResult => {
@@ -489,6 +505,7 @@ describe('OffscreenImages audit', () => {
     ];
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         generateImage({
           size: generateSize(0, 0),
@@ -507,6 +524,12 @@ describe('OffscreenImages audit', () => {
       ],
       traces: {defaultPass: createTestTrace({topLevelTasks})},
       devtoolsLogs: {defaultPass: devtoolsLog},
+      URL: {
+        initialUrl: 'about:blank',
+        requestedUrl: recordA.url,
+        mainDocumentUrl: recordA.url,
+        finalUrl: recordA.url,
+      },
     };
 
     return UnusedImages.audit_(artifacts, [recordA, recordB], context).then(auditResult => {
@@ -526,6 +549,7 @@ describe('OffscreenImages audit', () => {
     ];
     const artifacts = {
       ViewportDimensions: DEFAULT_DIMENSIONS,
+      GatherContext: {gatherMode: 'navigation'},
       ImageElements: [
         generateImage({
           size: generateSize(0, 0),
@@ -553,5 +577,36 @@ describe('OffscreenImages audit', () => {
       return;
     }
     assert.ok(false);
+  });
+
+  it('handles cached images', async () => {
+    const wastedSize = 100 * 1024;
+    const networkRecord = {
+      resourceSize: wastedSize,
+      transferSize: 0,
+      requestId: 'a',
+      startTime: 1,
+      priority: 'High',
+      timing: {receiveHeadersEnd: 1.25},
+    };
+
+    const artifacts = {
+      ViewportDimensions: DEFAULT_DIMENSIONS,
+      ImageElements: [
+        generateImage({
+          size: generateSize(0, 0),
+          x: 0,
+          y: 0,
+          networkRecord,
+        }),
+      ],
+      traces: {defaultPass: createTestTrace({traceEnd: 2000})},
+      devtoolsLogs: {},
+    };
+
+    return UnusedImages.audit_(artifacts, [networkRecord], context).then(auditResult => {
+      assert.equal(auditResult.items.length, 1);
+      assert.equal(auditResult.items[0].wastedBytes, wastedSize, 'correctly computes wastedBytes');
+    });
   });
 });

@@ -32,13 +32,13 @@ class PasswordInputsWithPreventedPaste extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['snapshot', 'navigation'],
-  }
+  };
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['PasswordInputsWithPreventedPaste']>}
    */
-  snapshot(passContext) {
+  getArtifact(passContext) {
     return passContext.driver.executionContext.evaluate(findPasswordInputsWithPreventedPaste, {
       args: [],
       deps: [pageFunctions.getNodeDetailsString],

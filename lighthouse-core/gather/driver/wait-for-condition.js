@@ -5,10 +5,11 @@
  */
 'use strict';
 
+/* global window */
+
 const log = require('lighthouse-logger');
 const LHError = require('../../lib/lh-error.js');
 const ExecutionContext = require('./execution-context.js');
-const pageFunctions = require('../../lib/page-functions.js');
 
 /** @typedef {import('./network-monitor.js')} NetworkMonitor */
 /** @typedef {import('./network-monitor.js').NetworkMonitorEvent} NetworkMonitorEvent */
@@ -113,7 +114,7 @@ function waitForFcp(session, pauseAfterFcpMs, maxWaitForFcpMs) {
  * `networkQuietThresholdMs` ms and a method to cancel internal network listeners/timeout.
  * @param {LH.Gatherer.FRProtocolSession} session
  * @param {NetworkMonitor} networkMonitor
- * @param {{networkQuietThresholdMs: number, busyEvent: NetworkMonitorEvent, idleEvent: NetworkMonitorEvent, isIdle(recorder: NetworkMonitor): boolean}} networkQuietOptions
+ * @param {{networkQuietThresholdMs: number, busyEvent: NetworkMonitorEvent, idleEvent: NetworkMonitorEvent, isIdle(recorder: NetworkMonitor): boolean, pretendDCLAlreadyFired?: boolean}} networkQuietOptions
  * @return {CancellableWait}
  */
 function waitForNetworkIdle(session, networkMonitor, networkQuietOptions) {
@@ -163,7 +164,8 @@ function waitForNetworkIdle(session, networkMonitor, networkQuietOptions) {
       const inflightRecords = networkMonitor.getInflightRequests();
       // If there are more than 20 inflight requests, load is still in full swing.
       // Wait until it calms down a bit to be a little less spammy.
-      if (inflightRecords.length < 20) {
+      if (log.isVerbose() && inflightRecords.length < 20 && inflightRecords.length > 0) {
+        log.verbose('waitFor', `=== Waiting on ${inflightRecords.length} requests to finish`);
         for (const record of inflightRecords) {
           log.verbose('waitFor', `Waiting on ${record.url.slice(0, 120)} to finish`);
         }
@@ -171,20 +173,27 @@ function waitForNetworkIdle(session, networkMonitor, networkQuietOptions) {
     };
 
     networkMonitor.on('requeststarted', logStatus);
-    networkMonitor.on('requestloaded', logStatus);
+    networkMonitor.on('requestfinished', logStatus);
     networkMonitor.on(busyEvent, logStatus);
 
-    session.once('Page.domContentEventFired', domContentLoadedListener);
+    if (!networkQuietOptions.pretendDCLAlreadyFired) {
+      session.once('Page.domContentEventFired', domContentLoadedListener);
+    } else {
+      domContentLoadedListener();
+    }
+
     let canceled = false;
     cancel = () => {
       if (canceled) return;
       canceled = true;
-      idleTimeout && clearTimeout(idleTimeout);
-      session.off('Page.domContentEventFired', domContentLoadedListener);
+      if (idleTimeout) clearTimeout(idleTimeout);
+      if (!networkQuietOptions.pretendDCLAlreadyFired) {
+        session.off('Page.domContentEventFired', domContentLoadedListener);
+      }
       networkMonitor.removeListener(busyEvent, onBusy);
       networkMonitor.removeListener(idleEvent, onIdle);
       networkMonitor.removeListener('requeststarted', logStatus);
-      networkMonitor.removeListener('requestloaded', logStatus);
+      networkMonitor.removeListener('requestfinished', logStatus);
       networkMonitor.removeListener(busyEvent, logStatus);
     };
   });
@@ -221,7 +230,7 @@ function waitForCPUIdle(session, waitForCPUQuiet) {
   async function checkForQuiet(executionContext, resolve) {
     if (canceled) return;
     const timeSinceLongTask =
-      await executionContext.evaluate(pageFunctions.checkTimeSinceLastLongTask, {args: []});
+      await executionContext.evaluate(checkTimeSinceLastLongTaskInPage, {args: []});
     if (canceled) return;
 
     if (typeof timeSinceLongTask === 'number') {
@@ -241,9 +250,12 @@ function waitForCPUIdle(session, waitForCPUQuiet) {
     throw new Error('waitForCPUIdle.cancel() called before it was defined');
   };
 
+  const executionContext = new ExecutionContext(session);
   /** @type {Promise<void>} */
   const promise = new Promise((resolve, reject) => {
-    checkForQuiet(new ExecutionContext(session), resolve).catch(reject);
+    executionContext.evaluate(registerPerformanceObserverInPage, {args: []})
+      .then(() => checkForQuiet(executionContext, resolve))
+      .catch(reject);
     cancel = () => {
       if (canceled) return;
       canceled = true;
@@ -257,6 +269,69 @@ function waitForCPUIdle(session, waitForCPUQuiet) {
     cancel,
   };
 }
+
+/* c8 ignore start */
+
+/**
+ * This function is executed in the page itself when the document is first loaded.
+ *
+ * Used by _waitForCPUIdle and executed in the context of the page, updates the ____lastLongTask
+ * property on window to the end time of the last long task.
+ */
+function registerPerformanceObserverInPage() {
+  // Do not re-register if we've already run this script.
+  if (window.____lastLongTask !== undefined) return;
+
+  window.____lastLongTask = performance.now();
+  const observer = new window.PerformanceObserver(entryList => {
+    const entries = entryList.getEntries();
+    for (const entry of entries) {
+      if (entry.entryType === 'longtask') {
+        const taskEnd = entry.startTime + entry.duration;
+        window.____lastLongTask = Math.max(window.____lastLongTask || 0, taskEnd);
+      }
+    }
+  });
+
+  observer.observe({type: 'longtask', buffered: true});
+}
+
+/**
+ * This function is executed in the page itself.
+ *
+ * Used by _waitForCPUIdle and executed in the context of the page, returns time since last long task.
+ * @return {Promise<number>}
+ */
+function checkTimeSinceLastLongTaskInPage() {
+  // This function attempts to return the time since the last long task occurred.
+  // `PerformanceObserver`s don't always immediately fire though, so we check twice with some time in
+  // between to make sure nothing has happened very recently.
+
+  // Chrome 88 introduced heavy throttling of timers which means our `setTimeout` will be executed
+  // at some point farish (several hundred ms) into the future and the time at which it executes isn't
+  // a reliable indicator of long task existence, instead we check if any information has changed.
+  // See https://developer.chrome.com/blog/timer-throttling-in-chrome-88/
+  return new Promise(resolve => {
+    const firstAttemptTs = performance.now();
+    const firstAttemptLastLongTaskTs = window.____lastLongTask || 0;
+
+    setTimeout(() => {
+      // We can't be sure a long task hasn't occurred since our first attempt, but if the `____lastLongTask`
+      // value is the same (i.e. the perf observer didn't have any new information), we can be pretty
+      // confident that the long task info was accurate *at the time of our first attempt*.
+      const secondAttemptLastLongTaskTs = window.____lastLongTask || 0;
+      const timeSinceLongTask =
+        firstAttemptLastLongTaskTs === secondAttemptLastLongTaskTs
+          ? // The time of the last long task hasn't changed, the information from our first attempt is accurate.
+            firstAttemptTs - firstAttemptLastLongTaskTs
+          : // The time of the last long task *did* change, we can't really trust the information we have.
+            0;
+      resolve(timeSinceLongTask);
+    }, 150);
+  });
+}
+
+/* c8 ignore stop */
 
 /**
  * Return a promise that resolves `pauseAfterLoadMs` after the load event
@@ -293,7 +368,6 @@ function waitForLoadEvent(session, pauseAfterLoadMs) {
     cancel,
   };
 }
-
 
 /**
  * Returns whether the page appears to be hung.
@@ -424,6 +498,32 @@ async function waitForFullyLoaded(session, networkMonitor, options) {
   return cleanupFn();
 }
 
+/**
+ * @param {LH.Gatherer.FRTransitionalDriver} driver
+ */
+function waitForUserToContinue(driver) {
+  /* c8 ignore start */
+  function createInPagePromise() {
+    let resolve = () => {};
+    /** @type {Promise<void>} */
+    const promise = new Promise(r => resolve = r);
+
+    // eslint-disable-next-line no-console
+    console.log([
+      `You have enabled Lighthouse navigation debug mode.`,
+      `When you have finished inspecting the page, evaluate "continueLighthouseRun()"`,
+      `in the console to continue with the Lighthouse run.`,
+    ].join(' '));
+
+    window.continueLighthouseRun = resolve;
+    return promise;
+  }
+  /* c8 ignore stop */
+
+  driver.defaultSession.setNextProtocolTimeout(2 ** 31 - 1);
+  return driver.executionContext.evaluate(createInPagePromise, {args: []});
+}
+
 module.exports = {
   waitForNothing,
   waitForFrameNavigated,
@@ -432,4 +532,5 @@ module.exports = {
   waitForNetworkIdle,
   waitForCPUIdle,
   waitForFullyLoaded,
+  waitForUserToContinue,
 };

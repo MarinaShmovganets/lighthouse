@@ -3,16 +3,15 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const {isIcuMessage} = require('../../lib/i18n/i18n.js');
-const {getTranslatedDescription, parseCsp} = require('../../lib/csp-evaluator.js');
-
-const {
+import {
   evaluateForFailure,
   evaluateForWarnings,
   evaluateForSyntaxErrors,
-} = require('csp_evaluator/dist/lighthouse/lighthouse_checks.js');
+} from 'csp_evaluator/dist/lighthouse/lighthouse_checks.js';
+
+import {isIcuMessage} from '../../../shared/localization/format.js';
+import {getTranslatedDescription, parseCsp} from '../../lib/csp-evaluator.js';
 
 /**
  * @param {string[]} rawCsps
@@ -35,8 +34,6 @@ function evaluateRawCspForSyntax(rawCsps) {
   return evaluateForSyntaxErrors(rawCsps.map(parseCsp));
 }
 
-/* eslint-env jest */
-
 describe('getTranslatedDescription', () => {
   it('missing script-src', () => {
     const rawCsp = `object-src 'none'`;
@@ -58,9 +55,8 @@ describe('getTranslatedDescription', () => {
     expect(translated).toHaveLength(1);
     expect(isIcuMessage(translated[0])).toBeTruthy();
     expect(translated[0]).toBeDisplayString(
-      'Elements controlled by object-src are considered legacy features. ' +
-      'Consider setting object-src to \'none\' to prevent the injection of ' +
-      'plugins that execute unsafe scripts.'
+      'Missing object-src allows the injection of plugins that execute unsafe scripts. ' +
+      'Consider setting object-src to \'none\' if you can.'
     );
   });
 
@@ -91,8 +87,36 @@ describe('getTranslatedDescription', () => {
     );
   });
 
+  it('wildcard', () => {
+    const rawCsp = `script-src 'strict-dynamic' *; object-src *`;
+    const findings = evaluateRawCspForFailures([rawCsp]);
+    const translated = findings.map(getTranslatedDescription);
+
+    expect(translated).toHaveLength(1);
+    expect(findings[0].directive).toEqual('object-src');
+    expect(isIcuMessage(translated[0])).toBeTruthy();
+    expect(translated[0]).toBeDisplayString(
+      'Avoid using plain wildcards (*) in this directive. ' +
+      'Plain wildcards allow scripts to be sourced from an unsafe domain.'
+    );
+  });
+
+  it('plain url scheme', () => {
+    const rawCsp = `script-src 'strict-dynamic' https:; object-src https:`;
+    const findings = evaluateRawCspForFailures([rawCsp]);
+    const translated = findings.map(getTranslatedDescription);
+
+    expect(translated).toHaveLength(1);
+    expect(findings[0].directive).toEqual('object-src');
+    expect(isIcuMessage(translated[0])).toBeTruthy();
+    expect(translated[0]).toBeDisplayString(
+      'Avoid using plain URL schemes (https:) in this directive. ' +
+      'Plain URL schemes allow scripts to be sourced from an unsafe domain.'
+    );
+  });
+
   it('strict-dynamic', () => {
-    const rawCsp = `script-src http:; object-src 'none'`;
+    const rawCsp = `script-src https://example.com; object-src 'none'`;
     const findings = evaluateRawCspForFailures([rawCsp]);
     const translated = findings.map(getTranslatedDescription);
 
@@ -100,34 +124,7 @@ describe('getTranslatedDescription', () => {
     expect(isIcuMessage(translated[0])).toBeTruthy();
     expect(translated[0]).toBeDisplayString(
       'Host allowlists can frequently be bypassed. Consider using ' +
-      '\'strict-dynamic\' in combination with CSP nonces or hashes.'
-    );
-  });
-
-  it('no reporting destination', () => {
-    const rawCsp = `script-src 'none'`;
-    const findings = evaluateRawCspForWarnings([rawCsp]);
-    const translated = findings.map(getTranslatedDescription);
-
-    expect(translated).toHaveLength(1);
-    expect(isIcuMessage(translated[0])).toBeTruthy();
-    expect(translated[0]).toBeDisplayString(
-      'No CSP configures a reporting destination. ' +
-      'This makes it difficult to maintain the CSP over time and monitor for any breakages.'
-    );
-  });
-
-  it('report-to only', () => {
-    const rawCsp = `script-src 'none'; report-to https://example.com`;
-    const findings = evaluateRawCspForWarnings([rawCsp]);
-    const translated = findings.map(getTranslatedDescription);
-
-    expect(translated).toHaveLength(1);
-    expect(isIcuMessage(translated[0])).toBeTruthy();
-    expect(translated[0]).toBeDisplayString(
-      'The reporting destination is only configured via the report-to directive. ' +
-      'This directive is only supported in Chromium-based browsers so it is ' +
-      'recommended to also use a report-uri directive.'
+      'CSP nonces or hashes instead, along with \'strict-dynamic\' if necessary.'
     );
   });
 

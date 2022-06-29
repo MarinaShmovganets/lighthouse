@@ -17,59 +17,68 @@
  */
 class FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
-  meta = {supportedModes: []}
-
-  /**
-   * Method to start observing a page before a navigation.
-   * @param {LH.Gatherer.FRTransitionalContext} passContext
-   * @return {Promise<void>|void}
-   */
-  beforeNavigation(passContext) { }
+  meta = {supportedModes: []};
 
   /**
    * Method to start observing a page for an arbitrary period of time.
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<void>|void}
    */
-  beforeTimespan(passContext) { }
+  startInstrumentation(passContext) { }
 
   /**
-   * Method to end observing a page after an arbitrary period of time and return the results.
+   * Method to start observing a page when the measurements are very sensitive and
+   * should observe as little Lighthouse-induced work as possible.
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
+   * @return {Promise<void>|void}
+   */
+  startSensitiveInstrumentation(passContext) { }
+
+  /**
+   * Method to stop observing a page when the measurements are very sensitive and
+   * should observe as little Lighthouse-induced work as possible.
+   *
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
+   * @return {Promise<void>|void}
+   */
+  stopSensitiveInstrumentation(passContext) { }
+
+  /**
+   * Method to end observing a page after an arbitrary period of time.
+   * @param {LH.Gatherer.FRTransitionalContext} passContext
+   * @return {Promise<void>|void}
+   */
+  stopInstrumentation(passContext) { }
+
+  /**
+   * Method to gather results about a page.
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {LH.Gatherer.PhaseResult}
    */
-  afterTimespan(passContext) { }
-
-  /**
-   * Method to end observing a page after a navigation and return the results.
-   * @param {LH.Gatherer.FRTransitionalContext} passContext
-   * @return {LH.Gatherer.PhaseResult}
-   */
-  afterNavigation(passContext) { }
-
-  /**
-   * Method to gather results about a page in a particular state.
-   * @param {LH.Gatherer.FRTransitionalContext} passContext
-   * @return {LH.Gatherer.PhaseResult}
-   */
-  snapshot(passContext) { }
+  getArtifact(passContext) { }
 
   /**
    * Legacy property used to define the artifact ID. In Fraggle Rock, the artifact ID lives on the config.
    * @return {keyof LH.GathererArtifacts}
    */
   get name() {
+    let name = this.constructor.name;
+    // Rollup will mangle class names in an known way–just trim until `$`.
+    if (name.includes('$')) {
+      name = name.substr(0, name.indexOf('$'));
+    }
     // @ts-expect-error - assume that class name has been added to LH.GathererArtifacts.
-    return this.constructor.name;
+    return name;
   }
 
   /**
-   * Legacy method. Called before navigation to target url, roughly corresponds to `beforeTimespan`.
+   * Legacy method. Called before navigation to target url, roughly corresponds to `startInstrumentation`.
    * @param {LH.Gatherer.PassContext} passContext
    * @return {Promise<LH.Gatherer.PhaseResultNonPromise>}
    */
   async beforePass(passContext) {
-    await this.beforeTimespan({...passContext, dependencies: {}});
+    await this.startInstrumentation({...passContext, dependencies: {}});
+    await this.startSensitiveInstrumentation({...passContext, dependencies: {}});
   }
 
   /**
@@ -80,17 +89,18 @@ class FRGatherer {
   pass(passContext) { }
 
   /**
-   * Legacy method. Roughly corresponds to `afterTimespan` or `snapshot` depending on type of gatherer.
+   * Legacy method. Roughly corresponds to `stopInstrumentation` or `getArtifact` depending on type of gatherer.
    * @param {LH.Gatherer.PassContext} passContext
    * @param {LH.Gatherer.LoadData} loadData
    * @return {Promise<LH.Gatherer.PhaseResultNonPromise>}
    */
   async afterPass(passContext, loadData) {
-    if (this.meta.supportedModes.includes('timespan')) {
-      return this.afterTimespan({...passContext, dependencies: {}});
+    if ('dependencies' in this.meta) {
+      throw Error('Gatherer with dependencies should override afterPass');
     }
-
-    return this.snapshot({...passContext, dependencies: {}});
+    await this.stopSensitiveInstrumentation({...passContext, dependencies: {}});
+    await this.stopInstrumentation({...passContext, dependencies: {}});
+    return this.getArtifact({...passContext, dependencies: {}});
   }
 }
 

@@ -5,52 +5,142 @@
  */
 'use strict';
 
-const Gatherer = require('./gatherer.js');
+const log = require('lighthouse-logger');
+const FRGatherer = require('../../fraggle-rock/gather/base-gatherer.js');
+const Sentry = require('../../lib/sentry.js');
 
 /**
  * @fileoverview Tracks unused CSS rules.
  */
-class CSSUsage extends Gatherer {
+class CSSUsage extends FRGatherer {
+  constructor() {
+    super();
+    /** @type {LH.Gatherer.FRProtocolSession|undefined} */
+    this._session = undefined;
+    /** @type {Map<string, Promise<LH.Artifacts.CSSStyleSheetInfo|Error>>} */
+    this._sheetPromises = new Map();
+    /**
+     * Initialize as undefined so we can assert results are fetched.
+     * @type {LH.Crdp.CSS.RuleUsage[]|undefined}
+     */
+    this._ruleUsage = undefined;
+    this._onStylesheetAdded = this._onStylesheetAdded.bind(this);
+  }
+
+  /** @type {LH.Gatherer.GathererMeta} */
+  meta = {
+    supportedModes: ['snapshot', 'timespan', 'navigation'],
+  };
+
   /**
-   * @param {LH.Gatherer.PassContext} passContext
+   * @param {LH.Crdp.CSS.StyleSheetAddedEvent} event
+   */
+  async _onStylesheetAdded(event) {
+    if (!this._session) throw new Error('Session not initialized');
+    const styleSheetId = event.header.styleSheetId;
+    const sheetPromise = this._session.sendCommand('CSS.getStyleSheetText', {styleSheetId})
+      .then(content => ({
+        header: event.header,
+        content: content.text,
+      }))
+      .catch(/** @param {Error} err */ (err) => {
+        log.warn(
+          'CSSUsage',
+          `Error fetching content of stylesheet with URL "${event.header.sourceURL}"`
+        );
+        Sentry.captureException(err, {
+          tags: {
+            gatherer: this.name,
+          },
+          extra: {
+            url: event.header.sourceURL,
+          },
+          level: 'error',
+        });
+        return err;
+      });
+    this._sheetPromises.set(styleSheetId, sheetPromise);
+  }
+
+  /**
+   * @param {LH.Gatherer.FRTransitionalContext} context
+   */
+  async startCSSUsageTracking(context) {
+    const session = context.driver.defaultSession;
+    this._session = session;
+    session.on('CSS.styleSheetAdded', this._onStylesheetAdded);
+
+    await session.sendCommand('DOM.enable');
+    await session.sendCommand('CSS.enable');
+    await session.sendCommand('CSS.startRuleUsageTracking');
+  }
+
+
+  /**
+   * @param {LH.Gatherer.FRTransitionalContext} context
+   */
+  async stopCSSUsageTracking(context) {
+    const session = context.driver.defaultSession;
+    const coverageResponse = await session.sendCommand('CSS.stopRuleUsageTracking');
+    this._ruleUsage = coverageResponse.ruleUsage;
+    session.off('CSS.styleSheetAdded', this._onStylesheetAdded);
+  }
+
+  /**
+   * @param {LH.Gatherer.FRTransitionalContext} context
+   */
+  async startInstrumentation(context) {
+    if (context.gatherMode !== 'timespan') return;
+    await this.startCSSUsageTracking(context);
+  }
+
+  /**
+   * @param {LH.Gatherer.FRTransitionalContext} context
+   */
+  async stopInstrumentation(context) {
+    if (context.gatherMode !== 'timespan') return;
+    await this.stopCSSUsageTracking(context);
+  }
+
+  /**
+   * @param {LH.Gatherer.FRTransitionalContext} context
    * @return {Promise<LH.Artifacts['CSSUsage']>}
    */
-  async afterPass(passContext) {
-    const driver = passContext.driver;
+  async getArtifact(context) {
+    const session = context.driver.defaultSession;
+    const executionContext = context.driver.executionContext;
 
-    /** @type {Array<LH.Crdp.CSS.StyleSheetAddedEvent>} */
-    const stylesheets = [];
-    /** @param {LH.Crdp.CSS.StyleSheetAddedEvent} sheet */
-    const onStylesheetAdded = sheet => stylesheets.push(sheet);
-    driver.on('CSS.styleSheetAdded', onStylesheetAdded);
+    if (context.gatherMode !== 'timespan') {
+      await this.startCSSUsageTracking(context);
 
-    await driver.sendCommand('DOM.enable');
-    await driver.sendCommand('CSS.enable');
-    await driver.sendCommand('CSS.startRuleUsageTracking');
-    await driver.executionContext.evaluateAsync('getComputedStyle(document.body)');
-    driver.off('CSS.styleSheetAdded', onStylesheetAdded);
+      // Force style to recompute.
+      // Doesn't appear to be necessary in newer versions of Chrome.
+      await executionContext.evaluateAsync('getComputedStyle(document.body)');
 
-    // Fetch style sheet content in parallel.
-    const promises = stylesheets.map(sheet => {
-      const styleSheetId = sheet.header.styleSheetId;
-      return driver.sendCommand('CSS.getStyleSheetText', {styleSheetId}).then(content => {
-        return {
-          header: sheet.header,
-          content: content.text,
-        };
-      });
-    });
-    const styleSheetInfo = await Promise.all(promises);
+      await this.stopCSSUsageTracking(context);
+    }
 
-    const ruleUsageResponse = await driver.sendCommand('CSS.stopRuleUsageTracking');
-    await driver.sendCommand('CSS.disable');
-    await driver.sendCommand('DOM.disable');
+    /** @type {Map<string, LH.Artifacts.CSSStyleSheetInfo>} */
+    const dedupedStylesheets = new Map();
+    const sheets = await Promise.all(this._sheetPromises.values());
 
-    const dedupedStylesheets = new Map(styleSheetInfo.map(sheet => {
-      return [sheet.content, sheet];
-    }));
+    for (const sheet of sheets) {
+      // Erroneous sheets will be reported via sentry and the log.
+      // We can ignore them here without throwing a fatal error.
+      if (sheet instanceof Error) {
+        continue;
+      }
+
+      dedupedStylesheets.set(sheet.content, sheet);
+    }
+
+    await session.sendCommand('CSS.disable');
+    await session.sendCommand('DOM.disable');
+
+    if (!this._ruleUsage) throw new Error('Issue collecting rule usages');
+
     return {
-      rules: ruleUsageResponse.ruleUsage,
+      rules: this._ruleUsage,
       stylesheets: Array.from(dedupedStylesheets.values()),
     };
   }

@@ -3,34 +3,36 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const CspXss = require('../../audits/csp-xss.js');
-const {Type} = require('csp_evaluator/dist/finding.js');
-const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
+import {Type} from 'csp_evaluator/dist/finding.js';
 
-/* eslint-env jest */
+import CspXss from '../../audits/csp-xss.js';
+import networkRecordsToDevtoolsLog from '../network-records-to-devtools-log.js';
 
-/** Using tooltips while severity icons are just for testing. */
-const ICONS = {
-  bypass: 'Bypass',
-  warning: 'Warning',
-  syntax: 'Syntax',
+const SEVERITY = {
+  syntax: {
+    formattedDefault: 'Syntax',
+  },
+  high: {
+    formattedDefault: 'High',
+  },
+  medium: {
+    formattedDefault: 'Medium',
+  },
 };
 
 const STATIC_RESULTS = {
   noObjectSrc: {
-    severity: ICONS.bypass,
+    severity: SEVERITY.high,
     description: {
       formattedDefault:
-        'Elements controlled by object-src are considered legacy features. ' +
-        'Consider setting object-src to \'none\' to prevent the injection of ' +
-        'plugins that execute unsafe scripts.',
+        'Missing object-src allows the injection of plugins that execute unsafe scripts. ' +
+        'Consider setting object-src to \'none\' if you can.',
     },
     directive: 'object-src',
   },
   noBaseUri: {
-    severity: ICONS.bypass,
+    severity: SEVERITY.high,
     description: {
       formattedDefault:
         'Missing base-uri allows injected <base> tags to set the base URL for all ' +
@@ -39,17 +41,8 @@ const STATIC_RESULTS = {
     },
     directive: 'base-uri',
   },
-  noReportingDestination: {
-    severity: ICONS.warning,
-    description: {
-      formattedDefault:
-        'No CSP configures a reporting destination. ' +
-        'This makes it difficult to maintain the CSP over time and monitor for any breakages.',
-    },
-    directive: 'report-uri',
-  },
   metaTag: {
-    severity: ICONS.warning,
+    severity: SEVERITY.medium,
     description: {
       formattedDefault:
         'The page contains a CSP defined in a <meta> tag. ' +
@@ -58,7 +51,7 @@ const STATIC_RESULTS = {
     directive: undefined,
   },
   unsafeInlineFallback: {
-    severity: ICONS.warning,
+    severity: SEVERITY.medium,
     description: {
       formattedDefault:
         'Consider adding \'unsafe-inline\' (ignored by browsers supporting ' +
@@ -70,7 +63,6 @@ const STATIC_RESULTS = {
 
 it('audit basic header', async () => {
   const artifacts = {
-    URL: 'https://example.com',
     MetaElements: [],
     devtoolsLogs: {
       defaultPass: networkRecordsToDevtoolsLog([
@@ -82,12 +74,19 @@ it('audit basic header', async () => {
         },
       ]),
     },
+    URL: {
+      initialUrl: 'about:blank',
+      requestedUrl: 'https://example.com',
+      mainDocumentUrl: 'https://example.com',
+      finalUrl: 'https://example.com',
+    },
   };
   const results = await CspXss.audit(artifacts, {computedCache: new Map()});
+  expect(results.notApplicable).toBeFalsy();
   expect(results.details.items).toMatchObject(
     [
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.syntax,
         description: {
           value:
             'script-src \'nonce-12345678\'; foo-bar \'none\'',
@@ -106,16 +105,47 @@ it('audit basic header', async () => {
       },
       STATIC_RESULTS.noObjectSrc,
       STATIC_RESULTS.noBaseUri,
-      STATIC_RESULTS.noReportingDestination,
       STATIC_RESULTS.unsafeInlineFallback,
     ]
   );
 });
 
+it('marked N/A if no warnings found', async () => {
+  const artifacts = {
+    URL: {
+      initialUrl: 'about:blank',
+      requestedUrl: 'https://example.com',
+      mainDocumentUrl: 'https://example.com',
+      finalUrl: 'https://example.com',
+    },
+    MetaElements: [],
+    devtoolsLogs: {
+      defaultPass: networkRecordsToDevtoolsLog([
+        {
+          url: 'https://example.com',
+          responseHeaders: [
+            {
+              name: 'Content-Security-Policy',
+              value: `script-src 'none'; object-src 'none'; base-uri 'none'; report-uri https://csp.example.com`},
+          ],
+        },
+      ]),
+    },
+  };
+  const results = await CspXss.audit(artifacts, {computedCache: new Map()});
+  expect(results.details.items).toHaveLength(0);
+  expect(results.notApplicable).toBeTruthy();
+});
+
 describe('getRawCsps', () => {
   it('basic case', async () => {
     const artifacts = {
-      URL: 'https://example.com',
+      URL: {
+        initialUrl: 'about:blank',
+        requestedUrl: 'https://example.com',
+        mainDocumentUrl: 'https://example.com',
+        finalUrl: 'https://example.com',
+      },
       MetaElements: [
         {
           httpEquiv: 'Content-Security-Policy',
@@ -140,8 +170,8 @@ describe('getRawCsps', () => {
         ]),
       },
     };
-    const {cspHeaders, cspMetaTags}
-      = await CspXss.getRawCsps(artifacts, {computedCache: new Map()});
+    const {cspHeaders, cspMetaTags} =
+      await CspXss.getRawCsps(artifacts, {computedCache: new Map()});
     expect(cspHeaders).toEqual([
       `script-src 'none'`,
       `object-src 'none'`,
@@ -153,7 +183,12 @@ describe('getRawCsps', () => {
 
   it('split on comma', async () => {
     const artifacts = {
-      URL: 'https://example.com',
+      URL: {
+        initialUrl: 'about:blank',
+        requestedUrl: 'https://example.com',
+        mainDocumentUrl: 'https://example.com',
+        finalUrl: 'https://example.com',
+      },
       MetaElements: [],
       devtoolsLogs: {
         defaultPass: networkRecordsToDevtoolsLog([
@@ -173,8 +208,8 @@ describe('getRawCsps', () => {
         ]),
       },
     };
-    const {cspHeaders, cspMetaTags}
-      = await CspXss.getRawCsps(artifacts, {computedCache: new Map()});
+    const {cspHeaders, cspMetaTags} =
+      await CspXss.getRawCsps(artifacts, {computedCache: new Map()});
     expect(cspHeaders).toEqual([
       `script-src 'none'`,
       `default-src 'none'`,
@@ -185,7 +220,12 @@ describe('getRawCsps', () => {
 
   it('ignore if empty', async () => {
     const artifacts = {
-      URL: 'https://example.com',
+      URL: {
+        initialUrl: 'about:blank',
+        requestedUrl: 'https://example.com',
+        mainDocumentUrl: 'https://example.com',
+        finalUrl: 'https://example.com',
+      },
       MetaElements: [],
       devtoolsLogs: {
         defaultPass: networkRecordsToDevtoolsLog([
@@ -205,8 +245,8 @@ describe('getRawCsps', () => {
         ]),
       },
     };
-    const {cspHeaders, cspMetaTags}
-      = await CspXss.getRawCsps(artifacts, {computedCache: new Map()});
+    const {cspHeaders, cspMetaTags} =
+      await CspXss.getRawCsps(artifacts, {computedCache: new Map()});
     expect(cspHeaders).toEqual([
       `object-src 'none'`,
     ]);
@@ -215,7 +255,12 @@ describe('getRawCsps', () => {
 
   it('ignore if only whitespace', async () => {
     const artifacts = {
-      URL: 'https://example.com',
+      URL: {
+        initialUrl: 'about:blank',
+        requestedUrl: 'https://example.com',
+        mainDocumentUrl: 'https://example.com',
+        finalUrl: 'https://example.com',
+      },
       MetaElements: [],
       devtoolsLogs: {
         defaultPass: networkRecordsToDevtoolsLog([
@@ -235,8 +280,8 @@ describe('getRawCsps', () => {
         ]),
       },
     };
-    const {cspHeaders, cspMetaTags}
-      = await CspXss.getRawCsps(artifacts, {computedCache: new Map()});
+    const {cspHeaders, cspMetaTags} =
+      await CspXss.getRawCsps(artifacts, {computedCache: new Map()});
     expect(cspHeaders).toEqual([
       `object-src 'none'`,
     ]);
@@ -250,7 +295,7 @@ describe('constructResults', () => {
     expect(score).toEqual(0);
     expect(results).toMatchObject([
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.syntax,
         description: {
           value: 'script-src \'none\'; foo-bar \'none\'',
         },
@@ -267,7 +312,6 @@ describe('constructResults', () => {
         },
       },
       STATIC_RESULTS.noObjectSrc,
-      STATIC_RESULTS.noReportingDestination,
     ]);
   });
 
@@ -292,7 +336,7 @@ describe('constructResults', () => {
     expect(score).toEqual(0);
     expect(results).toMatchObject([
       {
-        severity: ICONS.bypass,
+        severity: SEVERITY.high,
         description: {
           formattedDefault: 'No CSP found in enforcement mode',
         },
@@ -311,7 +355,7 @@ describe('constructSyntaxResults', () => {
     const results = CspXss.constructSyntaxResults(syntaxFindings, rawCsps);
     expect(results).toMatchObject([
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.syntax,
         description: {
           value: 'foo-bar \'none\'',
         },
@@ -351,7 +395,7 @@ describe('constructSyntaxResults', () => {
     const results = CspXss.constructSyntaxResults(syntaxFindings, rawCsps);
     expect(results).toMatchObject([
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.syntax,
         description: {
           value: 'foo-bar \'asdf\'',
         },
@@ -389,7 +433,7 @@ describe('constructSyntaxResults', () => {
     const results = CspXss.constructSyntaxResults(syntaxFindings, rawCsps);
     expect(results).toMatchObject([
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.syntax,
         description: {
           value: 'foo-bar \'none\'',
         },
@@ -406,7 +450,7 @@ describe('constructSyntaxResults', () => {
         },
       },
       {
-        severity: ICONS.syntax,
+        severity: SEVERITY.syntax,
         description: {
           value: 'object-src \'asdf\'',
         },

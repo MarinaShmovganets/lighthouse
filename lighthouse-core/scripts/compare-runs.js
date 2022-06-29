@@ -3,7 +3,6 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 /* eslint-disable no-console */
 
@@ -15,19 +14,24 @@
 // The script will report both timings and perf metric results. View just one of them by using --filter:
 //     node lighthouse-core/scripts/compare-runs.js --summarize --name pr --filter=metric
 
-const fs = require('fs');
+import fs from 'fs';
+import util from 'util';
+import childProcess from 'child_process';
+
+import glob from 'glob';
+import yargs from 'yargs';
+import * as yargsHelpers from 'yargs/helpers';
+
+import {LH_ROOT} from '../../root.js';
+import {ProgressLogger} from './lantern/collect/common.js';
+
 const mkdir = fs.promises.mkdir;
-const glob = require('glob');
-const util = require('util');
-const execFile = util.promisify(require('child_process').execFile);
-const yargs = require('yargs');
+const execFile = util.promisify(childProcess.execFile);
 
-const {ProgressLogger} = require('./lantern/collect/common.js');
-
-const LH_ROOT = `${__dirname}/../..`;
 const ROOT_OUTPUT_DIR = `${LH_ROOT}/timings-data`;
 
-const rawArgv = yargs
+const y = yargs(yargsHelpers.hideBin(process.argv));
+const rawArgv = y
   .help('help')
   .describe({
     // common flags
@@ -64,12 +68,13 @@ const rawArgv = yargs
   .default('sort-by-absolute-value', false)
   .default('lh-flags', '')
   .strict() // fail on unknown commands
-  .wrap(yargs.terminalWidth())
+  .wrap(y.terminalWidth())
   .argv;
 
 // Augmenting yargs type with auto-camelCasing breaks in tsc@4.1.2 and @types/yargs@15.0.11,
 // so for now cast to add yarg's camelCase properties to type.
-const argv = /** @type {typeof rawArgv & CamelCasify<typeof rawArgv>} */ (rawArgv);
+const argv =
+  /** @type {Awaited<typeof rawArgv> & CamelCasify<Awaited<typeof rawArgv>>} */ (rawArgv);
 
 const reportExcludeRegex =
   argv.reportExclude !== 'none' ? new RegExp(argv.reportExclude, 'i') : null;
@@ -227,9 +232,9 @@ function aggregateResults(name) {
       continue;
     }
 
-    if (argv.urlFilter && !lhr.requestedUrl.includes(argv.urlFilter)) continue;
+    if (argv.urlFilter && !lhr.requestedUrl?.includes(argv.urlFilter)) continue;
 
-    const metrics = lhr.audits.metrics && lhr.audits.metrics.details ?
+    const metrics = lhr.audits.metrics?.details ?
     /** @type {!LH.Audit.Details.Table} */ (lhr.audits.metrics.details).items[0] :
       {};
     const allEntries = {
@@ -357,12 +362,12 @@ function compare() {
     const someResult = baseResult || otherResult;
     if (!someResult) throw new Error('impossible');
 
-    const mean = compareValues(baseResult && baseResult.mean, otherResult && otherResult.mean);
-    const stdev = compareValues(baseResult && baseResult.stdev, otherResult && otherResult.stdev);
+    const mean = compareValues(baseResult?.mean, otherResult?.mean);
+    const stdev = compareValues(baseResult?.stdev, otherResult?.stdev);
     // eslint-disable-next-line max-len
     const cv = compareValues(baseResult && parseFloat(baseResult.CV), otherResult && parseFloat(otherResult.CV));
-    const min = compareValues(baseResult && baseResult.min, otherResult && otherResult.min);
-    const max = compareValues(baseResult && baseResult.max, otherResult && otherResult.max);
+    const min = compareValues(baseResult?.min, otherResult?.min);
+    const max = compareValues(baseResult?.max, otherResult?.max);
 
     return {
       'key': someResult.key,

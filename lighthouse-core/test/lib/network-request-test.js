@@ -3,13 +3,11 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const NetworkRequest = require('../../lib/network-request.js');
-const NetworkRecorder = require('../../lib/network-recorder.js');
-const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
+import NetworkRequest from '../../lib/network-request.js';
+import NetworkRecorder from '../../lib/network-recorder.js';
+import networkRecordsToDevtoolsLog from '../network-records-to-devtools-log.js';
 
-/* eslint-env jest */
 describe('NetworkRequest', () => {
   afterEach(() => {
     global.isLightrider = undefined;
@@ -287,6 +285,11 @@ describe('NetworkRequest', () => {
       expect(isSecureRequest({parsedURL: {scheme: 'http', host: '54.33.21.23'}})).toBe(false);
       expect(isSecureRequest({parsedURL: {scheme: 'ws', host: 'my-service.com'}})).toBe(false);
       expect(isSecureRequest({parsedURL: {scheme: '', host: 'google.com'}})).toBe(false);
+      expect(isSecureRequest({
+        parsedURL: {scheme: 'http', host: 'google.com'},
+        redirectDestination: {parsedURL: {scheme: 'https', host: 'google.com'}},
+        responseHeaders: [],
+      })).toBe(false);
     });
 
     it('correctly identifies secure records', () => {
@@ -300,6 +303,64 @@ describe('NetworkRequest', () => {
       expect(isSecureRequest({parsedURL: {scheme: '', host: ''}, protocol: 'blob'})).toBe(true);
       expect(isSecureRequest({parsedURL: {scheme: 'chrome', host: ''}})).toBe(true);
       expect(isSecureRequest({parsedURL: {scheme: 'chrome-extension', host: ''}})).toBe(true);
+      expect(isSecureRequest({
+        parsedURL: {scheme: 'http', host: 'google.com'},
+        redirectDestination: {parsedURL: {scheme: 'https', host: 'google.com'}},
+        responseHeaders: [{name: 'Non-Authoritative-Reason', value: 'HSTS'}],
+      })).toBe(true);
+    });
+  });
+
+  describe('#isHstsRequest', () => {
+    const isHstsRequest = NetworkRequest.isHstsRequest;
+
+    it('correctly identifies non-HSTS records', () => {
+      // missing a redirect destination
+      expect(isHstsRequest({
+        parsedURL: {scheme: 'http', host: 'google.com'},
+        responseHeaders: [{name: 'Non-Authoritative-Reason', value: 'HSTS'}],
+      })).toBe(false);
+
+      // no HSTS reason
+      expect(isHstsRequest({
+        parsedURL: {scheme: 'http', host: 'google.com'},
+        redirectDestination: {parsedURL: {scheme: 'https', host: 'google.com'}},
+        responseHeaders: [],
+      })).toBe(false);
+
+      // redirects to insecure
+      expect(isHstsRequest({
+        parsedURL: {scheme: 'http', host: 'google.com'},
+        redirectDestination: {parsedURL: {scheme: 'http', host: 'google.com'}},
+        responseHeaders: [{name: 'Non-Authoritative-Reason', value: 'HSTS'}],
+      })).toBe(false);
+    });
+
+    it('correctly identifies HSTS requests', () => {
+      expect(isHstsRequest({
+        parsedURL: {scheme: 'http', host: 'google.com'},
+        redirectDestination: {parsedURL: {scheme: 'https', host: 'google.com'}},
+        responseHeaders: [{name: 'Non-Authoritative-Reason', value: 'HSTS'}],
+      })).toBe(true);
+    });
+  });
+
+  describe('#isNonNetworkRequest', () => {
+    const isNonNetworkRequest = NetworkRequest.isNonNetworkRequest;
+
+    it('correctly identifies non-network records', () => {
+      // data protocol
+      expect(isNonNetworkRequest({protocol: 'data'})).toBe(true);
+
+      // filesystem scheme
+      expect(isNonNetworkRequest({protocol: '', parsedURL: {scheme: 'file'}})).toBe(true);
+    });
+
+    it('correctly identifies network records', () => {
+      expect(isNonNetworkRequest({
+        protocol: 'h2',
+        parsedURL: {scheme: 'http', host: 'google.com'},
+      })).toBe(false);
     });
   });
 });

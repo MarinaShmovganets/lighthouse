@@ -3,13 +3,11 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-/* eslint-env jest */
+import TagsBlockingFirstPaint from
+  '../../../../gather/gatherers/dobetterweb/tags-blocking-first-paint.js';
+import {createMockContext} from '../../../fraggle-rock/gather/mock-driver.js';
 
-const TagsBlockingFirstPaint =
-    require('../../../../gather/gatherers/dobetterweb/tags-blocking-first-paint.js');
-const assert = require('assert').strict;
 let tagsBlockingFirstPaint;
 const traceData = {
   networkRecords: [
@@ -150,13 +148,11 @@ describe('First paint blocking tags', () => {
       src: 'http://google.com/js/app.js',
     };
 
-    const artifact = await tagsBlockingFirstPaint.afterPass({
-      driver: {executionContext: {
-        evaluate() {
-          return Promise.resolve([linkDetails, linkDetails, scriptDetails]);
-        },
-      }},
-    }, traceData);
+    const mockContext = createMockContext();
+    mockContext.driver._executionContext.evaluate
+      .mockResolvedValue([linkDetails, linkDetails, scriptDetails]);
+
+    const artifact = await tagsBlockingFirstPaint.afterPass(mockContext, traceData);
 
     const expected = [
       {
@@ -172,6 +168,6 @@ describe('First paint blocking tags', () => {
         endTime: 22,
       },
     ];
-    assert.deepEqual(artifact, expected);
+    expect(artifact).toEqual(expected);
   });
 });

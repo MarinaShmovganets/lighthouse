@@ -3,28 +3,29 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const ExecutionContext = require('../../../gather/driver/execution-context.js');
-const {
-  createMockSendCommandFn: createMockSendCommandFn_,
+import {jest} from '@jest/globals';
+
+import ExecutionContext from '../../../gather/driver/execution-context.js';
+import {
+  mockCommands,
   makePromiseInspectable,
   flushAllTimersAndMicrotasks,
-} = require('../../test-utils.js');
-
-/* eslint-env jest */
+  fnAny,
+} from '../../test-utils.js';
 
 jest.useFakeTimers();
 
 // This can be removed when FR becomes the default.
-const createMockSendCommandFn = createMockSendCommandFn_.bind(null, {useSessionId: false});
+const createMockSendCommandFn =
+  mockCommands.createMockSendCommandFn.bind(null, {useSessionId: false});
 
 /** @return {LH.Gatherer.FRProtocolSession} */
 function createMockSession() {
   /** @type {any} */
   const session = {};
-  session.hasNextProtocolTimeout = jest.fn().mockReturnValue(false);
-  session.setNextProtocolTimeout = jest.fn();
+  session.hasNextProtocolTimeout = fnAny().mockReturnValue(false);
+  session.setNextProtocolTimeout = fnAny();
   return session;
 }
 
@@ -44,6 +45,8 @@ describe('ExecutionContext', () => {
 
     forceNewContextId = async (executionContext, executionContextId) => {
       executionContext._session.sendCommand = createMockSendCommandFn()
+        .mockResponse('Page.enable')
+        .mockResponse('Runtime.enable')
         .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
         .mockResponse('Page.createIsolatedWorld', {executionContextId})
         .mockResponse('Runtime.evaluate', {result: {value: 2}});
@@ -53,7 +56,7 @@ describe('ExecutionContext', () => {
   });
 
   it('should clear context on frame navigations', async () => {
-    const onMock = sessionMock.on = jest.fn();
+    const onMock = sessionMock.on = fnAny();
 
     const executionContext = new ExecutionContext(sessionMock);
 
@@ -67,7 +70,7 @@ describe('ExecutionContext', () => {
   });
 
   it('should clear context on execution context destroyed', async () => {
-    const onMock = sessionMock.on = jest.fn();
+    const onMock = sessionMock.on = fnAny();
 
     const executionContext = new ExecutionContext(sessionMock);
 
@@ -94,7 +97,7 @@ describe('.evaluateAsync', () => {
 
   beforeEach(() => {
     sessionMock = createMockSession();
-    sessionMock.on = jest.fn();
+    sessionMock.on = fnAny();
     executionContext = new ExecutionContext(sessionMock);
   });
 
@@ -110,8 +113,8 @@ describe('.evaluateAsync', () => {
   });
 
   it('uses a high default timeout', async () => {
-    const setNextProtocolTimeout = sessionMock.setNextProtocolTimeout = jest.fn();
-    sessionMock.hasNextProtocolTimeout = jest.fn().mockReturnValue(false);
+    const setNextProtocolTimeout = sessionMock.setNextProtocolTimeout = fnAny();
+    sessionMock.hasNextProtocolTimeout = fnAny().mockReturnValue(false);
     sessionMock.sendCommand = createMockSendCommandFn().mockRejectedValue(new Error('Timeout'));
 
     const evaluatePromise = makePromiseInspectable(executionContext.evaluateAsync('1 + 1'));
@@ -124,9 +127,9 @@ describe('.evaluateAsync', () => {
 
   it('uses the specific timeout given', async () => {
     const expectedTimeout = 5000;
-    const setNextProtocolTimeout = sessionMock.setNextProtocolTimeout = jest.fn();
-    sessionMock.hasNextProtocolTimeout = jest.fn().mockReturnValue(true);
-    sessionMock.getNextProtocolTimeout = jest.fn().mockReturnValue(expectedTimeout);
+    const setNextProtocolTimeout = sessionMock.setNextProtocolTimeout = fnAny();
+    sessionMock.hasNextProtocolTimeout = fnAny().mockReturnValue(true);
+    sessionMock.getNextProtocolTimeout = fnAny().mockReturnValue(expectedTimeout);
     sessionMock.sendCommand = createMockSendCommandFn().mockRejectedValue(new Error('Timeout'));
 
     const evaluatePromise = makePromiseInspectable(executionContext.evaluateAsync('1 + 1'));
@@ -139,6 +142,8 @@ describe('.evaluateAsync', () => {
 
   it('evaluates an expression in isolation', async () => {
     let sendCommand = (sessionMock.sendCommand = createMockSendCommandFn()
+      .mockResponse('Page.enable')
+      .mockResponse('Runtime.enable')
       .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
       .mockResponse('Page.createIsolatedWorld', {executionContextId: 1})
       .mockResponse('Runtime.evaluate', {result: {value: 2}}));
@@ -168,9 +173,13 @@ describe('.evaluateAsync', () => {
 
   it('recovers from isolation failures', async () => {
     sessionMock.sendCommand = createMockSendCommandFn()
+      .mockResponse('Page.enable')
+      .mockResponse('Runtime.enable')
       .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
       .mockResponse('Page.createIsolatedWorld', {executionContextId: 9001})
       .mockResponse('Runtime.evaluate', Promise.reject(new Error('Cannot find context')))
+      .mockResponse('Page.enable')
+      .mockResponse('Runtime.enable')
       .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
       .mockResponse('Page.createIsolatedWorld', {executionContextId: 9002})
       .mockResponse('Runtime.evaluate', {result: {value: 'mocked value'}});
@@ -188,7 +197,7 @@ describe('.evaluate', () => {
 
   beforeEach(() => {
     sessionMock = createMockSession();
-    sessionMock.on = jest.fn();
+    sessionMock.on = fnAny();
     executionContext = new ExecutionContext(sessionMock);
   });
 
@@ -206,11 +215,13 @@ describe('.evaluate', () => {
     const {expression} = mockFn.findInvocation('Runtime.evaluate');
     const expected = `
 (function wrapInNativePromise() {
-        const __nativePromise = globalThis.__nativePromise || Promise;
-        const URL = globalThis.__nativeURL || globalThis.URL;
+        const Promise = globalThis.__nativePromise || globalThis.Promise;
+const URL = globalThis.__nativeURL || globalThis.URL;
+const performance = globalThis.__nativePerformance || globalThis.performance;
+const fetch = globalThis.__nativeFetch || globalThis.fetch;
         globalThis.__lighthouseExecutionContextId = undefined;
-        return new __nativePromise(function (resolve) {
-          return __nativePromise.resolve()
+        return new Promise(function (resolve) {
+          return Promise.resolve()
             .then(_ => (() => {
 
       return (function main(value) {
@@ -231,7 +242,8 @@ describe('.evaluate', () => {
 })
             .then(resolve);
         });
-      }())`.trim();
+      }())
+      //# sourceURL=_lighthouse-eval.js`.trim();
     expect(trimTrailingWhitespace(expression)).toBe(trimTrailingWhitespace(expected));
     expect(await eval(expression)).toBe(1);
   });
@@ -239,7 +251,7 @@ describe('.evaluate', () => {
   it('transforms parameters into an expression (basic)', async () => {
     // Mock so the argument can be intercepted, and the generated code
     // can be evaluated without the error catching code.
-    const mockFn = executionContext._evaluateInContext = jest.fn()
+    const mockFn = executionContext._evaluateInContext = fnAny()
       .mockImplementation(() => Promise.resolve());
 
     /** @param {number} value */
@@ -250,8 +262,8 @@ describe('.evaluate', () => {
     const value = await executionContext.evaluate(mainFn, {args: [1]}); // eslint-disable-line no-unused-vars
 
     const code = mockFn.mock.calls[0][0];
-    expect(code).toBe(`(() => {
-      
+    expect(trimTrailingWhitespace(code)).toBe(`(() => {
+
       return (function mainFn(value) {
       return value;
     })(1);
@@ -262,7 +274,7 @@ describe('.evaluate', () => {
   it('transforms parameters into an expression (arrows)', async () => {
     // Mock so the argument can be intercepted, and the generated code
     // can be evaluated without the error catching code.
-    const mockFn = executionContext._evaluateInContext = jest.fn()
+    const mockFn = executionContext._evaluateInContext = fnAny()
       .mockImplementation(() => Promise.resolve());
 
     /** @param {number} value */
@@ -273,8 +285,8 @@ describe('.evaluate', () => {
     const value = await executionContext.evaluate(mainFn, {args: [1]}); // eslint-disable-line no-unused-vars
 
     const code = mockFn.mock.calls[0][0];
-    expect(code).toBe(`(() => {
-      
+    expect(trimTrailingWhitespace(code)).toBe(`(() => {
+
       return ((value) => {
       return value;
     })(1);
@@ -285,7 +297,7 @@ describe('.evaluate', () => {
   it('transforms parameters into an expression (complex)', async () => {
     // Mock so the argument can be intercepted, and the generated code
     // can be evaluated without the error catching code.
-    const mockFn = executionContext._evaluateInContext = jest.fn()
+    const mockFn = executionContext._evaluateInContext = fnAny()
       .mockImplementation(() => Promise.resolve());
 
     /**
@@ -327,5 +339,14 @@ function square(val) {
     })({"a":-5,"b":10},"hello");
     })()`);
     expect(eval(code)).toEqual({a: 5, b: 100, passThru: 'hello'});
+  });
+});
+
+describe('.serializeArguments', () => {
+  it('should serialize a list of differently typed arguments', () => {
+    const args = [undefined, 1, 'foo', null, {x: {y: {z: [2]}}}];
+    expect(ExecutionContext.serializeArguments(args)).toEqual(
+      `undefined,1,"foo",null,{"x":{"y":{"z":[2]}}}`
+    );
   });
 });

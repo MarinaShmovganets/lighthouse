@@ -3,20 +3,18 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const ImageAspectRatioAudit = require('../../audits/image-aspect-ratio.js');
-const assert = require('assert').strict;
+import {strict as assert} from 'assert';
 
-/* eslint-env jest */
+import ImageAspectRatioAudit from '../../audits/image-aspect-ratio.js';
 
-function generateImage(clientSize, naturalSize, props, src = 'https://google.com/logo.png') {
+function generateImage(clientSize, naturalDimensions, props, src = 'https://google.com/logo.png') {
   return {
     src,
-    mimeType: 'image/png',
-    cssComputedObjectFit: 'fill',
+    computedStyles: {objectFit: 'fill'},
+    naturalDimensions,
+    node: {devtoolsNodePath: '1,HTML,1,IMG'},
     ...clientSize,
-    ...naturalSize,
     ...props,
   };
 }
@@ -29,7 +27,7 @@ describe('Images: aspect-ratio audit', () => {
         ImageElements: [
           generateImage(
             {displayedWidth: data.clientSize[0], displayedHeight: data.clientSize[1]},
-            {naturalWidth: data.naturalSize[0], naturalHeight: data.naturalSize[1]},
+            {width: data.naturalSize[0], height: data.naturalSize[1]},
             data.props
           ),
         ],
@@ -81,7 +79,7 @@ describe('Images: aspect-ratio audit', () => {
     naturalSize: [800, 500],
     props: {
       isCss: false,
-      cssComputedObjectFit: 'cover',
+      computedStyles: {objectFit: 'cover'},
     },
   });
 
@@ -143,11 +141,13 @@ describe('Images: aspect-ratio audit', () => {
       ImageElements: [
         generateImage(
           {width: 150, height: 150},
-          {},
+          {width: 100, height: 200},
           {
-            mimeType: 'image/svg+xml',
             isCss: false,
-          }
+            displayedWidth: 150,
+            displayedHeight: 150,
+          },
+          'https://google.com/logo.svg'
         ),
       ],
     });

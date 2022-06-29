@@ -41,14 +41,14 @@ class CacheContents extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['snapshot', 'navigation'],
-  }
+  };
 
   /**
    * Creates an array of cached URLs.
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['CacheContents']>}
    */
-  async snapshot(passContext) {
+  async getArtifact(passContext) {
     const driver = passContext.driver;
 
     const cacheUrls = await driver.executionContext.evaluate(getCacheContents, {args: []});

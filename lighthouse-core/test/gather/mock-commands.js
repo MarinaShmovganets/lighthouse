@@ -3,13 +3,13 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
+
 
 /**
  * @fileoverview Refer to driver-test.js and source-maps-test.js for intended usage.
  */
 
-/* eslint-env jest */
+import {fnAny} from '../test-utils.js';
 
 /**
  * @template {keyof LH.CrdpCommands} C
@@ -30,6 +30,8 @@
  *    - `findInvocation` which asserts that `sendCommand` was invoked with the given command and
  *      returns the protocol message argument.
  *
+ * To mock an error response, use `send.mockResponse('Command', () => Promise.reject(error))`.
+ *
  * There are two variants of sendCommand, one that expects a sessionId as the second positional
  * argument (legacy Lighthouse `Connection.sendCommand`) and one that does not (Fraggle Rock
  * `ProtocolSession.sendCommand`).
@@ -47,14 +49,14 @@ function createMockSendCommandFn(options) {
    * @type {Array<{command: C|any, sessionId?: string, response?: MockResponse<C>, delay?: number}>}
    */
   const mockResponses = [];
-  const mockFnImpl = jest.fn().mockImplementation(
+  const mockFnImpl = fnAny().mockImplementation(
     /**
      * @template {keyof LH.CrdpCommands} C
      * @param {C} command
      * @param {string|undefined=} sessionId
      * @param {LH.CrdpCommands[C]['paramsType']} args
      */
-    (command, sessionId, ...args) => {
+    async (command, sessionId, ...args) => {
       if (!useSessionId) {
         // @ts-expect-error - If sessionId isn't used, it *is* args.
         args = [sessionId, ...args];
@@ -68,8 +70,7 @@ function createMockSendCommandFn(options) {
       mockResponses.splice(indexOfResponse, 1);
       const returnValue = typeof response === 'function' ? response(...args) : response;
       if (delay) return new Promise(resolve => setTimeout(() => resolve(returnValue), delay));
-      // @ts-expect-error: Some covariant type stuff doesn't work here. idk, I'm not a type scientist.
-      return Promise.resolve(returnValue);
+      return returnValue;
     });
 
   const mockFn = Object.assign(mockFnImpl, {
@@ -107,6 +108,15 @@ function createMockSendCommandFn(options) {
         call => call[0] === command && (!useSessionId || call[1] === sessionId)
       )[useSessionId ? 2 : 1];
     },
+    /**
+     * @param {keyof LH.CrdpCommands} command
+     * @param {string=} sessionId
+     */
+    findAllInvocations(command, sessionId) {
+      return mockFn.mock.calls.filter(
+        call => call[0] === command && (!useSessionId || call[1] === sessionId)
+      ).map(invocation => useSessionId ? invocation[2] : invocation[1]);
+    },
   });
 
   return mockFn;
@@ -127,7 +137,7 @@ function createMockOnceFn() {
    * @type {Array<{event: E|any, response?: MockEvent<E>}>}
    */
   const mockEvents = [];
-  const mockFnImpl = jest.fn().mockImplementation((eventName, listener) => {
+  const mockFnImpl = fnAny().mockImplementation((eventName, listener) => {
     const indexOfResponse = mockEvents.findIndex(entry => entry.event === eventName);
     if (indexOfResponse === -1) return;
     const {response} = mockEvents[indexOfResponse];
@@ -174,7 +184,7 @@ function createMockOnFn() {
    * @type {Array<{event: E|any, response?: MockEvent<E>}>}
    */
   const mockEvents = [];
-  const mockFnImpl = jest.fn().mockImplementation((eventName, listener) => {
+  const mockFnImpl = fnAny().mockImplementation((eventName, listener) => {
     const events = mockEvents.filter(entry => entry.event === eventName);
     if (!events.length) return;
     for (const event of events) {
@@ -206,12 +216,18 @@ function createMockOnFn() {
       expect(mockFn).toHaveBeenCalledWith(event, expect.anything());
       return mockFn.mock.calls.find(call => call[0] === event)[1];
     },
+    /**
+     * @param {keyof LH.CrdpEvents} event
+     */
+    getListeners(event) {
+      return mockFn.mock.calls.filter(call => call[0] === event).map(call => call[1]);
+    },
   });
 
   return mockFn;
 }
 
-module.exports = {
+export {
   createMockSendCommandFn,
   createMockOnceFn,
   createMockOnFn,

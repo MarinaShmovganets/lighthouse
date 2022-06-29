@@ -3,17 +3,19 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const PredictivePerf = require('../../audits/predictive-perf.js');
+import {readJson} from '../../../root.js';
+import PredictivePerf from '../../audits/predictive-perf.js';
+import {getURLArtifactFromDevtoolsLog} from '../test-utils.js';
 
-const acceptableTrace = require('../fixtures/traces/lcp-m78.json');
-const acceptableDevToolsLog = require('../fixtures/traces/lcp-m78.devtools.log.json');
+const acceptableTrace = readJson('../fixtures/traces/lcp-m78.json', import.meta);
+const acceptableDevToolsLog = readJson('../fixtures/traces/lcp-m78.devtools.log.json', import.meta);
 
-/* eslint-env jest */
 describe('Performance: predictive performance audit', () => {
-  it('should compute the predicted values', () => {
+  it('should compute the predicted values', async () => {
     const artifacts = {
+      URL: getURLArtifactFromDevtoolsLog(acceptableDevToolsLog),
+      GatherContext: {gatherMode: 'navigation'},
       traces: {
         [PredictivePerf.DEFAULT_PASS]: acceptableTrace,
       },
@@ -23,13 +25,12 @@ describe('Performance: predictive performance audit', () => {
     };
     const context = {computedCache: new Map(), settings: {locale: 'en'}};
 
-    return PredictivePerf.audit(artifacts, context).then(output => {
-      const metrics = output.details.items[0];
-      for (const [key, value] of Object.entries(metrics)) {
-        metrics[key] = Math.round(value);
-      }
-
-      expect(metrics).toMatchSnapshot();
-    });
+    const output = await PredictivePerf.audit(artifacts, context);
+    expect(output.displayValue).toBeDisplayString('4,670 ms');
+    const metrics = output.details.items[0];
+    for (const [key, value] of Object.entries(metrics)) {
+      metrics[key] = Math.round(value);
+    }
+    expect(metrics).toMatchSnapshot();
   });
 });

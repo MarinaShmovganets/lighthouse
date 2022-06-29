@@ -17,15 +17,14 @@
 # with a custom devtools location (could be path to standalone checkout):
 #   yarn devtools ~/code/devtools/devtools-frontend
 
+
+set -euo pipefail
+
 check="\033[96m ✓\033[39m"
 
-if [[ -n "$1" ]]; then
-  dt_dir="$1"
-else
-  dt_dir="$HOME/src/devtools/devtools-frontend"
-fi
+dt_dir="${1:-$HOME/src/devtools/devtools-frontend}"
 
-if [[ ! -d "$dt_dir" || ! -a "$dt_dir/front_end/shell.js" ]]; then
+if [[ ! -d "$dt_dir" || ! -a "$dt_dir/front_end/OWNERS" ]]; then
   echo -e "\033[31m✖ Error!\033[39m"
   echo "This script requires a devtools frontend folder. We didn't find one here:"
   echo "    $dt_dir"
@@ -39,9 +38,29 @@ mkdir -p "$fe_lh_dir"
 
 lh_bg_js="dist/lighthouse-dt-bundle.js"
 
-# copy lighthouse-dt-bundle (potentially stale)
+yarn build-report
+yarn build-devtools
+
+# copy lighthouse-dt-bundle
 cp -pPR "$lh_bg_js" "$fe_lh_dir/lighthouse-dt-bundle.js"
-echo -e "$check (Potentially stale) lighthouse-dt-bundle copied."
+echo -e "$check lighthouse-dt-bundle copied."
+
+# generate bundle.d.ts
+npx tsc --allowJs --declaration --emitDeclarationOnly dist/report/bundle.esm.js
+
+# Exports of report/clients/bundle.js can possibly be mistakenly overriden by tsc.
+# Funky sed inplace command so we support both GNU sed and BSD sed (used by GHA devtools runner on macos)
+#     https://stackoverflow.com/a/22084103/89484
+sed -i.bak 's/export type DOM = any;//' dist/report/bundle.esm.d.ts
+sed -i.bak 's/export type ReportRenderer = any;//' dist/report/bundle.esm.d.ts
+sed -i.bak 's/export type ReportUIFeatures = any;//' dist/report/bundle.esm.d.ts
+
+
+# copy report code $fe_lh_dir
+fe_lh_report_dir="$fe_lh_dir/report/"
+cp dist/report/bundle.esm.js "$fe_lh_report_dir/bundle.js"
+cp dist/report/bundle.esm.d.ts "$fe_lh_report_dir/bundle.d.ts"
+echo -e "$check Report code copied."
 
 # copy report generator + cached resources into $fe_lh_dir
 fe_lh_report_assets_dir="$fe_lh_dir/report-assets/"
@@ -49,7 +68,7 @@ rsync -avh dist/dt-report-resources/ "$fe_lh_report_assets_dir" --delete
 echo -e "$check Report resources copied."
 
 # copy locale JSON files (but not the .ctc.json ones)
-lh_locales_dir="lighthouse-core/lib/i18n/locales/"
+lh_locales_dir="shared/localization/locales/"
 fe_locales_dir="$fe_lh_dir/locales"
 rsync -avh "$lh_locales_dir" "$fe_locales_dir" --exclude="*.ctc.json" --delete
 echo -e "$check Locale JSON files copied."
@@ -58,7 +77,18 @@ echo -e "$check Locale JSON files copied."
 lh_webtests_dir="third-party/chromium-webtests/webtests/http/tests/devtools/lighthouse/"
 fe_webtests_dir="$dt_dir/test/webtests/http/tests/devtools/lighthouse"
 rsync -avh "$lh_webtests_dir" "$fe_webtests_dir" --exclude="OWNERS" --delete
+lh_webtests_exp_dir="third-party/chromium-webtests/webtests/platform/generic/http/tests/devtools/lighthouse/"
+fe_webtests_exp_dir="$dt_dir/test/webtests/platform/generic/http/tests/devtools/lighthouse"
+rsync -avh "$lh_webtests_exp_dir" "$fe_webtests_exp_dir" --exclude="OWNERS" --delete
+
+# copy e2e tests
+lh_e2e_dir="third-party/devtools-tests/e2e/lighthouse/"
+fe_e2e_dir="$dt_dir/test/e2e/lighthouse"
+rsync -avh "$lh_e2e_dir" "$fe_e2e_dir" --exclude="OWNERS" --exclude="BUILD.gn" --delete
+lh_e2e_res_dir="third-party/devtools-tests/e2e/resources/lighthouse/"
+fe_e2e_res_dir="$dt_dir/test/e2e/resources/lighthouse"
+rsync -avh "$lh_e2e_res_dir" "$fe_e2e_res_dir" --exclude="OWNERS" --exclude="BUILD.gn" --delete
 
 echo ""
-echo "Done. To run the webtests: " 
+echo "Done. To run the webtests: "
 echo "    DEVTOOLS_PATH=\"$dt_dir\" yarn test-devtools"

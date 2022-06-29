@@ -12,7 +12,8 @@ const FRGatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
 /**
  * Get and return `name`, `publicId`, `systemId` from
  * `document.doctype`
- * @return {{name: string, publicId: string, systemId: string} | null}
+ * and `compatMode` from `document` to check `quirks-mode`
+ * @return {{name: string, publicId: string, systemId: string, documentCompatMode: string} | null}
  */
 function getDoctype() {
   // An example of this is warnerbros.com/archive/spacejam/movie/jam.htm
@@ -20,21 +21,22 @@ function getDoctype() {
     return null;
   }
 
+  const documentCompatMode = document.compatMode;
   const {name, publicId, systemId} = document.doctype;
-  return {name, publicId, systemId};
+  return {name, publicId, systemId, documentCompatMode};
 }
 
 class Doctype extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['snapshot', 'navigation'],
-  }
+  };
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    * @return {Promise<LH.Artifacts['Doctype']>}
    */
-  snapshot(passContext) {
+  getArtifact(passContext) {
     const driver = passContext.driver;
     return driver.executionContext.evaluate(getDoctype, {
       args: [],

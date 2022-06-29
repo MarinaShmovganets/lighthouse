@@ -3,28 +3,30 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 /** @typedef {import('./common.js').Result} Result */
 /** @typedef {import('./common.js').Summary} Summary */
 
-const fs = require('fs');
-const fetch = require('node-fetch');
-const {execFile} = require('child_process');
-const {promisify} = require('util');
-const execFileAsync = promisify(execFile);
-const common = require('./common.js');
+import fs from 'fs';
+import {execFile} from 'child_process';
+import {promisify} from 'util';
 
-const LH_ROOT = `${__dirname}/../../../..`;
+import fetch from 'node-fetch';
+
+import defaultTestUrls from './urls.js';
+import * as common from './common.js';
+import {LH_ROOT} from '../../../../root.js';
+
+const execFileAsync = promisify(execFile);
+
 const SAMPLES = process.env.SAMPLES ? Number(process.env.SAMPLES) : 9;
-const TEST_URLS = process.env.TEST_URLS ? process.env.TEST_URLS.split(' ') : require('./urls.js');
+const TEST_URLS = process.env.TEST_URLS ? process.env.TEST_URLS.split(' ') : defaultTestUrls;
 
 if (!process.env.WPT_KEY) throw new Error('missing WPT_KEY');
 const WPT_KEY = process.env.WPT_KEY;
 const DEBUG = process.env.DEBUG;
 
-/** @type {typeof common.ProgressLogger['prototype']} */
-let log;
+const log = new common.ProgressLogger();
 
 /** @type {Summary} */
 let summary;
@@ -191,10 +193,7 @@ function assertLhr(lhr) {
   if (!lhr) throw new Error('missing lhr');
   if (lhr.runtimeError) throw new Error(`runtime error: ${lhr.runtimeError}`);
   const metrics = common.getMetrics(lhr);
-  if (metrics &&
-      metrics.estimatedInputLatency &&
-      metrics.firstContentfulPaint &&
-      metrics.firstCPUIdle &&
+  if (metrics?.firstContentfulPaint &&
       metrics.firstMeaningfulPaint &&
       metrics.interactive &&
       // WPT won't have this, we'll just get from the trace.
@@ -206,8 +205,6 @@ function assertLhr(lhr) {
 }
 
 async function main() {
-  log = new common.ProgressLogger();
-
   // Resume state from previous invocation of script.
   summary = common.loadSummary();
 
@@ -324,8 +321,8 @@ async function main() {
   log.closeProgress();
 }
 
-main().catch(err => {
+try {
+  await main();
+} finally {
   if (log) log.closeProgress();
-  process.stderr.write(`Fatal error in collect:\n\n  ${err.stack}`);
-  process.exit(1);
-});
+}

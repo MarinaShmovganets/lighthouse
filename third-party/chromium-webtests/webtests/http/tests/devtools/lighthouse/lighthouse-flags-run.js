@@ -10,11 +10,17 @@
   await TestRunner.showPanel('lighthouse');
 
   const dialogElement = LighthouseTestRunner.getContainerElement();
-  dialogElement.querySelector('input[name="lighthouse.device_type"][value="desktop"]').click();
+
   // Turn off simulated throttling.
-  dialogElement.querySelector('.lighthouse-settings-pane > div').shadowRoot
-               .querySelectorAll('span')[1].shadowRoot
-               .querySelector('input').click();
+  const select = dialogElement.querySelector('.lighthouse-settings-pane .toolbar')
+      .shadowRoot.querySelector('select')
+  select.querySelector('option[value="devtools"]').selected = true;
+
+  // Change event is not emitted automatically when updating select element programatically.
+  select.dispatchEvent(new Event('change'));
+
+  // Use desktop environment
+  dialogElement.querySelector('input[name="lighthouse.device_type"][value="desktop"]').click();
 
   LighthouseTestRunner.dumpStartAuditState();
   LighthouseTestRunner.getRunButton().click();
@@ -25,7 +31,7 @@
   TestRunner.addResult(`disableStorageReset: ${lhr.configSettings.disableStorageReset}`);
   TestRunner.addResult(`throttlingMethod: ${lhr.configSettings.throttlingMethod}`);
 
-  const viewTraceButton = LighthouseTestRunner.getResultsElement().querySelector('.view-trace');
+  const viewTraceButton = LighthouseTestRunner.getResultsElement().querySelector('.lh-button--trace');
   TestRunner.addResult(`\nView Trace Button Text: "${viewTraceButton.textContent}"`);
   TestRunner.addResult(`View Trace Button Title: "${viewTraceButton.title}"`);
 

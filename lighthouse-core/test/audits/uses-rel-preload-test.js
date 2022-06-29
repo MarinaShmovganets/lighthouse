@@ -4,17 +4,16 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-'use strict';
+import {strict as assert} from 'assert';
 
-/* eslint-env jest */
+import UsesRelPreload from '../../audits/uses-rel-preload.js';
+import networkRecordsToDevtoolsLog from '../network-records-to-devtools-log.js';
+import createTestTrace from '../create-test-trace.js';
+import {getURLArtifactFromDevtoolsLog} from '../test-utils.js';
+import {readJson} from '../../../root.js';
 
-const UsesRelPreload = require('../../audits/uses-rel-preload.js');
-const assert = require('assert').strict;
-
-const pwaTrace = require('../fixtures/traces/progressive-app-m60.json');
-const pwaDevtoolsLog = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
-const networkRecordsToDevtoolsLog = require('../network-records-to-devtools-log.js');
-const createTestTrace = require('../create-test-trace.js');
+const pwaTrace = readJson('../fixtures/traces/progressive-app-m60.json', import.meta);
+const pwaDevtoolsLog = readJson('../fixtures/traces/progressive-app-m60.devtools.log.json', import.meta);
 
 const defaultMainResourceUrl = 'http://www.example.com/';
 const defaultMainResource = {
@@ -38,7 +37,12 @@ describe('Performance: uses-rel-preload audit', () => {
     return {
       traces: {[UsesRelPreload.DEFAULT_PASS]: createTestTrace({traceEnd: 5000})},
       devtoolsLogs: {[UsesRelPreload.DEFAULT_PASS]: networkRecordsToDevtoolsLog(networkRecords)},
-      URL: {finalUrl},
+      URL: {
+        initialUrl: 'about:blank',
+        requestedUrl: finalUrl,
+        mainDocumentUrl: finalUrl,
+        finalUrl,
+      },
     };
   };
 
@@ -148,8 +152,9 @@ describe('Performance: uses-rel-preload audit', () => {
     ];
 
     const artifacts = mockArtifacts(networkRecords, mainDocumentNodeUrl);
+    artifacts.URL.requestedUrl = rootNodeUrl;
     const context = {settings: {}, computedCache: new Map()};
-    return UsesRelPreload.audit(artifacts, context).then(
+    return UsesRelPreload.audit_(artifacts, context).then(
       output => {
         assert.equal(output.details.overallSavingsMs, 330);
         assert.equal(output.details.items.length, 2);
@@ -166,7 +171,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
-    return UsesRelPreload.audit(artifacts, context).then(output => {
+    return UsesRelPreload.audit_(artifacts, context).then(output => {
       assert.equal(output.details.overallSavingsMs, 314);
       assert.equal(output.details.items.length, 1);
     });
@@ -203,7 +208,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
-    const result = await UsesRelPreload.audit(artifacts, context);
+    const result = await UsesRelPreload.audit_(artifacts, context);
     expect(result.warnings).toHaveLength(1);
   });
 
@@ -240,7 +245,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
-    const result = await UsesRelPreload.audit(artifacts, context);
+    const result = await UsesRelPreload.audit_(artifacts, context);
     expect(result.warnings).toBeUndefined();
   });
 
@@ -255,7 +260,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
-    const result = await UsesRelPreload.audit(artifacts, context);
+    const result = await UsesRelPreload.audit_(artifacts, context);
     expect(result.warnings).toBeUndefined();
   });
 
@@ -265,7 +270,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
-    return UsesRelPreload.audit(artifacts, context).then(output => {
+    return UsesRelPreload.audit_(artifacts, context).then(output => {
       assert.equal(output.score, 1);
       assert.equal(output.details.overallSavingsMs, 0);
       assert.equal(output.details.items.length, 0);
@@ -278,7 +283,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
-    const result = await UsesRelPreload.audit(artifacts, context);
+    const result = await UsesRelPreload.audit_(artifacts, context);
     expect(result).toMatchObject({score: 1, details: {overallSavingsMs: 0, items: []}});
   });
 
@@ -288,7 +293,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
-    return UsesRelPreload.audit(artifacts, context).then(output => {
+    return UsesRelPreload.audit_(artifacts, context).then(output => {
       assert.equal(output.score, 1);
       assert.equal(output.details.overallSavingsMs, 0);
       assert.equal(output.details.items.length, 0);
@@ -301,7 +306,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
-    return UsesRelPreload.audit(artifacts, context).then(output => {
+    return UsesRelPreload.audit_(artifacts, context).then(output => {
       assert.equal(output.numericValue, 0);
       assert.equal(output.details.items.length, 0);
     });
@@ -313,7 +318,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
-    return UsesRelPreload.audit(artifacts, context).then(output => {
+    return UsesRelPreload.audit_(artifacts, context).then(output => {
       assert.equal(output.numericValue, 0);
       assert.equal(output.details.items.length, 0);
     });
@@ -321,7 +326,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
   it('does not throw on a real trace/devtools log', async () => {
     const artifacts = {
-      URL: {finalUrl: 'https://pwa.rocks/'},
+      URL: getURLArtifactFromDevtoolsLog(pwaDevtoolsLog),
       traces: {
         [UsesRelPreload.DEFAULT_PASS]: pwaTrace,
       },
@@ -332,7 +337,7 @@ describe('Performance: uses-rel-preload audit', () => {
 
     const settings = {throttlingMethod: 'provided'};
     const context = {settings, computedCache: new Map()};
-    const result = await UsesRelPreload.audit(artifacts, context);
+    const result = await UsesRelPreload.audit_(artifacts, context);
     assert.equal(result.score, 1);
     assert.equal(result.numericValue, 0);
   });

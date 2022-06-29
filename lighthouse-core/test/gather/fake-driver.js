@@ -3,7 +3,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
+
+import {readJson} from '../../../root.js';
+import {fnAny} from '../test-utils.js';
 
 /**
  * @param {{protocolGetVersionResponse: LH.CrdpCommands['Browser.getVersion']['returnType']}} param0
@@ -13,10 +15,13 @@ function makeFakeDriver({protocolGetVersionResponse}) {
 
   return {
     get fetcher() {
-      return {
-        disableRequestInterception: () => Promise.resolve(),
-      };
+      return {};
     },
+    get defaultSession() {
+      return this;
+    },
+    on: fnAny(),
+    sendCommand: fnAny().mockResolvedValue(undefined),
     getBrowserVersion() {
       return Promise.resolve(Object.assign({}, protocolGetVersionResponse, {milestone: 71}));
     },
@@ -32,16 +37,6 @@ function makeFakeDriver({protocolGetVersionResponse}) {
     disconnect() {
       return Promise.resolve();
     },
-    /** @param {string} url */
-    gotoURL(url) {
-      return Promise.resolve({finalUrl: url, timedOut: false});
-    },
-    beginEmulation() {
-      return Promise.resolve();
-    },
-    setThrottling() {
-      return Promise.resolve();
-    },
     dismissJavaScriptDialogs() {
       return Promise.resolve();
     },
@@ -51,29 +46,15 @@ function makeFakeDriver({protocolGetVersionResponse}) {
     reloadForCleanStateIfNeeded() {
       return Promise.resolve();
     },
-    enableRuntimeEvents() {
-      return Promise.resolve();
-    },
-    enableAsyncStacks() {
-      return Promise.resolve();
-    },
-    evaluateScriptOnLoad() {
-      return Promise.resolve();
-    },
-    cleanBrowserCaches() {},
-    clearDataForOrigin() {},
-    getImportantStorageWarning() {
-      return Promise.resolve(undefined);
-    },
-    cacheNatives() {
-      return Promise.resolve();
-    },
     executionContext: {
       evaluateAsync() {
         return Promise.resolve({});
       },
       evaluate() {
         return Promise.resolve({});
+      },
+      cacheNativesOnNewDocument() {
+        return Promise.resolve();
       },
     },
     /** @param {{x: number, y: number}} position */
@@ -84,31 +65,23 @@ function makeFakeDriver({protocolGetVersionResponse}) {
     getScrollPosition() {
       return Promise.resolve(scrollPosition);
     },
-    registerPerformanceObserver() {
-      return Promise.resolve();
-    },
     beginTrace() {
       return Promise.resolve();
     },
     endTrace() {
-      // Minimal indirection so TypeScript doesn't crash trying to infer a type.
-      const modulePath = '../fixtures/traces/progressive-app.json';
-      return Promise.resolve(require(modulePath));
+      return Promise.resolve(
+        readJson('lighthouse-core/test/fixtures/traces/progressive-app.json'));
     },
     beginDevtoolsLog() {},
     endDevtoolsLog() {
-      // Minimal indirection so TypeScript doesn't crash trying to infer a type.
-      const modulePath = '../fixtures/artifacts/perflog/defaultPass.devtoolslog.json';
-      return require(modulePath);
-    },
-    blockUrlPatterns() {
-      return Promise.resolve();
-    },
-    setExtraHTTPHeaders() {
-      return Promise.resolve();
+      return readJson(
+        'lighthouse-core/test/fixtures/artifacts/perflog/defaultPass.devtoolslog.json');
     },
     registerRequestIdleCallbackWrap() {
       return Promise.resolve();
+    },
+    url() {
+      return Promise.resolve('about:blank');
     },
   };
 }
@@ -132,7 +105,8 @@ const fakeDriverUsingRealMobileDevice = makeFakeDriver({
   },
 });
 
-module.exports = {
+// TODO(esmodules): fix awkward export.
+export default {
   ...fakeDriver,
   fakeDriverUsingRealMobileDevice,
   protocolGetVersionResponse,

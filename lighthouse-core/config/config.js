@@ -8,18 +8,18 @@
 const defaultConfigPath = './default-config.js';
 const defaultConfig = require('./default-config.js');
 const constants = require('./constants.js');
-const i18n = require('./../lib/i18n/i18n.js');
+const format = require('../../shared/localization/format.js');
+const validation = require('./../fraggle-rock/config/validation.js');
 
 const log = require('lighthouse-logger');
 const path = require('path');
 const Runner = require('../runner.js');
-const ConfigPlugin = require('./config-plugin.js');
 const {
+  mergePlugins,
   mergeConfigFragment,
   resolveSettings,
   resolveAuditsToDefns,
   resolveGathererToDefn,
-  resolveModulePath,
   deepClone,
   deepCloneConfigJson,
 } = require('./config-helpers.js');
@@ -38,7 +38,9 @@ const BASE_ARTIFACT_BLANKS = {
   HostUserAgent: '',
   NetworkUserAgent: '',
   BenchmarkIndex: '',
+  BenchmarkIndexes: '',
   WebAppManifest: '',
+  GatherContext: '',
   InstallabilityErrors: '',
   Stacks: '',
   traces: '',
@@ -105,49 +107,6 @@ function assertValidPasses(passes, audits) {
 }
 
 /**
- * @param {Config['categories']} categories
- * @param {Config['audits']} audits
- * @param {Config['groups']} groups
- */
-function assertValidCategories(categories, audits, groups) {
-  if (!categories) {
-    return;
-  }
-
-  /** @type {Map<string, LH.Config.AuditDefn>} */
-  const auditsKeyedById = new Map((audits || []).map(audit => {
-    return [audit.implementation.meta.id, audit];
-  }));
-
-  Object.keys(categories).forEach(categoryId => {
-    categories[categoryId].auditRefs.forEach((auditRef, index) => {
-      if (!auditRef.id) {
-        throw new Error(`missing an audit id at ${categoryId}[${index}]`);
-      }
-
-      const audit = auditsKeyedById.get(auditRef.id);
-      if (!audit) {
-        throw new Error(`could not find ${auditRef.id} audit for category ${categoryId}`);
-      }
-
-      const auditImpl = audit.implementation;
-      const isManual = auditImpl.meta.scoreDisplayMode === 'manual';
-      if (categoryId === 'accessibility' && !auditRef.group && !isManual) {
-        throw new Error(`${auditRef.id} accessibility audit does not have a group`);
-      }
-
-      if (auditRef.weight > 0 && isManual) {
-        throw new Error(`${auditRef.id} is manual but has a positive weight`);
-      }
-
-      if (auditRef.group && (!groups || !groups[auditRef.group])) {
-        throw new Error(`${auditRef.id} references unknown group ${auditRef.group}`);
-      }
-    });
-  });
-}
-
-/**
  * @param {Gatherer} gathererInstance
  * @param {string=} gathererName
  */
@@ -191,35 +150,20 @@ function assertValidFlags(flags) {
 }
 
 /**
- * Throws if pluginName is invalid or (somehow) collides with a category in the
- * configJSON being added to.
- * @param {LH.Config.Json} configJSON
- * @param {string} pluginName
- */
-function assertValidPluginName(configJSON, pluginName) {
-  if (!pluginName.startsWith('lighthouse-plugin-')) {
-    throw new Error(`plugin name '${pluginName}' does not start with 'lighthouse-plugin-'`);
-  }
-
-  if (configJSON.categories && configJSON.categories[pluginName]) {
-    throw new Error(`plugin name '${pluginName}' not allowed because it is the id of a category already found in config`); // eslint-disable-line max-len
-  }
-}
-
-
-/**
  * @implements {LH.Config.Config}
  */
 class Config {
   /**
-   * @constructor
-   * @param {LH.Config.Json=} configJSON
+   * Resolves the provided config (inherits from extended config, if set), resolves
+   * all referenced modules, and validates.
+   * @param {LH.Config.Json=} configJSON If not provided, uses the default config.
    * @param {LH.Flags=} flags
+   * @return {Promise<Config>}
    */
-  constructor(configJSON, flags) {
+  static async fromJson(configJSON, flags) {
     const status = {msg: 'Create config', id: 'lh:init:config'};
     log.time(status, 'verbose');
-    let configPath = flags && flags.configPath;
+    let configPath = flags?.configPath;
 
     if (!configJSON) {
       configJSON = defaultConfig;
@@ -245,7 +189,7 @@ class Config {
     const configDir = configPath ? path.dirname(configPath) : undefined;
 
     // Validate and merge in plugins (if any).
-    configJSON = Config.mergePlugins(configJSON, flags, configDir);
+    configJSON = await mergePlugins(configJSON, configDir, flags);
 
     if (flags) {
       assertValidFlags(flags);
@@ -255,14 +199,28 @@ class Config {
     // Augment passes with necessary defaults and require gatherers.
     const passesWithDefaults = Config.augmentPassesWithDefaults(configJSON.passes);
     Config.adjustDefaultPassForThrottling(settings, passesWithDefaults);
-    const passes = Config.requireGatherers(passesWithDefaults, configDir);
+    const passes = await Config.requireGatherers(passesWithDefaults, configDir);
 
+    const audits = await Config.requireAudits(configJSON.audits, configDir);
+
+    const config = new Config(configJSON, {settings, passes, audits});
+    log.timeEnd(status);
+    return config;
+  }
+
+  /**
+   * @deprecated `Config.fromJson` should be used instead.
+   * @constructor
+   * @param {LH.Config.Json} configJSON
+   * @param {{settings: LH.Config.Settings, passes: ?LH.Config.Pass[], audits: ?LH.Config.AuditDefn[]}} opts
+   */
+  constructor(configJSON, opts) {
     /** @type {LH.Config.Settings} */
-    this.settings = settings;
+    this.settings = opts.settings;
     /** @type {?Array<LH.Config.Pass>} */
-    this.passes = passes;
+    this.passes = opts.passes;
     /** @type {?Array<LH.Config.AuditDefn>} */
-    this.audits = Config.requireAudits(configJSON.audits, configDir);
+    this.audits = opts.audits;
     /** @type {?Record<string, LH.Config.Category>} */
     this.categories = configJSON.categories || null;
     /** @type {?Record<string, LH.Config.Group>} */
@@ -271,9 +229,7 @@ class Config {
     Config.filterConfigIfNeeded(this);
 
     assertValidPasses(this.passes, this.audits);
-    assertValidCategories(this.categories, this.audits, this.groups);
-
-    log.timeEnd(status);
+    validation.assertValidCategories(this.categories, this.audits, this.groups);
   }
 
   /**
@@ -306,7 +262,7 @@ class Config {
     }
 
     // Printed config is more useful with localized strings.
-    i18n.replaceIcuMessages(jsonConfig, jsonConfig.settings.locale);
+    format.replaceIcuMessages(jsonConfig, jsonConfig.settings.locale);
 
     return JSON.stringify(jsonConfig, null, 2);
   }
@@ -334,33 +290,6 @@ class Config {
     }
 
     return mergeConfigFragment(baseJSON, extendJSON);
-  }
-
-  /**
-   * @param {LH.Config.Json} configJSON
-   * @param {LH.Flags=} flags
-   * @param {string=} configDir
-   * @return {LH.Config.Json}
-   */
-  static mergePlugins(configJSON, flags, configDir) {
-    const configPlugins = configJSON.plugins || [];
-    const flagPlugins = (flags && flags.plugins) || [];
-    const pluginNames = new Set([...configPlugins, ...flagPlugins]);
-
-    for (const pluginName of pluginNames) {
-      assertValidPluginName(configJSON, pluginName);
-
-      // TODO: refactor and delete `global.isDevtools`.
-      const pluginPath = global.isDevtools || global.isLightrider ?
-        pluginName :
-        resolveModulePath(pluginName, configDir, 'plugin');
-      const rawPluginJson = require(pluginPath);
-      const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
-
-      configJSON = Config.extendConfigJSON(configJSON, pluginJson);
-    }
-
-    return configJSON;
   }
 
   /**
@@ -508,12 +437,10 @@ class Config {
 
     // The `full-page-screenshot` audit belongs to no category, but we still want to include
     // it (unless explictly excluded) because there are audits in every category that can use it.
-    if (settings.onlyCategories) {
-      const explicitlyExcludesFullPageScreenshot =
-        settings.skipAudits && settings.skipAudits.includes('full-page-screenshot');
-      if (!explicitlyExcludesFullPageScreenshot) {
-        includedAudits.add('full-page-screenshot');
-      }
+    const explicitlyExcludesFullPageScreenshot =
+      settings.skipAudits && settings.skipAudits.includes('full-page-screenshot');
+    if (!explicitlyExcludesFullPageScreenshot && (settings.onlyCategories || settings.skipAudits)) {
+      includedAudits.add('full-page-screenshot');
     }
 
     return {categories, requestedAuditNames: includedAudits};
@@ -585,12 +512,12 @@ class Config {
    * leaving only an array of AuditDefns.
    * @param {LH.Config.Json['audits']} audits
    * @param {string=} configDir
-   * @return {Config['audits']}
+   * @return {Promise<Config['audits']>}
    */
-  static requireAudits(audits, configDir) {
+  static async requireAudits(audits, configDir) {
     const status = {msg: 'Requiring audits', id: 'lh:config:requireAudits'};
     log.time(status, 'verbose');
-    const auditDefns = resolveAuditsToDefns(audits, configDir);
+    const auditDefns = await resolveAuditsToDefns(audits, configDir);
     log.timeEnd(status);
     return auditDefns;
   }
@@ -601,9 +528,9 @@ class Config {
    * provided) using `resolveModulePath`, returning an array of full Passes.
    * @param {?Array<Required<LH.Config.PassJson>>} passes
    * @param {string=} configDir
-   * @return {Config['passes']}
+   * @return {Promise<Config['passes']>}
    */
-  static requireGatherers(passes, configDir) {
+  static async requireGatherers(passes, configDir) {
     if (!passes) {
       return null;
     }
@@ -611,9 +538,11 @@ class Config {
     log.time(status, 'verbose');
 
     const coreList = Runner.getGathererList();
-    const fullPasses = passes.map(pass => {
-      const gathererDefns = pass.gatherers
-        .map(gatherer => resolveGathererToDefn(gatherer, coreList, configDir));
+    const fullPassesPromises = passes.map(async (pass) => {
+      const gathererDefns = await Promise.all(
+        pass.gatherers
+          .map(gatherer => resolveGathererToDefn(gatherer, coreList, configDir))
+      );
 
       // De-dupe gatherers by artifact name because artifact IDs must be unique at runtime.
       const uniqueDefns = Array.from(
@@ -623,6 +552,8 @@ class Config {
 
       return Object.assign(pass, {gatherers: uniqueDefns});
     });
+    const fullPasses = await Promise.all(fullPassesPromises);
+
     log.timeEnd(status);
     return fullPasses;
   }

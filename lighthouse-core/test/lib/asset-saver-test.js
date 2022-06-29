@@ -3,21 +3,24 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const assetSaver = require('../../lib/asset-saver.js');
-const Metrics = require('../../lib/traces/pwmetrics-events.js');
-const assert = require('assert').strict;
-const fs = require('fs');
-const rimraf = require('rimraf');
-const LHError = require('../../lib/lh-error.js');
+import {strict as assert} from 'assert';
+import fs from 'fs';
 
-const traceEvents = require('../fixtures/traces/progressive-app.json');
-const dbwTrace = require('../results/artifacts/defaultPass.trace.json');
-const dbwResults = require('../results/sample_v2.json');
-const Audit = require('../../audits/audit.js');
-const fullTraceObj = require('../fixtures/traces/progressive-app-m60.json');
-const devtoolsLog = require('../fixtures/traces/progressive-app-m60.devtools.log.json');
+import assetSaver from '../../lib/asset-saver.js';
+import Metrics from '../../lib/traces/pwmetrics-events.js';
+import LHError from '../../lib/lh-error.js';
+import Audit from '../../audits/audit.js';
+import {getModuleDirectory} from '../../../esm-utils.mjs';
+import {LH_ROOT, readJson} from '../../../root.js';
+
+const traceEvents = readJson('../fixtures/traces/progressive-app.json', import.meta);
+const dbwTrace = readJson('../results/artifacts/defaultPass.trace.json', import.meta);
+const dbwResults = readJson('../results/sample_v2.json', import.meta);
+const fullTraceObj = readJson('../fixtures/traces/progressive-app-m60.json', import.meta);
+const devtoolsLog = readJson('../fixtures/traces/progressive-app-m60.devtools.log.json', import.meta);
+
+const moduleDir = getModuleDirectory(import.meta);
 
 // deepStrictEqual can hang on a full trace, we assert trace same-ness like so
 function assertTraceEventsEqual(traceEventsA, traceEventsB) {
@@ -26,11 +29,12 @@ function assertTraceEventsEqual(traceEventsA, traceEventsB) {
     assert.deepStrictEqual(evt, traceEventsB[i]);
   });
 }
-
-/* eslint-env jest */
 describe('asset-saver helper', () => {
   describe('saves files', function() {
+    const tmpDir = `${LH_ROOT}/.tmp/asset-saver-test`;
+
     beforeAll(() => {
+      fs.mkdirSync(tmpDir, {recursive: true});
       const artifacts = {
         devtoolsLogs: {
           [Audit.DEFAULT_PASS]: [{message: 'first'}, {message: 'second'}],
@@ -42,22 +46,22 @@ describe('asset-saver helper', () => {
         },
       };
 
-      return assetSaver.saveAssets(artifacts, dbwResults.audits, process.cwd() + '/the_file');
+      return assetSaver.saveAssets(artifacts, dbwResults.audits, `${tmpDir}/the_file`);
     });
 
     it('trace file saved to disk with trace events and extra fakeEvents', () => {
-      const traceFilename = 'the_file-0.trace.json';
+      const traceFilename = tmpDir + '/the_file-0.trace.json';
       const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
       const traceEventsOnDisk = JSON.parse(traceFileContents).traceEvents;
       const traceEventsWithoutExtrasOnDisk = traceEventsOnDisk.slice(0, traceEvents.length);
       const traceEventsFake = traceEventsOnDisk.slice(traceEvents.length);
       assertTraceEventsEqual(traceEventsWithoutExtrasOnDisk, traceEvents);
-      assert.equal(traceEventsFake.length, 20);
+      assert.equal(traceEventsFake.length, 18);
       fs.unlinkSync(traceFilename);
     });
 
     it('devtools log file saved to disk with data', () => {
-      const filename = 'the_file-0.devtoolslog.json';
+      const filename = tmpDir + '/the_file-0.devtoolslog.json';
       const fileContents = fs.readFileSync(filename, 'utf8');
       assert.ok(fileContents.includes('"message": "first"'));
       fs.unlinkSync(filename);
@@ -83,10 +87,42 @@ describe('asset-saver helper', () => {
   });
 
   describe('saveTrace', () => {
-    const traceFilename = 'test-trace-0.json';
+    const traceFilename = `${LH_ROOT}/.tmp/test-trace-0.json`;
+
+    beforeAll(() => {
+      fs.mkdirSync(`${LH_ROOT}/.tmp`, {recursive: true});
+    });
 
     afterEach(() => {
       fs.unlinkSync(traceFilename);
+    });
+
+    it('prints traces with an event per line', async () => {
+      const trace = {
+        traceEvents: [
+          {args: {}, cat: 'devtools.timeline', pid: 1, ts: 2},
+          {args: {}, cat: 'v8', pid: 1, ts: 3},
+          {args: {IsMainFrame: true}, cat: 'v8', pid: 1, ts: 5},
+          {args: {data: {encodedDataLength: 20, requestId: '1.22'}}, pid: 1, ts: 6},
+        ],
+        metadata: {'cpu-model': 9001, 'network-type': 'Unknown'},
+      };
+      await assetSaver.saveTrace(trace, traceFilename);
+
+      const traceFileContents = fs.readFileSync(traceFilename, 'utf8');
+      expect(traceFileContents).toEqual(
+`{
+"traceEvents": [
+  {"args":{},"cat":"devtools.timeline","pid":1,"ts":2},
+  {"args":{},"cat":"v8","pid":1,"ts":3},
+  {"args":{"IsMainFrame":true},"cat":"v8","pid":1,"ts":5},
+  {"args":{"data":{"encodedDataLength":20,"requestId":"1.22"}},"pid":1,"ts":6}
+],
+"metadata": {
+  "cpu-model": 9001,
+  "network-type": "Unknown"
+}}
+`);
     });
 
     it('correctly saves a trace with metadata to disk', () => {
@@ -96,7 +132,7 @@ describe('asset-saver helper', () => {
           const traceEventsFromDisk = JSON.parse(traceFileContents).traceEvents;
           assertTraceEventsEqual(traceEventsFromDisk, fullTraceObj.traceEvents);
         });
-    }, 10000);
+    });
 
     it('correctly saves a trace with no trace events to disk', () => {
       const trace = {
@@ -161,9 +197,33 @@ describe('asset-saver helper', () => {
     }, 40 * 1000);
   });
 
+  describe('saveDevtoolsLog', () => {
+    const devtoolsLogFilename = 'test-devtoolslog-0.json';
+
+    afterEach(() => {
+      fs.unlinkSync(devtoolsLogFilename);
+    });
+
+    it('prints devtoolsLogs with an event per line', async () => {
+      const devtoolsLog = [
+        {method: 'Network.requestServedFromCache', params: {requestId: '1.22'}},
+        {method: 'Network.responseReceived', params: {status: 301, headers: {':method': 'POST'}}},
+      ];
+      await assetSaver.saveDevtoolsLog(devtoolsLog, devtoolsLogFilename);
+
+      const devtoolsLogFileContents = fs.readFileSync(devtoolsLogFilename, 'utf8');
+      expect(devtoolsLogFileContents).toEqual(
+`[
+  {"method":"Network.requestServedFromCache","params":{"requestId":"1.22"}},
+  {"method":"Network.responseReceived","params":{"status":301,"headers":{":method":"POST"}}}
+]
+`);
+    });
+  });
+
   describe('loadArtifacts', () => {
     it('loads artifacts from disk', async () => {
-      const artifactsPath = __dirname + '/../fixtures/artifacts/perflog/';
+      const artifactsPath = moduleDir + '/../fixtures/artifacts/perflog/';
       const artifacts = await assetSaver.loadArtifacts(artifactsPath);
       assert.strictEqual(artifacts.LighthouseRunWarnings.length, 2);
       assert.strictEqual(artifacts.URL.requestedUrl, 'https://www.reddit.com/r/nba');
@@ -173,17 +233,38 @@ describe('asset-saver helper', () => {
   });
 
   describe('JSON serialization', () => {
-    const outputPath = __dirname + '/json-serialization-test-data/';
+    const outputPath = moduleDir + '/json-serialization-test-data/';
 
     afterEach(() => {
-      rimraf.sync(outputPath);
+      fs.rmSync(outputPath, {recursive: true, force: true});
     });
 
     it('round trips saved artifacts', async () => {
-      const artifactsPath = __dirname + '/../results/artifacts/';
+      const artifactsPath = moduleDir + '/../results/artifacts/';
       const originalArtifacts = await assetSaver.loadArtifacts(artifactsPath);
 
       await assetSaver.saveArtifacts(originalArtifacts, outputPath);
+      const roundTripArtifacts = await assetSaver.loadArtifacts(outputPath);
+      expect(roundTripArtifacts).toStrictEqual(originalArtifacts);
+    });
+
+    it('deletes existing artifact files before saving', async () => {
+      // Write some fake artifact files to start with.
+      fs.mkdirSync(outputPath, {recursive: true});
+      fs.writeFileSync(`${outputPath}/artifacts.json`, '{"BenchmarkIndex": 1731.5}');
+      const existingTracePath = `${outputPath}/bestPass.trace.json`;
+      fs.writeFileSync(existingTracePath, '{"traceEvents": []}');
+      const existingDevtoolslogPath = `${outputPath}/bestPass.devtoolslog.json`;
+      fs.writeFileSync(existingDevtoolslogPath, '[]');
+
+      const artifactsPath = moduleDir + '/../results/artifacts/';
+      const originalArtifacts = await assetSaver.loadArtifacts(artifactsPath);
+
+      await assetSaver.saveArtifacts(originalArtifacts, outputPath);
+
+      expect(fs.existsSync(existingDevtoolslogPath)).toBe(false);
+      expect(fs.existsSync(existingTracePath)).toBe(false);
+
       const roundTripArtifacts = await assetSaver.loadArtifacts(outputPath);
       expect(roundTripArtifacts).toStrictEqual(originalArtifacts);
     });
@@ -231,6 +312,27 @@ describe('asset-saver helper', () => {
           /^LHError: PROTOCOL_TIMEOUT.*test[\\/]lib[\\/]asset-saver-test\.js/s);
       expect(roundTripArtifacts.ScriptElements.friendlyMessage)
         .toBeDisplayString(/\(Method: Page\.getFastness\)/);
+    });
+
+    it('saves artifacts in files concluding with a newline', async () => {
+      const artifacts = {
+        devtoolsLogs: {
+          [Audit.DEFAULT_PASS]: [{method: 'first'}, {method: 'second'}],
+        },
+        traces: {
+          [Audit.DEFAULT_PASS]: {traceEvents: traceEvents.slice(0, 100)},
+        },
+        RobotsTxt: {status: 404, content: null},
+      };
+      await assetSaver.saveArtifacts(artifacts, outputPath);
+
+      const artifactFilenames = fs.readdirSync(outputPath);
+      expect(artifactFilenames.length).toBeGreaterThanOrEqual(3);
+      for (const artifactFilename of artifactFilenames) {
+        expect(artifactFilename).toMatch(/\.json$/);
+        const contents = fs.readFileSync(`${outputPath}/${artifactFilename}`, 'utf8');
+        expect(contents).toMatch(/\n$/);
+      }
     });
   });
 

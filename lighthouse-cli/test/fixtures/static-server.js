@@ -4,30 +4,34 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 // @ts-nocheck
-'use strict';
 
 /* eslint-disable no-console */
 
-const http = require('http');
-const zlib = require('zlib');
-const path = require('path');
-const fs = require('fs');
-const glob = require('glob');
-const mime = require('mime-types');
-const parseQueryString = require('querystring').parse;
-const parseURL = require('url').parse;
-const URLSearchParams = require('url').URLSearchParams;
-const HEADER_SAFELIST = new Set(['x-robots-tag', 'link']);
+import http from 'http';
+import zlib from 'zlib';
+import path from 'path';
+import fs from 'fs';
+import {parse as parseQueryString} from 'querystring';
+import {parse as parseURL} from 'url';
+import {URLSearchParams} from 'url';
 
-const lhRootDirPath = path.join(__dirname, '../../../');
+import mime from 'mime-types';
+import glob from 'glob';
+import esMain from 'es-main';
+
+import {LH_ROOT} from '../../../root.js';
+
+const HEADER_SAFELIST = new Set(['x-robots-tag', 'link', 'content-security-policy']);
 
 class Server {
-  baseDir = __dirname;
+  baseDir = `${LH_ROOT}/lighthouse-cli/test/fixtures`;
 
   constructor() {
     this._server = http.createServer(this._requestHandler.bind(this));
     /** @type {(data: string) => string=} */
     this._dataTransformer = undefined;
+    /** @type {string[]} */
+    this._requestUrls = [];
   }
 
   getPort() {
@@ -62,8 +66,32 @@ class Server {
     this._dataTransformer = fn;
   }
 
+  /**
+   * @return {string[]}
+   */
+  takeRequestUrls() {
+    const requestUrls = this._requestUrls;
+    this._requestUrls = [];
+    return requestUrls;
+  }
+
+  /**
+   * @param {http.IncomingMessage} request
+   */
+  _updateRequestUrls(request) {
+    // Favicon is not fetched in headless mode and robots is not fetched by every test.
+    // Ignoring these makes the assertion much simpler.
+    if (['/favicon.ico', '/robots.txt'].includes(request.url)) return;
+    this._requestUrls.push(request.url);
+  }
+
+  /**
+   * @param {http.IncomingMessage} request
+   * @param {http.ServerResponse} response
+   */
   _requestHandler(request, response) {
     const requestUrl = parseURL(request.url);
+    this._updateRequestUrls(request);
     const filePath = requestUrl.pathname;
     const queryString = requestUrl.search && parseQueryString(requestUrl.search.slice(1));
     let absoluteFilePath = path.join(this.baseDir, filePath);
@@ -71,7 +99,10 @@ class Server {
       // Used by Smokerider.
       if (this._dataTransformer) data = this._dataTransformer(data);
 
-      const headers = {'Access-Control-Allow-Origin': '*'};
+      const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Origin-Agent-Cluster': '?1',
+      };
 
       const contentType = mime.lookup(filePath);
       const charset = mime.lookup(contentType);
@@ -146,7 +177,7 @@ class Server {
 
     // Create an index page that lists the available test pages.
     if (filePath === '/') {
-      const fixturePaths = glob.sync('**/*.html', {cwd: __dirname});
+      const fixturePaths = glob.sync('**/*.html', {cwd: this.baseDir});
       const html = `
         <html>
         <h1>Smoke test fixtures</h1>
@@ -160,13 +191,13 @@ class Server {
     }
 
     if (filePath.startsWith('/dist/gh-pages')) {
-      // Rewrite lighthouse-viewer paths to point to that location.
-      absoluteFilePath = path.join(__dirname, '/../../../', filePath);
+      // Rewrite viewer paths to point to that location.
+      absoluteFilePath = path.join(this.baseDir, '/../../../', filePath);
     }
 
     // Disallow file requests outside of LH folder
     const filePathDir = path.parse(absoluteFilePath).dir;
-    if (!filePathDir.startsWith(lhRootDirPath)) {
+    if (!filePathDir.startsWith(LH_ROOT)) {
       return readFileCallback(new Error('Disallowed path'));
     }
 
@@ -218,7 +249,7 @@ serverForOnline._server.on('error', e => console.error(e.code, e));
 serverForOffline._server.on('error', e => console.error(e.code, e));
 
 // If called via `node static-server.js` then start listening, otherwise, just expose the servers
-if (require.main === module) {
+if (esMain(import.meta)) {
   // Start listening
   const onlinePort = 10200;
   const offlinePort = 10503;
@@ -226,10 +257,10 @@ if (require.main === module) {
   serverForOffline.listen(offlinePort, 'localhost');
   console.log(`online:  listening on http://localhost:${onlinePort}`);
   console.log(`offline: listening on http://localhost:${offlinePort}`);
-} else {
-  module.exports = {
-    Server,
-    server: serverForOnline,
-    serverForOffline,
-  };
 }
+
+export {
+  Server,
+  serverForOnline as server,
+  serverForOffline,
+};

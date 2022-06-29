@@ -4,16 +4,14 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const NetworkRecorder = require('../../lighthouse-core/lib/network-recorder.js');
+import NetworkRecorder from '../../lighthouse-core/lib/network-recorder.js';
+
 /** @typedef {import('../../lighthouse-core/lib/network-request.js')} NetworkRequest */
 
 const idBase = '127122';
 const exampleUrl = 'https://testingurl.com/';
 const redirectSuffix = ':redirect';
-
-/* eslint-env jest */
 
 /**
  * Extract requestId without any `:redirect` strings.
@@ -23,7 +21,7 @@ function getBaseRequestId(record) {
   if (!record.requestId) return;
 
   const match = /^([\w.]+)(?::redirect)*$/.exec(record.requestId);
-  return match && match[1];
+  return match?.[1];
 }
 
 /**
@@ -115,7 +113,8 @@ function getResponseReceivedEvent(networkRecord, index) {
         connectionId: networkRecord.connectionId || 140,
         fromDiskCache: networkRecord.fromDiskCache || false,
         fromServiceWorker: networkRecord.fetchedViaServiceWorker || false,
-        encodedDataLength: networkRecord.transferSize || 0,
+        encodedDataLength: networkRecord.transferSize === undefined ?
+          0 : networkRecord.transferSize,
         timing,
         protocol: networkRecord.protocol || 'http/1.1',
       },
@@ -134,7 +133,8 @@ function getDataReceivedEvent(networkRecord, index) {
     params: {
       requestId: getBaseRequestId(networkRecord) || `${idBase}.${index}`,
       dataLength: networkRecord.resourceSize || 0,
-      encodedDataLength: networkRecord.transferSize || 0,
+      encodedDataLength: networkRecord.transferSize === undefined ?
+        0 : networkRecord.transferSize,
     },
   };
 }
@@ -149,7 +149,23 @@ function getLoadingFinishedEvent(networkRecord, index) {
     params: {
       requestId: getBaseRequestId(networkRecord) || `${idBase}.${index}`,
       timestamp: networkRecord.endTime || 3,
-      encodedDataLength: networkRecord.transferSize || 0,
+      encodedDataLength: networkRecord.transferSize === undefined ?
+        0 : networkRecord.transferSize,
+    },
+  };
+}
+
+/**
+ * @param {Partial<NetworkRequest>} networkRecord
+ * @return {LH.Protocol.RawEventMessage}
+ */
+function getLoadingFailedEvent(networkRecord, index) {
+  return {
+    method: 'Network.loadingFailed',
+    params: {
+      requestId: getBaseRequestId(networkRecord) || `${idBase}.${index}`,
+      timestamp: networkRecord.endTime || 3,
+      errorText: networkRecord.localizedFailDescription || 'Request failed',
     },
   };
 }
@@ -222,6 +238,11 @@ function networkRecordsToDevtoolsLog(networkRecords, options = {}) {
       devtoolsLog.push(getRequestServedFromCacheEvent(networkRecord, index));
     }
 
+    if (networkRecord.failed) {
+      devtoolsLog.push(getLoadingFailedEvent(networkRecord, index));
+      return;
+    }
+
     devtoolsLog.push(getResponseReceivedEvent(networkRecord, index));
     devtoolsLog.push(getDataReceivedEvent(networkRecord, index));
     devtoolsLog.push(getLoadingFinishedEvent(networkRecord, index));
@@ -236,4 +257,4 @@ function networkRecordsToDevtoolsLog(networkRecords, options = {}) {
   return devtoolsLog;
 }
 
-module.exports = networkRecordsToDevtoolsLog;
+export default networkRecordsToDevtoolsLog;

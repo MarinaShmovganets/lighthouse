@@ -5,12 +5,20 @@
  */
 'use strict';
 
+const log = require('lighthouse-logger');
 const NetworkRequest = require('./network-request.js');
 const EventEmitter = require('events').EventEmitter;
 
-/** @typedef {'requeststarted'|'requestloaded'} NetworkRecorderEvent */
+/**
+ * @typedef {{
+ *   requeststarted: [NetworkRequest],
+ *   requestfinished: [NetworkRequest],
+ * }} NetworkRecorderEventMap
+ */
+/** @typedef {LH.Protocol.StrictEventEmitterClass<NetworkRecorderEventMap>} RequestEmitter */
+const RequestEventEmitter = /** @type {RequestEmitter} */ (EventEmitter);
 
-class NetworkRecorder extends EventEmitter {
+class NetworkRecorder extends RequestEventEmitter {
   /**
    * Creates an instance of NetworkRecorder.
    */
@@ -21,6 +29,8 @@ class NetworkRecorder extends EventEmitter {
     this._records = [];
     /** @type {Map<string, NetworkRequest>} */
     this._recordsById = new Map();
+    /** @type {string|null|undefined} */
+    this._mainSessionId = null;
   }
 
   /**
@@ -30,22 +40,6 @@ class NetworkRecorder extends EventEmitter {
    */
   getRawRecords() {
     return Array.from(this._records);
-  }
-
-  /**
-   * @param {NetworkRecorderEvent} event
-   * @param {*} listener
-   */
-  on(event, listener) {
-    return super.on(event, listener);
-  }
-
-  /**
-   * @param {NetworkRecorderEvent} event
-   * @param {*} listener
-   */
-  once(event, listener) {
-    return super.once(event, listener);
   }
 
   /**
@@ -68,7 +62,7 @@ class NetworkRecorder extends EventEmitter {
    * @private
    */
   onRequestFinished(request) {
-    this.emit('requestloaded', request);
+    this.emit('requestfinished', request);
   }
 
   // The below methods proxy network data into the NetworkRequest object which mimics the
@@ -86,6 +80,7 @@ class NetworkRecorder extends EventEmitter {
       request.onRequestWillBeSent(data);
       request.sessionId = event.sessionId;
       this.onRequestStarted(request);
+      log.verbose('network', `request will be sent to ${request.url}`);
       return;
     }
 
@@ -106,6 +101,7 @@ class NetworkRecorder extends EventEmitter {
 
     redirectedRequest.onRequestWillBeSent(modifiedData);
     originalRequest.onRedirectResponse(data);
+    log.verbose('network', `${originalRequest.url} redirected to ${redirectedRequest.url}`);
 
     originalRequest.redirectDestination = redirectedRequest;
     redirectedRequest.redirectSource = originalRequest;
@@ -122,6 +118,7 @@ class NetworkRecorder extends EventEmitter {
     const data = event.params;
     const request = this._findRealRequestAndSetSession(data.requestId, event.sessionId);
     if (!request) return;
+    log.verbose('network', `${request.url} served from cache`);
     request.onRequestServedFromCache();
   }
 
@@ -132,6 +129,7 @@ class NetworkRecorder extends EventEmitter {
     const data = event.params;
     const request = this._findRealRequestAndSetSession(data.requestId, event.sessionId);
     if (!request) return;
+    log.verbose('network', `${request.url} response received`);
     request.onResponseReceived(data);
   }
 
@@ -142,6 +140,7 @@ class NetworkRecorder extends EventEmitter {
     const data = event.params;
     const request = this._findRealRequestAndSetSession(data.requestId, event.sessionId);
     if (!request) return;
+    log.verbose('network', `${request.url} data received`);
     request.onDataReceived(data);
   }
 
@@ -152,6 +151,7 @@ class NetworkRecorder extends EventEmitter {
     const data = event.params;
     const request = this._findRealRequestAndSetSession(data.requestId, event.sessionId);
     if (!request) return;
+    log.verbose('network', `${request.url} loading finished`);
     request.onLoadingFinished(data);
     this.onRequestFinished(request);
   }
@@ -163,6 +163,7 @@ class NetworkRecorder extends EventEmitter {
     const data = event.params;
     const request = this._findRealRequestAndSetSession(data.requestId, event.sessionId);
     if (!request) return;
+    log.verbose('network', `${request.url} loading failed`);
     request.onLoadingFailed(data);
     this.onRequestFinished(request);
   }
@@ -205,6 +206,20 @@ class NetworkRecorder extends EventEmitter {
    * @return {NetworkRequest|undefined}
    */
   _findRealRequestAndSetSession(requestId, sessionId) {
+    // The very first sessionId processed is always the main sessionId. In all but DevTools,
+    // this sessionId is undefined. However, in DevTools the main Lighthouse protocol connection
+    // does send events with sessionId set to a string, because of how DevTools routes the protocol
+    // to Lighthouse.
+    // Many places in Lighthouse use `record.sessionId === undefined` to mean that the session is not
+    // an OOPIF. To maintain this property, we intercept sessionId here and set it to undefined if
+    // it matches the first value seen.
+    if (this._mainSessionId === null) {
+      this._mainSessionId = sessionId;
+    }
+    if (this._mainSessionId === sessionId) {
+      sessionId = undefined;
+    }
+
     let request = this._recordsById.get(requestId);
     if (!request || !request.isValid) return undefined;
 
@@ -227,8 +242,8 @@ class NetworkRecorder extends EventEmitter {
     if (record.redirectSource) {
       return record.redirectSource;
     }
-    const stackFrames = (record.initiator.stack && record.initiator.stack.callFrames) || [];
-    const initiatorURL = record.initiator.url || (stackFrames[0] && stackFrames[0].url);
+    const stackFrames = record.initiator.stack?.callFrames || [];
+    const initiatorURL = record.initiator.url || stackFrames[0]?.url;
 
     let candidates = recordsByURL.get(initiatorURL) || [];
     // The initiator must come before the initiated request.

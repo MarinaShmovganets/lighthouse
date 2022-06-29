@@ -34,7 +34,7 @@ class ConsoleMessages extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['timespan', 'navigation'],
-  }
+  };
 
   constructor() {
     super();
@@ -66,7 +66,7 @@ class ConsoleMessages extends FRGatherer {
     }
 
     const {url, lineNumber, columnNumber} =
-      event.stackTrace && event.stackTrace.callFrames[0] || {};
+      event.stackTrace?.callFrames[0] || {};
     /** @type {LH.Artifacts.ConsoleMessage} */
     const consoleMessage = {
       eventType: 'consoleAPI',
@@ -101,6 +101,7 @@ class ConsoleMessages extends FRGatherer {
       stackTrace: event.exceptionDetails.stackTrace,
       timestamp: event.timestamp,
       url: event.exceptionDetails.url,
+      scriptId: event.exceptionDetails.scriptId,
       lineNumber: event.exceptionDetails.lineNumber,
       columnNumber: event.exceptionDetails.columnNumber,
     };
@@ -117,7 +118,7 @@ class ConsoleMessages extends FRGatherer {
 
     // JS events have a stack trace, which we use to get the column.
     // CSS/HTML events only expose a line number.
-    const {columnNumber} = event.entry.stackTrace && event.entry.stackTrace.callFrames[0] || {};
+    const firstStackFrame = event.entry.stackTrace?.callFrames[0];
 
     this._logEntries.push({
       eventType: 'protocolLog',
@@ -127,15 +128,16 @@ class ConsoleMessages extends FRGatherer {
       stackTrace,
       timestamp,
       url,
+      scriptId: firstStackFrame?.scriptId,
       lineNumber,
-      columnNumber,
+      columnNumber: firstStackFrame?.columnNumber,
     });
   }
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
    */
-  async beforeTimespan(passContext) {
+  async startInstrumentation(passContext) {
     const session = passContext.driver.defaultSession;
 
     session.on('Log.entryAdded', this._onLogEntryAdded);
@@ -151,15 +153,21 @@ class ConsoleMessages extends FRGatherer {
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} passContext
-   * @return {Promise<LH.Artifacts['ConsoleMessages']>}
+   * @return {Promise<void>}
    */
-  async afterTimespan({driver}) {
+  async stopInstrumentation({driver}) {
     await driver.defaultSession.sendCommand('Log.stopViolationsReport');
     await driver.defaultSession.off('Log.entryAdded', this._onLogEntryAdded);
     await driver.defaultSession.sendCommand('Log.disable');
     await driver.defaultSession.off('Runtime.consoleAPICalled', this._onConsoleAPICalled);
     await driver.defaultSession.off('Runtime.exceptionThrown', this._onExceptionThrown);
     await driver.defaultSession.sendCommand('Runtime.disable');
+  }
+
+  /**
+   * @return {Promise<LH.Artifacts['ConsoleMessages']>}
+   */
+  async getArtifact() {
     return this._logEntries;
   }
 }

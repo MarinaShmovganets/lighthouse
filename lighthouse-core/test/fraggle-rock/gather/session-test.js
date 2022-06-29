@@ -3,128 +3,193 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const {EventEmitter} = require('events');
-const ProtocolSession = require('../../../fraggle-rock/gather/session.js');
+import {EventEmitter} from 'events';
 
-/* eslint-env jest */
+import {jest} from '@jest/globals';
+import {CDPSession} from 'puppeteer/lib/cjs/puppeteer/common/Connection.js';
+
+import ProtocolSession from '../../../fraggle-rock/gather/session.js';
+import {
+  flushAllTimersAndMicrotasks,
+  makePromiseInspectable,
+  createDecomposedPromise,
+  fnAny,
+} from '../../test-utils.js';
+
+jest.useFakeTimers();
 
 describe('ProtocolSession', () => {
-  /** @type {import('puppeteer').CDPSession} */
+  const DEFAULT_TIMEOUT = 30_000;
+
+  /** @type {LH.Puppeteer.CDPSession} */
   let puppeteerSession;
   /** @type {ProtocolSession} */
   let session;
 
   beforeEach(() => {
     // @ts-expect-error - Individual mock functions are applied as necessary.
-    puppeteerSession = {emit: jest.fn()};
+    puppeteerSession = new CDPSession({_rawSend: fnAny(), send: fnAny()}, '', 'root');
     session = new ProtocolSession(puppeteerSession);
   });
 
-  describe('ProtocolSession', () => {
-    it('should emit a copy of events on "*"', () => {
-      // @ts-expect-error - we want to use a more limited test of a real event emitter.
-      puppeteerSession = new EventEmitter();
-      session = new ProtocolSession(puppeteerSession);
+  describe('responds to events from the underlying CDPSession', () => {
+    it('once', async () => {
+      const callback = fnAny();
 
-      const regularListener = jest.fn();
-      const allListener = jest.fn();
+      session.once('Page.frameNavigated', callback);
+      puppeteerSession.emit('Page.frameNavigated', {id: 1});
+      expect(callback).toHaveBeenCalledTimes(1);
+      expect(callback).toHaveBeenCalledWith({id: 1});
 
-      puppeteerSession.on('Foo', regularListener);
-      puppeteerSession.on('*', allListener);
-      puppeteerSession.emit('Foo', 1, 2, 3);
-      puppeteerSession.emit('Bar', 1, 2, 3);
-
-      expect(regularListener).toHaveBeenCalledTimes(1);
-      expect(allListener).toHaveBeenCalledTimes(2);
-      expect(allListener).toHaveBeenCalledWith({method: 'Foo', params: 1});
-      expect(allListener).toHaveBeenCalledWith({method: 'Bar', params: 1});
+      puppeteerSession.emit('Page.frameNavigated', {id: 2});
+      expect(callback).toHaveBeenCalledTimes(1);
     });
 
-    it('should not fire duplicate events', () => {
-      // @ts-expect-error - we want to use a more limited test of a real event emitter.
-      puppeteerSession = new EventEmitter();
-      session = new ProtocolSession(puppeteerSession);
-      session = new ProtocolSession(puppeteerSession);
+    it('on', async () => {
+      const callback = fnAny();
 
-      const regularListener = jest.fn();
-      const allListener = jest.fn();
+      session.on('Page.frameNavigated', callback);
+      puppeteerSession.emit('Page.frameNavigated', {id: 1});
+      expect(callback).toHaveBeenCalledTimes(1);
+      expect(callback).toHaveBeenCalledWith({id: 1});
 
-      puppeteerSession.on('Foo', regularListener);
-      puppeteerSession.on('*', allListener);
-      puppeteerSession.emit('Foo', 1, 2, 3);
-      puppeteerSession.emit('Bar', 1, 2, 3);
-
-      expect(regularListener).toHaveBeenCalledTimes(1);
-      expect(allListener).toHaveBeenCalledTimes(2);
+      puppeteerSession.emit('Page.frameNavigated', {id: 2});
+      expect(callback).toHaveBeenCalledTimes(2);
+      expect(callback).toHaveBeenCalledWith({id: 2});
     });
-  });
 
-  /** @type {Array<'on'|'off'|'once'>} */
-  const delegateMethods = ['on', 'once', 'off'];
-  for (const method of delegateMethods) {
-    describe(`.${method}`, () => {
-      it('delegates to puppeteer', async () => {
-        const puppeteerFn = puppeteerSession[method] = jest.fn();
-        const callback = () => undefined;
+    it('off', async () => {
+      const callback = fnAny();
 
-        session[method]('Page.frameNavigated', callback);
-        expect(puppeteerFn).toHaveBeenCalledWith('Page.frameNavigated', callback);
-      });
-    });
-  }
+      session.on('Page.frameNavigated', callback);
+      puppeteerSession.emit('Page.frameNavigated', {id: 1});
+      expect(callback).toHaveBeenCalledTimes(1);
+      expect(callback).toHaveBeenCalledWith({id: 1});
 
-  describe('.addProtocolMessageListener', () => {
-    it('should listen for any event', () => {
-      // @ts-expect-error - we want to use a more limited test of a real event emitter.
-      puppeteerSession = new EventEmitter();
-      session = new ProtocolSession(puppeteerSession);
-
-      const regularListener = jest.fn();
-      const allListener = jest.fn();
-
-      session.on('Page.frameNavigated', regularListener);
-      session.addProtocolMessageListener(allListener);
-
-      puppeteerSession.emit('Page.frameNavigated');
-      puppeteerSession.emit('Debugger.scriptParsed', {script: 'details'});
-
-      expect(regularListener).toHaveBeenCalledTimes(1);
-      expect(regularListener).toHaveBeenCalledWith();
-      expect(allListener).toHaveBeenCalledTimes(2);
-      expect(allListener).toHaveBeenCalledWith({method: 'Page.frameNavigated', params: undefined});
-      expect(allListener).toHaveBeenCalledWith({
-        method: 'Debugger.scriptParsed',
-        params: {script: 'details'},
-      });
+      session.off('Page.frameNavigated', callback);
+      puppeteerSession.emit('Page.frameNavigated', {id: 2});
+      expect(callback).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('.removeProtocolMessageListener', () => {
-    it('should stop listening for any event', () => {
-      // @ts-expect-error - we want to use a more limited test of a real event emitter.
-      puppeteerSession = new EventEmitter();
+  describe('.dispose', () => {
+    it('should detach from the session', async () => {
+      const detach = fnAny();
+      class MockCdpSession extends EventEmitter {
+        constructor() {
+          super();
+
+          this.detach = detach;
+        }
+      }
+
+      // @ts-expect-error - we want to use a more limited test.
+      puppeteerSession = new MockCdpSession();
       session = new ProtocolSession(puppeteerSession);
 
-      const allListener = jest.fn();
+      expect(puppeteerSession.listenerCount('*')).toBe(1);
 
-      session.addProtocolMessageListener(allListener);
-      puppeteerSession.emit('Page.frameNavigated');
-      expect(allListener).toHaveBeenCalled();
-      session.removeProtocolMessageListener(allListener);
-      puppeteerSession.emit('Page.frameNavigated');
-      expect(allListener).toHaveBeenCalledTimes(1);
+      await session.dispose();
+      expect(detach).toHaveBeenCalled();
+      expect(puppeteerSession.listenerCount('*')).toBe(0);
     });
   });
 
   describe('.sendCommand', () => {
     it('delegates to puppeteer', async () => {
-      const send = puppeteerSession.send = jest.fn().mockResolvedValue(123);
+      const send = puppeteerSession.send = fnAny().mockResolvedValue(123);
 
       const result = await session.sendCommand('Page.navigate', {url: 'foo'});
       expect(result).toEqual(123);
       expect(send).toHaveBeenCalledWith('Page.navigate', {url: 'foo'});
+    });
+
+    it('times out a request by default', async () => {
+      const sendPromise = createDecomposedPromise();
+      puppeteerSession.send = fnAny().mockReturnValue(sendPromise.promise);
+
+      const resultPromise = makePromiseInspectable(session.sendCommand('Page.navigate', {url: ''}));
+
+      await jest.advanceTimersByTime(DEFAULT_TIMEOUT + 1);
+      await flushAllTimersAndMicrotasks();
+
+      expect(resultPromise).toBeDone();
+      await expect(resultPromise).rejects.toMatchObject({
+        code: 'PROTOCOL_TIMEOUT',
+        protocolMethod: 'Page.navigate',
+      });
+    });
+
+    it('times out a request with explicit timeout', async () => {
+      const sendPromise = createDecomposedPromise();
+      puppeteerSession.send = fnAny().mockReturnValue(sendPromise.promise);
+
+      session.setNextProtocolTimeout(60_000);
+      const resultPromise = makePromiseInspectable(session.sendCommand('Page.navigate', {url: ''}));
+
+      await jest.advanceTimersByTime(DEFAULT_TIMEOUT + 1);
+      await flushAllTimersAndMicrotasks();
+
+      expect(resultPromise).not.toBeDone();
+
+      await jest.advanceTimersByTime(DEFAULT_TIMEOUT + 1);
+      await flushAllTimersAndMicrotasks();
+
+      expect(resultPromise).toBeDone();
+      await expect(resultPromise).rejects.toMatchObject({
+        code: 'PROTOCOL_TIMEOUT',
+        protocolMethod: 'Page.navigate',
+      });
+    });
+
+    it('respects a timeout of infinity', async () => {
+      const sendPromise = createDecomposedPromise();
+      puppeteerSession.send = fnAny().mockReturnValue(sendPromise.promise);
+
+      session.setNextProtocolTimeout(Infinity);
+      const resultPromise = makePromiseInspectable(session.sendCommand('Page.navigate', {url: ''}));
+
+      await jest.advanceTimersByTime(100_000);
+      await flushAllTimersAndMicrotasks();
+
+      expect(resultPromise).not.toBeDone();
+
+      sendPromise.resolve('result');
+      await flushAllTimersAndMicrotasks();
+
+      expect(resultPromise).toBeDone();
+      expect(await resultPromise).toBe('result');
+    });
+  });
+
+  describe('.has/get/setNextProtocolTimeout', () => {
+    it('should handle when none has been set', () => {
+      expect(session.hasNextProtocolTimeout()).toBe(false);
+      expect(session.getNextProtocolTimeout()).toBe(DEFAULT_TIMEOUT);
+    });
+
+    it('should handle when one has been set', () => {
+      session.setNextProtocolTimeout(5_000);
+      expect(session.hasNextProtocolTimeout()).toBe(true);
+      expect(session.getNextProtocolTimeout()).toBe(5_000);
+    });
+
+    it('should handle when default has been explicitly set', () => {
+      session.setNextProtocolTimeout(DEFAULT_TIMEOUT);
+      expect(session.hasNextProtocolTimeout()).toBe(true);
+      expect(session.getNextProtocolTimeout()).toBe(DEFAULT_TIMEOUT);
+    });
+
+    it('should handle result after a command', () => {
+      session.setNextProtocolTimeout(10_000);
+      expect(session.hasNextProtocolTimeout()).toBe(true);
+      expect(session.getNextProtocolTimeout()).toBe(10_000);
+
+      session.sendCommand('Page.navigate', {url: ''});
+
+      expect(session.hasNextProtocolTimeout()).toBe(false);
+      expect(session.getNextProtocolTimeout()).toBe(DEFAULT_TIMEOUT);
     });
   });
 });

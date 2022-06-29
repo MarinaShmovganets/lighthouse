@@ -3,11 +3,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const Gatherer = require('../../../fraggle-rock/gather/base-gatherer.js');
-
-/* eslint-env jest */
+import Gatherer from '../../../fraggle-rock/gather/base-gatherer.js';
+import {fnAny} from '../../test-utils.js';
 
 /** @type {any} */
 const fakeParam = {};
@@ -18,7 +16,7 @@ describe('BaseGatherer', () => {
 
     // Fraggle Rock Gatherer contract
     expect(typeof gatherer.meta).toBe('object');
-    expect(gatherer.snapshot(fakeParam)).toBe(undefined);
+    expect(gatherer.getArtifact(fakeParam)).toBe(undefined);
 
     // Legacy Gatherer contract
     expect(typeof gatherer.name).toBe('string');
@@ -28,49 +26,60 @@ describe('BaseGatherer', () => {
   });
 
   describe('.beforePass', () => {
-    it('delegates to beforeTimespan by default', async () => {
+    it('delegates to startInstrumentation by default', async () => {
       class MyGatherer extends Gatherer {
-        beforeTimespan = jest.fn()
+        startInstrumentation = fnAny();
+        startSensitiveInstrumentation = fnAny();
       }
 
       const gatherer = new MyGatherer();
       await gatherer.beforePass(fakeParam);
-      expect(gatherer.beforeTimespan).toHaveBeenCalled();
+      expect(gatherer.startInstrumentation).toHaveBeenCalled();
+      expect(gatherer.startSensitiveInstrumentation).toHaveBeenCalled();
     });
   });
 
   describe('.afterPass', () => {
-    it('delegates to snapshot by default', async () => {
+    it('delegates to getArtifact by default', async () => {
       class MyGatherer extends Gatherer {
         /** @param {*} _ */
-        snapshot(_) {
+        getArtifact(_) {
           return 'Hello, Fraggle!';
         }
       }
 
       const gatherer = new MyGatherer();
-      expect(gatherer.snapshot(fakeParam)).toEqual('Hello, Fraggle!');
+      expect(gatherer.getArtifact(fakeParam)).toEqual('Hello, Fraggle!');
       expect(await gatherer.afterPass(fakeParam, fakeParam)).toEqual('Hello, Fraggle!');
     });
 
-    it('delegates to afterTimespan when supported', async () => {
+    it('invokes stopInstrumentation when supported', async () => {
       class MyGatherer extends Gatherer {
         /** @type {LH.Gatherer.GathererMeta} */
         meta = {supportedModes: ['timespan']};
-
-        /** @param {*} _ */
-        snapshot(_) {
-          return 'Oops, wrong method!';
-        }
-
-        /** @param {*} _ */
-        afterTimespan(_) {
-          return 'Hello, Fraggle!';
-        }
+        stopInstrumentation = fnAny();
+        stopSensitiveInstrumentation = fnAny();
       }
 
       const gatherer = new MyGatherer();
-      expect(await gatherer.afterPass(fakeParam, fakeParam)).toEqual('Hello, Fraggle!');
+      await gatherer.afterPass(fakeParam, fakeParam);
+      expect(gatherer.stopInstrumentation).toHaveBeenCalled();
+      expect(gatherer.stopSensitiveInstrumentation).toHaveBeenCalled();
+    });
+
+    it('throws if no override and has dependencies', async () => {
+      class MyGatherer extends Gatherer {
+        /** @type {LH.Gatherer.GathererMeta<'Trace'>} */
+        meta = {supportedModes: ['timespan'], dependencies: {Trace: Symbol('Trace')}};
+        stopInstrumentation = fnAny();
+        stopSensitiveInstrumentation = fnAny();
+      }
+
+      const gatherer = new MyGatherer();
+      const afterPassPromise = gatherer.afterPass(fakeParam, fakeParam);
+      await expect(afterPassPromise).rejects.toThrowError(/Gatherer with dependencies/);
+      expect(gatherer.stopInstrumentation).not.toHaveBeenCalled();
+      expect(gatherer.stopSensitiveInstrumentation).not.toHaveBeenCalled();
     });
   });
 });

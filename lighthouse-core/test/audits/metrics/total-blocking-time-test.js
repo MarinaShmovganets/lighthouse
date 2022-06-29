@@ -3,22 +3,25 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-const TBTAudit = require('../../../audits/metrics/total-blocking-time.js');
+import {readJson} from '../../../../root.js';
+import TBTAudit from '../../../audits/metrics/total-blocking-time.js';
+import constants from '../../../config/constants.js';
+import {getURLArtifactFromDevtoolsLog} from '../../test-utils.js';
+
+const trace = readJson('../../fixtures/traces/progressive-app-m60.json', import.meta);
+const devtoolsLog = readJson('../../fixtures/traces/progressive-app-m60.devtools.log.json', import.meta);
+const lcpTrace = readJson('../../fixtures/traces/lcp-m78.json', import.meta);
+const lcpDevtoolsLog = readJson('../../fixtures/traces/lcp-m78.devtools.log.json', import.meta);
+
 const defaultOptions = TBTAudit.defaultOptions;
-const constants = require('../../../config/constants.js');
 
-const trace = require('../../fixtures/traces/progressive-app-m60.json');
-const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
-
-const lcpTrace = require('../../fixtures/traces/lcp-m78.json');
-const lcpDevtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
-
-function generateArtifacts({trace, devtoolsLog}) {
+function generateArtifacts({gatherMode = 'navigation', trace, devtoolsLog}) {
   return {
+    GatherContext: {gatherMode},
     traces: {[TBTAudit.DEFAULT_PASS]: trace},
     devtoolsLogs: {[TBTAudit.DEFAULT_PASS]: devtoolsLog},
+    URL: getURLArtifactFromDevtoolsLog(devtoolsLog),
   };
 }
 
@@ -38,8 +41,6 @@ const getFakeContext = ({formFactor, throttlingMethod}) => ({
   },
 });
 
-/* eslint-env jest */
-
 describe('Performance: total-blocking-time audit', () => {
   it('evaluates Total Blocking Time metric properly', async () => {
     const artifacts = generateArtifacts({trace, devtoolsLog});
@@ -58,7 +59,7 @@ describe('Performance: total-blocking-time audit', () => {
 
     const outputMobile = await TBTAudit.audit(artifactsMobile, contextMobile);
     expect(outputMobile.numericValue).toBeCloseTo(333, 1);
-    expect(outputMobile.score).toBe(0.85);
+    expect(outputMobile.score).toBe(0.75);
     expect(outputMobile.displayValue).toBeDisplayString('330\xa0ms');
 
     const artifactsDesktop = generateArtifacts({trace: lcpTrace,
@@ -69,5 +70,13 @@ describe('Performance: total-blocking-time audit', () => {
     expect(outputDesktop.numericValue).toBeCloseTo(333, 1);
     expect(outputDesktop.score).toBe(0.53);
     expect(outputDesktop.displayValue).toBeDisplayString('330\xa0ms');
+  });
+
+  it('marks metric not applicable (throttlingMethod=simulate, gatherMode=timespan)', async () => {
+    const artifacts = generateArtifacts({gatherMode: 'timespan', trace, devtoolsLog});
+    const context = getFakeContext({formFactor: 'mobile', throttlingMethod: 'simulate'});
+
+    const output = await TBTAudit.audit(artifacts, context);
+    expect(output.notApplicable).toBe(true);
   });
 });

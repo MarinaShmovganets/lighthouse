@@ -16,20 +16,29 @@ const NetworkRecorder = require('../../lib/network-recorder.js');
 const NetworkRequest = require('../../lib/network-request.js');
 const URL = require('../../lib/url-shim.js');
 
-/** @typedef {import('../../lib/network-recorder.js').NetworkRecorderEvent} NetworkRecorderEvent */
+/** @typedef {import('../../lib/network-recorder.js').NetworkRecorderEventMap} NetworkRecorderEventMap */
 /** @typedef {'network-2-idle'|'network-critical-idle'|'networkidle'|'networkbusy'|'network-critical-busy'|'network-2-busy'} NetworkMonitorEvent_ */
-/** @typedef {NetworkRecorderEvent|NetworkMonitorEvent_} NetworkMonitorEvent */
+/** @typedef {Record<NetworkMonitorEvent_, []> & NetworkRecorderEventMap} NetworkMonitorEventMap */
+/** @typedef {keyof NetworkMonitorEventMap} NetworkMonitorEvent */
+/** @typedef {LH.Protocol.StrictEventEmitterClass<NetworkMonitorEventMap>} NetworkMonitorEmitter */
+const NetworkMonitorEventEmitter = /** @type {NetworkMonitorEmitter} */ (EventEmitter);
 
-class NetworkMonitor extends EventEmitter {
+class NetworkMonitor extends NetworkMonitorEventEmitter {
   /** @type {NetworkRecorder|undefined} */
   _networkRecorder = undefined;
   /** @type {Array<LH.Crdp.Page.Frame>} */
   _frameNavigations = [];
 
-  /** @param {LH.Gatherer.FRProtocolSession} session */
-  constructor(session) {
+  // TODO(FR-COMPAT): switch to real TargetManager when legacy removed.
+  /** @param {LH.Gatherer.FRTransitionalDriver['targetManager']} targetManager */
+  constructor(targetManager) {
     super();
-    this._session = session;
+
+    /** @type {LH.Gatherer.FRTransitionalDriver['targetManager']} */
+    this._targetManager = targetManager;
+
+    /** @type {LH.Gatherer.FRProtocolSession} */
+    this._session = targetManager.rootSession();
 
     /** @param {LH.Crdp.Page.FrameNavigatedEvent} event */
     this._onFrameNavigated = event => this._frameNavigations.push(event.frame);
@@ -39,14 +48,6 @@ class NetworkMonitor extends EventEmitter {
       if (!this._networkRecorder) return;
       this._networkRecorder.dispatch(event);
     };
-
-    // Redefine the event emitter types with a narrower type signature.
-    /** @param {NetworkMonitorEvent} event @param {*} listener  */
-    this.on = (event, listener) => super.on(event, listener);
-    /** @param {NetworkMonitorEvent} event @param {*} listener  */
-    this.once = (event, listener) => super.once(event, listener);
-    /** @param {NetworkMonitorEvent} event @param {*} listener  */
-    this.off = (event, listener) => super.off(event, listener);
   }
 
   /**
@@ -60,7 +61,7 @@ class NetworkMonitor extends EventEmitter {
 
     /**
      * Reemit the same network recorder events.
-     * @param {NetworkRecorderEvent} event
+     * @param {keyof NetworkRecorderEventMap} event
      * @return {(r: NetworkRequest) => void}
      */
     const reEmit = event => r => {
@@ -69,37 +70,52 @@ class NetworkMonitor extends EventEmitter {
     };
 
     this._networkRecorder.on('requeststarted', reEmit('requeststarted'));
-    this._networkRecorder.on('requestloaded', reEmit('requestloaded'));
+    this._networkRecorder.on('requestfinished', reEmit('requestfinished'));
 
     this._session.on('Page.frameNavigated', this._onFrameNavigated);
-    this._session.addProtocolMessageListener(this._onProtocolMessage);
-
-    await this._session.sendCommand('Network.enable');
+    this._targetManager.on('protocolevent', this._onProtocolMessage);
   }
 
   /**
    * @return {Promise<void>}
    */
   async disable() {
+    if (!this._networkRecorder) return;
+
     this._session.off('Page.frameNavigated', this._onFrameNavigated);
-    this._session.removeProtocolMessageListener(this._onProtocolMessage);
+    this._targetManager.off('protocolevent', this._onProtocolMessage);
 
     this._frameNavigations = [];
     this._networkRecorder = undefined;
   }
 
-  /** @return {Promise<string | undefined>} */
-  async getFinalNavigationUrl() {
+  /** @return {Promise<{requestedUrl?: string, mainDocumentUrl?: string}>} */
+  async getNavigationUrls() {
     const frameNavigations = this._frameNavigations;
-    if (!frameNavigations.length) return undefined;
+    if (!frameNavigations.length) return {};
 
     const resourceTreeResponse = await this._session.sendCommand('Page.getResourceTree');
     const mainFrameId = resourceTreeResponse.frameTree.frame.id;
     const mainFrameNavigations = frameNavigations.filter(frame => frame.id === mainFrameId);
-    const finalNavigation = mainFrameNavigations[mainFrameNavigations.length - 1];
-    if (!finalNavigation) log.warn('NetworkMonitor', 'No detected navigations');
+    if (!mainFrameNavigations.length) log.warn('NetworkMonitor', 'No detected navigations');
 
-    return finalNavigation && finalNavigation.url;
+    // The requested URL is the initiator request for the first frame navigation.
+    /** @type {string|undefined} */
+    let requestedUrl = mainFrameNavigations[0]?.url;
+    if (this._networkRecorder) {
+      const records = this._networkRecorder.getRawRecords();
+
+      let initialUrlRequest = records.find(record => record.url === requestedUrl);
+      while (initialUrlRequest?.redirectSource) {
+        initialUrlRequest = initialUrlRequest.redirectSource;
+        requestedUrl = initialUrlRequest.url;
+      }
+    }
+
+    return {
+      requestedUrl,
+      mainDocumentUrl: mainFrameNavigations[mainFrameNavigations.length - 1]?.url,
+    };
   }
 
   /**
@@ -127,7 +143,7 @@ class NetworkMonitor extends EventEmitter {
     if (!this._networkRecorder) return false;
     const requests = this._networkRecorder.getRawRecords();
     const rootFrameRequest = requests.find(r => r.resourceType === 'Document');
-    const rootFrameId = rootFrameRequest && rootFrameRequest.frameId;
+    const rootFrameId = rootFrameRequest?.frameId;
 
     return this._isActiveIdlePeriod(
       0,

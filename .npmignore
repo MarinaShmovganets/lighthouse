@@ -6,14 +6,14 @@
 assets/
 build/
 coverage/
-dist/
 proto/
+docs/
 
+lighthouse-core/lib/sd-validation/
 lighthouse-core/scripts/*
 lighthouse-core/test/
-lighthouse-core/third_party/src/
-lighthouse-viewer/
-lighthouse-treemap/
+viewer/
+treemap/
 clients/
 lighthouse-cli/results/
 lighthouse-logger/
@@ -22,8 +22,11 @@ lighthouse-logger/
 !lighthouse-core/scripts/manual-chrome-launcher.js
 !lighthouse-core/scripts/download-chrome.sh
 
-# keep smokehouse tests, etc
-!lighthouse-cli/test
+# Exclude the CLI smoketests but keep the smoketest runner that is used
+# by downstream projects (e.g. publisher ads).
+lighthouse-cli/test/*
+!lighthouse-cli/test/smokehouse/
+lighthouse-cli/test/smokehouse/test-definitions/
 
 results/
 lantern-data/
@@ -36,7 +39,6 @@ chromium-webtests
 .tmp
 
 # generated files
-**/pages/scripts/lighthouse-report.js
 *.report.html
 *.dom.html
 *.devtoolslog.json
@@ -48,6 +50,15 @@ npm-debug.log
 yarn-error.log
 results.html
 *.lcov
+
+# generated files needed for publish
+dist/**
+!dist/report/standalone.js
+!dist/report/flow.js
+!dist/report/bundle.esm.js
+
+# large files
+changelog.md
 
 # dev files
 .DS_Store

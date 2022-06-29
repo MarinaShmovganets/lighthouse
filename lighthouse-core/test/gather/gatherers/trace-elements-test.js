@@ -3,19 +3,22 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-/* eslint-env jest */
+import {jest} from '@jest/globals';
 
-const TraceElementsGatherer = require('../../../gather/gatherers/trace-elements.js');
-const Driver = require('../../../gather/driver.js');
-const Connection = require('../../../gather/connections/connection.js');
-const createTestTrace = require('../../create-test-trace.js');
-const {createMockSendCommandFn} = require('../mock-commands.js');
+import TraceElementsGatherer from '../../../gather/gatherers/trace-elements.js';
+import Driver from '../../../gather/driver.js';
+import Connection from '../../../gather/connections/connection.js';
+import createTestTrace from '../../create-test-trace.js';
+import {createMockSendCommandFn, createMockOnFn} from '../mock-commands.js';
+import {flushAllTimersAndMicrotasks, fnAny} from '../../test-utils.js';
+import {readJson} from '../../../../root.js';
 
-const animationTrace = require('../../fixtures/traces/animation.json');
+const animationTrace = readJson('../../fixtures/traces/animation.json', import.meta);
 
-function makeLayoutShiftTraceEvent(score, impactedNodes, had_recent_input = false) {
+jest.useFakeTimers();
+
+function makeLayoutShiftTraceEvent(score, impactedNodes, had_recent_input = false) { // eslint-disable-line camelcase
   return {
     name: 'LayoutShift',
     cat: 'loading',
@@ -25,7 +28,7 @@ function makeLayoutShiftTraceEvent(score, impactedNodes, had_recent_input = fals
     ts: 1200,
     args: {
       data: {
-        had_recent_input,
+        had_recent_input, // eslint-disable-line camelcase
         impacted_nodes: impactedNodes,
         score: score,
       },
@@ -318,24 +321,6 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
 
 describe('Trace Elements gatherer - Animated Elements', () => {
   it('gets animated node ids with non-composited animations', async () => {
-    const connectionStub = new Connection();
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 1}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: 'alpha'},
-      }]})
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 2}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: ''},
-      }]})
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 3}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: 'beta'},
-      }]});
-    const driver = new Driver(connectionStub);
     const traceEvents = [
       makeAnimationTraceEvent('0x363db876c1', 'b', {id: '1', nodeId: 5}),
       makeAnimationTraceEvent('0x363db876c1', 'n', {
@@ -354,7 +339,11 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       }),
     ];
 
-    const result = await TraceElementsGatherer.getAnimatedElements({driver}, traceEvents);
+    const gatherer = new TraceElementsGatherer();
+    gatherer.animationIdToName.set('1', 'alpha');
+    gatherer.animationIdToName.set('3', 'beta');
+
+    const result = await gatherer.getAnimatedElements(traceEvents);
     expect(result).toEqual([
       {nodeId: 5, animations: [
         {name: 'alpha', failureReasonsMask: 8192, unsupportedProperties: ['height']},
@@ -367,19 +356,6 @@ describe('Trace Elements gatherer - Animated Elements', () => {
   });
 
   it('get non-composited animations with no unsupported properties', async () => {
-    const connectionStub = new Connection();
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 1}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: 'alpha'},
-      }]})
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 2}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: ''},
-      }]});
-    const driver = new Driver(connectionStub);
     const traceEvents = [
       makeAnimationTraceEvent('0x363db876c1', 'b', {id: '1', nodeId: 5}),
       makeAnimationTraceEvent('0x363db876c1', 'n', {
@@ -393,7 +369,10 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       }),
     ];
 
-    const result = await TraceElementsGatherer.getAnimatedElements({driver}, traceEvents);
+    const gatherer = new TraceElementsGatherer();
+    gatherer.animationIdToName.set('1', 'alpha');
+
+    const result = await gatherer.getAnimatedElements(traceEvents);
     expect(result).toEqual([
       {nodeId: 5, animations: [
         {name: 'alpha', failureReasonsMask: 2048, unsupportedProperties: []},
@@ -403,24 +382,6 @@ describe('Trace Elements gatherer - Animated Elements', () => {
   });
 
   it('gets animated node ids with composited animations', async () => {
-    const connectionStub = new Connection();
-    connectionStub.sendCommand = createMockSendCommandFn()
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 1}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: 'alpha'},
-      }]})
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 2}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: ''},
-      }]})
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 3}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: 'beta'},
-      }]});
-    const driver = new Driver(connectionStub);
     const traceEvents = [
       makeAnimationTraceEvent('0x363db876c1', 'b', {id: '1', nodeId: 5}),
       makeAnimationTraceEvent('0x363db876c1', 'n', {compositeFailed: 0, unsupportedProperties: []}),
@@ -430,7 +391,11 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       makeAnimationTraceEvent('0x363db876c3', 'n', {compositeFailed: 0, unsupportedProperties: []}),
     ];
 
-    const result = await TraceElementsGatherer.getAnimatedElements({driver}, traceEvents);
+    const gatherer = new TraceElementsGatherer();
+    gatherer.animationIdToName.set('1', 'alpha');
+    gatherer.animationIdToName.set('3', 'beta');
+
+    const result = await gatherer.getAnimatedElements(traceEvents);
     expect(result).toEqual([
       {nodeId: 5, animations: [
         {name: 'alpha', failureReasonsMask: 0, unsupportedProperties: []},
@@ -497,11 +462,6 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       .mockResponse('DOM.resolveNode', () => { // 2nd CLS node
         throw Error('No node found');
       })
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 4}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: 'example'},
-      }]})
       .mockResponse('DOM.resolveNode', {object: {objectId: 3}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: animationNodeData}});
     const driver = new Driver(connectionStub);
@@ -529,7 +489,9 @@ describe('Trace Elements gatherer - Animated Elements', () => {
     trace.traceEvents.push(makeLCPTraceEvent(6));
 
     const gatherer = new TraceElementsGatherer();
-    const result = await gatherer.afterPass({driver}, {trace});
+    gatherer.animationIdToName.set('1', 'example');
+
+    const result = await gatherer._getArtifact({driver, computedCache: new Map()}, trace);
 
     expect(result).toEqual([
       {
@@ -603,36 +565,19 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       .mockResponse('DOM.resolveNode', {object: {objectId: 1}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: LCPNodeData}})
       // Animated node
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 2}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: ''},
-      }]})
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 3}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: 'alpha'},
-      }]})
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 4}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: 'beta'},
-      }]})
       .mockResponse('DOM.resolveNode', {object: {objectId: 5}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: animationNodeData}})
       // Composited node
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 6}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: 'gamma'},
-      }]})
       .mockResponse('DOM.resolveNode', {object: {objectId: 7}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: compositedNodeData}});
 
     const driver = new Driver(connectionStub);
     const gatherer = new TraceElementsGatherer();
+    gatherer.animationIdToName.set('2', 'alpha');
+    gatherer.animationIdToName.set('3', 'beta');
+    gatherer.animationIdToName.set('4', 'gamma');
 
-    const result = await gatherer.afterPass({driver}, {trace: animationTrace});
+    const result = await gatherer._getArtifact({driver, computedCache: new Map()}, animationTrace);
 
     expect(result).toEqual([
       {
@@ -694,18 +639,10 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       .mockResponse('DOM.resolveNode', {object: {objectId: 1}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: LCPNodeData}})
       // Animation 1
-      .mockResponse('Animation.resolveAnimation', () => {
-        throw Error();
-      })
       .mockResponse('DOM.resolveNode', () => {
         throw Error();
       })
       // Animation 2
-      .mockResponse('Animation.resolveAnimation', {remoteObject: {objectId: 4}})
-      .mockResponse('Runtime.getProperties', {result: [{
-        name: 'animationName',
-        value: {type: 'string', value: 'example'},
-      }]})
       .mockResponse('DOM.resolveNode', {object: {objectId: 5}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: animationNodeData}});
     const driver = new Driver(connectionStub);
@@ -724,7 +661,10 @@ describe('Trace Elements gatherer - Animated Elements', () => {
     trace.traceEvents.push(makeLCPTraceEvent(7));
 
     const gatherer = new TraceElementsGatherer();
-    const result = await gatherer.afterPass({driver}, {trace});
+    gatherer.animationIdToName.set('1', 'notgunnamatter');
+    gatherer.animationIdToName.set('2', 'example');
+
+    const result = await gatherer._getArtifact({driver, computedCache: new Map()}, trace);
 
     expect(result).toEqual([
       {
@@ -739,5 +679,129 @@ describe('Trace Elements gatherer - Animated Elements', () => {
         nodeId: 6,
       },
     ]);
+  });
+
+
+  it('properly handles timespans without FCP', async () => {
+    const animationNodeData = {
+      traceEventType: 'animation',
+      devtoolsNodePath: '1,HTML,1,BODY,1,DIV',
+      selector: 'body > div#animated',
+      nodeLabel: 'div',
+      snippet: '<div id="animated">',
+      boundingRect: {
+        top: 60,
+        bottom: 200,
+        left: 60,
+        right: 100,
+        width: 40,
+        height: 140,
+      },
+    };
+    const connectionStub = new Connection();
+    connectionStub.sendCommand = createMockSendCommandFn()
+      // Animation 1
+      .mockResponse('DOM.resolveNode', {object: {objectId: 5}})
+      .mockResponse('Runtime.callFunctionOn', {result: {value: animationNodeData}});
+    const driver = new Driver(connectionStub);
+
+    const trace = createTestTrace({timeOrigin: 0, traceEnd: 2000});
+    trace.traceEvents = trace.traceEvents.filter(event => event.name !== 'firstContentfulPaint');
+    trace.traceEvents.push(makeAnimationTraceEvent('0x363db876c8', 'b', {id: '1', nodeId: 5}));
+    trace.traceEvents.push(makeAnimationTraceEvent('0x363db876c8', 'n', {
+      compositeFailed: 8192,
+      unsupportedProperties: ['height'],
+    }));
+
+    const gatherer = new TraceElementsGatherer();
+    gatherer.animationIdToName.set('1', 'example');
+
+    const result = await gatherer._getArtifact({
+      driver,
+      gatherMode: 'timespan',
+      computedCache: new Map(),
+    }, trace);
+
+    expect(result).toEqual([
+      {
+        ...animationNodeData,
+        animations: [
+          {name: 'example', failureReasonsMask: 8192, unsupportedProperties: ['height']},
+        ],
+        nodeId: 5,
+      },
+    ]);
+  });
+});
+
+describe('instrumentation', () => {
+  it('resolves animation name', async () => {
+    const connectionStub = new Connection();
+    connectionStub.on = createMockOnFn()
+      .mockEvent('protocolevent', {
+        method: 'Animation.animationStarted',
+        params: {animation: {id: '1', name: 'example'}},
+      });
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Animation.enable')
+      .mockResponse('Animation.disable');
+    const driver = new Driver(connectionStub);
+    const gatherer = new TraceElementsGatherer();
+    await gatherer.startInstrumentation({driver, computedCache: new Map()});
+
+    await flushAllTimersAndMicrotasks();
+
+    await gatherer.stopInstrumentation({driver, computedCache: new Map()});
+
+    expect(gatherer.animationIdToName.size).toEqual(1);
+    expect(gatherer.animationIdToName.get('1')).toEqual('example');
+  });
+
+  it('ignores empty name', async () => {
+    const connectionStub = new Connection();
+    connectionStub.on = createMockOnFn()
+      .mockEvent('protocolevent', {
+        method: 'Animation.animationStarted',
+        params: {animation: {id: '1', name: ''}},
+      });
+    connectionStub.sendCommand = createMockSendCommandFn()
+      .mockResponse('Animation.enable')
+      .mockResponse('Animation.disable');
+    const driver = new Driver(connectionStub);
+    const gatherer = new TraceElementsGatherer();
+    await gatherer.startInstrumentation({driver, computedCache: new Map()});
+
+    await flushAllTimersAndMicrotasks();
+
+    await gatherer.stopInstrumentation({driver, computedCache: new Map()});
+
+    expect(gatherer.animationIdToName.size).toEqual(0);
+  });
+});
+
+describe('FR compat', () => {
+  it('uses loadData in legacy mode', async () => {
+    const trace = ['1', '2'];
+    const gatherer = new TraceElementsGatherer();
+    gatherer._getArtifact = fnAny();
+    gatherer.stopInstrumentation = fnAny();
+
+    await gatherer.afterPass({}, {trace});
+
+    expect(gatherer._getArtifact).toHaveBeenCalledWith({dependencies: {}}, trace);
+    expect(gatherer.stopInstrumentation).toHaveBeenCalledWith({dependencies: {}});
+  });
+
+  it('uses dependency in legacy mode', async () => {
+    const trace = ['1', '2'];
+    const gatherer = new TraceElementsGatherer();
+    gatherer._getArtifact = fnAny();
+    gatherer.stopInstrumentation = fnAny();
+
+    const context = {dependencies: {Trace: trace}};
+    await gatherer.getArtifact(context);
+
+    expect(gatherer._getArtifact).toHaveBeenCalledWith(context, trace);
+    expect(gatherer.stopInstrumentation).not.toHaveBeenCalled();
   });
 });
