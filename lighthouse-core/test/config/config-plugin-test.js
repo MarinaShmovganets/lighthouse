@@ -262,14 +262,14 @@ describe('ConfigPlugin', () => {
       const pluginClone = deepClone(nicePlugin);
       pluginClone.category.supportedModes = 55;
       assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
-        /^Error: lighthouse-plugin-nice-plugin has an invalid category supportedModes/);
+        /^Error: lighthouse-plugin-nice-plugin supportedModes must be an array/);
     });
 
     it('throws if supported modes is not an array of valid gather modes', () => {
       const pluginClone = deepClone(nicePlugin);
       pluginClone.category.supportedModes = ['invalid-mode'];
       assert.throws(() => ConfigPlugin.parsePlugin(pluginClone, nicePluginName),
-        /^Error: lighthouse-plugin-nice-plugin has an invalid category supportedModes/);
+        /^Error: lighthouse-plugin-nice-plugin supportedModes must be an array/);
     });
 
     describe('`category.auditRefs`', () => {
