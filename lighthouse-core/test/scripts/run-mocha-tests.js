@@ -282,9 +282,9 @@ let didFail = false;
  * @param {string[]} tests
  */
 function runMochaCLI(tests) {
-  const file = 'node';
+  const file = 'npx';
   const args = [
-    'node_modules/.bin/mocha',
+    'mocha',
     ...baseArgs,
     ...tests,
   ];
