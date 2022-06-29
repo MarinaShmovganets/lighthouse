@@ -687,7 +687,7 @@ describe('Runner', () => {
       const AuditClass = require(auditPath);
       assert.strictEqual(AuditClass.meta.id, auditExpectedName);
     });
-  });
+  }).timeout(40_000);
 
   it('results include artifacts when given artifacts and audits', async () => {
     const config = await Config.fromJson({
