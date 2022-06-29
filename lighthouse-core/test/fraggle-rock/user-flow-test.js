@@ -27,6 +27,8 @@ const navigationModule = {navigationGather: jest.fn()};
 jest.mock('../../fraggle-rock/gather/navigation-runner.js', () => navigationModule);
 const timespanModule = {startTimespanGather: jest.fn()};
 jest.mock('../../fraggle-rock/gather/timespan-runner.js', () => timespanModule);
+const dryRunModule = {dryRun: jest.fn(), dryRunNavigation: jest.fn()};
+jest.mock('../../fraggle-rock/gather/dry-run.js', () => dryRunModule);
 
 const mockRunner = mockRunnerModule();
 
@@ -37,6 +39,9 @@ describe('UserFlow', () => {
     mockPage = createMockPage();
 
     mockRunner.reset();
+
+    dryRunModule.dryRun.mockReset();
+    dryRunModule.dryRunNavigation.mockReset();
 
     snapshotModule.snapshotGather.mockReset();
     snapshotModule.snapshotGather.mockResolvedValue({
@@ -162,6 +167,14 @@ describe('UserFlow', () => {
       expect(configContext).toEqual({settingsOverrides: {maxWaitForLoad: 1000}});
       expect(configContextExplicit).toEqual({skipAboutBlank: false});
     });
+
+    it('should perform a minimal navigation in a dry run', async () => {
+      const flow = new UserFlow(mockPage.asPage(), {dryRun: true});
+      await flow.navigate('https://example.com/1');
+
+      expect(navigationModule.navigationGather).not.toHaveBeenCalled();
+      expect(dryRunModule.dryRunNavigation).toHaveBeenCalled();
+    });
   });
 
   describe('.startNavigation()', () => {
@@ -238,12 +251,28 @@ describe('UserFlow', () => {
         {name: 'Timespan report (www.example.com/)'},
       ]);
     });
+
+    it('should setup emulation in a dry run', async () => {
+      const flow = new UserFlow(mockPage.asPage(), {dryRun: true});
+      await flow.startTimespan();
+
+      expect(timespanModule.startTimespanGather).not.toHaveBeenCalled();
+      expect(dryRunModule.dryRun).toHaveBeenCalled();
+    });
   });
 
   describe('.endTimespan()', () => {
     it('should throw if a timespan has not started', async () => {
       const flow = new UserFlow(mockPage.asPage());
       await expect(flow.endTimespan()).rejects.toBeTruthy();
+    });
+
+    it('should do nothing in a dry run', async () => {
+      const flow = new UserFlow(mockPage.asPage(), {dryRun: true});
+      await flow.endTimespan();
+
+      expect(timespanModule.startTimespanGather).not.toHaveBeenCalled();
+      expect(dryRunModule.dryRun).not.toHaveBeenCalled();
     });
   });
 
@@ -266,6 +295,14 @@ describe('UserFlow', () => {
         {name: 'Snapshot report (www.example.com/)'},
       ]);
     });
+
+    it('should setup emulation in a dry run', async () => {
+      const flow = new UserFlow(mockPage.asPage(), {dryRun: true});
+      await flow.snapshot();
+
+      expect(snapshotModule.snapshotGather).not.toHaveBeenCalled();
+      expect(dryRunModule.dryRun).toHaveBeenCalled();
+    });
   });
 
   describe('.getFlowResult', () => {
@@ -273,6 +310,16 @@ describe('UserFlow', () => {
       const flow = new UserFlow(mockPage.asPage());
       const flowResultPromise = flow.createFlowResult();
       await expect(flowResultPromise).rejects.toThrow(/Need at least one step/);
+    });
+
+    it('should return shell object after a dry run', async () => {
+      const flow = new UserFlow(mockPage.asPage(), {dryRun: true});
+      await flow.snapshot();
+      const flowResult = await flow.createFlowResult();
+      await expect(flowResult).toEqual({
+        name: 'Dry run',
+        steps: [],
+      });
     });
 
     it('should audit active gather steps', async () => {
