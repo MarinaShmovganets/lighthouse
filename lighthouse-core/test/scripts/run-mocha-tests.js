@@ -300,7 +300,6 @@ function runMochaCLI(tests) {
         LH_FAILED_TESTS_FILE: `${failedTestsDir}/output-${numberMochaInvocations}.json`,
       },
       stdio: 'inherit',
-      shell: process.platform === 'win32',
     });
   } catch {
     if (argv.bail) {
