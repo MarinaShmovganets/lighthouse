@@ -114,7 +114,7 @@ class LighthouseError extends Error {
    */
   constructor(errorDefinition, properties) {
     super(errorDefinition.code);
-    this.name = 'LHError';
+    this.name = 'LighthouseError';
     this.code = errorDefinition.code;
     // Add additional properties to be ICU replacements in the error string.
     // `code` is always added as `errorCode` so callers don't need to specify the code multiple times.
@@ -182,12 +182,12 @@ class LighthouseError extends Error {
       };
     }
 
-    throw new Error('Invalid value for LHError stringification');
+    throw new Error('Invalid value for LighthouseError stringification');
   }
 
   /**
    * A JSON.parse reviver. If any value passed in is a serialized Error or
-   * LHError, the error is recreated as the original object. Otherwise, the
+   * LighthouseError, the error is recreated as the original object. Otherwise, the
    * value is passed through unchanged.
    * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#Using_the_reviver_parameter
    * @param {string} key
