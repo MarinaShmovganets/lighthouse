@@ -18,8 +18,8 @@
     "clients/**/*.js",
     "build/**/*.js",
     "./types/**/*.d.ts",
-    "eslint-local-rules.js",
-    "third-party/axe/valid-langs.js",
+    "eslint-local-rules.cjs",
+    "eslint-local-rules.cjs-langs.js",
 
     // TODO(esmodules): JSON files included via resolveJsonModule. Removable on the switch to ES Modules.
     "package.json",
