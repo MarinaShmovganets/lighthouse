@@ -148,7 +148,7 @@ class LighthouseError extends Error {
   }
 
   /**
-   * A JSON.stringify replacer to serialize LHErrors and (as a fallback) Errors.
+   * A JSON.stringify replacer to serialize LighthouseErrors and (as a fallback) Errors.
    * Returns a simplified version of the error object that can be reconstituted
    * as a copy of the original error at parse time.
    * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#The_replacer_parameter
@@ -169,7 +169,7 @@ class LighthouseError extends Error {
       };
     }
 
-    // Unexpected errors won't be LHErrors, but we want them serialized as well.
+    // Unexpected errors won't be LighthouseErrors, but we want them serialized as well.
     if (err instanceof Error) {
       const {message, stack} = err;
       // @ts-expect-error - code can be helpful for e.g. node errors, so preserve it if it's present.

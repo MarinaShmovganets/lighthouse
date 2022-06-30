@@ -48,7 +48,7 @@ function loadArtifacts(basePath) {
     throw new Error('No saved artifacts found at ' + basePath);
   }
 
-  // load artifacts.json using a reviver to deserialize any LHErrors in artifacts.
+  // load artifacts.json using a reviver to deserialize any LighthouseErrors in artifacts.
   const artifactsStr = fs.readFileSync(path.join(basePath, artifactsFilename), 'utf8');
   /** @type {LH.Artifacts} */
   const artifacts = JSON.parse(artifactsStr, LighthouseError.parseReviver);
@@ -128,7 +128,7 @@ async function saveArtifacts(artifacts, basePath) {
     await saveDevtoolsLog(devtoolsLog, `${basePath}/${passName}${devtoolsLogSuffix}`);
   }
 
-  // save everything else, using a replacer to serialize LHErrors in the artifacts.
+  // save everything else, using a replacer to serialize LighthouseErrors in the artifacts.
   const restArtifactsString = JSON.stringify(restArtifacts, stringifyReplacer, 2) + '\n';
   fs.writeFileSync(`${basePath}/${artifactsFilename}`, restArtifactsString, 'utf8');
   log.log('Artifacts saved to disk in folder:', basePath);
