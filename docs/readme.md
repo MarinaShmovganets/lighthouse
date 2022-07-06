@@ -7,26 +7,49 @@ internals, see [Lighthouse Architecture](architecture.md).
 The example below shows how to run Lighthouse programmatically as a Node module. It
 assumes you've installed Lighthouse as a dependency (`yarn add --dev lighthouse`).
 
-```javascript
-const fs = require('fs');
-const lighthouse = require('lighthouse');
-const chromeLauncher = require('chrome-launcher');
+```js
+import fs from 'fs';
+import lighthouse from 'lighthouse';
+import chromeLauncher from 'chrome-launcher';
 
-(async () => {
-  const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
-  const options = {logLevel: 'info', output: 'html', onlyCategories: ['performance'], port: chrome.port};
-  const runnerResult = await lighthouse('https://example.com', options);
+const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
+const options = {logLevel: 'info', output: 'html', onlyCategories: ['performance'], port: chrome.port};
+const runnerResult = await lighthouse('https://example.com', options);
 
-  // `.report` is the HTML report as a string
-  const reportHtml = runnerResult.report;
-  fs.writeFileSync('lhreport.html', reportHtml);
+// `.report` is the HTML report as a string
+const reportHtml = runnerResult.report;
+fs.writeFileSync('lhreport.html', reportHtml);
 
-  // `.lhr` is the Lighthouse Result as a JS object
-  console.log('Report is done for', runnerResult.lhr.finalUrl);
-  console.log('Performance score was', runnerResult.lhr.categories.performance.score * 100);
+// `.lhr` is the Lighthouse Result as a JS object
+console.log('Report is done for', runnerResult.lhr.finalUrl);
+console.log('Performance score was', runnerResult.lhr.categories.performance.score * 100);
 
-  await chrome.kill();
-})();
+await chrome.kill();
+```
+
+## Using programmatically with Puppeteer
+
+This is the same example as above, but it uses Puppeteer instead of `chrome-launcher`. It will test the page in the same tab opened by Puppeteer.
+
+```js
+import fs from 'fs';
+import lighthouse from 'lighthouse';
+import puppeteer from 'puppeteer';
+
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+const options = {logLevel: 'info', output: 'html', onlyCategories: ['performance']};
+const runnerResult = await lighthouse('https://example.com', options, undefined, page);
+
+// `.report` is the HTML report as a string
+const reportHtml = runnerResult.report;
+fs.writeFileSync('lhreport.html', reportHtml);
+
+// `.lhr` is the Lighthouse Result as a JS object
+console.log('Report is done for', runnerResult.lhr.finalUrl);
+console.log('Performance score was', runnerResult.lhr.categories.performance.score * 100);
+
+await chrome.kill();
 ```
 
 ### Performance-only Lighthouse run
