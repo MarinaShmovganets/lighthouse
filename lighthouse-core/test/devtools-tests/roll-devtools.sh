@@ -28,6 +28,9 @@ echo "$DEVTOOLS_PATH"
 cat "$DEVTOOLS_PATH/test/e2e/resources/lighthouse/BUILD.gn"
 ls "$DEVTOOLS_PATH/test/e2e/resources/lighthouse/"
 echo "----------debug"
+cat "$DEVTOOLS_PATH/test/e2e/lighthouse/BUILD.gn"
+ls "$DEVTOOLS_PATH/test/e2e/lighthouse/"
+echo "----------debug"
 
 # Build devtools. This creates `out/Default/gen/front_end`.
 autoninja -C out/Default
