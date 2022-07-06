@@ -49,7 +49,8 @@ fs.writeFileSync('lhreport.html', reportHtml);
 console.log('Report is done for', runnerResult.lhr.finalUrl);
 console.log('Performance score was', runnerResult.lhr.categories.performance.score * 100);
 
-await chrome.kill();
+await page.close();
+await browser.close();
 ```
 
 ### Performance-only Lighthouse run
