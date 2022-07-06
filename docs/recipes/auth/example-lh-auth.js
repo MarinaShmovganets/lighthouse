@@ -33,7 +33,7 @@ async function login(page, origin) {
 }
 
 /**
- * @param {puppeteer.page} page
+ * @param {puppeteer.Page} page
  * @param {string} origin
  */
 async function logout(page, origin) {
