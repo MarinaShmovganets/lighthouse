@@ -5,31 +5,7 @@ internals, see [Lighthouse Architecture](architecture.md).
 ## Using programmatically
 
 The example below shows how to run Lighthouse programmatically as a Node module. It
-assumes you've installed Lighthouse as a dependency (`yarn add --dev lighthouse`).
-
-```js
-import fs from 'fs';
-import lighthouse from 'lighthouse';
-import chromeLauncher from 'chrome-launcher';
-
-const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
-const options = {logLevel: 'info', output: 'html', onlyCategories: ['performance'], port: chrome.port};
-const runnerResult = await lighthouse('https://example.com', options);
-
-// `.report` is the HTML report as a string
-const reportHtml = runnerResult.report;
-fs.writeFileSync('lhreport.html', reportHtml);
-
-// `.lhr` is the Lighthouse Result as a JS object
-console.log('Report is done for', runnerResult.lhr.finalUrl);
-console.log('Performance score was', runnerResult.lhr.categories.performance.score * 100);
-
-await chrome.kill();
-```
-
-## Using programmatically with Puppeteer
-
-This is the same example as above, but it uses Puppeteer instead of `chrome-launcher`. It will test the page in the same tab opened by Puppeteer.
+assumes you've installed Lighthouse and Puppeteer as dependencies (`yarn add --dev lighthouse puppeteer`).
 
 ```js
 import fs from 'fs';
@@ -51,6 +27,30 @@ console.log('Performance score was', runnerResult.lhr.categories.performance.sco
 
 await page.close();
 await browser.close();
+```
+
+## Using programmatically with specified Chrome port
+
+This is the same example as above, but it specifies a Chrome debugging port instead of providing a Puppeteer page. This example uses `chrome-launcher` and works for pre-10.0 Lighthouse versions.
+
+```js
+import fs from 'fs';
+import lighthouse from 'lighthouse';
+import chromeLauncher from 'chrome-launcher';
+
+const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
+const options = {logLevel: 'info', output: 'html', onlyCategories: ['performance'], port: chrome.port};
+const runnerResult = await lighthouse('https://example.com', options);
+
+// `.report` is the HTML report as a string
+const reportHtml = runnerResult.report;
+fs.writeFileSync('lhreport.html', reportHtml);
+
+// `.lhr` is the Lighthouse Result as a JS object
+console.log('Report is done for', runnerResult.lhr.finalUrl);
+console.log('Performance score was', runnerResult.lhr.categories.performance.score * 100);
+
+await chrome.kill();
 ```
 
 ### Performance-only Lighthouse run
