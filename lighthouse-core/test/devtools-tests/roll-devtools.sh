@@ -13,7 +13,7 @@ LH_ROOT="$SCRIPT_DIR/../../.."
 
 roll_devtools() {
   # Roll devtools. Besides giving DevTools the latest lighthouse source files,
-  # this also copies over the webtests.
+  # this also copies over the e2e tests.
   cd "$LH_ROOT"
   yarn devtools "$DEVTOOLS_PATH"
   cd -
@@ -22,7 +22,13 @@ roll_devtools() {
 cd "$DEVTOOLS_PATH"
 git --no-pager log -1
 roll_devtools
-# Build devtools. The creates `out/Default/gen/front_end`,
-# which is served as `inspector-sources` by the webtests server.
+
+echo "----------debug"
+echo "$DEVTOOLS_PATH"
+cat "$DEVTOOLS_PATH/test/e2e/resources/lighthouse/BUILD.gn"
+ls "$DEVTOOLS_PATH/test/e2e/resources/lighthouse/"
+echo "----------debug"
+
+# Build devtools. This creates `out/Default/gen/front_end`.
 autoninja -C out/Default
 cd -

@@ -82,5 +82,5 @@ fe_e2e_res_dir="$dt_dir/test/e2e/resources/lighthouse"
 rsync -avh "$lh_e2e_res_dir" "$fe_e2e_res_dir" --exclude="OWNERS" --delete
 
 echo ""
-echo "Done. To run the webtests: "
+echo "Done. To run the e2e tests: "
 echo "    DEVTOOLS_PATH=\"$dt_dir\" yarn test-devtools"
