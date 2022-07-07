@@ -41,6 +41,6 @@ fi
 yarn devtools "$DEVTOOLS_PATH"
 
 cd "$DEVTOOLS_PATH"
-gn gen out/Default --args=devtools_dcheck_always_on=true is_debug=false
+gn gen out/Default --args='devtools_dcheck_always_on=true is_debug=false'
 gclient sync
 autoninja -C out/Default
