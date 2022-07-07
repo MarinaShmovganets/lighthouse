@@ -10,7 +10,8 @@
 import fs from 'fs';
 import path from 'path';
 
-import {LH_ROOT, readJson} from '../../../root.js';
+import {LH_ROOT} from '../../../root.js';
+import {readJson} from '../../test/test-utils.js';
 
 /**
  * @typedef CtcMessage
@@ -80,7 +81,7 @@ function bakePlaceholders(messages) {
         // Need a global replace due to plural ICU copying placeholders
         // (and therefore ICU vars) multiple times.
         const regex = new RegExp('\\$' + placeholder + '\\$', 'g');
-        message = message.replace(regex, content);
+        message = message.replace(regex, () => content);
       }
     }
 

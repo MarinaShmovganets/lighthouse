@@ -15,7 +15,8 @@ import glob from 'glob';
 import {makeHash} from './hash.js';
 import LegacyJavascript from '../../audits/byte-efficiency/legacy-javascript.js';
 import networkRecordsToDevtoolsLog from '../../test/network-records-to-devtools-log.js';
-import {LH_ROOT, readJson} from '../../../root.js';
+import {LH_ROOT} from '../../../root.js';
+import {readJson} from '../../test/test-utils.js';
 
 const scriptDir = `${LH_ROOT}/lighthouse-core/scripts/legacy-javascript`;
 
@@ -320,7 +321,4 @@ async function main() {
   createSummarySizes();
 }
 
-main().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+await main();

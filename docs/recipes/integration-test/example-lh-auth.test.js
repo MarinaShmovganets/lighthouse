@@ -4,12 +4,10 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
-
-/* eslint-env jest */
 /* eslint-disable new-cap */
 
 /**
- * @fileoverview Example Jest tests for demonstrating how to run Lighthouse on an authenticated
+ * @fileoverview Example Mocha tests for demonstrating how to run Lighthouse on an authenticated
  * page as integration tests. See docs/recipes/auth/README.md for more.
  */
 
@@ -17,14 +15,13 @@
 
 const puppeteer = require('puppeteer');
 const lighthouse = require('lighthouse');
+const {expect} = require('expect');
 const server = require('../auth/server/server.js');
 const {login, logout} = require('../auth/example-lh-auth.js');
 
 const CHROME_DEBUG_PORT = 8042;
 const SERVER_PORT = 10632;
 const ORIGIN = `http://localhost:${SERVER_PORT}`;
-
-jest.setTimeout(30000);
 
 // Provide a nice way to assert a score for a category.
 // Note, you could just use `expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9)`,
@@ -80,7 +77,7 @@ describe('my site', () => {
   /** @type {import('puppeteer').Page} */
   let page;
 
-  beforeAll(async () => {
+  before(async () => {
     await new Promise(resolve => server.listen(SERVER_PORT, resolve));
     browser = await puppeteer.launch({
       args: [`--remote-debugging-port=${CHROME_DEBUG_PORT}`],
@@ -89,7 +86,7 @@ describe('my site', () => {
     });
   });
 
-  afterAll(async () => {
+  after(async () => {
     await browser.close();
     await new Promise(resolve => server.close(resolve));
   });

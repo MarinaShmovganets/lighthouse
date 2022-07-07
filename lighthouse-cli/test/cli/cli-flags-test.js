@@ -4,14 +4,10 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-/* eslint-env jest */
-
 import {strict as assert} from 'assert';
 import fs from 'fs';
 
-import yargs from 'yargs';
-
-import {getFlags} from '../../cli-flags.js';
+import {getFlags, getYargsParser} from '../../cli-flags.js';
 import {LH_ROOT} from '../../../root.js';
 
 /**
@@ -39,10 +35,9 @@ function snapshot(flags) {
 
 describe('CLI flags', function() {
   it('all options should have descriptions', () => {
-    getFlags('chrome://version');
-
+    const parser = getYargsParser();
     // @ts-expect-error - getGroups is private
-    const optionGroups = yargs.getGroups();
+    const optionGroups = parser.getGroups();
     /** @type {string[]} */
     const allOptions = [];
     Object.keys(optionGroups).forEach(key => {
@@ -50,7 +45,7 @@ describe('CLI flags', function() {
     });
     const optionsWithDescriptions =
       // @ts-expect-error - getUsageInstance is private
-      Object.keys(yargs.getInternalMethods().getUsageInstance().getDescriptions());
+      Object.keys(parser.getInternalMethods().getUsageInstance().getDescriptions());
 
     allOptions.forEach(opt => {
       assert.ok(optionsWithDescriptions.includes(opt), `cli option '${opt}' has no description`);

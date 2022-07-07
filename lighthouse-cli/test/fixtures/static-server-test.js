@@ -10,14 +10,13 @@ import fetch from 'node-fetch';
 
 import {server} from './static-server.js';
 
-/* eslint-env jest */
 
 describe('Server', () => {
-  beforeAll(async () => {
+  before(async () => {
     await server.listen(10200, 'localhost');
   });
 
-  afterAll(async () => {
+  after(async () => {
     await server.close();
   });
 

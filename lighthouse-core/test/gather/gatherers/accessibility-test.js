@@ -3,13 +3,16 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-/* eslint-env jest */
+import fs from 'fs';
+import {strict as assert} from 'assert';
 
-const AccessibilityGather = require('../../../gather/gatherers/accessibility.js');
-const assert = require('assert').strict;
-const {LH_ROOT} = require('../../../../root.js');
+import puppeteer from 'puppeteer';
+
+import AccessibilityGather from '../../../gather/gatherers/accessibility.js';
+import {LH_ROOT} from '../../../../root.js';
+import axeLib from '../../../../lighthouse-core/lib/axe.js';
+import pageFunctions from '../../../../lighthouse-core/lib/page-functions.js';
 
 describe('Accessibility gatherer', () => {
   let accessibilityGather;
@@ -36,22 +39,19 @@ describe('Accessibility gatherer', () => {
 
 describe('a11y audits + aXe', () => {
   let browser;
-  const axeLibSource = require('../../../lib/axe.js').source;
-  const pageFunctions = require('../../../lib/page-functions.js');
-  const fs = require('fs');
 
-  beforeAll(async () => {
-    browser = await require('puppeteer').launch();
+  before(async () => {
+    browser = await puppeteer.launch();
   });
 
-  afterAll(async () => {
+  after(async () => {
     await browser.close();
   });
 
   it('only runs the axe rules we have audits defined for', async () => {
     const page = await browser.newPage();
     page.setContent(`<!doctype html><meta charset="utf8"><title>hi</title>valid.`);
-    await page.evaluate(axeLibSource);
+    await page.evaluate(axeLib.source);
     await page.evaluate(pageFunctions.getNodeDetailsString);
     await page.evaluate(AccessibilityGather.pageFns.runA11yChecks.toString());
     await page.evaluate(AccessibilityGather.pageFns.createAxeRuleResultArtifact.toString());
