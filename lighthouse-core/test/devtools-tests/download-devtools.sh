@@ -35,6 +35,6 @@ fetch --nohooks --no-history devtools-frontend
 cd devtools-frontend
 
 gclient sync
-gn gen out/Default
+gn gen out/Default --args=devtools_dcheck_always_on=true is_debug=false
 
 set +x
