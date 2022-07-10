@@ -334,6 +334,8 @@ This section details services that have integrated Lighthouse data. If you're wo
 
 * **[Screpy](https://screpy.com)** - Screpy is a web analysis tool that can analyze all pages of your websites in one dashboard and monitor them with your team. It's powered by Lighthouse and it also includes some different analysis tools (SERP, W3C, Uptime, etc). Screpy has free and paid plans.
 
+* **[Lighthouse Metrics](https://lighthouse-metrics.com/)** - Lighthouse Metrics gives you global performance insights with a single test. You can also monitor your websites on a daily or hourly base. Lighthouse Metrics offers free global one-time tests and performance monitoring as a paid feature with a free 14-day trial.
+
 * **[Lighthouse Keeper](https://lighthouse-keeper.com/)** - Lighthouse Keeper monitors your pages' Lighthouse scores and notifies you if they drop below your thresholds. Lighthouse Keeper is a free service that monitors up to 3 URLs once per day.
 
 * **[Siteimprove Performance](https://siteimprove.com/en/performance/)** — Siteimprove Performance is a web Performance monitoring solution that enables a marketer, manager or decision maker to understand and optimize website load times. Get easy-to-use insights with a focus on quick and impactful wins. Siteimprove Performance is a paid product with a free 14-day trial.
