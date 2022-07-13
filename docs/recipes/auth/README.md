@@ -35,7 +35,7 @@ What does this do?  Read on....
 
 ## Process
 
-Puppeteer - a browser automation tool - can be used to programatically setup a session.
+Puppeteer - a browser automation tool - can be used to programmatically setup a session.
 
 1. Launch a new browser.
 1. Navigate to the login page.
