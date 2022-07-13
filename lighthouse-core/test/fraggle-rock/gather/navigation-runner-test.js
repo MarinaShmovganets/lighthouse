@@ -421,8 +421,7 @@ describe('NavigationRunner', () => {
       expect(artifacts).toEqual({});
     });
 
-    // TODO(esmodules): unclear why this fails now.
-    it.skip('finds page load errors in network records when available', async () => {
+    it('finds page load errors in network records when available', async () => {
       const {navigation, gatherers} = createNavigation();
       mocks.navigationMock.gotoURL.mockResolvedValue({mainDocumentUrl: requestedUrl, warnings: []});
       const devtoolsLog = networkRecordsToDevtoolsLog([{url: requestedUrl, failed: true}]);
