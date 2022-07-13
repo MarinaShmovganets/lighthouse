@@ -439,10 +439,7 @@ class Runner {
     ];
 
     for (const possibleErrorArtifact of possibleErrorArtifacts) {
-      // TODO: for some reason, when under test LighthouseError !== the LighthouseError from the test file.
-      // yarn mocha navigation-runner-test -t 'includes a top-level runtimeError when a gatherer throws one'
-      // const isError = possibleErrorArtifact instanceof LighthouseError;
-      const isError = possibleErrorArtifact?.name === 'LighthouseError';
+      const isError = possibleErrorArtifact instanceof LighthouseError;
 
       // eslint-disable-next-line max-len
       if (isError && possibleErrorArtifact.lhrRuntimeError) {

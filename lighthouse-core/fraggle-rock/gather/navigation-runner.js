@@ -18,6 +18,7 @@ import {defaultNavigationConfig} from '../../config/constants.js';
 import {initializeConfig} from '../config/config.js';
 import {getBaseArtifacts, finalizeArtifacts} from './base-artifacts.js';
 import format from '../../../shared/localization/format.js';
+import {LighthouseError} from '../../lib/lh-error.js';
 import URL from '../../lib/url-shim.js';
 import {getPageLoadError} from '../../lib/navigation-error.js';
 import Trace from '../../gather/gatherers/trace.js';
@@ -103,10 +104,7 @@ async function _navigate(navigationContext) {
     });
     return {requestedUrl, mainDocumentUrl, navigationError: undefined, warnings};
   } catch (err) {
-    // TODO: for some reason, when under test LighthouseError !== the LighthouseError from the test file.
-    // yarn mocha navigation-runner-test -t 'should retain PageLoadError'
-    // if (!(err instanceof LighthouseError)) throw err;
-    if (err.name !== 'LighthouseError') throw err;
+    if (!(err instanceof LighthouseError)) throw err;
     if (err.code !== 'NO_FCP' && err.code !== 'PAGE_HUNG') throw err;
     if (typeof requestor !== 'string') throw err;
 
