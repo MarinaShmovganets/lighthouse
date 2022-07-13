@@ -27,8 +27,8 @@ import {Runner as runnerActual} from '../../../runner.js';
 /** @type {import('../../../fraggle-rock/gather/navigation-runner.js')} */
 let runner;
 
-const mocks = mockDriverSubmodules();
-const mockRunner = mockRunnerModule();
+const mocks = await mockDriverSubmodules();
+const mockRunner = await mockRunnerModule();
 beforeEach(async () => {
   mockRunner.reset();
   mockRunner.getGathererList.mockImplementation(runnerActual.getGathererList);

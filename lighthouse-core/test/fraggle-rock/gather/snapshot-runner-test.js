@@ -31,7 +31,7 @@ const mockRunner = mockRunnerModule();
 /** @type {ReturnType<typeof createMockDriver>} */
 let mockDriver;
 
-td.replaceEsm('../../../fraggle-rock/gather/driver.js',
+await td.replaceEsm('../../../fraggle-rock/gather/driver.js',
   mockDriverModule(() => mockDriver.asDriver()));
 
 describe('Snapshot Runner', () => {

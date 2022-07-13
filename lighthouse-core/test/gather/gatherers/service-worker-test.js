@@ -25,7 +25,7 @@ before(async () => {
 const getServiceWorkerVersions = fnAny();
 const getServiceWorkerRegistrations = fnAny();
 
-td.replaceEsm('../../../gather/driver/service-workers.js', {
+await td.replaceEsm('../../../gather/driver/service-workers.js', {
   getServiceWorkerVersions,
   getServiceWorkerRegistrations,
 });

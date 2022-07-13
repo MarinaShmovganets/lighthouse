@@ -25,7 +25,7 @@ import {getModuleDirectory} from '../../esm-utils.js';
 
 const moduleDir = getModuleDirectory(import.meta);
 
-makeMocksForGatherRunner();
+await makeMocksForGatherRunner();
 
 // Some imports needs to be done dynamically, so that their dependencies will be mocked.
 // See: https://jestjs.io/docs/ecmascript-modules#differences-between-esm-and-commonjs
@@ -48,13 +48,13 @@ let gatherRunnerRunSpy;
 /** @type {jestMock.Mock} */
 let runAuditSpy;
 
-td.replaceEsm('../lib/asset-saver.js', {
+await td.replaceEsm('../lib/asset-saver.js', {
   saveArtifacts: saveArtifactsSpy = jestMock.fn(assetSaver.saveArtifacts),
   saveLhr: saveLhrSpy = jestMock.fn(),
   loadArtifacts: loadArtifactsSpy = jestMock.fn(assetSaver.loadArtifacts),
 });
 
-td.replaceEsm('../gather/driver/service-workers.js', {
+await td.replaceEsm('../gather/driver/service-workers.js', {
   getServiceWorkerVersions: jestMock.fn().mockResolvedValue({versions: []}),
   getServiceWorkerRegistrations: jestMock.fn().mockResolvedValue({registrations: []}),
 });

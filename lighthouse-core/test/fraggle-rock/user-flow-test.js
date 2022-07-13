@@ -24,13 +24,13 @@ before(async () => {
 });
 
 const snapshotModule = {snapshotGather: jestMock.fn()};
-td.replaceEsm('../../fraggle-rock/gather/snapshot-runner.js', snapshotModule);
+await td.replaceEsm('../../fraggle-rock/gather/snapshot-runner.js', snapshotModule);
 const navigationModule = {navigationGather: jestMock.fn()};
-td.replaceEsm('../../fraggle-rock/gather/navigation-runner.js', navigationModule);
+await td.replaceEsm('../../fraggle-rock/gather/navigation-runner.js', navigationModule);
 const timespanModule = {startTimespanGather: jestMock.fn()};
-td.replaceEsm('../../fraggle-rock/gather/timespan-runner.js', timespanModule);
+await td.replaceEsm('../../fraggle-rock/gather/timespan-runner.js', timespanModule);
 
-const mockRunner = mockRunnerModule();
+const mockRunner = await mockRunnerModule();
 
 describe('UserFlow', () => {
   let mockPage = createMockPage();

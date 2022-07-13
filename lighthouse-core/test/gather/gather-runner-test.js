@@ -30,7 +30,7 @@ import {fakeDriver} from './fake-driver.js';
 
 const unresolvedPerfLog = readJson('./../fixtures/unresolved-perflog.json', import.meta);
 
-makeMocksForGatherRunner();
+await makeMocksForGatherRunner();
 
 /** @type {jestMock.SpyInstance<Promise<void>, [session: any, pageUrl: string]>} */
 let assertNoSameOriginServiceWorkerClientsMock;

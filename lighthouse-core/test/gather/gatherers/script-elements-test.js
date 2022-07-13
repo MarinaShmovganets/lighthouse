@@ -19,7 +19,7 @@ before(async () => {
   ScriptElements = (await import('../../../gather/gatherers/script-elements.js')).default;
 });
 
-const mocks = mockDriverSubmodules();
+const mocks = await mockDriverSubmodules();
 
 /**
  * @param {Partial<LH.Artifacts.NetworkRequest>=} partial

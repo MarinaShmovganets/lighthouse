@@ -14,8 +14,8 @@ describe('Sentry', () => {
   let configPayload;
   let originalSentry;
 
-  beforeEach(() => {
-    td.replaceEsm('@sentry/node', (sentryNodeMock = {
+  beforeEach(async () => {
+    await td.replaceEsm('@sentry/node', (sentryNodeMock = {
       init: jestMock.fn().mockReturnValue({install: jestMock.fn()}),
       setExtras: jestMock.fn(),
       captureException: jestMock.fn(),

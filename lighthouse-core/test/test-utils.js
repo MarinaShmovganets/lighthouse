@@ -181,36 +181,36 @@ async function flushAllTimersAndMicrotasks(ms = 1000) {
  * Mocks gatherers for BaseArtifacts that tests for components using GatherRunner
  * shouldn't concern themselves about.
  */
-function makeMocksForGatherRunner() {
-  td.replaceEsm(require.resolve('../gather/driver/environment.js'), {
+async function makeMocksForGatherRunner() {
+  await td.replaceEsm(require.resolve('../gather/driver/environment.js'), {
     getBenchmarkIndex: () => Promise.resolve(150),
     getBrowserVersion: async () => ({userAgent: 'Chrome', milestone: 80}),
     getEnvironmentWarnings: () => [],
   });
-  td.replaceEsm(require.resolve('../gather/gatherers/stacks.js'), undefined, {
+  await td.replaceEsm(require.resolve('../gather/gatherers/stacks.js'), undefined, {
     collectStacks: () => Promise.resolve([]),
   });
-  td.replaceEsm(require.resolve('../gather/gatherers/installability-errors.js'), undefined, {
+  await td.replaceEsm(require.resolve('../gather/gatherers/installability-errors.js'), undefined, {
     getInstallabilityErrors: async () => ({errors: []}),
   });
-  td.replaceEsm(require.resolve('../gather/gatherers/web-app-manifest.js'), undefined, {
+  await td.replaceEsm(require.resolve('../gather/gatherers/web-app-manifest.js'), undefined, {
     getWebAppManifest: async () => null,
   });
-  td.replaceEsm(require.resolve('../lib/emulation.js'), {
+  await td.replaceEsm(require.resolve('../lib/emulation.js'), {
     emulate: jestMock.fn(),
     throttle: jestMock.fn(),
     clearThrottling: jestMock.fn(),
   });
-  td.replaceEsm(require.resolve('../gather/driver/prepare.js'), {
+  await td.replaceEsm(require.resolve('../gather/driver/prepare.js'), {
     prepareTargetForNavigationMode: jestMock.fn(),
     prepareTargetForIndividualNavigation: jestMock.fn().mockResolvedValue({warnings: []}),
   });
-  td.replaceEsm(require.resolve('../gather/driver/storage.js'), {
+  await td.replaceEsm(require.resolve('../gather/driver/storage.js'), {
     clearDataForOrigin: jestMock.fn(),
     cleanBrowserCaches: jestMock.fn(),
     getImportantStorageWarning: jestMock.fn(),
   });
-  td.replaceEsm(require.resolve('../gather/driver/navigation.js'), {
+  await td.replaceEsm(require.resolve('../gather/driver/navigation.js'), {
     gotoURL: jestMock.fn().mockResolvedValue({
       mainDocumentUrl: 'http://example.com',
       warnings: [],

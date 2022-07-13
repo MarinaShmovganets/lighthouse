@@ -186,8 +186,8 @@ const runnerMock = {
     runnerMock.gather.mockReset();
   },
 };
-function mockRunnerModule() {
-  td.replaceEsm(`${LH_ROOT}/lighthouse-core/runner.js`, {Runner: runnerMock});
+async function mockRunnerModule() {
+  await td.replaceEsm(`${LH_ROOT}/lighthouse-core/runner.js`, {Runner: runnerMock});
   return runnerMock;
 }
 
@@ -249,7 +249,7 @@ function createMockContext() {
   };
 }
 
-function mockDriverSubmodules() {
+async function mockDriverSubmodules() {
   const navigationMock = {gotoURL: fnAny()};
   const prepareMock = {
     prepareThrottlingAndNetwork: fnAny(),
@@ -290,11 +290,11 @@ function mockDriverSubmodules() {
     return (...args) => target[name](...args);
   };
 
-  td.replaceEsm('../../../gather/driver/navigation.js', new Proxy(navigationMock, {get}));
-  td.replaceEsm('../../../gather/driver/prepare.js', new Proxy(prepareMock, {get}));
-  td.replaceEsm('../../../gather/driver/storage.js', new Proxy(storageMock, {get}));
-  td.replaceEsm('../../../gather/driver/network.js', new Proxy(networkMock, {get}));
-  td.replaceEsm('../../../lib/emulation.js', new Proxy(emulationMock, {get}));
+  await td.replaceEsm('../../../gather/driver/navigation.js', new Proxy(navigationMock, {get}));
+  await td.replaceEsm('../../../gather/driver/prepare.js', new Proxy(prepareMock, {get}));
+  await td.replaceEsm('../../../gather/driver/storage.js', new Proxy(storageMock, {get}));
+  await td.replaceEsm('../../../gather/driver/network.js', new Proxy(networkMock, {get}));
+  await td.replaceEsm('../../../lib/emulation.js', new Proxy(emulationMock, {get}));
 
   reset();
 

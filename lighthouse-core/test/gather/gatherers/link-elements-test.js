@@ -19,7 +19,7 @@ before(async () => {
 });
 
 const mockMainResource = jestMock.fn();
-td.replaceEsm('../../../computed/main-resource.js', undefined, {request: mockMainResource});
+await td.replaceEsm('../../../computed/main-resource.js', undefined, {request: mockMainResource});
 
 beforeEach(() => {
   mockMainResource.mockReset();

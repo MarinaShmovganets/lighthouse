@@ -26,7 +26,7 @@ const storageMock = {
   clearBrowserCaches: fnAny(),
   getImportantStorageWarning: fnAny(),
 };
-td.replaceEsm('../../../gather/driver/storage.js', storageMock);
+await td.replaceEsm('../../../gather/driver/storage.js', storageMock);
 
 const url = 'https://example.com';
 let sessionMock = createMockSession();
