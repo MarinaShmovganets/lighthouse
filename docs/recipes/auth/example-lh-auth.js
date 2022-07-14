@@ -12,6 +12,7 @@
 
 import puppeteer from 'puppeteer';
 import lighthouse from 'lighthouse';
+import esMain from 'es-main';
 
 /**
  * @param {puppeteer.Page} page
@@ -66,9 +67,11 @@ async function main() {
   console.log(JSON.stringify(result.lhr, null, 2));
 }
 
-// Run the Lighthouse example if this module is the entrypoint.
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (esMain(import.meta)) {
   await main();
 }
 
-export {login, logout};
+export {
+  login,
+  logout,
+};

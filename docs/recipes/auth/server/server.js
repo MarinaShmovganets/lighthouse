@@ -16,9 +16,11 @@ import morgan from 'morgan';
 import session from 'express-session';
 import http from 'http';
 import path from 'path';
-import {getModuleDirectory} from '../../../../esm-utils.mjs';
+import url from 'url';
+import esMain from 'es-main';
 
-const PUBLIC_DIR = path.join(getModuleDirectory(import.meta), 'public');
+const moduleDir = path.dirname(url.fileURLToPath(import.meta.url));
+const PUBLIC_DIR = path.join(moduleDir, 'public');
 
 const app = express();
 
@@ -81,8 +83,7 @@ app.use(function(err, req, res, next) {
 
 const server = http.createServer(app);
 
-// Start the server if this module is the entrypoint.
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (esMain(import.meta)) {
   server.listen(10632);
 }
 

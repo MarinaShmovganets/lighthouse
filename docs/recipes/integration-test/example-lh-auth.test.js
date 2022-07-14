@@ -4,6 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
+
 /* eslint-disable new-cap */
 
 /**
@@ -14,8 +15,9 @@
 /** @typedef {import('lighthouse/types/lhr')} LH */
 
 import puppeteer from 'puppeteer';
+
 import lighthouse from 'lighthouse';
-import expect from 'expect';
+import {expect} from 'expect';
 import server from '../auth/server/server.js';
 import {login, logout} from '../auth/example-lh-auth.js';
 
