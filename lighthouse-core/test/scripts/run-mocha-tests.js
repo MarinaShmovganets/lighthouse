@@ -351,7 +351,7 @@ async function main() {
 
     for (const test of testsToRunIsolated) {
       console.log(`Running test in isolation: ${test}`);
-      const worker = new Worker(import.meta.url, {
+      const worker = new Worker(new URL(import.meta.url), {
         workerData: {
           test,
           mochaArgs,
