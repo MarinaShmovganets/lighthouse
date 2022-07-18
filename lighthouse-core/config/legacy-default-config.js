@@ -33,7 +33,7 @@ legacyDefaultConfig.audits = legacyDefaultConfig.audits?.filter(audit =>
 
 legacyDefaultConfig.categories['performance'].auditRefs =
   legacyDefaultConfig.categories['performance'].auditRefs.filter(auditRef =>
-    !unsupportedAuditIds.includes(auditRef.id))
+    !unsupportedAuditIds.includes(auditRef.id));
 
 legacyDefaultConfig.passes = [{
   passName: 'defaultPass',
