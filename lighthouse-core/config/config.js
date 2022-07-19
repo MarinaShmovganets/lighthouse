@@ -348,7 +348,9 @@ class Config {
 
     // 2. Resolve which audits will need to run
     const audits = config.audits && config.audits.filter(auditDefn =>
-        requestedAuditNames.has(auditDefn.implementation.meta.id));
+        requestedAuditNames.has(auditDefn.implementation.meta.id) ||
+        requestedAuditNames.has(auditDefn.path)
+    );
 
     // 3. Resolve which gatherers will need to run
     const requestedGathererIds = Config.getGatherersRequestedByAudits(audits);
@@ -396,7 +398,14 @@ class Config {
     for (const auditId of auditsToValidate) {
       const foundCategory = Object.keys(oldCategories).find(categoryId => {
         const auditRefs = oldCategories[categoryId].auditRefs;
-        return !!auditRefs.find(candidate => candidate.id === auditId);
+
+        return !!auditRefs.find(candidate => {
+          const { id } = candidate;
+
+          // RegExp checks for "audit-name" and "largerCategory/audit-name" style notation
+          const canidateMatcher = new RegExp(`${id}|${categoryId}/${id}`)
+          return auditId.match(canidateMatcher);
+        });
       });
 
       if (!foundCategory) {
@@ -425,7 +434,10 @@ class Config {
           return;
         }
       } else if (filterByIncludedAudit) {
-        category.auditRefs = category.auditRefs.filter(audit => auditIds.includes(audit.id));
+        category.auditRefs = category.auditRefs.filter(audit => {
+          const matcher = new RegExp(`(${categoryId}/)${audit.id}`);
+          return auditIds.some(a => a.match(matcher));
+        })
       }
 
       // always filter based on skipAuditIds
