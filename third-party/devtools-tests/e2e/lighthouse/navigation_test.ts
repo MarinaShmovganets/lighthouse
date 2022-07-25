@@ -10,9 +10,6 @@ import {
   clickStartButton,
   getAuditsBreakdown,
   navigateToLighthouseTab,
-  selectCategories,
-  selectMode,
-  setClearStorage,
   setLegacyNavigation,
   setThrottlingMethod,
   waitForResult,
@@ -41,7 +38,6 @@ describe('Navigation', async function() {
         await navigateToLighthouseTab('lighthouse/hello.html');
 
         await setLegacyNavigation(mode === 'legacy');
-
         await clickStartButton();
 
         const {lhr, artifacts, reportEl} = await waitForResult();
@@ -49,12 +45,9 @@ describe('Navigation', async function() {
         assert.strictEqual(lhr.lighthouseVersion, '9.6.2');
         assert.match(lhr.finalUrl, /^https:\/\/localhost:[0-9]+\/test\/e2e\/resources\/lighthouse\/hello.html/);
         assert.strictEqual(lhr.configSettings.throttlingMethod, 'simulate');
-        assert.strictEqual(lhr.configSettings.disableStorageReset, false);
-        assert.strictEqual(lhr.configSettings.formFactor, 'mobile');
 
         const {innerWidth, innerHeight, outerWidth, outerHeight, devicePixelRatio} = artifacts.ViewportDimensions;
         // This value can vary slightly, depending on the display.
-        // https://bugs.chromium.org/p/chromium/issues/detail?id=1346355
         assert.approximately(innerHeight, 1742, 1);
         assert.strictEqual(innerWidth, 980);
         assert.strictEqual(outerWidth, 360);
@@ -91,7 +84,6 @@ describe('Navigation', async function() {
 
         await setThrottlingMethod('devtools');
         await setLegacyNavigation(mode === 'legacy');
-
         await clickStartButton();
 
         const {lhr, reportEl} = await waitForResult();
@@ -121,34 +113,6 @@ describe('Navigation', async function() {
           return viewTraceEl.textContent;
         });
         assert.strictEqual(viewTraceText, 'View Trace');
-      });
-
-      it('successfully returns a Lighthouse report when settings changed', async () => {
-        await navigateToLighthouseTab('lighthouse/hello.html');
-
-        await setLegacyNavigation(mode === 'legacy');
-        await setClearStorage(false);
-        await selectCategories(['performance', 'best-practices']);
-        await selectMode('desktop');
-
-        await clickStartButton();
-
-        const {lhr, artifacts} = await waitForResult();
-
-        assert.deepStrictEqual(artifacts.ViewportDimensions, {
-          devicePixelRatio: 1,
-          innerHeight: 720,
-          innerWidth: 1280,
-          outerHeight: 0,
-          outerWidth: 0,
-        });
-
-        const {erroredAudits} = getAuditsBreakdown(lhr);
-        assert.strictEqual(erroredAudits.length, 0);
-
-        assert.deepStrictEqual(Object.keys(lhr.categories), ['performance', 'best-practices']);
-        assert.strictEqual(lhr.configSettings.disableStorageReset, true);
-        assert.strictEqual(lhr.configSettings.formFactor, 'desktop');
       });
     });
   }
