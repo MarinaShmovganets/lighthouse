@@ -42,7 +42,9 @@ describe('Navigation', async function() {
 
         const {lhr, artifacts, reportEl} = await waitForResult();
 
-        assert.strictEqual(lhr.lighthouseVersion, '9.6.2');
+        // TODO: Reenable this for 10.0
+        // 9.6.x is forked so Lighthouse ToT is still using 9.5.0 as the version.
+        // assert.strictEqual(lhr.lighthouseVersion, '9.6.2');
         assert.match(lhr.finalUrl, /^https:\/\/localhost:[0-9]+\/test\/e2e\/resources\/lighthouse\/hello.html/);
         assert.strictEqual(lhr.configSettings.throttlingMethod, 'simulate');
 
