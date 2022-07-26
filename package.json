@@ -185,7 +185,7 @@
     "webtreemap-cdt": "^3.2.1"
   },
   "dependencies": {
-    "@puppeteer/replay": "^0.5.0",
+    "@puppeteer/replay": "^0.5.1",
     "@sentry/node": "^6.17.4",
     "axe-core": "4.4.1",
     "chrome-launcher": "^0.15.1",

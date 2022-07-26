@@ -1127,10 +1127,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@puppeteer/replay@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@puppeteer/replay/-/replay-0.5.0.tgz#71aecd600b808984f7351a2c1e13dee817c9fe26"
-  integrity sha512-/rpzaWz33I9RnHxux2SH8fIkIVvZTy1x+C1CpGWDTjIVog4nwkrt3nN73HuhPqDPn47dpwX+82N6nQmT+Hzy/Q==
+"@puppeteer/replay@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@puppeteer/replay/-/replay-0.5.1.tgz#6ca2a01541c339b343755aac19dad9349df344f8"
+  integrity sha512-/vCqtk0ZosPGOodRoMskAJztJwMbi0dE0FHO8kY/FrN06jfz1pG3hgTgD1EVNdJKw+8prMApMx3/8cUVpTfdlA==
   dependencies:
     yargs "17.5.1"
 

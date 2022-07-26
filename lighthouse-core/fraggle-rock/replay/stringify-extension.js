@@ -5,10 +5,10 @@
  */
 'use strict';
 
-import {PuppeteerStringifyExtension} from '@puppeteer/replay';
+import * as PuppeteerReplay from '@puppeteer/replay';
 
 /**
- * @param {import('@puppeteer/replay').Schema.Step} step
+ * @param {PuppeteerReplay.Schema.Step} step
  * @return {boolean}
  */
 function isNavigationStep(step) {
@@ -18,14 +18,14 @@ function isNavigationStep(step) {
   );
 }
 
-class LighthouseStringifyExtension extends PuppeteerStringifyExtension {
+class LighthouseStringifyExtension extends PuppeteerReplay.StringifyExtension {
   #isProcessingTimespan = false;
 
   /**
-   * @param {Parameters<PuppeteerStringifyExtension['beforeAllSteps']>} args
+   * @param {PuppeteerReplay.LineWriter} out
+   * @param {PuppeteerReplay.Schema.UserFlow} flow
    */
-  async beforeAllSteps(...args) {
-    const [out, flow] = args;
+  async beforeAllSteps(out, flow) {
     out.appendLine(`const fs = require('fs');`);
 
     let isMobile = true;
@@ -34,7 +34,7 @@ class LighthouseStringifyExtension extends PuppeteerStringifyExtension {
       isMobile = step.isMobile;
     }
 
-    await super.beforeAllSteps(...args);
+    await super.beforeAllSteps?.(out, flow);
 
     const configContext = {
       settingsOverrides: {
@@ -57,13 +57,12 @@ class LighthouseStringifyExtension extends PuppeteerStringifyExtension {
   }
 
   /**
-   * @param {Parameters<PuppeteerStringifyExtension['stringifyStep']>} args
+   * @param {PuppeteerReplay.LineWriter} out
+   * @param {PuppeteerReplay.Schema.Step} step
    */
-  async stringifyStep(...args) {
-    const [out, step] = args;
-
+  async stringifyStep(out, step) {
     if (step.type === 'setViewport') {
-      await super.stringifyStep(...args);
+      await super.stringifyStep(out, step);
       return;
     }
 
@@ -80,7 +79,7 @@ class LighthouseStringifyExtension extends PuppeteerStringifyExtension {
       this.#isProcessingTimespan = true;
     }
 
-    await super.stringifyStep(...args);
+    await super.stringifyStep(out, step);
 
     if (isNavigation) {
       out.appendLine(`await lhFlow.endNavigation();`);
@@ -88,16 +87,16 @@ class LighthouseStringifyExtension extends PuppeteerStringifyExtension {
   }
 
   /**
-   * @param {Parameters<PuppeteerStringifyExtension['afterAllSteps']>} args
+   * @param {PuppeteerReplay.LineWriter} out
+   * @param {PuppeteerReplay.Schema.UserFlow} flow
    */
-  async afterAllSteps(...args) {
-    const [out] = args;
+  async afterAllSteps(out, flow) {
     if (this.#isProcessingTimespan) {
       out.appendLine(`await lhFlow.endTimespan();`);
     }
     out.appendLine(`const lhFlowReport = await lhFlow.generateReport();`);
     out.appendLine(`fs.writeFileSync(__dirname + '/flow.report.html', lhFlowReport)`);
-    await super.afterAllSteps(...args);
+    await super.afterAllSteps?.(out, flow);
   }
 }
 
