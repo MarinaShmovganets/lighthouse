@@ -18,10 +18,11 @@ function isNavigationStep(step) {
   );
 }
 
-class LighthouseStringifyExtension extends PuppeteerReplay.StringifyExtension {
+class LighthouseStringifyExtension extends PuppeteerReplay.PuppeteerStringifyExtension {
   #isProcessingTimespan = false;
 
   /**
+   * @override
    * @param {PuppeteerReplay.LineWriter} out
    * @param {PuppeteerReplay.Schema.UserFlow} flow
    */
@@ -34,7 +35,7 @@ class LighthouseStringifyExtension extends PuppeteerReplay.StringifyExtension {
       isMobile = step.isMobile;
     }
 
-    await super.beforeAllSteps?.(out, flow);
+    await super.beforeAllSteps(out, flow);
 
     const configContext = {
       settingsOverrides: {
@@ -57,12 +58,14 @@ class LighthouseStringifyExtension extends PuppeteerReplay.StringifyExtension {
   }
 
   /**
+   * @override
    * @param {PuppeteerReplay.LineWriter} out
    * @param {PuppeteerReplay.Schema.Step} step
+   * @param {PuppeteerReplay.Schema.UserFlow} flow
    */
-  async stringifyStep(out, step) {
+  async stringifyStep(out, step, flow) {
     if (step.type === 'setViewport') {
-      await super.stringifyStep(out, step);
+      await super.stringifyStep(out, step, flow);
       return;
     }
 
@@ -79,7 +82,7 @@ class LighthouseStringifyExtension extends PuppeteerReplay.StringifyExtension {
       this.#isProcessingTimespan = true;
     }
 
-    await super.stringifyStep(out, step);
+    await super.stringifyStep(out, step, flow);
 
     if (isNavigation) {
       out.appendLine(`await lhFlow.endNavigation();`);
@@ -87,6 +90,7 @@ class LighthouseStringifyExtension extends PuppeteerReplay.StringifyExtension {
   }
 
   /**
+   * @override
    * @param {PuppeteerReplay.LineWriter} out
    * @param {PuppeteerReplay.Schema.UserFlow} flow
    */
@@ -96,7 +100,7 @@ class LighthouseStringifyExtension extends PuppeteerReplay.StringifyExtension {
     }
     out.appendLine(`const lhFlowReport = await lhFlow.generateReport();`);
     out.appendLine(`fs.writeFileSync(__dirname + '/flow.report.html', lhFlowReport)`);
-    await super.afterAllSteps?.(out, flow);
+    await super.afterAllSteps(out, flow);
   }
 }
 
