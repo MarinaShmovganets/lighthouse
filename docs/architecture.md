@@ -86,7 +86,7 @@ The return value of each audit [takes this shape](https://github.com/GoogleChrom
 
 The `details` object is parsed in report-renderer.js. View other audits for guidance on how to structure `details`.
 
-## core internal module dependencies
+## Core internal module dependencies
 
 ![image](https://user-images.githubusercontent.com/6752989/168904554-082aa9c3-46f3-448f-92b8-20ad3a02258f.png)
 
