@@ -50,7 +50,7 @@ async function getPageFromConnection(connection) {
     connection.channel_.root_.transport_
   );
 
-  const browser = await Browser.create(
+  const browser = await Browser._create(
     pptrConnection,
     [] /* contextIds */,
     false /* ignoreHTTPSErrors */,
