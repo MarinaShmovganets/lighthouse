@@ -57,15 +57,7 @@ async function getPageFromConnection(connection) {
     undefined /* defaultViewport */,
     undefined /* process */,
     undefined /* closeCallback */,
-    (targetInfo) => {
-      if (targetInfo.type !== 'page' && targetInfo.type !== 'iframe') {
-        return false;
-      }
-      // TODO only connect to iframes that are related to the main target. This requires refactoring in Puppeteer: https://github.com/puppeteer/puppeteer/issues/3667.
-      return targetInfo.targetId === mainTargetInfo.targetId ||
-        targetInfo.openerId === mainTargetInfo.targetId ||
-        targetInfo.type === 'iframe';
-    }
+    targetInfo => targetInfo.targetId === mainTargetInfo.targetId
   );
 
   const pages = await browser.pages();
