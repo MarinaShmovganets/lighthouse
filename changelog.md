@@ -394,7 +394,7 @@ Lighthouse now offers auditing user flows, scripted with Puppeteer, via the Node
 
 * publish: include the report bundle in npm package ([#13349](https://github.com/GoogleChrome/lighthouse/pull/13349))
 * build: create inline-fs rollup plugin to replace brfs ([#13232](https://github.com/GoogleChrome/lighthouse/pull/13232), [#13240](https://github.com/GoogleChrome/lighthouse/pull/13240), [#13248](https://github.com/GoogleChrome/lighthouse/pull/13248), [#13272](https://github.com/GoogleChrome/lighthouse/pull/13272), [#13275](https://github.com/GoogleChrome/lighthouse/pull/13275), [#13278](https://github.com/GoogleChrome/lighthouse/pull/13278), [#13280](https://github.com/GoogleChrome/lighthouse/pull/13280))
-* build: use rollup to build core bundles ([#12771](https://github.com/GoogleChrome/lighthouse/pull/12771))
+* build: use rollup to build lighthouse-core bundles ([#12771](https://github.com/GoogleChrome/lighthouse/pull/12771))
 * build: call close method on rollup builds ([#13307](https://github.com/GoogleChrome/lighthouse/pull/13307))
 * build: use prepack script to build report ([#13261](https://github.com/GoogleChrome/lighthouse/pull/13261))
 * build: do not assign runBundledLighthouse in devtools bundle ([#13311](https://github.com/GoogleChrome/lighthouse/pull/13311))
@@ -493,7 +493,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## Misc
 
-* convert core/scripts to ES modules ([#13121](https://github.com/GoogleChrome/lighthouse/pull/13121))
+* convert lighthouse-core/scripts to ES modules ([#13121](https://github.com/GoogleChrome/lighthouse/pull/13121))
 * remove patrick from issue assigner ([#13194](https://github.com/GoogleChrome/lighthouse/pull/13194))
 * set predictable order for sample json timing entries ([#13162](https://github.com/GoogleChrome/lighthouse/pull/13162))
 * scripts: fix run-devtools sniffing, add error checking ([#13163](https://github.com/GoogleChrome/lighthouse/pull/13163))
@@ -1110,7 +1110,7 @@ Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighth
 * treemap: add data table ([#12363](https://github.com/GoogleChrome/lighthouse/pull/12363))
 * cli: destructure args in import ([#12398](https://github.com/GoogleChrome/lighthouse/pull/12398))
 * move predictive-perf off renderer i18n ([#12482](https://github.com/GoogleChrome/lighthouse/pull/12482))
-* do not publish cli/test except smokehouse ([#12415](https://github.com/GoogleChrome/lighthouse/pull/12415))
+* do not publish lighthouse-cli/test except smokehouse ([#12415](https://github.com/GoogleChrome/lighthouse/pull/12415))
 
 <a name="7.4.0"></a>
 # 7.4.0 (2021-04-27)
@@ -1434,7 +1434,7 @@ Support for auditing user flows ([#11313](https://github.com/GoogleChrome/lighth
 * remove travis ([#11902](https://github.com/GoogleChrome/lighthouse/pull/11902))
 * increase treemap pptr timeouts ([#11916](https://github.com/GoogleChrome/lighthouse/pull/11916))
 * add missing arrays to InspectorIssues sample artifact ([#11871](https://github.com/GoogleChrome/lighthouse/pull/11871))
-* add more files in core/tests to tsconfig ([#11728](https://github.com/GoogleChrome/lighthouse/pull/11728))
+* add more files in lighthouse-core/tests to tsconfig ([#11728](https://github.com/GoogleChrome/lighthouse/pull/11728))
 * add warn-not-offline-capable smoketest ([#11842](https://github.com/GoogleChrome/lighthouse/pull/11842))
 
 ## Misc
@@ -3232,7 +3232,7 @@ Thanks to @rdlabo and @yashrajbharti for their first contributions!
 * the correct Nexus 5X screen height of 660 now used instead of 732 ([#6932](https://github.com/googlechrome/lighthouse/pull/6932))
 * throttling constants under `mobile3G` renamed to the more accurate `mobileSlow4G` with no change in values ([#6163](https://github.com/googlechrome/lighthouse/pull/6163))
 * typescript definition files are now located under `types/` ([#6617](https://github.com/googlechrome/lighthouse/pull/6617))
-* computed artifact files are now located under `core/computed/` ([#6618](https://github.com/googlechrome/lighthouse/pull/6618))
+* computed artifact files are now located under `lighthouse-core/computed/` ([#6618](https://github.com/googlechrome/lighthouse/pull/6618))
 
 <hr>
 
@@ -4137,7 +4137,7 @@ Thanks to @underbyte, @nourikhalass and @ernstmul for their first contributions!
 * headless-chrome: switch to prioritize headless ([#4553](https://github.com/googlechrome/lighthouse/pull/4553))
 * headless-chrome.md: fix broken link ([#4523](https://github.com/googlechrome/lighthouse/pull/4523))
 * programmatic: add caveat about removing artifacts ([#4540](https://github.com/googlechrome/lighthouse/pull/4540))
-* readme: remove ts command for cli dev ([#5088](https://github.com/googlechrome/lighthouse/pull/5088))
+* readme: remove ts command for lighthouse-cli dev ([#5088](https://github.com/googlechrome/lighthouse/pull/5088))
 * readme: Bye Bye Greta ([#5036](https://github.com/googlechrome/lighthouse/pull/5036))
 * releasing: updates ([fcec593](https://github.com/googlechrome/lighthouse/commit/fcec593))
 * update docker image id ([f092a8a](https://github.com/googlechrome/lighthouse/commit/f092a8a))
@@ -4540,10 +4540,10 @@ Thanks to @sanjsanj, @dennismartensson, @daannijkamp, @crimeminister!
 * `errors-in-console` best practice audit (#2836)
 * `no-vulnerable-libraries` best practice audit (#2372)
 
-### New audits in [full-config](https://github.com/GoogleChrome/lighthouse/blob/master/core/config/full-config.js)
+### New audits in [full-config](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/full-config.js)
 * `unused-javascript` coverage audit (#3085)
 
-### New audits in new [SEO config](https://github.com/GoogleChrome/lighthouse/blob/master/core/config/seo.js) (#2999)
+### New audits in new [SEO config](https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/config/seo.js) (#2999)
 * `meta-description` SEO audit (#3227)
 * `http-status-code` SEO audit (#3311)
 
@@ -5624,7 +5624,7 @@ There were 128 PRs landed for this release. These are their stories.
 - **readme:** matching parentheses - #855
 
 ### Refactor
-- Make [`web-inspector.js`](https://github.com/GoogleChrome/lighthouse/blob/694baf61d587eda360e89fde4bb17e6cd46fcbf0/core/lib/web-inspector.js) worker friendly - #795
+- Make [`web-inspector.js`](https://github.com/GoogleChrome/lighthouse/blob/694baf61d587eda360e89fde4bb17e6cd46fcbf0/lighthouse-core/lib/web-inspector.js) worker friendly - #795
 - Migrate `driver.evaluateAsync` to `Runtime.evaluate(awaitPromise)` - #793
 - Extract a `Connection` abstraction from driver - #800
 - Create `connections/` directory for debugger protocol connection classes - #822
@@ -5761,7 +5761,7 @@ There were 128 PRs landed for this release. These are their stories.
 * Remove find command in runmocha ([81653a4](https://github.com/GoogleChrome/lighthouse/commit/81653a4))
 * remove redundant gatherer lifecycle methods ([ac2f62d](https://github.com/GoogleChrome/lighthouse/commit/ac2f62d))
 * rename computed artifact tests. ([5d20fa8](https://github.com/GoogleChrome/lighthouse/commit/5d20fa8))
-* Rename cli tests as well ([9ee4c57](https://github.com/GoogleChrome/lighthouse/commit/9ee4c57))
+* Rename lighthouse-cli tests as well ([9ee4c57](https://github.com/GoogleChrome/lighthouse/commit/9ee4c57))
 * Revamp of the offline.js gatherer ([2b39d27](https://github.com/GoogleChrome/lighthouse/commit/2b39d27))
 * Revamp smoketest, include offline & SW test ([543b422](https://github.com/GoogleChrome/lighthouse/commit/543b422))
 * review feedback ([6add53a](https://github.com/GoogleChrome/lighthouse/commit/6add53a))
@@ -5850,7 +5850,7 @@ There were 128 PRs landed for this release. These are their stories.
 * Cleanup harmony scripts #513 (#516) ([da09ffb](https://github.com/GoogleChrome/lighthouse/commit/da09ffb))
 * compat note about firstContentfulPaint trace event. ([3e81a6d](https://github.com/GoogleChrome/lighthouse/commit/3e81a6d))
 * config requires absolute paths ([9560a42](https://github.com/GoogleChrome/lighthouse/commit/9560a42))
-* delete core/package.json ([d07719e](https://github.com/GoogleChrome/lighthouse/commit/d07719e))
+* delete lighthouse-core/package.json ([d07719e](https://github.com/GoogleChrome/lighthouse/commit/d07719e))
 * Do the last (clean-state) reload in parallel with finishing the report (#522) ([c14e7a3](https://github.com/GoogleChrome/lighthouse/commit/c14e7a3))
 * Extension popup: styling ([50c3ced](https://github.com/GoogleChrome/lighthouse/commit/50c3ced))
 * Faster smoketest. Fix Flaky works-offline gather (#506) ([2fdde48](https://github.com/GoogleChrome/lighthouse/commit/2fdde48)), closes [#506](https://github.com/GoogleChrome/lighthouse/issues/506)
@@ -5862,7 +5862,7 @@ There were 128 PRs landed for this release. These are their stories.
 * incl critical-request-chains in traceprocessor example ([4636ffe](https://github.com/GoogleChrome/lighthouse/commit/4636ffe))
 * manifest display must be one of the 3 allowed values. ([98c4980](https://github.com/GoogleChrome/lighthouse/commit/98c4980))
 * move driver/ to gather/ ([35d0360](https://github.com/GoogleChrome/lighthouse/commit/35d0360))
-* Moved everything from core to ligthouse ([1b998a3](https://github.com/GoogleChrome/lighthouse/commit/1b998a3))
+* Moved everything from lighthouse-core to ligthouse ([1b998a3](https://github.com/GoogleChrome/lighthouse/commit/1b998a3))
 * note about excluded cpu profile trace category. ([4f66e0d](https://github.com/GoogleChrome/lighthouse/commit/4f66e0d))
 * Removes the 'module' folder from main. ([07e4958](https://github.com/GoogleChrome/lighthouse/commit/07e4958))
 * Removes unused test ([3585eef](https://github.com/GoogleChrome/lighthouse/commit/3585eef))
