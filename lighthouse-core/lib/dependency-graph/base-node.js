@@ -355,7 +355,7 @@ class BaseNode {
   }
 }
 
-BaseNode.TYPES = /** @type {{NETWORK: 'network', CPU: 'cpu'}} */({
+BaseNode.TYPES = /** @type {const} */({
   NETWORK: 'network',
   CPU: 'cpu',
 });

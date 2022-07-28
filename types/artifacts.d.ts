@@ -999,6 +999,7 @@ export interface TraceEvent {
       compositeFailed?: number;
       unsupportedProperties?: string[];
       size?: number;
+      priority?: LH.Crdp.Network.ResourcePriority;
       /** Responsiveness data. */
       interactionType?: 'drag'|'keyboard'|'tapOrClick';
       maxDuration?: number;

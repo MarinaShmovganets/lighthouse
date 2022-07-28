@@ -32,15 +32,6 @@ const NodeState = {
   Complete: 3,
 };
 
-/** @type {Record<NetworkNode['record']['priority'], number>} */
-const PriorityStartTimePenalty = {
-  VeryHigh: 0,
-  High: 0.25,
-  Medium: 0.5,
-  Low: 1,
-  VeryLow: 2,
-};
-
 /** @type {Map<string, LH.Gatherer.Simulation.Result['nodeTimings']>} */
 const ALL_SIMULATION_NODE_TIMINGS = new Map();
 
@@ -81,6 +72,8 @@ class Simulator {
     this._numberInProgressByType = new Map();
     /** @type {Record<number, Set<Node>>} */
     this._nodes = {};
+    /** @type {Record<string, NetworkNode>} */
+    this._networkNodes = {};
     this._dns = new DNSCache({rtt: this._rtt});
     /** @type {ConnectionPool} */
     // @ts-expect-error
@@ -118,6 +111,7 @@ class Simulator {
     this._numberInProgressByType = new Map();
 
     this._nodes = {};
+    this._networkNodes = {};
     this._cachedNodeListByStartPosition = [];
     // NOTE: We don't actually need *all* of these sets, but the clarity that each node progresses
     // through the system is quite nice.
@@ -139,13 +133,7 @@ class Simulator {
    * @param {number} queuedTime
    */
   _markNodeAsReadyToStart(node, queuedTime) {
-    const nodeStartPosition = Simulator._computeNodeStartPosition(node);
-    const firstNodeIndexWithGreaterStartPosition = this._cachedNodeListByStartPosition
-      .findIndex(candidate => Simulator._computeNodeStartPosition(candidate) > nodeStartPosition);
-    const insertionIndex = firstNodeIndexWithGreaterStartPosition === -1 ?
-      this._cachedNodeListByStartPosition.length : firstNodeIndexWithGreaterStartPosition;
-    this._cachedNodeListByStartPosition.splice(insertionIndex, 0, node);
-
+    this._insertNodeIntoSortedStartPositions(node);
     this._nodes[NodeState.ReadyToStart].add(node);
     this._nodes[NodeState.NotReadyToStart].delete(node);
     this._nodeTimings.setReadyToStart(node, {queuedTime});
@@ -156,9 +144,7 @@ class Simulator {
    * @param {number} startTime
    */
   _markNodeAsInProgress(node, startTime) {
-    const indexOfNodeToStart = this._cachedNodeListByStartPosition.indexOf(node);
-    this._cachedNodeListByStartPosition.splice(indexOfNodeToStart, 1);
-
+    this._removeNodeFromSortedStartPositions(node);
     this._nodes[NodeState.InProgress].add(node);
     this._nodes[NodeState.ReadyToStart].delete(node);
     this._numberInProgressByType.set(node.type, this._numberInProgress(node.type) + 1);
@@ -202,6 +188,26 @@ class Simulator {
   _getNodesSortedByStartPosition() {
     // Make a copy so we don't skip nodes due to concurrent modification
     return Array.from(this._cachedNodeListByStartPosition);
+  }
+
+  /**
+   * @param {Node} node
+   */
+  _insertNodeIntoSortedStartPositions(node) {
+    const nodeStartPosition = Simulator._computeNodeStartPosition(node);
+    const firstNodeIndexWithGreaterStartPosition = this._cachedNodeListByStartPosition
+      .findIndex(candidate => Simulator._computeNodeStartPosition(candidate) > nodeStartPosition);
+    const insertionIndex = firstNodeIndexWithGreaterStartPosition === -1 ?
+      this._cachedNodeListByStartPosition.length : firstNodeIndexWithGreaterStartPosition;
+    this._cachedNodeListByStartPosition.splice(insertionIndex, 0, node);
+  }
+
+  /**
+   * @param {Node} node
+   */
+  _removeNodeFromSortedStartPositions(node) {
+    const indexOfNodeToStart = this._cachedNodeListByStartPosition.indexOf(node);
+    this._cachedNodeListByStartPosition.splice(indexOfNodeToStart, 1);
   }
 
   /**
@@ -261,11 +267,19 @@ class Simulator {
    * @param {CpuNode} cpuNode
    * @return {number}
    */
-  _estimateCPUTimeRemaining(cpuNode) {
-    const timingData = this._nodeTimings.getCpuStarted(cpuNode);
-    const multiplier = cpuNode.didPerformLayout()
+  _getCPUMultiplier(cpuNode) {
+    return cpuNode.didPerformLayout()
       ? this._layoutTaskMultiplier
       : this._cpuSlowdownMultiplier;
+  }
+
+  /**
+   * @param {CpuNode} cpuNode
+   * @return {number}
+   */
+  _estimateCPUTimeRemaining(cpuNode) {
+    const timingData = this._nodeTimings.getCpuStarted(cpuNode);
+    const multiplier = this._getCPUMultiplier(cpuNode);
     const totalDuration = Math.min(
       Math.round(cpuNode.event.dur / 1000 * multiplier),
       DEFAULT_MAXIMUM_CPU_TASK_DURATION
@@ -339,7 +353,8 @@ class Simulator {
     const timingData = this._nodeTimings.getInProgress(node);
     const isFinished = timingData.estimatedTimeElapsed === timePeriodLength;
 
-    if (node.type === BaseNode.TYPES.CPU || node.isConnectionless) {
+    const hasNetworkComponent = node.type === BaseNode.TYPES.NETWORK && !node.isConnectionless;
+    if (!hasNetworkComponent) {
       return isFinished
         ? this._markNodeAsComplete(node, totalElapsedTime)
         : (timingData.timeElapsed += timePeriodLength);
@@ -439,6 +454,9 @@ class Simulator {
 
     const rootNode = graph.getRootNode();
     rootNode.traverse(node => nodesNotReadyToStart.add(node));
+    rootNode.traverse(node => {
+      if (node.type === 'network') this._networkNodes[node.id] = node;
+    });
     let totalElapsedTime = 0;
     let iteration = 0;
 
@@ -518,7 +536,8 @@ class Simulator {
    */
   static _computeNodeStartPosition(node) {
     if (node.type === 'cpu') return node.startTime;
-    return node.startTime + (PriorityStartTimePenalty[node.record.priority] * 1000 * 1000 || 0);
+    const penalty = (1 - node.weightedPriority) * 2.0 * (1000 * 1000);
+    return node.startTime + (penalty || 0);
   }
 }
 

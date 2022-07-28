@@ -31,8 +31,8 @@ describe('Metrics: Lantern LCP', () => {
       `
       Object {
         "optimistic": 2289,
-        "pessimistic": 3228,
-        "timing": 2758,
+        "pessimistic": 3495,
+        "timing": 2892,
       }
     `
     );
