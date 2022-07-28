@@ -10,10 +10,7 @@
 import {Buffer} from 'buffer';
 import log from 'lighthouse-logger';
 
-import {Browser} from 'puppeteer-core/lib/esm/puppeteer/common/Browser.js';
-import {Connection as PptrConnection} from 'puppeteer-core/lib/esm/puppeteer/common/Connection.js';
-
-import lighthouse, {legacyNavigation} from '../../lighthouse-core/index.js';
+import {legacyNavigation} from '../../lighthouse-core/index.js';
 import {LighthouseError} from '../../lighthouse-core/lib/lh-error.js';
 import {processForProto} from '../../lighthouse-core/lib/proto-preprocessor.js';
 import * as assetSaver from '../../lighthouse-core/lib/asset-saver.js';
@@ -35,47 +32,13 @@ const LR_PRESETS = {
 globalThis.Buffer = Buffer;
 
 /**
- * @param {Connection} connection
- * @return {Promise<LH.Puppeteer.Page>}
- */
-async function getPageFromConnection(connection) {
-  await connection.connect();
-  const {targetInfo: mainTargetInfo} =
-    await connection.sendCommand('Target.getTargetInfo', undefined);
-  const {frameTree} = await connection.sendCommand('Page.getFrameTree', undefined);
-
-  const pptrConnection = new PptrConnection(
-    mainTargetInfo.url,
-    // @ts-expect-error Hack to access the WRS transport layer.
-    connection.channel_.root_.transport_
-  );
-
-  const browser = await Browser._create(
-    pptrConnection,
-    [] /* contextIds */,
-    false /* ignoreHTTPSErrors */,
-    undefined /* defaultViewport */,
-    undefined /* process */,
-    undefined /* closeCallback */,
-    targetInfo => targetInfo.targetId === mainTargetInfo.targetId
-  );
-
-  const pages = await browser.pages();
-  const page = pages.find(p => p.mainFrame()._id === frameTree.frame.id);
-  if (!page) throw new Error('Could not find relevant puppeteer page');
-
-  // @ts-expect-error Page has a slightly different type when importing the browser module directly.
-  return page;
-}
-
-/**
  * Run lighthouse for connection and provide similar results as in CLI.
  *
  * If configOverride is provided, lrDevice and categoryIDs are ignored.
  * @param {Connection} connection
  * @param {string} url
  * @param {LH.Flags} flags Lighthouse flags
- * @param {{lrDevice?: 'desktop'|'mobile', categoryIDs?: Array<string>, logAssets: boolean, configOverride?: LH.Config.Json, useFraggleRock?: boolean}} lrOpts Options coming from Lightrider
+ * @param {{lrDevice?: 'desktop'|'mobile', categoryIDs?: Array<string>, logAssets: boolean, configOverride?: LH.Config.Json}} lrOpts Options coming from Lightrider
  * @return {Promise<string>}
  */
 export async function runLighthouseInLR(connection, url, flags, lrOpts) {
@@ -101,14 +64,7 @@ export async function runLighthouseInLR(connection, url, flags, lrOpts) {
   }
 
   try {
-    let runnerResult;
-    if (lrOpts.useFraggleRock) {
-      const page = await getPageFromConnection(connection);
-      runnerResult = await lighthouse(url, flags, config, page);
-    } else {
-      runnerResult = await legacyNavigation(url, flags, config, connection);
-    }
-
+    const runnerResult = await legacyNavigation(url, flags, config, connection);
     if (!runnerResult) throw new Error('Lighthouse finished without a runnerResult');
 
     // pre process the LHR for proto
