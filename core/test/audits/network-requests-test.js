@@ -57,7 +57,7 @@ describe('Network requests audit', () => {
       resourceType: 'Script',
     });
 
-    expect(output.details.debugData).toBe({
+    expect(output.details.debugData).toStrictEqual({
       type: 'debugdata',
       networkStartTimeTs: 360725781425,
     });
