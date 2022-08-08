@@ -79,9 +79,7 @@ describe('Running the stringified output script', function() {
 
       const {auditResults, erroredAudits} = getAuditsBreakdown(lhr);
       expect(auditResults.length).toBeGreaterThanOrEqual(10);
-
-      // TODO: INP breakdown diagnostic audit is broken because of old Chrome
-      expect(erroredAudits.length).toBeLessThanOrEqual(1);
+      expect(erroredAudits.length).toStrictEqual(0);
     }
   });
 
@@ -119,9 +117,7 @@ describe('Running the stringified output script', function() {
 
       const {auditResults, erroredAudits} = getAuditsBreakdown(lhr);
       expect(auditResults.length).toBeGreaterThanOrEqual(10);
-
-      // TODO: INP breakdown diagnostic audit is broken because of old Chrome
-      expect(erroredAudits.length).toBeLessThanOrEqual(1);
+      expect(erroredAudits.length).toStrictEqual(0);
     }
   });
 });
