@@ -18,9 +18,11 @@ import typescript from '@rollup/plugin-typescript';
 
 import inlineFs from './plugins/rollup-plugin-inline-fs.js';
 
-// These expressions should never show up in a bundle, otherwise they'll never
-// run inside a browser. They are only ever used to set a variable `moduleDir`,
-// which the inline-fs replaces anyways.
+/**
+ * These expressions should never show up in a bundle, otherwise they'll never
+ * run inside a browser. They are only ever used to set a variable `moduleDir`,
+ * which the inline-fs replaces anyways.
+ */
 function removeModuleDirCalls() {
   return replace({
     delimiters: ['', ''],
