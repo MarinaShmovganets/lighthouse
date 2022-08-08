@@ -216,7 +216,7 @@ describe('Lighthouse Viewer', () => {
           document.querySelector('.lh-tools__dropdown')).visibility === 'visible';
       });
 
-      // For some reason, clicking this button doesn't always initiate the download after upgrading to Puppeteer 15.2.0.
+      // For some reason, clicking this button doesn't always initiate the download after upgrading to Puppeteer 16.
       // As a workaround, we send another click signal 1s after the first to make sure the download starts.
       // TODO: Find a more robust fix for this issue.
       const timeoutHandle = setTimeout(() => viewerPage.click('a[data-action="save-html"]'), 1000);
