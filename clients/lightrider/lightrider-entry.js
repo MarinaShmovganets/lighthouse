@@ -13,13 +13,13 @@ import log from 'lighthouse-logger';
 import {Browser} from 'puppeteer-core/lib/esm/puppeteer/common/Browser.js';
 import {Connection as PptrConnection} from 'puppeteer-core/lib/esm/puppeteer/common/Connection.js';
 
-import lighthouse, {legacyNavigation} from '../../lighthouse-core/index.js';
-import {LighthouseError} from '../../lighthouse-core/lib/lh-error.js';
-import {processForProto} from '../../lighthouse-core/lib/proto-preprocessor.js';
-import * as assetSaver from '../../lighthouse-core/lib/asset-saver.js';
+import lighthouse, {legacyNavigation} from '../../core/index.js';
+import {LighthouseError} from '../../core/lib/lh-error.js';
+import {processForProto} from '../../core/lib/proto-preprocessor.js';
+import * as assetSaver from '../../core/lib/asset-saver.js';
 
-import mobileConfig from '../../lighthouse-core/config/lr-mobile-config.js';
-import desktopConfig from '../../lighthouse-core/config/lr-desktop-config.js';
+import mobileConfig from '../../core/config/lr-mobile-config.js';
+import desktopConfig from '../../core/config/lr-desktop-config.js';
 
 /** @type {Record<'mobile'|'desktop', LH.Config.Json>} */
 const LR_PRESETS = {
@@ -27,7 +27,7 @@ const LR_PRESETS = {
   desktop: desktopConfig,
 };
 
-/** @typedef {import('../../lighthouse-core/gather/connections/connection.js').Connection} Connection */
+/** @typedef {import('../../core/gather/connections/connection.js').Connection} Connection */
 
 // Rollup seems to overlook some references to `Buffer`, so it must be made explicit.
 // (`parseSourceMapFromDataUrl` breaks without this)
@@ -51,6 +51,7 @@ async function getPageFromConnection(connection) {
   );
 
   const browser = await Browser._create(
+    'chrome',
     pptrConnection,
     [] /* contextIds */,
     false /* ignoreHTTPSErrors */,

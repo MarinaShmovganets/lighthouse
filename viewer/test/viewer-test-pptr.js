@@ -9,16 +9,16 @@ import assert from 'assert';
 
 import puppeteer from 'puppeteer';
 
-import {server} from '../../lighthouse-cli/test/fixtures/static-server.js';
-import defaultConfig from '../../lighthouse-core/config/default-config.js';
+import {server} from '../../cli/test/fixtures/static-server.js';
+import defaultConfig from '../../core/config/default-config.js';
 import {LH_ROOT} from '../../root.js';
 import {getCanonicalLocales} from '../../shared/localization/format.js';
 
 const portNumber = 10200;
 const viewerUrl = `http://localhost:${portNumber}/dist/gh-pages/viewer/index.html`;
-const sampleLhr = LH_ROOT + '/lighthouse-core/test/results/sample_v2.json';
+const sampleLhr = LH_ROOT + '/core/test/results/sample_v2.json';
 // eslint-disable-next-line max-len
-const sampleFlowResult = LH_ROOT + '/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.json';
+const sampleFlowResult = LH_ROOT + '/core/test/fixtures/fraggle-rock/reports/sample-flow-result.json';
 
 const lighthouseCategories = Object.keys(defaultConfig.categories);
 const getAuditsOfCategory = category => defaultConfig.categories[category].auditRefs;
@@ -216,7 +216,7 @@ describe('Lighthouse Viewer', () => {
           document.querySelector('.lh-tools__dropdown')).visibility === 'visible';
       });
 
-      // For some reason, clicking this button doesn't always initiate the download after upgrading to Puppeteer 15.2.0.
+      // For some reason, clicking this button doesn't always initiate the download after upgrading to Puppeteer 16.
       // As a workaround, we send another click signal 1s after the first to make sure the download starts.
       // TODO: Find a more robust fix for this issue.
       const timeoutHandle = setTimeout(() => viewerPage.click('a[data-action="save-html"]'), 1000);
