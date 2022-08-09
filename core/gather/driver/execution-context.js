@@ -16,6 +16,12 @@ class ExecutionContext {
 
     /** @type {number|undefined} */
     this._executionContextId = undefined;
+    /**
+     * Marks the order that execution context ids are used, for purposes of having a unique
+     * value (that doesn't expose the actual execution context id) to use for __lighthouseMainExecutionContextId.
+     * @type {number[]}
+     */
+    this._executionContextIdentifiersUsed = [];
 
     // We use isolated execution contexts for `evaluateAsync` that can be destroyed through navigation
     // and other page actions. Cleanup our relevant bookkeeping as we see those events.
@@ -82,8 +88,13 @@ class ExecutionContext {
       this._session.getNextProtocolTimeout() :
       60000;
 
-    // This is only used by the fullpage screenshot gatherer. See `getNodeDetails` in page-functions.
-    const uniqueExecutionContextIdentifier = (contextId || 0) - (this._executionContextId || 0);
+    // `__lighthouseMainExecutionContextId` is only used by the FullPageScreenshot gatherer.
+    // See `getNodeDetails` in page-functions.
+    if (!this._executionContextIdentifiersUsed.includes(contextId || 0)) {
+      this._executionContextIdentifiersUsed.push(contextId || 0);
+    }
+    const uniqueExecutionContextIdentifier =
+      this._executionContextIdentifiersUsed.indexOf(contextId || 0);
 
     const evaluationParams = {
       // We need to explicitly wrap the raw expression for several purposes:
