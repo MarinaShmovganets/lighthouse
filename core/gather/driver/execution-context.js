@@ -18,7 +18,7 @@ class ExecutionContext {
     this._executionContextId = undefined;
     /**
      * Marks the order that execution context ids are used, for purposes of having a unique
-     * value (that doesn't expose the actual execution context id) to use for __lighthouseMainExecutionContextId.
+     * value (that doesn't expose the actual execution context id) to use for __lighthouseExecutionContextUniqueIdentifier.
      * @type {number[]}
      */
     this._executionContextIdentifiersUsed = [];
@@ -88,7 +88,7 @@ class ExecutionContext {
       this._session.getNextProtocolTimeout() :
       60000;
 
-    // `__lighthouseMainExecutionContextId` is only used by the FullPageScreenshot gatherer.
+    // `__lighthouseExecutionContextUniqueIdentifier` is only used by the FullPageScreenshot gatherer.
     // See `getNodeDetails` in page-functions.
     if (!this._executionContextIdentifiersUsed.includes(contextId || 0)) {
       this._executionContextIdentifiersUsed.push(contextId || 0);
@@ -104,7 +104,8 @@ class ExecutionContext {
       //    so that they can be serialized properly b/c JSON.stringify(new Error('foo')) === '{}'
       expression: `(function wrapInNativePromise() {
         ${ExecutionContext._cachedNativesPreamble};
-        globalThis.__lighthouseMainExecutionContextId = ${uniqueExecutionContextIdentifier};
+        globalThis.__lighthouseExecutionContextUniqueIdentifier =
+          ${uniqueExecutionContextIdentifier};
         return new Promise(function (resolve) {
           return Promise.resolve()
             .then(_ => ${expression})
