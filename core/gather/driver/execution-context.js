@@ -18,7 +18,8 @@ class ExecutionContext {
     this._executionContextId = undefined;
     /**
      * Marks the order that execution context ids are used, for purposes of having a unique
-     * value (that doesn't expose the actual execution context id) to use for __lighthouseExecutionContextUniqueIdentifier.
+     * value (that doesn't expose the actual execution context id) to
+     * use for __lighthouseExecutionContextUniqueIdentifier.
      * @type {number[]}
      */
     this._executionContextIdentifiersUsed = [];
