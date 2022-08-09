@@ -440,6 +440,14 @@ const expectations = {
                 width: '120±20',
                 height: '20±20',
               }],
+              [/[0-9]-[0-9]+-IMG/, {
+                top: '575±50',
+                bottom: '650±50',
+                left: '130±10',
+                right: '250±20',
+                width: '120±20',
+                height: '80±20',
+              }],
               // And then many more nodes.
             ],
           },
