@@ -218,7 +218,8 @@ describe('.evaluate', () => {
 const URL = globalThis.__nativeURL || globalThis.URL;
 const performance = globalThis.__nativePerformance || globalThis.performance;
 const fetch = globalThis.__nativeFetch || globalThis.fetch;
-        globalThis.__lighthouseExecutionContextUniqueIdentifier = 0;
+        globalThis.__lighthouseExecutionContextUniqueIdentifier =
+          0;
         return new Promise(function (resolve) {
           return Promise.resolve()
             .then(_ => (() => {
