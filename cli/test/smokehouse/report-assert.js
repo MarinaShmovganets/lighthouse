@@ -108,11 +108,6 @@ function findDifferences(path, actual, expected) {
 
   /** @type {any[]|undefined} */
   let inclExclCopy;
-  if (Array.isArray(actual)) {
-    inclExclCopy = [...actual];
-  } else if (typeof actual === 'object') {
-    inclExclCopy = Object.entries(actual);
-  }
 
   // We only care that all expected's own properties are on actual (and not the other way around).
   // Note an expected `undefined` can match an actual that is either `undefined` or not defined.
@@ -123,6 +118,12 @@ function findDifferences(path, actual, expected) {
     const expectedValue = expected[key];
 
     if (key === '_includes') {
+      if (Array.isArray(actual)) {
+        inclExclCopy = [...actual];
+      } else if (typeof actual === 'object') {
+        inclExclCopy = Object.entries(actual);
+      }
+
       if (!Array.isArray(expectedValue)) throw new Error('Array subset must be array');
       if (!inclExclCopy) {
         diffs.push({
@@ -153,8 +154,17 @@ function findDifferences(path, actual, expected) {
     }
 
     if (key === '_excludes') {
-      if (!Array.isArray(expectedValue)) throw new Error('Array subset must be array');
       // Re-use state from `_includes` check, if there was one.
+      if (!inclExclCopy) {
+        if (Array.isArray(actual)) {
+          // We won't be removing items, so we can just copy the reference.
+          inclExclCopy = actual;
+        } else if (typeof actual === 'object') {
+          inclExclCopy = Object.entries(actual);
+        }
+      }
+
+      if (!Array.isArray(expectedValue)) throw new Error('Array subset must be array');
       if (!inclExclCopy) {
         diffs.push({
           path,
