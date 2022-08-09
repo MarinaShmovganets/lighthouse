@@ -82,6 +82,9 @@ class ExecutionContext {
       this._session.getNextProtocolTimeout() :
       60000;
 
+    // This is only used by the fullpage screenshot gatherer. See `getNodeDetails` in page-functions.
+    const uniqueExecutionContextIdentifier = (contextId || 0) - (this._executionContextId || 0);
+
     const evaluationParams = {
       // We need to explicitly wrap the raw expression for several purposes:
       // 1. Ensure that the expression will be a native Promise and not a polyfill/non-Promise.
@@ -90,7 +93,7 @@ class ExecutionContext {
       //    so that they can be serialized properly b/c JSON.stringify(new Error('foo')) === '{}'
       expression: `(function wrapInNativePromise() {
         ${ExecutionContext._cachedNativesPreamble};
-        globalThis.__lighthouseExecutionContextId = ${contextId};
+        globalThis.__lighthouseMainExecutionContextId = ${uniqueExecutionContextIdentifier};
         return new Promise(function (resolve) {
           return Promise.resolve()
             .then(_ => ${expression})
