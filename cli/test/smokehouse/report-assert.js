@@ -105,7 +105,14 @@ function findDifferences(path, actual, expected) {
 
   /** @type {Difference[]} */
   const diffs = [];
+
+  /** @type {any[]|undefined} */
   let inclExclCopy;
+  if (Array.isArray(actual)) {
+    inclExclCopy = [...actual];
+  } else if (typeof actual === 'object') {
+    inclExclCopy = Object.entries(actual);
+  }
 
   // We only care that all expected's own properties are on actual (and not the other way around).
   // Note an expected `undefined` can match an actual that is either `undefined` or not defined.
@@ -116,15 +123,14 @@ function findDifferences(path, actual, expected) {
     const expectedValue = expected[key];
 
     if (key === '_includes') {
-      inclExclCopy = [...actual];
-
       if (!Array.isArray(expectedValue)) throw new Error('Array subset must be array');
-      if (!Array.isArray(actual)) {
+      if (!inclExclCopy) {
         diffs.push({
           path,
-          actual: 'Actual value is not an array',
+          actual: 'Actual value is not an array or object',
           expected,
         });
+        continue;
       }
 
       for (const expectedEntry of expectedValue) {
@@ -147,21 +153,25 @@ function findDifferences(path, actual, expected) {
     }
 
     if (key === '_excludes') {
-      // Re-use state from `_includes` check, if there was one.
-      /** @type {any[]} */
-      const arrToCheckAgainst = inclExclCopy || actual;
-
       if (!Array.isArray(expectedValue)) throw new Error('Array subset must be array');
-      if (!Array.isArray(actual)) continue;
+      // Re-use state from `_includes` check, if there was one.
+      if (!inclExclCopy) {
+        diffs.push({
+          path,
+          actual: 'Actual value is not an array or object',
+          expected,
+        });
+        continue;
+      }
 
       const expectedExclusions = expectedValue;
       for (const expectedExclusion of expectedExclusions) {
-        const matchingIndex = arrToCheckAgainst.findIndex(actualEntry =>
+        const matchingIndex = inclExclCopy.findIndex(actualEntry =>
             !findDifferences(keyPath, actualEntry, expectedExclusion));
         if (matchingIndex !== -1) {
           diffs.push({
             path,
-            actual: arrToCheckAgainst[matchingIndex],
+            actual: inclExclCopy[matchingIndex],
             expected: {
               message: 'Expected to not find matching entry via _excludes',
               expectedExclusion,
