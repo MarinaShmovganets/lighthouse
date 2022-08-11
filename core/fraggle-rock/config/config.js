@@ -215,7 +215,7 @@ function overrideNavigationThrottlingWindows(navigation, settings) {
  * @return {LH.Config.NavigationDefn[] | null}
  */
 function resolveFakeNavigations(artifactDefns, settings) {
-  if (!artifactDefns) throw new Error('Cannot use navigations without defining artifacts');
+  if (!artifactDefns) return null;
 
   const status = {msg: 'Resolve navigation definitions', id: 'lh:config:resolveNavigationsToDefns'};
   log.time(status, 'verbose');
