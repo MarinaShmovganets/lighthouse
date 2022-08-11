@@ -4,7 +4,6 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-
 import {strict as assert} from 'assert';
 import fs from 'fs';
 import path from 'path';
@@ -278,7 +277,7 @@ function collapseToStringLiteral(node, filepath) {
     }
 
     case 'Identifier': {
-      if (node.name === '__dirname') {
+      if (node.name === '__dirname' || node.name === 'moduleDir') {
         return path.dirname(filepath);
       } else if (node.name === '__filename') {
         return filepath;

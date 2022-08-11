@@ -11,7 +11,8 @@ import cpy from 'cpy';
 import {rollup} from 'rollup';
 
 import * as rollupPlugins from './rollup-plugins.js';
-import {LH_ROOT, readJson} from '../root.js';
+import {LH_ROOT} from '../root.js';
+import {readJson} from '../core/test/test-utils.js';
 
 const argv = process.argv.slice(2);
 const browserBrand = argv[0];
@@ -38,7 +39,6 @@ async function buildEntryPoint() {
       rollupPlugins.replace({
         '___BROWSER_BRAND___': browserBrand,
       }),
-      rollupPlugins.commonjs(),
       rollupPlugins.nodeResolve(),
       rollupPlugins.inlineFs({verbose: false}),
       rollupPlugins.terser(),
@@ -88,7 +88,7 @@ async function packageExtension() {
   });
 }
 
-async function run() {
+async function main() {
   await Promise.all([
     buildEntryPoint(),
     copyAssets(),
@@ -97,7 +97,4 @@ async function run() {
   await packageExtension();
 }
 
-run().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+await main();
