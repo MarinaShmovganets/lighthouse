@@ -24,6 +24,7 @@ import log from 'lighthouse-logger';
 import {runSmokehouse, getShardedDefinitions} from '../smokehouse.js';
 import {updateTestDefnFormat} from './back-compat-util.js';
 import {LH_ROOT} from '../../../../root.js';
+import {createServers} from '../../fixtures/static-server.js';
 
 const coreTestDefnsPath =
   path.join(LH_ROOT, 'cli/test/smokehouse/core-tests.js');
@@ -198,20 +199,14 @@ async function begin() {
   const testDefns = getShardedDefinitions(requestedTestDefns, argv.shard);
 
   let smokehouseResult;
-  let server;
-  let serverForOffline;
-  let serverTheThird;
+  let servers;
   let takeNetworkRequestUrls = undefined;
 
   try {
     // If running the core tests, spin up the test server.
     if (testDefnPath === coreTestDefnsPath) {
-      ({server, serverForOffline, serverTheThird} =
-        await import('../../fixtures/static-server.js'));
-      await server.listen(10200, 'localhost');
-      await serverForOffline.listen(10503, 'localhost');
-      await serverTheThird.listen(10420, 'localhost');
-      takeNetworkRequestUrls = server.takeRequestUrls.bind(server);
+      servers = await createServers();
+      takeNetworkRequestUrls = servers[0].takeRequestUrls.bind(servers[0]);
     }
 
     const prunedTestDefns = pruneExpectedNetworkRequests(testDefns, takeNetworkRequestUrls);
@@ -227,9 +222,7 @@ async function begin() {
 
     smokehouseResult = (await runSmokehouse(prunedTestDefns, options));
   } finally {
-    if (server) await server.close();
-    if (serverForOffline) await serverForOffline.close();
-    if (serverTheThird) await serverTheThird.close();
+    servers?.forEach(s => s.close());
   }
 
   if (!smokehouseResult.success) {

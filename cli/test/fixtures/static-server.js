@@ -26,7 +26,11 @@ const HEADER_SAFELIST = new Set(['x-robots-tag', 'link', 'content-security-polic
 class Server {
   baseDir = `${LH_ROOT}/cli/test/fixtures`;
 
-  constructor() {
+  /**
+   * @param {number} port
+   */
+  constructor(port) {
+    this._port = port;
     this._server = http.createServer(this._requestHandler.bind(this));
     /** @type {(data: string) => string=} */
     this._dataTransformer = undefined;
@@ -242,31 +246,24 @@ class Server {
   }
 }
 
-const serverForOnline = new Server();
-const serverForOffline = new Server();
-const serverTheThird = new Server();
+async function createServers() {
+  const servers = [10200, 10503, 10420].map(port => {
+    const server = new Server(port);
+    server._server.on('error', e => console.error(e.code, e));
+    return server;
+  });
+  await Promise.all(servers.map(s => s.listen(s._port, 'localhost')));
+  return servers;
+}
 
-serverForOnline._server.on('error', e => console.error(e.code, e));
-serverForOffline._server.on('error', e => console.error(e.code, e));
-serverTheThird._server.on('error', e => console.error(e.code, e));
-
-// If called via `node static-server.js` then start listening, otherwise, just expose the servers
+// If called directly (such as via `yarn static-server`) then start all of the servers.
 if (esMain(import.meta)) {
-  // Start listening
-  const onlinePort = 10200;
-  const offlinePort = 10503;
-  const thirdPort = 10404;
-  serverForOnline.listen(onlinePort, 'localhost');
-  serverForOffline.listen(offlinePort, 'localhost');
-  serverTheThird.listen(thirdPort, 'localhost');
-  console.log(`online:  listening on http://localhost:${onlinePort}`);
-  console.log(`offline: listening on http://localhost:${offlinePort}`);
-  console.log(`third: listening on http://localhost:${thirdPort}`);
+  for (const server of await createServers()) {
+    console.log(`listening on http://localhost:${server._port}`);
+  }
 }
 
 export {
   Server,
-  serverForOnline as server,
-  serverForOffline,
-  serverTheThird,
+  createServers,
 };
