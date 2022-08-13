@@ -244,23 +244,29 @@ class Server {
 
 const serverForOnline = new Server();
 const serverForOffline = new Server();
+const serverTheThird = new Server();
 
 serverForOnline._server.on('error', e => console.error(e.code, e));
 serverForOffline._server.on('error', e => console.error(e.code, e));
+serverTheThird._server.on('error', e => console.error(e.code, e));
 
 // If called via `node static-server.js` then start listening, otherwise, just expose the servers
 if (esMain(import.meta)) {
   // Start listening
   const onlinePort = 10200;
   const offlinePort = 10503;
+  const thirdPort = 10404;
   serverForOnline.listen(onlinePort, 'localhost');
   serverForOffline.listen(offlinePort, 'localhost');
+  serverTheThird.listen(thirdPort, 'localhost');
   console.log(`online:  listening on http://localhost:${onlinePort}`);
   console.log(`offline: listening on http://localhost:${offlinePort}`);
+  console.log(`third: listening on http://localhost:${thirdPort}`);
 }
 
 export {
   Server,
   serverForOnline as server,
   serverForOffline,
+  serverTheThird,
 };

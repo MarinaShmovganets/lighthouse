@@ -107,7 +107,7 @@ const expectations = {
       'uses-rel-preconnect': {
         score: 1,
         warnings: {
-          0: /fonts.googleapis/,
+          0: /localhost:10503/,
           length: 1,
         },
       },

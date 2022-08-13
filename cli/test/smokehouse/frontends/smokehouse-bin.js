@@ -200,14 +200,17 @@ async function begin() {
   let smokehouseResult;
   let server;
   let serverForOffline;
+  let serverTheThird;
   let takeNetworkRequestUrls = undefined;
 
   try {
     // If running the core tests, spin up the test server.
     if (testDefnPath === coreTestDefnsPath) {
-      ({server, serverForOffline} = await import('../../fixtures/static-server.js'));
+      ({server, serverForOffline, serverTheThird} =
+        await import('../../fixtures/static-server.js'));
       await server.listen(10200, 'localhost');
       await serverForOffline.listen(10503, 'localhost');
+      await serverTheThird.listen(10420, 'localhost');
       takeNetworkRequestUrls = server.takeRequestUrls.bind(server);
     }
 
@@ -226,6 +229,7 @@ async function begin() {
   } finally {
     if (server) await server.close();
     if (serverForOffline) await serverForOffline.close();
+    if (serverTheThird) await serverTheThird.close();
   }
 
   if (!smokehouseResult.success) {
