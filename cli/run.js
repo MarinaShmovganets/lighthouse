@@ -77,7 +77,9 @@ function getDebuggableChrome(flags) {
       throw new Error(
         'Launching Chrome on Mac Silicon (arm64) from an x64 Node installation results in ' +
         'Rosetta translating the Chrome binary, even if Chrome is already arm64. This would ' +
-        'result in huge performance issues.');
+        'result in huge performance issues. To resolve this, you must run Lighthouse CLI with ' +
+        'a version of Node built for arm64. You should also confirm that your Chrome install ' +
+        'says arm64 in chrome://version');
     }
   }
 
