@@ -258,9 +258,11 @@ async function createServers() {
 
 // If called directly (such as via `yarn static-server`) then start all of the servers.
 if (esMain(import.meta)) {
-  for (const server of await createServers()) {
-    console.log(`listening on http://localhost:${server._port}`);
-  }
+  createServers().then(servers => {
+    for (const server of servers) {
+      console.log(`listening on http://localhost:${server._port}`);
+    }
+  });
 }
 
 export {
