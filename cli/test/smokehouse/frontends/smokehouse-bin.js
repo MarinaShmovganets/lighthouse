@@ -24,7 +24,6 @@ import log from 'lighthouse-logger';
 import {runSmokehouse, getShardedDefinitions} from '../smokehouse.js';
 import {updateTestDefnFormat} from './back-compat-util.js';
 import {LH_ROOT} from '../../../../root.js';
-import {createServers} from '../../fixtures/static-server.js';
 
 const coreTestDefnsPath =
   path.join(LH_ROOT, 'cli/test/smokehouse/core-tests.js');
@@ -205,6 +204,7 @@ async function begin() {
   try {
     // If running the core tests, spin up the test server.
     if (testDefnPath === coreTestDefnsPath) {
+      const {createServers} = await import('../../fixtures/static-server.js');
       servers = await createServers();
       takeNetworkRequestUrls = servers[0].takeRequestUrls.bind(servers[0]);
     }
