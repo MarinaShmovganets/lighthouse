@@ -38,8 +38,8 @@ function createTestState() {
 
     installSetupAndTeardownHooks() {
       before(async () => {
-        this.server = new Server();
-        this.secondaryServer = new Server();
+        this.server = new Server(0);
+        this.secondaryServer = new Server(0);
         await this.server.listen(0, '127.0.0.1');
         await this.secondaryServer.listen(0, '127.0.0.1');
         this.serverBaseUrl = `http://localhost:${this.server.getPort()}`;
