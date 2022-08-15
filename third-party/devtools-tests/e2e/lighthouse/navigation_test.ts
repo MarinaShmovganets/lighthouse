@@ -14,9 +14,24 @@ import {
   setThrottlingMethod,
   waitForResult,
 } from '../helpers/lighthouse-helpers.js';
+import {click, goToResource, waitFor, setDevToolsSettings} from '../../shared/helper.js';
+
+import type {ElementHandle} from 'puppeteer';
 
 // This test will fail (by default) in headful mode, as the target page never gets painted.
 // To resolve this when debugging, just make sure the target page is visible during the lighthouse run.
+
+// TODO: update upstream.
+async function navigateToLighthouseTab_2(path?: string): Promise<ElementHandle<Element>> {
+  await click('#tab-lighthouse');
+  // await waitForLighthousePanelContentLoaded();
+  await waitFor('.view-container > .lighthouse');
+  if (path) {
+    await goToResource(path);
+  }
+
+  return waitFor('.lighthouse-start-view-fr');
+}
 
 describe('Navigation', async function() {
   // The tests in this suite are particularly slow
@@ -35,7 +50,8 @@ describe('Navigation', async function() {
       });
 
       it('successfully returns a Lighthouse report', async () => {
-        await navigateToLighthouseTab('lighthouse/hello.html');
+        await setDevToolsSettings({language: 'en-XL'});
+        await navigateToLighthouseTab_2('lighthouse/hello.html');
 
         await setLegacyNavigation(mode === 'legacy');
         await clickStartButton();
