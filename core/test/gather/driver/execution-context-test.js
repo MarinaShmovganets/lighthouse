@@ -219,7 +219,7 @@ const URL = globalThis.__nativeURL || globalThis.URL;
 const performance = globalThis.__nativePerformance || globalThis.performance;
 const fetch = globalThis.__nativeFetch || globalThis.fetch;
         globalThis.__lighthouseExecutionContextUniqueIdentifier =
-          0;
+          undefined;
         return new Promise(function (resolve) {
           return Promise.resolve()
             .then(_ => (() => {
