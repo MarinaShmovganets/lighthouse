@@ -500,7 +500,7 @@ function getNodeDetails(element) {
   // Create an id that will be unique across all execution contexts.
   //
   // Made up of 3 components:
-  //   - number unique to specific execution context
+  //   - prefix unique to specific execution context
   //   - nth unique node seen by this function for this execution context
   //   - node tagName
   //
@@ -512,8 +512,17 @@ function getNodeDetails(element) {
   // cuts down on some duplication.
   let lhId = window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.get(element);
   if (!lhId) {
+    let prefix;
+    if (window.__lighthouseExecutionContextUniqueIdentifier === 0) {
+      prefix = 'page';
+    } else if (window.__lighthouseExecutionContextUniqueIdentifier) {
+      prefix = String(window.__lighthouseExecutionContextUniqueIdentifier);
+    } else {
+      prefix = '?';
+    }
+
     lhId = [
-      window.__lighthouseExecutionContextUniqueIdentifier ?? '?',
+      prefix,
       window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.size,
       element.tagName,
     ].join('-');
