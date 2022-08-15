@@ -499,6 +499,12 @@ function getNodeDetails(element) {
 
   // Create an id that will be unique across all execution contexts.
   //
+  // Every page load only has up to two associated context - the page context
+  // (denoted as `__lighthouseExecutionContextUniqueIdentifier` being undefined)
+  // and the isolated context. The id must be unique to distinguish gatherers running
+  // on different page loads that identify the same logical element, for purposes
+  // of the full page screenshot node lookup.
+  //
   // Made up of 3 components:
   //   - prefix unique to specific execution context
   //   - nth unique node seen by this function for this execution context
