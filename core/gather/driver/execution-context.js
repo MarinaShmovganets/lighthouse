@@ -92,7 +92,7 @@ class ExecutionContext {
     // `__lighthouseExecutionContextUniqueIdentifier` is only used by the FullPageScreenshot gatherer.
     // See `getNodeDetails` in page-functions.
     const uniqueExecutionContextIdentifier = contextId === undefined ?
-      0 :
+      undefined :
       this._executionContextIdentifiersCreated;
 
     const evaluationParams = {

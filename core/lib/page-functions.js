@@ -512,17 +512,10 @@ function getNodeDetails(element) {
   // cuts down on some duplication.
   let lhId = window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.get(element);
   if (!lhId) {
-    let prefix;
-    if (window.__lighthouseExecutionContextUniqueIdentifier === 0) {
-      prefix = 'page';
-    } else if (window.__lighthouseExecutionContextUniqueIdentifier) {
-      prefix = String(window.__lighthouseExecutionContextUniqueIdentifier);
-    } else {
-      prefix = '?';
-    }
-
     lhId = [
-      prefix,
+      window.__lighthouseExecutionContextUniqueIdentifier === undefined ?
+        'page' :
+        window.__lighthouseExecutionContextUniqueIdentifier,
       window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.size,
       element.tagName,
     ].join('-');
