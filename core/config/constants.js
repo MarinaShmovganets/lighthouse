@@ -119,6 +119,7 @@ const defaultSettings = {
   onlyAudits: null,
   onlyCategories: null,
   skipAudits: null,
+  skipAboutBlank: false,
 
   // The following settings are from SharedPassNavigationJson
   // They are historically defined on a legacy pass but have been moved here as part of FR.

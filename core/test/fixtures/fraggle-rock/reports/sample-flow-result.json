@@ -3735,6 +3735,7 @@
           "skipAudits": [
             "uses-http2"
           ],
+          "skipAboutBlank": true,
           "pauseAfterFcpMs": 1000,
           "pauseAfterLoadMs": 1000,
           "networkQuietThresholdMs": 1000,
@@ -9179,6 +9180,7 @@
           "skipAudits": [
             "uses-http2"
           ],
+          "skipAboutBlank": false,
           "pauseAfterFcpMs": 1000,
           "pauseAfterLoadMs": 1000,
           "networkQuietThresholdMs": 1000,
@@ -12447,6 +12449,7 @@
           "skipAudits": [
             "uses-http2"
           ],
+          "skipAboutBlank": false,
           "pauseAfterFcpMs": 1000,
           "pauseAfterLoadMs": 1000,
           "networkQuietThresholdMs": 1000,
@@ -17995,6 +17998,7 @@
           "skipAudits": [
             "uses-http2"
           ],
+          "skipAboutBlank": true,
           "pauseAfterFcpMs": 1000,
           "pauseAfterLoadMs": 1000,
           "networkQuietThresholdMs": 1000,
