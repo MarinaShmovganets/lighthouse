@@ -32,16 +32,16 @@ describe('Running the stringified output script', function() {
   let testTmpDir = '';
   let scriptPath = '';
 
-  before(async () => {
+  before(() => {
     fs.mkdirSync(tmpDir, {recursive: true});
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     testTmpDir = fs.mkdtempSync(`${tmpDir}/replay-`);
     scriptPath = `${testTmpDir}/stringified.cjs`;
   });
 
-  after(async () => {
+  after(() => {
     fs.rmSync(tmpDir, {recursive: true, force: true});
   });
 
