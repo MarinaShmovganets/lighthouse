@@ -126,12 +126,12 @@ describe('NavigationRunner', () => {
     });
 
     it('should connect the driver', async () => {
-      await runner._setup({driver, config});
+      await runner._setup({driver, config, requestor: requestedUrl});
       expect(mockDriver.connect).toHaveBeenCalled();
     });
 
-    it('should navigate to the blank page', async () => {
-      await runner._setup({driver, config});
+    it('should navigate to the blank page if requestor is a string', async () => {
+      await runner._setup({driver, config, requestor: requestedUrl});
       expect(mocks.navigationMock.gotoURL).toHaveBeenCalledTimes(1);
       expect(mocks.navigationMock.gotoURL).toHaveBeenCalledWith(
         expect.anything(),
@@ -140,17 +140,28 @@ describe('NavigationRunner', () => {
       );
     });
 
-    it('skip about:blank if option is true', async () => {
+    it('skip about:blank if using callback requestor', async () => {
       await runner._setup({
         driver,
         config,
-        options: {skipAboutBlank: true},
+        requestor: () => {},
+      });
+      expect(mocks.navigationMock.gotoURL).not.toHaveBeenCalled();
+    });
+
+    it('skip about:blank if config option is set to true', async () => {
+      config.settings.skipAboutBlank = true;
+
+      await runner._setup({
+        driver,
+        config,
+        requestor: requestedUrl,
       });
       expect(mocks.navigationMock.gotoURL).not.toHaveBeenCalled();
     });
 
     it('should collect base artifacts', async () => {
-      const {baseArtifacts} = await runner._setup({driver, config});
+      const {baseArtifacts} = await runner._setup({driver, config, requestor: requestedUrl});
       expect(baseArtifacts).toMatchObject({
         URL: {
           initialUrl: '',
@@ -160,14 +171,14 @@ describe('NavigationRunner', () => {
     });
 
     it('should prepare the target for navigation', async () => {
-      await runner._setup({driver, config});
+      await runner._setup({driver, config, requestor: requestedUrl});
       expect(mocks.prepareMock.prepareTargetForNavigationMode).toHaveBeenCalledTimes(1);
     });
 
     it('should prepare the target for navigation *after* base artifact collection', async () => {
       mockDriver._executionContext.evaluate.mockReset();
       mockDriver._executionContext.evaluate.mockRejectedValue(new Error('Not available'));
-      const setupPromise = runner._setup({driver, config});
+      const setupPromise = runner._setup({driver, config, requestor: requestedUrl});
       await expect(setupPromise).rejects.toThrowError(/Not available/);
       expect(mocks.prepareMock.prepareTargetForNavigationMode).not.toHaveBeenCalled();
     });
@@ -310,7 +321,9 @@ describe('NavigationRunner', () => {
       expect(mocks.navigationMock.gotoURL).toHaveBeenCalledTimes(2);
     });
 
-    it('skips about:blank if option is set to true', async () => {
+    it('skips about:blank if config option is set to true', async () => {
+      config.settings.skipAboutBlank = true;
+
       const {artifacts} = await runner._navigation({
         driver,
         config,
@@ -318,7 +331,23 @@ describe('NavigationRunner', () => {
         requestor: requestedUrl,
         computedCache,
         baseArtifacts,
-        options: {skipAboutBlank: true},
+      });
+      const artifactIds = Object.keys(artifacts);
+      expect(artifactIds).toContain('Timespan');
+      expect(artifactIds).toContain('Snapshot');
+
+      // Only once for the requested URL.
+      expect(mocks.navigationMock.gotoURL).toHaveBeenCalledTimes(1);
+    });
+
+    it('skips about:blank if using a callback requestor', async () => {
+      const {artifacts} = await runner._navigation({
+        driver,
+        config,
+        navigation,
+        requestor: () => {},
+        computedCache,
+        baseArtifacts,
       });
       const artifactIds = Object.keys(artifacts);
       expect(artifactIds).toContain('Timespan');
