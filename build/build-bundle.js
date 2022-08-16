@@ -116,12 +116,13 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
   // Don't include the stringified report in DevTools - see devtools-report-assets.js
   // Don't include in Lightrider - HTML generation isn't supported, so report assets aren't needed.
   if (isDevtools(entryPath) || isLightrider(entryPath)) {
-    modulesToIgnore.push(require.resolve('../report/generator/report-assets.js'));
+    shimsObj[require.resolve('../report/generator/report-assets.js')] =
+      'export const reportAssets = {}';
   }
 
   // Don't include locales in DevTools.
   if (isDevtools(entryPath)) {
-    shimsObj['./locales.js'] = 'export default {}';
+    shimsObj['./locales.js'] = 'export const locales = {};';
   }
 
   for (const modulePath of modulesToIgnore) {
@@ -186,6 +187,7 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
         `,
       }),
       rollupPlugins.json(),
+      rollupPlugins.removeModuleDirCalls(),
       rollupPlugins.inlineFs({verbose: false}),
       rollupPlugins.commonjs({
         // https://github.com/rollup/plugins/issues/922

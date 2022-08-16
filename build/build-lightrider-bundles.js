@@ -31,12 +31,12 @@ async function buildReportGenerator() {
   const bundle = await rollup({
     input: 'report/generator/report-generator.js',
     plugins: [
+      rollupPlugins.removeModuleDirCalls(),
       rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
       rollupPlugins.shim({
-        [`${LH_ROOT}/report/generator/flow-report-assets.js`]: 'export default {}',
+        [`${LH_ROOT}/report/generator/flow-report-assets.js`]: 'export const flowReportAssets = {}',
         'fs': 'export default {}',
       }),
-      rollupPlugins.commonjs(),
     ],
   });
 
@@ -52,6 +52,7 @@ async function buildStaticServerBundle() {
   const bundle = await rollup({
     input: 'cli/test/fixtures/static-server.js',
     plugins: [
+      rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
       rollupPlugins.nodeResolve(),
     ],
     external: ['mime-types', 'glob'],
