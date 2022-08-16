@@ -50,8 +50,9 @@ async function buildReportGenerator() {
 
 async function buildStaticServerBundle() {
   const bundle = await rollup({
-    input: 'lighthouse-cli/test/fixtures/static-server.js',
+    input: 'cli/test/fixtures/static-server.js',
     plugins: [
+      rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
       rollupPlugins.nodeResolve(),
     ],
     external: ['mime-types', 'glob'],
