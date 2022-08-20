@@ -249,20 +249,31 @@ class Server {
 async function createServers() {
   const servers = [10200, 10503, 10420].map(port => {
     const server = new Server(port);
-    server._server.on('error', e => console.error(e.code, e));
+    server._server.on('error', e => console.error(e.message));
+    if (esMain(import.meta)) {
+      server._server.on('listening', _ => console.log(`listening on http://localhost:${port}`));
+    }
     return server;
   });
-  await Promise.all(servers.map(s => s.listen(s._port, 'localhost')));
+
+  await Promise.allSettled(servers.map(s => s.listen(s._port, 'localhost'))).then(results => {
+    if (results.every(p => p.status === 'fulfilled')) return;
+
+    const isAlreadyUp = results
+      .every(p => p.status === 'rejected' && p.reason?.message?.includes('already'));
+    if (isAlreadyUp) {
+      console.warn('😧 Server already up. Continuing…');
+    } else {
+      console.log(results.map(p => p.reason))
+      throw results.map(p => p.reason);
+    }
+  });
   return servers;
 }
 
 // If called directly (such as via `yarn static-server`) then start all of the servers.
 if (esMain(import.meta)) {
-  createServers().then(servers => {
-    for (const server of servers) {
-      console.log(`listening on http://localhost:${server._port}`);
-    }
-  });
+  createServers();
 }
 
 export {
