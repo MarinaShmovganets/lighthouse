@@ -22,6 +22,7 @@ import esMain from 'es-main';
 import {LH_ROOT} from '../../../root.js';
 
 const HEADER_SAFELIST = new Set(['x-robots-tag', 'link', 'content-security-policy']);
+const wasInvokedDirectly = esMain(import.meta);
 
 class Server {
   baseDir = `${LH_ROOT}/cli/test/fixtures`;
@@ -250,7 +251,7 @@ async function createServers() {
   const servers = [10200, 10503, 10420].map(port => {
     const server = new Server(port);
     server._server.on('error', e => console.error(e.message));
-    if (esMain(import.meta)) {
+    if (wasInvokedDirectly) {
       server._server.on('listening', _ => console.log(`listening on http://localhost:${port}`));
     }
     return server;
@@ -267,7 +268,7 @@ async function createServers() {
 }
 
 // If called directly (such as via `yarn static-server`) then start all of the servers.
-if (esMain(import.meta)) {
+if (wasInvokedDirectly) {
   createServers();
 }
 
