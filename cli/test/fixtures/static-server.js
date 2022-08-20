@@ -256,12 +256,12 @@ async function createServers() {
     return server;
   });
 
-  await Promise.all(servers.map(s => s.listen(s._port, 'localhost'))).catch(e => {
-    if (e.message.includes('already')) {
-      setTimeout(_ => console.warn('😧 Server already up. Continuing…'), 10);
-    } else {
-      console.error(e);
+  await Promise.allSettled(servers.map(s => s.listen(s._port, 'localhost'))).then(outcomes => {
+    if (outcomes.every(o => o.status === 'fulfilled')) return;
+    if (outcomes.every(o => o.reason.message.includes('already'))) {
+      return console.warn('😧 Server already up. Continuing…');
     }
+    console.error(outcomes.map(o => o.reason));
   });
   return servers;
 }
