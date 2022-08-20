@@ -256,16 +256,11 @@ async function createServers() {
     return server;
   });
 
-  await Promise.allSettled(servers.map(s => s.listen(s._port, 'localhost'))).then(results => {
-    if (results.every(p => p.status === 'fulfilled')) return;
-
-    const isAlreadyUp = results
-      .every(p => p.status === 'rejected' && p.reason?.message?.includes('already'));
-    if (isAlreadyUp) {
-      console.warn('😧 Server already up. Continuing…');
+  await Promise.all(servers.map(s => s.listen(s._port, 'localhost'))).catch(e => {
+    if (e.message.includes('already')) {
+      setTimeout(_ => console.warn('😧 Server already up. Continuing…'), 10);
     } else {
-      console.log(results.map(p => p.reason))
-      throw results.map(p => p.reason);
+      console.error(e);
     }
   });
   return servers;
