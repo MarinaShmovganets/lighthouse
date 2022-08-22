@@ -36,7 +36,7 @@ module.exports = {
     }],
     'no-floating-decimal': 2,
     'max-len': [2, 100, {
-      ignorePattern: 'readJson\\(',
+      ignorePattern: 'readJson\\(|^import ',
       ignoreComments: true,
       ignoreUrls: true,
       tabWidth: 2,
@@ -82,7 +82,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['lighthouse-cli/test/smokehouse/test-definitions/*.js'],
+      files: ['cli/test/smokehouse/test-definitions/*.js'],
       rules: {
         'max-len': 0,
       },

@@ -15,7 +15,7 @@ declare global {
       requestedUrl: string;
       finalUrl: string | RegExp;
       userAgent?: string | RegExp;
-      runWarnings?: Array<string|RegExp> | {length: string | number};
+      runWarnings?: any;
       runtimeError?: {
         code?: any;
         message?: any;
@@ -28,7 +28,7 @@ declare global {
     export type ExpectedRunnerResult = {
       lhr: ExpectedLHR,
       artifacts?: Partial<Record<keyof Artifacts|'_maxChromiumVersion'|'_minChromiumVersion', any>>
-      networkRequests?: {length: number, _legacyOnly?: boolean, _fraggleRockOnly?: boolean};
+      networkRequests?: any;
     }
 
     export interface TestDfn {
@@ -67,6 +67,8 @@ declare global {
       lighthouseRunner?: LighthouseRunner;
       /** A function that gets a list of URLs requested to the server since the last fetch. */
       takeNetworkRequestUrls?: () => string[];
+      /** A function run once before all smoke tests. */
+      setup?: () => Promise<void>;
     }
 
     export interface SmokehouseLibOptions extends SmokehouseOptions {
