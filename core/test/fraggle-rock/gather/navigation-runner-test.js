@@ -194,8 +194,8 @@ describe('NavigationRunner', () => {
     });
 
     it('should navigate as many times as there are navigations', async () => {
-      // initializeConfig will always produce a single config navigation.
-      // This code will artificially construct a multiple navigations to test on the navigation runner.
+      // initializeConfig always produces a single config navigation.
+      // Artificially construct multiple navigations to test on the navigation runner.
       const originalNavigation = config.navigations?.[0];
       if (!originalNavigation) throw new Error('Should always have navigations');
       const artifactDefns = originalNavigation.artifacts.filter(a =>
@@ -249,8 +249,8 @@ describe('NavigationRunner', () => {
     });
 
     it('should merge artifacts between navigations', async () => {
-      // initializeConfig will always produce a single config navigation.
-      // This code will artificially construct a second navigation to test on the navigation runner.
+      // initializeConfig always produces a single config navigation.
+      // Artificially construct multiple navigations to test on the navigation runner.
       if (!config.navigations) throw new Error('Should always have navigations');
       const firstNavigation = config.navigations[0];
       const secondNavigation = {...firstNavigation, id: 'second'};
