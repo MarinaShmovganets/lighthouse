@@ -10,29 +10,30 @@
 import fs from 'fs';
 import path from 'path';
 
-import swapLocale from '../shared/localization/swap-locale.js';
-import swapFlowLocale from '../shared/localization/swap-flow-locale.js';
-import ReportGenerator from '../report/generator/report-generator.js';
-import {defaultSettings} from '../lighthouse-core/config/constants.js';
-import lighthouse from '../lighthouse-core/index.js';
-import {LH_ROOT, readJson} from '../root.js';
+import {swapLocale} from '../shared/localization/swap-locale.js';
+import {swapFlowLocale} from '../shared/localization/swap-flow-locale.js';
+import {ReportGenerator} from '../report/generator/report-generator.js';
+import {defaultSettings} from '../core/config/constants.js';
+import lighthouse from '../core/index.js';
+import {LH_ROOT} from '../root.js';
+import {readJson} from '../core/test/test-utils.js';
 
 /** @type {LH.Result} */
-const lhr = readJson(`${LH_ROOT}/lighthouse-core/test/results/sample_v2.json`);
+const lhr = readJson(`${LH_ROOT}/core/test/results/sample_v2.json`);
 
 /** @type {LH.FlowResult} */
 const flowResult = readJson(
-  `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/reports/sample-flow-result.json`
+  `${LH_ROOT}/core/test/fixtures/fraggle-rock/reports/sample-flow-result.json`
 );
-
-const snapshotLhr = flowResult.steps.find(step => step.lhr.gatherMode === 'snapshot')?.lhr;
-const timespanLhr = flowResult.steps.find(step => step.lhr.gatherMode === 'timespan')?.lhr;
-if (!snapshotLhr) throw new Error('Could not find a snapshot report on the sample flow result');
-if (!timespanLhr) throw new Error('Could not find a timespan report on the sample flow result');
 
 const DIST = path.join(LH_ROOT, 'dist');
 
-(async function() {
+async function buildSampleReports() {
+  const snapshotLhr = flowResult.steps.find(step => step.lhr.gatherMode === 'snapshot')?.lhr;
+  const timespanLhr = flowResult.steps.find(step => step.lhr.gatherMode === 'timespan')?.lhr;
+  if (!snapshotLhr) throw new Error('Could not find a snapshot report on the sample flow result');
+  if (!timespanLhr) throw new Error('Could not find a timespan report on the sample flow result');
+
   addPluginCategory(lhr);
   const errorLhr = await generateErrorLHR();
 
@@ -68,10 +69,7 @@ const DIST = path.join(LH_ROOT, 'dist');
   });
 
   generateFlowReports();
-})().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+}
 
 function generateFlowReports() {
   const filenameToFlowResult = {
@@ -193,15 +191,9 @@ async function generateErrorLHR() {
   offscreenImagesAudit.errorMessage = undefined;
   offscreenImagesAudit.scoreDisplayMode = 'binary';
   offscreenImagesAudit.score = 1;
-  // pwa-apple-touch-icon - set as passing but with a warning
-  const appleTouchIconAudit = errorLhr.audits['apple-touch-icon'];
-  appleTouchIconAudit.warnings = [
-    '`apple-touch-icon-precomposed` is out of date; `apple-touch-icon` is preferred.',
-  ];
-  appleTouchIconAudit.errorMessage = undefined;
-  appleTouchIconAudit.scoreDisplayMode = 'binary';
-  appleTouchIconAudit.score = 1;
 
   fs.rmSync(TMP, {recursive: true, force: true});
   return errorLhr;
 }
+
+await buildSampleReports();

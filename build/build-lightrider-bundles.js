@@ -31,12 +31,12 @@ async function buildReportGenerator() {
   const bundle = await rollup({
     input: 'report/generator/report-generator.js',
     plugins: [
-      rollupPlugins.shim({
-        [`${LH_ROOT}/report/generator/flow-report-assets.js`]: 'export default {}',
-      }),
-      rollupPlugins.commonjs(),
-      rollupPlugins.nodeResolve(),
+      rollupPlugins.removeModuleDirCalls(),
       rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
+      rollupPlugins.shim({
+        [`${LH_ROOT}/report/generator/flow-report-assets.js`]: 'export const flowReportAssets = {}',
+        'fs': 'export default {}',
+      }),
     ],
   });
 
@@ -50,12 +50,9 @@ async function buildReportGenerator() {
 
 async function buildStaticServerBundle() {
   const bundle = await rollup({
-    input: 'lighthouse-cli/test/fixtures/static-server.js',
+    input: 'cli/test/fixtures/static-server.js',
     plugins: [
-      rollupPlugins.shim({
-        'es-main': 'export default function() { return false; }',
-      }),
-      rollupPlugins.commonjs(),
+      rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
       rollupPlugins.nodeResolve(),
     ],
     external: ['mime-types', 'glob'],
@@ -68,15 +65,8 @@ async function buildStaticServerBundle() {
   await bundle.close();
 }
 
-async function run() {
-  await Promise.all([
-    buildEntryPoint(),
-    buildReportGenerator(),
-    buildStaticServerBundle(),
-  ]);
-}
-
-run().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+await Promise.all([
+  buildEntryPoint(),
+  buildReportGenerator(),
+  buildStaticServerBundle(),
+]);

@@ -4,16 +4,14 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import parseManifest = require('../lighthouse-core/lib/manifest-parser.js');
-import LanternSimulator = require('../lighthouse-core/lib/dependency-graph/simulator/simulator.js');
-import LighthouseError = require('../lighthouse-core/lib/lh-error.js');
-import _NetworkRequest = require('../lighthouse-core/lib/network-request.js');
-import speedline = require('speedline-core');
-import TextSourceMap = require('../lighthouse-core/lib/cdt/generated/SourceMap.js');
-import ArbitraryEqualityMap = require('../lighthouse-core/lib/arbitrary-equality-map.js');
-
-type _TaskNode = import('../lighthouse-core/lib/tracehouse/main-thread-tasks.js').TaskNode;
-
+import {parseManifest} from '../core/lib/manifest-parser.js';
+import {Simulator} from '../core/lib/dependency-graph/simulator/simulator.js';
+import {LighthouseError} from '../core/lib/lh-error.js';
+import {NetworkRequest as _NetworkRequest} from '../core/lib/network-request.js';
+import speedline from 'speedline-core';
+import TextSourceMap from '../core/lib/cdt/generated/SourceMap.js';
+import {ArbitraryEqualityMap} from '../core/lib/arbitrary-equality-map.js';
+import type { TaskNode as _TaskNode } from '../core/lib/tracehouse/main-thread-tasks.js';
 import AuditDetails from './lhr/audit-details'
 import Config from './config';
 import Gatherer from './gatherer';
@@ -49,6 +47,8 @@ interface UniversalBaseArtifacts {
   LighthouseRunWarnings: Array<string | IcuMessage>;
   /** The benchmark index that indicates rough device class. */
   BenchmarkIndex: number;
+  /** Many benchmark indexes. Many. */
+  BenchmarkIndexes?: number[];
   /** An object containing information about the testing configuration used by Lighthouse. */
   settings: Config.Settings;
   /** The timing instrumentation of the gather portion of a run. */
@@ -573,7 +573,7 @@ declare module Artifacts {
   }
 
   interface TraceElement {
-    traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation';
+    traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation'|'responsiveness';
     score?: number;
     node: NodeDetails;
     nodeId?: number;
@@ -641,7 +641,7 @@ declare module Artifacts {
     trace: Trace;
     settings: Immutable<Config.Settings>;
     gatherContext: Artifacts['GatherContext'];
-    simulator?: InstanceType<typeof LanternSimulator>;
+    simulator?: InstanceType<typeof Simulator>;
     URL: Artifacts['URL'];
   }
 
@@ -1002,6 +1002,7 @@ export interface TraceEvent {
       /** Responsiveness data. */
       interactionType?: 'drag'|'keyboard'|'tapOrClick';
       maxDuration?: number;
+      type?: string;
     };
     frame?: string;
     name?: string;
@@ -1034,6 +1035,23 @@ declare module Trace {
     ts: number;
     tdur: number;
     tts: number;
+  }
+
+  /**
+   * Base event of a `ph: 'b'|'e'|'n'` async event. Extend with `name`, `args`, and
+   * more specific `ph` (if needed).
+   */
+  interface AsyncEvent {
+    ph: 'b'|'e'|'n';
+    cat: string;
+    pid: number;
+    tid: number;
+    ts: number;
+    id: string;
+    scope?: string;
+    // TODO(bckenny): No dur on these. Sort out optional `dur` on trace events.
+    /** @deprecated there is no `dur` on async events. */
+    dur: number;
   }
 }
 

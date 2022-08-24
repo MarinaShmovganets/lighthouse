@@ -5,12 +5,16 @@
  */
 'use strict';
 
-const path = require('path');
+import path from 'path';
 
-const format = require('../../localization/format.js');
-const i18n = require('../../../lighthouse-core/lib/i18n/i18n.js');
-const constants = require('../../../lighthouse-core/config/constants.js');
-const locales = require('../../localization/locales.js');
+import * as i18n from '../../../core/lib/i18n/i18n.js';
+import * as constants from '../../../core/config/constants.js';
+import * as format from '../../localization/format.js';
+import {locales} from '../../localization/locales.js';
+import {getModuleDirectory, getModulePath} from '../../../esm-utils.js';
+
+const moduleDir = getModuleDirectory(import.meta);
+const modulePath = getModulePath(import.meta);
 
 describe('format', () => {
   describe('DEFAULT_LOCALE', () => {
@@ -77,9 +81,9 @@ describe('format', () => {
 
   describe('#replaceIcuMessages', () => {
     it('replaces the references in the LHR', () => {
-      const fakeFile = path.join(__dirname, 'fake-file-number-2.js');
+      const fakeFile = path.join(moduleDir, 'fake-file-number-2.js');
       const UIStrings = {aString: 'different {x}!'};
-      const formatter = i18n.createMessageInstanceIdFn(fakeFile, UIStrings);
+      const formatter = i18n.createIcuMessageFn(fakeFile, UIStrings);
 
       const title = formatter(UIStrings.aString, {x: 1});
       const lhr = {audits: {'fake-audit': {title}}};
@@ -109,14 +113,14 @@ describe('format', () => {
   describe('#getFormatted', () => {
     it('returns the formatted string', () => {
       const UIStrings = {testMessage: 'happy test'};
-      const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
+      const str_ = i18n.createIcuMessageFn(modulePath, UIStrings);
       const formattedStr = format.getFormatted(str_(UIStrings.testMessage), 'en');
       expect(formattedStr).toEqual('happy test');
     });
 
     it('returns the formatted string with replacements', () => {
       const UIStrings = {testMessage: 'replacement test ({errorCode})'};
-      const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
+      const str_ = i18n.createIcuMessageFn(modulePath, UIStrings);
       const formattedStr = format.getFormatted(str_(UIStrings.testMessage,
           {errorCode: 'BOO'}), 'en');
       expect(formattedStr).toEqual('replacement test (BOO)');
@@ -125,7 +129,7 @@ describe('format', () => {
     it('throws an error for invalid locales', () => {
       // Populate a string to try to localize to a bad locale.
       const UIStrings = {testMessage: 'testy test'};
-      const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
+      const str_ = i18n.createIcuMessageFn(modulePath, UIStrings);
 
       expect(_ => format.getFormatted(str_(UIStrings.testMessage), 'still-not-a-locale'))
         .toThrow(`Unsupported locale 'still-not-a-locale'`);
@@ -135,7 +139,7 @@ describe('format', () => {
       const UIStrings = {
         testMessage: 'needs {count, number, bytes}KB test {str} in {timeInMs, number, seconds}s',
       };
-      const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
+      const str_ = i18n.createIcuMessageFn(modulePath, UIStrings);
 
       const replacements = {
         count: 2555,
@@ -166,8 +170,7 @@ describe('format', () => {
 
   describe('#registerLocaleData', () => {
     // Store original locale data so we can restore at the end
-    const moduleLocales = require('../../localization/locales.js');
-    const clonedLocales = JSON.parse(JSON.stringify(moduleLocales));
+    const clonedLocales = JSON.parse(JSON.stringify(locales));
 
     it('installs new locale strings', () => {
       const localeData = {
@@ -178,15 +181,15 @@ describe('format', () => {
       format.registerLocaleData('en-XZ', localeData);
 
       const UIStrings = {testString: 'en-US string!'};
-      const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
+      const str_ = i18n.createIcuMessageFn(modulePath, UIStrings);
       const formattedStr = format.getFormatted(str_(UIStrings.testString), 'en-XZ');
       expect(formattedStr).toEqual('en-XZ cuerda!');
     });
 
-    it('overwrites existing locale strings', () => {
-      const filename = 'lighthouse-core/audits/is-on-https.js';
-      const UIStrings = require('../../../lighthouse-core/audits/is-on-https.js').UIStrings;
-      const str_ = i18n.createMessageInstanceIdFn(filename, UIStrings);
+    it('overwrites existing locale strings', async () => {
+      const filename = 'core/audits/is-on-https.js';
+      const {UIStrings} = await import('../../../core/audits/is-on-https.js');
+      const str_ = i18n.createIcuMessageFn(filename, UIStrings);
 
       // To start with, we get back the intended string..
       const origTitle = format.getFormatted(str_(UIStrings.title), 'es-419');
@@ -196,7 +199,7 @@ describe('format', () => {
 
       // Now we declare and register the new string...
       const localeData = {
-        'lighthouse-core/audits/is-on-https.js | title': {
+        'core/audits/is-on-https.js | title': {
           'message': 'new string for es-419 uses https!',
         },
       };
@@ -211,7 +214,7 @@ describe('format', () => {
       expect(newFailureTitle).toEqual('Does not use HTTPS');
 
       // Restore overwritten strings to avoid messing with other tests
-      moduleLocales['es-419'] = clonedLocales['es-419'];
+      locales['es-419'] = clonedLocales['es-419'];
       const title = format.getFormatted(str_(UIStrings.title), 'es-419');
       expect(title).toEqual('Usa HTTPS');
     });
@@ -305,17 +308,21 @@ describe('format', () => {
       helloWorldMultiReplace: '{hello} {world}',
       helloPlural: '{itemCount, plural, =1{1 hello} other{hellos}}',
       helloPluralNestedICU: '{itemCount, plural, ' +
-        '=1{1 hello {in, number, bytes}} ' +
-        'other{hellos {in, number, bytes}}}',
+      '=1{1 hello {in, number, bytes}} ' +
+      'other{hellos {in, number, bytes}}}',
       helloPluralNestedPluralAndICU: '{itemCount, plural, ' +
-        '=1{{innerItemCount, plural, ' +
-          '=1{1 hello 1 goodbye {in, number, bytes}} ' +
-          'other{1 hello, goodbyes {in, number, bytes}}}} ' +
-        'other{{innerItemCount, plural, ' +
-          '=1{hellos 1 goodbye {in, number, bytes}} ' +
-          'other{hellos, goodbyes {in, number, bytes}}}}}',
+      '=1{{innerItemCount, plural, ' +
+      '=1{1 hello 1 goodbye {in, number, bytes}} ' +
+      'other{1 hello, goodbyes {in, number, bytes}}}} ' +
+      'other{{innerItemCount, plural, ' +
+      '=1{hellos 1 goodbye {in, number, bytes}} ' +
+      'other{hellos, goodbyes {in, number, bytes}}}}}',
     };
-    const str_ = i18n.createMessageInstanceIdFn(__filename, UIStrings);
+
+    let str_;
+    before(() => {
+      str_ = i18n.createIcuMessageFn(modulePath, UIStrings);
+    });
 
     it('formats a basic message', () => {
       const helloStr = str_(UIStrings.helloWorld);
@@ -398,6 +405,14 @@ describe('format', () => {
       }))
         // eslint-disable-next-line max-len
         .toThrow(`Provided value "sirNotAppearingInThisString" does not match any placeholder in ICU message "Hello {timeInMs, number, seconds} World"`);
+    });
+
+    it('throws an error if a value is provided for a message with no placeholders', () => {
+      expect(_ => str_(UIStrings.helloWorld, {
+        extraCreditValue: 100,
+      }))
+        // eslint-disable-next-line max-len
+        .toThrow(`Provided value "extraCreditValue" does not match any placeholder in ICU message "Hello World"`);
     });
 
     it('formats correctly with NaN and Infinity numeric values', () => {

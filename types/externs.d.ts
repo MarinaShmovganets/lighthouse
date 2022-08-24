@@ -23,13 +23,14 @@ declare global {
     __nativeFetch: typeof fetch,
     __nativeURL: typeof URL;
     __ElementMatches: Element['matches'];
+    __HTMLElementBoundingClientRect: HTMLElement['getBoundingClientRect'];
 
     /** Used for monitoring long tasks in the test page. */
     ____lastLongTask?: number;
 
     /** Used by FullPageScreenshot gatherer. */
     __lighthouseNodesDontTouchOrAllVarianceGoesAway: Map<Element, string>;
-    __lighthouseExecutionContextId?: number;
+    __lighthouseExecutionContextUniqueIdentifier?: number;
 
     /** Injected into the page when the `--debug` flag is used. */
     continueLighthouseRun(): void;

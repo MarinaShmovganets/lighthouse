@@ -6,14 +6,14 @@
 
 import fs from 'fs';
 import path from 'path';
+import {createRequire} from 'module';
 
 import {inlineFs} from '../../plugins/inline-fs.js';
 import {LH_ROOT} from '../../../root.js';
-import {createCommonjsRefs} from '../../../lighthouse-core/scripts/esm-utils.js';
 
-const {require} = createCommonjsRefs(import.meta);
+const require = createRequire(import.meta.url);
 
-const filepath = `${LH_ROOT}/lighthouse-core/index.js`;
+const filepath = `${LH_ROOT}/core/index.js`;
 
 describe('inline-fs', () => {
   const tmpPath = `${LH_ROOT}/.tmp/inline-fs/test.txt`;

@@ -4,24 +4,25 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+import {createRequire} from 'module';
+
 import {rollup} from 'rollup';
 
 import * as rollupPlugins from './rollup-plugins.js';
 import {GhPagesApp} from './gh-pages-app.js';
 import {LH_ROOT} from '../root.js';
-import {createCommonjsRefs} from '../lighthouse-core/scripts/esm-utils.js';
 
-const {require} = createCommonjsRefs(import.meta);
+const require = createRequire(import.meta.url);
 
 async function buildReportGenerator() {
   const bundle = await rollup({
     input: 'report/generator/report-generator.js',
     plugins: [
       rollupPlugins.shim({
-        [`${LH_ROOT}/report/generator/flow-report-assets.js`]: 'export default {}',
+        [`${LH_ROOT}/report/generator/flow-report-assets.js`]: 'export const flowReportAssets = {}',
       }),
-      rollupPlugins.commonjs(),
       rollupPlugins.nodeResolve(),
+      rollupPlugins.removeModuleDirCalls(),
       rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
     ],
   });
@@ -37,7 +38,7 @@ async function buildReportGenerator() {
 /**
  * Build viewer, optionally deploying to gh-pages if `--deploy` flag was set.
  */
-async function run() {
+async function main() {
   const reportGeneratorJs = await buildReportGenerator();
 
   const app = new GhPagesApp({
@@ -50,10 +51,27 @@ async function run() {
     ],
     javascripts: [
       reportGeneratorJs,
+      // TODO: https://github.com/GoogleChrome/lighthouse/pull/13429
+      'window.ReportGenerator = window.ReportGenerator.ReportGenerator',
       {path: require.resolve('pako/dist/pako_inflate.js')},
       {path: 'src/main.js', rollup: true, rollupPlugins: [
+        rollupPlugins.replace({
+          delimiters: ['', ''],
+          values: {
+            'getModuleDirectory(import.meta)': '""',
+          },
+        }),
         rollupPlugins.shim({
-          './locales.js': 'export default {}',
+          './locales.js': 'export const locales = {};',
+          'module': `
+            export const createRequire = () => {
+              return {
+                resolve() {
+                  throw new Error('createRequire.resolve is not supported in bundled Lighthouse');
+                },
+              };
+            };
+          `,
         }),
         rollupPlugins.typescript({
           tsconfig: 'flow-report/tsconfig.json',
@@ -65,11 +83,6 @@ async function run() {
           declarationMap: false,
         }),
         rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
-        rollupPlugins.replace({
-          values: {
-            '__dirname': '""',
-          },
-        }),
         rollupPlugins.commonjs(),
         rollupPlugins.nodePolyfills(),
         rollupPlugins.nodeResolve({preferBuiltins: true}),
@@ -90,7 +103,4 @@ async function run() {
   }
 }
 
-run().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+await main();
