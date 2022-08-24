@@ -257,13 +257,15 @@ async function createServers() {
     return server;
   });
 
-  await Promise.allSettled(servers.map(s => s.listen(s._port, 'localhost'))).then(outcomes => {
-    if (outcomes.every(o => o.status === 'fulfilled')) return;
+  const outcomes = await Promise.allSettled(servers.map(s => s.listen(s._port, 'localhost')));
+  if (outcomes.some(o => o.status === 'rejected')) {
     if (outcomes.every(o => o.reason.message.includes('already'))) {
-      return console.warn('😧 Server already up. Continuing…');
+      console.warn('😧 Server already up. Continuing…');
+    } else {
+      console.error(outcomes.map(o => o.reason));
+      throw new Error('One or more servers did not start correctly');
     }
-    console.error(outcomes.map(o => o.reason));
-  });
+  }
   return servers;
 }
 
