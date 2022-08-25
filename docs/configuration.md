@@ -81,6 +81,24 @@ For full list see [our config settings typedef](https://github.com/GoogleChrome/
 | onlyAudits | `string[]` | Includes only the specified audits in the final report. Additive with `onlyCategories` and reduces the time to audit a page. |
 | skipAudits | `string[]` | Excludes the specified audits from the final report. Takes priority over `onlyCategories`, not usable in conjuction with `onlyAudits`, and reduces the time to audit a page. |
 
+### `artifacts: Object[]`
+
+The list of artifacts to collect on a single Lighthouse run. This property is required and on extension will be concatenated with the existing set of artifacts.
+
+| Name | Type | Description |
+| -- | -- | -- |
+| id | `string` | Unique identifier for this artifact. This is how the artifact is referenced in audits. |
+| gatherer | `string` | Gatherer used to produce this artifact. Does not need to be unique within the `artifacts` list. |
+
+```js
+{
+  artifacts: [
+    {id: 'Accessibility', gatherer: 'accessibility'},
+    {id: 'AnchorElements', gatherer: 'anchor-elements'},
+  ]
+}
+```
+
 ### `audits: string[]`
 
 The audits property controls which audits to run and include with your Lighthouse report. See [more examples](#more-examples) to see how to add custom audits to your config.
@@ -91,18 +109,6 @@ The audits property controls which audits to run and include with your Lighthous
   audits: [
     'first-contentful-paint',
     'byte-efficiency/uses-optimized-images',
-  ]
-}
-```
-### `artifacts: Object[]`
-
-The list of artifacts to collect on a single Lighthouse run. This property is required and on extension will be concatenated with the existing set of artifacts.
-
-```js
-{
-  artifacts: [
-    {id: 'Accessibility', gatherer: 'accessibility'},
-    {id: 'AnchorElements', gatherer: 'anchor-elements'},
   ]
 }
 ```
