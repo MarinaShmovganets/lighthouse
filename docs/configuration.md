@@ -85,11 +85,6 @@ For full list see [our config settings typedef](https://github.com/GoogleChrome/
 
 The list of artifacts to collect on a single Lighthouse run. This property is required and on extension will be concatenated with the existing set of artifacts.
 
-| Name | Type | Description |
-| -- | -- | -- |
-| id | `string` | Unique identifier for this artifact. This is how the artifact is referenced in audits. |
-| gatherer | `string` | Gatherer used to produce this artifact. Does not need to be unique within the `artifacts` list. |
-
 ```js
 {
   artifacts: [
@@ -98,6 +93,11 @@ The list of artifacts to collect on a single Lighthouse run. This property is re
   ]
 }
 ```
+
+| Name | Type | Description |
+| -- | -- | -- |
+| id | `string` | Unique identifier for this artifact. This is how the artifact is referenced in audits. |
+| gatherer | `string` | Gatherer used to produce this artifact. Does not need to be unique within the `artifacts` list. |
 
 ### `audits: string[]`
 
