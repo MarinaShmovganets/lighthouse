@@ -10,7 +10,7 @@ You can specify a custom config file when using Lighthouse through the CLI or co
 
 **custom-config.js file**
 ```js
-module.exports = {
+export default {
   extends: 'lighthouse:default',
   settings: {
     onlyAudits: [
@@ -29,9 +29,9 @@ lighthouse --config-path=path/to/custom-config.js https://example.com
 
 **Use config file via Node**
 ```js
-const lighthouse = require('lighthouse');
-const config = require('./path/to/custom-config.js');
-lighthouse('https://example.com/', {port: 9222}, config);
+import lighthouse from 'lighthouse';
+import config from './path/to/custom-config.js';
+await lighthouse.legacyNavigation('https://example.com/', {port: 9222}, config);
 ```
 
 ## Properties
