@@ -51,17 +51,16 @@ Puppeteer can reconnect to this existing browser instance like so:
 import chromeLauncher from 'chrome-launcher';
 import puppeteer from 'puppeteer';
 import lighthouse from 'lighthouse';
-import request from 'request';
-import util from 'util';
+import fetch from 'node-fetch';
 
 const url = 'https://chromestatus.com/features';
 
 // Launch chrome using chrome-launcher.
-const chrome = await chromeLauncher.launch(opts);
+const chrome = await chromeLauncher.launch();
 
 // Connect to it using puppeteer.connect().
-const resp = await util.promisify(request)(`http://localhost:${opts.port}/json/version`);
-const {webSocketDebuggerUrl} = JSON.parse(resp.body);
+const resp = await fetch(`http://localhost:${chrome.port}/json/version`);
+const {webSocketDebuggerUrl} = await resp.json();
 const browser = await puppeteer.connect({browserWSEndpoint: webSocketDebuggerUrl});
 const page = await browser.newPage();
 
