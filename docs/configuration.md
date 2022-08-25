@@ -1,3 +1,6 @@
+<!---
+TODO(rm-legacy): Remove this when legacy path is gone.
+-->
 > **WARNING**: This config format is for configs in version 10.0 and beyond. Please read the [legacy config](#legacy-configs) section if you are using the old config format.
 
 # Lighthouse Configuration
