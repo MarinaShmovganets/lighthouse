@@ -2591,17 +2591,8 @@
       "id": "preload-lcp-image",
       "title": "Preload Largest Contentful Paint image",
       "description": "Preload the image used by the LCP element in order to improve your LCP time. [Learn more](https://web.dev/optimize-lcp/#preload-important-resources).",
-      "score": 1,
-      "scoreDisplayMode": "numeric",
-      "numericValue": 0,
-      "numericUnit": "millisecond",
-      "displayValue": "",
-      "details": {
-        "type": "opportunity",
-        "headings": [],
-        "items": [],
-        "overallSavingsMs": 0
-      }
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
     },
     "csp-xss": {
       "id": "csp-xss",
@@ -8065,12 +8056,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:preload-lcp-image",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:computed:LanternLargestContentfulPaint",
         "duration": 100,
         "entryType": "measure"
       },
