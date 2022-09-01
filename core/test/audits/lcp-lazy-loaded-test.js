@@ -31,6 +31,7 @@ describe('Performance: lcp-lazy-loaded audit', () => {
       TraceElements: [{
         traceEventType: 'largest-contentful-paint',
         node: SAMPLE_NODE,
+        type: 'image',
       }],
       ImageElements: [
         generateImage('lazy', 0),
@@ -54,6 +55,7 @@ describe('Performance: lcp-lazy-loaded audit', () => {
       TraceElements: [{
         traceEventType: 'largest-contentful-paint',
         node: SAMPLE_NODE,
+        type: 'image',
       }],
       ImageElements: [
         generateImage('eager', 0),
@@ -73,6 +75,7 @@ describe('Performance: lcp-lazy-loaded audit', () => {
       TraceElements: [{
         traceEventType: 'largest-contentful-paint',
         node: SAMPLE_NODE,
+        type: 'image',
       }],
       ImageElements: [
         generateImage('lazy', 700),
