@@ -4,7 +4,6 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-
 /**
  * @fileoverview Returns a high-percentle (usually 98th) measure of how long it
  * takes the page to visibly respond to user input (or null, if there was no
