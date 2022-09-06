@@ -10,7 +10,7 @@ import {Gatherer} from 'lighthouse';
 
 class CustomGatherer extends Gatherer {
   meta = {
-    supportedModes: ['navigation'],
+    supportedModes: ['navigation', 'timespan', 'snapshot'],
   };
 
   async getArtifact(context) {
