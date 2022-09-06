@@ -39,7 +39,7 @@ function rewriteChromeInternalUrl(url) {
   return url.replace(/^chrome:\/\/chrome\//, 'chrome://');
 }
 
-class URLShim {
+class UrlUtils {
   /**
    * @param {string} url
    * @return {boolean}
@@ -259,11 +259,9 @@ class URLShim {
   }
 }
 
-URLShim.URL = URL;
-
-URLShim.INVALID_URL_DEBUG_STRING =
+UrlUtils.INVALID_URL_DEBUG_STRING =
     'Lighthouse was unable to determine the URL of some script executions. ' +
     'It\'s possible a Chrome extension or other eval\'d code is the source.';
 
 // TODO(esmodules): don't use default export
-export default URLShim;
+export default UrlUtils;
