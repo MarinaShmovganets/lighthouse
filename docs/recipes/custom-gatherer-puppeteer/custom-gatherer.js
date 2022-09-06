@@ -14,9 +14,8 @@ class CustomGatherer extends Gatherer {
   };
 
   async getArtifact(context) {
-    const {driver} = context;
+    const {driver, page} = context;
     const {executionContext} = driver;
-    const page = driver.getPage();
 
     // Inject an input field for our debugging pleasure.
     function makeInput() {

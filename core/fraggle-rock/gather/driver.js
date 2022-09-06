@@ -87,11 +87,6 @@ class Driver {
     this._targetManager?.disable();
     await this.defaultSession.dispose();
   }
-
-  /** @return {LH.Puppeteer.Page} */
-  getPage() {
-    return this._page;
-  }
 }
 
 export {Driver};
