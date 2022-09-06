@@ -27,7 +27,7 @@ EXTRA_LIGHTHOUSE_FLAGS=${BASE_LIGHTHOUSE_FLAGS:-}
 for (( i = 0; i < $NUMBER_OF_RUNS; i++ ))
 do
   FOLDER_NAME="$SAFE_URL/$i"
-  echo "Run $i on $URL..."
+  echo "Run $i on $UrlUtils..."
   if [[ -f "$FOLDER_NAME" ]]; then
     echo "$FOLDER_NAME already exists, skipping"
     continue
