@@ -6156,8 +6156,8 @@ query-string@^4.1.0:
 
 quibble@^0.6.7, quibble@connorjclark/quibble#mod-cache:
   version "0.6.14"
-  uid "444ce4ddcdf11c1705fc188e4054764040bc63cd"
-  resolved "https://codeload.github.com/connorjclark/quibble/tar.gz/444ce4ddcdf11c1705fc188e4054764040bc63cd"
+  uid "68d53b087d4c9117cc86c7e5f19e7953a219582b"
+  resolved "https://codeload.github.com/connorjclark/quibble/tar.gz/68d53b087d4c9117cc86c7e5f19e7953a219582b"
   dependencies:
     lodash "^4.17.21"
     resolve "^1.20.0"
