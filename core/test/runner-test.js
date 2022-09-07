@@ -809,7 +809,7 @@ describe('Runner', () => {
       audits: [WarningAudit],
     };
 
-    it.only('includes a top-level runtimeError when a gatherer throws one', async () => {
+    it('includes a top-level runtimeError when a gatherer throws one', async () => {
       const config = await Config.fromJson(configJson);
       const {lhr} = await runGatherAndAudit(createGatherFn('https://example.com/'), {config, driverMock});
 
