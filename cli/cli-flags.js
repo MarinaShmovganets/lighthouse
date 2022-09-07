@@ -228,6 +228,7 @@ function getYargsParser(manualArgv) {
       },
       'output-path': {
         type: 'string',
+        coerce: coerceOutputPath,
         describe: `The file path to output the results. Use 'stdout' to write to stdout.
 If using JSON output, default is stdout.
 If using HTML or CSV output, default is a file in the working directory with a name based on the test URL and date.
@@ -311,12 +312,6 @@ Example: --output-path=./lighthouse-results.html`,
     .choices('preset', /** @type {const} */ (['perf', 'experimental', 'desktop']))
 
     .check(argv => {
-      if (argv.outputPath && typeof argv.outputPath === 'string') {
-        if (!fs.existsSync(path.dirname(argv.outputPath))) {
-          throw new Error(`--output-path (${argv.outputPath}) cannot be written to`);
-        }
-      }
-
       // Lighthouse doesn't need a URL if...
       //   - We're just listing the available options.
       //   - We're just printing the config.
@@ -413,6 +408,21 @@ function coerceOutput(values) {
   });
 
   return validValues;
+}
+
+/**
+ * Verifies outputPath is something we can actually write to.
+ * @param {unknown} value
+ * @return {string=}
+ */
+function coerceOutputPath(value) {
+  if (value === undefined) return;
+
+  if (typeof value !== 'string' || !fs.existsSync(path.dirname(value))) {
+    throw new Error(`--output-path (${value}) cannot be written to`);
+  }
+
+  return value;
 }
 
 /**
