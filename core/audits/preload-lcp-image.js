@@ -3,7 +3,6 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 import {Audit} from './audit.js';
 import * as i18n from '../lib/i18n/i18n.js';
@@ -88,13 +87,11 @@ class PreloadLCPImageAudit extends Audit {
   /**
    * @param {LH.Artifacts.NetworkRequest} mainResource
    * @param {LH.Gatherer.Simulation.GraphNode} graph
-   * @param {LH.Artifacts.TraceElement|undefined} lcpElement
+   * @param {LH.Artifacts.TraceElement} lcpElement
    * @param {Array<LH.Artifacts.ImageElement>} imageElements
    * @return {{lcpNodeToPreload?: LH.Gatherer.Simulation.GraphNetworkNode, initiatorPath?: InitiatorPath}}
    */
   static getLCPNodeToPreload(mainResource, graph, lcpElement, imageElements) {
-    if (!lcpElement) return {};
-
     const lcpImageElement = imageElements.find(elem => {
       return elem.node.devtoolsNodePath === lcpElement.node.devtoolsNodePath;
     });
@@ -121,14 +118,14 @@ class PreloadLCPImageAudit extends Audit {
 
   /**
    * Computes the estimated effect of preloading the LCP image.
-   * @param {LH.Artifacts.TraceElement|undefined} lcpElement
+   * @param {LH.Artifacts.TraceElement} lcpElement
    * @param {LH.Gatherer.Simulation.GraphNetworkNode|undefined} lcpNode
    * @param {LH.Gatherer.Simulation.GraphNode} graph
    * @param {LH.Gatherer.Simulation.Simulator} simulator
    * @return {{wastedMs: number, results: Array<{node: LH.Audit.Details.NodeValue, url: string, wastedMs: number}>}}
    */
   static computeWasteWithGraph(lcpElement, lcpNode, graph, simulator) {
-    if (!lcpElement || !lcpNode) {
+    if (!lcpNode) {
       return {
         wastedMs: 0,
         results: [],
@@ -221,6 +218,10 @@ class PreloadLCPImageAudit extends Audit {
     const metricData = {trace, devtoolsLog, gatherContext, settings: context.settings, URL};
     const lcpElement = artifacts.TraceElements
       .find(element => element.traceEventType === 'largest-contentful-paint');
+
+    if (!lcpElement || lcpElement.type !== 'image') {
+      return {score: null, notApplicable: true};
+    }
 
     const [mainResource, lanternLCP, simulator] = await Promise.all([
       MainResource.request({devtoolsLog, URL}, context),

@@ -3,9 +3,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 import log from 'lighthouse-logger';
+
 import NetworkRecords from '../computed/network-records.js';
 import {getPageLoadError} from '../lib/navigation-error.js';
 import * as emulation from '../lib/emulation.js';
@@ -21,7 +21,7 @@ import InstallabilityErrors from './gatherers/installability-errors.js';
 import NetworkUserAgent from './gatherers/network-user-agent.js';
 import Stacks from './gatherers/stacks.js';
 import {finalizeArtifacts} from '../fraggle-rock/gather/base-artifacts.js';
-import URLShim from '../lib/url-shim.js';
+import UrlUtils from '../lib/url-utils.js';
 
 /** @typedef {import('../gather/driver.js').Driver} Driver */
 /** @typedef {import('../lib/arbitrary-equality-map.js').ArbitraryEqualityMap} ArbitraryEqualityMap */
@@ -494,7 +494,7 @@ class GatherRunner {
 
       // Hack for running benchmarkIndex extra times.
       // Add a `bidx=20` query param, eg: https://www.example.com/?bidx=50
-      const parsedUrl = URLShim.isValid(options.requestedUrl) && new URL(options.requestedUrl);
+      const parsedUrl = UrlUtils.isValid(options.requestedUrl) && new URL(options.requestedUrl);
       if (options.settings.channel === 'lr' && parsedUrl && parsedUrl.searchParams.has('bidx')) {
         const bidxRunCount = parsedUrl.searchParams.get('bidx') || 0;
         // Add the first bidx into the new set
