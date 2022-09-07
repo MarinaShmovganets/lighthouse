@@ -412,13 +412,13 @@ function coerceOutput(values) {
 
 /**
  * Verifies outputPath is something we can actually write to.
- * @param {unknown} value
+ * @param {unknown=} value
  * @return {string=}
  */
 function coerceOutputPath(value) {
   if (value === undefined) return;
 
-  if (typeof value !== 'string' || !fs.existsSync(path.dirname(value))) {
+  if (typeof value !== 'string' || !value || !fs.existsSync(path.dirname(value))) {
     throw new Error(`--output-path (${value}) cannot be written to`);
   }
 
