@@ -4,11 +4,9 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-'use strict';
-
 import {Audit} from './audit.js';
 import {ByteEfficiencyAudit} from './byte-efficiency/byte-efficiency-audit.js';
-import URL from '../lib/url-shim.js';
+import UrlUtils from '../lib/url-utils.js';
 import * as i18n from '../lib/i18n/i18n.js';
 import NetworkRecords from '../computed/network-records.js';
 import MainResource from '../computed/main-resource.js';
@@ -164,7 +162,8 @@ class UsesRelPreconnectAudit extends Audit {
       });
 
     const preconnectLinks = artifacts.LinkElements.filter(el => el.rel === 'preconnect');
-    const preconnectOrigins = new Set(preconnectLinks.map(link => URL.getOrigin(link.href || '')));
+    const preconnectOrigins =
+      new Set(preconnectLinks.map(link => UrlUtils.getOrigin(link.href || '')));
 
     /** @type {Array<{url: string, wastedMs: number}>}*/
     let results = [];
