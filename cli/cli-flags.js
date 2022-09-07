@@ -7,6 +7,7 @@
 /* eslint-disable max-len */
 
 import fs from 'fs';
+import path from 'path';
 
 import yargs from 'yargs';
 import * as yargsHelpers from 'yargs/helpers';
@@ -310,6 +311,12 @@ Example: --output-path=./lighthouse-results.html`,
     .choices('preset', /** @type {const} */ (['perf', 'experimental', 'desktop']))
 
     .check(argv => {
+      if (argv.outputPath && typeof argv.outputPath === 'string') {
+        if (!fs.existsSync(path.dirname(argv.outputPath))) {
+          throw new Error(`--output-path (${argv.outputPath}) cannot be written to`);
+        }
+      }
+
       // Lighthouse doesn't need a URL if...
       //   - We're just listing the available options.
       //   - We're just printing the config.
