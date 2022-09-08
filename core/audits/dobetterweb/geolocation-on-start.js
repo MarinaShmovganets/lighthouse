@@ -9,7 +9,6 @@
  * page load. This is often a sign of poor user experience because it lacks context.
  */
 
-'use strict';
 
 import ViolationAudit from '../violation-audit.js';
 import * as i18n from '../../lib/i18n/i18n.js';
@@ -25,7 +24,7 @@ const UIStrings = {
     '[Learn more about the geolocation permission](https://web.dev/geolocation-on-start/).',
 };
 
-const str_ = i18n.createMessageInstanceIdFn(import.meta.url, UIStrings);
+const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
 class GeolocationOnStart extends ViolationAudit {
   /**

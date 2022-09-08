@@ -9,7 +9,7 @@ import assert from 'assert';
 
 import puppeteer from 'puppeteer';
 
-import {server} from '../../cli/test/fixtures/static-server.js';
+import {Server} from '../../cli/test/fixtures/static-server.js';
 import defaultConfig from '../../core/config/default-config.js';
 import {LH_ROOT} from '../../root.js';
 import {getCanonicalLocales} from '../../shared/localization/format.js';
@@ -55,7 +55,9 @@ describe('Lighthouse Viewer', () => {
       });
   }
 
+  let server;
   before(async () => {
+    server = new Server(portNumber);
     await server.listen(portNumber, 'localhost');
 
     // start puppeteer
@@ -203,9 +205,11 @@ describe('Lighthouse Viewer', () => {
     it('should support saving as html', async () => {
       const tmpDir = `${LH_ROOT}/.tmp/pptr-downloads`;
       fs.rmSync(tmpDir, {force: true, recursive: true});
-      await viewerPage._client.send('Page.setDownloadBehavior', {
+      const session = await viewerPage.target().createCDPSession();
+      await session.send('Browser.setDownloadBehavior', {
         behavior: 'allow',
         downloadPath: tmpDir,
+        eventsEnabled: true,
       });
 
       await viewerPage.click('.lh-tools__button');
@@ -214,19 +218,26 @@ describe('Lighthouse Viewer', () => {
           document.querySelector('.lh-tools__dropdown')).visibility === 'visible';
       });
 
+      // For some reason, clicking this button doesn't always initiate the download after upgrading to Puppeteer 16.
+      // As a workaround, we send another click signal 1s after the first to make sure the download starts.
+      // TODO: Find a more robust fix for this issue.
+      const timeoutHandle = setTimeout(() => viewerPage.click('a[data-action="save-html"]'), 1000);
+
       const [, filename] = await Promise.all([
         viewerPage.click('a[data-action="save-html"]'),
         new Promise(resolve => {
-          viewerPage._client.on('Page.downloadWillBegin', ({suggestedFilename}) => {
+          session.on('Browser.downloadWillBegin', ({suggestedFilename}) => {
             resolve(suggestedFilename);
           });
         }),
         new Promise(resolve => {
-          viewerPage._client.on('Page.downloadProgress', ({state}) => {
+          session.on('Browser.downloadProgress', ({state}) => {
             if (state === 'completed') resolve();
           });
         }),
       ]);
+
+      clearTimeout(timeoutHandle);
 
       const savedPage = await browser.newPage();
       const savedPageErrors = [];

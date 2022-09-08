@@ -3,7 +3,6 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 import {taskGroups, taskNameToGroup} from './task-groups.js';
 
@@ -561,9 +560,10 @@ class MainThreadTasks {
    * @param {LH.TraceEvent[]} mainThreadEvents
    * @param {Array<{id: string, url: string}>} frames
    * @param {number} traceEndTs
+   * @param {number} [traceStartTs] Optional time-0 ts for tasks. Tasks before this point will have negative start/end times. Defaults to the first task found.
    * @return {TaskNode[]}
    */
-  static getMainThreadTasks(mainThreadEvents, frames, traceEndTs) {
+  static getMainThreadTasks(mainThreadEvents, frames, traceEndTs, traceStartTs) {
     const timers = new Map();
     const xhrs = new Map();
     const frameURLsById = new Map();
@@ -587,8 +587,8 @@ class MainThreadTasks {
       priorTaskData.lastTaskURLs = task.attributableURLs;
     }
 
-    // Rebase all the times to be relative to start of trace in ms
-    const firstTs = (tasks[0] || {startTime: 0}).startTime;
+    // Rebase all the times to be relative to start of trace and covert to ms.
+    const firstTs = traceStartTs ?? tasks[0].startTime;
     for (const task of tasks) {
       task.startTime = (task.startTime - firstTs) / 1000;
       task.endTime = (task.endTime - firstTs) / 1000;

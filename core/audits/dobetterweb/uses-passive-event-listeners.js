@@ -9,7 +9,6 @@
  * scroll-blocking touch and wheel event listeners.
  */
 
-'use strict';
 
 import ViolationAudit from '../violation-audit.js';
 import * as i18n from '../../lib/i18n/i18n.js';
@@ -25,7 +24,7 @@ const UIStrings = {
       '[Learn more about adopting passive event listeners](https://web.dev/uses-passive-event-listeners/).',
 };
 
-const str_ = i18n.createMessageInstanceIdFn(import.meta.url, UIStrings);
+const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
 class PassiveEventsAudit extends ViolationAudit {
   /**

@@ -7,18 +7,18 @@
 /**
  * @fileoverview Audit a page to see if it does have resources that are blocking first paint
  */
-'use strict';
+
 
 import {Audit} from '../audit.js';
 import * as i18n from '../../lib/i18n/i18n.js';
 import {BaseNode} from '../../lib/dependency-graph/base-node.js';
 import {ByteEfficiencyAudit} from './byte-efficiency-audit.js';
-import UnusedCSS from '../../computed/unused-css.js';
+import {UnusedCSS} from '../../computed/unused-css.js';
 import {NetworkRequest} from '../../lib/network-request.js';
-import ProcessedTrace from '../../computed/processed-trace.js';
-import ProcessedNavigation from '../../computed/processed-navigation.js';
-import LoadSimulator from '../../computed/load-simulator.js';
-import FirstContentfulPaint from '../../computed/metrics/first-contentful-paint.js';
+import {ProcessedTrace} from '../../computed/processed-trace.js';
+import {ProcessedNavigation} from '../../computed/processed-navigation.js';
+import {LoadSimulator} from '../../computed/load-simulator.js';
+import {FirstContentfulPaint} from '../../computed/metrics/first-contentful-paint.js';
 
 /** @typedef {import('../../lib/dependency-graph/simulator/simulator').Simulator} Simulator */
 /** @typedef {import('../../lib/dependency-graph/base-node.js').Node} Node */
@@ -39,7 +39,7 @@ const UIStrings = {
     'JS/styles. [Learn how to eliminate render-blocking resources](https://web.dev/render-blocking-resources/).',
 };
 
-const str_ = i18n.createMessageInstanceIdFn(import.meta.url, UIStrings);
+const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
 /**
  * Given a simulation's nodeTimings, return an object with the nodes/timing keyed by network URL

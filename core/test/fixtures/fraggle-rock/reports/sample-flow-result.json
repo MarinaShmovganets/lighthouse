@@ -758,6 +758,7 @@
                   "statusCode": 200,
                   "mimeType": "text/html",
                   "resourceType": "Document",
+                  "priority": "VeryHigh",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -771,6 +772,7 @@
                   "statusCode": 200,
                   "mimeType": "font/woff2",
                   "resourceType": "Font",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -785,6 +787,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "Low",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -798,6 +801,7 @@
                   "statusCode": 200,
                   "mimeType": "text/css",
                   "resourceType": "Stylesheet",
+                  "priority": "VeryHigh",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -812,6 +816,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -826,6 +831,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -840,6 +846,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -854,6 +861,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -868,6 +876,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -882,6 +891,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -896,6 +906,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -910,6 +921,7 @@
                   "statusCode": 200,
                   "mimeType": "image/svg+xml",
                   "resourceType": "Image",
+                  "priority": "High",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -923,6 +935,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "Low",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -936,6 +949,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "Low",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -949,6 +963,7 @@
                   "statusCode": 200,
                   "mimeType": "text/css",
                   "resourceType": "Stylesheet",
+                  "priority": "VeryLow",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -962,6 +977,7 @@
                   "statusCode": 200,
                   "mimeType": "font/woff2",
                   "resourceType": "Font",
+                  "priority": "VeryHigh",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -975,6 +991,7 @@
                   "statusCode": 200,
                   "mimeType": "font/woff2",
                   "resourceType": "Font",
+                  "priority": "VeryHigh",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -988,6 +1005,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Other",
+                  "priority": "VeryLow",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -1001,6 +1019,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Other",
+                  "priority": "VeryLow",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -1014,6 +1033,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Other",
+                  "priority": "VeryLow",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -1027,6 +1047,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "Low",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -1040,6 +1061,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "Low",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -1053,9 +1075,14 @@
                   "statusCode": 200,
                   "mimeType": "image/png",
                   "resourceType": "Other",
+                  "priority": "High",
                   "experimentalFromMainFrame": true
                 }
-              ]
+              ],
+              "debugData": {
+                "type": "debugdata",
+                "networkStartTimeTs": 49208077236
+              }
             }
           },
           "network-rtt": {
@@ -1171,35 +1198,35 @@
               "items": [
                 {
                   "duration": 9.057,
-                  "startTime": 748.485
+                  "startTime": 739.383
                 },
                 {
                   "duration": 5.516,
-                  "startTime": 757.682
+                  "startTime": 748.58
                 },
                 {
                   "duration": 5.176,
-                  "startTime": 763.285
+                  "startTime": 754.183
                 },
                 {
                   "duration": 36.813,
-                  "startTime": 906.673
+                  "startTime": 897.571
                 },
                 {
                   "duration": 10.155,
-                  "startTime": 972.313
+                  "startTime": 963.211
                 },
                 {
                   "duration": 15.789,
-                  "startTime": 1003.996
+                  "startTime": 994.894
                 },
                 {
                   "duration": 28.247,
-                  "startTime": 1115.8
+                  "startTime": 1106.698
                 },
                 {
                   "duration": 5.311,
-                  "startTime": 1191.301
+                  "startTime": 1182.199
                 }
               ]
             }
@@ -3399,46 +3426,6 @@
               "items": []
             }
           },
-          "no-vulnerable-libraries": {
-            "id": "no-vulnerable-libraries",
-            "title": "Includes front-end JavaScript libraries with known security vulnerabilities",
-            "description": "Some third-party scripts may contain known security vulnerabilities that are easily identified and exploited by attackers. [Learn more about vulnerable libraries](https://web.dev/no-vulnerable-libraries/).",
-            "score": 0,
-            "scoreDisplayMode": "binary",
-            "displayValue": "3 vulnerabilities detected",
-            "details": {
-              "type": "table",
-              "headings": [
-                {
-                  "key": "detectedLib",
-                  "itemType": "link",
-                  "text": "Library Version"
-                },
-                {
-                  "key": "vulnCount",
-                  "itemType": "text",
-                  "text": "Vulnerability Count"
-                },
-                {
-                  "key": "highestSeverity",
-                  "itemType": "text",
-                  "text": "Highest Severity"
-                }
-              ],
-              "items": [
-                {
-                  "highestSeverity": "Medium",
-                  "vulnCount": 3,
-                  "detectedLib": {
-                    "text": "Next.js@10.0.6",
-                    "url": "https://snyk.io/vuln/npm:next?lh=10.0.6&utm_source=lighthouse&utm_medium=ref&utm_campaign=audit",
-                    "type": "link"
-                  }
-                }
-              ],
-              "summary": {}
-            }
-          },
           "js-libraries": {
             "id": "js-libraries",
             "title": "Detected JavaScript libraries",
@@ -3697,6 +3684,10 @@
           "output": "json",
           "maxWaitForFcp": 30000,
           "maxWaitForLoad": 45000,
+          "pauseAfterFcpMs": 1000,
+          "pauseAfterLoadMs": 1000,
+          "networkQuietThresholdMs": 1000,
+          "cpuQuietThresholdMs": 1000,
           "formFactor": "mobile",
           "throttling": {
             "rttMs": 150,
@@ -3720,6 +3711,8 @@
           "disableStorageReset": false,
           "debugNavigation": false,
           "channel": "node",
+          "skipAboutBlank": true,
+          "blankPage": "about:blank",
           "budgets": null,
           "locale": "en-US",
           "blockedUrlPatterns": null,
@@ -4347,11 +4340,6 @@
                 "group": "best-practices-trust-safety"
               },
               {
-                "id": "no-vulnerable-libraries",
-                "weight": 1,
-                "group": "best-practices-trust-safety"
-              },
-              {
                 "id": "csp-xss",
                 "weight": 0,
                 "group": "best-practices-trust-safety"
@@ -4413,7 +4401,7 @@
               }
             ],
             "id": "best-practices",
-            "score": 0.92
+            "score": 1
           },
           "seo": {
             "title": "SEO",
@@ -5943,114 +5931,108 @@
             },
             {
               "startTime": 210,
-              "name": "lh:audit:no-vulnerable-libraries",
-              "duration": 1,
-              "entryType": "measure"
-            },
-            {
-              "startTime": 211,
               "name": "lh:audit:js-libraries",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 212,
+              "startTime": 211,
               "name": "lh:audit:notification-on-start",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 213,
+              "startTime": 212,
               "name": "lh:audit:password-inputs-can-be-pasted-into",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 214,
+              "startTime": 213,
               "name": "lh:audit:uses-passive-event-listeners",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 215,
+              "startTime": 214,
               "name": "lh:audit:meta-description",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 216,
+              "startTime": 215,
               "name": "lh:audit:http-status-code",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 217,
+              "startTime": 216,
               "name": "lh:audit:font-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 218,
+              "startTime": 217,
               "name": "lh:audit:link-text",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 219,
+              "startTime": 218,
               "name": "lh:audit:crawlable-anchors",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 220,
+              "startTime": 219,
               "name": "lh:audit:is-crawlable",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 221,
+              "startTime": 220,
               "name": "lh:audit:robots-txt",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 222,
+              "startTime": 221,
               "name": "lh:audit:tap-targets",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 223,
+              "startTime": 222,
               "name": "lh:audit:hreflang",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 224,
+              "startTime": 223,
               "name": "lh:audit:plugins",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 225,
+              "startTime": 224,
               "name": "lh:audit:canonical",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 226,
+              "startTime": 225,
               "name": "lh:audit:structured-data",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 227,
+              "startTime": 226,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 228
+          "total": 227
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -7100,32 +7082,6 @@
             "core/audits/dobetterweb/no-document-write.js | description": [
               "audits[no-document-write].description"
             ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | failureTitle": [
-              "audits[no-vulnerable-libraries].title"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | description": [
-              "audits[no-vulnerable-libraries].description"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | displayValue": [
-              {
-                "values": {
-                  "itemCount": 3
-                },
-                "path": "audits[no-vulnerable-libraries].displayValue"
-              }
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | columnVersion": [
-              "audits[no-vulnerable-libraries].details.headings[0].text"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | columnVuln": [
-              "audits[no-vulnerable-libraries].details.headings[1].text"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | columnSeverity": [
-              "audits[no-vulnerable-libraries].details.headings[2].text"
-            ],
-            "core/lib/i18n/i18n.js | itemSeverityMedium": [
-              "audits[no-vulnerable-libraries].details.items[0].highestSeverity"
-            ],
             "core/audits/dobetterweb/js-libraries.js | title": [
               "audits[js-libraries].title"
             ],
@@ -8008,7 +7964,8 @@
                   "resourceSize": 6631,
                   "statusCode": 200,
                   "mimeType": "application/javascript",
-                  "resourceType": "Script"
+                  "resourceType": "Script",
+                  "priority": "Low"
                 },
                 {
                   "url": "https://www.mikescerealshack.co/logo-text.svg",
@@ -8020,7 +7977,8 @@
                   "resourceSize": 53947,
                   "statusCode": 200,
                   "mimeType": "image/svg+xml",
-                  "resourceType": "Image"
+                  "resourceType": "Image",
+                  "priority": "High"
                 },
                 {
                   "url": "https://mnl4bjjsnz-dsn.algolia.net/1/indexes/dev_OFFICE_SCENES/query",
@@ -8032,7 +7990,8 @@
                   "resourceSize": 0,
                   "statusCode": 200,
                   "mimeType": "text/plain",
-                  "resourceType": "Preflight"
+                  "resourceType": "Preflight",
+                  "priority": "High"
                 },
                 {
                   "url": "https://mnl4bjjsnz-dsn.algolia.net/1/indexes/dev_OFFICE_SCENES/query",
@@ -8044,7 +8003,8 @@
                   "resourceSize": 16577,
                   "statusCode": 200,
                   "mimeType": "application/json",
-                  "resourceType": "Fetch"
+                  "resourceType": "Fetch",
+                  "priority": "High"
                 },
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/pages/index-37980adf97404e76e41a.js",
@@ -8056,7 +8016,8 @@
                   "resourceSize": 0,
                   "statusCode": 200,
                   "mimeType": "application/javascript",
-                  "resourceType": "Other"
+                  "resourceType": "Other",
+                  "priority": "VeryLow"
                 },
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/pages/terms-0236318e86139dd7d7f2.js",
@@ -8068,7 +8029,8 @@
                   "resourceSize": 0,
                   "statusCode": 200,
                   "mimeType": "application/javascript",
-                  "resourceType": "Other"
+                  "resourceType": "Other",
+                  "priority": "VeryLow"
                 },
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/pages/privacy-864d3895f3c3722acef2.js",
@@ -8080,7 +8042,8 @@
                   "resourceSize": 0,
                   "statusCode": 200,
                   "mimeType": "application/javascript",
-                  "resourceType": "Other"
+                  "resourceType": "Other",
+                  "priority": "VeryLow"
                 },
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/pages/privacy-864d3895f3c3722acef2.js",
@@ -8092,7 +8055,8 @@
                   "resourceSize": 720,
                   "statusCode": 200,
                   "mimeType": "application/javascript",
-                  "resourceType": "Script"
+                  "resourceType": "Script",
+                  "priority": "Low"
                 },
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/pages/terms-0236318e86139dd7d7f2.js",
@@ -8104,7 +8068,8 @@
                   "resourceSize": 11002,
                   "statusCode": 200,
                   "mimeType": "application/javascript",
-                  "resourceType": "Script"
+                  "resourceType": "Script",
+                  "priority": "Low"
                 },
                 {
                   "url": "https://cdn.mikescerealshack.co/frames/s8/e13/128w/81d89db1bf3d43b5b21f813d2f2a9777.jpg",
@@ -8116,7 +8081,8 @@
                   "resourceSize": 2379,
                   "statusCode": 200,
                   "mimeType": "image/jpeg",
-                  "resourceType": "Image"
+                  "resourceType": "Image",
+                  "priority": "Low"
                 },
                 {
                   "url": "https://cdn.mikescerealshack.co/frames/s3/e3/128w/9b3031eb3988ba363fe946929a79e016.jpg",
@@ -8128,7 +8094,8 @@
                   "resourceSize": 2865,
                   "statusCode": 200,
                   "mimeType": "image/jpeg",
-                  "resourceType": "Image"
+                  "resourceType": "Image",
+                  "priority": "Low"
                 },
                 {
                   "url": "https://cdn.mikescerealshack.co/frames/s3/e3/128w/793a408ca63a660b5d7aa1a41ac126ca.jpg",
@@ -8140,9 +8107,14 @@
                   "resourceSize": 1758,
                   "statusCode": 200,
                   "mimeType": "image/jpeg",
-                  "resourceType": "Image"
+                  "resourceType": "Image",
+                  "priority": "Low"
                 }
-              ]
+              ],
+              "debugData": {
+                "type": "debugdata",
+                "networkStartTimeTs": 49220053647
+              }
             }
           },
           "network-rtt": {
@@ -8250,107 +8222,107 @@
               "items": [
                 {
                   "duration": 55.073,
-                  "startTime": 11.328
+                  "startTime": 10.63
                 },
                 {
                   "duration": 10.795,
-                  "startTime": 72.701
+                  "startTime": 72.003
                 },
                 {
                   "duration": 8.441,
-                  "startTime": 85.749
+                  "startTime": 85.051
                 },
                 {
                   "duration": 8.48,
-                  "startTime": 96.294
+                  "startTime": 95.596
                 },
                 {
                   "duration": 13.941,
-                  "startTime": 107.64
+                  "startTime": 106.942
                 },
                 {
                   "duration": 8.502,
-                  "startTime": 122.72
+                  "startTime": 122.022
                 },
                 {
                   "duration": 9.046,
-                  "startTime": 133.192
+                  "startTime": 132.494
                 },
                 {
                   "duration": 8.882,
-                  "startTime": 146.061
+                  "startTime": 145.363
                 },
                 {
                   "duration": 7.095,
-                  "startTime": 156.508
+                  "startTime": 155.81
                 },
                 {
                   "duration": 10.088,
-                  "startTime": 167.398
+                  "startTime": 166.7
                 },
                 {
                   "duration": 9.653,
-                  "startTime": 180.47
+                  "startTime": 179.772
                 },
                 {
                   "duration": 8.539,
-                  "startTime": 192.018
+                  "startTime": 191.32
                 },
                 {
                   "duration": 7.717,
-                  "startTime": 236.437
+                  "startTime": 235.739
                 },
                 {
                   "duration": 9.973,
-                  "startTime": 244.165
+                  "startTime": 243.467
                 },
                 {
                   "duration": 16.563,
-                  "startTime": 255.058
+                  "startTime": 254.36
                 },
                 {
                   "duration": 35.152,
-                  "startTime": 853.004
+                  "startTime": 852.306
                 },
                 {
                   "duration": 13.307,
-                  "startTime": 888.596
+                  "startTime": 887.898
                 },
                 {
                   "duration": 8.093,
-                  "startTime": 902.596
+                  "startTime": 901.898
                 },
                 {
                   "duration": 5.438,
-                  "startTime": 911.958
+                  "startTime": 911.26
                 },
                 {
                   "duration": 8.586,
-                  "startTime": 917.434
+                  "startTime": 916.736
                 },
                 {
                   "duration": 5.453,
-                  "startTime": 926.691
+                  "startTime": 925.993
                 },
                 {
                   "duration": 14.123,
-                  "startTime": 1454.129
+                  "startTime": 1453.431
                 },
                 {
                   "duration": 5.701,
-                  "startTime": 1747.959
+                  "startTime": 1747.261
                 },
                 {
                   "duration": 75.734,
-                  "startTime": 1765.511
+                  "startTime": 1764.813
                 },
                 {
                   "duration": 9.896,
-                  "startTime": 1841.774
+                  "startTime": 1841.076
                 },
                 {
                   "duration": 6.119,
-                  "startTime": 1854.003
+                  "startTime": 1853.305
                 }
               ]
             }
@@ -8576,12 +8548,12 @@
                 {
                   "url": "https://www.mikescerealshack.co/",
                   "duration": 75.734,
-                  "startTime": 1765.511
+                  "startTime": 1764.813
                 },
                 {
                   "url": "https://www.mikescerealshack.co/",
                   "duration": 55.073,
-                  "startTime": 11.328
+                  "startTime": 10.63
                 }
               ]
             }
@@ -9132,6 +9104,10 @@
           "output": "json",
           "maxWaitForFcp": 30000,
           "maxWaitForLoad": 45000,
+          "pauseAfterFcpMs": 1000,
+          "pauseAfterLoadMs": 1000,
+          "networkQuietThresholdMs": 1000,
+          "cpuQuietThresholdMs": 1000,
           "formFactor": "mobile",
           "throttling": {
             "rttMs": 150,
@@ -9155,6 +9131,8 @@
           "disableStorageReset": false,
           "debugNavigation": false,
           "channel": "node",
+          "skipAboutBlank": false,
+          "blankPage": "about:blank",
           "budgets": null,
           "locale": "en-US",
           "blockedUrlPatterns": null,
@@ -12102,46 +12080,6 @@
               ]
             }
           },
-          "no-vulnerable-libraries": {
-            "id": "no-vulnerable-libraries",
-            "title": "Includes front-end JavaScript libraries with known security vulnerabilities",
-            "description": "Some third-party scripts may contain known security vulnerabilities that are easily identified and exploited by attackers. [Learn more about vulnerable libraries](https://web.dev/no-vulnerable-libraries/).",
-            "score": 0,
-            "scoreDisplayMode": "binary",
-            "displayValue": "3 vulnerabilities detected",
-            "details": {
-              "type": "table",
-              "headings": [
-                {
-                  "key": "detectedLib",
-                  "itemType": "link",
-                  "text": "Library Version"
-                },
-                {
-                  "key": "vulnCount",
-                  "itemType": "text",
-                  "text": "Vulnerability Count"
-                },
-                {
-                  "key": "highestSeverity",
-                  "itemType": "text",
-                  "text": "Highest Severity"
-                }
-              ],
-              "items": [
-                {
-                  "highestSeverity": "Medium",
-                  "vulnCount": 3,
-                  "detectedLib": {
-                    "text": "Next.js@10.0.6",
-                    "url": "https://snyk.io/vuln/npm:next?lh=10.0.6&utm_source=lighthouse&utm_medium=ref&utm_campaign=audit",
-                    "type": "link"
-                  }
-                }
-              ],
-              "summary": {}
-            }
-          },
           "js-libraries": {
             "id": "js-libraries",
             "title": "Detected JavaScript libraries",
@@ -12395,6 +12333,10 @@
           "output": "json",
           "maxWaitForFcp": 30000,
           "maxWaitForLoad": 45000,
+          "pauseAfterFcpMs": 1000,
+          "pauseAfterLoadMs": 1000,
+          "networkQuietThresholdMs": 1000,
+          "cpuQuietThresholdMs": 1000,
           "formFactor": "mobile",
           "throttling": {
             "rttMs": 150,
@@ -12418,6 +12360,8 @@
           "disableStorageReset": false,
           "debugNavigation": false,
           "channel": "node",
+          "skipAboutBlank": false,
+          "blankPage": "about:blank",
           "budgets": null,
           "locale": "en-US",
           "blockedUrlPatterns": null,
@@ -12741,11 +12685,6 @@
             ],
             "auditRefs": [
               {
-                "id": "no-vulnerable-libraries",
-                "weight": 1,
-                "group": "best-practices-trust-safety"
-              },
-              {
                 "id": "password-inputs-can-be-pasted-into",
                 "weight": 1,
                 "group": "best-practices-ux"
@@ -12772,7 +12711,7 @@
               }
             ],
             "id": "best-practices",
-            "score": 0.6
+            "score": 0.75
           },
           "seo": {
             "title": "SEO",
@@ -13431,78 +13370,72 @@
             },
             {
               "startTime": 78,
-              "name": "lh:audit:no-vulnerable-libraries",
-              "duration": 1,
-              "entryType": "measure"
-            },
-            {
-              "startTime": 79,
               "name": "lh:audit:js-libraries",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 80,
+              "startTime": 79,
               "name": "lh:audit:password-inputs-can-be-pasted-into",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 81,
+              "startTime": 80,
               "name": "lh:audit:meta-description",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 82,
+              "startTime": 81,
               "name": "lh:audit:font-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 83,
+              "startTime": 82,
               "name": "lh:audit:link-text",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 84,
+              "startTime": 83,
               "name": "lh:audit:crawlable-anchors",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 85,
+              "startTime": 84,
               "name": "lh:audit:robots-txt",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 86,
+              "startTime": 85,
               "name": "lh:audit:tap-targets",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 87,
+              "startTime": 86,
               "name": "lh:audit:plugins",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 88,
+              "startTime": 87,
               "name": "lh:audit:structured-data",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 89,
+              "startTime": 88,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 90
+          "total": 89
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -13915,32 +13848,6 @@
             ],
             "core/audits/dobetterweb/dom-size.js | statisticDOMWidth": [
               "audits[dom-size].details.items[2].statistic"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | failureTitle": [
-              "audits[no-vulnerable-libraries].title"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | description": [
-              "audits[no-vulnerable-libraries].description"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | displayValue": [
-              {
-                "values": {
-                  "itemCount": 3
-                },
-                "path": "audits[no-vulnerable-libraries].displayValue"
-              }
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | columnVersion": [
-              "audits[no-vulnerable-libraries].details.headings[0].text"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | columnVuln": [
-              "audits[no-vulnerable-libraries].details.headings[1].text"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | columnSeverity": [
-              "audits[no-vulnerable-libraries].details.headings[2].text"
-            ],
-            "core/lib/i18n/i18n.js | itemSeverityMedium": [
-              "audits[no-vulnerable-libraries].details.items[0].highestSeverity"
             ],
             "core/audits/dobetterweb/js-libraries.js | title": [
               "audits[js-libraries].title"
@@ -15002,6 +14909,7 @@
                   "statusCode": 200,
                   "mimeType": "text/html",
                   "resourceType": "Document",
+                  "priority": "VeryHigh",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15015,6 +14923,7 @@
                   "statusCode": 200,
                   "mimeType": "font/woff2",
                   "resourceType": "Font",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -15029,6 +14938,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "Low",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15042,6 +14952,7 @@
                   "statusCode": 200,
                   "mimeType": "text/css",
                   "resourceType": "Stylesheet",
+                  "priority": "VeryHigh",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -15056,6 +14967,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -15070,6 +14982,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -15084,6 +14997,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -15098,6 +15012,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -15112,6 +15027,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -15126,6 +15042,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -15140,6 +15057,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "High",
                   "isLinkPreload": true,
                   "experimentalFromMainFrame": true
                 },
@@ -15154,6 +15072,7 @@
                   "statusCode": 200,
                   "mimeType": "image/svg+xml",
                   "resourceType": "Image",
+                  "priority": "High",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15167,6 +15086,7 @@
                   "statusCode": 200,
                   "mimeType": "image/jpeg",
                   "resourceType": "Image",
+                  "priority": "High",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15180,6 +15100,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "Low",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15193,6 +15114,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "Low",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15206,6 +15128,7 @@
                   "statusCode": 200,
                   "mimeType": "text/css",
                   "resourceType": "Stylesheet",
+                  "priority": "VeryLow",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15219,6 +15142,7 @@
                   "statusCode": 200,
                   "mimeType": "font/woff2",
                   "resourceType": "Font",
+                  "priority": "VeryHigh",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15232,6 +15156,7 @@
                   "statusCode": 200,
                   "mimeType": "font/woff2",
                   "resourceType": "Font",
+                  "priority": "VeryHigh",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15245,6 +15170,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Other",
+                  "priority": "VeryLow",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15258,6 +15184,7 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Other",
+                  "priority": "VeryLow",
                   "experimentalFromMainFrame": true
                 },
                 {
@@ -15271,9 +15198,14 @@
                   "statusCode": 200,
                   "mimeType": "application/javascript",
                   "resourceType": "Script",
+                  "priority": "Low",
                   "experimentalFromMainFrame": true
                 }
-              ]
+              ],
+              "debugData": {
+                "type": "debugdata",
+                "networkStartTimeTs": 49241053294
+              }
             }
           },
           "network-rtt": {
@@ -15389,19 +15321,19 @@
               "items": [
                 {
                   "duration": 11.62,
-                  "startTime": 129.762
+                  "startTime": 120.628
                 },
                 {
                   "duration": 10.402,
-                  "startTime": 166.603
+                  "startTime": 157.469
                 },
                 {
                   "duration": 9.63,
-                  "startTime": 182.736
+                  "startTime": 173.602
                 },
                 {
                   "duration": 22.974,
-                  "startTime": 273.238
+                  "startTime": 264.104
                 }
               ]
             }
@@ -17579,46 +17511,6 @@
               "items": []
             }
           },
-          "no-vulnerable-libraries": {
-            "id": "no-vulnerable-libraries",
-            "title": "Includes front-end JavaScript libraries with known security vulnerabilities",
-            "description": "Some third-party scripts may contain known security vulnerabilities that are easily identified and exploited by attackers. [Learn more about vulnerable libraries](https://web.dev/no-vulnerable-libraries/).",
-            "score": 0,
-            "scoreDisplayMode": "binary",
-            "displayValue": "3 vulnerabilities detected",
-            "details": {
-              "type": "table",
-              "headings": [
-                {
-                  "key": "detectedLib",
-                  "itemType": "link",
-                  "text": "Library Version"
-                },
-                {
-                  "key": "vulnCount",
-                  "itemType": "text",
-                  "text": "Vulnerability Count"
-                },
-                {
-                  "key": "highestSeverity",
-                  "itemType": "text",
-                  "text": "Highest Severity"
-                }
-              ],
-              "items": [
-                {
-                  "highestSeverity": "Medium",
-                  "vulnCount": 3,
-                  "detectedLib": {
-                    "text": "Next.js@10.0.6",
-                    "url": "https://snyk.io/vuln/npm:next?lh=10.0.6&utm_source=lighthouse&utm_medium=ref&utm_campaign=audit",
-                    "type": "link"
-                  }
-                }
-              ],
-              "summary": {}
-            }
-          },
           "js-libraries": {
             "id": "js-libraries",
             "title": "Detected JavaScript libraries",
@@ -17934,6 +17826,10 @@
           "output": "json",
           "maxWaitForFcp": 30000,
           "maxWaitForLoad": 45000,
+          "pauseAfterFcpMs": 1000,
+          "pauseAfterLoadMs": 1000,
+          "networkQuietThresholdMs": 1000,
+          "cpuQuietThresholdMs": 1000,
           "formFactor": "mobile",
           "throttling": {
             "rttMs": 150,
@@ -17957,6 +17853,8 @@
           "disableStorageReset": true,
           "debugNavigation": false,
           "channel": "node",
+          "skipAboutBlank": true,
+          "blankPage": "about:blank",
           "budgets": null,
           "locale": "en-US",
           "blockedUrlPatterns": null,
@@ -18584,11 +18482,6 @@
                 "group": "best-practices-trust-safety"
               },
               {
-                "id": "no-vulnerable-libraries",
-                "weight": 1,
-                "group": "best-practices-trust-safety"
-              },
-              {
                 "id": "csp-xss",
                 "weight": 0,
                 "group": "best-practices-trust-safety"
@@ -18650,7 +18543,7 @@
               }
             ],
             "id": "best-practices",
-            "score": 0.92
+            "score": 1
           },
           "seo": {
             "title": "SEO",
@@ -20162,114 +20055,108 @@
             },
             {
               "startTime": 207,
-              "name": "lh:audit:no-vulnerable-libraries",
-              "duration": 1,
-              "entryType": "measure"
-            },
-            {
-              "startTime": 208,
               "name": "lh:audit:js-libraries",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 209,
+              "startTime": 208,
               "name": "lh:audit:notification-on-start",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 210,
+              "startTime": 209,
               "name": "lh:audit:password-inputs-can-be-pasted-into",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 211,
+              "startTime": 210,
               "name": "lh:audit:uses-passive-event-listeners",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 212,
+              "startTime": 211,
               "name": "lh:audit:meta-description",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 213,
+              "startTime": 212,
               "name": "lh:audit:http-status-code",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 214,
+              "startTime": 213,
               "name": "lh:audit:font-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 215,
+              "startTime": 214,
               "name": "lh:audit:link-text",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 216,
+              "startTime": 215,
               "name": "lh:audit:crawlable-anchors",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 217,
+              "startTime": 216,
               "name": "lh:audit:is-crawlable",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 218,
+              "startTime": 217,
               "name": "lh:audit:robots-txt",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 219,
+              "startTime": 218,
               "name": "lh:audit:tap-targets",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 220,
+              "startTime": 219,
               "name": "lh:audit:hreflang",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 221,
+              "startTime": 220,
               "name": "lh:audit:plugins",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 222,
+              "startTime": 221,
               "name": "lh:audit:canonical",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 223,
+              "startTime": 222,
               "name": "lh:audit:structured-data",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 224,
+              "startTime": 223,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 225
+          "total": 224
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -21325,32 +21212,6 @@
             ],
             "core/audits/dobetterweb/no-document-write.js | description": [
               "audits[no-document-write].description"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | failureTitle": [
-              "audits[no-vulnerable-libraries].title"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | description": [
-              "audits[no-vulnerable-libraries].description"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | displayValue": [
-              {
-                "values": {
-                  "itemCount": 3
-                },
-                "path": "audits[no-vulnerable-libraries].displayValue"
-              }
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | columnVersion": [
-              "audits[no-vulnerable-libraries].details.headings[0].text"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | columnVuln": [
-              "audits[no-vulnerable-libraries].details.headings[1].text"
-            ],
-            "core/audits/dobetterweb/no-vulnerable-libraries.js | columnSeverity": [
-              "audits[no-vulnerable-libraries].details.headings[2].text"
-            ],
-            "core/lib/i18n/i18n.js | itemSeverityMedium": [
-              "audits[no-vulnerable-libraries].details.items[0].highestSeverity"
             ],
             "core/audits/dobetterweb/js-libraries.js | title": [
               "audits[js-libraries].title"

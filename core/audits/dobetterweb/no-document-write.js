@@ -26,7 +26,6 @@
  *     "Parser was blocked due to document.write(<script>)". src: https://cs.chromium.org/chromium/src/third_party/blink/renderer/core/frame/performance_monitor.cc?l=294-300&rcl=40b90cafad9f219e0845879ed8648bdcc96116dc
  */
 
-'use strict';
 
 import ViolationAudit from '../violation-audit.js';
 import * as i18n from '../../lib/i18n/i18n.js';
@@ -42,7 +41,7 @@ const UIStrings = {
       '[Learn how to avoid document.write()](https://web.dev/no-document-write/).',
 };
 
-const str_ = i18n.createMessageInstanceIdFn(import.meta.url, UIStrings);
+const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
 class NoDocWriteAudit extends ViolationAudit {
   /**

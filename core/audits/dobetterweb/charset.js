@@ -10,11 +10,11 @@
  *
  * @see https://github.com/GoogleChrome/lighthouse/issues/10023
  */
-'use strict';
+
 
 import {Audit} from '../audit.js';
 import * as i18n from '../../lib/i18n/i18n.js';
-import MainResource from '../../computed/main-resource.js';
+import {MainResource} from '../../computed/main-resource.js';
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on if the charset is set properly for a page. This title is shown when the charset is defined correctly. Charset defines the character encoding (eg UTF-8) of the page content. */
@@ -27,7 +27,7 @@ const UIStrings = {
     '[Learn more about declaring the character encoding](https://web.dev/charset/).',
 };
 
-const str_ = i18n.createMessageInstanceIdFn(import.meta.url, UIStrings);
+const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
 const CONTENT_TYPE_HEADER = 'content-type';
 // /^[a-zA-Z0-9-_:.()]{2,}$/ matches all known IANA charset names (https://www.iana.org/assignments/character-sets/character-sets.xhtml)

@@ -3,9 +3,8 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-import ReportGenerator from '../../report/generator/report-generator.js';
+import {ReportGenerator} from '../../report/generator/report-generator.js';
 import {snapshotGather} from './gather/snapshot-runner.js';
 import {startTimespanGather} from './gather/timespan-runner.js';
 import {navigationGather} from './gather/navigation-runner.js';
@@ -63,24 +62,22 @@ class UserFlow {
    */
   _getNextNavigationOptions(stepOptions) {
     const options = {...this.options, ...stepOptions};
-    const configContext = {...options.configContext};
-    const settingsOverrides = {...configContext.settingsOverrides};
+    const flags = {...options.flags};
 
-    if (configContext.skipAboutBlank === undefined) {
-      configContext.skipAboutBlank = true;
+    if (flags.skipAboutBlank === undefined) {
+      flags.skipAboutBlank = true;
     }
 
     // On repeat navigations, we want to disable storage reset by default (i.e. it's not a cold load).
     const isSubsequentNavigation = this._gatherSteps
       .some(step => step.artifacts.GatherContext.gatherMode === 'navigation');
     if (isSubsequentNavigation) {
-      if (settingsOverrides.disableStorageReset === undefined) {
-        settingsOverrides.disableStorageReset = true;
+      if (flags.disableStorageReset === undefined) {
+        flags.disableStorageReset = true;
       }
     }
 
-    configContext.settingsOverrides = settingsOverrides;
-    options.configContext = configContext;
+    options.flags = flags;
 
     return options;
   }
@@ -96,7 +93,7 @@ class UserFlow {
       artifacts: gatherResult.artifacts,
       name: providedName || this._getDefaultStepName(gatherResult.artifacts),
       config: options.config,
-      configContext: options.configContext,
+      flags: options.flags,
     };
     this._gatherSteps.push(gatherStep);
     this._gatherStepRunnerOptions.set(gatherStep, gatherResult.runnerOptions);
@@ -246,7 +243,7 @@ async function auditGatherSteps(gatherSteps, options) {
   /** @type {LH.FlowResult['steps']} */
   const steps = [];
   for (const gatherStep of gatherSteps) {
-    const {artifacts, name, configContext} = gatherStep;
+    const {artifacts, name, flags} = gatherStep;
 
     let runnerOptions = options.gatherStepRunnerOptions?.get(gatherStep);
 
@@ -255,7 +252,7 @@ async function auditGatherSteps(gatherSteps, options) {
       // Step specific configs take precedence over a config for the entire flow.
       const configJson = gatherStep.config || options.config;
       const {gatherMode} = artifacts.GatherContext;
-      const {config} = await initializeConfig(configJson, {...configContext, gatherMode});
+      const {config} = await initializeConfig(gatherMode, configJson, flags);
       runnerOptions = {
         config,
         computedCache: new Map(),

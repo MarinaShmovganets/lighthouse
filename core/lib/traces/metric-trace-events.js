@@ -3,9 +3,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 import log from 'lighthouse-logger';
+
 import {TraceProcessor} from '../tracehouse/trace-processor.js';
 
 /**
@@ -19,7 +19,7 @@ function getUberMetrics(auditResults) {
   return metricsAudit.details.items[0];
 }
 
-class Metrics {
+class MetricTraceEvents {
   /**
    * @param {Array<LH.TraceEvent>} traceEvents
    * @param {LH.Result['audits']} auditResults
@@ -100,7 +100,7 @@ class Metrics {
 
     /** @type {Array<{ts: number, id: string, name: string}>} */
     const resolvedMetrics = [];
-    Metrics.metricsDefinitions.forEach(metric => {
+    MetricTraceEvents.metricsDefinitions.forEach(metric => {
       // Skip if auditResults is missing a particular audit result
       const ts = uberMetrics[metric.tsKey];
       if (ts === undefined) {
@@ -197,5 +197,4 @@ class Metrics {
   }
 }
 
-// TODO(esmodule): rename?
-export {Metrics};
+export {MetricTraceEvents};

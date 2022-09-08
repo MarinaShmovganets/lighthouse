@@ -3,17 +3,16 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
-import URL from '../lib/url-shim.js';
+import UrlUtils from '../lib/url-utils.js';
 import {NetworkRequest} from '../lib/network-request.js';
 import {Audit} from './audit.js';
 import {ByteEfficiencyAudit} from './byte-efficiency/byte-efficiency-audit.js';
-import CriticalRequestChains from '../computed/critical-request-chains.js';
+import {CriticalRequestChains} from '../computed/critical-request-chains.js';
 import * as i18n from '../lib/i18n/i18n.js';
-import MainResource from '../computed/main-resource.js';
-import PageDependencyGraph from '../computed/page-dependency-graph.js';
-import LoadSimulator from '../computed/load-simulator.js';
+import {MainResource} from '../computed/main-resource.js';
+import {PageDependencyGraph} from '../computed/page-dependency-graph.js';
+import {LoadSimulator} from '../computed/load-simulator.js';
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to use <link rel=preload> to initiate important network requests earlier during page load. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -30,7 +29,7 @@ const UIStrings = {
     'by the browser. Check that you are using the `crossorigin` attribute properly.',
 };
 
-const str_ = i18n.createMessageInstanceIdFn(import.meta.url, UIStrings);
+const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
 const THRESHOLD_IN_MS = 100;
 
@@ -129,7 +128,7 @@ class UsesRelPreloadAudit extends Audit {
     // It's not a request for the main frame, it wouldn't get reused even if you did preload it.
     if (request.frameId !== mainResource.frameId) return false;
     // We survived everything else, just check that it's a first party request.
-    return URL.rootDomainsMatch(request.url, mainResource.url);
+    return UrlUtils.rootDomainsMatch(request.url, mainResource.url);
   }
 
   /**

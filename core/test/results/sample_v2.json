@@ -1302,6 +1302,7 @@
             "statusCode": 200,
             "mimeType": "text/html",
             "resourceType": "Document",
+            "priority": "VeryHigh",
             "experimentalFromMainFrame": true
           },
           {
@@ -1315,6 +1316,7 @@
             "statusCode": 200,
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
+            "priority": "VeryHigh",
             "experimentalFromMainFrame": true
           },
           {
@@ -1328,6 +1330,7 @@
             "statusCode": 404,
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
+            "priority": "VeryHigh",
             "experimentalFromMainFrame": true
           },
           {
@@ -1341,6 +1344,7 @@
             "statusCode": 200,
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
+            "priority": "VeryHigh",
             "experimentalFromMainFrame": true
           },
           {
@@ -1354,6 +1358,7 @@
             "statusCode": 200,
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
+            "priority": "VeryHigh",
             "experimentalFromMainFrame": true
           },
           {
@@ -1367,6 +1372,7 @@
             "statusCode": 200,
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
+            "priority": "VeryHigh",
             "experimentalFromMainFrame": true
           },
           {
@@ -1380,6 +1386,7 @@
             "statusCode": 200,
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
+            "priority": "VeryHigh",
             "isLinkPreload": true,
             "experimentalFromMainFrame": true
           },
@@ -1394,6 +1401,7 @@
             "statusCode": 200,
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
+            "priority": "VeryHigh",
             "experimentalFromMainFrame": true
           },
           {
@@ -1407,6 +1415,7 @@
             "statusCode": 200,
             "mimeType": "application/javascript",
             "resourceType": "Script",
+            "priority": "High",
             "experimentalFromMainFrame": true
           },
           {
@@ -1420,6 +1429,7 @@
             "statusCode": 200,
             "mimeType": "application/javascript",
             "resourceType": "Script",
+            "priority": "High",
             "experimentalFromMainFrame": true
           },
           {
@@ -1433,6 +1443,7 @@
             "statusCode": 200,
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
+            "priority": "VeryLow",
             "experimentalFromMainFrame": true
           },
           {
@@ -1446,6 +1457,7 @@
             "statusCode": 404,
             "mimeType": "application/javascript",
             "resourceType": "Script",
+            "priority": "High",
             "experimentalFromMainFrame": true
           },
           {
@@ -1459,6 +1471,7 @@
             "statusCode": 200,
             "mimeType": "image/jpeg",
             "resourceType": "Image",
+            "priority": "Low",
             "experimentalFromMainFrame": true
           },
           {
@@ -1472,6 +1485,7 @@
             "statusCode": 200,
             "mimeType": "image/jpeg",
             "resourceType": "Image",
+            "priority": "High",
             "experimentalFromMainFrame": true
           },
           {
@@ -1485,6 +1499,7 @@
             "statusCode": 200,
             "mimeType": "image/jpeg",
             "resourceType": "Image",
+            "priority": "High",
             "experimentalFromMainFrame": true
           },
           {
@@ -1498,6 +1513,7 @@
             "statusCode": 200,
             "mimeType": "image/jpeg",
             "resourceType": "Image",
+            "priority": "High",
             "experimentalFromMainFrame": true
           },
           {
@@ -1511,6 +1527,7 @@
             "statusCode": 200,
             "mimeType": "image/jpeg",
             "resourceType": "Image",
+            "priority": "High",
             "experimentalFromMainFrame": true
           },
           {
@@ -1524,6 +1541,7 @@
             "statusCode": 200,
             "mimeType": "image/gif",
             "resourceType": "Image",
+            "priority": "Low",
             "experimentalFromMainFrame": true
           },
           {
@@ -1537,6 +1555,7 @@
             "statusCode": 200,
             "mimeType": "application/javascript",
             "resourceType": "Script",
+            "priority": "Medium",
             "experimentalFromMainFrame": true
           },
           {
@@ -1550,6 +1569,7 @@
             "statusCode": 200,
             "mimeType": "text/javascript",
             "resourceType": "Script",
+            "priority": "Medium",
             "experimentalFromMainFrame": true
           },
           {
@@ -1563,6 +1583,7 @@
             "statusCode": 200,
             "mimeType": "image/jpeg",
             "resourceType": "Image",
+            "priority": "High",
             "experimentalFromMainFrame": true
           },
           {
@@ -1576,6 +1597,7 @@
             "statusCode": 200,
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
+            "priority": "VeryHigh",
             "experimentalFromMainFrame": true
           },
           {
@@ -1589,6 +1611,7 @@
             "statusCode": 200,
             "mimeType": "text/html",
             "resourceType": "XHR",
+            "priority": "VeryHigh",
             "experimentalFromMainFrame": true
           },
           {
@@ -1602,6 +1625,7 @@
             "statusCode": 200,
             "mimeType": "text/plain",
             "resourceType": "Image",
+            "priority": "Low",
             "experimentalFromMainFrame": true
           },
           {
@@ -1615,6 +1639,7 @@
             "statusCode": 200,
             "mimeType": "text/html",
             "resourceType": "Image",
+            "priority": "Low",
             "experimentalFromMainFrame": true
           },
           {
@@ -1628,9 +1653,14 @@
             "statusCode": 404,
             "mimeType": "image/vnd.microsoft.icon",
             "resourceType": "Other",
+            "priority": "High",
             "experimentalFromMainFrame": true
           }
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "networkStartTimeTs": 8696703416
+        }
       }
     },
     "network-rtt": {
@@ -1730,67 +1760,67 @@
         "items": [
           {
             "duration": 18.205,
-            "startTime": 577.894
+            "startTime": 575.062
           },
           {
             "duration": 13.115,
-            "startTime": 604.987
+            "startTime": 602.155
           },
           {
             "duration": 7.754,
-            "startTime": 618.358
+            "startTime": 615.526
           },
           {
             "duration": 6.866,
-            "startTime": 663.052
+            "startTime": 660.22
           },
           {
             "duration": 8.315,
-            "startTime": 2818.076
+            "startTime": 2815.244
           },
           {
             "duration": 49.24,
-            "startTime": 6769.397
+            "startTime": 6766.565
           },
           {
             "duration": 28.923,
-            "startTime": 6818.645
+            "startTime": 6815.813
           },
           {
             "duration": 1174.877,
-            "startTime": 6848.627
+            "startTime": 6845.795
           },
           {
             "duration": 6.514,
-            "startTime": 8023.518
+            "startTime": 8020.686
           },
           {
             "duration": 145.815,
-            "startTime": 8047.587
+            "startTime": 8044.755
           },
           {
             "duration": 8.377,
-            "startTime": 8193.425
+            "startTime": 8190.593
           },
           {
             "duration": 8.436,
-            "startTime": 8211.514
+            "startTime": 8208.682
           },
           {
             "duration": 5.248,
-            "startTime": 8531.242
+            "startTime": 8528.41
           },
           {
             "duration": 5.931,
-            "startTime": 8780.548
+            "startTime": 8777.716
           },
           {
             "duration": 11.936,
-            "startTime": 18938.384
+            "startTime": 18935.552
           },
           {
             "duration": 5.837,
-            "startTime": 24358.667
+            "startTime": 24355.835
           }
         ]
       }
@@ -2377,12 +2407,12 @@
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
             "duration": 1174.877,
-            "startTime": 6848.627
+            "startTime": 6845.795
           },
           {
             "url": "http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js",
             "duration": 145.815,
-            "startTime": 8047.587
+            "startTime": 8044.755
           }
         ]
       }
@@ -2553,17 +2583,8 @@
       "id": "preload-lcp-image",
       "title": "Preload Largest Contentful Paint image",
       "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/optimize-lcp/#preload-important-resources).",
-      "score": 1,
-      "scoreDisplayMode": "numeric",
-      "numericValue": 0,
-      "numericUnit": "millisecond",
-      "displayValue": "",
-      "details": {
-        "type": "opportunity",
-        "headings": [],
-        "items": [],
-        "overallSavingsMs": 0
-      }
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
     },
     "csp-xss": {
       "id": "csp-xss",
@@ -5375,46 +5396,6 @@
         ]
       }
     },
-    "no-vulnerable-libraries": {
-      "id": "no-vulnerable-libraries",
-      "title": "Includes front-end JavaScript libraries with known security vulnerabilities",
-      "description": "Some third-party scripts may contain known security vulnerabilities that are easily identified and exploited by attackers. [Learn more about vulnerable libraries](https://web.dev/no-vulnerable-libraries/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "displayValue": "4 vulnerabilities detected",
-      "details": {
-        "type": "table",
-        "headings": [
-          {
-            "key": "detectedLib",
-            "itemType": "link",
-            "text": "Library Version"
-          },
-          {
-            "key": "vulnCount",
-            "itemType": "text",
-            "text": "Vulnerability Count"
-          },
-          {
-            "key": "highestSeverity",
-            "itemType": "text",
-            "text": "Highest Severity"
-          }
-        ],
-        "items": [
-          {
-            "highestSeverity": "Medium",
-            "vulnCount": 4,
-            "detectedLib": {
-              "text": "jQuery@2.1.1",
-              "url": "https://snyk.io/vuln/npm:jquery?lh=2.1.1&utm_source=lighthouse&utm_medium=ref&utm_campaign=audit",
-              "type": "link"
-            }
-          }
-        ],
-        "summary": {}
-      }
-    },
     "js-libraries": {
       "id": "js-libraries",
       "title": "Detected JavaScript libraries",
@@ -5849,6 +5830,10 @@
     ],
     "maxWaitForFcp": 30000,
     "maxWaitForLoad": 45000,
+    "pauseAfterFcpMs": 1000,
+    "pauseAfterLoadMs": 1000,
+    "networkQuietThresholdMs": 1000,
+    "cpuQuietThresholdMs": 1000,
     "formFactor": "mobile",
     "throttling": {
       "rttMs": 150,
@@ -5872,6 +5857,8 @@
     "disableStorageReset": false,
     "debugNavigation": false,
     "channel": "cli",
+    "skipAboutBlank": false,
+    "blankPage": "about:blank",
     "budgets": [
       {
         "path": "/",
@@ -6599,11 +6586,6 @@
           "group": "best-practices-trust-safety"
         },
         {
-          "id": "no-vulnerable-libraries",
-          "weight": 1,
-          "group": "best-practices-trust-safety"
-        },
-        {
           "id": "csp-xss",
           "weight": 0,
           "group": "best-practices-trust-safety"
@@ -6665,7 +6647,7 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.25
+      "score": 0.27
     },
     "seo": {
       "title": "SEO",
@@ -7583,12 +7565,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:computed:LanternLargestContentfulPaint",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:csp-xss",
         "duration": 100,
         "entryType": "measure"
@@ -8202,12 +8178,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:no-document-write",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:no-vulnerable-libraries",
         "duration": 100,
         "entryType": "measure"
       },
@@ -9581,32 +9551,6 @@
       ],
       "core/audits/dobetterweb/no-document-write.js | description": [
         "audits[no-document-write].description"
-      ],
-      "core/audits/dobetterweb/no-vulnerable-libraries.js | failureTitle": [
-        "audits[no-vulnerable-libraries].title"
-      ],
-      "core/audits/dobetterweb/no-vulnerable-libraries.js | description": [
-        "audits[no-vulnerable-libraries].description"
-      ],
-      "core/audits/dobetterweb/no-vulnerable-libraries.js | displayValue": [
-        {
-          "values": {
-            "itemCount": 4
-          },
-          "path": "audits[no-vulnerable-libraries].displayValue"
-        }
-      ],
-      "core/audits/dobetterweb/no-vulnerable-libraries.js | columnVersion": [
-        "audits[no-vulnerable-libraries].details.headings[0].text"
-      ],
-      "core/audits/dobetterweb/no-vulnerable-libraries.js | columnVuln": [
-        "audits[no-vulnerable-libraries].details.headings[1].text"
-      ],
-      "core/audits/dobetterweb/no-vulnerable-libraries.js | columnSeverity": [
-        "audits[no-vulnerable-libraries].details.headings[2].text"
-      ],
-      "core/lib/i18n/i18n.js | itemSeverityMedium": [
-        "audits[no-vulnerable-libraries].details.items[0].highestSeverity"
       ],
       "core/audits/dobetterweb/js-libraries.js | title": [
         "audits[js-libraries].title"

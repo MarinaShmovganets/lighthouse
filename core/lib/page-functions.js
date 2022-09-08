@@ -3,7 +3,6 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
 
 /**
  * @fileoverview
@@ -498,6 +497,18 @@ function getNodeDetails(element) {
   const selector = getNodeSelector(element);
 
   // Create an id that will be unique across all execution contexts.
+  //
+  // Made up of 3 components:
+  //   - prefix unique to specific execution context
+  //   - nth unique node seen by this function for this execution context
+  //   - node tagName
+  //
+  // Every page load only has up to two associated contexts - the page context
+  // (denoted as `__lighthouseExecutionContextUniqueIdentifier` being undefined)
+  // and the isolated context. The id must be unique to distinguish gatherers running
+  // on different page loads that identify the same logical element, for purposes
+  // of the full page screenshot node lookup; hence the prefix.
+  //
   // The id could be any arbitrary string, the exact value is not important.
   // For example, tagName is added only because it might be useful for debugging.
   // But execution id and map size are added to ensure uniqueness.
@@ -507,9 +518,9 @@ function getNodeDetails(element) {
   let lhId = window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.get(element);
   if (!lhId) {
     lhId = [
-      window.__lighthouseExecutionContextId !== undefined ?
-        window.__lighthouseExecutionContextId :
-        'page',
+      window.__lighthouseExecutionContextUniqueIdentifier === undefined ?
+        'page' :
+        window.__lighthouseExecutionContextUniqueIdentifier,
       window.__lighthouseNodesDontTouchOrAllVarianceGoesAway.size,
       element.tagName,
     ].join('-');

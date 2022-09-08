@@ -3,16 +3,15 @@
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-'use strict';
+
+import log from 'lighthouse-logger';
 
 import {Runner} from './runner.js';
-import log from 'lighthouse-logger';
 import {CriConnection} from './gather/connections/cri.js';
 import {Config} from './config/config.js';
-import URL from './lib/url-shim.js';
+import UrlUtils from './lib/url-utils.js';
 import * as fraggleRock from './fraggle-rock/api.js';
 import {Driver} from './gather/driver.js';
-import {flagsToFRContext} from './config/config-helpers.js';
 import {initializeConfig} from './fraggle-rock/config/config.js';
 
 /** @typedef {import('./gather/connections/connection.js').Connection} Connection */
@@ -41,8 +40,7 @@ import {initializeConfig} from './fraggle-rock/config/config.js';
  * @return {Promise<LH.RunnerResult|undefined>}
  */
 async function lighthouse(url, flags = {}, configJSON, page) {
-  const configContext = flagsToFRContext(flags);
-  return fraggleRock.navigation(url, {page, config: configJSON, configContext});
+  return fraggleRock.navigation(url, {page, config: configJSON, flags});
 }
 
 /**
@@ -69,7 +67,7 @@ async function legacyNavigation(url, flags = {}, configJSON, userConnection) {
 
   // kick off a lighthouse run
   const artifacts = await Runner.gather(() => {
-    const requestedUrl = URL.normalizeUrl(url);
+    const requestedUrl = UrlUtils.normalizeUrl(url);
     return Runner._gatherArtifactsFromBrowser(requestedUrl, options, connection);
   }, options);
   return Runner.audit(artifacts, options);
@@ -86,8 +84,7 @@ async function legacyNavigation(url, flags = {}, configJSON, userConnection) {
  * @return {Promise<LH.Config.FRConfig>}
  */
 async function generateConfig(configJson, flags = {}, gatherMode = 'navigation') {
-  const configContext = flagsToFRContext(flags);
-  const {config} = await initializeConfig(configJson, {...configContext, gatherMode});
+  const {config} = await initializeConfig(gatherMode, configJson, flags);
   return config;
 }
 
@@ -108,14 +105,16 @@ function getAuditList() {
   return Runner.getAuditList();
 }
 
+const traceCategories = Driver.traceCategories;
+
 export default lighthouse;
 export {Audit} from './audits/audit.js';
 export {default as Gatherer} from './fraggle-rock/gather/base-gatherer.js';
-export {default as NetworkRecords} from './computed/network-records.js';
+export {NetworkRecords} from './computed/network-records.js';
 export {
   legacyNavigation,
   generateConfig,
   generateLegacyConfig,
   getAuditList,
+  traceCategories,
 };
-export const traceCategories = Driver.traceCategories;

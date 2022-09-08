@@ -9,11 +9,11 @@
  *   their display size with DPR (a 1000px wide image displayed as a
  *   500px high-res image on a Retina display is 100% used);
  */
-'use strict';
+
 
 import {Audit} from '../audit.js';
 import * as UsesResponsiveImages from './uses-responsive-images.js';
-import URL from '../../lib/url-shim.js';
+import UrlUtils from '../../lib/url-utils.js';
 import * as i18n from '../../lib/i18n/i18n.js';
 
 const UIStrings = {
@@ -27,7 +27,7 @@ const UIStrings = {
   columnActualDimensions: 'Actual dimensions',
 };
 
-const str_ = i18n.createMessageInstanceIdFn(import.meta.url, UIStrings);
+const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
 // Based on byte threshold of 4096, with 3 bytes per pixel.
 const IGNORE_THRESHOLD_IN_PIXELS = 1365;
@@ -71,7 +71,7 @@ class UsesResponsiveImagesSnapshot extends Audit {
 
       items.push({
         node: Audit.makeNodeItem(image.node),
-        url: URL.elideDataURI(image.src),
+        url: UrlUtils.elideDataURI(image.src),
         displayedDimensions: `${displayed.width}x${displayed.height}`,
         actualDimensions: `${actual.width}x${actual.height}`,
       });
