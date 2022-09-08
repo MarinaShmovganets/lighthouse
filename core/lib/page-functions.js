@@ -539,7 +539,8 @@ function getNodeDetails(element) {
   return details;
 }
 
-const getNodeDetailsString = `function getNodeDetails(element) {
+// @ts-expect-error
+getNodeDetails.toString = () => `function getNodeDetails(element) {
   ${getNodePath.toString()};
   ${getNodeSelector.toString()};
   ${getBoundingClientRect.toString()};
@@ -555,7 +556,6 @@ export const pageFunctions = {
   computeBenchmarkIndex,
   getMaxTextureSize,
   getNodeDetails,
-  getNodeDetailsString,
   getNodePath,
   getNodeSelector,
   getNodeLabel,
