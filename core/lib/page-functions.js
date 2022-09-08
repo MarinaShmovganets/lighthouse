@@ -539,14 +539,15 @@ function getNodeDetails(element) {
   return details;
 }
 
-// @ts-expect-error
+/** @type {string} */
+const getNodeDetailsRawString = getNodeDetails.toString();
 getNodeDetails.toString = () => `function getNodeDetails(element) {
   ${getNodePath.toString()};
   ${getNodeSelector.toString()};
   ${getBoundingClientRect.toString()};
   ${getOuterHTMLSnippet.toString()};
   ${getNodeLabel.toString()};
-  return (${getNodeDetails.toString()})(element);
+  return (${getNodeDetailsRawString})(element);
 }`;
 
 export const pageFunctions = {
