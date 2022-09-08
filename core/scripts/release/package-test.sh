@@ -20,7 +20,7 @@ cd /tmp/lighthouse-local-test
 
 npm init -y
 npm install "$LH_ROOT/lighthouse-$VERSION.tgz"
-npm install lighthouse-plugin-publisher-ads@https://gitpkg.now.sh/connorjclark/publisher-ads-lighthouse-plugin/lighthouse-plugin-publisher-ads?paths
+npm install lighthouse-plugin-publisher-ads@next
 npm explore lighthouse -- npm run fast -- http://example.com
 
 # Packaged smokehouse/lighthouse using root's static-server and test fixtures.
