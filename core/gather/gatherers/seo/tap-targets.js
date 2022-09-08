@@ -341,7 +341,7 @@ class TapTargets extends FRGatherer {
       args: [tapTargetsSelector, className],
       useIsolation: true,
       deps: [
-        pageFunctions.getNodeDetails,
+        pageFunctions.getNodeDetailsString,
         pageFunctions.getElementsInDocument,
         disableFixedAndStickyElementPointerEvents,
         elementIsVisible,

@@ -539,13 +539,14 @@ function getNodeDetails(element) {
   return details;
 }
 
-getNodeDetails.dependencies = [
-  getNodePath,
-  getNodeSelector,
-  getBoundingClientRect,
-  getOuterHTMLSnippet,
-  getNodeLabel,
-];
+const getNodeDetailsString = `function getNodeDetails(element) {
+  ${getNodePath.toString()};
+  ${getNodeSelector.toString()};
+  ${getBoundingClientRect.toString()};
+  ${getOuterHTMLSnippet.toString()};
+  ${getNodeLabel.toString()};
+  return (${getNodeDetails.toString()})(element);
+}`;
 
 export const pageFunctions = {
   wrapRuntimeEvalErrorInBrowser,
@@ -554,6 +555,7 @@ export const pageFunctions = {
   computeBenchmarkIndex,
   getMaxTextureSize,
   getNodeDetails,
+  getNodeDetailsString,
   getNodePath,
   getNodeSelector,
   getNodeLabel,

@@ -58,7 +58,7 @@ class ScriptElements extends FRGatherer {
       args: [],
       useIsolation: true,
       deps: [
-        pageFunctions.getNodeDetails,
+        pageFunctions.getNodeDetailsString,
         pageFunctions.getElementsInDocument,
       ],
     });

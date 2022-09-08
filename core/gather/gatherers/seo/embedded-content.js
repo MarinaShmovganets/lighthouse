@@ -54,7 +54,7 @@ class EmbeddedContent extends FRGatherer {
       args: [],
       deps: [
         pageFunctions.getElementsInDocument,
-        pageFunctions.getNodeDetails,
+        pageFunctions.getNodeDetailsString,
       ],
     });
   }

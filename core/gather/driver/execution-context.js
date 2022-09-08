@@ -187,7 +187,7 @@ class ExecutionContext {
    */
   evaluate(mainFn, options) {
     const argsSerialized = ExecutionContext.serializeArguments(options.args);
-    const depsSerialized = ExecutionContext.serializeDependencies(options.deps);
+    const depsSerialized = options.deps ? options.deps.join('\n') : '';
     const expression = `(() => {
       ${depsSerialized}
       return (${mainFn})(${argsSerialized});
@@ -206,7 +206,7 @@ class ExecutionContext {
    */
   async evaluateOnNewDocument(mainFn, options) {
     const argsSerialized = ExecutionContext.serializeArguments(options.args);
-    const depsSerialized = ExecutionContext.serializeDependencies(options.deps);
+    const depsSerialized = options.deps ? options.deps.join('\n') : '';
 
     const expression = `(() => {
       ${ExecutionContext._cachedNativesPreamble};
@@ -262,37 +262,6 @@ class ExecutionContext {
    */
   static serializeArguments(args) {
     return args.map(arg => arg === undefined ? 'undefined' : JSON.stringify(arg)).join(',');
-  }
-
-  /**
-   * Serializes an array of dependency functions.
-   * Function dependencies can have a `.dependencies` array declaring their sub-dependencies.
-   * @param {Array<(Function)|string>=} deps
-   * @return {string}
-   */
-  static serializeDependencies(deps) {
-    if (!deps) return '';
-
-    const allDeps = new Set(deps);
-    const active = [...allDeps];
-    while (active.length) {
-      const dep = active.pop();
-      if (!(dep instanceof Function)) continue;
-
-      /** @type {Function[]} */
-      // @ts-expect-error
-      const subDependencies = dep.dependencies;
-      if (!subDependencies) continue;
-
-      for (const subDep of subDependencies) {
-        if (allDeps.has(subDep)) continue;
-
-        allDeps.add(subDep);
-        active.push(subDep);
-      }
-    }
-
-    return [...allDeps].join('\n');
   }
 }
 

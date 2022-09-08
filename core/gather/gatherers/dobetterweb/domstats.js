@@ -92,7 +92,7 @@ class DOMStats extends FRGatherer {
     const results = await driver.executionContext.evaluate(getDOMStats, {
       args: [],
       useIsolation: true,
-      deps: [pageFunctions.getNodeDetails],
+      deps: [pageFunctions.getNodeDetailsString],
     });
     await driver.defaultSession.sendCommand('DOM.disable');
     return results;

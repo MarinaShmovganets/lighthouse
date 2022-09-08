@@ -350,32 +350,3 @@ describe('.serializeArguments', () => {
     );
   });
 });
-
-describe('.serializeDependencies', () => {
-  it('should serialize a list of dependencies and their sub-dependencies', () => {
-    function a() {}
-    function b() {}
-    function c() {}
-    function d() {}
-    function e() {}
-
-    c.dependencies = [d, a];
-    d.dependencies = [e];
-
-    const args = [
-      a,
-      'function str() {}',
-      b,
-      c,
-    ];
-    expect(ExecutionContext.serializeDependencies(args)).toEqual(`
-function a() {}
-function str() {}
-function b() {}
-function c() {}
-function d() {}
-function e() {}
-`.trim()
-    );
-  });
-});
