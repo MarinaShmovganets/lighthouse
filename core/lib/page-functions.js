@@ -547,7 +547,6 @@ getNodeDetails.dependencies = [
   getNodeLabel,
 ];
 
-// TODO(esmodules): should this be refactored to export each function individually?
 export const pageFunctions = {
   wrapRuntimeEvalErrorInBrowser,
   getElementsInDocument,
