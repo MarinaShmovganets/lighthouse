@@ -550,24 +550,17 @@ const getNodeDetailsString = `function getNodeDetails(element) {
 
 // TODO(esmodules): should this be refactored to export each function individually?
 export const pageFunctions = {
-  wrapRuntimeEvalErrorInBrowserString: wrapRuntimeEvalErrorInBrowser.toString(),
   wrapRuntimeEvalErrorInBrowser,
   getElementsInDocument,
-  getElementsInDocumentString: getElementsInDocument.toString(),
-  getOuterHTMLSnippetString: getOuterHTMLSnippet.toString(),
   getOuterHTMLSnippet,
   computeBenchmarkIndex,
-  computeBenchmarkIndexString: computeBenchmarkIndex.toString(),
   getMaxTextureSize,
-  getNodeDetailsString,
   getNodeDetails,
-  getNodePathString: getNodePath.toString(),
-  getNodeSelectorString: getNodeSelector.toString(),
+  getNodeDetailsString,
   getNodePath,
   getNodeSelector,
   getNodeLabel,
-  getNodeLabelString: getNodeLabel.toString(),
-  isPositionFixedString: isPositionFixed.toString(),
+  isPositionFixed,
   wrapRequestIdleCallback,
-  getBoundingClientRectString: getBoundingClientRect.toString(),
+  getBoundingClientRect,
 };
