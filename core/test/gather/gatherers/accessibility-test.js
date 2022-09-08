@@ -13,6 +13,7 @@ import AccessibilityGather from '../../../gather/gatherers/accessibility.js';
 import {LH_ROOT} from '../../../../root.js';
 import {axeSource} from '../../../../core/lib/axe.js';
 import {pageFunctions} from '../../../../core/lib/page-functions.js';
+import {ExecutionContext} from '../../../gather/driver/execution-context.js';
 
 describe('Accessibility gatherer', () => {
   let accessibilityGather;
@@ -52,7 +53,7 @@ describe('a11y audits + aXe', () => {
     const page = await browser.newPage();
     page.setContent(`<!doctype html><meta charset="utf8"><title>hi</title>valid.`);
     await page.evaluate(axeSource);
-    await page.evaluate(pageFunctions.getNodeDetailsString);
+    await page.evaluate(ExecutionContext.serializeDependencies([pageFunctions.getNodeDetails]));
     await page.evaluate(AccessibilityGather.pageFns.runA11yChecks.toString());
     await page.evaluate(AccessibilityGather.pageFns.createAxeRuleResultArtifact.toString());
 

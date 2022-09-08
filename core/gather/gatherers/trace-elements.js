@@ -22,6 +22,7 @@ import {ProcessedTrace} from '../../computed/processed-trace.js';
 import {ProcessedNavigation} from '../../computed/processed-navigation.js';
 import {LighthouseError} from '../../lib/lh-error.js';
 import {Responsiveness} from '../../computed/metrics/responsiveness.js';
+import {ExecutionContext} from '../driver/execution-context.js';
 
 /** @typedef {{nodeId: number, score?: number, animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[], type?: string}} TraceElementData */
 
@@ -294,8 +295,8 @@ class TraceElements extends FRGatherer {
           response = await session.sendCommand('Runtime.callFunctionOn', {
             objectId,
             functionDeclaration: `function () {
-              ${getNodeDetailsData.toString()};
-              ${pageFunctions.getNodeDetailsString};
+              ${getNodeDetailsData};
+              ${ExecutionContext.serializeDependencies([pageFunctions.getNodeDetails])};
               return getNodeDetailsData.call(this);
             }`,
             returnByValue: true,

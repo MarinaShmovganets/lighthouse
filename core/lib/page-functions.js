@@ -539,14 +539,13 @@ function getNodeDetails(element) {
   return details;
 }
 
-const getNodeDetailsString = `function getNodeDetails(element) {
-  ${getNodePath.toString()};
-  ${getNodeSelector.toString()};
-  ${getBoundingClientRect.toString()};
-  ${getOuterHTMLSnippet.toString()};
-  ${getNodeLabel.toString()};
-  return (${getNodeDetails.toString()})(element);
-}`;
+getNodeDetails.dependencies = [
+  getNodePath,
+  getNodeSelector,
+  getBoundingClientRect,
+  getOuterHTMLSnippet,
+  getNodeLabel,
+];
 
 // TODO(esmodules): should this be refactored to export each function individually?
 export const pageFunctions = {
@@ -556,7 +555,6 @@ export const pageFunctions = {
   computeBenchmarkIndex,
   getMaxTextureSize,
   getNodeDetails,
-  getNodeDetailsString,
   getNodePath,
   getNodeSelector,
   getNodeLabel,
