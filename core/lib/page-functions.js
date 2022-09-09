@@ -542,11 +542,11 @@ function getNodeDetails(element) {
 /** @type {string} */
 const getNodeDetailsRawString = getNodeDetails.toString();
 getNodeDetails.toString = () => `function getNodeDetails(element) {
-  ${getNodePath.toString()};
-  ${getNodeSelector.toString()};
-  ${getBoundingClientRect.toString()};
-  ${getOuterHTMLSnippet.toString()};
-  ${getNodeLabel.toString()};
+  ${getNodePath};
+  ${getNodeSelector};
+  ${getBoundingClientRect};
+  ${getOuterHTMLSnippet};
+  ${getNodeLabel};
   return (${getNodeDetailsRawString})(element);
 }`;
 
