@@ -50,7 +50,9 @@ describe('Navigation', async function() {
 
         const {lhr, artifacts, reportEl} = await waitForResult();
 
-        assert.strictEqual(lhr.lighthouseVersion, '9.6.6');
+        // TODO: Reenable this for 10.0
+        // 9.6.x is forked so Lighthouse ToT is still using 9.5.0 as the version.
+        // assert.strictEqual(lhr.lighthouseVersion, '9.6.6');
         assert.match(lhr.finalUrl, /^https:\/\/localhost:[0-9]+\/test\/e2e\/resources\/lighthouse\/hello.html/);
         assert.strictEqual(lhr.configSettings.throttlingMethod, 'simulate');
         assert.strictEqual(lhr.configSettings.disableStorageReset, false);
@@ -66,13 +68,12 @@ describe('Navigation', async function() {
         assert.strictEqual(devicePixelRatio, 3);
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-        assert.strictEqual(auditResults.length, 152);
+        assert.strictEqual(auditResults.length, 150);
         assert.strictEqual(erroredAudits.length, 0);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
           'viewport',
           'installable-manifest',
-          'apple-touch-icon',
           'splash-screen',
           'themed-omnibox',
           'maskable-icon',
@@ -109,13 +110,12 @@ describe('Navigation', async function() {
         ];
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, flakyAudits);
-        assert.strictEqual(auditResults.length, 152);
+        assert.strictEqual(auditResults.length, 150);
         assert.strictEqual(erroredAudits.length, 0);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
           'viewport',
           'installable-manifest',
-          'apple-touch-icon',
           'splash-screen',
           'themed-omnibox',
           'maskable-icon',
