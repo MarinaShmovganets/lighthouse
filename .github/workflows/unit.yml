@@ -10,7 +10,7 @@ jobs:
   unit:
     strategy:
       matrix:
-        node: ['14', '16', '17', '18']
+        node: ['14', '16', '18']
     runs-on: ubuntu-latest
     name: node ${{ matrix.node }}
     env:
