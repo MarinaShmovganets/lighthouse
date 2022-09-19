@@ -4,8 +4,6 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-/* eslint-env jest */
-
 import jsdom from 'jsdom';
 
 import {ElementScreenshotRenderer} from '../../renderer/element-screenshot-renderer.js';
@@ -28,14 +26,15 @@ function makeRect(opts) {
 describe('ElementScreenshotRenderer', () => {
   let dom;
 
-  beforeAll(() => {
+  before(() => {
     Util.i18n = new I18n('en', {...Util.UIStrings});
 
     const {document} = new jsdom.JSDOM().window;
     dom = new DOM(document);
+    Util.resetUniqueSuffix();
   });
 
-  afterAll(() => {
+  after(() => {
     Util.i18n = undefined;
   });
 

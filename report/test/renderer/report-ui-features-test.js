@@ -4,21 +4,21 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-/* eslint-env jest */
-
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
-import {jest} from '@jest/globals';
+import jestMock from 'jest-mock';
 
-import reportAssets from '../../generator/report-assets.js';
+import {reportAssets} from '../../generator/report-assets.js';
 import {Util} from '../../renderer/util.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {ReportUIFeatures} from '../../renderer/report-ui-features.js';
 import {CategoryRenderer} from '../../renderer/category-renderer.js';
 import {ReportRenderer} from '../../renderer/report-renderer.js';
-import sampleResultsOrig from '../../../lighthouse-core/test/results/sample_v2.json';
+import {readJson} from '../../../core/test/test-utils.js';
+
+const sampleResultsOrig = readJson('../../../core/test/results/sample_v2.json', import.meta);
 
 describe('ReportUIFeatures', () => {
   let sampleResults;
@@ -40,8 +40,8 @@ describe('ReportUIFeatures', () => {
     return container;
   }
 
-  beforeAll(() => {
-    global.console.warn = jest.fn();
+  before(() => {
+    global.console.warn = jestMock.fn();
 
     // Stub out matchMedia for Node.
     global.matchMedia = function() {
@@ -80,7 +80,7 @@ describe('ReportUIFeatures', () => {
     render(sampleResults);
   });
 
-  afterAll(() => {
+  after(() => {
     global.window = undefined;
     global.HTMLElement = undefined;
     global.HTMLInputElement = undefined;
@@ -105,7 +105,7 @@ describe('ReportUIFeatures', () => {
     describe('third-party filtering', () => {
       let container;
 
-      beforeAll(() => {
+      before(() => {
         const lhr = JSON.parse(JSON.stringify(sampleResults));
         lhr.requestedUrl = lhr.finalUrl = 'http://www.example.com';
         const webpAuditItemTemplate = {
@@ -283,7 +283,7 @@ describe('ReportUIFeatures', () => {
       const getSaveEl = () => dom.find('a[data-action="save-html"]', container);
       expect(getSaveEl().classList.contains('lh-hidden')).toBeTruthy();
 
-      const getHtmlMock = jest.fn();
+      const getHtmlMock = jestMock.fn();
       container = render(sampleResults, {
         getStandaloneReportHTML: getHtmlMock,
       });
@@ -428,7 +428,7 @@ describe('ReportUIFeatures', () => {
     describe('_getNextSelectableNode', () => {
       let createDiv;
 
-      beforeAll(() => {
+      before(() => {
         createDiv = () => dom.document().createElement('div');
       });
 
