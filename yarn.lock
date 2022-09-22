@@ -5979,10 +5979,10 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-puppeteer-core@^18.0.3:
-  version "18.0.3"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-18.0.3.tgz#62c115b7adf00f6085f50deb8de98eb399dda240"
-  integrity sha512-QBCr4zX93WhaXOeznj/XmfTrmz0H8Die2NnOKdLHxqGhFu0HipgKiuKUktVGm8R5mCCJoi1HFbnjOwKgO8P4dQ==
+puppeteer-core@^18.0.5:
+  version "18.0.5"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-18.0.5.tgz#c37e0f52e92f1c91bf56cebc5a718f00698a5566"
+  integrity sha512-JM83vUAmWdzZfUEDTGlkSdGFq0/TiVbFjQrb6BJVeLJAWVYlkO4YvyFAaTWdCM5Kz+ovg4g7xOSAU4FRh4Cv/w==
   dependencies:
     cross-fetch "3.1.5"
     debug "4.3.4"
@@ -5996,10 +5996,10 @@ puppeteer-core@^18.0.3:
     unbzip2-stream "1.4.3"
     ws "8.8.1"
 
-puppeteer@^18.0.3:
-  version "18.0.3"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-18.0.3.tgz#3f06b649d3ceef191318b8cb1193c1eaf23eba52"
-  integrity sha512-IiW4Zz0xbphl1lQEAB7grPucbk/aM+GND4aJ7I8gOzOSp7Ika1bz35maox4FbELpPL8sqXsVQRNrXQnzBMiCzQ==
+puppeteer@^18.0.5:
+  version "18.0.5"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-18.0.5.tgz#873223b17b92345182c5b5e8cfbd6f3117f1547d"
+  integrity sha512-s4erjxU0VtKojPvF+KvLKG6OHUPw7gO2YV1dtOsoryyCbhrs444fXb4QZqGWuTv3V/rgSCUzeixxu34g0ZkSMA==
   dependencies:
     cross-fetch "3.1.5"
     debug "4.3.4"
