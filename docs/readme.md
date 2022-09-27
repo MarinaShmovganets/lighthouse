@@ -40,7 +40,7 @@ const flags = {onlyCategories: ['performance']};
 launchChromeAndRunLighthouse(url, flags).then( // ...
 ```
 
-You can also craft your own config (e.g. [experimental-config.js](https://github.com/GoogleChrome/lighthouse/blob/main/core/config/experimental-config.js)) for custom runs. Also see the [basic custom audit recipe](https://github.com/GoogleChrome/lighthouse/tree/master/docs/recipes/custom-audit).
+You can also craft your own config (e.g. [experimental-config.js](https://github.com/GoogleChrome/lighthouse/blob/main/core/config/experimental-config.js)) for custom runs. Also see the [basic custom audit recipe](https://github.com/GoogleChrome/lighthouse/tree/main/docs/recipes/custom-audit).
 
 ### Differences from CLI flags
 
