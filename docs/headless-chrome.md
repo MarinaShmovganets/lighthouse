@@ -115,5 +115,5 @@ launchChromeAndRunLighthouse('https://github.com', flags).then(results => {
 Other resources you might find helpful:
 
 - [Getting Started with Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome)
-- Example [Dockerfile](https://github.com/ebidel/lighthouse-ci/blob/master/builder/Dockerfile)
+- Example [Dockerfile](https://github.com/GoogleChrome/lighthouse-ci/blob/main/docs/recipes/docker-client/Dockerfile)
 - Lighthouse's GitHub Actions [`.ci.yml`](https://github.com/GoogleChrome/lighthouse/blob/main/.github/workflows/ci.yml)
