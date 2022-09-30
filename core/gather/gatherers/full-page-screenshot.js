@@ -123,10 +123,16 @@ class FullPageScreenshot extends FRGatherer {
     });
     const data = 'data:image/webp;base64,' + result.data;
 
+    const observedDeviceMetrics =
+      await context.driver.executionContext.evaluate(getObservedDeviceMetrics, {
+        args: [],
+        useIsolation: true,
+        deps: [kebabCaseToCamelCase],
+      });
     return {
       data,
-      width: deviceMetrics.width,
-      height,
+      width: observedDeviceMetrics.width,
+      height: observedDeviceMetrics.height,
     };
   }
 
