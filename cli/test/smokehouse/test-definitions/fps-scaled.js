@@ -24,7 +24,8 @@ const expectations = {
       innerHeight: '1742 +/- 1',
       outerWidth: 360,
       outerHeight: 640,
-      devicePixelRatio: 2.625,
+      // In DevTools this value will be exactly 3.
+      devicePixelRatio: '2.625 +/- 1',
     },
   },
   lhr: {

@@ -31,13 +31,20 @@ function getObservedDeviceMetrics() {
   // Convert the Web API's kebab case (landscape-primary) to camel case (landscapePrimary).
   const screenOrientationType = kebabCaseToCamelCase(window.screen.orientation.type);
   return {
-    width: document.documentElement.clientWidth,
-    height: document.documentElement.clientHeight,
+    width: window.outerWidth,
+    height: window.outerHeight,
     screenOrientation: {
       type: screenOrientationType,
       angle: window.screen.orientation.angle,
     },
     deviceScaleFactor: window.devicePixelRatio,
+  };
+}
+
+function getDocumentSize() {
+  return {
+    width: document.documentElement.clientWidth,
+    height: document.documentElement.clientHeight,
   };
 }
 
@@ -124,7 +131,7 @@ class FullPageScreenshot extends FRGatherer {
     const data = 'data:image/webp;base64,' + result.data;
 
     const observedDeviceMetrics =
-      await context.driver.executionContext.evaluate(getObservedDeviceMetrics, {
+      await context.driver.executionContext.evaluate(getDocumentSize, {
         args: [],
         useIsolation: true,
         deps: [kebabCaseToCamelCase],
