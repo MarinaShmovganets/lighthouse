@@ -14,6 +14,8 @@ const maxTextureSizeMock = 1024 * 8;
 let contentSize;
 /** @type {{width?: number, height?: number, dpr: number}} */
 let screenSize;
+/** @type {{width?: number, height?: number, dpr: number}} */
+let documentElementSize;
 /** @type {string[]} */
 let screenshotData;
 let mockContext = createMockContext();
@@ -21,6 +23,7 @@ let mockContext = createMockContext();
 beforeEach(() => {
   contentSize = {width: 100, height: 100};
   screenSize = {width: 100, height: 100, dpr: 1};
+  documentElementSize = screenSize;
   screenshotData = [];
   mockContext = createMockContext();
   mockContext.driver.defaultSession.sendCommand.mockImplementation((method) => {
@@ -44,10 +47,8 @@ beforeEach(() => {
       return maxTextureSizeMock;
     } else if (fn.name === 'getObservedDeviceMetrics') {
       return {
-        width: screenSize.width,
-        height: screenSize.height,
-        screenWidth: screenSize.width,
-        screenHeight: screenSize.height,
+        width: documentElementSize.width,
+        height: documentElementSize.height,
         screenOrientation: {
           type: 'landscapePrimary',
           angle: 30,
@@ -67,6 +68,9 @@ describe('FullPageScreenshot gatherer', () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 412, height: 2000};
     screenSize = {width: 412, height: 412};
+
+    // Observed screen size will be fetched after the viewport is resized in this case.
+    documentElementSize = contentSize;
 
     mockContext.settings = {
       ...mockContext.settings,
@@ -95,6 +99,7 @@ describe('FullPageScreenshot gatherer', () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 412, height: 2000};
     screenSize = {width: 412, height: 412};
+    documentElementSize = screenSize;
 
     mockContext.settings = {
       ...mockContext.settings,
@@ -128,6 +133,7 @@ describe('FullPageScreenshot gatherer', () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 500, height: 1500};
     screenSize = {width: 500, height: 500, dpr: 2};
+    documentElementSize = screenSize;
     mockContext.settings = {
       ...mockContext.settings,
       screenEmulation: {
@@ -174,6 +180,7 @@ describe('FullPageScreenshot gatherer', () => {
 
     contentSize = {width: 412, height: 100000};
     screenSize = {width: 412, height: 412, dpr: 1};
+    documentElementSize = screenSize;
     mockContext.settings = {
       ...mockContext.settings,
       formFactor: 'mobile',
