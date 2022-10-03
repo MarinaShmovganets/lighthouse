@@ -79,9 +79,10 @@ class ExecutionContext {
    * page without isolation.
    * @param {string} expression
    * @param {number|undefined} contextId
+   * @param {boolean=} returnByValue
    * @return {Promise<*>}
    */
-  async _evaluateInContext(expression, contextId) {
+  async _evaluateInContext(expression, contextId, returnByValue = true) {
     // Use a higher than default timeout if the user hasn't specified a specific timeout.
     // Otherwise, use whatever was requested.
     const timeout = this._session.hasNextProtocolTimeout() ?
@@ -117,7 +118,7 @@ class ExecutionContext {
       //# sourceURL=_lighthouse-eval.js`,
       includeCommandLineAPI: true,
       awaitPromise: true,
-      returnByValue: true,
+      returnByValue,
       timeout,
       contextId,
     };
@@ -137,12 +138,7 @@ class ExecutionContext {
       return Promise.reject(
         new Error('Runtime.evaluate response did not contain a "result" object'));
     }
-    const value = response.result.value;
-    if (value?.__failedInBrowser) {
-      return Promise.reject(Object.assign(new Error(), value));
-    } else {
-      return value;
-    }
+    return response;
   }
 
   /**
@@ -152,24 +148,37 @@ class ExecutionContext {
    * is completely separate.
    * Returns a promise that resolves on the expression's value.
    * @param {string} expression
-   * @param {{useIsolation?: boolean}=} options
+   * @param {{useIsolation?: boolean, returnRawResponse?: boolean}=} options
    * @return {Promise<*>}
    */
   async evaluateAsync(expression, options = {}) {
     const contextId = options.useIsolation ? await this._getOrCreateIsolatedContextId() : undefined;
 
+    let response;
     try {
-      // `await` is not redundant here because we want to `catch` the async errors
-      return await this._evaluateInContext(expression, contextId);
+      response = await this._evaluateInContext(expression, contextId, !options.returnRawResponse);
     } catch (err) {
       // If we were using isolation and the context disappeared on us, retry one more time.
       if (contextId && err.message.includes('Cannot find context')) {
         this.clearContextId();
         const freshContextId = await this._getOrCreateIsolatedContextId();
-        return this._evaluateInContext(expression, freshContextId);
+        try {
+          response =
+            await this._evaluateInContext(expression, freshContextId, !options.returnRawResponse);
+        } catch {
+          // On retry fail, thow the original error.
+          throw err;
+        }
       }
+    }
 
-      throw err;
+    if (options.returnRawResponse) return response;
+
+    const value = response.result.value;
+    if (value?.__failedInBrowser) {
+      return Promise.reject(Object.assign(new Error(), value));
+    } else {
+      return value;
     }
   }
 
@@ -193,6 +202,27 @@ class ExecutionContext {
       return (${mainFn})(${argsSerialized});
     })()`;
     return this.evaluateAsync(expression, options);
+  }
+
+  /**
+   * Same as `evaluate`, but return the raw protocol result instead of just the value returned by
+   * the evaluated function.
+   * @see {evaluate}
+   * @template {unknown[]} T, R
+   * @param {((...args: T) => R)} mainFn The main function to call.
+   * @param {{args: T, useIsolation?: boolean, deps?: Array<Function|string>}} options `args` should
+   *   match the args of `mainFn`, and can be any serializable value. `deps` are functions that must be
+   *   defined for `mainFn` to work.
+   * @return {Promise<Omit<LH.Crdp.Runtime.EvaluateResponse, 'result'> & {result: Omit<LH.Crdp.Runtime.RemoteObject, 'value'>} & {result: {value: R}}>}
+   */
+  evaluateRaw(mainFn, options) {
+    const argsSerialized = ExecutionContext.serializeArguments(options.args);
+    const depsSerialized = options.deps ? options.deps.join('\n') : '';
+    const expression = `(() => {
+      ${depsSerialized}
+      return (${mainFn})(${argsSerialized});
+    })()`;
+    return this.evaluateAsync(expression, {...options, returnRawResponse: true});
   }
 
   /**

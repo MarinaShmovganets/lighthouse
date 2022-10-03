@@ -147,6 +147,7 @@ const artifacts = {
   MainDocumentContent: '',
   MetaElements: '',
   NetworkUserAgent: '',
+  NodeStackTraces: '',
   OptimizedImages: '',
   PasswordInputsWithPreventedPaste: '',
   ResponseCompression: '',
@@ -216,8 +217,9 @@ const defaultConfig = {
     {id: artifacts.devtoolsLogs, gatherer: 'devtools-log-compat'},
     {id: artifacts.traces, gatherer: 'trace-compat'},
 
-    // FullPageScreenshot comes at the very end so all other node analysis is captured.
+    // These must come at the very end so all other node analysis is captured.
     {id: artifacts.FullPageScreenshot, gatherer: 'full-page-screenshot'},
+    {id: artifacts.NodeStackTraces, gatherer: 'node-stack-traces'},
   ],
   audits: [
     'is-on-https',
@@ -275,6 +277,7 @@ const defaultConfig = {
     'preload-lcp-image',
     'csp-xss',
     'full-page-screenshot',
+    'node-stack-traces',
     'script-treemap-data',
     'manual/pwa-cross-browser',
     'manual/pwa-page-transitions',

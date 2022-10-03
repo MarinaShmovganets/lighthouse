@@ -33,11 +33,38 @@ const URL_PREFIXES = ['http://', 'https://', 'data:'];
 export class DetailsRenderer {
   /**
    * @param {DOM} dom
-   * @param {{fullPageScreenshot?: LH.Audit.Details.FullPageScreenshot}} [options]
+   * @param {{fullPageScreenshot?: LH.Audit.Details.FullPageScreenshot; nodeStackTraces?: LH.Audit.Details.DebugData}} [options]
    */
   constructor(dom, options = {}) {
     this._dom = dom;
     this._fullPageScreenshot = options.fullPageScreenshot;
+    this._nodeStackTraces = options.nodeStackTraces;
+  }
+
+  /**
+   * @param {number} stackIndex
+   */
+  _decompressStackTrace(stackIndex) {
+    const compressedStackTrace = this._nodeStackTraces?.stacks?.[stackIndex];
+    if (!compressedStackTrace) return;
+
+    /** @type {Array<{url: string, line: number, column: number}>} */
+    const stackTrace = [];
+    for (const frameIndex of compressedStackTrace) {
+      const compressedFrame = this._nodeStackTraces?.frames[frameIndex];
+      if (!compressedFrame) return;
+
+      const url = this._nodeStackTraces?.urls[compressedFrame.url];
+      if (url === undefined) return;
+
+      stackTrace.push({
+        url,
+        line: compressedFrame.line,
+        column: compressedFrame.column,
+      });
+    }
+
+    return stackTrace;
   }
 
   /**
@@ -509,6 +536,15 @@ export class DetailsRenderer {
     if (item.path) element.setAttribute('data-path', item.path);
     if (item.selector) element.setAttribute('data-selector', item.selector);
     if (item.snippet) element.setAttribute('data-snippet', item.snippet);
+    if (item.lhId && this._nodeStackTraces?.nodes?.[item.lhId]?.creation !== undefined) {
+      const stackTrace =
+        this._decompressStackTrace(this._nodeStackTraces.nodes[item.lhId].creation);
+      if (stackTrace) {
+        element.dataset['creationUrl'] = stackTrace[0].url;
+        element.dataset['creationLine'] = stackTrace[0].line.toString();
+        element.dataset['creationColumn'] = stackTrace[0].column.toString();
+      }
+    }
 
     if (!this._fullPageScreenshot) return element;
 
