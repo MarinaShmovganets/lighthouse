@@ -130,7 +130,7 @@ class FullPageScreenshot extends FRGatherer {
     });
     const data = 'data:image/webp;base64,' + result.data;
 
-    const observedDeviceMetrics =
+    const documentSize =
       await context.driver.executionContext.evaluate(getDocumentSize, {
         args: [],
         useIsolation: true,
@@ -138,8 +138,8 @@ class FullPageScreenshot extends FRGatherer {
       });
     return {
       data,
-      width: observedDeviceMetrics.width,
-      height: observedDeviceMetrics.height,
+      width: documentSize.width,
+      height: documentSize.height,
     };
   }
 
