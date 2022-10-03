@@ -18,10 +18,8 @@ const config = {
 const expectations = {
   artifacts: {
     ViewportDimensions: {
-      innerWidth: 980,
-      // This value can vary slightly, depending on the display.
-      // https://bugs.chromium.org/p/chromium/issues/detail?id=1346355
-      innerHeight: '1742 +/- 1',
+      innerWidth: 720,
+      innerHeight: 1280,
       outerWidth: 360,
       outerHeight: 640,
       // In DevTools this value will be exactly 3.
@@ -37,16 +35,16 @@ const expectations = {
           nodes: {
             'page-0-BODY': {
               top: 0,
-              bottom: 1742,
+              bottom: 1280,
               left: 0,
-              right: 980,
-              width: 980,
-              height: 1742,
+              right: 720,
+              width: 720,
+              height: 1280,
             },
           },
           screenshot: {
-            height: 1742,
-            width: 980,
+            height: 1280,
+            width: 720,
           },
         },
       },
