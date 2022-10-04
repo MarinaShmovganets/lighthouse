@@ -33,17 +33,22 @@ const expectations = {
       'full-page-screenshot': {
         details: {
           nodes: {
-            'page-0-BODY': {
-              top: 0,
-              bottom: 1280,
-              left: 0,
-              right: 720,
-              width: 720,
-              height: 1280,
-            },
+            _includes: [
+              [
+                /-BODY$/,
+                {
+                  top: 0,
+                  bottom: 2000,
+                  left: 0,
+                  right: 720,
+                  width: 720,
+                  height: 2000,
+                },
+              ],
+            ],
           },
           screenshot: {
-            height: 1280,
+            height: 2000,
             width: 720,
           },
         },

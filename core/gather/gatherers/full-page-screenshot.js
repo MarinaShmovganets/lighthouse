@@ -4,7 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-/* globals window document getBoundingClientRect requestAnimationFrame */
+/* globals window getBoundingClientRect requestAnimationFrame */
 
 import FRGatherer from '../base-gatherer.js';
 import * as emulation from '../../lib/emulation.js';
@@ -41,10 +41,10 @@ function getObservedDeviceMetrics() {
   };
 }
 
-function getDocumentSize() {
+function getScreenshotAreaSize() {
   return {
-    width: document.documentElement.clientWidth,
-    height: document.documentElement.clientHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
   };
 }
 
@@ -130,16 +130,16 @@ class FullPageScreenshot extends FRGatherer {
     });
     const data = 'data:image/webp;base64,' + result.data;
 
-    const documentSize =
-      await context.driver.executionContext.evaluate(getDocumentSize, {
+    const screenshotAreaSize =
+      await context.driver.executionContext.evaluate(getScreenshotAreaSize, {
         args: [],
         useIsolation: true,
         deps: [kebabCaseToCamelCase],
       });
     return {
       data,
-      width: documentSize.width,
-      height: documentSize.height,
+      width: screenshotAreaSize.width,
+      height: screenshotAreaSize.height,
     };
   }
 
