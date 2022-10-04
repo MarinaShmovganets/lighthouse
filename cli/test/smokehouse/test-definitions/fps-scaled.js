@@ -28,7 +28,7 @@ const expectations = {
   },
   lhr: {
     requestedUrl: 'http://localhost:10200/scaled-content.html',
-    finalUrl: 'http://localhost:10200/scaled-content.html',
+    finalDisplayedUrl: 'http://localhost:10200/scaled-content.html',
     audits: {
       'full-page-screenshot': {
         details: {
