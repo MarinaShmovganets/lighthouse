@@ -146,6 +146,9 @@ function addSniffer(receiver, methodName, override) {
 
 async function waitForLighthouseReady() {
   // @ts-expect-error global
+  UI.dockController.setDockSide('undocked');
+
+  // @ts-expect-error global
   const viewManager = UI.viewManager || (UI.ViewManager.ViewManager || UI.ViewManager).instance();
   const views = viewManager.views || viewManager._views;
   const panelName = views.has('lighthouse') ? 'lighthouse' : 'audits';
@@ -155,9 +158,6 @@ async function waitForLighthouseReady() {
   const panel = UI.panels.lighthouse || UI.panels.audits;
   const button = panel.contentElement.querySelector('button');
   if (button.disabled) throw new Error('Start button disabled');
-
-  // @ts-expect-error global
-  UI.dockController.setDockSide('undocked');
 
   // Give the main target model a moment to be available.
   // Otherwise, 'SDK.TargetManager.TargetManager.instance().mainTarget()' is null.
@@ -183,6 +183,11 @@ async function waitForLighthouseReady() {
       }
     }
   }
+
+  // Ensure the emulation model is ready before Lighthouse starts by enabling device emulation.
+  // `waitForLighthouseReady` can be run multiple times, so this should be the final action.
+  // @ts-expect-error global
+  Emulation.AdvancedApp.instance().deviceModeView.toggleDeviceMode();
 }
 
 async function runLighthouse() {
