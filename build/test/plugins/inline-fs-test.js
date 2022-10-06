@@ -279,14 +279,21 @@ describe('inline-fs', () => {
         const myTextContent = fs.readFileSync('${tmpPath}', 'utf8');
         `;
         const result = await inlineFs(content, filepath);
-        expect(result).toMatchObject({
+        expect(result).toEqual({
           code: `
         /**
          * fs.readFileSync('i-never-exist.lol', 'utf8');
          */
         const myTextContent = "contents";
         `,
-          warnings: [{text: /ignoring potential match/}],
+          warnings: [{
+            text: 'ignoring potential match because likely inside a block comment',
+            location: {
+              file: filepath,
+              line: 3,
+              column: 11,
+            },
+          }],
         });
       });
 
