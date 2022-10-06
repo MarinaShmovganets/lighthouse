@@ -75,8 +75,8 @@ async function inlineFs(code, filepath) {
     }
     if (maybeInBlockComment) {
       const err = new Error('ignoring potential match because likely inside a block comment');
-      const line = code.substring(0, foundIndex).split(/\r\n|\r|\n/).length;
-      warnings.push(createWarning(err, filepath, {line, column: 1}));
+      const location = acorn.getLineInfo(code, foundIndex);
+      warnings.push(createWarning(err, filepath, location));
       continue;
     }
 
