@@ -456,7 +456,7 @@ machine. Report results are never processed or beaconed to a remote server.
 
 Starting in Lighthouse 8.0, Lighthouse relies entirely on native `Intl` support and no longer uses an `Intl` polyfill. If you're using Node 14 or later, there should be no issue because Node is now [built with `full-icu` by default](https://nodejs.medium.com/node-js-12-to-lts-and-node-js-13-is-here-e28d6a4a2bd#9514).
 
-However, if you're using a `small-icu` Node build, you may see Lighthouse log messages about your locale not being available. To remedy this, you can upgrade to Node 14+ or manually install ICU data by using the [`full-icu`](https://www.npmjs.com/package/full-icu) module and the [`--icu-data-dir` node flag](https://nodejs.org/api/intl.html#intl_providing_icu_data_at_runtime) at launch.
+However, if you're using a `small-icu` Node build, you may see Lighthouse log messages about your locale not being available. To remedy this, you can manually install ICU data by using the [`full-icu`](https://www.npmjs.com/package/full-icu) module and the [`--icu-data-dir` node flag](https://nodejs.org/api/intl.html#intl_providing_icu_data_at_runtime) at launch.
 
 ### How do I author custom audits to extend Lighthouse?
 
