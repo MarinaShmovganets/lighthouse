@@ -192,7 +192,7 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
       }),
       rollupPlugins.json(),
       rollupPlugins.removeModuleDirCalls(),
-      rollupPlugins.inlineFs({verbose: false}),
+      rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
       rollupPlugins.commonjs({
         // https://github.com/rollup/plugins/issues/922
         ignoreGlobal: true,

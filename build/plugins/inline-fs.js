@@ -64,6 +64,22 @@ async function inlineFs(code, filepath) {
   for (const foundIndex of foundIndices) {
     if (foundIndex === undefined) continue; // https://github.com/microsoft/TypeScript/issues/36788
 
+    // First iterate backwards until a newline to determine if we are in a block comment.
+    let maybeInBlockComment = false;
+    for (let i = foundIndex; i > 0; i--) {
+      if (code[i] === '*') {
+        maybeInBlockComment = true;
+        break;
+      }
+      if (code[i] === '\n') break;
+    }
+    if (maybeInBlockComment) {
+      const err = new Error('ignoring potential match because likely inside a block comment');
+      const line = code.substring(0, foundIndex).split(/\r\n|\r|\n/).length;
+      warnings.push(createWarning(err, filepath, {line, column: 1}));
+      continue;
+    }
+
     let parsed;
     try {
       parsed = parseExpressionAt(code, foundIndex, {ecmaVersion: 'latest'});
@@ -98,6 +114,11 @@ async function inlineFs(code, filepath) {
             parsed.callee.property);
       }
     } catch (err) {
+      // Consider missing files to be a fatal error.
+      if (err.code === 'ENOENT') {
+        throw err;
+      }
+
       // Use the specific node with the error if available; fallback to fs.method location.
       const offsets = getNodeOffsets(err.node || parsed);
       const location = acorn.getLineInfo(code, offsets.start);
