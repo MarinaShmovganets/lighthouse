@@ -265,6 +265,31 @@ describe('inline-fs', () => {
         });
       });
 
+      it('throws fatal error if file is missing', async () => {
+        const content = `const myTextContent = fs.readFileSync('i-never-exist.lol', 'utf8');`;
+        await expect(inlineFs(content, filepath)).rejects.toThrow('ENOENT');
+      });
+
+      it('ignores matches inside block comment', async () => {
+        fs.writeFileSync(tmpPath, 'contents');
+        const content = `
+        /**
+         * fs.readFileSync('i-never-exist.lol', 'utf8');
+         */
+        const myTextContent = fs.readFileSync('${tmpPath}', 'utf8');
+        `;
+        const result = await inlineFs(content, filepath);
+        expect(result).toMatchObject({
+          code: `
+        /**
+         * fs.readFileSync('i-never-exist.lol', 'utf8');
+         */
+        const myTextContent = "contents";
+        `,
+          warnings: [{text: /ignoring potential match/}],
+        });
+      });
+
       it('inlines multiple fs.readFileSync calls', async () => {
         fs.writeFileSync(tmpPath, 'some text content');
         // eslint-disable-next-line max-len
