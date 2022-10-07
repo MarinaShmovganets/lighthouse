@@ -185,6 +185,7 @@ async function waitForLighthouseReady() {
     }
   }
 
+  // Ensure the emulation model is ready before Lighthouse starts by enabling device emulation.
   // @ts-expect-error global
   const {deviceModeView} = Emulation.AdvancedApp.instance();
   if (!deviceModeView.isDeviceModeOn()) {
