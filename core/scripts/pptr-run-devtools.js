@@ -145,6 +145,7 @@ function addSniffer(receiver, methodName, override) {
 }
 
 async function waitForLighthouseReady() {
+  // Undocking later in the function can cause hiccups when Lighthouse enables device emulation.
   // @ts-expect-error global
   UI.dockController.setDockSide('undocked');
 
@@ -184,10 +185,11 @@ async function waitForLighthouseReady() {
     }
   }
 
-  // Ensure the emulation model is ready before Lighthouse starts by enabling device emulation.
-  // `waitForLighthouseReady` can be run multiple times, so this should be the final action.
   // @ts-expect-error global
-  Emulation.AdvancedApp.instance().deviceModeView.toggleDeviceMode();
+  const {deviceModeView} = Emulation.AdvancedApp.instance();
+  if (!deviceModeView.isDeviceModeOn()) {
+    deviceModeView.toggleDeviceMode();
+  }
 }
 
 async function runLighthouse() {
