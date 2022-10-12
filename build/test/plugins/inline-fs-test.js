@@ -270,33 +270,6 @@ describe('inline-fs', () => {
         await expect(inlineFs(content, filepath)).rejects.toThrow('ENOENT');
       });
 
-      it('ignores matches inside block comment', async () => {
-        fs.writeFileSync(tmpPath, 'contents');
-        const content = `
-        /**
-         * fs.readFileSync('i-never-exist.lol', 'utf8');
-         */
-        const myTextContent = fs.readFileSync('${tmpPath}', 'utf8');
-        `;
-        const result = await inlineFs(content, filepath);
-        expect(result).toEqual({
-          code: `
-        /**
-         * fs.readFileSync('i-never-exist.lol', 'utf8');
-         */
-        const myTextContent = "contents";
-        `,
-          warnings: [{
-            text: 'ignoring potential match because likely inside a block comment',
-            location: {
-              file: filepath,
-              line: 3,
-              column: 11,
-            },
-          }],
-        });
-      });
-
       it('inlines multiple fs.readFileSync calls', async () => {
         fs.writeFileSync(tmpPath, 'some text content');
         // eslint-disable-next-line max-len

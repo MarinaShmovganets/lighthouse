@@ -64,22 +64,6 @@ async function inlineFs(code, filepath) {
   for (const foundIndex of foundIndices) {
     if (foundIndex === undefined) continue; // https://github.com/microsoft/TypeScript/issues/36788
 
-    // First iterate backwards until a newline to determine if we are in a block comment.
-    let maybeInBlockComment = false;
-    for (let i = foundIndex; i > 0; i--) {
-      if (code[i] === '*') {
-        maybeInBlockComment = true;
-        break;
-      }
-      if (code[i] === '\n') break;
-    }
-    if (maybeInBlockComment) {
-      const err = new Error('ignoring potential match because likely inside a block comment');
-      const location = acorn.getLineInfo(code, foundIndex);
-      warnings.push(createWarning(err, filepath, location));
-      continue;
-    }
-
     let parsed;
     try {
       parsed = parseExpressionAt(code, foundIndex, {ecmaVersion: 'latest'});
