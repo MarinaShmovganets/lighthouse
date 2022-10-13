@@ -78,14 +78,14 @@ const UIStrings = {
   /** Description of the Search Engine Optimization (SEO) category. This is displayed at the top of a list of audits focused on optimizing a website for indexing by search engines. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   seoCategoryDescription: 'These checks ensure that your page is following basic search engine optimization advice. ' +
   'There are many additional factors Lighthouse does not score here that may affect your search ranking, ' +
-  'including performance on [Core Web Vitals](https://web.dev/learn-web-vitals/). [Learn more](https://support.google.com/webmasters/answer/35769).',
+  'including performance on [Core Web Vitals](https://web.dev/learn-web-vitals/). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).',
   /** Description of the Search Engine Optimization (SEO) manual checks category, the additional validators must be run by hand in order to check all SEO best practices. This is displayed at the top of a list of manually run audits focused on optimizing a website for indexing by search engines. No character length limits. */
   seoCategoryManualDescription: 'Run these additional validators on your site to check additional SEO best practices.',
   /** Title of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
   seoMobileGroupTitle: 'Mobile Friendly',
   /** Description of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
   seoMobileGroupDescription: 'Make sure your pages are mobile friendly so users don’t have to pinch or zoom ' +
-  'in order to read the content pages. [Learn more](https://developers.google.com/search/mobile-sites/).',
+  'in order to read the content pages. [Learn how to make pages mobile-friendly](https://developers.google.com/search/mobile-sites/).',
   /** Title of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight ways to make a website content more easily understood by search engine crawler bots. */
   seoContentGroupTitle: 'Content Best Practices',
   /** Description of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight ways to make a website content more easily understood by search engine crawler bots. */
@@ -98,7 +98,7 @@ const UIStrings = {
   pwaCategoryTitle: 'PWA',
   /** Description of the Progressive Web Application (PWA) category. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   pwaCategoryDescription: 'These checks validate the aspects of a Progressive Web App. ' +
-  '[Learn more](https://web.dev/pwa-checklist/).',
+  '[Learn what makes a good Progressive Web App](https://web.dev/pwa-checklist/).',
   /** Description of the Progressive Web Application (PWA) manual checks category, containing a list of additional validators must be run by hand in order to check all PWA best practices. This is displayed at the top of a list of manually run audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc.. No character length limits. */
   pwaCategoryManualDescription: 'These checks are required by the baseline ' +
   '[PWA Checklist](https://web.dev/pwa-checklist/) but are ' +
