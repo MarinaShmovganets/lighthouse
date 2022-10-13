@@ -75,7 +75,7 @@ const UIStrings = {
   a11yTablesListsVideoGroupDescription: 'These are opportunities to improve the experience of reading tabular or list data using assistive technology, like a screen reader.',
   /** Title of the Search Engine Optimization (SEO) category of audits. This is displayed at the top of a list of audits focused on topics related to optimizing a website for indexing by search engines. Also used as a label of a score gauge; try to limit to 20 characters. */
   seoCategoryTitle: 'SEO',
-  /** Description of the Search Engine Optimization (SEO) category. This is displayed at the top of a list of audits focused on optimizing a website for indexing by search engines. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of the Search Engine Optimization (SEO) category. This is displayed at the top of a list of audits focused on optimizing a website for indexing by search engines. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   seoCategoryDescription: 'These checks ensure that your page is following basic search engine optimization advice. ' +
   'There are many additional factors Lighthouse does not score here that may affect your search ranking, ' +
   'including performance on [Core Web Vitals](https://web.dev/learn-web-vitals/). [Learn more](https://support.google.com/webmasters/answer/35769).',
@@ -96,7 +96,7 @@ const UIStrings = {
   seoCrawlingGroupDescription: 'To appear in search results, crawlers need access to your app.',
   /** Title of the Progressive Web Application (PWA) category of audits. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. Also used as a label of a score gauge. */
   pwaCategoryTitle: 'PWA',
-  /** Description of the Progressive Web Application (PWA) category. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of the Progressive Web Application (PWA) category. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   pwaCategoryDescription: 'These checks validate the aspects of a Progressive Web App. ' +
   '[Learn more](https://web.dev/pwa-checklist/).',
   /** Description of the Progressive Web Application (PWA) manual checks category, containing a list of additional validators must be run by hand in order to check all PWA best practices. This is displayed at the top of a list of manually run audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc.. No character length limits. */
