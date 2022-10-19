@@ -300,7 +300,7 @@ async function auditGatherSteps(gatherSteps, options) {
   const steps = [];
   for (const gatherStep of gatherSteps) {
     const {artifacts, flags} = gatherStep;
-    const name = flags?.name || getStepName(flags, artifacts);
+    const name = getStepName(flags, artifacts);
 
     let runnerOptions = options.gatherStepRunnerOptions?.get(gatherStep);
 
