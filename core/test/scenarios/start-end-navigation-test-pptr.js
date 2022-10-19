@@ -33,7 +33,7 @@ describe('Start/End navigation', function() {
     await flow.endNavigation();
 
     const flowResult = await flow.createFlowResult();
-    const flowArtifacts = await flow.createArtifactsJson();
+    const flowArtifacts = flow.createArtifactsJson();
     const lhr = flowResult.steps[0].lhr;
     const artifacts = flowArtifacts.gatherSteps[0].artifacts;
 

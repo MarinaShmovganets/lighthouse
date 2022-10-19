@@ -195,9 +195,9 @@ class UserFlow {
   }
 
   /**
-   * @return {Promise<LH.UserFlow.FlowArtifacts>}
+   * @return {LH.UserFlow.FlowArtifacts}
    */
-  async createArtifactsJson() {
+  createArtifactsJson() {
     return {
       gatherSteps: this._gatherSteps,
       name: this._options?.name,

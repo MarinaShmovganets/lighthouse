@@ -107,7 +107,7 @@ async function rebaselineArtifacts(artifactKeys) {
 
   await browser.close();
 
-  let flowArtifacts = await flow.createArtifactsJson();
+  let flowArtifacts = flow.createArtifactsJson();
 
   // Normalize some data so it doesn't change on every update.
   for (const {artifacts} of flowArtifacts.gatherSteps) {
