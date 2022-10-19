@@ -7,11 +7,14 @@ declare module UserFlow {
   }
 
   export interface Options {
+    /** Config to use for each flow step. */
     config: LH.Config.Json;
+    /** Display name for this user flow. */
     name?: string;
   }
 
   export interface StepFlags extends LH.Flags {
+    /** Display name for this flow step. */
     name?: string;
   }
 
