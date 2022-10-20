@@ -19,6 +19,9 @@ await td.replaceEsm('../gather/timespan-runner.js', timespanModule);
 
 const mockRunner = await mockRunnerModule();
 
+// Some imports needs to be done dynamically, so that their dependencies will be mocked.
+// See: https://jestjs.io/docs/ecmascript-modules#differences-between-esm-and-commonjs
+//      https://github.com/facebook/jest/issues/10025
 const {getStepName, getFlowName, UserFlow, auditGatherSteps} = await import('../user-flow.js');
 
 describe('UserFlow', () => {
