@@ -9,19 +9,6 @@ import * as td from 'testdouble';
 
 import {Runner} from '../runner.js';
 import {createMockPage, mockRunnerModule} from './gather/mock-driver.js';
-// import UserFlow from '../../user-flow.js';
-
-// Some imports needs to be done dynamically, so that their dependencies will be mocked.
-// See: https://jestjs.io/docs/ecmascript-modules#differences-between-esm-and-commonjs
-//      https://github.com/facebook/jest/issues/10025
-/** @type {typeof import('../user-flow.js').UserFlow} */
-let UserFlow;
-/** @type {typeof import('../user-flow.js')['auditGatherSteps']} */
-let auditGatherSteps;
-
-before(async () => {
-  ({UserFlow, auditGatherSteps} = await import('../user-flow.js'));
-});
 
 const snapshotModule = {snapshotGather: jestMock.fn()};
 await td.replaceEsm('../gather/snapshot-runner.js', snapshotModule);
@@ -31,7 +18,8 @@ const timespanModule = {startTimespanGather: jestMock.fn()};
 await td.replaceEsm('../gather/timespan-runner.js', timespanModule);
 
 const mockRunner = await mockRunnerModule();
-const {getStepName, getFlowName} = await import('../user-flow.js');
+
+const {getStepName, getFlowName, UserFlow, auditGatherSteps} = await import('../user-flow.js');
 
 describe('UserFlow', () => {
   let mockPage = createMockPage();
