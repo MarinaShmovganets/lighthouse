@@ -22,17 +22,17 @@ const UIStrings = {
    */
   defaultFlowName: 'User flow ({url})',
   /**
-   * @description Default name for a user flow step that analyzes a page navigation.
+   * @description Default name for a Lighthouse report that analyzes a page navigation.
    * @example {https://example.com} url
    */
   defaultNavigationName: 'Navigation report ({url})',
   /**
-   * @description Default name for a user flow step that analyzes user interactions over a period of time.
+   * @description Default name for a Lighthouse report that analyzes user interactions over a period of time.
    * @example {https://example.com} url
    */
   defaultTimespanName: 'Timespan report ({url})',
   /**
-   * @description Default name for a user flow step that analyzes the page state at a point in time.
+   * @description Default name for a Lighthouse report that analyzes the page state at a point in time.
    * @example {https://example.com} url
    */
   defaultSnapshotName: 'Snapshot report ({url})',
