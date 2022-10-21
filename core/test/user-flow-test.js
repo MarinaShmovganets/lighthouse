@@ -100,7 +100,7 @@ describe('UserFlow', () => {
     });
 
     it('should merge flow flags with step flags', async () => {
-      const flowFlags = {maxWaitForLoad: 500};
+      const flowFlags = {maxWaitForLoad: 500, maxWaitForFcp: 500};
       const flow = new UserFlow(mockPage.asPage(), {flags: flowFlags});
       await flow.navigate('https://example.com/1');
 
@@ -113,10 +113,12 @@ describe('UserFlow', () => {
         navigationModule.navigationGather.mock.calls;
 
       expect(call1.flags.maxWaitForLoad).toBe(500);
+      expect(call1.flags.maxWaitForFcp).toBe(500);
       expect(call2.flags.maxWaitForLoad).toBe(1000);
+      expect(call2.flags.maxWaitForFcp).toBe(500);
 
       // Check that we didn't mutate the original objects.
-      expect(flowFlags).toEqual({maxWaitForLoad: 500});
+      expect(flowFlags).toEqual({maxWaitForLoad: 500, maxWaitForFcp: 500});
       expect(flags).toEqual({maxWaitForLoad: 1000});
     });
 
@@ -275,7 +277,7 @@ describe('UserFlow', () => {
     });
 
     it('should merge flow flags with step flags', async () => {
-      const flowFlags = {maxWaitForLoad: 500};
+      const flowFlags = {maxWaitForLoad: 500, maxWaitForFcp: 500};
       const flow = new UserFlow(mockPage.asPage(), {flags: flowFlags});
       await flow.startTimespan();
       await flow.endTimespan();
@@ -290,10 +292,12 @@ describe('UserFlow', () => {
         timespanModule.startTimespanGather.mock.calls;
 
       expect(call1.flags.maxWaitForLoad).toBe(500);
+      expect(call1.flags.maxWaitForFcp).toBe(500);
       expect(call2.flags.maxWaitForLoad).toBe(1000);
+      expect(call2.flags.maxWaitForFcp).toBe(500);
 
       // Check that we didn't mutate the original objects.
-      expect(flowFlags).toEqual({maxWaitForLoad: 500});
+      expect(flowFlags).toEqual({maxWaitForLoad: 500, maxWaitForFcp: 500});
       expect(flags).toEqual({maxWaitForLoad: 1000});
     });
   });
@@ -326,7 +330,7 @@ describe('UserFlow', () => {
     });
 
     it('should merge flow flags with step flags', async () => {
-      const flowFlags = {maxWaitForLoad: 500};
+      const flowFlags = {maxWaitForLoad: 500, maxWaitForFcp: 500};
       const flow = new UserFlow(mockPage.asPage(), {flags: flowFlags});
       await flow.snapshot();
 
@@ -339,10 +343,12 @@ describe('UserFlow', () => {
         snapshotModule.snapshotGather.mock.calls;
 
       expect(call1.flags.maxWaitForLoad).toBe(500);
+      expect(call1.flags.maxWaitForFcp).toBe(500);
       expect(call2.flags.maxWaitForLoad).toBe(1000);
+      expect(call2.flags.maxWaitForFcp).toBe(500);
 
       // Check that we didn't mutate the original objects.
-      expect(flowFlags).toEqual({maxWaitForLoad: 500});
+      expect(flowFlags).toEqual({maxWaitForLoad: 500, maxWaitForFcp: 500});
       expect(flags).toEqual({maxWaitForLoad: 1000});
     });
   });
