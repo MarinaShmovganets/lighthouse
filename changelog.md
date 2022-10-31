@@ -1,6 +1,6 @@
  <a name="9.6.8"></a>
 # 9.6.8 (2022-10-31)
-[Full Changelog](https://github.com/compare/v9.6.7...v9.6.8)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v9.6.7...v9.6.8)
 
 We expect this release to ship in the DevTools of [Chrome 109](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
