@@ -7,6 +7,7 @@ We expect this release to ship in the DevTools of [Chrome 109](https://chromiumd
 ## Core
 
 * deprecations: use translated strings from devtools repo ([#13961](https://github.com/GoogleChrome/lighthouse/pull/13961))
+* network-request: backport rendererStartTime ([#14481](https://github.com/GoogleChrome/lighthouse/pull/14481))
 
 <a name="9.6.7"></a>
 # 9.6.7 (2022-09-01)
