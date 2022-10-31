@@ -94,17 +94,17 @@ class DOMSize extends Audit {
     const items = [
       {
         statistic: str_(UIStrings.statisticDOMElements),
-        value: stats.totalBodyElements,
+        value: Math.floor(stats.totalBodyElements),
       },
       {
         node: Audit.makeNodeItem(stats.depth),
         statistic: str_(UIStrings.statisticDOMDepth),
-        value: stats.depth.max,
+        value: Math.floor(stats.depth.max),
       },
       {
         node: Audit.makeNodeItem(stats.width),
         statistic: str_(UIStrings.statisticDOMWidth),
-        value: stats.width.max,
+        value: Math.floor((stats.width.max),
       },
     ];
 
