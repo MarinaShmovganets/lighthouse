@@ -41,6 +41,10 @@ function getObservedDeviceMetrics() {
   };
 }
 
+/**
+ * The screenshot dimensions are sized to `window.outerHeight` / `window.innerWidth`,
+ * however the bounding boxes of the elements are relative to `window.innerHeight` / `window.innerWidth`.
+ */
 function getScreenshotAreaSize() {
   return {
     width: window.innerWidth,
@@ -87,12 +91,12 @@ class FullPageScreenshot extends FRGatherer {
 
     // Height should be as tall as the content.
     // Scale the emulated height to reach the content height.
-    const desiredLayoutViewportHeight = Math.min(metrics.cssContentSize.height, maxTextureSize);
-    const newDeviceHeight = Math.round(
+    const fullHeight = Math.round(
       deviceMetrics.height *
-      desiredLayoutViewportHeight /
+      metrics.cssContentSize.height /
       metrics.cssLayoutViewport.clientHeight
     );
+    const height = Math.min(fullHeight, maxTextureSize);
 
     // Setup network monitor before we change the viewport.
     const networkMonitor = new NetworkMonitor(context.driver.targetManager);
@@ -108,7 +112,7 @@ class FullPageScreenshot extends FRGatherer {
     await session.sendCommand('Emulation.setDeviceMetricsOverride', {
       mobile: deviceMetrics.mobile,
       deviceScaleFactor: 1,
-      height: newDeviceHeight,
+      height: height,
       width: 0, // Leave width unchanged
     });
 
