@@ -93,8 +93,8 @@ class FullPageScreenshot extends FRGatherer {
     // Scale the emulated height to reach the content height.
     const fullHeight = Math.round(
       deviceMetrics.height *
-      metrics.contentSize.height /
-      metrics.layoutViewport.clientHeight
+      metrics.cssContentSize.height /
+      metrics.cssLayoutViewport.clientHeight
     );
     const height = Math.min(fullHeight, maxTextureSize);
 
