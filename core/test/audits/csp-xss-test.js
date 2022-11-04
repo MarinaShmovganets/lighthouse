@@ -46,7 +46,8 @@ const STATIC_RESULTS = {
     description: {
       formattedDefault:
         'The page contains a CSP defined in a <meta> tag. ' +
-        'Consider defining the CSP in an HTTP header if you can.',
+        'Consider moving the CSP to an HTTP header or ' +
+        'defining another strict CSP in an HTTP header.',
     },
     directive: undefined,
   },
