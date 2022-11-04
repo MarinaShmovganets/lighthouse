@@ -174,7 +174,7 @@ function getMaxTextureSize() {
     const gl = canvas.getContext('webgl');
     if (!gl) throw new Error('no webgl');
     const maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-    return maxTextureSize;
+    return maxTextureSize - 1;
   } catch (e) {
     // If the above fails for any reason we need a fallback number;
     // 4096 is the max texture size on a Pixel 2 XL, so to be conservative we'll use a low value like it.

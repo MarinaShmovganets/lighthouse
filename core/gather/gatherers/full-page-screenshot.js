@@ -87,12 +87,12 @@ class FullPageScreenshot extends FRGatherer {
 
     // Height should be as tall as the content.
     // Scale the emulated height to reach the content height.
-    const fullHeight = Math.round(
+    const desiredLayoutViewportHeight = Math.min(metrics.cssContentSize.height, maxTextureSize);
+    const newDeviceHeight = Math.round(
       deviceMetrics.height *
-      metrics.contentSize.height /
-      metrics.layoutViewport.clientHeight
+      desiredLayoutViewportHeight /
+      metrics.cssLayoutViewport.clientHeight
     );
-    const height = Math.min(fullHeight, maxTextureSize);
 
     // Setup network monitor before we change the viewport.
     const networkMonitor = new NetworkMonitor(context.driver.targetManager);
@@ -108,7 +108,7 @@ class FullPageScreenshot extends FRGatherer {
     await session.sendCommand('Emulation.setDeviceMetricsOverride', {
       mobile: deviceMetrics.mobile,
       deviceScaleFactor: 1,
-      height,
+      height: newDeviceHeight,
       width: 0, // Leave width unchanged
     });
 

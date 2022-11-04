@@ -29,9 +29,9 @@ beforeEach(() => {
   mockContext.driver.defaultSession.sendCommand.mockImplementation((method) => {
     if (method === 'Page.getLayoutMetrics') {
       return {
-        contentSize,
+        cssContentSize: contentSize,
         // See comment within _takeScreenshot() implementation
-        layoutViewport: {clientWidth: screenSize.width, clientHeight: screenSize.height},
+        cssLayoutViewport: {clientWidth: screenSize.width, clientHeight: screenSize.height},
       };
     }
     if (method === 'Page.captureScreenshot') {
