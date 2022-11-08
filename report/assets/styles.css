@@ -1508,7 +1508,7 @@
   top: calc(var(--topbar-plus-sticky-header) + 1em);
   z-index: 1;
   background-color: var(--report-background-color);
-  border-bottom: 1px solid var(--highlighter-background-color);
+  border-bottom: 1px solid var(--report-border-color-secondary);
   font-weight: normal;
   color: var(--color-gray-600);
   /* See text-wrapping comment on .lh-container. */
