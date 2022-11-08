@@ -4,8 +4,6 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-const MAX_TEXTURE_SIZE = process.platform === 'linux' ? 8191 : 16383;
-
 /** @type {LH.Config.Json} */
 const config = {
   extends: 'lighthouse:default',
@@ -36,7 +34,7 @@ const expectations = {
         details: {
           screenshot: {
             data: /^data:image\/webp;base64,.{50}/,
-            height: MAX_TEXTURE_SIZE,
+            height: 16383,
             width: 360,
           },
         },
