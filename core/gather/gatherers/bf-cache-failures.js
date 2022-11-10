@@ -102,7 +102,7 @@ class BFCacheFailures extends FRGatherer {
     const entry = history.entries[history.currentIndex];
 
     await Promise.all([
-      session.sendCommand('Page.navigate', {url: 'chrome://terms'}),
+      session.sendCommand('Page.navigate', {url: 'about:blank'}),
       waitForLoadEvent(session, 0).promise,
     ]);
 
