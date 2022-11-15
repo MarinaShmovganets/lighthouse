@@ -123,7 +123,7 @@ async function startTimespan(page, options) {
 /**
  * @template {LH.Result|LH.FlowResult} R
  * @param {R} result
- * @param {[R] extends [LH.Result] ? LH.OutputMode : Exclude<LH.OutputMode, 'csv'>} format
+ * @param {[R] extends [LH.Result] ? LH.OutputMode : Exclude<LH.OutputMode, 'csv'>} [format]
  * @return {string}
  */
 function generateReport(result, format = 'html') {
