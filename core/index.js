@@ -129,6 +129,8 @@ async function startTimespan(page, options) {
 function generateReport(result, format = 'html') {
   const reportOutput = ReportGenerator.generateReport(result, format);
   if (Array.isArray(reportOutput)) {
+    // In theory the output should never be an array.
+    // This is mostly for type checking.
     return reportOutput[0];
   } else {
     return reportOutput;
