@@ -27,7 +27,7 @@ const UIStrings = {
    * @description Error message explaining that the Largest Contentful Paint metric was not seen during the page load.
    * @example {NO_LCP} errorCode
    * */
-  noLcp: 'The page did not paint anything that qualifies as LCP. Ensure the page has a valid LCP element and then try again. ({errorCode})',
+  noLcp: 'The page did not display content that qualifies as a Largest Contentful Paint (LCP). Ensure the page has a valid LCP element and then try again. ({errorCode})',
   /**
    * @description Error message explaining that the page loaded too slowly to perform a Lighthouse run.
    * @example {NO_TTI_CPU_IDLE_PERIOD} errorCode
