@@ -594,7 +594,7 @@
     "message": "Ŝýn̂t́âx́"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "T̂h́ê ṕâǵê ćôńt̂áîńŝ á ĈŚP̂ d́êf́îńêd́ îń â <ḿêt́â> t́âǵ. Ĉón̂śîd́êŕ d̂éf̂ín̂ín̂ǵ t̂h́ê ĆŜṔ îń âń ĤT́T̂Ṕ ĥéâd́êŕ îf́ ŷóû ćâń."
+    "message": "T̂h́ê ṕâǵê ćôńt̂áîńŝ á ĈŚP̂ d́êf́îńêd́ îń â <ḿêt́â> t́âǵ. Ĉón̂śîd́êŕ m̂óv̂ín̂ǵ t̂h́ê ĆŜṔ t̂ó âń ĤT́T̂Ṕ ĥéâd́êŕ ôŕ d̂éf̂ín̂ín̂ǵ âńôt́ĥér̂ śt̂ŕîćt̂ ĆŜṔ îń âń ĤT́T̂Ṕ ĥéâd́êŕ."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "N̂ó ĈŚP̂ f́ôún̂d́ îń êńf̂ór̂ćêḿêńt̂ ḿôd́ê"
@@ -960,7 +960,7 @@
     "message": "ĈĹŜ Ćôńt̂ŕîb́ût́îón̂"
   },
   "core/audits/layout-shift-elements.js | description": {
-    "message": "T̂h́êśê D́ÔḾ êĺêḿêńt̂ś ĉón̂t́r̂íb̂út̂é m̂óŝt́ t̂ó t̂h́ê ĆL̂Ś ôf́ t̂h́ê ṕâǵê."
+    "message": "T̂h́êśê D́ÔḾ êĺêḿêńt̂ś ĉón̂t́r̂íb̂út̂é m̂óŝt́ t̂ó t̂h́ê ĆL̂Ś ôf́ t̂h́ê ṕâǵê. [Ĺêár̂ń ĥóŵ t́ô ím̂ṕr̂óv̂é ĈĹŜ](https://web.dev/optimize-cls/)"
   },
   "core/audits/layout-shift-elements.js | title": {
     "message": "Âv́ôíd̂ ĺâŕĝé l̂áŷóût́ ŝh́îf́t̂ś"
@@ -1482,7 +1482,7 @@
     "message": "P̂áĝé ĥáŝ v́âĺîd́ ŝóûŕĉé m̂áp̂ś"
   },
   "core/audits/viewport.js | description": {
-    "message": "Â `<meta name=\"viewport\">` ńôt́ ôńl̂ý ôṕt̂ím̂íẑéŝ ýôúr̂ áp̂ṕ f̂ór̂ ḿôb́îĺê śĉŕêén̂ śîźêś, b̂út̂ ál̂śô ṕr̂év̂én̂t́ŝ [á 300 m̂íl̂ĺîśêćôńd̂ d́êĺâý t̂ó ûśêŕ îńp̂út̂](https://developers.google.com/web/updates/2013/12/300ms-tap-delay-gone-away). [Ĺêár̂ń m̂ór̂é âb́ôút̂ úŝín̂ǵ t̂h́ê v́îéŵṕôŕt̂ ḿêt́â t́âǵ](https://web.dev/viewport/)."
+    "message": "Â `<meta name=\"viewport\">` ńôt́ ôńl̂ý ôṕt̂ím̂íẑéŝ ýôúr̂ áp̂ṕ f̂ór̂ ḿôb́îĺê śĉŕêén̂ śîźêś, b̂út̂ ál̂śô ṕr̂év̂én̂t́ŝ [á 300 m̂íl̂ĺîśêćôńd̂ d́êĺâý t̂ó ûśêŕ îńp̂út̂](https://developer.chrome.com/blog/300ms-tap-delay-gone-away/). [Ĺêár̂ń m̂ór̂é âb́ôút̂ úŝín̂ǵ t̂h́ê v́îéŵṕôŕt̂ ḿêt́â t́âǵ](https://web.dev/viewport/)."
   },
   "core/audits/viewport.js | explanationNoTag": {
     "message": "N̂ó `<meta name=\"viewport\">` t̂áĝ f́ôún̂d́"
@@ -2384,6 +2384,9 @@
   "core/lib/lh-error.js | noFcp": {
     "message": "T̂h́ê ṕâǵê d́îd́ n̂ót̂ ṕâín̂t́ âńŷ ćôńt̂én̂t́. P̂ĺêáŝé êńŝúr̂é ŷóû ḱêép̂ t́ĥé b̂ŕôẃŝér̂ ẃîńd̂óŵ ín̂ t́ĥé f̂ór̂éĝŕôún̂d́ d̂úr̂ín̂ǵ t̂h́ê ĺôád̂ án̂d́ t̂ŕŷ áĝáîń. ({errorCode})"
   },
+  "core/lib/lh-error.js | noLcp": {
+    "message": "T̂h́ê ṕâǵê d́îd́ n̂ót̂ d́îśp̂ĺâý ĉón̂t́êńt̂ t́ĥát̂ q́ûál̂íf̂íêś âś â Ĺâŕĝéŝt́ Ĉón̂t́êńt̂f́ûĺ P̂áîńt̂ (ĹĈṔ). Êńŝúr̂é t̂h́ê ṕâǵê h́âś â v́âĺîd́ L̂ĆP̂ él̂ém̂én̂t́ âńd̂ t́ĥén̂ t́r̂ý âǵâín̂. ({errorCode})"
+  },
   "core/lib/lh-error.js | notHtml": {
     "message": "T̂h́ê ṕâǵê ṕr̂óv̂íd̂éd̂ íŝ ńôt́ ĤT́M̂Ĺ (ŝér̂v́êd́ âś M̂ÍM̂É t̂ýp̂é {mimeType})."
   },
@@ -3025,6 +3028,9 @@
   },
   "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
     "message": "N̂ét̂ẃôŕk̂ t́ĥŕôt́t̂ĺîńĝ"
+  },
+  "report/renderer/util.js | runtimeSettingsScreenEmulation": {
+    "message": "Ŝćr̂éêń êḿûĺât́îón̂"
   },
   "report/renderer/util.js | runtimeSettingsUANetwork": {
     "message": "Ûśêŕ âǵêńt̂ (ńêt́ŵór̂ḱ)"

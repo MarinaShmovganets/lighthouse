@@ -42,7 +42,7 @@
           "viewport": {
             "id": "viewport",
             "title": "Has a `<meta name=\"viewport\">` tag with `width` or `initial-scale`",
-            "description": "A `<meta name=\"viewport\">` not only optimizes your app for mobile screen sizes, but also prevents [a 300 millisecond delay to user input](https://developers.google.com/web/updates/2013/12/300ms-tap-delay-gone-away). [Learn more about using the viewport meta tag](https://web.dev/viewport/).",
+            "description": "A `<meta name=\"viewport\">` not only optimizes your app for mobile screen sizes, but also prevents [a 300 millisecond delay to user input](https://developer.chrome.com/blog/300ms-tap-delay-gone-away/). [Learn more about using the viewport meta tag](https://web.dev/viewport/).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "warnings": []
@@ -1549,7 +1549,7 @@
           "layout-shift-elements": {
             "id": "layout-shift-elements",
             "title": "Avoid large layout shifts",
-            "description": "These DOM elements contribute most to the CLS of the page.",
+            "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/optimize-cls/)",
             "score": null,
             "scoreDisplayMode": "informative",
             "displayValue": "5 elements found",
@@ -3342,7 +3342,11 @@
               "items": [
                 {
                   "statistic": "Total DOM Elements",
-                  "value": 70
+                  "value": {
+                    "type": "numeric",
+                    "granularity": 1,
+                    "value": 70
+                  }
                 },
                 {
                   "node": {
@@ -3362,7 +3366,11 @@
                     "nodeLabel": "div.flex > div.inline-block > svg.h-6 > path"
                   },
                   "statistic": "Maximum DOM Depth",
-                  "value": 9
+                  "value": {
+                    "type": "numeric",
+                    "granularity": 1,
+                    "value": 9
+                  }
                 },
                 {
                   "node": {
@@ -3382,7 +3390,11 @@
                     "nodeLabel": "body"
                   },
                   "statistic": "Maximum Child Elements",
-                  "value": 14
+                  "value": {
+                    "type": "numeric",
+                    "granularity": 1,
+                    "value": 14
+                  }
                 }
               ]
             }
@@ -6067,6 +6079,7 @@
             "runtimeSettingsCPUThrottling": "CPU throttling",
             "runtimeSettingsDevice": "Device",
             "runtimeSettingsNetworkThrottling": "Network throttling",
+            "runtimeSettingsScreenEmulation": "Screen emulation",
             "runtimeSettingsUANetwork": "User agent (network)",
             "runtimeSingleLoad": "Single page load",
             "runtimeSingleLoadTooltip": "This data is taken from a single page load, as opposed to field data summarizing many sessions.",
@@ -8470,7 +8483,7 @@
           "layout-shift-elements": {
             "id": "layout-shift-elements",
             "title": "Avoid large layout shifts",
-            "description": "These DOM elements contribute most to the CLS of the page.",
+            "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/optimize-cls/)",
             "score": null,
             "scoreDisplayMode": "informative",
             "displayValue": "1 element found",
@@ -9999,6 +10012,7 @@
             "runtimeSettingsCPUThrottling": "CPU throttling",
             "runtimeSettingsDevice": "Device",
             "runtimeSettingsNetworkThrottling": "Network throttling",
+            "runtimeSettingsScreenEmulation": "Screen emulation",
             "runtimeSettingsUANetwork": "User agent (network)",
             "runtimeSingleLoad": "Single page load",
             "runtimeSingleLoadTooltip": "This data is taken from a single page load, as opposed to field data summarizing many sessions.",
@@ -10599,7 +10613,7 @@
           "viewport": {
             "id": "viewport",
             "title": "Has a `<meta name=\"viewport\">` tag with `width` or `initial-scale`",
-            "description": "A `<meta name=\"viewport\">` not only optimizes your app for mobile screen sizes, but also prevents [a 300 millisecond delay to user input](https://developers.google.com/web/updates/2013/12/300ms-tap-delay-gone-away). [Learn more about using the viewport meta tag](https://web.dev/viewport/).",
+            "description": "A `<meta name=\"viewport\">` not only optimizes your app for mobile screen sizes, but also prevents [a 300 millisecond delay to user input](https://developer.chrome.com/blog/300ms-tap-delay-gone-away/). [Learn more about using the viewport meta tag](https://web.dev/viewport/).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "warnings": []
@@ -12025,7 +12039,11 @@
               "items": [
                 {
                   "statistic": "Total DOM Elements",
-                  "value": 155
+                  "value": {
+                    "type": "numeric",
+                    "granularity": 1,
+                    "value": 155
+                  }
                 },
                 {
                   "node": {
@@ -12045,7 +12063,11 @@
                     "nodeLabel": "Oscar:"
                   },
                   "statistic": "Maximum DOM Depth",
-                  "value": 11
+                  "value": {
+                    "type": "numeric",
+                    "granularity": 1,
+                    "value": 11
+                  }
                 },
                 {
                   "node": {
@@ -12065,7 +12087,11 @@
                     "nodeLabel": "body"
                   },
                   "statistic": "Maximum Child Elements",
-                  "value": 17
+                  "value": {
+                    "type": "numeric",
+                    "granularity": 1,
+                    "value": 17
+                  }
                 }
               ]
             }
@@ -13463,6 +13489,7 @@
             "runtimeSettingsCPUThrottling": "CPU throttling",
             "runtimeSettingsDevice": "Device",
             "runtimeSettingsNetworkThrottling": "Network throttling",
+            "runtimeSettingsScreenEmulation": "Screen emulation",
             "runtimeSettingsUANetwork": "User agent (network)",
             "runtimeSingleLoad": "Single page load",
             "runtimeSingleLoadTooltip": "This data is taken from a single page load, as opposed to field data summarizing many sessions.",
@@ -14178,7 +14205,7 @@
           "viewport": {
             "id": "viewport",
             "title": "Has a `<meta name=\"viewport\">` tag with `width` or `initial-scale`",
-            "description": "A `<meta name=\"viewport\">` not only optimizes your app for mobile screen sizes, but also prevents [a 300 millisecond delay to user input](https://developers.google.com/web/updates/2013/12/300ms-tap-delay-gone-away). [Learn more about using the viewport meta tag](https://web.dev/viewport/).",
+            "description": "A `<meta name=\"viewport\">` not only optimizes your app for mobile screen sizes, but also prevents [a 300 millisecond delay to user input](https://developer.chrome.com/blog/300ms-tap-delay-gone-away/). [Learn more about using the viewport meta tag](https://web.dev/viewport/).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "warnings": []
@@ -15633,7 +15660,7 @@
           "layout-shift-elements": {
             "id": "layout-shift-elements",
             "title": "Avoid large layout shifts",
-            "description": "These DOM elements contribute most to the CLS of the page.",
+            "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/optimize-cls/)",
             "score": null,
             "scoreDisplayMode": "notApplicable",
             "details": {
@@ -17417,7 +17444,11 @@
               "items": [
                 {
                   "statistic": "Total DOM Elements",
-                  "value": 81
+                  "value": {
+                    "type": "numeric",
+                    "granularity": 1,
+                    "value": 81
+                  }
                 },
                 {
                   "node": {
@@ -17437,7 +17468,11 @@
                     "nodeLabel": "div.flex > div.inline-block > svg.h-6 > path"
                   },
                   "statistic": "Maximum DOM Depth",
-                  "value": 9
+                  "value": {
+                    "type": "numeric",
+                    "granularity": 1,
+                    "value": 9
+                  }
                 },
                 {
                   "node": {
@@ -17457,7 +17492,11 @@
                     "nodeLabel": "body"
                   },
                   "statistic": "Maximum Child Elements",
-                  "value": 13
+                  "value": {
+                    "type": "numeric",
+                    "granularity": 1,
+                    "value": 13
+                  }
                 }
               ]
             }
@@ -20181,6 +20220,7 @@
             "runtimeSettingsCPUThrottling": "CPU throttling",
             "runtimeSettingsDevice": "Device",
             "runtimeSettingsNetworkThrottling": "Network throttling",
+            "runtimeSettingsScreenEmulation": "Screen emulation",
             "runtimeSettingsUANetwork": "User agent (network)",
             "runtimeSingleLoad": "Single page load",
             "runtimeSingleLoadTooltip": "This data is taken from a single page load, as opposed to field data summarizing many sessions.",
