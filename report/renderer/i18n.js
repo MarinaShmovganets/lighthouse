@@ -60,7 +60,15 @@ export class I18n {
 
     let formatter;
     // eslint-disable-next-line max-len
-    const cacheKey = `${opts.minimumFractionDigits}${opts.maximumFractionDigits}${opts.style}${opts.unit}${opts.unitDisplay}`;
+    const cacheKey = [
+      opts.minimumFractionDigits,
+      opts.maximumFractionDigits,
+      opts.style,
+      opts.unit,
+      opts.unitDisplay,
+      this._locale,
+    ].join('');
+
     formatter = this._cachedNumberFormatters.get(cacheKey);
     if (!formatter) {
       formatter = new Intl.NumberFormat(this._locale, opts);
