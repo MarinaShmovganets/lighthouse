@@ -120,7 +120,7 @@ class BFCacheFailures extends FRGatherer {
    * @param {LH.Gatherer.FRTransitionalContext<'DevtoolsLog'>} context
    * @return {LH.Crdp.Page.BackForwardCacheNotUsedEvent[]}
    */
-  passivelyCollectBFCacheEvent(context) {
+  passivelyCollectBFCacheEvents(context) {
     const events = [];
     for (const event of context.dependencies.DevtoolsLog) {
       if (event.method === 'Page.backForwardCacheNotUsed') {
@@ -135,7 +135,7 @@ class BFCacheFailures extends FRGatherer {
    * @return {Promise<LH.Artifacts['BFCacheFailures']>}
    */
   async getArtifact(context) {
-    const events = this.passivelyCollectBFCacheEvent(context);
+    const events = this.passivelyCollectBFCacheEvents(context);
     if (context.gatherMode === 'navigation') {
       const activelyCollectedEvent = await this.activelyCollectBFCacheEvent(context);
       if (activelyCollectedEvent) events.push(activelyCollectedEvent);
