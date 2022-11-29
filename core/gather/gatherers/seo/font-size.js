@@ -42,21 +42,21 @@ function hasFontSizeDeclaration(style) {
  * @return {NodeFontData['cssRule']|undefined}
  */
 function findMostSpecificMatchedCSSRule(matchedCSSRules = [], isDeclarationOfInterest) {
-  let maxSpecificityRule;
+  let mostSpecificRule;
   for (let i = matchedCSSRules.length - 1; i >= 0; i--) {
     if (isDeclarationOfInterest(matchedCSSRules[i].rule.style)) {
-      maxSpecificityRule = matchedCSSRules[i].rule;
+      mostSpecificRule = matchedCSSRules[i].rule;
       break;
     }
   }
 
-  if (maxSpecificityRule) {
+  if (mostSpecificRule) {
     return {
       type: 'Regular',
-      ...maxSpecificityRule.style,
+      ...mostSpecificRule.style,
       parentRule: {
-        origin: maxSpecificityRule.origin,
-        selectors: maxSpecificityRule.selectorList.selectors,
+        origin: mostSpecificRule.origin,
+        selectors: mostSpecificRule.selectorList.selectors,
       },
     };
   }
