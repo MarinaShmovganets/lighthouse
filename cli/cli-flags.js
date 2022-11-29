@@ -176,7 +176,7 @@ function getYargsParser(manualArgv) {
       },
       'enable-error-reporting': {
         type: 'boolean',
-        describe: 'Enables error reporting, overriding any saved preference. --no-enable-error-reporting will do the opposite. More: https://github.com/GoogleChrome/lighthouse/blob/master/docs/error-reporting.md',
+        describe: 'Enables error reporting, overriding any saved preference. --no-enable-error-reporting will do the opposite. More: https://github.com/GoogleChrome/lighthouse/blob/main/docs/error-reporting.md',
       },
       'gather-mode': {
         alias: 'G',
@@ -351,7 +351,7 @@ function getFlags(manualArgv, options = {}) {
   // Augmenting yargs type with auto-camelCasing breaks in tsc@4.1.2 and @types/yargs@15.0.11,
   // so for now cast to add yarg's camelCase properties to type.
   const argv = /** @type {Awaited<typeof parser.argv>} */ (parser.argv);
-  const cliFlags = /** @type {typeof argv & CamelCasify<typeof argv>} */ (argv);
+  const cliFlags = /** @type {typeof argv & LH.Util.CamelCasify<typeof argv>} */ (argv);
 
   // yargs will return `undefined` for options that have a `coerce` function but
   // are not actually present in the user input. Instead of passing properties
