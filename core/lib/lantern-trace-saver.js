@@ -4,8 +4,11 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+/** @typedef {import('./dependency-graph/base-node.js').Node} Node */
+/** @typedef {import('./dependency-graph/simulator/simulator.js').CompleteNodeTiming} CompleteNodeTiming */
+
 /**
- * @param {LH.Gatherer.Simulation.Result['nodeTimings']} nodeTimings
+ * @param {Map<Node, CompleteNodeTiming>} nodeTimings
  * @return {LH.Trace}
  */
 function convertNodeTimingsToTrace(nodeTimings) {
@@ -123,7 +126,7 @@ function convertNodeTimingsToTrace(nodeTimings) {
   /**
    * @param {number} requestId
    * @param {LH.Artifacts.NetworkRequest} record
-   * @param {LH.Gatherer.Simulation.NodeTiming} timing
+   * @param {CompleteNodeTiming} timing
    * @return {LH.TraceEvent}
    */
   function createWillSendRequestEvent(requestId, record, timing) {
@@ -142,7 +145,7 @@ function convertNodeTimingsToTrace(nodeTimings) {
   /**
    * @param {number} requestId
    * @param {LH.Artifacts.NetworkRequest} record
-   * @param {LH.Gatherer.Simulation.NodeTiming} timing
+   * @param {CompleteNodeTiming} timing
    * @return {LH.TraceEvent[]}
    */
   function createFakeNetworkEvents(requestId, record, timing) {
