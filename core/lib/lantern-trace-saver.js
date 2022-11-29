@@ -31,7 +31,11 @@ function convertNodeTimingsToTrace(nodeTimings) {
     } else {
       // Ignore data URIs as they don't really add much value
       if (/^data/.test(node.record.url)) continue;
-      traceEvents.push(...createFakeNetworkEvents(node.record, timing));
+      if (requestId === 1) {
+        traceEvents.push(createWillSendRequestEvent(requestId, node.record, timing));
+      }
+      traceEvents.push(...createFakeNetworkEvents(requestId, node.record, timing));
+      requestId++;
     }
   }
 
@@ -117,19 +121,38 @@ function convertNodeTimingsToTrace(nodeTimings) {
   }
 
   /**
+   * @param {number} requestId
+   * @param {LH.Artifacts.NetworkRequest} record
+   * @param {LH.Gatherer.Simulation.NodeTiming} timing
+   * @return {LH.TraceEvent}
+   */
+  function createWillSendRequestEvent(requestId, record, timing) {
+    return {
+      ...baseEvent,
+      ph: 'I',
+      s: 't',
+      // No `dur` on network instant events but add to keep types happy.
+      dur: 0,
+      name: 'ResourceWillSendRequest',
+      ts: toMicroseconds(timing.startTime),
+      args: {data: {requestId: String(requestId)}},
+    };
+  }
+
+  /**
+   * @param {number} requestId
    * @param {LH.Artifacts.NetworkRequest} record
    * @param {LH.Gatherer.Simulation.NodeTiming} timing
    * @return {LH.TraceEvent[]}
    */
-  function createFakeNetworkEvents(record, timing) {
-    requestId++;
-
+  function createFakeNetworkEvents(requestId, record, timing) {
     // 0ms requests get super-messed up rendering
     // Use 0.3ms instead so they're still hoverable, https://github.com/GoogleChrome/lighthouse/pull/5350#discussion_r194563201
     let {startTime, endTime} = timing; // eslint-disable-line prefer-const
     if (startTime === endTime) endTime += 0.3;
 
     const requestData = {requestId: requestId.toString(), frame};
+    // No `dur` on network instant events but add to keep types happy.
     /** @type {LH.Util.StrictOmit<LH.TraceEvent, 'name'|'ts'|'args'>} */
     const baseRequestEvent = {...baseEvent, ph: 'I', s: 't', dur: 0};
 
@@ -150,7 +173,8 @@ function convertNodeTimingsToTrace(nodeTimings) {
     };
 
     const resourceFinishData = {
-      ...requestData,
+      requestId: requestId.toString(),
+      encodedDataLength: record.transferSize,
       decodedBodyLength: record.resourceSize,
       didFail: !!record.failed,
       finishTime: toMicroseconds(endTime) / (1000 * 1000),
