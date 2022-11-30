@@ -149,6 +149,10 @@ function convertNodeTimingsToTrace(nodeTimings) {
    * @return {LH.TraceEvent[]}
    */
   function createFakeNetworkEvents(requestId, record, timing) {
+    if (!('connectionTiming' in timing)) {
+      throw new Error('Network node timing incomplete');
+    }
+
     // 0ms requests get super-messed up rendering
     // Use 0.3ms instead so they're still hoverable, https://github.com/GoogleChrome/lighthouse/pull/5350#discussion_r194563201
     let {startTime, endTime} = timing; // eslint-disable-line prefer-const
@@ -166,6 +170,13 @@ function convertNodeTimingsToTrace(nodeTimings) {
       priority: record.priority,
     };
 
+    const {dnsResolutionTime, connectionTime, sslTime, timeToFirstByte} = timing.connectionTiming;
+    let sslStart = -1;
+    let sslEnd = -1;
+    if (connectionTime !== undefined && sslTime !== undefined) {
+      sslStart = connectionTime - sslTime;
+      sslEnd = connectionTime;
+    }
     const receiveResponseData = {
       ...requestData,
       statusCode: record.statusCode,
@@ -173,6 +184,24 @@ function convertNodeTimingsToTrace(nodeTimings) {
       encodedDataLength: record.transferSize,
       fromCache: record.fromDiskCache,
       fromServiceWorker: record.fetchedViaServiceWorker,
+      timing: {
+        requestTime: toMicroseconds(startTime) / (1000 * 1000),
+        dnsStart: dnsResolutionTime === undefined ? -1 : 0,
+        dnsEnd: dnsResolutionTime ?? -1,
+        connectStart: dnsResolutionTime ?? -1,
+        connectEnd: connectionTime ?? -1,
+        sslStart,
+        sslEnd,
+        sendStart: connectionTime ?? 0,
+        sendEnd: connectionTime ?? 0,
+        receiveHeadersEnd: timeToFirstByte,
+        workerStart: -1,
+        workerReady: -1,
+        proxyStart: -1,
+        proxyEnd: -1,
+        pushStart: 0,
+        pushEnd: 0,
+      },
     };
 
     const resourceFinishData = {
@@ -203,6 +232,7 @@ function convertNodeTimingsToTrace(nodeTimings) {
       events.push({
         ...baseRequestEvent,
         name: 'ResourceReceiveResponse',
+        // Event `ts` isn't meaningful, so just pick a time.
         ts: toMicroseconds((startTime + endTime) / 2),
         args: {data: receiveResponseData},
       });

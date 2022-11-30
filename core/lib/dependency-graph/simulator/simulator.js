@@ -17,6 +17,7 @@ const mobileSlow4G = constants.throttling.mobileSlow4G;
 /** @typedef {import('../network-node').NetworkNode} NetworkNode */
 /** @typedef {import('../cpu-node').CPUNode} CpuNode */
 /** @typedef {import('./simulator-timing-map.js').CpuNodeTimingComplete | import('./simulator-timing-map.js').NetworkNodeTimingComplete} CompleteNodeTiming */
+/** @typedef {import('./simulator-timing-map.js').ConnectionTiming} ConnectionTiming */
 
 // see https://cs.chromium.org/search/?q=kDefaultMaxNumDelayableRequestsPerClient&sq=package:chromium&type=cs
 const DEFAULT_MAXIMUM_CONCURRENT_REQUESTS = 10;
@@ -168,12 +169,13 @@ class Simulator {
   /**
    * @param {Node} node
    * @param {number} endTime
+   * @param {ConnectionTiming} [connectionTiming] Optional network connection information.
    */
-  _markNodeAsComplete(node, endTime) {
+  _markNodeAsComplete(node, endTime, connectionTiming) {
     this._nodes[NodeState.Complete].add(node);
     this._nodes[NodeState.InProgress].delete(node);
     this._numberInProgressByType.set(node.type, this._numberInProgress(node.type) - 1);
-    this._nodeTimings.setCompleted(node, {endTime});
+    this._nodeTimings.setCompleted(node, {endTime, connectionTiming});
 
     // Try to add all its dependents to the queue
     for (const dependent of node.getDependents()) {
@@ -372,7 +374,7 @@ class Simulator {
     if (isFinished) {
       connection.setWarmed(true);
       this._connectionPool.release(record);
-      this._markNodeAsComplete(node, totalElapsedTime);
+      this._markNodeAsComplete(node, totalElapsedTime, calculation.connectionTiming);
     } else {
       timingData.timeElapsed += calculation.timeElapsed;
       timingData.timeElapsedOvershoot += calculation.timeElapsed - timePeriodLength;
