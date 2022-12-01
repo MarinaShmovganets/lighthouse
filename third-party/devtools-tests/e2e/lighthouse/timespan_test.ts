@@ -30,6 +30,9 @@ describe('Timespan', async function() {
   this.timeout(60_000);
 
   beforeEach(() => {
+    // https://github.com/GoogleChrome/lighthouse/issues/14572
+    expectError(/Request CacheStorage\.requestCacheNames failed/);
+
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1357791
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
