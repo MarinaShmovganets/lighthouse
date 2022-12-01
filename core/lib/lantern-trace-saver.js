@@ -34,9 +34,6 @@ function convertNodeTimingsToTrace(nodeTimings) {
     } else {
       // Ignore data URIs as they don't really add much value
       if (/^data/.test(node.record.url)) continue;
-      if (requestId === 1) {
-        traceEvents.push(createWillSendRequestEvent(requestId, node.record, timing));
-      }
       traceEvents.push(...createFakeNetworkEvents(requestId, node.record, timing));
       requestId++;
     }
@@ -185,7 +182,9 @@ function convertNodeTimingsToTrace(nodeTimings) {
       fromCache: record.fromDiskCache,
       fromServiceWorker: record.fetchedViaServiceWorker,
       timing: {
+        // `requestTime` is in seconds.
         requestTime: toMicroseconds(startTime) / (1000 * 1000),
+        // Remaining values are milliseconds after `requestTime`.
         dnsStart: dnsResolutionTime === undefined ? -1 : 0,
         dnsEnd: dnsResolutionTime ?? -1,
         connectStart: dnsResolutionTime ?? -1,
@@ -213,7 +212,14 @@ function convertNodeTimingsToTrace(nodeTimings) {
     };
 
     /** @type {LH.TraceEvent[]} */
-    const events = [
+    const events = [];
+
+    // Navigation request needs an additional ResourceWillSendRequest event.
+    if (requestId === 1) {
+      events.push(createWillSendRequestEvent(requestId, record, timing));
+    }
+
+    events.push(
       {
         ...baseRequestEvent,
         name: 'ResourceSendRequest',
@@ -225,8 +231,8 @@ function convertNodeTimingsToTrace(nodeTimings) {
         name: 'ResourceFinish',
         ts: toMicroseconds(endTime),
         args: {data: resourceFinishData},
-      },
-    ];
+      }
+    );
 
     if (!record.failed) {
       events.push({
