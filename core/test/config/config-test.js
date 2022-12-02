@@ -9,10 +9,8 @@ import jestMock from 'jest-mock';
 import {Audit as BaseAudit} from '../../audits/audit.js';
 import * as constants from '../../config/constants.js';
 import BaseGatherer from '../../gather/base-gatherer.js';
-import {initializeConfig, getConfigDisplayString} from '../../config/config.js';
+import {initializeConfig} from '../../config/config.js';
 import {LH_ROOT} from '../../../root.js';
-import * as format from '../../../shared/localization/format.js';
-import defaultConfig from '../../config/default-config.js';
 
 const {nonSimulatedPassConfigOverrides} = constants;
 
@@ -433,70 +431,5 @@ describe('Fraggle Rock Config', () => {
 
     await expect(initializeConfig('navigation', extensionConfig)).rejects
       .toThrow(/did not support any gather modes/);
-  });
-});
-
-describe('getConfigDisplayString', () => {
-  it('doesn\'t include empty audit options in output', async () => {
-    const aOpt = 'auditOption';
-    const configJson = {
-      extends: 'lighthouse:default',
-      passes: [{
-        passName: 'defaultPass',
-        gatherers: [
-          {path: 'script-elements'},
-        ],
-      }],
-      audits: [
-        // `options` merged into default `metrics` audit.
-        {path: 'metrics', options: {aOpt}},
-      ],
-    };
-
-    const {config} = await initializeConfig('navigation', configJson);
-    const printed = getConfigDisplayString(config);
-    const printedConfig = JSON.parse(printed);
-
-    // Check that options weren't completely eliminated.
-    const metricsAudit = printedConfig.audits.find(/** @param {any} a */ a => a.path === 'metrics');
-    expect(metricsAudit.options.aOpt).toEqual(aOpt);
-
-    for (const audit of printedConfig.audits) {
-      if (audit.options) {
-        expect(audit.options).not.toEqual({});
-      }
-    }
-  });
-
-  it('returns localized category titles', async () => {
-    const {config} = await initializeConfig('navigation');
-    const printed = getConfigDisplayString(config);
-    const printedConfig = JSON.parse(printed);
-    let localizableCount = 0;
-
-    for (const [printedCategoryId, printedCategory] of Object.entries(printedConfig.categories)) {
-      if (!defaultConfig.categories) throw new Error('Default config will have categories');
-      if (!defaultConfig.settings?.locale) throw new Error('Default config will have a locale');
-      const origTitle = defaultConfig.categories[printedCategoryId].title;
-      if (format.isIcuMessage(origTitle)) localizableCount++;
-      const i18nOrigTitle = format.getFormatted(origTitle, defaultConfig.settings.locale);
-
-      expect(printedCategory.title).toStrictEqual(i18nOrigTitle);
-    }
-
-    // Should have localized at least one string.
-    expect(localizableCount).toBeGreaterThan(0);
-  });
-
-  it('returns a valid ConfigJson that can make an identical Config', async () => {
-    // depends on defaultConfig having a `path` for all gatherers and audits.
-    const {config: firstConfig} = await initializeConfig('navigation');
-    const firstPrint = getConfigDisplayString(firstConfig);
-
-    const {config: secondConfig} =
-      await initializeConfig('navigation', JSON.parse(firstPrint));
-    const secondPrint = getConfigDisplayString(secondConfig);
-
-    expect(firstPrint).toEqual(secondPrint);
   });
 });

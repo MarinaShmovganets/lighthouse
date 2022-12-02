@@ -30,7 +30,6 @@ import {
   mergeConfigFragmentArrayByKey,
 } from './config-helpers.js';
 import {getModuleDirectory} from '../../esm-utils.js';
-import * as format from '../../shared/localization/format.js';
 
 const defaultConfigPath = path.join(
   getModuleDirectory(import.meta),
@@ -275,51 +274,7 @@ async function initializeConfig(gatherMode, configJSON, flags = {}) {
   return {config, warnings};
 }
 
-/**
- * @param {LH.Config.FRConfig} config
- * @return {string}
- */
-function getConfigDisplayString(config) {
-  /** @type {LH.Config.FRConfig} */
-  const jsonConfig = JSON.parse(JSON.stringify(config));
-
-  if (jsonConfig.navigations) {
-    for (const navigation of jsonConfig.navigations) {
-      for (let i = 0; i < navigation.artifacts.length; ++i) {
-        // @ts-expect-error Breaking the Config.AnyArtifactDefn type.
-        navigation.artifacts[i] = navigation.artifacts[i].id;
-      }
-    }
-  }
-
-  if (jsonConfig.artifacts) {
-    for (const artifactDefn of jsonConfig.artifacts) {
-      // @ts-expect-error Breaking the Config.AnyArtifactDefn type.
-      artifactDefn.gatherer = artifactDefn.gatherer.path;
-      // Dependencies are not declared on Config JSON
-      artifactDefn.dependencies = undefined;
-    }
-  }
-
-  if (jsonConfig.audits) {
-    for (const auditDefn of jsonConfig.audits) {
-      // @ts-expect-error Breaking the Config.AuditDefn type.
-      auditDefn.implementation = undefined;
-      if (Object.keys(auditDefn.options).length === 0) {
-        // @ts-expect-error Breaking the Config.AuditDefn type.
-        auditDefn.options = undefined;
-      }
-    }
-  }
-
-  // Printed config is more useful with localized strings.
-  format.replaceIcuMessages(jsonConfig, jsonConfig.settings.locale);
-
-  return JSON.stringify(jsonConfig, null, 2);
-}
-
 export {
   resolveWorkingCopy,
   initializeConfig,
-  getConfigDisplayString,
 };

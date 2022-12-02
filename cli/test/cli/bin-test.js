@@ -67,7 +67,6 @@ beforeEach(async () => {
     listAllAudits: false,
     listLocales: false,
     listTraceCategories: false,
-    printConfig: false,
   };
   mockGetFlags.mockImplementation(() => cliFlags);
 });
