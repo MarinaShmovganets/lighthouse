@@ -10,6 +10,7 @@ import log from 'lighthouse-logger';
 
 import legacyDefaultConfig from './legacy-default-config.js';
 import * as constants from '../../config/constants.js';
+import * as format from '../../../shared/localization/format.js';
 import * as validation from '../../config/validation.js';
 import {Runner} from '../../runner.js';
 import {
@@ -205,6 +206,41 @@ class Config {
 
     assertValidPasses(this.passes, this.audits);
     validation.assertValidCategories(this.categories, this.audits, this.groups);
+  }
+
+  /**
+   * Provides a cleaned-up, stringified version of this config. Gatherer and
+   * Audit `implementation` and `instance` do not survive this process.
+   * @return {string}
+   */
+  getPrintString() {
+    const jsonConfig = deepClone(this);
+
+    if (jsonConfig.passes) {
+      for (const pass of jsonConfig.passes) {
+        for (const gathererDefn of pass.gatherers) {
+          gathererDefn.implementation = undefined;
+          // @ts-expect-error Breaking the Config.GathererDefn type.
+          gathererDefn.instance = undefined;
+        }
+      }
+    }
+
+    if (jsonConfig.audits) {
+      for (const auditDefn of jsonConfig.audits) {
+        // @ts-expect-error Breaking the Config.AuditDefn type.
+        auditDefn.implementation = undefined;
+        if (Object.keys(auditDefn.options).length === 0) {
+          // @ts-expect-error Breaking the Config.AuditDefn type.
+          auditDefn.options = undefined;
+        }
+      }
+    }
+
+    // Printed config is more useful with localized strings.
+    format.replaceIcuMessages(jsonConfig, jsonConfig.settings.locale);
+
+    return JSON.stringify(jsonConfig, null, 2);
   }
 
   /**

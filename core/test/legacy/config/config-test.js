@@ -16,6 +16,7 @@ import * as constants from '../../../config/constants.js';
 import {Gatherer} from '../../../gather/gatherers/gatherer.js';
 import {Audit} from '../../../audits/audit.js';
 import * as i18n from '../../../lib/i18n/i18n.js';
+import * as format from '../../../../shared/localization/format.js';
 import {getModuleDirectory, getModulePath} from '../../../../esm-utils.js';
 
 const require = createRequire(import.meta.url);
@@ -1445,6 +1446,66 @@ describe('Config', () => {
 
       await assert.rejects(loadGatherer(`${root}/missing-after-pass`),
         /afterPass\(\) method/);
+    });
+  });
+
+  describe('#getPrintString', () => {
+    it('doesn\'t include empty audit options in output', async () => {
+      const aOpt = 'auditOption';
+      const configJson = {
+        extends: 'lighthouse:default',
+        passes: [{
+          passName: 'defaultPass',
+          gatherers: [
+            {path: 'script-elements'},
+          ],
+        }],
+        audits: [
+          // `options` merged into default `metrics` audit.
+          {path: 'metrics', options: {aOpt}},
+        ],
+      };
+
+      const printed = (await Config.fromJson(configJson)).getPrintString();
+      const printedConfig = JSON.parse(printed);
+
+      // Check that options weren't completely eliminated.
+      const metricsAudit = printedConfig.audits.find(a => a.path === 'metrics');
+      assert.strictEqual(metricsAudit.options.aOpt, aOpt);
+
+      for (const audit of printedConfig.audits) {
+        if (audit.options) {
+          assert.ok(Object.keys(audit.options).length > 0);
+        }
+      }
+    });
+
+    it('prints localized category titles', async () => {
+      const printed = (await Config.fromJson(legacyDefaultConfig)).getPrintString();
+      const printedConfig = JSON.parse(printed);
+      let localizableCount = 0;
+
+      Object.entries(printedConfig.categories).forEach(([printedCategoryId, printedCategory]) => {
+        const origTitle = origConfig.categories[printedCategoryId].title;
+        if (format.isIcuMessage(origTitle)) localizableCount++;
+        const i18nOrigTitle = format.getFormatted(origTitle, origConfig.settings.locale);
+
+        assert.strictEqual(printedCategory.title, i18nOrigTitle);
+      });
+
+      // Should have localized at least one string.
+      assert.ok(localizableCount > 0);
+    });
+
+    it('prints a valid ConfigJson that can make an identical Config', async () => {
+      // depends on defaultConfig having a `path` for all gatherers and audits.
+      const firstConfig = await Config.fromJson(legacyDefaultConfig);
+      const firstPrint = firstConfig.getPrintString();
+
+      const secondConfig = await Config.fromJson(JSON.parse(firstPrint));
+      const secondPrint = secondConfig.getPrintString();
+
+      assert.strictEqual(firstPrint, secondPrint);
     });
   });
 });
