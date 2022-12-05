@@ -4,13 +4,12 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {strict as assert} from 'assert';
+import assert from 'assert/strict';
 
 import jsdom from 'jsdom';
 
 import {Util} from '../../renderer/util.js';
 import {I18n} from '../../renderer/i18n.js';
-import URL from '../../../core/lib/url-shim.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {PerformanceCategoryRenderer} from '../../renderer/performance-category-renderer.js';
@@ -120,7 +119,7 @@ describe('PerfCategoryRenderer', () => {
     const disclamerLink = disclaimerEl.querySelector('a');
     assert.ok(disclamerLink, 'disclaimer contains coverted markdown link');
     const disclamerUrl = new URL(disclamerLink.href);
-    assert.strictEqual(disclamerUrl.hostname, 'web.dev');
+    assert.strictEqual(disclamerUrl.hostname, 'developer.chrome.com');
     const calcLink = disclaimerEl.querySelector('a.lh-calclink');
     assert.ok(calcLink, 'disclaimer contains scorecalc link');
     assert.strictEqual(new URL(calcLink.href).hostname, 'googlechrome.github.io');

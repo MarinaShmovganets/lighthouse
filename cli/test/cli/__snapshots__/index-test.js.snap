@@ -12,6 +12,10 @@ Object {
       "id": "Trace",
     },
     Object {
+      "gatherer": "network-user-agent",
+      "id": "NetworkUserAgent",
+    },
+    Object {
       "gatherer": "stacks",
       "id": "Stacks",
     },
@@ -103,14 +107,14 @@ Object {
       "title": "Budgets",
     },
     "diagnostics": Object {
-      "description": "More information about the performance of your application. These numbers don't [directly affect](https://web.dev/performance-scoring/) the Performance score.",
+      "description": "More information about the performance of your application. These numbers don't [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score.",
       "title": "Diagnostics",
     },
     "hidden": Object {
       "title": "",
     },
     "load-opportunities": Object {
-      "description": "These suggestions can help your page load faster. They don't [directly affect](https://web.dev/performance-scoring/) the Performance score.",
+      "description": "These suggestions can help your page load faster. They don't [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score.",
       "title": "Opportunities",
     },
     "metrics": Object {
@@ -131,7 +135,7 @@ Object {
       "title": "Crawling and Indexing",
     },
     "seo-mobile": Object {
-      "description": "Make sure your pages are mobile friendly so users don’t have to pinch or zoom in order to read the content pages. [Learn more](https://developers.google.com/search/mobile-sites/).",
+      "description": "Make sure your pages are mobile friendly so users don’t have to pinch or zoom in order to read the content pages. [Learn how to make pages mobile-friendly](https://developers.google.com/search/mobile-sites/).",
       "title": "Mobile Friendly",
     },
   },
@@ -140,6 +144,7 @@ Object {
       "artifacts": Array [
         "DevtoolsLog",
         "Trace",
+        "NetworkUserAgent",
         "Stacks",
         "devtoolsLogs",
         "traces",
@@ -281,14 +286,14 @@ Object {
       "title": "Budgets",
     },
     "diagnostics": Object {
-      "description": "More information about the performance of your application. These numbers don't [directly affect](https://web.dev/performance-scoring/) the Performance score.",
+      "description": "More information about the performance of your application. These numbers don't [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score.",
       "title": "Diagnostics",
     },
     "hidden": Object {
       "title": "",
     },
     "load-opportunities": Object {
-      "description": "These suggestions can help your page load faster. They don't [directly affect](https://web.dev/performance-scoring/) the Performance score.",
+      "description": "These suggestions can help your page load faster. They don't [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score.",
       "title": "Opportunities",
     },
     "metrics": Object {
@@ -309,7 +314,7 @@ Object {
       "title": "Crawling and Indexing",
     },
     "seo-mobile": Object {
-      "description": "Make sure your pages are mobile friendly so users don’t have to pinch or zoom in order to read the content pages. [Learn more](https://developers.google.com/search/mobile-sites/).",
+      "description": "Make sure your pages are mobile friendly so users don’t have to pinch or zoom in order to read the content pages. [Learn how to make pages mobile-friendly](https://developers.google.com/search/mobile-sites/).",
       "title": "Mobile Friendly",
     },
   },
