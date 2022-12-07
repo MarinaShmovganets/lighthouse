@@ -66,6 +66,9 @@ function loadArtifacts(basePath) {
     const passName = filename.replace(devtoolsLogSuffix, '');
     const devtoolsLog = JSON.parse(fs.readFileSync(path.join(basePath, filename), 'utf8'));
     artifacts.devtoolsLogs[passName] = devtoolsLog;
+    if (passName === 'defaultPass') {
+      artifacts.DevtoolsLog = devtoolsLog;
+    }
   });
 
   // load traces
@@ -75,6 +78,9 @@ function loadArtifacts(basePath) {
     const trace = JSON.parse(file);
     const passName = filename.replace(traceSuffix, '');
     artifacts.traces[passName] = Array.isArray(trace) ? {traceEvents: trace} : trace;
+    if (passName === 'defaultPass') {
+      artifacts.Trace = artifacts.traces[passName];
+    }
   });
 
   if (Array.isArray(artifacts.Timing)) {
@@ -197,7 +203,10 @@ async function saveArtifacts(artifacts, basePath) {
     }
   }
 
-  const {traces, devtoolsLogs, ...restArtifacts} = artifacts;
+  // `DevtoolsLog` and `Trace` will always be the 'defaultPass' version.
+  // We don't need to save them twice, so extract them here.
+  // eslint-disable-next-line no-unused-vars
+  const {traces, devtoolsLogs, DevtoolsLog, Trace, ...restArtifacts} = artifacts;
 
   // save traces
   for (const [passName, trace] of Object.entries(traces)) {

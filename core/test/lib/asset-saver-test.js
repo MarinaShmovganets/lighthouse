@@ -233,6 +233,35 @@ describe('asset-saver helper', () => {
     });
   });
 
+  describe('loadFlowArtifacts', () => {
+    it('loads flow artifacts from disk', async () => {
+      const artifactsPath = moduleDir + '/../fixtures/fraggle-rock/artifacts/';
+      const flowArtifacts = await assetSaver.loadFlowArtifacts(artifactsPath);
+
+      const artifactsList = flowArtifacts.gatherSteps.map(gatherStep => gatherStep.artifacts);
+
+      expect(artifactsList[0].GatherContext.gatherMode).toEqual('navigation');
+      expect(artifactsList[0].URL.finalDisplayedUrl).toEqual('https://www.mikescerealshack.co/');
+      expect(artifactsList[0].DevtoolsLog.length).toBeGreaterThan(10);
+      expect(artifactsList[0].Trace.traceEvents.length).toBeGreaterThan(10);
+
+      expect(artifactsList[1].GatherContext.gatherMode).toEqual('timespan');
+      expect(artifactsList[1].URL.finalDisplayedUrl).toEqual('https://www.mikescerealshack.co/search?q=call+of+duty');
+      expect(artifactsList[1].DevtoolsLog.length).toBeGreaterThan(10);
+      expect(artifactsList[1].Trace.traceEvents.length).toBeGreaterThan(10);
+
+      expect(artifactsList[2].GatherContext.gatherMode).toEqual('snapshot');
+      expect(artifactsList[2].URL.finalDisplayedUrl).toEqual('https://www.mikescerealshack.co/search?q=call+of+duty');
+      expect(artifactsList[2].DevtoolsLog).toBeUndefined();
+      expect(artifactsList[2].Trace).toBeUndefined();
+
+      expect(artifactsList[3].GatherContext.gatherMode).toEqual('navigation');
+      expect(artifactsList[3].URL.finalDisplayedUrl).toEqual('https://www.mikescerealshack.co/corrections');
+      expect(artifactsList[3].DevtoolsLog.length).toBeGreaterThan(10);
+      expect(artifactsList[3].Trace.traceEvents.length).toBeGreaterThan(10);
+    });
+  });
+
   describe('JSON serialization', () => {
     const outputPath = moduleDir + '/json-serialization-test-data/';
 
@@ -246,6 +275,15 @@ describe('asset-saver helper', () => {
 
       await assetSaver.saveArtifacts(originalArtifacts, outputPath);
       const roundTripArtifacts = await assetSaver.loadArtifacts(outputPath);
+      expect(roundTripArtifacts).toStrictEqual(originalArtifacts);
+    });
+
+    it('round trips saved flow artifacts', async () => {
+      const flowArtifactsPath = moduleDir + '/../fixtures/fraggle-rock/artifacts/';
+      const originalArtifacts = await assetSaver.loadFlowArtifacts(flowArtifactsPath);
+
+      await assetSaver.saveFlowArtifacts(originalArtifacts, outputPath);
+      const roundTripArtifacts = await assetSaver.loadFlowArtifacts(outputPath);
       expect(roundTripArtifacts).toStrictEqual(originalArtifacts);
     });
 
