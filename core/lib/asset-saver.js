@@ -111,7 +111,7 @@ function loadFlowArtifacts(basePath) {
 
   flowArtifacts.gatherSteps = [];
   for (const filename of filenames) {
-    const regexResult = /^step([0-9]+)$/.exec(filename);
+    const regexResult = /^step(\d+)$/.exec(filename);
     if (!regexResult) continue;
 
     const index = Number(regexResult[1]);
@@ -153,6 +153,16 @@ function stringifyReplacer(key, value) {
 }
 
 /**
+ * Saves flow artifacts with the following file structure:
+ *   flow/                             --  Directory specified by `basePath`.
+ *     options.json                    --  Flow options (e.g. flow name, flags).
+ *     step0/                          --  Directory containing artifacts for the first step.
+ *       options.json                  --  First step's options (e.g. step flags).
+ *       artifacts.json                --  First step's artifacts except the DevTools log and trace.
+ *       defaultPass.devtoolslog.json  --  First step's DevTools log.
+ *       defaultPass.trace.json        --  First step's trace.
+ *     step1/                          --  Directory containing artifacts for the second step.
+ *
  * @param {LH.UserFlow.FlowArtifacts} flowArtifacts
  * @param {string} basePath
  * @return {Promise<void>}
