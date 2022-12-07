@@ -31,6 +31,7 @@ const optionsFilename = 'options.json';
 const artifactsFilename = 'artifacts.json';
 const traceSuffix = '.trace.json';
 const devtoolsLogSuffix = '.devtoolslog.json';
+const stepDirectoryRegex = /^step(\d+)$/;
 
 /**
  * @typedef {object} PreparedAssets
@@ -111,7 +112,7 @@ function loadFlowArtifacts(basePath) {
 
   flowArtifacts.gatherSteps = [];
   for (const filename of filenames) {
-    const regexResult = /^step(\d+)$/.exec(filename);
+    const regexResult = stepDirectoryRegex.exec(filename);
     if (!regexResult) continue;
 
     const index = Number(regexResult[1]);
@@ -171,6 +172,14 @@ async function saveFlowArtifacts(flowArtifacts, basePath) {
   const status = {msg: 'Saving flow artifacts', id: 'lh:assetSaver:saveArtifacts'};
   log.time(status);
   fs.mkdirSync(basePath, {recursive: true});
+
+  // Delete any previous artifacts in this directory.
+  const filenames = fs.readdirSync(basePath);
+  for (const filename of filenames) {
+    if (stepDirectoryRegex.test(filename) || filename === optionsFilename) {
+      fs.rmSync(`${basePath}/${filename}`, {recursive: true});
+    }
+  }
 
   const {gatherSteps, ...flowOptions} = flowArtifacts;
   for (let i = 0; i < gatherSteps.length; ++i) {

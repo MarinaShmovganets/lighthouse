@@ -230,6 +230,8 @@ describe('asset-saver helper', () => {
       assert.strictEqual(artifacts.URL.requestedUrl, 'https://www.reddit.com/r/nba');
       assert.strictEqual(artifacts.devtoolsLogs.defaultPass.length, 555);
       assert.strictEqual(artifacts.traces.defaultPass.traceEvents.length, 13);
+      assert.strictEqual(artifacts.DevtoolsLog.length, 555);
+      assert.strictEqual(artifacts.Trace.traceEvents.length, 13);
     });
   });
 
@@ -314,6 +316,32 @@ describe('asset-saver helper', () => {
       expect(fs.existsSync(existingTracePath)).toBe(false);
 
       const roundTripArtifacts = await assetSaver.loadArtifacts(outputPath);
+      expect(roundTripArtifacts).toStrictEqual(originalArtifacts);
+    });
+
+    it('deletes existing flow artifact files before saving', async () => {
+      // Write some fake artifact files to start with.
+      fs.mkdirSync(outputPath, {recursive: true});
+      fs.writeFileSync(`${outputPath}options.json`, '{}');
+
+      const step0Path = `${outputPath}step0`;
+      fs.mkdirSync(step0Path, {recursive: true});
+      fs.writeFileSync(`${step0Path}/options.json`, '{}');
+      fs.writeFileSync(`${step0Path}/artifacts.json`, '{"BenchmarkIndex": 1731.5}');
+      const existingTracePath = `${step0Path}/bestPass.trace.json`;
+      fs.writeFileSync(existingTracePath, '{"traceEvents": []}');
+      const existingDevtoolslogPath = `${step0Path}/bestPass.devtoolslog.json`;
+      fs.writeFileSync(existingDevtoolslogPath, '[]');
+
+      const artifactsPath = moduleDir + '/../fixtures/fraggle-rock/artifacts';
+      const originalArtifacts = await assetSaver.loadFlowArtifacts(artifactsPath);
+
+      await assetSaver.saveFlowArtifacts(originalArtifacts, outputPath);
+
+      expect(fs.existsSync(existingDevtoolslogPath)).toBe(false);
+      expect(fs.existsSync(existingTracePath)).toBe(false);
+
+      const roundTripArtifacts = await assetSaver.loadFlowArtifacts(outputPath);
       expect(roundTripArtifacts).toStrictEqual(originalArtifacts);
     });
 
