@@ -247,6 +247,8 @@ describe('asset-saver helper', () => {
 
       const artifactsList = flowArtifacts.gatherSteps.map(gatherStep => gatherStep.artifacts);
 
+      expect(artifactsList).toHaveLength(4);
+
       expect(artifactsList[0].GatherContext.gatherMode).toEqual('navigation');
       expect(artifactsList[0].URL.finalDisplayedUrl).toEqual('https://www.mikescerealshack.co/');
       expect(artifactsList[0].DevtoolsLog.length).toBeGreaterThan(10);
