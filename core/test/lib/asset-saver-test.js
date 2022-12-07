@@ -238,6 +238,13 @@ describe('asset-saver helper', () => {
       const artifactsPath = moduleDir + '/../fixtures/fraggle-rock/artifacts/';
       const flowArtifacts = await assetSaver.loadFlowArtifacts(artifactsPath);
 
+      expect(flowArtifacts.gatherSteps.map(gatherStep => gatherStep.flags)).toEqual([
+        {skipAboutBlank: true},
+        {name: 'Search input'},
+        {name: 'Search results'},
+        {skipAboutBlank: true, disableStorageReset: true},
+      ]);
+
       const artifactsList = flowArtifacts.gatherSteps.map(gatherStep => gatherStep.artifacts);
 
       expect(artifactsList[0].GatherContext.gatherMode).toEqual('navigation');
