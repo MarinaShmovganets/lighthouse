@@ -662,7 +662,7 @@ class TraceProcessor {
       // define the frame tree. Unfortunately, many test traces do not that frame info due to minification.
       // This ensures there is always a minimal frame tree and events so those tests don't fail.
       log.warn(
-        'TraceProcessor'
+        'TraceProcessor',
         'frameTreeEvents may be incomplete, make sure the trace has frame events'
       );
       frameIdToRootFrameId.set(mainFrameIds.frameId, mainFrameIds.frameId);
