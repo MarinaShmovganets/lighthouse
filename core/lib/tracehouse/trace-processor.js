@@ -890,7 +890,8 @@ class TraceProcessor {
     if (!firstMeaningfulPaint) {
       const fmpCand = 'firstMeaningfulPaintCandidate';
       fmpFellBack = true;
-      log.verbose('TraceProcessor', `No firstMeaningfulPaint found, falling back to last ${fmpCand}`);
+      log.verbose('TraceProcessor', 
+        `No firstMeaningfulPaint found, falling back to last ${fmpCand}`);
       const lastCandidate = frameEvents.filter(e => e.name === fmpCand).pop();
       if (!lastCandidate) {
         log.verbose('TraceProcessor', 'No `firstMeaningfulPaintCandidate` events found in trace');
