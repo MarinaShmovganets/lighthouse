@@ -183,7 +183,7 @@ async function search(page) {
   // Phase 2 - Interact with the page and submit the search form.
   await flow.startTimespan();
   await search(page);
-   await flow.endTimespan();
+  await flow.endTimespan();
 
   // Phase 3 - Analyze the new state.
   await flow.snapshot();
