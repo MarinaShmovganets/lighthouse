@@ -1,6 +1,6 @@
 # User Flows in Lighthouse
 
-Historically, Lighthouse has analyzed the cold pageload of a page. Starting in 2022 (Lighthouse v10), it can analyze and report on the entire page lifecycle via "user flows".
+Historically, Lighthouse has analyzed the cold pageload of a page. Starting in 2022, it can analyze and report on the entire page lifecycle via "user flows".
 
 #### You might be interested in flows if…
 
