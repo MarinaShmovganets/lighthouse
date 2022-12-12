@@ -64,7 +64,7 @@ import {startFlow} from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
 
 ##### Triggering a navigation via user interactions
 
-Instead of providing a URL to navigate to, you can provide a callback function or use `startNavigation`/`endNavigation`, as seen above. This is useful when you want to audit a navigation that's initiated by a scenario like a button click or form submission.
+Instead of providing a URL to navigate to, you can provide a callback function, as seen above. This is useful when you want to audit a navigation that's initiated by a scenario like a button click or form submission.
 
 > Aside: Lighthouse typically clears out any active Service Worker and Cache Storage for the origin under test. However, in this case, as it doesn't know the URL being analyzed, Lighthouse cannot clear this storage. This generally reflects the real user experience, but if you still wish to clear the Service Workers and Cache Storage you must do it manually.
 
@@ -181,7 +181,9 @@ async function search(page) {
   await flow.navigate('https://www.bestbuy.com');
 
   // Phase 2 - Interact with the page and submit the search form.
-  await flow.navigate(async () => await search(page));
+  await flow.startTimespan();
+  await search(page);
+   await flow.endTimespan();
 
   // Phase 3 - Analyze the new state.
   await flow.snapshot();
