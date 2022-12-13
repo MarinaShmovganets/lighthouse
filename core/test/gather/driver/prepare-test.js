@@ -37,8 +37,6 @@ beforeEach(() => {
 });
 
 describe('.prepareThrottlingAndNetwork()', () => {
-  after(() => timers.dispose());
-
   it('sets throttling appropriately', async () => {
     await prepare.prepareThrottlingAndNetwork(
       sessionMock.asSession(),
@@ -151,8 +149,6 @@ describe('.prepareThrottlingAndNetwork()', () => {
 });
 
 describe('.prepareTargetForIndividualNavigation()', () => {
-  after(() => timers.dispose());
-
   it('clears storage when not disabled', async () => {
     await prepare.prepareTargetForIndividualNavigation(
       sessionMock.asSession(),
@@ -210,8 +206,6 @@ describe('.prepareTargetForIndividualNavigation()', () => {
 });
 
 describe('.prepareTargetForNavigationMode()', () => {
-  after(() => timers.dispose());
-
   let driverMock = createMockDriver();
 
   beforeEach(() => {
