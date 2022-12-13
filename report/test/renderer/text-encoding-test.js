@@ -11,14 +11,12 @@ import pako from 'pako';
 import {TextEncoding} from '../../renderer/text-encoding.js';
 import {LH_ROOT} from '../../../root.js';
 
-/* eslint-env jest */
-
 describe('TextEncoding', () => {
-  beforeAll(() => {
+  before(() => {
     global.window = {pako};
   });
 
-  afterAll(() => {
+  after(() => {
     global.window = undefined;
   });
 

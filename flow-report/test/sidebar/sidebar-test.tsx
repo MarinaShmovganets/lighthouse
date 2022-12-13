@@ -12,7 +12,6 @@ import {SidebarHeader, SidebarRuntimeSettings, SidebarSummary} from '../../src/s
 import {FlowResultContext} from '../../src/util';
 import {flowResult} from '../sample-flow';
 
-
 let wrapper: FunctionComponent;
 
 beforeEach(() => {
@@ -59,10 +58,18 @@ describe('SidebarRuntimeSettings', () => {
         throughputKbps: 1.6 * 1024,
         rttMs: 150,
       },
+      screenEmulation: {
+        disabled: false,
+        width: 200,
+        height: 200,
+        deviceScaleFactor: 3,
+        mobile: true,
+      },
     } as any;
     const root = render(<SidebarRuntimeSettings settings={settings}/>, {wrapper});
 
-    expect(root.getByText('Emulated Moto G4')).toBeTruthy();
+    expect(root.getByText('Emulated Moto G4 - 200x200, DPR 3')).toBeTruthy();
+    expect(root.queryByText('Emulated Moto G4 -')).toBeFalsy();
     expect(root.getByText('Slow 4G throttling')).toBeTruthy();
     expect(root.getByText('4x slowdown'));
   });
@@ -79,11 +86,31 @@ describe('SidebarRuntimeSettings', () => {
         throughputKbps: 1,
         rttMs: 1,
       },
+      screenEmulation: {
+        width: 100,
+        height: 100,
+        mobile: false,
+        deviceScaleFactor: 2,
+      },
     } as any;
     const root = render(<SidebarRuntimeSettings settings={settings}/>, {wrapper});
 
-    expect(root.getByText('Emulated Desktop')).toBeTruthy();
+    expect(root.getByText('Emulated Desktop - 100x100, DPR 2')).toBeTruthy();
     expect(root.getByText('Custom throttling')).toBeTruthy();
     expect(root.getByText('1x slowdown'));
+  });
+
+  it('displays runtime settings when screenEmulation disabled', async () => {
+    const settings = {
+      formFactor: 'mobile',
+      throttlingMethod: 'provided',
+      throttling: {},
+      screenEmulation: {disabled: true},
+    } as any;
+    const root = render(<SidebarRuntimeSettings settings={settings}/>, {wrapper});
+
+    expect(root.getByText('No emulation')).toBeTruthy();
+    expect(root.queryByText('Emulated Moto G4 -')).toBeFalsy();
+    expect(root.getByText('Provided by environment')).toBeTruthy();
   });
 });

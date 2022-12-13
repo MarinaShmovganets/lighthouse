@@ -279,7 +279,7 @@ export class LighthouseReportViewer {
     // Reset container content.
     container.innerHTML = '';
     const rootEl = document.createElement('div');
-    container.appendChild(rootEl);
+    container.append(rootEl);
 
     // Only give gist-saving callback if current report isn't from a gist.
     let saveGistCallback;
@@ -301,7 +301,7 @@ export class LighthouseReportViewer {
         history.pushState({}, '', LighthouseReportViewer.APP_URL);
       }
     } catch (e) {
-      logger.error(`Error rendering report: ${e.message}`);
+      logger.error(`Error rendering report: ${e.stack}`);
       container.innerHTML = '';
       throw e;
     } finally {

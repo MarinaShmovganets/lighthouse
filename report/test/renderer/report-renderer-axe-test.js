@@ -4,29 +4,31 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-/* eslint-env jest */
-
 import puppeteer from 'puppeteer';
 
-import sampleResults from '../../../lighthouse-core/test/results/sample_v2.json';
-import reportGenerator from '../../generator/report-generator.js';
-import axeLib from '../../../lighthouse-core/lib/axe.js';
+import {ReportGenerator} from '../../generator/report-generator.js';
+import {axeSource} from '../../../core/lib/axe.js';
+import {readJson} from '../../../core/test/test-utils.js';
+
+const sampleResults = readJson('../../../core/test/results/sample_v2.json', import.meta);
 
 describe('ReportRendererAxe', () => {
   describe('with aXe', () => {
     let browser;
 
-    beforeAll(async () => {
+    before(async () => {
       browser = await puppeteer.launch();
     });
 
-    afterAll(async () => {
+    after(async () => {
       await browser.close();
     });
 
+    // This test takes 10s on fast hardware, but can take longer in CI.
+    // https://github.com/dequelabs/axe-core/tree/b573b1c1/doc/examples/jest_react#timeout-issues
     it('renders without axe violations', async () => {
       const page = await browser.newPage();
-      const htmlReport = reportGenerator.generateReportHtml(sampleResults);
+      const htmlReport = ReportGenerator.generateReportHtml(sampleResults);
       await page.setContent(htmlReport);
 
       // Superset of Lighthouse's aXe config
@@ -50,7 +52,7 @@ describe('ReportRendererAxe', () => {
         },
       };
 
-      await page.evaluate(axeLib.source);
+      await page.evaluate(axeSource);
       // eslint-disable-next-line no-undef
       const axeResults = await page.evaluate(config => axe.run(config), config);
 
@@ -78,10 +80,6 @@ describe('ReportRendererAxe', () => {
         };
       });
       expect(axeSummary).toMatchSnapshot();
-    },
-    // This test takes 10s on fast hardware, but can take longer in CI.
-    // https://github.com/dequelabs/axe-core/tree/b573b1c1/doc/examples/jest_react#timeout-issues
-    /* timeout= */ 20_000
-    );
+    });
   });
 });
