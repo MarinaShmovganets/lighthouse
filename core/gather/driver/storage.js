@@ -24,9 +24,9 @@ const UIStrings = {
       `from affecting your scores.}
   }`,
   /** A warning that the data in the browser cache may have affected the measured performance because the operation to clear the browser cache timed out. */
-  warningCacheTimeout: 'Clearing the browser cache timed out. Audit this page in an incognito window to prevent cached resources from affecting your scores.',
+  warningCacheTimeout: 'Clearing the browser cache timed out. Try auditing this page again and file a bug if the issue persists.',
   /** A warning that the data on the page's origin may have affected the measured performance because the operation to clear the origin data timed out. */
-  warningOriginDataTimeout: 'Clearing the origin data timed out. Audit this page in an incognito window to prevent stored data from affecting your scores.',
+  warningOriginDataTimeout: 'Clearing the origin data timed out. Try auditing this page again and file a bug if the issue persists.',
 };
 /* eslint-enable max-len */
 
