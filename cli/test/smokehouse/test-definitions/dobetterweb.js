@@ -36,15 +36,6 @@ const imgB = {
  * Expected Lighthouse audit values for Do Better Web tests.
  */
 const expectations = {
-  networkRequests: {
-    // Number of network requests differs between Fraggle Rock and legacy modes because
-    // FR has fewer passes, preserve this check moving forward.
-    _fraggleRockOnly: true,
-
-    // 22 requests made for a single navigation.
-    // 6 extra requests made because stylesheets are evicted from the cache by the time DT opens.
-    length: 28,
-  },
   artifacts: {
     BenchmarkIndex: '<10000',
     HostFormFactor: 'desktop',
@@ -243,6 +234,8 @@ const expectations = {
               sourceLocation: {url: 'http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000'},
             },
             4: {
+              // In the DT runner, the initial page load before staring Lighthouse will prevent this error.
+              _excludeRunner: 'devtools',
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               sourceLocation: {url: 'http://localhost:10200/favicon.ico'},
@@ -321,6 +314,9 @@ const expectations = {
         details: {
           items: [
             {
+              // This feature was removed in M110.
+              // TODO: Remove this expectation once M110 reaches stable.
+              _maxChromiumVersion: '109',
               value: /`window.webkitStorageInfo` is deprecated/,
               source: {
                 type: 'source-location',
@@ -405,11 +401,29 @@ const expectations = {
         numericValue: 153,
         details: {
           items: [
-            {statistic: 'Total DOM Elements', value: 153},
-            {statistic: 'Maximum DOM Depth', value: 4},
+            {
+              statistic: 'Total DOM Elements',
+              value: {
+                type: 'numeric',
+                granularity: 1,
+                value: 153,
+              },
+            },
+            {
+              statistic: 'Maximum DOM Depth',
+              value: {
+                type: 'numeric',
+                granularity: 1,
+                value: 4,
+              },
+            },
             {
               statistic: 'Maximum Child Elements',
-              value: 100,
+              value: {
+                type: 'numeric',
+                granularity: 1,
+                value: 100,
+              },
               node: {snippet: '<div id="shadow-root-container">'},
             },
           ],

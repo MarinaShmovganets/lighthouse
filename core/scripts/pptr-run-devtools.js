@@ -10,12 +10,12 @@
  * May work on older versions of Chrome.
  *
  * To use with locally built DevTools and Lighthouse, run (assuming devtools at ~/src/devtools/devtools-frontend):
- *    yarn devtools
- *    yarn run-devtools --chrome-flags=--custom-devtools-frontend=file://$HOME/src/devtools/devtools-frontend/out/Default/gen/front_end
+ *    DEVTOOLS_PATH=~/src/devtools/devtools-frontend sh core/scripts/build-devtools.sh
+ *    yarn run-devtools --chrome-flags=--custom-devtools-frontend=file://$HOME/src/devtools/devtools-frontend/out/LighthouseIntegration/gen/front_end
  *
  * Or with the DevTools in .tmp:
  *   bash core/test/devtools-tests/setup.sh
- *   yarn run-devtools --chrome-flags=--custom-devtools-frontend=file://$PWD/.tmp/chromium-web-tests/devtools/devtools-frontend/out/Default/gen/front_end
+ *   yarn run-devtools --chrome-flags=--custom-devtools-frontend=file://$PWD/.tmp/chromium-web-tests/devtools/devtools-frontend/out/LighthouseIntegration/gen/front_end
  *
  * URL list file: yarn run-devtools < path/to/urls.txt
  * Single URL: yarn run-devtools "https://example.com"
@@ -288,6 +288,13 @@ async function installConsoleListener(inspectorSession, logs) {
 }
 
 /**
+ * @param {puppeteer.Dialog} dialog
+ */
+function dismissDialog(dialog) {
+  dialog.dismiss();
+}
+
+/**
  * @param {string} url
  * @param {{config?: LH.Config.Json, chromeFlags?: string[], useLegacyNavigation?: boolean}} [options]
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, logs: string[]}>}
@@ -315,9 +322,13 @@ async function testUrlFromDevtools(url, options = {}) {
     const logs = [];
     await installConsoleListener(inspectorSession, logs);
 
+    page.on('dialog', dismissDialog);
+
     await page.goto(url, {waitUntil: ['domcontentloaded']});
 
     await waitForFunction(inspectorSession, waitForLighthouseReady);
+
+    page.off('dialog', dismissDialog);
 
     if (!useLegacyNavigation) {
       await evaluateInSession(inspectorSession, disableLegacyNavigation);

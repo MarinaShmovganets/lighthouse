@@ -22,7 +22,7 @@ const UIStrings = {
   /** Description of a Lighthouse audit that tells the user *why* they should reduce the size of the web page's DOM. The size of a DOM is characterized by the total number of DOM elements and greatest DOM depth. This is displayed after a user expands the section to see more. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   description: 'A large DOM will increase memory usage, cause longer ' +
     '[style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), ' +
-    'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn how to avoid an excessive DOM size](https://web.dev/dom-size/).',
+    'and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn how to avoid an excessive DOM size](https://developer.chrome.com/docs/lighthouse/performance/dom-size/).',
   /** Table column header for the type of statistic. These statistics describe how big the DOM is (count of DOM elements, children, depth). */
   columnStatistic: 'Statistic',
   /** Table column header for the observed value of the DOM statistic. */
@@ -94,17 +94,29 @@ class DOMSize extends Audit {
     const items = [
       {
         statistic: str_(UIStrings.statisticDOMElements),
-        value: stats.totalBodyElements,
+        value: {
+          type: 'numeric',
+          granularity: 1,
+          value: stats.totalBodyElements,
+        },
       },
       {
         node: Audit.makeNodeItem(stats.depth),
         statistic: str_(UIStrings.statisticDOMDepth),
-        value: stats.depth.max,
+        value: {
+          type: 'numeric',
+          granularity: 1,
+          value: stats.depth.max,
+        },
       },
       {
         node: Audit.makeNodeItem(stats.width),
         statistic: str_(UIStrings.statisticDOMWidth),
-        value: stats.width.max,
+        value: {
+          type: 'numeric',
+          granularity: 1,
+          value: stats.width.max,
+        },
       },
     ];
 
