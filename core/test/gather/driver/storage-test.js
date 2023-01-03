@@ -41,7 +41,7 @@ describe('.clearDataForOrigin', () => {
     expect(warnings).toHaveLength(1);
     expect(warnings[0]).toBeDisplayString(
       'Clearing the origin data timed out. ' +
-      'Audit this page in an incognito window to prevent stored data from affecting your scores.'
+      'Try auditing this page again and file a bug if the issue persists.'
     );
   });
 
@@ -66,8 +66,7 @@ describe('.clearBrowserCaches', () => {
     expect(warnings).toHaveLength(1);
     expect(warnings[0]).toBeDisplayString(
       'Clearing the browser cache timed out. ' +
-      'Audit this page in an incognito window to prevent ' +
-      'cached resources from affecting your scores.'
+      'Try auditing this page again and file a bug if the issue persists.'
     );
   });
 
