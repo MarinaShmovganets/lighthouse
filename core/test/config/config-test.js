@@ -59,7 +59,7 @@ describe('Fraggle Rock Config', () => {
 
     expect(resolvedConfig.settings).toMatchObject({
       formFactor: 'mobile', // inherit from default
-      output: 'csv', // resolvedConfig-specific overrides
+      output: 'csv', // config-specific overrides
       maxWaitForFcp: 12345, // explicit overrides
     });
   });
@@ -126,7 +126,7 @@ describe('Fraggle Rock Config', () => {
 
   it('should support plugins', async () => {
     const {resolvedConfig} = await initializeConfig('navigation', undefined, {
-      configPath: `${LH_ROOT}/core/test/fixtures/resolvedConfig-plugins/`,
+      configPath: `${LH_ROOT}/core/test/fixtures/config-plugins/`,
       plugins: ['lighthouse-plugin-simple'],
     });
 
