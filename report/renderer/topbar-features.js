@@ -239,17 +239,14 @@ export class TopbarFeatures {
    * print dialog, all `<details>` are collapsed.
    */
   _setUpCollapseDetailsAfterPrinting() {
-    // We will feature detect w/ onbeforeprint, so gotta suppress typescript's narrowing.
-    /** @type {Omit<Window & typeof globalThis, 'onbeforeprint'> & {onbeforeprint?: any}} */
-    const self2 = self;
-
     // FF and IE implement these old events.
-    if ('onbeforeprint' in self2) {
-      self2.addEventListener('afterprint', this.collapseAllDetails);
+    const supportsOldPrintEvents = 'onbeforeprint' in self;
+    if (supportsOldPrintEvents) {
+      self.addEventListener('afterprint', this.collapseAllDetails);
     } else {
       // Note: FF implements both window.onbeforeprint and media listeners. However,
       // it doesn't matchMedia doesn't fire when matching 'print'.
-      self2.matchMedia('print').addListener(mql => {
+      self.matchMedia('print').addListener(mql => {
         if (mql.matches) {
           this.expandAllDetails();
         } else {
