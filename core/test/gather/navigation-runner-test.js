@@ -529,7 +529,7 @@ describe('NavigationRunner', () => {
         page,
         navigation,
         requestor: requestedUrl,
-        resolvedConfig: resolvedConfig,
+        resolvedConfig,
         computedCache,
         baseArtifacts,
       });
@@ -587,13 +587,13 @@ describe('NavigationRunner', () => {
   describe('_cleanup', () => {
     it('should clear storage when storage was reset', async () => {
       resolvedConfig.settings.disableStorageReset = false;
-      await runner._cleanup({requestedUrl, driver, resolvedConfig: resolvedConfig});
+      await runner._cleanup({requestedUrl, driver, resolvedConfig});
       expect(mocks.storageMock.clearDataForOrigin).toHaveBeenCalled();
     });
 
     it('should not clear storage when storage reset was disabled', async () => {
       resolvedConfig.settings.disableStorageReset = true;
-      await runner._cleanup({requestedUrl, driver, resolvedConfig: resolvedConfig});
+      await runner._cleanup({requestedUrl, driver, resolvedConfig});
       expect(mocks.storageMock.clearDataForOrigin).not.toHaveBeenCalled();
     });
   });
