@@ -10,7 +10,7 @@ import {createRequire} from 'module';
 
 import log from 'lighthouse-logger';
 
-import {Config} from '../../../legacy/config/config.js';
+import {LegacyResolvedConfig} from '../../../legacy/config/config.js';
 import legacyDefaultConfig from '../../../legacy/config/legacy-default-config.js';
 import * as constants from '../../../config/constants.js';
 import {Gatherer} from '../../../gather/gatherers/gatherer.js';
@@ -33,7 +33,7 @@ describe('Config', () => {
     const config = {
       audits: ['is-on-https'],
     };
-    const newConfig = Config.fromJson(config, {});
+    const newConfig = LegacyResolvedConfig.fromJson(config, {});
     assert.notEqual(config, newConfig);
   });
 
@@ -60,7 +60,7 @@ describe('Config', () => {
       }],
       audits: [MyAudit],
     };
-    const newConfig = await Config.fromJson(config);
+    const newConfig = await LegacyResolvedConfig.fromJson(config);
     assert.equal(MyGatherer, newConfig.passes[0].gatherers[0].implementation);
     assert.equal(MyAudit, newConfig.audits[0].implementation);
   });
@@ -87,7 +87,7 @@ describe('Config', () => {
         ],
       }],
     };
-    const newConfig = await Config.fromJson(config);
+    const newConfig = await LegacyResolvedConfig.fromJson(config);
     const configGatherers = newConfig.passes[0].gatherers;
     assert(configGatherers[0].instance instanceof MyGatherer);
     assert.equal(configGatherers[0].instance.secret, 1729);
@@ -96,7 +96,7 @@ describe('Config', () => {
   });
 
   it('uses the default config when no config is provided', async () => {
-    const config = await Config.fromJson();
+    const config = await LegacyResolvedConfig.fromJson();
     assert.deepStrictEqual(config.categories, origConfig.categories);
     assert.deepStrictEqual(config.audits.map(a => a.path), origConfig.audits);
   });
@@ -113,7 +113,7 @@ describe('Config', () => {
       }],
     };
 
-    await assert.rejects(Config.fromJson(configJson), /unique/);
+    await assert.rejects(LegacyResolvedConfig.fromJson(configJson), /unique/);
   });
 
   it('defaults passName to defaultPass', async () => {
@@ -124,7 +124,7 @@ describe('Config', () => {
       }],
     };
 
-    const config = await Config.fromJson(configJson);
+    const config = await LegacyResolvedConfig.fromJson(configJson);
     const defaultPass = config.passes.find(pass => pass.passName === 'defaultPass');
     assert.ok(
       defaultPass.gatherers.find(gatherer => gatherer.implementation === MyGatherer),
@@ -153,7 +153,7 @@ describe('Config', () => {
       static audit() {}
     }
 
-    await expect(Config.fromJson({
+    await expect(LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       audits: [NeedsWhatYouCantGive],
     // eslint-disable-next-line max-len
@@ -183,7 +183,7 @@ describe('Config', () => {
     }
 
     // Shouldn't throw.
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       audits: [DoesntNeedYourCrap],
     }, {
@@ -214,7 +214,7 @@ describe('Config', () => {
       static audit() {}
     }
 
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       audits: [ButWillStillTakeYourCrap],
     }, {
@@ -246,7 +246,7 @@ describe('Config', () => {
       static audit() {}
     }
 
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       audits: [ButWillStillTakeYourCrap],
     }, {
@@ -278,7 +278,7 @@ describe('Config', () => {
       static audit() {}
     }
 
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       audits: [ButWillStillTakeYourCrap],
     }, {
@@ -304,7 +304,7 @@ describe('Config', () => {
       static audit() {}
     }
 
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       audits: [BaseArtifactsAudit],
     }, {onlyAudits: ['base-artifacts-audit']});
@@ -323,7 +323,7 @@ describe('Config', () => {
       ],
     };
 
-    await assert.rejects(Config.fromJson(config), /Unable to locate/);
+    await assert.rejects(LegacyResolvedConfig.fromJson(config), /Unable to locate/);
   });
 
   it('doesn\'t mutate old gatherers when filtering passes', async () => {
@@ -338,12 +338,12 @@ describe('Config', () => {
       audits: ['is-on-https'],
     };
 
-    const _ = await Config.fromJson(configJSON);
+    const _ = await LegacyResolvedConfig.fromJson(configJSON);
     assert.equal(configJSON.passes[0].gatherers.length, 3);
   });
 
   it('expands audits', async () => {
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       audits: ['user-timings'],
     });
 
@@ -355,7 +355,7 @@ describe('Config', () => {
   });
 
   it('throws when an audit is not found', async () => {
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: ['/fake-path/non-existent-audit'],
     }), /locate audit/);
   });
@@ -363,7 +363,7 @@ describe('Config', () => {
   it('throws on a non-absolute config path', async () => {
     const configPath = '../../legacy/config/legacy-default-config.js';
 
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [],
     }, {configPath}), /absolute path/);
   });
@@ -373,7 +373,7 @@ describe('Config', () => {
       it('loads an audit relative to a config path', async () => {
         const configPath = modulePath;
 
-        return assert.doesNotReject(Config.fromJson({
+        return assert.doesNotReject(LegacyResolvedConfig.fromJson({
           audits: ['../../fixtures/valid-custom-audit' + variant],
         }, {configPath}));
       });
@@ -386,7 +386,7 @@ describe('Config', () => {
         assert.doesNotThrow(() => require.resolve(absoluteAuditPath));
         const relativePath = path.relative(process.cwd(), absoluteAuditPath);
 
-        return assert.doesNotReject(Config.fromJson({
+        return assert.doesNotReject(LegacyResolvedConfig.fromJson({
           audits: [relativePath],
         }));
       });
@@ -394,7 +394,7 @@ describe('Config', () => {
   });
 
   it('loads an audit from node_modules/', async () => {
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       // Use a lighthouse dep as a stand in for a module.
       audits: ['lighthouse-logger'],
     }), function(err) {
@@ -404,7 +404,7 @@ describe('Config', () => {
   });
 
   it('throws but not for missing audit when audit has a dependency error', async () => {
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [path.resolve(moduleDir, '../../fixtures/invalid-audits/require-error.js')],
     }), function(err) {
       // We're expecting not to find parent class Audit, so only reject on our
@@ -415,19 +415,19 @@ describe('Config', () => {
 
   it('throws when it finds invalid audits', async () => {
     const basePath = path.resolve(moduleDir, '../../fixtures/invalid-audits');
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [basePath + '/missing-audit'],
     }), /audit\(\) method/);
 
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [basePath + '/missing-id'],
     }), /meta.id property/);
 
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [basePath + '/missing-title'],
     }), /meta.title property/);
 
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [
         class BinaryButNoFailureTitleAudit extends Audit {
           static get meta() {
@@ -447,11 +447,11 @@ describe('Config', () => {
       ],
     }), /no meta.failureTitle and should/);
 
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [basePath + '/missing-description'],
     }), /meta.description property/);
 
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [
         class EmptyStringDescriptionAudit extends Audit {
           static get meta() {
@@ -471,13 +471,13 @@ describe('Config', () => {
       ],
     }), /empty meta.description string/);
 
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [basePath + '/missing-required-artifacts'],
     }), /meta.requiredArtifacts property/);
   });
 
   it('throws when a category references a non-existent audit', async () => {
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [],
       categories: {
         pwa: {
@@ -490,7 +490,7 @@ describe('Config', () => {
   });
 
   it('throws when a category fails to specify an audit id', async () => {
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: [],
       categories: {
         pwa: {
@@ -503,7 +503,7 @@ describe('Config', () => {
   });
 
   it('throws when an accessibility audit does not have a group', async () => {
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: ['accessibility/color-contrast'],
       categories: {
         accessibility: {
@@ -516,7 +516,7 @@ describe('Config', () => {
   });
 
   it('throws when an audit references an unknown group', async () => {
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       groups: {
         'group-a': {
           title: 'Group A',
@@ -536,7 +536,7 @@ describe('Config', () => {
   });
 
   it('throws when a manual audit has weight', async () => {
-    await assert.rejects(Config.fromJson({
+    await assert.rejects(LegacyResolvedConfig.fromJson({
       audits: ['manual/pwa-cross-browser'],
       categories: {
         accessibility: {
@@ -549,7 +549,7 @@ describe('Config', () => {
   });
 
   it('filters the config', async () => {
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       settings: {
         onlyCategories: ['needed-category'],
         onlyAudits: ['color-contrast'],
@@ -594,7 +594,7 @@ describe('Config', () => {
   });
 
   it('filters the config w/ skipAudits', async () => {
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       settings: {
         skipAudits: ['first-meaningful-paint'],
       },
@@ -637,7 +637,7 @@ describe('Config', () => {
     const warnings = [];
     const saveWarning = evt => warnings.push(evt);
     log.events.addListener('warning', saveWarning);
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       settings: {
         onlyCategories: ['accessibility'],
@@ -655,7 +655,7 @@ describe('Config', () => {
     const warnings = [];
     const saveWarning = evt => warnings.push(evt);
     log.events.addListener('warning', saveWarning);
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       settings: {
         onlyCategories: ['performance', 'pwa'],
@@ -672,7 +672,7 @@ describe('Config', () => {
   });
 
   it('filters works with extension', async () => {
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       settings: {
         onlyCategories: ['performance'],
@@ -692,7 +692,7 @@ describe('Config', () => {
     const warnings = [];
     const saveWarning = evt => warnings.push(evt);
     log.events.addListener('warning', saveWarning);
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       settings: {
         onlyCategories: ['performance', 'missing-category'],
@@ -707,7 +707,7 @@ describe('Config', () => {
 
   it('throws for invalid use of skipAudits and onlyAudits', async () => {
     await assert.rejects(() => {
-      return Config.fromJson({
+      return LegacyResolvedConfig.fromJson({
         extends: 'lighthouse:default',
         settings: {
           onlyAudits: ['first-meaningful-paint'],
@@ -718,14 +718,14 @@ describe('Config', () => {
   });
 
   it('cleans up flags for settings', async () => {
-    const config = await Config.fromJson({extends: 'lighthouse:default'},
+    const config = await LegacyResolvedConfig.fromJson({extends: 'lighthouse:default'},
       {nonsense: 1, foo: 2, throttlingMethod: 'provided'});
     assert.equal(config.settings.throttlingMethod, 'provided');
     assert.ok(config.settings.nonsense === undefined, 'did not cleanup settings');
   });
 
   it('allows overriding of array-typed settings', async () => {
-    const config = await Config.fromJson(
+    const config = await LegacyResolvedConfig.fromJson(
       {extends: 'lighthouse:default'},
       {output: ['html']}
     );
@@ -749,7 +749,7 @@ describe('Config', () => {
       }
     }
 
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       audits: [
         CustomAudit,
@@ -764,7 +764,7 @@ describe('Config', () => {
   });
 
   it('ensures quiet thresholds are sufficient when using devtools', async () => {
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       settings: {
         throttlingMethod: 'devtools',
@@ -781,7 +781,7 @@ describe('Config', () => {
   });
 
   it('does nothing when thresholds for devtools are already sufficient', async () => {
-    const config = await Config.fromJson({
+    const config = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       settings: {
         throttlingMethod: 'devtools',
@@ -803,7 +803,7 @@ describe('Config', () => {
   });
 
   it('only supports `lighthouse:default` extension', async () => {
-    const createConfig = extendsValue => Config.fromJson({extends: extendsValue});
+    const createConfig = extendsValue => LegacyResolvedConfig.fromJson({extends: extendsValue});
 
     await expect(createConfig(true)).rejects.toThrow(/default` is the only valid extension/);
     await expect(createConfig('lighthouse')).rejects.toThrow(/default` is the only valid/);
@@ -811,7 +811,7 @@ describe('Config', () => {
   });
 
   it('merges settings with correct priority', async () => {
-    const config = await Config.fromJson(
+    const config = await LegacyResolvedConfig.fromJson(
       {
         extends: 'lighthouse:default',
         settings: {
@@ -832,13 +832,13 @@ describe('Config', () => {
   });
 
   it('inherits default settings when undefined', async () => {
-    const config = await Config.fromJson({settings: undefined});
+    const config = await LegacyResolvedConfig.fromJson({settings: undefined});
     assert.ok(typeof config.settings.maxWaitForLoad === 'number', 'missing setting from default');
   });
 
   describe('locale', () => {
     it('falls back to default locale if none specified', async () => {
-      const config = await Config.fromJson({settings: undefined});
+      const config = await LegacyResolvedConfig.fromJson({settings: undefined});
       // Don't assert specific locale so it isn't tied to where tests are run, but
       // check that it's valid and available.
       assert.ok(config.settings.locale);
@@ -847,14 +847,14 @@ describe('Config', () => {
 
     it('uses config setting for locale if set', async () => {
       const locale = 'ar-XB';
-      const config = await Config.fromJson({settings: {locale}});
+      const config = await LegacyResolvedConfig.fromJson({settings: {locale}});
       assert.strictEqual(config.settings.locale, locale);
     });
 
     it('uses flag setting for locale if set', async () => {
       const settingsLocale = 'en-XA';
       const flagsLocale = 'ar-XB';
-      const config = await Config.fromJson({
+      const config = await LegacyResolvedConfig.fromJson({
         settings: {locale: settingsLocale}},
         {locale: flagsLocale}
       );
@@ -864,12 +864,12 @@ describe('Config', () => {
 
   describe('emulatedUserAgent', () => {
     it('uses the default UA string when emulatedUserAgent is undefined', async () => {
-      const config = await Config.fromJson({});
+      const config = await LegacyResolvedConfig.fromJson({});
       expect(config.settings.emulatedUserAgent).toMatch(/^Mozilla\/5.*Chrome-Lighthouse$/);
     });
 
     it('uses the default UA string when emulatedUserAgent is true', async () => {
-      const config = await Config.fromJson({
+      const config = await LegacyResolvedConfig.fromJson({
         settings: {
           emulatedUserAgent: true,
         },
@@ -878,7 +878,7 @@ describe('Config', () => {
     });
 
     it('does not use a UA string when emulatedUserAgent is false', async () => {
-      const config = await Config.fromJson({
+      const config = await LegacyResolvedConfig.fromJson({
         settings: {
           emulatedUserAgent: false,
         },
@@ -888,7 +888,7 @@ describe('Config', () => {
 
     it('uses the UA string provided if it is a string', async () => {
       const emulatedUserAgent = 'one weird trick to get a perfect LH score';
-      const config = await Config.fromJson({
+      const config = await LegacyResolvedConfig.fromJson({
         settings: {
           emulatedUserAgent,
         },
@@ -898,8 +898,8 @@ describe('Config', () => {
   });
 
   it('is idempotent when accepting a canonicalized Config as valid ConfigJson input', async () => {
-    const config = await Config.fromJson(legacyDefaultConfig);
-    const configAgain = await Config.fromJson(config);
+    const config = await LegacyResolvedConfig.fromJson(legacyDefaultConfig);
+    const configAgain = await LegacyResolvedConfig.fromJson(config);
     assert.deepEqual(config, configAgain);
   });
 
@@ -911,11 +911,11 @@ describe('Config', () => {
         onlyCategories: ['pwa'],
       },
     };
-    const config = await Config.fromJson(extendedJson);
+    const config = await LegacyResolvedConfig.fromJson(extendedJson);
     assert.equal(config.passes.length, 2, 'did not filter config');
     assert.equal(Object.keys(config.categories).length, 1, 'did not filter config');
     assert.deepEqual(config.settings.onlyCategories, ['pwa']);
-    const configAgain = await Config.fromJson(config);
+    const configAgain = await LegacyResolvedConfig.fromJson(config);
     assert.deepEqual(config, configAgain);
   });
 
@@ -935,7 +935,7 @@ describe('Config', () => {
         ],
       };
 
-      const merged = Config.extendConfigJSON(configA, configB);
+      const merged = LegacyResolvedConfig.extendConfigJSON(configA, configB);
       assert.equal(merged.passes.length, 4);
       assert.equal(merged.passes[1].recordTrace, true);
       assert.deepEqual(merged.passes[1].gatherers, ['b', 'd']);
@@ -945,14 +945,14 @@ describe('Config', () => {
     it('should merge audits', async () => {
       const configA = {audits: ['a', 'b']};
       const configB = {audits: ['c']};
-      const merged = Config.extendConfigJSON(configA, configB);
+      const merged = LegacyResolvedConfig.extendConfigJSON(configA, configB);
       assert.deepEqual(merged.audits, ['a', 'b', 'c']);
     });
 
     it('should merge categories', async () => {
       const configA = {categories: {A: {title: 'Acat'}, B: {title: 'Bcat'}}};
       const configB = {categories: {C: {title: 'Ccat'}}};
-      const merged = Config.extendConfigJSON(configA, configB);
+      const merged = LegacyResolvedConfig.extendConfigJSON(configA, configB);
       assert.deepStrictEqual(merged.categories, {
         A: {title: 'Acat'},
         B: {title: 'Bcat'},
@@ -967,7 +967,7 @@ describe('Config', () => {
       };
       const configA = {};
       const configB = {extends: 'lighthouse:default', artifacts};
-      const merged = Config.extendConfigJSON(configA, configB);
+      const merged = LegacyResolvedConfig.extendConfigJSON(configA, configB);
       assert.equal(merged.extends, 'lighthouse:default');
       assert.equal(merged.artifacts, configB.artifacts);
     });
@@ -982,7 +982,8 @@ describe('Config', () => {
         audits: ['installable-manifest', 'metrics'],
         plugins: ['lighthouse-plugin-simple'],
       };
-      const config = await Config.fromJson(configJson, {configPath: configFixturePath});
+      const config =
+        await LegacyResolvedConfig.fromJson(configJson, {configPath: configFixturePath});
       assert.deepStrictEqual(config.audits.map(a => a.path),
         ['installable-manifest', 'metrics', 'redirects', 'user-timings']);
     });
@@ -995,7 +996,8 @@ describe('Config', () => {
           configGroup: {title: 'This is a group in the base config'},
         },
       };
-      const config = await Config.fromJson(configJson, {configPath: configFixturePath});
+      const config =
+        await LegacyResolvedConfig.fromJson(configJson, {configPath: configFixturePath});
 
       const groupIds = Object.keys(config.groups);
       assert.ok(groupIds.length === 2);
@@ -1011,7 +1013,8 @@ describe('Config', () => {
         extends: 'lighthouse:default',
         plugins: ['lighthouse-plugin-simple'],
       };
-      const config = await Config.fromJson(configJson, {configPath: configFixturePath});
+      const config =
+        await LegacyResolvedConfig.fromJson(configJson, {configPath: configFixturePath});
       const categoryNames = Object.keys(config.categories);
       assert.ok(categoryNames.length > 1);
       assert.strictEqual(categoryNames[categoryNames.length - 1], 'lighthouse-plugin-simple');
@@ -1031,7 +1034,7 @@ describe('Config', () => {
             }],
           },
         };
-        const config = await Config.fromJson(configJson);
+        const config = await LegacyResolvedConfig.fromJson(configJson);
         assert.equal(config.settings.budgets[0].resourceCounts.length, 1);
         assert.equal(config.settings.budgets[0].resourceCounts[0].resourceType, 'image');
         assert.equal(config.settings.budgets[0].resourceCounts[0].budget, 500);
@@ -1039,7 +1042,7 @@ describe('Config', () => {
 
       it('should throw when provided an invalid budget', async () => {
         await assert.rejects(
-          () => Config.fromJson({settings: {budgets: ['invalid123']}}),
+          () => LegacyResolvedConfig.fromJson({settings: {budgets: ['invalid123']}}),
           /Budget file is not defined as an array of budgets/);
       });
     });
@@ -1059,14 +1062,17 @@ describe('Config', () => {
 
       const allConfigConfigJson = {...baseConfigJson, plugins: [simplePluginName,
         noGroupsPluginName]};
-      const allPluginsInConfigConfig = await Config.fromJson(allConfigConfigJson, baseFlags);
+      const allPluginsInConfigConfig =
+        await LegacyResolvedConfig.fromJson(allConfigConfigJson, baseFlags);
 
       const allFlagsFlags = {...baseFlags, plugins: [simplePluginName, noGroupsPluginName]};
-      const allPluginsInFlagsConfig = await Config.fromJson(baseConfigJson, allFlagsFlags);
+      const allPluginsInFlagsConfig =
+        await LegacyResolvedConfig.fromJson(baseConfigJson, allFlagsFlags);
 
       const mixedConfigJson = {...baseConfigJson, plugins: [simplePluginName]};
       const mixedFlags = {...baseFlags, plugins: [noGroupsPluginName]};
-      const pluginsInConfigAndFlagsConfig = await Config.fromJson(mixedConfigJson, mixedFlags);
+      const pluginsInConfigAndFlagsConfig =
+        await LegacyResolvedConfig.fromJson(mixedConfigJson, mixedFlags);
 
       // Double check that we're not comparing empty objects.
       const categoryNames = Object.keys(allPluginsInConfigConfig.categories);
@@ -1084,7 +1090,7 @@ describe('Config', () => {
       };
       // Required to have a `category`, so plugin is invalid.
       await assert.rejects(
-        () => Config.fromJson(configJson, {configPath: configFixturePath}),
+        () => LegacyResolvedConfig.fromJson(configJson, {configPath: configFixturePath}),
         /^Error: lighthouse-plugin-no-category has no valid category/);
     });
 
@@ -1094,7 +1100,7 @@ describe('Config', () => {
         plugins: ['lighthouse-plugin-not-a-plugin'],
       };
       await assert.rejects(
-        () => Config.fromJson(configJson, {configPath: configFixturePath}),
+        () => LegacyResolvedConfig.fromJson(configJson, {configPath: configFixturePath}),
         /^Error: Unable to locate plugin: `lighthouse-plugin-not-a-plugin/);
     });
 
@@ -1104,7 +1110,7 @@ describe('Config', () => {
         plugins: ['just-let-me-be-a-plugin'],
       };
       await assert.rejects(
-        () => Config.fromJson(configJson, {configPath: configFixturePath}),
+        () => LegacyResolvedConfig.fromJson(configJson, {configPath: configFixturePath}),
         /^Error: plugin name 'just-let-me-be-a-plugin' does not start with 'lighthouse-plugin-'/);
     });
 
@@ -1117,7 +1123,7 @@ describe('Config', () => {
         },
       };
       await assert.rejects(
-        () => Config.fromJson(configJson, {configPath: configFixturePath}),
+        () => LegacyResolvedConfig.fromJson(configJson, {configPath: configFixturePath}),
         /^Error: plugin name 'lighthouse-plugin-simple' not allowed because it is the id of a category/); // eslint-disable-line max-len
     });
   });
@@ -1126,7 +1132,7 @@ describe('Config', () => {
     it('should not mutate the original config', async () => {
       const configCopy = JSON.parse(JSON.stringify(origConfig));
       configCopy.settings.onlyCategories = ['performance'];
-      const config = await Config.fromJson(configCopy);
+      const config = await LegacyResolvedConfig.fromJson(configCopy);
       configCopy.settings.onlyCategories = null;
       assert.equal(config.passes.length, 1, 'did not filter config');
       assert.deepStrictEqual(configCopy, origConfig, 'had mutations');
@@ -1135,7 +1141,7 @@ describe('Config', () => {
     it('should generate the same filtered config, extended or original', async () => {
       const configCopy = JSON.parse(JSON.stringify(origConfig));
       configCopy.settings.onlyCategories = ['performance'];
-      const config = await Config.fromJson(configCopy);
+      const config = await LegacyResolvedConfig.fromJson(configCopy);
 
       const extended = {
         extends: 'lighthouse:default',
@@ -1143,7 +1149,7 @@ describe('Config', () => {
           onlyCategories: ['performance'],
         },
       };
-      const extendedConfig = await Config.fromJson(extended);
+      const extendedConfig = await LegacyResolvedConfig.fromJson(extended);
 
       // When gatherers have instance properties that are bind()'d, they'll not match.
       // Gatherers in each config will still be compared via the constructor on .implementation.
@@ -1170,7 +1176,7 @@ describe('Config', () => {
           onlyCategories: ['performance'],
         },
       };
-      const config = await Config.fromJson(extended);
+      const config = await LegacyResolvedConfig.fromJson(extended);
       assert.equal(Object.keys(config.categories).length, 1, 'other categories are present');
       assert.equal(config.passes.length, 1, 'incorrect # of passes');
       assert.ok(config.audits.length < totalAuditCount, 'audit filtering probably failed');
@@ -1184,7 +1190,7 @@ describe('Config', () => {
           onlyCategories: ['pwa'],
         },
       };
-      const config = await Config.fromJson(extended);
+      const config = await LegacyResolvedConfig.fromJson(extended);
       assert.equal(Object.keys(config.categories).length, 1, 'other categories are present');
       assert.ok(config.audits.length < totalAuditCount, 'audit filtering probably failed');
     });
@@ -1197,7 +1203,7 @@ describe('Config', () => {
           onlyCategories: ['best-practices'],
         },
       };
-      const config = await Config.fromJson(extended);
+      const config = await LegacyResolvedConfig.fromJson(extended);
       assert.equal(Object.keys(config.categories).length, 1, 'other categories are present');
       assert.equal(config.passes.length, 1, 'incorrect # of passes');
       assert.ok(config.audits.length < totalAuditCount, 'audit filtering probably failed');
@@ -1210,7 +1216,7 @@ describe('Config', () => {
           onlyCategories: ['performance'],
         },
       };
-      const config = await Config.fromJson(extended);
+      const config = await LegacyResolvedConfig.fromJson(extended);
       const selectedCategory = origConfig.categories.performance;
       // +1 for `full-page-screenshot`.
       const auditCount = Object.keys(selectedCategory.auditRefs).length + 1;
@@ -1226,7 +1232,7 @@ describe('Config', () => {
           onlyAudits: ['service-worker'], // something from non-defaultPass
         },
       };
-      const config = await Config.fromJson(extended);
+      const config = await LegacyResolvedConfig.fromJson(extended);
       assert.equal(config.passes.length, 2, 'incorrect # of passes');
       assert.equal(config.audits.length, 1, 'audit filtering failed');
     });
@@ -1239,7 +1245,7 @@ describe('Config', () => {
           onlyAudits: ['service-worker'], // something from non-defaultPass
         },
       };
-      const config = await Config.fromJson(extended);
+      const config = await LegacyResolvedConfig.fromJson(extended);
       const selectedCategory = origConfig.categories.performance;
       // +1 for `service-worker`, +1 for `full-page-screenshot`.
       const auditCount = Object.keys(selectedCategory.auditRefs).length + 2;
@@ -1257,7 +1263,7 @@ describe('Config', () => {
           onlyAudits: ['viewport'],
         },
       };
-      const config = await Config.fromJson(extended);
+      const config = await LegacyResolvedConfig.fromJson(extended);
       const selectedCategory = origConfig.categories.pwa;
       // +1 for `full-page-screenshot`.
       const auditCount = Object.keys(selectedCategory.auditRefs).length + 1;
@@ -1279,7 +1285,7 @@ describe('Config', () => {
           onlyCategories: ['accessibility'],
         },
       };
-      const config = await Config.fromJson(extended);
+      const config = await LegacyResolvedConfig.fromJson(extended);
 
       assert.ok(config.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
     });
@@ -1291,7 +1297,7 @@ describe('Config', () => {
           skipAudits: ['font-size'],
         },
       };
-      const config = await Config.fromJson(extended);
+      const config = await LegacyResolvedConfig.fromJson(extended);
       assert.ok(config.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
     });
   });
@@ -1303,7 +1309,7 @@ describe('Config', () => {
         {path: 'is-on-https', options: {x: 1, y: 1}},
         {path: 'is-on-https', options: {x: 2}},
       ];
-      const merged = await Config.requireAudits(audits);
+      const merged = await LegacyResolvedConfig.requireAudits(audits);
       // Round-trip through JSON to drop live 'implementation' prop.
       const mergedJson = JSON.parse(JSON.stringify(merged));
       assert.deepEqual(mergedJson,
@@ -1316,7 +1322,7 @@ describe('Config', () => {
           new Gatherer(),
         ],
       };
-      await assert.rejects(Config.fromJson(configJson), /Invalid Audit type/);
+      await assert.rejects(LegacyResolvedConfig.fromJson(configJson), /Invalid Audit type/);
     });
   });
 
@@ -1327,7 +1333,7 @@ describe('Config', () => {
         {path: 'viewport-dimensions'},
       ];
 
-      const merged = await Config.requireGatherers([{gatherers}]);
+      const merged = await LegacyResolvedConfig.requireGatherers([{gatherers}]);
       // Round-trip through JSON to drop live 'instance'/'implementation' props.
       const mergedJson = JSON.parse(JSON.stringify(merged));
 
@@ -1341,7 +1347,7 @@ describe('Config', () => {
     });
 
     async function loadGatherer(gathererEntry) {
-      const config = await Config.fromJson({passes: [{gatherers: [gathererEntry]}]});
+      const config = await LegacyResolvedConfig.fromJson({passes: [{gatherers: [gathererEntry]}]});
       return config.passes[0].gatherers[0];
     }
 
@@ -1362,7 +1368,7 @@ describe('Config', () => {
         });
 
         it('loads a gatherer relative to a config path', async () => {
-          const config = await Config.fromJson({
+          const config = await LegacyResolvedConfig.fromJson({
             passes: [{gatherers: ['../../fixtures/valid-custom-gatherer' + variant]}],
           }, {configPath: modulePath});
           const gatherer = config.passes[0].gatherers[0];
@@ -1466,7 +1472,7 @@ describe('Config', () => {
         ],
       };
 
-      const printed = (await Config.fromJson(configJson)).getPrintString();
+      const printed = (await LegacyResolvedConfig.fromJson(configJson)).getPrintString();
       const printedConfig = JSON.parse(printed);
 
       // Check that options weren't completely eliminated.
@@ -1481,7 +1487,7 @@ describe('Config', () => {
     });
 
     it('prints localized category titles', async () => {
-      const printed = (await Config.fromJson(legacyDefaultConfig)).getPrintString();
+      const printed = (await LegacyResolvedConfig.fromJson(legacyDefaultConfig)).getPrintString();
       const printedConfig = JSON.parse(printed);
       let localizableCount = 0;
 
@@ -1499,10 +1505,10 @@ describe('Config', () => {
 
     it('prints a valid ConfigJson that can make an identical Config', async () => {
       // depends on defaultConfig having a `path` for all gatherers and audits.
-      const firstConfig = await Config.fromJson(legacyDefaultConfig);
+      const firstConfig = await LegacyResolvedConfig.fromJson(legacyDefaultConfig);
       const firstPrint = firstConfig.getPrintString();
 
-      const secondConfig = await Config.fromJson(JSON.parse(firstPrint));
+      const secondConfig = await LegacyResolvedConfig.fromJson(JSON.parse(firstPrint));
       const secondPrint = secondConfig.getPrintString();
 
       assert.strictEqual(firstPrint, secondPrint);
