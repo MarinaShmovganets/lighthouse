@@ -30,11 +30,11 @@ describe('Config', () => {
   });
 
   it('returns new object', async () => {
-    const resolvedConfig = {
+    const config = {
       audits: ['is-on-https'],
     };
-    const newConfig = LegacyResolvedConfig.fromJson(resolvedConfig, {});
-    assert.notEqual(resolvedConfig, newConfig);
+    const newConfig = LegacyResolvedConfig.fromJson(config, {});
+    assert.notEqual(config, newConfig);
   });
 
   it('doesn\'t change directly injected gatherer implementations', async () => {
@@ -51,7 +51,7 @@ describe('Config', () => {
       }
       static audit() {}
     }
-    const resolvedConfig = {
+    const config = {
       // Extend default to double test our ability to handle injection.
       extends: 'lighthouse:default',
       settings: {onlyAudits: ['my-audit']},
@@ -60,7 +60,7 @@ describe('Config', () => {
       }],
       audits: [MyAudit],
     };
-    const newConfig = await LegacyResolvedConfig.fromJson(resolvedConfig);
+    const newConfig = await LegacyResolvedConfig.fromJson(config);
     assert.equal(MyGatherer, newConfig.passes[0].gatherers[0].implementation);
     assert.equal(MyAudit, newConfig.audits[0].implementation);
   });
@@ -79,7 +79,7 @@ describe('Config', () => {
     }
     const myGatherer1 = new MyGatherer(1729);
     const myGatherer2 = new MyGatherer(6);
-    const resolvedConfig = {
+    const config = {
       passes: [{
         gatherers: [
           myGatherer1,
@@ -87,7 +87,7 @@ describe('Config', () => {
         ],
       }],
     };
-    const newConfig = await LegacyResolvedConfig.fromJson(resolvedConfig);
+    const newConfig = await LegacyResolvedConfig.fromJson(config);
     const configGatherers = newConfig.passes[0].gatherers;
     assert(configGatherers[0].instance instanceof MyGatherer);
     assert.equal(configGatherers[0].instance.secret, 1729);
@@ -314,7 +314,7 @@ describe('Config', () => {
   });
 
   it('throws for unknown gatherers', async () => {
-    const resolvedConfig = {
+    const config = {
       passes: [{
         gatherers: ['fuzz'],
       }],
@@ -323,7 +323,7 @@ describe('Config', () => {
       ],
     };
 
-    await assert.rejects(LegacyResolvedConfig.fromJson(resolvedConfig), /Unable to locate/);
+    await assert.rejects(LegacyResolvedConfig.fromJson(config), /Unable to locate/);
   });
 
   it('doesn\'t mutate old gatherers when filtering passes', async () => {
