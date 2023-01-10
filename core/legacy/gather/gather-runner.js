@@ -22,7 +22,6 @@ import NetworkUserAgent from '../../gather/gatherers/network-user-agent.js';
 import Stacks from '../../gather/gatherers/stacks.js';
 import {finalizeArtifacts} from '../../gather/base-artifacts.js';
 import UrlUtils from '../../lib/url-utils.js';
-import FullPageScreenshot from '../../gather/gatherers/full-page-screenshot.js';
 
 /** @typedef {import('./driver.js').Driver} Driver */
 /** @typedef {import('../../lib/arbitrary-equality-map.js').ArbitraryEqualityMap} ArbitraryEqualityMap */
@@ -405,7 +404,6 @@ class GatherRunner {
       WebAppManifest: null, // updated later
       InstallabilityErrors: {errors: []}, // updated later
       Stacks: [], // updated later
-      FullPageScreenshot: null, // updated later
       traces: {},
       devtoolsLogs: {},
       settings: options.settings,
@@ -522,7 +520,7 @@ class GatherRunner {
           computedCache: options.computedCache,
           LighthouseRunWarnings: baseArtifacts.LighthouseRunWarnings,
         };
-        const passResults = await GatherRunner.runPass(passContext, isFirstPass);
+        const passResults = await GatherRunner.runPass(passContext);
         Object.assign(artifacts, passResults.artifacts);
 
         // If we encountered a pageLoadError, don't try to keep loading the page in future passes.
@@ -564,7 +562,7 @@ class GatherRunner {
    * @param {LH.Gatherer.PassContext} passContext
    * @return {Promise<{artifacts: Partial<LH.GathererArtifacts>, pageLoadError?: LH.LighthouseError}>}
    */
-  static async runPass(passContext, isFirstPass) {
+  static async runPass(passContext) {
     const status = {
       msg: `Running ${passContext.passConfig.passName} pass`,
       id: `lh:gather:runPass-${passContext.passConfig.passName}`,
@@ -625,16 +623,6 @@ class GatherRunner {
 
     // Run `afterPass()` on gatherers and return collected artifacts.
     await GatherRunner.afterPass(passContext, loadData, gathererResults);
-
-    if (isFirstPass && !passContext.settings.disableFullPageScreenshot) {
-      try {
-        passContext.baseArtifacts.FullPageScreenshot =
-          await FullPageScreenshot.collectFullPageScreenshot({...passContext, dependencies: []});
-      } catch (err) {
-        log.error('GatherRunner FullPageScreenshot', err);
-        passContext.baseArtifacts.FullPageScreenshot = null;
-      }
-    }
 
     const artifacts = GatherRunner.collectArtifacts(gathererResults);
 

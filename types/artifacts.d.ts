@@ -81,8 +81,6 @@ interface LegacyBaseArtifacts {
   NetworkUserAgent: string;
   /** Information on detected tech stacks (e.g. JS libraries) used by the page. */
   Stacks: Artifacts.DetectedStack[];
-  /** TODO ! */
-  FullPageScreenshot: LHResult.FullPageScreenshot | null;
   /** Parsed version of the page's Web App Manifest, or null if none found. This moved to a regular artifact in Fraggle Rock. */
   WebAppManifest: Artifacts.Manifest | null;
   /** Errors preventing page being installable as PWA. This moved to a regular artifact in Fraggle Rock. */

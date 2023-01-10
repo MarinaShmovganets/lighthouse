@@ -45,7 +45,6 @@ const BASE_ARTIFACT_BLANKS = {
   GatherContext: '',
   InstallabilityErrors: '',
   Stacks: '',
-  FullPageScreenshot: '',
   traces: '',
   devtoolsLogs: '',
   settings: '',
@@ -314,7 +313,8 @@ class LegacyResolvedConfig {
    */
   static filterConfigIfNeeded(config) {
     const settings = config.settings;
-    if (!settings.onlyCategories && !settings.onlyAudits && !settings.skipAudits) {
+    // eslint-disable-next-line max-len
+    if (!settings.onlyCategories && !settings.onlyAudits && !settings.skipAudits && !settings.disableFullPageScreenshot) {
       return;
     }
 
@@ -328,6 +328,11 @@ class LegacyResolvedConfig {
 
     // 3. Resolve which gatherers will need to run
     const requestedGathererIds = LegacyResolvedConfig.getGatherersRequestedByAudits(audits);
+
+    // Always include FullPageScreenshot, unless explictly told not to.
+    if (!settings.disableFullPageScreenshot) {
+      requestedGathererIds.add('FullPageScreenshot');
+    }
 
     // 4. Filter to only the neccessary passes
     const passes =

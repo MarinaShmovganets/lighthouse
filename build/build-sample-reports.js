@@ -155,7 +155,6 @@ async function generateErrorLHR() {
     WebAppManifest: null,
     InstallabilityErrors: {errors: []},
     Stacks: [],
-    FullPageScreenshot: null,
     settings: defaultSettings,
     URL: {
       requestedUrl: 'http://fakeurl.com',
