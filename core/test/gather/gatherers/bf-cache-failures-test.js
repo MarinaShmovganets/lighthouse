@@ -6,6 +6,7 @@
 
 import BFCacheFailures from '../../../gather/gatherers/bf-cache-failures.js';
 import {createMockContext} from '../mock-driver.js';
+import {flushAllTimersAndMicrotasks, timers} from '../../test-utils.js';
 
 /**
  * @returns {LH.Crdp.Page.BackForwardCacheNotUsedEvent}
@@ -45,6 +46,7 @@ describe('BFCacheFailures', () => {
   let mockContext = createMockContext();
   /** @type {LH.Crdp.Page.BackForwardCacheNotUsedEvent|undefined} */
   let mockActiveBfCacheEvent;
+  let eventEmitDelay = 0;
   /** @type {Partial<LH.Crdp.Page.FrameNavigatedEvent>} */
   let frameNavigatedEvent = {type: 'Navigation'};
 
@@ -54,6 +56,7 @@ describe('BFCacheFailures', () => {
     context = mockContext.asContext();
 
     mockActiveBfCacheEvent = createMockBfCacheEvent();
+    eventEmitDelay = 0;
 
     context.dependencies.DevtoolsLog = [];
 
@@ -70,7 +73,9 @@ describe('BFCacheFailures', () => {
         if (mockActiveBfCacheEvent) {
           const listener =
             mockContext.driver.defaultSession.on.findListener('Page.backForwardCacheNotUsed');
-          listener(mockActiveBfCacheEvent);
+          setTimeout(() => {
+            listener(mockActiveBfCacheEvent);
+          }, eventEmitDelay);
         }
       });
 
@@ -212,5 +217,34 @@ describe('BFCacheFailures', () => {
       .toHaveBeenCalledWith('Page.navigateToHistoryEntry', {entryId: 1});
 
     expect(artifact).toHaveLength(0);
+  });
+
+  describe('handles event after frameNavigated', () => {
+    beforeEach(() => timers.useFakeTimers());
+    afterEach(() => timers.dispose());
+
+    it('and resolves if emitted before the timeout', async () => {
+      eventEmitDelay = 25;
+
+      const gatherer = new BFCacheFailures();
+      const artifactPromise = gatherer.getArtifact(context);
+
+      await flushAllTimersAndMicrotasks(60);
+
+      await expect(artifactPromise).resolves.toHaveLength(1);
+    });
+
+    it('and rejects if emitted after the timeout', async () => {
+      eventEmitDelay = 55;
+
+      const gatherer = new BFCacheFailures();
+      const artifactPromise = gatherer.getArtifact(context);
+
+      await flushAllTimersAndMicrotasks(60);
+
+      await expect(artifactPromise).rejects.toThrow(
+        'bfcache failed but the failure reasons were not emitted in time'
+      );
+    });
   });
 });

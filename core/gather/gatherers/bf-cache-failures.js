@@ -130,7 +130,7 @@ class BFCacheFailures extends FRGatherer {
       // If we still can't get the failure reasons after the timeout we should fail loudly,
       // otherwise this gatherer will return no failures when there should be failures.
       if (!bfCacheEvent) {
-        throw new Error('bfcache was not used but the failure reasons were not emitted in time');
+        throw new Error('bfcache failed but the failure reasons were not emitted in time');
       }
     }
 
