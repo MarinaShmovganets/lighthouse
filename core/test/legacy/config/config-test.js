@@ -54,7 +54,7 @@ describe('Config', () => {
     const config = {
       // Extend default to double test our ability to handle injection.
       extends: 'lighthouse:default',
-      settings: {onlyAudits: ['my-audit']},
+      settings: {onlyAudits: ['my-audit'], disableFullPageScreenshot: true},
       passes: [{
         gatherers: [MyGatherer],
       }],
@@ -186,6 +186,7 @@ describe('Config', () => {
     const resolvedConfig = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       audits: [DoesntNeedYourCrap],
+      settings: {disableFullPageScreenshot: true},
     }, {
       // Trigger filtering logic.
       onlyAudits: ['optional-artifact-audit'],
@@ -222,7 +223,7 @@ describe('Config', () => {
       onlyAudits: ['optional-artifact-audit'],
     });
     expect(resolvedConfig.passes[0].gatherers.map(g => g.path))
-      .toEqual(['viewport-dimensions', 'source-maps']);
+      .toEqual(['viewport-dimensions', 'source-maps', 'full-page-screenshot']);
   });
 
   it('should keep optional artifacts in gatherers after filter', async () => {
@@ -254,7 +255,7 @@ describe('Config', () => {
       onlyAudits: ['optional-artifact-audit'],
     });
     expect(resolvedConfig.passes[0].gatherers.map(g => g.path))
-      .toEqual(['viewport-dimensions', 'source-maps']);
+      .toEqual(['viewport-dimensions', 'source-maps', 'full-page-screenshot']);
   });
 
   it('should keep optional artifacts in gatherers after filter', async () => {
@@ -286,7 +287,7 @@ describe('Config', () => {
       onlyAudits: ['optional-artifact-audit'],
     });
     expect(resolvedConfig.passes[0].gatherers.map(g => g.path))
-      .toEqual(['viewport-dimensions', 'source-maps']);
+      .toEqual(['viewport-dimensions', 'source-maps', 'full-page-screenshot']);
   });
 
   it('does not throw when an audit requires only base artifacts', async () => {

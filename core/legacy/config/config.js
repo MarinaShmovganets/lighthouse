@@ -79,7 +79,7 @@ function assertValidPasses(passes, audits) {
       const gatherer = gathererDefn.instance;
       foundGatherers.add(gatherer.name);
       const isGatherRequiredByAudits = requestedGatherers.has(gatherer.name);
-      if (!isGatherRequiredByAudits) {
+      if (!isGatherRequiredByAudits && gatherer.name !== 'FullPageScreenshot') {
         const msg = `${gatherer.name} gatherer requested, however no audit requires it.`;
         log.warn('config', msg);
       }
