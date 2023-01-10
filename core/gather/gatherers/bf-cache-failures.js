@@ -92,17 +92,9 @@ class BFCacheFailures extends FRGatherer {
     /**
      * @param {LH.Crdp.Page.BackForwardCacheNotUsedEvent} event
      */
-    let onBfCacheNotUsed = (event) => {
+    function onBfCacheNotUsed(event) {
       bfCacheEvent = event;
-    };
-
-    /** @type {Promise<void>} */
-    const bfCacheEventPromise = new Promise(resolve => {
-      onBfCacheNotUsed = (event) => {
-        bfCacheEvent = event;
-        resolve();
-      };
-    });
+    }
 
     session.on('Page.backForwardCacheNotUsed', onBfCacheNotUsed);
 
@@ -122,10 +114,7 @@ class BFCacheFailures extends FRGatherer {
     // The bfcache failure event is not necessarily emitted by this point.
     // If we are expecting a bfcache failure event but haven't seen one, we should wait for it.
     if (frameNavigatedEvent.type !== 'BackForwardCacheRestore' && !bfCacheEvent) {
-      await Promise.race([
-        bfCacheEventPromise,
-        new Promise(resolve => setTimeout(resolve, 50)),
-      ]);
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       // If we still can't get the failure reasons after the timeout we should fail loudly,
       // otherwise this gatherer will return no failures when there should be failures.
