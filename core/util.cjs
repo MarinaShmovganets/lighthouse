@@ -218,7 +218,7 @@ class Util {
 
     // In 10.0, full-page-screenshot became a top-level property on the LHR.
     if (clone.audits['full-page-screenshot']) {
-      const details = /** @type {LH.Audit.Details.FullPageScreenshot=} */ (
+      const details = /** @type {LH.Result.FullPageScreenshot=} */ (
         clone.audits['full-page-screenshot'].details);
       if (details) {
         clone.fullPageScreenshot = {
