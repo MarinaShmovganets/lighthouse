@@ -6,8 +6,6 @@
 
 /* globals window getBoundingClientRect requestAnimationFrame */
 
-import log from 'lighthouse-logger';
-
 import FRGatherer from '../base-gatherer.js';
 import * as emulation from '../../lib/emulation.js';
 import {pageFunctions} from '../../lib/page-functions.js';
@@ -72,19 +70,6 @@ class FullPageScreenshot extends FRGatherer {
   meta = {
     supportedModes: ['snapshot', 'timespan', 'navigation'],
   };
-
-  /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
-   * @return {Promise<LH.Artifacts['FullPageScreenshot']>}
-   */
-  static async collectFullPageScreenshot(context) {
-    const status = {msg: 'Collect full page screenshot', id: 'lh:gather:fullPageScreenshot'};
-    log.time(status);
-    const impl = new FullPageScreenshot();
-    const result = await impl.getArtifact(context);
-    log.timeEnd(status);
-    return result;
-  }
 
   /**
    * @param {LH.Gatherer.FRTransitionalContext} context

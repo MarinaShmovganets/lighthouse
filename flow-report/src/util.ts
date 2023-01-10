@@ -41,13 +41,6 @@ function getScreenDimensions(reportResult: LH.Result) {
   return {width, height};
 }
 
-function getFullPageScreenshot(reportResult: LH.Result) {
-  return reportResult.fullPageScreenshot ? {
-    type: 'full-page-screenshot',
-    ...reportResult.fullPageScreenshot,
-  } as LH.Audit.Details.FullPageScreenshot : null;
-}
-
 function getFilmstripFrames(
   reportResult: LH.Result
 ): Array<{data: string}> | undefined {
@@ -153,7 +146,6 @@ export {
   OptionsContext,
   classNames,
   getScreenDimensions,
-  getFullPageScreenshot,
   getFilmstripFrames,
   getModeDescription,
   useFlowResult,

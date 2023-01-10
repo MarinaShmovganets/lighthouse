@@ -8,7 +8,7 @@ import {FunctionComponent} from 'preact';
 import {useEffect, useState} from 'preact/hooks';
 
 import {NavigationIcon, SnapshotIcon, TimespanIcon} from './icons';
-import {getFilmstripFrames, getScreenDimensions, getFullPageScreenshot} from './util';
+import {getFilmstripFrames, getScreenDimensions} from './util';
 
 const ANIMATION_FRAME_DURATION_MS = 500;
 
@@ -76,7 +76,6 @@ const FlowStepThumbnail: FunctionComponent<{
   width?: number,
   height?: number,
 }> = ({lhr, width, height}) => {
-  const fullPageScreenshot = getFullPageScreenshot(lhr);
   const frames = getFilmstripFrames(lhr);
 
   // Resize the image to fit the viewport aspect ratio.
@@ -99,7 +98,7 @@ const FlowStepThumbnail: FunctionComponent<{
       return <FlowStepAnimatedThumbnail frames={frames} width={width} height={height} />;
     }
   } else {
-    thumbnail = fullPageScreenshot?.screenshot.data;
+    thumbnail = lhr.fullPageScreenshot?.screenshot.data;
   }
 
   return <>
