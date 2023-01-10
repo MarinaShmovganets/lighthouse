@@ -1276,6 +1276,37 @@ describe('Config', () => {
       assert.equal(resolvedConfig.passes.length, 2, 'incorrect # of passes');
       assert.equal(resolvedConfig.audits.length, auditCount, 'audit filtering failed');
     });
+
+    it('should include full-page-screenshot by default', async () => {
+      const resolvedConfig = await LegacyResolvedConfig.fromJson(origConfig);
+      assert.ok(resolvedConfig.passes[0].gatherers
+        .some(g => g.implementation.name === 'FullPageScreenshot'));
+    });
+
+    it('should include full-page-screenshot when filtered, if not explictly excluded', async () => {
+      const extended = {
+        extends: 'lighthouse:default',
+        settings: {
+          onlyCategories: ['performance'],
+        },
+      };
+      const resolvedConfig = await LegacyResolvedConfig.fromJson(extended);
+      assert.ok(resolvedConfig.passes[0].gatherers
+        .some(g => g.implementation.name === 'FullPageScreenshot'));
+    });
+
+    it('should exclude full-page-screenshot if specified', async () => {
+      const extended = {
+        extends: 'lighthouse:default',
+        settings: {
+          onlyCategories: ['performance'],
+          disableFullPageScreenshot: true,
+        },
+      };
+      const resolvedConfig = await LegacyResolvedConfig.fromJson(extended);
+      assert.ok(!resolvedConfig.passes[0].gatherers
+        .some(g => g.implementation.name === 'FullPageScreenshot'));
+    });
   });
 
   describe('#requireAudits', () => {
