@@ -15,6 +15,11 @@ import {pageFunctions} from '../../lib/page-functions.js';
  */
 /* c8 ignore start */
 async function runA11yChecks() {
+  const originalScrollPosition = {
+    x: window.scrollX,
+    y: window.scrollY,
+  };
+
   /** @type {import('axe-core/axe')} */
   // @ts-expect-error - axe defined by axeLibSource
   const axe = window.axe;
@@ -72,13 +77,17 @@ async function runA11yChecks() {
   // are relative to the top of the page
   document.documentElement.scrollTop = 0;
 
-  return {
+  const result = {
     violations: axeResults.violations.map(createAxeRuleResultArtifact),
     incomplete: axeResults.incomplete.map(createAxeRuleResultArtifact),
     notApplicable: axeResults.inapplicable.map(result => ({id: result.id})), // FYI: inapplicable => notApplicable!
     passes: axeResults.passes.map(result => ({id: result.id})),
     version: axeResults.testEngine.version,
   };
+
+  window.scrollTo(originalScrollPosition.x, originalScrollPosition.y);
+
+  return result;
 }
 
 /**

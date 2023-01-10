@@ -195,6 +195,11 @@ function gatherTapTargets(tapTargetsSelector, className) {
   /** @type {LH.Artifacts.TapTarget[]} */
   const targets = [];
 
+  const originalScrollPosition = {
+    x: window.scrollX,
+    y: window.scrollY,
+  };
+
   // Capture element positions relative to the top of the page
   window.scrollTo(0, 0);
 
@@ -278,6 +283,8 @@ function gatherTapTargets(tapTargetsSelector, className) {
   }
 
   reenableFixedAndStickyElementPointerEvents();
+
+  window.scrollTo(originalScrollPosition.x, originalScrollPosition.y);
 
   return targets;
 }
