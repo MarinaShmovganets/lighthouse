@@ -3765,7 +3765,7 @@
               },
               {
                 "id": "interactive",
-                "weight": 10,
+                "weight": 0,
                 "group": "metrics",
                 "acronym": "TTI"
               },
@@ -3818,7 +3818,7 @@
               },
               {
                 "id": "cumulative-layout-shift",
-                "weight": 15,
+                "weight": 25,
                 "group": "metrics",
                 "acronym": "CLS",
                 "relevantAudits": [
@@ -9184,7 +9184,7 @@
               },
               {
                 "id": "cumulative-layout-shift",
-                "weight": 15,
+                "weight": 25,
                 "group": "metrics",
                 "acronym": "CLS",
                 "relevantAudits": [
@@ -17921,7 +17921,7 @@
               },
               {
                 "id": "interactive",
-                "weight": 10,
+                "weight": 0,
                 "group": "metrics",
                 "acronym": "TTI"
               },
@@ -17974,7 +17974,7 @@
               },
               {
                 "id": "cumulative-layout-shift",
-                "weight": 15,
+                "weight": 25,
                 "group": "metrics",
                 "acronym": "CLS",
                 "relevantAudits": [
