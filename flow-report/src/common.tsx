@@ -9,6 +9,7 @@ import {useEffect, useState} from 'preact/hooks';
 
 import {NavigationIcon, SnapshotIcon, TimespanIcon} from './icons';
 import {getFilmstripFrames, getScreenDimensions} from './util';
+import {Util} from '../../report/renderer/util.js';
 
 const ANIMATION_FRAME_DURATION_MS = 500;
 
@@ -98,7 +99,7 @@ const FlowStepThumbnail: FunctionComponent<{
       return <FlowStepAnimatedThumbnail frames={frames} width={width} height={height} />;
     }
   } else {
-    thumbnail = lhr.fullPageScreenshot?.screenshot.data;
+    thumbnail = Util.getFullPageScreenshot(lhr)?.screenshot?.data;
   }
 
   return <>

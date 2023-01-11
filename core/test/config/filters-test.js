@@ -17,16 +17,6 @@ describe('Fraggle Rock Config Filtering', () => {
   const timespanGatherer = new BaseGatherer();
   timespanGatherer.meta = {supportedModes: ['timespan']};
 
-  const artifacts = [
-    {id: 'Snapshot', gatherer: {instance: snapshotGatherer}},
-    {id: 'Timespan', gatherer: {instance: timespanGatherer}},
-  ];
-
-  const navigationArtifacts = [
-    ...artifacts,
-    {id: 'Snapshot2', gatherer: {instance: snapshotGatherer}},
-  ];
-
   const auditMeta = {title: '', description: ''};
   class SnapshotAudit extends BaseAudit {
     static meta = {
@@ -66,29 +56,51 @@ describe('Fraggle Rock Config Filtering', () => {
     };
   }
 
-  const audits = [SnapshotAudit, TimespanAudit, NavigationAudit, ManualAudit].map(audit => ({
-    implementation: audit,
-    options: {},
-  }));
+  function createTestObjects() {
+    /** @type {Array<LH.Config.AnyArtifactDefn>} */
+    const artifacts = [
+      {id: 'Snapshot', gatherer: {instance: snapshotGatherer}},
+      {id: 'Timespan', gatherer: {instance: timespanGatherer}},
+    ];
 
-  /** @type {Array<LH.Config.NavigationDefn>} */
-  const navigations = [
-    {
-      ...defaultNavigationConfig,
-      id: 'firstPass',
-      artifacts: [
-        {id: 'Snapshot', gatherer: {instance: snapshotGatherer}},
-        {id: 'Timespan', gatherer: {instance: timespanGatherer}},
-      ],
-    },
-    {
-      ...defaultNavigationConfig,
-      id: 'secondPass',
-      artifacts: [
-        {id: 'Snapshot2', gatherer: {instance: snapshotGatherer}},
-      ],
-    },
-  ];
+    /** @type {Array<LH.Config.AnyArtifactDefn>} */
+    const navigationArtifacts = [
+      ...artifacts,
+      {id: 'Snapshot2', gatherer: {instance: snapshotGatherer}},
+    ];
+
+    /** @type {Array<LH.Config.NavigationDefn>} */
+    const navigations = [
+      {
+        ...defaultNavigationConfig,
+        id: 'firstPass',
+        artifacts: [
+          {id: 'Snapshot', gatherer: {instance: snapshotGatherer}},
+          {id: 'Timespan', gatherer: {instance: timespanGatherer}},
+        ],
+      },
+      {
+        ...defaultNavigationConfig,
+        id: 'secondPass',
+        artifacts: [
+          {id: 'Snapshot2', gatherer: {instance: snapshotGatherer}},
+        ],
+      },
+    ];
+
+    /** @type {Array<LH.Config.AuditDefn>} */
+    const audits = [SnapshotAudit, TimespanAudit, NavigationAudit, ManualAudit].map(audit => ({
+      implementation: audit,
+      options: {},
+    }));
+
+    return {artifacts, navigationArtifacts, navigations, audits};
+  }
+
+  let {artifacts, navigationArtifacts, navigations, audits} = createTestObjects();
+  beforeEach(() => {
+    ({artifacts, navigationArtifacts, navigations, audits} = createTestObjects());
+  });
 
   describe('filterArtifactsByGatherMode', () => {
     it('should handle null', () => {
@@ -401,7 +413,7 @@ describe('Fraggle Rock Config Filtering', () => {
         audits,
         categories,
         groups: null,
-        settings: defaultSettings,
+        settings: JSON.parse(JSON.stringify(defaultSettings)),
       };
     });
 

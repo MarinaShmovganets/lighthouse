@@ -231,6 +231,21 @@ class Util {
   }
 
   /**
+   * @param {LH.Result} lhr
+   * @return {LH.Result.FullPageScreenshot=}
+   */
+  static getFullPageScreenshot(lhr) {
+    if (lhr.fullPageScreenshot) {
+      return lhr.fullPageScreenshot;
+    }
+
+    // Prior to 10.0.
+    const details = /** @type {LH.Result.FullPageScreenshot=} */ (
+      lhr.audits['full-page-screenshot']?.details);
+    return details;
+  }
+
+  /**
    * Used to determine if the "passed" for the purposes of showing up in the "failed" or "passed"
    * sections of the report.
    *
