@@ -3687,6 +3687,14 @@
             "description": "Run the [Structured Data Testing Tool](https://search.google.com/structured-data/testing-tool/) and the [Structured Data Linter](http://linter.structured-data.org/) to validate structured data. [Learn more about Structured Data](https://developer.chrome.com/docs/lighthouse/seo/structured-data/).",
             "score": null,
             "scoreDisplayMode": "manual"
+          },
+          "bf-cache": {
+            "id": "bf-cache",
+            "title": "Page didn't prevent back/forward cache restoration",
+            "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://web.dev/bfcache/)",
+            "score": null,
+            "scoreDisplayMode": "error",
+            "errorMessage": "Required BFCacheFailures gatherer did not run."
           }
         },
         "configSettings": {
@@ -3992,6 +4000,10 @@
               },
               {
                 "id": "no-unload-listeners",
+                "weight": 0
+              },
+              {
+                "id": "bf-cache",
                 "weight": 0
               },
               {
@@ -6037,12 +6049,18 @@
             },
             {
               "startTime": 226,
+              "name": "lh:audit:bf-cache",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 227,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 227
+          "total": 228
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -7222,6 +7240,21 @@
             ],
             "core/audits/seo/manual/structured-data.js | description": [
               "audits[structured-data].description"
+            ],
+            "core/audits/bf-cache.js | title": [
+              "audits[bf-cache].title"
+            ],
+            "core/audits/bf-cache.js | description": [
+              "audits[bf-cache].description"
+            ],
+            "core/lib/lh-error.js | missingRequiredArtifact": [
+              {
+                "values": {
+                  "errorCode": "MISSING_REQUIRED_ARTIFACT",
+                  "artifactName": "BFCacheFailures"
+                },
+                "path": "audits[bf-cache].errorMessage"
+              }
             ],
             "core/config/default-config.js | performanceCategoryTitle": [
               "categories.performance.title"
@@ -9108,6 +9141,13 @@
             "score": null,
             "scoreDisplayMode": "error",
             "errorMessage": "This version of Chrome is too old to support 'detailed EventTiming trace events'. Use a newer version to see full results."
+          },
+          "bf-cache": {
+            "id": "bf-cache",
+            "title": "Page didn't prevent back/forward cache restoration",
+            "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://web.dev/bfcache/)",
+            "score": 1,
+            "scoreDisplayMode": "binary"
           }
         },
         "configSettings": {
@@ -9304,6 +9344,10 @@
               },
               {
                 "id": "work-during-interaction",
+                "weight": 0
+              },
+              {
+                "id": "bf-cache",
                 "weight": 0
               },
               {
@@ -9977,12 +10021,18 @@
             },
             {
               "startTime": 82,
+              "name": "lh:audit:bf-cache",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 83,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 83
+          "total": 84
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -10484,6 +10534,12 @@
                 },
                 "path": "audits[work-during-interaction].errorMessage"
               }
+            ],
+            "core/audits/bf-cache.js | title": [
+              "audits[bf-cache].title"
+            ],
+            "core/audits/bf-cache.js | description": [
+              "audits[bf-cache].description"
             ],
             "core/config/default-config.js | performanceCategoryTitle": [
               "categories.performance.title"
@@ -17843,6 +17899,14 @@
             "description": "Run the [Structured Data Testing Tool](https://search.google.com/structured-data/testing-tool/) and the [Structured Data Linter](http://linter.structured-data.org/) to validate structured data. [Learn more about Structured Data](https://developer.chrome.com/docs/lighthouse/seo/structured-data/).",
             "score": null,
             "scoreDisplayMode": "manual"
+          },
+          "bf-cache": {
+            "id": "bf-cache",
+            "title": "Page didn't prevent back/forward cache restoration",
+            "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://web.dev/bfcache/)",
+            "score": null,
+            "scoreDisplayMode": "error",
+            "errorMessage": "Required BFCacheFailures gatherer did not run."
           }
         },
         "configSettings": {
@@ -18148,6 +18212,10 @@
               },
               {
                 "id": "no-unload-listeners",
+                "weight": 0
+              },
+              {
+                "id": "bf-cache",
                 "weight": 0
               },
               {
@@ -20175,12 +20243,18 @@
             },
             {
               "startTime": 223,
+              "name": "lh:audit:bf-cache",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 224,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 224
+          "total": 225
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -21376,6 +21450,21 @@
             ],
             "core/audits/seo/manual/structured-data.js | description": [
               "audits[structured-data].description"
+            ],
+            "core/audits/bf-cache.js | title": [
+              "audits[bf-cache].title"
+            ],
+            "core/audits/bf-cache.js | description": [
+              "audits[bf-cache].description"
+            ],
+            "core/lib/lh-error.js | missingRequiredArtifact": [
+              {
+                "values": {
+                  "errorCode": "MISSING_REQUIRED_ARTIFACT",
+                  "artifactName": "BFCacheFailures"
+                },
+                "path": "audits[bf-cache].errorMessage"
+              }
             ],
             "core/config/default-config.js | performanceCategoryTitle": [
               "categories.performance.title"
