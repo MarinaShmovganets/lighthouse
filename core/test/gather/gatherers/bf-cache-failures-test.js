@@ -6,6 +6,7 @@
 
 import BFCacheFailures from '../../../gather/gatherers/bf-cache-failures.js';
 import {createMockContext} from '../mock-driver.js';
+import {flushAllTimersAndMicrotasks, timers} from '../../test-utils.js';
 
 /**
  * @returns {LH.Crdp.Page.BackForwardCacheNotUsedEvent}
@@ -45,6 +46,9 @@ describe('BFCacheFailures', () => {
   let mockContext = createMockContext();
   /** @type {LH.Crdp.Page.BackForwardCacheNotUsedEvent|undefined} */
   let mockActiveBfCacheEvent;
+  let eventEmitDelay = 0;
+  /** @type {Partial<LH.Crdp.Page.FrameNavigatedEvent>} */
+  let frameNavigatedEvent = {type: 'Navigation'};
 
   beforeEach(() => {
     mockContext = createMockContext();
@@ -52,6 +56,7 @@ describe('BFCacheFailures', () => {
     context = mockContext.asContext();
 
     mockActiveBfCacheEvent = createMockBfCacheEvent();
+    eventEmitDelay = 0;
 
     context.dependencies.DevtoolsLog = [];
 
@@ -68,13 +73,16 @@ describe('BFCacheFailures', () => {
         if (mockActiveBfCacheEvent) {
           const listener =
             mockContext.driver.defaultSession.on.findListener('Page.backForwardCacheNotUsed');
-          listener(mockActiveBfCacheEvent);
+          setTimeout(() => {
+            listener(mockActiveBfCacheEvent);
+          }, eventEmitDelay);
         }
       });
 
+    frameNavigatedEvent = {type: 'Navigation'};
     mockContext.driver.defaultSession.once
       .mockEvent('Page.loadEventFired', {})
-      .mockEvent('Page.frameNavigated', {});
+      .mockEvent('Page.frameNavigated', frameNavigatedEvent);
   });
 
   it('actively triggers bf cache in navigation mode', async () => {
@@ -82,7 +90,7 @@ describe('BFCacheFailures', () => {
     const artifact = await gatherer.getArtifact(context);
 
     expect(mockContext.driver.defaultSession.sendCommand)
-      .toHaveBeenCalledWith('Page.navigate', {url: 'about:blank'});
+      .toHaveBeenCalledWith('Page.navigate', {url: 'chrome://terms'});
     expect(mockContext.driver.defaultSession.sendCommand)
       .toHaveBeenCalledWith('Page.navigateToHistoryEntry', {entryId: 1});
 
@@ -108,7 +116,7 @@ describe('BFCacheFailures', () => {
     });
 
     expect(mockContext.driver.defaultSession.sendCommand)
-      .toHaveBeenCalledWith('Page.navigate', {url: 'about:blank'});
+      .toHaveBeenCalledWith('Page.navigate', {url: 'chrome://terms'});
     expect(mockContext.driver.defaultSession.sendCommand)
       .toHaveBeenCalledWith('Page.navigateToHistoryEntry', {entryId: 1});
 
@@ -126,6 +134,22 @@ describe('BFCacheFailures', () => {
     });
   });
 
+  it('passively collects bf cache events in navigation mode when passive flag set', async () => {
+    context.gatherMode = 'navigation';
+    context.dependencies.DevtoolsLog = [];
+    context.settings.usePassiveGathering = true;
+
+    const gatherer = new BFCacheFailures();
+    const artifact = await gatherer.getArtifact(context);
+
+    expect(mockContext.driver.defaultSession.sendCommand)
+      .not.toHaveBeenCalledWith('Page.navigate', {url: 'chrome://terms'});
+    expect(mockContext.driver.defaultSession.sendCommand)
+      .not.toHaveBeenCalledWith('Page.navigateToHistoryEntry', {entryId: 1});
+
+    expect(artifact).toHaveLength(0);
+  });
+
   it('passively collects bf cache event in timespan mode', async () => {
     context.gatherMode = 'timespan';
     context.dependencies.DevtoolsLog = [{
@@ -137,7 +161,7 @@ describe('BFCacheFailures', () => {
     const artifact = await gatherer.getArtifact(context);
 
     expect(mockContext.driver.defaultSession.sendCommand)
-      .not.toHaveBeenCalledWith('Page.navigate', {url: 'about:blank'});
+      .not.toHaveBeenCalledWith('Page.navigate', {url: 'chrome://terms'});
     expect(mockContext.driver.defaultSession.sendCommand)
       .not.toHaveBeenCalledWith('Page.navigateToHistoryEntry', {entryId: 1});
 
@@ -162,7 +186,7 @@ describe('BFCacheFailures', () => {
     const artifact = await gatherer.getArtifact(context);
 
     expect(mockContext.driver.defaultSession.sendCommand)
-      .toHaveBeenCalledWith('Page.navigate', {url: 'about:blank'});
+      .toHaveBeenCalledWith('Page.navigate', {url: 'chrome://terms'});
     expect(mockContext.driver.defaultSession.sendCommand)
       .toHaveBeenCalledWith('Page.navigateToHistoryEntry', {entryId: 1});
 
@@ -182,15 +206,45 @@ describe('BFCacheFailures', () => {
 
   it('returns an empty list if no events were found passively or actively', async () => {
     mockActiveBfCacheEvent = undefined;
+    frameNavigatedEvent.type = 'BackForwardCacheRestore';
 
     const gatherer = new BFCacheFailures();
     const artifact = await gatherer.getArtifact(context);
 
     expect(mockContext.driver.defaultSession.sendCommand)
-      .toHaveBeenCalledWith('Page.navigate', {url: 'about:blank'});
+      .toHaveBeenCalledWith('Page.navigate', {url: 'chrome://terms'});
     expect(mockContext.driver.defaultSession.sendCommand)
       .toHaveBeenCalledWith('Page.navigateToHistoryEntry', {entryId: 1});
 
     expect(artifact).toHaveLength(0);
+  });
+
+  describe('handles event after frameNavigated', () => {
+    beforeEach(() => timers.useFakeTimers());
+    afterEach(() => timers.dispose());
+
+    it('and resolves if emitted before the timeout', async () => {
+      eventEmitDelay = 55;
+
+      const gatherer = new BFCacheFailures();
+      const artifactPromise = gatherer.getArtifact(context);
+
+      await flushAllTimersAndMicrotasks(110);
+
+      await expect(artifactPromise).resolves.toHaveLength(1);
+    });
+
+    it('and rejects if emitted after the timeout', async () => {
+      eventEmitDelay = 105;
+
+      const gatherer = new BFCacheFailures();
+      const artifactPromise = gatherer.getArtifact(context);
+
+      await flushAllTimersAndMicrotasks(110);
+
+      await expect(artifactPromise).rejects.toThrow(
+        'bfcache failed but the failure reasons were not emitted in time'
+      );
+    });
   });
 });

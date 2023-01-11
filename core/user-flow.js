@@ -87,22 +87,22 @@ class UserFlow {
    * @return {LH.UserFlow.StepFlags}
    */
   _getNextNavigationFlags(flags) {
-    const nextFlags = this._getNextFlags(flags) || {};
+    const newStepFlags = this._getNextFlags(flags) || {};
 
-    if (nextFlags.skipAboutBlank === undefined) {
-      nextFlags.skipAboutBlank = true;
+    if (newStepFlags.skipAboutBlank === undefined) {
+      newStepFlags.skipAboutBlank = true;
     }
 
     // On repeat navigations, we want to disable storage reset by default (i.e. it's not a cold load).
     const isSubsequentNavigation = this._gatherSteps
       .some(step => step.artifacts.GatherContext.gatherMode === 'navigation');
     if (isSubsequentNavigation) {
-      if (nextFlags.disableStorageReset === undefined) {
-        nextFlags.disableStorageReset = true;
+      if (newStepFlags.disableStorageReset === undefined) {
+        newStepFlags.disableStorageReset = true;
       }
     }
 
-    return nextFlags;
+    return newStepFlags;
   }
 
   /**

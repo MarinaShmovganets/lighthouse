@@ -443,26 +443,85 @@ const expectations = {
           }],
         },
       },
+      'bf-cache': {
+        details: {
+          items: [
+            {
+              reason: 'The page has an unload handler in the main frame.',
+              failureType: 'Actionable',
+              subItems: {
+                items: [{
+                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                }],
+              },
+            },
+            {
+              // Support for this was added in M109
+              // https://crbug.com/1350944
+              _maxChromiumVersion: '108',
+              reason: 'Pages that have requested notifications permissions are not currently eligible for back/forward cache.',
+              failureType: 'Pending browser support',
+              subItems: {
+                items: [{
+                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                }],
+              },
+            },
+            {
+              // This issue only appears in the DevTools runner for some reason.
+              // TODO: Investigate why this doesn't happen on the CLI runner.
+              _runner: 'devtools',
+              reason: 'There were permission requests upon navigating away.',
+              failureType: 'Pending browser support',
+              subItems: {
+                items: [{
+                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                }],
+              },
+            },
+            {
+              // The DevTools runner uses Puppeteer to launch Chrome which disables BFCache by default.
+              // https://github.com/puppeteer/puppeteer/issues/8197
+              //
+              // If we ignore the Puppeteer args and force BFCache to be enabled, it causes thew viewport to be sized incorrectly for other tests.
+              // These viewport issues are not present when Lighthouse is run from DevTools manually.
+              // TODO: Investigate why BFCache causes viewport issues only in our DevTools smoke tests.
+              _runner: 'devtools',
+              reason: 'Back/forward cache is disabled by flags. Visit chrome://flags/#back-forward-cache to enable it locally on this device.',
+              failureType: 'Not actionable',
+              subItems: {
+                items: [{
+                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                }],
+              },
+            },
+          ],
+        },
+      },
     },
     fullPageScreenshot: {
-      screenshot: {
-        width: 360,
-        // Allow for differences in platforms.
-        height: '1350±100',
-        data: /^data:image\/webp;.{500,}/,
-      },
-      nodes: {
-        _includes: [
-          // Test that the numbers for individual elements are in the ballpark.
-          [/[0-9]-[0-9]+-IMG/, imgA],
-          [/[0-9]-[0-9]+-IMG/, imgB],
-          // And then many more nodes...
-        ],
-        _excludes: [
-          // Ensure that the nodes we found above are unique.
-          [/[0-9]-[0-9]+-IMG/, imgA],
-          [/[0-9]-[0-9]+-IMG/, imgB],
-        ],
+      score: null,
+      details: {
+        type: 'full-page-screenshot',
+        screenshot: {
+          width: 360,
+          // Allow for differences in platforms.
+          height: '1350±100',
+          data: /^data:image\/webp;.{500,}/,
+        },
+        nodes: {
+          _includes: [
+            // Test that the numbers for individual elements are in the ballpark.
+            [/[0-9]-[0-9]+-IMG/, imgA],
+            [/[0-9]-[0-9]+-IMG/, imgB],
+            // And then many more nodes...
+          ],
+          _excludes: [
+            // Ensure that the nodes we found above are unique.
+            [/[0-9]-[0-9]+-IMG/, imgA],
+            [/[0-9]-[0-9]+-IMG/, imgB],
+          ],
+        },
       },
     },
   },
