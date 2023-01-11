@@ -192,101 +192,103 @@ function disableFixedAndStickyElementPointerEvents(className) {
  */
 /* c8 ignore start */
 function gatherTapTargets(tapTargetsSelector, className) {
-  /** @type {LH.Artifacts.TapTarget[]} */
-  const targets = [];
-
   const originalScrollPosition = {
     x: window.scrollX,
     y: window.scrollY,
   };
 
-  // Capture element positions relative to the top of the page
-  window.scrollTo(0, 0);
+  try {
+    /** @type {LH.Artifacts.TapTarget[]} */
+    const targets = [];
 
-  /** @type {HTMLElement[]} */
-  // @ts-expect-error - getElementsInDocument put into scope via stringification
-  const tapTargetElements = getElementsInDocument(tapTargetsSelector);
+    // Capture element positions relative to the top of the page
+    window.scrollTo(0, 0);
 
-  /** @type {{
-    tapTargetElement: Element,
-    clientRects: LH.Artifacts.Rect[]
-  }[]} */
-  const tapTargetsWithClientRects = [];
-  tapTargetElements.forEach(tapTargetElement => {
-    // Filter out tap targets that are likely to cause false failures:
-    if (elementHasAncestorTapTarget(tapTargetElement, tapTargetsSelector)) {
-      // This is usually intentional, either the tap targets trigger the same action
-      // or there's a child with a related action (like a delete button for an item)
-      return;
-    }
-    if (elementIsInTextBlock(tapTargetElement)) {
-      // Links inside text blocks cause a lot of failures, and there's also an exception for them
-      // in the Web Content Accessibility Guidelines https://www.w3.org/TR/WCAG21/#target-size
-      return;
-    }
-    if (!elementIsVisible(tapTargetElement)) {
-      return;
-    }
+    /** @type {HTMLElement[]} */
+    // @ts-expect-error - getElementsInDocument put into scope via stringification
+    const tapTargetElements = getElementsInDocument(tapTargetsSelector);
 
-    tapTargetsWithClientRects.push({
-      tapTargetElement,
-      clientRects: getClientRects(tapTargetElement),
-    });
-  });
+    /** @type {{
+      tapTargetElement: Element,
+      clientRects: LH.Artifacts.Rect[]
+    }[]} */
+    const tapTargetsWithClientRects = [];
+    tapTargetElements.forEach(tapTargetElement => {
+      // Filter out tap targets that are likely to cause false failures:
+      if (elementHasAncestorTapTarget(tapTargetElement, tapTargetsSelector)) {
+        // This is usually intentional, either the tap targets trigger the same action
+        // or there's a child with a related action (like a delete button for an item)
+        return;
+      }
+      if (elementIsInTextBlock(tapTargetElement)) {
+        // Links inside text blocks cause a lot of failures, and there's also an exception for them
+        // in the Web Content Accessibility Guidelines https://www.w3.org/TR/WCAG21/#target-size
+        return;
+      }
+      if (!elementIsVisible(tapTargetElement)) {
+        return;
+      }
 
-  // Disable pointer events so that tap targets below them don't get
-  // detected as non-tappable (they are tappable, just not while the viewport
-  // is at the current scroll position)
-  const reenableFixedAndStickyElementPointerEvents =
-    disableFixedAndStickyElementPointerEvents(className);
-
-  /** @type {{
-    tapTargetElement: Element,
-    visibleClientRects: LH.Artifacts.Rect[]
-  }[]} */
-  const tapTargetsWithVisibleClientRects = [];
-  // We use separate loop here to get visible client rects because that involves
-  // scrolling around the page for elementCenterIsAtZAxisTop, which would affect the
-  // client rect positions.
-  tapTargetsWithClientRects.forEach(({tapTargetElement, clientRects}) => {
-    // Filter out empty client rects
-    let visibleClientRects = clientRects.filter(cr => cr.width !== 0 && cr.height !== 0);
-
-    // Filter out client rects that are invisible, e.g because they are in a position absolute element
-    // with a lower z-index than the main content.
-    // This will also filter out all position fixed or sticky tap targets elements because we disable pointer
-    // events on them before running this. That's the correct behavior because whether a position fixed/stick
-    // element overlaps with another tap target depends on the scroll position.
-    visibleClientRects = visibleClientRects.filter(rect => {
-      // Just checking the center can cause false failures for large partially hidden tap targets,
-      // but that should be a rare edge case
-      // @ts-expect-error - put into scope via stringification
-      const rectCenterPoint = getRectCenterPoint(rect);
-      return elementCenterIsAtZAxisTop(tapTargetElement, rectCenterPoint);
-    });
-
-    if (visibleClientRects.length > 0) {
-      tapTargetsWithVisibleClientRects.push({
+      tapTargetsWithClientRects.push({
         tapTargetElement,
-        visibleClientRects,
+        clientRects: getClientRects(tapTargetElement),
+      });
+    });
+
+    // Disable pointer events so that tap targets below them don't get
+    // detected as non-tappable (they are tappable, just not while the viewport
+    // is at the current scroll position)
+    const reenableFixedAndStickyElementPointerEvents =
+      disableFixedAndStickyElementPointerEvents(className);
+
+    /** @type {{
+      tapTargetElement: Element,
+      visibleClientRects: LH.Artifacts.Rect[]
+    }[]} */
+    const tapTargetsWithVisibleClientRects = [];
+    // We use separate loop here to get visible client rects because that involves
+    // scrolling around the page for elementCenterIsAtZAxisTop, which would affect the
+    // client rect positions.
+    tapTargetsWithClientRects.forEach(({tapTargetElement, clientRects}) => {
+      // Filter out empty client rects
+      let visibleClientRects = clientRects.filter(cr => cr.width !== 0 && cr.height !== 0);
+
+      // Filter out client rects that are invisible, e.g because they are in a position absolute element
+      // with a lower z-index than the main content.
+      // This will also filter out all position fixed or sticky tap targets elements because we disable pointer
+      // events on them before running this. That's the correct behavior because whether a position fixed/stick
+      // element overlaps with another tap target depends on the scroll position.
+      visibleClientRects = visibleClientRects.filter(rect => {
+        // Just checking the center can cause false failures for large partially hidden tap targets,
+        // but that should be a rare edge case
+        // @ts-expect-error - put into scope via stringification
+        const rectCenterPoint = getRectCenterPoint(rect);
+        return elementCenterIsAtZAxisTop(tapTargetElement, rectCenterPoint);
+      });
+
+      if (visibleClientRects.length > 0) {
+        tapTargetsWithVisibleClientRects.push({
+          tapTargetElement,
+          visibleClientRects,
+        });
+      }
+    });
+
+    for (const {tapTargetElement, visibleClientRects} of tapTargetsWithVisibleClientRects) {
+      targets.push({
+        clientRects: visibleClientRects,
+        href: /** @type {HTMLAnchorElement} */(tapTargetElement)['href'] || '',
+        // @ts-expect-error - getNodeDetails put into scope via stringification
+        node: getNodeDetails(tapTargetElement),
       });
     }
-  });
 
-  for (const {tapTargetElement, visibleClientRects} of tapTargetsWithVisibleClientRects) {
-    targets.push({
-      clientRects: visibleClientRects,
-      href: /** @type {HTMLAnchorElement} */(tapTargetElement)['href'] || '',
-      // @ts-expect-error - getNodeDetails put into scope via stringification
-      node: getNodeDetails(tapTargetElement),
-    });
+    reenableFixedAndStickyElementPointerEvents();
+
+    return targets;
+  } finally {
+    window.scrollTo(originalScrollPosition.x, originalScrollPosition.y);
   }
-
-  reenableFixedAndStickyElementPointerEvents();
-
-  window.scrollTo(originalScrollPosition.x, originalScrollPosition.y);
-
-  return targets;
 }
 /* c8 ignore stop */
 

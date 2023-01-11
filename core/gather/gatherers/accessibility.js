@@ -20,74 +20,74 @@ async function runA11yChecks() {
     y: window.scrollY,
   };
 
-  /** @type {import('axe-core/axe')} */
-  // @ts-expect-error - axe defined by axeLibSource
-  const axe = window.axe;
-  const application = `lighthouse-${Math.random()}`;
-  axe.configure({
-    branding: {
-      application,
-    },
-    noHtml: true,
-  });
-  const axeResults = await axe.run(document, {
-    elementRef: true,
-    runOnly: {
-      type: 'tag',
-      values: [
-        'wcag2a',
-        'wcag2aa',
-      ],
-    },
-    // resultTypes doesn't limit the output of the axeResults object. Instead, if it's defined,
-    // some expensive element identification is done only for the respective types. https://github.com/dequelabs/axe-core/blob/f62f0cf18f7b69b247b0b6362cf1ae71ffbf3a1b/lib/core/reporters/helpers/process-aggregate.js#L61-L97
-    resultTypes: ['violations', 'inapplicable'],
-    rules: {
-      // Consider http://go/prcpg for expert review of the aXe rules.
-      'tabindex': {enabled: true},
-      'accesskeys': {enabled: true},
-      'heading-order': {enabled: true},
-      'meta-viewport': {enabled: true},
-      'duplicate-id': {enabled: false},
-      'table-fake-caption': {enabled: false},
-      'td-has-header': {enabled: false},
-      'marquee': {enabled: false},
-      'area-alt': {enabled: false},
-      'html-xml-lang-mismatch': {enabled: false},
-      'blink': {enabled: false},
-      'server-side-image-map': {enabled: false},
-      'identical-links-same-purpose': {enabled: false},
-      'no-autoplay-audio': {enabled: false},
-      'svg-img-alt': {enabled: false},
-      'audio-caption': {enabled: false},
-      'aria-treeitem-name': {enabled: true},
-      // https://github.com/dequelabs/axe-core/issues/2958
-      'nested-interactive': {enabled: false},
-      'frame-focusable-content': {enabled: false},
-      'aria-roledescription': {enabled: false},
-      'scrollable-region-focusable': {enabled: false},
-      // TODO(paulirish): create audits and enable these 3.
-      'input-button-name': {enabled: false},
-      'role-img-alt': {enabled: false},
-      'select-name': {enabled: false},
-    },
-  });
+  try {
+    /** @type {import('axe-core/axe')} */
+    // @ts-expect-error - axe defined by axeLibSource
+    const axe = window.axe;
+    const application = `lighthouse-${Math.random()}`;
+    axe.configure({
+      branding: {
+        application,
+      },
+      noHtml: true,
+    });
+    const axeResults = await axe.run(document, {
+      elementRef: true,
+      runOnly: {
+        type: 'tag',
+        values: [
+          'wcag2a',
+          'wcag2aa',
+        ],
+      },
+      // resultTypes doesn't limit the output of the axeResults object. Instead, if it's defined,
+      // some expensive element identification is done only for the respective types. https://github.com/dequelabs/axe-core/blob/f62f0cf18f7b69b247b0b6362cf1ae71ffbf3a1b/lib/core/reporters/helpers/process-aggregate.js#L61-L97
+      resultTypes: ['violations', 'inapplicable'],
+      rules: {
+        // Consider http://go/prcpg for expert review of the aXe rules.
+        'tabindex': {enabled: true},
+        'accesskeys': {enabled: true},
+        'heading-order': {enabled: true},
+        'meta-viewport': {enabled: true},
+        'duplicate-id': {enabled: false},
+        'table-fake-caption': {enabled: false},
+        'td-has-header': {enabled: false},
+        'marquee': {enabled: false},
+        'area-alt': {enabled: false},
+        'html-xml-lang-mismatch': {enabled: false},
+        'blink': {enabled: false},
+        'server-side-image-map': {enabled: false},
+        'identical-links-same-purpose': {enabled: false},
+        'no-autoplay-audio': {enabled: false},
+        'svg-img-alt': {enabled: false},
+        'audio-caption': {enabled: false},
+        'aria-treeitem-name': {enabled: true},
+        // https://github.com/dequelabs/axe-core/issues/2958
+        'nested-interactive': {enabled: false},
+        'frame-focusable-content': {enabled: false},
+        'aria-roledescription': {enabled: false},
+        'scrollable-region-focusable': {enabled: false},
+        // TODO(paulirish): create audits and enable these 3.
+        'input-button-name': {enabled: false},
+        'role-img-alt': {enabled: false},
+        'select-name': {enabled: false},
+      },
+    });
 
-  // axe just scrolled the page, scroll back to the top of the page so that element positions
-  // are relative to the top of the page
-  document.documentElement.scrollTop = 0;
+    // axe just scrolled the page, scroll back to the top of the page so that element positions
+    // are relative to the top of the page
+    document.documentElement.scrollTop = 0;
 
-  const result = {
-    violations: axeResults.violations.map(createAxeRuleResultArtifact),
-    incomplete: axeResults.incomplete.map(createAxeRuleResultArtifact),
-    notApplicable: axeResults.inapplicable.map(result => ({id: result.id})), // FYI: inapplicable => notApplicable!
-    passes: axeResults.passes.map(result => ({id: result.id})),
-    version: axeResults.testEngine.version,
-  };
-
-  window.scrollTo(originalScrollPosition.x, originalScrollPosition.y);
-
-  return result;
+    return {
+      violations: axeResults.violations.map(createAxeRuleResultArtifact),
+      incomplete: axeResults.incomplete.map(createAxeRuleResultArtifact),
+      notApplicable: axeResults.inapplicable.map(result => ({id: result.id})), // FYI: inapplicable => notApplicable!
+      passes: axeResults.passes.map(result => ({id: result.id})),
+      version: axeResults.testEngine.version,
+    };
+  } finally {
+    window.scrollTo(originalScrollPosition.x, originalScrollPosition.y);
+  }
 }
 
 /**
