@@ -203,9 +203,9 @@ function gatherTapTargets(tapTargetsSelector, className) {
   const tapTargetElements = getElementsInDocument(tapTargetsSelector);
 
   /** @type {{
-      tapTargetElement: Element,
-      clientRects: LH.Artifacts.Rect[]
-    }[]} */
+    tapTargetElement: Element,
+    clientRects: LH.Artifacts.Rect[]
+  }[]} */
   const tapTargetsWithClientRects = [];
   tapTargetElements.forEach(tapTargetElement => {
     // Filter out tap targets that are likely to cause false failures:
@@ -233,12 +233,12 @@ function gatherTapTargets(tapTargetsSelector, className) {
   // detected as non-tappable (they are tappable, just not while the viewport
   // is at the current scroll position)
   const reenableFixedAndStickyElementPointerEvents =
-      disableFixedAndStickyElementPointerEvents(className);
+    disableFixedAndStickyElementPointerEvents(className);
 
   /** @type {{
-      tapTargetElement: Element,
-      visibleClientRects: LH.Artifacts.Rect[]
-    }[]} */
+    tapTargetElement: Element,
+    visibleClientRects: LH.Artifacts.Rect[]
+  }[]} */
   const tapTargetsWithVisibleClientRects = [];
   // We use separate loop here to get visible client rects because that involves
   // scrolling around the page for elementCenterIsAtZAxisTop, which would affect the
