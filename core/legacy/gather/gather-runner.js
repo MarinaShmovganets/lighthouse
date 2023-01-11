@@ -623,7 +623,6 @@ class GatherRunner {
 
     // Run `afterPass()` on gatherers and return collected artifacts.
     await GatherRunner.afterPass(passContext, loadData, gathererResults);
-
     const artifacts = GatherRunner.collectArtifacts(gathererResults);
 
     log.timeEnd(status);
