@@ -6292,10 +6292,6 @@
           "weight": 0
         },
         {
-          "id": "no-unload-listeners",
-          "weight": 0
-        },
-        {
           "id": "bf-cache",
           "weight": 0
         },
@@ -6690,6 +6686,11 @@
           "group": "best-practices-browser-compat"
         },
         {
+          "id": "no-unload-listeners",
+          "weight": 1,
+          "group": "best-practices-general"
+        },
+        {
           "id": "js-libraries",
           "weight": 0,
           "group": "best-practices-general"
@@ -6716,7 +6717,7 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.27
+      "score": 0.25
     },
     "seo": {
       "title": "SEO",
