@@ -123,7 +123,7 @@ describe('Navigation', async function() {
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
         assert.strictEqual(auditResults.length, 174);
-        assert.strictEqual(erroredAudits.length, 0);
+        assert.deepStrictEqual(erroredAudits, []);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
           'installable-manifest',
@@ -211,7 +211,7 @@ describe('Navigation', async function() {
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, flakyAudits);
         assert.strictEqual(auditResults.length, 151);
-        assert.strictEqual(erroredAudits.length, 0);
+        assert.deepStrictEqual(erroredAudits, []);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
           'installable-manifest',
@@ -249,7 +249,7 @@ describe('Navigation', async function() {
         assert.strictEqual(devicePixelRatio, 1);
 
         const {erroredAudits} = getAuditsBreakdown(lhr);
-        assert.strictEqual(erroredAudits.length, 0);
+        assert.deepStrictEqual(erroredAudits, []);
 
         assert.deepStrictEqual(Object.keys(lhr.categories), ['performance', 'best-practices']);
         assert.strictEqual(lhr.configSettings.disableStorageReset, true);
