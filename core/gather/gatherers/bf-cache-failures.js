@@ -106,6 +106,7 @@ class BFCacheFailures extends FRGatherer {
     // In theory, we should be able to use about:blank here
     // but that sometimes produces BrowsingInstanceNotSwapped failures.
     // DevTools uses chrome://terms as it's temporary page so we should stick with that.
+    // https://github.com/GoogleChrome/lighthouse/issues/14665
     await Promise.all([
       session.sendCommand('Page.navigate', {url: 'chrome://terms'}),
       waitForLoadEvent(session, 0).promise,

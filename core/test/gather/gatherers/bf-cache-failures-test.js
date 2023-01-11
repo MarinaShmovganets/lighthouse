@@ -224,23 +224,23 @@ describe('BFCacheFailures', () => {
     afterEach(() => timers.dispose());
 
     it('and resolves if emitted before the timeout', async () => {
-      eventEmitDelay = 25;
-
-      const gatherer = new BFCacheFailures();
-      const artifactPromise = gatherer.getArtifact(context);
-
-      await flushAllTimersAndMicrotasks(60);
-
-      await expect(artifactPromise).resolves.toHaveLength(1);
-    });
-
-    it('and rejects if emitted after the timeout', async () => {
       eventEmitDelay = 55;
 
       const gatherer = new BFCacheFailures();
       const artifactPromise = gatherer.getArtifact(context);
 
-      await flushAllTimersAndMicrotasks(60);
+      await flushAllTimersAndMicrotasks(110);
+
+      await expect(artifactPromise).resolves.toHaveLength(1);
+    });
+
+    it('and rejects if emitted after the timeout', async () => {
+      eventEmitDelay = 105;
+
+      const gatherer = new BFCacheFailures();
+      const artifactPromise = gatherer.getArtifact(context);
+
+      await flushAllTimersAndMicrotasks(110);
 
       await expect(artifactPromise).rejects.toThrow(
         'bfcache failed but the failure reasons were not emitted in time'
