@@ -8,6 +8,8 @@ import FRGatherer from '../base-gatherer.js';
 import {waitForFrameNavigated, waitForLoadEvent} from '../driver/wait-for-condition.js';
 import DevtoolsLog from './devtools-log.js';
 
+const FAILURE_EVENT_TIMEOUT = 100;
+
 class BFCacheFailures extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta<'DevtoolsLog'>} */
   meta = {
@@ -117,7 +119,7 @@ class BFCacheFailures extends FRGatherer {
     // The bfcache failure event is not necessarily emitted by this point.
     // If we are expecting a bfcache failure event but haven't seen one, we should wait for it.
     if (frameNavigatedEvent.type !== 'BackForwardCacheRestore' && !bfCacheEvent) {
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise(resolve => setTimeout(resolve, FAILURE_EVENT_TIMEOUT));
 
       // If we still can't get the failure reasons after the timeout we should fail loudly,
       // otherwise this gatherer will return no failures when there should be failures.
