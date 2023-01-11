@@ -101,6 +101,9 @@ class BFCacheFailures extends FRGatherer {
     const history = await session.sendCommand('Page.getNavigationHistory');
     const entry = history.entries[history.currentIndex];
 
+    // In theory, we should be able to use about:blank here
+    // but that sometimes produces BrowsingInstanceNotSwapped failures.
+    // DevTools uses chrome://terms as it's temporary page so we should stick with that.
     await Promise.all([
       session.sendCommand('Page.navigate', {url: 'chrome://terms'}),
       waitForLoadEvent(session, 0).promise,
