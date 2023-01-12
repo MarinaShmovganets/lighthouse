@@ -171,7 +171,7 @@ describe('NetworkMonitor', () => {
         .mockResponse('Target.setAutoAttach')
         .mockResponse('Target.setAutoAttach')
         .mockResponse('Target.setAutoAttach')
-        .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1'}}});
+        .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: '1'}}});
       await monitor.enable();
 
       const type = 'Navigation';
@@ -190,7 +190,7 @@ describe('NetworkMonitor', () => {
       rootCdpSessionMock.send
         .mockResponse('Target.setAutoAttach')
         .mockResponse('Target.setAutoAttach')
-        .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1'}}});
+        .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: '1'}}});
       await monitor.enable();
 
       // One server redirect followed by a client redirect
@@ -218,7 +218,7 @@ describe('NetworkMonitor', () => {
       rootCdpSessionMock.send
         .mockResponse('Target.setAutoAttach')
         .mockResponse('Target.setAutoAttach')
-        .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1'}}});
+        .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: '1'}}});
       await monitor.enable();
 
       const type = 'Navigation';

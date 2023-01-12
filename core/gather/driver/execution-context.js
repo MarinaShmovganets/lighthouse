@@ -61,8 +61,8 @@ class ExecutionContext {
     await this._session.sendCommand('Page.enable');
     await this._session.sendCommand('Runtime.enable');
 
-    const resourceTreeResponse = await this._session.sendCommand('Page.getResourceTree');
-    const mainFrameId = resourceTreeResponse.frameTree.frame.id;
+    const frameTreeResponse = await this._session.sendCommand('Page.getFrameTree');
+    const mainFrameId = frameTreeResponse.frameTree.frame.id;
 
     const isolatedWorldResponse = await this._session.sendCommand('Page.createIsolatedWorld', {
       frameId: mainFrameId,
