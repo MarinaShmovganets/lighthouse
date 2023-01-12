@@ -530,7 +530,7 @@ class Util {
       deviceEmulation = Util.i18n.strings.runtimeDesktopEmulation;
     }
 
-    const screenEmulation = settings.screenEmulation.disabled ?
+    const screenEmulation = isScreenEmulationDisabled ?
       undefined :
       // eslint-disable-next-line max-len
       `${settings.screenEmulation.width}x${settings.screenEmulation.height}, DPR ${settings.screenEmulation.deviceScaleFactor}`;
