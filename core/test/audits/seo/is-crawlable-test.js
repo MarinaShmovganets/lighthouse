@@ -6,8 +6,6 @@
 
 import assert from 'assert/strict';
 
-import {expect} from 'expect';
-
 import IsCrawlableAudit from '../../../audits/seo/is-crawlable.js';
 import {networkRecordsToDevtoolsLog} from '../../network-records-to-devtools-log.js';
 

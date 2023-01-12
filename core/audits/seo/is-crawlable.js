@@ -66,7 +66,7 @@ function hasBlockingDirective(directives) {
 }
 
 /**
- * Returns true if robots header specifies user agent (e.g. `googlebot: noindex`)
+ * Returns user agent if specified in robots header (e.g. `googlebot: noindex`)
  * @param {string} directives
  * @return {string|undefined}
  */
@@ -197,7 +197,7 @@ class IsCrawlable extends Audit {
       }
     }
 
-    const score = blockedUserAgents.length !== BOT_USER_AGENTS.size ? 1 : 0;
+    const score = blockedUserAgents.length === BOT_USER_AGENTS.size ? 0 : 1;
     const warnings = [];
     if (score && blockedUserAgents.length > 0) {
       const list = blockedUserAgents.filter(Boolean).join(', ');
