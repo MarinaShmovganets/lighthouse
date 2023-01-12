@@ -99,7 +99,7 @@ const FlowStepThumbnail: FunctionComponent<{
       return <FlowStepAnimatedThumbnail frames={frames} width={width} height={height} />;
     }
   } else {
-    thumbnail = Util.getFullPageScreenshot(lhr)?.screenshot?.data;
+    thumbnail = Util.getFullPageScreenshot(lhr)?.screenshot.data;
   }
 
   return <>
