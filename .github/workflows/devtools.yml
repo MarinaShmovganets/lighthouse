@@ -12,6 +12,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      FORCE_COLOR: true
 
     steps:
     - name: Set $PATH
@@ -49,8 +51,8 @@ jobs:
         # 3) every change to file in Lighthouse repo important to running these tests.
         #
         # The number is how many times this hash key was manually updated to break the cache.
-        key: ${{ runner.os }}-10-${{ env.WEEK_OF_THE_YEAR }}-${{ hashFiles('cdt-test-hash.txt') }}
-        restore-keys: ${{ runner.os }}-10
+        key: ${{ runner.os }}-11-${{ env.WEEK_OF_THE_YEAR }}-${{ hashFiles('cdt-test-hash.txt') }}
+        restore-keys: ${{ runner.os }}-11
     - name: Set GHA_DEVTOOLS_CACHE_HIT
       if: steps.devtools-cache.outputs.cache-hit == 'true'
       run: echo "GHA_DEVTOOLS_CACHE_HIT=1" >> $GITHUB_ENV
@@ -79,6 +81,8 @@ jobs:
   e2e:
     needs: [build]
     runs-on: ubuntu-latest
+    env:
+      FORCE_COLOR: true
 
     steps:
     - name: git clone
@@ -121,6 +125,8 @@ jobs:
       # e.g. if set 1 fails, continue with set 2 anyway
       fail-fast: false
     runs-on: ubuntu-latest
+    env:
+      FORCE_COLOR: true
     name: DevTools smoke ${{ matrix.smoke-test-shard }}/${{ strategy.job-total }}
 
     steps:

@@ -18,9 +18,10 @@ const {createMockOnceFn} = mockCommands;
 // https://github.com/GoogleChrome/lighthouse/blob/main/docs/hacking-tips.md#mocking-modules-with-testdouble
 const {gotoURL, getNavigationWarnings} = await import('../../../gather/driver/navigation.js');
 
-timers.useFakeTimers();
-
 describe('.gotoURL', () => {
+  before(() => timers.useFakeTimers());
+  after(() => timers.dispose());
+
   /** @type {LH.Gatherer.FRTransitionalDriver} */
   let driver;
   /** @type {ReturnType<typeof createMockDriver>} */
@@ -37,7 +38,7 @@ describe('.gotoURL', () => {
       .mockResponse('Page.setLifecycleEventsEnabled')
       .mockResponse('Page.navigate')
       .mockResponse('Runtime.evaluate')
-      .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: 'ABC'}}});
+      .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: 'ABC'}}});
   });
 
   it('will track redirects through gotoURL load with warning', async () => {

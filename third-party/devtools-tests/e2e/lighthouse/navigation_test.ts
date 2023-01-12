@@ -5,7 +5,13 @@
 import {assert} from 'chai';
 
 import {expectError} from '../../conductor/events.js';
-import {getBrowserAndPages, setDevToolsSettings, waitFor} from '../../shared/helper.js';
+import {
+  $textContent,
+  getBrowserAndPages,
+  setDevToolsSettings,
+  waitFor,
+  waitForElementWithTextContent,
+} from '../../shared/helper.js';
 import {describe, it} from '../../shared/mocha-extensions.js';
 import {
   clickStartButton,
@@ -20,6 +26,7 @@ import {
   setLegacyNavigation,
   setThrottlingMethod,
   setToolbarCheckboxWithText,
+  unregisterAllServiceWorkers,
   waitForResult,
 } from '../helpers/lighthouse-helpers.js';
 
@@ -31,12 +38,19 @@ describe('Navigation', async function() {
   this.timeout(60_000);
 
   beforeEach(() => {
+    // https://github.com/GoogleChrome/lighthouse/issues/14572
+    expectError(/Request CacheStorage\.requestCacheNames failed/);
+
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1357791
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
+  });
+
+  afterEach(async () => {
+    await unregisterAllServiceWorkers();
   });
 
   const modes = ['legacy', 'FR'];
@@ -69,13 +83,15 @@ describe('Navigation', async function() {
           // 1 initial about:blank jump
           // 1 about:blank jump + 1 navigation for the default pass
           // 1 about:blank jump + 1 navigation for the offline pass
+          // 2 navigations to go to chrome://terms and back testing bfcache
           // 1 navigation after auditing to reset state
-          assert.strictEqual(numNavigations, 6);
+          assert.strictEqual(numNavigations, 8);
         } else {
           // 1 initial about:blank jump
           // 1 about:blank jump + 1 navigation for the default pass
+          // 2 navigations to go to chrome://terms and back testing bfcache
           // 1 navigation after auditing to reset state
-          assert.strictEqual(numNavigations, 4);
+          assert.strictEqual(numNavigations, 6);
         }
 
         // TODO: Reenable this for 10.0
@@ -106,8 +122,8 @@ describe('Navigation', async function() {
         });
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-        assert.strictEqual(auditResults.length, 173);
-        assert.strictEqual(erroredAudits.length, 0);
+        assert.strictEqual(auditResults.length, 174);
+        assert.deepStrictEqual(erroredAudits, []);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
           'installable-manifest',
@@ -117,22 +133,35 @@ describe('Navigation', async function() {
           'document-title',
           'html-has-lang',
           'meta-description',
+          'bf-cache',
         ]);
 
-        const viewTraceButton = await waitFor('.lh-button--trace', reportEl);
-        const viewTraceText = await viewTraceButton.evaluate(viewTraceEl => {
-          return viewTraceEl.textContent;
-        });
-        assert.strictEqual(viewTraceText, 'View Original Trace');
+        const viewTraceButton = await $textContent('View Original Trace', reportEl);
+        if (!viewTraceButton) {
+          throw new Error('Could not find view trace button');
+        }
 
+        // Test view trace button behavior
         await viewTraceButton.click();
-        const selectedTab = await waitFor('.tabbed-pane-header-tab.selected[aria-label="Performance"]');
-        const selectedTabText = await selectedTab.evaluate(selectedTabEl => {
+        let selectedTab = await waitFor('.tabbed-pane-header-tab.selected[aria-label="Performance"]');
+        let selectedTabText = await selectedTab.evaluate(selectedTabEl => {
           return selectedTabEl.textContent;
         });
         assert.strictEqual(selectedTabText, 'Performance');
 
         await navigateToLighthouseTab();
+
+        // Test element link behavior
+        const lcpElementAudit = await waitForElementWithTextContent('Largest Contentful Paint element', reportEl);
+        await lcpElementAudit.click();
+        const lcpElementLink = await waitForElementWithTextContent('button');
+        await lcpElementLink.click();
+
+        selectedTab = await waitFor('.tabbed-pane-header-tab.selected[aria-label="Elements"]');
+        selectedTabText = await selectedTab.evaluate(selectedTabEl => {
+          return selectedTabEl.textContent;
+        });
+        assert.strictEqual(selectedTabText, 'Elements');
 
         const waitForJson = await interceptNextFileSave();
 
@@ -181,8 +210,8 @@ describe('Navigation', async function() {
         ];
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, flakyAudits);
-        assert.strictEqual(auditResults.length, 150);
-        assert.strictEqual(erroredAudits.length, 0);
+        assert.strictEqual(auditResults.length, 151);
+        assert.deepStrictEqual(erroredAudits, []);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
           'installable-manifest',
@@ -192,12 +221,11 @@ describe('Navigation', async function() {
           'document-title',
           'html-has-lang',
           'meta-description',
+          'bf-cache',
         ]);
 
-        const viewTraceText = await reportEl.$eval('.lh-button--trace', viewTraceEl => {
-          return viewTraceEl.textContent;
-        });
-        assert.strictEqual(viewTraceText, 'View Trace');
+        const viewTraceButton = await $textContent('View Trace', reportEl);
+        assert.ok(viewTraceButton);
       });
 
       it('successfully returns a Lighthouse report when settings changed', async () => {
@@ -221,7 +249,7 @@ describe('Navigation', async function() {
         assert.strictEqual(devicePixelRatio, 1);
 
         const {erroredAudits} = getAuditsBreakdown(lhr);
-        assert.strictEqual(erroredAudits.length, 0);
+        assert.deepStrictEqual(erroredAudits, []);
 
         assert.deepStrictEqual(Object.keys(lhr.categories), ['performance', 'best-practices']);
         assert.strictEqual(lhr.configSettings.disableStorageReset, true);
@@ -237,10 +265,10 @@ describe('Navigation', async function() {
           assert.notInclude(lhr.environment.networkUserAgent, 'Mobile');
         }
 
-        const viewTraceText = await reportEl.$eval('.lh-button--trace', viewTraceEl => {
-          return viewTraceEl.textContent;
-        });
-        assert.strictEqual(viewTraceText, 'Ver rastro original');
+        // This string is not translated in the Lighthouse roll yet.
+        // TODO: Use the translated version once the strings land in DT.
+        const viewTraceButton = await $textContent('View Original Trace', reportEl);
+        assert.ok(viewTraceButton);
 
         const footerIssueText = await reportEl.$eval('.lh-footer__version_issue', footerIssueEl => {
           return footerIssueEl.textContent;
