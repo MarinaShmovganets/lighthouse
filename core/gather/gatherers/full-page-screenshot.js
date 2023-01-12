@@ -126,7 +126,6 @@ class FullPageScreenshot extends FRGatherer {
   async _takeScreenshot(context) {
     const result = await context.driver.defaultSession.sendCommand('Page.captureScreenshot', {
       format: 'webp',
-      fromSurface: false,
       quality: FULL_PAGE_SCREENSHOT_QUALITY,
     });
     const data = 'data:image/webp;base64,' + result.data;
