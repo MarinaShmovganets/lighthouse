@@ -3604,6 +3604,7 @@
             "description": "Search engines are unable to include your pages in search results if they don't have permission to crawl them. [Learn more about crawler directives](https://developer.chrome.com/docs/lighthouse/seo/is-crawlable/).",
             "score": 1,
             "scoreDisplayMode": "binary",
+            "warnings": [],
             "details": {
               "type": "table",
               "headings": [],
@@ -3975,10 +3976,6 @@
               },
               {
                 "id": "viewport",
-                "weight": 0
-              },
-              {
-                "id": "no-unload-listeners",
                 "weight": 0
               },
               {
@@ -4374,6 +4371,11 @@
                 "id": "charset",
                 "weight": 1,
                 "group": "best-practices-browser-compat"
+              },
+              {
+                "id": "no-unload-listeners",
+                "weight": 1,
+                "group": "best-practices-general"
               },
               {
                 "id": "js-libraries",
@@ -9750,10 +9752,6 @@
                 "weight": 0
               },
               {
-                "id": "no-unload-listeners",
-                "weight": 0
-              },
-              {
                 "id": "work-during-interaction",
                 "weight": 0
               },
@@ -9829,6 +9827,11 @@
                 "group": "best-practices-ux"
               },
               {
+                "id": "no-unload-listeners",
+                "weight": 1,
+                "group": "best-practices-general"
+              },
+              {
                 "id": "deprecations",
                 "weight": 1,
                 "group": "best-practices-general"
@@ -9850,7 +9853,7 @@
               }
             ],
             "id": "best-practices",
-            "score": 0.83
+            "score": 0.86
           }
         },
         "categoryGroups": {
@@ -19472,6 +19475,7 @@
             "description": "Search engines are unable to include your pages in search results if they don't have permission to crawl them. [Learn more about crawler directives](https://developer.chrome.com/docs/lighthouse/seo/is-crawlable/).",
             "score": 1,
             "scoreDisplayMode": "binary",
+            "warnings": [],
             "details": {
               "type": "table",
               "headings": [],
@@ -19903,10 +19907,6 @@
                 "weight": 0
               },
               {
-                "id": "no-unload-listeners",
-                "weight": 0
-              },
-              {
                 "id": "bf-cache",
                 "weight": 0
               },
@@ -20299,6 +20299,11 @@
                 "id": "charset",
                 "weight": 1,
                 "group": "best-practices-browser-compat"
+              },
+              {
+                "id": "no-unload-listeners",
+                "weight": 1,
+                "group": "best-practices-general"
               },
               {
                 "id": "js-libraries",

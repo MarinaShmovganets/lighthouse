@@ -512,14 +512,24 @@ class Util {
         summary = cpuThrottling = networkThrottling = Util.i18n.strings.runtimeUnknown;
     }
 
+    // devtools-entry.js always sets `screenEmulation.disabled` when using mobile emulation,
+    // because we handle the emulation outside of Lighthouse. Since the screen truly is emulated
+    // as a mobile device, ignore `.disabled` in devtools and just check the form factor
+    const isScreenEmulationDisabled = settings.channel === 'devtools' ?
+      false :
+      settings.screenEmulation.disabled;
+    const isScreenEmulationMobile = settings.channel === 'devtools' ?
+      settings.formFactor === 'mobile' :
+      settings.screenEmulation.mobile;
+
     let deviceEmulation = Util.i18n.strings.runtimeMobileEmulation;
-    if (settings.screenEmulation.disabled) {
+    if (isScreenEmulationDisabled) {
       deviceEmulation = Util.i18n.strings.runtimeNoEmulation;
-    } else if (!settings.screenEmulation.mobile) {
+    } else if (!isScreenEmulationMobile) {
       deviceEmulation = Util.i18n.strings.runtimeDesktopEmulation;
     }
 
-    const screenEmulation = settings.screenEmulation.disabled ?
+    const screenEmulation = isScreenEmulationDisabled ?
       undefined :
       // eslint-disable-next-line max-len
       `${settings.screenEmulation.width}x${settings.screenEmulation.height}, DPR ${settings.screenEmulation.deviceScaleFactor}`;
