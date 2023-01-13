@@ -81,14 +81,14 @@ async function runA11yChecks() {
   };
 }
 
-function runA11yChecksAndResetScroll() {
+async function runA11yChecksAndResetScroll() {
   const originalScrollPosition = {
     x: window.scrollX,
     y: window.scrollY,
   };
 
   try {
-    return runA11yChecks();
+    return await runA11yChecks();
   } finally {
     window.scrollTo(originalScrollPosition.x, originalScrollPosition.y);
   }
