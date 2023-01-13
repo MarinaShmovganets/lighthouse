@@ -25,7 +25,7 @@ describe('Performance: preload-lcp audit', () => {
       },
       devtoolsLogs: {[PreloadLCPImage.DEFAULT_PASS]: networkRecordsToDevtoolsLog(networkRecords)},
       URL: {
-        requestedUrl: finalDisplayedUrl,
+        requestedUrl: rootNodeUrl,
         mainDocumentUrl: finalDisplayedUrl,
         finalDisplayedUrl,
       },
@@ -118,6 +118,67 @@ describe('Performance: preload-lcp audit', () => {
     });
   });
 
+  it('is not applicable if LCP is discovered from the main document', async () => {
+    const networkRecords = [
+      {
+        requestId: '1',
+        priority: 'High',
+        isLinkPreload: false,
+        startTime: 0,
+        endTime: 0.5,
+        timing: {receiveHeadersEnd: 500},
+        url: rootNodeUrl,
+      },
+      {
+        requestId: '2',
+        resourceType: 'Image',
+        priority: 'High',
+        isLinkPreload: false,
+        startTime: 2,
+        endTime: 4.5,
+        timing: {receiveHeadersEnd: 2500},
+        url: imageUrl,
+        initiator: {type: 'document', url: rootNodeUrl},
+      },
+    ];
+    const artifacts = mockArtifacts(networkRecords, rootNodeUrl, imageUrl);
+    const context = {settings: {}, computedCache: new Map()};
+    const result = await PreloadLCPImage.audit(artifacts, context);
+    expect(result.score).toEqual(1);
+    expect(result.details.overallSavingsMs).toEqual(0);
+    expect(result.details.items).toHaveLength(0);
+  });
+
+  it('fails and warns if missing initiator', async () => {
+    const networkRecords = [
+      {
+        requestId: '1',
+        priority: 'High',
+        isLinkPreload: false,
+        startTime: 0,
+        endTime: 0.5,
+        timing: {receiveHeadersEnd: 500},
+        url: rootNodeUrl,
+      },
+      {
+        requestId: '2',
+        resourceType: 'Image',
+        priority: 'High',
+        isLinkPreload: false,
+        startTime: 2,
+        endTime: 4.5,
+        timing: {receiveHeadersEnd: 2500},
+        url: imageUrl,
+      },
+    ];
+    const artifacts = mockArtifacts(networkRecords, rootNodeUrl, imageUrl);
+    const context = {settings: {}, computedCache: new Map()};
+    const result = await PreloadLCPImage.audit(artifacts, context);
+    expect(result.score).toEqual(0);
+    expect(result.warnings.length).toEqual(1);
+    expect(result.details.items).toHaveLength(1);
+  });
+
   it('shouldn\'t be applicable if lcp image element is not found', async () => {
     const networkRecords = mockNetworkRecords();
     const artifacts = mockArtifacts(networkRecords, mainDocumentNodeUrl, imageUrl);
@@ -167,8 +228,9 @@ describe('Performance: preload-lcp audit', () => {
         {url: 'http://www.example.com/image.png', initiatorType: 'script'},
         {url: 'http://www.example.com/script.js', initiatorType: 'parser'},
         {url: 'http://www.example.com:3000', initiatorType: 'other'},
+        {url: 'http://example.com:3000', initiatorType: 'other'},
       ],
-      pathLength: 3,
+      pathLength: 4,
     });
   });
 
@@ -199,8 +261,9 @@ describe('Performance: preload-lcp audit', () => {
         {url: 'http://www.example.com/image.png', initiatorType: 'script'},
         {url: 'http://www.example.com/script.js', initiatorType: 'parser'},
         {url: 'http://www.example.com:3000', initiatorType: 'other'},
+        {url: 'http://example.com:3000', initiatorType: 'other'},
       ],
-      pathLength: 3,
+      pathLength: 4,
     });
   });
 });

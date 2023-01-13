@@ -43,7 +43,6 @@ class PreloadLCPImageAudit extends Audit {
   }
 
   /**
-   *
    * @param {LH.Artifacts.NetworkRequest} request
    * @param {LH.Artifacts.NetworkRequest} mainResource
    * @param {Array<LH.Gatherer.Simulation.GraphNode>} initiatorPath
@@ -56,8 +55,17 @@ class PreloadLCPImageAudit extends Audit {
     if (request.isLinkPreload) return false;
     // It's not a request loaded over the network, don't recommend it.
     if (NetworkRequest.isNonNetworkRequest(request)) return false;
-    // It's already discoverable from the main document, don't recommend it.
-    if (initiatorPath.length <= mainResourceDepth) return false;
+    // If the LCP element was lazy-loaded, tracing loses initiator information and the
+    // lantern graph defaults to just connecting it to the root request. In this case,
+    // initiatorRequest will be undefined. Because the initiator path will be bogus,
+    // just ignore the following check for lazy-loaded images.
+    // Note: lcp-lazy-loaded audit will direct the user to the correct course of action,
+    // which would be to not lazy load the LCP element. So it's somewhat OK to just dismiss
+    // this case for this audit.
+    if (request.initiatorRequest) {
+      // It's already discoverable from the main document, don't recommend it.
+      if (initiatorPath.length <= mainResourceDepth + 1) return false;
+    }
     // Finally, return whether or not it belongs to the main frame
     return request.frameId === mainResource.frameId;
   }
@@ -89,7 +97,7 @@ class PreloadLCPImageAudit extends Audit {
    * @param {LH.Gatherer.Simulation.GraphNode} graph
    * @param {LH.Artifacts.TraceElement} lcpElement
    * @param {Array<LH.Artifacts.ImageElement>} imageElements
-   * @return {{lcpNodeToPreload?: LH.Gatherer.Simulation.GraphNetworkNode, initiatorPath?: InitiatorPath}}
+   * @return {{lcpNodeToPreload?: LH.Gatherer.Simulation.GraphNetworkNode, initiatorPath?: InitiatorPath, missingInitiator?: boolean}}
    */
   static getLCPNodeToPreload(mainResource, graph, lcpElement, imageElements) {
     const lcpImageElement = imageElements.find(elem => {
@@ -113,6 +121,9 @@ class PreloadLCPImageAudit extends Audit {
     return {
       lcpNodeToPreload,
       initiatorPath,
+      // Tracks the case where Chrome can't give us an initiator chain.
+      // See img.lazy note in `shouldPreloadRequest`.
+      missingInitiator: initiatorPath && !lcpNode.record.initiatorRequest,
     };
   }
 
@@ -230,8 +241,9 @@ class PreloadLCPImageAudit extends Audit {
     ]);
 
     const graph = lanternLCP.pessimisticGraph;
-    // eslint-disable-next-line max-len
-    const {lcpNodeToPreload, initiatorPath} = PreloadLCPImageAudit.getLCPNodeToPreload(mainResource, graph, lcpElement, artifacts.ImageElements);
+    const {lcpNodeToPreload, initiatorPath, missingInitiator} =
+      PreloadLCPImageAudit.getLCPNodeToPreload(mainResource, graph, lcpElement,
+        artifacts.ImageElements);
 
     const {results, wastedMs} =
       PreloadLCPImageAudit.computeWasteWithGraph(lcpElement, lcpNodeToPreload, graph, simulator);
@@ -252,15 +264,28 @@ class PreloadLCPImageAudit extends Audit {
         type: 'debugdata',
         initiatorPath,
         pathLength: initiatorPath.length,
+        missingInitiator,
       };
     }
 
+    const warnings = [];
+    if (missingInitiator) {
+      // eslint-disable-next-line max-len
+      warnings.push([
+        'Could not determine what initiated the image.',
+        'We know for certain that the browser could not discover the img from the HTML',
+        'Known reasons: it was made lazy via `img.loading = "lazy"`',
+        'If that is not the case for your LCP image, please file a bug on https://github.com/GoogleChrome/lighthouse to let us know.',
+      ].join(' '));
+    }
+
     return {
-      score: ByteEfficiencyAudit.scoreForWastedMs(wastedMs),
+      score: missingInitiator ? 0 : ByteEfficiencyAudit.scoreForWastedMs(wastedMs),
       numericValue: wastedMs,
       numericUnit: 'millisecond',
       displayValue: wastedMs ? str_(i18n.UIStrings.displayValueMsSavings, {wastedMs}) : '',
       details,
+      warnings,
     };
   }
 }
