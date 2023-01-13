@@ -64,7 +64,7 @@ before(async () => {
 });
 
 /**
- * @param {LH.Config.Json} json
+ * @param {LH.Config} json
  */
 async function makeConfig(json) {
   const config = await LegacyResolvedConfig.fromJson(json);

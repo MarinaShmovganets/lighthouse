@@ -37,13 +37,13 @@ import {navigationGather} from './gather/navigation-runner.js';
  * @param {string=} url The URL to test. Optional if running in auditMode.
  * @param {LH.Flags=} flags Optional settings for the Lighthouse run. If present,
  *   they will override any settings in the config.
- * @param {LH.Config.Json=} configJSON Configuration for the Lighthouse run. If
+ * @param {LH.Config=} config Configuration for the Lighthouse run. If
  *   not present, the default config is used.
  * @param {LH.Puppeteer.Page=} page
  * @return {Promise<LH.RunnerResult|undefined>}
  */
-async function lighthouse(url, flags = {}, configJSON, page) {
-  return navigation(page, url, {config: configJSON, flags});
+async function lighthouse(url, flags = {}, config, page) {
+  return navigation(page, url, {config, flags});
 }
 
 /**
@@ -53,17 +53,17 @@ async function lighthouse(url, flags = {}, configJSON, page) {
  * @param {string=} url The URL to test. Optional if running in auditMode.
  * @param {LH.Flags=} flags Optional settings for the Lighthouse run. If present,
  *   they will override any settings in the config.
- * @param {LH.Config.Json=} configJSON Configuration for the Lighthouse run. If
+ * @param {LH.Config=} config Configuration for the Lighthouse run. If
  *   not present, the default config is used.
  * @param {Connection=} userConnection
  * @return {Promise<LH.RunnerResult|undefined>}
  */
-async function legacyNavigation(url, flags = {}, configJSON, userConnection) {
+async function legacyNavigation(url, flags = {}, config, userConnection) {
   // set logging preferences, assume quiet
   flags.logLevel = flags.logLevel || 'error';
   log.setLevel(flags.logLevel);
 
-  const resolvedConfig = await LegacyResolvedConfig.fromJson(configJSON, flags);
+  const resolvedConfig = await LegacyResolvedConfig.fromJson(config, flags);
   const computedCache = new Map();
   const options = {resolvedConfig, computedCache};
   const connection = userConnection || new CriConnection(flags.port, flags.hostname);
@@ -87,7 +87,7 @@ async function startFlow(page, options) {
 /**
  * @param {LH.Puppeteer.Page|undefined} page
  * @param {LH.NavigationRequestor|undefined} requestor
- * @param {{config?: LH.Config.Json, flags?: LH.Flags}} [options]
+ * @param {{config?: LH.Config, flags?: LH.Flags}} [options]
  * @return {Promise<LH.RunnerResult|undefined>}
  */
 async function navigation(page, requestor, options) {
@@ -97,7 +97,7 @@ async function navigation(page, requestor, options) {
 
 /**
  * @param {LH.Puppeteer.Page} page
- * @param {{config?: LH.Config.Json, flags?: LH.Flags}} [options]
+ * @param {{config?: LH.Config, flags?: LH.Flags}} [options]
  * @return {Promise<LH.RunnerResult|undefined>}
  */
 async function snapshot(page, options) {
@@ -107,7 +107,7 @@ async function snapshot(page, options) {
 
 /**
  * @param {LH.Puppeteer.Page} page
- * @param {{config?: LH.Config.Json, flags?: LH.Flags}} [options]
+ * @param {{config?: LH.Config, flags?: LH.Flags}} [options]
  * @return {Promise<{endTimespan: () => Promise<LH.RunnerResult|undefined>}>}
  */
 async function startTimespan(page, options) {
@@ -138,7 +138,7 @@ function generateReport(result, format = 'html') {
 
 /**
  * @param {LH.UserFlow.FlowArtifacts} flowArtifacts
- * @param {LH.Config.Json} [config]
+ * @param {LH.Config} [config]
  */
 async function auditFlowArtifacts(flowArtifacts, config) {
   const {gatherSteps, name} = flowArtifacts;

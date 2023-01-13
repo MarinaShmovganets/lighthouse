@@ -87,22 +87,22 @@ class UserFlow {
    * @return {LH.UserFlow.StepFlags}
    */
   _getNextNavigationFlags(flags) {
-    const nextFlags = this._getNextFlags(flags) || {};
+    const newStepFlags = this._getNextFlags(flags) || {};
 
-    if (nextFlags.skipAboutBlank === undefined) {
-      nextFlags.skipAboutBlank = true;
+    if (newStepFlags.skipAboutBlank === undefined) {
+      newStepFlags.skipAboutBlank = true;
     }
 
     // On repeat navigations, we want to disable storage reset by default (i.e. it's not a cold load).
     const isSubsequentNavigation = this._gatherSteps
       .some(step => step.artifacts.GatherContext.gatherMode === 'navigation');
     if (isSubsequentNavigation) {
-      if (nextFlags.disableStorageReset === undefined) {
-        nextFlags.disableStorageReset = true;
+      if (newStepFlags.disableStorageReset === undefined) {
+        newStepFlags.disableStorageReset = true;
       }
     }
 
-    return nextFlags;
+    return newStepFlags;
   }
 
   /**
@@ -308,7 +308,7 @@ function getFlowName(name, gatherSteps) {
 
 /**
  * @param {Array<LH.UserFlow.GatherStep>} gatherSteps
- * @param {{name?: string, config?: LH.Config.Json, gatherStepRunnerOptions?: GatherStepRunnerOptions}} options
+ * @param {{name?: string, config?: LH.Config, gatherStepRunnerOptions?: GatherStepRunnerOptions}} options
  */
 async function auditGatherSteps(gatherSteps, options) {
   if (!gatherSteps.length) {
@@ -326,9 +326,9 @@ async function auditGatherSteps(gatherSteps, options) {
     // If the gather step is not active, we must recreate the runner options.
     if (!runnerOptions) {
       // Step specific configs take precedence over a config for the entire flow.
-      const configJson = options.config;
+      const config = options.config;
       const {gatherMode} = artifacts.GatherContext;
-      const {resolvedConfig} = await initializeConfig(gatherMode, configJson, flags);
+      const {resolvedConfig} = await initializeConfig(gatherMode, config, flags);
       runnerOptions = {
         resolvedConfig,
         computedCache: new Map(),

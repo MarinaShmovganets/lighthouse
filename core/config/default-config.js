@@ -170,7 +170,7 @@ for (const key of Object.keys(artifacts)) {
   artifacts[/** @type {keyof typeof artifacts} */ (key)] = key;
 }
 
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const defaultConfig = {
   settings: constants.defaultSettings,
   artifacts: [
@@ -217,8 +217,11 @@ const defaultConfig = {
     {id: artifacts.devtoolsLogs, gatherer: 'devtools-log-compat'},
     {id: artifacts.traces, gatherer: 'trace-compat'},
 
-    // FullPageScreenshot comes at the very end so all other node analysis is captured.
+    // FullPageScreenshot comes at the end so all other node analysis is captured.
     {id: artifacts.FullPageScreenshot, gatherer: 'full-page-screenshot'},
+
+    // BFCacheErrors comes at the very end because it can perform a page navigation.
+    {id: artifacts.BFCacheFailures, gatherer: 'bf-cache-failures'},
   ],
   audits: [
     'is-on-https',
@@ -374,6 +377,7 @@ const defaultConfig = {
     'seo/canonical',
     'seo/manual/structured-data',
     'work-during-interaction',
+    'bf-cache',
   ],
   groups: {
     'metrics': {
@@ -513,9 +517,9 @@ const defaultConfig = {
         {id: 'non-composited-animations', weight: 0},
         {id: 'unsized-images', weight: 0},
         {id: 'viewport', weight: 0},
-        {id: 'no-unload-listeners', weight: 0},
         {id: 'uses-responsive-images-snapshot', weight: 0},
         {id: 'work-during-interaction', weight: 0},
+        {id: 'bf-cache', weight: 0},
 
         // Budget audits.
         {id: 'performance-budget', weight: 0, group: 'budgets'},
@@ -618,6 +622,7 @@ const defaultConfig = {
         {id: 'doctype', weight: 1, group: 'best-practices-browser-compat'},
         {id: 'charset', weight: 1, group: 'best-practices-browser-compat'},
         // General Group
+        {id: 'no-unload-listeners', weight: 1, group: 'best-practices-general'},
         {id: 'js-libraries', weight: 0, group: 'best-practices-general'},
         {id: 'deprecations', weight: 1, group: 'best-practices-general'},
         {id: 'errors-in-console', weight: 1, group: 'best-practices-general'},

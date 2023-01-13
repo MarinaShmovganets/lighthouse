@@ -10369,5 +10369,6 @@
     "outerWidth": 360,
     "outerHeight": 640,
     "devicePixelRatio": 2.625
-  }
+  },
+  "BFCacheFailures": []
 }

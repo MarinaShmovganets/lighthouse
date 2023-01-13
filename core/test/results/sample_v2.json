@@ -5711,6 +5711,7 @@
       "description": "Search engines are unable to include your pages in search results if they don't have permission to crawl them. [Learn more about crawler directives](https://developer.chrome.com/docs/lighthouse/seo/is-crawlable/).",
       "score": 1,
       "scoreDisplayMode": "binary",
+      "warnings": [],
       "details": {
         "type": "table",
         "headings": [],
@@ -5831,6 +5832,61 @@
       "description": "Run the [Structured Data Testing Tool](https://search.google.com/structured-data/testing-tool/) and the [Structured Data Linter](http://linter.structured-data.org/) to validate structured data. [Learn more about Structured Data](https://developer.chrome.com/docs/lighthouse/seo/structured-data/).",
       "score": null,
       "scoreDisplayMode": "manual"
+    },
+    "bf-cache": {
+      "id": "bf-cache",
+      "title": "Page prevented back/forward cache restoration",
+      "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://web.dev/bfcache/)",
+      "score": 0,
+      "scoreDisplayMode": "binary",
+      "displayValue": "2 failure reasons",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "reason",
+            "valueType": "text",
+            "subItemsHeading": {
+              "key": "frameUrl",
+              "valueType": "url"
+            },
+            "label": "Failure reason"
+          },
+          {
+            "key": "failureType",
+            "valueType": "text",
+            "label": "Failure type"
+          }
+        ],
+        "items": [
+          {
+            "reason": "The page has an unload handler in the main frame.",
+            "failureType": "Actionable",
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "frameUrl": "http://localhost:10200/dobetterweb/dbw_tester.html"
+                }
+              ]
+            },
+            "protocolReason": "UnloadHandlerExistsInMainFrame"
+          },
+          {
+            "reason": "Internal error.",
+            "failureType": "Not actionable",
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "frameUrl": "http://localhost:10200/dobetterweb/dbw_tester.html"
+                }
+              ]
+            },
+            "protocolReason": "BrowsingInstanceNotSwapped"
+          }
+        ]
+      }
     }
   },
   "configSettings": {
@@ -6237,7 +6293,7 @@
           "weight": 0
         },
         {
-          "id": "no-unload-listeners",
+          "id": "bf-cache",
           "weight": 0
         },
         {
@@ -6631,6 +6687,11 @@
           "group": "best-practices-browser-compat"
         },
         {
+          "id": "no-unload-listeners",
+          "weight": 1,
+          "group": "best-practices-general"
+        },
+        {
           "id": "js-libraries",
           "weight": 0,
           "group": "best-practices-general"
@@ -6657,7 +6718,7 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.27
+      "score": 0.25
     },
     "seo": {
       "title": "SEO",
@@ -8295,6 +8356,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:bf-cache",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:runner:generate",
         "duration": 100,
         "entryType": "measure"
@@ -9707,6 +9774,38 @@
       ],
       "core/audits/seo/manual/structured-data.js | description": [
         "audits[structured-data].description"
+      ],
+      "core/audits/bf-cache.js | failureTitle": [
+        "audits[bf-cache].title"
+      ],
+      "core/audits/bf-cache.js | description": [
+        "audits[bf-cache].description"
+      ],
+      "core/audits/bf-cache.js | displayValue": [
+        {
+          "values": {
+            "itemCount": 2
+          },
+          "path": "audits[bf-cache].displayValue"
+        }
+      ],
+      "core/audits/bf-cache.js | failureReasonColumn": [
+        "audits[bf-cache].details.headings[0].label"
+      ],
+      "core/audits/bf-cache.js | failureTypeColumn": [
+        "audits[bf-cache].details.headings[1].label"
+      ],
+      "core/lib/bf-cache-strings.js | unloadHandlerExistsInMainFrame": [
+        "audits[bf-cache].details.items[0].reason"
+      ],
+      "core/audits/bf-cache.js | actionableFailureType": [
+        "audits[bf-cache].details.items[0].failureType"
+      ],
+      "core/lib/bf-cache-strings.js | internalError": [
+        "audits[bf-cache].details.items[1].reason"
+      ],
+      "core/audits/bf-cache.js | notActionableFailureType": [
+        "audits[bf-cache].details.items[1].failureType"
       ],
       "core/config/default-config.js | performanceCategoryTitle": [
         "categories.performance.title"

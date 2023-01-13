@@ -83,13 +83,15 @@ describe('Navigation', async function() {
           // 1 initial about:blank jump
           // 1 about:blank jump + 1 navigation for the default pass
           // 1 about:blank jump + 1 navigation for the offline pass
+          // 2 navigations to go to chrome://terms and back testing bfcache
           // 1 navigation after auditing to reset state
-          assert.strictEqual(numNavigations, 6);
+          assert.strictEqual(numNavigations, 8);
         } else {
           // 1 initial about:blank jump
           // 1 about:blank jump + 1 navigation for the default pass
+          // 2 navigations to go to chrome://terms and back testing bfcache
           // 1 navigation after auditing to reset state
-          assert.strictEqual(numNavigations, 4);
+          assert.strictEqual(numNavigations, 6);
         }
 
         // TODO: Reenable this for 10.0
@@ -120,8 +122,8 @@ describe('Navigation', async function() {
         });
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-        assert.strictEqual(auditResults.length, 173);
-        assert.strictEqual(erroredAudits.length, 0);
+        assert.strictEqual(auditResults.length, 174);
+        assert.deepStrictEqual(erroredAudits, []);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
           'installable-manifest',
@@ -131,6 +133,7 @@ describe('Navigation', async function() {
           'document-title',
           'html-has-lang',
           'meta-description',
+          'bf-cache',
         ]);
 
         const viewTraceButton = await $textContent('View Original Trace', reportEl);
@@ -207,8 +210,8 @@ describe('Navigation', async function() {
         ];
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, flakyAudits);
-        assert.strictEqual(auditResults.length, 150);
-        assert.strictEqual(erroredAudits.length, 0);
+        assert.strictEqual(auditResults.length, 151);
+        assert.deepStrictEqual(erroredAudits, []);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
           'installable-manifest',
@@ -218,6 +221,7 @@ describe('Navigation', async function() {
           'document-title',
           'html-has-lang',
           'meta-description',
+          'bf-cache',
         ]);
 
         const viewTraceButton = await $textContent('View Trace', reportEl);
@@ -245,7 +249,7 @@ describe('Navigation', async function() {
         assert.strictEqual(devicePixelRatio, 1);
 
         const {erroredAudits} = getAuditsBreakdown(lhr);
-        assert.strictEqual(erroredAudits.length, 0);
+        assert.deepStrictEqual(erroredAudits, []);
 
         assert.deepStrictEqual(Object.keys(lhr.categories), ['performance', 'best-practices']);
         assert.strictEqual(lhr.configSettings.disableStorageReset, true);
