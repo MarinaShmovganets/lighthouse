@@ -25,9 +25,12 @@ jobs:
         path: lighthouse
 
     - name: Use Node.js 16.x
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: 16.x
+        cache: yarn
+        cache-dependency-path: |
+          ${{ github.workspace }}/yarn.lock
 
     - name: Generate cache hash
       run: bash $GITHUB_WORKSPACE/lighthouse/.github/scripts/generate-devtools-hash.sh > cdt-test-hash.txt
@@ -91,9 +94,12 @@ jobs:
         path: lighthouse
 
     - name: Use Node.js 16.x
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: 16.x
+        cache: yarn
+        cache-dependency-path: |
+          ${{ github.workspace }}/yarn.lock
 
     - run: yarn --frozen-lockfile --network-timeout 1000000
       working-directory: ${{ github.workspace }}/lighthouse
@@ -136,9 +142,12 @@ jobs:
         path: lighthouse
 
     - name: Use Node.js 16.x
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: 16.x
+        cache: yarn
+        cache-dependency-path: |
+          ${{ github.workspace }}/yarn.lock
 
     - name: Load build artifacts
       id: devtools-build-artifacts
