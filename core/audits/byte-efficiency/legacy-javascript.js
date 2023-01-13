@@ -467,6 +467,7 @@ class LegacyJavascript extends ByteEfficiencyAudit {
     return {
       items,
       headings,
+      subItemsLabel: str_(i18n.UIStrings.columnLocation),
       wastedBytesByUrl,
     };
   }

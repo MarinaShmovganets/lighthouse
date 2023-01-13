@@ -186,6 +186,7 @@ class NonCompositedAnimations extends Audit {
     }
 
     const details = Audit.makeTableDetails(headings, results);
+    details.subItemsLabel = str_(i18n.UIStrings.reasons);
 
     let displayValue;
     if (results.length > 0) {

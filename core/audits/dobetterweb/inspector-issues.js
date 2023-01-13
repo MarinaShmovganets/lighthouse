@@ -64,6 +64,7 @@ class IssuesPanelEntries extends Audit {
       issueType: 'Mixed content',
       subItems: {
         type: 'subitems',
+        label: str_(i18n.UIStrings.columnURL),
         items: Array.from(requestUrls).map(url => ({url})),
       },
     };
@@ -85,6 +86,7 @@ class IssuesPanelEntries extends Audit {
       issueType: 'Cookie',
       subItems: {
         type: 'subitems',
+        label: str_(i18n.UIStrings.columnURL),
         items: Array.from(requestUrls).map(url => {
           return {
             url,
@@ -110,6 +112,7 @@ class IssuesPanelEntries extends Audit {
       issueType: str_(UIStrings.issueTypeBlockedByResponse),
       subItems: {
         type: 'subitems',
+        label: str_(i18n.UIStrings.columnURL),
         items: Array.from(requestUrls).map(url => {
           return {
             url,
@@ -135,6 +138,7 @@ class IssuesPanelEntries extends Audit {
       issueType: 'Content security policy',
       subItems: {
         type: 'subitems',
+        label: str_(i18n.UIStrings.columnURL),
         items: Array.from(requestUrls).map(url => {
           return {
             url,

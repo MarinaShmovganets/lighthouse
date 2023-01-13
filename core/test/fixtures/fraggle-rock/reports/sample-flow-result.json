@@ -1730,7 +1730,8 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": []
+              "items": [],
+              "subItemsLabel": "Reasons"
             }
           },
           "unsized-images": {
@@ -1894,7 +1895,8 @@
                   "severity": "High",
                   "description": "No CSP found in enforcement mode"
                 }
-              ]
+              ],
+              "subItemsLabel": "Reasons"
             }
           },
           "script-treemap-data": {
@@ -2664,7 +2666,8 @@
               "headings": [],
               "items": [],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "overallSavingsBytes": 0,
+              "subItemsLabel": "Module"
             }
           },
           "modern-image-formats": {
@@ -2768,7 +2771,8 @@
               "headings": [],
               "items": [],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "overallSavingsBytes": 0,
+              "subItemsLabel": "Script"
             }
           },
           "legacy-javascript": {
@@ -2829,7 +2833,8 @@
                 }
               ],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 57
+              "overallSavingsBytes": 57,
+              "subItemsLabel": "Location"
             }
           },
           "doctype": {
@@ -3195,7 +3200,8 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": []
+              "items": [],
+              "subItemsLabel": "Reasons"
             }
           },
           "plugins": {
@@ -6486,7 +6492,8 @@
               "audits[resource-summary].details.items[0].label"
             ],
             "core/lib/i18n/i18n.js | scriptResourceType": [
-              "audits[resource-summary].details.items[1].label"
+              "audits[resource-summary].details.items[1].label",
+              "audits[duplicated-javascript].details.subItemsLabel"
             ],
             "core/lib/i18n/i18n.js | fontResourceType": [
               "audits[resource-summary].details.items[2].label"
@@ -6601,6 +6608,11 @@
             ],
             "core/audits/non-composited-animations.js | description": [
               "audits[non-composited-animations].description"
+            ],
+            "core/lib/i18n/i18n.js | reasons": [
+              "audits[non-composited-animations].details.subItemsLabel",
+              "audits[csp-xss].details.subItemsLabel",
+              "audits.hreflang.details.subItemsLabel"
             ],
             "core/audits/unsized-images.js | failureTitle": [
               "audits[unsized-images].title"
@@ -6991,6 +7003,9 @@
             "core/audits/byte-efficiency/unused-javascript.js | description": [
               "audits[unused-javascript].description"
             ],
+            "core/lib/i18n/i18n.js | module": [
+              "audits[unused-javascript].details.subItemsLabel"
+            ],
             "core/audits/byte-efficiency/modern-image-formats.js | title": [
               "audits[modern-image-formats].title"
             ],
@@ -7040,6 +7055,9 @@
                 },
                 "path": "audits[legacy-javascript].displayValue"
               }
+            ],
+            "core/lib/i18n/i18n.js | columnLocation": [
+              "audits[legacy-javascript].details.subItemsLabel"
             ],
             "core/audits/dobetterweb/doctype.js | title": [
               "audits.doctype.title"
@@ -8606,7 +8624,8 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": []
+              "items": [],
+              "subItemsLabel": "Reasons"
             }
           },
           "unsized-images": {
@@ -8890,7 +8909,8 @@
               "headings": [],
               "items": [],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "overallSavingsBytes": 0,
+              "subItemsLabel": "Module"
             }
           },
           "modern-image-formats": {
@@ -8994,7 +9014,8 @@
               "headings": [],
               "items": [],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "overallSavingsBytes": 0,
+              "subItemsLabel": "Script"
             }
           },
           "legacy-javascript": {
@@ -9011,7 +9032,8 @@
               "headings": [],
               "items": [],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "overallSavingsBytes": 0,
+              "subItemsLabel": "Location"
             }
           },
           "inspector-issues": {
@@ -10287,7 +10309,8 @@
               "audits[resource-summary].details.items[2].label"
             ],
             "core/lib/i18n/i18n.js | scriptResourceType": [
-              "audits[resource-summary].details.items[3].label"
+              "audits[resource-summary].details.items[3].label",
+              "audits[duplicated-javascript].details.subItemsLabel"
             ],
             "core/lib/i18n/i18n.js | stylesheetResourceType": [
               "audits[resource-summary].details.items[4].label"
@@ -10370,6 +10393,9 @@
             "core/audits/non-composited-animations.js | description": [
               "audits[non-composited-animations].description"
             ],
+            "core/lib/i18n/i18n.js | reasons": [
+              "audits[non-composited-animations].details.subItemsLabel"
+            ],
             "core/audits/unsized-images.js | failureTitle": [
               "audits[unsized-images].title"
             ],
@@ -10437,6 +10463,9 @@
             "core/audits/byte-efficiency/unused-javascript.js | description": [
               "audits[unused-javascript].description"
             ],
+            "core/lib/i18n/i18n.js | module": [
+              "audits[unused-javascript].details.subItemsLabel"
+            ],
             "core/audits/byte-efficiency/modern-image-formats.js | title": [
               "audits[modern-image-formats].title"
             ],
@@ -10478,6 +10507,9 @@
             ],
             "core/audits/byte-efficiency/legacy-javascript.js | description": [
               "audits[legacy-javascript].description"
+            ],
+            "core/lib/i18n/i18n.js | columnLocation": [
+              "audits[legacy-javascript].details.subItemsLabel"
             ],
             "core/audits/dobetterweb/inspector-issues.js | title": [
               "audits[inspector-issues].title"
@@ -11038,6 +11070,7 @@
                   },
                   "subItems": {
                     "type": "subitems",
+                    "label": "Background Element",
                     "items": [
                       {
                         "relatedNode": {
@@ -11080,6 +11113,7 @@
                   },
                   "subItems": {
                     "type": "subitems",
+                    "label": "Background Element",
                     "items": [
                       {
                         "relatedNode": {
@@ -11122,6 +11156,7 @@
                   },
                   "subItems": {
                     "type": "subitems",
+                    "label": "Background Element",
                     "items": [
                       {
                         "relatedNode": {
@@ -11164,6 +11199,7 @@
                   },
                   "subItems": {
                     "type": "subitems",
+                    "label": "Background Element",
                     "items": [
                       {
                         "relatedNode": {
@@ -11206,6 +11242,7 @@
                   },
                   "subItems": {
                     "type": "subitems",
+                    "label": "Background Element",
                     "items": [
                       {
                         "relatedNode": {
@@ -11248,6 +11285,7 @@
                   },
                   "subItems": {
                     "type": "subitems",
+                    "label": "Background Element",
                     "items": [
                       {
                         "relatedNode": {
@@ -13689,6 +13727,14 @@
               "audits[color-contrast].details.headings[0].label",
               "audits[image-alt].details.headings[0].label"
             ],
+            "core/audits/accessibility/color-contrast.js | backgroundElementHeader": [
+              "audits[color-contrast].details.items[0].subItems.label",
+              "audits[color-contrast].details.items[1].subItems.label",
+              "audits[color-contrast].details.items[2].subItems.label",
+              "audits[color-contrast].details.items[3].subItems.label",
+              "audits[color-contrast].details.items[4].subItems.label",
+              "audits[color-contrast].details.items[5].subItems.label"
+            ],
             "core/audits/accessibility/definition-list.js | title": [
               "audits[definition-list].title"
             ],
@@ -15739,7 +15785,8 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": []
+              "items": [],
+              "subItemsLabel": "Reasons"
             }
           },
           "unsized-images": {
@@ -15922,7 +15969,8 @@
                   "severity": "High",
                   "description": "No CSP found in enforcement mode"
                 }
-              ]
+              ],
+              "subItemsLabel": "Reasons"
             }
           },
           "script-treemap-data": {
@@ -16709,7 +16757,8 @@
               "headings": [],
               "items": [],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "overallSavingsBytes": 0,
+              "subItemsLabel": "Module"
             }
           },
           "modern-image-formats": {
@@ -16903,7 +16952,8 @@
               "headings": [],
               "items": [],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "overallSavingsBytes": 0,
+              "subItemsLabel": "Script"
             }
           },
           "legacy-javascript": {
@@ -16964,7 +17014,8 @@
                 }
               ],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "overallSavingsBytes": 0,
+              "subItemsLabel": "Location"
             }
           },
           "doctype": {
@@ -17387,7 +17438,8 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": []
+              "items": [],
+              "subItemsLabel": "Reasons"
             }
           },
           "plugins": {
@@ -20652,7 +20704,8 @@
               "audits[resource-summary].details.items[2].label"
             ],
             "core/lib/i18n/i18n.js | scriptResourceType": [
-              "audits[resource-summary].details.items[3].label"
+              "audits[resource-summary].details.items[3].label",
+              "audits[duplicated-javascript].details.subItemsLabel"
             ],
             "core/lib/i18n/i18n.js | fontResourceType": [
               "audits[resource-summary].details.items[4].label"
@@ -20751,6 +20804,11 @@
             ],
             "core/audits/non-composited-animations.js | description": [
               "audits[non-composited-animations].description"
+            ],
+            "core/lib/i18n/i18n.js | reasons": [
+              "audits[non-composited-animations].details.subItemsLabel",
+              "audits[csp-xss].details.subItemsLabel",
+              "audits.hreflang.details.subItemsLabel"
             ],
             "core/audits/unsized-images.js | failureTitle": [
               "audits[unsized-images].title"
@@ -21146,6 +21204,9 @@
             "core/audits/byte-efficiency/unused-javascript.js | description": [
               "audits[unused-javascript].description"
             ],
+            "core/lib/i18n/i18n.js | module": [
+              "audits[unused-javascript].details.subItemsLabel"
+            ],
             "core/audits/byte-efficiency/modern-image-formats.js | title": [
               "audits[modern-image-formats].title"
             ],
@@ -21205,6 +21266,9 @@
             ],
             "core/audits/byte-efficiency/legacy-javascript.js | description": [
               "audits[legacy-javascript].description"
+            ],
+            "core/lib/i18n/i18n.js | columnLocation": [
+              "audits[legacy-javascript].details.subItemsLabel"
             ],
             "core/audits/dobetterweb/doctype.js | title": [
               "audits.doctype.title"

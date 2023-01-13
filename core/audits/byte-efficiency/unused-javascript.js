@@ -155,6 +155,7 @@ class UnusedJavaScript extends ByteEfficiencyAudit {
         {key: 'wastedBytes', valueType: 'bytes', subItemsHeading: {key: 'sourceWastedBytes'}, label: str_(i18n.UIStrings.columnWastedBytes)},
         /* eslint-enable max-len */
       ],
+      subItemsLabel: str_(i18n.UIStrings.module),
     };
   }
 }

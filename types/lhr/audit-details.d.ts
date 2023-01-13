@@ -67,6 +67,7 @@ declare module Details {
     overallSavingsMs: number;
     overallSavingsBytes?: number;
     headings: TableColumnHeading[];
+    subItemsLabel?: string | IcuMessage;
     items: OpportunityItem[];
     debugData?: DebugData;
   }
@@ -90,6 +91,7 @@ declare module Details {
   interface Table {
     type: 'table';
     headings: TableColumnHeading[];
+    subItemsLabel?: string | IcuMessage;
     items: TableItem[];
     summary?: {
       wastedMs?: number;
@@ -102,6 +104,7 @@ declare module Details {
   interface TableSubItems {
     type: 'subitems';
     items: TableItem[];
+    label?: string | IcuMessage;
   }
 
   /**

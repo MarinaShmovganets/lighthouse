@@ -238,6 +238,7 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
     return {
       items,
       headings,
+      subItemsLabel: str_(i18n.UIStrings.scriptResourceType),
       wastedBytesByUrl,
     };
   }

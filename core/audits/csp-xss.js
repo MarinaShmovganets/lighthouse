@@ -173,6 +173,7 @@ class CspXss extends Audit {
       /* eslint-enable max-len */
     ];
     const details = Audit.makeTableDetails(headings, results);
+    details.subItemsLabel = str_(i18n.UIStrings.reasons);
 
     return {
       score,

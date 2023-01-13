@@ -355,15 +355,27 @@ export class DetailsRenderer {
    * expand into multiple rows, if there is a subItemsHeading.
    * @param {TableItem} item
    * @param {LH.Audit.Details.TableColumnHeading[]} headings
+   * @param {string | undefined} defaultSubItemsLabel
    */
-  _renderTableRowsFromItem(item, headings) {
+  _renderTableRowsFromItem(item, headings, defaultSubItemsLabel) {
     const fragment = this._dom.createFragment();
     fragment.append(this._renderTableRow(item, headings));
 
     if (!item.subItems) return fragment;
 
     const subItemsHeadings = headings.map(this._getDerivedSubItemsHeading);
-    if (!subItemsHeadings.some(Boolean)) return fragment;
+    if (!subItemsHeadings.some(Boolean) || !item.subItems.items.length) return fragment;
+
+    const label = item.subItems.label ?? defaultSubItemsLabel;
+    if (label) {
+      const rowEl = this._dom.createElement('tr');
+      const tdEl = this._dom.createChildOf(rowEl, 'td');
+      tdEl.setAttribute('colspan', headings.length.toString());
+      tdEl.append(this._renderText(label));
+      tdEl.append(this._dom.createElement('hr'));
+      rowEl.classList.add('lh-sub-item-row');
+      fragment.append(rowEl);
+    }
 
     for (const subItem of item.subItems.items) {
       const rowEl = this._renderTableRow(subItem, subItemsHeadings);
@@ -375,7 +387,7 @@ export class DetailsRenderer {
   }
 
   /**
-   * @param {{headings: TableColumnHeading[], items: TableItem[]}} details
+   * @param {{headings: TableColumnHeading[], items: TableItem[], subItemsLabel?: string}} details
    * @return {Element}
    */
   _renderTable(details) {
@@ -396,7 +408,8 @@ export class DetailsRenderer {
     const tbodyElem = this._dom.createChildOf(tableElem, 'tbody');
     let even = true;
     for (const item of details.items) {
-      const rowsFragment = this._renderTableRowsFromItem(item, details.headings);
+      const rowsFragment =
+        this._renderTableRowsFromItem(item, details.headings, details.subItemsLabel);
       for (const rowEl of this._dom.findAll('tr', rowsFragment)) {
         // For zebra styling.
         rowEl.classList.add(even ? 'lh-row--even' : 'lh-row--odd');

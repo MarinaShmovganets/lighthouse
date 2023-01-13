@@ -155,6 +155,9 @@
   "core/audits/accessibility/axe-audit.js | failingElementsHeader": {
     "message": "Failing Elements"
   },
+  "core/audits/accessibility/axe-audit.js | relatedElementsHeader": {
+    "message": "Related Elements"
+  },
   "core/audits/accessibility/button-name.js | description": {
     "message": "When a button doesn't have an accessible name, screen readers announce it as \"button\", making it unusable for users who rely on screen readers. [Learn how to make buttons more accessible](https://dequeuniversity.com/rules/axe/4.4/button-name)."
   },
@@ -172,6 +175,9 @@
   },
   "core/audits/accessibility/bypass.js | title": {
     "message": "The page contains a heading, skip link, or landmark region"
+  },
+  "core/audits/accessibility/color-contrast.js | backgroundElementHeader": {
+    "message": "Background Element"
   },
   "core/audits/accessibility/color-contrast.js | description": {
     "message": "Low-contrast text is difficult or impossible for many users to read. [Learn how to provide sufficient color contrast](https://dequeuniversity.com/rules/axe/4.4/color-contrast)."
@@ -223,6 +229,9 @@
   },
   "core/audits/accessibility/duplicate-id-aria.js | failureTitle": {
     "message": "ARIA IDs are not unique"
+  },
+  "core/audits/accessibility/duplicate-id-aria.js | relatedElementsHeader": {
+    "message": "Duplicate Elements"
   },
   "core/audits/accessibility/duplicate-id-aria.js | title": {
     "message": "ARIA IDs are unique"
@@ -2375,6 +2384,9 @@
   "core/lib/i18n/i18n.js | mediaResourceType": {
     "message": "Media"
   },
+  "core/lib/i18n/i18n.js | module": {
+    "message": "Module"
+  },
   "core/lib/i18n/i18n.js | ms": {
     "message": "{timeInMs, number, milliseconds} ms"
   },
@@ -2383,6 +2395,9 @@
   },
   "core/lib/i18n/i18n.js | otherResourceType": {
     "message": "Other"
+  },
+  "core/lib/i18n/i18n.js | reasons": {
+    "message": "Reasons"
   },
   "core/lib/i18n/i18n.js | scriptResourceType": {
     "message": "Script"

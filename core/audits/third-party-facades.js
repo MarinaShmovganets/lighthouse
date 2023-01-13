@@ -187,7 +187,10 @@ class ThirdPartyFacades extends Audit {
         product: productWithCategory,
         transferSize: entitySummary.transferSize,
         blockingTime: entitySummary.blockingTime,
-        subItems: {type: 'subitems', items},
+        subItems: {
+          type: 'subitems',
+          items,
+        },
       });
     }
 
@@ -212,7 +215,10 @@ class ThirdPartyFacades extends Audit {
       displayValue: str_(UIStrings.displayValue, {
         itemCount: results.length,
       }),
-      details: Audit.makeTableDetails(headings, results),
+      details: {
+        ...Audit.makeTableDetails(headings, results),
+        subItemsLabel: str_(i18n.UIStrings.scriptResourceType),
+      },
     };
   }
 }

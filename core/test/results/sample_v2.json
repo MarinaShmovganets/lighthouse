@@ -2504,7 +2504,8 @@
               ]
             }
           }
-        ]
+        ],
+        "subItemsLabel": "Reasons"
       }
     },
     "unsized-images": {
@@ -2627,7 +2628,8 @@
             "severity": "High",
             "description": "No CSP found in enforcement mode"
           }
-        ]
+        ],
+        "subItemsLabel": "Reasons"
       }
     },
     "script-treemap-data": {
@@ -4094,7 +4096,8 @@
           }
         ],
         "overallSavingsMs": 600,
-        "overallSavingsBytes": 65111
+        "overallSavingsBytes": 65111,
+        "subItemsLabel": "Module"
       }
     },
     "modern-image-formats": {
@@ -4501,7 +4504,8 @@
         "headings": [],
         "items": [],
         "overallSavingsMs": 0,
-        "overallSavingsBytes": 0
+        "overallSavingsBytes": 0,
+        "subItemsLabel": "Script"
       }
     },
     "legacy-javascript": {
@@ -4572,7 +4576,8 @@
           }
         ],
         "overallSavingsMs": 150,
-        "overallSavingsBytes": 21189
+        "overallSavingsBytes": 21189,
+        "subItemsLabel": "Location"
       }
     },
     "doctype": {
@@ -5171,7 +5176,8 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": []
+        "items": [],
+        "subItemsLabel": "Reasons"
       }
     },
     "plugins": {
@@ -8893,7 +8899,8 @@
       ],
       "core/lib/i18n/i18n.js | scriptResourceType": [
         "audits[performance-budget].details.items[2].label",
-        "audits[resource-summary].details.items[2].label"
+        "audits[resource-summary].details.items[2].label",
+        "audits[duplicated-javascript].details.subItemsLabel"
       ],
       "core/lib/i18n/i18n.js | otherResourceType": [
         "audits[performance-budget].details.items[3].label",
@@ -9055,6 +9062,11 @@
           },
           "path": "audits[non-composited-animations].details.items[0].subItems.items[0].failureReason"
         }
+      ],
+      "core/lib/i18n/i18n.js | reasons": [
+        "audits[non-composited-animations].details.subItemsLabel",
+        "audits[csp-xss].details.subItemsLabel",
+        "audits.hreflang.details.subItemsLabel"
       ],
       "core/audits/unsized-images.js | failureTitle": [
         "audits[unsized-images].title"
@@ -9511,6 +9523,9 @@
       "core/audits/byte-efficiency/unused-javascript.js | description": [
         "audits[unused-javascript].description"
       ],
+      "core/lib/i18n/i18n.js | module": [
+        "audits[unused-javascript].details.subItemsLabel"
+      ],
       "core/audits/byte-efficiency/modern-image-formats.js | title": [
         "audits[modern-image-formats].title"
       ],
@@ -9557,6 +9572,9 @@
       ],
       "core/audits/byte-efficiency/legacy-javascript.js | description": [
         "audits[legacy-javascript].description"
+      ],
+      "core/lib/i18n/i18n.js | columnLocation": [
+        "audits[legacy-javascript].details.subItemsLabel"
       ],
       "core/audits/dobetterweb/doctype.js | title": [
         "audits.doctype.title"

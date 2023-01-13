@@ -96,28 +96,28 @@ describe('LegacyJavaScript audit', () => {
     ]);
     expect(result.items).toHaveLength(1);
     expect(result.items[0]).toMatchInlineSnapshot(`
+Object {
+  "subItems": Object {
+    "items": Array [
       Object {
-        "subItems": Object {
-          "items": Array [
-            Object {
-              "location": Object {
-                "column": 0,
-                "line": 0,
-                "original": undefined,
-                "type": "source-location",
-                "url": "https://www.googletagmanager.com/a.js",
-                "urlProvider": "network",
-              },
-              "signal": "String.prototype.repeat",
-            },
-          ],
-          "type": "subitems",
+        "location": Object {
+          "column": 0,
+          "line": 0,
+          "original": undefined,
+          "type": "source-location",
+          "url": "https://www.googletagmanager.com/a.js",
+          "urlProvider": "network",
         },
-        "totalBytes": 0,
-        "url": "https://www.googletagmanager.com/a.js",
-        "wastedBytes": 20104,
-      }
-    `);
+        "signal": "String.prototype.repeat",
+      },
+    ],
+    "type": "subitems",
+  },
+  "totalBytes": 0,
+  "url": "https://www.googletagmanager.com/a.js",
+  "wastedBytes": 20104,
+}
+`);
     expect(result.wastedBytesByUrl).toMatchInlineSnapshot(`Map {}`);
   });
 
