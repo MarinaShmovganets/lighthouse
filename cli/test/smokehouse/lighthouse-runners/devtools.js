@@ -41,7 +41,7 @@ async function setup() {
  * unless DEVTOOLS_PATH is set.
  * CHROME_PATH determines which Chrome is used–otherwise the default is puppeteer's chrome binary.
  * @param {string} url
- * @param {LH.Config.Json=} config
+ * @param {LH.Config=} config
  * @param {{isDebug?: boolean, useLegacyNavigation?: boolean}=} testRunnerOptions
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */

@@ -219,7 +219,7 @@ class ConfigPlugin {
    * if it deviates from the expected object shape.
    * @param {unknown} pluginJson
    * @param {string} pluginName
-   * @return {LH.Config.Json}
+   * @return {LH.Config}
    */
   static parsePlugin(pluginJson, pluginName) {
     // Clone to prevent modifications of original and to deactivate any live properties.

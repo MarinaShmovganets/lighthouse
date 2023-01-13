@@ -27,7 +27,7 @@ const execFileAsync = promisify(execFile);
 /**
  * Launch Chrome and do a full Lighthouse run via the Lighthouse CLI.
  * @param {string} url
- * @param {LH.Config.Json=} config
+ * @param {LH.Config=} config
  * @param {{isDebug?: boolean, useFraggleRock?: boolean}=} testRunnerOptions
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */
@@ -45,7 +45,7 @@ async function runLighthouse(url, config, testRunnerOptions = {}) {
  * Internal runner.
  * @param {string} url
  * @param {string} tmpPath
- * @param {LH.Config.Json=} config
+ * @param {LH.Config=} config
  * @param {{isDebug?: boolean, useLegacyNavigation?: boolean}=} options
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */

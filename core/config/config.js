@@ -38,9 +38,9 @@ const defaultConfigPath = path.join(
 );
 
 /**
- * @param {LH.Config.Json|undefined} config
+ * @param {LH.Config|undefined} config
  * @param {{configPath?: string}} context
- * @return {{configWorkingCopy: LH.Config.Json, configDir?: string, configPath?: string}}
+ * @return {{configWorkingCopy: LH.Config, configDir?: string, configPath?: string}}
  */
 function resolveWorkingCopy(config, context) {
   let {configPath} = context;
@@ -65,8 +65,8 @@ function resolveWorkingCopy(config, context) {
 }
 
 /**
- * @param {LH.Config.Json} config
- * @return {LH.Config.Json}
+ * @param {LH.Config} config
+ * @return {LH.Config}
  */
 function resolveExtensions(config) {
   if (!config.extends) return config;
@@ -236,7 +236,7 @@ function resolveFakeNavigations(artifactDefns, settings) {
 
 /**
  * @param {LH.Gatherer.GatherMode} gatherMode
- * @param {LH.Config.Json=} config
+ * @param {LH.Config=} config
  * @param {LH.Flags=} flags
  * @return {Promise<{resolvedConfig: LH.Config.ResolvedConfig, warnings: string[]}>}
  */

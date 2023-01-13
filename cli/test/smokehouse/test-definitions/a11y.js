@@ -6,7 +6,7 @@
 
 /**
  * Config for running PWA smokehouse audits for axe.
- * @type {LH.Config.Json}
+ * @type {LH.Config}
  */
 const config = {
   extends: 'lighthouse:default',

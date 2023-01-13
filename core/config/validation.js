@@ -40,7 +40,7 @@ function isValidArtifactDependency(dependent, dependency) {
 /**
  * Throws if pluginName is invalid or (somehow) collides with a category in the
  * config being added to.
- * @param {LH.Config.Json} config
+ * @param {LH.Config} config
  * @param {string} pluginName
  */
 function assertValidPluginName(config, pluginName) {

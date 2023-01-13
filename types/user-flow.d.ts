@@ -8,7 +8,7 @@ declare module UserFlow {
 
   export interface Options {
     /** Config to use for each flow step. */
-    config?: LH.Config.Json;
+    config?: LH.Config;
     /** Base flags to use for each flow step. Step specific flags will override these flags. */
     flags?: LH.Flags;
     /** Display name for this user flow. */

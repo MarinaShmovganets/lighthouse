@@ -308,7 +308,7 @@ function getFlowName(name, gatherSteps) {
 
 /**
  * @param {Array<LH.UserFlow.GatherStep>} gatherSteps
- * @param {{name?: string, config?: LH.Config.Json, gatherStepRunnerOptions?: GatherStepRunnerOptions}} options
+ * @param {{name?: string, config?: LH.Config, gatherStepRunnerOptions?: GatherStepRunnerOptions}} options
  */
 async function auditGatherSteps(gatherSteps, options) {
   if (!gatherSteps.length) {

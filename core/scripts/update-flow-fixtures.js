@@ -71,7 +71,7 @@ async function waitForImagesToLoad(page) {
   }, TIMEOUT);
 }
 
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const config = {
   extends: 'lighthouse:default',
   settings: {

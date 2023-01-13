@@ -63,7 +63,7 @@ async function begin() {
 
   const urlUnderTest = cliFlags._[0];
 
-  /** @type {LH.Config.Json|undefined} */
+  /** @type {LH.Config|undefined} */
   let config;
   if (cliFlags.configPath) {
     // Resolve the config file path relative to where cli was called.

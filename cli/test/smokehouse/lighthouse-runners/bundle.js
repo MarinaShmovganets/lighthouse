@@ -46,7 +46,7 @@ if (!isMainThread && parentPort) {
 
 /**
  * @param {string} url
- * @param {LH.Config.Json|undefined} config
+ * @param {LH.Config|undefined} config
  * @param {{isDebug?: boolean, useLegacyNavigation?: boolean}} testRunnerOptions
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts}>}
  */
@@ -109,7 +109,7 @@ async function runBundledLighthouse(url, config, testRunnerOptions) {
 /**
  * Launch Chrome and do a full Lighthouse run via the Lighthouse DevTools bundle.
  * @param {string} url
- * @param {LH.Config.Json=} config
+ * @param {LH.Config=} config
  * @param {{isDebug?: boolean, useLegacyNavigation?: boolean}=} testRunnerOptions
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */

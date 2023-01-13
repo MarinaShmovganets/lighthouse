@@ -135,7 +135,7 @@ class LegacyResolvedConfig {
   /**
    * Resolves the provided config (inherits from extended config, if set), resolves
    * all referenced modules, and validates.
-   * @param {LH.Config.Json=} config If not provided, uses the default config.
+   * @param {LH.Config=} config If not provided, uses the default config.
    * @param {LH.Flags=} flags
    * @return {Promise<LegacyResolvedConfig>}
    */
@@ -188,7 +188,7 @@ class LegacyResolvedConfig {
   /**
    * @deprecated `Config.fromJson` should be used instead.
    * @constructor
-   * @param {LH.Config.Json} config
+   * @param {LH.Config} config
    * @param {{settings: LH.Config.Settings, passes: ?LH.Config.Pass[], audits: ?LH.Config.AuditDefn[]}} opts
    */
   constructor(config, opts) {
@@ -245,9 +245,9 @@ class LegacyResolvedConfig {
   }
 
   /**
-   * @param {LH.Config.Json} baseJSON The JSON of the configuration to extend
-   * @param {LH.Config.Json} extendJSON The JSON of the extensions
-   * @return {LH.Config.Json}
+   * @param {LH.Config} baseJSON The JSON of the configuration to extend
+   * @param {LH.Config} extendJSON The JSON of the extensions
+   * @return {LH.Config}
    */
   static extendConfigJSON(baseJSON, extendJSON) {
     if (extendJSON.passes && baseJSON.passes) {
@@ -270,7 +270,7 @@ class LegacyResolvedConfig {
   }
 
   /**
-   * @param {LH.Config.Json['passes']} passes
+   * @param {LH.Config['passes']} passes
    * @return {?Array<Required<LH.Config.PassJson>>}
    */
   static augmentPassesWithDefaults(passes) {
@@ -488,7 +488,7 @@ class LegacyResolvedConfig {
    * Take an array of audits and audit paths and require any paths (possibly
    * relative to the optional `configDir`) using `resolveModulePath`,
    * leaving only an array of AuditDefns.
-   * @param {LH.Config.Json['audits']} audits
+   * @param {LH.Config['audits']} audits
    * @param {string=} configDir
    * @return {Promise<LegacyResolvedConfig['audits']>}
    */

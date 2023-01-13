@@ -37,7 +37,7 @@ declare global {
       /** Expected test results. */
       expectations: ExpectedRunnerResult;
       /** An optional custom config. If none is present, uses the default Lighthouse config. */
-      config?: Config.Json;
+      config?: Config;
       /** If test is performance sensitive, set to true so that it won't be run parallel to other tests. */
       runSerially?: boolean;
     }
@@ -52,7 +52,7 @@ declare global {
       {expectations: Smokehouse.ExpectedRunnerResult | Array<Smokehouse.ExpectedRunnerResult>}
 
     export type LighthouseRunner =
-      {runnerName?: string} & ((url: string, config?: Config.Json, runnerOptions?: {isDebug?: boolean; useLegacyNavigation?: boolean}) => Promise<{lhr: LHResult, artifacts: Artifacts, log: string}>);
+      {runnerName?: string} & ((url: string, config?: Config, runnerOptions?: {isDebug?: boolean; useLegacyNavigation?: boolean}) => Promise<{lhr: LHResult, artifacts: Artifacts, log: string}>);
 
     export interface SmokehouseOptions {
       /** If true, performs extra logging from the test runs. */

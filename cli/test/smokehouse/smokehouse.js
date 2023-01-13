@@ -134,8 +134,8 @@ function purpleify(str) {
 }
 
 /**
- * @param {LH.Config.Json=} config
- * @return {LH.Config.Json|undefined}
+ * @param {LH.Config=} config
+ * @return {LH.Config|undefined}
  */
 function convertToLegacyConfig(config) {
   if (!config) return config;

@@ -170,7 +170,7 @@ for (const key of Object.keys(artifacts)) {
   artifacts[/** @type {keyof typeof artifacts} */ (key)] = key;
 }
 
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const defaultConfig = {
   settings: constants.defaultSettings,
   artifacts: [

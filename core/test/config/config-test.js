@@ -46,7 +46,7 @@ describe('Fraggle Rock Config', () => {
   });
 
   it('should resolve settings with defaults', async () => {
-    /** @type {LH.Config.Json} */
+    /** @type {LH.Config} */
     const config = {
       extends: 'lighthouse:default',
       settings: {output: 'csv', maxWaitForFcp: 1234},
@@ -145,7 +145,7 @@ describe('Fraggle Rock Config', () => {
     let dependencyGatherer;
     /** @type {LH.Gatherer.FRGathererInstance<'ImageElements'>} */
     let dependentGatherer;
-    /** @type {LH.Config.Json} */
+    /** @type {LH.Config} */
     let config;
 
     beforeEach(() => {
@@ -292,7 +292,7 @@ describe('Fraggle Rock Config', () => {
   });
 
   describe('.resolveExtensions', () => {
-    /** @type {LH.Config.Json} */
+    /** @type {LH.Config} */
     let extensionConfig;
 
     beforeEach(() => {
@@ -417,7 +417,7 @@ describe('Fraggle Rock Config', () => {
   });
 
   it('should use failure mode fatal for the fake navigation', async () => {
-    /** @type {LH.Config.Json} */
+    /** @type {LH.Config} */
     const extensionConfig = {
       extends: 'lighthouse:default',
     };
@@ -430,7 +430,7 @@ describe('Fraggle Rock Config', () => {
   });
 
   it('should validate the resolvedConfig with fatal errors', async () => {
-    /** @type {LH.Config.Json} */
+    /** @type {LH.Config} */
     const extensionConfig = {
       extends: 'lighthouse:default',
       artifacts: [{id: 'artifact', gatherer: {instance: new BaseGatherer()}}],

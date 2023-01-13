@@ -364,10 +364,10 @@ function resolveSettings(settingsJson = {}, overrides = undefined) {
 }
 
 /**
- * @param {LH.Config.Json} config
+ * @param {LH.Config} config
  * @param {string | undefined} configDir
  * @param {{plugins?: string[]} | undefined} flags
- * @return {Promise<LH.Config.Json>}
+ * @return {Promise<LH.Config>}
  */
 async function mergePlugins(config, configDir, flags) {
   const configPlugins = config.plugins || [];
@@ -428,7 +428,7 @@ async function resolveGathererToDefn(gathererJson, coreGathererList, configDir) 
  * Take an array of audits and audit paths and require any paths (possibly
  * relative to the optional `configDir`) using `resolveModule`,
  * leaving only an array of AuditDefns.
- * @param {LH.Config.Json['audits']} audits
+ * @param {LH.Config['audits']} audits
  * @param {string=} configDir
  * @return {Promise<Array<LH.Config.AuditDefn>|null>}
  */
@@ -587,8 +587,8 @@ function deepClone(json) {
 /**
  * Deep clone a config, copying over any "live" gatherer or audit that
  * wouldn't make the JSON round trip.
- * @param {LH.Config.Json} json
- * @return {LH.Config.Json}
+ * @param {LH.Config} json
+ * @return {LH.Config}
  */
 function deepCloneConfigJson(json) {
   const cloned = deepClone(json);
