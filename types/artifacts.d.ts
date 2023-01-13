@@ -79,12 +79,6 @@ interface ContextualBaseArtifacts {
 interface LegacyBaseArtifacts {
   /** The user agent string that Lighthouse used to load the page. Set to the empty string if unknown. */
   NetworkUserAgent: string;
-  /** Information on detected tech stacks (e.g. JS libraries) used by the page. */
-  Stacks: Artifacts.DetectedStack[];
-  /** Parsed version of the page's Web App Manifest, or null if none found. This moved to a regular artifact in Fraggle Rock. */
-  WebAppManifest: Artifacts.Manifest | null;
-  /** Errors preventing page being installable as PWA. This moved to a regular artifact in Fraggle Rock. */
-  InstallabilityErrors: Artifacts.InstallabilityErrors;
   /** A set of page-load traces, keyed by passName. */
   traces: {[passName: string]: Trace};
   /** A set of DevTools debugger protocol records, keyed by passName. */
@@ -151,6 +145,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   GlobalListeners: Array<Artifacts.GlobalListener>;
   /** The issues surfaced in the devtools Issues panel */
   InspectorIssues: Artifacts.InspectorIssues;
+  /** Errors preventing page being installable as PWA. */
+  InstallabilityErrors: Artifacts.InstallabilityErrors;
   /** JS coverage information for code used during audit. Keyed by script id. */
   // 'url' is excluded because it can be overriden by a magic sourceURL= comment, which makes keeping it a dangerous footgun!
   JsUsage: Record<string, Omit<LH.Crdp.Profiler.ScriptCoverage, 'url'>>;
@@ -172,6 +168,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   ServiceWorker: {versions: LH.Crdp.ServiceWorker.ServiceWorkerVersion[], registrations: LH.Crdp.ServiceWorker.ServiceWorkerRegistration[]};
   /** Source maps of scripts executed in the page. */
   SourceMaps: Array<Artifacts.SourceMap>;
+  /** Information on detected tech stacks (e.g. JS libraries) used by the page. */
+  Stacks: Artifacts.DetectedStack[];
   /** Information on <script> and <link> tags blocking first paint. */
   TagsBlockingFirstPaint: Artifacts.TagBlockingFirstPaint[];
   /** Information about tap targets including their position and size. */
@@ -180,6 +178,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   Trace: Trace;
   /** Elements associated with metrics (ie: Largest Contentful Paint element). */
   TraceElements: Artifacts.TraceElement[];
+  /** Parsed version of the page's Web App Manifest, or null if none found. */
+  WebAppManifest: Artifacts.Manifest | null;
 }
 
 declare module Artifacts {

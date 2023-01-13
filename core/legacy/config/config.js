@@ -41,10 +41,7 @@ const BASE_ARTIFACT_BLANKS = {
   NetworkUserAgent: '',
   BenchmarkIndex: '',
   BenchmarkIndexes: '',
-  WebAppManifest: '',
   GatherContext: '',
-  InstallabilityErrors: '',
-  Stacks: '',
   traces: '',
   devtoolsLogs: '',
   settings: '',
@@ -53,6 +50,14 @@ const BASE_ARTIFACT_BLANKS = {
   PageLoadError: '',
 };
 const BASE_ARTIFACT_NAMES = Object.keys(BASE_ARTIFACT_BLANKS);
+
+// These were legacy base artifacts, but we need certain gatherers (e.g. bfcache) to run after them.
+// The order is controlled by the config, but still need to force them to run every time.
+const alwaysRunArtifactIds = [
+  'WebAppManifest',
+  'InstallabilityErrors',
+  'Stacks',
+];
 
 /**
  * @param {LegacyResolvedConfig['passes']} passes
@@ -79,7 +84,8 @@ function assertValidPasses(passes, audits) {
       const gatherer = gathererDefn.instance;
       foundGatherers.add(gatherer.name);
       const isGatherRequiredByAudits = requestedGatherers.has(gatherer.name);
-      if (!isGatherRequiredByAudits) {
+      const isAlwaysRunArtifact = alwaysRunArtifactIds.includes(gatherer.name);
+      if (!isGatherRequiredByAudits && !isAlwaysRunArtifact) {
         const msg = `${gatherer.name} gatherer requested, however no audit requires it.`;
         log.warn('config', msg);
       }
@@ -327,6 +333,9 @@ class LegacyResolvedConfig {
 
     // 3. Resolve which gatherers will need to run
     const requestedGathererIds = LegacyResolvedConfig.getGatherersRequestedByAudits(audits);
+    for (const gathererId of alwaysRunArtifactIds) {
+      requestedGathererIds.add(gathererId);
+    }
 
     // 4. Filter to only the neccessary passes
     const passes =
