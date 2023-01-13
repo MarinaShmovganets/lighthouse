@@ -71,7 +71,7 @@ async function waitForImagesToLoad(page) {
   }, TIMEOUT);
 }
 
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const config = {
   extends: 'lighthouse:default',
   settings: {
@@ -135,7 +135,6 @@ async function rebaselineArtifacts(artifactKeys) {
         // @ts-expect-error
         gatherStep.artifacts[key] = newGatherStep.artifacts[key];
       }
-      flowArtifacts.gatherSteps[i] = gatherStep;
     }
   }
 

@@ -73,7 +73,7 @@ declare module Gatherer {
   interface FRGatherResult {
     artifacts: Artifacts;
     runnerOptions: {
-      config: Config.FRConfig;
+      resolvedConfig: Config.ResolvedConfig;
       computedCache: Map<string, ArbitraryEqualityMap>
     }
   }

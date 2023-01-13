@@ -14,29 +14,29 @@ interface ClassOf<T> {
   new (): T;
 }
 
+/**
+ * The Lighthouse Config format.
+ */
+interface Config {
+  extends?: 'lighthouse:default' | string;
+  settings?: SharedFlagsSettings;
+  audits?: Config.AuditJson[] | null;
+  categories?: Record<string, Config.CategoryJson> | null;
+  groups?: Record<string, Config.GroupJson> | null;
+  plugins?: Array<string>;
+
+  // Fraggle Rock Only
+  artifacts?: Config.ArtifactJson[] | null;
+
+  // Legacy Only
+  passes?: Config.PassJson[] | null;
+}
+
 declare module Config {
   /**
-   * The pre-normalization Lighthouse Config format.
+   * The normalized and fully resolved legacy config.
    */
-  interface Json {
-    extends?: 'lighthouse:default' | string;
-    settings?: SharedFlagsSettings;
-    audits?: Config.AuditJson[] | null;
-    categories?: Record<string, CategoryJson> | null;
-    groups?: Record<string, Config.GroupJson> | null;
-    plugins?: Array<string>;
-
-    // Fraggle Rock Only
-    artifacts?: ArtifactJson[] | null;
-
-    // Legacy Only
-    passes?: PassJson[] | null;
-  }
-
-  /**
-   * The normalized and fully resolved config.
-   */
-  interface Config {
+  interface LegacyResolvedConfig {
     settings: Settings;
     passes: Pass[] | null;
     audits: AuditDefn[] | null;
@@ -45,9 +45,9 @@ declare module Config {
   }
 
   /**
-   * The normalized and fully resolved Fraggle Rock config.
+   * The normalized and fully resolved config.
    */
-  interface FRConfig {
+  interface ResolvedConfig {
     settings: Settings;
     artifacts: AnyArtifactDefn[] | null;
     navigations: NavigationDefn[] | null;

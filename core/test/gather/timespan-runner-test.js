@@ -37,7 +37,7 @@ describe('Timespan Runner', () => {
   let gathererA;
   /** @type {ReturnType<typeof createMockGathererInstance>} */
   let gathererB;
-  /** @type {LH.Config.Json} */
+  /** @type {LH.Config} */
   let config;
 
   beforeEach(() => {
@@ -117,7 +117,7 @@ describe('Timespan Runner', () => {
     await timespan.endTimespanGather();
 
     expect(mockRunner.gather.mock.calls[0][1]).toMatchObject({
-      config: {
+      resolvedConfig: {
         settings: flags,
       },
     });

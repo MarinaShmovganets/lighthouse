@@ -17,7 +17,7 @@ declare module UserFlow {
 
   export interface Options {
     /** Config to use for each flow step. */
-    config?: Config.Json;
+    config?: Config;
     /** Base flags to use for each flow step. Step specific flags will override these flags. */
     flags?: Flags;
     /** Display name for this user flow. */
