@@ -54,7 +54,7 @@ describe('Config', () => {
     const config = {
       // Extend default to double test our ability to handle injection.
       extends: 'lighthouse:default',
-      settings: {onlyAudits: ['my-audit']},
+      settings: {onlyAudits: ['my-audit'], disableFullPageScreenshot: true},
       passes: [{
         gatherers: [MyGatherer],
       }],
@@ -187,6 +187,7 @@ describe('Config', () => {
     const resolvedConfig = await LegacyResolvedConfig.fromJson({
       extends: 'lighthouse:default',
       audits: [DoesntNeedYourCrap],
+      settings: {disableFullPageScreenshot: true},
     }, {
       // Trigger filtering logic.
       onlyAudits: ['optional-artifact-audit'],
@@ -234,6 +235,7 @@ describe('Config', () => {
         'web-app-manifest',
         'installability-errors',
         'stacks',
+        'full-page-screenshot',
       ]);
   });
 
@@ -272,6 +274,7 @@ describe('Config', () => {
         'web-app-manifest',
         'installability-errors',
         'stacks',
+        'full-page-screenshot',
       ]);
   });
 
@@ -310,6 +313,7 @@ describe('Config', () => {
         'web-app-manifest',
         'installability-errors',
         'stacks',
+        'full-page-screenshot',
       ]);
   });
 
@@ -705,12 +709,11 @@ describe('Config', () => {
     });
 
     assert.ok(resolvedConfig.audits.length, 'inherited audits by extension');
-    // +1 for `is-on-https`, +1 for `full-page-screenshot`.
+    // +1 for `is-on-https`.
     assert.equal(
-      resolvedConfig.audits.length, origConfig.categories.performance.auditRefs.length + 2);
+      resolvedConfig.audits.length, origConfig.categories.performance.auditRefs.length + 1);
     assert.equal(resolvedConfig.passes.length, 1, 'filtered out passes');
     assert.ok(resolvedConfig.audits.find(a => a.implementation.meta.id === 'is-on-https'));
-    assert.ok(resolvedConfig.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
   });
 
   it('warns for invalid filters', async () => {
@@ -1252,12 +1255,9 @@ describe('Config', () => {
       };
       const resolvedConfig = await LegacyResolvedConfig.fromJson(extended);
       const selectedCategory = origConfig.categories.performance;
-      // +1 for `full-page-screenshot`.
-      const auditCount = Object.keys(selectedCategory.auditRefs).length + 1;
+      const auditCount = Object.keys(selectedCategory.auditRefs).length;
 
       assert.equal(resolvedConfig.audits.length, auditCount, '# of audits match category list');
-      assert.ok(
-        resolvedConfig.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
     });
 
     it('should only run specified audits', async () => {
@@ -1282,13 +1282,11 @@ describe('Config', () => {
       };
       const resolvedConfig = await LegacyResolvedConfig.fromJson(extended);
       const selectedCategory = origConfig.categories.performance;
-      // +1 for `service-worker`, +1 for `full-page-screenshot`.
-      const auditCount = Object.keys(selectedCategory.auditRefs).length + 2;
+      // +1 for `service-worker`.
+      const auditCount = Object.keys(selectedCategory.auditRefs).length + 1;
       assert.equal(resolvedConfig.passes.length, 2, 'incorrect # of passes');
       assert.equal(resolvedConfig.audits.length, auditCount, 'audit filtering failed');
       assert.ok(resolvedConfig.audits.find(a => a.implementation.meta.id === 'service-worker'));
-      assert.ok(
-        resolvedConfig.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
     });
 
     it('should support redundant filtering', async () => {
@@ -1301,43 +1299,40 @@ describe('Config', () => {
       };
       const resolvedConfig = await LegacyResolvedConfig.fromJson(extended);
       const selectedCategory = origConfig.categories.pwa;
-      // +1 for `full-page-screenshot`.
-      const auditCount = Object.keys(selectedCategory.auditRefs).length + 1;
+      const auditCount = Object.keys(selectedCategory.auditRefs).length;
       assert.equal(resolvedConfig.passes.length, 2, 'incorrect # of passes');
       assert.equal(resolvedConfig.audits.length, auditCount, 'audit filtering failed');
-      assert.ok(
-        resolvedConfig.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
     });
 
-    it('should keep full-page-screenshot even if onlyCategories is set', async () => {
-      assert.ok(origConfig.audits.includes('full-page-screenshot'));
-      // full-page-screenshot does not belong to a category.
-      const matchCategories = Object.values(origConfig.categories).filter(cat =>
-          cat.auditRefs.find(ref => ref.id === 'full-page-screenshot'));
-      assert.equal(matchCategories.length, 0);
+    it('should include full-page-screenshot by default', async () => {
+      const resolvedConfig = await LegacyResolvedConfig.fromJson(origConfig);
+      assert.ok(resolvedConfig.passes[0].gatherers
+        .some(g => g.implementation.name === 'FullPageScreenshot'));
+    });
 
+    it('should include full-page-screenshot when filtered, if not explictly excluded', async () => {
       const extended = {
         extends: 'lighthouse:default',
         settings: {
-          onlyCategories: ['accessibility'],
+          onlyCategories: ['performance'],
         },
       };
       const resolvedConfig = await LegacyResolvedConfig.fromJson(extended);
-
-      assert.ok(
-        resolvedConfig.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
+      assert.ok(resolvedConfig.passes[0].gatherers
+        .some(g => g.implementation.name === 'FullPageScreenshot'));
     });
 
-    it('should keep full-page-screenshot even if skipAudits is set', async () => {
+    it('should exclude full-page-screenshot if specified', async () => {
       const extended = {
         extends: 'lighthouse:default',
         settings: {
-          skipAudits: ['font-size'],
+          onlyCategories: ['performance'],
+          disableFullPageScreenshot: true,
         },
       };
       const resolvedConfig = await LegacyResolvedConfig.fromJson(extended);
-      assert.ok(
-        resolvedConfig.audits.find(a => a.implementation.meta.id === 'full-page-screenshot'));
+      assert.ok(!resolvedConfig.passes[0].gatherers
+        .some(g => g.implementation.name === 'FullPageScreenshot'));
     });
   });
 

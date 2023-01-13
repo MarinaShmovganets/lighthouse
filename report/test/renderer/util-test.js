@@ -168,6 +168,26 @@ describe('util helpers', () => {
         assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
       });
 
+      it('moves full-page-screenshot audit', () => {
+        const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
+
+        clonedSampleResult.audits['full-page-screenshot'] = {
+          details: {
+            type: 'full-page-screenshot',
+            ...sampleResult.fullPageScreenshot,
+          },
+        };
+        delete clonedSampleResult.fullPageScreenshot;
+
+        assert.ok(clonedSampleResult.audits['full-page-screenshot'].details.nodes); // Make sure something's being tested.
+        assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
+
+        // Original audit results should be restored.
+        const preparedResult = Util.prepareReportResult(clonedSampleResult);
+        assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
+        assert.deepStrictEqual(preparedResult.fullPageScreenshot, sampleResult.fullPageScreenshot);
+      });
+
       it('corrects performance category without hidden group', () => {
         const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
 

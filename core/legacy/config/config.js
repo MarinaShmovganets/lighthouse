@@ -57,6 +57,7 @@ const alwaysRunArtifactIds = [
   'WebAppManifest',
   'InstallabilityErrors',
   'Stacks',
+  'FullPageScreenshot',
 ];
 
 /**
@@ -319,7 +320,8 @@ class LegacyResolvedConfig {
    */
   static filterConfigIfNeeded(config) {
     const settings = config.settings;
-    if (!settings.onlyCategories && !settings.onlyAudits && !settings.skipAudits) {
+    // eslint-disable-next-line max-len
+    if (!settings.onlyCategories && !settings.onlyAudits && !settings.skipAudits && !settings.disableFullPageScreenshot) {
       return;
     }
 
@@ -335,6 +337,11 @@ class LegacyResolvedConfig {
     const requestedGathererIds = LegacyResolvedConfig.getGatherersRequestedByAudits(audits);
     for (const gathererId of alwaysRunArtifactIds) {
       requestedGathererIds.add(gathererId);
+    }
+
+    // Remove FullPageScreenshot if we explicitly exclude it.
+    if (settings.disableFullPageScreenshot) {
+      requestedGathererIds.delete('FullPageScreenshot');
     }
 
     // 4. Filter to only the neccessary passes
@@ -421,14 +428,6 @@ class LegacyResolvedConfig {
         category.auditRefs.forEach(audit => includedAudits.add(audit.id));
       }
     });
-
-    // The `full-page-screenshot` audit belongs to no category, but we still want to include
-    // it (unless explictly excluded) because there are audits in every category that can use it.
-    const explicitlyExcludesFullPageScreenshot =
-      settings.skipAudits && settings.skipAudits.includes('full-page-screenshot');
-    if (!explicitlyExcludesFullPageScreenshot && (settings.onlyCategories || settings.skipAudits)) {
-      includedAudits.add('full-page-screenshot');
-    }
 
     return {categories, requestedAuditNames: includedAudits};
   }

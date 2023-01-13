@@ -268,12 +268,8 @@ export class ReportRenderer {
     Util.i18n = i18n;
     Util.reportJson = report;
 
-    const fullPageScreenshot =
-      report.audits['full-page-screenshot']?.details &&
-      report.audits['full-page-screenshot'].details.type === 'full-page-screenshot' ?
-      report.audits['full-page-screenshot'].details : undefined;
     const detailsRenderer = new DetailsRenderer(this._dom, {
-      fullPageScreenshot,
+      fullPageScreenshot: report.fullPageScreenshot ?? undefined,
     });
 
     const categoryRenderer = new CategoryRenderer(this._dom, detailsRenderer);
@@ -344,9 +340,9 @@ export class ReportRenderer {
     reportSection.append(this._renderReportFooter(report));
     reportContainer.append(headerContainer, reportSection);
 
-    if (fullPageScreenshot) {
+    if (report.fullPageScreenshot) {
       ElementScreenshotRenderer.installFullPageScreenshot(
-        this._dom.rootEl, fullPageScreenshot.screenshot);
+        this._dom.rootEl, report.fullPageScreenshot.screenshot);
     }
 
     return reportFragment;
