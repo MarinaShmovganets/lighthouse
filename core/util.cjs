@@ -522,11 +522,14 @@ class Util {
     const isScreenEmulationDisabled = settings.channel === 'devtools' ?
       false :
       settings.screenEmulation.disabled;
+    const isScreenEmulationMobile = settings.channel === 'devtools' ?
+      settings.formFactor === 'mobile' :
+      settings.screenEmulation.mobile;
 
     let deviceEmulation = Util.i18n.strings.runtimeMobileEmulation;
     if (isScreenEmulationDisabled) {
       deviceEmulation = Util.i18n.strings.runtimeNoEmulation;
-    } else if (!settings.screenEmulation.mobile) {
+    } else if (!isScreenEmulationMobile) {
       deviceEmulation = Util.i18n.strings.runtimeDesktopEmulation;
     }
 
