@@ -146,7 +146,7 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   /** All the input elements, including associated form and label elements. */
   Inputs: {inputs: Artifacts.InputElement[]; forms: Artifacts.FormElement[]; labels: Artifacts.LabelElement[]};
   /** Screenshot of the entire page (rather than just the above the fold content). */
-  FullPageScreenshot: Artifacts.FullPageScreenshot | null;
+  FullPageScreenshot: LHResult.FullPageScreenshot | null;
   /** Information about event listeners registered on the global object. */
   GlobalListeners: Array<Artifacts.GlobalListener>;
   /** The issues surfaced in the devtools Issues panel */
@@ -768,16 +768,6 @@ declare module Artifacts {
     version?: string;
     /** The package name on NPM, if it exists. */
     npm?: string;
-  }
-
-  interface FullPageScreenshot {
-    screenshot: {
-      /** Base64 image data URL. */
-      data: string;
-      width: number;
-      height: number;
-    };
-    nodes: Record<string, Rect>;
   }
 
   interface TimingSummary {

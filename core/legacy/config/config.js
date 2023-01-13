@@ -79,7 +79,7 @@ function assertValidPasses(passes, audits) {
       const gatherer = gathererDefn.instance;
       foundGatherers.add(gatherer.name);
       const isGatherRequiredByAudits = requestedGatherers.has(gatherer.name);
-      if (!isGatherRequiredByAudits) {
+      if (!isGatherRequiredByAudits && gatherer.name !== 'FullPageScreenshot') {
         const msg = `${gatherer.name} gatherer requested, however no audit requires it.`;
         log.warn('config', msg);
       }
@@ -313,7 +313,8 @@ class LegacyResolvedConfig {
    */
   static filterConfigIfNeeded(config) {
     const settings = config.settings;
-    if (!settings.onlyCategories && !settings.onlyAudits && !settings.skipAudits) {
+    // eslint-disable-next-line max-len
+    if (!settings.onlyCategories && !settings.onlyAudits && !settings.skipAudits && !settings.disableFullPageScreenshot) {
       return;
     }
 
@@ -327,6 +328,11 @@ class LegacyResolvedConfig {
 
     // 3. Resolve which gatherers will need to run
     const requestedGathererIds = LegacyResolvedConfig.getGatherersRequestedByAudits(audits);
+
+    // Always include FullPageScreenshot, unless explictly told not to.
+    if (!settings.disableFullPageScreenshot) {
+      requestedGathererIds.add('FullPageScreenshot');
+    }
 
     // 4. Filter to only the neccessary passes
     const passes =
@@ -412,14 +418,6 @@ class LegacyResolvedConfig {
         category.auditRefs.forEach(audit => includedAudits.add(audit.id));
       }
     });
-
-    // The `full-page-screenshot` audit belongs to no category, but we still want to include
-    // it (unless explictly excluded) because there are audits in every category that can use it.
-    const explicitlyExcludesFullPageScreenshot =
-      settings.skipAudits && settings.skipAudits.includes('full-page-screenshot');
-    if (!explicitlyExcludesFullPageScreenshot && (settings.onlyCategories || settings.skipAudits)) {
-      includedAudits.add('full-page-screenshot');
-    }
 
     return {categories, requestedAuditNames: includedAudits};
   }

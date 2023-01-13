@@ -216,7 +216,37 @@ class Util {
       });
     }
 
+    // In 10.0, full-page-screenshot became a top-level property on the LHR.
+    if (clone.audits['full-page-screenshot']) {
+      const details = /** @type {LH.Result.FullPageScreenshot=} */ (
+        clone.audits['full-page-screenshot'].details);
+      if (details) {
+        clone.fullPageScreenshot = {
+          screenshot: details.screenshot,
+          nodes: details.nodes,
+        };
+      } else {
+        clone.fullPageScreenshot = null;
+      }
+      delete clone.audits['full-page-screenshot'];
+    }
+
     return clone;
+  }
+
+  /**
+   * @param {LH.Result} lhr
+   * @return {LH.Result.FullPageScreenshot=}
+   */
+  static getFullPageScreenshot(lhr) {
+    if (lhr.fullPageScreenshot) {
+      return lhr.fullPageScreenshot;
+    }
+
+    // Prior to 10.0.
+    const details = /** @type {LH.Result.FullPageScreenshot=} */ (
+      lhr.audits['full-page-screenshot']?.details);
+    return details;
   }
 
   /**
