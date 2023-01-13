@@ -163,6 +163,10 @@ async function generateErrorLHR() {
     PageLoadError: null,
     devtoolsLogs: {},
     traces: {},
+    // @ts-expect-error Always run but no longer base artifacts.
+    WebAppManifest: null,
+    InstallabilityErrors: {errors: []},
+    Stacks: [],
   };
 
   // Save artifacts to disk then run `lighthouse -G` with them.
