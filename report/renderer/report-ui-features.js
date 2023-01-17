@@ -60,6 +60,7 @@ export class ReportUIFeatures {
    */
   initFeatures(lhr) {
     this.json = lhr;
+    this._fullPageScreenshot = Util.getFullPageScreenshot(lhr);
 
     if (this._topbar) {
       this._topbar.enable(lhr);
@@ -299,18 +300,13 @@ export class ReportUIFeatures {
    * @param {Element} rootEl
    */
   _setupElementScreenshotOverlay(rootEl) {
-    const fullPageScreenshot =
-      this.json.audits['full-page-screenshot'] &&
-      this.json.audits['full-page-screenshot'].details &&
-      this.json.audits['full-page-screenshot'].details.type === 'full-page-screenshot' &&
-      this.json.audits['full-page-screenshot'].details;
-    if (!fullPageScreenshot) return;
+    if (!this._fullPageScreenshot) return;
 
     ElementScreenshotRenderer.installOverlayFeature({
       dom: this._dom,
       rootEl: rootEl,
       overlayContainerEl: rootEl,
-      fullPageScreenshot,
+      fullPageScreenshot: this._fullPageScreenshot,
     });
   }
 

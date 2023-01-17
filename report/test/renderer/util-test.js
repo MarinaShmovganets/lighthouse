@@ -37,8 +37,10 @@ describe('util helpers', () => {
     /* eslint-disable max-len */
     assert.equal(get({formFactor: 'mobile', screenEmulation: {disabled: false, mobile: true}}), 'Emulated Moto G4');
     assert.equal(get({formFactor: 'mobile', screenEmulation: {disabled: true, mobile: true}}), 'No emulation');
+    assert.equal(get({formFactor: 'mobile', screenEmulation: {disabled: true, mobile: true}, channel: 'devtools'}), 'Emulated Moto G4');
     assert.equal(get({formFactor: 'desktop', screenEmulation: {disabled: false, mobile: false}}), 'Emulated Desktop');
     assert.equal(get({formFactor: 'desktop', screenEmulation: {disabled: true, mobile: false}}), 'No emulation');
+    assert.equal(get({formFactor: 'desktop', screenEmulation: {disabled: true, mobile: true}, channel: 'devtools'}), 'Emulated Desktop');
     /* eslint-enable max-len */
   });
 
@@ -164,6 +166,26 @@ describe('util helpers', () => {
         // Original audit results should be restored.
         const preparedResult = Util.prepareReportResult(clonedSampleResult);
         assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
+      });
+
+      it('moves full-page-screenshot audit', () => {
+        const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
+
+        clonedSampleResult.audits['full-page-screenshot'] = {
+          details: {
+            type: 'full-page-screenshot',
+            ...sampleResult.fullPageScreenshot,
+          },
+        };
+        delete clonedSampleResult.fullPageScreenshot;
+
+        assert.ok(clonedSampleResult.audits['full-page-screenshot'].details.nodes); // Make sure something's being tested.
+        assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
+
+        // Original audit results should be restored.
+        const preparedResult = Util.prepareReportResult(clonedSampleResult);
+        assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
+        assert.deepStrictEqual(preparedResult.fullPageScreenshot, sampleResult.fullPageScreenshot);
       });
 
       it('corrects performance category without hidden group', () => {
