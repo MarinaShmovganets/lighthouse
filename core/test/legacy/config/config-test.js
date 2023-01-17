@@ -61,7 +61,8 @@ describe('Config', () => {
       audits: [MyAudit],
     };
     const newConfig = await LegacyResolvedConfig.fromJson(config);
-    assert.equal(MyGatherer, newConfig.passes[0].gatherers[0].implementation);
+    // Gatherer index 3 because of always included artifacts.
+    assert.equal(MyGatherer, newConfig.passes[0].gatherers[3].implementation);
     assert.equal(MyAudit, newConfig.audits[0].implementation);
   });
 
@@ -191,7 +192,12 @@ describe('Config', () => {
       // Trigger filtering logic.
       onlyAudits: ['optional-artifact-audit'],
     });
-    expect(resolvedConfig.passes[0].gatherers.map(g => g.path)).toEqual(['viewport-dimensions']);
+    expect(resolvedConfig.passes[0].gatherers.map(g => g.path)).toEqual([
+      'viewport-dimensions',
+      'web-app-manifest',
+      'installability-errors',
+      'stacks',
+    ]);
   });
 
   it('should keep optional artifacts in gatherers after filter', async () => {
@@ -223,7 +229,14 @@ describe('Config', () => {
       onlyAudits: ['optional-artifact-audit'],
     });
     expect(resolvedConfig.passes[0].gatherers.map(g => g.path))
-      .toEqual(['viewport-dimensions', 'source-maps', 'full-page-screenshot']);
+      .toEqual([
+        'viewport-dimensions',
+        'source-maps',
+        'web-app-manifest',
+        'installability-errors',
+        'stacks',
+        'full-page-screenshot',
+      ]);
   });
 
   it('should keep optional artifacts in gatherers after filter', async () => {
@@ -255,7 +268,14 @@ describe('Config', () => {
       onlyAudits: ['optional-artifact-audit'],
     });
     expect(resolvedConfig.passes[0].gatherers.map(g => g.path))
-      .toEqual(['viewport-dimensions', 'source-maps', 'full-page-screenshot']);
+      .toEqual([
+        'viewport-dimensions',
+        'source-maps',
+        'web-app-manifest',
+        'installability-errors',
+        'stacks',
+        'full-page-screenshot',
+      ]);
   });
 
   it('should keep optional artifacts in gatherers after filter', async () => {
@@ -287,7 +307,14 @@ describe('Config', () => {
       onlyAudits: ['optional-artifact-audit'],
     });
     expect(resolvedConfig.passes[0].gatherers.map(g => g.path))
-      .toEqual(['viewport-dimensions', 'source-maps', 'full-page-screenshot']);
+      .toEqual([
+        'viewport-dimensions',
+        'source-maps',
+        'web-app-manifest',
+        'installability-errors',
+        'stacks',
+        'full-page-screenshot',
+      ]);
   });
 
   it('does not throw when an audit requires only base artifacts', async () => {
