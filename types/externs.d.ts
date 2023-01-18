@@ -71,7 +71,10 @@ export interface CliFlags extends Flags {
 export interface RunnerResult {
   lhr: LHResult;
   report: string|string[];
-  /** WARNING: artifacts are not guaranteed to be stable. The structure is subject to change in minor releases. */
+  /**
+   * @internal
+   * WARNING: artifacts are not guaranteed to be stable. The structure is subject to change in minor releases.
+   */
   artifacts: Artifacts;
 }
 
