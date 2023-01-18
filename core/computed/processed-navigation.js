@@ -5,14 +5,17 @@
  */
 
 import {makeComputedArtifact} from './computed-artifact.js';
+import {ProcessedTrace} from './processed-trace.js';
 import LHTraceProcessor from '../lib/lh-trace-processor.js';
 
 class ProcessedNavigation {
   /**
-     * @param {LH.Artifacts.ProcessedTrace} processedTrace
+     * @param {LH.Trace} trace
+     * @param {LH.Artifacts.ComputedContext} context
      * @return {Promise<LH.Artifacts.ProcessedNavigation>}
     */
-  static async compute_(processedTrace) {
+  static async compute_(trace, context) {
+    const processedTrace = await ProcessedTrace.request(trace, context);
     return LHTraceProcessor.processNavigation(processedTrace);
   }
 }
