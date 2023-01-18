@@ -4,16 +4,16 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import Crdp from 'devtools-protocol/types/protocol';
-import CrdpMappings from 'devtools-protocol/types/protocol-mapping';
+import {Protocol as Crdp} from 'devtools-protocol/types/protocol.js';
+import {ProtocolMapping as CrdpMappings} from 'devtools-protocol/types/protocol-mapping.js';
 
-import {NetworkNode as _NetworkNode} from '../core/lib/dependency-graph/network-node';
-import {CPUNode as _CPUNode} from '../core/lib/dependency-graph/cpu-node';
-import {Simulator as _Simulator} from '../core/lib/dependency-graph/simulator/simulator';
-import {Driver} from '../core/legacy/gather/driver';
-import {ExecutionContext} from '../core/gather/driver/execution-context';
-import {Fetcher} from '../core/gather/fetcher';
-import {ArbitraryEqualityMap} from '../core/lib/arbitrary-equality-map';
+import {NetworkNode as _NetworkNode} from '../core/lib/dependency-graph/network-node.js';
+import {CPUNode as _CPUNode} from '../core/lib/dependency-graph/cpu-node.js';
+import {Simulator as _Simulator} from '../core/lib/dependency-graph/simulator/simulator.js';
+import {Driver} from '../core/legacy/gather/driver.js';
+import {ExecutionContext} from '../core/gather/driver/execution-context.js';
+import {Fetcher} from '../core/gather/fetcher.js';
+import {ArbitraryEqualityMap} from '../core/lib/arbitrary-equality-map.js';
 
 import {Artifacts, BaseArtifacts, FRBaseArtifacts, GathererArtifacts, DevtoolsLog, Trace} from './artifacts.js';
 import Config from './config.js';
@@ -155,7 +155,7 @@ declare module Gatherer {
   type AnyFRGathererInstance = FRGathererInstanceExpander<Gatherer.DependencyKey>
 
   namespace Simulation {
-    type GraphNode = import('../core/lib/dependency-graph/base-node').Node;
+    type GraphNode = import('../core/lib/dependency-graph/base-node.js').Node;
     type GraphNetworkNode = _NetworkNode;
     type GraphCPUNode = _CPUNode;
     type Simulator = _Simulator;

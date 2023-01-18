@@ -6,6 +6,7 @@
 
 /* global window */
 
+import * as LH from '../../../types/lh.js';
 import {pageFunctions} from '../../lib/page-functions.js';
 
 class ExecutionContext {
