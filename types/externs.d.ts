@@ -73,7 +73,7 @@ export interface RunnerResult {
   report: string|string[];
   /**
    * @internal
-   * WARNING: artifacts are not guaranteed to be stable. The structure is subject to change in minor releases.
+   * WARNING: Some artifacts are not guaranteed to be stable. The structure is subject to change in minor releases.
    */
   artifacts: Artifacts;
 }
