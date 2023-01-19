@@ -1,0 +1,135 @@
+
+GreggJuanEduardoPH1
+/
+faro
+Público
+bifurcado de Google Chrome/lighthouse
+Código
+Solicitudes de extracción
+Comportamiento
+Proyectos
+Seguridad
+Perspectivas
+Ajustes
+faro/documentos/ estrangulamiento.md
+@paulirish
+núcleo paulirish : finalizar maestro => cambiar el nombre de la rama principal ( GoogleChrome#14409 )
+ 8 colaboradores
+151 líneas (97 sloc)  13 KB
+Limitación de la red
+Lighthouse aplica aceleración de red para emular la velocidad de conexión móvil del percentil 85, incluso cuando se ejecuta en conexiones de fibra mucho más rápidas.
+
+El ajuste preestablecido de limitación de la red móvil
+Esta es la recomendación estándar para la limitación móvil:
+
+Latencia: 150ms
+Rendimiento: 1,6 Mbps de bajada/750 Kbps de subida.
+Pérdida de paquetes: ninguno.
+Estas cifras exactas se definen en las constantes de Lighthouse y se utilizan como el límite predeterminado de Lighthouse. Representan aproximadamente el 25 % inferior de las conexiones 4G y el 25 % superior de las conexiones 3G (en Lighthouse, esta configuración se denomina actualmente "4G lenta", pero solía etiquetarse como "3G rápida"). Este ajuste preestablecido es idéntico al "Mobile 3G - Fast" de WebPageTest y, debido a una latencia más baja, ligeramente más rápido para algunas páginas que el ajuste preestablecido "4G" de WebPageTest .
+
+Tipos de estrangulamiento de red
+Dentro de las pruebas de rendimiento web, existen cuatro estilos típicos de limitación de la red:
+
+La limitación simulada , que Lighthouse utiliza de forma predeterminada , utiliza una simulación de la carga de una página, en función de los datos observados en la carga inicial sin limitación. Este enfoque lo hace muy rápido y determinista. Sin embargo, debido a la naturaleza imperfecta de la predicción de rutas de ejecución alternativas, existe una imprecisión inherente que se resume en este documento: Lighthouse Metric Variability and Accuracy . El TLDR: si bien es más o menos tan preciso o mejor que la limitación de DevTools para la mayoría de los sitios, adolece de casos extremos y una investigación profunda del rendimiento debería usar herramientas de limitación a nivel de paquete .
+La limitación a nivel de solicitud , también conocida como limitación aplicada en el panel Auditorías odevtools limitación en la configuración de Lighthouse, es la forma en que se implementa la limitación con Chrome DevTools. En la conectividad móvil real, la latencia afecta las cosas a nivel de paquete en lugar de a nivel de solicitud. Como resultado, esta limitación no es muy precisa. También tiene algunas desventajas más que se resumen en Limitación de red y estado de Chrome . El TLDR: si bien es una aproximación decente , no es un modelo suficiente de una conexión lenta. Los multiplicadores utilizados en Lighthouse intentan corregir las diferencias.
+Las herramientas de regulación de nivel de proxy no afectan los datos UDP, por lo que son decentes, pero no ideales.
+Las herramientas de limitación a nivel de paquete pueden realizar la simulación de red más precisa. Si bien este enfoque puede modelar las condiciones reales de la red de manera más efectiva, también puede introducir más variación que el nivel de solicitud o la limitación simulada. WebPageTest utiliza la limitación a nivel de paquete.
+Lighthouse, de forma predeterminada, utiliza una limitación simulada, ya que proporciona una evaluación rápida y una varianza minimizada. Sin embargo, es posible que algunos deseen experimentar con una limitación más precisa... Obtenga más información sobre estos tipos de limitación y cómo se comportan en diferentes escenarios .
+
+Limitación del panel Lighthouse de DevTools
+El panel Lighthouse tiene una configuración de aceleración simplificada:
+
+La limitación simulada sigue siendo la configuración predeterminada. Esto coincide con la configuración predeterminada de PageSpeed ​​Insights y Lighthouse CLI, manteniendo la coherencia entre herramientas.
+Si hace clic en el View Original Tracebotón, los valores de la traza no coincidirán con los resultados de la métrica de Lighthouse, ya que la traza original es anterior a la simulación.
+La limitación aplicada está disponible en la configuración del panel Lighthouse (⚙): desactive la casilla de verificación Limitación simulada .
+En este modo, los datos de rendimiento que se ven después de hacer clic en el View Tracebotón coincidirán con los números de Lighthouses.
+Por supuesto, los usuarios de CLI aún pueden controlar la configuración exacta de la limitación.
+
+¿Cómo obtengo la limitación a nivel de paquete?
+Este artículo de Performance Calendar, Testing with Realistic Networking Conditions , tiene una buena explicación de la configuración del tráfico a nivel de paquete (que se aplica a través de TCP/UDP/ICMP) y recomendaciones.
+
+El @sitespeed.io/throttlepaquete npm parece ser la aplicación de línea de comandos de Mac/Linux más útil para administrar su conexión de red. Importante tener en cuenta: cambia toda la interfaz de red de su máquina. Además, @sitespeed.io/throttlerequieresudo (como lo hacen todos los modeladores de nivel de paquete).
+
+ventanas? A día de hoy, no existe una única herramienta multiplataforma para la regulación. Pero hay dos utilidades de configuración de red de Windows 7 recomendadas: WinShaper y Clumsy .
+
+Para Windows 10 , NetLimiter (opción de pago) y TMeter (edición gratuita) son las soluciones más útiles.
+
+@sitespeed.io/throttleconfigurar
+# Install with npm
+npm install @sitespeed.io/throttle -g
+# Ensure you have Node.js installed and npm is in your $PATH (https://nodejs.org/en/download/)
+
+# To use the recommended throttling values:
+throttle --up 768 --down 1638 --rtt 150
+
+# or even simpler (using a predefined profile)
+throttle 3gfast
+
+# To disable throttling
+throttle --stop
+Para obtener más información y una lista completa de funciones, visite la documentación en el sitio web sitespeed.io .
+
+Uso de Lighthouse con@sitespeed.io/throttle
+npm install @sitespeed.io/throttle -g
+
+# Enable system traffic throttling
+throttle 3gfast
+
+# Run Lighthouse with its own network throttling disabled (while leaving CPU throttling)
+lighthouse --throttling-method=devtools \
+  --throttling.requestLatencyMs=0 \
+  --throttling.downloadThroughputKbps=0 \
+  --throttling.uploadThroughputKbps=0 \
+  https://example.com
+
+# Disable the traffic throttling once you see "Gathering trace"
+throttle --stop
+Estrangulamiento de la CPU
+Lighthouse aplica la aceleración de la CPU para emular un dispositivo móvil de nivel medio, incluso cuando se ejecuta en un hardware de escritorio mucho más potente.
+
+Evaluación comparativa de la potencia de la CPU
+A diferencia de la limitación de la red, en la que criterios objetivos como el RTT y el rendimiento permiten apuntar a un entorno específico, la limitación de la CPU se expresa en relación con el rendimiento del dispositivo host. Esto plantea desafíos a la variabilidad de los resultados entre dispositivos , por lo que es importante calibrar su dispositivo antes de intentar comparar diferentes informes.
+
+Lighthouse calcula y guarda una benchmarkIndexaproximación aproximada del rendimiento de la CPU del dispositivo host con cada informe. Puede encontrar este valor bajo el título "CPU/Memory Power" en la parte inferior del informe de Lighthouse:
+
+Captura de pantalla del informe Potencia de CPU/memoria en Lighthouse
+
+NOTA: En Lighthouse 6.3, BenchmarkIndex cambió su definición para alinearse mejor con los cambios en Chrome 86. Los valores del índice de referencia anteriores a 6.3 y Chrome 86 pueden diferir.
+
+A continuación se muestra una tabla de varias clases de dispositivos y sus rangos aproximados a benchmarkIndexpartir de Chrome m86 junto con algunos otros puntos de referencia. La cantidad de variación en cada clase es bastante alta. Incluso el mismo dispositivo se puede comprar con múltiples procesadores y opciones de memoria diferentes.
+
+-	Escritorio de gama alta	Escritorio de gama baja	Móvil de gama alta	Móvil de nivel medio	Móvil de gama baja
+Dispositivo de ejemplo	MacBook Pro de 16"	Intel NUC i3	samsung s10	motorola g4	Samsung Galaxy J2
+Índice de referencia de Lighthouse	1500-2000	1000-1500	800-1200	125-800	<125
+Octano 2.0	30000-45000	20000-35000	15000-25000	2000-20000	<2000
+Velocímetro 2.0	90-200	50-90	20-50	10-20	<10
+Ejecución de JavaScript de un sitio de noticias	2-4 s	4-8s	4-8s	8-20s	20-40 años
+Calibración de la ralentización de la CPU
+De forma predeterminada, Lighthouse usa un multiplicador de CPU constante de 4x que mueve una ejecución típica en el soporte de escritorio de gama alta en algún lugar al soporte móvil de nivel medio.
+
+Puede optar por calibrar si su índice de referencia está en un rango diferente al esperado en la tabla anterior. Además, cuando Lighthouse se ejecuta desde la CLI con la configuración predeterminada en un dispositivo con poca potencia, se agregará una advertencia al informe sugiriendo que calibre la desaceleración:
+
+imagen
+
+El --throttling.cpuSlowdownMultiplierindicador CLI le permite configurar el nivel de limitación aplicado. En una máquina más débil, puede reducirlo desde el valor predeterminado de 4x a algo más apropiado.
+
+La aplicación web de la calculadora de ralentización de la CPU de Lighthouse calculará qué multiplicador usar a partir del CPU/Memory Powervalor de la parte inferior del informe.
+
+
+Alternativamente, considere la siguiente tabla de los diversos cpuSlowdownMultipliercorreos electrónicos que puede usar para apuntar a diferentes dispositivos junto con el rango posible:
+
+-	Escritorio de gama alta	Escritorio de gama baja	Móvil de gama alta	Móvil de nivel medio	Móvil de gama baja
+Escritorio de gama alta	1x	2x (1-4)	2x (1-4)	4x (2-10)	10x (5-20)
+Escritorio de gama baja	-	1x	1x	2x (1-5)	5x (3-10)
+Móvil de gama alta	-	-	1x	2x (1-5)	5x (3-10)
+Móvil de nivel medio	-	-	-	1x	2x (1-5)
+Móvil de gama baja	-	-	-	-	1x
+Si el BenchmarkIndex de su dispositivo cae en el extremo superior de su soporte, use un multiplicador más alto del rango de la tabla. Si el BenchmarkIndex de su dispositivo cae en el extremo inferior de su paréntesis, use un multiplicador más bajo del rango de la tabla. Si está en algún lugar en el medio, use el multiplicador sugerido.
+
+# Run Lighthouse with a custom CPU slowdown multiplier
+lighthouse --throttling.cpuSlowdownMultiplier=6 https://example.com
+Tipos de aceleración de la CPU
+Dentro de las pruebas de rendimiento web, existen dos estilos típicos de aceleración de la CPU:
+
+La limitación simulada , que Lighthouse utiliza de forma predeterminada , utiliza una simulación de la carga de una página, en función de los datos observados en la carga inicial sin limitación. Este enfoque lo hace muy rápido. Sin embargo, debido a la naturaleza imperfecta de la predicción de rutas de ejecución alternativas, existe una imprecisión inherente que se resume en este documento: Lighthouse Metric Variability and Accuracy . El TLDR: si bien es bastante preciso para la mayoría de las circunstancias, adolece de casos extremos y una investigación profunda del rendimiento debe usarherramientas de aceleración de CPU aplicadas .
+Limitación aplicada , también denominadadevtools limitación en la configuración Lighthouse. Este método en realidad interrumpe la ejecución del trabajo de la CPU a intervalos periódicos para emular un procesador más lento. Es bastante preciso y mucho más fácil que obtener el hardware de destino. El mismo principio subyacente puede ser utilizado por linux cgroups para acelerar cualquier proceso, no solo el navegador. Otras herramientas, como WebPageTest, utilizan la limitación de CPU aplicada que ofrece DevTools.
