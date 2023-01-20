@@ -125,6 +125,8 @@ class NetworkRequest {
     this.parsedURL = /** @type {ParsedURL} */ ({scheme: ''});
     this.documentURL = '';
 
+    /** When the renderer process initially discovers a network request, in milliseconds. */
+    this.rendererStartTime = -1;
     /**
      * When the network service is about to handle a request, ie. just before going to the
      * HTTP cache or going to the network for DNS/connection setup, in milliseconds.
@@ -222,6 +224,7 @@ class NetworkRequest {
     };
     this.isSecure = UrlUtils.isSecureScheme(this.parsedURL.scheme);
 
+    this.rendererStartTime = data.timestamp * 1000;
     // Expected to be overriden with better value in `_recomputeTimesWithResourceTiming`.
     this.startTime = data.timestamp * 1000;
 
