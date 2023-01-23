@@ -233,13 +233,6 @@ class ExecutionContext {
       window.__nativeFetch = window.fetch;
       window.__ElementMatches = window.Element.prototype.matches;
       window.__HTMLElementBoundingClientRect = window.HTMLElement.prototype.getBoundingClientRect;
-      // Ensure the native `performance.now` is not overwritable.
-      const performance = window.performance;
-      const performanceNow = window.performance.now;
-      Object.defineProperty(performance, 'now', {
-        value: () => performanceNow.call(performance),
-        writable: false,
-      });
       /* c8 ignore stop */
     }, {args: []});
   }
