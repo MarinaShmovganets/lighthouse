@@ -10,17 +10,24 @@ import LHTraceProcessor from '../lib/lh-trace-processor.js';
 
 class ProcessedNavigation {
   /**
-     * @param {LH.Trace} trace
-     * @param {LH.Artifacts.ComputedContext} context
-     * @return {Promise<LH.Artifacts.ProcessedNavigation>}
-    */
-  static async compute_(trace, context) {
-    if ('timeOriginEvt' in trace) {
-      // @ts-expect-error TODO: Remove this hacky workaround once pubads is updated
-      return LHTraceProcessor.processNavigation(trace);
+   * @param {LH.Trace | LH.Artifacts.ProcessedTrace} traceOrProcessedTrace
+   * @return {traceOrProcessedTrace is LH.Artifacts.ProcessedTrace}
+   */
+  static isProcessedTrace(traceOrProcessedTrace) {
+    return 'timeOriginEvt' in traceOrProcessedTrace;
+  }
+  /**
+   * @param {LH.Trace | LH.Artifacts.ProcessedTrace} traceOrProcessedTrace
+   * @param {LH.Artifacts.ComputedContext} context
+   * @return {Promise<LH.Artifacts.ProcessedNavigation>}
+   */
+  static async compute_(traceOrProcessedTrace, context) {
+    // TODO: Remove this backport once pubads is updated
+    if (this.isProcessedTrace(traceOrProcessedTrace)) {
+      return LHTraceProcessor.processNavigation(traceOrProcessedTrace);
     }
 
-    const processedTrace = await ProcessedTrace.request(trace, context);
+    const processedTrace = await ProcessedTrace.request(traceOrProcessedTrace, context);
     return LHTraceProcessor.processNavigation(processedTrace);
   }
 }
