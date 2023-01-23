@@ -56,7 +56,7 @@ interface Result {
   };
   /** An array containing the result of all stack packs. */
   stackPacks?: Result.StackPack[];
-  /** All the origins encountered during this Lighthouse run, and information about what web property (aka "entity") they belong to. */
+  /** All the origins encountered during this Lighthouse run, and information about what web property (aka "entity") they belong to. Won't be present for snapshot mode. */
   entityClassification?: Result.EntityClassification;
   /** Screenshot taken of the full page, with node rects referencing audit results. If there was an error with collection, this is null. If disabled via the disableFullPageScreenshot setting, this is undefined. */
   fullPageScreenshot?: Result.FullPageScreenshot | null;
