@@ -18,12 +18,13 @@ import {Audit} from './audits/audit.js';
 import * as format from '../shared/localization/format.js';
 import * as stackPacks from './lib/stack-packs.js';
 import * as assetSaver from './lib/asset-saver.js';
-import {getEntityClassification} from './lib/entity-classification.js';
 import {Sentry} from './lib/sentry.js';
 import {ReportGenerator} from '../report/generator/report-generator.js';
 import {LighthouseError} from './lib/lh-error.js';
 import {lighthouseVersion} from '../root.js';
 import {getModuleDirectory} from '../esm-utils.js';
+import UrlUtils from './lib/url-utils.js';
+import {EntityClassification as ComputedEntityClassification} from './computed/entity-classification.js';
 
 const moduleDir = getModuleDirectory(import.meta);
 
@@ -111,7 +112,7 @@ class Runner {
         categories,
         categoryGroups: resolvedConfig.groups || undefined,
         stackPacks: stackPacks.getStackPacks(artifacts.Stacks),
-        entityClassification: await getEntityClassification(artifacts,
+        entityClassification: await Runner.getEntityClassification(artifacts,
           {options: {}, computedCache, settings}),
         fullPageScreenshot: resolvedConfig.settings.disableFullPageScreenshot ?
           undefined : artifacts.FullPageScreenshot,
@@ -140,6 +141,51 @@ class Runner {
     } catch (err) {
       throw Runner.createRunnerError(err, settings);
     }
+  }
+
+  /**
+   * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
+   */
+  static async getEntityClassification(artifacts, context) {
+    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    if (!devtoolsLog) return;
+    const classifiedEntities = await ComputedEntityClassification.request(
+      {URL: artifacts.URL, devtoolsLog}, context);
+
+    /** @type {Array<LH.Result.Entity>} */
+    const entities = [];
+    /** @type {Record<string, number>} */
+    const entityIndexByOrigin = {};
+    /** @type {Record<string, number>} */
+    const entityIndexByName = {};
+
+    for (const [entity, entityUrls] of classifiedEntities.urlsByEntity) {
+      /** @type {LH.Result.Entity} */
+      const shortEntity = {
+        name: entity.name,
+        homepage: entity.homepage,
+      };
+
+      // Reduce payload size in LHR JSON by omitting whats falsy.
+      if (entity === classifiedEntities.firstParty) shortEntity.isFirstParty = true;
+      if (entity.isUnrecognized) shortEntity.isUnrecognized = true;
+
+      const id = entities.push(shortEntity) - 1;
+      entityUrls.forEach(url => {
+        const origin = UrlUtils.getOrigin(url);
+        if (!origin) return;
+        entityIndexByOrigin[origin] = id;
+      });
+      entityIndexByName[shortEntity.name] = id;
+    }
+
+    return {
+      entities,
+      firstParty: classifiedEntities.firstParty?.name,
+      entityIndexByOrigin,
+      entityIndexByName,
+    };
   }
 
   /**
