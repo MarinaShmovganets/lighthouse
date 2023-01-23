@@ -8,7 +8,7 @@
  * @fileoverview Stricter querySelector/querySelectorAll using typed-query-selector.
  */
 
-import {ParseSelectorToTagNames} from 'typed-query-selector/parser';
+import {ParseSelectorToTagNames} from 'typed-query-selector/parser.js';
 
 /** Merge properties of the types in union `T`. Where properties overlap, property types becomes the union of the two (or more) possible types. */
 type MergeTypes<T> = {

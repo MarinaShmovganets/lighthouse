@@ -52,6 +52,7 @@
       Trace: ResourceFinish.ts
  */
 
+import * as LH from '../../types/lh.js';
 import UrlUtils from './url-utils.js';
 
 // Lightrider X-Header names for timing information.

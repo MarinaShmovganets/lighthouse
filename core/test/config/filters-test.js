@@ -10,23 +10,12 @@ import {Audit as BaseAudit} from '../../audits/audit.js';
 import BaseGatherer from '../../gather/base-gatherer.js';
 import {defaultSettings, defaultNavigationConfig} from '../../config/constants.js';
 import * as filters from '../../config/filters.js';
-import {initializeConfig} from '../../config/config.js';
 
 describe('Fraggle Rock Config Filtering', () => {
   const snapshotGatherer = new BaseGatherer();
   snapshotGatherer.meta = {supportedModes: ['snapshot']};
   const timespanGatherer = new BaseGatherer();
   timespanGatherer.meta = {supportedModes: ['timespan']};
-
-  const artifacts = [
-    {id: 'Snapshot', gatherer: {instance: snapshotGatherer}},
-    {id: 'Timespan', gatherer: {instance: timespanGatherer}},
-  ];
-
-  const navigationArtifacts = [
-    ...artifacts,
-    {id: 'Snapshot2', gatherer: {instance: snapshotGatherer}},
-  ];
 
   const auditMeta = {title: '', description: ''};
   class SnapshotAudit extends BaseAudit {
@@ -67,29 +56,51 @@ describe('Fraggle Rock Config Filtering', () => {
     };
   }
 
-  const audits = [SnapshotAudit, TimespanAudit, NavigationAudit, ManualAudit].map(audit => ({
-    implementation: audit,
-    options: {},
-  }));
+  function createTestObjects() {
+    /** @type {Array<LH.Config.AnyArtifactDefn>} */
+    const artifacts = [
+      {id: 'Snapshot', gatherer: {instance: snapshotGatherer}},
+      {id: 'Timespan', gatherer: {instance: timespanGatherer}},
+    ];
 
-  /** @type {Array<LH.Config.NavigationDefn>} */
-  const navigations = [
-    {
-      ...defaultNavigationConfig,
-      id: 'firstPass',
-      artifacts: [
-        {id: 'Snapshot', gatherer: {instance: snapshotGatherer}},
-        {id: 'Timespan', gatherer: {instance: timespanGatherer}},
-      ],
-    },
-    {
-      ...defaultNavigationConfig,
-      id: 'secondPass',
-      artifacts: [
-        {id: 'Snapshot2', gatherer: {instance: snapshotGatherer}},
-      ],
-    },
-  ];
+    /** @type {Array<LH.Config.AnyArtifactDefn>} */
+    const navigationArtifacts = [
+      ...artifacts,
+      {id: 'Snapshot2', gatherer: {instance: snapshotGatherer}},
+    ];
+
+    /** @type {Array<LH.Config.NavigationDefn>} */
+    const navigations = [
+      {
+        ...defaultNavigationConfig,
+        id: 'firstPass',
+        artifacts: [
+          {id: 'Snapshot', gatherer: {instance: snapshotGatherer}},
+          {id: 'Timespan', gatherer: {instance: timespanGatherer}},
+        ],
+      },
+      {
+        ...defaultNavigationConfig,
+        id: 'secondPass',
+        artifacts: [
+          {id: 'Snapshot2', gatherer: {instance: snapshotGatherer}},
+        ],
+      },
+    ];
+
+    /** @type {Array<LH.Config.AuditDefn>} */
+    const audits = [SnapshotAudit, TimespanAudit, NavigationAudit, ManualAudit].map(audit => ({
+      implementation: audit,
+      options: {},
+    }));
+
+    return {artifacts, navigationArtifacts, navigations, audits};
+  }
+
+  let {artifacts, navigationArtifacts, navigations, audits} = createTestObjects();
+  beforeEach(() => {
+    ({artifacts, navigationArtifacts, navigations, audits} = createTestObjects());
+  });
 
   describe('filterArtifactsByGatherMode', () => {
     it('should handle null', () => {
@@ -243,7 +254,7 @@ describe('Fraggle Rock Config Filtering', () => {
     });
   });
 
-  /** @type {LH.Config.FRConfig['categories']} */
+  /** @type {LH.Config.ResolvedConfig['categories']} */
   const categories = {
     snapshot: {title: 'Snapshot', auditRefs: [{id: 'snapshot', weight: 0}]},
     timespan: {title: 'Timespan', auditRefs: [{id: 'timespan', weight: 0}]},
@@ -392,22 +403,22 @@ describe('Fraggle Rock Config Filtering', () => {
   });
 
   describe('filterConfigByExplicitFilters', () => {
-    /** @type {LH.Config.FRConfig} */
-    let config;
+    /** @type {LH.Config.ResolvedConfig} */
+    let resolvedConfig;
 
     beforeEach(() => {
-      config = {
+      resolvedConfig = {
         artifacts: navigationArtifacts,
         navigations,
         audits,
         categories,
         groups: null,
-        settings: defaultSettings,
+        settings: JSON.parse(JSON.stringify(defaultSettings)),
       };
     });
 
     it('should filter via onlyAudits', () => {
-      const filtered = filters.filterConfigByExplicitFilters(config, {
+      const filtered = filters.filterConfigByExplicitFilters(resolvedConfig, {
         onlyAudits: ['snapshot'],
         onlyCategories: null,
         skipAudits: null,
@@ -424,7 +435,7 @@ describe('Fraggle Rock Config Filtering', () => {
     });
 
     it('should filter via skipAudits', () => {
-      const filtered = filters.filterConfigByExplicitFilters(config, {
+      const filtered = filters.filterConfigByExplicitFilters(resolvedConfig, {
         onlyAudits: null,
         onlyCategories: null,
         skipAudits: ['snapshot', 'navigation'],
@@ -440,7 +451,7 @@ describe('Fraggle Rock Config Filtering', () => {
     });
 
     it('should filter via onlyCategories', () => {
-      const filtered = filters.filterConfigByExplicitFilters(config, {
+      const filtered = filters.filterConfigByExplicitFilters(resolvedConfig, {
         onlyAudits: null,
         onlyCategories: ['timespan'],
         skipAudits: null,
@@ -463,7 +474,7 @@ describe('Fraggle Rock Config Filtering', () => {
       const saveWarning = evt => warnings.push(evt);
 
       log.events.on('warning', saveWarning);
-      const filtered = filters.filterConfigByExplicitFilters(config, {
+      const filtered = filters.filterConfigByExplicitFilters(resolvedConfig, {
         onlyAudits: null,
         onlyCategories: ['timespan', 'thisIsNotACategory'],
         skipAudits: null,
@@ -485,7 +496,7 @@ describe('Fraggle Rock Config Filtering', () => {
     });
 
     it('should filter via a combination of filters', () => {
-      const filtered = filters.filterConfigByExplicitFilters(config, {
+      const filtered = filters.filterConfigByExplicitFilters(resolvedConfig, {
         onlyCategories: ['mixed'],
         onlyAudits: ['snapshot', 'timespan'],
         skipAudits: ['timespan', 'navigation'],
@@ -500,15 +511,15 @@ describe('Fraggle Rock Config Filtering', () => {
     });
 
     it('should filter out audits and artifacts not in the categories by default', () => {
-      config = {
-        ...config,
+      resolvedConfig = {
+        ...resolvedConfig,
         audits: [
           ...audits,
           {implementation: NavigationOnlyAudit, options: {}},
         ],
       };
 
-      const filtered = filters.filterConfigByExplicitFilters(config, {
+      const filtered = filters.filterConfigByExplicitFilters(resolvedConfig, {
         onlyAudits: null,
         onlyCategories: null,
         skipAudits: null,
@@ -526,8 +537,8 @@ describe('Fraggle Rock Config Filtering', () => {
     });
 
     it('should keep all audits if there are no categories', () => {
-      config = {
-        ...config,
+      resolvedConfig = {
+        ...resolvedConfig,
         audits: [
           ...audits,
           {implementation: NavigationOnlyAudit, options: {}},
@@ -535,7 +546,7 @@ describe('Fraggle Rock Config Filtering', () => {
         categories: {},
       };
 
-      const filtered = filters.filterConfigByExplicitFilters(config, {
+      const filtered = filters.filterConfigByExplicitFilters(resolvedConfig, {
         onlyAudits: null,
         onlyCategories: null,
         skipAudits: null,
@@ -553,18 +564,75 @@ describe('Fraggle Rock Config Filtering', () => {
       });
     });
 
-    it('should preserve full-page-screenshot', async () => {
-      config = (await initializeConfig('navigation')).config;
+    it('should include full-page-screenshot by default', async () => {
+      const fpsGatherer = new BaseGatherer();
+      fpsGatherer.meta = {supportedModes: ['navigation', 'snapshot', 'timespan']};
 
-      const filtered = filters.filterConfigByExplicitFilters(config, {
-        onlyAudits: ['color-contrast'],
+      // TODO UGH this is modifying all other instances. can't just copy cuz not primitive object. halp
+      resolvedConfig = {
+        ...resolvedConfig,
+      };
+      resolvedConfig.navigations?.[0].artifacts.push(
+        {id: 'FullPageScreenshot', gatherer: {instance: fpsGatherer}});
+      resolvedConfig.artifacts?.push(
+        {id: 'FullPageScreenshot', gatherer: {instance: fpsGatherer}});
+
+      const filtered = filters.filterConfigByExplicitFilters(resolvedConfig, {
+        onlyAudits: null,
         onlyCategories: null,
         skipAudits: null,
       });
+      expect(filtered).toMatchObject({
+        navigations: [{id: 'firstPass'}],
+        artifacts: [{id: 'Snapshot'}, {id: 'Timespan'}, {id: 'FullPageScreenshot'}],
+      });
+    });
 
-      if (!filtered.audits) throw new Error('No audits produced');
-      const auditIds = filtered.audits.map(audit => audit.implementation.meta.id);
-      expect(auditIds).toEqual(['full-page-screenshot', 'color-contrast']);
+    it('should include full-page-screenshot by default, if not explictly excluded', async () => {
+      const fpsGatherer = new BaseGatherer();
+      fpsGatherer.meta = {supportedModes: ['navigation', 'snapshot', 'timespan']};
+
+      resolvedConfig = {
+        ...resolvedConfig,
+      };
+      resolvedConfig.navigations?.[0].artifacts.push(
+        {id: 'FullPageScreenshot', gatherer: {instance: fpsGatherer}});
+      resolvedConfig.artifacts?.push(
+        {id: 'FullPageScreenshot', gatherer: {instance: fpsGatherer}});
+
+      const filtered = filters.filterConfigByExplicitFilters(resolvedConfig, {
+        onlyAudits: null,
+        onlyCategories: ['performance'],
+        skipAudits: null,
+      });
+      expect(filtered).toMatchObject({
+        navigations: [{id: 'firstPass'}],
+        artifacts: [{id: 'Snapshot'}, {id: 'Timespan'}, {id: 'FullPageScreenshot'}],
+      });
+    });
+
+    it('should exclude full-page-screenshot if specified', async () => {
+      const fpsGatherer = new BaseGatherer();
+      fpsGatherer.meta = {supportedModes: ['navigation', 'snapshot', 'timespan']};
+
+      resolvedConfig = {
+        ...resolvedConfig,
+      };
+      resolvedConfig.settings.disableFullPageScreenshot = true;
+      resolvedConfig.navigations?.[0].artifacts.push(
+        {id: 'FullPageScreenshot', gatherer: {instance: fpsGatherer}});
+      resolvedConfig.artifacts?.push(
+        {id: 'FullPageScreenshot', gatherer: {instance: fpsGatherer}});
+
+      const filtered = filters.filterConfigByExplicitFilters(resolvedConfig, {
+        onlyAudits: null,
+        onlyCategories: null,
+        skipAudits: null,
+      });
+      expect(filtered).toMatchObject({
+        navigations: [{id: 'firstPass'}],
+        artifacts: [{id: 'Snapshot'}, {id: 'Timespan'}],
+      });
     });
   });
 });

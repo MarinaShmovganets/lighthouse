@@ -116,8 +116,10 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
   _getScoringCalculatorHref(auditRefs) {
     // TODO: filter by !!acronym when dropping renderer support of v7 LHRs.
     const metrics = auditRefs.filter(audit => audit.group === 'metrics');
+    const tti = auditRefs.find(audit => audit.id === 'interactive');
     const fci = auditRefs.find(audit => audit.id === 'first-cpu-idle');
     const fmp = auditRefs.find(audit => audit.id === 'first-meaningful-paint');
+    if (tti) metrics.push(tti);
     if (fci) metrics.push(fci);
     if (fmp) metrics.push(fmp);
 
