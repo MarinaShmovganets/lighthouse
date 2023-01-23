@@ -9,7 +9,7 @@ import assert from 'assert/strict';
 import jsdom from 'jsdom';
 
 import {Util} from '../../renderer/util.js';
-import {I18n} from '../../renderer/i18n.js';
+import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {PerformanceCategoryRenderer} from '../../renderer/performance-category-renderer.js';
@@ -23,7 +23,7 @@ describe('PerfCategoryRenderer', () => {
   let sampleResults;
 
   before(() => {
-    Util.i18n = new I18n('en', {...Util.UIStrings});
+    Util.i18n = new I18nFormatter('en');
 
     const {document} = new jsdom.JSDOM().window;
     const dom = new DOM(document);

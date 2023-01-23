@@ -11,7 +11,7 @@ import jsdom from 'jsdom';
 
 import {DOM} from '../../renderer/dom.js';
 import {Util} from '../../renderer/util.js';
-import {I18n} from '../../renderer/i18n.js';
+import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 
 describe('DOM', () => {
   /** @type {DOM} */
@@ -20,7 +20,7 @@ describe('DOM', () => {
   let nativeCreateObjectURL;
 
   before(() => {
-    Util.i18n = new I18n('en', {...Util.UIStrings});
+    Util.i18n = new I18nFormatter('en');
     window = new jsdom.JSDOM().window;
 
     // The Node version of URL.createObjectURL isn't compatible with the jsdom blob type,

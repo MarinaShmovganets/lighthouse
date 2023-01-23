@@ -7,14 +7,14 @@
 import assert from 'assert/strict';
 
 import {Util} from '../../renderer/util.js';
-import {I18n} from '../../renderer/i18n.js';
+import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {readJson} from '../../../core/test/test-utils.js';
 
 const sampleResult = readJson('../../../core/test/results/sample_v2.json', import.meta);
 
 describe('util helpers', () => {
   beforeEach(() => {
-    Util.i18n = new I18n('en', {...Util.UIStrings});
+    Util.i18n = new I18nFormatter('en');
   });
 
   afterEach(() => {

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-/** @template T @typedef {import('./i18n').I18n<T>} I18n */
+/** @typedef {import('./i18n-formatter').I18nFormatter} I18nFormatter */
 
 const ELLIPSIS = '\u2026';
 const NBSP = '\xa0';
@@ -42,9 +42,21 @@ const listOfTlds = [
 ];
 
 class Util {
-  /** @type {I18n<typeof UIStrings>} */
+  /** @type {I18nFormatter} */
   // @ts-expect-error: Is set in report renderer.
   static i18n = null;
+  static strings = /** @type {typeof UIStrings} */ ({});
+
+  /**
+   * @param {Record<string, string>} providedStrings
+   */
+  static applyStrings(providedStrings) {
+    this.strings = {
+      // Set missing renderer strings to default (english) values.
+      ...UIStrings,
+      ...providedStrings,
+    };
+  }
 
   static get PASS_THRESHOLD() {
     return PASS_THRESHOLD;
@@ -154,6 +166,10 @@ class Util {
             }
           }
         }
+
+        // TODO: convert printf-style displayValue.
+        // Added:   #5099, v3
+        // Removed: #6767, v4
       }
     }
 
@@ -214,6 +230,20 @@ class Util {
           });
         }
       });
+    }
+
+    // Add some minimal stuff so older reports still work.
+    if (!clone.environment) {
+      // @ts-expect-error
+      clone.environment = {benchmarkIndex: 0};
+    }
+    if (!clone.configSettings.screenEmulation) {
+      // @ts-expect-error
+      clone.configSettings.screenEmulation = {};
+    }
+    if (!clone.i18n) {
+      // @ts-expect-error
+      clone.i18n = {};
     }
 
     // In 10.0, full-page-screenshot became a top-level property on the LHR.
@@ -511,7 +541,7 @@ class Util {
 
     switch (settings.throttlingMethod) {
       case 'provided':
-        summary = networkThrottling = cpuThrottling = Util.i18n.strings.throttlingProvided;
+        summary = networkThrottling = cpuThrottling = Util.strings.throttlingProvided;
         break;
       case 'devtools': {
         const {cpuSlowdownMultiplier, requestLatencyMs} = throttling;
@@ -526,7 +556,8 @@ class Util {
             throttling.downloadThroughputKbps === 1.6 * 1024 * 0.9 &&
             throttling.uploadThroughputKbps === 750 * 0.9;
         };
-        summary = isSlow4G() ? Util.i18n.strings.runtimeSlow4g : Util.i18n.strings.runtimeCustom;
+        summary = isSlow4G() ?
+          Util.strings.runtimeSlow4g : Util.strings.runtimeCustom;
         break;
       }
       case 'simulate': {
@@ -539,11 +570,12 @@ class Util {
         const isSlow4G = () => {
           return rttMs === 150 && throughputKbps === 1.6 * 1024;
         };
-        summary = isSlow4G() ? Util.i18n.strings.runtimeSlow4g : Util.i18n.strings.runtimeCustom;
+        summary = isSlow4G() ?
+          Util.strings.runtimeSlow4g : Util.strings.runtimeCustom;
         break;
       }
       default:
-        summary = cpuThrottling = networkThrottling = Util.i18n.strings.runtimeUnknown;
+        summary = cpuThrottling = networkThrottling = Util.strings.runtimeUnknown;
     }
 
     // devtools-entry.js always sets `screenEmulation.disabled` when using mobile emulation,
@@ -556,11 +588,11 @@ class Util {
       settings.formFactor === 'mobile' :
       settings.screenEmulation.mobile;
 
-    let deviceEmulation = Util.i18n.strings.runtimeMobileEmulation;
+    let deviceEmulation = Util.strings.runtimeMobileEmulation;
     if (isScreenEmulationDisabled) {
-      deviceEmulation = Util.i18n.strings.runtimeNoEmulation;
+      deviceEmulation = Util.strings.runtimeNoEmulation;
     } else if (!isScreenEmulationMobile) {
-      deviceEmulation = Util.i18n.strings.runtimeDesktopEmulation;
+      deviceEmulation = Util.strings.runtimeDesktopEmulation;
     }
 
     const screenEmulation = isScreenEmulationDisabled ?
@@ -805,6 +837,7 @@ const UIStrings = {
   runtimeCustom: 'Custom throttling',
 };
 Util.UIStrings = UIStrings;
+Util.strings = {...UIStrings};
 
 module.exports = {
   Util,
