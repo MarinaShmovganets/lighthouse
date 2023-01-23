@@ -23,8 +23,8 @@ import {ReportGenerator} from '../report/generator/report-generator.js';
 import {LighthouseError} from './lib/lh-error.js';
 import {lighthouseVersion} from '../root.js';
 import {getModuleDirectory} from '../esm-utils.js';
+import {EntityClassification} from './computed/entity-classification.js';
 import UrlUtils from './lib/url-utils.js';
-import {EntityClassification as ComputedEntityClassification} from './computed/entity-classification.js';
 
 const moduleDir = getModuleDirectory(import.meta);
 
@@ -150,7 +150,7 @@ class Runner {
   static async getEntityClassification(artifacts, context) {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     if (!devtoolsLog) return;
-    const classifiedEntities = await ComputedEntityClassification.request(
+    const classifiedEntities = await EntityClassification.request(
       {URL: artifacts.URL, devtoolsLog}, context);
 
     /** @type {Array<LH.Result.Entity>} */
