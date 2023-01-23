@@ -2327,154 +2327,154 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "आप अपने वेब सर्वर कॉन्फ़िगरेशन में टेक्स्ट कंप्रेस करने की सुविधा चालू कर सकते हैं."
   },
-  "report/renderer/util.js | calculatorLink": {
+  "shared/util.js | calculatorLink": {
     "message": "कैलकुलेटर देखें."
   },
-  "report/renderer/util.js | collapseView": {
+  "shared/util.js | collapseView": {
     "message": "व्यू को छोटा करें"
   },
-  "report/renderer/util.js | crcInitialNavigation": {
+  "shared/util.js | crcInitialNavigation": {
     "message": "शुरुआती नेविगेशन"
   },
-  "report/renderer/util.js | crcLongestDurationLabel": {
+  "shared/util.js | crcLongestDurationLabel": {
     "message": "पाथ का ज़्यादा से ज़्यादा अहम प्रतीक्षा समय:"
   },
-  "report/renderer/util.js | dropdownCopyJSON": {
+  "shared/util.js | dropdownCopyJSON": {
     "message": "JSON कॉपी करें"
   },
-  "report/renderer/util.js | dropdownDarkTheme": {
+  "shared/util.js | dropdownDarkTheme": {
     "message": "गहरे रंग वाली थीम को टॉगल करें"
   },
-  "report/renderer/util.js | dropdownPrintExpanded": {
+  "shared/util.js | dropdownPrintExpanded": {
     "message": "प्रिंट को बड़ा किया गया"
   },
-  "report/renderer/util.js | dropdownPrintSummary": {
+  "shared/util.js | dropdownPrintSummary": {
     "message": "प्रिंट के बारे में खास जानकारी"
   },
-  "report/renderer/util.js | dropdownSaveGist": {
+  "shared/util.js | dropdownSaveGist": {
     "message": "Gist के रूप में सेव करें"
   },
-  "report/renderer/util.js | dropdownSaveHTML": {
+  "shared/util.js | dropdownSaveHTML": {
     "message": "एचटीएमएल के रूप में सेव करें"
   },
-  "report/renderer/util.js | dropdownSaveJSON": {
+  "shared/util.js | dropdownSaveJSON": {
     "message": "JSON के रूप में सेव करें"
   },
-  "report/renderer/util.js | dropdownViewer": {
+  "shared/util.js | dropdownViewer": {
     "message": "व्यूअर में खोलें"
   },
-  "report/renderer/util.js | errorLabel": {
+  "shared/util.js | errorLabel": {
     "message": "गड़बड़ी!"
   },
-  "report/renderer/util.js | errorMissingAuditInfo": {
+  "shared/util.js | errorMissingAuditInfo": {
     "message": "गड़बड़ी की रिपोर्ट करें: कोई ऑडिट जानकारी नहीं"
   },
-  "report/renderer/util.js | expandView": {
+  "shared/util.js | expandView": {
     "message": "व्यू को बड़ा करें"
   },
-  "report/renderer/util.js | footerIssue": {
+  "shared/util.js | footerIssue": {
     "message": "समस्या की रिपोर्ट करें"
   },
-  "report/renderer/util.js | hide": {
+  "shared/util.js | hide": {
     "message": "छिपाएं"
   },
-  "report/renderer/util.js | labDataTitle": {
+  "shared/util.js | labDataTitle": {
     "message": "किसी नई या दुबारा जाँची जाने वाली ऐप्लिकेशन के लिए तैयार किया गया डेटा"
   },
-  "report/renderer/util.js | lsPerformanceCategoryDescription": {
+  "shared/util.js | lsPerformanceCategoryDescription": {
     "message": "एम्युलेट किए गए मोबाइल नेटवर्क पर मौजूद पेज का [Lighthouse](https://developers.google.com/web/tools/lighthouse/) विश्लेषण. मान अनुमान के हिसाब से लिखे गए हैं और इनमें अंतर हो सकता है."
   },
-  "report/renderer/util.js | manualAuditsGroupTitle": {
+  "shared/util.js | manualAuditsGroupTitle": {
     "message": "मैन्युअल रूप से देखे जाने वाले और ज़्यादा आइटम"
   },
-  "report/renderer/util.js | notApplicableAuditsGroupTitle": {
+  "shared/util.js | notApplicableAuditsGroupTitle": {
     "message": "लागू नहीं"
   },
-  "report/renderer/util.js | opportunityResourceColumnLabel": {
+  "shared/util.js | opportunityResourceColumnLabel": {
     "message": "अवसर"
   },
-  "report/renderer/util.js | opportunitySavingsColumnLabel": {
+  "shared/util.js | opportunitySavingsColumnLabel": {
     "message": "अनुमानित बचत"
   },
-  "report/renderer/util.js | passedAuditsGroupTitle": {
+  "shared/util.js | passedAuditsGroupTitle": {
     "message": "पास हुए ऑडिट"
   },
-  "report/renderer/util.js | runtimeAnalysisWindow": {
+  "shared/util.js | runtimeAnalysisWindow": {
     "message": "शुरुआती पेज लोड"
   },
-  "report/renderer/util.js | runtimeCustom": {
+  "shared/util.js | runtimeCustom": {
     "message": "कस्टम थ्रॉटलिंग"
   },
-  "report/renderer/util.js | runtimeDesktopEmulation": {
+  "shared/util.js | runtimeDesktopEmulation": {
     "message": "एम्युलेट किया गया डेस्कटॉप"
   },
-  "report/renderer/util.js | runtimeMobileEmulation": {
+  "shared/util.js | runtimeMobileEmulation": {
     "message": "एम्युलेट किया गया Moto G4"
   },
-  "report/renderer/util.js | runtimeNoEmulation": {
+  "shared/util.js | runtimeNoEmulation": {
     "message": "कोई भी एम्युलेशन नहीं"
   },
-  "report/renderer/util.js | runtimeSettingsAxeVersion": {
+  "shared/util.js | runtimeSettingsAxeVersion": {
     "message": "Axe वर्शन"
   },
-  "report/renderer/util.js | runtimeSettingsBenchmark": {
+  "shared/util.js | runtimeSettingsBenchmark": {
     "message": "सीपीयू/मेमोरी पावर"
   },
-  "report/renderer/util.js | runtimeSettingsCPUThrottling": {
+  "shared/util.js | runtimeSettingsCPUThrottling": {
     "message": "सीपीयू थ्रॉटलिंग"
   },
-  "report/renderer/util.js | runtimeSettingsDevice": {
+  "shared/util.js | runtimeSettingsDevice": {
     "message": "डिवाइस"
   },
-  "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
+  "shared/util.js | runtimeSettingsNetworkThrottling": {
     "message": "नेटवर्क थ्रॉटलिंग"
   },
-  "report/renderer/util.js | runtimeSettingsUANetwork": {
+  "shared/util.js | runtimeSettingsUANetwork": {
     "message": "उपयोगकर्ता एजेंट (नेटवर्क)"
   },
-  "report/renderer/util.js | runtimeSingleLoad": {
+  "shared/util.js | runtimeSingleLoad": {
     "message": "एक पेज लोड"
   },
-  "report/renderer/util.js | runtimeSingleLoadTooltip": {
+  "shared/util.js | runtimeSingleLoadTooltip": {
     "message": "यह डेटा, कई सेशन के बारे में जानकारी देने वाले फ़ील्ड डेटा के बजाय, लोड हुए एक पेज से लिया गया है."
   },
-  "report/renderer/util.js | runtimeSlow4g": {
+  "shared/util.js | runtimeSlow4g": {
     "message": "धीमी 4G थ्रॉटलिंग"
   },
-  "report/renderer/util.js | runtimeUnknown": {
+  "shared/util.js | runtimeUnknown": {
     "message": "अज्ञात"
   },
-  "report/renderer/util.js | show": {
+  "shared/util.js | show": {
     "message": "दिखाएं"
   },
-  "report/renderer/util.js | showRelevantAudits": {
+  "shared/util.js | showRelevantAudits": {
     "message": "वे ऑडिट दिखाएं जो इनके लिए काम के हों:"
   },
-  "report/renderer/util.js | snippetCollapseButtonLabel": {
+  "shared/util.js | snippetCollapseButtonLabel": {
     "message": "स्निपेट को छोटा करें"
   },
-  "report/renderer/util.js | snippetExpandButtonLabel": {
+  "shared/util.js | snippetExpandButtonLabel": {
     "message": "स्निपेट को बड़ा करें"
   },
-  "report/renderer/util.js | thirdPartyResourcesLabel": {
+  "shared/util.js | thirdPartyResourcesLabel": {
     "message": "तीसरे पक्ष के संसाधन दिखाएं"
   },
-  "report/renderer/util.js | throttlingProvided": {
+  "shared/util.js | throttlingProvided": {
     "message": "रनटाइम एनवायरमेंट से मिला"
   },
-  "report/renderer/util.js | toplevelWarningsMessage": {
+  "shared/util.js | toplevelWarningsMessage": {
     "message": "कुछ समस्याएं आने के कारण Lighthouse के इस रन पर असर पड़ा है:"
   },
-  "report/renderer/util.js | varianceDisclaimer": {
+  "shared/util.js | varianceDisclaimer": {
     "message": "मान अनुमानित हैं और इनमें बदलाव हो सकता है. सीधे तौर पर इन मेट्रिक से [परफ़ॉर्मेंस स्कोर तय किए ](https://web.dev/performance-scoring/) जाते हैं."
   },
-  "report/renderer/util.js | viewTreemapLabel": {
+  "shared/util.js | viewTreemapLabel": {
     "message": "Treemap देखें"
   },
-  "report/renderer/util.js | warningAuditsGroupTitle": {
+  "shared/util.js | warningAuditsGroupTitle": {
     "message": "चेतावनियों के साथ पास हुए ऑडिट"
   },
-  "report/renderer/util.js | warningHeader": {
+  "shared/util.js | warningHeader": {
     "message": "चेतावनियां: "
   },
   "treemap/app/src/util.js | allLabel": {

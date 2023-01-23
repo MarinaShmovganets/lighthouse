@@ -2327,154 +2327,154 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "Можете да омогућите компримовање текста у конфигурацији веб-сервера."
   },
-  "report/renderer/util.js | calculatorLink": {
+  "shared/util.js | calculatorLink": {
     "message": "Погледајте калкулатор."
   },
-  "report/renderer/util.js | collapseView": {
+  "shared/util.js | collapseView": {
     "message": "Скупи приказ"
   },
-  "report/renderer/util.js | crcInitialNavigation": {
+  "shared/util.js | crcInitialNavigation": {
     "message": "Почетна навигација"
   },
-  "report/renderer/util.js | crcLongestDurationLabel": {
+  "shared/util.js | crcLongestDurationLabel": {
     "message": "Максимално кашњење критичне путање:"
   },
-  "report/renderer/util.js | dropdownCopyJSON": {
+  "shared/util.js | dropdownCopyJSON": {
     "message": "Копирај JSON"
   },
-  "report/renderer/util.js | dropdownDarkTheme": {
+  "shared/util.js | dropdownDarkTheme": {
     "message": "Укључи/искључи тамну тему"
   },
-  "report/renderer/util.js | dropdownPrintExpanded": {
+  "shared/util.js | dropdownPrintExpanded": {
     "message": "Прошири дијалог за штампање"
   },
-  "report/renderer/util.js | dropdownPrintSummary": {
+  "shared/util.js | dropdownPrintSummary": {
     "message": "Штампај резиме"
   },
-  "report/renderer/util.js | dropdownSaveGist": {
+  "shared/util.js | dropdownSaveGist": {
     "message": "Сачувај као Gist"
   },
-  "report/renderer/util.js | dropdownSaveHTML": {
+  "shared/util.js | dropdownSaveHTML": {
     "message": "Сачувај као HTML"
   },
-  "report/renderer/util.js | dropdownSaveJSON": {
+  "shared/util.js | dropdownSaveJSON": {
     "message": "Сачувај као JSON"
   },
-  "report/renderer/util.js | dropdownViewer": {
+  "shared/util.js | dropdownViewer": {
     "message": "Отвори у приказивачу"
   },
-  "report/renderer/util.js | errorLabel": {
+  "shared/util.js | errorLabel": {
     "message": "Грешка!"
   },
-  "report/renderer/util.js | errorMissingAuditInfo": {
+  "shared/util.js | errorMissingAuditInfo": {
     "message": "Пријављивање грешке: нема информација о провери"
   },
-  "report/renderer/util.js | expandView": {
+  "shared/util.js | expandView": {
     "message": "Прошири приказ"
   },
-  "report/renderer/util.js | footerIssue": {
+  "shared/util.js | footerIssue": {
     "message": "Пријавите проблем"
   },
-  "report/renderer/util.js | hide": {
+  "shared/util.js | hide": {
     "message": "Сакриј"
   },
-  "report/renderer/util.js | labDataTitle": {
+  "shared/util.js | labDataTitle": {
     "message": "Подаци о експерименталним функцијама"
   },
-  "report/renderer/util.js | lsPerformanceCategoryDescription": {
+  "shared/util.js | lsPerformanceCategoryDescription": {
     "message": "[Lighthouse](https://developers.google.com/web/tools/lighthouse/) анализа актуелне странице емулиране помоћу мобилне мреже. Вредности представљају процене и могу да варирају."
   },
-  "report/renderer/util.js | manualAuditsGroupTitle": {
+  "shared/util.js | manualAuditsGroupTitle": {
     "message": "Додатне ставке за ручну проверу"
   },
-  "report/renderer/util.js | notApplicableAuditsGroupTitle": {
+  "shared/util.js | notApplicableAuditsGroupTitle": {
     "message": "Није примењиво"
   },
-  "report/renderer/util.js | opportunityResourceColumnLabel": {
+  "shared/util.js | opportunityResourceColumnLabel": {
     "message": "Могућност"
   },
-  "report/renderer/util.js | opportunitySavingsColumnLabel": {
+  "shared/util.js | opportunitySavingsColumnLabel": {
     "message": "Процењена уштеда"
   },
-  "report/renderer/util.js | passedAuditsGroupTitle": {
+  "shared/util.js | passedAuditsGroupTitle": {
     "message": "Провере са задовољавајућом оценом"
   },
-  "report/renderer/util.js | runtimeAnalysisWindow": {
+  "shared/util.js | runtimeAnalysisWindow": {
     "message": "Почетно учитавање странице"
   },
-  "report/renderer/util.js | runtimeCustom": {
+  "shared/util.js | runtimeCustom": {
     "message": "Прилагођено ограничавање"
   },
-  "report/renderer/util.js | runtimeDesktopEmulation": {
+  "shared/util.js | runtimeDesktopEmulation": {
     "message": "Емулирани рачунар"
   },
-  "report/renderer/util.js | runtimeMobileEmulation": {
+  "shared/util.js | runtimeMobileEmulation": {
     "message": "Емулирани Moto G4"
   },
-  "report/renderer/util.js | runtimeNoEmulation": {
+  "shared/util.js | runtimeNoEmulation": {
     "message": "Без емулације"
   },
-  "report/renderer/util.js | runtimeSettingsAxeVersion": {
+  "shared/util.js | runtimeSettingsAxeVersion": {
     "message": "Axe верзија"
   },
-  "report/renderer/util.js | runtimeSettingsBenchmark": {
+  "shared/util.js | runtimeSettingsBenchmark": {
     "message": "Јачина процесора/меморије"
   },
-  "report/renderer/util.js | runtimeSettingsCPUThrottling": {
+  "shared/util.js | runtimeSettingsCPUThrottling": {
     "message": "Ограничавање процесора"
   },
-  "report/renderer/util.js | runtimeSettingsDevice": {
+  "shared/util.js | runtimeSettingsDevice": {
     "message": "Уређај"
   },
-  "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
+  "shared/util.js | runtimeSettingsNetworkThrottling": {
     "message": "Ограничавање мреже"
   },
-  "report/renderer/util.js | runtimeSettingsUANetwork": {
+  "shared/util.js | runtimeSettingsUANetwork": {
     "message": "Кориснички агент (мрежа)"
   },
-  "report/renderer/util.js | runtimeSingleLoad": {
+  "shared/util.js | runtimeSingleLoad": {
     "message": "Једно учитавање странице"
   },
-  "report/renderer/util.js | runtimeSingleLoadTooltip": {
+  "shared/util.js | runtimeSingleLoadTooltip": {
     "message": "Ови подаци су добијени на основу једног учитавања странице, насупрот подацима из поља који резимирају многе сесије."
   },
-  "report/renderer/util.js | runtimeSlow4g": {
+  "shared/util.js | runtimeSlow4g": {
     "message": "Ограничавање попут споре 4G везе"
   },
-  "report/renderer/util.js | runtimeUnknown": {
+  "shared/util.js | runtimeUnknown": {
     "message": "Непознато"
   },
-  "report/renderer/util.js | show": {
+  "shared/util.js | show": {
     "message": "Прикажи"
   },
-  "report/renderer/util.js | showRelevantAudits": {
+  "shared/util.js | showRelevantAudits": {
     "message": "Прикажи ревизије релевантне за:"
   },
-  "report/renderer/util.js | snippetCollapseButtonLabel": {
+  "shared/util.js | snippetCollapseButtonLabel": {
     "message": "Скупи фрагмент"
   },
-  "report/renderer/util.js | snippetExpandButtonLabel": {
+  "shared/util.js | snippetExpandButtonLabel": {
     "message": "Прошири фрагмент"
   },
-  "report/renderer/util.js | thirdPartyResourcesLabel": {
+  "shared/util.js | thirdPartyResourcesLabel": {
     "message": "Прикажи независне ресурсе"
   },
-  "report/renderer/util.js | throttlingProvided": {
+  "shared/util.js | throttlingProvided": {
     "message": "Пружа окружење"
   },
-  "report/renderer/util.js | toplevelWarningsMessage": {
+  "shared/util.js | toplevelWarningsMessage": {
     "message": "Било је извесних проблема који су утицали на ово покретање Lighthouse-а:"
   },
-  "report/renderer/util.js | varianceDisclaimer": {
+  "shared/util.js | varianceDisclaimer": {
     "message": "Вредности представљају процене и могу да варирају. [Оцена учинка са израчунава](https://web.dev/performance-scoring/) директно на основу тих показатеља."
   },
-  "report/renderer/util.js | viewTreemapLabel": {
+  "shared/util.js | viewTreemapLabel": {
     "message": "Прикажи Treemap"
   },
-  "report/renderer/util.js | warningAuditsGroupTitle": {
+  "shared/util.js | warningAuditsGroupTitle": {
     "message": "Провере са задовољавајућом оценом које садрже упозорења"
   },
-  "report/renderer/util.js | warningHeader": {
+  "shared/util.js | warningHeader": {
     "message": "Упозорења: "
   },
   "treemap/app/src/util.js | allLabel": {

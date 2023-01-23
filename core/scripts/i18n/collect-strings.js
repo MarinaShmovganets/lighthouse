@@ -18,7 +18,7 @@ import MessageParser from 'intl-messageformat-parser';
 import esMain from 'es-main';
 import isDeepEqual from 'lodash/isEqual.js';
 
-import {Util} from '../../util.cjs';
+import {Util} from '../../../shared/util.js';
 import {collectAndBakeCtcStrings} from './bake-ctc-to-lhl.js';
 import {pruneObsoleteLhlMessages} from './prune-obsolete-lhl-messages.js';
 import {countTranslatedMessages} from './count-translated.js';
@@ -36,7 +36,7 @@ const UISTRINGS_REGEX = /UIStrings = .*?\}(;|\n)\n/s;
 
 const foldersWithStrings = [
   `${LH_ROOT}/core`,
-  `${LH_ROOT}/report/renderer`,
+  `${LH_ROOT}/shared`,
   `${LH_ROOT}/treemap`,
   `${LH_ROOT}/flow-report`,
   path.dirname(resolveModulePath('lighthouse-stack-packs')) + '/packs',

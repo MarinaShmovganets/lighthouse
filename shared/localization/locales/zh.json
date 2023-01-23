@@ -2327,154 +2327,154 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "您可以在网络服务器配置中启用文本压缩。"
   },
-  "report/renderer/util.js | calculatorLink": {
+  "shared/util.js | calculatorLink": {
     "message": "查看计算器。"
   },
-  "report/renderer/util.js | collapseView": {
+  "shared/util.js | collapseView": {
     "message": "收起视图"
   },
-  "report/renderer/util.js | crcInitialNavigation": {
+  "shared/util.js | crcInitialNavigation": {
     "message": "初始导航"
   },
-  "report/renderer/util.js | crcLongestDurationLabel": {
+  "shared/util.js | crcLongestDurationLabel": {
     "message": "关键路径延迟时间上限："
   },
-  "report/renderer/util.js | dropdownCopyJSON": {
+  "shared/util.js | dropdownCopyJSON": {
     "message": "复制 JSON"
   },
-  "report/renderer/util.js | dropdownDarkTheme": {
+  "shared/util.js | dropdownDarkTheme": {
     "message": "开启/关闭深色主题"
   },
-  "report/renderer/util.js | dropdownPrintExpanded": {
+  "shared/util.js | dropdownPrintExpanded": {
     "message": "展开打印对话框"
   },
-  "report/renderer/util.js | dropdownPrintSummary": {
+  "shared/util.js | dropdownPrintSummary": {
     "message": "打印摘要"
   },
-  "report/renderer/util.js | dropdownSaveGist": {
+  "shared/util.js | dropdownSaveGist": {
     "message": "另存为 Gist"
   },
-  "report/renderer/util.js | dropdownSaveHTML": {
+  "shared/util.js | dropdownSaveHTML": {
     "message": "另存为 HTML"
   },
-  "report/renderer/util.js | dropdownSaveJSON": {
+  "shared/util.js | dropdownSaveJSON": {
     "message": "另存为 JSON"
   },
-  "report/renderer/util.js | dropdownViewer": {
+  "shared/util.js | dropdownViewer": {
     "message": "在查看器中打开"
   },
-  "report/renderer/util.js | errorLabel": {
+  "shared/util.js | errorLabel": {
     "message": "出错了！"
   },
-  "report/renderer/util.js | errorMissingAuditInfo": {
+  "shared/util.js | errorMissingAuditInfo": {
     "message": "报告错误：没有任何审核信息"
   },
-  "report/renderer/util.js | expandView": {
+  "shared/util.js | expandView": {
     "message": "展开视图"
   },
-  "report/renderer/util.js | footerIssue": {
+  "shared/util.js | footerIssue": {
     "message": "提交问题"
   },
-  "report/renderer/util.js | hide": {
+  "shared/util.js | hide": {
     "message": "隐藏"
   },
-  "report/renderer/util.js | labDataTitle": {
+  "shared/util.js | labDataTitle": {
     "message": "实验室数据"
   },
-  "report/renderer/util.js | lsPerformanceCategoryDescription": {
+  "shared/util.js | lsPerformanceCategoryDescription": {
     "message": "[Lighthouse](https://developers.google.com/web/tools/lighthouse/) 使用模拟的移动网络对当前页面进行的分析。这些值都是估算值，且可能会因时而异。"
   },
-  "report/renderer/util.js | manualAuditsGroupTitle": {
+  "shared/util.js | manualAuditsGroupTitle": {
     "message": "待手动检查的其他项"
   },
-  "report/renderer/util.js | notApplicableAuditsGroupTitle": {
+  "shared/util.js | notApplicableAuditsGroupTitle": {
     "message": "不适用"
   },
-  "report/renderer/util.js | opportunityResourceColumnLabel": {
+  "shared/util.js | opportunityResourceColumnLabel": {
     "message": "优化建议"
   },
-  "report/renderer/util.js | opportunitySavingsColumnLabel": {
+  "shared/util.js | opportunitySavingsColumnLabel": {
     "message": "有望节省的总时间（估算值）"
   },
-  "report/renderer/util.js | passedAuditsGroupTitle": {
+  "shared/util.js | passedAuditsGroupTitle": {
     "message": "已通过的审核"
   },
-  "report/renderer/util.js | runtimeAnalysisWindow": {
+  "shared/util.js | runtimeAnalysisWindow": {
     "message": "初始网页加载"
   },
-  "report/renderer/util.js | runtimeCustom": {
+  "shared/util.js | runtimeCustom": {
     "message": "自定义节流"
   },
-  "report/renderer/util.js | runtimeDesktopEmulation": {
+  "shared/util.js | runtimeDesktopEmulation": {
     "message": "模拟桌面设备"
   },
-  "report/renderer/util.js | runtimeMobileEmulation": {
+  "shared/util.js | runtimeMobileEmulation": {
     "message": "模拟 Moto G4"
   },
-  "report/renderer/util.js | runtimeNoEmulation": {
+  "shared/util.js | runtimeNoEmulation": {
     "message": "无模拟"
   },
-  "report/renderer/util.js | runtimeSettingsAxeVersion": {
+  "shared/util.js | runtimeSettingsAxeVersion": {
     "message": "Axe 版本"
   },
-  "report/renderer/util.js | runtimeSettingsBenchmark": {
+  "shared/util.js | runtimeSettingsBenchmark": {
     "message": "CPU/内存能力"
   },
-  "report/renderer/util.js | runtimeSettingsCPUThrottling": {
+  "shared/util.js | runtimeSettingsCPUThrottling": {
     "message": "CPU 节流"
   },
-  "report/renderer/util.js | runtimeSettingsDevice": {
+  "shared/util.js | runtimeSettingsDevice": {
     "message": "设备"
   },
-  "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
+  "shared/util.js | runtimeSettingsNetworkThrottling": {
     "message": "网络节流"
   },
-  "report/renderer/util.js | runtimeSettingsUANetwork": {
+  "shared/util.js | runtimeSettingsUANetwork": {
     "message": "用户代理（网络）"
   },
-  "report/renderer/util.js | runtimeSingleLoad": {
+  "shared/util.js | runtimeSingleLoad": {
     "message": "单次网页加载"
   },
-  "report/renderer/util.js | runtimeSingleLoadTooltip": {
+  "shared/util.js | runtimeSingleLoadTooltip": {
     "message": "此数据是取自单次网页加载，现场数据则是汇总了许多次网页加载。"
   },
-  "report/renderer/util.js | runtimeSlow4g": {
+  "shared/util.js | runtimeSlow4g": {
     "message": "低速 4G 节流"
   },
-  "report/renderer/util.js | runtimeUnknown": {
+  "shared/util.js | runtimeUnknown": {
     "message": "不明"
   },
-  "report/renderer/util.js | show": {
+  "shared/util.js | show": {
     "message": "显示"
   },
-  "report/renderer/util.js | showRelevantAudits": {
+  "shared/util.js | showRelevantAudits": {
     "message": "显示与所选指标相关的评估结果："
   },
-  "report/renderer/util.js | snippetCollapseButtonLabel": {
+  "shared/util.js | snippetCollapseButtonLabel": {
     "message": "收起代码段"
   },
-  "report/renderer/util.js | snippetExpandButtonLabel": {
+  "shared/util.js | snippetExpandButtonLabel": {
     "message": "展开代码段"
   },
-  "report/renderer/util.js | thirdPartyResourcesLabel": {
+  "shared/util.js | thirdPartyResourcesLabel": {
     "message": "显示第三方资源"
   },
-  "report/renderer/util.js | throttlingProvided": {
+  "shared/util.js | throttlingProvided": {
     "message": "由环境提供"
   },
-  "report/renderer/util.js | toplevelWarningsMessage": {
+  "shared/util.js | toplevelWarningsMessage": {
     "message": "此次 Lighthouse 运行并不顺利，原因如下："
   },
-  "report/renderer/util.js | varianceDisclaimer": {
+  "shared/util.js | varianceDisclaimer": {
     "message": "这些都是估算值，且可能会因时而异。系统会直接基于这些指标来[计算性能得分](https://web.dev/performance-scoring/)。"
   },
-  "report/renderer/util.js | viewTreemapLabel": {
+  "shared/util.js | viewTreemapLabel": {
     "message": "查看树状图"
   },
-  "report/renderer/util.js | warningAuditsGroupTitle": {
+  "shared/util.js | warningAuditsGroupTitle": {
     "message": "已顺利通过审核，但有警告消息"
   },
-  "report/renderer/util.js | warningHeader": {
+  "shared/util.js | warningHeader": {
     "message": "警告： "
   },
   "treemap/app/src/util.js | allLabel": {

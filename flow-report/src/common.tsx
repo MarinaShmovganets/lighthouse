@@ -9,7 +9,7 @@ import {useEffect, useState} from 'preact/hooks';
 
 import {NavigationIcon, SnapshotIcon, TimespanIcon} from './icons';
 import {getFilmstripFrames, getScreenDimensions} from './util';
-import {Util} from '../../report/renderer/util.js';
+import {Util} from '../../shared/util.js';
 
 const ANIMATION_FRAME_DURATION_MS = 500;
 

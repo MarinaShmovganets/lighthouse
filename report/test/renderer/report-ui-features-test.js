@@ -10,7 +10,8 @@ import jsdom from 'jsdom';
 import jestMock from 'jest-mock';
 
 import {reportAssets} from '../../generator/report-assets.js';
-import {Util} from '../../renderer/util.js';
+import {Util} from '../../../shared/util.js';
+import {ReportUtils} from '../../renderer/report-utils.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {ReportUIFeatures} from '../../renderer/report-ui-features.js';
@@ -76,7 +77,7 @@ describe('ReportUIFeatures', () => {
     };
 
     dom = new DOM(document.window.document);
-    sampleResults = Util.prepareReportResult(sampleResultsOrig);
+    sampleResults = ReportUtils.prepareReportResult(sampleResultsOrig);
     render(sampleResults);
   });
 

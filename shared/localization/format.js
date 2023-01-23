@@ -221,7 +221,7 @@ function getRendererFormattedStrings(locale) {
 
   // If `localeMessages` is empty in the bundled and DEFAULT_LOCALE case, this
   // will be empty and the report will fall back to the util UIStrings for these.
-  const icuMessageIds = Object.keys(localeMessages).filter(f => f.startsWith('report/'));
+  const icuMessageIds = Object.keys(localeMessages).filter(f => f.startsWith('shared/util.js'));
   /** @type {Record<string, string>} */
   const strings = {};
   for (const icuMessageId of icuMessageIds) {

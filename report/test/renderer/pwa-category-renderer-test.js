@@ -8,12 +8,14 @@ import assert from 'assert/strict';
 
 import jsdom from 'jsdom';
 
-import {Util} from '../../renderer/util.js';
+import {Util} from '../../../shared/util.js';
+import {ReportUtils} from '../../renderer/report-utils.js';
 import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {PwaCategoryRenderer} from '../../renderer/pwa-category-renderer.js';
 import {readJson} from '../../../core/test/test-utils.js';
+import {Globals} from '../../renderer/report-globals.js';
 
 const sampleResultsOrig = readJson('../../../core/test/results/sample_v2.json', import.meta);
 
@@ -23,14 +25,14 @@ describe('PwaCategoryRenderer', () => {
   let sampleResults;
 
   before(() => {
-    Util.i18n = new I18nFormatter('en');
+    Globals.i18n = new I18nFormatter('en');
 
     const {document} = new jsdom.JSDOM().window;
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
     pwaRenderer = new PwaCategoryRenderer(dom, detailsRenderer);
 
-    sampleResults = Util.prepareReportResult(sampleResultsOrig);
+    sampleResults = ReportUtils.prepareReportResult(sampleResultsOrig);
   });
 
   beforeEach(() => {
@@ -40,7 +42,7 @@ describe('PwaCategoryRenderer', () => {
   });
 
   after(() => {
-    Util.i18n = undefined;
+    Globals.i18n = undefined;
   });
 
   it('renders the regular audits', () => {

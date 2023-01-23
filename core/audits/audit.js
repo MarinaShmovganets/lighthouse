@@ -7,7 +7,7 @@
 import * as LH from '../../types/lh.js';
 import {isUnderTest} from '../lib/lh-env.js';
 import * as statistics from '../lib/statistics.js';
-import {Util} from '../util.cjs';
+import {Util} from '../../shared/util.js';
 
 const DEFAULT_PASS = 'defaultPass';
 

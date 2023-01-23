@@ -2972,163 +2972,163 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "Ŷóû ćâń êńâb́l̂é t̂éx̂t́ ĉóm̂ṕr̂éŝśîón̂ ín̂ ýôúr̂ ẃêb́ ŝér̂v́êŕ ĉón̂f́îǵûŕât́îón̂."
   },
-  "report/renderer/util.js | calculatorLink": {
+  "shared/util.js | calculatorLink": {
     "message": "Ŝéê ćâĺĉúl̂át̂ór̂."
   },
-  "report/renderer/util.js | collapseView": {
+  "shared/util.js | collapseView": {
     "message": "Ĉól̂ĺâṕŝé v̂íêẃ"
   },
-  "report/renderer/util.js | crcInitialNavigation": {
+  "shared/util.js | crcInitialNavigation": {
     "message": "Îńît́îál̂ Ńâv́îǵât́îón̂"
   },
-  "report/renderer/util.js | crcLongestDurationLabel": {
+  "shared/util.js | crcLongestDurationLabel": {
     "message": "M̂áx̂ím̂úm̂ ćr̂ít̂íĉál̂ ṕât́ĥ ĺât́êńĉý:"
   },
-  "report/renderer/util.js | dropdownCopyJSON": {
+  "shared/util.js | dropdownCopyJSON": {
     "message": "Ĉóp̂ý ĴŚÔŃ"
   },
-  "report/renderer/util.js | dropdownDarkTheme": {
+  "shared/util.js | dropdownDarkTheme": {
     "message": "T̂óĝǵl̂é D̂ár̂ḱ T̂h́êḿê"
   },
-  "report/renderer/util.js | dropdownPrintExpanded": {
+  "shared/util.js | dropdownPrintExpanded": {
     "message": "P̂ŕîńt̂ Éx̂ṕâńd̂éd̂"
   },
-  "report/renderer/util.js | dropdownPrintSummary": {
+  "shared/util.js | dropdownPrintSummary": {
     "message": "P̂ŕîńt̂ Śûḿm̂ár̂ý"
   },
-  "report/renderer/util.js | dropdownSaveGist": {
+  "shared/util.js | dropdownSaveGist": {
     "message": "Ŝáv̂é âś Ĝíŝt́"
   },
-  "report/renderer/util.js | dropdownSaveHTML": {
+  "shared/util.js | dropdownSaveHTML": {
     "message": "Ŝáv̂é âś ĤT́M̂Ĺ"
   },
-  "report/renderer/util.js | dropdownSaveJSON": {
+  "shared/util.js | dropdownSaveJSON": {
     "message": "Ŝáv̂é âś ĴŚÔŃ"
   },
-  "report/renderer/util.js | dropdownViewer": {
+  "shared/util.js | dropdownViewer": {
     "message": "Ôṕêń îń V̂íêẃêŕ"
   },
-  "report/renderer/util.js | errorLabel": {
+  "shared/util.js | errorLabel": {
     "message": "Êŕr̂ór̂!"
   },
-  "report/renderer/util.js | errorMissingAuditInfo": {
+  "shared/util.js | errorMissingAuditInfo": {
     "message": "R̂ép̂ór̂t́ êŕr̂ór̂: ńô áûd́ît́ îńf̂ór̂ḿât́îón̂"
   },
-  "report/renderer/util.js | expandView": {
+  "shared/util.js | expandView": {
     "message": "Êx́p̂án̂d́ v̂íêẃ"
   },
-  "report/renderer/util.js | footerIssue": {
+  "shared/util.js | footerIssue": {
     "message": "F̂íl̂é âń îśŝúê"
   },
-  "report/renderer/util.js | hide": {
+  "shared/util.js | hide": {
     "message": "Ĥíd̂é"
   },
-  "report/renderer/util.js | labDataTitle": {
+  "shared/util.js | labDataTitle": {
     "message": "L̂áb̂ D́ât́â"
   },
-  "report/renderer/util.js | lsPerformanceCategoryDescription": {
+  "shared/util.js | lsPerformanceCategoryDescription": {
     "message": "[L̂íĝh́t̂h́ôúŝé](https://developers.google.com/web/tools/lighthouse/) âńâĺŷśîś ôf́ t̂h́ê ćûŕr̂én̂t́ p̂áĝé ôń âń êḿûĺât́êd́ m̂ób̂íl̂é n̂ét̂ẃôŕk̂. V́âĺûéŝ ár̂é êśt̂ím̂át̂éd̂ án̂d́ m̂áŷ v́âŕŷ."
   },
-  "report/renderer/util.js | manualAuditsGroupTitle": {
+  "shared/util.js | manualAuditsGroupTitle": {
     "message": "Âd́d̂ít̂íôńâĺ ît́êḿŝ t́ô ḿâńûál̂ĺŷ ćĥéĉḱ"
   },
-  "report/renderer/util.js | notApplicableAuditsGroupTitle": {
+  "shared/util.js | notApplicableAuditsGroupTitle": {
     "message": "N̂ót̂ áp̂ṕl̂íĉáb̂ĺê"
   },
-  "report/renderer/util.js | opportunityResourceColumnLabel": {
+  "shared/util.js | opportunityResourceColumnLabel": {
     "message": "Ôṕp̂ór̂t́ûńît́ŷ"
   },
-  "report/renderer/util.js | opportunitySavingsColumnLabel": {
+  "shared/util.js | opportunitySavingsColumnLabel": {
     "message": "Êśt̂ím̂át̂éd̂ Śâv́îńĝś"
   },
-  "report/renderer/util.js | passedAuditsGroupTitle": {
+  "shared/util.js | passedAuditsGroupTitle": {
     "message": "P̂áŝśêd́ âúd̂ít̂ś"
   },
-  "report/renderer/util.js | runtimeAnalysisWindow": {
+  "shared/util.js | runtimeAnalysisWindow": {
     "message": "Îńît́îál̂ ṕâǵê ĺôád̂"
   },
-  "report/renderer/util.js | runtimeCustom": {
+  "shared/util.js | runtimeCustom": {
     "message": "Ĉúŝt́ôḿ t̂h́r̂ót̂t́l̂ín̂ǵ"
   },
-  "report/renderer/util.js | runtimeDesktopEmulation": {
+  "shared/util.js | runtimeDesktopEmulation": {
     "message": "Êḿûĺât́êd́ D̂éŝḱt̂óp̂"
   },
-  "report/renderer/util.js | runtimeMobileEmulation": {
+  "shared/util.js | runtimeMobileEmulation": {
     "message": "Êḿûĺât́êd́ M̂ót̂ó Ĝ4"
   },
-  "report/renderer/util.js | runtimeNoEmulation": {
+  "shared/util.js | runtimeNoEmulation": {
     "message": "N̂ó êḿûĺât́îón̂"
   },
-  "report/renderer/util.js | runtimeSettingsAxeVersion": {
+  "shared/util.js | runtimeSettingsAxeVersion": {
     "message": "Âx́ê v́êŕŝíôń"
   },
-  "report/renderer/util.js | runtimeSettingsBenchmark": {
+  "shared/util.js | runtimeSettingsBenchmark": {
     "message": "ĈṔÛ/Ḿêḿôŕŷ Ṕôẃêŕ"
   },
-  "report/renderer/util.js | runtimeSettingsCPUThrottling": {
+  "shared/util.js | runtimeSettingsCPUThrottling": {
     "message": "ĈṔÛ t́ĥŕôt́t̂ĺîńĝ"
   },
-  "report/renderer/util.js | runtimeSettingsDevice": {
+  "shared/util.js | runtimeSettingsDevice": {
     "message": "D̂év̂íĉé"
   },
-  "report/renderer/util.js | runtimeSettingsNetworkThrottling": {
+  "shared/util.js | runtimeSettingsNetworkThrottling": {
     "message": "N̂ét̂ẃôŕk̂ t́ĥŕôt́t̂ĺîńĝ"
   },
-  "report/renderer/util.js | runtimeSettingsScreenEmulation": {
+  "shared/util.js | runtimeSettingsScreenEmulation": {
     "message": "Ŝćr̂éêń êḿûĺât́îón̂"
   },
-  "report/renderer/util.js | runtimeSettingsUANetwork": {
+  "shared/util.js | runtimeSettingsUANetwork": {
     "message": "Ûśêŕ âǵêńt̂ (ńêt́ŵór̂ḱ)"
   },
-  "report/renderer/util.js | runtimeSingleLoad": {
+  "shared/util.js | runtimeSingleLoad": {
     "message": "Ŝín̂ǵl̂é p̂áĝé l̂óâd́"
   },
-  "report/renderer/util.js | runtimeSingleLoadTooltip": {
+  "shared/util.js | runtimeSingleLoadTooltip": {
     "message": "T̂h́îś d̂át̂á îś t̂ák̂én̂ f́r̂óm̂ á ŝín̂ǵl̂é p̂áĝé l̂óâd́, âś ôṕp̂óŝéd̂ t́ô f́îél̂d́ d̂át̂á ŝúm̂ḿâŕîźîńĝ ḿâńŷ śêśŝíôńŝ."
   },
-  "report/renderer/util.js | runtimeSlow4g": {
+  "shared/util.js | runtimeSlow4g": {
     "message": "Ŝĺôẃ 4Ĝ t́ĥŕôt́t̂ĺîńĝ"
   },
-  "report/renderer/util.js | runtimeUnknown": {
+  "shared/util.js | runtimeUnknown": {
     "message": "Ûńk̂ńôẃn̂"
   },
-  "report/renderer/util.js | show": {
+  "shared/util.js | show": {
     "message": "Ŝh́ôẃ"
   },
-  "report/renderer/util.js | showRelevantAudits": {
+  "shared/util.js | showRelevantAudits": {
     "message": "Ŝh́ôẃ âúd̂ít̂ś r̂él̂év̂án̂t́ t̂ó:"
   },
-  "report/renderer/util.js | snippetCollapseButtonLabel": {
+  "shared/util.js | snippetCollapseButtonLabel": {
     "message": "Ĉól̂ĺâṕŝé ŝńîṕp̂ét̂"
   },
-  "report/renderer/util.js | snippetExpandButtonLabel": {
+  "shared/util.js | snippetExpandButtonLabel": {
     "message": "Êx́p̂án̂d́ ŝńîṕp̂ét̂"
   },
-  "report/renderer/util.js | thirdPartyResourcesLabel": {
+  "shared/util.js | thirdPartyResourcesLabel": {
     "message": "Ŝh́ôẃ 3r̂d́-p̂ár̂t́ŷ ŕêśôúr̂ćêś"
   },
-  "report/renderer/util.js | throttlingProvided": {
+  "shared/util.js | throttlingProvided": {
     "message": "P̂ŕôv́îd́êd́ b̂ý êńv̂ír̂ón̂ḿêńt̂"
   },
-  "report/renderer/util.js | toplevelWarningsMessage": {
+  "shared/util.js | toplevelWarningsMessage": {
     "message": "T̂h́êŕê ẃêŕê íŝśûéŝ áf̂f́êćt̂ín̂ǵ t̂h́îś r̂ún̂ óf̂ Ĺîǵĥt́ĥóûśê:"
   },
-  "report/renderer/util.js | varianceDisclaimer": {
+  "shared/util.js | varianceDisclaimer": {
     "message": "V̂ál̂úêś âŕê éŝt́îḿât́êd́ âńd̂ ḿâý v̂ár̂ý. T̂h́ê [ṕêŕf̂ór̂ḿâńĉé ŝćôŕê íŝ ćâĺĉúl̂át̂éd̂](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) d́îŕêćt̂ĺŷ f́r̂óm̂ t́ĥéŝé m̂ét̂ŕîćŝ."
   },
-  "report/renderer/util.js | viewOriginalTraceLabel": {
+  "shared/util.js | viewOriginalTraceLabel": {
     "message": "V̂íêẃ Ôŕîǵîńâĺ T̂ŕâćê"
   },
-  "report/renderer/util.js | viewTraceLabel": {
+  "shared/util.js | viewTraceLabel": {
     "message": "V̂íêẃ T̂ŕâćê"
   },
-  "report/renderer/util.js | viewTreemapLabel": {
+  "shared/util.js | viewTreemapLabel": {
     "message": "V̂íêẃ T̂ŕêém̂áp̂"
   },
-  "report/renderer/util.js | warningAuditsGroupTitle": {
+  "shared/util.js | warningAuditsGroupTitle": {
     "message": "P̂áŝśêd́ âúd̂ít̂ś b̂út̂ ẃît́ĥ ẃâŕn̂ín̂ǵŝ"
   },
-  "report/renderer/util.js | warningHeader": {
+  "shared/util.js | warningHeader": {
     "message": "Ŵár̂ńîńĝś: "
   },
   "treemap/app/src/util.js | allLabel": {
