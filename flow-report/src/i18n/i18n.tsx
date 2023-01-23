@@ -8,14 +8,14 @@ import {createContext, FunctionComponent} from 'preact';
 import {useContext, useMemo} from 'preact/hooks';
 
 import {formatMessage} from '../../../shared/localization/format';
-import {Formatter} from '../../../report/renderer/formatter';
+import {I18nFormatter} from '../../../report/renderer/i18n-formatter';
 import {UIStrings} from './ui-strings';
 import {useFlowResult} from '../util';
 import strings from './localized-strings.js';
 import {Util} from '../../../report/renderer/util';
 
 const I18nContext = createContext({
-  formatter: new Formatter('en-US'),
+  formatter: new I18nFormatter('en-US'),
   strings: {...Util.UIStrings, ...UIStrings},
 });
 
@@ -53,7 +53,7 @@ function useStringFormatter() {
 const I18nProvider: FunctionComponent = ({children}) => {
   const {locale, lhrStrings} = useLhrLocale();
 
-  const formatter = useMemo(() => {
+  const i18n = useMemo(() => {
     Util.applyStrings({
       // Preload with strings from the first lhr.
       // Used for legacy report components imported into the flow report.
@@ -66,16 +66,16 @@ const I18nProvider: FunctionComponent = ({children}) => {
 
     // Initialize renderer util i18n for strings rendered in wrapped components.
     // TODO: Don't attach global formatter to `Util`.
-    Util.formatter = new Formatter(locale);
+    Util.i18n = new I18nFormatter(locale);
 
     return {
-      formatter: Util.formatter,
+      formatter: Util.i18n,
       strings: Util.strings as typeof UIStrings & typeof Util.UIStrings,
     };
   }, [locale, lhrStrings]);
 
   return (
-    <I18nContext.Provider value={formatter}>
+    <I18nContext.Provider value={i18n}>
       {children}
     </I18nContext.Provider>
   );

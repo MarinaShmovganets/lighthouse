@@ -23,7 +23,7 @@
 import {CategoryRenderer} from './category-renderer.js';
 import {DetailsRenderer} from './details-renderer.js';
 import {ElementScreenshotRenderer} from './element-screenshot-renderer.js';
-import {Formatter} from './formatter.js';
+import {I18nFormatter} from './i18n-formatter.js';
 import {PerformanceCategoryRenderer} from './performance-category-renderer.js';
 import {PwaCategoryRenderer} from './pwa-category-renderer.js';
 import {Util} from './util.js';
@@ -142,7 +142,7 @@ export class ReportRenderer {
     // [CSS icon class, textContent, tooltipText]
     const metaItems = [
       ['date',
-        `Captured at ${Util.formatter.formatDateTime(report.fetchTime)}`],
+        `Captured at ${Util.i18n.formatDateTime(report.fetchTime)}`],
       ['devices',
         `${envValues.deviceEmulation} with Lighthouse ${report.lighthouseVersion}`,
         devicesTooltipTextLines.join('\n')],
@@ -261,7 +261,7 @@ export class ReportRenderer {
    */
   _renderReport(report) {
     Util.applyStrings(report.i18n.rendererFormattedStrings);
-    Util.formatter = new Formatter(report.configSettings.locale);
+    Util.i18n = new I18nFormatter(report.configSettings.locale);
     Util.reportJson = report;
 
     const detailsRenderer = new DetailsRenderer(this._dom, {

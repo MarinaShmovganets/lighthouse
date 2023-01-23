@@ -10,7 +10,7 @@ import jsdom from 'jsdom';
 
 import {DOM} from '../../renderer/dom.js';
 import {Util} from '../../renderer/util.js';
-import {Formatter} from '../../renderer/formatter.js';
+import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 
 describe('DetailsRenderer', () => {
@@ -23,12 +23,12 @@ describe('DetailsRenderer', () => {
   }
 
   before(() => {
-    Util.formatter = new Formatter('en');
+    Util.i18n = new I18nFormatter('en');
     createRenderer();
   });
 
   after(() => {
-    Util.formatter = undefined;
+    Util.i18n = undefined;
   });
 
   describe('render', () => {

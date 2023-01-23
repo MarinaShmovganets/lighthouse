@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-/** @typedef {import('./formatter').Formatter} Formatter */
+/** @typedef {import('./i18n-formatter').I18nFormatter} I18nFormatter */
 
 const ELLIPSIS = '\u2026';
 const NBSP = '\xa0';
@@ -38,9 +38,9 @@ const listOfTlds = [
 ];
 
 class Util {
-  /** @type {Formatter} */
+  /** @type {I18nFormatter} */
   // @ts-expect-error: Is set in report renderer.
-  static formatter = null;
+  static i18n = null;
   static strings = /** @type {typeof UIStrings} */ ({});
 
   /**
@@ -524,10 +524,10 @@ class Util {
       case 'devtools': {
         const {cpuSlowdownMultiplier, requestLatencyMs} = throttling;
         // eslint-disable-next-line max-len
-        cpuThrottling = `${Util.formatter.formatNumber(cpuSlowdownMultiplier)}x slowdown (DevTools)`;
-        networkThrottling = `${Util.formatter.formatMilliseconds(requestLatencyMs)} HTTP RTT, ` +
-          `${Util.formatter.formatKbps(throttling.downloadThroughputKbps)} down, ` +
-          `${Util.formatter.formatKbps(throttling.uploadThroughputKbps)} up (DevTools)`;
+        cpuThrottling = `${Util.i18n.formatNumber(cpuSlowdownMultiplier)}x slowdown (DevTools)`;
+        networkThrottling = `${Util.i18n.formatMilliseconds(requestLatencyMs)} HTTP RTT, ` +
+          `${Util.i18n.formatKbps(throttling.downloadThroughputKbps)} down, ` +
+          `${Util.i18n.formatKbps(throttling.uploadThroughputKbps)} up (DevTools)`;
 
         const isSlow4G = () => {
           return requestLatencyMs === 150 * 3.75 &&
@@ -541,9 +541,9 @@ class Util {
       case 'simulate': {
         const {cpuSlowdownMultiplier, rttMs, throughputKbps} = throttling;
         // eslint-disable-next-line max-len
-        cpuThrottling = `${Util.formatter.formatNumber(cpuSlowdownMultiplier)}x slowdown (Simulated)`;
-        networkThrottling = `${Util.formatter.formatMilliseconds(rttMs)} TCP RTT, ` +
-          `${Util.formatter.formatKbps(throughputKbps)} throughput (Simulated)`;
+        cpuThrottling = `${Util.i18n.formatNumber(cpuSlowdownMultiplier)}x slowdown (Simulated)`;
+        networkThrottling = `${Util.i18n.formatMilliseconds(rttMs)} TCP RTT, ` +
+          `${Util.i18n.formatKbps(throughputKbps)} throughput (Simulated)`;
 
         const isSlow4G = () => {
           return rttMs === 150 && throughputKbps === 1.6 * 1024;

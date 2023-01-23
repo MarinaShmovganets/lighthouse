@@ -9,7 +9,7 @@ const NBSP2 = '\xa0';
 const KiB = 1024;
 const MiB = KiB * KiB;
 
-export class Formatter {
+export class I18nFormatter {
   /**
    * @param {LH.Locale} locale
    */
