@@ -4,12 +4,12 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {strict as assert} from 'assert';
+import assert from 'assert/strict';
 
 import jsdom from 'jsdom';
 
 import {Util} from '../../renderer/util.js';
-import {I18n} from '../../renderer/i18n.js';
+import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {CriticalRequestChainRenderer} from '../../renderer/crc-details-renderer.js';
@@ -73,7 +73,7 @@ describe('DetailsRenderer', () => {
   let detailsRenderer;
 
   before(() => {
-    Util.i18n = new I18n('en', {...Util.UIStrings});
+    Util.i18n = new I18nFormatter('en');
 
     const {document} = new jsdom.JSDOM().window;
     dom = new DOM(document);

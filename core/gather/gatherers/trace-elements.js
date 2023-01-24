@@ -213,14 +213,14 @@ class TraceElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Artifacts.ProcessedTrace} processedTrace
+   * @param {LH.Trace} trace
    * @param {LH.Gatherer.FRTransitionalContext} context
    * @return {Promise<{nodeId: number, type: string} | undefined>}
    */
-  static async getLcpElement(processedTrace, context) {
+  static async getLcpElement(trace, context) {
     let processedNavigation;
     try {
-      processedNavigation = await ProcessedNavigation.request(processedTrace, context);
+      processedNavigation = await ProcessedNavigation.request(trace, context);
     } catch (err) {
       // If we were running in timespan mode and there was no paint, treat LCP as missing.
       if (context.gatherMode === 'timespan' && err.code === LighthouseError.errors.NO_FCP.code) {
@@ -270,7 +270,7 @@ class TraceElements extends FRGatherer {
     const processedTrace = await ProcessedTrace.request(trace, context);
     const {mainThreadEvents} = processedTrace;
 
-    const lcpNodeData = await TraceElements.getLcpElement(processedTrace, context);
+    const lcpNodeData = await TraceElements.getLcpElement(trace, context);
     const clsNodeData = TraceElements.getTopLayoutShiftElements(mainThreadEvents);
     const animatedElementData = await this.getAnimatedElements(mainThreadEvents);
     const responsivenessElementData = await TraceElements.getResponsivenessElement(trace, context);

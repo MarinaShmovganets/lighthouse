@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-/** @template T @typedef {import('./i18n').I18n<T>} I18n */
+/** @typedef {import('./i18n-formatter').I18nFormatter} I18nFormatter */
 
 const ELLIPSIS = '\u2026';
 const NBSP = '\xa0';
@@ -42,9 +42,21 @@ const listOfTlds = [
 ];
 
 class Util {
-  /** @type {I18n<typeof UIStrings>} */
+  /** @type {I18nFormatter} */
   // @ts-expect-error: Is set in report renderer.
   static i18n = null;
+  static strings = /** @type {typeof UIStrings} */ ({});
+
+  /**
+   * @param {Record<string, string>} providedStrings
+   */
+  static applyStrings(providedStrings) {
+    this.strings = {
+      // Set missing renderer strings to default (english) values.
+      ...UIStrings,
+      ...providedStrings,
+    };
+  }
 
   static get PASS_THRESHOLD() {
     return PASS_THRESHOLD;
@@ -127,6 +139,37 @@ class Util {
             }
           }
         }
+
+        // Circa 10.0, table items were refactored.
+        if (audit.details.type === 'table') {
+          for (const heading of audit.details.headings) {
+            /** @type {{itemType: LH.Audit.Details.ItemValueType|undefined, text: string|undefined}} */
+            // @ts-expect-error
+            const {itemType, text} = heading;
+            if (itemType !== undefined) {
+              heading.valueType = itemType;
+              // @ts-expect-error
+              delete heading.itemType;
+            }
+            if (text !== undefined) {
+              heading.label = text;
+              // @ts-expect-error
+              delete heading.text;
+            }
+
+            // @ts-expect-error
+            const subItemsItemType = heading.subItemsHeading?.itemType;
+            if (heading.subItemsHeading && subItemsItemType !== undefined) {
+              heading.subItemsHeading.valueType = subItemsItemType;
+              // @ts-expect-error
+              delete heading.subItemsHeading.itemType;
+            }
+          }
+        }
+
+        // TODO: convert printf-style displayValue.
+        // Added:   #5099, v3
+        // Removed: #6767, v4
       }
     }
 
@@ -189,7 +232,51 @@ class Util {
       });
     }
 
+    // Add some minimal stuff so older reports still work.
+    if (!clone.environment) {
+      // @ts-expect-error
+      clone.environment = {benchmarkIndex: 0};
+    }
+    if (!clone.configSettings.screenEmulation) {
+      // @ts-expect-error
+      clone.configSettings.screenEmulation = {};
+    }
+    if (!clone.i18n) {
+      // @ts-expect-error
+      clone.i18n = {};
+    }
+
+    // In 10.0, full-page-screenshot became a top-level property on the LHR.
+    if (clone.audits['full-page-screenshot']) {
+      const details = /** @type {LH.Result.FullPageScreenshot=} */ (
+        clone.audits['full-page-screenshot'].details);
+      if (details) {
+        clone.fullPageScreenshot = {
+          screenshot: details.screenshot,
+          nodes: details.nodes,
+        };
+      } else {
+        clone.fullPageScreenshot = null;
+      }
+      delete clone.audits['full-page-screenshot'];
+    }
+
     return clone;
+  }
+
+  /**
+   * @param {LH.Result} lhr
+   * @return {LH.Result.FullPageScreenshot=}
+   */
+  static getFullPageScreenshot(lhr) {
+    if (lhr.fullPageScreenshot) {
+      return lhr.fullPageScreenshot;
+    }
+
+    // Prior to 10.0.
+    const details = /** @type {LH.Result.FullPageScreenshot=} */ (
+      lhr.audits['full-page-screenshot']?.details);
+    return details;
   }
 
   /**
@@ -443,7 +530,7 @@ class Util {
 
   /**
    * @param {LH.Result['configSettings']} settings
-   * @return {!{deviceEmulation: string, networkThrottling: string, cpuThrottling: string, summary: string}}
+   * @return {!{deviceEmulation: string, screenEmulation?: string, networkThrottling: string, cpuThrottling: string, summary: string}}
    */
   static getEmulationDescriptions(settings) {
     let cpuThrottling;
@@ -454,7 +541,7 @@ class Util {
 
     switch (settings.throttlingMethod) {
       case 'provided':
-        summary = networkThrottling = cpuThrottling = Util.i18n.strings.throttlingProvided;
+        summary = networkThrottling = cpuThrottling = Util.strings.throttlingProvided;
         break;
       case 'devtools': {
         const {cpuSlowdownMultiplier, requestLatencyMs} = throttling;
@@ -469,7 +556,8 @@ class Util {
             throttling.downloadThroughputKbps === 1.6 * 1024 * 0.9 &&
             throttling.uploadThroughputKbps === 750 * 0.9;
         };
-        summary = isSlow4G() ? Util.i18n.strings.runtimeSlow4g : Util.i18n.strings.runtimeCustom;
+        summary = isSlow4G() ?
+          Util.strings.runtimeSlow4g : Util.strings.runtimeCustom;
         break;
       }
       case 'simulate': {
@@ -482,21 +570,39 @@ class Util {
         const isSlow4G = () => {
           return rttMs === 150 && throughputKbps === 1.6 * 1024;
         };
-        summary = isSlow4G() ? Util.i18n.strings.runtimeSlow4g : Util.i18n.strings.runtimeCustom;
+        summary = isSlow4G() ?
+          Util.strings.runtimeSlow4g : Util.strings.runtimeCustom;
         break;
       }
       default:
-        summary = cpuThrottling = networkThrottling = Util.i18n.strings.runtimeUnknown;
+        summary = cpuThrottling = networkThrottling = Util.strings.runtimeUnknown;
     }
 
-    // TODO(paulirish): revise Runtime Settings strings: https://github.com/GoogleChrome/lighthouse/pull/11796
-    const deviceEmulation = {
-      mobile: Util.i18n.strings.runtimeMobileEmulation,
-      desktop: Util.i18n.strings.runtimeDesktopEmulation,
-    }[settings.formFactor] || Util.i18n.strings.runtimeNoEmulation;
+    // devtools-entry.js always sets `screenEmulation.disabled` when using mobile emulation,
+    // because we handle the emulation outside of Lighthouse. Since the screen truly is emulated
+    // as a mobile device, ignore `.disabled` in devtools and just check the form factor
+    const isScreenEmulationDisabled = settings.channel === 'devtools' ?
+      false :
+      settings.screenEmulation.disabled;
+    const isScreenEmulationMobile = settings.channel === 'devtools' ?
+      settings.formFactor === 'mobile' :
+      settings.screenEmulation.mobile;
+
+    let deviceEmulation = Util.strings.runtimeMobileEmulation;
+    if (isScreenEmulationDisabled) {
+      deviceEmulation = Util.strings.runtimeNoEmulation;
+    } else if (!isScreenEmulationMobile) {
+      deviceEmulation = Util.strings.runtimeDesktopEmulation;
+    }
+
+    const screenEmulation = isScreenEmulationDisabled ?
+      undefined :
+      // eslint-disable-next-line max-len
+      `${settings.screenEmulation.width}x${settings.screenEmulation.height}, DPR ${settings.screenEmulation.deviceScaleFactor}`;
 
     return {
       deviceEmulation,
+      screenEmulation,
       cpuThrottling,
       networkThrottling,
       summary,
@@ -613,7 +719,7 @@ Util.resetUniqueSuffix = () => {
  */
 const UIStrings = {
   /** Disclaimer shown to users below the metric values (First Contentful Paint, Time to Interactive, etc) to warn them that the numbers they see will likely change slightly the next time they run Lighthouse. */
-  varianceDisclaimer: 'Values are estimated and may vary. The [performance score is calculated](https://web.dev/performance-scoring/) directly from these metrics.',
+  varianceDisclaimer: 'Values are estimated and may vary. The [performance score is calculated](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) directly from these metrics.',
   /** Text link pointing to an interactive calculator that explains Lighthouse scoring. The link text should be fairly short. */
   calculatorLink: 'See calculator.',
   /** Label preceding a radio control for filtering the list of audits. The radio choices are various performance metrics (FCP, LCP, TBT), and if chosen, the audits in the report are hidden if they are not relevant to the selected metric. */
@@ -694,6 +800,8 @@ const UIStrings = {
   runtimeSettingsBenchmark: 'CPU/Memory Power',
   /** Label for a row in a table that shows the version of the Axe library used. Example row values: 2.1.0, 3.2.3 */
   runtimeSettingsAxeVersion: 'Axe version',
+  /** Label for a row in a table that shows the screen resolution and DPR that was emulated for the Lighthouse run. Example values: '800x600, DPR: 3' */
+  runtimeSettingsScreenEmulation: 'Screen emulation',
 
   /** Label for button to create an issue against the Lighthouse GitHub project. */
   footerIssue: 'File an issue',
@@ -729,6 +837,7 @@ const UIStrings = {
   runtimeCustom: 'Custom throttling',
 };
 Util.UIStrings = UIStrings;
+Util.strings = {...UIStrings};
 
 module.exports = {
   Util,

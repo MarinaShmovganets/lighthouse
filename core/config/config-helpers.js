@@ -6,6 +6,7 @@
 
 import path from 'path';
 import {createRequire} from 'module';
+import url from 'url';
 
 import isDeepEqual from 'lodash/isEqual.js';
 
@@ -119,7 +120,7 @@ const mergeConfigFragment = _mergeConfigFragment;
  * Merge an array of items by a caller-defined key. `mergeConfigFragment` is used to merge any items
  * with a matching key.
  *
- * @template T
+ * @template {Record<string, any>} T
  * @param {Array<T>|null|undefined} baseArray
  * @param {Array<T>|null|undefined} extensionArray
  * @param {(item: T) => string} keyFn
@@ -217,6 +218,11 @@ const bundledModules = new Map(/* BUILD_REPLACE_BUNDLED_MODULES */);
  * @param {string} requirePath
  */
 async function requireWrapper(requirePath) {
+  // For windows.
+  if (path.isAbsolute(requirePath)) {
+    requirePath = url.pathToFileURL(requirePath).href;
+  }
+
   /** @type {any} */
   let module;
   if (bundledModules.has(requirePath)) {
@@ -231,7 +237,6 @@ async function requireWrapper(requirePath) {
   if (module.default) return module.default;
 
   // Find a valid named export.
-  // TODO(esmodules): actually make all the audits/gatherers use named exports
   const methods = new Set(['meta']);
   const possibleNamedExports = Object.keys(module).filter(key => {
     if (!(module[key] && module[key] instanceof Object)) return false;
@@ -287,8 +292,12 @@ function requireAudit(auditPath, coreAuditList, configDir) {
     } else {
       // Otherwise, attempt to find it elsewhere. This throws if not found.
       const absolutePath = resolveModulePath(auditPath, configDir, 'audit');
-      // Use a relative path so bundler can easily expose it.
-      requirePath = path.relative(getModuleDirectory(import.meta), absolutePath);
+      if (isBundledEnvironment()) {
+        // Use a relative path so bundler can easily expose it.
+        requirePath = path.relative(getModuleDirectory(import.meta), absolutePath);
+      } else {
+        requirePath = absolutePath;
+      }
     }
   }
 
@@ -299,10 +308,10 @@ function requireAudit(auditPath, coreAuditList, configDir) {
  * Creates a settings object from potential flags object by dropping all the properties
  * that don't exist on Config.Settings.
  * @param {Partial<LH.Flags>=} flags
- * @return {RecursivePartial<LH.Config.Settings>}
+ * @return {LH.Util.RecursivePartial<LH.Config.Settings>}
 */
 function cleanFlagsForSettings(flags = {}) {
-  /** @type {RecursivePartial<LH.Config.Settings>} */
+  /** @type {LH.Util.RecursivePartial<LH.Config.Settings>} */
   const settings = {};
 
   for (const key of Object.keys(flags)) {
@@ -355,18 +364,18 @@ function resolveSettings(settingsJson = {}, overrides = undefined) {
 }
 
 /**
- * @param {LH.Config.Json} configJSON
+ * @param {LH.Config} config
  * @param {string | undefined} configDir
  * @param {{plugins?: string[]} | undefined} flags
- * @return {Promise<LH.Config.Json>}
+ * @return {Promise<LH.Config>}
  */
-async function mergePlugins(configJSON, configDir, flags) {
-  const configPlugins = configJSON.plugins || [];
+async function mergePlugins(config, configDir, flags) {
+  const configPlugins = config.plugins || [];
   const flagPlugins = flags?.plugins || [];
   const pluginNames = new Set([...configPlugins, ...flagPlugins]);
 
   for (const pluginName of pluginNames) {
-    validation.assertValidPluginName(configJSON, pluginName);
+    validation.assertValidPluginName(config, pluginName);
 
     // In bundled contexts, `resolveModulePath` will fail, so use the raw pluginName directly.
     const pluginPath = isBundledEnvironment() ?
@@ -375,10 +384,10 @@ async function mergePlugins(configJSON, configDir, flags) {
     const rawPluginJson = await requireWrapper(pluginPath);
     const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
 
-    configJSON = mergeConfigFragment(configJSON, pluginJson);
+    config = mergeConfigFragment(config, pluginJson);
   }
 
-  return configJSON;
+  return config;
 }
 
 
@@ -419,7 +428,7 @@ async function resolveGathererToDefn(gathererJson, coreGathererList, configDir) 
  * Take an array of audits and audit paths and require any paths (possibly
  * relative to the optional `configDir`) using `resolveModule`,
  * leaving only an array of AuditDefns.
- * @param {LH.Config.Json['audits']} audits
+ * @param {LH.Config['audits']} audits
  * @param {string=} configDir
  * @return {Promise<Array<LH.Config.AuditDefn>|null>}
  */
@@ -576,10 +585,10 @@ function deepClone(json) {
 }
 
 /**
- * Deep clone a ConfigJson, copying over any "live" gatherer or audit that
+ * Deep clone a config, copying over any "live" gatherer or audit that
  * wouldn't make the JSON round trip.
- * @param {LH.Config.Json} json
- * @return {LH.Config.Json}
+ * @param {LH.Config} json
+ * @return {LH.Config}
  */
 function deepCloneConfigJson(json) {
   const cloned = deepClone(json);

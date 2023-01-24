@@ -4,7 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const config = {
   extends: 'lighthouse:default',
   settings: {
@@ -29,29 +29,26 @@ const expectations = {
   lhr: {
     requestedUrl: 'http://localhost:10200/scaled-content.html',
     finalDisplayedUrl: 'http://localhost:10200/scaled-content.html',
-    audits: {
-      'full-page-screenshot': {
-        details: {
-          nodes: {
-            _includes: [
-              [
-                /-BODY$/,
-                {
-                  top: 0,
-                  bottom: 2000,
-                  left: 0,
-                  right: 720,
-                  width: 720,
-                  height: 2000,
-                },
-              ],
-            ],
-          },
-          screenshot: {
-            height: 2000,
-            width: 720,
-          },
-        },
+    audits: {},
+    fullPageScreenshot: {
+      nodes: {
+        _includes: [
+          [
+            /-BODY$/,
+            {
+              top: 0,
+              bottom: 2000,
+              left: 0,
+              right: 720,
+              width: 720,
+              height: 2000,
+            },
+          ],
+        ],
+      },
+      screenshot: {
+        height: 2000,
+        width: 720,
       },
     },
   },

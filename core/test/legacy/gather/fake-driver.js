@@ -10,8 +10,6 @@ import {fnAny, readJson} from '../../test-utils.js';
  * @param {{protocolGetVersionResponse: LH.CrdpCommands['Browser.getVersion']['returnType']}} param0
  */
 function makeFakeDriver({protocolGetVersionResponse}) {
-  let scrollPosition = {x: 0, y: 0};
-
   return {
     get fetcher() {
       return {};
@@ -56,14 +54,6 @@ function makeFakeDriver({protocolGetVersionResponse}) {
         return Promise.resolve();
       },
     },
-    /** @param {{x: number, y: number}} position */
-    scrollTo(position) {
-      scrollPosition = position;
-      return Promise.resolve();
-    },
-    getScrollPosition() {
-      return Promise.resolve(scrollPosition);
-    },
     beginTrace() {
       return Promise.resolve();
     },
@@ -103,7 +93,6 @@ const fakeDriverUsingRealMobileDevice = makeFakeDriver({
   },
 });
 
-// TODO(esmodules): fix awkward export.
 export const fakeDriver = {
   ...makeFakeDriver({protocolGetVersionResponse}),
   fakeDriverUsingRealMobileDevice,

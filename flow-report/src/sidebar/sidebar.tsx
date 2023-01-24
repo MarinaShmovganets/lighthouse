@@ -35,6 +35,9 @@ const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
 ({settings}) => {
   const strings = useLocalizedStrings();
   const env = Util.getEmulationDescriptions(settings);
+  const deviceEmulationString = env.screenEmulation ?
+    `${env.deviceEmulation} - ${env.screenEmulation}` :
+    env.deviceEmulation;
 
   return (
     <div className="SidebarRuntimeSettings">
@@ -43,7 +46,7 @@ const SidebarRuntimeSettings: FunctionComponent<{settings: LH.ConfigSettings}> =
           <EnvIcon/>
         </div>
         {
-          env.deviceEmulation
+          deviceEmulationString
         }
       </div>
       <div
@@ -74,7 +77,7 @@ const SidebarHeader: FunctionComponent<{title: string, date: string}> = ({title,
   return (
     <div className="SidebarHeader">
       <div className="SidebarHeader__title">{title}</div>
-      <div className="SidebarHeader__date">{i18n.formatDateTime(date)}</div>
+      <div className="SidebarHeader__date">{i18n.formatter.formatDateTime(date)}</div>
     </div>
   );
 };

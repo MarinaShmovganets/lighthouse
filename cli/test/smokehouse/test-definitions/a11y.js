@@ -6,7 +6,7 @@
 
 /**
  * Config for running PWA smokehouse audits for axe.
- * @type {LH.Config.Json}
+ * @type {LH.Config}
  */
 const config = {
   extends: 'lighthouse:default',
@@ -331,12 +331,8 @@ const expectations = {
         },
       },
       'bypass': {
-        score: 1,
-        details: {
-          type: 'table',
-          headings: [],
-          items: [],
-        },
+        score: null,
+        scoreDisplayMode: 'notApplicable',
       },
       'color-contrast': {
         score: 0,

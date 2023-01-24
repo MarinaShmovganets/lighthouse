@@ -4,7 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const config = {
   extends: 'lighthouse:default',
   audits: [
@@ -36,15 +36,6 @@ const imgB = {
  * Expected Lighthouse audit values for Do Better Web tests.
  */
 const expectations = {
-  networkRequests: {
-    // Number of network requests differs between Fraggle Rock and legacy modes because
-    // FR has fewer passes, preserve this check moving forward.
-    _fraggleRockOnly: true,
-
-    // 22 requests made for a single navigation.
-    // 6 extra requests made because stylesheets are evicted from the cache by the time DT opens.
-    length: 28,
-  },
   artifacts: {
     BenchmarkIndex: '<10000',
     HostFormFactor: 'desktop',
@@ -243,6 +234,8 @@ const expectations = {
               sourceLocation: {url: 'http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000'},
             },
             4: {
+              // In the DT runner, the initial page load before staring Lighthouse will prevent this error.
+              _excludeRunner: 'devtools',
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               sourceLocation: {url: 'http://localhost:10200/favicon.ico'},
@@ -321,6 +314,9 @@ const expectations = {
         details: {
           items: [
             {
+              // This feature was removed in M110.
+              // TODO: Remove this expectation once M110 reaches stable.
+              _maxChromiumVersion: '109',
               value: /`window.webkitStorageInfo` is deprecated/,
               source: {
                 type: 'source-location',
@@ -405,11 +401,29 @@ const expectations = {
         numericValue: 153,
         details: {
           items: [
-            {statistic: 'Total DOM Elements', value: 153},
-            {statistic: 'Maximum DOM Depth', value: 4},
+            {
+              statistic: 'Total DOM Elements',
+              value: {
+                type: 'numeric',
+                granularity: 1,
+                value: 153,
+              },
+            },
+            {
+              statistic: 'Maximum DOM Depth',
+              value: {
+                type: 'numeric',
+                granularity: 1,
+                value: 4,
+              },
+            },
             {
               statistic: 'Maximum Child Elements',
-              value: 100,
+              value: {
+                type: 'numeric',
+                granularity: 1,
+                value: 100,
+              },
               node: {snippet: '<div id="shadow-root-container">'},
             },
           ],
@@ -429,30 +443,81 @@ const expectations = {
           }],
         },
       },
-      'full-page-screenshot': {
-        score: null,
+      'bf-cache': {
         details: {
-          type: 'full-page-screenshot',
-          screenshot: {
-            width: 360,
-            // Allow for differences in platforms.
-            height: '1350±100',
-            data: /^data:image\/webp;.{500,}/,
-          },
-          nodes: {
-            _includes: [
-              // Test that the numbers for individual elements are in the ballpark.
-              [/[0-9]-[0-9]+-IMG/, imgA],
-              [/[0-9]-[0-9]+-IMG/, imgB],
-              // And then many more nodes...
-            ],
-            _excludes: [
-              // Ensure that the nodes we found above are unique.
-              [/[0-9]-[0-9]+-IMG/, imgA],
-              [/[0-9]-[0-9]+-IMG/, imgB],
-            ],
-          },
+          items: [
+            {
+              reason: 'The page has an unload handler in the main frame.',
+              failureType: 'Actionable',
+              subItems: {
+                items: [{
+                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                }],
+              },
+            },
+            {
+              // Support for this was added in M109
+              // https://crbug.com/1350944
+              _maxChromiumVersion: '108',
+              reason: 'Pages that have requested notifications permissions are not currently eligible for back/forward cache.',
+              failureType: 'Pending browser support',
+              subItems: {
+                items: [{
+                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                }],
+              },
+            },
+            {
+              // This issue only appears in the DevTools runner for some reason.
+              // TODO: Investigate why this doesn't happen on the CLI runner.
+              _runner: 'devtools',
+              reason: 'There were permission requests upon navigating away.',
+              failureType: 'Pending browser support',
+              subItems: {
+                items: [{
+                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                }],
+              },
+            },
+            {
+              // The DevTools runner uses Puppeteer to launch Chrome which disables BFCache by default.
+              // https://github.com/puppeteer/puppeteer/issues/8197
+              //
+              // If we ignore the Puppeteer args and force BFCache to be enabled, it causes thew viewport to be sized incorrectly for other tests.
+              // These viewport issues are not present when Lighthouse is run from DevTools manually.
+              // TODO: Investigate why BFCache causes viewport issues only in our DevTools smoke tests.
+              _runner: 'devtools',
+              reason: 'Back/forward cache is disabled by flags. Visit chrome://flags/#back-forward-cache to enable it locally on this device.',
+              failureType: 'Not actionable',
+              subItems: {
+                items: [{
+                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                }],
+              },
+            },
+          ],
         },
+      },
+    },
+    fullPageScreenshot: {
+      screenshot: {
+        width: 360,
+        // Allow for differences in platforms.
+        height: '1350±100',
+        data: /^data:image\/webp;.{500,}/,
+      },
+      nodes: {
+        _includes: [
+          // Test that the numbers for individual elements are in the ballpark.
+          [/[0-9]-[0-9]+-IMG/, imgA],
+          [/[0-9]-[0-9]+-IMG/, imgB],
+          // And then many more nodes...
+        ],
+        _excludes: [
+          // Ensure that the nodes we found above are unique.
+          [/[0-9]-[0-9]+-IMG/, imgA],
+          [/[0-9]-[0-9]+-IMG/, imgB],
+        ],
       },
     },
   },

@@ -4,17 +4,11 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {strict as assert} from 'assert';
+import assert from 'assert/strict';
 
 import jestMock from 'jest-mock';
 
-import {Gatherer} from '../../../gather/gatherers/gatherer.js';
-// import GathererRunner_ from '../../legacy/gather/gather-runner.js';
-// import {Config} from '../../legacy/config/config.js';
-import {LighthouseError} from '../../../lib/lh-error.js';
 import {networkRecordsToDevtoolsLog} from '../../network-records-to-devtools-log.js';
-// import {Driver} from '../../legacy/gather/driver.js';
-import {Connection} from '../../../legacy/gather/connections/connection.js';
 import {createMockSendCommandFn, createMockOnceFn} from '../../gather/mock-commands.js';
 import {
   makeMocksForGatherRunner,
@@ -50,39 +44,36 @@ function createTypeHackedGatherRunner() {
 }
 
 // Some imports needs to be done dynamically, so that their dependencies will be mocked.
-// See: https://jestjs.io/docs/ecmascript-modules#differences-between-esm-and-commonjs
-//      https://github.com/facebook/jest/issues/10025
+// https://github.com/GoogleChrome/lighthouse/blob/main/docs/hacking-tips.md#mocking-modules-with-testdouble
 /** @typedef {import('../../../legacy/gather/driver.js').Driver} Driver */
-/** @type {typeof import('../../../legacy/gather/driver.js').Driver} */
-let Driver;
-/** @type {typeof import('../../../legacy/gather/gather-runner.js').GatherRunner} */
-let GatherRunner_;
-/** @typedef {import('../../../legacy/config/config.js').Config} Config */
-/** @type {typeof import('../../../legacy/config/config.js').Config} */
-let Config;
+/** @typedef {import('../../../legacy/config/config.js').LegacyResolvedConfig} LegacyResolvedConfig */
+/** @typedef {import('../../../legacy/gather/connections/connection.js').Connection} Connection */
+const {Driver} = await import('../../../legacy/gather/driver.js');
+const {GatherRunner: GatherRunner_} = await import('../../../legacy/gather/gather-runner.js');
+const {LegacyResolvedConfig} = await import('../../../legacy/config/config.js');
+const {Gatherer} = await import('../../../gather/gatherers/gatherer.js');
+const {LighthouseError} = await import('../../../lib/lh-error.js');
+const {Connection} = await import('../../../legacy/gather/connections/connection.js');
 
 /** @type {ReturnType<createTypeHackedGatherRunner>} */
 let GatherRunner;
 before(async () => {
-  Driver = (await import('../../../legacy/gather/driver.js')).Driver;
-  GatherRunner_ = (await import('../../../legacy/gather/gather-runner.js')).GatherRunner;
-  Config = (await import('../../../legacy/config/config.js')).Config;
   assertNoSameOriginServiceWorkerClientsMock =
     jestMock.spyOn(GatherRunner_, 'assertNoSameOriginServiceWorkerClients');
   GatherRunner = createTypeHackedGatherRunner();
 });
 
 /**
- * @param {LH.Config.Json} json
+ * @param {LH.Config} json
  */
 async function makeConfig(json) {
-  const config = await Config.fromJson(json);
+  const config = await LegacyResolvedConfig.fromJson(json);
 
   // Since the config is for `gather-runner`, ensure it has `passes`.
   if (!config.passes) {
     throw new Error('gather-runner test configs must have `passes`');
   }
-  return /** @type {Config & {passes: Array<LH.Config.Pass>}} */ (config);
+  return /** @type {LegacyResolvedConfig & {passes: Array<LH.Config.Pass>}} */ (config);
 }
 
 class TestGatherer extends Gatherer {
@@ -694,40 +685,6 @@ describe('GatherRunner', function() {
       assert.equal(calledDevtoolsLogCollect, true);
       assert.strictEqual(passData.devtoolsLog[0], fakeDevtoolsMessage);
     });
-  });
-
-  it('resets scroll position between every gatherer', async () => {
-    class ScrollMcScrollyGatherer extends TestGatherer {
-      /** @param {{driver: Driver}} context */
-      afterPass(context) {
-        context.driver.scrollTo({x: 1000, y: 1000});
-      }
-    }
-
-    const url = 'https://example.com';
-    const driver = Object.assign({}, fakeDriver);
-    const scrollToSpy = jestMock.spyOn(driver, 'scrollTo');
-
-    const passConfig = {
-      recordTrace: true,
-      gatherers: [
-        {instance: new ScrollMcScrollyGatherer()},
-        {instance: new TestGatherer()},
-      ],
-    };
-
-    /** @type {any} Using Test-only gatherer. */
-    const gathererResults = {
-      TestGatherer: [],
-    };
-    const passContext = {url, driver, passConfig, computedCache: new Map()};
-    await GatherRunner.afterPass(passContext, {}, gathererResults);
-    // One time for the afterPass of ScrollMcScrolly, two times for the resets of the two gatherers.
-    expect(scrollToSpy.mock.calls).toEqual([
-      [{x: 1000, y: 1000}],
-      [{x: 0, y: 0}],
-      [{x: 0, y: 0}],
-    ]);
   });
 
   it('does as many passes as are required', async () => {

@@ -8,18 +8,6 @@ import * as td from 'testdouble';
 
 import {createMockSession, createMockDriver} from '../mock-driver.js';
 import {flushAllTimersAndMicrotasks, fnAny, timers} from '../../test-utils.js';
-// import prepare from '../../../gather/driver/prepare.js';
-import * as constants from '../../../config/constants.js';
-
-// Some imports needs to be done dynamically, so that their dependencies will be mocked.
-// See: https://jestjs.io/docs/ecmascript-modules#differences-between-esm-and-commonjs
-//      https://github.com/facebook/jest/issues/10025
-/** @type {import('../../../gather/driver/prepare.js')} */
-let prepare;
-
-before(async () => {
-  prepare = (await import('../../../gather/driver/prepare.js'));
-});
 
 const storageMock = {
   clearDataForOrigin: fnAny(),
@@ -27,6 +15,11 @@ const storageMock = {
   getImportantStorageWarning: fnAny(),
 };
 await td.replaceEsm('../../../gather/driver/storage.js', storageMock);
+
+// Some imports needs to be done dynamically, so that their dependencies will be mocked.
+// https://github.com/GoogleChrome/lighthouse/blob/main/docs/hacking-tips.md#mocking-modules-with-testdouble
+const prepare = await import('../../../gather/driver/prepare.js');
+const constants = await import('../../../config/constants.js');
 
 const url = 'https://example.com';
 let sessionMock = createMockSession();
@@ -39,12 +32,10 @@ beforeEach(() => {
     .mockResponse('Network.setBlockedURLs')
     .mockResponse('Network.setExtraHTTPHeaders');
   storageMock.clearDataForOrigin.mockReset();
+  storageMock.clearDataForOrigin.mockReturnValue([]);
   storageMock.clearBrowserCaches.mockReset();
+  storageMock.clearBrowserCaches.mockReturnValue([]);
   storageMock.getImportantStorageWarning.mockReset();
-});
-
-afterEach(() => {
-  timers.useRealTimers();
 });
 
 describe('.prepareThrottlingAndNetwork()', () => {
@@ -205,14 +196,20 @@ describe('.prepareTargetForIndividualNavigation()', () => {
   });
 
   it('collects storage warnings', async () => {
-    storageMock.getImportantStorageWarning.mockResolvedValue({message: 'This is a warning'});
+    storageMock.getImportantStorageWarning.mockResolvedValue('This is a storage warning');
+    storageMock.clearDataForOrigin.mockResolvedValue(['This is a clear data warning']);
+    storageMock.clearBrowserCaches.mockResolvedValue(['This is a clear cache warning']);
     const {warnings} = await prepare.prepareTargetForIndividualNavigation(
       sessionMock.asSession(),
       {...constants.defaultSettings, disableStorageReset: false},
       {...constants.defaultNavigationConfig, disableStorageReset: false, requestor: url}
     );
 
-    expect(warnings).toEqual([{message: 'This is a warning'}]);
+    expect(warnings).toEqual([
+      'This is a storage warning',
+      'This is a clear data warning',
+      'This is a clear cache warning',
+    ]);
   });
 });
 
@@ -270,6 +267,7 @@ describe('.prepareTargetForNavigationMode()', () => {
 
   it('enables async stacks on every main frame navigation', async () => {
     timers.useFakeTimers();
+    after(() => timers.dispose());
 
     sessionMock.sendCommand
       .mockResponse('Debugger.enable')
@@ -336,6 +334,7 @@ describe('.prepareTargetForNavigationMode()', () => {
 
   it('handle javascript dialogs automatically', async () => {
     timers.useFakeTimers();
+    after(() => timers.dispose());
 
     sessionMock.sendCommand.mockResponse('Page.handleJavaScriptDialog');
     sessionMock.on.mockEvent('Page.javascriptDialogOpening', {type: 'confirm'});

@@ -9,6 +9,8 @@ jobs:
   # `basics` includes all non-smoke and non-unit CI
   basics:
     runs-on: ubuntu-latest
+    env:
+      FORCE_COLOR: true
 
     # A few steps are duplicated across all jobs. Can be done better when this feature lands:
     #   https://github.community/t/reusing-sharing-inheriting-steps-between-jobs-declarations/16851
@@ -23,12 +25,13 @@ jobs:
         GITHUB_CONTEXT_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         GITHUB_CONTEXT_BASE_SHA: ${{ github.event.before }}
 
-    - name: Use Node.js 14.x
+    - name: Use Node.js 16.x
       uses: actions/setup-node@v1
       with:
-        node-version: 14.x
+        node-version: 16.x
 
     - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: yarn type-check
     - run: yarn build-all
 
     # Run pptr tests using ToT Chrome instead of stable default.
@@ -51,7 +54,6 @@ jobs:
 
     - run: yarn diff:sample-json
     - run: yarn diff:flow-sample-json
-    - run: yarn type-check
     - run: yarn lint
     - run: yarn test-lantern
     - run: yarn test-legacy-javascript

@@ -6,6 +6,7 @@
 
 /* eslint-disable max-len */
 
+import * as LH from '../../types/lh.js';
 import * as constants from './constants.js';
 import * as i18n from '../lib/i18n/i18n.js';
 import {metricsToAudits} from './metrics-to-audits.js';
@@ -22,7 +23,7 @@ const UIStrings = {
   /** Title of the opportunity section of the Performance category. Within this section are audits with imperative titles that suggest actions the user can take to improve the loading performance of their web page. 'Suggestion'/'Optimization'/'Recommendation' are reasonable synonyms for 'opportunity' in this case. */
   loadOpportunitiesGroupTitle: 'Opportunities',
   /** Description of the opportunity section of the Performance category. 'Suggestions' could also be 'recommendations'. Within this section are audits with imperative titles that suggest actions the user can take to improve the loading performance of their web page. */
-  loadOpportunitiesGroupDescription: 'These suggestions can help your page load faster. They don\'t [directly affect](https://web.dev/performance-scoring/) the Performance score.',
+  loadOpportunitiesGroupDescription: 'These suggestions can help your page load faster. They don\'t [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score.',
   /** Title of an opportunity sub-section of the Performance category. Within this section are audits with imperative titles that suggest actions the user can take to improve the time of the first initial render of the webpage. */
   firstPaintImprovementsGroupTitle: 'First Paint Improvements',
   /** Description of an opportunity sub-section of the Performance category. Within this section are audits with imperative titles that suggest actions the user can take to improve the time of the first initial render of the webpage. */
@@ -34,11 +35,11 @@ const UIStrings = {
   /** Title of the diagnostics section of the Performance category. Within this section are audits with non-imperative titles that provide more detail on the page's page load performance characteristics. Whereas the 'Opportunities' suggest an action along with expected time savings, diagnostics do not. Within this section, the user may read the details and deduce additional actions they could take. */
   diagnosticsGroupTitle: 'Diagnostics',
   /** Description of the diagnostics section of the Performance category. Within this section are audits with non-imperative titles that provide more detail on a web page's load performance characteristics. Within this section, the user may read the details and deduce additional actions they could take to improve performance. */
-  diagnosticsGroupDescription: 'More information about the performance of your application. These numbers don\'t [directly affect](https://web.dev/performance-scoring/) the Performance score.',
+  diagnosticsGroupDescription: 'More information about the performance of your application. These numbers don\'t [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score.',
   /** Title of the Accessibility category of audits. This section contains audits focused on making web content accessible to all users. Also used as a label of a score gauge; try to limit to 20 characters. */
   a11yCategoryTitle: 'Accessibility',
   /** Description of the Accessibility category. This is displayed at the top of a list of audits focused on making web content accessible to all users. No character length limits. 'improve the accessibility of your web app' becomes link text to additional documentation. */
-  a11yCategoryDescription: 'These checks highlight opportunities to [improve the accessibility of your web app](https://web.dev/lighthouse-accessibility/). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.',
+  a11yCategoryDescription: 'These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.',
   /** Description of the Accessibility manual checks category. This description is displayed above a list of accessibility audits that currently have no automated test and so must be verified manually by the user. No character length limits. 'conducting an accessibility review' becomes link text to additional documentation. */
   a11yCategoryManualDescription: 'These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).',
   /** Title of the best practices section of the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices. */
@@ -75,17 +76,17 @@ const UIStrings = {
   a11yTablesListsVideoGroupDescription: 'These are opportunities to improve the experience of reading tabular or list data using assistive technology, like a screen reader.',
   /** Title of the Search Engine Optimization (SEO) category of audits. This is displayed at the top of a list of audits focused on topics related to optimizing a website for indexing by search engines. Also used as a label of a score gauge; try to limit to 20 characters. */
   seoCategoryTitle: 'SEO',
-  /** Description of the Search Engine Optimization (SEO) category. This is displayed at the top of a list of audits focused on optimizing a website for indexing by search engines. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of the Search Engine Optimization (SEO) category. This is displayed at the top of a list of audits focused on optimizing a website for indexing by search engines. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   seoCategoryDescription: 'These checks ensure that your page is following basic search engine optimization advice. ' +
   'There are many additional factors Lighthouse does not score here that may affect your search ranking, ' +
-  'including performance on [Core Web Vitals](https://web.dev/learn-web-vitals/). [Learn more](https://support.google.com/webmasters/answer/35769).',
+  'including performance on [Core Web Vitals](https://web.dev/learn-core-web-vitals/). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).',
   /** Description of the Search Engine Optimization (SEO) manual checks category, the additional validators must be run by hand in order to check all SEO best practices. This is displayed at the top of a list of manually run audits focused on optimizing a website for indexing by search engines. No character length limits. */
   seoCategoryManualDescription: 'Run these additional validators on your site to check additional SEO best practices.',
   /** Title of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
   seoMobileGroupTitle: 'Mobile Friendly',
   /** Description of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
   seoMobileGroupDescription: 'Make sure your pages are mobile friendly so users don’t have to pinch or zoom ' +
-  'in order to read the content pages. [Learn more](https://developers.google.com/search/mobile-sites/).',
+  'in order to read the content pages. [Learn how to make pages mobile-friendly](https://developers.google.com/search/mobile-sites/).',
   /** Title of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight ways to make a website content more easily understood by search engine crawler bots. */
   seoContentGroupTitle: 'Content Best Practices',
   /** Description of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight ways to make a website content more easily understood by search engine crawler bots. */
@@ -96,9 +97,9 @@ const UIStrings = {
   seoCrawlingGroupDescription: 'To appear in search results, crawlers need access to your app.',
   /** Title of the Progressive Web Application (PWA) category of audits. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. Also used as a label of a score gauge. */
   pwaCategoryTitle: 'PWA',
-  /** Description of the Progressive Web Application (PWA) category. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. No character length limits. 'Learn More' becomes link text to additional documentation. */
+  /** Description of the Progressive Web Application (PWA) category. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   pwaCategoryDescription: 'These checks validate the aspects of a Progressive Web App. ' +
-  '[Learn more](https://web.dev/pwa-checklist/).',
+  '[Learn what makes a good Progressive Web App](https://web.dev/pwa-checklist/).',
   /** Description of the Progressive Web Application (PWA) manual checks category, containing a list of additional validators must be run by hand in order to check all PWA best practices. This is displayed at the top of a list of manually run audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc.. No character length limits. */
   pwaCategoryManualDescription: 'These checks are required by the baseline ' +
   '[PWA Checklist](https://web.dev/pwa-checklist/) but are ' +
@@ -128,6 +129,7 @@ const artifacts = {
   Trace: '',
   Accessibility: '',
   AnchorElements: '',
+  BFCacheFailures: '',
   CacheContents: '',
   ConsoleMessages: '',
   CSSUsage: '',
@@ -169,7 +171,7 @@ for (const key of Object.keys(artifacts)) {
   artifacts[/** @type {keyof typeof artifacts} */ (key)] = key;
 }
 
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const defaultConfig = {
   settings: constants.defaultSettings,
   artifacts: [
@@ -216,8 +218,11 @@ const defaultConfig = {
     {id: artifacts.devtoolsLogs, gatherer: 'devtools-log-compat'},
     {id: artifacts.traces, gatherer: 'trace-compat'},
 
-    // FullPageScreenshot comes at the very end so all other node analysis is captured.
+    // FullPageScreenshot comes at the end so all other node analysis is captured.
     {id: artifacts.FullPageScreenshot, gatherer: 'full-page-screenshot'},
+
+    // BFCacheErrors comes at the very end because it can perform a page navigation.
+    {id: artifacts.BFCacheFailures, gatherer: 'bf-cache-failures'},
   ],
   audits: [
     'is-on-https',
@@ -274,7 +279,6 @@ const defaultConfig = {
     'valid-source-maps',
     'preload-lcp-image',
     'csp-xss',
-    'full-page-screenshot',
     'script-treemap-data',
     'manual/pwa-cross-browser',
     'manual/pwa-page-transitions',
@@ -373,6 +377,7 @@ const defaultConfig = {
     'seo/canonical',
     'seo/manual/structured-data',
     'work-during-interaction',
+    'bf-cache',
   ],
   groups: {
     'metrics': {
@@ -461,14 +466,14 @@ const defaultConfig = {
       supportedModes: ['navigation', 'timespan', 'snapshot'],
       auditRefs: [
         {id: 'first-contentful-paint', weight: 10, group: 'metrics', acronym: 'FCP', relevantAudits: metricsToAudits.fcpRelevantAudits},
-        {id: 'interactive', weight: 10, group: 'metrics', acronym: 'TTI'},
-        {id: 'speed-index', weight: 10, group: 'metrics', acronym: 'SI'},
-        {id: 'total-blocking-time', weight: 30, group: 'metrics', acronym: 'TBT', relevantAudits: metricsToAudits.tbtRelevantAudits},
         {id: 'largest-contentful-paint', weight: 25, group: 'metrics', acronym: 'LCP', relevantAudits: metricsToAudits.lcpRelevantAudits},
-        {id: 'cumulative-layout-shift', weight: 15, group: 'metrics', acronym: 'CLS', relevantAudits: metricsToAudits.clsRelevantAudits},
+        {id: 'total-blocking-time', weight: 30, group: 'metrics', acronym: 'TBT', relevantAudits: metricsToAudits.tbtRelevantAudits},
+        {id: 'cumulative-layout-shift', weight: 25, group: 'metrics', acronym: 'CLS', relevantAudits: metricsToAudits.clsRelevantAudits},
+        {id: 'speed-index', weight: 10, group: 'metrics', acronym: 'SI'},
         {id: 'experimental-interaction-to-next-paint', weight: 0, group: 'metrics', acronym: 'INP', relevantAudits: metricsToAudits.inpRelevantAudits},
 
         // These are our "invisible" metrics. Not displayed, but still in the LHR.
+        {id: 'interactive', weight: 0, group: 'hidden', acronym: 'TTI'},
         {id: 'max-potential-fid', weight: 0, group: 'hidden'},
         {id: 'first-meaningful-paint', weight: 0, acronym: 'FMP', group: 'hidden'},
 
@@ -512,9 +517,9 @@ const defaultConfig = {
         {id: 'non-composited-animations', weight: 0},
         {id: 'unsized-images', weight: 0},
         {id: 'viewport', weight: 0},
-        {id: 'no-unload-listeners', weight: 0},
         {id: 'uses-responsive-images-snapshot', weight: 0},
         {id: 'work-during-interaction', weight: 0},
+        {id: 'bf-cache', weight: 0},
 
         // Budget audits.
         {id: 'performance-budget', weight: 0, group: 'budgets'},
@@ -617,6 +622,7 @@ const defaultConfig = {
         {id: 'doctype', weight: 1, group: 'best-practices-browser-compat'},
         {id: 'charset', weight: 1, group: 'best-practices-browser-compat'},
         // General Group
+        {id: 'no-unload-listeners', weight: 1, group: 'best-practices-general'},
         {id: 'js-libraries', weight: 0, group: 'best-practices-general'},
         {id: 'deprecations', weight: 1, group: 'best-practices-general'},
         {id: 'errors-in-console', weight: 1, group: 'best-practices-general'},

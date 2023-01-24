@@ -8,7 +8,7 @@ import jsdom from 'jsdom';
 
 import {ElementScreenshotRenderer} from '../../renderer/element-screenshot-renderer.js';
 import {Util} from '../../renderer/util.js';
-import {I18n} from '../../renderer/i18n.js';
+import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {DOM} from '../../renderer/dom.js';
 
 /**
@@ -27,7 +27,7 @@ describe('ElementScreenshotRenderer', () => {
   let dom;
 
   before(() => {
-    Util.i18n = new I18n('en', {...Util.UIStrings});
+    Util.i18n = new I18nFormatter('en');
 
     const {document} = new jsdom.JSDOM().window;
     dom = new DOM(document);

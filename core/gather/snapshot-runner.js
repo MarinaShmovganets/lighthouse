@@ -13,14 +13,15 @@ import {initializeConfig} from '../config/config.js';
 import {getBaseArtifacts, finalizeArtifacts} from './base-artifacts.js';
 
 /**
- * @param {{page: LH.Puppeteer.Page, config?: LH.Config.Json, flags?: LH.Flags}} options
+ * @param {LH.Puppeteer.Page} page
+ * @param {{config?: LH.Config, flags?: LH.Flags}} [options]
  * @return {Promise<LH.Gatherer.FRGatherResult>}
  */
-async function snapshotGather(options) {
-  const {page, flags = {}} = options;
+async function snapshotGather(page, options = {}) {
+  const {flags = {}, config} = options;
   log.setLevel(flags.logLevel || 'error');
 
-  const {config} = await initializeConfig('snapshot', options.config, flags);
+  const {resolvedConfig} = await initializeConfig('snapshot', config, flags);
   const driver = new Driver(page);
   await driver.connect();
 
@@ -28,15 +29,16 @@ async function snapshotGather(options) {
   const computedCache = new Map();
   const url = await driver.url();
 
-  const runnerOptions = {config, computedCache};
+  const runnerOptions = {resolvedConfig, computedCache};
   const artifacts = await Runner.gather(
     async () => {
-      const baseArtifacts = await getBaseArtifacts(config, driver, {gatherMode: 'snapshot'});
+      const baseArtifacts =
+        await getBaseArtifacts(resolvedConfig, driver, {gatherMode: 'snapshot'});
       baseArtifacts.URL = {
         finalDisplayedUrl: url,
       };
 
-      const artifactDefinitions = config.artifacts || [];
+      const artifactDefinitions = resolvedConfig.artifacts || [];
       const artifactState = getEmptyArtifactState();
       await collectPhaseArtifacts({
         phase: 'getArtifact',
@@ -47,7 +49,7 @@ async function snapshotGather(options) {
         artifactDefinitions,
         artifactState,
         computedCache,
-        settings: config.settings,
+        settings: resolvedConfig.settings,
       });
 
       await driver.disconnect();

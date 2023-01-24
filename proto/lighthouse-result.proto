@@ -229,6 +229,9 @@ message LighthouseResult {
 
   // URL displayed on the page after Lighthouse finishes.
   string final_displayed_url = 18;
+
+  // Screenshot data of the full page, along with node rects relevant to the audit results.
+  google.protobuf.Value full_page_screenshot = 19;
 }
 
 // Message containing a category
@@ -579,6 +582,9 @@ message I18n {
 
     // This label is for a button that will show the user a trace of the page.
     string view_original_trace_label = 59;
+
+    // Label for a row in a table that shows the screen emulation used
+    string runtime_settings_screen_emulation = 60;
   }
 
   // The message holding all formatted strings used in the renderer.

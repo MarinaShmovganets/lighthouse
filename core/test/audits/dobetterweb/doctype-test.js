@@ -4,7 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {strict as assert} from 'assert';
+import assert from 'assert/strict';
 
 import Audit from '../../../audits/dobetterweb/doctype.js';
 
@@ -30,6 +30,24 @@ describe('DOBETTERWEB: doctype audit', () => {
     assert.equal(auditResult.score, 0);
     expect(auditResult.explanation)
         .toBeDisplayString('Document contains a doctype that triggers quirks-mode');
+  });
+
+  it('fails when document is in limited-quirks-mode', () => {
+    const auditResult = Audit.audit({
+      // eg `<!DOCTYPE html foo>`. https://github.com/GoogleChrome/lighthouse/issues/10030
+      Doctype: {
+        name: 'html',
+        publicId: '-//W3C//DTD HTML 4.01 Transitional//EN',
+        systemId: 'http://www.w3.org/TR/html4/loose.dtd',
+        documentCompatMode: 'CSS1Compat',
+      },
+      InspectorIssues: {
+        quirksModeIssue: [{isLimitedQuirksMode: true}],
+      },
+    });
+    assert.equal(auditResult.score, 0);
+    expect(auditResult.explanation)
+        .toBeDisplayString('Document contains a doctype that triggers limited-quirks-mode');
   });
 
   it('fails when the value of the name attribute is a value other than "html"', () => {
@@ -72,12 +90,25 @@ describe('DOBETTERWEB: doctype audit', () => {
     expect(auditResult.explanation).toBeDisplayString('Expected systemId to be an empty string');
   });
 
-  it('succeeds when document contains a doctype, and the name value is "html"', () => {
+  it('succeeds when document is regular html doctype', () => {
     const auditResult = Audit.audit({
       Doctype: {
         name: 'html',
         publicId: '',
         systemId: '',
+        documentCompatMode: 'CSS1Compat',
+      },
+    });
+    assert.equal(auditResult.score, 1);
+  });
+
+  // eslint-disable-next-line max-len
+  it('succeeds when document is CSS1Compat, did not detect limit-quirks-mode, and regardless of doctype values seen', () => {
+    const auditResult = Audit.audit({
+      Doctype: {
+        name: 'html',
+        publicId: '-//W3C//DTD HTML 4.01 Transitional//EN',
+        systemId: 'http://www.w3.org/TR/html4/loose.dtd',
         documentCompatMode: 'CSS1Compat',
       },
     });
