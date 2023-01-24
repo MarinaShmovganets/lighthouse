@@ -155,7 +155,7 @@ declare module Result {
 
   /**
    * Entity classification for the run, for resolving URLs/items to entities in report.
-   * The two lookup tables (LUT) below provide space-optimized, O(1) index lookup into entities.
+   * The two lookup tables (LUT) below provide space-optimized, O(1) index lookup into entities.list.
    */
   interface Entities {
     /** All entities (1st and 3rd party) discovered during the run */
