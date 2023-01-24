@@ -932,7 +932,7 @@ declare module Artifacts {
   }
 
   interface EntityClassification {
-    urlsByEntity: Map<Entity, Array<string>>;
+    urlsByEntity: Map<Entity, Set<string>>;
     entityByUrl: Map<string, Entity>;
     firstParty?: Entity;
 

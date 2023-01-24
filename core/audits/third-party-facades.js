@@ -189,6 +189,7 @@ class ThirdPartyFacades extends Audit {
         transferSize: entitySummary.transferSize,
         blockingTime: entitySummary.blockingTime,
         subItems: {type: 'subitems', items},
+        // Add entity manually since facades don't have a single `url`.
         entity: entity.name,
       });
     }

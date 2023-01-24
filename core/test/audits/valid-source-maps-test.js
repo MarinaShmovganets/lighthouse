@@ -53,6 +53,8 @@ describe('Valid source maps audit', () => {
       devtoolsLogs: {
         defaultPass: networkRecordsToDevtoolsLog([
           {url: 'https://example.com'},
+          {url: 'https://example.com/script1.min.js'},
+          {url: 'https://example.com/script2.min.js'},
         ]),
       },
     };

@@ -54,7 +54,7 @@ class EntityClassification {
     const madeUpEntityCache = new Map();
     /** @type {Map<string, LH.Artifacts.Entity>} */
     const entityByUrl = new Map();
-    /** @type {Map<LH.Artifacts.Entity, Array<string>>} */
+    /** @type {Map<LH.Artifacts.Entity, Set<string>>} */
     const urlsByEntity = new Map();
 
     for (const record of networkRecords) {
@@ -65,8 +65,8 @@ class EntityClassification {
         EntityClassification.makeUpAnEntity(madeUpEntityCache, url);
       if (!entity) continue;
 
-      const entityURLs = urlsByEntity.get(entity) || [];
-      entityURLs.push(url);
+      const entityURLs = urlsByEntity.get(entity) || new Set();
+      entityURLs.add(url);
       urlsByEntity.set(entity, entityURLs);
       entityByUrl.set(url, entity);
     }
@@ -84,7 +84,9 @@ class EntityClassification {
      * @return {boolean}
      */
     function isFirstParty(url) {
-      return entityByUrl.get(url) === firstParty;
+      const entityUrl = entityByUrl.get(url);
+      if (!entityUrl) throw new Error('A url not in devtoolsLog was used for first-party check.');
+      return entityUrl === firstParty;
     }
 
     return {

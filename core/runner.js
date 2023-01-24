@@ -112,8 +112,7 @@ class Runner {
         categories,
         categoryGroups: resolvedConfig.groups || undefined,
         stackPacks: stackPacks.getStackPacks(artifacts.Stacks),
-        entities: await Runner.getEntityClassification(artifacts,
-          {options: {}, computedCache, settings}),
+        entities: await Runner.getEntityClassification(artifacts, {computedCache}),
         fullPageScreenshot: resolvedConfig.settings.disableFullPageScreenshot ?
           undefined : artifacts.FullPageScreenshot,
         timing: this._getTiming(artifacts),
@@ -145,7 +144,7 @@ class Runner {
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @param {LH.Audit.Context} context
+   * @param {LH.Artifacts.ComputedContext} context
    */
   static async getEntityClassification(artifacts, context) {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
