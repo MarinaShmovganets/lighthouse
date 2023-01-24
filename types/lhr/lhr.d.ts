@@ -57,7 +57,7 @@ interface Result {
   /** An array containing the result of all stack packs. */
   stackPacks?: Result.StackPack[];
   /** All the origins encountered during this Lighthouse run, and information about what web property (aka "entity") they belong to. Won't be present for snapshot mode. */
-  entityClassification?: Result.EntityClassification;
+  entities?: Result.Entities;
   /** Screenshot taken of the full page, with node rects referencing audit results. If there was an error with collection, this is null. If disabled via the disableFullPageScreenshot setting, this is undefined. */
   fullPageScreenshot?: Result.FullPageScreenshot | null;
 }
@@ -155,11 +155,11 @@ declare module Result {
 
   /**
    * Entity classification for the run, for resolving URLs/items to entities in report.
-   * The two lookup tables (LUT) below provide space-optimized, O(1) index lookup into entities.
+   * The two lookup tables (LUT) below provide space-optimized, O(1) index lookup into entities.list.
    */
-  interface EntityClassification {
+  interface Entities {
     /** All entities (1st and 3rd party) discovered during the run */
-    entities: Array<Entity>;
+    list: Array<LhrEntity>;
     /** Name of the first-party entity */
     firstParty?: string;
     /** Entity-name to entity index lookup table  */
@@ -171,7 +171,7 @@ declare module Result {
   /**
    * An entity that's either recognized by third-party-web or made up by Lighthouse.
    */
-  interface Entity {
+  interface LhrEntity {
     /** Name of the entity. Maps to third-party-web unique name for recognized entities and a root domain name for the unrecognized. */
     name: string;
     /** Homepage URL for a recognized entity, if available in third-party-web. */

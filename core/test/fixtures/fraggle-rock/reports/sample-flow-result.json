@@ -4206,8 +4206,8 @@
             }
           }
         ],
-        "entityClassification": {
-          "entities": [
+        "entities": {
+          "list": [
             {
               "name": "mikescerealshack.co",
               "isFirstParty": true,
@@ -9815,8 +9815,8 @@
           }
         },
         "stackPacks": [],
-        "entityClassification": {
-          "entities": [
+        "entities": {
+          "list": [
             {
               "name": "mikescerealshack.co",
               "isFirstParty": true,
@@ -20023,8 +20023,8 @@
             }
           }
         ],
-        "entityClassification": {
-          "entities": [
+        "entities": {
+          "list": [
             {
               "name": "mikescerealshack.co",
               "isFirstParty": true,

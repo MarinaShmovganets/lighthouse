@@ -234,7 +234,7 @@ message LighthouseResult {
   google.protobuf.Value full_page_screenshot = 19;
 
   // Entity classification data.
-  EntityClassification entityClassification = 20;
+  Entities entities = 20;
 }
 
 // Message containing a category
@@ -615,9 +615,9 @@ message StackPack {
 }
 
 // Message containing Entity Classification.
-message EntityClassification {
+message Entities {
   // List of entities.
-  repeated Entity entities = 1;
+  repeated LhrEntity list = 1;
   
   // Name of the first-party entity.
   string firstParty = 2;
@@ -630,7 +630,7 @@ message EntityClassification {
 }
 
 // Message containing an Entity.
-message Entity {
+message LhrEntity {
   // Name of the entity.
   string name = 1;
   
