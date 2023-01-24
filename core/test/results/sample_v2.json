@@ -8378,7 +8378,7 @@
       "runtimeMobileEmulation": "Emulated Moto G4",
       "runtimeNoEmulation": "No emulation",
       "runtimeSettingsAxeVersion": "Axe version",
-      "runtimeSettingsBenchmark": "CPU/Memory Power",
+      "runtimeSettingsBenchmark": "Unthrottled CPU/Memory Power",
       "runtimeSettingsCPUThrottling": "CPU throttling",
       "runtimeSettingsDevice": "Device",
       "runtimeSettingsNetworkThrottling": "Network throttling",

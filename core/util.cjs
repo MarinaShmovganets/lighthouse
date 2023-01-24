@@ -797,7 +797,7 @@ const UIStrings = {
   /** Label for a row in a table that shows the User Agent that was used to send out all network requests during the Lighthouse run. */
   runtimeSettingsUANetwork: 'User agent (network)',
   /** Label for a row in a table that shows the estimated CPU power of the machine running Lighthouse. Example row values: 532, 1492, 783. */
-  runtimeSettingsBenchmark: 'CPU/Memory Power',
+  runtimeSettingsBenchmark: 'Unthrottled CPU/Memory Power',
   /** Label for a row in a table that shows the version of the Axe library used. Example row values: 2.1.0, 3.2.3 */
   runtimeSettingsAxeVersion: 'Axe version',
   /** Label for a row in a table that shows the screen resolution and DPR that was emulated for the Lighthouse run. Example values: '800x600, DPR: 3' */
