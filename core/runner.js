@@ -301,7 +301,6 @@ class Runner {
       ]);
       for (const k of keys) {
         if (!isDeepEqual(normalizedGatherSettings[k], normalizedAuditSettings[k])) {
-          console.log(normalizedGatherSettings[k], normalizedAuditSettings[k]);
           throw new Error(
             `Cannot change settings between gathering and auditing. Difference found at: ${k}`);
         }
