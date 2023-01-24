@@ -617,7 +617,7 @@ message StackPack {
 // Message containing Entity Classification.
 message Entities {
   // List of entities.
-  repeated Entity list = 1;
+  repeated LhrEntity list = 1;
   
   // Name of the first-party entity.
   string firstParty = 2;
@@ -630,7 +630,7 @@ message Entities {
 }
 
 // Message containing an Entity.
-message Entity {
+message LhrEntity {
   // Name of the entity.
   string name = 1;
   
