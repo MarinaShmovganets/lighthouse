@@ -112,7 +112,7 @@ class Runner {
         categories,
         categoryGroups: resolvedConfig.groups || undefined,
         stackPacks: stackPacks.getStackPacks(artifacts.Stacks),
-        entityClassification: await Runner.getEntityClassification(artifacts,
+        entities: await Runner.getEntityClassification(artifacts,
           {options: {}, computedCache, settings}),
         fullPageScreenshot: resolvedConfig.settings.disableFullPageScreenshot ?
           undefined : artifacts.FullPageScreenshot,
@@ -153,7 +153,7 @@ class Runner {
     const classifiedEntities = await EntityClassification.request(
       {URL: artifacts.URL, devtoolsLog}, context);
 
-    /** @type {Array<LH.Result.Entity>} */
+    /** @type {Array<LH.Result.LhrEntity>} */
     const entities = [];
     /** @type {Record<string, number>} */
     const entityIndexByOrigin = {};
@@ -161,7 +161,7 @@ class Runner {
     const entityIndexByName = {};
 
     for (const [entity, entityUrls] of classifiedEntities.urlsByEntity) {
-      /** @type {LH.Result.Entity} */
+      /** @type {LH.Result.LhrEntity} */
       const shortEntity = {
         name: entity.name,
         homepage: entity.homepage,
@@ -181,7 +181,7 @@ class Runner {
     }
 
     return {
-      entities,
+      list: entities,
       firstParty: classifiedEntities.firstParty?.name,
       entityIndexByOrigin,
       entityIndexByName,

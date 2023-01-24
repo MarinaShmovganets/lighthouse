@@ -6330,8 +6330,8 @@
       }
     }
   ],
-  "entityClassification": {
-    "entities": [
+  "entities": {
+    "list": [
       {
         "name": "localhost",
         "isFirstParty": true,
