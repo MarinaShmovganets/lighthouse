@@ -171,11 +171,11 @@ class Runner {
       if (entity.isUnrecognized) shortEntity.isUnrecognized = true;
 
       const id = entities.push(shortEntity) - 1;
-      entityUrls.forEach(url => {
+      for (const url of entityUrls) {
         const origin = UrlUtils.getOrigin(url);
-        if (!origin) return;
+        if (!origin) continue;
         entityIndexByOrigin[origin] = id;
-      });
+      }
       entityIndexByName[shortEntity.name] = id;
     }
 
