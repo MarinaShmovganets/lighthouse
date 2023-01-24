@@ -9,7 +9,7 @@ import assert from 'assert/strict';
 import jsdom from 'jsdom';
 
 import {Util} from '../../renderer/util.js';
-import {I18n} from '../../renderer/i18n.js';
+import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {PerformanceCategoryRenderer} from '../../renderer/performance-category-renderer.js';
@@ -23,7 +23,7 @@ describe('PerfCategoryRenderer', () => {
   let sampleResults;
 
   before(() => {
-    Util.i18n = new I18n('en', {...Util.UIStrings});
+    Util.i18n = new I18nFormatter('en');
 
     const {document} = new jsdom.JSDOM().window;
     const dom = new DOM(document);
@@ -69,11 +69,10 @@ describe('PerfCategoryRenderer', () => {
       Array.from(timelineElements).map(el => el.id),
       [
         'first-contentful-paint',
-        'interactive',
-        'speed-index',
-        'total-blocking-time',
         'largest-contentful-paint',
+        'total-blocking-time',
         'cumulative-layout-shift',
+        'speed-index',
       ]
     );
   });
@@ -322,11 +321,11 @@ describe('PerfCategoryRenderer', () => {
       expect(url.hash.split('&')).toMatchInlineSnapshot(`
 Array [
   "#FCP=6844",
-  "TTI=8191",
-  "SI=8114",
-  "TBT=1221",
   "LCP=6844",
+  "TBT=1221",
   "CLS=0",
+  "SI=8114",
+  "TTI=8191",
   "FMP=6844",
 ]
 `);
@@ -343,11 +342,11 @@ Array [
         expect(url.hash.split('&')).toMatchInlineSnapshot(`
 Array [
   "#FCP=6844",
-  "TTI=8191",
-  "SI=8114",
-  "TBT=1221",
   "LCP=6844",
+  "TBT=1221",
   "CLS=0.14",
+  "SI=8114",
+  "TTI=8191",
   "FMP=6844",
   "device=mobile",
   "version=6.0.0",

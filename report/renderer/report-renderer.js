@@ -23,7 +23,7 @@
 import {CategoryRenderer} from './category-renderer.js';
 import {DetailsRenderer} from './details-renderer.js';
 import {ElementScreenshotRenderer} from './element-screenshot-renderer.js';
-import {I18n} from './i18n.js';
+import {I18nFormatter} from './i18n-formatter.js';
 import {PerformanceCategoryRenderer} from './performance-category-renderer.js';
 import {PwaCategoryRenderer} from './pwa-category-renderer.js';
 import {Util} from './util.js';
@@ -108,7 +108,7 @@ export class ReportRenderer {
 
     this._renderMetaBlock(report, footer);
 
-    this._dom.find('.lh-footer__version_issue', footer).textContent = Util.i18n.strings.footerIssue;
+    this._dom.find('.lh-footer__version_issue', footer).textContent = Util.strings.footerIssue;
     this._dom.find('.lh-footer__version', footer).textContent = report.lighthouseVersion;
     return footer;
   }
@@ -128,15 +128,15 @@ export class ReportRenderer {
     const axeVersion = report.environment.credits?.['axe-core'];
 
     const devicesTooltipTextLines = [
-      `${Util.i18n.strings.runtimeSettingsBenchmark}: ${benchmarkIndex}`,
-      `${Util.i18n.strings.runtimeSettingsCPUThrottling}: ${envValues.cpuThrottling}`,
+      `${Util.strings.runtimeSettingsBenchmark}: ${benchmarkIndex}`,
+      `${Util.strings.runtimeSettingsCPUThrottling}: ${envValues.cpuThrottling}`,
     ];
     if (envValues.screenEmulation) {
       devicesTooltipTextLines.push(
-        `${Util.i18n.strings.runtimeSettingsScreenEmulation}: ${envValues.screenEmulation}`);
+        `${Util.strings.runtimeSettingsScreenEmulation}: ${envValues.screenEmulation}`);
     }
     if (axeVersion) {
-      devicesTooltipTextLines.push(`${Util.i18n.strings.runtimeSettingsAxeVersion}: ${axeVersion}`);
+      devicesTooltipTextLines.push(`${Util.strings.runtimeSettingsAxeVersion}: ${axeVersion}`);
     }
 
     // [CSS icon class, textContent, tooltipText]
@@ -147,16 +147,16 @@ export class ReportRenderer {
         `${envValues.deviceEmulation} with Lighthouse ${report.lighthouseVersion}`,
         devicesTooltipTextLines.join('\n')],
       ['samples-one',
-        Util.i18n.strings.runtimeSingleLoad,
-        Util.i18n.strings.runtimeSingleLoadTooltip],
+        Util.strings.runtimeSingleLoad,
+        Util.strings.runtimeSingleLoadTooltip],
       ['stopwatch',
-        Util.i18n.strings.runtimeAnalysisWindow],
+        Util.strings.runtimeAnalysisWindow],
       ['networkspeed',
         `${envValues.summary}`,
-        `${Util.i18n.strings.runtimeSettingsNetworkThrottling}: ${envValues.networkThrottling}`],
+        `${Util.strings.runtimeSettingsNetworkThrottling}: ${envValues.networkThrottling}`],
       ['chrome',
         `Using ${chromeVer}` + (channel ? ` with ${channel}` : ''),
-        `${Util.i18n.strings.runtimeSettingsUANetwork}: "${report.environment.networkUserAgent}"`],
+        `${Util.strings.runtimeSettingsUANetwork}: "${report.environment.networkUserAgent}"`],
     ];
 
     const metaItemsEl = this._dom.find('.lh-meta__items', footer);
@@ -184,7 +184,7 @@ export class ReportRenderer {
 
     const container = this._dom.createComponent('warningsToplevel');
     const message = this._dom.find('.lh-warnings__msg', container);
-    message.textContent = Util.i18n.strings.toplevelWarningsMessage;
+    message.textContent = Util.strings.toplevelWarningsMessage;
 
     const warnings = [];
     for (const warningString of report.runWarnings) {
@@ -260,12 +260,8 @@ export class ReportRenderer {
    * @return {!DocumentFragment}
    */
   _renderReport(report) {
-    const i18n = new I18n(report.configSettings.locale, {
-      // Set missing renderer strings to default (english) values.
-      ...Util.UIStrings,
-      ...report.i18n.rendererFormattedStrings,
-    });
-    Util.i18n = i18n;
+    Util.applyStrings(report.i18n.rendererFormattedStrings);
+    Util.i18n = new I18nFormatter(report.configSettings.locale);
     Util.reportJson = report;
 
     const detailsRenderer = new DetailsRenderer(this._dom, {

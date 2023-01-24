@@ -4,6 +4,8 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+import {Protocol as Crdp} from 'devtools-protocol/types/protocol.js';
+
 import {parseManifest} from '../core/lib/manifest-parser.js';
 import {Simulator} from '../core/lib/dependency-graph/simulator/simulator.js';
 import {LighthouseError} from '../core/lib/lh-error.js';
@@ -12,12 +14,12 @@ import speedline from 'speedline-core';
 import TextSourceMap from '../core/lib/cdt/generated/SourceMap.js';
 import {ArbitraryEqualityMap} from '../core/lib/arbitrary-equality-map.js';
 import type { TaskNode as _TaskNode } from '../core/lib/tracehouse/main-thread-tasks.js';
-import AuditDetails from './lhr/audit-details'
-import Config from './config';
-import Gatherer from './gatherer';
-import {IcuMessage} from './lhr/i18n';
-import LHResult from './lhr/lhr'
-import Protocol from './protocol';
+import AuditDetails from './lhr/audit-details.js'
+import Config from './config.js';
+import Gatherer from './gatherer.js';
+import {IcuMessage} from './lhr/i18n.js';
+import LHResult from './lhr/lhr.js'
+import Protocol from './protocol.js';
 import Util from './utility-types.js';
 import Audit from './audit.js';
 
@@ -123,7 +125,7 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   /** Array of all URLs cached in CacheStorage. */
   CacheContents: string[];
   /** CSS coverage information for styles used by page's final state. */
-  CSSUsage: {rules: LH.Crdp.CSS.RuleUsage[], stylesheets: Artifacts.CSSStyleSheetInfo[]};
+  CSSUsage: {rules: Crdp.CSS.RuleUsage[], stylesheets: Artifacts.CSSStyleSheetInfo[]};
   /** The primary log of devtools protocol activity. Used in Fraggle Rock gathering. */
   DevtoolsLog: DevtoolsLog;
   /** Information on the document's doctype(or null if not present), specifically the name, publicId, and systemId.
@@ -149,7 +151,7 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   InstallabilityErrors: Artifacts.InstallabilityErrors;
   /** JS coverage information for code used during audit. Keyed by script id. */
   // 'url' is excluded because it can be overriden by a magic sourceURL= comment, which makes keeping it a dangerous footgun!
-  JsUsage: Record<string, Omit<LH.Crdp.Profiler.ScriptCoverage, 'url'>>;
+  JsUsage: Record<string, Omit<Crdp.Profiler.ScriptCoverage, 'url'>>;
   /** Parsed version of the page's Web App Manifest, or null if none found. */
   Manifest: Artifacts.Manifest | null;
   /** The URL loaded with interception */
@@ -165,7 +167,7 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   /** Information on all scripts in the page. */
   Scripts: Artifacts.Script[];
   /** Version information for all ServiceWorkers active after the first page load. */
-  ServiceWorker: {versions: LH.Crdp.ServiceWorker.ServiceWorkerVersion[], registrations: LH.Crdp.ServiceWorker.ServiceWorkerRegistration[]};
+  ServiceWorker: {versions: Crdp.ServiceWorker.ServiceWorkerVersion[], registrations: Crdp.ServiceWorker.ServiceWorkerRegistration[]};
   /** Source maps of scripts executed in the page. */
   SourceMaps: Array<Artifacts.SourceMap>;
   /** Information on detected tech stacks (e.g. JS libraries) used by the page. */
@@ -242,7 +244,7 @@ declare module Artifacts {
   }
 
   interface CSSStyleSheetInfo {
-    header: LH.Crdp.CSS.CSSStyleSheetHeader;
+    header: Crdp.CSS.CSSStyleSheetHeader;
     content: string;
   }
 
@@ -311,7 +313,7 @@ declare module Artifacts {
 
   interface PasswordInputsWithPreventedPaste {node: NodeDetails}
 
-  interface Script extends Omit<LH.Crdp.Debugger.ScriptParsedEvent, 'url'|'embedderName'> {
+  interface Script extends Omit<Crdp.Debugger.ScriptParsedEvent, 'url'|'embedderName'> {
     /**
      * Set by a sourceURL= magic comment if present, otherwise this is the same as the URL.
      * Use this field for presentational purposes only.
@@ -386,7 +388,7 @@ declare module Artifacts {
 
   interface Bundle {
     rawMap: RawSourceMap;
-    script: LH.Artifacts.Script;
+    script: Artifacts.Script;
     map: TextSourceMap;
     sizes: {
       // TODO(cjamcl): Rename to `sources`.
@@ -410,15 +412,15 @@ declare module Artifacts {
     node: NodeDetails
     onclick: string
     listeners?: Array<{
-      type: LH.Crdp.DOMDebugger.EventListener['type']
+      type: Crdp.DOMDebugger.EventListener['type']
     }>
   }
 
   type BFCacheReasonMap = {
-    [key in LH.Crdp.Page.BackForwardCacheNotRestoredReason]?: string[];
+    [key in Crdp.Page.BackForwardCacheNotRestoredReason]?: string[];
   };
 
-  type BFCacheNotRestoredReasonsTree = Record<LH.Crdp.Page.BackForwardCacheNotRestoredReasonType, BFCacheReasonMap>;
+  type BFCacheNotRestoredReasonsTree = Record<Crdp.Page.BackForwardCacheNotRestoredReasonType, BFCacheReasonMap>;
 
   interface BFCacheFailure {
     notRestoredReasonsTree: BFCacheNotRestoredReasonsTree;
@@ -459,10 +461,10 @@ declare module Artifacts {
       cssRule?: {
         type: 'Regular' | 'Inline' | 'Attributes';
         range?: {startLine: number, startColumn: number};
-        parentRule?: {origin: LH.Crdp.CSS.StyleSheetOrigin, selectors: {text: string}[]};
+        parentRule?: {origin: Crdp.CSS.StyleSheetOrigin, selectors: {text: string}[]};
         styleSheetId?: string;
-        stylesheet?: LH.Crdp.CSS.CSSStyleSheetHeader;
-        cssProperties?: Array<LH.Crdp.CSS.CSSProperty>;
+        stylesheet?: Crdp.CSS.CSSStyleSheetHeader;
+        cssProperties?: Array<Crdp.CSS.CSSProperty>;
       }
     }>
   }
@@ -471,7 +473,7 @@ declare module Artifacts {
   type Manifest = ReturnType<typeof parseManifest>;
 
   interface InstallabilityErrors {
-    errors: LH.Crdp.Page.InstallabilityError[];
+    errors: Crdp.Page.InstallabilityError[];
   }
 
   interface ImageElement {
@@ -598,22 +600,22 @@ declare module Artifacts {
   }
 
   interface InspectorIssues {
-    attributionReportingIssue: LH.Crdp.Audits.AttributionReportingIssueDetails[];
-    blockedByResponseIssue: LH.Crdp.Audits.BlockedByResponseIssueDetails[];
-    clientHintIssue: LH.Crdp.Audits.ClientHintIssueDetails[];
-    contentSecurityPolicyIssue: LH.Crdp.Audits.ContentSecurityPolicyIssueDetails[];
-    corsIssue: LH.Crdp.Audits.CorsIssueDetails[];
-    deprecationIssue: LH.Crdp.Audits.DeprecationIssueDetails[];
-    federatedAuthRequestIssue: LH.Crdp.Audits.FederatedAuthRequestIssueDetails[],
-    genericIssue: LH.Crdp.Audits.GenericIssueDetails[];
-    heavyAdIssue: LH.Crdp.Audits.HeavyAdIssueDetails[];
-    lowTextContrastIssue: LH.Crdp.Audits.LowTextContrastIssueDetails[];
-    mixedContentIssue: LH.Crdp.Audits.MixedContentIssueDetails[];
-    navigatorUserAgentIssue: LH.Crdp.Audits.NavigatorUserAgentIssueDetails[];
-    quirksModeIssue: LH.Crdp.Audits.QuirksModeIssueDetails[];
-    cookieIssue: LH.Crdp.Audits.CookieIssueDetails[];
-    sharedArrayBufferIssue: LH.Crdp.Audits.SharedArrayBufferIssueDetails[];
-    twaQualityEnforcement: LH.Crdp.Audits.TrustedWebActivityIssueDetails[];
+    attributionReportingIssue: Crdp.Audits.AttributionReportingIssueDetails[];
+    blockedByResponseIssue: Crdp.Audits.BlockedByResponseIssueDetails[];
+    clientHintIssue: Crdp.Audits.ClientHintIssueDetails[];
+    contentSecurityPolicyIssue: Crdp.Audits.ContentSecurityPolicyIssueDetails[];
+    corsIssue: Crdp.Audits.CorsIssueDetails[];
+    deprecationIssue: Crdp.Audits.DeprecationIssueDetails[];
+    federatedAuthRequestIssue: Crdp.Audits.FederatedAuthRequestIssueDetails[],
+    genericIssue: Crdp.Audits.GenericIssueDetails[];
+    heavyAdIssue: Crdp.Audits.HeavyAdIssueDetails[];
+    lowTextContrastIssue: Crdp.Audits.LowTextContrastIssueDetails[];
+    mixedContentIssue: Crdp.Audits.MixedContentIssueDetails[];
+    navigatorUserAgentIssue: Crdp.Audits.NavigatorUserAgentIssueDetails[];
+    quirksModeIssue: Crdp.Audits.QuirksModeIssueDetails[];
+    cookieIssue: Crdp.Audits.CookieIssueDetails[];
+    sharedArrayBufferIssue: Crdp.Audits.SharedArrayBufferIssueDetails[];
+    twaQualityEnforcement: Crdp.Audits.TrustedWebActivityIssueDetails[];
   }
 
   // Computed artifact types below.
@@ -881,7 +883,7 @@ declare module Artifacts {
     /** Time of the console log in milliseconds since epoch. */
     timestamp: number;
     /** The stack trace of the log/exception, if known. */
-    stackTrace?: LH.Crdp.Runtime.StackTrace;
+    stackTrace?: Crdp.Runtime.StackTrace;
     /** The URL of the log/exception, if known. */
     url?: string;
     /** The script id of the log/exception, if known. */
@@ -912,8 +914,8 @@ declare module Artifacts {
    * deprecations, violations, and more.
    */
   interface ConsoleProtocolLog extends BaseConsoleMessage {
-    source: LH.Crdp.Log.LogEntry['source'],
-    level: LH.Crdp.Log.LogEntry['level'],
+    source: Crdp.Log.LogEntry['source'],
+    level: Crdp.Log.LogEntry['level'],
     eventType: 'protocolLog';
   }
 

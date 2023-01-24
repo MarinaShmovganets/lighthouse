@@ -11,7 +11,6 @@ import * as i18n from '../lib/i18n/i18n.js';
 import {NetworkRecords} from '../computed/network-records.js';
 import {MainResource} from '../computed/main-resource.js';
 import {LoadSimulator} from '../computed/load-simulator.js';
-import {ProcessedTrace} from '../computed/processed-trace.js';
 import {ProcessedNavigation} from '../computed/processed-navigation.js';
 import {PageDependencyGraph} from '../computed/page-dependency-graph.js';
 import {LanternLargestContentfulPaint} from '../computed/metrics/lantern-largest-contentful-paint.js';
@@ -113,14 +112,12 @@ class UsesRelPreconnectAudit extends Audit {
     /** @type {Array<LH.IcuMessage>} */
     const warnings = [];
 
-    const processedTrace = await ProcessedTrace.request(trace, context);
-
     const [networkRecords, mainResource, loadSimulator, processedNavigation, pageGraph] =
       await Promise.all([
         NetworkRecords.request(devtoolsLog, context),
         MainResource.request({devtoolsLog, URL: artifacts.URL}, context),
         LoadSimulator.request({devtoolsLog, settings}, context),
-        ProcessedNavigation.request(processedTrace, context),
+        ProcessedNavigation.request(trace, context),
         PageDependencyGraph.request({trace, devtoolsLog, URL: artifacts.URL}, context),
       ]);
 
