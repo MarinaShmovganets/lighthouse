@@ -16,7 +16,6 @@
     "cli/**/*.js",
     "core/**/*.js",
     "core/index.cjs",
-    "core/util.cjs",
     "clients/**/*.js",
     "build/**/*.js",
     "./types/**/*.d.ts",
