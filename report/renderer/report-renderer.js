@@ -26,8 +26,8 @@ import {ElementScreenshotRenderer} from './element-screenshot-renderer.js';
 import {I18nFormatter} from './i18n-formatter.js';
 import {PerformanceCategoryRenderer} from './performance-category-renderer.js';
 import {PwaCategoryRenderer} from './pwa-category-renderer.js';
-import {Util} from './util.js';
-
+import {ReportUtils} from './report-utils.js';
+import {Globals} from './report-globals.js';
 
 export class ReportRenderer {
   /**
@@ -67,7 +67,7 @@ export class ReportRenderer {
 
     this._dom.setLighthouseChannel(lhr.configSettings.channel || 'unknown');
 
-    const report = Util.prepareReportResult(lhr);
+    const report = ReportUtils.prepareReportResult(lhr);
 
     this._dom.rootEl.textContent = ''; // Remove previous report.
     this._dom.rootEl.append(this._renderReport(report));
@@ -108,7 +108,7 @@ export class ReportRenderer {
 
     this._renderMetaBlock(report, footer);
 
-    this._dom.find('.lh-footer__version_issue', footer).textContent = Util.strings.footerIssue;
+    this._dom.find('.lh-footer__version_issue', footer).textContent = Globals.strings.footerIssue;
     this._dom.find('.lh-footer__version', footer).textContent = report.lighthouseVersion;
     return footer;
   }
@@ -118,7 +118,7 @@ export class ReportRenderer {
    * @param {DocumentFragment} footer
    */
   _renderMetaBlock(report, footer) {
-    const envValues = Util.getEmulationDescriptions(report.configSettings || {});
+    const envValues = ReportUtils.getEmulationDescriptions(report.configSettings || {});
     const match = report.userAgent.match(/(\w*Chrome\/[\d.]+)/); // \w* to include 'HeadlessChrome'
     const chromeVer = Array.isArray(match)
       ? match[1].replace('/', ' ').replace('Chrome', 'Chromium')
@@ -128,35 +128,35 @@ export class ReportRenderer {
     const axeVersion = report.environment.credits?.['axe-core'];
 
     const devicesTooltipTextLines = [
-      `${Util.strings.runtimeSettingsBenchmark}: ${benchmarkIndex}`,
-      `${Util.strings.runtimeSettingsCPUThrottling}: ${envValues.cpuThrottling}`,
+      `${Globals.strings.runtimeSettingsBenchmark}: ${benchmarkIndex}`,
+      `${Globals.strings.runtimeSettingsCPUThrottling}: ${envValues.cpuThrottling}`,
     ];
     if (envValues.screenEmulation) {
       devicesTooltipTextLines.push(
-        `${Util.strings.runtimeSettingsScreenEmulation}: ${envValues.screenEmulation}`);
+        `${Globals.strings.runtimeSettingsScreenEmulation}: ${envValues.screenEmulation}`);
     }
     if (axeVersion) {
-      devicesTooltipTextLines.push(`${Util.strings.runtimeSettingsAxeVersion}: ${axeVersion}`);
+      devicesTooltipTextLines.push(`${Globals.strings.runtimeSettingsAxeVersion}: ${axeVersion}`);
     }
 
     // [CSS icon class, textContent, tooltipText]
     const metaItems = [
       ['date',
-        `Captured at ${Util.i18n.formatDateTime(report.fetchTime)}`],
+        `Captured at ${Globals.i18n.formatDateTime(report.fetchTime)}`],
       ['devices',
         `${envValues.deviceEmulation} with Lighthouse ${report.lighthouseVersion}`,
         devicesTooltipTextLines.join('\n')],
       ['samples-one',
-        Util.strings.runtimeSingleLoad,
-        Util.strings.runtimeSingleLoadTooltip],
+        Globals.strings.runtimeSingleLoad,
+        Globals.strings.runtimeSingleLoadTooltip],
       ['stopwatch',
-        Util.strings.runtimeAnalysisWindow],
+        Globals.strings.runtimeAnalysisWindow],
       ['networkspeed',
         `${envValues.summary}`,
-        `${Util.strings.runtimeSettingsNetworkThrottling}: ${envValues.networkThrottling}`],
+        `${Globals.strings.runtimeSettingsNetworkThrottling}: ${envValues.networkThrottling}`],
       ['chrome',
         `Using ${chromeVer}` + (channel ? ` with ${channel}` : ''),
-        `${Util.strings.runtimeSettingsUANetwork}: "${report.environment.networkUserAgent}"`],
+        `${Globals.strings.runtimeSettingsUANetwork}: "${report.environment.networkUserAgent}"`],
     ];
 
     const metaItemsEl = this._dom.find('.lh-meta__items', footer);
@@ -184,7 +184,7 @@ export class ReportRenderer {
 
     const container = this._dom.createComponent('warningsToplevel');
     const message = this._dom.find('.lh-warnings__msg', container);
-    message.textContent = Util.strings.toplevelWarningsMessage;
+    message.textContent = Globals.strings.toplevelWarningsMessage;
 
     const warnings = [];
     for (const warningString of report.runWarnings) {
@@ -238,7 +238,7 @@ export class ReportRenderer {
       }
 
 
-      if (Util.isPluginCategory(category.id)) {
+      if (ReportUtils.isPluginCategory(category.id)) {
         pluginGauges.push(categoryGauge);
       } else if (renderer.renderCategoryScore === categoryRenderer.renderCategoryScore) {
         // The renderer for default categories is just the default CategoryRenderer.
@@ -260,9 +260,11 @@ export class ReportRenderer {
    * @return {!DocumentFragment}
    */
   _renderReport(report) {
-    Util.applyStrings(report.i18n.rendererFormattedStrings);
-    Util.i18n = new I18nFormatter(report.configSettings.locale);
-    Util.reportJson = report;
+    Globals.apply({
+      providedStrings: report.i18n.rendererFormattedStrings,
+      i18n: new I18nFormatter(report.configSettings.locale),
+      reportJson: report,
+    });
 
     const detailsRenderer = new DetailsRenderer(this._dom, {
       fullPageScreenshot: report.fullPageScreenshot ?? undefined,

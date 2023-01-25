@@ -11,7 +11,7 @@ import assert from 'assert/strict';
 
 import open from 'open';
 import waitForExpect from 'wait-for-expect';
-import puppeteer from 'puppeteer-core';
+import * as puppeteer from 'puppeteer-core';
 import yargs from 'yargs';
 import {getChromePath} from 'chrome-launcher';
 import log from 'lighthouse-logger';

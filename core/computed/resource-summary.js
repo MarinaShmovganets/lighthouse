@@ -9,7 +9,7 @@ import {makeComputedArtifact} from './computed-artifact.js';
 import {NetworkRecords} from './network-records.js';
 import {NetworkRequest} from '../lib/network-request.js';
 import {Budget} from '../config/budget.js';
-import {Util} from '../util.cjs';
+import {Util} from '../../shared/util.js';
 
 /** @typedef {{count: number, resourceSize: number, transferSize: number}} ResourceEntry */
 

@@ -18,7 +18,7 @@ import MessageParser from 'intl-messageformat-parser';
 import esMain from 'es-main';
 import isDeepEqual from 'lodash/isEqual.js';
 
-import {Util} from '../../util.cjs';
+import {Util} from '../../../shared/util.js';
 import {collectAndBakeCtcStrings} from './bake-ctc-to-lhl.js';
 import {pruneObsoleteLhlMessages} from './prune-obsolete-lhl-messages.js';
 import {countTranslatedMessages} from './count-translated.js';

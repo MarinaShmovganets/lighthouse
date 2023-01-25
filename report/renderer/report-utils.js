@@ -1,89 +1,16 @@
 /**
- * @license
- * Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @license Copyright 2023 The Lighthouse Authors. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-/** @typedef {import('./i18n-formatter').I18nFormatter} I18nFormatter */
+import {Util} from '../../shared/util.js';
+import {Globals} from './report-globals.js';
 
-const ELLIPSIS = '\u2026';
-const NBSP = '\xa0';
-const PASS_THRESHOLD = 0.9;
 const SCREENSHOT_PREFIX = 'data:image/jpeg;base64,';
+const RATINGS = Util.RATINGS;
 
-const RATINGS = {
-  PASS: {label: 'pass', minScore: PASS_THRESHOLD},
-  AVERAGE: {label: 'average', minScore: 0.5},
-  FAIL: {label: 'fail'},
-  ERROR: {label: 'error'},
-};
-
-// 25 most used tld plus one domains (aka public suffixes) from http archive.
-// @see https://github.com/GoogleChrome/lighthouse/pull/5065#discussion_r191926212
-// The canonical list is https://publicsuffix.org/learn/ but we're only using subset to conserve bytes
-const listOfTlds = [
-  'com', 'co', 'gov', 'edu', 'ac', 'org', 'go', 'gob', 'or', 'net', 'in', 'ne', 'nic', 'gouv',
-  'web', 'spb', 'blog', 'jus', 'kiev', 'mil', 'wi', 'qc', 'ca', 'bel', 'on',
-];
-
-class Util {
-  /** @type {I18nFormatter} */
-  // @ts-expect-error: Is set in report renderer.
-  static i18n = null;
-  static strings = /** @type {typeof UIStrings} */ ({});
-
-  /**
-   * @param {Record<string, string>} providedStrings
-   */
-  static applyStrings(providedStrings) {
-    this.strings = {
-      // Set missing renderer strings to default (english) values.
-      ...UIStrings,
-      ...providedStrings,
-    };
-  }
-
-  static get PASS_THRESHOLD() {
-    return PASS_THRESHOLD;
-  }
-
-  static get MS_DISPLAY_VALUE() {
-    return `%10d${NBSP}ms`;
-  }
-
-  /**
-   * If LHR is older than 10.0 it will not have the `finalDisplayedUrl` property.
-   * Old LHRs should have the `finalUrl` property which will work fine for the report.
-   *
-   * @param {LH.Result} lhr
-   */
-  static getFinalDisplayedUrl(lhr) {
-    if (lhr.finalDisplayedUrl) return lhr.finalDisplayedUrl;
-    if (lhr.finalUrl) return lhr.finalUrl;
-    throw new Error('Could not determine final displayed URL');
-  }
-
-  /**
-   * If LHR is older than 10.0 it will not have the `mainDocumentUrl` property.
-   * Old LHRs should have the `finalUrl` property which is the same as `mainDocumentUrl`.
-   *
-   * @param {LH.Result} lhr
-   */
-  static getMainDocumentUrl(lhr) {
-    return lhr.mainDocumentUrl || lhr.finalUrl;
-  }
-
+class ReportUtils {
   /**
    * Returns a new LHR that's reshaped for slightly better ergonomics within the report rendereer.
    * Also, sets up the localized UI strings used within renderer and makes changes to old LHRs to be
@@ -106,8 +33,8 @@ class Util {
       clone.configSettings.formFactor = clone.configSettings.emulatedFormFactor;
     }
 
-    clone.finalDisplayedUrl = this.getFinalDisplayedUrl(clone);
-    clone.mainDocumentUrl = this.getMainDocumentUrl(clone);
+    clone.finalDisplayedUrl = Util.getFinalDisplayedUrl(clone);
+    clone.mainDocumentUrl = Util.getMainDocumentUrl(clone);
 
     for (const audit of Object.values(clone.audits)) {
       // Turn 'not-applicable' (LHR <4.0) and 'not_applicable' (older proto versions)
@@ -261,18 +188,85 @@ class Util {
   }
 
   /**
-   * @param {LH.Result} lhr
-   * @return {LH.Result.FullPageScreenshot=}
+   * @param {LH.Result['configSettings']} settings
+   * @return {!{deviceEmulation: string, screenEmulation?: string, networkThrottling: string, cpuThrottling: string, summary: string}}
    */
-  static getFullPageScreenshot(lhr) {
-    if (lhr.fullPageScreenshot) {
-      return lhr.fullPageScreenshot;
+  static getEmulationDescriptions(settings) {
+    let cpuThrottling;
+    let networkThrottling;
+    let summary;
+
+    const throttling = settings.throttling;
+    const i18n = Globals.i18n;
+    const strings = Globals.strings;
+
+    switch (settings.throttlingMethod) {
+      case 'provided':
+        summary = networkThrottling = cpuThrottling = strings.throttlingProvided;
+        break;
+      case 'devtools': {
+        const {cpuSlowdownMultiplier, requestLatencyMs} = throttling;
+        // eslint-disable-next-line max-len
+        cpuThrottling = `${i18n.formatNumber(cpuSlowdownMultiplier)}x slowdown (DevTools)`;
+        networkThrottling = `${i18n.formatMilliseconds(requestLatencyMs)} HTTP RTT, ` +
+          `${i18n.formatKbps(throttling.downloadThroughputKbps)} down, ` +
+          `${i18n.formatKbps(throttling.uploadThroughputKbps)} up (DevTools)`;
+
+        const isSlow4G = () => {
+          return requestLatencyMs === 150 * 3.75 &&
+            throttling.downloadThroughputKbps === 1.6 * 1024 * 0.9 &&
+            throttling.uploadThroughputKbps === 750 * 0.9;
+        };
+        summary = isSlow4G() ? strings.runtimeSlow4g : strings.runtimeCustom;
+        break;
+      }
+      case 'simulate': {
+        const {cpuSlowdownMultiplier, rttMs, throughputKbps} = throttling;
+        // eslint-disable-next-line max-len
+        cpuThrottling = `${i18n.formatNumber(cpuSlowdownMultiplier)}x slowdown (Simulated)`;
+        networkThrottling = `${i18n.formatMilliseconds(rttMs)} TCP RTT, ` +
+          `${i18n.formatKbps(throughputKbps)} throughput (Simulated)`;
+
+        const isSlow4G = () => {
+          return rttMs === 150 && throughputKbps === 1.6 * 1024;
+        };
+        summary = isSlow4G() ?
+          strings.runtimeSlow4g : strings.runtimeCustom;
+        break;
+      }
+      default:
+        summary = cpuThrottling = networkThrottling = strings.runtimeUnknown;
     }
 
-    // Prior to 10.0.
-    const details = /** @type {LH.Result.FullPageScreenshot=} */ (
-      lhr.audits['full-page-screenshot']?.details);
-    return details;
+    // devtools-entry.js always sets `screenEmulation.disabled` when using mobile emulation,
+    // because we handle the emulation outside of Lighthouse. Since the screen truly is emulated
+    // as a mobile device, ignore `.disabled` in devtools and just check the form factor
+    const isScreenEmulationDisabled = settings.channel === 'devtools' ?
+      false :
+      settings.screenEmulation.disabled;
+    const isScreenEmulationMobile = settings.channel === 'devtools' ?
+      settings.formFactor === 'mobile' :
+      settings.screenEmulation.mobile;
+
+    let deviceEmulation = strings.runtimeMobileEmulation;
+    if (isScreenEmulationDisabled) {
+      deviceEmulation = strings.runtimeNoEmulation;
+    } else if (!isScreenEmulationMobile) {
+      deviceEmulation = strings.runtimeDesktopEmulation;
+    }
+
+    const screenEmulation = isScreenEmulationDisabled ?
+      undefined :
+      // eslint-disable-next-line max-len
+      `${settings.screenEmulation.width}x${settings.screenEmulation.height}, DPR ${settings.screenEmulation.deviceScaleFactor}`;
+
+    return {
+      deviceEmulation,
+      screenEmulation,
+      cpuThrottling,
+      networkThrottling,
+      summary,
+    };
   }
 
   /**
@@ -326,342 +320,6 @@ class Util {
   }
 
   /**
-   * Split a string by markdown code spans (enclosed in `backticks`), splitting
-   * into segments that were enclosed in backticks (marked as `isCode === true`)
-   * and those that outside the backticks (`isCode === false`).
-   * @param {string} text
-   * @return {Array<{isCode: true, text: string}|{isCode: false, text: string}>}
-   */
-  static splitMarkdownCodeSpans(text) {
-    /** @type {Array<{isCode: true, text: string}|{isCode: false, text: string}>} */
-    const segments = [];
-
-    // Split on backticked code spans.
-    const parts = text.split(/`(.*?)`/g);
-    for (let i = 0; i < parts.length; i ++) {
-      const text = parts[i];
-
-      // Empty strings are an artifact of splitting, not meaningful.
-      if (!text) continue;
-
-      // Alternates between plain text and code segments.
-      const isCode = i % 2 !== 0;
-      segments.push({
-        isCode,
-        text,
-      });
-    }
-
-    return segments;
-  }
-
-  /**
-   * Split a string on markdown links (e.g. [some link](https://...)) into
-   * segments of plain text that weren't part of a link (marked as
-   * `isLink === false`), and segments with text content and a URL that did make
-   * up a link (marked as `isLink === true`).
-   * @param {string} text
-   * @return {Array<{isLink: true, text: string, linkHref: string}|{isLink: false, text: string}>}
-   */
-  static splitMarkdownLink(text) {
-    /** @type {Array<{isLink: true, text: string, linkHref: string}|{isLink: false, text: string}>} */
-    const segments = [];
-
-    const parts = text.split(/\[([^\]]+?)\]\((https?:\/\/.*?)\)/g);
-    while (parts.length) {
-      // Shift off the same number of elements as the pre-split and capture groups.
-      const [preambleText, linkText, linkHref] = parts.splice(0, 3);
-
-      if (preambleText) { // Skip empty text as it's an artifact of splitting, not meaningful.
-        segments.push({
-          isLink: false,
-          text: preambleText,
-        });
-      }
-
-      // Append link if there are any.
-      if (linkText && linkHref) {
-        segments.push({
-          isLink: true,
-          text: linkText,
-          linkHref,
-        });
-      }
-    }
-
-    return segments;
-  }
-
-  /**
-   * @param {URL} parsedUrl
-   * @param {{numPathParts?: number, preserveQuery?: boolean, preserveHost?: boolean}=} options
-   * @return {string}
-   */
-  static getURLDisplayName(parsedUrl, options) {
-    // Closure optional properties aren't optional in tsc, so fallback needs undefined  values.
-    options = options || {numPathParts: undefined, preserveQuery: undefined,
-      preserveHost: undefined};
-    const numPathParts = options.numPathParts !== undefined ? options.numPathParts : 2;
-    const preserveQuery = options.preserveQuery !== undefined ? options.preserveQuery : true;
-    const preserveHost = options.preserveHost || false;
-
-    let name;
-
-    if (parsedUrl.protocol === 'about:' || parsedUrl.protocol === 'data:') {
-      // Handle 'about:*' and 'data:*' URLs specially since they have no path.
-      name = parsedUrl.href;
-    } else {
-      name = parsedUrl.pathname;
-      const parts = name.split('/').filter(part => part.length);
-      if (numPathParts && parts.length > numPathParts) {
-        name = ELLIPSIS + parts.slice(-1 * numPathParts).join('/');
-      }
-
-      if (preserveHost) {
-        name = `${parsedUrl.host}/${name.replace(/^\//, '')}`;
-      }
-      if (preserveQuery) {
-        name = `${name}${parsedUrl.search}`;
-      }
-    }
-
-    const MAX_LENGTH = 64;
-    if (parsedUrl.protocol !== 'data:') {
-      // Always elide hexadecimal hash
-      name = name.replace(/([a-f0-9]{7})[a-f0-9]{13}[a-f0-9]*/g, `$1${ELLIPSIS}`);
-      // Also elide other hash-like mixed-case strings
-      name = name.replace(/([a-zA-Z0-9-_]{9})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9-_]{10,}/g,
-        `$1${ELLIPSIS}`);
-      // Also elide long number sequences
-      name = name.replace(/(\d{3})\d{6,}/g, `$1${ELLIPSIS}`);
-      // Merge any adjacent ellipses
-      name = name.replace(/\u2026+/g, ELLIPSIS);
-
-      // Elide query params first
-      if (name.length > MAX_LENGTH && name.includes('?')) {
-        // Try to leave the first query parameter intact
-        name = name.replace(/\?([^=]*)(=)?.*/, `?$1$2${ELLIPSIS}`);
-
-        // Remove it all if it's still too long
-        if (name.length > MAX_LENGTH) {
-          name = name.replace(/\?.*/, `?${ELLIPSIS}`);
-        }
-      }
-    }
-
-    // Elide too long names next
-    if (name.length > MAX_LENGTH) {
-      const dotIndex = name.lastIndexOf('.');
-      if (dotIndex >= 0) {
-        name = name.slice(0, MAX_LENGTH - 1 - (name.length - dotIndex)) +
-          // Show file extension
-          `${ELLIPSIS}${name.slice(dotIndex)}`;
-      } else {
-        name = name.slice(0, MAX_LENGTH - 1) + ELLIPSIS;
-      }
-    }
-
-    return name;
-  }
-
-  /**
-   * Split a URL into a file, hostname and origin for easy display.
-   * @param {string} url
-   * @return {{file: string, hostname: string, origin: string}}
-   */
-  static parseURL(url) {
-    const parsedUrl = new URL(url);
-    return {
-      file: Util.getURLDisplayName(parsedUrl),
-      hostname: parsedUrl.hostname,
-      origin: parsedUrl.origin,
-    };
-  }
-
-  /**
-   * @param {string|URL} value
-   * @return {!URL}
-   */
-  static createOrReturnURL(value) {
-    if (value instanceof URL) {
-      return value;
-    }
-
-    return new URL(value);
-  }
-
-  /**
-   * Gets the tld of a domain
-   *
-   * @param {string} hostname
-   * @return {string} tld
-   */
-  static getTld(hostname) {
-    const tlds = hostname.split('.').slice(-2);
-
-    if (!listOfTlds.includes(tlds[0])) {
-      return `.${tlds[tlds.length - 1]}`;
-    }
-
-    return `.${tlds.join('.')}`;
-  }
-
-  /**
-   * Returns a primary domain for provided hostname (e.g. www.example.com -> example.com).
-   * @param {string|URL} url hostname or URL object
-   * @return {string}
-   */
-  static getRootDomain(url) {
-    const hostname = Util.createOrReturnURL(url).hostname;
-    const tld = Util.getTld(hostname);
-
-    // tld is .com or .co.uk which means we means that length is 1 to big
-    // .com => 2 & .co.uk => 3
-    const splitTld = tld.split('.');
-
-    // get TLD + root domain
-    return hostname.split('.').slice(-splitTld.length).join('.');
-  }
-
-
-  /**
-   * @param {LH.Result['configSettings']} settings
-   * @return {!{deviceEmulation: string, screenEmulation?: string, networkThrottling: string, cpuThrottling: string, summary: string}}
-   */
-  static getEmulationDescriptions(settings) {
-    let cpuThrottling;
-    let networkThrottling;
-    let summary;
-
-    const throttling = settings.throttling;
-
-    switch (settings.throttlingMethod) {
-      case 'provided':
-        summary = networkThrottling = cpuThrottling = Util.strings.throttlingProvided;
-        break;
-      case 'devtools': {
-        const {cpuSlowdownMultiplier, requestLatencyMs} = throttling;
-        // eslint-disable-next-line max-len
-        cpuThrottling = `${Util.i18n.formatNumber(cpuSlowdownMultiplier)}x slowdown (DevTools)`;
-        networkThrottling = `${Util.i18n.formatMilliseconds(requestLatencyMs)} HTTP RTT, ` +
-          `${Util.i18n.formatKbps(throttling.downloadThroughputKbps)} down, ` +
-          `${Util.i18n.formatKbps(throttling.uploadThroughputKbps)} up (DevTools)`;
-
-        const isSlow4G = () => {
-          return requestLatencyMs === 150 * 3.75 &&
-            throttling.downloadThroughputKbps === 1.6 * 1024 * 0.9 &&
-            throttling.uploadThroughputKbps === 750 * 0.9;
-        };
-        summary = isSlow4G() ?
-          Util.strings.runtimeSlow4g : Util.strings.runtimeCustom;
-        break;
-      }
-      case 'simulate': {
-        const {cpuSlowdownMultiplier, rttMs, throughputKbps} = throttling;
-        // eslint-disable-next-line max-len
-        cpuThrottling = `${Util.i18n.formatNumber(cpuSlowdownMultiplier)}x slowdown (Simulated)`;
-        networkThrottling = `${Util.i18n.formatMilliseconds(rttMs)} TCP RTT, ` +
-          `${Util.i18n.formatKbps(throughputKbps)} throughput (Simulated)`;
-
-        const isSlow4G = () => {
-          return rttMs === 150 && throughputKbps === 1.6 * 1024;
-        };
-        summary = isSlow4G() ?
-          Util.strings.runtimeSlow4g : Util.strings.runtimeCustom;
-        break;
-      }
-      default:
-        summary = cpuThrottling = networkThrottling = Util.strings.runtimeUnknown;
-    }
-
-    // devtools-entry.js always sets `screenEmulation.disabled` when using mobile emulation,
-    // because we handle the emulation outside of Lighthouse. Since the screen truly is emulated
-    // as a mobile device, ignore `.disabled` in devtools and just check the form factor
-    const isScreenEmulationDisabled = settings.channel === 'devtools' ?
-      false :
-      settings.screenEmulation.disabled;
-    const isScreenEmulationMobile = settings.channel === 'devtools' ?
-      settings.formFactor === 'mobile' :
-      settings.screenEmulation.mobile;
-
-    let deviceEmulation = Util.strings.runtimeMobileEmulation;
-    if (isScreenEmulationDisabled) {
-      deviceEmulation = Util.strings.runtimeNoEmulation;
-    } else if (!isScreenEmulationMobile) {
-      deviceEmulation = Util.strings.runtimeDesktopEmulation;
-    }
-
-    const screenEmulation = isScreenEmulationDisabled ?
-      undefined :
-      // eslint-disable-next-line max-len
-      `${settings.screenEmulation.width}x${settings.screenEmulation.height}, DPR ${settings.screenEmulation.deviceScaleFactor}`;
-
-    return {
-      deviceEmulation,
-      screenEmulation,
-      cpuThrottling,
-      networkThrottling,
-      summary,
-    };
-  }
-
-  /**
-   * Returns only lines that are near a message, or the first few lines if there are
-   * no line messages.
-   * @param {LH.Audit.Details.SnippetValue['lines']} lines
-   * @param {LH.Audit.Details.SnippetValue['lineMessages']} lineMessages
-   * @param {number} surroundingLineCount Number of lines to include before and after
-   * the message. If this is e.g. 2 this function might return 5 lines.
-   */
-  static filterRelevantLines(lines, lineMessages, surroundingLineCount) {
-    if (lineMessages.length === 0) {
-      // no lines with messages, just return the first bunch of lines
-      return lines.slice(0, surroundingLineCount * 2 + 1);
-    }
-
-    const minGapSize = 3;
-    const lineNumbersToKeep = new Set();
-    // Sort messages so we can check lineNumbersToKeep to see how big the gap to
-    // the previous line is.
-    lineMessages = lineMessages.sort((a, b) => (a.lineNumber || 0) - (b.lineNumber || 0));
-    lineMessages.forEach(({lineNumber}) => {
-      let firstSurroundingLineNumber = lineNumber - surroundingLineCount;
-      let lastSurroundingLineNumber = lineNumber + surroundingLineCount;
-
-      while (firstSurroundingLineNumber < 1) {
-        // make sure we still show (surroundingLineCount * 2 + 1) lines in total
-        firstSurroundingLineNumber++;
-        lastSurroundingLineNumber++;
-      }
-      // If only a few lines would be omitted normally then we prefer to include
-      // extra lines to avoid the tiny gap
-      if (lineNumbersToKeep.has(firstSurroundingLineNumber - minGapSize - 1)) {
-        firstSurroundingLineNumber -= minGapSize;
-      }
-      for (let i = firstSurroundingLineNumber; i <= lastSurroundingLineNumber; i++) {
-        const surroundingLineNumber = i;
-        lineNumbersToKeep.add(surroundingLineNumber);
-      }
-    });
-
-    return lines.filter(line => lineNumbersToKeep.has(line.lineNumber));
-  }
-
-  /**
-   * @param {string} categoryId
-   */
-  static isPluginCategory(categoryId) {
-    return categoryId.startsWith('lighthouse-plugin-');
-  }
-
-  /**
-   * @param {LH.Result.GatherMode} gatherMode
-   */
-  static shouldDisplayAsFraction(gatherMode) {
-    return gatherMode === 'timespan' || gatherMode === 'snapshot';
-  }
-
-  /**
    * @param {LH.ReportResult.Category} category
    */
   static calculateCategoryFraction(category) {
@@ -670,7 +328,7 @@ class Util {
     let numInformative = 0;
     let totalWeight = 0;
     for (const auditRef of category.auditRefs) {
-      const auditPassed = Util.showAsPassed(auditRef.result);
+      const auditPassed = ReportUtils.showAsPassed(auditRef.result);
 
       // Don't count the audit if it's manual, N/A, or isn't displayed.
       if (auditRef.group === 'hidden' ||
@@ -690,25 +348,21 @@ class Util {
     }
     return {numPassed, numPassableAudits, numInformative, totalWeight};
   }
+
+  /**
+   * @param {string} categoryId
+   */
+  static isPluginCategory(categoryId) {
+    return categoryId.startsWith('lighthouse-plugin-');
+  }
+
+  /**
+   * @param {LH.Result.GatherMode} gatherMode
+   */
+  static shouldDisplayAsFraction(gatherMode) {
+    return gatherMode === 'timespan' || gatherMode === 'snapshot';
+  }
 }
-
-/**
- * Some parts of the report renderer require data found on the LHR. Instead of wiring it
- * through, we have this global.
- * @type {LH.ReportResult | null}
- */
-Util.reportJson = null;
-
-let svgSuffix = 0;
-/**
- * An always-increasing counter for making unique SVG ID suffixes.
- */
-Util.getUniqueSuffix = () => {
-  return svgSuffix++;
-};
-Util.resetUniqueSuffix = () => {
-  svgSuffix = 0;
-};
 
 /**
  * Report-renderer-specific strings.
@@ -832,10 +486,8 @@ const UIStrings = {
   /** Label indicating that Lighthouse throttled the page using custom throttling settings. */
   runtimeCustom: 'Custom throttling',
 };
-Util.UIStrings = UIStrings;
-Util.strings = {...UIStrings};
 
 export {
-  Util,
+  ReportUtils,
   UIStrings,
 };

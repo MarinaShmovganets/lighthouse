@@ -10,6 +10,8 @@
  *   2. Display coords (DC suffix): that match the CSS pixel coordinate space of the LH report's page.
  */
 
+import {Globals} from './report-globals.js';
+
 /** @typedef {import('./dom.js').DOM} DOM */
 /** @typedef {LH.Audit.Details.Rect} Rect */
 /** @typedef {{width: number, height: number}} Size */
@@ -21,8 +23,6 @@
  * @property {Element} overlayContainerEl
  * @property {LH.Result.FullPageScreenshot} fullPageScreenshot
  */
-
-import {Util} from './util.js';
 
 /**
  * @param {LH.Result.FullPageScreenshot['screenshot']} screenshot
@@ -102,7 +102,7 @@ export class ElementScreenshotRenderer {
    */
   static renderClipPathInScreenshot(dom, maskEl, positionClip, elementRect, elementPreviewSize) {
     const clipPathEl = dom.find('clipPath', maskEl);
-    const clipId = `clip-${Util.getUniqueSuffix()}`;
+    const clipId = `clip-${Globals.getUniqueSuffix()}`;
     clipPathEl.id = clipId;
     maskEl.style.clipPath = `url(#${clipId})`;
 

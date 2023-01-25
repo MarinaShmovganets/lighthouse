@@ -12,11 +12,12 @@ import {I18nFormatter} from '../../../report/renderer/i18n-formatter';
 import {UIStrings} from './ui-strings';
 import {useFlowResult} from '../util';
 import strings from './localized-strings.js';
-import {Util} from '../../../report/renderer/util';
+import {UIStrings as ReportUIStrings} from '../../../report/renderer/report-utils.js';
+import {Globals} from '../../../report/renderer/report-globals.js';
 
 const I18nContext = createContext({
   formatter: new I18nFormatter('en-US'),
-  strings: {...Util.UIStrings, ...UIStrings},
+  strings: {...ReportUIStrings, ...UIStrings},
 });
 
 function useLhrLocale() {
@@ -54,23 +55,23 @@ const I18nProvider: FunctionComponent = ({children}) => {
   const {locale, lhrStrings} = useLhrLocale();
 
   const i18n = useMemo(() => {
-    Util.applyStrings({
-      // Preload with strings from the first lhr.
-      // Used for legacy report components imported into the flow report.
-      ...lhrStrings,
-      // Set any missing flow strings to default (english) values.
-      ...UIStrings,
-      // `strings` is generated in build/build-report.js
-      ...strings[locale],
+    Globals.apply({
+      providedStrings: {
+        // Preload with strings from the first lhr.
+        // Used for legacy report components imported into the flow report.
+        ...lhrStrings,
+        // Set any missing flow strings to default (english) values.
+        ...UIStrings,
+        // `strings` is generated in build/build-report.js
+        ...strings[locale],
+      },
+      i18n: new I18nFormatter(locale),
+      reportJson: null,
     });
 
-    // Initialize renderer util i18n for strings rendered in wrapped components.
-    // TODO: Don't attach global formatter to `Util`.
-    Util.i18n = new I18nFormatter(locale);
-
     return {
-      formatter: Util.i18n,
-      strings: Util.strings as typeof UIStrings & typeof Util.UIStrings,
+      formatter: Globals.i18n,
+      strings: Globals.strings as typeof UIStrings & typeof ReportUIStrings,
     };
   }, [locale, lhrStrings]);
 

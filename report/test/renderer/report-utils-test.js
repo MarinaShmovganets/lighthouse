@@ -6,34 +6,39 @@
 
 import assert from 'assert/strict';
 
-import {Util} from '../../renderer/util.js';
+import {ReportUtils} from '../../renderer/report-utils.js';
 import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {readJson} from '../../../core/test/test-utils.js';
+import {Globals} from '../../renderer/report-globals.js';
 
 const sampleResult = readJson('../../../core/test/results/sample_v2.json', import.meta);
 
 describe('util helpers', () => {
   beforeEach(() => {
-    Util.i18n = new I18nFormatter('en');
+    Globals.apply({
+      providedStrings: {},
+      i18n: new I18nFormatter('en'),
+      reportJson: null,
+    });
   });
 
   afterEach(() => {
-    Util.i18n = undefined;
+    Globals.i18n = undefined;
   });
 
   it('calculates a score ratings', () => {
-    assert.equal(Util.calculateRating(0.0), 'fail');
-    assert.equal(Util.calculateRating(0.10), 'fail');
-    assert.equal(Util.calculateRating(0.45), 'fail');
-    assert.equal(Util.calculateRating(0.5), 'average');
-    assert.equal(Util.calculateRating(0.75), 'average');
-    assert.equal(Util.calculateRating(0.80), 'average');
-    assert.equal(Util.calculateRating(0.90), 'pass');
-    assert.equal(Util.calculateRating(1.00), 'pass');
+    assert.equal(ReportUtils.calculateRating(0.0), 'fail');
+    assert.equal(ReportUtils.calculateRating(0.10), 'fail');
+    assert.equal(ReportUtils.calculateRating(0.45), 'fail');
+    assert.equal(ReportUtils.calculateRating(0.5), 'average');
+    assert.equal(ReportUtils.calculateRating(0.75), 'average');
+    assert.equal(ReportUtils.calculateRating(0.80), 'average');
+    assert.equal(ReportUtils.calculateRating(0.90), 'pass');
+    assert.equal(ReportUtils.calculateRating(1.00), 'pass');
   });
 
   it('builds device emulation string', () => {
-    const get = settings => Util.getEmulationDescriptions(settings).deviceEmulation;
+    const get = settings => ReportUtils.getEmulationDescriptions(settings).deviceEmulation;
     /* eslint-disable max-len */
     assert.equal(get({formFactor: 'mobile', screenEmulation: {disabled: false, mobile: true}}), 'Emulated Moto G4');
     assert.equal(get({formFactor: 'mobile', screenEmulation: {disabled: true, mobile: true}}), 'No emulation');
@@ -45,7 +50,7 @@ describe('util helpers', () => {
   });
 
   it('builds throttling strings when provided', () => {
-    const descriptions = Util.getEmulationDescriptions({
+    const descriptions = ReportUtils.getEmulationDescriptions({
       throttlingMethod: 'provided',
       screenEmulation: {disabled: true},
     });
@@ -55,7 +60,7 @@ describe('util helpers', () => {
   });
 
   it('builds throttling strings when devtools', () => {
-    const descriptions = Util.getEmulationDescriptions({
+    const descriptions = ReportUtils.getEmulationDescriptions({
       throttlingMethod: 'devtools',
       throttling: {
         cpuSlowdownMultiplier: 4.5,
@@ -72,7 +77,7 @@ describe('util helpers', () => {
   });
 
   it('builds throttling strings when simulate', () => {
-    const descriptions = Util.getEmulationDescriptions({
+    const descriptions = ReportUtils.getEmulationDescriptions({
       throttlingMethod: 'simulate',
       throttling: {
         cpuSlowdownMultiplier: 2,
@@ -104,7 +109,7 @@ describe('util helpers', () => {
         assert.ok(notApplicableCount > 20); // Make sure something's being tested.
 
         // Original audit results should be restored.
-        const preparedResult = Util.prepareReportResult(clonedSampleResult);
+        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
 
         assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
       });
@@ -124,7 +129,7 @@ describe('util helpers', () => {
         assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
 
         // Original audit results should be restored.
-        const preparedResult = Util.prepareReportResult(clonedSampleResult);
+        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
         assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
       });
 
@@ -143,7 +148,7 @@ describe('util helpers', () => {
         assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
 
         // Original audit results should be restored.
-        const preparedResult = Util.prepareReportResult(clonedSampleResult);
+        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
         assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
       });
 
@@ -164,7 +169,7 @@ describe('util helpers', () => {
         assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
 
         // Original audit results should be restored.
-        const preparedResult = Util.prepareReportResult(clonedSampleResult);
+        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
         assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
       });
 
@@ -183,7 +188,7 @@ describe('util helpers', () => {
         assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
 
         // Original audit results should be restored.
-        const preparedResult = Util.prepareReportResult(clonedSampleResult);
+        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
         assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
         assert.deepStrictEqual(preparedResult.fullPageScreenshot, sampleResult.fullPageScreenshot);
       });
@@ -204,8 +209,8 @@ describe('util helpers', () => {
         assert.notDeepStrictEqual(clonedSampleResult.categoryGroups, sampleResult.categoryGroups);
 
         // Original audit results should be restored.
-        const clonedPreparedResult = Util.prepareReportResult(clonedSampleResult);
-        const preparedResult = Util.prepareReportResult(sampleResult);
+        const clonedPreparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
+        const preparedResult = ReportUtils.prepareReportResult(sampleResult);
         assert.deepStrictEqual(clonedPreparedResult.categories, preparedResult.categories);
         assert.deepStrictEqual(clonedPreparedResult.categoryGroups, preparedResult.categoryGroups);
       });
@@ -231,7 +236,7 @@ describe('util helpers', () => {
           }
         }
 
-        const preparedResult = Util.prepareReportResult(clonedSampleResult);
+        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
         assert.deepStrictEqual(sampleResult.audits, preparedResult.audits);
       });
     });
@@ -247,7 +252,7 @@ describe('util helpers', () => {
           'unused-css-rules': 'Consider using snacks in packs.',
         },
       }];
-      const preparedResult = Util.prepareReportResult(clonedSampleResult);
+      const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
 
       const perfAuditRefs = preparedResult.categories.performance.auditRefs;
       const unusedCssRef = perfAuditRefs.find(ref => ref.id === 'unused-css-rules');
@@ -263,215 +268,12 @@ describe('util helpers', () => {
     });
   });
 
-  describe('getTld', () => {
-    it('returns the correct tld', () => {
-      assert.equal(Util.getTld('example.com'), '.com');
-      assert.equal(Util.getTld('example.co.uk'), '.co.uk');
-      assert.equal(Util.getTld('example.com.br'), '.com.br');
-      assert.equal(Util.getTld('example.tokyo.jp'), '.jp');
-    });
-  });
-
-  describe('getRootDomain', () => {
-    it('returns the correct rootDomain from a string', () => {
-      assert.equal(Util.getRootDomain('https://www.example.com/index.html'), 'example.com');
-      assert.equal(Util.getRootDomain('https://example.com'), 'example.com');
-      assert.equal(Util.getRootDomain('https://www.example.co.uk'), 'example.co.uk');
-      assert.equal(Util.getRootDomain('https://example.com.br/app/'), 'example.com.br');
-      assert.equal(Util.getRootDomain('https://example.tokyo.jp'), 'tokyo.jp');
-      assert.equal(Util.getRootDomain('https://sub.example.com'), 'example.com');
-      assert.equal(Util.getRootDomain('https://sub.example.tokyo.jp'), 'tokyo.jp');
-      assert.equal(Util.getRootDomain('http://localhost'), 'localhost');
-      assert.equal(Util.getRootDomain('http://localhost:8080'), 'localhost');
-    });
-
-    it('returns the correct rootDomain from an URL object', () => {
-      assert.equal(Util.getRootDomain(new URL('https://www.example.com/index.html')), 'example.com');
-      assert.equal(Util.getRootDomain(new URL('https://example.com')), 'example.com');
-      assert.equal(Util.getRootDomain(new URL('https://www.example.co.uk')), 'example.co.uk');
-      assert.equal(Util.getRootDomain(new URL('https://example.com.br/app/')), 'example.com.br');
-      assert.equal(Util.getRootDomain(new URL('https://example.tokyo.jp')), 'tokyo.jp');
-      assert.equal(Util.getRootDomain(new URL('https://sub.example.com')), 'example.com');
-      assert.equal(Util.getRootDomain(new URL('https://sub.example.tokyo.jp')), 'tokyo.jp');
-      assert.equal(Util.getRootDomain(new URL('http://localhost')), 'localhost');
-      assert.equal(Util.getRootDomain(new URL('http://localhost:8080')), 'localhost');
-    });
-  });
-
-  describe('#splitMarkdownCodeSpans', () => {
-    it('handles strings with no backticks in them', () => {
-      expect(Util.splitMarkdownCodeSpans('regular text')).toEqual([
-        {isCode: false, text: 'regular text'},
-      ]);
-    });
-
-    it('does not split on a single backtick', () => {
-      expect(Util.splitMarkdownCodeSpans('regular `text')).toEqual([
-        {isCode: false, text: 'regular `text'},
-      ]);
-    });
-
-    it('splits on backticked code', () => {
-      expect(Util.splitMarkdownCodeSpans('regular `code` text')).toEqual([
-        {isCode: false, text: 'regular '},
-        {isCode: true, text: 'code'},
-        {isCode: false, text: ' text'},
-      ]);
-    });
-
-    it('splits on backticked code at the beginning of the string', () => {
-      expect(Util.splitMarkdownCodeSpans('`start code` regular text')).toEqual([
-        {isCode: true, text: 'start code'},
-        {isCode: false, text: ' regular text'},
-      ]);
-    });
-
-    it('splits on backticked code at the end of the string', () => {
-      expect(Util.splitMarkdownCodeSpans('regular text `end code`')).toEqual([
-        {isCode: false, text: 'regular text '},
-        {isCode: true, text: 'end code'},
-      ]);
-    });
-
-    it('does not split on a single backtick after split out backticked code', () => {
-      expect(Util.splitMarkdownCodeSpans('regular text `code` and more `text')).toEqual([
-        {isCode: false, text: 'regular text '},
-        {isCode: true, text: 'code'},
-        {isCode: false, text: ' and more `text'},
-      ]);
-    });
-
-    it('splits on two instances of backticked code', () => {
-      expect(Util.splitMarkdownCodeSpans('regular text `code` more text `and more code`')).toEqual([
-        {isCode: false, text: 'regular text '},
-        {isCode: true, text: 'code'},
-        {isCode: false, text: ' more text '},
-        {isCode: true, text: 'and more code'},
-      ]);
-    });
-
-    it('splits on two directly adjacent instances of backticked code', () => {
-      // eslint-disable-next-line max-len
-      expect(Util.splitMarkdownCodeSpans('regular text `first code``second code` end text')).toEqual([
-        {isCode: false, text: 'regular text '},
-        {isCode: true, text: 'first code'},
-        {isCode: true, text: 'second code'},
-        {isCode: false, text: ' end text'},
-      ]);
-    });
-
-    it('handles text only within backticks', () => {
-      expect(Util.splitMarkdownCodeSpans('`first code``second code`')).toEqual([
-        {isCode: true, text: 'first code'},
-        {isCode: true, text: 'second code'},
-      ]);
-    });
-
-    it('splits on two instances of backticked code separated by only a space', () => {
-      // eslint-disable-next-line max-len
-      expect(Util.splitMarkdownCodeSpans('`first code` `second code`')).toEqual([
-        {isCode: true, text: 'first code'},
-        {isCode: false, text: ' '},
-        {isCode: true, text: 'second code'},
-      ]);
-    });
-  });
-
-  describe('#splitMarkdownLink', () => {
-    it('handles strings with no links in them', () => {
-      expect(Util.splitMarkdownLink('some text')).toEqual([
-        {isLink: false, text: 'some text'},
-      ]);
-    });
-
-    it('does not split on an incomplete markdown link', () => {
-      expect(Util.splitMarkdownLink('some [not link text](text')).toEqual([
-        {isLink: false, text: 'some [not link text](text'},
-      ]);
-    });
-
-    it('splits on a markdown link', () => {
-      expect(Util.splitMarkdownLink('some [link text](https://example.com) text')).toEqual([
-        {isLink: false, text: 'some '},
-        {isLink: true, text: 'link text', linkHref: 'https://example.com'},
-        {isLink: false, text: ' text'},
-      ]);
-    });
-
-    it('splits on an http markdown link', () => {
-      expect(Util.splitMarkdownLink('you should [totally click here](http://never-mitm.com) now')).toEqual([
-        {isLink: false, text: 'you should '},
-        {isLink: true, text: 'totally click here', linkHref: 'http://never-mitm.com'},
-        {isLink: false, text: ' now'},
-      ]);
-    });
-
-    it('does not split on a non-http/https link', () => {
-      expect(Util.splitMarkdownLink('some [link text](ftp://example.com) text')).toEqual([
-        {isLink: false, text: 'some [link text](ftp://example.com) text'},
-      ]);
-    });
-
-    it('does not split on a malformed markdown link', () => {
-      expect(Util.splitMarkdownLink('some [link ]text](https://example.com')).toEqual([
-        {isLink: false, text: 'some [link ]text](https://example.com'},
-      ]);
-
-      expect(Util.splitMarkdownLink('some [link text] (https://example.com')).toEqual([
-        {isLink: false, text: 'some [link text] (https://example.com'},
-      ]);
-    });
-
-    it('does not split on empty link text', () => {
-      expect(Util.splitMarkdownLink('some [](https://example.com) empty link')).toEqual([
-        {isLink: false, text: 'some [](https://example.com) empty link'},
-      ]);
-    });
-
-    it('splits on a markdown link at the beginning of a string', () => {
-      expect(Util.splitMarkdownLink('[link text](https://example.com) end text')).toEqual([
-        {isLink: true, text: 'link text', linkHref: 'https://example.com'},
-        {isLink: false, text: ' end text'},
-      ]);
-    });
-
-    it('splits on a markdown link at the end of a string', () => {
-      expect(Util.splitMarkdownLink('start text [link text](https://example.com)')).toEqual([
-        {isLink: false, text: 'start text '},
-        {isLink: true, text: 'link text', linkHref: 'https://example.com'},
-      ]);
-    });
-
-    it('handles a string consisting only of a markdown link', () => {
-      expect(Util.splitMarkdownLink(`[I'm only a link](https://example.com)`)).toEqual([
-        {isLink: true, text: `I'm only a link`, linkHref: 'https://example.com'},
-      ]);
-    });
-
-    it('handles a string starting and ending with a markdown link', () => {
-      expect(Util.splitMarkdownLink('[first link](https://first.com) other text [second link](https://second.com)')).toEqual([
-        {isLink: true, text: 'first link', linkHref: 'https://first.com'},
-        {isLink: false, text: ' other text '},
-        {isLink: true, text: 'second link', linkHref: 'https://second.com'},
-      ]);
-    });
-
-    it('handles a string with adjacent markdown links', () => {
-      expect(Util.splitMarkdownLink('start text [first link](https://first.com)[second link](https://second.com) and scene')).toEqual([
-        {isLink: false, text: 'start text '},
-        {isLink: true, text: 'first link', linkHref: 'https://first.com'},
-        {isLink: true, text: 'second link', linkHref: 'https://second.com'},
-        {isLink: false, text: ' and scene'},
-      ]);
-    });
-  });
-
   describe('#shouldDisplayAsFraction', () => {
     it('returns true for timespan and snapshot', () => {
-      expect(Util.shouldDisplayAsFraction('navigation')).toEqual(false);
-      expect(Util.shouldDisplayAsFraction('timespan')).toEqual(true);
-      expect(Util.shouldDisplayAsFraction('snapshot')).toEqual(true);
-      expect(Util.shouldDisplayAsFraction(undefined)).toEqual(false);
+      expect(ReportUtils.shouldDisplayAsFraction('navigation')).toEqual(false);
+      expect(ReportUtils.shouldDisplayAsFraction('timespan')).toEqual(true);
+      expect(ReportUtils.shouldDisplayAsFraction('snapshot')).toEqual(true);
+      expect(ReportUtils.shouldDisplayAsFraction(undefined)).toEqual(false);
     });
   });
 
@@ -486,7 +288,7 @@ describe('util helpers', () => {
           {weight: 1, result: {score: 0, scoreDisplayMode: 'binary'}, group: 'metrics'},
         ],
       };
-      const fraction = Util.calculateCategoryFraction(category);
+      const fraction = ReportUtils.calculateCategoryFraction(category);
       expect(fraction).toEqual({
         numPassableAudits: 4,
         numPassed: 3,
@@ -505,7 +307,7 @@ describe('util helpers', () => {
           {weight: 1, result: {score: 0, scoreDisplayMode: 'notApplicable'}, group: 'metrics'},
         ],
       };
-      const fraction = Util.calculateCategoryFraction(category);
+      const fraction = ReportUtils.calculateCategoryFraction(category);
       expect(fraction).toEqual({
         numPassableAudits: 1,
         numPassed: 1,
@@ -524,7 +326,7 @@ describe('util helpers', () => {
           {weight: 1, result: {score: 0, scoreDisplayMode: 'informative'}, group: 'metrics'},
         ],
       };
-      const fraction = Util.calculateCategoryFraction(category);
+      const fraction = ReportUtils.calculateCategoryFraction(category);
       expect(fraction).toEqual({
         numPassableAudits: 2,
         numPassed: 2,
