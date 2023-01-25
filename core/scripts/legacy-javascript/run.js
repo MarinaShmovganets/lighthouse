@@ -41,7 +41,7 @@ const polyfills = LegacyJavascript.getPolyfillData();
  * @param {string[]} args
  */
 function runCommand(command, args) {
-  execFileSync(command, args, {cwd: scriptDir});
+  return execFileSync(command, args, {cwd: scriptDir});
 }
 
 /**
@@ -81,7 +81,7 @@ async function createVariant(options) {
       `<title>${name}</title><script src=main.bundle.min.js></script><p>${name}</p>`);
 
     // Note: No babelrc will make babel a glorified `cp`.
-    runCommand('yarn', [
+    const babelOutputBuffer = runCommand('yarn', [
       'babel',
       `${dir}/main.js`,
       '--config-file', `${dir}/.babelrc`,
@@ -89,6 +89,7 @@ async function createVariant(options) {
       '-o', `${dir}/main.transpiled.js`,
       '--source-maps', 'inline',
     ]);
+    fs.writeFileSync(`${dir}/babel-stdout.txt`, babelOutputBuffer.toString());
 
     // Transform any require statements (like for core-js) into a big bundle.
     runCommand('yarn', [
@@ -269,6 +270,7 @@ async function main() {
                 useBuiltIns: 'entry',
                 corejs: major,
                 bugfixes,
+                debug: true,
               },
             ],
           ],

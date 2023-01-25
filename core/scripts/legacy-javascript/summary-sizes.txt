@@ -1,6 +1,6 @@
 all-legacy-polyfills
-  98346        all-legacy-polyfills-core-js-3/main.bundle.min.js
-  51364        all-legacy-polyfills-core-js-2/main.bundle.min.js
+  97737        all-legacy-polyfills-core-js-3/main.bundle.min.js
+  50853        all-legacy-polyfills-core-js-2/main.bundle.min.js
 
 core-js-2-only-polyfill
   14974        es6-reflect-construct/main.bundle.min.js
@@ -18,7 +18,6 @@ core-js-2-only-polyfill
   11253        es6-reflect-own-keys/main.bundle.min.js
   11240        es6-object-define-properties/main.bundle.min.js
   10456        es6-reflect-get/main.bundle.min.js
-  10417        es7-array-includes/main.bundle.min.js
    9934        es6-reflect-set-prototype-of/main.bundle.min.js
    9820        es6-array-fill/main.bundle.min.js
    9776        es6-object-set-prototype-of/main.bundle.min.js
@@ -53,9 +52,9 @@ core-js-2-only-polyfill
    3504        es6-function-name/main.bundle.min.js
 
 core-js-2-preset-env-esmodules
-  179558       false/main.bundle.min.js
-   64435       true/main.bundle.min.js
-   63754       true-and-bugfixes/main.bundle.min.js
+  191667       false/main.bundle.min.js
+   64901       true/main.bundle.min.js
+   64221       true-and-bugfixes/main.bundle.min.js
 
 core-js-3-only-polyfill
   40653        es-array-find-index/main.bundle.min.js
@@ -71,7 +70,6 @@ core-js-3-only-polyfill
   35015        es-object-freeze/main.bundle.min.js
   34997        es-object-seal/main.bundle.min.js
   34914        es-array-fill/main.bundle.min.js
-  34354        es-array-includes/main.bundle.min.js
   33898        es-array-of/main.bundle.min.js
   32875        es-string-code-point-at/main.bundle.min.js
   32421        es-reflect-get/main.bundle.min.js
@@ -108,12 +106,12 @@ core-js-3-only-polyfill
   14848        es-function-name/main.bundle.min.js
 
 core-js-3-preset-env-esmodules
-  471217       false/main.bundle.min.js
-  356739       true/main.bundle.min.js
-  356058       true-and-bugfixes/main.bundle.min.js
+  483326       false/main.bundle.min.js
+  359306       true/main.bundle.min.js
+  358626       true-and-bugfixes/main.bundle.min.js
 
 only-plugin
-  1809         -babel-plugin-transform-spread/main.bundle.min.js
-  1710         -babel-plugin-transform-regenerator-babel-transform-async-to-generator/main.bundle.min.js
-  1073         -babel-plugin-transform-regenerator/main.bundle.min.js
-   895         -babel-plugin-transform-classes/main.bundle.min.js
+  12390        -babel-plugin-transform-regenerator-babel-transform-async-to-generator/main.bundle.min.js
+  11759        -babel-plugin-transform-regenerator/main.bundle.min.js
+   1918        -babel-plugin-transform-classes/main.bundle.min.js
+   1809        -babel-plugin-transform-spread/main.bundle.min.js
