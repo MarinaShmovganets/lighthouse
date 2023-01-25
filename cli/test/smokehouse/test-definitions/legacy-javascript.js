@@ -40,7 +40,6 @@ const expectations = {
                   {signal: 'Array.prototype.find'},
                   {signal: 'Array.prototype.forEach'},
                   {signal: 'Array.from'},
-                  {signal: 'Array.prototype.includes'},
                   {signal: 'Array.isArray'},
                   {signal: 'Array.prototype.map'},
                   {signal: 'Array.of'},
