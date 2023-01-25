@@ -2972,6 +2972,36 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "Ŷóû ćâń êńâb́l̂é t̂éx̂t́ ĉóm̂ṕr̂éŝśîón̂ ín̂ ýôúr̂ ẃêb́ ŝér̂v́êŕ ĉón̂f́îǵûŕât́îón̂."
   },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | modern-image-formats": {
+    "message": "Êńâb́l̂é 'Îḿâǵîf́ŷ' f́r̂óm̂ t́ĥé Îḿâǵê Óp̂t́îḿîźât́îón̂ t́âb́ îń 'ŴṔ R̂óĉḱêt́' t̂ó ĉón̂v́êŕt̂ ýôúr̂ ím̂áĝéŝ t́ô Ẃêb́P̂."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | offscreen-images": {
+    "message": "Êńâb́l̂é [L̂áẑýL̂óâd́](https://docs.wp-rocket.me/article/1141-lazyload-for-images) îń ŴṔ R̂óĉḱêt́ t̂ó f̂íx̂ t́ĥíŝ ŕêćôḿm̂én̂d́ât́îón̂. T́ĥíŝ f́êát̂úr̂é d̂él̂áŷś t̂h́ê ĺôád̂ín̂ǵ ôf́ t̂h́ê ím̂áĝéŝ ún̂t́îĺ t̂h́ê v́îśît́ôŕ ŝćr̂ól̂ĺŝ d́ôẃn̂ t́ĥé p̂áĝé âńd̂ áĉt́ûál̂ĺŷ ńêéd̂ś t̂ó ŝéê t́ĥém̂."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | render-blocking-resources": {
+    "message": "Êńâb́l̂é [R̂ém̂óv̂é Ûńûśêd́ ĈŚŜ](https://docs.wp-rocket.me/article/1529-remove-unused-css) án̂d́ [L̂óâd́ Ĵáv̂áŜćr̂íp̂t́ d̂éf̂ér̂ŕêd́](https://docs.wp-rocket.me/article/1265-load-javascript-deferred) îń 'ŴṔ R̂óĉḱêt́' t̂ó âd́d̂ŕêśŝ t́ĥíŝ ŕêćôḿm̂én̂d́ât́îón̂. T́ĥéŝé f̂éât́ûŕêś ŵíl̂ĺ r̂éŝṕêćt̂ív̂él̂ý ôṕt̂ím̂íẑé t̂h́ê ĆŜŚ âńd̂ J́âv́âŚĉŕîṕt̂ f́îĺêś ŝó t̂h́ât́ t̂h́êý d̂ón̂'t́ b̂ĺôćk̂ t́ĥé r̂én̂d́êŕîńĝ óf̂ ýôúr̂ ṕâǵê."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | unminified-css": {
+    "message": "Êńâb́l̂é [M̂ín̂íf̂ý ĈŚŜ f́îĺêś](https://docs.wp-rocket.me/article/1350-css-minify-combine) îń 'ŴṔ R̂óĉḱêt́' t̂ó f̂íx̂ t́ĥíŝ íŝśûé. Âńŷ śp̂áĉéŝ án̂d́ ĉóm̂ḿêńt̂ś îń ŷóûŕ ŝít̂é'ŝ ĆŜŚ f̂íl̂éŝ ẃîĺl̂ b́ê ŕêḿôv́êd́ t̂ó m̂ák̂é t̂h́ê f́îĺê śîźê śm̂ál̂ĺêŕ âńd̂ f́âśt̂ér̂ t́ô d́ôẃn̂ĺôád̂."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | unminified-javascript": {
+    "message": "Êńâb́l̂é [M̂ín̂íf̂ý Ĵáv̂áŜćr̂íp̂t́ f̂íl̂éŝ](https://docs.wp-rocket.me/article/1351-javascript-minify-combine) ín̂ 'ẂP̂ Ŕôćk̂ét̂' t́ô f́îx́ t̂h́îś îśŝúê. Ém̂ṕt̂ý ŝṕâćêś âńd̂ ćôḿm̂én̂t́ŝ ẃîĺl̂ b́ê ŕêḿôv́êd́ f̂ŕôḿ Ĵáv̂áŜćr̂íp̂t́ f̂íl̂éŝ t́ô ḿâḱê t́ĥéîŕ ŝíẑé ŝḿâĺl̂ér̂ án̂d́ f̂áŝt́êŕ t̂ó d̂óŵńl̂óâd́."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | unused-css-rules": {
+    "message": "Êńâb́l̂é [R̂ém̂óv̂é Ûńûśêd́ ĈŚŜ](https://docs.wp-rocket.me/article/1529-remove-unused-css) ín̂ 'ẂP̂ Ŕôćk̂ét̂' t́ô f́îx́ t̂h́îś îśŝúê. Ít̂ ŕêd́ûćêś p̂áĝé ŝíẑé b̂ý r̂ém̂óv̂ín̂ǵ âĺl̂ ĆŜŚ âńd̂ śt̂ýl̂éŝh́êét̂ś t̂h́ât́ âŕê ńôt́ ûśêd́ ŵh́îĺê ḱêép̂ín̂ǵ ôńl̂ý t̂h́ê úŝéd̂ ĆŜŚ f̂ór̂ éâćĥ ṕâǵê."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | unused-javascript": {
+    "message": "Êńâb́l̂é [D̂él̂áŷ J́âv́âŚĉŕîṕt̂ éx̂éĉút̂íôń](https://docs.wp-rocket.me/article/1349-delay-javascript-execution) îń 'ŴṔ R̂óĉḱêt́' t̂ó f̂íx̂ t́ĥíŝ ṕr̂ób̂ĺêḿ. Ît́ ŵíl̂ĺ îḿp̂ŕôv́ê t́ĥé l̂óâd́îńĝ óf̂ ýôúr̂ ṕâǵê b́ŷ d́êĺâýîńĝ t́ĥé êx́êćût́îón̂ óf̂ śĉŕîṕt̂ś ûńt̂íl̂ úŝér̂ ín̂t́êŕâćt̂íôń. Îf́ ŷóûŕ ŝít̂é ĥáŝ íf̂ŕâḿêś, ŷóû ćâń ûśê ẂP̂ Ŕôćk̂ét̂'ś [L̂áẑýL̂óâd́ f̂ór̂ íf̂ŕâḿêś âńd̂ v́îd́êóŝ](https://docs.wp-rocket.me/article/1674-lazyload-for-iframes-and-videos) án̂d́ [R̂ép̂ĺâćê ÝôúT̂úb̂é îf́r̂ám̂é ŵít̂h́ p̂ŕêv́îéŵ ím̂áĝé](https://docs.wp-rocket.me/article/1488-replace-youtube-iframe-with-preview-image) âś ŵél̂ĺ."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | uses-optimized-images": {
+    "message": "Êńâb́l̂é 'Îḿâǵîf́ŷ' f́r̂óm̂ t́ĥé Îḿâǵê Óp̂t́îḿîźât́îón̂ t́âb́ îń 'ŴṔ R̂óĉḱêt́' âńd̂ ŕûń B̂úl̂ḱ Ôṕt̂ím̂íẑát̂íôń t̂ó ĉóm̂ṕr̂éŝś ŷóûŕ îḿâǵêś."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | uses-rel-preconnect": {
+    "message": "Ûśê [Ṕr̂éf̂ét̂ćĥ D́N̂Ś R̂éq̂úêśt̂ś](https://docs.wp-rocket.me/article/1302-prefetch-dns-requests) îń 'ŴṔ R̂óĉḱêt́' t̂ó âd́d̂ \"d́n̂ś-p̂ŕêf́êt́ĉh́\" âńd̂ śp̂éêd́ ûṕ t̂h́ê ćôńn̂éĉt́îón̂ ẃît́ĥ éx̂t́êŕn̂ál̂ d́ôḿâín̂ś. Âĺŝó, 'ŴṔ R̂óĉḱêt́' âút̂óm̂át̂íĉál̂ĺŷ ád̂d́ŝ \"ṕr̂éĉón̂ńêćt̂\" t́ô [Ǵôóĝĺê F́ôńt̂ś d̂óm̂áîń](https://docs.wp-rocket.me/article/1312-optimize-google-fonts) âńd̂ án̂ý ĈŃÂḾÊ(Ś) âd́d̂éd̂ v́îá t̂h́ê [Én̂áb̂ĺê ĆD̂Ń](https://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn) f̂éât́ûŕê."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | uses-rel-preload": {
+    "message": "T̂ó f̂íx̂ t́ĥíŝ íŝśûé f̂ór̂ f́ôńt̂ś, êńâb́l̂é [R̂ém̂óv̂é Ûńûśêd́ ĈŚŜ](https://docs.wp-rocket.me/article/1529-remove-unused-css) ín̂ 'ẂP̂ Ŕôćk̂ét̂'. Ýôúr̂ śît́ê'ś ĉŕît́îćâĺ f̂ón̂t́ŝ ẃîĺl̂ b́ê ṕr̂él̂óâd́êd́ ŵít̂h́ p̂ŕîór̂ít̂ý."
+  },
   "report/renderer/report-utils.js | calculatorLink": {
     "message": "Ŝéê ćâĺĉúl̂át̂ór̂."
   },

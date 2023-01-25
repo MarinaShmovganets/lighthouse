@@ -2972,6 +2972,36 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "You can enable text compression in your web server configuration."
   },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | modern-image-formats": {
+    "message": "Enable 'Imagify' from the Image Optimization tab in 'WP Rocket' to convert your images to WebP."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | offscreen-images": {
+    "message": "Enable [LazyLoad](https://docs.wp-rocket.me/article/1141-lazyload-for-images) in WP Rocket to fix this recommendation. This feature delays the loading of the images until the visitor scrolls down the page and actually needs to see them."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | render-blocking-resources": {
+    "message": "Enable [Remove Unused CSS](https://docs.wp-rocket.me/article/1529-remove-unused-css) and [Load JavaScript deferred](https://docs.wp-rocket.me/article/1265-load-javascript-deferred) in 'WP Rocket' to address this recommendation. These features will respectively optimize the CSS and JavaScript files so that they don't block the rendering of your page."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | unminified-css": {
+    "message": "Enable [Minify CSS files](https://docs.wp-rocket.me/article/1350-css-minify-combine) in 'WP Rocket' to fix this issue. Any spaces and comments in your site's CSS files will be removed to make the file size smaller and faster to download."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | unminified-javascript": {
+    "message": "Enable [Minify JavaScript files](https://docs.wp-rocket.me/article/1351-javascript-minify-combine) in 'WP Rocket' to fix this issue. Empty spaces and comments will be removed from JavaScript files to make their size smaller and faster to download."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | unused-css-rules": {
+    "message": "Enable [Remove Unused CSS](https://docs.wp-rocket.me/article/1529-remove-unused-css) in 'WP Rocket' to fix this issue. It reduces page size by removing all CSS and stylesheets that are not used while keeping only the used CSS for each page."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | unused-javascript": {
+    "message": "Enable [Delay JavaScript execution](https://docs.wp-rocket.me/article/1349-delay-javascript-execution) in 'WP Rocket' to fix this problem. It will improve the loading of your page by delaying the execution of scripts until user interaction. If your site has iframes, you can use WP Rocket's [LazyLoad for iframes and videos](https://docs.wp-rocket.me/article/1674-lazyload-for-iframes-and-videos) and [Replace YouTube iframe with preview image](https://docs.wp-rocket.me/article/1488-replace-youtube-iframe-with-preview-image) as well."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | uses-optimized-images": {
+    "message": "Enable 'Imagify' from the Image Optimization tab in 'WP Rocket' and run Bulk Optimization to compress your images."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | uses-rel-preconnect": {
+    "message": "Use [Prefetch DNS Requests](https://docs.wp-rocket.me/article/1302-prefetch-dns-requests) in 'WP Rocket' to add \"dns-prefetch\" and speed up the connection with external domains. Also, 'WP Rocket' automatically adds \"preconnect\" to [Google Fonts domain](https://docs.wp-rocket.me/article/1312-optimize-google-fonts) and any CNAME(S) added via the [Enable CDN](https://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn) feature."
+  },
+  "node_modules/lighthouse-stack-packs/packs/wp-rocket.js | uses-rel-preload": {
+    "message": "To fix this issue for fonts, enable [Remove Unused CSS](https://docs.wp-rocket.me/article/1529-remove-unused-css) in 'WP Rocket'. Your site's critical fonts will be preloaded with priority."
+  },
   "report/renderer/report-utils.js | calculatorLink": {
     "message": "See calculator."
   },
