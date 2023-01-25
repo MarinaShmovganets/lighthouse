@@ -522,11 +522,8 @@ class TraceProcessor {
         // TODO: recapture our fixture traces so we can remove this trash
         const mainThreadEvent = keyEvents.find(e =>
           e.pid === pid &&
-          e.name === 'EventDispatch' ||
-          e.name === 'navigationStart' ||
-          e.name === 'ResourceSendRequest' ||
-          e.name === 'firstContentfulPaint' ||
-          e.name === 'ParseHTML'
+          ['EventDispatch', 'navigationStart', 'ResourceSendRequest',
+            'firstContentfulPaint', 'ParseHTML'].includes(e.name)
         );
         tid = mainThreadEvent?.tid;
         if (!tid) {
