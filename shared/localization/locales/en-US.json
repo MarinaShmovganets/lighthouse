@@ -3063,7 +3063,7 @@
     "message": "Axe version"
   },
   "report/renderer/report-utils.js | runtimeSettingsBenchmark": {
-    "message": "CPU/Memory Power"
+    "message": "Unthrottled CPU/Memory Power"
   },
   "report/renderer/report-utils.js | runtimeSettingsCPUThrottling": {
     "message": "CPU throttling"

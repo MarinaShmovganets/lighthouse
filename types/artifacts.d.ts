@@ -17,6 +17,7 @@ import type { TaskNode as _TaskNode } from '../core/lib/tracehouse/main-thread-t
 import AuditDetails from './lhr/audit-details.js'
 import Config from './config.js';
 import Gatherer from './gatherer.js';
+import {IEntity} from 'third-party-web';
 import {IcuMessage} from './lhr/i18n.js';
 import LHResult from './lhr/lhr.js'
 import Protocol from './protocol.js';
@@ -924,6 +925,19 @@ declare module Artifacts {
   interface ImageElementRecord extends ImageElement {
     /** The MIME type of the underlying image file. */
     mimeType?: string;
+  }
+
+  interface Entity extends IEntity {
+    isUnrecognized?: boolean;
+  }
+
+  interface EntityClassification {
+    urlsByEntity: Map<Entity, Set<string>>;
+    entityByUrl: Map<string, Entity>;
+    firstParty?: Entity;
+
+    // Convenience methods.
+    isFirstParty: (url: string) => boolean;
   }
 }
 
