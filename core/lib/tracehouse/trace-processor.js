@@ -511,24 +511,10 @@ class TraceProcessor {
         e.name === 'thread_name' &&
         e.args.name === 'CrRendererMain'
       );
-      let tid = threadNameEvt?.tid;
+      const tid = threadNameEvt?.tid;
 
-      // Fallback as many test/fixture traces are missing metadata blocks
       if (!tid) {
-        log.warn('TraceProcessor',
-          'Trace processor falling back to undesirable mainThread match technique.');
-
-        // All of these are dispatched on the main thread.
-        // TODO: recapture our fixture traces so we can remove this trash
-        const mainThreadEvent = keyEvents.find(e =>
-          e.pid === pid &&
-          ['EventDispatch', 'navigationStart', 'ResourceSendRequest',
-            'firstContentfulPaint', 'ParseHTML'].includes(e.name)
-        );
-        tid = mainThreadEvent?.tid;
-        if (!tid) {
-          throw new Error('Unable to determine tid for renderer process');
-        }
+        throw new Error('Unable to determine tid for renderer process');
       }
 
       pidToTid.set(pid, tid);
