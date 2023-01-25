@@ -449,8 +449,6 @@ const UIStrings = {
   /** Label indicating that Lighthouse throttled the page using custom throttling settings. */
   runtimeCustom: 'Custom throttling',
 };
-Util.UIStrings = {...UIStrings};
-Util.strings = {...UIStrings};
 
 export {
   Util,

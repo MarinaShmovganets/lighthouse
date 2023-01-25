@@ -4,7 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Util} from '../../shared/util.js';
+import {UIStrings} from '../../shared/util.js';
 
 /** @typedef {import('./i18n-formatter').I18nFormatter} I18nFormatter */
 
@@ -15,7 +15,7 @@ class Globals {
   // @ts-expect-error: Set in report renderer.
   static i18n = null;
 
-  static strings = {...Util.UIStrings};
+  static strings = {...UIStrings};
 
   /** @type {LH.ReportResult | null} */
   static reportJson = null;
@@ -26,7 +26,7 @@ class Globals {
   static applyStrings(providedStrings) {
     this.strings = {
       // Set missing renderer strings to default (english) values.
-      ...Util.UIStrings,
+      ...UIStrings,
       ...providedStrings,
     };
   }
