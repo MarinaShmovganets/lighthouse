@@ -198,9 +198,9 @@ const expectations = {
               node: {
                 'type': 'node',
                 'selector': 'body > section > div#aria-required-children',
-                'snippet': '<div id="aria-required-children" role="radiogroup">',
-                'explanation': 'Fix any of the following:\n  Required ARIA child role not present: radio',
-                'nodeLabel': 'body > section > div#aria-required-children',
+                'snippet': '<div id="aria-required-children" role="list">',
+                'explanation': 'Fix any of the following:\n  Required ARIA child role not present: listitem\n  Element has no aria-busy="true" attribute',
+                'nodeLabel': 'Item',
               },
             },
           ],
@@ -674,7 +674,7 @@ const expectations = {
               node: {
                 'type': 'node',
                 'selector': 'body > section > object#object-alt',
-                'snippet': '<object id="object-alt">',
+                'snippet': '<object id="object-alt" data="data:text/html,data">',
                 'explanation': 'Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element\'s default semantics were not overridden with role="none" or role="presentation"',
                 'nodeLabel': 'body > section > object#object-alt',
               },
