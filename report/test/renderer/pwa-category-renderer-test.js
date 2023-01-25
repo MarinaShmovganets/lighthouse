@@ -8,8 +8,7 @@ import assert from 'assert/strict';
 
 import jsdom from 'jsdom';
 
-import {Util} from '../../../shared/util.js';
-import {ReportUtils} from '../../renderer/report-utils.js';
+import {ReportUtils, UIStrings} from '../../renderer/report-utils.js';
 import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
@@ -26,6 +25,7 @@ describe('PwaCategoryRenderer', () => {
 
   before(() => {
     Globals.i18n = new I18nFormatter('en');
+    Globals.applyStrings();
 
     const {document} = new jsdom.JSDOM().window;
     const dom = new DOM(document);
@@ -260,7 +260,7 @@ describe('PwaCategoryRenderer', () => {
 
       const percentageElem = badgeGauge.querySelector('.lh-gauge__percentage');
       assert.strictEqual(percentageElem.textContent, '?');
-      assert.strictEqual(percentageElem.title, Util.UIStrings.errorLabel);
+      assert.strictEqual(percentageElem.title, UIStrings.errorLabel);
     });
 
     it('renders score gauges with unique ids for items in <defs>', () => {

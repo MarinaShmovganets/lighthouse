@@ -2327,154 +2327,154 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "Galite įgalinti teksto glaudinimą žiniatinklio serverio konfigūracijoje."
   },
-  "shared/util.js | calculatorLink": {
+  "report/renderer/report-utils.js | calculatorLink": {
     "message": "Žr. skaičiuotuvą."
   },
-  "shared/util.js | collapseView": {
+  "report/renderer/report-utils.js | collapseView": {
     "message": "Sutraukti rodinį"
   },
-  "shared/util.js | crcInitialNavigation": {
+  "report/renderer/report-utils.js | crcInitialNavigation": {
     "message": "Pradinis naršymas"
   },
-  "shared/util.js | crcLongestDurationLabel": {
+  "report/renderer/report-utils.js | crcLongestDurationLabel": {
     "message": "Didžiausia svarbiausio kelio delsa:"
   },
-  "shared/util.js | dropdownCopyJSON": {
+  "report/renderer/report-utils.js | dropdownCopyJSON": {
     "message": "Kopijuoti JSON"
   },
-  "shared/util.js | dropdownDarkTheme": {
+  "report/renderer/report-utils.js | dropdownDarkTheme": {
     "message": "Perjungti Tamsiąją temą"
   },
-  "shared/util.js | dropdownPrintExpanded": {
+  "report/renderer/report-utils.js | dropdownPrintExpanded": {
     "message": "Išskleista spausdintinė kopija"
   },
-  "shared/util.js | dropdownPrintSummary": {
+  "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Spausdintinė suvestinė"
   },
-  "shared/util.js | dropdownSaveGist": {
+  "report/renderer/report-utils.js | dropdownSaveGist": {
     "message": "Išsaugoti kaip „Gist“"
   },
-  "shared/util.js | dropdownSaveHTML": {
+  "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Išsaugoti kaip HTML"
   },
-  "shared/util.js | dropdownSaveJSON": {
+  "report/renderer/report-utils.js | dropdownSaveJSON": {
     "message": "Išsaugoti kaip JSON"
   },
-  "shared/util.js | dropdownViewer": {
+  "report/renderer/report-utils.js | dropdownViewer": {
     "message": "Atidaryti naudojant žiūriklį"
   },
-  "shared/util.js | errorLabel": {
+  "report/renderer/report-utils.js | errorLabel": {
     "message": "Klaida!"
   },
-  "shared/util.js | errorMissingAuditInfo": {
+  "report/renderer/report-utils.js | errorMissingAuditInfo": {
     "message": "Ataskaitos klaida: nėra patikros informacijos"
   },
-  "shared/util.js | expandView": {
+  "report/renderer/report-utils.js | expandView": {
     "message": "Išskleisti rodinį"
   },
-  "shared/util.js | footerIssue": {
+  "report/renderer/report-utils.js | footerIssue": {
     "message": "Pateikti problemą"
   },
-  "shared/util.js | hide": {
+  "report/renderer/report-utils.js | hide": {
     "message": "Slėpti"
   },
-  "shared/util.js | labDataTitle": {
+  "report/renderer/report-utils.js | labDataTitle": {
     "message": "Laboratorijos duomenys"
   },
-  "shared/util.js | lsPerformanceCategoryDescription": {
+  "report/renderer/report-utils.js | lsPerformanceCategoryDescription": {
     "message": "[„Lighthouse“](https://developers.google.com/web/tools/lighthouse/) dabartinio puslapio analizė emuliuotame mobiliojo ryšio tinkle. Vertės yra apytikslės ir gali skirtis."
   },
-  "shared/util.js | manualAuditsGroupTitle": {
+  "report/renderer/report-utils.js | manualAuditsGroupTitle": {
     "message": "Papildomi elementai, kuriuos reikia patikrinti neautomatiškai"
   },
-  "shared/util.js | notApplicableAuditsGroupTitle": {
+  "report/renderer/report-utils.js | notApplicableAuditsGroupTitle": {
     "message": "Netaikoma"
   },
-  "shared/util.js | opportunityResourceColumnLabel": {
+  "report/renderer/report-utils.js | opportunityResourceColumnLabel": {
     "message": "Galimybė"
   },
-  "shared/util.js | opportunitySavingsColumnLabel": {
+  "report/renderer/report-utils.js | opportunitySavingsColumnLabel": {
     "message": "Numatomos santaupos"
   },
-  "shared/util.js | passedAuditsGroupTitle": {
+  "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Sėkmingos patikros"
   },
-  "shared/util.js | runtimeAnalysisWindow": {
+  "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Pirminis puslapio įkėlimas"
   },
-  "shared/util.js | runtimeCustom": {
+  "report/renderer/report-utils.js | runtimeCustom": {
     "message": "Tinkintas duomenų srauto ribojimas"
   },
-  "shared/util.js | runtimeDesktopEmulation": {
+  "report/renderer/report-utils.js | runtimeDesktopEmulation": {
     "message": "Emuliuotas stalinis kompiuteris"
   },
-  "shared/util.js | runtimeMobileEmulation": {
+  "report/renderer/report-utils.js | runtimeMobileEmulation": {
     "message": "Emuliuotas „Moto G4“"
   },
-  "shared/util.js | runtimeNoEmulation": {
+  "report/renderer/report-utils.js | runtimeNoEmulation": {
     "message": "Nėra emuliacijos"
   },
-  "shared/util.js | runtimeSettingsAxeVersion": {
+  "report/renderer/report-utils.js | runtimeSettingsAxeVersion": {
     "message": "„Axe“ versija"
   },
-  "shared/util.js | runtimeSettingsBenchmark": {
+  "report/renderer/report-utils.js | runtimeSettingsBenchmark": {
     "message": "Centrinio procesoriaus ir (arba) atminties galia"
   },
-  "shared/util.js | runtimeSettingsCPUThrottling": {
+  "report/renderer/report-utils.js | runtimeSettingsCPUThrottling": {
     "message": "Centrinio procesoriaus pralaidumo ribojimas"
   },
-  "shared/util.js | runtimeSettingsDevice": {
+  "report/renderer/report-utils.js | runtimeSettingsDevice": {
     "message": "Įrenginys"
   },
-  "shared/util.js | runtimeSettingsNetworkThrottling": {
+  "report/renderer/report-utils.js | runtimeSettingsNetworkThrottling": {
     "message": "Tinklo pralaidumo ribojimas"
   },
-  "shared/util.js | runtimeSettingsUANetwork": {
+  "report/renderer/report-utils.js | runtimeSettingsUANetwork": {
     "message": "Naudotojo priemonė (tinklas)"
   },
-  "shared/util.js | runtimeSingleLoad": {
+  "report/renderer/report-utils.js | runtimeSingleLoad": {
     "message": "Vienas puslapio įkėlimas"
   },
-  "shared/util.js | runtimeSingleLoadTooltip": {
+  "report/renderer/report-utils.js | runtimeSingleLoadTooltip": {
     "message": "Šie duomenys gauti išanalizavus vieno puslapio įkėlimą, o lauko duomenys apibendrina daug seansų."
   },
-  "shared/util.js | runtimeSlow4g": {
+  "report/renderer/report-utils.js | runtimeSlow4g": {
     "message": "Lėto 4G duomenų srauto ribojimas"
   },
-  "shared/util.js | runtimeUnknown": {
+  "report/renderer/report-utils.js | runtimeUnknown": {
     "message": "Nežinoma"
   },
-  "shared/util.js | show": {
+  "report/renderer/report-utils.js | show": {
     "message": "Rodyti"
   },
-  "shared/util.js | showRelevantAudits": {
+  "report/renderer/report-utils.js | showRelevantAudits": {
     "message": "Rodyti patikras, aktualias:"
   },
-  "shared/util.js | snippetCollapseButtonLabel": {
+  "report/renderer/report-utils.js | snippetCollapseButtonLabel": {
     "message": "Sutraukti fragmentą"
   },
-  "shared/util.js | snippetExpandButtonLabel": {
+  "report/renderer/report-utils.js | snippetExpandButtonLabel": {
     "message": "Išplėsti fragmentą"
   },
-  "shared/util.js | thirdPartyResourcesLabel": {
+  "report/renderer/report-utils.js | thirdPartyResourcesLabel": {
     "message": "Rodyti trečiųjų šalių išteklius"
   },
-  "shared/util.js | throttlingProvided": {
+  "report/renderer/report-utils.js | throttlingProvided": {
     "message": "Pateikta pagal aplinką"
   },
-  "shared/util.js | toplevelWarningsMessage": {
+  "report/renderer/report-utils.js | toplevelWarningsMessage": {
     "message": "Paleidžiant „Lighthouse“ kilo problemų."
   },
-  "shared/util.js | varianceDisclaimer": {
+  "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Vertės yra apytikslės ir gali skirtis. [Našumo įvertinimas apskaičiuojamas](https://web.dev/performance-scoring/) tiesiogiai pagal šias metrikas."
   },
-  "shared/util.js | viewTreemapLabel": {
+  "report/renderer/report-utils.js | viewTreemapLabel": {
     "message": "Žr. medžio žemėlapį"
   },
-  "shared/util.js | warningAuditsGroupTitle": {
+  "report/renderer/report-utils.js | warningAuditsGroupTitle": {
     "message": "Sėkmingos patikros, bet pateikta įspėjimų"
   },
-  "shared/util.js | warningHeader": {
+  "report/renderer/report-utils.js | warningHeader": {
     "message": "Įspėjimai: "
   },
   "treemap/app/src/util.js | allLabel": {

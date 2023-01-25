@@ -2327,154 +2327,154 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "אפשר להפעיל דחיסת טקסט בהגדרות שרת האינטרנט."
   },
-  "shared/util.js | calculatorLink": {
+  "report/renderer/report-utils.js | calculatorLink": {
     "message": "להצגת המחשבון."
   },
-  "shared/util.js | collapseView": {
+  "report/renderer/report-utils.js | collapseView": {
     "message": "כיווץ התצוגה"
   },
-  "shared/util.js | crcInitialNavigation": {
+  "report/renderer/report-utils.js | crcInitialNavigation": {
     "message": "ניווט התחלתי"
   },
-  "shared/util.js | crcLongestDurationLabel": {
+  "report/renderer/report-utils.js | crcLongestDurationLabel": {
     "message": "זמן אחזור מקסימלי של נתיב קריטי:"
   },
-  "shared/util.js | dropdownCopyJSON": {
+  "report/renderer/report-utils.js | dropdownCopyJSON": {
     "message": "העתקת ה-JSON"
   },
-  "shared/util.js | dropdownDarkTheme": {
+  "report/renderer/report-utils.js | dropdownDarkTheme": {
     "message": "מעבר לעיצוב כהה"
   },
-  "shared/util.js | dropdownPrintExpanded": {
+  "report/renderer/report-utils.js | dropdownPrintExpanded": {
     "message": "פרטי הדפסה מורחבים"
   },
-  "shared/util.js | dropdownPrintSummary": {
+  "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "סיכום הדפסות"
   },
-  "shared/util.js | dropdownSaveGist": {
+  "report/renderer/report-utils.js | dropdownSaveGist": {
     "message": "שמירה כ-Gist"
   },
-  "shared/util.js | dropdownSaveHTML": {
+  "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "שמירה כ-HTML"
   },
-  "shared/util.js | dropdownSaveJSON": {
+  "report/renderer/report-utils.js | dropdownSaveJSON": {
     "message": "שמירה כ-JSON"
   },
-  "shared/util.js | dropdownViewer": {
+  "report/renderer/report-utils.js | dropdownViewer": {
     "message": "פתיחה ב-Viewer"
   },
-  "shared/util.js | errorLabel": {
+  "report/renderer/report-utils.js | errorLabel": {
     "message": "שגיאה!"
   },
-  "shared/util.js | errorMissingAuditInfo": {
+  "report/renderer/report-utils.js | errorMissingAuditInfo": {
     "message": "שגיאה בדוח: אין מידע על הבדיקה"
   },
-  "shared/util.js | expandView": {
+  "report/renderer/report-utils.js | expandView": {
     "message": "הרחבת התצוגה"
   },
-  "shared/util.js | footerIssue": {
+  "report/renderer/report-utils.js | footerIssue": {
     "message": "דיווח על בעיה"
   },
-  "shared/util.js | hide": {
+  "report/renderer/report-utils.js | hide": {
     "message": "הסתרה"
   },
-  "shared/util.js | labDataTitle": {
+  "report/renderer/report-utils.js | labDataTitle": {
     "message": "נתוני בדיקה"
   },
-  "shared/util.js | lsPerformanceCategoryDescription": {
+  "report/renderer/report-utils.js | lsPerformanceCategoryDescription": {
     "message": "ניתוח [Lighthouse](https://developers.google.com/web/tools/lighthouse/) של הדף הנוכחי באמולציה של רשת סלולרית. הערכים מהווים אומדן והם עשויים להשתנות."
   },
-  "shared/util.js | manualAuditsGroupTitle": {
+  "report/renderer/report-utils.js | manualAuditsGroupTitle": {
     "message": "פריטים נוספים שיש לבדוק באופן ידני"
   },
-  "shared/util.js | notApplicableAuditsGroupTitle": {
+  "report/renderer/report-utils.js | notApplicableAuditsGroupTitle": {
     "message": "לא רלוונטי"
   },
-  "shared/util.js | opportunityResourceColumnLabel": {
+  "report/renderer/report-utils.js | opportunityResourceColumnLabel": {
     "message": "הזדמנות"
   },
-  "shared/util.js | opportunitySavingsColumnLabel": {
+  "report/renderer/report-utils.js | opportunitySavingsColumnLabel": {
     "message": "אומדן חיסכון"
   },
-  "shared/util.js | passedAuditsGroupTitle": {
+  "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "בדיקות עם ציון 'עובר'"
   },
-  "shared/util.js | runtimeAnalysisWindow": {
+  "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "טעינת הדף הראשונית"
   },
-  "shared/util.js | runtimeCustom": {
+  "report/renderer/report-utils.js | runtimeCustom": {
     "message": "ויסות נתונים בהתאמה אישית"
   },
-  "shared/util.js | runtimeDesktopEmulation": {
+  "report/renderer/report-utils.js | runtimeDesktopEmulation": {
     "message": "אמולציה של מחשב שולחני"
   },
-  "shared/util.js | runtimeMobileEmulation": {
+  "report/renderer/report-utils.js | runtimeMobileEmulation": {
     "message": "אמולציה של Moto G4"
   },
-  "shared/util.js | runtimeNoEmulation": {
+  "report/renderer/report-utils.js | runtimeNoEmulation": {
     "message": "ללא אמולציה"
   },
-  "shared/util.js | runtimeSettingsAxeVersion": {
+  "report/renderer/report-utils.js | runtimeSettingsAxeVersion": {
     "message": "גרסת Axe"
   },
-  "shared/util.js | runtimeSettingsBenchmark": {
+  "report/renderer/report-utils.js | runtimeSettingsBenchmark": {
     "message": "יכולת זיכרון/יחידת עיבוד מרכזית (CPU)"
   },
-  "shared/util.js | runtimeSettingsCPUThrottling": {
+  "report/renderer/report-utils.js | runtimeSettingsCPUThrottling": {
     "message": "ויסות נתונים (throttle) של יחידת עיבוד מרכזית (CPU)"
   },
-  "shared/util.js | runtimeSettingsDevice": {
+  "report/renderer/report-utils.js | runtimeSettingsDevice": {
     "message": "מכשיר"
   },
-  "shared/util.js | runtimeSettingsNetworkThrottling": {
+  "report/renderer/report-utils.js | runtimeSettingsNetworkThrottling": {
     "message": "הגבלת רוחב פס"
   },
-  "shared/util.js | runtimeSettingsUANetwork": {
+  "report/renderer/report-utils.js | runtimeSettingsUANetwork": {
     "message": "סוכן משתמש (רשת)"
   },
-  "shared/util.js | runtimeSingleLoad": {
+  "report/renderer/report-utils.js | runtimeSingleLoad": {
     "message": "טעינת דף יחיד"
   },
-  "shared/util.js | runtimeSingleLoadTooltip": {
+  "report/renderer/report-utils.js | runtimeSingleLoadTooltip": {
     "message": "הנתונים האלה מגיעים מטעינת דף יחיד, בניגוד לנתוני שטח שמסכמים מספר סשנים."
   },
-  "shared/util.js | runtimeSlow4g": {
+  "report/renderer/report-utils.js | runtimeSlow4g": {
     "message": "ויסות נתונים איטי ב-4G"
   },
-  "shared/util.js | runtimeUnknown": {
+  "report/renderer/report-utils.js | runtimeUnknown": {
     "message": "ערך לא ידוע"
   },
-  "shared/util.js | show": {
+  "report/renderer/report-utils.js | show": {
     "message": "הצגה"
   },
-  "shared/util.js | showRelevantAudits": {
+  "report/renderer/report-utils.js | showRelevantAudits": {
     "message": "הצגת הביקורות שרלוונטיות למדדים:"
   },
-  "shared/util.js | snippetCollapseButtonLabel": {
+  "report/renderer/report-utils.js | snippetCollapseButtonLabel": {
     "message": "כיווץ קטע הטקסט"
   },
-  "shared/util.js | snippetExpandButtonLabel": {
+  "report/renderer/report-utils.js | snippetExpandButtonLabel": {
     "message": "הרחבת קטע הטקסט"
   },
-  "shared/util.js | thirdPartyResourcesLabel": {
+  "report/renderer/report-utils.js | thirdPartyResourcesLabel": {
     "message": "הצגה של משאבי צד שלישי"
   },
-  "shared/util.js | throttlingProvided": {
+  "report/renderer/report-utils.js | throttlingProvided": {
     "message": "שסיפקה הסביבה"
   },
-  "shared/util.js | toplevelWarningsMessage": {
+  "report/renderer/report-utils.js | toplevelWarningsMessage": {
     "message": "היו בעיות שהשפיעו על ההרצה הזו של Lighthouse:"
   },
-  "shared/util.js | varianceDisclaimer": {
+  "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "הערכים משוערים והם עשויים להשתנות. [ציון הביצועים מחושב](https://web.dev/performance-scoring/) ישירות לפי הערכים האלה."
   },
-  "shared/util.js | viewTreemapLabel": {
+  "report/renderer/report-utils.js | viewTreemapLabel": {
     "message": "הצגת תרשים Treemap"
   },
-  "shared/util.js | warningAuditsGroupTitle": {
+  "report/renderer/report-utils.js | warningAuditsGroupTitle": {
     "message": "בדיקות שהסתיימו בציון 'עובר', אבל עם אזהרות"
   },
-  "shared/util.js | warningHeader": {
+  "report/renderer/report-utils.js | warningHeader": {
     "message": "אזהרות: "
   },
   "treemap/app/src/util.js | allLabel": {

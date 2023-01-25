@@ -74,6 +74,7 @@ describe('DetailsRenderer', () => {
 
   before(() => {
     Globals.i18n = new I18nFormatter('en');
+    Globals.applyStrings();
 
     const {document} = new jsdom.JSDOM().window;
     dom = new DOM(document);

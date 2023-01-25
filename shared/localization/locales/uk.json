@@ -2327,154 +2327,154 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "Ви можете ввімкнути стиснення тексту в конфігурації веб-сервера."
   },
-  "shared/util.js | calculatorLink": {
+  "report/renderer/report-utils.js | calculatorLink": {
     "message": "Показати калькулятор."
   },
-  "shared/util.js | collapseView": {
+  "report/renderer/report-utils.js | collapseView": {
     "message": "Згорнути"
   },
-  "shared/util.js | crcInitialNavigation": {
+  "report/renderer/report-utils.js | crcInitialNavigation": {
     "message": "Початкова навігація"
   },
-  "shared/util.js | crcLongestDurationLabel": {
+  "report/renderer/report-utils.js | crcLongestDurationLabel": {
     "message": "Максимальна критична затримка шляху:"
   },
-  "shared/util.js | dropdownCopyJSON": {
+  "report/renderer/report-utils.js | dropdownCopyJSON": {
     "message": "Копіювати JSON"
   },
-  "shared/util.js | dropdownDarkTheme": {
+  "report/renderer/report-utils.js | dropdownDarkTheme": {
     "message": "Увімкнути або вимкнути темну тему"
   },
-  "shared/util.js | dropdownPrintExpanded": {
+  "report/renderer/report-utils.js | dropdownPrintExpanded": {
     "message": "Розгорнути вікно друку"
   },
-  "shared/util.js | dropdownPrintSummary": {
+  "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Друкувати підсумок"
   },
-  "shared/util.js | dropdownSaveGist": {
+  "report/renderer/report-utils.js | dropdownSaveGist": {
     "message": "Зберегти як Gist"
   },
-  "shared/util.js | dropdownSaveHTML": {
+  "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Зберегти як HTML"
   },
-  "shared/util.js | dropdownSaveJSON": {
+  "report/renderer/report-utils.js | dropdownSaveJSON": {
     "message": "Зберегти як JSON"
   },
-  "shared/util.js | dropdownViewer": {
+  "report/renderer/report-utils.js | dropdownViewer": {
     "message": "Відкрити в засобі перегляду"
   },
-  "shared/util.js | errorLabel": {
+  "report/renderer/report-utils.js | errorLabel": {
     "message": "Помилка."
   },
-  "shared/util.js | errorMissingAuditInfo": {
+  "report/renderer/report-utils.js | errorMissingAuditInfo": {
     "message": "Повідомлення про помилку: немає інформації про перевірку"
   },
-  "shared/util.js | expandView": {
+  "report/renderer/report-utils.js | expandView": {
     "message": "Розгорнути"
   },
-  "shared/util.js | footerIssue": {
+  "report/renderer/report-utils.js | footerIssue": {
     "message": "Повідомити про проблему"
   },
-  "shared/util.js | hide": {
+  "report/renderer/report-utils.js | hide": {
     "message": "Сховати"
   },
-  "shared/util.js | labDataTitle": {
+  "report/renderer/report-utils.js | labDataTitle": {
     "message": "Дані тестів"
   },
-  "shared/util.js | lsPerformanceCategoryDescription": {
+  "report/renderer/report-utils.js | lsPerformanceCategoryDescription": {
     "message": "Аналіз [Lighthouse](https://developers.google.com/web/tools/lighthouse/) поточної сторінки в емульованій мобільній мережі. Значення приблизні й можуть відрізнятися."
   },
-  "shared/util.js | manualAuditsGroupTitle": {
+  "report/renderer/report-utils.js | manualAuditsGroupTitle": {
     "message": "Додаткові елементи, які потрібно перевірити вручну"
   },
-  "shared/util.js | notApplicableAuditsGroupTitle": {
+  "report/renderer/report-utils.js | notApplicableAuditsGroupTitle": {
     "message": "Не застосовуються"
   },
-  "shared/util.js | opportunityResourceColumnLabel": {
+  "report/renderer/report-utils.js | opportunityResourceColumnLabel": {
     "message": "Можливість"
   },
-  "shared/util.js | opportunitySavingsColumnLabel": {
+  "report/renderer/report-utils.js | opportunitySavingsColumnLabel": {
     "message": "Приблизне заощадження"
   },
-  "shared/util.js | passedAuditsGroupTitle": {
+  "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Виконані перевірки"
   },
-  "shared/util.js | runtimeAnalysisWindow": {
+  "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Перше завантаження сторінки"
   },
-  "shared/util.js | runtimeCustom": {
+  "report/renderer/report-utils.js | runtimeCustom": {
     "message": "Спеціальне обмеження пропускної спроможності"
   },
-  "shared/util.js | runtimeDesktopEmulation": {
+  "report/renderer/report-utils.js | runtimeDesktopEmulation": {
     "message": "Емульований комп'ютер"
   },
-  "shared/util.js | runtimeMobileEmulation": {
+  "report/renderer/report-utils.js | runtimeMobileEmulation": {
     "message": "Емульований пристрій Moto G4"
   },
-  "shared/util.js | runtimeNoEmulation": {
+  "report/renderer/report-utils.js | runtimeNoEmulation": {
     "message": "Без емуляції"
   },
-  "shared/util.js | runtimeSettingsAxeVersion": {
+  "report/renderer/report-utils.js | runtimeSettingsAxeVersion": {
     "message": "Версія Axe"
   },
-  "shared/util.js | runtimeSettingsBenchmark": {
+  "report/renderer/report-utils.js | runtimeSettingsBenchmark": {
     "message": "Споживання ЦП/пам'яті"
   },
-  "shared/util.js | runtimeSettingsCPUThrottling": {
+  "report/renderer/report-utils.js | runtimeSettingsCPUThrottling": {
     "message": "Обмеження пропускної спроможності ЦП"
   },
-  "shared/util.js | runtimeSettingsDevice": {
+  "report/renderer/report-utils.js | runtimeSettingsDevice": {
     "message": "Пристрій"
   },
-  "shared/util.js | runtimeSettingsNetworkThrottling": {
+  "report/renderer/report-utils.js | runtimeSettingsNetworkThrottling": {
     "message": "Зменшення пропускної спроможності мережі"
   },
-  "shared/util.js | runtimeSettingsUANetwork": {
+  "report/renderer/report-utils.js | runtimeSettingsUANetwork": {
     "message": "Агент користувача (мережа)"
   },
-  "shared/util.js | runtimeSingleLoad": {
+  "report/renderer/report-utils.js | runtimeSingleLoad": {
     "message": "Одне завантаження сторінки"
   },
-  "shared/util.js | runtimeSingleLoadTooltip": {
+  "report/renderer/report-utils.js | runtimeSingleLoadTooltip": {
     "message": "Було взято дані одного завантаження сторінки, а не дані поля, що охоплюють кілька сеансів."
   },
-  "shared/util.js | runtimeSlow4g": {
+  "report/renderer/report-utils.js | runtimeSlow4g": {
     "message": "Обмеження пропускної спроможності для мережі 4G з низькою швидкістю"
   },
-  "shared/util.js | runtimeUnknown": {
+  "report/renderer/report-utils.js | runtimeUnknown": {
     "message": "Невідомо"
   },
-  "shared/util.js | show": {
+  "report/renderer/report-utils.js | show": {
     "message": "Показати"
   },
-  "shared/util.js | showRelevantAudits": {
+  "report/renderer/report-utils.js | showRelevantAudits": {
     "message": "Показано аудити, релевантні для:"
   },
-  "shared/util.js | snippetCollapseButtonLabel": {
+  "report/renderer/report-utils.js | snippetCollapseButtonLabel": {
     "message": "Згорнути фрагмент"
   },
-  "shared/util.js | snippetExpandButtonLabel": {
+  "report/renderer/report-utils.js | snippetExpandButtonLabel": {
     "message": "Розгорнути фрагмент"
   },
-  "shared/util.js | thirdPartyResourcesLabel": {
+  "report/renderer/report-utils.js | thirdPartyResourcesLabel": {
     "message": "Показати сторонні ресурси"
   },
-  "shared/util.js | throttlingProvided": {
+  "report/renderer/report-utils.js | throttlingProvided": {
     "message": "Надано середовищем"
   },
-  "shared/util.js | toplevelWarningsMessage": {
+  "report/renderer/report-utils.js | toplevelWarningsMessage": {
     "message": "Під час запуску Lighthouse виникли перелічені нижче проблеми."
   },
-  "shared/util.js | varianceDisclaimer": {
+  "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Значення приблизні й можуть відрізнятися. [Значення ефективності визначено](https://web.dev/performance-scoring/) на основі цих показників."
   },
-  "shared/util.js | viewTreemapLabel": {
+  "report/renderer/report-utils.js | viewTreemapLabel": {
     "message": "Переглянути веб-додаток Treemap"
   },
-  "shared/util.js | warningAuditsGroupTitle": {
+  "report/renderer/report-utils.js | warningAuditsGroupTitle": {
     "message": "Перевірки зі статусом \"Пройдено\", що містять застереження"
   },
-  "shared/util.js | warningHeader": {
+  "report/renderer/report-utils.js | warningHeader": {
     "message": "Застереження. "
   },
   "treemap/app/src/util.js | allLabel": {

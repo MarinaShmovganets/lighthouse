@@ -24,6 +24,7 @@ describe('DetailsRenderer', () => {
 
   before(() => {
     Globals.i18n = new I18nFormatter('en');
+    Globals.applyStrings();
     createRenderer();
   });
 

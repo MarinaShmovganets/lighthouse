@@ -2327,154 +2327,154 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "Možete omogućiti kompresiju teksta u konfiguraciji web-poslužitelja."
   },
-  "shared/util.js | calculatorLink": {
+  "report/renderer/report-utils.js | calculatorLink": {
     "message": "Pogledajte kalkulator."
   },
-  "shared/util.js | collapseView": {
+  "report/renderer/report-utils.js | collapseView": {
     "message": "Sažmi prikaz"
   },
-  "shared/util.js | crcInitialNavigation": {
+  "report/renderer/report-utils.js | crcInitialNavigation": {
     "message": "Početna navigacija"
   },
-  "shared/util.js | crcLongestDurationLabel": {
+  "report/renderer/report-utils.js | crcLongestDurationLabel": {
     "message": "Maksimalna latencija kritičkog puta:"
   },
-  "shared/util.js | dropdownCopyJSON": {
+  "report/renderer/report-utils.js | dropdownCopyJSON": {
     "message": "Kopiranje JSON-a"
   },
-  "shared/util.js | dropdownDarkTheme": {
+  "report/renderer/report-utils.js | dropdownDarkTheme": {
     "message": "Prebacivanje na Tamnu temu"
   },
-  "shared/util.js | dropdownPrintExpanded": {
+  "report/renderer/report-utils.js | dropdownPrintExpanded": {
     "message": "Ispiši prošireno"
   },
-  "shared/util.js | dropdownPrintSummary": {
+  "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Ispis sažetka"
   },
-  "shared/util.js | dropdownSaveGist": {
+  "report/renderer/report-utils.js | dropdownSaveGist": {
     "message": "Spremanje kao Gist"
   },
-  "shared/util.js | dropdownSaveHTML": {
+  "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Spremanje kao HTML"
   },
-  "shared/util.js | dropdownSaveJSON": {
+  "report/renderer/report-utils.js | dropdownSaveJSON": {
     "message": "Spremi kao JSON"
   },
-  "shared/util.js | dropdownViewer": {
+  "report/renderer/report-utils.js | dropdownViewer": {
     "message": "Otvori u pregledaču"
   },
-  "shared/util.js | errorLabel": {
+  "report/renderer/report-utils.js | errorLabel": {
     "message": "Pogreška!"
   },
-  "shared/util.js | errorMissingAuditInfo": {
+  "report/renderer/report-utils.js | errorMissingAuditInfo": {
     "message": "Pogreška izvješća: nema podataka o pregledu"
   },
-  "shared/util.js | expandView": {
+  "report/renderer/report-utils.js | expandView": {
     "message": "Proširi prikaz"
   },
-  "shared/util.js | footerIssue": {
+  "report/renderer/report-utils.js | footerIssue": {
     "message": "Prijavljivanje poteškoće"
   },
-  "shared/util.js | hide": {
+  "report/renderer/report-utils.js | hide": {
     "message": "Sakrij"
   },
-  "shared/util.js | labDataTitle": {
+  "report/renderer/report-utils.js | labDataTitle": {
     "message": "Laboratorijski podaci"
   },
-  "shared/util.js | lsPerformanceCategoryDescription": {
+  "report/renderer/report-utils.js | lsPerformanceCategoryDescription": {
     "message": "[Lighthouse](https://developers.google.com/web/tools/lighthouse/) analiza trenutačne stranice na emuliranoj mobilnoj mreži. Vrijednosti se procjenjuju i mogu se razlikovati."
   },
-  "shared/util.js | manualAuditsGroupTitle": {
+  "report/renderer/report-utils.js | manualAuditsGroupTitle": {
     "message": "Dodatne stavke za ručnu provjeru"
   },
-  "shared/util.js | notApplicableAuditsGroupTitle": {
+  "report/renderer/report-utils.js | notApplicableAuditsGroupTitle": {
     "message": "Nije primjenjivo"
   },
-  "shared/util.js | opportunityResourceColumnLabel": {
+  "report/renderer/report-utils.js | opportunityResourceColumnLabel": {
     "message": "Prilika"
   },
-  "shared/util.js | opportunitySavingsColumnLabel": {
+  "report/renderer/report-utils.js | opportunitySavingsColumnLabel": {
     "message": "Procijenjena ušteda"
   },
-  "shared/util.js | passedAuditsGroupTitle": {
+  "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Uspješni pregledi"
   },
-  "shared/util.js | runtimeAnalysisWindow": {
+  "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Početno učitavanje stranice"
   },
-  "shared/util.js | runtimeCustom": {
+  "report/renderer/report-utils.js | runtimeCustom": {
     "message": "Prilagođeno potiskivanje"
   },
-  "shared/util.js | runtimeDesktopEmulation": {
+  "report/renderer/report-utils.js | runtimeDesktopEmulation": {
     "message": "Emulirana radna površina"
   },
-  "shared/util.js | runtimeMobileEmulation": {
+  "report/renderer/report-utils.js | runtimeMobileEmulation": {
     "message": "Emulirani Moto G4"
   },
-  "shared/util.js | runtimeNoEmulation": {
+  "report/renderer/report-utils.js | runtimeNoEmulation": {
     "message": "Nema emulacije"
   },
-  "shared/util.js | runtimeSettingsAxeVersion": {
+  "report/renderer/report-utils.js | runtimeSettingsAxeVersion": {
     "message": "Axeova verzija"
   },
-  "shared/util.js | runtimeSettingsBenchmark": {
+  "report/renderer/report-utils.js | runtimeSettingsBenchmark": {
     "message": "Snaga procesora/memorije"
   },
-  "shared/util.js | runtimeSettingsCPUThrottling": {
+  "report/renderer/report-utils.js | runtimeSettingsCPUThrottling": {
     "message": "Potiskivanje procesora"
   },
-  "shared/util.js | runtimeSettingsDevice": {
+  "report/renderer/report-utils.js | runtimeSettingsDevice": {
     "message": "Uređaj"
   },
-  "shared/util.js | runtimeSettingsNetworkThrottling": {
+  "report/renderer/report-utils.js | runtimeSettingsNetworkThrottling": {
     "message": "Ograničavanje podatkovnog prometa mreže"
   },
-  "shared/util.js | runtimeSettingsUANetwork": {
+  "report/renderer/report-utils.js | runtimeSettingsUANetwork": {
     "message": "Korisnički agent (mreža)"
   },
-  "shared/util.js | runtimeSingleLoad": {
+  "report/renderer/report-utils.js | runtimeSingleLoad": {
     "message": "Jedno učitavanje stranice"
   },
-  "shared/util.js | runtimeSingleLoadTooltip": {
+  "report/renderer/report-utils.js | runtimeSingleLoadTooltip": {
     "message": "Ovi su podaci preuzeti s jednog učitavanja stranice, za razliku od podataka polja koji sažimaju mnoge sesije."
   },
-  "shared/util.js | runtimeSlow4g": {
+  "report/renderer/report-utils.js | runtimeSlow4g": {
     "message": "Sporo 4G potiskivanje"
   },
-  "shared/util.js | runtimeUnknown": {
+  "report/renderer/report-utils.js | runtimeUnknown": {
     "message": "Nepoznato"
   },
-  "shared/util.js | show": {
+  "report/renderer/report-utils.js | show": {
     "message": "Prikaži"
   },
-  "shared/util.js | showRelevantAudits": {
+  "report/renderer/report-utils.js | showRelevantAudits": {
     "message": "Prikaži revizije relevantne za sljedeće:"
   },
-  "shared/util.js | snippetCollapseButtonLabel": {
+  "report/renderer/report-utils.js | snippetCollapseButtonLabel": {
     "message": "Sažmi isječak"
   },
-  "shared/util.js | snippetExpandButtonLabel": {
+  "report/renderer/report-utils.js | snippetExpandButtonLabel": {
     "message": "Proširi isječak"
   },
-  "shared/util.js | thirdPartyResourcesLabel": {
+  "report/renderer/report-utils.js | thirdPartyResourcesLabel": {
     "message": "Pokaži resurse treće strane"
   },
-  "shared/util.js | throttlingProvided": {
+  "report/renderer/report-utils.js | throttlingProvided": {
     "message": "Omogućuje okruženje"
   },
-  "shared/util.js | toplevelWarningsMessage": {
+  "report/renderer/report-utils.js | toplevelWarningsMessage": {
     "message": "Na ovo izvođenje Lighthousea utjecale su neke poteškoće:"
   },
-  "shared/util.js | varianceDisclaimer": {
+  "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Vrijednosti se procjenjuju i mogu se razlikovati. [Rezultat izvedbe računa se](https://web.dev/performance-scoring/) izravno pomoću tih mjernih podataka."
   },
-  "shared/util.js | viewTreemapLabel": {
+  "report/renderer/report-utils.js | viewTreemapLabel": {
     "message": "Pregledajte Treemap"
   },
-  "shared/util.js | warningAuditsGroupTitle": {
+  "report/renderer/report-utils.js | warningAuditsGroupTitle": {
     "message": "Uspješni pregledi no s upozorenjima"
   },
-  "shared/util.js | warningHeader": {
+  "report/renderer/report-utils.js | warningHeader": {
     "message": "Upozorenja: "
   },
   "treemap/app/src/util.js | allLabel": {

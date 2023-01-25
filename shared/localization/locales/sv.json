@@ -2327,154 +2327,154 @@
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | uses-text-compression": {
     "message": "Du kan aktivera textkomprimering i webbserverns konfiguration."
   },
-  "shared/util.js | calculatorLink": {
+  "report/renderer/report-utils.js | calculatorLink": {
     "message": "Visa kalkylator."
   },
-  "shared/util.js | collapseView": {
+  "report/renderer/report-utils.js | collapseView": {
     "message": "Komprimera vy"
   },
-  "shared/util.js | crcInitialNavigation": {
+  "report/renderer/report-utils.js | crcInitialNavigation": {
     "message": "Första navigering"
   },
-  "shared/util.js | crcLongestDurationLabel": {
+  "report/renderer/report-utils.js | crcLongestDurationLabel": {
     "message": "Högsta latens för kritisk kedja:"
   },
-  "shared/util.js | dropdownCopyJSON": {
+  "report/renderer/report-utils.js | dropdownCopyJSON": {
     "message": "Kopiera JSON"
   },
-  "shared/util.js | dropdownDarkTheme": {
+  "report/renderer/report-utils.js | dropdownDarkTheme": {
     "message": "Aktivera och inaktivera mörkt tema"
   },
-  "shared/util.js | dropdownPrintExpanded": {
+  "report/renderer/report-utils.js | dropdownPrintExpanded": {
     "message": "Skriv ut utökad"
   },
-  "shared/util.js | dropdownPrintSummary": {
+  "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Skriv ut sammanfattning"
   },
-  "shared/util.js | dropdownSaveGist": {
+  "report/renderer/report-utils.js | dropdownSaveGist": {
     "message": "Spara som Gist"
   },
-  "shared/util.js | dropdownSaveHTML": {
+  "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Spara som HTML"
   },
-  "shared/util.js | dropdownSaveJSON": {
+  "report/renderer/report-utils.js | dropdownSaveJSON": {
     "message": "Spara som JSON"
   },
-  "shared/util.js | dropdownViewer": {
+  "report/renderer/report-utils.js | dropdownViewer": {
     "message": "Öppna i visningsprogram"
   },
-  "shared/util.js | errorLabel": {
+  "report/renderer/report-utils.js | errorLabel": {
     "message": "Fel."
   },
-  "shared/util.js | errorMissingAuditInfo": {
+  "report/renderer/report-utils.js | errorMissingAuditInfo": {
     "message": "Rapportfel: ingen granskningsinformation"
   },
-  "shared/util.js | expandView": {
+  "report/renderer/report-utils.js | expandView": {
     "message": "Utöka vy"
   },
-  "shared/util.js | footerIssue": {
+  "report/renderer/report-utils.js | footerIssue": {
     "message": "Rapportera ett problem"
   },
-  "shared/util.js | hide": {
+  "report/renderer/report-utils.js | hide": {
     "message": "Dölj"
   },
-  "shared/util.js | labDataTitle": {
+  "report/renderer/report-utils.js | labDataTitle": {
     "message": "Labbdata"
   },
-  "shared/util.js | lsPerformanceCategoryDescription": {
+  "report/renderer/report-utils.js | lsPerformanceCategoryDescription": {
     "message": "Analys med [Lighthouse](https://developers.google.com/web/tools/lighthouse/) av den aktuella sidan i ett emulerat mobilnätverk. Värdena är uppskattningar och kan variera."
   },
-  "shared/util.js | manualAuditsGroupTitle": {
+  "report/renderer/report-utils.js | manualAuditsGroupTitle": {
     "message": "Fler saker att kolla manuellt"
   },
-  "shared/util.js | notApplicableAuditsGroupTitle": {
+  "report/renderer/report-utils.js | notApplicableAuditsGroupTitle": {
     "message": "Ej tillämpligt"
   },
-  "shared/util.js | opportunityResourceColumnLabel": {
+  "report/renderer/report-utils.js | opportunityResourceColumnLabel": {
     "message": "Möjlighet"
   },
-  "shared/util.js | opportunitySavingsColumnLabel": {
+  "report/renderer/report-utils.js | opportunitySavingsColumnLabel": {
     "message": "Uppskattad tidsbesparing"
   },
-  "shared/util.js | passedAuditsGroupTitle": {
+  "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Godkända granskningar"
   },
-  "shared/util.js | runtimeAnalysisWindow": {
+  "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Första sidhämtningen"
   },
-  "shared/util.js | runtimeCustom": {
+  "report/renderer/report-utils.js | runtimeCustom": {
     "message": "Anpassad begränsning"
   },
-  "shared/util.js | runtimeDesktopEmulation": {
+  "report/renderer/report-utils.js | runtimeDesktopEmulation": {
     "message": "Emulerat skrivbord"
   },
-  "shared/util.js | runtimeMobileEmulation": {
+  "report/renderer/report-utils.js | runtimeMobileEmulation": {
     "message": "Emulerad Moto G4"
   },
-  "shared/util.js | runtimeNoEmulation": {
+  "report/renderer/report-utils.js | runtimeNoEmulation": {
     "message": "Ingen emulering"
   },
-  "shared/util.js | runtimeSettingsAxeVersion": {
+  "report/renderer/report-utils.js | runtimeSettingsAxeVersion": {
     "message": "Axe-version"
   },
-  "shared/util.js | runtimeSettingsBenchmark": {
+  "report/renderer/report-utils.js | runtimeSettingsBenchmark": {
     "message": "CPU/minne"
   },
-  "shared/util.js | runtimeSettingsCPUThrottling": {
+  "report/renderer/report-utils.js | runtimeSettingsCPUThrottling": {
     "message": "CPU-begränsning"
   },
-  "shared/util.js | runtimeSettingsDevice": {
+  "report/renderer/report-utils.js | runtimeSettingsDevice": {
     "message": "Enhet"
   },
-  "shared/util.js | runtimeSettingsNetworkThrottling": {
+  "report/renderer/report-utils.js | runtimeSettingsNetworkThrottling": {
     "message": "Nätverksbegränsning"
   },
-  "shared/util.js | runtimeSettingsUANetwork": {
+  "report/renderer/report-utils.js | runtimeSettingsUANetwork": {
     "message": "Användaragent (nätverk)"
   },
-  "shared/util.js | runtimeSingleLoad": {
+  "report/renderer/report-utils.js | runtimeSingleLoad": {
     "message": "Enskild sidhämtning"
   },
-  "shared/util.js | runtimeSingleLoadTooltip": {
+  "report/renderer/report-utils.js | runtimeSingleLoadTooltip": {
     "message": "Denna data kommer från en enskild sidhämtning, till skillnad från fältdata som sammanfattar flera sessioner."
   },
-  "shared/util.js | runtimeSlow4g": {
+  "report/renderer/report-utils.js | runtimeSlow4g": {
     "message": "Långsam 4G-begränsning"
   },
-  "shared/util.js | runtimeUnknown": {
+  "report/renderer/report-utils.js | runtimeUnknown": {
     "message": "Okänd"
   },
-  "shared/util.js | show": {
+  "report/renderer/report-utils.js | show": {
     "message": "Visa"
   },
-  "shared/util.js | showRelevantAudits": {
+  "report/renderer/report-utils.js | showRelevantAudits": {
     "message": "Visa granskningar som är relevanta för:"
   },
-  "shared/util.js | snippetCollapseButtonLabel": {
+  "report/renderer/report-utils.js | snippetCollapseButtonLabel": {
     "message": "Komprimera utdrag"
   },
-  "shared/util.js | snippetExpandButtonLabel": {
+  "report/renderer/report-utils.js | snippetExpandButtonLabel": {
     "message": "Utöka utdrag"
   },
-  "shared/util.js | thirdPartyResourcesLabel": {
+  "report/renderer/report-utils.js | thirdPartyResourcesLabel": {
     "message": "Visa resurser från tredje part"
   },
-  "shared/util.js | throttlingProvided": {
+  "report/renderer/report-utils.js | throttlingProvided": {
     "message": "Tillhandahålls av miljön"
   },
-  "shared/util.js | toplevelWarningsMessage": {
+  "report/renderer/report-utils.js | toplevelWarningsMessage": {
     "message": "Problem uppstod med den här körningen av Lighthouse."
   },
-  "shared/util.js | varianceDisclaimer": {
+  "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Värdena är uppskattningar och kan variera. [Prestandapoängen beräknas](https://web.dev/performance-scoring/) direkt utifrån dessa mätvärden."
   },
-  "shared/util.js | viewTreemapLabel": {
+  "report/renderer/report-utils.js | viewTreemapLabel": {
     "message": "Visa Treemap"
   },
-  "shared/util.js | warningAuditsGroupTitle": {
+  "report/renderer/report-utils.js | warningAuditsGroupTitle": {
     "message": "Godkänd i granskningarna men med varningar"
   },
-  "shared/util.js | warningHeader": {
+  "report/renderer/report-utils.js | warningHeader": {
     "message": "Varningar: "
   },
   "treemap/app/src/util.js | allLabel": {

@@ -25,6 +25,7 @@ describe('PerfCategoryRenderer', () => {
 
   before(() => {
     Globals.i18n = new I18nFormatter('en');
+    Globals.applyStrings();
 
     const {document} = new jsdom.JSDOM().window;
     const dom = new DOM(document);

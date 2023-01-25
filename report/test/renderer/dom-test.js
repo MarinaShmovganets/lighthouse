@@ -21,6 +21,7 @@ describe('DOM', () => {
 
   before(() => {
     Globals.i18n = new I18nFormatter('en');
+    Globals.applyStrings();
     window = new jsdom.JSDOM().window;
 
     // The Node version of URL.createObjectURL isn't compatible with the jsdom blob type,

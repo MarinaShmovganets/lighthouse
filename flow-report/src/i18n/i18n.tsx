@@ -12,12 +12,12 @@ import {I18nFormatter} from '../../../report/renderer/i18n-formatter';
 import {UIStrings} from './ui-strings';
 import {useFlowResult} from '../util';
 import strings from './localized-strings.js';
-import {UIStrings as SharedUIStrings} from '../../../shared/util.js';
+import {UIStrings as ReportUIStrings} from '../../../report/renderer/report-utils.js';
 import {Globals} from '../../../report/renderer/report-globals.js';
 
 const I18nContext = createContext({
   formatter: new I18nFormatter('en-US'),
-  strings: {...SharedUIStrings, ...UIStrings},
+  strings: {...ReportUIStrings, ...UIStrings},
 });
 
 function useLhrLocale() {
@@ -70,7 +70,7 @@ const I18nProvider: FunctionComponent = ({children}) => {
 
     return {
       formatter: Globals.i18n,
-      strings: Globals.strings as typeof UIStrings & typeof SharedUIStrings,
+      strings: Globals.strings as typeof UIStrings & typeof ReportUIStrings,
     };
   }, [locale, lhrStrings]);
 

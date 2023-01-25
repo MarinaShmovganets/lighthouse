@@ -36,7 +36,7 @@ const UISTRINGS_REGEX = /UIStrings = .*?\}(;|\n)\n/s;
 
 const foldersWithStrings = [
   `${LH_ROOT}/core`,
-  `${LH_ROOT}/shared`,
+  `${LH_ROOT}/report/renderer`,
   `${LH_ROOT}/treemap`,
   `${LH_ROOT}/flow-report`,
   path.dirname(resolveModulePath('lighthouse-stack-packs')) + '/packs',
