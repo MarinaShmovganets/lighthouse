@@ -23,14 +23,16 @@ class Globals {
   static reportJson = null;
 
   /**
-   * @param {Record<string, string>} providedStrings
+   * @param {{providedStrings: Record<string, string>; i18n: I18nFormatter; reportJson: LH.ReportResult | null}} options
    */
-  static applyStrings(providedStrings) {
-    this.strings = {
+  static apply(options) {
+    Globals.strings = {
       // Set missing renderer strings to default (english) values.
       ...UIStrings,
-      ...providedStrings,
+      ...options.providedStrings,
     };
+    Globals.i18n = options.i18n;
+    Globals.reportJson = options.reportJson;
   }
 
   static getUniqueSuffix() {

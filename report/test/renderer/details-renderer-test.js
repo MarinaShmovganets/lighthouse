@@ -23,8 +23,11 @@ describe('DetailsRenderer', () => {
   }
 
   before(() => {
-    Globals.i18n = new I18nFormatter('en');
-    Globals.applyStrings();
+    Globals.apply({
+      providedStrings: {},
+      i18n: new I18nFormatter('en'),
+      reportJson: null,
+    });
     createRenderer();
   });
 

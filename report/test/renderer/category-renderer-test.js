@@ -23,8 +23,11 @@ describe('CategoryRenderer', () => {
   let sampleResults;
 
   before(() => {
-    Globals.i18n = new I18nFormatter('en');
-    Globals.applyStrings();
+    Globals.apply({
+      providedStrings: {},
+      i18n: new I18nFormatter('en'),
+      reportJson: null,
+    });
 
     const {document} = new jsdom.JSDOM().window;
     const dom = new DOM(document);

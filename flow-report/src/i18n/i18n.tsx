@@ -55,18 +55,19 @@ const I18nProvider: FunctionComponent = ({children}) => {
   const {locale, lhrStrings} = useLhrLocale();
 
   const i18n = useMemo(() => {
-    Globals.applyStrings({
-      // Preload with strings from the first lhr.
-      // Used for legacy report components imported into the flow report.
-      ...lhrStrings,
-      // Set any missing flow strings to default (english) values.
-      ...UIStrings,
-      // `strings` is generated in build/build-report.js
-      ...strings[locale],
+    Globals.apply({
+      providedStrings: {
+        // Preload with strings from the first lhr.
+        // Used for legacy report components imported into the flow report.
+        ...lhrStrings,
+        // Set any missing flow strings to default (english) values.
+        ...UIStrings,
+        // `strings` is generated in build/build-report.js
+        ...strings[locale],
+      },
+      i18n: new I18nFormatter(locale),
+      reportJson: null,
     });
-
-    // Initialize renderer util i18n for strings rendered in wrapped components.
-    Globals.i18n = new I18nFormatter(locale);
 
     return {
       formatter: Globals.i18n,

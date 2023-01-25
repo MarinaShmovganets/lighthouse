@@ -73,8 +73,11 @@ describe('DetailsRenderer', () => {
   let detailsRenderer;
 
   before(() => {
-    Globals.i18n = new I18nFormatter('en');
-    Globals.applyStrings();
+    Globals.apply({
+      providedStrings: {},
+      i18n: new I18nFormatter('en'),
+      reportJson: null,
+    });
 
     const {document} = new jsdom.JSDOM().window;
     dom = new DOM(document);

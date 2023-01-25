@@ -260,9 +260,11 @@ export class ReportRenderer {
    * @return {!DocumentFragment}
    */
   _renderReport(report) {
-    Globals.applyStrings(report.i18n.rendererFormattedStrings);
-    Globals.i18n = new I18nFormatter(report.configSettings.locale);
-    Globals.reportJson = report;
+    Globals.apply({
+      providedStrings: report.i18n.rendererFormattedStrings,
+      i18n: new I18nFormatter(report.configSettings.locale),
+      reportJson: report,
+    });
 
     const detailsRenderer = new DetailsRenderer(this._dom, {
       fullPageScreenshot: report.fullPageScreenshot ?? undefined,

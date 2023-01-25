@@ -15,8 +15,11 @@ const sampleResult = readJson('../../../core/test/results/sample_v2.json', impor
 
 describe('util helpers', () => {
   beforeEach(() => {
-    Globals.i18n = new I18nFormatter('en');
-    Globals.applyStrings();
+    Globals.apply({
+      providedStrings: {},
+      i18n: new I18nFormatter('en'),
+      reportJson: null,
+    });
   });
 
   afterEach(() => {
