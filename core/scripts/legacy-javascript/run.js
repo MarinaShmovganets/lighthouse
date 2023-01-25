@@ -251,9 +251,9 @@ async function main() {
     installCoreJs(coreJsVersion);
 
     const moduleOptions = [
-      {esmodules: false},
+      {esmodules: false, bugfixes: false},
       // Output: https://gist.github.com/connorjclark/515d05094ffd1fc038894a77156bf226
-      {esmodules: true},
+      {esmodules: true, bugfixes: false},
       {esmodules: true, bugfixes: true},
     ];
     for (const {esmodules, bugfixes} of moduleOptions) {
