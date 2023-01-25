@@ -39,10 +39,10 @@ export class CategoryRenderer {
    */
   get _clumpTitles() {
     return {
-      warning: Util.i18n.strings.warningAuditsGroupTitle,
-      manual: Util.i18n.strings.manualAuditsGroupTitle,
-      passed: Util.i18n.strings.passedAuditsGroupTitle,
-      notApplicable: Util.i18n.strings.notApplicableAuditsGroupTitle,
+      warning: Util.strings.warningAuditsGroupTitle,
+      manual: Util.strings.manualAuditsGroupTitle,
+      passed: Util.strings.passedAuditsGroupTitle,
+      notApplicable: Util.strings.notApplicableAuditsGroupTitle,
     };
   }
 
@@ -62,7 +62,7 @@ export class CategoryRenderer {
    * @return {!Element}
    */
   populateAuditValues(audit, component) {
-    const strings = Util.i18n.strings;
+    const strings = Util.strings;
     const auditEl = this.dom.find('.lh-audit', component);
     auditEl.id = audit.result.id;
     const scoreDisplayMode = audit.result.scoreDisplayMode;
@@ -334,8 +334,8 @@ export class CategoryRenderer {
       el.append(descriptionEl);
     }
 
-    this.dom.find('.lh-clump-toggletext--show', el).textContent = Util.i18n.strings.show;
-    this.dom.find('.lh-clump-toggletext--hide', el).textContent = Util.i18n.strings.hide;
+    this.dom.find('.lh-clump-toggletext--show', el).textContent = Util.strings.show;
+    this.dom.find('.lh-clump-toggletext--hide', el).textContent = Util.strings.hide;
 
     clumpElement.classList.add(`lh-clump--${clumpId.toLowerCase()}`);
     return el;
@@ -393,7 +393,7 @@ export class CategoryRenderer {
     percentageEl.textContent = scoreOutOf100.toString();
     if (category.score === null) {
       percentageEl.textContent = '?';
-      percentageEl.title = Util.i18n.strings.errorLabel;
+      percentageEl.title = Util.strings.errorLabel;
     }
 
     // Render a numerical score if the category has applicable audits, or no audits whatsoever.
@@ -402,7 +402,7 @@ export class CategoryRenderer {
     } else {
       wrapper.classList.add(`lh-gauge__wrapper--not-applicable`);
       percentageEl.textContent = '-';
-      percentageEl.title = Util.i18n.strings.notApplicableAuditsGroupTitle;
+      percentageEl.title = Util.strings.notApplicableAuditsGroupTitle;
     }
 
     this.dom.find('.lh-gauge__label', tmpl).textContent = category.title;

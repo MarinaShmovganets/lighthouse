@@ -7,14 +7,14 @@
 import assert from 'assert/strict';
 
 import {Util} from '../../renderer/util.js';
-import {I18n} from '../../renderer/i18n.js';
+import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {readJson} from '../../../core/test/test-utils.js';
 
 const sampleResult = readJson('../../../core/test/results/sample_v2.json', import.meta);
 
 describe('util helpers', () => {
   beforeEach(() => {
-    Util.i18n = new I18n('en', {...Util.UIStrings});
+    Util.i18n = new I18nFormatter('en');
   });
 
   afterEach(() => {
@@ -166,6 +166,26 @@ describe('util helpers', () => {
         // Original audit results should be restored.
         const preparedResult = Util.prepareReportResult(clonedSampleResult);
         assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
+      });
+
+      it('moves full-page-screenshot audit', () => {
+        const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
+
+        clonedSampleResult.audits['full-page-screenshot'] = {
+          details: {
+            type: 'full-page-screenshot',
+            ...sampleResult.fullPageScreenshot,
+          },
+        };
+        delete clonedSampleResult.fullPageScreenshot;
+
+        assert.ok(clonedSampleResult.audits['full-page-screenshot'].details.nodes); // Make sure something's being tested.
+        assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
+
+        // Original audit results should be restored.
+        const preparedResult = Util.prepareReportResult(clonedSampleResult);
+        assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
+        assert.deepStrictEqual(preparedResult.fullPageScreenshot, sampleResult.fullPageScreenshot);
       });
 
       it('corrects performance category without hidden group', () => {

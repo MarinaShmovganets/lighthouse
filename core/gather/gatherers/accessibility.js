@@ -81,6 +81,19 @@ async function runA11yChecks() {
   };
 }
 
+async function runA11yChecksAndResetScroll() {
+  const originalScrollPosition = {
+    x: window.scrollX,
+    y: window.scrollY,
+  };
+
+  try {
+    return await runA11yChecks();
+  } finally {
+    window.scrollTo(originalScrollPosition.x, originalScrollPosition.y);
+  }
+}
+
 /**
  * @param {import('axe-core/axe').Result} result
  * @return {LH.Artifacts.AxeRuleResult}
@@ -168,13 +181,14 @@ class Accessibility extends FRGatherer {
   getArtifact(passContext) {
     const driver = passContext.driver;
 
-    return driver.executionContext.evaluate(runA11yChecks, {
+    return driver.executionContext.evaluate(runA11yChecksAndResetScroll, {
       args: [],
       useIsolation: true,
       deps: [
         axeSource,
         pageFunctions.getNodeDetails,
         createAxeRuleResultArtifact,
+        runA11yChecks,
       ],
     });
   }

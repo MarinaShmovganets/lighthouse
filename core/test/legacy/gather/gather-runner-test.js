@@ -687,40 +687,6 @@ describe('GatherRunner', function() {
     });
   });
 
-  it('resets scroll position between every gatherer', async () => {
-    class ScrollMcScrollyGatherer extends TestGatherer {
-      /** @param {{driver: Driver}} context */
-      afterPass(context) {
-        context.driver.scrollTo({x: 1000, y: 1000});
-      }
-    }
-
-    const url = 'https://example.com';
-    const driver = Object.assign({}, fakeDriver);
-    const scrollToSpy = jestMock.spyOn(driver, 'scrollTo');
-
-    const passConfig = {
-      recordTrace: true,
-      gatherers: [
-        {instance: new ScrollMcScrollyGatherer()},
-        {instance: new TestGatherer()},
-      ],
-    };
-
-    /** @type {any} Using Test-only gatherer. */
-    const gathererResults = {
-      TestGatherer: [],
-    };
-    const passContext = {url, driver, passConfig, computedCache: new Map()};
-    await GatherRunner.afterPass(passContext, {}, gathererResults);
-    // One time for the afterPass of ScrollMcScrolly, two times for the resets of the two gatherers.
-    expect(scrollToSpy.mock.calls).toEqual([
-      [{x: 1000, y: 1000}],
-      [{x: 0, y: 0}],
-      [{x: 0, y: 0}],
-    ]);
-  });
-
   it('does as many passes as are required', async () => {
     const t1 = new TestGatherer();
     const t2 = new TestGatherer();

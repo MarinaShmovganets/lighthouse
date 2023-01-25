@@ -16,6 +16,7 @@ import {ReportGenerator} from '../report/generator/report-generator.js';
 import {startTimespanGather} from './gather/timespan-runner.js';
 import {snapshotGather} from './gather/snapshot-runner.js';
 import {navigationGather} from './gather/navigation-runner.js';
+import * as LH from '../types/lh.js';
 
 /** @typedef {import('./legacy/gather/connections/connection.js').Connection} Connection */
 
@@ -157,6 +158,7 @@ export {default as Gatherer} from './gather/base-gatherer.js';
 export {NetworkRecords} from './computed/network-records.js';
 export {default as defaultConfig} from './config/default-config.js';
 export {default as desktopConfig} from './config/desktop-config.js';
+export * from '../types/lh.js';
 export {
   legacyNavigation,
   startFlow,

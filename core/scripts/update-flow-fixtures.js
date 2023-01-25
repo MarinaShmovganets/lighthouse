@@ -34,6 +34,7 @@ const args = yargs(process.argv.slice(2))
     },
     'rebaseline-artifacts': {
       type: 'array',
+      alias: 'a',
     },
     'output-path': {
       type: 'string',
