@@ -906,9 +906,9 @@ describe('Main Thread Tasks', () => {
     it('should throw on invalid task input', () => {
       const traceEvents = [...boilerplateTrace, ...invalidEvents];
       traceEvents.filter(evt => !evt.cat).forEach(evt => {
-      evt.cat = 'devtools.timeline';
-      evt.args = evt.args || args;
-    });
+        evt.cat = 'devtools.timeline';
+        evt.args = evt.args || args;
+      });
       expect(() => run({traceEvents})).toThrow();
     });
   }
@@ -925,9 +925,9 @@ describe('Main Thread Tasks', () => {
       ];
 
       traceEvents.filter(evt => !evt.cat).forEach(evt => {
-      evt.cat = 'devtools.timeline';
-      evt.args = evt.args || args;
-    });
+        evt.cat = 'devtools.timeline';
+        evt.args = evt.args || args;
+      });
 
       const tasks = run({traceEvents});
       const taskTreeAsString = MainThreadTasks.printTaskTreeToDebugString(tasks, {printWidth: 50});
