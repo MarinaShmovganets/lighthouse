@@ -489,20 +489,22 @@ class TraceProcessor {
    */
   static findMainFramePidTids(mainFrameInfo, keyEvents) {
     const frameCommittedEvts = keyEvents.filter(evt =>
-      evt.name === 'FrameCommittedInBrowser' &&
+      // ProcessReadyInBrowser is used when a processID isn't available when the FrameCommittedInBrowser trace event is emitted.
+      // In that case. FrameCommittedInBrowser has no processId, but a processPseudoId. and the ReadyInBrowser event declares the proper processId.
+      (evt.name === 'FrameCommittedInBrowser' || evt.name === 'ProcessReadyInBrowser') &&
       evt.args?.data?.frame === mainFrameInfo.frameId
     );
 
     // "Modern" traces with a navigation have a FrameCommittedInBrowser event
     const mainFramePids = frameCommittedEvts.length
-      ? frameCommittedEvts.map(e => e?.args?.data?.processId)
+      ? frameCommittedEvts.map(e => e?.args?.data?.processId).filter(Boolean)
       // …But old traces and some timespan traces may not. In these situations, we'll assume the
       // primary process ID remains constant (as there were no navigations).
       : [mainFrameInfo.startingPid];
 
     const pidToTid = new Map();
 
-    mainFramePids.forEach(pid => {
+    Array.from(new Set(mainFramePids)).forEach(pid => {
       // While renderer tids are generally predictable, we'll doublecheck it
       const threadNameEvt = keyEvents.find(e =>
         e.cat === '__metadata' &&
