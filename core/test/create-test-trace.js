@@ -7,7 +7,7 @@
 const pid = 1111;
 const tid = 222;
 const browserPid = 13725;
-const rootFrame = '3EFC2700D7BC3F4734CAF2F726EFB78C';
+const rootFrame = 'ROOT_FRAME';
 const defaultUrl = 'https://example.com/';
 const lcpNodeId = 16;
 const lcpImageUrl = 'http://www.example.com/image.png';
@@ -225,4 +225,7 @@ function createTestTrace(options) {
   return {traceEvents};
 }
 
-export {createTestTrace};
+export {
+  createTestTrace,
+  rootFrame,
+};

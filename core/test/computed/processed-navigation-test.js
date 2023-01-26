@@ -5,6 +5,7 @@
  */
 
 import {ProcessedNavigation} from '../../computed/processed-navigation.js';
+import {ProcessedTrace} from '../../computed/processed-trace.js';
 import {readJson} from '../test-utils.js';
 
 const pwaTrace = readJson('../fixtures/traces/progressive-app-m60.json', import.meta);
@@ -114,6 +115,23 @@ describe('ProcessedTrace', () => {
         timeOrigin: 0,
         traceEnd: 12539.872,
       },
+    });
+  });
+
+  it('accepts a processed trace as input', async () => {
+    const context = {computedCache: new Map()};
+    const processedTrace = await ProcessedTrace.request(pwaTrace, context);
+    const processedNavigation = await ProcessedNavigation.request(processedTrace, context);
+
+    expect(processedNavigation.timings).toEqual({
+      domContentLoaded: 560.294,
+      firstContentfulPaint: 498.87,
+      firstContentfulPaintAllFrames: 498.87,
+      firstMeaningfulPaint: 783.328,
+      firstPaint: 498.853,
+      load: 2198.898,
+      timeOrigin: 0,
+      traceEnd: 12539.872,
     });
   });
 

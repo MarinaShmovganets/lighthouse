@@ -918,7 +918,7 @@
   justify-content: space-between;
   padding-bottom: var(--default-padding);
   width: 100%;
-  grid-template-columns: repeat(auto-fit, 60px);
+  grid-template-columns: repeat(auto-fit, 90px);
 }
 
 .lh-filmstrip__frame {
@@ -928,8 +928,8 @@
 
 .lh-filmstrip__thumbnail {
   border: 1px solid var(--report-border-color-secondary);
-  max-height: 100px;
-  max-width: 60px;
+  max-height: 150px;
+  max-width: 120px;
 }
 
 /* Audit */

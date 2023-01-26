@@ -8,6 +8,7 @@ import {EventEmitter} from 'events';
 
 import log from 'lighthouse-logger';
 
+import * as LH from '../../../types/lh.js';
 import {Fetcher} from '../../gather/fetcher.js';
 import {ExecutionContext} from '../../gather/driver/execution-context.js';
 import {LighthouseError} from '../../lib/lh-error.js';

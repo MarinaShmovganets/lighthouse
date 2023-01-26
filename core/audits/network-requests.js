@@ -31,8 +31,8 @@ class NetworkRequests extends Audit {
   static async audit(artifacts, context) {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const records = await NetworkRecords.request(devtoolsLog, context);
-    const earliestStartTime = records.reduce(
-      (min, record) => Math.min(min, record.startTime),
+    const earliestRendererStartTime = records.reduce(
+      (min, record) => Math.min(min, record.rendererStartTime),
       Infinity
     );
 
@@ -47,8 +47,8 @@ class NetworkRequests extends Audit {
     }
 
     /** @param {number} time */
-    const normalizeTime = time => time < earliestStartTime || !Number.isFinite(time) ?
-      undefined : (time - earliestStartTime);
+    const normalizeTime = time => time < earliestRendererStartTime || !Number.isFinite(time) ?
+      undefined : (time - earliestRendererStartTime);
 
     const results = records.map(record => {
       const endTimeDeltaMs = record.lrStatistics?.endTimeDeltaMs;
@@ -64,6 +64,7 @@ class NetworkRequests extends Audit {
       return {
         url: UrlUtils.elideDataURI(record.url),
         protocol: record.protocol,
+        rendererStartTime: normalizeTime(record.rendererStartTime),
         startTime: normalizeTime(record.startTime),
         endTime: normalizeTime(record.endTime),
         finished: record.finished,
@@ -111,8 +112,8 @@ class NetworkRequests extends Audit {
     const tableDetails = Audit.makeTableDetails(headings, results);
 
     // Include starting timestamp to allow syncing requests with navStart/metric timestamps.
-    const networkStartTimeTs = Number.isFinite(earliestStartTime) ?
-        earliestStartTime * 1000 : undefined;
+    const networkStartTimeTs = Number.isFinite(earliestRendererStartTime) ?
+        earliestRendererStartTime * 1000 : undefined;
     tableDetails.debugData = {
       type: 'debugdata',
       networkStartTimeTs,

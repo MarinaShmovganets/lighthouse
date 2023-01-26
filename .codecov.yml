@@ -20,8 +20,3 @@ coverage:
     patch:
       default:
         if_not_found: success
-
-# docs:
-#   https://docs.codecov.com/docs/ignoring-paths
-ignore:
-- "core/util.cjs" # file is a copy of report/renderer/util.js
