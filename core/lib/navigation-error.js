@@ -125,7 +125,7 @@ function getPageLoadError(navigationError, context) {
       record.resourceType === NetworkRequest.TYPES.Document
     );
     if (documentRequests.length) {
-      mainRecord = documentRequests.reduce((min, r) => (r.startTime < min.startTime ? r : min));
+      mainRecord = documentRequests.reduce((min, r) => (r.networkRequestTime < min.networkRequestTime ? r : min));
     }
   }
 

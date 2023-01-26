@@ -112,9 +112,9 @@ describe('NetworkRequest', () => {
     function getRequest() {
       return {
         rendererStartTime: 0,
-        startTime: 50,
-        responseReceivedTime: 1000,
-        endTime: 2000,
+        networkRequestTime: 50,
+        responseHeadersEndTime: 1000,
+        networkEndTime: 2000,
 
         // units = ms
         responseHeaders: [
@@ -135,9 +135,9 @@ describe('NetworkRequest', () => {
       const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
 
       expect(record.rendererStartTime).toStrictEqual(0);
-      expect(record.startTime).toStrictEqual(50);
-      expect(record.endTime).toStrictEqual(2000);
-      expect(record.responseReceivedTime).toStrictEqual(1000);
+      expect(record.networkRequestTime).toStrictEqual(50);
+      expect(record.networkEndTime).toStrictEqual(2000);
+      expect(record.responseHeadersEndTime).toStrictEqual(1000);
       expect(record.lrStatistics).toStrictEqual({
         endTimeDeltaMs: -8050,
         TCPMs: 5000,

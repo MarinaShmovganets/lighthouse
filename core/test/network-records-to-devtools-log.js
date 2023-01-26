@@ -14,7 +14,7 @@ import {NetworkRecorder} from '../../core/lib/network-recorder.js';
 const idBase = '127122';
 const exampleUrl = 'https://testingurl.com/';
 const redirectSuffix = ':redirect';
-// Default request startTime if none provided. Do not use 0 due to guard against
+// Default networkRequestTime if none provided. Do not use 0 due to guard against
 // bad network records starting at 0. See https://github.com/GoogleChrome/lighthouse/pull/6780
 const defaultStart = 1000;
 const defaultTimingOffset = 1000;
@@ -92,49 +92,49 @@ function extractPartialTiming(networkRecord) {
 
   const {
     rendererStartTime,
-    startTime,
-    responseReceivedTime,
-    endTime,
+    networkRequestTime,
+    responseHeadersEndTime,
+    networkEndTime,
     redirectResponseTimestamp, // Generated timestamp added in addRedirectResponseIfNeeded; only used as backup start time.
   } = networkRecord;
 
   const requestTime = timeDefined(requestTimeS) ? requestTimeS * 1000 : undefined;
-  const absoluteTimes = {rendererStartTime, startTime, requestTime, responseReceivedTime, endTime};
+  const absoluteTimes = {rendererStartTime, networkRequestTime, requestTime, responseHeadersEndTime, networkEndTime};
   assertTimingIncreases(absoluteTimes);
 
-  // `requestTime` and `startTime` must be equal if both are defined.
-  if (timeDefined(startTime) && timeDefined(requestTime)) {
-    assert.equal(startTime, requestTime, `'startTime' (${startTime}) is not equal to 'timing.requestTime' (${requestTimeS} seconds) in test network record`); // eslint-disable-line max-len
+  // `requestTime` and `networkRequestTime` must be equal if both are defined.
+  if (timeDefined(networkRequestTime) && timeDefined(requestTime)) {
+    assert.equal(networkRequestTime, requestTime, `'networkRequestTime' (${networkRequestTime}) is not equal to 'timing.requestTime' (${requestTimeS} seconds) in test network record`); // eslint-disable-line max-len
   }
 
-  // Start of request + relative timing must be <= responseReceivedTime and endTime.
-  const startTimes = [rendererStartTime, startTime, requestTime];
+  // Start of request + relative timing must be <= responseHeadersEndTime and networkEndTime.
+  const startTimes = [rendererStartTime, networkRequestTime, requestTime];
   let maxStart = Math.max(...startTimes.filter(timeDefined));
   maxStart = Number.isFinite(maxStart) ? maxStart : redirectResponseTimestamp; // Use redirectResponseTimestamp only as fallback.
   if (timeDefined(maxStart)) {
-    if (timeDefined(responseReceivedTime)) {
-      assert(maxStart + relativeTimingMax <= responseReceivedTime, `request start (${maxStart}) plus relative 'timing' value (${relativeTimingMax}) exceeds 'responseReceivedTime' (${responseReceivedTime}) in test network record`); // eslint-disable-line max-len
+    if (timeDefined(responseHeadersEndTime)) {
+      assert(maxStart + relativeTimingMax <= responseHeadersEndTime, `request start (${maxStart}) plus relative 'timing' value (${relativeTimingMax}) exceeds 'responseHeadersEndTime' (${responseHeadersEndTime}) in test network record`); // eslint-disable-line max-len
     }
-    if (timeDefined(endTime)) {
-      assert(maxStart + relativeTimingMax <= endTime, `request start (${maxStart}) plus relative 'timing' value (${relativeTimingMax}) exceeds 'endTime' (${endTime}) in test network record`); // eslint-disable-line max-len
+    if (timeDefined(networkEndTime)) {
+      assert(maxStart + relativeTimingMax <= networkEndTime, `request start (${maxStart}) plus relative 'timing' value (${relativeTimingMax}) exceeds 'networkEndTime' (${networkEndTime}) in test network record`); // eslint-disable-line max-len
     }
   }
 
-  // If all are defined, requestTime + receiveHeadersEnd === responseReceivedTime.
+  // If all are defined, requestTime + receiveHeadersEnd === responseHeadersEndTime.
   const {receiveHeadersEnd} = networkRecord.timing ?? {};
-  const start = timeDefined(startTime) ? startTime : requestTime;
-  if (timeDefined(start) && timeDefined(receiveHeadersEnd) && timeDefined(responseReceivedTime)) {
-    assert.equal(start + receiveHeadersEnd, responseReceivedTime, `request start (${start}) plus 'receiveHeadersEnd' (${receiveHeadersEnd}) does not equal 'responseReceivedTime' (${responseReceivedTime}) in test network record`); // eslint-disable-line max-len
+  const start = timeDefined(networkRequestTime) ? networkRequestTime : requestTime;
+  if (timeDefined(start) && timeDefined(receiveHeadersEnd) && timeDefined(responseHeadersEndTime)) {
+    assert.equal(start + receiveHeadersEnd, responseHeadersEndTime, `request start (${start}) plus 'receiveHeadersEnd' (${receiveHeadersEnd}) does not equal 'responseHeadersEndTime' (${responseHeadersEndTime}) in test network record`); // eslint-disable-line max-len
   }
 
   return {
     redirectResponseTimestamp,
     rendererStartTime,
-    startTime,
+    networkRequestTime,
     requestTime,
     receiveHeadersEnd,
-    responseReceivedTime,
-    endTime,
+    responseHeadersEndTime,
+    networkEndTime,
     relativeTimingMax,
   };
 }
@@ -158,50 +158,50 @@ function getNormalizedRequestTiming(networkRecord) {
   const extractedTimes = extractPartialTiming(networkRecord);
 
   const possibleStarts = [
-    extractedTimes.startTime,
+    extractedTimes.networkRequestTime,
     extractedTimes.requestTime,
     extractedTimes.rendererStartTime,
-    // Note: since redirectResponseTimestamp (aka the redirect's endTime) is
+    // Note: since redirectResponseTimestamp (aka the redirect's networkEndTime) is
     // used as a last resort, some redirected requests may start before the
     // redirect ends. Up to the caller to override if this matters.
     extractedTimes.redirectResponseTimestamp,
   ];
-  const startTime = possibleStarts.find(timeDefined) ?? defaultStart;
+  const networkRequestTime = possibleStarts.find(timeDefined) ?? defaultStart;
 
   const rendererStartTime = timeDefined(extractedTimes.rendererStartTime) ?
       extractedTimes.rendererStartTime :
       // Because `rendererStartTime` was added much later, several tests assume
-      // requests start at `startTime`, so default to the same timestamp.
-      startTime;
+      // requests start at `networkRequestTime`, so default to the same timestamp.
+      networkRequestTime;
 
-  // `startTime` and `requestTime` are the same.
-  const requestTime = startTime;
+  // `networkRequestTime` and `requestTime` are the same.
+  const requestTime = networkRequestTime;
 
   // `receiveHeadersEnd` is milliseconds after `requestTime`.
   let {receiveHeadersEnd} = extractedTimes;
   if (!timeDefined(receiveHeadersEnd)) {
-    if (timeDefined(extractedTimes.responseReceivedTime)) {
-      receiveHeadersEnd = extractedTimes.responseReceivedTime - requestTime;
-    } else if (timeDefined(extractedTimes.endTime)) {
-      // Pick a time between last defined `timing` (may just be `requestTime`) and `endTime`.
+    if (timeDefined(extractedTimes.responseHeadersEndTime)) {
+      receiveHeadersEnd = extractedTimes.responseHeadersEndTime - requestTime;
+    } else if (timeDefined(extractedTimes.networkEndTime)) {
+      // Pick a time between last defined `timing` (may just be `requestTime`) and `networkEndTime`.
       receiveHeadersEnd = (extractedTimes.relativeTimingMax +
-          (extractedTimes.endTime - requestTime)) / 2;
+          (extractedTimes.networkEndTime - requestTime)) / 2;
     } else {
       receiveHeadersEnd = Math.max(extractedTimes.relativeTimingMax, defaultTimingOffset);
     }
   }
 
-  // Equivalent to responseReceivedTime if provided due to `receiveHeadersEnd` construction above.
-  const responseReceivedTime = requestTime + receiveHeadersEnd;
+  // Equivalent to responseHeadersEndTime if provided due to `receiveHeadersEnd` construction above.
+  const responseHeadersEndTime = requestTime + receiveHeadersEnd;
 
-  // endTime is allowed to be -1, e.g. for incomplete requests.
-  const endTime = extractedTimes.endTime ?? (responseReceivedTime + defaultTimingOffset);
+  // networkEndTime is allowed to be -1, e.g. for incomplete requests.
+  const networkEndTime = extractedTimes.networkEndTime ?? (responseHeadersEndTime + defaultTimingOffset);
 
   return {
     rendererStartTime,
-    startTime: startTime,
-    responseReceivedTime,
-    endTime,
+    networkRequestTime,
+    responseHeadersEndTime,
+    networkEndTime,
     timing: {
       // TODO: other `timing` properties could have default values.
       ...networkRecord.timing,
@@ -271,7 +271,7 @@ function getResponseReceivedEvent(networkRecord, index, normalizedTiming) {
     method: 'Network.responseReceived',
     params: {
       requestId: getBaseRequestId(networkRecord) || `${idBase}.${index}`,
-      timestamp: normalizedTiming.responseReceivedTime / 1000,
+      timestamp: normalizedTiming.responseHeadersEndTime / 1000,
       type: networkRecord.resourceType || undefined,
       response: {
         url: networkRecord.url || exampleUrl,
@@ -319,7 +319,7 @@ function getLoadingFinishedEvent(networkRecord, index, normalizedTiming) {
     method: 'Network.loadingFinished',
     params: {
       requestId: getBaseRequestId(networkRecord) || `${idBase}.${index}`,
-      timestamp: normalizedTiming.endTime / 1000,
+      timestamp: normalizedTiming.networkEndTime / 1000,
       encodedDataLength: networkRecord.transferSize === undefined ?
         0 : networkRecord.transferSize,
     },
@@ -337,7 +337,7 @@ function getLoadingFailedEvent(networkRecord, index, normalizedTiming) {
     method: 'Network.loadingFailed',
     params: {
       requestId: getBaseRequestId(networkRecord) || `${idBase}.${index}`,
-      timestamp: normalizedTiming.endTime,
+      timestamp: normalizedTiming.networkEndTime,
       errorText: networkRecord.localizedFailDescription || 'Request failed',
     },
   };
@@ -383,7 +383,7 @@ function addRedirectResponseIfNeeded(networkRecords, record) {
   originalResponse.status = originalRecord.statusCode || 302;
   return {
     ...record,
-    redirectResponseTimestamp: originalTiming.endTime,
+    redirectResponseTimestamp: originalTiming.networkEndTime,
     redirectResponse: originalResponse,
   };
 }
