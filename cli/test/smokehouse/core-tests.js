@@ -14,6 +14,9 @@ import errorsExpiredSsl from './test-definitions/errors-expired-ssl.js';
 import errorsIframeExpiredSsl from './test-definitions/errors-iframe-expired-ssl.js';
 import errorsInfiniteLoop from './test-definitions/errors-infinite-loop.js';
 import formsAutoComplete from './test-definitions/forms-autocomplete.js';
+import fpsMax from './test-definitions/fps-max.js';
+import fpsMaxPassive from './test-definitions/fps-max-passive.js';
+import fpsScaled from './test-definitions/fps-scaled.js';
 import issuesMixedContent from './test-definitions/issues-mixed-content.js';
 import lanternFetch from './test-definitions/lantern-fetch.js';
 import lanternIdleCallbackLong from './test-definitions/lantern-idle-callback-long.js';
@@ -51,10 +54,10 @@ import pwaSvgomg from './test-definitions/pwa-svgomg.js';
 import redirectsClientPaintServer from './test-definitions/redirects-client-paint-server.js';
 import redirectsHistoryPushState from './test-definitions/redirects-history-push-state.js';
 import redirectsMultipleServer from './test-definitions/redirects-multiple-server.js';
-import redirectScripts from './test-definitions/redirects-scripts.js';
+import redirectsScripts from './test-definitions/redirects-scripts.js';
+import redirectsSelf from './test-definitions/redirects-self.js';
 import redirectsSingleClient from './test-definitions/redirects-single-client.js';
 import redirectsSingleServer from './test-definitions/redirects-single-server.js';
-import redirectsSelf from './test-definitions/redirects-self.js';
 import screenshot from './test-definitions/screenshot.js';
 import seoFailing from './test-definitions/seo-failing.js';
 import seoPassing from './test-definitions/seo-passing.js';
@@ -62,8 +65,6 @@ import seoStatus403 from './test-definitions/seo-status-403.js';
 import seoTapTargets from './test-definitions/seo-tap-targets.js';
 import sourceMaps from './test-definitions/source-maps.js';
 import timing from './test-definitions/timing.js';
-import fpsScaled from './test-definitions/fps-scaled.js';
-import fpsMax from './test-definitions/fps-max.js';
 
 /** @type {ReadonlyArray<Smokehouse.TestDfn>} */
 const smokeTests = [
@@ -77,19 +78,22 @@ const smokeTests = [
   errorsIframeExpiredSsl,
   errorsInfiniteLoop,
   formsAutoComplete,
+  fpsMax,
+  fpsScaled,
+  fpsMaxPassive,
   issuesMixedContent,
+  lanternFetch,
+  lanternIdleCallbackLong,
+  lanternIdleCallbackShort,
   lanternOnline,
   lanternSetTimeout,
-  lanternFetch,
   lanternXhr,
-  lanternIdleCallbackShort,
-  lanternIdleCallbackLong,
   legacyJavascript,
   metricsDebugger,
   metricsDelayedFcp,
   metricsDelayedLcp,
-  metricsTrickyTtiLateFcp,
   metricsTrickyTti,
+  metricsTrickyTtiLateFcp,
   offlineOnlineOnly,
   offlineReady,
   offlineSwBroken,
@@ -107,17 +111,17 @@ const smokeTests = [
   perfTraceElements,
   pubads,
   pwaAirhorner,
-  pwaChromestatus,
-  pwaSvgomg,
   pwaCaltrain,
+  pwaChromestatus,
   pwaRocks,
+  pwaSvgomg,
   redirectsClientPaintServer,
   redirectsHistoryPushState,
   redirectsMultipleServer,
-  redirectScripts,
+  redirectsScripts,
+  redirectsSelf,
   redirectsSingleClient,
   redirectsSingleServer,
-  redirectsSelf,
   screenshot,
   seoFailing,
   seoPassing,
@@ -125,8 +129,6 @@ const smokeTests = [
   seoTapTargets,
   sourceMaps,
   timing,
-  fpsScaled,
-  fpsMax,
 ];
 
 export default smokeTests;

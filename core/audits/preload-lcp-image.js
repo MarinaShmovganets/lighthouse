@@ -11,6 +11,7 @@ import {MainResource} from '../computed/main-resource.js';
 import {LanternLargestContentfulPaint} from '../computed/metrics/lantern-largest-contentful-paint.js';
 import {LoadSimulator} from '../computed/load-simulator.js';
 import {ByteEfficiencyAudit} from './byte-efficiency/byte-efficiency-audit.js';
+import {ProcessedNavigation} from '../computed/processed-navigation.js';
 
 const UIStrings = {
   /** Title of a lighthouse audit that tells a user to preload an image in order to improve their LCP time. */
@@ -36,8 +37,7 @@ class PreloadLCPImageAudit extends Audit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       supportedModes: ['navigation'],
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'GatherContext', 'URL', 'TraceElements',
-        'ImageElements'],
+      requiredArtifacts: ['traces', 'devtoolsLogs', 'GatherContext', 'URL', 'TraceElements'],
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
     };
   }
@@ -87,17 +87,11 @@ class PreloadLCPImageAudit extends Audit {
   /**
    * @param {LH.Artifacts.NetworkRequest} mainResource
    * @param {LH.Gatherer.Simulation.GraphNode} graph
-   * @param {LH.Artifacts.TraceElement} lcpElement
-   * @param {Array<LH.Artifacts.ImageElement>} imageElements
+   * @param {string | undefined} lcpUrl
    * @return {{lcpNodeToPreload?: LH.Gatherer.Simulation.GraphNetworkNode, initiatorPath?: InitiatorPath}}
    */
-  static getLCPNodeToPreload(mainResource, graph, lcpElement, imageElements) {
-    const lcpImageElement = imageElements.find(elem => {
-      return elem.node.devtoolsNodePath === lcpElement.node.devtoolsNodePath;
-    });
-
-    if (!lcpImageElement) return {};
-    const lcpUrl = lcpImageElement.src;
+  static getLCPNodeToPreload(mainResource, graph, lcpUrl) {
+    if (!lcpUrl) return {};
     const {lcpNode, path} = PreloadLCPImageAudit.findLCPNode(graph, lcpUrl);
     if (!lcpNode || !path) return {};
 
@@ -114,6 +108,29 @@ class PreloadLCPImageAudit extends Audit {
       lcpNodeToPreload,
       initiatorPath,
     };
+  }
+
+  /**
+   * Match the LCP event with the paint event to get the URL of the image actually painted.
+   * This could differ from the `ImageElement` associated with the nodeId if e.g. the LCP
+   * was a pseudo-element associated with a node containing a smaller background-image.
+   * @param {LH.Trace} trace
+   * @param {LH.Artifacts.ProcessedNavigation} processedNavigation
+   * @return {string | undefined}
+   */
+  static getLcpUrl(trace, processedNavigation) {
+    const lcpEvent = processedNavigation.largestContentfulPaintAllFramesEvt;
+    if (!lcpEvent) return;
+
+    const lcpImagePaintEvent = trace.traceEvents.filter(e => {
+      return e.name === 'LargestImagePaint::Candidate' &&
+          e.args.frame === lcpEvent.args.frame &&
+          e.args.data?.DOMNodeId === lcpEvent.args.data?.nodeId &&
+          e.args.data?.size === lcpEvent.args.data?.size;
+    // Get last candidate, in case there was more than one.
+    }).sort((a, b) => b.ts - a.ts)[0];
+
+    return lcpImagePaintEvent?.args.data?.imageUrl;
   }
 
   /**
@@ -223,15 +240,17 @@ class PreloadLCPImageAudit extends Audit {
       return {score: null, notApplicable: true};
     }
 
-    const [mainResource, lanternLCP, simulator] = await Promise.all([
+    const [processedNavigation, mainResource, lanternLCP, simulator] = await Promise.all([
+      ProcessedNavigation.request(trace, context),
       MainResource.request({devtoolsLog, URL}, context),
       LanternLargestContentfulPaint.request(metricData, context),
       LoadSimulator.request({devtoolsLog, settings: context.settings}, context),
     ]);
 
+    const lcpUrl = PreloadLCPImageAudit.getLcpUrl(trace, processedNavigation);
     const graph = lanternLCP.pessimisticGraph;
     // eslint-disable-next-line max-len
-    const {lcpNodeToPreload, initiatorPath} = PreloadLCPImageAudit.getLCPNodeToPreload(mainResource, graph, lcpElement, artifacts.ImageElements);
+    const {lcpNodeToPreload, initiatorPath} = PreloadLCPImageAudit.getLCPNodeToPreload(mainResource, graph, lcpUrl);
 
     const {results, wastedMs} =
       PreloadLCPImageAudit.computeWasteWithGraph(lcpElement, lcpNodeToPreload, graph, simulator);

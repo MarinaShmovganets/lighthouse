@@ -13,6 +13,7 @@ import {initializeConfig} from './config/config.js';
 import {getFormatted} from '../shared/localization/format.js';
 import {mergeConfigFragment, deepClone} from './config/config-helpers.js';
 import * as i18n from './lib/i18n/i18n.js';
+import * as LH from '../types/lh.js';
 
 /** @typedef {WeakMap<LH.UserFlow.GatherStep, LH.Gatherer.FRGatherResult['runnerOptions']>} GatherStepRunnerOptions */
 
@@ -73,8 +74,13 @@ class UserFlow {
    */
   _getNextFlags(flags) {
     const clonedFlowFlags = this._options?.flags && deepClone(this._options?.flags);
-    if (!flags) return clonedFlowFlags;
-    return mergeConfigFragment(clonedFlowFlags || {}, flags, true);
+    const mergedFlags = mergeConfigFragment(clonedFlowFlags || {}, flags || {}, true);
+
+    if (mergedFlags.usePassiveGathering === undefined) {
+      mergedFlags.usePassiveGathering = true;
+    }
+
+    return mergedFlags;
   }
 
   /**
@@ -82,22 +88,22 @@ class UserFlow {
    * @return {LH.UserFlow.StepFlags}
    */
   _getNextNavigationFlags(flags) {
-    const nextFlags = this._getNextFlags(flags) || {};
+    const newStepFlags = this._getNextFlags(flags) || {};
 
-    if (nextFlags.skipAboutBlank === undefined) {
-      nextFlags.skipAboutBlank = true;
+    if (newStepFlags.skipAboutBlank === undefined) {
+      newStepFlags.skipAboutBlank = true;
     }
 
     // On repeat navigations, we want to disable storage reset by default (i.e. it's not a cold load).
     const isSubsequentNavigation = this._gatherSteps
       .some(step => step.artifacts.GatherContext.gatherMode === 'navigation');
     if (isSubsequentNavigation) {
-      if (nextFlags.disableStorageReset === undefined) {
-        nextFlags.disableStorageReset = true;
+      if (newStepFlags.disableStorageReset === undefined) {
+        newStepFlags.disableStorageReset = true;
       }
     }
 
-    return nextFlags;
+    return newStepFlags;
   }
 
   /**
@@ -303,7 +309,7 @@ function getFlowName(name, gatherSteps) {
 
 /**
  * @param {Array<LH.UserFlow.GatherStep>} gatherSteps
- * @param {{name?: string, config?: LH.Config.Json, gatherStepRunnerOptions?: GatherStepRunnerOptions}} options
+ * @param {{name?: string, config?: LH.Config, gatherStepRunnerOptions?: GatherStepRunnerOptions}} options
  */
 async function auditGatherSteps(gatherSteps, options) {
   if (!gatherSteps.length) {
@@ -321,11 +327,11 @@ async function auditGatherSteps(gatherSteps, options) {
     // If the gather step is not active, we must recreate the runner options.
     if (!runnerOptions) {
       // Step specific configs take precedence over a config for the entire flow.
-      const configJson = options.config;
+      const config = options.config;
       const {gatherMode} = artifacts.GatherContext;
-      const {config} = await initializeConfig(gatherMode, configJson, flags);
+      const {resolvedConfig} = await initializeConfig(gatherMode, config, flags);
       runnerOptions = {
-        config,
+        resolvedConfig,
         computedCache: new Map(),
       };
     }

@@ -49,6 +49,11 @@ function getRequestWillBeSentEvent(networkRecord, index) {
     initiator = {...networkRecord.initiator};
   }
 
+  const timestampMs = networkRecord.redirectResponseTimestamp ??
+      networkRecord.rendererStartTime ??
+      networkRecord.startTime ??
+      0;
+
   return {
     method: 'Network.requestWillBeSent',
     params: {
@@ -61,8 +66,7 @@ function getRequestWillBeSentEvent(networkRecord, index) {
         initialPriority: networkRecord.priority || 'Low',
         isLinkPreload: networkRecord.isLinkPreload,
       },
-      timestamp:
-        networkRecord.redirectResponseTimestamp / 1000 || networkRecord.startTime / 1000 || 0,
+      timestamp: timestampMs / 1000,
       wallTime: 0,
       initiator,
       type: networkRecord.resourceType || 'Document',

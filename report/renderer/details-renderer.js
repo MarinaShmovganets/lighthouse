@@ -25,16 +25,17 @@
 /** @typedef {LH.FormattedIcu<LH.Audit.Details.ItemValue>} TableItemValue */
 /** @typedef {LH.FormattedIcu<LH.Audit.Details.TableColumnHeading>} TableColumnHeading */
 
-import {Util} from './util.js';
+import {Util} from '../../shared/util.js';
 import {CriticalRequestChainRenderer} from './crc-details-renderer.js';
 import {ElementScreenshotRenderer} from './element-screenshot-renderer.js';
+import {Globals} from './report-globals.js';
 
 const URL_PREFIXES = ['http://', 'https://', 'data:'];
 
 export class DetailsRenderer {
   /**
    * @param {DOM} dom
-   * @param {{fullPageScreenshot?: LH.Audit.Details.FullPageScreenshot}} [options]
+   * @param {{fullPageScreenshot?: LH.Result.FullPageScreenshot}} [options]
    */
   constructor(dom, options = {}) {
     this._dom = dom;
@@ -60,7 +61,6 @@ export class DetailsRenderer {
       // Internal-only details, not for rendering.
       case 'screenshot':
       case 'debugdata':
-      case 'full-page-screenshot':
       case 'treemap-data':
         return null;
 
@@ -78,9 +78,9 @@ export class DetailsRenderer {
    */
   _renderBytes(details) {
     // TODO: handle displayUnit once we have something other than 'KiB'
-    const value = Util.i18n.formatBytesToKiB(details.value, details.granularity || 0.1);
+    const value = Globals.i18n.formatBytesToKiB(details.value, details.granularity || 0.1);
     const textEl = this._renderText(value);
-    textEl.title = Util.i18n.formatBytes(details.value);
+    textEl.title = Globals.i18n.formatBytes(details.value);
     return textEl;
   }
 
@@ -91,9 +91,9 @@ export class DetailsRenderer {
   _renderMilliseconds(details) {
     let value;
     if (details.displayUnit === 'duration') {
-      value = Util.i18n.formatDuration(details.value);
+      value = Globals.i18n.formatDuration(details.value);
     } else {
-      value = Util.i18n.formatMilliseconds(details.value, details.granularity || 10);
+      value = Globals.i18n.formatMilliseconds(details.value, details.granularity || 10);
     }
 
     return this._renderText(value);
@@ -172,7 +172,7 @@ export class DetailsRenderer {
    * @return {Element}
    */
   _renderNumeric(details) {
-    const value = Util.i18n.formatNumber(details.value, details.granularity || 0.1);
+    const value = Globals.i18n.formatNumber(details.value, details.granularity || 0.1);
     const element = this._dom.createElement('div', 'lh-numeric');
     element.textContent = value;
     return element;
