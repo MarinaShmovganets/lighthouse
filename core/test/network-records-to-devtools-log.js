@@ -140,14 +140,16 @@ function extractPartialTiming(networkRecord) {
 }
 
 /**
- * Takes the partial network timing and fills in the missing values so at least
- * time is linear (if not realistic). The main timing properties on
- * `NetworkRequest` and `requestTime` and `receiveHeadersEnd` on
- * `NetworkRequest['timing']` will be computed. The other `timing` properties
- * will not be automatically provided, but will be copied if provided, so they
- * are up to the caller to order correctly. If no absolute times are provided,
- * starts at `defaultStart`, finishes receiving headers `defaultTimingOffset` ms
- * later, then endTime is `defaultTimingOffset` ms after that.
+ * Takes partial network timing and fills in the missing values to at least
+ * ensure time is linear (if not realistic). The main timing properties on
+ * `NetworkRequest`, and `requestTime` and `receiveHeadersEnd` on
+ * `NetworkRequest['timing']` will be generated. The other `timing` properties
+ * will not be automatically generated, but will be copied if provided, so it's
+ * up to the caller to make them correctly ordered with each other.
+ * If no absolute times are provided at all:
+ * - request will start at `defaultStart`
+ * - finish receiving headers `defaultTimingOffset` ms later
+ * - then end `defaultTimingOffset` ms after that
  * Throws an error if conditions appear impossible to satisfy.
  * @param {Partial<NetworkRequest>} values
  * @return {NormalizedRequestTime}
@@ -164,7 +166,7 @@ function getNormalizedRequestTiming(networkRecord) {
     // redirect ends. Up to the caller to override if this matters.
     extractedTimes.redirectResponseTimestamp,
   ];
-  const startTime = possibleStarts.filter(timeDefined)[0] ?? defaultStart;
+  const startTime = possibleStarts.find(timeDefined) ?? defaultStart;
 
   const rendererStartTime = timeDefined(extractedTimes.rendererStartTime) ?
       extractedTimes.rendererStartTime :
@@ -189,8 +191,8 @@ function getNormalizedRequestTiming(networkRecord) {
     }
   }
 
-  const responseReceivedTime = timeDefined(extractedTimes.responseReceivedTime) ?
-      extractedTimes.responseReceivedTime : (requestTime + receiveHeadersEnd);
+  // Equivalent to responseReceivedTime if provided due to `receiveHeadersEnd` construction above.
+  const responseReceivedTime = requestTime + receiveHeadersEnd;
 
   // endTime is allowed to be -1, e.g. for incomplete requests.
   const endTime = extractedTimes.endTime ?? (responseReceivedTime + defaultTimingOffset);
