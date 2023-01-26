@@ -1008,6 +1008,8 @@ export interface TraceEvent {
       cumulative_score?: number;
       id?: string;
       nodeId?: number;
+      DOMNodeId?: number;
+      imageUrl?: string;
       impacted_nodes?: Array<{
         node_id: number,
         old_rect?: Array<number>,

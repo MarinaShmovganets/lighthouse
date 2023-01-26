@@ -75,11 +75,11 @@
       "id": "largest-contentful-paint",
       "title": "Largest Contentful Paint",
       "description": "Largest Contentful Paint marks the time at which the largest text or image is painted. [Learn more about the Largest Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/)",
-      "score": 0.07,
+      "score": 0.01,
       "scoreDisplayMode": "numeric",
-      "numericValue": 6843.951,
+      "numericValue": 9319.961,
       "numericUnit": "millisecond",
-      "displayValue": "6.8 s"
+      "displayValue": "9.3 s"
     },
     "first-meaningful-paint": {
       "id": "first-meaningful-paint",
@@ -1200,7 +1200,7 @@
         "type": "debugdata",
         "items": [
           {
-            "numRequests": 26,
+            "numRequests": 27,
             "numScripts": 5,
             "numStylesheets": 9,
             "numFonts": 0,
@@ -1211,10 +1211,10 @@
             "numTasksOver100ms": 2,
             "numTasksOver500ms": 1,
             "rtt": 0.20899999999999996,
-            "throughput": 1514636.1150482374,
+            "throughput": 1543040.2410387795,
             "maxRtt": 12.662,
-            "maxServerLatency": 579.2030000000001,
-            "totalByteWeight": 1324308,
+            "maxServerLatency": 578.519,
+            "totalByteWeight": 1349130,
             "totalTaskTime": 2240.733000000005,
             "mainDocumentTransferSize": 17609
           }
@@ -1673,6 +1673,21 @@
             "resourceType": "Other",
             "priority": "High",
             "experimentalFromMainFrame": true
+          },
+          {
+            "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?lcp",
+            "protocol": "http/1.1",
+            "rendererStartTime": 6841.868000000715,
+            "startTime": 8009.196000002325,
+            "endTime": 8851.022000001743,
+            "finished": true,
+            "transferSize": 24822,
+            "resourceSize": 24620,
+            "statusCode": 200,
+            "mimeType": "image/jpeg",
+            "resourceType": "Image",
+            "priority": "High",
+            "experimentalFromMainFrame": true
           }
         ],
         "debugData": {
@@ -1723,7 +1738,7 @@
       "description": "Server latencies can impact web performance. If the server latency of an origin is high, it's an indication the server is overloaded or has poor backend performance. [Learn more about server response time](https://hpbn.co/primer-on-web-performance/#analyzing-the-resource-waterfall).",
       "score": null,
       "scoreDisplayMode": "informative",
-      "numericValue": 579.2030000000001,
+      "numericValue": 578.519,
       "numericUnit": "millisecond",
       "displayValue": "580 ms",
       "details": {
@@ -1744,7 +1759,7 @@
         "items": [
           {
             "origin": "http://localhost:10200",
-            "serverResponseTime": 579.2030000000001
+            "serverResponseTime": 578.519
           },
           {
             "origin": "http://ajax.googleapis.com",
@@ -1861,10 +1876,10 @@
             "firstContentfulPaintAllFramesTs": 8703544772,
             "firstMeaningfulPaint": 6844,
             "firstMeaningfulPaintTs": 8703544773,
-            "largestContentfulPaint": 6844,
-            "largestContentfulPaintTs": 8703544773,
-            "largestContentfulPaintAllFrames": 6844,
-            "largestContentfulPaintAllFramesTs": 8703544773,
+            "largestContentfulPaint": 9320,
+            "largestContentfulPaintTs": 8706020783,
+            "largestContentfulPaintAllFrames": 9320,
+            "largestContentfulPaintAllFramesTs": 8706020783,
             "interactive": 8191,
             "interactiveTs": 8704891392,
             "speedIndex": 8114,
@@ -1886,10 +1901,10 @@
             "observedFirstContentfulPaintAllFramesTs": 8703544772,
             "observedFirstMeaningfulPaint": 6844,
             "observedFirstMeaningfulPaintTs": 8703544773,
-            "observedLargestContentfulPaint": 6844,
-            "observedLargestContentfulPaintTs": 8703544773,
-            "observedLargestContentfulPaintAllFrames": 6844,
-            "observedLargestContentfulPaintAllFramesTs": 8703544773,
+            "observedLargestContentfulPaint": 9320,
+            "observedLargestContentfulPaintTs": 8706020783,
+            "observedLargestContentfulPaintAllFrames": 9320,
+            "observedLargestContentfulPaintAllFramesTs": 8706020783,
             "observedTraceEnd": 24522,
             "observedTraceEndTs": 8721222937,
             "observedLoad": 13070,
@@ -1951,18 +1966,18 @@
           {
             "resourceType": "total",
             "label": "Total",
-            "requestCount": 23,
-            "transferSize": 1324053,
-            "countOverBudget": "13 requests",
-            "sizeOverBudget": 1221653
+            "requestCount": 24,
+            "transferSize": 1348875,
+            "countOverBudget": "14 requests",
+            "sizeOverBudget": 1246475
           },
           {
             "resourceType": "image",
             "label": "Image",
-            "requestCount": 7,
-            "transferSize": 1083419,
-            "countOverBudget": "5 requests",
-            "sizeOverBudget": 1052699
+            "requestCount": 8,
+            "transferSize": 1108241,
+            "countOverBudget": "6 requests",
+            "sizeOverBudget": 1077521
           },
           {
             "resourceType": "script",
@@ -2075,7 +2090,7 @@
       "description": "To set budgets for the quantity and size of page resources, add a budget.json file. [Learn more about performance budgets](https://web.dev/use-lighthouse-for-performance-budgets/).",
       "score": null,
       "scoreDisplayMode": "informative",
-      "displayValue": "23 requests • 1,293 KiB",
+      "displayValue": "24 requests • 1,317 KiB",
       "details": {
         "type": "table",
         "headings": [
@@ -2099,14 +2114,14 @@
           {
             "resourceType": "total",
             "label": "Total",
-            "requestCount": 23,
-            "transferSize": 1324053
+            "requestCount": 24,
+            "transferSize": 1348875
           },
           {
             "resourceType": "image",
             "label": "Image",
-            "requestCount": 7,
-            "transferSize": 1083419
+            "requestCount": 8,
+            "transferSize": 1108241
           },
           {
             "resourceType": "script",
@@ -2249,7 +2264,7 @@
               "type": "node",
               "lhId": "page-13-H2",
               "path": "3,HTML,1,BODY,9,DIV,0,H2",
-              "selector": "body > div > h2",
+              "selector": "body > div > h2#toppy",
               "boundingRect": {
                 "top": 336,
                 "bottom": 364,
@@ -2258,7 +2273,7 @@
                 "width": 344,
                 "height": 28
               },
-              "snippet": "<h2>",
+              "snippet": "<h2 id=\"toppy\" style=\"background-image:url('');\">",
               "nodeLabel": "Do better web tester page"
             }
           }
@@ -2601,8 +2616,72 @@
       "id": "preload-lcp-image",
       "title": "Preload Largest Contentful Paint image",
       "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/optimize-lcp/#optimize-when-the-resource-is-discovered).",
-      "score": null,
-      "scoreDisplayMode": "notApplicable"
+      "score": 1,
+      "scoreDisplayMode": "numeric",
+      "numericValue": 0,
+      "numericUnit": "millisecond",
+      "displayValue": "",
+      "details": {
+        "type": "opportunity",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "label": ""
+          },
+          {
+            "key": "url",
+            "valueType": "url",
+            "label": "URL"
+          },
+          {
+            "key": "wastedMs",
+            "valueType": "timespanMs",
+            "label": "Potential Savings"
+          }
+        ],
+        "items": [
+          {
+            "node": {
+              "type": "node",
+              "lhId": "page-13-H2",
+              "path": "3,HTML,1,BODY,9,DIV,0,H2",
+              "selector": "body > div > h2#toppy",
+              "boundingRect": {
+                "top": 336,
+                "bottom": 364,
+                "left": 8,
+                "right": 352,
+                "width": 344,
+                "height": 28
+              },
+              "snippet": "<h2 id=\"toppy\" style=\"background-image:url('');\">",
+              "nodeLabel": "Do better web tester page"
+            },
+            "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?lcp",
+            "wastedMs": 0
+          }
+        ],
+        "overallSavingsMs": 0,
+        "debugData": {
+          "type": "debugdata",
+          "initiatorPath": [
+            {
+              "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?lcp",
+              "initiatorType": "parser"
+            },
+            {
+              "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
+              "initiatorType": "parser"
+            },
+            {
+              "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
+              "initiatorType": "other"
+            }
+          ],
+          "pathLength": 3
+        }
+      }
     },
     "csp-xss": {
       "id": "csp-xss",
@@ -3676,9 +3755,9 @@
       "description": "A long cache lifetime can speed up repeat visits to your page. [Learn more about efficient cache policies](https://developer.chrome.com/docs/lighthouse/performance/uses-long-cache-ttl/).",
       "score": 0.02,
       "scoreDisplayMode": "numeric",
-      "numericValue": 1258057,
+      "numericValue": 1282879,
       "numericUnit": "byte",
-      "displayValue": "18 resources found",
+      "displayValue": "19 resources found",
       "details": {
         "type": "table",
         "headings": [
@@ -3759,6 +3838,13 @@
             "wastedBytes": 24822
           },
           {
+            "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?lcp",
+            "cacheLifetimeMs": 0,
+            "cacheHitProbability": 0,
+            "totalBytes": 24822,
+            "wastedBytes": 24822
+          },
+          {
             "url": "http://localhost:10200/dobetterweb/dbw_disabled.css?delay=200&isdisabled",
             "cacheLifetimeMs": 0,
             "cacheHitProbability": 0,
@@ -3830,7 +3916,7 @@
           }
         ],
         "summary": {
-          "wastedBytes": 1258057
+          "wastedBytes": 1282879
         }
       }
     },
@@ -3840,9 +3926,9 @@
       "description": "Large network payloads cost users real money and are highly correlated with long load times. [Learn how to reduce payload sizes](https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/).",
       "score": 1,
       "scoreDisplayMode": "numeric",
-      "numericValue": 1324308,
+      "numericValue": 1349130,
       "numericUnit": "byte",
-      "displayValue": "Total size was 1,293 KiB",
+      "displayValue": "Total size was 1,318 KiB",
       "details": {
         "type": "table",
         "headings": [
@@ -3895,8 +3981,8 @@
             "totalBytes": 24822
           },
           {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
-            "totalBytes": 17609
+            "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?lcp",
+            "totalBytes": 24822
           }
         ]
       }
@@ -4003,9 +4089,9 @@
       "id": "unminified-javascript",
       "title": "Minify JavaScript",
       "description": "Minifying JavaScript files can reduce payload sizes and script parse time. [Learn how to minify JavaScript](https://developer.chrome.com/docs/lighthouse/performance/unminified-javascript/).",
-      "score": 0.48,
+      "score": 0.5,
       "scoreDisplayMode": "numeric",
-      "numericValue": 900,
+      "numericValue": 750,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 82 KiB",
       "warnings": [],
@@ -4036,7 +4122,7 @@
             "wastedPercent": 50.176166426166425
           }
         ],
-        "overallSavingsMs": 900,
+        "overallSavingsMs": 750,
         "overallSavingsBytes": 83568
       }
     },
@@ -4319,9 +4405,9 @@
       "id": "uses-text-compression",
       "title": "Enable text compression",
       "description": "Text-based resources should be served with compression (gzip, deflate or brotli) to minimize total network bytes. [Learn more about text compression](https://developer.chrome.com/docs/lighthouse/performance/uses-text-compression/).",
-      "score": 0.38,
+      "score": 0.36,
       "scoreDisplayMode": "numeric",
-      "numericValue": 1800,
+      "numericValue": 1950,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 143 KiB",
       "details": {
@@ -4355,7 +4441,7 @@
             "wastedBytes": 11647
           }
         ],
-        "overallSavingsMs": 1800,
+        "overallSavingsMs": 1950,
         "overallSavingsBytes": 146478
       }
     },
@@ -5737,7 +5823,7 @@
         }
       ],
       "id": "performance",
-      "score": 0.3
+      "score": 0.28
     },
     "accessibility": {
       "title": "Accessibility",
@@ -7679,6 +7765,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:computed:LanternLargestContentfulPaint",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:csp-xss",
         "duration": 100,
         "entryType": "measure"
@@ -8514,7 +8606,7 @@
         },
         {
           "values": {
-            "timeInMs": 6843.951
+            "timeInMs": 9319.961
           },
           "path": "audits[largest-contentful-paint].displayValue"
         },
@@ -8595,7 +8687,7 @@
         },
         {
           "values": {
-            "timeInMs": 579.2030000000001
+            "timeInMs": 578.519
           },
           "path": "audits[network-server-latency].displayValue"
         }
@@ -8656,6 +8748,7 @@
         "audits[network-server-latency].details.headings[0].label",
         "audits[long-tasks].details.headings[0].label",
         "audits[unsized-images].details.headings[1].label",
+        "audits[preload-lcp-image].details.headings[1].label",
         "audits[uses-long-cache-ttl].details.headings[0].label",
         "audits[total-byte-weight].details.headings[0].label",
         "audits[render-blocking-resources].details.headings[0].label",
@@ -8914,13 +9007,13 @@
       "core/audits/performance-budget.js | requestCountOverBudget": [
         {
           "values": {
-            "count": 13
+            "count": 14
           },
           "path": "audits[performance-budget].details.items[0].countOverBudget"
         },
         {
           "values": {
-            "count": 5
+            "count": 6
           },
           "path": "audits[performance-budget].details.items[1].countOverBudget"
         },
@@ -8990,8 +9083,8 @@
       "core/audits/resource-summary.js | displayValue": [
         {
           "values": {
-            "requestCount": 23,
-            "byteCount": 1324053
+            "requestCount": 24,
+            "byteCount": 1348875
           },
           "path": "audits[resource-summary].displayValue"
         }
@@ -9123,6 +9216,17 @@
       ],
       "core/audits/preload-lcp-image.js | description": [
         "audits[preload-lcp-image].description"
+      ],
+      "core/lib/i18n/i18n.js | columnWastedBytes": [
+        "audits[preload-lcp-image].details.headings[2].label",
+        "audits[render-blocking-resources].details.headings[2].label",
+        "audits[unminified-javascript].details.headings[2].label",
+        "audits[unused-javascript].details.headings[2].label",
+        "audits[modern-image-formats].details.headings[3].label",
+        "audits[uses-text-compression].details.headings[2].label",
+        "audits[uses-responsive-images].details.headings[3].label",
+        "audits[efficient-animated-content].details.headings[2].label",
+        "audits[legacy-javascript].details.headings[2].label"
       ],
       "core/audits/csp-xss.js | title": [
         "audits[csp-xss].title"
@@ -9441,7 +9545,7 @@
       "core/audits/byte-efficiency/uses-long-cache-ttl.js | displayValue": [
         {
           "values": {
-            "itemCount": 18
+            "itemCount": 19
           },
           "path": "audits[uses-long-cache-ttl].displayValue"
         }
@@ -9458,7 +9562,7 @@
       "core/audits/byte-efficiency/total-byte-weight.js | displayValue": [
         {
           "values": {
-            "totalBytes": 1324308
+            "totalBytes": 1349130
           },
           "path": "audits[total-byte-weight].displayValue"
         }
@@ -9482,16 +9586,6 @@
           },
           "path": "audits[render-blocking-resources].displayValue"
         }
-      ],
-      "core/lib/i18n/i18n.js | columnWastedBytes": [
-        "audits[render-blocking-resources].details.headings[2].label",
-        "audits[unminified-javascript].details.headings[2].label",
-        "audits[unused-javascript].details.headings[2].label",
-        "audits[modern-image-formats].details.headings[3].label",
-        "audits[uses-text-compression].details.headings[2].label",
-        "audits[uses-responsive-images].details.headings[3].label",
-        "audits[efficient-animated-content].details.headings[2].label",
-        "audits[legacy-javascript].details.headings[2].label"
       ],
       "core/audits/byte-efficiency/unminified-css.js | title": [
         "audits[unminified-css].title"

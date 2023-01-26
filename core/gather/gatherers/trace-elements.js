@@ -231,7 +231,7 @@ class TraceElements extends FRGatherer {
     }
 
     // These should exist, but trace types are loose.
-    const lcpData = processedNavigation.largestContentfulPaintEvt?.args?.data;
+    const lcpData = processedNavigation.largestContentfulPaintAllFramesEvt?.args?.data;
     if (lcpData?.nodeId === undefined || !lcpData.type) return;
 
     return {

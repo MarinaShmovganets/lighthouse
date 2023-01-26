@@ -11518,7 +11518,7 @@
       "node": {
         "lhId": "page-13-H2",
         "devtoolsNodePath": "3,HTML,1,BODY,9,DIV,0,H2",
-        "selector": "body > div > h2",
+        "selector": "body > div > h2#toppy",
         "boundingRect": {
           "top": 336,
           "bottom": 364,
@@ -11527,11 +11527,11 @@
           "width": 344,
           "height": 28
         },
-        "snippet": "<h2>",
+        "snippet": "<h2 id=\"toppy\" style=\"background-image:url('');\">",
         "nodeLabel": "Do better web tester page"
       },
       "nodeId": 6,
-      "type": "text"
+      "type": "image"
     },
     {
       "traceEventType": "layout-shift",
