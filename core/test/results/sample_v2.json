@@ -1677,8 +1677,9 @@
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?lcp",
             "protocol": "http/1.1",
-            "startTime": 8008.174000000581,
-            "endTime": 8850,
+            "rendererStartTime": 6841.868000000715,
+            "startTime": 8009.196000002325,
+            "endTime": 8851.022000001743,
             "finished": true,
             "transferSize": 24822,
             "resourceSize": 24620,
