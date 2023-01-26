@@ -147,9 +147,9 @@ class Driver {
   /**
    * @return {Promise<void>}
    */
-  async disconnect() {
+  disconnect() {
     this._connected = false;
-    await this._connection.disconnect();
+    return this._connection.disconnect();
   }
 
   isConnected() {
