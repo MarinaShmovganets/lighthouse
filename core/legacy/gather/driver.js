@@ -52,6 +52,8 @@ class Driver {
    */
   _nextProtocolTimeout = DEFAULT_PROTOCOL_TIMEOUT;
 
+  _connected = false;
+
   online = true;
 
   // eslint-disable-next-line no-invalid-this
@@ -138,14 +140,20 @@ class Driver {
     const status = {msg: 'Connecting to browser', id: 'lh:init:connect'};
     log.time(status);
     await this._connection.connect();
+    this._connected = true;
     log.timeEnd(status);
   }
 
   /**
    * @return {Promise<void>}
    */
-  disconnect() {
-    return this._connection.disconnect();
+  async disconnect() {
+    this._connected = false;
+    await this._connection.disconnect();
+  }
+
+  isConnected() {
+    return this._connected;
   }
 
   /** @return {Promise<void>} */

@@ -13,9 +13,11 @@ import {pageFunctions} from '../../lib/page-functions.js';
 /**
  * Enables `Debugger` domain to receive async stacktrace information on network request initiators.
  * This is critical for tracking attribution of tasks and performance simulation accuracy.
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.FRTransitionalDriver} driver
  */
-async function enableAsyncStacks(session) {
+async function enableAsyncStacks(driver) {
+  const session = driver.defaultSession;
+
   const enable = async () => {
     await session.sendCommand('Debugger.enable');
     await session.sendCommand('Debugger.setSkipAllPauses', {skip: true});
@@ -29,7 +31,13 @@ async function enableAsyncStacks(session) {
   // See https://bugs.chromium.org/p/chromium/issues/detail?id=990945&q=setSkipAllPauses&can=2
   session.on('Page.frameNavigated', event => {
     if (event.frame.parentId) return;
-    enable().catch(err => log.error('Driver', err));
+    enable().catch(err => {
+      // `Page.frameNavigated` can be emitted near the end of the run due to bfcache testing.
+      // This can cause errors if the driver is disconnected before the commands in `enable()` run.
+      if (!driver.isConnected()) return;
+
+      log.error('Driver', err);
+    });
   });
 
   await enable();
@@ -136,7 +144,7 @@ async function prepareDeviceEmulationAndAsyncStacks(driver, settings) {
   await emulation.emulate(driver.defaultSession, settings);
 
   // Enable better stacks on network requests.
-  await enableAsyncStacks(driver.defaultSession);
+  await enableAsyncStacks(driver);
 }
 
 /**
