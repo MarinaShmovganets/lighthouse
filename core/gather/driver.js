@@ -41,7 +41,6 @@ class Driver {
     this._executionContext = undefined;
     /** @type {Fetcher|undefined} */
     this._fetcher = undefined;
-    this._connected = false;
 
     this.defaultSession = throwingSession;
   }
@@ -69,12 +68,12 @@ class Driver {
   }
 
   isConnected() {
-    return this._connected;
+    return this.defaultSession !== throwingSession;
   }
 
   /** @return {Promise<void>} */
   async connect() {
-    if (this._connected) return;
+    if (this.isConnected()) return;
     const status = {msg: 'Connecting to browser', id: 'lh:driver:connect'};
     log.time(status);
     const cdpSession = await this._page.target().createCDPSession();
@@ -83,16 +82,16 @@ class Driver {
     this.defaultSession = this._targetManager.rootSession();
     this._executionContext = new ExecutionContext(this.defaultSession);
     this._fetcher = new Fetcher(this.defaultSession);
-    this._connected = true;
     log.timeEnd(status);
   }
 
   /** @return {Promise<void>} */
   async disconnect() {
-    if (!this._connected) return;
-    this._connected = false;
+    if (!this.isConnected()) return;
+    const oldSession = this.defaultSession;
+    this.defaultSession = throwingSession;
     await this._targetManager?.disable();
-    await this.defaultSession.dispose();
+    await oldSession.dispose();
   }
 }
 
