@@ -13,34 +13,42 @@ import {pageFunctions} from '../../lib/page-functions.js';
 /**
  * Enables `Debugger` domain to receive async stacktrace information on network request initiators.
  * This is critical for tracking attribution of tasks and performance simulation accuracy.
- * @param {LH.Gatherer.FRTransitionalDriver} driver
+ * @param {LH.Gatherer.FRProtocolSession} session
  */
-async function enableAsyncStacks(driver) {
-  const session = driver.defaultSession;
-
+async function enableAsyncStacks(session) {
   const enable = async () => {
     await session.sendCommand('Debugger.enable');
     await session.sendCommand('Debugger.setSkipAllPauses', {skip: true});
     await session.sendCommand('Debugger.setAsyncCallStackDepth', {maxDepth: 8});
   };
 
-  // Resume any pauses that make it through `setSkipAllPauses`
-  session.on('Debugger.paused', () => session.sendCommand('Debugger.resume'));
+  /**
+   * Resume any pauses that make it through `setSkipAllPauses`
+   */
+  function onDebuggerPaused() {
+    session.sendCommand('Debugger.resume');
+  }
 
-  // `Debugger.setSkipAllPauses` is reset after every navigation, so retrigger it on main frame navigations.
-  // See https://bugs.chromium.org/p/chromium/issues/detail?id=990945&q=setSkipAllPauses&can=2
-  session.on('Page.frameNavigated', event => {
+  /**
+   * `Debugger.setSkipAllPauses` is reset after every navigation, so retrigger it on main frame navigations.
+   * See https://bugs.chromium.org/p/chromium/issues/detail?id=990945&q=setSkipAllPauses&can=2
+   * @param {LH.Crdp.Page.FrameNavigatedEvent} event
+   */
+  function onFrameNavigated(event) {
     if (event.frame.parentId) return;
-    enable().catch(err => {
-      // `Page.frameNavigated` can be emitted near the end of the run due to bfcache testing.
-      // This can cause errors if the driver is disconnected before the commands in `enable()` run.
-      if (!driver.isConnected()) return;
+    enable().catch(err => log.error('Driver', err));
+  }
 
-      log.error('Driver', err);
-    });
-  });
+  session.on('Debugger.paused', onDebuggerPaused);
+  session.on('Page.frameNavigated', onFrameNavigated);
 
   await enable();
+
+  return async () => {
+    await session.sendCommand('Debugger.disable');
+    session.off('Debugger.paused', onDebuggerPaused);
+    session.off('Page.frameNavigated', onFrameNavigated);
+  };
 }
 
 /**
@@ -136,15 +144,12 @@ async function prepareThrottlingAndNetwork(session, settings, options) {
  * @param {LH.Gatherer.FRTransitionalDriver} driver
  * @param {LH.Config.Settings} settings
  */
-async function prepareDeviceEmulationAndAsyncStacks(driver, settings) {
+async function prepareDeviceEmulation(driver, settings) {
   // Enable network domain here so future calls to `emulate()` don't clear cache (https://github.com/GoogleChrome/lighthouse/issues/12631)
   await driver.defaultSession.sendCommand('Network.enable');
 
   // Emulate our target device screen and user agent.
   await emulation.emulate(driver.defaultSession, settings);
-
-  // Enable better stacks on network requests.
-  await enableAsyncStacks(driver);
 }
 
 /**
@@ -157,7 +162,7 @@ async function prepareTargetForTimespanMode(driver, settings) {
   const status = {msg: 'Preparing target for timespan mode', id: 'lh:prepare:timespanMode'};
   log.time(status);
 
-  await prepareDeviceEmulationAndAsyncStacks(driver, settings);
+  await prepareDeviceEmulation(driver, settings);
   await prepareThrottlingAndNetwork(driver.defaultSession, settings, {
     disableThrottling: false,
     blockedUrlPatterns: undefined,
@@ -179,7 +184,7 @@ async function prepareTargetForNavigationMode(driver, settings) {
   const status = {msg: 'Preparing target for navigation mode', id: 'lh:prepare:navigationMode'};
   log.time(status);
 
-  await prepareDeviceEmulationAndAsyncStacks(driver, settings);
+  await prepareDeviceEmulation(driver, settings);
 
   // Automatically handle any JavaScript dialogs to prevent a hung renderer.
   await dismissJavaScriptDialogs(driver.defaultSession);
@@ -235,4 +240,5 @@ export {
   prepareTargetForTimespanMode,
   prepareTargetForNavigationMode,
   prepareTargetForIndividualNavigation,
+  enableAsyncStacks,
 };

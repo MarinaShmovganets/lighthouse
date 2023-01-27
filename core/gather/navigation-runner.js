@@ -227,6 +227,11 @@ async function _navigation(navigationContext) {
   };
 
   const setupResult = await _setupNavigation(navigationContext);
+
+  // TODO: Do this as part of the DevtoolsLog gatherer.
+  const disableAsyncStacks =
+    await prepare.enableAsyncStacks(navigationContext.driver.defaultSession);
+
   await collectPhaseArtifacts({phase: 'startInstrumentation', ...phaseState});
   await collectPhaseArtifacts({phase: 'startSensitiveInstrumentation', ...phaseState});
   const navigateResult = await _navigate(navigationContext);
@@ -244,6 +249,10 @@ async function _navigation(navigationContext) {
 
   await collectPhaseArtifacts({phase: 'stopSensitiveInstrumentation', ...phaseState});
   await collectPhaseArtifacts({phase: 'stopInstrumentation', ...phaseState});
+
+  // Needs to be disabled before `getArtifact` phase.
+  await disableAsyncStacks();
+
   await _cleanupNavigation(navigationContext);
 
   return _computeNavigationResult(navigationContext, phaseState, setupResult, navigateResult);

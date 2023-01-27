@@ -9,7 +9,7 @@ import log from 'lighthouse-logger';
 import {Driver} from './driver.js';
 import {Runner} from '../runner.js';
 import {getEmptyArtifactState, collectPhaseArtifacts, awaitArtifacts} from './runner-helpers.js';
-import {prepareTargetForTimespanMode} from './driver/prepare.js';
+import {enableAsyncStacks, prepareTargetForTimespanMode} from './driver/prepare.js';
 import {initializeConfig} from '../config/config.js';
 import {getBaseArtifacts, finalizeArtifacts} from './base-artifacts.js';
 
@@ -44,6 +44,10 @@ async function startTimespanGather(page, options = {}) {
   };
 
   await prepareTargetForTimespanMode(driver, resolvedConfig.settings);
+
+  // TODO: Do this as part of the DevtoolsLog gatherer.
+  const disableAsyncStacks = await enableAsyncStacks(driver.defaultSession);
+
   await collectPhaseArtifacts({phase: 'startInstrumentation', ...phaseOptions});
   await collectPhaseArtifacts({phase: 'startSensitiveInstrumentation', ...phaseOptions});
 
@@ -58,6 +62,10 @@ async function startTimespanGather(page, options = {}) {
 
           await collectPhaseArtifacts({phase: 'stopSensitiveInstrumentation', ...phaseOptions});
           await collectPhaseArtifacts({phase: 'stopInstrumentation', ...phaseOptions});
+
+          // Needs to be disabled before `getArtifact` phase.
+          await disableAsyncStacks();
+
           await collectPhaseArtifacts({phase: 'getArtifact', ...phaseOptions});
           await driver.disconnect();
 

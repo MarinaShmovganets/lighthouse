@@ -45,7 +45,6 @@ declare module Gatherer {
     executionContext: ExecutionContext;
     fetcher: Fetcher;
     url: () => Promise<string>;
-    isConnected: () => boolean;
     targetManager: {
       rootSession(): FRProtocolSession;
       on(event: 'protocolevent', callback: (payload: Protocol.RawEventMessage) => void): void

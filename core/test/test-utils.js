@@ -207,6 +207,7 @@ async function makeMocksForGatherRunner() {
   await td.replaceEsm('../gather/driver/prepare.js', {
     prepareTargetForNavigationMode: jestMock.fn(),
     prepareTargetForIndividualNavigation: jestMock.fn().mockResolvedValue({warnings: []}),
+    enableAsyncStacks: jestMock.fn().mockReturnValue(jestMock.fn()),
   });
   await td.replaceEsm('../gather/driver/storage.js', {
     clearDataForOrigin: jestMock.fn(),

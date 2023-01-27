@@ -16,6 +16,7 @@ import {fetchResponseBodyFromCache} from '../../gather/driver/network.js';
 import {DevtoolsMessageLog} from '../../gather/gatherers/devtools-log.js';
 import TraceGatherer from '../../gather/gatherers/trace.js';
 import {getBrowserVersion} from '../../gather/driver/environment.js';
+import {enableAsyncStacks} from '../../gather/driver/prepare.js';
 
 // Controls how long to wait for a response after sending a DevTools protocol command.
 const DEFAULT_PROTOCOL_TIMEOUT = 30000;
@@ -51,8 +52,6 @@ class Driver {
    * @private
    */
   _nextProtocolTimeout = DEFAULT_PROTOCOL_TIMEOUT;
-
-  _connected = false;
 
   online = true;
 
@@ -140,7 +139,6 @@ class Driver {
     const status = {msg: 'Connecting to browser', id: 'lh:init:connect'};
     log.time(status);
     await this._connection.connect();
-    this._connected = true;
     log.timeEnd(status);
   }
 
@@ -148,12 +146,7 @@ class Driver {
    * @return {Promise<void>}
    */
   disconnect() {
-    this._connected = false;
     return this._connection.disconnect();
-  }
-
-  isConnected() {
-    return this._connected;
   }
 
   /** @return {Promise<void>} */
@@ -451,17 +444,19 @@ class Driver {
   /**
    * Begin recording devtools protocol messages.
    */
-  beginDevtoolsLog() {
+  async beginDevtoolsLog() {
+    this._disableAsyncStacks = await enableAsyncStacks(this);
     this._devtoolsLog.reset();
     this._devtoolsLog.beginRecording();
   }
 
   /**
    * Stop recording to devtoolsLog and return log contents.
-   * @return {LH.DevtoolsLog}
+   * @return {Promise<LH.DevtoolsLog>}
    */
-  endDevtoolsLog() {
+  async endDevtoolsLog() {
     this._devtoolsLog.endRecording();
+    await this._disableAsyncStacks?.();
     return this._devtoolsLog.messages;
   }
 

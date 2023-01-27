@@ -235,7 +235,7 @@ class GatherRunner {
       id: `lh:gather:getDevtoolsLog`,
     };
     log.time(status);
-    const devtoolsLog = driver.endDevtoolsLog();
+    const devtoolsLog = await driver.endDevtoolsLog();
     const networkRecords = await NetworkRecords.request(devtoolsLog, passContext);
     log.timeEnd(status);
 

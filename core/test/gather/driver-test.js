@@ -48,7 +48,6 @@ for (const fnName of DELEGATED_FUNCTIONS) {
     it('should use connected session for default', async () => {
       await driver.connect();
       if (!driver.defaultSession) throw new Error('Driver did not connect');
-      expect(driver.isConnected()).toBeTruthy();
 
       /** @type {any} */
       const args = [1, {arg: 2}];
@@ -98,10 +97,8 @@ describe('.disconnect', () => {
 
   it('should invoke session dispose', async () => {
     await driver.connect();
-    expect(driver.isConnected()).toBeTruthy();
     const dispose = driver.defaultSession.dispose = fnAny();
     await driver.disconnect();
-    expect(driver.isConnected()).toBeFalsy();
     expect(dispose).toHaveBeenCalled();
   });
 });
