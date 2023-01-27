@@ -85,7 +85,7 @@ describe('Timespan', async function() {
 
     const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
     assert.strictEqual(auditResults.length, 46);
-    assert.strictEqual(erroredAudits.length, 0);
+    assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), []);
 
     // Ensure the timespan captured the user interaction.

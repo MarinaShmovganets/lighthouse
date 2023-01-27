@@ -204,6 +204,44 @@ const expectations = {
       lineNumber: '>300',
       columnNumber: '>30',
     }],
+    DevtoolsLog: {
+      _includes: [
+        // Ensure we are getting async call stacks.
+        {
+          method: 'Network.requestWillBeSent',
+          params: {
+            type: 'Image',
+            request: {
+              url: 'http://localhost:10200/dobetterweb/async.jpg',
+            },
+            initiator: {
+              type: 'script',
+              stack: {
+                callFrames: [],
+                parent: {
+                  description: 'Image',
+                  callFrames: [
+                    {
+                      'functionName': '',
+                      'url': 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                    },
+                  ],
+                  parent: {
+                    description: 'Promise.then',
+                    callFrames: [
+                      {
+                        'functionName': '',
+                        'url': 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
   },
   lhr: {
     requestedUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
