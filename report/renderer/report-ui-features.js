@@ -331,7 +331,7 @@ export class ReportUIFeatures {
         // We rely on entity-classification for new LHRs that support it.
         if (!rowEl.dataset.entity || rowEl.dataset.entity === firstPartyEntityName) continue;
       } else {
-        // Continue the legacy root domain check for back compat.
+        // Without 10.0's entity classification, fallback to the older root domain-based filtering.
         const urlItem = rowEl.querySelector('div.lh-text__url');
         if (!urlItem) continue;
         const datasetUrl = urlItem.dataset.url;
