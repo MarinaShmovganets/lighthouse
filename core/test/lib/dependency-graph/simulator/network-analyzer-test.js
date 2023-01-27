@@ -159,7 +159,8 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       // this record took 1000ms after the first byte was received to download the payload
       // i.e. it took at least one full additional roundtrip after first byte to download the rest
       // 1000ms / 1 round trip ~= 1000ms RTT
-      const record = createRecord({networkRequestTime: 0, networkEndTime: 1.1, transferSize: 28 * 1024, timing});
+      const record = createRecord({networkRequestTime: 0, networkEndTime: 1.1,
+        transferSize: 28 * 1024, timing});
       const result = NetworkAnalyzer.estimateRTTByOrigin([record], {
         coarseEstimateMultiplier: 1,
         useHeadersEndEstimates: false,
@@ -170,7 +171,8 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
 
     it('should infer from TTFB when available', () => {
       const timing = {receiveHeadersEnd: 1000};
-      const record = createRecord({networkRequestTime: 0, networkEndTime: 1, timing, resourceType: 'Other'});
+      const record = createRecord({networkRequestTime: 0, networkEndTime: 1, timing,
+        resourceType: 'Other'});
       const result = NetworkAnalyzer.estimateRTTByOrigin([record], {
         coarseEstimateMultiplier: 1,
       });
@@ -185,7 +187,8 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
 
     it('should handle untrustworthy connection information', () => {
       const timing = {sendStart: 150};
-      const recordA = createRecord({networkRequestTime: 0, networkEndTime: 1, timing, connectionReused: true});
+      const recordA = createRecord({networkRequestTime: 0, networkEndTime: 1, timing,
+        connectionReused: true});
       const recordB = createRecord({
         networkRequestTime: 0,
         networkEndTime: 1,

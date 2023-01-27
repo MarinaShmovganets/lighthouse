@@ -289,7 +289,9 @@ class NetworkAnalyzer {
         );
       }
 
-      const firstRecord = originRecords.reduce((a, b) => (a.networkRequestTime > b.networkRequestTime ? b : a));
+      const firstRecord = originRecords.reduce((a, b) => {
+        return a.networkRequestTime > b.networkRequestTime ? b : a;
+      });
       connectionWasReused.set(firstRecord.requestId, false);
     }
 

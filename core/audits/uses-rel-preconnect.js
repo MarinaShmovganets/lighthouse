@@ -95,7 +95,8 @@ class UsesRelPreconnectAudit extends Audit {
    * @return {boolean}
    */
   static socketStartTimeIsBelowThreshold(record, mainResource) {
-    return Math.max(0, record.networkRequestTime - mainResource.networkEndTime) < PRECONNECT_SOCKET_MAX_IDLE_IN_MS;
+    const timeSinceMainEnd = Math.max(0, record.networkRequestTime - mainResource.networkEndTime);
+    return timeSinceMainEnd < PRECONNECT_SOCKET_MAX_IDLE_IN_MS;
   }
 
   /**

@@ -99,7 +99,8 @@ function extractPartialTiming(networkRecord) {
   } = networkRecord;
 
   const requestTime = timeDefined(requestTimeS) ? requestTimeS * 1000 : undefined;
-  const absoluteTimes = {rendererStartTime, networkRequestTime, requestTime, responseHeadersEndTime, networkEndTime};
+  const absoluteTimes = {rendererStartTime, networkRequestTime, requestTime, responseHeadersEndTime,
+    networkEndTime};
   assertTimingIncreases(absoluteTimes);
 
   // `requestTime` and `networkRequestTime` must be equal if both are defined.
@@ -195,7 +196,8 @@ function getNormalizedRequestTiming(networkRecord) {
   const responseHeadersEndTime = requestTime + receiveHeadersEnd;
 
   // networkEndTime is allowed to be -1, e.g. for incomplete requests.
-  const networkEndTime = extractedTimes.networkEndTime ?? (responseHeadersEndTime + defaultTimingOffset);
+  const networkEndTime = extractedTimes.networkEndTime ??
+      (responseHeadersEndTime + defaultTimingOffset);
 
   return {
     rendererStartTime,
