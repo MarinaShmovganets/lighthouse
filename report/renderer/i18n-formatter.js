@@ -189,7 +189,7 @@ export class I18nFormatter {
     return this._formatNumberWithGranularity(ms / 1000, granularity, {
       style: 'unit',
       unit: 'second',
-      unitDisplay: 'short',
+      unitDisplay: 'narrow',
     });
   }
 
