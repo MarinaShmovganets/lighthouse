@@ -122,6 +122,10 @@ describe('ReportUIFeatures', () => {
           ...sampleResults.audits['uses-text-compression'].details.items[0],
           entity: undefined, // Remove entity classification from previous result.
         };
+        const bootupTimeAuditItemTemplate = {
+          ...sampleResults.audits['bootup-time'].details.items[0],
+          entity: undefined, // Remove entity classification from previous result.
+        };
 
         // Interleave first/third party URLs to test restoring order.
         lhr.audits['modern-image-formats'].details.items = [
@@ -205,6 +209,26 @@ describe('ReportUIFeatures', () => {
           {
             ...textCompressionAuditItemTemplate,
             url: 'http://www.example.com/font3.ttf', // First party.
+          },
+        ];
+
+        // A mix of 3P, 1P and Unattributable.
+        lhr.audits['bootup-time'].details.items = [
+          {
+            ...bootupTimeAuditItemTemplate,
+            url: 'http://www.example.com/dobetterweb/dbw_tester.html',
+          },
+          {
+            ...bootupTimeAuditItemTemplate,
+            url: 'Unattributable',
+          },
+          {
+            ...bootupTimeAuditItemTemplate,
+            url: 'http://www.example.com/dobetterweb/third_party/aggressive-promise-polyfill.js',
+          },
+          {
+            ...bootupTimeAuditItemTemplate,
+            url: 'http://www.cdn.com/script1.js',
           },
         ];
 
@@ -330,6 +354,36 @@ describe('ReportUIFeatures', () => {
 
           expect(() => dom.find(`#uses-rel-preconnect .${checkboxClassName}`, container))
             .toThrowError('query #uses-rel-preconnect .lh-3p-filter-input not found');
+        });
+
+        it('treats non-classifiable url values as first-party', () => {
+          const auditEl = dom.find('#bootup-time', container);
+          const filterCheckboxEl = dom.find('.lh-3p-filter-input', auditEl);
+
+          // Ensure 3p filter is visible.
+          expect(dom.find('.lh-3p-filter', auditEl).hidden).toBeFalsy();
+
+          function getUrlsInTable() {
+            return dom.findAll('tbody tr:not(.lh-row--hidden) td:first-child', auditEl)
+              .map(el => el.textContent);
+          }
+
+          const preFilterRowSet = [
+            '/dobetterweb/dbw_tester.html(www.example.com)',
+            'Unattributable',
+            '…third_party/aggressive-promise-polyfill.js(www.example.com)',
+            '/script1.js(www.cdn.com)',
+          ];
+
+          expect(getUrlsInTable()).toEqual(preFilterRowSet);
+          filterCheckboxEl.click();
+          expect(getUrlsInTable()).toEqual(preFilterRowSet.filter(
+            text => !text.includes('cdn.com')));
+          filterCheckboxEl.click();
+          expect(getUrlsInTable()).toEqual(preFilterRowSet);
+
+          const filter3pCountEl = dom.find('.lh-3p-filter-count', auditEl);
+          expect(filter3pCountEl.textContent).toEqual('1');
         });
 
         it('filter is hidden when just third party resources', () => {
