@@ -7700,12 +7700,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:computed:EntityClassification",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:third-party-facades",
         "duration": 100,
         "entryType": "measure"
