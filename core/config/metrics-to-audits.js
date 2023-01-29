@@ -26,7 +26,6 @@ const lcpRelevantAudits = [
   'unused-javascript',
   'efficient-animated-content',
   'total-byte-weight',
-  'lcp-lazy-loaded',
 ];
 
 const tbtRelevantAudits = [

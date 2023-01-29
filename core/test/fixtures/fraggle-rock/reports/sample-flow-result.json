@@ -3331,8 +3331,7 @@
                   "preload-lcp-image",
                   "unused-javascript",
                   "efficient-animated-content",
-                  "total-byte-weight",
-                  "lcp-lazy-loaded"
+                  "total-byte-weight"
                 ]
               },
               {
@@ -19188,8 +19187,7 @@
                   "preload-lcp-image",
                   "unused-javascript",
                   "efficient-animated-content",
-                  "total-byte-weight",
-                  "lcp-lazy-loaded"
+                  "total-byte-weight"
                 ]
               },
               {
