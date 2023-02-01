@@ -18,10 +18,10 @@ const config = {
 const expectations = {
   artifacts: {
     ViewportDimensions: {
-      innerWidth: 720,
-      innerHeight: 1280,
-      outerWidth: 360,
-      outerHeight: 640,
+      innerWidth: 824,
+      innerHeight: 1534,
+      outerWidth: 412,
+      outerHeight: 767,
       // In DevTools this value will be exactly 3.
       devicePixelRatio: '2.625 +/- 1',
     },
@@ -39,8 +39,8 @@ const expectations = {
               top: 0,
               bottom: 2000,
               left: 0,
-              right: 720,
-              width: 720,
+              right: 824,
+              width: 824,
               height: 2000,
             },
           ],
@@ -48,7 +48,7 @@ const expectations = {
       },
       screenshot: {
         height: 2000,
-        width: 720,
+        width: 824,
       },
     },
   },
