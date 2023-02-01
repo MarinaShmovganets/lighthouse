@@ -98,6 +98,10 @@ describe('util helpers', () => {
       it('corrects underscored `notApplicable` scoreDisplayMode', () => {
         const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
 
+        // Avoid injecting entity names into audits that would would
+        // make the diff at the end of this test difficult.
+        delete clonedSampleResult.entities;
+
         let notApplicableCount = 0;
         Object.values(clonedSampleResult.audits).forEach(audit => {
           if (audit.scoreDisplayMode === 'notApplicable') {
@@ -116,6 +120,10 @@ describe('util helpers', () => {
 
       it('corrects undefined auditDetails.type to `debugdata`', () => {
         const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
+
+        // Avoid injecting entity names into audits that would would
+        // make the diff at the end of this test difficult.
+        delete clonedSampleResult.entities;
 
         // Delete debugdata details types.
         let undefinedCount = 0;
@@ -136,6 +144,10 @@ describe('util helpers', () => {
       it('corrects `diagnostic` auditDetails.type to `debugdata`', () => {
         const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
 
+        // Avoid injecting entity names into audits that would would
+        // make the diff at the end of this test difficult.
+        delete clonedSampleResult.entities;
+
         // Change debugdata details types.
         let diagnosticCount = 0;
         for (const audit of Object.values(clonedSampleResult.audits)) {
@@ -154,6 +166,10 @@ describe('util helpers', () => {
 
       it('corrects screenshots in the `filmstrip` auditDetails.type', () => {
         const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
+
+        // Avoid injecting entity names into audits that would would
+        // make the diff at the end of this test difficult.
+        delete clonedSampleResult.entities;
 
         // Strip filmstrip screenshots of data URL prefix.
         let filmstripCount = 0;
@@ -183,6 +199,9 @@ describe('util helpers', () => {
           },
         };
         delete clonedSampleResult.fullPageScreenshot;
+        // Avoid injecting entity names into audits that would would
+        // make the diff at the end of this test difficult.
+        delete clonedSampleResult.entities;
 
         assert.ok(clonedSampleResult.audits['full-page-screenshot'].details.nodes); // Make sure something's being tested.
         assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
@@ -217,6 +236,10 @@ describe('util helpers', () => {
 
       it('converts old opportunity table column headings to consolidated table headings', () => {
         const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
+
+        // Avoid injecting entity names into audits that would would
+        // make the diff at the end of this test difficult.
+        delete clonedSampleResult.entities;
 
         const auditsWithTableDetails = Object.values(clonedSampleResult.audits)
           .filter(audit => audit.details?.type === 'table');
@@ -265,6 +288,34 @@ describe('util helpers', () => {
       // No stack pack on audit wth no stack pack.
       const interactiveRef = perfAuditRefs.find(ref => ref.id === 'interactive');
       assert.strictEqual(interactiveRef.stackPacks, undefined);
+    });
+
+    it('identifies entities on items of tables with urls', () => {
+      const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
+
+      const auditsWithTableDetails = Object.values(clonedSampleResult.audits)
+        .filter(audit => audit.details?.type === 'table');
+      assert.notEqual(auditsWithTableDetails.length, 0);
+
+      // collect audit names that might have urls
+      const auditsThatDontHaveUrls = ['bf-cache', 'font-size']; // no urls in data-set
+      const auditsWithUrls = auditsWithTableDetails.filter(audit => {
+        if (auditsThatDontHaveUrls.includes(audit.id)) return false;
+        const urlFields = ['url', 'source-location'];
+        return audit.details.headings.some(heading =>
+          urlFields.includes(heading.valueType) ||
+          urlFields.includes(heading.subItemsHeading?.valueType)
+        );
+      }).map(audit => audit.id);
+      assert.notEqual(auditsWithUrls.length, 0);
+
+      const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
+
+      // ensure each audit that had urls detected to have marked entities.
+      for (const id of auditsWithUrls) {
+        const foundEntities = preparedResult.audits[id].details.items.some(item => item.entity);
+        assert.equal(foundEntities, true);
+      }
     });
   });
 

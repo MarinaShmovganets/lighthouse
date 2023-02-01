@@ -244,7 +244,9 @@ export class ReportUIFeatures {
 
     tablesWithUrls.forEach((tableEl) => {
       const rowEls = getTableRows(tableEl);
-      const thirdPartyRows = this._getThirdPartyRows(rowEls, Util.getFinalDisplayedUrl(this.json));
+      const primaryRowEls = rowEls.filter(rowEl => !rowEl.classList.contains('lh-sub-item-row'));
+      const thirdPartyRowEls = this._getThirdPartyRows(
+        primaryRowEls, Util.getFinalDisplayedUrl(this.json));
 
       // create input box
       const filterTemplate = this._dom.createComponent('3pFilter');
@@ -253,9 +255,9 @@ export class ReportUIFeatures {
       filterInput.addEventListener('change', e => {
         const shouldHideThirdParty = e.target instanceof HTMLInputElement && !e.target.checked;
         let even = true;
-        let rowEl = rowEls[0];
+        let rowEl = primaryRowEls[0];
         while (rowEl) {
-          const shouldHide = shouldHideThirdParty && thirdPartyRows.includes(rowEl);
+          const shouldHide = shouldHideThirdParty && thirdPartyRowEls.includes(rowEl);
 
           // Iterate subsequent associated sub item rows.
           do {
@@ -272,12 +274,12 @@ export class ReportUIFeatures {
       });
 
       this._dom.find('.lh-3p-filter-count', filterTemplate).textContent =
-          `${thirdPartyRows.length}`;
+          `${thirdPartyRowEls.length}`;
       this._dom.find('.lh-3p-ui-string', filterTemplate).textContent =
           Globals.strings.thirdPartyResourcesLabel;
 
-      const allThirdParty = thirdPartyRows.length === rowEls.length;
-      const allFirstParty = !thirdPartyRows.length;
+      const allThirdParty = thirdPartyRowEls.length === primaryRowEls.length;
+      const allFirstParty = !thirdPartyRowEls.length;
 
       // If all or none of the rows are 3rd party, hide the control.
       if (allThirdParty || allFirstParty) {
@@ -319,25 +321,29 @@ export class ReportUIFeatures {
    * @return {Array<HTMLElement>}
    */
   _getThirdPartyRows(rowEls, finalDisplayedUrl) {
-    /** @type {Array<HTMLElement>} */
-    const thirdPartyRows = [];
     const finalDisplayedUrlRootDomain = Util.getRootDomain(finalDisplayedUrl);
+    const firstPartyEntityName = this.json.entities?.firstParty;
 
+    /** @type {Array<HTMLElement>} */
+    const thirdPartyRowEls = [];
     for (const rowEl of rowEls) {
-      if (rowEl.classList.contains('lh-sub-item-row')) continue;
+      if (firstPartyEntityName) {
+        // We rely on entity-classification for new LHRs that support it.
+        if (!rowEl.dataset.entity || rowEl.dataset.entity === firstPartyEntityName) continue;
+      } else {
+        // Without 10.0's entity classification, fallback to the older root domain-based filtering.
+        const urlItem = rowEl.querySelector('div.lh-text__url');
+        if (!urlItem) continue;
+        const datasetUrl = urlItem.dataset.url;
+        if (!datasetUrl) continue;
+        const isThirdParty = Util.getRootDomain(datasetUrl) !== finalDisplayedUrlRootDomain;
+        if (!isThirdParty) continue;
+      }
 
-      const urlItem = rowEl.querySelector('div.lh-text__url');
-      if (!urlItem) continue;
-
-      const datasetUrl = urlItem.dataset.url;
-      if (!datasetUrl) continue;
-      const isThirdParty = Util.getRootDomain(datasetUrl) !== finalDisplayedUrlRootDomain;
-      if (!isThirdParty) continue;
-
-      thirdPartyRows.push(rowEl);
+      thirdPartyRowEls.push(rowEl);
     }
 
-    return thirdPartyRows;
+    return thirdPartyRowEls;
   }
 
   /**

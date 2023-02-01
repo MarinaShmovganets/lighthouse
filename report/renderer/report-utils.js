@@ -90,6 +90,9 @@ class ReportUtils {
           }
         }
 
+        // Attach table/opportunity items with entity information.
+        ReportUtils.classifyEntities(result.entities, audit);
+
         // TODO: convert printf-style displayValue.
         // Added:   #5099, v3
         // Removed: #6767, v4
@@ -185,6 +188,75 @@ class ReportUtils {
     }
 
     return clone;
+  }
+
+  /**
+   * Given an audit's details, identify and return a URL locator function that
+   * can be called later with an `item` to extract the URL of it.
+   * @param {LH.FormattedIcu<LH.Audit.Details.TableColumnHeading[]>} headings
+   * @return {{(item: LH.FormattedIcu<LH.Audit.Details.TableItem>): string|undefined}=}
+   */
+  static getUrlLocatorFn(headings) {
+    // The most common type, valueType=url.
+    const urlKey = headings.find(heading => heading.valueType === 'url')?.key;
+    if (urlKey && typeof urlKey === 'string') {
+      // Return a function that extracts item.url.
+      return (item) => {
+        const url = item[urlKey];
+        if (typeof url === 'string') return url;
+      };
+    }
+
+    // The second common type, valueType=source-location.
+    const srcLocationKey = headings.find(heading => heading.valueType === 'source-location')?.key;
+    if (srcLocationKey) {
+      // Return a function that extracts item.source.url.
+      return (item) => {
+        const sourceLocation = item[srcLocationKey];
+        if (typeof sourceLocation === 'object' && sourceLocation.type === 'source-location') {
+          return sourceLocation.url;
+        }
+      };
+    }
+
+    // More specific tests go here, as we need to identify URLs in more audits.
+  }
+
+  /**
+   * Mark TableItems/OpportunityItems with entity names.
+   * @param {LH.Result.Entities|undefined} entityClassification
+   * @param {import('../../types/lhr/audit-result').Result} audit
+   */
+  static classifyEntities(entityClassification, audit) {
+    if (!entityClassification) return;
+    if (audit.details?.type !== 'opportunity' && audit.details?.type !== 'table') {
+      return;
+    }
+
+    // If details.items are already marked with entity attribute during an audit, nothing to do here.
+    const {items, headings} = audit.details;
+    if (!items.length || items.some(item => item.entity)) return;
+
+    // Identify a URL-locator function that we could call against each item to get its URL.
+    const urlLocatorFn = ReportUtils.getUrlLocatorFn(headings);
+    if (!urlLocatorFn) return;
+
+    for (const item of items) {
+      const url = urlLocatorFn(item);
+      if (!url) continue;
+
+      let origin;
+      try {
+        // Non-URLs can appear in valueType: url columns, like 'Unattributable'
+        origin = Util.parseURL(url).origin;
+      } catch {}
+      if (!origin) continue;
+
+      const entityIndex = entityClassification.entityIndexByOrigin[origin];
+      if (entityIndex === undefined) return;
+      const entity = entityClassification.list[entityIndex];
+      item.entity = entity.name;
+    }
   }
 
   /**

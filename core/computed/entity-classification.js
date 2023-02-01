@@ -98,5 +98,6 @@ class EntityClassification {
   }
 }
 
-const EntityClassificationComputed = makeComputedArtifact(EntityClassification, null);
+const EntityClassificationComputed = makeComputedArtifact(EntityClassification,
+  ['URL', 'devtoolsLog']);
 export {EntityClassificationComputed as EntityClassification};

@@ -663,7 +663,7 @@
     "message": "Doctype name must be the string `html`"
   },
   "core/audits/dobetterweb/doctype.js | explanationLimitedQuirks": {
-    "message": "Document contains a doctype that triggers limited-quirks-mode"
+    "message": "Document contains a `doctype` that triggers `limited-quirks-mode`"
   },
   "core/audits/dobetterweb/doctype.js | explanationNoDoctype": {
     "message": "Document must contain a doctype"
@@ -675,7 +675,7 @@
     "message": "Expected systemId to be an empty string"
   },
   "core/audits/dobetterweb/doctype.js | explanationWrongDoctype": {
-    "message": "Document contains a doctype that triggers quirks-mode"
+    "message": "Document contains a `doctype` that triggers `quirks-mode`"
   },
   "core/audits/dobetterweb/doctype.js | failureTitle": {
     "message": "Page lacks the HTML doctype, thus triggering quirks-mode"
@@ -1869,7 +1869,7 @@
     "message": "Ineligible APIs were used."
   },
   "core/lib/bf-cache-strings.js | injectedJavascript": {
-    "message": "IPages that JavaScript is injected into by extensions are not currently eligible for back/forward cache."
+    "message": "Pages that JavaScript is injected into by extensions are not currently eligible for back/forward cache."
   },
   "core/lib/bf-cache-strings.js | injectedStyleSheet": {
     "message": "Pages that StyleSheet is injected into by extensions are not currently eligible for back/forward cache."

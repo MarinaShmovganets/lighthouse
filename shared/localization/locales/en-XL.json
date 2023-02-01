@@ -663,7 +663,7 @@
     "message": "D̂óĉt́ŷṕê ńâḿê ḿûśt̂ b́ê t́ĥé ŝt́r̂ín̂ǵ `html`"
   },
   "core/audits/dobetterweb/doctype.js | explanationLimitedQuirks": {
-    "message": "D̂óĉúm̂én̂t́ ĉón̂t́âín̂ś â d́ôćt̂ýp̂é t̂h́ât́ t̂ŕîǵĝér̂ś l̂ím̂ít̂éd̂-q́ûír̂ḱŝ-ḿôd́ê"
+    "message": "D̂óĉúm̂én̂t́ ĉón̂t́âín̂ś â `doctype` t́ĥát̂ t́r̂íĝǵêŕŝ `limited-quirks-mode`"
   },
   "core/audits/dobetterweb/doctype.js | explanationNoDoctype": {
     "message": "D̂óĉúm̂én̂t́ m̂úŝt́ ĉón̂t́âín̂ á d̂óĉt́ŷṕê"
@@ -675,7 +675,7 @@
     "message": "Êx́p̂éĉt́êd́ ŝýŝt́êḿÎd́ t̂ó b̂é âń êḿp̂t́ŷ śt̂ŕîńĝ"
   },
   "core/audits/dobetterweb/doctype.js | explanationWrongDoctype": {
-    "message": "D̂óĉúm̂én̂t́ ĉón̂t́âín̂ś â d́ôćt̂ýp̂é t̂h́ât́ t̂ŕîǵĝér̂ś q̂úîŕk̂ś-m̂ód̂é"
+    "message": "D̂óĉúm̂én̂t́ ĉón̂t́âín̂ś â `doctype` t́ĥát̂ t́r̂íĝǵêŕŝ `quirks-mode`"
   },
   "core/audits/dobetterweb/doctype.js | failureTitle": {
     "message": "P̂áĝé l̂áĉḱŝ t́ĥé ĤT́M̂Ĺ d̂óĉt́ŷṕê, t́ĥúŝ t́r̂íĝǵêŕîńĝ q́ûír̂ḱŝ-ḿôd́ê"
@@ -1869,7 +1869,7 @@
     "message": "Îńêĺîǵîb́l̂é ÂṔÎś ŵér̂é ûśêd́."
   },
   "core/lib/bf-cache-strings.js | injectedJavascript": {
-    "message": "ÎṔâǵêś t̂h́ât́ Ĵáv̂áŜćr̂íp̂t́ îś îńĵéĉt́êd́ îńt̂ó b̂ý êx́t̂én̂śîón̂ś âŕê ńôt́ ĉúr̂ŕêńt̂ĺŷ él̂íĝíb̂ĺê f́ôŕ b̂áĉḱ/f̂ór̂ẃâŕd̂ ćâćĥé."
+    "message": "P̂áĝéŝ t́ĥát̂ J́âv́âŚĉŕîṕt̂ íŝ ín̂j́êćt̂éd̂ ín̂t́ô b́ŷ éx̂t́êńŝíôńŝ ár̂é n̂ót̂ ćûŕr̂én̂t́l̂ý êĺîǵîb́l̂é f̂ór̂ b́âćk̂/f́ôŕŵár̂d́ ĉáĉh́ê."
   },
   "core/lib/bf-cache-strings.js | injectedStyleSheet": {
     "message": "P̂áĝéŝ t́ĥát̂ Śt̂ýl̂éŜh́êét̂ íŝ ín̂j́êćt̂éd̂ ín̂t́ô b́ŷ éx̂t́êńŝíôńŝ ár̂é n̂ót̂ ćûŕr̂én̂t́l̂ý êĺîǵîb́l̂é f̂ór̂ b́âćk̂/f́ôŕŵár̂d́ ĉáĉh́ê."

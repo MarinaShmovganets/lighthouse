@@ -5552,7 +5552,8 @@
             "preload-lcp-image",
             "unused-javascript",
             "efficient-animated-content",
-            "total-byte-weight"
+            "total-byte-weight",
+            "lcp-lazy-loaded"
           ]
         },
         {
@@ -7694,12 +7695,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:third-party-summary",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:computed:EntityClassification",
         "duration": 100,
         "entryType": "measure"
       },
