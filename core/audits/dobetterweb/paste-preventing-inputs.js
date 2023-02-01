@@ -26,7 +26,7 @@ class PasswordInputsCanBePastedIntoAudit extends Audit {
    */
   static get meta() {
     return {
-      id: 'inputs-can-be-pasted-into',
+      id: 'paste-preventing-inputs',
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),

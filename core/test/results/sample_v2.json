@@ -5481,8 +5481,8 @@
         ]
       }
     },
-    "inputs-can-be-pasted-into": {
-      "id": "inputs-can-be-pasted-into",
+    "paste-preventing-inputs": {
+      "id": "paste-preventing-inputs",
       "title": "Prevents users from pasting into input fields",
       "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/password-inputs-can-be-pasted-into/).",
       "score": 0,
@@ -6662,7 +6662,7 @@
           "group": "best-practices-trust-safety"
         },
         {
-          "id": "inputs-can-be-pasted-into",
+          "id": "paste-preventing-inputs",
           "weight": 1,
           "group": "best-practices-ux"
         },
@@ -8266,7 +8266,7 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:inputs-can-be-pasted-into",
+        "name": "lh:audit:paste-preventing-inputs",
         "duration": 100,
         "entryType": "measure"
       },
@@ -9303,7 +9303,7 @@
         "audits.label.details.headings[0].label",
         "audits[link-name].details.headings[0].label",
         "audits[object-alt].details.headings[0].label",
-        "audits[inputs-can-be-pasted-into].details.headings[0].label"
+        "audits[paste-preventing-inputs].details.headings[0].label"
       ],
       "core/audits/accessibility/html-lang-valid.js | title": [
         "audits[html-lang-valid].title"
@@ -9645,11 +9645,11 @@
       "core/audits/dobetterweb/notification-on-start.js | description": [
         "audits[notification-on-start].description"
       ],
-      "core/audits/dobetterweb/inputs-can-be-pasted-into.js | failureTitle": [
-        "audits[inputs-can-be-pasted-into].title"
+      "core/audits/dobetterweb/paste-preventing-inputs.js | failureTitle": [
+        "audits[paste-preventing-inputs].title"
       ],
-      "core/audits/dobetterweb/inputs-can-be-pasted-into.js | description": [
-        "audits[inputs-can-be-pasted-into].description"
+      "core/audits/dobetterweb/paste-preventing-inputs.js | description": [
+        "audits[paste-preventing-inputs].description"
       ],
       "core/audits/dobetterweb/uses-http2.js | title": [
         "audits[uses-http2].title"

@@ -194,7 +194,7 @@
   <a href="mailto:inbox@email.com" target="_blank"></a>
 </template>
 
-<template id="inputs-can-be-pasted-into">
+<template id="paste-preventing-inputs">
   <!-- FAIL - calls preventDefault on event -->
   <input type="password" onpaste="event.preventDefault();" />
   <!-- PASS -->
@@ -362,7 +362,7 @@ function noRelOpenLinksTest() {
 }
 
 function inputsCanBePastedIntoTest() {
-  stampTemplate('inputs-can-be-pasted-into', document.body);
+  stampTemplate('paste-preventing-inputs', document.body);
 }
 
 

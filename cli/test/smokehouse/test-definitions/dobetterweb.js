@@ -341,7 +341,7 @@ const expectations = {
           ],
         },
       },
-      'inputs-can-be-pasted-into': {
+      'paste-preventing-inputs': {
         score: 0,
         details: {
           items: {

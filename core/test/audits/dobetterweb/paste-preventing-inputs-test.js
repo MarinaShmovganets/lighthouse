@@ -6,11 +6,11 @@
 
 import {strict as assert} from 'assert';
 
-import InputsCanBePastedIntoAudit from '../../../audits/dobetterweb/inputs-can-be-pasted-into.js';
+import PastePreventingInputsAudit from '../../../audits/dobetterweb/paste-preventing-inputs.js';
 
 describe('Inputs can be pasted into', () => {
   it('passes when there are no inputs preventing paste', () => {
-    const auditResult = InputsCanBePastedIntoAudit.audit({
+    const auditResult = PastePreventingInputsAudit.audit({
       Inputs: {
         inputs: [],
       },
@@ -20,7 +20,7 @@ describe('Inputs can be pasted into', () => {
   });
 
   it('fails when there are inputs preventing paste', () => {
-    const auditResult = InputsCanBePastedIntoAudit.audit({
+    const auditResult = PastePreventingInputsAudit.audit({
       Inputs: {
         inputs: [
           {node: {snippet: 'bad'}, preventsPaste: true},
