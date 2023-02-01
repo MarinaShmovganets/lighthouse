@@ -3040,7 +3040,7 @@
           "paste-preventing-inputs": {
             "id": "paste-preventing-inputs",
             "title": "Allows users to paste into input fields",
-            "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/password-inputs-can-be-pasted-into/).",
+            "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13160,7 +13160,7 @@
           "paste-preventing-inputs": {
             "id": "paste-preventing-inputs",
             "title": "Allows users to paste into input fields",
-            "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/password-inputs-can-be-pasted-into/).",
+            "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18828,7 +18828,7 @@
           "paste-preventing-inputs": {
             "id": "paste-preventing-inputs",
             "title": "Allows users to paste into input fields",
-            "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/password-inputs-can-be-pasted-into/).",
+            "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
