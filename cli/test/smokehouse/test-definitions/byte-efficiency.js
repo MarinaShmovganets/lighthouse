@@ -5,7 +5,7 @@
  */
 
 /**
- * @type {LH.Config.Json}
+ * @type {LH.Config}
  * Config file for running byte efficiency smokehouse audits.
  */
 const config = {

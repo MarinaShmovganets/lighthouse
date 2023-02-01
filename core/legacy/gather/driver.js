@@ -8,6 +8,7 @@ import {EventEmitter} from 'events';
 
 import log from 'lighthouse-logger';
 
+import * as LH from '../../../types/lh.js';
 import {Fetcher} from '../../gather/fetcher.js';
 import {ExecutionContext} from '../../gather/driver/execution-context.js';
 import {LighthouseError} from '../../lib/lh-error.js';
@@ -403,23 +404,6 @@ class Driver {
    */
   async getRequestContent(requestId, timeout = 1000) {
     return fetchResponseBodyFromCache(this.defaultSession, requestId, timeout);
-  }
-
-  /**
-   * @param {{x: number, y: number}} position
-   * @return {Promise<void>}
-   */
-  scrollTo(position) {
-    const scrollExpression = `window.scrollTo(${position.x}, ${position.y})`;
-    return this.executionContext.evaluateAsync(scrollExpression, {useIsolation: true});
-  }
-
-  /**
-   * @return {Promise<{x: number, y: number}>}
-   */
-  getScrollPosition() {
-    return this.executionContext.evaluateAsync(`({x: window.scrollX, y: window.scrollY})`,
-      {useIsolation: true});
   }
 
   /**

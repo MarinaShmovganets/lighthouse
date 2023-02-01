@@ -311,7 +311,7 @@ async function _cleanup({requestedUrl, driver, resolvedConfig}) {
 /**
  * @param {LH.Puppeteer.Page|undefined} page
  * @param {LH.NavigationRequestor|undefined} requestor
- * @param {{config?: LH.Config.Json, flags?: LH.Flags}} [options]
+ * @param {{config?: LH.Config, flags?: LH.Flags}} [options]
  * @return {Promise<LH.Gatherer.FRGatherResult>}
  */
 async function navigationGather(page, requestor, options = {}) {

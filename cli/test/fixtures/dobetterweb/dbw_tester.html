@@ -155,7 +155,9 @@
 </script>
 
 <div>
-  <h2>Do better web tester page</h2>
+  <!-- Empty url('') will attempt to load the page itself as a background image. -->
+  <!-- A pseudo-element LCP image is added in dbw_tester.css. -->
+  <h2 id="toppy" style="background-image:url('');">Do better web tester page</h2>
   <span>Hi there!</span>
 
   <!-- Invalid SVG with a link just to ensure the `LinkElements` gatherer can handle it. -->

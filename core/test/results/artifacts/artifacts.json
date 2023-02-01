@@ -3,7 +3,7 @@
   "LighthouseRunWarnings": [],
   "HostFormFactor": "desktop",
   "HostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4635.0 Safari/537.36",
-  "NetworkUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4695.0 Mobile Safari/537.36 Chrome-Lighthouse",
+  "NetworkUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
   "BenchmarkIndex": 1549,
   "WebAppManifest": null,
   "InstallabilityErrors": {
@@ -61,13 +61,14 @@
       "deviceScaleFactor": 2.625,
       "disabled": false
     },
-    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4695.0 Mobile Safari/537.36 Chrome-Lighthouse",
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
     "auditMode": false,
     "gatherMode": "core/test/results/artifacts",
     "disableStorageReset": false,
     "debugNavigation": false,
     "channel": "cli",
     "usePassiveGathering": false,
+    "disableFullPageScreenshot": false,
     "skipAboutBlank": false,
     "blankPage": "about:blank",
     "budgets": [
@@ -11481,7 +11482,7 @@
       "node": {
         "lhId": "page-13-H2",
         "devtoolsNodePath": "3,HTML,1,BODY,9,DIV,0,H2",
-        "selector": "body > div > h2",
+        "selector": "body > div > h2#toppy",
         "boundingRect": {
           "top": 336,
           "bottom": 364,
@@ -11490,11 +11491,11 @@
           "width": 344,
           "height": 28
         },
-        "snippet": "<h2>",
+        "snippet": "<h2 id=\"toppy\" style=\"background-image:url('');\">",
         "nodeLabel": "Do better web tester page"
       },
       "nodeId": 6,
-      "type": "text"
+      "type": "image"
     },
     {
       "traceEventType": "layout-shift",

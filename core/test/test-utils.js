@@ -199,15 +199,6 @@ async function makeMocksForGatherRunner() {
     getBrowserVersion: async () => ({userAgent: 'Chrome', milestone: 80}),
     getEnvironmentWarnings: () => [],
   });
-  await td.replaceEsm('../gather/gatherers/stacks.js', undefined, {
-    collectStacks: () => Promise.resolve([]),
-  });
-  await td.replaceEsm('../gather/gatherers/installability-errors.js', undefined, {
-    getInstallabilityErrors: async () => ({errors: []}),
-  });
-  await td.replaceEsm('../gather/gatherers/web-app-manifest.js', undefined, {
-    getWebAppManifest: async () => null,
-  });
   await td.replaceEsm('../lib/emulation.js', {
     emulate: jestMock.fn(),
     throttle: jestMock.fn(),
