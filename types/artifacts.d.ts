@@ -310,7 +310,7 @@ declare module Artifacts {
     node: NodeDetails | null
   }
 
-  interface Script extends Omit<LH.Crdp.Debugger.ScriptParsedEvent, 'url'|'embedderName'> {
+  interface Script extends Omit<Crdp.Debugger.ScriptParsedEvent, 'url'|'embedderName'> {
     /**
      * Set by a sourceURL= magic comment if present, otherwise this is the same as the URL.
      * Use this field for presentational purposes only.

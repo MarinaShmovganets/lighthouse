@@ -15,7 +15,7 @@ const UIStrings = {
   /** Description of a Lighthouse audit that tells the user why they should allow pasting of content into input fields. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
   description: 'Preventing input pasting is a UX anti-pattern, ' +
       'and undermines good security policy. ' +
-      '[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/password-inputs-can-be-pasted-into/).',
+      '[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
