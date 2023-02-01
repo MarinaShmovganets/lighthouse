@@ -52,14 +52,13 @@ const throttling = {
 /**
  * @type {Required<LH.SharedFlagsSettings['screenEmulation']>}
  */
-const MOTOG4_EMULATION_METRICS = {
+const MOTOGPOWER_EMULATION_METRICS = {
   mobile: true,
-  width: 360,
-  height: 640,
-  // Moto G4 is really 3, but a higher value here works against
-  // our perf recommendations.
+  width: 412,
+  height: 767,
+  // This value has some interesting ramifications for image-size-responsive, see:
   // https://github.com/GoogleChrome/lighthouse/issues/10741#issuecomment-626903508
-  deviceScaleFactor: 2.625,
+  deviceScaleFactor: 1.75,
   disabled: false,
 };
 
@@ -76,7 +75,7 @@ const DESKTOP_EMULATION_METRICS = {
 };
 
 const screenEmulationMetrics = {
-  mobile: MOTOG4_EMULATION_METRICS,
+  mobile: MOTOGPOWER_EMULATION_METRICS,
   desktop: DESKTOP_EMULATION_METRICS,
 };
 

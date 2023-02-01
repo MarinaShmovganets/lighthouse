@@ -3084,7 +3084,7 @@
     "message": "Emulated Desktop"
   },
   "report/renderer/report-utils.js | runtimeMobileEmulation": {
-    "message": "Emulated Moto G4"
+    "message": "Emulated Moto G Power"
   },
   "report/renderer/report-utils.js | runtimeNoEmulation": {
     "message": "No emulation"
