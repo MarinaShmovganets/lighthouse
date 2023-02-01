@@ -20,7 +20,7 @@ const UIStrings = {
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
-class PasswordInputsCanBePastedIntoAudit extends Audit {
+class PastePreventingInputsAudit extends Audit {
   /**
    * @return {LH.Audit.Meta}
    */
@@ -63,5 +63,5 @@ class PasswordInputsCanBePastedIntoAudit extends Audit {
   }
 }
 
-export default PasswordInputsCanBePastedIntoAudit;
+export default PastePreventingInputsAudit;
 export {UIStrings};
