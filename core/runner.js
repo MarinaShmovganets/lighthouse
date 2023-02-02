@@ -155,12 +155,17 @@ class Runner {
     /** @type {Array<LH.Result.LhrEntity>} */
     const entities = [];
     for (const [entity, entityUrls] of classifiedEntities.urlsByEntity) {
+      const uniqueOrigins = new Set();
+      for (const url of entityUrls) {
+        const origin = UrlUtils.getOrigin(url);
+        if (origin) uniqueOrigins.add(origin);
+      }
+
       /** @type {LH.Result.LhrEntity} */
       const shortEntity = {
         name: entity.name,
         homepage: entity.homepage,
-        origins: [...new Set(
-          [...entityUrls].map(url => UrlUtils.getOrigin(url) || '').filter(Boolean))],
+        origins: [...uniqueOrigins],
       };
       // Reduce payload size in LHR JSON by omitting whats falsy.
       if (entity === classifiedEntities.firstParty) shortEntity.isFirstParty = true;

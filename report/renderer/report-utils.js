@@ -109,11 +109,11 @@ class ReportUtils {
 
   /**
    * Mark TableItems/OpportunityItems with entity names.
-   * @param {LH.Result.Entities|undefined} entityClassification
+   * @param {LH.Result.Entities|undefined} entities
    * @param {import('../../types/lhr/audit-result').Result} audit
    */
-  static classifyEntities(entityClassification, audit) {
-    if (!entityClassification) return;
+  static classifyEntities(entities, audit) {
+    if (!entities) return;
     if (audit.details?.type !== 'opportunity' && audit.details?.type !== 'table') {
       return;
     }
@@ -137,7 +137,7 @@ class ReportUtils {
       } catch {}
       if (!origin) continue;
 
-      const entity = entityClassification.find(e => e.origins.includes(origin));
+      const entity = entities.find(e => e.origins.includes(origin));
       if (entity) item.entity = entity.name;
     }
   }

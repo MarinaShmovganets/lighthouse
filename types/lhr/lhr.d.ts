@@ -172,7 +172,7 @@ declare module Result {
     isFirstParty?: boolean;
     /** Is this entity recognized by third-party-web? */
     isUnrecognized?: boolean;
-    /** List of origin strings that belong to this entity */
+    /** List of origin strings that belong to this entity found in network records. */
     origins: Array<string>;
   }
 
