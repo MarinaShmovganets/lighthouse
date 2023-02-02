@@ -168,10 +168,7 @@ class Runner {
       entities.push(shortEntity);
     }
 
-    return {
-      list: entities,
-      firstParty: classifiedEntities.firstParty?.name,
-    };
+    return entities;
   }
 
   /**

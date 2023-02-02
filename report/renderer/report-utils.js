@@ -137,8 +137,8 @@ class ReportUtils {
       } catch {}
       if (!origin) continue;
 
-      const entity = entityClassification.list.find(e => e.origins.includes(origin));
-      item.entity = entity?.name;
+      const entity = entityClassification.find(e => e.origins.includes(origin));
+      if (entity) item.entity = entity.name;
     }
   }
 

@@ -322,7 +322,7 @@ export class ReportUIFeatures {
    */
   _getThirdPartyRows(rowEls, finalDisplayedUrl) {
     const finalDisplayedUrlRootDomain = Util.getRootDomain(finalDisplayedUrl);
-    const firstPartyEntityName = this.json.entities?.firstParty;
+    const firstPartyEntityName = this.json.entities?.find(e => e.isFirstParty === true)?.name;
 
     /** @type {Array<HTMLElement>} */
     const thirdPartyRowEls = [];
