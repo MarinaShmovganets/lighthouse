@@ -160,7 +160,7 @@ describe('PerfCategoryRenderer', () => {
     const oppElements = [...categoryDOM.querySelectorAll('.lh-audit--load-opportunity')];
     expect(oppElements.map(e => e.id).sort()).toEqual(oppAudits.map(a => a.id).sort());
     expect(oppElements.length).toBeGreaterThan(0);
-    expect(oppElements.length).toMatchInlineSnapshot('7');
+    expect(oppElements.length).toMatchInlineSnapshot('6');
 
     const oppElement = oppElements[0];
     const oppSparklineBarElement = oppElement.querySelector('.lh-sparkline__bar');
