@@ -19,9 +19,9 @@ const expectations = {
   artifacts: {
     ViewportDimensions: {
       innerWidth: 412,
-      innerHeight: 767,
+      innerHeight: 823,
       outerWidth: 412,
-      outerHeight: 767,
+      outerHeight: 823,
       // In DevTools this value will be exactly 3.
       devicePixelRatio: '1.75 +/- 1',
     },

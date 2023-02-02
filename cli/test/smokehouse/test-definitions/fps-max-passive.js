@@ -20,9 +20,9 @@ const expectations = {
   artifacts: {
     ViewportDimensions: {
       innerWidth: 412,
-      innerHeight: 767,
+      innerHeight: 823,
       outerWidth: 412,
-      outerHeight: 767,
+      outerHeight: 823,
     },
   },
   lhr: {
@@ -32,7 +32,7 @@ const expectations = {
     fullPageScreenshot: {
       screenshot: {
         data: /^data:image\/webp;base64,.{50}/,
-        height: 767,
+        height: 823,
         width: 412,
       },
     },

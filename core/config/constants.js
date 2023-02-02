@@ -55,7 +55,7 @@ const throttling = {
 const MOTOGPOWER_EMULATION_METRICS = {
   mobile: true,
   width: 412,
-  height: 767,
+  height: 823,
   // This value has some interesting ramifications for image-size-responsive, see:
   // https://github.com/GoogleChrome/lighthouse/issues/10741#issuecomment-626903508
   deviceScaleFactor: 1.75,
