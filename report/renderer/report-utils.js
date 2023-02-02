@@ -130,17 +130,15 @@ class ReportUtils {
       const url = urlLocatorFn(item);
       if (!url) continue;
 
-      let origin;
+      let origin = '';
       try {
         // Non-URLs can appear in valueType: url columns, like 'Unattributable'
         origin = Util.parseURL(url).origin;
       } catch {}
       if (!origin) continue;
 
-      const entityIndex = entityClassification.entityIndexByOrigin[origin];
-      if (entityIndex === undefined) return;
-      const entity = entityClassification.list[entityIndex];
-      item.entity = entity.name;
+      const entity = entityClassification.list.find(e => e.origins.includes(origin));
+      item.entity = entity?.name;
     }
   }
 

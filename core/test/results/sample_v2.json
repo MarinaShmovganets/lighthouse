@@ -6449,23 +6449,21 @@
     "list": [
       {
         "name": "localhost",
+        "origins": [
+          "http://localhost:10200"
+        ],
         "isFirstParty": true,
         "isUnrecognized": true
       },
       {
         "name": "Google CDN",
-        "homepage": "https://developers.google.com/speed/libraries/"
+        "homepage": "https://developers.google.com/speed/libraries/",
+        "origins": [
+          "http://ajax.googleapis.com"
+        ]
       }
     ],
-    "firstParty": "localhost",
-    "entityIndexByOrigin": {
-      "http://localhost:10200": 0,
-      "http://ajax.googleapis.com": 1
-    },
-    "entityIndexByName": {
-      "localhost": 0,
-      "Google CDN": 1
-    }
+    "firstParty": "localhost"
   },
   "fullPageScreenshot": {
     "screenshot": {

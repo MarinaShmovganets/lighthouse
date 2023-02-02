@@ -247,31 +247,23 @@ describe('ReportUIFeatures', () => {
                 name: 'example.com',
                 isFirstParty: true,
                 isUnrecognized: true,
+                origins: ['http://www.example.com'],
               },
               {
                 name: 'cdn.com',
                 isUnrecognized: true,
+                origins: ['http://www.cdn.com'],
               },
               {
                 name: 'notexample.com',
                 isUnrecognized: true,
+                origins: ['http://www.notexample.com'],
               },
               {
                 name: 'google.com',
+                origins: ['http://www.google.com'],
               },
             ],
-            entityIndexByOrigin: {
-              'http://www.example.com': 0,
-              'http://www.cdn.com': 1,
-              'http://www.notexample.com': 2,
-              'http://www.google.com': 3,
-            },
-            entityIndexByName: {
-              'example.com': 0,
-              'cdn.com': 1,
-              'notexample.com': 2,
-              'google.com': 3,
-            },
           };
 
           // Entity resolution is done during prepareReportResult

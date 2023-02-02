@@ -618,22 +618,16 @@ message StackPack {
 message Entities {
   // List of entities.
   repeated LhrEntity list = 1;
-  
+
   // Name of the first-party entity.
   string firstParty = 2;
-  
-  // Lookup table that maps URL origins to corresponding index in entities.
-  map<string, uint32> entityIndexByOrigin = 3;
-
-  // Lookup table that maps entity names to corresponding index in entities.
-  map<string, uint32> entityIndexByName = 4;
 }
 
 // Message containing an Entity.
 message LhrEntity {
   // Name of the entity.
   string name = 1;
-  
+
   // An optional homepage URL of the entity.
   optional string homepage = 2;
 
@@ -645,4 +639,7 @@ message LhrEntity {
 
   // An optional flag indicating if the entity is not recognized.
   optional bool isUnrecognized = 5;
+
+  // A list of URL origin strings that belong to this entity.
+  repeated string origins = 6;
 }

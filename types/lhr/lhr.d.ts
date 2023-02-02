@@ -162,10 +162,6 @@ declare module Result {
     list: Array<LhrEntity>;
     /** Name of the first-party entity */
     firstParty?: string;
-    /** Entity-name to entity index lookup table  */
-    entityIndexByName: Record<string, number>;
-    /** URL origin to entity index lookup table */
-    entityIndexByOrigin: Record<string, number>;
   }
 
   /**
@@ -182,6 +178,8 @@ declare module Result {
     isFirstParty?: boolean;
     /** Is this entity recognized by third-party-web? */
     isUnrecognized?: boolean;
+    /** List of origin strings that belong to this entity */
+    origins: Array<string>;
   }
 
   /**

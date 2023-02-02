@@ -4234,25 +4234,23 @@
           "list": [
             {
               "name": "mikescerealshack.co",
+              "origins": [
+                "https://www.mikescerealshack.co",
+                "https://events.mikescerealshack.co"
+              ],
               "isFirstParty": true,
               "isUnrecognized": true
             },
             {
               "name": "Google Fonts",
-              "homepage": "https://fonts.google.com/"
+              "homepage": "https://fonts.google.com/",
+              "origins": [
+                "https://fonts.googleapis.com",
+                "https://fonts.gstatic.com"
+              ]
             }
           ],
-          "firstParty": "mikescerealshack.co",
-          "entityIndexByOrigin": {
-            "https://www.mikescerealshack.co": 0,
-            "https://events.mikescerealshack.co": 0,
-            "https://fonts.googleapis.com": 1,
-            "https://fonts.gstatic.com": 1
-          },
-          "entityIndexByName": {
-            "mikescerealshack.co": 0,
-            "Google Fonts": 1
-          }
+          "firstParty": "mikescerealshack.co"
         },
         "fullPageScreenshot": {
           "screenshot": {
@@ -9855,24 +9853,22 @@
           "list": [
             {
               "name": "mikescerealshack.co",
+              "origins": [
+                "https://www.mikescerealshack.co",
+                "https://cdn.mikescerealshack.co"
+              ],
               "isFirstParty": true,
               "isUnrecognized": true
             },
             {
               "name": "Algolia",
-              "homepage": "https://www.algolia.com/"
+              "homepage": "https://www.algolia.com/",
+              "origins": [
+                "https://mnl4bjjsnz-dsn.algolia.net"
+              ]
             }
           ],
-          "firstParty": "mikescerealshack.co",
-          "entityIndexByOrigin": {
-            "https://www.mikescerealshack.co": 0,
-            "https://cdn.mikescerealshack.co": 0,
-            "https://mnl4bjjsnz-dsn.algolia.net": 1
-          },
-          "entityIndexByName": {
-            "mikescerealshack.co": 0,
-            "Algolia": 1
-          }
+          "firstParty": "mikescerealshack.co"
         },
         "fullPageScreenshot": {
           "screenshot": {
@@ -20079,25 +20075,23 @@
           "list": [
             {
               "name": "mikescerealshack.co",
+              "origins": [
+                "https://www.mikescerealshack.co",
+                "https://events.mikescerealshack.co"
+              ],
               "isFirstParty": true,
               "isUnrecognized": true
             },
             {
               "name": "Google Fonts",
-              "homepage": "https://fonts.google.com/"
+              "homepage": "https://fonts.google.com/",
+              "origins": [
+                "https://fonts.googleapis.com",
+                "https://fonts.gstatic.com"
+              ]
             }
           ],
-          "firstParty": "mikescerealshack.co",
-          "entityIndexByOrigin": {
-            "https://www.mikescerealshack.co": 0,
-            "https://events.mikescerealshack.co": 0,
-            "https://fonts.googleapis.com": 1,
-            "https://fonts.gstatic.com": 1
-          },
-          "entityIndexByName": {
-            "mikescerealshack.co": 0,
-            "Google Fonts": 1
-          }
+          "firstParty": "mikescerealshack.co"
         },
         "fullPageScreenshot": {
           "screenshot": {
