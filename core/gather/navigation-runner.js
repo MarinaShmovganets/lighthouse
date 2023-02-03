@@ -249,7 +249,9 @@ async function _navigation(navigationContext) {
   await collectPhaseArtifacts({phase: 'stopSensitiveInstrumentation', ...phaseState});
   await collectPhaseArtifacts({phase: 'stopInstrumentation', ...phaseState});
 
-  // Needs to be disabled before `getArtifact` phase.
+  // bf-cache-failures can emit `Page.frameNavigated` at the end of the run.
+  // This can cause us to issue protocol commands after the target closes.
+  // We should disable our `Page.frameNavigated` handlers before that.
   await disableAsyncStacks();
 
   await _cleanupNavigation(navigationContext);

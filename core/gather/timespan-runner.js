@@ -62,7 +62,9 @@ async function startTimespanGather(page, options = {}) {
           await collectPhaseArtifacts({phase: 'stopSensitiveInstrumentation', ...phaseOptions});
           await collectPhaseArtifacts({phase: 'stopInstrumentation', ...phaseOptions});
 
-          // Needs to be disabled before `getArtifact` phase.
+          // bf-cache-failures can emit `Page.frameNavigated` at the end of the run.
+          // This can cause us to issue protocol commands after the target closes.
+          // We should disable our `Page.frameNavigated` handlers before that.
           await disableAsyncStacks();
 
           await collectPhaseArtifacts({phase: 'getArtifact', ...phaseOptions});
