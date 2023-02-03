@@ -182,7 +182,6 @@ describe('backward compatibility', () => {
     const clonedSampleResult = cloneLhr(sampleResult);
 
     const details = clonedSampleResult.audits['third-party-summary'].details;
-    delete details.isEntityGrouped;
     details.headings[0].valueType = 'link';
     for (const item of details.items) {
       item.entity = {
