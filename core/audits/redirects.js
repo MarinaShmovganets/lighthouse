@@ -125,7 +125,8 @@ class Redirects extends Audit {
       }
 
       const lanternTimingDeltaMs = redirectedTiming.startTime - initialTiming.startTime;
-      const observedTimingDeltaMs = redirectedRequest.startTime - initialRequest.startTime;
+      const observedTimingDeltaMs = redirectedRequest.networkRequestTime -
+          initialRequest.networkRequestTime;
       const wastedMs = settings.throttlingMethod === 'simulate' ?
         lanternTimingDeltaMs : observedTimingDeltaMs;
       totalWastedMs += wastedMs;

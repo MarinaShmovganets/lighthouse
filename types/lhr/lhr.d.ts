@@ -155,18 +155,8 @@ declare module Result {
 
   /**
    * Entity classification for the run, for resolving URLs/items to entities in report.
-   * The two lookup tables (LUT) below provide space-optimized, O(1) index lookup into entities.list.
    */
-  interface Entities {
-    /** All entities (1st and 3rd party) discovered during the run */
-    list: Array<LhrEntity>;
-    /** Name of the first-party entity */
-    firstParty?: string;
-    /** Entity-name to entity index lookup table  */
-    entityIndexByName: Record<string, number>;
-    /** URL origin to entity index lookup table */
-    entityIndexByOrigin: Record<string, number>;
-  }
+  interface Entities extends Array<LhrEntity> {}
 
   /**
    * An entity that's either recognized by third-party-web or made up by Lighthouse.
@@ -182,6 +172,8 @@ declare module Result {
     isFirstParty?: boolean;
     /** Is this entity recognized by third-party-web? */
     isUnrecognized?: boolean;
+    /** List of origin strings that belong to this entity found in network records. */
+    origins: Array<string>;
   }
 
   /**

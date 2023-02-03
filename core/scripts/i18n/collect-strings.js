@@ -714,6 +714,8 @@ function checkKnownFixedCollisions(strings) {
       'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
       'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
       'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
+      'Document contains a $MARKDOWN_SNIPPET_0$ that triggers $MARKDOWN_SNIPPET_1$',
+      'Document contains a $MARKDOWN_SNIPPET_0$ that triggers $MARKDOWN_SNIPPET_1$',
       'Document has a valid $MARKDOWN_SNIPPET_0$',
       'Document has a valid $MARKDOWN_SNIPPET_0$',
       'Failing Elements',

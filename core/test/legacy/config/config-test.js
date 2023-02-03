@@ -898,7 +898,7 @@ describe('Config', () => {
   describe('emulatedUserAgent', () => {
     it('uses the default UA string when emulatedUserAgent is undefined', async () => {
       const resolvedConfig = await LegacyResolvedConfig.fromJson({});
-      expect(resolvedConfig.settings.emulatedUserAgent).toMatch(/^Mozilla\/5.*Chrome-Lighthouse$/);
+      expect(resolvedConfig.settings.emulatedUserAgent).toMatch(/^Mozilla\/5.*Moto.*Chrome/);
     });
 
     it('uses the default UA string when emulatedUserAgent is true', async () => {
@@ -907,7 +907,7 @@ describe('Config', () => {
           emulatedUserAgent: true,
         },
       });
-      expect(resolvedConfig.settings.emulatedUserAgent).toMatch(/^Mozilla\/5.*Chrome-Lighthouse$/);
+      expect(resolvedConfig.settings.emulatedUserAgent).toMatch(/^Mozilla\/5.*Moto.*Chrome/);
     });
 
     it('does not use a UA string when emulatedUserAgent is false', async () => {

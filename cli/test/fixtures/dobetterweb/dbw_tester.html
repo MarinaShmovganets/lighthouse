@@ -165,7 +165,9 @@
 </script>
 
 <div>
-  <h2>Do better web tester page</h2>
+  <!-- Empty url('') will attempt to load the page itself as a background image. -->
+  <!-- A pseudo-element LCP image is added in dbw_tester.css. -->
+  <h2 id="toppy" style="background-image:url('');">Do better web tester page</h2>
   <span>Hi there!</span>
 
   <!-- Invalid SVG with a link just to ensure the `LinkElements` gatherer can handle it. -->
@@ -204,7 +206,7 @@
   <a href="mailto:inbox@email.com" target="_blank"></a>
 </template>
 
-<template id="password-inputs-can-be-pasted-into">
+<template id="paste-preventing-inputs">
   <!-- FAIL - calls preventDefault on event -->
   <input type="password" onpaste="event.preventDefault();" />
   <!-- PASS -->
@@ -371,8 +373,8 @@ function noRelOpenLinksTest() {
   stampTemplate('noopener-links-tmpl', document.body);
 }
 
-function passwordInputsCanBePastedIntoTest() {
-  stampTemplate('password-inputs-can-be-pasted-into', document.body);
+function inputsCanBePastedIntoTest() {
+  stampTemplate('paste-preventing-inputs', document.body);
 }
 
 
@@ -415,7 +417,7 @@ if (location.search === '') {
   noRelOpenLinksTest();
   // oldCSSFlexboxTest();
   deprecationsTest();
-  passwordInputsCanBePastedIntoTest();
+  inputsCanBePastedIntoTest();
   isOnHttps();
   noUnloadListenersTest();
 } else {
@@ -450,7 +452,7 @@ if (location.search === '') {
     deprecationsTest();
   }
   if (params.has('passwordinputs')) {
-    passwordInputsCanBePastedIntoTest();
+    inputsCanBePastedIntoTest();
   }
   if (params.has('isonhttps')) {
     isOnHttps();

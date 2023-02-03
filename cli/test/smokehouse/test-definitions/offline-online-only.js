@@ -50,7 +50,7 @@ const expectations = {
       'render-blocking-resources': {
         score: 1,
       },
-      'password-inputs-can-be-pasted-into': {
+      'paste-preventing-inputs': {
         score: 1,
       },
       'service-worker': {

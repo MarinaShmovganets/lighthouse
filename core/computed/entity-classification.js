@@ -6,7 +6,7 @@
 
 import {makeComputedArtifact} from './computed-artifact.js';
 import {NetworkRecords} from './network-records.js';
-import {Util} from '../util.cjs';
+import {Util} from '../../shared/util.js';
 import UrlUtils from '../lib/url-utils.js';
 import thirdPartyWeb from '../lib/third-party-web.js';
 
@@ -98,5 +98,6 @@ class EntityClassification {
   }
 }
 
-const EntityClassificationComputed = makeComputedArtifact(EntityClassification, null);
+const EntityClassificationComputed = makeComputedArtifact(EntityClassification,
+  ['URL', 'devtoolsLog']);
 export {EntityClassificationComputed as EntityClassification};
