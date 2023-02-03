@@ -110,12 +110,10 @@ class BFCacheFailures extends FRGatherer {
     // https://github.com/GoogleChrome/lighthouse/issues/14665
     await Promise.all([
       session.sendCommand('Page.navigate', {url: 'chrome://terms'}),
-      waitForLoadEvent(session, 0).promise,
+      // DevTools e2e tests can sometimes fail on the next command if we progress too fast.
+      // The only reliable way to prevent this is to wait for an arbitrary period of time after load.
+      waitForLoadEvent(session, TEMP_PAGE_PAUSE_TIMEOUT).promise,
     ]);
-
-    // DevTools e2e tests can sometimes fail on the next command if we progress too fast.
-    // The only reliable way to prevent this is to wait for an arbitrary period of time.
-    await new Promise(resolve => setTimeout(resolve, TEMP_PAGE_PAUSE_TIMEOUT));
 
     const [, frameNavigatedEvent] = await Promise.all([
       session.sendCommand('Page.navigateToHistoryEntry', {entryId: entry.id}),
