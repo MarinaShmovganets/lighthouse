@@ -212,7 +212,7 @@ const expectations = {
           params: {
             type: 'Image',
             request: {
-              url: 'http://localhost:10200/dobetterweb/async.jpg',
+              url: 'http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?async',
             },
             initiator: {
               type: 'script',
