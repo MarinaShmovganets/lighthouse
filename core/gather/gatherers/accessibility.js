@@ -61,10 +61,12 @@ async function runA11yChecks() {
       'frame-focusable-content': {enabled: false},
       'aria-roledescription': {enabled: false},
       'scrollable-region-focusable': {enabled: false},
-      // TODO(paulirish): create audits and enable these 3.
+      // TODO(paulirish): create audits and enable these 5.
       'input-button-name': {enabled: false},
       'role-img-alt': {enabled: false},
       'select-name': {enabled: false},
+      'link-in-text-block': {enabled: false},
+      'frame-title-unique': {enabled: false},
     },
   });
 

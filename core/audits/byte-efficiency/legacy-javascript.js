@@ -222,7 +222,6 @@ class LegacyJavascript extends ByteEfficiencyAudit {
       ['String.fromCodePoint', 'es6.string.from-code-point'],
       ['String.raw', 'es6.string.raw'],
       ['String.prototype.repeat', 'es6.string.repeat'],
-      ['Array.prototype.includes', 'es7.array.includes'],
       ['Object.entries', 'es7.object.entries'],
       ['Object.getOwnPropertyDescriptors', 'es7.object.get-own-property-descriptors'],
       ['Object.values', 'es7.object.values'],
@@ -266,7 +265,7 @@ class LegacyJavascript extends ByteEfficiencyAudit {
       },
       {
         name: '@babel/plugin-transform-regenerator',
-        expression: /regeneratorRuntime\.a?wrap/.source,
+        expression: /regeneratorRuntime\(?\)?\.a?wrap/.source,
         // Example of this transform: https://gist.github.com/connorjclark/af8bccfff377ac44efc104a79bc75da2
         // `regeneratorRuntime.awrap` is generated for every usage of `await`, and adds ~80 bytes each.
         estimateBytes: result => result.count * 80,

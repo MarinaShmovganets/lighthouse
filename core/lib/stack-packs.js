@@ -20,6 +20,10 @@ const stackPacksToInclude = [
     requiredStacks: ['js:wordpress'],
   },
   {
+    packId: 'wp-rocket',
+    requiredStacks: ['js:wp-rocket'],
+  },
+  {
     packId: 'ezoic',
     requiredStacks: ['js:ezoic'],
   },

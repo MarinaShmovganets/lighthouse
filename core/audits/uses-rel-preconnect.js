@@ -95,7 +95,8 @@ class UsesRelPreconnectAudit extends Audit {
    * @return {boolean}
    */
   static socketStartTimeIsBelowThreshold(record, mainResource) {
-    return Math.max(0, record.startTime - mainResource.endTime) < PRECONNECT_SOCKET_MAX_IDLE_IN_MS;
+    const timeSinceMainEnd = Math.max(0, record.networkRequestTime - mainResource.networkEndTime);
+    return timeSinceMainEnd < PRECONNECT_SOCKET_MAX_IDLE_IN_MS;
   }
 
   /**
@@ -169,7 +170,7 @@ class UsesRelPreconnectAudit extends Audit {
       // Sometimes requests are done simultaneous and the connection has not been made
       // chrome will try to connect for each network record, we get the first record
       const firstRecordOfOrigin = records.reduce((firstRecord, record) => {
-        return (record.startTime < firstRecord.startTime) ? record : firstRecord;
+        return (record.networkRequestTime < firstRecord.networkRequestTime) ? record : firstRecord;
       });
 
       // Skip the origin if we don't have timing information
@@ -186,8 +187,8 @@ class UsesRelPreconnectAudit extends Audit {
       if (firstRecordOfOrigin.parsedURL.scheme === 'https') connectionTime = connectionTime * 2;
 
       const timeBetweenMainResourceAndDnsStart =
-        firstRecordOfOrigin.startTime -
-        mainResource.endTime +
+        firstRecordOfOrigin.networkRequestTime -
+        mainResource.networkEndTime +
         firstRecordOfOrigin.timing.dnsStart;
 
       const wastedMs = Math.min(connectionTime, timeBetweenMainResourceAndDnsStart);

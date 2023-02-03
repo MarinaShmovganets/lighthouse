@@ -379,7 +379,7 @@ const expectations = {
           ],
         },
       },
-      'password-inputs-can-be-pasted-into': {
+      'paste-preventing-inputs': {
         score: 0,
         details: {
           items: {
@@ -534,6 +534,33 @@ const expectations = {
               },
             },
           ],
+        },
+      },
+      'preload-lcp-image': {
+        score: 1,
+        numericValue: 0,
+        details: {
+          items: [{
+            node: {
+              snippet: '<h2 id="toppy" style="background-image:url(\'\');">',
+              nodeLabel: 'Do better web tester page',
+            },
+            url: 'http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?lcp',
+            wastedMs: 0,
+          }],
+          debugData: {
+            initiatorPath: [{
+              url: 'http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?lcp',
+              initiatorType: 'parser',
+            }, {
+              url: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true',
+              initiatorType: 'parser',
+            }, {
+              url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+              initiatorType: 'other',
+            }],
+            pathLength: 3,
+          },
         },
       },
     },

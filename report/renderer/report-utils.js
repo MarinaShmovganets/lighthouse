@@ -6,8 +6,8 @@
 
 import {Util} from '../../shared/util.js';
 import {Globals} from './report-globals.js';
+import {upgradeLhrForCompatibility} from '../../core/lib/lighthouse-compatibility.js';
 
-const SCREENSHOT_PREFIX = 'data:image/jpeg;base64,';
 const RATINGS = Util.RATINGS;
 
 class ReportUtils {
@@ -17,83 +17,17 @@ class ReportUtils {
    * compatible with current renderer.
    * The LHR passed in is not mutated.
    * TODO(team): we all agree the LHR shape change is technical debt we should fix
-   * @param {LH.Result} result
+   * @param {LH.Result} lhr
    * @return {LH.ReportResult}
    */
-  static prepareReportResult(result) {
+  static prepareReportResult(lhr) {
     // If any mutations happen to the report within the renderers, we want the original object untouched
-    const clone = /** @type {LH.ReportResult} */ (JSON.parse(JSON.stringify(result)));
-
-    // If LHR is older (≤3.0.3), it has no locale setting. Set default.
-    if (!clone.configSettings.locale) {
-      clone.configSettings.locale = 'en';
-    }
-    if (!clone.configSettings.formFactor) {
-      // @ts-expect-error fallback handling for emulatedFormFactor
-      clone.configSettings.formFactor = clone.configSettings.emulatedFormFactor;
-    }
-
-    clone.finalDisplayedUrl = Util.getFinalDisplayedUrl(clone);
-    clone.mainDocumentUrl = Util.getMainDocumentUrl(clone);
+    const clone = /** @type {LH.ReportResult} */ (JSON.parse(JSON.stringify(lhr)));
+    upgradeLhrForCompatibility(clone);
 
     for (const audit of Object.values(clone.audits)) {
-      // Turn 'not-applicable' (LHR <4.0) and 'not_applicable' (older proto versions)
-      // into 'notApplicable' (LHR ≥4.0).
-      // @ts-expect-error tsc rightly flags that these values shouldn't occur.
-      // eslint-disable-next-line max-len
-      if (audit.scoreDisplayMode === 'not_applicable' || audit.scoreDisplayMode === 'not-applicable') {
-        audit.scoreDisplayMode = 'notApplicable';
-      }
-
-      if (audit.details) {
-        // Turn `auditDetails.type` of undefined (LHR <4.2) and 'diagnostic' (LHR <5.0)
-        // into 'debugdata' (LHR ≥5.0).
-        // @ts-expect-error tsc rightly flags that these values shouldn't occur.
-        if (audit.details.type === undefined || audit.details.type === 'diagnostic') {
-          // @ts-expect-error details is of type never.
-          audit.details.type = 'debugdata';
-        }
-
-        // Add the jpg data URL prefix to filmstrip screenshots without them (LHR <5.0).
-        if (audit.details.type === 'filmstrip') {
-          for (const screenshot of audit.details.items) {
-            if (!screenshot.data.startsWith(SCREENSHOT_PREFIX)) {
-              screenshot.data = SCREENSHOT_PREFIX + screenshot.data;
-            }
-          }
-        }
-
-        // Circa 10.0, table items were refactored.
-        if (audit.details.type === 'table') {
-          for (const heading of audit.details.headings) {
-            /** @type {{itemType: LH.Audit.Details.ItemValueType|undefined, text: string|undefined}} */
-            // @ts-expect-error
-            const {itemType, text} = heading;
-            if (itemType !== undefined) {
-              heading.valueType = itemType;
-              // @ts-expect-error
-              delete heading.itemType;
-            }
-            if (text !== undefined) {
-              heading.label = text;
-              // @ts-expect-error
-              delete heading.text;
-            }
-
-            // @ts-expect-error
-            const subItemsItemType = heading.subItemsHeading?.itemType;
-            if (heading.subItemsHeading && subItemsItemType !== undefined) {
-              heading.subItemsHeading.valueType = subItemsItemType;
-              // @ts-expect-error
-              delete heading.subItemsHeading.itemType;
-            }
-          }
-        }
-
-        // TODO: convert printf-style displayValue.
-        // Added:   #5099, v3
-        // Removed: #6767, v4
-      }
+      // Attach table/opportunity items with entity information.
+      ReportUtils.classifyEntities(clone.entities, audit);
     }
 
     // For convenience, smoosh all AuditResults into their auditRef (which has just weight & group)
@@ -101,23 +35,6 @@ class ReportUtils {
 
     /** @type {Map<string, Array<LH.ReportResult.AuditRef>>} */
     const relevantAuditToMetricsMap = new Map();
-
-    // This backcompat converts old LHRs (<9.0.0) to use the new "hidden" group.
-    // Old LHRs used "no group" to identify audits that should be hidden in performance instead of the "hidden" group.
-    // Newer LHRs use "no group" to identify opportunities and diagnostics whose groups are assigned by details type.
-    const [majorVersion] = clone.lighthouseVersion.split('.').map(Number);
-    const perfCategory = clone.categories['performance'];
-    if (majorVersion < 9 && perfCategory) {
-      if (!clone.categoryGroups) clone.categoryGroups = {};
-      clone.categoryGroups['hidden'] = {title: ''};
-      for (const auditRef of perfCategory.auditRefs) {
-        if (!auditRef.group) {
-          auditRef.group = 'hidden';
-        } else if (['load-opportunities', 'diagnostics'].includes(auditRef.group)) {
-          delete auditRef.group;
-        }
-      }
-    }
 
     for (const category of Object.values(clone.categories)) {
       // Make basic lookup table for relevantAudits
@@ -155,36 +72,74 @@ class ReportUtils {
       });
     }
 
-    // Add some minimal stuff so older reports still work.
-    if (!clone.environment) {
-      // @ts-expect-error
-      clone.environment = {benchmarkIndex: 0};
-    }
-    if (!clone.configSettings.screenEmulation) {
-      // @ts-expect-error
-      clone.configSettings.screenEmulation = {};
-    }
-    if (!clone.i18n) {
-      // @ts-expect-error
-      clone.i18n = {};
-    }
-
-    // In 10.0, full-page-screenshot became a top-level property on the LHR.
-    if (clone.audits['full-page-screenshot']) {
-      const details = /** @type {LH.Result.FullPageScreenshot=} */ (
-        clone.audits['full-page-screenshot'].details);
-      if (details) {
-        clone.fullPageScreenshot = {
-          screenshot: details.screenshot,
-          nodes: details.nodes,
-        };
-      } else {
-        clone.fullPageScreenshot = null;
-      }
-      delete clone.audits['full-page-screenshot'];
-    }
-
     return clone;
+  }
+
+  /**
+   * Given an audit's details, identify and return a URL locator function that
+   * can be called later with an `item` to extract the URL of it.
+   * @param {LH.FormattedIcu<LH.Audit.Details.TableColumnHeading[]>} headings
+   * @return {{(item: LH.FormattedIcu<LH.Audit.Details.TableItem>): string|undefined}=}
+   */
+  static getUrlLocatorFn(headings) {
+    // The most common type, valueType=url.
+    const urlKey = headings.find(heading => heading.valueType === 'url')?.key;
+    if (urlKey && typeof urlKey === 'string') {
+      // Return a function that extracts item.url.
+      return (item) => {
+        const url = item[urlKey];
+        if (typeof url === 'string') return url;
+      };
+    }
+
+    // The second common type, valueType=source-location.
+    const srcLocationKey = headings.find(heading => heading.valueType === 'source-location')?.key;
+    if (srcLocationKey) {
+      // Return a function that extracts item.source.url.
+      return (item) => {
+        const sourceLocation = item[srcLocationKey];
+        if (typeof sourceLocation === 'object' && sourceLocation.type === 'source-location') {
+          return sourceLocation.url;
+        }
+      };
+    }
+
+    // More specific tests go here, as we need to identify URLs in more audits.
+  }
+
+  /**
+   * Mark TableItems/OpportunityItems with entity names.
+   * @param {LH.Result.Entities|undefined} entities
+   * @param {import('../../types/lhr/audit-result').Result} audit
+   */
+  static classifyEntities(entities, audit) {
+    if (!entities) return;
+    if (audit.details?.type !== 'opportunity' && audit.details?.type !== 'table') {
+      return;
+    }
+
+    // If details.items are already marked with entity attribute during an audit, nothing to do here.
+    const {items, headings} = audit.details;
+    if (!items.length || items.some(item => item.entity)) return;
+
+    // Identify a URL-locator function that we could call against each item to get its URL.
+    const urlLocatorFn = ReportUtils.getUrlLocatorFn(headings);
+    if (!urlLocatorFn) return;
+
+    for (const item of items) {
+      const url = urlLocatorFn(item);
+      if (!url) continue;
+
+      let origin = '';
+      try {
+        // Non-URLs can appear in valueType: url columns, like 'Unattributable'
+        origin = Util.parseURL(url).origin;
+      } catch {}
+      if (!origin) continue;
+
+      const entity = entities.find(e => e.origins.includes(origin));
+      if (entity) item.entity = entity.name;
+    }
   }
 
   /**
