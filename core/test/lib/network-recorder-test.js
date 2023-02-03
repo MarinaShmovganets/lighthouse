@@ -615,10 +615,10 @@ describe('network recorder', function() {
     const devtoolsLogs = networkRecordsToDevtoolsLog([
       {
         url: 'https://example.com/',
-        startTime: 10_000,
+        networkRequestTime: 10_000,
       }, {
         url: 'https://example.com/script.js',
-        startTime: 20_000,
+        networkRequestTime: 20_000,
         initiator: {
           type: 'parser',
           url: 'https://example.com/',
@@ -626,7 +626,7 @@ describe('network recorder', function() {
       },
       {
         url: 'https://example.com/img.png',
-        startTime: 30_000,
+        networkRequestTime: 30_000,
         initiator: {
           type: 'script',
           stack: {
@@ -666,21 +666,21 @@ describe('network recorder', function() {
     const devtoolsLogs = networkRecordsToDevtoolsLog([
       {
         url: 'https://example.com/',
-        startTime: 10_000,
+        networkRequestTime: 10_000,
       }, {
         url: 'https://example.com/script.js',
-        startTime: 20_000,
+        networkRequestTime: 20_000,
         isLinkPreload: true,
         initiator: {type: 'parser', url: 'https://example.com/'},
       }, {
         url: 'https://example.com/script.js',
-        startTime: 30_000,
+        networkRequestTime: 30_000,
         fromDiskCache: true,
         initiator: {type: 'parser', url: 'https://example.com/'},
       },
       {
         url: 'https://example.com/img.png',
-        startTime: 40_000,
+        networkRequestTime: 40_000,
         initiator: {type: 'script', url: 'https://example.com/script.js'},
       },
     ]);
