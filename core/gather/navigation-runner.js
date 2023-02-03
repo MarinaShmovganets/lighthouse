@@ -228,7 +228,6 @@ async function _navigation(navigationContext) {
 
   const setupResult = await _setupNavigation(navigationContext);
 
-  // TODO: Do this as part of the DevtoolsLog gatherer.
   const disableAsyncStacks =
     await prepare.enableAsyncStacks(navigationContext.driver.defaultSession);
 

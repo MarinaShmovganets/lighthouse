@@ -45,7 +45,6 @@ async function startTimespanGather(page, options = {}) {
 
   await prepareTargetForTimespanMode(driver, resolvedConfig.settings);
 
-  // TODO: Do this as part of the DevtoolsLog gatherer.
   const disableAsyncStacks = await enableAsyncStacks(driver.defaultSession);
 
   await collectPhaseArtifacts({phase: 'startInstrumentation', ...phaseOptions});
