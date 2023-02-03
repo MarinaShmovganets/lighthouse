@@ -28,11 +28,7 @@ describe('Third party summary', () => {
     );
     expect(results.details.items).toEqual([
       {
-        entity: {
-          text: 'Google Tag Manager',
-          type: 'link',
-          url: 'https://marketingplatform.google.com/about/tag-manager/',
-        },
+        entity: 'Google Tag Manager',
         mainThreadTime: 127.15300000000003,
         blockingTime: 18.186999999999998,
         transferSize: 30827,
@@ -49,11 +45,7 @@ describe('Third party summary', () => {
         },
       },
       {
-        entity: {
-          text: 'Google Analytics',
-          type: 'link',
-          url: 'https://marketingplatform.google.com/about/analytics/',
-        },
+        entity: 'Google Analytics',
         mainThreadTime: 95.15599999999999,
         blockingTime: 0,
         transferSize: 20913,
@@ -154,8 +146,8 @@ describe('Third party summary', () => {
     const resultsOnExternal = await ThirdPartySummary.audit(externalArtifacts, context);
     const resultsOnFacebook = await ThirdPartySummary.audit(facebookArtifacts, context);
 
-    const externalEntities = resultsOnExternal.details.items.map(item => item.entity.text);
-    const facebookEntities = resultsOnFacebook.details.items.map(item => item.entity.text);
+    const externalEntities = resultsOnExternal.details.items.map(item => item.entity);
+    const facebookEntities = resultsOnFacebook.details.items.map(item => item.entity);
 
     expect(externalEntities).toEqual([
       'Google Tag Manager', 'Facebook', 'pwa.rocks', 'Google Analytics']);

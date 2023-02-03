@@ -217,11 +217,7 @@ class ThirdPartySummary extends Audit {
 
         return {
           ...stats,
-          entity: {
-            type: /** @type {const} */ ('link'),
-            text: entity.name,
-            url: entity.homepage || '',
-          },
+          entity: entity.name,
           subItems: {
             type: /** @type {const} */ ('subitems'),
             items: ThirdPartySummary.makeSubItems(entity, summaries, stats),
@@ -234,7 +230,7 @@ class ThirdPartySummary extends Audit {
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       /* eslint-disable max-len */
-      {key: 'entity', valueType: 'link', label: str_(UIStrings.columnThirdParty), subItemsHeading: {key: 'url', valueType: 'url'}},
+      {key: 'entity', valueType: 'text', label: str_(UIStrings.columnThirdParty), subItemsHeading: {key: 'url', valueType: 'url'}},
       {key: 'transferSize', granularity: 1, valueType: 'bytes', label: str_(i18n.UIStrings.columnTransferSize), subItemsHeading: {key: 'transferSize'}},
       {key: 'blockingTime', granularity: 1, valueType: 'ms', label: str_(i18n.UIStrings.columnBlockingTime), subItemsHeading: {key: 'blockingTime'}},
       /* eslint-enable max-len */

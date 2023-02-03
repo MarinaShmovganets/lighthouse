@@ -177,4 +177,23 @@ describe('backward compatibility', () => {
     const preparedResult = upgradeLhr(clonedSampleResult);
     assert.deepStrictEqual(sampleResult.audits, preparedResult.audits);
   });
+
+  it('upgrades old third-party-summary with entity:LinkValue', () => {
+    const clonedSampleResult = cloneLhr(sampleResult);
+
+    const details = clonedSampleResult.audits['third-party-summary'].details;
+    delete details.isEntityGrouped;
+    details.headings[0].valueType = 'link';
+    for (const item of details.items) {
+      item.entity = {
+        'type': 'link',
+        'text': item.entity,
+        'url': 'https://www.someurl.com/',
+      };
+    }
+
+    // Original audit results should be restored.
+    const preparedResult = upgradeLhr(clonedSampleResult);
+    assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
+  });
 });

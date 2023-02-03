@@ -1406,7 +1406,7 @@
               "headings": [
                 {
                   "key": "entity",
-                  "valueType": "link",
+                  "valueType": "text",
                   "label": "Third-Party",
                   "subItemsHeading": {
                     "key": "url",
@@ -1437,11 +1437,7 @@
                   "mainThreadTime": 4.868,
                   "blockingTime": 0,
                   "transferSize": 20174,
-                  "entity": {
-                    "type": "link",
-                    "text": "Google Fonts",
-                    "url": "https://fonts.google.com/"
-                  },
+                  "entity": "Google Fonts",
                   "subItems": {
                     "type": "subitems",
                     "items": [
@@ -8597,7 +8593,7 @@
               "headings": [
                 {
                   "key": "entity",
-                  "valueType": "link",
+                  "valueType": "text",
                   "label": "Third-Party",
                   "subItemsHeading": {
                     "key": "url",
@@ -8628,11 +8624,7 @@
                   "mainThreadTime": 0,
                   "blockingTime": 0,
                   "transferSize": 25328,
-                  "entity": {
-                    "type": "link",
-                    "text": "Algolia",
-                    "url": "https://www.algolia.com/"
-                  },
+                  "entity": "Algolia",
                   "subItems": {
                     "type": "subitems",
                     "items": [
@@ -17185,7 +17177,7 @@
               "headings": [
                 {
                   "key": "entity",
-                  "valueType": "link",
+                  "valueType": "text",
                   "label": "Third-Party",
                   "subItemsHeading": {
                     "key": "url",
@@ -17216,11 +17208,7 @@
                   "mainThreadTime": 2.98,
                   "blockingTime": 0,
                   "transferSize": 0,
-                  "entity": {
-                    "type": "link",
-                    "text": "Google Fonts",
-                    "url": "https://fonts.google.com/"
-                  },
+                  "entity": "Google Fonts",
                   "subItems": {
                     "type": "subitems",
                     "items": []
