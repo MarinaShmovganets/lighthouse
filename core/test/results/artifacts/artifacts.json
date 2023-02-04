@@ -3,7 +3,7 @@
   "LighthouseRunWarnings": [],
   "HostFormFactor": "desktop",
   "HostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4635.0 Safari/537.36",
-  "NetworkUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+  "NetworkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
   "BenchmarkIndex": 1549,
   "WebAppManifest": null,
   "InstallabilityErrors": {
@@ -56,12 +56,12 @@
     "throttlingMethod": "devtools",
     "screenEmulation": {
       "mobile": true,
-      "width": 360,
-      "height": 640,
-      "deviceScaleFactor": 2.625,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
       "disabled": false
     },
-    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
     "auditMode": false,
     "gatherMode": "core/test/results/artifacts",
     "disableStorageReset": false,
@@ -9414,13 +9414,201 @@
   ],
   "ImageElements": [
     {
+      "src": "http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?iar1",
+      "srcset": "",
+      "displayedWidth": 120,
+      "displayedHeight": 15,
+      "clientRect": {
+        "top": 620.828125,
+        "bottom": 635.828125,
+        "left": 8,
+        "right": 128
+      },
+      "attributeWidth": "120",
+      "attributeHeight": "15",
+      "naturalDimensions": {
+        "width": 1024,
+        "height": 678
+      },
+      "computedStyles": {
+        "position": "static",
+        "objectFit": "fill",
+        "imageRendering": "auto"
+      },
+      "isCss": false,
+      "isPicture": false,
+      "loading": "auto",
+      "isInShadowDOM": false,
+      "node": {
+        "lhId": "1-1-IMG",
+        "devtoolsNodePath": "2,HTML,1,BODY,14,IMG",
+        "selector": "body > img",
+        "boundingRect": {
+          "top": 621,
+          "bottom": 636,
+          "left": 8,
+          "right": 128,
+          "width": 120,
+          "height": 15
+        },
+        "snippet": "<img src=\"lighthouse-1024x680.jpg?iar1\" width=\"120\" height=\"15\">",
+        "nodeLabel": "body > img"
+      },
+      "cssEffectiveRules": {
+        "width": "120px",
+        "height": "15px",
+        "aspectRatio": "auto 120 / 15"
+      }
+    },
+    {
+      "src": "http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?iar2",
+      "srcset": "",
+      "displayedWidth": 120,
+      "displayedHeight": 80,
+      "clientRect": {
+        "top": 555.828125,
+        "bottom": 635.828125,
+        "left": 132,
+        "right": 252
+      },
+      "attributeWidth": "120",
+      "attributeHeight": "80",
+      "naturalDimensions": {
+        "width": 1024,
+        "height": 678
+      },
+      "computedStyles": {
+        "position": "static",
+        "objectFit": "fill",
+        "imageRendering": "auto"
+      },
+      "isCss": false,
+      "isPicture": false,
+      "loading": "lazy",
+      "isInShadowDOM": false,
+      "node": {
+        "lhId": "1-2-IMG",
+        "devtoolsNodePath": "2,HTML,1,BODY,17,IMG",
+        "selector": "body > img",
+        "boundingRect": {
+          "top": 556,
+          "bottom": 636,
+          "left": 132,
+          "right": 252,
+          "width": 120,
+          "height": 80
+        },
+        "snippet": "<img loading=\"lazy\" src=\"lighthouse-1024x680.jpg?iar2\" width=\"120\" height=\"80\">",
+        "nodeLabel": "body > img"
+      },
+      "cssEffectiveRules": {
+        "width": "120px",
+        "height": "80px",
+        "aspectRatio": "auto 120 / 80"
+      }
+    },
+    {
+      "src": "http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?isr2",
+      "srcset": "",
+      "displayedWidth": 120,
+      "displayedHeight": 80,
+      "clientRect": {
+        "top": 555.828125,
+        "bottom": 635.828125,
+        "left": 252,
+        "right": 372
+      },
+      "attributeWidth": "120",
+      "attributeHeight": "80",
+      "naturalDimensions": {
+        "width": 1024,
+        "height": 678
+      },
+      "computedStyles": {
+        "position": "absolute",
+        "objectFit": "fill",
+        "imageRendering": "auto"
+      },
+      "isCss": false,
+      "isPicture": false,
+      "loading": "auto",
+      "isInShadowDOM": false,
+      "node": {
+        "lhId": "1-4-IMG",
+        "devtoolsNodePath": "2,HTML,1,BODY,21,IMG",
+        "selector": "body > img",
+        "boundingRect": {
+          "top": 556,
+          "bottom": 636,
+          "left": 252,
+          "right": 372,
+          "width": 120,
+          "height": 80
+        },
+        "snippet": "<img src=\"lighthouse-1024x680.jpg?isr2\" width=\"120\" height=\"80\" style=\"position: absolute;\">",
+        "nodeLabel": "body > img"
+      },
+      "cssEffectiveRules": {
+        "width": "120px",
+        "height": "80px",
+        "aspectRatio": "auto 120 / 80"
+      }
+    },
+    {
+      "src": "http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?isr3",
+      "srcset": "",
+      "displayedWidth": 360,
+      "displayedHeight": 240,
+      "clientRect": {
+        "top": 555.828125,
+        "bottom": 795.828125,
+        "left": 252,
+        "right": 612
+      },
+      "attributeWidth": "360",
+      "attributeHeight": "240",
+      "naturalDimensions": {
+        "width": 1024,
+        "height": 678
+      },
+      "computedStyles": {
+        "position": "absolute",
+        "objectFit": "fill",
+        "imageRendering": "pixelated"
+      },
+      "isCss": false,
+      "isPicture": false,
+      "loading": "auto",
+      "isInShadowDOM": false,
+      "node": {
+        "lhId": "1-5-IMG",
+        "devtoolsNodePath": "2,HTML,1,BODY,23,IMG",
+        "selector": "body > img",
+        "boundingRect": {
+          "top": 556,
+          "bottom": 796,
+          "left": 252,
+          "right": 612,
+          "width": 360,
+          "height": 240
+        },
+        "snippet": "<img src=\"lighthouse-1024x680.jpg?isr3\" width=\"360\" height=\"240\" style=\"image-rendering: pixelated; position: absolute;\">",
+        "nodeLabel": "body > img"
+      },
+      "cssEffectiveRules": {
+        "width": "360px",
+        "height": "240px",
+        "aspectRatio": "auto 360 / 240"
+      }
+    },
+    {
       "src": "http://localhost:10200/dobetterweb/lighthouse-rotating.gif",
       "srcset": "",
       "displayedWidth": 811,
       "displayedHeight": 462,
       "clientRect": {
-        "top": 657.8125,
-        "bottom": 1119.8125,
+        "top": 639.828125,
+        "bottom": 1101.828125,
         "left": 8,
         "right": 819
       },
@@ -9440,12 +9628,12 @@
       "loading": "auto",
       "isInShadowDOM": false,
       "node": {
-        "lhId": "page-6-IMG",
-        "devtoolsNodePath": "3,HTML,1,BODY,27,IMG",
+        "lhId": "1-7-IMG",
+        "devtoolsNodePath": "2,HTML,1,BODY,27,IMG",
         "selector": "body > img",
         "boundingRect": {
-          "top": 658,
-          "bottom": 1120,
+          "top": 640,
+          "bottom": 1102,
           "left": 8,
           "right": 819,
           "width": 811,
@@ -9454,7 +9642,6 @@
         "snippet": "<img src=\"lighthouse-rotating.gif\" width=\"811\" height=\"462\">",
         "nodeLabel": "body > img"
       },
-      "mimeType": "image/gif",
       "cssEffectiveRules": {
         "width": "811px",
         "height": "462px",
@@ -9462,114 +9649,18 @@
       }
     },
     {
-      "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar1",
-      "srcset": "",
-      "displayedWidth": 120,
-      "displayedHeight": 15,
-      "clientRect": {
-        "top": 638.8125,
-        "bottom": 653.8125,
-        "left": 8,
-        "right": 128
-      },
-      "attributeWidth": "120",
-      "attributeHeight": "15",
-      "naturalDimensions": {
-        "width": 480,
-        "height": 318
-      },
-      "computedStyles": {
-        "position": "static",
-        "objectFit": "fill",
-        "imageRendering": "auto"
-      },
-      "isCss": false,
-      "isPicture": false,
-      "loading": "auto",
-      "isInShadowDOM": false,
-      "node": {
-        "lhId": "page-0-IMG",
-        "devtoolsNodePath": "3,HTML,1,BODY,14,IMG",
-        "selector": "body > img",
-        "boundingRect": {
-          "top": 639,
-          "bottom": 654,
-          "left": 8,
-          "right": 128,
-          "width": 120,
-          "height": 15
-        },
-        "snippet": "<img src=\"lighthouse-480x318.jpg?iar1\" width=\"120\" height=\"15\">",
-        "nodeLabel": "body > img"
-      },
-      "mimeType": "image/jpeg",
-      "cssEffectiveRules": {
-        "width": "120px",
-        "height": "15px",
-        "aspectRatio": "auto 120 / 15"
-      }
-    },
-    {
-      "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar2",
-      "srcset": "",
-      "displayedWidth": 120,
-      "displayedHeight": 80,
-      "clientRect": {
-        "top": 573.8125,
-        "bottom": 653.8125,
-        "left": 132,
-        "right": 252
-      },
-      "attributeWidth": "120",
-      "attributeHeight": "80",
-      "naturalDimensions": {
-        "width": 480,
-        "height": 318
-      },
-      "computedStyles": {
-        "position": "static",
-        "objectFit": "fill",
-        "imageRendering": "auto"
-      },
-      "isCss": false,
-      "isPicture": false,
-      "loading": "lazy",
-      "isInShadowDOM": false,
-      "node": {
-        "lhId": "page-1-IMG",
-        "devtoolsNodePath": "3,HTML,1,BODY,17,IMG",
-        "selector": "body > img",
-        "boundingRect": {
-          "top": 574,
-          "bottom": 654,
-          "left": 132,
-          "right": 252,
-          "width": 120,
-          "height": 80
-        },
-        "snippet": "<img loading=\"lazy\" src=\"lighthouse-480x318.jpg?iar2\" width=\"120\" height=\"80\">",
-        "nodeLabel": "body > img"
-      },
-      "mimeType": "image/jpeg",
-      "cssEffectiveRules": {
-        "width": "120px",
-        "height": "80px",
-        "aspectRatio": "auto 120 / 80"
-      }
-    },
-    {
       "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
       "srcset": "",
-      "displayedWidth": 360,
-      "displayedHeight": 240,
+      "displayedWidth": 400,
+      "displayedHeight": 360,
       "clientRect": {
-        "top": 573.8125,
-        "bottom": 813.8125,
+        "top": 555.828125,
+        "bottom": 915.828125,
         "left": 252,
-        "right": 612
+        "right": 652
       },
-      "attributeWidth": "360",
-      "attributeHeight": "240",
+      "attributeWidth": "400",
+      "attributeHeight": "360",
       "naturalDimensions": {
         "width": 480,
         "height": 318
@@ -9584,181 +9675,120 @@
       "loading": "auto",
       "isInShadowDOM": false,
       "node": {
-        "lhId": "page-2-IMG",
-        "devtoolsNodePath": "3,HTML,1,BODY,19,IMG",
+        "lhId": "1-3-IMG",
+        "devtoolsNodePath": "2,HTML,1,BODY,19,IMG",
         "selector": "body > img",
         "boundingRect": {
-          "top": 574,
-          "bottom": 814,
+          "top": 556,
+          "bottom": 916,
+          "left": 252,
+          "right": 652,
+          "width": 400,
+          "height": 360
+        },
+        "snippet": "<img src=\"lighthouse-480x318.jpg?isr1\" width=\"400\" height=\"360\" style=\"position: absolute;\">",
+        "nodeLabel": "body > img"
+      },
+      "cssEffectiveRules": {
+        "width": "400px",
+        "height": "360px",
+        "aspectRatio": "auto 400 / 360"
+      }
+    },
+    {
+      "src": "http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg",
+      "srcset": "lighthouse-1024x680.jpg 2x",
+      "displayedWidth": 360,
+      "displayedHeight": 240,
+      "clientRect": {
+        "top": 555.828125,
+        "bottom": 795.828125,
+        "left": 252,
+        "right": 612
+      },
+      "attributeWidth": "360",
+      "attributeHeight": "240",
+      "computedStyles": {
+        "position": "absolute",
+        "objectFit": "fill",
+        "imageRendering": "auto"
+      },
+      "isCss": false,
+      "isPicture": false,
+      "loading": "auto",
+      "isInShadowDOM": false,
+      "node": {
+        "lhId": "1-6-IMG",
+        "devtoolsNodePath": "2,HTML,1,BODY,25,IMG",
+        "selector": "body > img",
+        "boundingRect": {
+          "top": 556,
+          "bottom": 796,
           "left": 252,
           "right": 612,
           "width": 360,
           "height": 240
         },
-        "snippet": "<img src=\"lighthouse-480x318.jpg?isr1\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
+        "snippet": "<img src=\"http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg\" srcset=\"lighthouse-1024x680.jpg 2x\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
         "nodeLabel": "body > img"
       },
-      "mimeType": "image/jpeg",
       "cssEffectiveRules": {
         "width": "360px",
         "height": "240px",
         "aspectRatio": "auto 360 / 240"
+      },
+      "naturalDimensions": {
+        "width": 1024,
+        "height": 678
       }
     },
     {
-      "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr2",
+      "src": "http://localhost:10200/dobetterweb/dbw_tester.html",
       "srcset": "",
-      "displayedWidth": 120,
-      "displayedHeight": 80,
+      "displayedWidth": 396,
+      "displayedHeight": 28,
       "clientRect": {
-        "top": 573.8125,
-        "bottom": 653.8125,
-        "left": 252,
-        "right": 372
+        "top": 335.9140625,
+        "bottom": 363.4140625,
+        "left": 8,
+        "right": 404
       },
-      "attributeWidth": "120",
-      "attributeHeight": "80",
-      "naturalDimensions": {
-        "width": 480,
-        "height": 318
-      },
+      "attributeWidth": null,
+      "attributeHeight": null,
       "computedStyles": {
-        "position": "absolute",
-        "objectFit": "fill",
+        "position": "static",
+        "objectFit": "",
         "imageRendering": "auto"
       },
-      "isCss": false,
+      "isCss": true,
       "isPicture": false,
-      "loading": "auto",
       "isInShadowDOM": false,
       "node": {
-        "lhId": "page-3-IMG",
-        "devtoolsNodePath": "3,HTML,1,BODY,21,IMG",
-        "selector": "body > img",
+        "lhId": "1-15-H2",
+        "devtoolsNodePath": "2,HTML,1,BODY,9,DIV,2,H2",
+        "selector": "body > div > h2#toppy",
         "boundingRect": {
-          "top": 574,
-          "bottom": 654,
-          "left": 252,
-          "right": 372,
-          "width": 120,
-          "height": 80
+          "top": 336,
+          "bottom": 363,
+          "left": 8,
+          "right": 404,
+          "width": 396,
+          "height": 28
         },
-        "snippet": "<img src=\"lighthouse-480x318.jpg?isr2\" width=\"120\" height=\"80\" style=\"position: absolute;\">",
-        "nodeLabel": "body > img"
-      },
-      "mimeType": "image/jpeg",
-      "cssEffectiveRules": {
-        "width": "120px",
-        "height": "80px",
-        "aspectRatio": "auto 120 / 80"
+        "snippet": "<h2 id=\"toppy\" style=\"background-image:url('');\">",
+        "nodeLabel": "Do better web tester page"
       }
     },
     {
-      "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr3",
-      "srcset": "",
-      "displayedWidth": 360,
-      "displayedHeight": 240,
-      "clientRect": {
-        "top": 573.8125,
-        "bottom": 813.8125,
-        "left": 252,
-        "right": 612
-      },
-      "attributeWidth": "360",
-      "attributeHeight": "240",
-      "naturalDimensions": {
-        "width": 480,
-        "height": 318
-      },
-      "computedStyles": {
-        "position": "absolute",
-        "objectFit": "fill",
-        "imageRendering": "pixelated"
-      },
-      "isCss": false,
-      "isPicture": false,
-      "loading": "auto",
-      "isInShadowDOM": false,
-      "node": {
-        "lhId": "page-4-IMG",
-        "devtoolsNodePath": "3,HTML,1,BODY,23,IMG",
-        "selector": "body > img",
-        "boundingRect": {
-          "top": 574,
-          "bottom": 814,
-          "left": 252,
-          "right": 612,
-          "width": 360,
-          "height": 240
-        },
-        "snippet": "<img src=\"lighthouse-480x318.jpg?isr3\" width=\"360\" height=\"240\" style=\"image-rendering: pixelated; position: absolute;\">",
-        "nodeLabel": "body > img"
-      },
-      "mimeType": "image/jpeg",
-      "cssEffectiveRules": {
-        "width": "360px",
-        "height": "240px",
-        "aspectRatio": "auto 360 / 240"
-      }
-    },
-    {
-      "src": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
-      "srcset": "lighthouse-480x318.jpg 2x",
-      "displayedWidth": 360,
-      "displayedHeight": 240,
-      "clientRect": {
-        "top": 573.8125,
-        "bottom": 813.8125,
-        "left": 252,
-        "right": 612
-      },
-      "attributeWidth": "360",
-      "attributeHeight": "240",
-      "computedStyles": {
-        "position": "absolute",
-        "objectFit": "fill",
-        "imageRendering": "auto"
-      },
-      "isCss": false,
-      "isPicture": false,
-      "loading": "auto",
-      "isInShadowDOM": false,
-      "node": {
-        "lhId": "page-5-IMG",
-        "devtoolsNodePath": "3,HTML,1,BODY,25,IMG",
-        "selector": "body > img",
-        "boundingRect": {
-          "top": 574,
-          "bottom": 814,
-          "left": 252,
-          "right": 612,
-          "width": 360,
-          "height": 240
-        },
-        "snippet": "<img src=\"http://localhost:10200/dobetterweb/lighthouse-480x318.jpg\" srcset=\"lighthouse-480x318.jpg 2x\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
-        "nodeLabel": "body > img"
-      },
-      "mimeType": "image/jpeg",
-      "cssEffectiveRules": {
-        "width": "360px",
-        "height": "240px",
-        "aspectRatio": "auto 360 / 240"
-      },
-      "naturalDimensions": {
-        "width": 480,
-        "height": 318
-      }
-    },
-    {
-      "src": "blob:http://localhost:10200/3f2bc9df-684b-4541-837c-1590152ef65d",
+      "src": "blob:http://localhost:10200/8081f274-a0c6-440f-a9cc-be826a0e01d5",
       "srcset": "",
       "displayedWidth": 16,
       "displayedHeight": 16,
       "clientRect": {
-        "top": 1294.8125,
-        "bottom": 1310.8125,
-        "left": 322,
-        "right": 338
+        "top": 1262.828125,
+        "bottom": 1278.828125,
+        "left": 310,
+        "right": 326
       },
       "attributeWidth": null,
       "attributeHeight": null,
@@ -9776,18 +9806,18 @@
       "loading": "auto",
       "isInShadowDOM": false,
       "node": {
-        "lhId": "page-7-IMG",
-        "devtoolsNodePath": "3,HTML,1,BODY,66,IMG",
+        "lhId": "1-8-IMG",
+        "devtoolsNodePath": "2,HTML,1,BODY,66,IMG",
         "selector": "body > img",
         "boundingRect": {
-          "top": 1295,
-          "bottom": 1311,
-          "left": 322,
-          "right": 338,
+          "top": 1263,
+          "bottom": 1279,
+          "left": 310,
+          "right": 326,
           "width": 16,
           "height": 16
         },
-        "snippet": "<img src=\"blob:http://localhost:10200/3f2bc9df-684b-4541-837c-1590152ef65d\">",
+        "snippet": "<img src=\"blob:http://localhost:10200/8081f274-a0c6-440f-a9cc-be826a0e01d5\">",
         "nodeLabel": "body > img"
       },
       "cssEffectiveRules": {
@@ -9797,13 +9827,13 @@
       }
     },
     {
-      "src": "filesystem:http://localhost:10200/temporary/empty-0.43448333410631723.png",
+      "src": "filesystem:http://localhost:10200/temporary/empty-0.30045073591260474.png",
       "srcset": "",
       "displayedWidth": 16,
       "displayedHeight": 16,
       "clientRect": {
-        "top": 1336.8125,
-        "bottom": 1352.8125,
+        "top": 1305.828125,
+        "bottom": 1321.828125,
         "left": 8,
         "right": 24
       },
@@ -9823,21 +9853,20 @@
       "loading": "auto",
       "isInShadowDOM": false,
       "node": {
-        "lhId": "page-8-IMG",
-        "devtoolsNodePath": "3,HTML,1,BODY,78,IMG",
+        "lhId": "1-9-IMG",
+        "devtoolsNodePath": "2,HTML,1,BODY,78,IMG",
         "selector": "body > img",
         "boundingRect": {
-          "top": 1337,
-          "bottom": 1353,
+          "top": 1306,
+          "bottom": 1322,
           "left": 8,
           "right": 24,
           "width": 16,
           "height": 16
         },
-        "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.43448333410631723.png\">",
+        "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.30045073591260474.png\">",
         "nodeLabel": "body > img"
       },
-      "mimeType": "image/png",
       "cssEffectiveRules": {
         "width": null,
         "height": null,

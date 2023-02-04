@@ -217,11 +217,11 @@ describe('ReportRenderer', () => {
       expect(items.length).toBeGreaterThanOrEqual(6);
 
       const itemsTxt = items.map(el => `${el.textContent} ${el.title}`).join('\n');
-      expect(itemsTxt).toContain('Moto G4');
+      expect(itemsTxt).toContain('Moto G Power');
       expect(itemsTxt).toContain('RTT');
       expect(itemsTxt).toMatch(/\dx/);
       expect(itemsTxt).toContain(sampleResults.environment.networkUserAgent);
-      expect(itemsTxt).toMatch('360x640, DPR 2.625');
+      expect(itemsTxt).toMatch('412x823, DPR 1.75');
     });
   });
 
