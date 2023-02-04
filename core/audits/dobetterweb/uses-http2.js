@@ -247,7 +247,8 @@ class UsesHTTP2Audit extends Audit {
       {key: 'protocol', valueType: 'text', label: str_(UIStrings.columnProtocol)},
     ];
 
-    const details = Audit.makeOpportunityDetails(headings, resources, wastedMs);
+    const details = Audit.makeOpportunityDetails(headings, resources,
+      {overallSavingsMs: wastedMs});
 
     return {
       displayValue,
