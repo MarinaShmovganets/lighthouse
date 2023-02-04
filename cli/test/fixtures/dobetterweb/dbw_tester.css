@@ -13,7 +13,7 @@ body {
 /* LCP image in a pseudo-element */
 #toppy::before {
   content: '';
-  background-image: url('lighthouse-480x318.jpg?lcp');
+  background-image: url('lighthouse-1024x680.jpg?lcp');
   position: absolute;
   top: 0;
   width: 480px;

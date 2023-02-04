@@ -216,20 +216,20 @@
 
 </template>
 
-<!-- FAIL(image-aspect-ratio): image is naturally 480x318 -->
-<img src="lighthouse-480x318.jpg?iar1" width="120" height="15">
+<!-- FAIL(image-aspect-ratio): image is naturally 1024x680 -->
+<img src="lighthouse-1024x680.jpg?iar1" width="120" height="15">
 <!-- PASS(image-aspect-ratio) -->
 <!-- FAIL(lcp-lazy-loaded) -->
-<img loading="lazy" src="lighthouse-480x318.jpg?iar2" width="120" height="80">
+<img loading="lazy" src="lighthouse-1024x680.jpg?iar2" width="120" height="80">
 
 <!-- FAIL(image-size-responsive): image is naturally 480x318 -->
-<img src="lighthouse-480x318.jpg?isr1" width="360" height="240" style="position: absolute;">
+<img src="lighthouse-480x318.jpg?isr1" width="400" height="360" style="position: absolute;">
 <!-- PASS(image-size-responsive) -->
-<img src="lighthouse-480x318.jpg?isr2" width="120" height="80" style="position: absolute;">
+<img src="lighthouse-1024x680.jpg?isr2" width="120" height="80" style="position: absolute;">
 <!-- PASS(image-size-responsive) -->
-<img src="lighthouse-480x318.jpg?isr3" width="360" height="240" style="image-rendering: pixelated; position: absolute;">
+<img src="lighthouse-1024x680.jpg?isr3" width="360" height="240" style="image-rendering: pixelated; position: absolute;">
 <!-- PASS(image-size-responsive) -->
-<img src="lighthouse-480x318.jpg?isr4" srcset="lighthouse-480x318.jpg 2x" width="360" height="240" style="position: absolute;">
+<img src="lighthouse-1024x680.jpg?isr4" srcset="lighthouse-1024x680.jpg 2x" width="360" height="240" style="position: absolute;">
 
 <!-- FAIL(efficient-animated-content): animated gif found -->
 <img src="lighthouse-rotating.gif" width="811" height="462">
