@@ -3000,7 +3000,6 @@
                   "npm": "next"
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "stacks": [
@@ -3136,8 +3135,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "crawlable-anchors": {
@@ -13118,7 +13116,6 @@
                   "npm": "next"
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "stacks": [
@@ -13223,8 +13220,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "crawlable-anchors": {
@@ -18770,7 +18766,6 @@
                   "npm": "next"
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "stacks": [
@@ -18906,8 +18901,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "crawlable-anchors": {

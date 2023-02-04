@@ -281,7 +281,7 @@ class CacheHeaders extends Audit {
     ];
 
     const summary = {wastedBytes: totalWastedBytes};
-    const details = Audit.makeTableDetails(headings, results, summary);
+    const details = Audit.makeTableDetails(headings, results, {summary});
 
     return {
       score,

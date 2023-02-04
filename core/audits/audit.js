@@ -123,10 +123,14 @@ class Audit {
   /**
    * @param {LH.Audit.Details.Table['headings']} headings
    * @param {LH.Audit.Details.Table['items']} results
-   * @param {LH.Audit.Details.Table['summary']=} summary
+   * @param {{
+   *  summary?: LH.Audit.Details.Table['summary'],
+   * }=} options
    * @return {LH.Audit.Details.Table}
    */
-  static makeTableDetails(headings, results, summary) {
+  static makeTableDetails(headings, results, options = {}) {
+    const {summary} = options;
+
     if (results.length === 0) {
       return {
         type: 'table',
