@@ -12,6 +12,17 @@ import {Util} from '../../shared/util.js';
 const DEFAULT_PASS = 'defaultPass';
 
 /**
+ * @typedef TableOptions
+ * @property {LH.Audit.Details.Table['summary']=} summary
+ */
+
+/**
+ * @typedef OpportunityOptions
+ * @property {number} overallSavingsMs
+ * @property {number=} overallSavingsBytes
+ */
+
+/**
  * Clamp figure to 2 decimal places
  * @param {number} val
  * @return {number}
@@ -123,9 +134,7 @@ class Audit {
   /**
    * @param {LH.Audit.Details.Table['headings']} headings
    * @param {LH.Audit.Details.Table['items']} results
-   * @param {{
-   *  summary?: LH.Audit.Details.Table['summary'],
-   * }=} options
+   * @param {TableOptions=} options
    * @return {LH.Audit.Details.Table}
    */
   static makeTableDetails(headings, results, options = {}) {
@@ -219,10 +228,7 @@ class Audit {
   /**
    * @param {LH.Audit.Details.Opportunity['headings']} headings
    * @param {LH.Audit.Details.Opportunity['items']} items
-   * @param {{
-   *  overallSavingsMs: number,
-   *  overallSavingsBytes?: number,
-   * }} options
+   * @param {OpportunityOptions} options
    * @return {LH.Audit.Details.Opportunity}
    */
   static makeOpportunityDetails(headings, items, options) {
