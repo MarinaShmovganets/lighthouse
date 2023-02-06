@@ -145,6 +145,7 @@
   --sparkline-height: 5px;
   --stackpack-padding-horizontal: 10px;
   --sticky-header-background-color: var(--report-background-color);
+  --sticky-header-height: calc(var(--gauge-circle-size-sm) + var(--score-container-padding) * 2);
   --table-higlight-background-color: hsla(210, 17%, 77%, 0.1);
   --tools-icon-color: var(--color-gray-600);
   --topbar-background-color: var(--color-white);
@@ -278,6 +279,11 @@
   --score-icon-margin-left: 2px;
   --score-icon-size: 10px;
   --section-padding-vertical: 8px;
+}
+
+.lh-container:not(.lh-topbar + .lh-container) {
+  --topbar-height: 0;
+  --sticky-header-height: 0;
 }
 
 .lh-devtools.lh-root {
@@ -1408,7 +1414,6 @@
   max-width: var(--report-content-max-width);
   margin: 0 auto;
 
-  --sticky-header-height: calc(var(--gauge-circle-size-sm) + var(--score-container-padding) * 2);
   --topbar-plus-sticky-header: calc(var(--topbar-height) + var(--sticky-header-height));
   scroll-margin-top: var(--topbar-plus-sticky-header);
 
