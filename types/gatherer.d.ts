@@ -112,6 +112,11 @@ declare module Gatherer {
     symbol?: Symbol;
     /** Lists the modes in which this gatherer can run. */
     supportedModes: Array<GatherMode>;
+    /**
+     * @internal
+     * Used to force certain gatherers like bf-cache-failures to run after custom gatherers.
+     */
+    __priority?: number
   }
 
   interface GathererMetaWithDependencies<

@@ -16,6 +16,7 @@ class BFCacheFailures extends FRGatherer {
   meta = {
     supportedModes: ['navigation', 'timespan'],
     dependencies: {DevtoolsLog: DevtoolsLog.symbol},
+    __priority: 1,
   };
 
   /**
