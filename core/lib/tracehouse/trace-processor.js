@@ -714,7 +714,8 @@ class TraceProcessor {
     }
     const frameEvents = keyEvents.filter(e => associatedToMainFrame(e));
 
-    // Filter to just events matching the main frame ID or any child frame IDs.
+    // Filter to just events matching the main frame ID or any child frame IDs. The subframes
+    // are either in-process (same origin) or, potentially, out-of-process. (OOPIFs)
     let frameTreeEvents = [];
     if (frameIdToRootFrameId.has(mainFrameInfo.frameId)) {
       frameTreeEvents = keyEvents.filter(e => associatedToAllFrames(e));
