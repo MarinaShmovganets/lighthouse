@@ -140,7 +140,7 @@ class Audit {
    */
   static makeTableDetails(headings, results, options = {}) {
     const {wastedBytes, wastedMs} = options;
-    const summary = (wastedBytes || wastedMs) ? {wastedBytes, wastedMs} : undefined;
+    const summary = {wastedBytes, wastedMs};
     if (results.length === 0) {
       return {
         type: 'table',
