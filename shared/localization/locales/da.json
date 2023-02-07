@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Skrifttyper med `font-display: optional` er forudindlæst"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Forudindlæs det billede, der anvendes af LCP-elementet, med henblik på at forbedre din LCP-tid. [Få flere oplysninger](https://web.dev/optimize-lcp/#preload-important-resources)."
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Forudindlæs billedet med størst udfyldning af indhold"
-  },
   "core/audits/redirects.js | description": {
     "message": "Omdirigeringer medfører yderligere forsinkelser, inden siden kan indlæses. [Få flere oplysninger](https://web.dev/redirects/)."
   },

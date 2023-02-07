@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "已预加载使用 `font-display: optional` 的字体"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "请预加载 Largest Contentful Paint (LCP) 元素所用的图片，以缩短您的 LCP 用时。[了解详情](https://web.dev/optimize-lcp/#preload-important-resources)。"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "预加载 LCP 元素所用图片"
-  },
   "core/audits/redirects.js | description": {
     "message": "重定向会在网页可加载前引入更多延迟。[了解详情](https://web.dev/redirects/)。"
   },

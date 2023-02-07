@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "`font-display: optional` を使用するフォントがプリロードされています"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "LCP 時間を改善するため、LCP 要素で使用する画像をプリロードしてください。[詳細](https://web.dev/optimize-lcp/#preload-important-resources)"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Largest Contentful Paint の画像のプリロード"
-  },
   "core/audits/redirects.js | description": {
     "message": "リダイレクトを行うと、ページの読み込みにさらに時間がかかる可能性があります。[詳細](https://web.dev/redirects/)"
   },

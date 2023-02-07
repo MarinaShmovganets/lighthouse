@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Đã tải trước phông chữ có `font-display: optional`"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Tải trước hình ảnh mà thành phần LCP (Thời gian hiển thị nội dung lớn nhất) sử dụng nhằm cải thiện thời gian LCP của bạn. [Tìm hiểu thêm](https://web.dev/optimize-lcp/#preload-important-resources)"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Tải trước hình ảnh có Thời gian hiển thị nội dung lớn nhất"
-  },
   "core/audits/redirects.js | description": {
     "message": "Các lần chuyển hướng sẽ làm giảm tốc độ tải trang. [Tìm hiểu thêm](https://web.dev/redirects/)."
   },

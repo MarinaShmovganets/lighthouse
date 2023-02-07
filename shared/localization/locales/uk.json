@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Шрифти з параметром \"`font-display: optional`\" попередньо завантажено"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Попередньо завантаживши зображення для елемента LCP, ви зможете оптимізувати час візуалізації великого контенту. [Докладніше](https://web.dev/optimize-lcp/#preload-important-resources)"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Попередньо завантажте зображення для візуалізації великого контенту"
-  },
   "core/audits/redirects.js | description": {
     "message": "Переспрямування викликають додаткові затримки під час завантаження сторінки. [Докладніше](https://web.dev/redirects/)."
   },

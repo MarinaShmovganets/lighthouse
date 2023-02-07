@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Шрифты со свойством `font-display: optional` предварительно загружены"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Выполните предзагрузку изображения, которое используется элементом LCP, чтобы оптимизировать время, требуемое на полную отрисовку крупного изображения. [Подробнее…](https://web.dev/optimize-lcp/#preload-important-resources)"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Предзагрузите изображение для элемента \"Отрисовка самого крупного контента\""
-  },
   "core/audits/redirects.js | description": {
     "message": "Переадресации могут стать причиной дополнительных задержек при загрузке страницы. [Подробнее…](https://web.dev/redirects/)"
   },

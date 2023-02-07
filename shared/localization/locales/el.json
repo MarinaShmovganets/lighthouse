@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Έχουν προφορτωθεί γραμματοσειρές με `font-display: optional`"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Προφορτώστε την εικόνα που χρησιμοποιείται από το στοιχείο LCP για να βελτιώσετε τον χρόνο LCP. [Μάθετε περισσότερα](https://web.dev/optimize-lcp/#preload-important-resources)."
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Προφόρτωση εικόνας Μεγαλύτερης σχεδίασης με περιεχόμενο"
-  },
   "core/audits/redirects.js | description": {
     "message": "Οι ανακατευθύνσεις προκαλούν πρόσθετες καθυστερήσεις στη φόρτωση της σελίδας. [Μάθετε περισσότερα](https://web.dev/redirects/)."
   },

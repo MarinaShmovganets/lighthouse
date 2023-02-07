@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Font dengan `font-display: optional` telah dipramuat"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Pramuat gambar yang digunakan oleh elemen LCP untuk mengoptimalkan waktu LCP Anda. [Pelajari lebih lanjut](https://web.dev/optimize-lcp/#preload-important-resources)."
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Pramuat gambar Largest Contentful Paint (LCP)"
-  },
   "core/audits/redirects.js | description": {
     "message": "Pengalihan mencakup penundaan tambahan sebelum halaman dapat dimuat. [Pelajari lebih lanjut](https://web.dev/redirects/)."
   },

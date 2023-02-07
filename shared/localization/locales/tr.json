@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "`font-display: optional` özelliği olan yazı tipleri önceden yüklendi"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "LCP sürenizi iyileştirmek için LCP öğesi tarafından kullanılan resmi önceden yükleyin. [Daha fazla bilgi](https://web.dev/optimize-lcp/#preload-important-resources)."
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Largest Contentful Paint resmi önceden yükleme"
-  },
   "core/audits/redirects.js | description": {
     "message": "Yönlendirmeler, sayfanın yüklenmesinden önce ek gecikmelere neden olur. [Daha fazla bilgi](https://web.dev/redirects/)."
   },

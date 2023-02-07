@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "`font-display: optional`తో ఉన్న ఫాంట్‌లు ముందే లోడ్ చేయబడ్డాయి"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "మీ LCP సమయాన్ని మెరుగుపరుచుకోవడానికి LCP ఎలిమెంట్ ఉపయోగించిన ఇమేజ్‌ను ముందే లోడ్ చేయండి. [మరింత తెలుసుకోండి](https://web.dev/optimize-lcp/#preload-important-resources)."
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "కంటెంట్ కలిగి ఉండే అతిపెద్ద పెయింట్ ఇమేజ్‌ను ముందే లోడ్ చేయండి"
-  },
   "core/audits/redirects.js | description": {
     "message": "మళ్లింపులు పేజీ లోడ్ అవ్వడానికి ముందు అదనపు ఆలస్యాలను కలుగజేస్తాయి. [మరింత తెలుసుకోండి](https://web.dev/redirects/)."
   },

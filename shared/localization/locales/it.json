@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "I caratteri con `font-display: optional` vengono precaricati"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Precarica l'immagine usata dall'elemento LCP per migliorare il tuo tempo LCP. [Ulteriori informazioni](https://web.dev/optimize-lcp/#preload-important-resources)"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Precarica l'immagine Largest Contentful Paint"
-  },
   "core/audits/redirects.js | description": {
     "message": "I reindirizzamenti comportano ulteriori ritardi prima del caricamento della pagina. [Ulteriori informazioni](https://web.dev/redirects/)."
   },

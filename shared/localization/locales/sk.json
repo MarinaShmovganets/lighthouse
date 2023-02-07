@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Písma s atribútom `font-display: optional` sú prednačítané"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Ak chcete zlepšiť čas vykreslenia najväčšieho obsahu, prednačítajte obrázok použitý prvkom vykreslenia najväčšieho obsahu. [Ďalšie informácie](https://web.dev/optimize-lcp/#preload-important-resources)"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Prednačítajte obrázok vykreslenia najväčšieho obsahu"
-  },
   "core/audits/redirects.js | description": {
     "message": "Presmerovania spôsobujú ďalšie oneskorenia pri načítavaní stránky. [Ďalšie informácie](https://web.dev/redirects/)"
   },

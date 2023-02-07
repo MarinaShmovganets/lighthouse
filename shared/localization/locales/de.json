@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Schriftarten mit `font-display: optional` werden vorab geladen"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Sie können das vom LCP-Element verwendete Bild vorab laden, um die LCP-Zeit zu verbessern. [Weitere Informationen](https://web.dev/optimize-lcp/#preload-important-resources)"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Largest Contentful Paint-Bild vorab laden"
-  },
   "core/audits/redirects.js | description": {
     "message": "Weiterleitungen führen zu zusätzlichen Verzögerungen, bevor die Seite geladen werden kann. [Weitere Informationen.](https://web.dev/redirects/)"
   },

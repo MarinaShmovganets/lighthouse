@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "S'han carregat prèviament els tipus de lletra `font-display: optional`"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Precarrega la imatge utilitzada per l'element LCP per millorar el teu temps LCP. [Obtén més informació](https://web.dev/optimize-lcp/#preload-important-resources)."
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Precarrega la imatge de renderització de l'element més gran amb contingut"
-  },
   "core/audits/redirects.js | description": {
     "message": "La mètrica Redireccions introdueix retards addicionals abans de poder carregar la pàgina. [Obtén més informació](https://web.dev/redirects/)."
   },

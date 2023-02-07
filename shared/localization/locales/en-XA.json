@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "[Föñţš ŵîţĥ ᐅ`font-display: optional`ᐊ åŕé þŕéļöåðéð one two three four five six]"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "[Þŕéļöåð ţĥé îmåĝé ûšéð бý ţĥé ĻÇÞ éļéméñţ îñ öŕðéŕ ţö îmþŕövé ýöûŕ ĻÇÞ ţîmé. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/optimize-lcp/#preload-important-resources)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen]"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "[Þŕéļöåð Ļåŕĝéšţ Çöñţéñţƒûļ Þåîñţ îmåĝé one two three four five six seven eight]"
-  },
   "core/audits/redirects.js | description": {
     "message": "[Ŕéðîŕéçţš îñţŕöðûçé åððîţîöñåļ ðéļåýš бéƒöŕé ţĥé þåĝé çåñ бé ļöåðéð. ᐅ[ᐊĻéåŕñ möŕéᐅ](https://web.dev/redirects/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen]"
   },

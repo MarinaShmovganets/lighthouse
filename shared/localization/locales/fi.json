@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Fontit, joissa on `font-display: optional`, on esiladattu"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Esilataa LCP-elementin käyttämä kuva, jotta voit parantaa sivun latautumisaikaa. [Lue lisää](https://web.dev/optimize-lcp/#preload-important-resources)."
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Esilataa sivun latautumisajan kuva"
-  },
   "core/audits/redirects.js | description": {
     "message": "Uudelleenohjaukset viivästyttävät sivun lataamista. [Lue lisää](https://web.dev/redirects/)."
   },

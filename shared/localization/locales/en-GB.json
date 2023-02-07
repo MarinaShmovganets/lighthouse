@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Fonts with `font-display: optional` are preloaded"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Preload the image used by the LCP element in order to improve your LCP time. [Learn more](https://web.dev/optimize-lcp/#preload-important-resources)."
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Preload largest contentful paint image"
-  },
   "core/audits/redirects.js | description": {
     "message": "Redirects introduce additional delays before the page can be loaded. [Learn more](https://web.dev/redirects/)."
   },

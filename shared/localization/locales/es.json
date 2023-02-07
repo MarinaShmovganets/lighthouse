@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Se han precargado las fuentes con `font-display: optional`"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Precarga la imagen usada por el elemento LCP (renderizado del mayor elemento con contenido) para mejorar el tiempo de LCP. [Más información](https://web.dev/optimize-lcp/#preload-important-resources)"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Precargar la imagen de renderizado del mayor elemento con contenido"
-  },
   "core/audits/redirects.js | description": {
     "message": "Las redirecciones provocan retrasos adicionales antes de que la página se pueda cargar. [Más información](https://web.dev/redirects/)"
   },

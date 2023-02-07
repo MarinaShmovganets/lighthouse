@@ -260,6 +260,7 @@ Array [
       Array [
         "unminified-warning",
         "disable-bundling",
+        "preload-lcp-image",
       ]
     `);
   });

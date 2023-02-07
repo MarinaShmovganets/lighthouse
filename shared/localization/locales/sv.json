@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Teckensnitt med `font-display: optional` läses in i förväg"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Gör så att den största uppritningen av innehåll går snabbare genom att läsa in bilden i det berörda elementet i förväg. [Läs mer](https://web.dev/optimize-lcp/#preload-important-resources)."
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Läs in bilden i förväg för största uppritningen av innehåll"
-  },
   "core/audits/redirects.js | description": {
     "message": "Omdirigeringar medför en ytterligare fördröjning innan sidan kan läsas in. [Läs mer](https://web.dev/redirects/)."
   },

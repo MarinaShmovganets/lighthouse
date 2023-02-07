@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Фонтови који користе `font-display: optional` су предучитани"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Предучитајте слику коју користи елемент са највећим приказивањем садржаја да бисте смањили време за највеће приказивање садржаја. [Сазнајте више](https://web.dev/optimize-lcp/#preload-important-resources)."
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Предучитајте слику са највећим приказивањем садржаја"
-  },
   "core/audits/redirects.js | description": {
     "message": "Преусмеравања доводе до додатних кашњења пре учитавања странице. [Сазнајте више](https://web.dev/redirects/)."
   },

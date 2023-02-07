@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "已預先載入使用 `font-display: optional` 的字型"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "預先載入 LCP 元素所使用的圖片，以縮短 LCP 載入時間。[瞭解詳情](https://web.dev/optimize-lcp/#preload-important-resources)。"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "預先載入最大內容繪製圖片"
-  },
   "core/audits/redirects.js | description": {
     "message": "重新導向會導致頁面延遲載入。[瞭解詳情](https://web.dev/redirects/)。"
   },

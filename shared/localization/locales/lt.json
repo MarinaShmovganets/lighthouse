@@ -1229,12 +1229,6 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Šriftai su „`font-display: optional`“ buvo iš anksto įkelti"
   },
-  "core/audits/preload-lcp-image.js | description": {
-    "message": "Iš anksto įkelkite vaizdą, kurį naudoja DTŽ elementas, kad pagerintumėte DTŽ laiką. [Sužinokite daugiau](https://web.dev/optimize-lcp/#preload-important-resources)"
-  },
-  "core/audits/preload-lcp-image.js | title": {
-    "message": "Iš anksto įkelkite didžiausio turiningo žymėjimo vaizdą"
-  },
   "core/audits/redirects.js | description": {
     "message": "Peradresuojant puslapio įkėlimo delsos laikas dar labiau pailgėja. [Sužinokite daugiau](https://web.dev/redirects/)."
   },
