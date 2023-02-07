@@ -13,7 +13,8 @@ const DEFAULT_PASS = 'defaultPass';
 
 /**
  * @typedef TableOptions
- * @property {LH.Audit.Details.Table['summary']=} summary
+ * @property {number=} wastedMs
+ * @property {number=} wastedBytes
  */
 
 /**
@@ -138,8 +139,8 @@ class Audit {
    * @return {LH.Audit.Details.Table}
    */
   static makeTableDetails(headings, results, options = {}) {
-    const {summary} = options;
-
+    const {wastedBytes, wastedMs} = options;
+    const summary = (wastedBytes || wastedMs) ? {wastedBytes, wastedMs} : undefined;
     if (results.length === 0) {
       return {
         type: 'table',

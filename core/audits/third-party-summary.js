@@ -248,7 +248,7 @@ class ThirdPartySummary extends Audit {
       displayValue: str_(UIStrings.displayValue, {
         timeInMs: overallSummary.wastedMs,
       }),
-      details: Audit.makeTableDetails(headings, results, {summary: overallSummary}),
+      details: Audit.makeTableDetails(headings, results, overallSummary),
     };
   }
 }
