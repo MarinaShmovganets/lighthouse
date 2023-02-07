@@ -43,8 +43,7 @@
             "url": "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js",
             "resolution": "Allowed"
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "service-worker": {
@@ -305,8 +304,7 @@
               "column": 0
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "server-response-time": {
@@ -616,8 +614,7 @@
             "startTime": 8137.227,
             "timingType": "Mark"
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "critical-request-chains": {
@@ -797,7 +794,6 @@
             "reason": "Page has no manifest <link> URL"
           }
         ],
-        "summary": {},
         "debugData": {
           "type": "debugdata",
           "manifestUrl": null
@@ -936,8 +932,7 @@
             "actualAspectRatio": "480 x 318\n        (1.51)",
             "doRatiosMatch": false
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "image-size-responsive": {
@@ -949,8 +944,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "preload-fonts": {
@@ -1002,8 +996,7 @@
               "column": 6
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "mainthread-work-breakdown": {
@@ -1061,8 +1054,7 @@
             "groupLabel": "Script Parsing & Compilation",
             "duration": 16.858999999999998
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "bootup-time": {
@@ -1166,8 +1158,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "diagnostics": {
@@ -1670,7 +1661,6 @@
             "experimentalFromMainFrame": true
           }
         ],
-        "summary": {},
         "debugData": {
           "type": "debugdata",
           "networkStartTimeTs": 8696702394
@@ -1710,8 +1700,7 @@
             "origin": "http://localhost:10200",
             "rtt": 0.20899999999999996
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "network-server-latency": {
@@ -1747,8 +1736,7 @@
             "origin": "http://ajax.googleapis.com",
             "serverResponseTime": 556.128
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "main-thread-tasks": {
@@ -1838,8 +1826,7 @@
             "duration": 5.837,
             "startTime": 24355.835
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "metrics": {
@@ -2012,8 +1999,7 @@
             "requestCount": 0,
             "transferSize": 0
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "timing-budget": {
@@ -2066,8 +2052,7 @@
             "measurement": 1175,
             "overBudget": 1075
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "resource-summary": {
@@ -2151,8 +2136,7 @@
             "requestCount": 1,
             "transferSize": 30346
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "third-party-summary": {
@@ -2260,8 +2244,7 @@
               "nodeLabel": "Do better web tester page"
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "lcp-lazy-loaded": {
@@ -2389,8 +2372,7 @@
             },
             "score": 0.004071364067636093
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "long-tasks": {
@@ -2432,8 +2414,7 @@
             "duration": 145.815,
             "startTime": 8044.755
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "no-unload-listeners": {
@@ -2461,8 +2442,7 @@
               "column": 36
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "non-composited-animations": {
@@ -2522,8 +2502,7 @@
               ]
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "unsized-images": {
@@ -2585,8 +2564,7 @@
               "nodeLabel": "body > img"
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "valid-source-maps": {
@@ -2598,8 +2576,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "preload-lcp-image": {
@@ -2712,8 +2689,7 @@
             "severity": "High",
             "description": "No CSP found in enforcement mode"
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "script-treemap-data": {
@@ -2856,8 +2832,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "aria-command-name": {
@@ -2876,8 +2851,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "aria-hidden-focus": {
@@ -2917,8 +2891,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "aria-required-children": {
@@ -2944,8 +2917,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "aria-toggle-field-name": {
@@ -2978,8 +2950,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "aria-valid-attr": {
@@ -2991,8 +2962,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "button-name": {
@@ -3004,8 +2974,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "bypass": {
@@ -3024,8 +2993,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "definition-list": {
@@ -3051,8 +3019,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "duplicate-id-active": {
@@ -3071,8 +3038,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "form-field-multiple-labels": {
@@ -3098,8 +3064,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "html-has-lang": {
@@ -3142,7 +3107,6 @@
             }
           }
         ],
-        "summary": {},
         "debugData": {
           "type": "debugdata",
           "impact": "serious",
@@ -3354,7 +3318,6 @@
             }
           }
         ],
-        "summary": {},
         "debugData": {
           "type": "debugdata",
           "impact": "critical",
@@ -3454,7 +3417,6 @@
             }
           }
         ],
-        "summary": {},
         "debugData": {
           "type": "debugdata",
           "impact": "critical",
@@ -3529,7 +3491,6 @@
             }
           }
         ],
-        "summary": {},
         "debugData": {
           "type": "debugdata",
           "impact": "serious",
@@ -3575,8 +3536,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "object-alt": {
@@ -3638,7 +3598,6 @@
             }
           }
         ],
-        "summary": {},
         "debugData": {
           "type": "debugdata",
           "impact": "serious",
@@ -3992,8 +3951,7 @@
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?lcp",
             "totalBytes": 24822
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "offscreen-images": {
@@ -4617,8 +4575,7 @@
               "value": 100
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "geolocation-on-start": {
@@ -4655,8 +4612,7 @@
               "column": 40
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "inspector-issues": {
@@ -4668,8 +4624,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "no-document-write": {
@@ -4715,8 +4670,7 @@
               "column": 11
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "js-libraries": {
@@ -4749,7 +4703,6 @@
             "name": "WordPress"
           }
         ],
-        "summary": {},
         "debugData": {
           "type": "debugdata",
           "stacks": [
@@ -4792,8 +4745,7 @@
               "column": 15
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "paste-preventing-inputs": {
@@ -4850,8 +4802,7 @@
             },
             "type": "password"
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "uses-http2": {
@@ -4894,8 +4845,7 @@
               "column": 5
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "meta-description": {
@@ -4953,8 +4903,7 @@
             "coverage": "100.00%",
             "fontSize": "≥ 12px"
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "link-text": {
@@ -4966,8 +4915,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "crawlable-anchors": {
@@ -5022,8 +4970,7 @@
               "nodeLabel": "body > a"
             }
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "is-crawlable": {
@@ -5036,8 +4983,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "robots-txt": {
@@ -5114,8 +5060,7 @@
             "width": 200,
             "height": 21
           }
-        ],
-        "summary": {}
+        ]
       }
     },
     "hreflang": {
@@ -5127,8 +5072,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "plugins": {
@@ -5140,8 +5084,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "canonical": {
@@ -5210,8 +5153,7 @@
             },
             "protocolReason": "BrowsingInstanceNotSwapped"
           }
-        ],
-        "summary": {}
+        ]
       }
     }
   },

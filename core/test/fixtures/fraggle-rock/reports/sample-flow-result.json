@@ -29,8 +29,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "service-worker": {
@@ -202,8 +201,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "server-response-time": {
@@ -304,8 +302,7 @@
                   "startTime": 379.609,
                   "timingType": "Mark"
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "critical-request-chains": {
@@ -375,7 +372,6 @@
                   "reason": "Page has no manifest <link> URL"
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "manifestUrl": null
@@ -448,8 +444,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "image-size-responsive": {
@@ -461,8 +456,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "preload-fonts": {
@@ -481,8 +475,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "mainthread-work-breakdown": {
@@ -540,8 +533,7 @@
                   "groupLabel": "Script Parsing & Compilation",
                   "duration": 25.208000000000006
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "bootup-time": {
@@ -645,8 +637,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "diagnostics": {
@@ -1097,7 +1088,6 @@
                   "experimentalFromMainFrame": true
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "networkStartTimeTs": 183712986644
@@ -1145,8 +1135,7 @@
                   "origin": "https://fonts.gstatic.com",
                   "rtt": 3.406000000000006
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "network-server-latency": {
@@ -1190,8 +1179,7 @@
                   "origin": "https://events.mikescerealshack.co",
                   "serverResponseTime": 3.7920000000000016
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "main-thread-tasks": {
@@ -1245,8 +1233,7 @@
                   "duration": 5.731,
                   "startTime": 513.949
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "metrics": {
@@ -1404,8 +1391,7 @@
                   "requestCount": 3,
                   "transferSize": 20174
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "third-party-summary": {
@@ -1519,8 +1505,7 @@
                     "nodeLabel": "Mike's Cereal Shack Logo"
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "lcp-lazy-loaded": {
@@ -1557,8 +1542,7 @@
                     "nodeLabel": "Mike's Cereal Shack Logo"
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "layout-shift-elements": {
@@ -1679,8 +1663,7 @@
                   },
                   "score": 0.00036762719987422577
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "long-tasks": {
@@ -1727,8 +1710,7 @@
                   "duration": 96,
                   "startTime": 965.8119999999999
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "no-unload-listeners": {
@@ -1747,8 +1729,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "unsized-images": {
@@ -1791,8 +1772,7 @@
                     "nodeLabel": "Mike's Cereal Shack Logo"
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "valid-source-maps": {
@@ -1804,8 +1784,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "preload-lcp-image": {
@@ -1914,8 +1893,7 @@
                   "severity": "High",
                   "description": "No CSP found in enforcement mode"
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "script-treemap-data": {
@@ -2044,8 +2022,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-command-name": {
@@ -2064,8 +2041,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-hidden-focus": {
@@ -2077,8 +2053,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-input-field-name": {
@@ -2111,8 +2086,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-required-children": {
@@ -2138,8 +2112,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-toggle-field-name": {
@@ -2172,8 +2145,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-valid-attr": {
@@ -2185,8 +2157,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "button-name": {
@@ -2198,8 +2169,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "bypass": {
@@ -2218,8 +2188,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "definition-list": {
@@ -2245,8 +2214,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "duplicate-id-active": {
@@ -2286,8 +2254,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "html-has-lang": {
@@ -2299,8 +2266,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "html-lang-valid": {
@@ -2312,8 +2278,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "image-alt": {
@@ -2325,8 +2290,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "input-image-alt": {
@@ -2345,8 +2309,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "link-name": {
@@ -2358,8 +2321,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "list": {
@@ -2371,8 +2333,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "listitem": {
@@ -2384,8 +2345,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "meta-refresh": {
@@ -2404,8 +2364,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "object-alt": {
@@ -2602,8 +2561,7 @@
                   "url": "https://www.mikescerealshack.co/_next/static/css/08dcb440d7d83b488817.css",
                   "totalBytes": 4994
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "offscreen-images": {
@@ -2972,8 +2930,7 @@
                     "value": 14
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "geolocation-on-start": {
@@ -2985,8 +2942,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "inspector-issues": {
@@ -2998,8 +2954,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "no-document-write": {
@@ -3011,8 +2966,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "js-libraries": {
@@ -3046,7 +3000,6 @@
                   "npm": "next"
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "stacks": [
@@ -3076,8 +3029,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "paste-preventing-inputs": {
@@ -3089,8 +3041,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "uses-passive-event-listeners": {
@@ -3102,8 +3053,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "meta-description": {
@@ -3173,8 +3123,7 @@
                   "coverage": "73.43%",
                   "fontSize": "≥ 12px"
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "link-text": {
@@ -3186,8 +3135,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "crawlable-anchors": {
@@ -3199,8 +3147,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "is-crawlable": {
@@ -3213,8 +3160,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "robots-txt": {
@@ -3234,8 +3180,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "hreflang": {
@@ -3247,8 +3192,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "plugins": {
@@ -3260,8 +3204,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "canonical": {
@@ -7531,8 +7474,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "screenshot-thumbnails": {
@@ -7649,8 +7591,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "user-timings": {
@@ -7714,8 +7655,7 @@
                   "startTime": 889.887,
                   "timingType": "Mark"
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "image-aspect-ratio": {
@@ -7727,8 +7667,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "image-size-responsive": {
@@ -7863,8 +7802,7 @@
                   "expectedSize": "224 x 128",
                   "expectedPixels": 28672
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "preload-fonts": {
@@ -7883,8 +7821,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "mainthread-work-breakdown": {
@@ -7947,8 +7884,7 @@
                   "groupLabel": "Script Parsing & Compilation",
                   "duration": 1.264
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "bootup-time": {
@@ -8327,7 +8263,6 @@
                   "priority": "Low"
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "networkStartTimeTs": 183718559114
@@ -8371,8 +8306,7 @@
                   "origin": "https://cdn.mikescerealshack.co",
                   "rtt": 5.454999999999998
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "network-server-latency": {
@@ -8412,8 +8346,7 @@
                   "origin": "https://mnl4bjjsnz-dsn.algolia.net",
                   "serverResponseTime": 0
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "main-thread-tasks": {
@@ -8559,8 +8492,7 @@
                   "duration": 9.238,
                   "startTime": 5657.279
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "resource-summary": {
@@ -8644,8 +8576,7 @@
                   "requestCount": 2,
                   "transferSize": 25328
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "third-party-summary": {
@@ -8753,8 +8684,7 @@
                   },
                   "score": 0.13125
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "long-tasks": {
@@ -8791,8 +8721,7 @@
                   "duration": 172.833,
                   "startTime": 1903.231
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "no-unload-listeners": {
@@ -8811,8 +8740,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "unsized-images": {
@@ -8855,8 +8783,7 @@
                     "nodeLabel": "Mike's Cereal Shack Co Logo - The Office Meme Creator"
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "valid-source-maps": {
@@ -8868,8 +8795,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "script-treemap-data": {
@@ -9109,8 +9035,7 @@
                   "url": "https://cdn.mikescerealshack.co/frames/s8/e13/128w/b997cdb40263ff124e2a245c5e86a9a3.jpg",
                   "totalBytes": 3142
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "unminified-css": {
@@ -9312,8 +9237,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "no-document-write": {
@@ -9325,8 +9249,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "uses-passive-event-listeners": {
@@ -9338,8 +9261,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "work-during-interaction": {
@@ -9380,8 +9302,7 @@
                         "nodeLabel": "div.flex > form.flex > input.font-daniel"
                       }
                     }
-                  ],
-                  "summary": {}
+                  ]
                 },
                 {
                   "type": "table",
@@ -9507,8 +9428,7 @@
                         ]
                       }
                     }
-                  ],
-                  "summary": {}
+                  ]
                 },
                 {
                   "type": "debugdata",
@@ -11265,8 +11185,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "image-size-responsive": {
@@ -11401,8 +11320,7 @@
                   "expectedSize": "224 x 128",
                   "expectedPixels": 28672
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "unsized-images": {
@@ -11445,8 +11363,7 @@
                     "nodeLabel": "Mike's Cereal Shack Co Logo - The Office Meme Creator"
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "accesskeys": {
@@ -11465,8 +11382,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-command-name": {
@@ -11485,8 +11401,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-hidden-focus": {
@@ -11498,8 +11413,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-input-field-name": {
@@ -11532,8 +11446,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-required-children": {
@@ -11559,8 +11472,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-toggle-field-name": {
@@ -11593,8 +11505,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-valid-attr": {
@@ -11606,8 +11517,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "button-name": {
@@ -11619,8 +11529,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "bypass": {
@@ -12533,7 +12442,6 @@
                   }
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "impact": "serious",
@@ -12568,8 +12476,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "duplicate-id-active": {
@@ -12609,8 +12516,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "html-has-lang": {
@@ -12622,8 +12528,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "html-lang-valid": {
@@ -12635,8 +12540,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "image-alt": {
@@ -12831,7 +12735,6 @@
                   }
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "impact": "critical",
@@ -12862,8 +12765,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "link-name": {
@@ -12875,8 +12777,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "list": {
@@ -12888,8 +12789,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "listitem": {
@@ -12901,8 +12801,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "meta-refresh": {
@@ -12921,8 +12820,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "object-alt": {
@@ -13089,8 +12987,7 @@
                   "displayedDimensions": "178x80",
                   "actualDimensions": "1000x450"
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "doctype": {
@@ -13185,8 +13082,7 @@
                     "value": 17
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "js-libraries": {
@@ -13220,7 +13116,6 @@
                   "npm": "next"
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "stacks": [
@@ -13250,8 +13145,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "meta-description": {
@@ -13314,8 +13208,7 @@
                   "coverage": "88.61%",
                   "fontSize": "≥ 12px"
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "link-text": {
@@ -13327,8 +13220,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "crawlable-anchors": {
@@ -13340,8 +13232,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "robots-txt": {
@@ -13418,8 +13309,7 @@
                   "width": 65,
                   "height": 11
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "plugins": {
@@ -13431,8 +13321,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "structured-data": {
@@ -15939,8 +15828,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "service-worker": {
@@ -16112,8 +16000,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "server-response-time": {
@@ -16214,8 +16101,7 @@
                   "startTime": 109.889,
                   "timingType": "Mark"
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "critical-request-chains": {
@@ -16285,7 +16171,6 @@
                   "reason": "Page has no manifest <link> URL"
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "manifestUrl": null
@@ -16358,8 +16243,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "image-size-responsive": {
@@ -16371,8 +16255,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "preload-fonts": {
@@ -16391,8 +16274,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "mainthread-work-breakdown": {
@@ -16450,8 +16332,7 @@
                   "groupLabel": "Rendering",
                   "duration": 14.543999999999997
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "bootup-time": {
@@ -16561,8 +16442,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "diagnostics": {
@@ -16983,7 +16863,6 @@
                   "experimentalFromMainFrame": true
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "networkStartTimeTs": 183729762259
@@ -17031,8 +16910,7 @@
                   "origin": "https://fonts.gstatic.com",
                   "rtt": 0.003
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "network-server-latency": {
@@ -17076,8 +16954,7 @@
                   "origin": "https://fonts.gstatic.com",
                   "serverResponseTime": 0.874
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "main-thread-tasks": {
@@ -17123,8 +17000,7 @@
                   "duration": 18.944,
                   "startTime": 92.148
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "metrics": {
@@ -17282,8 +17158,7 @@
                   "requestCount": 3,
                   "transferSize": 0
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "third-party-summary": {
@@ -17384,8 +17259,7 @@
                     "nodeLabel": "div.flex > main#main-content > div.flex > img.rounded-md"
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "lcp-lazy-loaded": {
@@ -17422,8 +17296,7 @@
                     "nodeLabel": "div.flex > main#main-content > div.flex > img.rounded-md"
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "layout-shift-elements": {
@@ -17435,8 +17308,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "long-tasks": {
@@ -17478,8 +17350,7 @@
                   "duration": 63,
                   "startTime": 752.7026
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "no-unload-listeners": {
@@ -17498,8 +17369,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "unsized-images": {
@@ -17561,8 +17431,7 @@
                     "nodeLabel": "Mike's Cereal Shack Co Logo - The Office Meme Creator"
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "valid-source-maps": {
@@ -17574,8 +17443,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "preload-lcp-image": {
@@ -17684,8 +17552,7 @@
                   "severity": "High",
                   "description": "No CSP found in enforcement mode"
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "script-treemap-data": {
@@ -17809,8 +17676,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-command-name": {
@@ -17829,8 +17695,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-hidden-focus": {
@@ -17842,8 +17707,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-input-field-name": {
@@ -17876,8 +17740,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-required-children": {
@@ -17903,8 +17766,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-toggle-field-name": {
@@ -17937,8 +17799,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "aria-valid-attr": {
@@ -17950,8 +17811,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "button-name": {
@@ -17963,8 +17823,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "bypass": {
@@ -17983,8 +17842,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "definition-list": {
@@ -18010,8 +17868,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "duplicate-id-active": {
@@ -18051,8 +17908,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "html-has-lang": {
@@ -18064,8 +17920,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "html-lang-valid": {
@@ -18077,8 +17932,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "image-alt": {
@@ -18121,7 +17975,6 @@
                   }
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "impact": "critical",
@@ -18152,8 +18005,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "link-name": {
@@ -18165,8 +18017,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "list": {
@@ -18178,8 +18029,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "listitem": {
@@ -18191,8 +18041,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "meta-refresh": {
@@ -18211,8 +18060,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "object-alt": {
@@ -18389,8 +18237,7 @@
                   "url": "https://www.mikescerealshack.co/logo-text.svg",
                   "totalBytes": 44
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "offscreen-images": {
@@ -18849,8 +18696,7 @@
                     "value": 13
                   }
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "geolocation-on-start": {
@@ -18862,8 +18708,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "inspector-issues": {
@@ -18875,8 +18720,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "no-document-write": {
@@ -18888,8 +18732,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "js-libraries": {
@@ -18923,7 +18766,6 @@
                   "npm": "next"
                 }
               ],
-              "summary": {},
               "debugData": {
                 "type": "debugdata",
                 "stacks": [
@@ -18953,8 +18795,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "paste-preventing-inputs": {
@@ -18966,8 +18807,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "uses-passive-event-listeners": {
@@ -18979,8 +18819,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "meta-description": {
@@ -19050,8 +18889,7 @@
                   "coverage": "78.13%",
                   "fontSize": "≥ 12px"
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "link-text": {
@@ -19063,8 +18901,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "crawlable-anchors": {
@@ -19076,8 +18913,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "is-crawlable": {
@@ -19090,8 +18926,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "robots-txt": {
@@ -19168,8 +19003,7 @@
                   "width": 65,
                   "height": 11
                 }
-              ],
-              "summary": {}
+              ]
             }
           },
           "hreflang": {
@@ -19181,8 +19015,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "plugins": {
@@ -19194,8 +19027,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {}
+              "items": []
             }
           },
           "canonical": {
