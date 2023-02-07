@@ -61,6 +61,18 @@ const alwaysRunArtifactIds = [
 ];
 
 /**
+ * Certain gatherers are destructive to the page state.
+ * We should ensure that these gatherers run after any custom gatherers.
+ * The default priority should be 0.
+ * TODO: Make this an official part of the config or design a different solution.
+ * @type {Record<string, number|undefined>}
+ */
+const internalGathererPriorities = {
+  FullPageScreenshot: 1,
+  BFCacheFailures: 1,
+};
+
+/**
  * @param {LegacyResolvedConfig['passes']} passes
  * @param {LegacyResolvedConfig['audits']} audits
  */
@@ -535,6 +547,12 @@ class LegacyResolvedConfig {
         new Map(gathererDefns.map(defn => [defn.instance.name, defn])).values()
       );
       uniqueDefns.forEach(gatherer => assertValidGatherer(gatherer.instance, gatherer.path));
+
+      uniqueDefns.sort((a, b) => {
+        const aPriority = internalGathererPriorities[a.instance.name] || 0;
+        const bPriority = internalGathererPriorities[b.instance.name] || 0;
+        return aPriority - bPriority;
+      });
 
       return Object.assign(pass, {gatherers: uniqueDefns});
     });
