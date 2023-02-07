@@ -86,6 +86,20 @@ const expectations = {
           ],
         },
       },
+      'largest-contentful-paint': {
+        // Non-all-frames value.
+        numericValue: '>5000',
+      },
+      'largest-contentful-paint-element': {
+        details: {
+          items: [{
+            node: {
+              // Element should be from main frame while metric is not LCPAllFrames.
+              nodeLabel: 'This is the main frame LCP and FCP.',
+            },
+          }],
+        },
+      },
     },
   },
 };

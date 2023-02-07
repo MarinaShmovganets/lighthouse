@@ -119,7 +119,8 @@ class PreloadLCPImageAudit extends Audit {
    * @return {string | undefined}
    */
   static getLcpUrl(trace, processedNavigation) {
-    const lcpEvent = processedNavigation.largestContentfulPaintAllFramesEvt;
+    // Use main-frame-only LCP to match the metric value.
+    const lcpEvent = processedNavigation.largestContentfulPaintEvt;
     if (!lcpEvent) return;
 
     const lcpImagePaintEvent = trace.traceEvents.filter(e => {
