@@ -2491,10 +2491,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {
-                "wastedBytes": 0
-              }
+              "items": []
             }
           },
           "total-byte-weight": {
@@ -17210,11 +17207,7 @@
                     "items": []
                   }
                 }
-              ],
-              "summary": {
-                "wastedBytes": 0,
-                "wastedMs": 0
-              }
+              ]
             }
           },
           "third-party-facades": {
@@ -18187,10 +18180,7 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": [],
-              "summary": {
-                "wastedBytes": 0
-              }
+              "items": []
             }
           },
           "total-byte-weight": {
