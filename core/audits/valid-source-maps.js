@@ -7,6 +7,8 @@
 import {Audit} from './audit.js';
 import {EntityClassification} from '../computed/entity-classification.js';
 import * as i18n from '../lib/i18n/i18n.js';
+import {Util} from '../../shared/util.js';
+import UrlUtils from '../lib/url-utils.js';
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on HTTP to HTTPS redirects. This descriptive title is shown to users when HTTP traffic is redirected to HTTPS. */
@@ -54,11 +56,13 @@ class ValidSourceMaps extends Audit {
    * @return {boolean}
    */
   static isLargeFirstPartyJS(script, classifiedEntities) {
-    if (!script.length) return false;
+    const url = script.url;
+    if (!script.length || !url) return false;
+    if (!UrlUtils.isValid(url)) return false;
+    if (!Util.createOrReturnURL(url).protocol.startsWith('http')) return false;
 
     const isLargeJS = script.length >= LARGE_JS_BYTE_THRESHOLD;
-    const isFirstPartyJS = script.url ? classifiedEntities.isFirstParty(script.url) : false;
-    return isLargeJS && isFirstPartyJS;
+    return classifiedEntities.isFirstParty(url) && isLargeJS;
   }
 
   /**
