@@ -222,9 +222,11 @@ class FullPageScreenshot extends FRGatherer {
         await this._resizeViewport(context, deviceMetrics);
       }
 
+      const [screenshot, nodes] =
+        await Promise.all([this._takeScreenshot(context), this._resolveNodes(context)]);
       return {
-        screenshot: await this._takeScreenshot(context),
-        nodes: await this._resolveNodes(context),
+        screenshot,
+        nodes,
       };
     } finally {
       if (!settings.usePassiveGathering) {
