@@ -160,7 +160,7 @@ Array [
       "uses-text-compression",
       "uses-responsive-images",
       "user-timings",
-      "preload-lcp-image",
+      "prioritize-lcp-image",
       "unsized-images",
     ],
   },
@@ -171,7 +171,7 @@ Array [
       "offscreen-images",
       "uses-optimized-images",
       "uses-responsive-images",
-      "preload-lcp-image",
+      "prioritize-lcp-image",
       "unsized-images",
     ],
   },
@@ -260,7 +260,6 @@ Array [
       Array [
         "unminified-warning",
         "disable-bundling",
-        "preload-lcp-image",
       ]
     `);
   });

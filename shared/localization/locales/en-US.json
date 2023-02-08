@@ -2819,7 +2819,7 @@
   "node_modules/lighthouse-stack-packs/packs/next.js | offscreen-images": {
     "message": "Use the `next/image` component instead of `<img>` to automatically lazy-load images. [Learn more](https://nextjs.org/docs/basic-features/image-optimization)."
   },
-  "node_modules/lighthouse-stack-packs/packs/next.js | preload-lcp-image": {
+  "node_modules/lighthouse-stack-packs/packs/next.js | prioritize-lcp-image": {
     "message": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority)."
   },
   "node_modules/lighthouse-stack-packs/packs/next.js | render-blocking-resources": {
@@ -2855,7 +2855,7 @@
   "node_modules/lighthouse-stack-packs/packs/nuxt.js | offscreen-images": {
     "message": "Use the `nuxt/image` component and set `loading=\"lazy\"` for offscreen images. [Learn more](https://image.nuxtjs.org/components/nuxt-img#loading)."
   },
-  "node_modules/lighthouse-stack-packs/packs/nuxt.js | preload-lcp-image": {
+  "node_modules/lighthouse-stack-packs/packs/nuxt.js | prioritize-lcp-image": {
     "message": "Use the `nuxt/image` component and specify `preload` for LCP image. [Learn more](https://image.nuxtjs.org/components/nuxt-img#preload)."
   },
   "node_modules/lighthouse-stack-packs/packs/nuxt.js | unsized-images": {

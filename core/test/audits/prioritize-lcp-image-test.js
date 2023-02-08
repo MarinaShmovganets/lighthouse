@@ -13,7 +13,7 @@ const mainDocumentNodeUrl = 'http://www.example.com:3000';
 const scriptNodeUrl = 'http://www.example.com/script.js';
 const imageUrl = 'http://www.example.com/image.png';
 
-describe('Performance: prioritize-lcp audit', () => {
+describe('Performance: prioritize-lcp-image audit', () => {
   const mockArtifacts = (networkRecords, finalDisplayedUrl) => {
     return {
       GatherContext: {gatherMode: 'navigation'},
