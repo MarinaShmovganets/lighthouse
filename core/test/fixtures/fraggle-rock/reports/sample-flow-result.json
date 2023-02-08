@@ -4216,7 +4216,7 @@
               "uses-text-compression": "Enable compression on your Next.js server. [Learn more](https://nextjs.org/docs/api-reference/next.config.js/compression).",
               "uses-responsive-images": "Use the `next/image` component to set the appropriate `sizes`. [Learn more](https://nextjs.org/docs/api-reference/next/image#sizes).",
               "user-timings": "Consider using `Next.js Analytics` to measure your app's real-world performance. [Learn more](https://nextjs.org/docs/advanced-features/measuring-performance).",
-              "prioritize-lcp-image": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority).",
+              "preload-lcp-image": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority).",
               "unsized-images": "Use the `next/image` component to make sure images are always sized appropriately. [Learn more](https://nextjs.org/docs/api-reference/next/image#width)."
             }
           }
@@ -7436,8 +7436,8 @@
             "node_modules/lighthouse-stack-packs/packs/next.js.js | user-timings": [
               "stackPacks[1].descriptions[user-timings]"
             ],
-            "node_modules/lighthouse-stack-packs/packs/next.js.js | prioritize-lcp-image": [
-              "stackPacks[1].descriptions[prioritize-lcp-image]"
+            "node_modules/lighthouse-stack-packs/packs/next.js.js | preload-lcp-image": [
+              "stackPacks[1].descriptions[preload-lcp-image]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unsized-images": [
               "stackPacks[1].descriptions[unsized-images]"
@@ -13895,7 +13895,7 @@
               "uses-text-compression": "Enable compression on your Next.js server. [Learn more](https://nextjs.org/docs/api-reference/next.config.js/compression).",
               "uses-responsive-images": "Use the `next/image` component to set the appropriate `sizes`. [Learn more](https://nextjs.org/docs/api-reference/next/image#sizes).",
               "user-timings": "Consider using `Next.js Analytics` to measure your app's real-world performance. [Learn more](https://nextjs.org/docs/advanced-features/measuring-performance).",
-              "prioritize-lcp-image": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority).",
+              "preload-lcp-image": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority).",
               "unsized-images": "Use the `next/image` component to make sure images are always sized appropriately. [Learn more](https://nextjs.org/docs/api-reference/next/image#width)."
             }
           }
@@ -15785,8 +15785,8 @@
             "node_modules/lighthouse-stack-packs/packs/next.js.js | user-timings": [
               "stackPacks[1].descriptions[user-timings]"
             ],
-            "node_modules/lighthouse-stack-packs/packs/next.js.js | prioritize-lcp-image": [
-              "stackPacks[1].descriptions[prioritize-lcp-image]"
+            "node_modules/lighthouse-stack-packs/packs/next.js.js | preload-lcp-image": [
+              "stackPacks[1].descriptions[preload-lcp-image]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unsized-images": [
               "stackPacks[1].descriptions[unsized-images]"
@@ -20032,7 +20032,7 @@
               "uses-text-compression": "Enable compression on your Next.js server. [Learn more](https://nextjs.org/docs/api-reference/next.config.js/compression).",
               "uses-responsive-images": "Use the `next/image` component to set the appropriate `sizes`. [Learn more](https://nextjs.org/docs/api-reference/next/image#sizes).",
               "user-timings": "Consider using `Next.js Analytics` to measure your app's real-world performance. [Learn more](https://nextjs.org/docs/advanced-features/measuring-performance).",
-              "prioritize-lcp-image": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority).",
+              "preload-lcp-image": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority).",
               "unsized-images": "Use the `next/image` component to make sure images are always sized appropriately. [Learn more](https://nextjs.org/docs/api-reference/next/image#width)."
             }
           }
@@ -23242,8 +23242,8 @@
             "node_modules/lighthouse-stack-packs/packs/next.js.js | user-timings": [
               "stackPacks[1].descriptions[user-timings]"
             ],
-            "node_modules/lighthouse-stack-packs/packs/next.js.js | prioritize-lcp-image": [
-              "stackPacks[1].descriptions[prioritize-lcp-image]"
+            "node_modules/lighthouse-stack-packs/packs/next.js.js | preload-lcp-image": [
+              "stackPacks[1].descriptions[preload-lcp-image]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unsized-images": [
               "stackPacks[1].descriptions[unsized-images]"

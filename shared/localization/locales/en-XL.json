@@ -2819,7 +2819,7 @@
   "node_modules/lighthouse-stack-packs/packs/next.js | offscreen-images": {
     "message": "Ûśê t́ĥé `next/image` ĉóm̂ṕôńêńt̂ ín̂śt̂éâd́ ôf́ `<img>` t̂ó âút̂óm̂át̂íĉál̂ĺŷ ĺâźŷ-ĺôád̂ ím̂áĝéŝ. [Ĺêár̂ń m̂ór̂é](https://nextjs.org/docs/basic-features/image-optimization)."
   },
-  "node_modules/lighthouse-stack-packs/packs/next.js | prioritize-lcp-image": {
+  "node_modules/lighthouse-stack-packs/packs/next.js | preload-lcp-image": {
     "message": "Ûśê t́ĥé `next/image` ĉóm̂ṕôńêńt̂ án̂d́ ŝét̂ \"ṕr̂íôŕît́ŷ\" t́ô t́r̂úê t́ô ṕr̂él̂óâd́ L̂ĆP̂ ím̂áĝé. [L̂éâŕn̂ ḿôŕê](https://nextjs.org/docs/api-reference/next/image#priority)."
   },
   "node_modules/lighthouse-stack-packs/packs/next.js | render-blocking-resources": {
@@ -2855,7 +2855,7 @@
   "node_modules/lighthouse-stack-packs/packs/nuxt.js | offscreen-images": {
     "message": "Ûśê t́ĥé `nuxt/image` ĉóm̂ṕôńêńt̂ án̂d́ ŝét̂ `loading=\"lazy\"` f́ôŕ ôf́f̂śĉŕêén̂ ím̂áĝéŝ. [Ĺêár̂ń m̂ór̂é](https://image.nuxtjs.org/components/nuxt-img#loading)."
   },
-  "node_modules/lighthouse-stack-packs/packs/nuxt.js | prioritize-lcp-image": {
+  "node_modules/lighthouse-stack-packs/packs/nuxt.js | preload-lcp-image": {
     "message": "Ûśê t́ĥé `nuxt/image` ĉóm̂ṕôńêńt̂ án̂d́ ŝṕêćîf́ŷ `preload` f́ôŕ L̂ĆP̂ ím̂áĝé. [L̂éâŕn̂ ḿôŕê](https://image.nuxtjs.org/components/nuxt-img#preload)."
   },
   "node_modules/lighthouse-stack-packs/packs/nuxt.js | unsized-images": {
