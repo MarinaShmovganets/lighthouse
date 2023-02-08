@@ -14,7 +14,7 @@ BASE_VERSION="$PKG_VERSION-dev.$DATE"
 VERSION="$BASE_VERSION"
 
 i=0
-while npx version-exists lighthouse "$VERSION"
+while npx version-exists@0.0.4 lighthouse "$VERSION"
 do
   ((i++))
   VERSION="$BASE_VERSION-$i"
