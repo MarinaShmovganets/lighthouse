@@ -42,8 +42,9 @@ function getScoreToBeGained(audit: ScoredAuditRef): number {
 function getOverallSavings(audit: LH.ReportResult.AuditRef): number {
   return (
     audit.result.details &&
-    audit.result.details.type === 'opportunity' &&
-    audit.result.details.overallSavingsMs
+    audit.result.details.type === 'table' &&
+    audit.result.details.isOpportunity &&
+    audit.result.details.summary?.wastedMs
   ) || 0;
 }
 

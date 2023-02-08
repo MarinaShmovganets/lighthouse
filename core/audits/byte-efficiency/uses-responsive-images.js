@@ -182,7 +182,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
 
     const items = Array.from(resultsMap.values());
 
-    /** @type {LH.Audit.Details.Opportunity['headings']} */
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'node', valueType: 'node', label: ''},
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},

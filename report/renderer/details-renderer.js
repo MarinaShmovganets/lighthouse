@@ -19,7 +19,6 @@
 
 // Convenience types for localized AuditDetails.
 /** @typedef {LH.FormattedIcu<LH.Audit.Details>} AuditDetails */
-/** @typedef {LH.FormattedIcu<LH.Audit.Details.Opportunity>} OpportunityTable */
 /** @typedef {LH.FormattedIcu<LH.Audit.Details.Table>} Table */
 /** @typedef {LH.FormattedIcu<LH.Audit.Details.TableItem>} TableItem */
 /** @typedef {LH.FormattedIcu<LH.Audit.Details.ItemValue>} TableItemValue */
@@ -53,7 +52,6 @@ export class DetailsRenderer {
       case 'list':
         return this._renderList(details);
       case 'table':
-      case 'opportunity':
         return this._renderTable(details);
       case 'criticalrequestchain':
         return CriticalRequestChainRenderer.render(this._dom, details, this);

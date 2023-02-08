@@ -125,7 +125,7 @@ describe('Performance: prioritize-lcp-image audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PrioritizeLcpImage.audit(artifacts, context);
     expect(results.score).toEqual(1);
-    expect(results.details.overallSavingsMs).toEqual(0);
+    expect(results.details.summary?.wastedMs).toEqual(0);
     expect(results.details.items).toHaveLength(0);
   });
 
@@ -136,7 +136,7 @@ describe('Performance: prioritize-lcp-image audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PrioritizeLcpImage.audit(artifacts, context);
     expect(results.score).toEqual(1);
-    expect(results.details.overallSavingsMs).toEqual(0);
+    expect(results.details.summary?.wastedMs).toEqual(0);
     expect(results.details.items).toHaveLength(0);
   });
 
@@ -147,7 +147,7 @@ describe('Performance: prioritize-lcp-image audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PrioritizeLcpImage.audit(artifacts, context);
     expect(results.score).toEqual(1);
-    expect(results.details.overallSavingsMs).toEqual(0);
+    expect(results.details.summary?.wastedMs).toEqual(0);
     expect(results.details.items).toHaveLength(0);
   });
 
@@ -157,7 +157,7 @@ describe('Performance: prioritize-lcp-image audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PrioritizeLcpImage.audit(artifacts, context);
     expect(results.numericValue).toEqual(180);
-    expect(results.details.overallSavingsMs).toEqual(180);
+    expect(results.details.summary?.wastedMs).toEqual(180);
     expect(results.details.items[0].url).toEqual(imageUrl);
     expect(results.details.items[0].wastedMs).toEqual(180);
 
@@ -179,7 +179,7 @@ describe('Performance: prioritize-lcp-image audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PrioritizeLcpImage.audit(artifacts, context);
     expect(results.numericValue).toEqual(30);
-    expect(results.details.overallSavingsMs).toEqual(30);
+    expect(results.details.summary?.wastedMs).toEqual(30);
     expect(results.details.items[0].url).toEqual(imageUrl);
     expect(results.details.items[0].wastedMs).toEqual(30);
   });
@@ -191,7 +191,7 @@ describe('Performance: prioritize-lcp-image audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PrioritizeLcpImage.audit(artifacts, context);
     expect(results.numericValue).toEqual(30);
-    expect(results.details.overallSavingsMs).toEqual(30);
+    expect(results.details.summary?.wastedMs).toEqual(30);
     expect(results.details.items[0].url).toEqual(imageUrl);
     expect(results.details.items[0].wastedMs).toEqual(30);
     expect(results.details.debugData).toMatchObject({

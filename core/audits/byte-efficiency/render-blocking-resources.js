@@ -283,15 +283,14 @@ class RenderBlockingResources extends Audit {
       displayValue = str_(i18n.UIStrings.displayValueMsSavings, {wastedMs});
     }
 
-    /** @type {LH.Audit.Details.Opportunity['headings']} */
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
       {key: 'totalBytes', valueType: 'bytes', label: str_(i18n.UIStrings.columnTransferSize)},
       {key: 'wastedMs', valueType: 'timespanMs', label: str_(i18n.UIStrings.columnWastedMs)},
     ];
 
-    const details = Audit.makeOpportunityDetails(headings, results,
-      {overallSavingsMs: wastedMs});
+    const details = Audit.makeTableDetails(headings, results, {wastedMs, isOpportunity: true});
 
     return {
       displayValue,

@@ -227,14 +227,14 @@ class UsesRelPreconnectAudit extends Audit {
       };
     }
 
-    /** @type {LH.Audit.Details.Opportunity['headings']} */
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
       {key: 'wastedMs', valueType: 'timespanMs', label: str_(i18n.UIStrings.columnWastedMs)},
     ];
 
-    const details = Audit.makeOpportunityDetails(headings, results,
-      {overallSavingsMs: maxWasted});
+    const details = Audit.makeTableDetails(headings, results,
+      {wastedMs: maxWasted, isOpportunity: true});
 
     return {
       score: ByteEfficiencyAudit.scoreForWastedMs(maxWasted),

@@ -166,7 +166,8 @@ describe('DetailsRenderer', () => {
 
     it('renders opportunity details as a table', () => {
       const details = {
-        type: 'opportunity',
+        type: 'table',
+        isOpportunity: true,
         headings: [
           {key: 'url', valueType: 'url', label: 'URL'},
           {key: 'totalBytes', valueType: 'bytes', label: 'Size (KiB)'},

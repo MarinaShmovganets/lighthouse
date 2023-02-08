@@ -161,9 +161,9 @@ describe('SummaryTooltip', () => {
       auditRefs: [
         /* eslint-disable max-len */
         {result: {score: 0.75, scoreDisplayMode: 'numeric', title: 'Metric 1'}, weight: 1, group: 'metrics'},
-        {result: {score: 0, scoreDisplayMode: 'numeric', title: 'Audit 1', details: {type: 'opportunity', overallSavingsMs: 500}}, weight: 0, group: 'opportunities'},
-        {result: {score: 0, scoreDisplayMode: 'numeric', title: 'Audit 2', details: {type: 'opportunity', overallSavingsMs: 1000}}, weight: 0, group: 'opportunities'},
-        {result: {score: 0, scoreDisplayMode: 'numeric', title: 'Audit 3', details: {type: 'opportunity', overallSavingsMs: 100}}, weight: 0, group: 'opportunities'},
+        {result: {score: 0, scoreDisplayMode: 'numeric', title: 'Audit 1', details: {type: 'table', overallSavingsMs: 500}}, weight: 0, group: 'opportunities'},
+        {result: {score: 0, scoreDisplayMode: 'numeric', title: 'Audit 2', details: {type: 'table', overallSavingsMs: 1000}}, weight: 0, group: 'opportunities'},
+        {result: {score: 0, scoreDisplayMode: 'numeric', title: 'Audit 3', details: {type: 'table', overallSavingsMs: 100}}, weight: 0, group: 'opportunities'},
         /* eslint-enable max-len */
       ],
     };
