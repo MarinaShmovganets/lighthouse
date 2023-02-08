@@ -9,15 +9,6 @@ export default {
     {id: 'CustomGatherer', gatherer: 'custom-gatherer'},
   ],
 
-  navigations: [
-    {
-      id: 'default',
-      artifacts: [
-        'CustomGatherer',
-      ],
-    },
-  ],
-
   audits: [
     'custom-audit',
   ],
