@@ -285,6 +285,7 @@
 .lh-container:not(.lh-topbar + .lh-container) {
   --topbar-height: 0;
   --sticky-header-height: 0;
+  --sticky-header-buffer: 0;
 }
 
 .lh-devtools.lh-root {
