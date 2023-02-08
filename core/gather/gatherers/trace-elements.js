@@ -230,8 +230,9 @@ class TraceElements extends FRGatherer {
       throw err;
     }
 
+    // Use main-frame-only LCP to match the metric value.
+    const lcpData = processedNavigation.largestContentfulPaintEvt?.args?.data;
     // These should exist, but trace types are loose.
-    const lcpData = processedNavigation.largestContentfulPaintAllFramesEvt?.args?.data;
     if (lcpData?.nodeId === undefined || !lcpData.type) return;
 
     return {
