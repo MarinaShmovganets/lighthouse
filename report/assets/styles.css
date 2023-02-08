@@ -145,6 +145,7 @@
   --sparkline-height: 5px;
   --stackpack-padding-horizontal: 10px;
   --sticky-header-background-color: var(--report-background-color);
+  --sticky-header-buffer: calc(var(--topbar-height) + var(--sticky-header-height));
   --sticky-header-height: calc(var(--gauge-circle-size-sm) + var(--score-container-padding) * 2);
   --table-higlight-background-color: hsla(210, 17%, 77%, 0.1);
   --tools-icon-color: var(--color-gray-600);
@@ -296,6 +297,8 @@
 .lh-devtools .lh-container {
   overflow-y: scroll;
   height: calc(100% - var(--topbar-height));
+  /** The .lh-container is the scroll parent in DevTools so we exclude the topbar from the sticky header buffer. */
+  --sticky-header-buffer: calc(var(--sticky-header-height));
 }
 @media print {
   .lh-devtools .lh-container {
@@ -1414,8 +1417,7 @@
   max-width: var(--report-content-max-width);
   margin: 0 auto;
 
-  --topbar-plus-sticky-header: calc(var(--topbar-height) + var(--sticky-header-height));
-  scroll-margin-top: var(--topbar-plus-sticky-header);
+  scroll-margin-top: var(--sticky-header-buffer);
 
   /* Faster recalc style & layout of the report. https://web.dev/content-visibility/ */
   content-visibility: auto;
@@ -1510,7 +1512,7 @@
 
 .lh-table thead th {
   position: sticky;
-  top: calc(var(--topbar-plus-sticky-header) + 1em);
+  top: calc(var(--sticky-header-buffer) + 1em);
   z-index: 1;
   background-color: var(--report-background-color);
   border-bottom: 1px solid var(--report-border-color-secondary);
