@@ -6,7 +6,7 @@ We expect this release to ship in the DevTools of [Chrome 112](https://chromiumd
 
 ## New Contributors
 
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 - Alex N. Jose @alexnj
 - Alexandra White @heyawhite
@@ -28,7 +28,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ### Performance Score Changes
 
-Time to Interactive (TTI) no longer contributes to the performance score and is not displayed in the report. However, it is still accessible in the Lighthouse result JSON.
+In the 8.0 release, we [described TTI's waning role](https://github.com/GoogleChrome/lighthouse/blob/main/docs/v8-perf-faq.md#whats-the-story-with-tti), and today we have the followup. Time to Interactive (TTI) no longer contributes to the performance score and is not displayed in the report. However, it is still accessible in the Lighthouse result JSON.
 
 Without TTI, the weighting of Cumulative Layout Shift (CLS) has increased from 15% to 25%. See the docs for a complete breakdown of [how the Performance score is calculated in 10.0](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/#lighthouse-10), or [play with the scoring calculator](https://googlechrome.github.io/lighthouse/scorecalc/#FCP=3000&SI=5800&FMP=4000&TTI=7300&FCI=6500&LCP=4000&TBT=600&CLS=0.25&device=mobile&version=10&version=8).
 
@@ -36,19 +36,17 @@ Without TTI, the weighting of Cumulative Layout Shift (CLS) has increased from 1
 
 Lighthouse now includes type declarations! Our [example TypeScript recipe](https://github.com/GoogleChrome/lighthouse/tree/main/docs/recipes/type-checking) demonstrates how to achieve proper type safety with Lighthouse.
 
-### Entity classification
+### Third-party Entity classification
 
-Since Lighthouse 5.3, the [`third-party-web`](https://github.com/patrickhulce/third-party-web) dataset has been used to summarize how every third-party found on a page contributes to the total JavaScript blocking time, via the `third-party-summary` audit. With Lighthouse 10.0, we are adding a new property to the JSON result (`entities`) to make further use of this dataset. Every origin encountered on a page is now classified as first-party or third-party within `entities`. In 10.0, this classification is used to power the existing third-party filter checkbox.
+Since Lighthouse 5.3, the community-driven [`third-party-web`](https://github.com/patrickhulce/third-party-web) dataset has been used to summarize how every third-party found on a page contributes to the total JavaScript blocking time, via the `third-party-summary` audit. With Lighthouse 10.0, we are adding a new property to the JSON result (`entities`) to make further use of this dataset. Every origin encountered on a page is now classified as first-party or third-party within `entities`. In 10.0, this classification is used to power the existing third-party filter checkbox.
 
 In a future version of Lighthouse, this will be used to group the table items of every audit based on the entity it originated from, and aggregate the impact of items from that specific entity.
 
-## New Audits
+## 🆕 New Audits
 
 ### Back/forward cache
 
-* bf-cache ([#14465](https://github.com/GoogleChrome/lighthouse/pull/14465))
-
-The Back/forward cache (bfcache for short) is a browser optimization that serves pages from fully serialized snapshots when navigating back or forwards in session history. There are over 100 different reasons why a page may not be eligible for this optimization, so to assist developers Lighthouse now attempts to trigger a bfcache response and will list anything that prevented the browser from using the bfcache.
+The Back/forward cache (bfcache for short) is a browser optimization that serves pages from fully serialized snapshots when navigating back or forwards in session history. There are over 100 different reasons why a page may not be eligible for this optimization, so to assist developers Lighthouse now attempts to trigger a bfcache response and will list anything that prevented the browser from using the bfcache. [#14465](https://github.com/GoogleChrome/lighthouse/pull/14465)
 
 For more on bfcache, see [the web.dev article](https://web.dev/bfcache/).
 
@@ -56,19 +54,15 @@ Note: This audit initially will not be available for PageSpeed Insights.
 
 ### Preventing pasting to inputs
 
-* paste-preventing-inputs ([#14313](https://github.com/GoogleChrome/lighthouse/pull/14313))
+The audit `password-inputs-can-be-pasted-into` is now `paste-preventing-inputs`. This audit's logic works just as before, but rather than just considering `[type=password]` inputs, it now fails if _any_ non-readonly input element prevents the user from pasting. [#14313](https://github.com/GoogleChrome/lighthouse/pull/14313)
 
-The audit `password-inputs-can-be-pasted-into` is now `paste-preventing-inputs`. This audit works just as before, but now fails if any non-readonly input element prevents the user from pasting.
+## Lighthouse documentation is now on developer.chrome.com
 
-## Lighthouse documentation has been moved to developer.chrome.com
+Our documentation is no longer hosted on web.dev. For the most up to date audit docs, please go to [developer.chrome.com/docs/lighthouse/](https://developer.chrome.com/docs/lighthouse/)
 
-Our documentation is no longer hosted on web.dev. For the most up to date audit docs please go to [developer.chrome.com/docs/lighthouse/](https://developer.chrome.com/docs/lighthouse/)
+## 💥 Breaking changes
 
-## Breaking changes
-
-### For programmatic users
-
-Under the hood, Lighthouse now uses the new user-flow supporting infrastructure by default, even for traditional navigation runs. You can opt out of this by: in the CLI, use `--legacy-navigation`; in DevTools: check “Legacy Navigation” in the settings menu. If you have a use case that necessitates this escape hatch, please file an issue. We plan to remove the legacy runner for 11.0.
+Under the hood, Lighthouse now uses the new user-flow supporting infrastructure by default, even for traditional navigation runs. You can opt out of this by: in the CLI, use `--legacy-navigation`; in DevTools: check “Legacy Navigation” in the settings menu. If you have a use case that necessitates this escape hatch, please file an issue. We plan to remove this legacy path in 11.0.
 
 ### For Lighthouse result JSON (LHR) users
 
@@ -86,13 +80,12 @@ This taxonomy cannot account for more complex scenarios, such as JS-initiated re
 - (new) `finalDisplayedUrl`: The URL displayed in the browser combobox at the end of a Lighthouse run. It accounts for soft navigations and history API events. Available in navigation, timespan, and snapshot modes.
 - (deprecated) `finalUrl`: Same value as `mainDocumentUrl`.
 
-
 #### Audit changes
 
 - `password-inputs-can-be-pasted-into` -> `paste-preventing-inputs`
 - `preload-lcp-image` -> `prioritize-lcp-image`
 - `third-party-summary` no longer uses a `link` value for `item.entity`, instead uses a raw `text` value
-- `full-page-screenshot` is no longer an audit, instead it is stored at `lhr.fullPageScreenshot`. To suppress collection of the full-page screenshot, you must now use `--disable-full-page-screenshot` in the CLI.
+- `full-page-screenshot` is no longer an audit, instead it is stored at `lhr.fullPageScreenshot`. To suppress collection of the full-page screenshot in the CLI, you must migrate from `--skip-audits full-page-screenshot` to `--disable-full-page-screenshot`.
 
 ### For Node users
 
