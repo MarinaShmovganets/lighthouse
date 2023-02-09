@@ -265,9 +265,7 @@ describe('Navigation', async function() {
           assert.notInclude(lhr.environment.networkUserAgent, 'Mobile');
         }
 
-        // This string is not translated in the Lighthouse roll yet.
-        // TODO: Use the translated version once the strings land in DT.
-        const viewTraceButton = await $textContent('View Original Trace', reportEl);
+        const viewTraceButton = await $textContent('Ver rastro original', reportEl);
         assert.ok(viewTraceButton);
 
         const footerIssueText = await reportEl.$eval('.lh-footer__version_issue', footerIssueEl => {
