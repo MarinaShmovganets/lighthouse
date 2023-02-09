@@ -81,6 +81,24 @@ function upgradeLhrForCompatibility(lhr) {
         }
       }
 
+
+      // In (TBD version), Details.Opportunities were merged with Details.Table
+      // @ts-expect-error
+      if (audit.details.type === 'opportunity') {
+        /** @type {LH.Audit.Details.Table} */
+        const details = audit.details;
+        details.type = 'table';
+        details.isOpportunity = true;
+        details.summary =
+          // @ts-expect-error
+          {wastedMs: details.overallSavingsMs, wastedBytes: details.overallSavingsBytes};
+
+        // @ts-expect-error
+        delete audit.details.overallSavingsBytes;
+        // @ts-expect-error
+        delete audit.details.overallSavingsMs;
+      }
+
       // TODO: convert printf-style displayValue.
       // Added:   #5099, v3
       // Removed: #6767, v4
