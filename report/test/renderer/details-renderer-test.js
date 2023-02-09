@@ -179,8 +179,10 @@ describe('DetailsRenderer', () => {
           wastedBytes: 30470,
           wastedPercent: 42,
         }],
-        overallSavingsMs: 150,
-        overallSavingsBytes: 30470,
+        summary: {
+          wastedMs: 150,
+          wastedBytes: 30470,
+        },
       };
 
       const oppEl = renderer.render(details);
@@ -680,7 +682,9 @@ describe('DetailsRenderer', () => {
         type: 'table',
         headings: [{key: 'content', valueType: 'url', label: 'Heading'}],
         items: [{content: url}],
-        overallSavingsMs: 100,
+        summary: {
+          wastedMs: 100,
+        },
       };
 
       const el = renderer.render(details);

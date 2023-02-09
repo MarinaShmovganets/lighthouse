@@ -181,7 +181,9 @@ describe('PerfCategoryRenderer', () => {
         score: null, scoreDisplayMode: 'error', errorMessage: 'Yikes!!', title: 'Bug #2',
         description: '',
         details: {
-          overallSavingsMs: 0,
+          summary: {
+            wastedMs: 0,
+          },
           items: [],
           type: 'table',
           isOpportunity: true,
@@ -203,7 +205,9 @@ describe('PerfCategoryRenderer', () => {
         score: 0, scoreDisplayMode: 'numeric',
         numericValue: 100, explanation: 'Yikes!!', title: 'Bug #2', description: '',
         details: {
-          overallSavingsMs: 0,
+          summary: {
+            wastedMs: 0,
+          },
           items: [],
           type: 'table',
           isOpportunity: true,
@@ -227,7 +231,7 @@ describe('PerfCategoryRenderer', () => {
 
     const diagnosticAuditIds = category.auditRefs.filter(audit => {
       return !audit.group &&
-        !(audit.result.details && audit.result.details.type === 'table'  &&
+        !(audit.result.details && audit.result.details.type === 'table' &&
         audit.result.details.isOpportunity) && !ReportUtils.showAsPassed(audit.result);
     }).map(audit => audit.id).sort();
     assert.ok(diagnosticAuditIds.length > 0);
@@ -260,7 +264,9 @@ describe('PerfCategoryRenderer', () => {
           error: true, score: 0,
           numericValue: 100, explanation: 'Yikes!!', title: 'Bug #2',
           details: {
-            overallSavingsMs: 0,
+            summary: {
+              wastedMs: 0,
+            },
             items: [],
             type: 'table',
             isOpportunity: true,

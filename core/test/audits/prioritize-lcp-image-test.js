@@ -125,7 +125,7 @@ describe('Performance: prioritize-lcp-image audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PrioritizeLcpImage.audit(artifacts, context);
     expect(results.score).toEqual(1);
-    expect(results.details.summary?.wastedMs).toEqual(0);
+    expect(results.details.summary?.wastedMs).toEqual(undefined);
     expect(results.details.items).toHaveLength(0);
   });
 
@@ -136,7 +136,7 @@ describe('Performance: prioritize-lcp-image audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PrioritizeLcpImage.audit(artifacts, context);
     expect(results.score).toEqual(1);
-    expect(results.details.summary?.wastedMs).toEqual(0);
+    expect(results.details.summary?.wastedMs).toEqual(undefined);
     expect(results.details.items).toHaveLength(0);
   });
 
@@ -147,7 +147,7 @@ describe('Performance: prioritize-lcp-image audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     const results = await PrioritizeLcpImage.audit(artifacts, context);
     expect(results.score).toEqual(1);
-    expect(results.details.summary?.wastedMs).toEqual(0);
+    expect(results.details.summary?.wastedMs).toEqual(undefined);
     expect(results.details.items).toHaveLength(0);
   });
 

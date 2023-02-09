@@ -270,7 +270,7 @@ describe('Performance: uses-rel-preload audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     return UsesRelPreload.audit_(artifacts, context).then(output => {
       assert.equal(output.score, 1);
-      assert.equal(output.details.summary?.wastedMs, 0);
+      assert.equal(output.details.summary?.wastedMs, undefined);
       assert.equal(output.details.items.length, 0);
     });
   });
@@ -282,7 +282,7 @@ describe('Performance: uses-rel-preload audit', () => {
     const artifacts = mockArtifacts(networkRecords, defaultMainResourceUrl);
     const context = {settings: {}, computedCache: new Map()};
     const result = await UsesRelPreload.audit_(artifacts, context);
-    expect(result).toMatchObject({score: 1, details: {summary?.wastedMs: 0, items: []}});
+    expect(result).toMatchObject({score: 1, details: {summary: undefined, items: []}});
   });
 
   it(`shouldn't suggest preload for protocol data`, () => {
@@ -293,7 +293,7 @@ describe('Performance: uses-rel-preload audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     return UsesRelPreload.audit_(artifacts, context).then(output => {
       assert.equal(output.score, 1);
-      assert.equal(output.details.summary?.wastedMs, 0);
+      assert.equal(output.details.summary?.wastedMs, undefined);
       assert.equal(output.details.items.length, 0);
     });
   });

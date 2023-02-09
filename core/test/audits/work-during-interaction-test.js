@@ -63,6 +63,7 @@ Object {
             "valueType": "node",
           },
         ],
+        "isOpportunity": undefined,
         "items": Array [
           Object {
             "node": Object {
@@ -139,6 +140,7 @@ Object {
             "valueType": "ms",
           },
         ],
+        "isOpportunity": undefined,
         "items": Array [
           Object {
             "phase": Object {

@@ -317,7 +317,7 @@
       "numericUnit": "millisecond",
       "displayValue": "Root document took 570 ms",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [
           {
             "key": "url",
@@ -336,7 +336,10 @@
             "responseTime": 568.468
           }
         ],
-        "overallSavingsMs": 468.46799999999996
+        "summary": {
+          "wastedMs": 468.46799999999996
+        },
+        "isOpportunity": true
       }
     },
     "interactive": {
@@ -764,10 +767,10 @@
       "numericUnit": "millisecond",
       "displayValue": "",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [],
         "items": [],
-        "overallSavingsMs": 0
+        "isOpportunity": true
       }
     },
     "installable-manifest": {
@@ -1125,10 +1128,10 @@
       "score": null,
       "scoreDisplayMode": "notApplicable",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [],
         "items": [],
-        "overallSavingsMs": 0
+        "isOpportunity": true
       }
     },
     "uses-rel-preconnect": {
@@ -1142,10 +1145,10 @@
       "displayValue": "",
       "warnings": [],
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [],
         "items": [],
-        "overallSavingsMs": 0
+        "isOpportunity": true
       }
     },
     "font-display": {
@@ -2589,7 +2592,7 @@
       "numericUnit": "millisecond",
       "displayValue": "",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [
           {
             "key": "node",
@@ -2629,7 +2632,7 @@
             "wastedMs": 0
           }
         ],
-        "overallSavingsMs": 0,
+        "isOpportunity": true,
         "debugData": {
           "type": "debugdata",
           "initiatorPath": [
@@ -3965,11 +3968,10 @@
       "displayValue": "",
       "warnings": [],
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [],
         "items": [],
-        "overallSavingsMs": 0,
-        "overallSavingsBytes": 0
+        "isOpportunity": true
       }
     },
     "render-blocking-resources": {
@@ -3982,7 +3984,7 @@
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 0 ms",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [
           {
             "key": "url",
@@ -4032,7 +4034,7 @@
             "wastedMs": 879
           }
         ],
-        "overallSavingsMs": 0
+        "isOpportunity": true
       }
     },
     "unminified-css": {
@@ -4045,11 +4047,10 @@
       "numericUnit": "millisecond",
       "displayValue": "",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [],
         "items": [],
-        "overallSavingsMs": 0,
-        "overallSavingsBytes": 0
+        "isOpportunity": true
       }
     },
     "unminified-javascript": {
@@ -4063,7 +4064,7 @@
       "displayValue": "Potential savings of 82 KiB",
       "warnings": [],
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [
           {
             "key": "url",
@@ -4089,8 +4090,11 @@
             "wastedPercent": 50.176166426166425
           }
         ],
-        "overallSavingsMs": 750,
-        "overallSavingsBytes": 83568
+        "summary": {
+          "wastedBytes": 83568,
+          "wastedMs": 750
+        },
+        "isOpportunity": true
       }
     },
     "unused-css-rules": {
@@ -4103,11 +4107,10 @@
       "numericUnit": "millisecond",
       "displayValue": "",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [],
         "items": [],
-        "overallSavingsMs": 0,
-        "overallSavingsBytes": 0
+        "isOpportunity": true
       }
     },
     "unused-javascript": {
@@ -4120,7 +4123,7 @@
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 64 KiB",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [
           {
             "key": "url",
@@ -4162,8 +4165,11 @@
             "wastedPercent": 70.99531129443884
           }
         ],
-        "overallSavingsMs": 600,
-        "overallSavingsBytes": 65111
+        "summary": {
+          "wastedBytes": 65111,
+          "wastedMs": 600
+        },
+        "isOpportunity": true
       }
     },
     "modern-image-formats": {
@@ -4177,7 +4183,7 @@
       "displayValue": "Potential savings of 76 KiB",
       "warnings": [],
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [
           {
             "key": "node",
@@ -4266,8 +4272,11 @@
             "wastedWebpBytes": 9002
           }
         ],
-        "overallSavingsMs": 450,
-        "overallSavingsBytes": 77874.3
+        "summary": {
+          "wastedBytes": 77874.3,
+          "wastedMs": 450
+        },
+        "isOpportunity": true
       }
     },
     "uses-optimized-images": {
@@ -4281,11 +4290,10 @@
       "displayValue": "",
       "warnings": [],
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [],
         "items": [],
-        "overallSavingsMs": 0,
-        "overallSavingsBytes": 0
+        "isOpportunity": true
       }
     },
     "uses-text-compression": {
@@ -4298,7 +4306,7 @@
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 143 KiB",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [
           {
             "key": "url",
@@ -4328,8 +4336,11 @@
             "wastedBytes": 11647
           }
         ],
-        "overallSavingsMs": 1950,
-        "overallSavingsBytes": 146478
+        "summary": {
+          "wastedBytes": 146478,
+          "wastedMs": 1950
+        },
+        "isOpportunity": true
       }
     },
     "uses-responsive-images": {
@@ -4342,11 +4353,10 @@
       "numericUnit": "millisecond",
       "displayValue": "",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [],
         "items": [],
-        "overallSavingsMs": 0,
-        "overallSavingsBytes": 0
+        "isOpportunity": true
       }
     },
     "efficient-animated-content": {
@@ -4359,7 +4369,7 @@
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 666 KiB",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [
           {
             "key": "url",
@@ -4384,8 +4394,11 @@
             "wastedBytes": 682028
           }
         ],
-        "overallSavingsMs": 3300,
-        "overallSavingsBytes": 682028
+        "summary": {
+          "wastedBytes": 682028,
+          "wastedMs": 3300
+        },
+        "isOpportunity": true
       }
     },
     "duplicated-javascript": {
@@ -4398,11 +4411,10 @@
       "numericUnit": "millisecond",
       "displayValue": "",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [],
         "items": [],
-        "overallSavingsMs": 0,
-        "overallSavingsBytes": 0
+        "isOpportunity": true
       }
     },
     "legacy-javascript": {
@@ -4415,7 +4427,7 @@
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 21 KiB",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [
           {
             "key": "url",
@@ -4472,8 +4484,11 @@
             "totalBytes": 0
           }
         ],
-        "overallSavingsMs": 150,
-        "overallSavingsBytes": 21189
+        "summary": {
+          "wastedBytes": 21189,
+          "wastedMs": 150
+        },
+        "isOpportunity": true
       }
     },
     "doctype": {
@@ -4814,10 +4829,10 @@
       "numericValue": 0,
       "numericUnit": "millisecond",
       "details": {
-        "type": "opportunity",
+        "type": "table",
         "headings": [],
         "items": [],
-        "overallSavingsMs": 0
+        "isOpportunity": true
       }
     },
     "uses-passive-event-listeners": {

@@ -77,7 +77,7 @@ const SummaryTooltipAudits: FunctionComponent<{category: LH.ReportResult.Categor
     .filter(isRelevantAudit)
     .sort((a, b) => {
       // Remaining score should always be 0 for perf opportunities because weight is 0.
-      // In that case, we want to sort by `overallSavingsMs`.
+      // In that case, we want to sort by `wastedMs`.
       const remainingScoreA = getScoreToBeGained(a);
       const remainingScoreB = getScoreToBeGained(b);
       if (remainingScoreA !== remainingScoreB) return remainingScoreB - remainingScoreA;
