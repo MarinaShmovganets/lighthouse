@@ -321,6 +321,8 @@ Some of our docs have tests that run only in CI by default. To modify our docume
 
 This section details services that have integrated Lighthouse data. If you're working on a cool project integrating Lighthouse and would like to be featured here, file an issue to this repo or tweet at us [@_____lighthouse](https://twitter.com/____lighthouse)!
 
+* **[AwesomeTechStack](https://awesometechstack.com)** — Unlock the secrets of top-performing websites with AwesomeTechStack's comprehensive technology analysis. From security to modernity and performance, we'll provide you with the information you need to level up your tech stack's awesomeness.
+
 * **[Web Page Test](https://www.webpagetest.org)** — An [open source](https://github.com/WPO-Foundation/webpagetest) tool for measuring and analyzing the performance of web pages on real devices. Users can choose to produce a Lighthouse report alongside the analysis of WebPageTest results.
 
 * **[HTTPArchive](http://httparchive.org/)** - HTTPArchive tracks how the web is built by crawling 500k pages with Web Page Test, including Lighthouse results, and stores the information in BigQuery where it is [publicly available](https://discuss.httparchive.org/t/quickstart-guide-to-exploring-the-http-archive/682).
