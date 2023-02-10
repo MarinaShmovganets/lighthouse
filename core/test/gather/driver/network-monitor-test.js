@@ -217,14 +217,13 @@ describe('NetworkMonitor', () => {
     it('should ignore non-main-frame navigations', async () => {
       rootCdpSessionMock.send
         .mockResponse('Target.setAutoAttach')
-        .mockResponse('Target.setAutoAttach')
-        .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: '1'}}});
+        .mockResponse('Target.setAutoAttach');
       await monitor.enable();
 
       const type = 'Navigation';
       const frame = /** @type {*} */ ({id: '1', url: 'https://page.example.com'});
       rootDispatch({method: 'Page.frameNavigated', params: {frame, type}});
-      const iframe = /** @type {*} */ ({id: '2', url: 'https://iframe.example.com'});
+      const iframe = /** @type {*} */ ({id: '2', url: 'https://iframe.example.com', parentId: '1'});
       rootDispatch({method: 'Page.frameNavigated', params: {frame: iframe, type}});
 
       expect(await monitor.getNavigationUrls()).toEqual({
