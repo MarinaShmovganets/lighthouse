@@ -8,7 +8,7 @@ import FRGatherer from '../base-gatherer.js';
 import {waitForFrameNavigated, waitForLoadEvent} from '../driver/wait-for-condition.js';
 import DevtoolsLog from './devtools-log.js';
 
-const FAILURE_EVENT_TIMEOUT = 100;
+const AFTER_RETURN_TIMEOUT = 100;
 const TEMP_PAGE_PAUSE_TIMEOUT = 100;
 
 class BFCacheFailures extends FRGatherer {
@@ -122,14 +122,13 @@ class BFCacheFailures extends FRGatherer {
 
     // The bfcache failure event is not necessarily emitted by this point.
     // If we are expecting a bfcache failure event but haven't seen one, we should wait for it.
-    if (frameNavigatedEvent.type !== 'BackForwardCacheRestore' && !bfCacheEvent) {
-      await new Promise(resolve => setTimeout(resolve, FAILURE_EVENT_TIMEOUT));
+    // This timeout also allows the environment to "settle" before gathering enters it's cleanup phase.
+    await new Promise(resolve => setTimeout(resolve, AFTER_RETURN_TIMEOUT));
 
-      // If we still can't get the failure reasons after the timeout we should fail loudly,
-      // otherwise this gatherer will return no failures when there should be failures.
-      if (!bfCacheEvent) {
-        throw new Error('bfcache failed but the failure reasons were not emitted in time');
-      }
+    // If we still can't get the failure reasons after the timeout we should fail loudly,
+    // otherwise this gatherer will return no failures when there should be failures.
+    if (frameNavigatedEvent.type !== 'BackForwardCacheRestore' && !bfCacheEvent) {
+      throw new Error('bfcache failed but the failure reasons were not emitted in time');
     }
 
     session.off('Page.backForwardCacheNotUsed', onBfCacheNotUsed);
