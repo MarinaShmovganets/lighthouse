@@ -2,7 +2,7 @@
   "steps": [
     {
       "lhr": {
-        "lighthouseVersion": "10.0.0",
+        "lighthouseVersion": "10.0.1",
         "requestedUrl": "https://www.mikescerealshack.co/",
         "mainDocumentUrl": "https://www.mikescerealshack.co/",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/",
@@ -7449,7 +7449,7 @@
     },
     {
       "lhr": {
-        "lighthouseVersion": "10.0.0",
+        "lighthouseVersion": "10.0.1",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/search?q=call+of+duty",
         "fetchTime": "2023-01-13T23:27:51.982Z",
         "gatherMode": "timespan",
@@ -11150,7 +11150,7 @@
     },
     {
       "lhr": {
-        "lighthouseVersion": "10.0.0",
+        "lighthouseVersion": "10.0.1",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/search?q=call+of+duty",
         "fetchTime": "2023-01-13T23:28:01.888Z",
         "gatherMode": "snapshot",
@@ -15798,7 +15798,7 @@
     },
     {
       "lhr": {
-        "lighthouseVersion": "10.0.0",
+        "lighthouseVersion": "10.0.1",
         "requestedUrl": "https://www.mikescerealshack.co/corrections",
         "mainDocumentUrl": "https://www.mikescerealshack.co/corrections",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/corrections",
