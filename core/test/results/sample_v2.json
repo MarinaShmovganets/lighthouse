@@ -4751,7 +4751,7 @@
     "paste-preventing-inputs": {
       "id": "paste-preventing-inputs",
       "title": "Prevents users from pasting into input fields",
-      "description": "Preventing input pasting is bad practice for the UX, and weakens security by blocking password managers.[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
+      "description": "Preventing input pasting is a bad practice for the UX, and weakens security by blocking password managers.[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
       "score": 0,
       "scoreDisplayMode": "binary",
       "details": {
