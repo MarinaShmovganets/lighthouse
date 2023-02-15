@@ -94,9 +94,7 @@ describe('Navigation', async function() {
           assert.strictEqual(numNavigations, 6);
         }
 
-        // TODO: Reenable this for 10.0
-        // 9.6.x is forked so Lighthouse ToT is still using 9.5.0 as the version.
-        // assert.strictEqual(lhr.lighthouseVersion, '9.6.6');
+        assert.strictEqual(lhr.lighthouseVersion, '10.0.1');
         assert.match(lhr.finalUrl, /^https:\/\/localhost:[0-9]+\/test\/e2e\/resources\/lighthouse\/hello.html/);
 
         assert.strictEqual(lhr.configSettings.throttlingMethod, 'simulate');
@@ -105,20 +103,14 @@ describe('Navigation', async function() {
         assert.strictEqual(lhr.configSettings.throttling.rttMs, 150);
         assert.strictEqual(lhr.configSettings.screenEmulation.disabled, true);
         assert.include(lhr.configSettings.emulatedUserAgent, 'Mobile');
-
-        // A bug in FR caused `networkUserAgent` to be excluded from the LHR.
-        // https://github.com/GoogleChrome/lighthouse/pull/14392
-        // TODO: Reenable once the fix lands in DT.
-        if (mode === 'legacy') {
-          assert.include(lhr.environment.networkUserAgent, 'Mobile');
-        }
+        assert.include(lhr.environment.networkUserAgent, 'Mobile');
 
         assert.deepStrictEqual(artifacts.ViewportDimensions, {
-          innerHeight: 640,
-          innerWidth: 360,
-          outerHeight: 640,
-          outerWidth: 360,
-          devicePixelRatio: 3,
+          innerHeight: 823,
+          innerWidth: 412,
+          outerHeight: 823,
+          outerWidth: 412,
+          devicePixelRatio: 1.75,
         });
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
@@ -257,17 +249,9 @@ describe('Navigation', async function() {
         assert.strictEqual(lhr.configSettings.throttling.rttMs, 40);
         assert.strictEqual(lhr.configSettings.screenEmulation.disabled, true);
         assert.notInclude(lhr.configSettings.emulatedUserAgent, 'Mobile');
+        assert.notInclude(lhr.environment.networkUserAgent, 'Mobile');
 
-        // A bug in FR caused `networkUserAgent` to be excluded from the LHR.
-        // https://github.com/GoogleChrome/lighthouse/pull/14392
-        // TODO: Reenable once the fix lands in DT.
-        if (mode === 'legacy') {
-          assert.notInclude(lhr.environment.networkUserAgent, 'Mobile');
-        }
-
-        // This string is not translated in the Lighthouse roll yet.
-        // TODO: Use the translated version once the strings land in DT.
-        const viewTraceButton = await $textContent('View Original Trace', reportEl);
+        const viewTraceButton = await $textContent('Ver rastro original', reportEl);
         assert.ok(viewTraceButton);
 
         const footerIssueText = await reportEl.$eval('.lh-footer__version_issue', footerIssueEl => {

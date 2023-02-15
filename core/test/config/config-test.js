@@ -383,6 +383,20 @@ describe('Fraggle Rock Config', () => {
       if (!hasExtraArtifact) expect(resolvedConfig.artifacts).toContain('ExtraArtifact');
     });
 
+    it('should sort artifacts by internal priority', async () => {
+      const {resolvedConfig} = await initializeConfig('navigation', extensionConfig);
+      if (!resolvedConfig.artifacts) throw new Error(`No artifacts created`);
+
+      const last5 = resolvedConfig.artifacts.reverse().slice(0, 5).map(a => a.id);
+      expect(last5).toEqual([
+        'BFCacheFailures', // Has internal priority of 1
+        'FullPageScreenshot', // Has internal priority of 1
+        'ExtraArtifact', // Has default priority of 0
+        'traces', // Has default priority of 0
+        'devtoolsLogs', // Has default priority of 0
+      ]);
+    });
+
     it('should merge in navigations', async () => {
       const {resolvedConfig} = await initializeConfig('navigation', extensionConfig);
       if (!resolvedConfig.navigations) throw new Error(`No navigations created`);

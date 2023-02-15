@@ -78,6 +78,7 @@ module.exports = {
       argsIgnorePattern: '(^reject$|^_+$)',
       varsIgnorePattern: '(^_$|^LH$)',
     }],
+    'no-cond-assign': 2,
     'space-infix-ops': 2,
     'strict': [2, 'global'],
     'prefer-const': 2,

@@ -663,7 +663,7 @@
     "message": "D̂óĉt́ŷṕê ńâḿê ḿûśt̂ b́ê t́ĥé ŝt́r̂ín̂ǵ `html`"
   },
   "core/audits/dobetterweb/doctype.js | explanationLimitedQuirks": {
-    "message": "D̂óĉúm̂én̂t́ ĉón̂t́âín̂ś â d́ôćt̂ýp̂é t̂h́ât́ t̂ŕîǵĝér̂ś l̂ím̂ít̂éd̂-q́ûír̂ḱŝ-ḿôd́ê"
+    "message": "D̂óĉúm̂én̂t́ ĉón̂t́âín̂ś â `doctype` t́ĥát̂ t́r̂íĝǵêŕŝ `limited-quirks-mode`"
   },
   "core/audits/dobetterweb/doctype.js | explanationNoDoctype": {
     "message": "D̂óĉúm̂én̂t́ m̂úŝt́ ĉón̂t́âín̂ á d̂óĉt́ŷṕê"
@@ -675,7 +675,7 @@
     "message": "Êx́p̂éĉt́êd́ ŝýŝt́êḿÎd́ t̂ó b̂é âń êḿp̂t́ŷ śt̂ŕîńĝ"
   },
   "core/audits/dobetterweb/doctype.js | explanationWrongDoctype": {
-    "message": "D̂óĉúm̂én̂t́ ĉón̂t́âín̂ś â d́ôćt̂ýp̂é t̂h́ât́ t̂ŕîǵĝér̂ś q̂úîŕk̂ś-m̂ód̂é"
+    "message": "D̂óĉúm̂én̂t́ ĉón̂t́âín̂ś â `doctype` t́ĥát̂ t́r̂íĝǵêŕŝ `quirks-mode`"
   },
   "core/audits/dobetterweb/doctype.js | failureTitle": {
     "message": "P̂áĝé l̂áĉḱŝ t́ĥé ĤT́M̂Ĺ d̂óĉt́ŷṕê, t́ĥúŝ t́r̂íĝǵêŕîńĝ q́ûír̂ḱŝ-ḿôd́ê"
@@ -764,14 +764,14 @@
   "core/audits/dobetterweb/notification-on-start.js | title": {
     "message": "Âv́ôíd̂ś r̂éq̂úêśt̂ín̂ǵ t̂h́ê ńôt́îf́îćât́îón̂ ṕêŕm̂íŝśîón̂ ón̂ ṕâǵê ĺôád̂"
   },
-  "core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | description": {
-    "message": "P̂ŕêv́êńt̂ín̂ǵ p̂áŝśŵór̂d́ p̂áŝt́îńĝ ún̂d́êŕm̂ín̂éŝ ǵôód̂ śêćûŕît́ŷ ṕôĺîćŷ. [Ĺêár̂ń m̂ór̂é âb́ôút̂ úŝér̂-f́r̂íêńd̂ĺŷ ṕâśŝẃôŕd̂ f́îél̂d́ŝ](https://developer.chrome.com/docs/lighthouse/best-practices/password-inputs-can-be-pasted-into/)."
+  "core/audits/dobetterweb/paste-preventing-inputs.js | description": {
+    "message": "P̂ŕêv́êńt̂ín̂ǵ îńp̂út̂ ṕâśt̂ín̂ǵ îś â b́âd́ p̂ŕâćt̂íĉé f̂ór̂ t́ĥé ÛX́, âńd̂ ẃêák̂én̂ś ŝéĉúr̂ít̂ý b̂ý b̂ĺôćk̂ín̂ǵ p̂áŝśŵór̂d́ m̂án̂áĝér̂ś.[L̂éâŕn̂ ḿôŕê áb̂óût́ ûśêŕ-f̂ŕîén̂d́l̂ý îńp̂út̂ f́îél̂d́ŝ](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/)."
   },
-  "core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | failureTitle": {
-    "message": "P̂ŕêv́êńt̂ś ûśêŕŝ t́ô ṕâśt̂é îńt̂ó p̂áŝśŵór̂d́ f̂íêĺd̂ś"
+  "core/audits/dobetterweb/paste-preventing-inputs.js | failureTitle": {
+    "message": "P̂ŕêv́êńt̂ś ûśêŕŝ f́r̂óm̂ ṕâśt̂ín̂ǵ îńt̂ó îńp̂út̂ f́îél̂d́ŝ"
   },
-  "core/audits/dobetterweb/password-inputs-can-be-pasted-into.js | title": {
-    "message": "Âĺl̂óŵś ûśêŕŝ t́ô ṕâśt̂é îńt̂ó p̂áŝśŵór̂d́ f̂íêĺd̂ś"
+  "core/audits/dobetterweb/paste-preventing-inputs.js | title": {
+    "message": "Âĺl̂óŵś ûśêŕŝ t́ô ṕâśt̂é îńt̂ó îńp̂út̂ f́îél̂d́ŝ"
   },
   "core/audits/dobetterweb/uses-http2.js | columnProtocol": {
     "message": "P̂ŕôt́ôćôĺ"
@@ -1145,10 +1145,10 @@
   "core/audits/preload-fonts.js | title": {
     "message": "F̂ón̂t́ŝ ẃît́ĥ `font-display: optional` ár̂é p̂ŕêĺôád̂éd̂"
   },
-  "core/audits/preload-lcp-image.js | description": {
+  "core/audits/prioritize-lcp-image.js | description": {
     "message": "Îf́ t̂h́ê ĹĈṔ êĺêḿêńt̂ íŝ d́ŷńâḿîćâĺl̂ý âd́d̂éd̂ t́ô t́ĥé p̂áĝé, ŷóû śĥóûĺd̂ ṕr̂él̂óâd́ t̂h́ê ím̂áĝé îń ôŕd̂ér̂ t́ô ím̂ṕr̂óv̂é L̂ĆP̂. [Ĺêár̂ń m̂ór̂é âb́ôút̂ ṕr̂él̂óâd́îńĝ ĹĈṔ êĺêḿêńt̂ś](https://web.dev/optimize-lcp/#optimize-when-the-resource-is-discovered)."
   },
-  "core/audits/preload-lcp-image.js | title": {
+  "core/audits/prioritize-lcp-image.js | title": {
     "message": "P̂ŕêĺôád̂ Ĺâŕĝéŝt́ Ĉón̂t́êńt̂f́ûĺ P̂áîńt̂ ím̂áĝé"
   },
   "core/audits/redirects.js | description": {
@@ -1869,7 +1869,7 @@
     "message": "Îńêĺîǵîb́l̂é ÂṔÎś ŵér̂é ûśêd́."
   },
   "core/lib/bf-cache-strings.js | injectedJavascript": {
-    "message": "ÎṔâǵêś t̂h́ât́ Ĵáv̂áŜćr̂íp̂t́ îś îńĵéĉt́êd́ îńt̂ó b̂ý êx́t̂én̂śîón̂ś âŕê ńôt́ ĉúr̂ŕêńt̂ĺŷ él̂íĝíb̂ĺê f́ôŕ b̂áĉḱ/f̂ór̂ẃâŕd̂ ćâćĥé."
+    "message": "P̂áĝéŝ t́ĥát̂ J́âv́âŚĉŕîṕt̂ íŝ ín̂j́êćt̂éd̂ ín̂t́ô b́ŷ éx̂t́êńŝíôńŝ ár̂é n̂ót̂ ćûŕr̂én̂t́l̂ý êĺîǵîb́l̂é f̂ór̂ b́âćk̂/f́ôŕŵár̂d́ ĉáĉh́ê."
   },
   "core/lib/bf-cache-strings.js | injectedStyleSheet": {
     "message": "P̂áĝéŝ t́ĥát̂ Śt̂ýl̂éŜh́êét̂ íŝ ín̂j́êćt̂éd̂ ín̂t́ô b́ŷ éx̂t́êńŝíôńŝ ár̂é n̂ót̂ ćûŕr̂én̂t́l̂ý êĺîǵîb́l̂é f̂ór̂ b́âćk̂/f́ôŕŵár̂d́ ĉáĉh́ê."
@@ -2819,7 +2819,7 @@
   "node_modules/lighthouse-stack-packs/packs/next.js | offscreen-images": {
     "message": "Ûśê t́ĥé `next/image` ĉóm̂ṕôńêńt̂ ín̂śt̂éâd́ ôf́ `<img>` t̂ó âút̂óm̂át̂íĉál̂ĺŷ ĺâźŷ-ĺôád̂ ím̂áĝéŝ. [Ĺêár̂ń m̂ór̂é](https://nextjs.org/docs/basic-features/image-optimization)."
   },
-  "node_modules/lighthouse-stack-packs/packs/next.js | preload-lcp-image": {
+  "node_modules/lighthouse-stack-packs/packs/next.js | prioritize-lcp-image": {
     "message": "Ûśê t́ĥé `next/image` ĉóm̂ṕôńêńt̂ án̂d́ ŝét̂ \"ṕr̂íôŕît́ŷ\" t́ô t́r̂úê t́ô ṕr̂él̂óâd́ L̂ĆP̂ ím̂áĝé. [L̂éâŕn̂ ḿôŕê](https://nextjs.org/docs/api-reference/next/image#priority)."
   },
   "node_modules/lighthouse-stack-packs/packs/next.js | render-blocking-resources": {
@@ -2855,7 +2855,7 @@
   "node_modules/lighthouse-stack-packs/packs/nuxt.js | offscreen-images": {
     "message": "Ûśê t́ĥé `nuxt/image` ĉóm̂ṕôńêńt̂ án̂d́ ŝét̂ `loading=\"lazy\"` f́ôŕ ôf́f̂śĉŕêén̂ ím̂áĝéŝ. [Ĺêár̂ń m̂ór̂é](https://image.nuxtjs.org/components/nuxt-img#loading)."
   },
-  "node_modules/lighthouse-stack-packs/packs/nuxt.js | preload-lcp-image": {
+  "node_modules/lighthouse-stack-packs/packs/nuxt.js | prioritize-lcp-image": {
     "message": "Ûśê t́ĥé `nuxt/image` ĉóm̂ṕôńêńt̂ án̂d́ ŝṕêćîf́ŷ `preload` f́ôŕ L̂ĆP̂ ím̂áĝé. [L̂éâŕn̂ ḿôŕê](https://image.nuxtjs.org/components/nuxt-img#preload)."
   },
   "node_modules/lighthouse-stack-packs/packs/nuxt.js | unsized-images": {
@@ -3084,7 +3084,7 @@
     "message": "Êḿûĺât́êd́ D̂éŝḱt̂óp̂"
   },
   "report/renderer/report-utils.js | runtimeMobileEmulation": {
-    "message": "Êḿûĺât́êd́ M̂ót̂ó Ĝ4"
+    "message": "Êḿûĺât́êd́ M̂ót̂ó Ĝ Ṕôẃêŕ"
   },
   "report/renderer/report-utils.js | runtimeNoEmulation": {
     "message": "N̂ó êḿûĺât́îón̂"

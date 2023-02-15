@@ -37,8 +37,7 @@ describe('.gotoURL', () => {
       .mockResponse('Page.enable') // gotoURL's Page.enable
       .mockResponse('Page.setLifecycleEventsEnabled')
       .mockResponse('Page.navigate')
-      .mockResponse('Runtime.evaluate')
-      .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: 'ABC'}}});
+      .mockResponse('Runtime.evaluate');
   });
 
   it('will track redirects through gotoURL load with warning', async () => {
@@ -71,10 +70,10 @@ describe('.gotoURL', () => {
     navigate({...baseFrame, url: 'https://example.com'});
     navigate({...baseFrame, url: 'https://www.example.com'});
     navigate({...baseFrame, url: 'https://m.example.com'});
-    navigate({...baseFrame, id: 'ad1', url: 'https://frame-a.example.com'});
+    navigate({...baseFrame, id: 'ad1', url: 'https://frame-a.example.com', parentId: 'ABC'});
     navigate({...baseFrame, url: 'https://m.example.com/client'});
-    navigate({...baseFrame, id: 'ad2', url: 'https://frame-b.example.com'});
-    navigate({...baseFrame, id: 'ad3', url: 'https://frame-c.example.com'});
+    navigate({...baseFrame, id: 'ad2', url: 'https://frame-b.example.com', parentId: 'ABC'});
+    navigate({...baseFrame, id: 'ad3', url: 'https://frame-c.example.com', parentId: 'ABC'});
 
     loadListener(baseFrame);
     await flushAllTimersAndMicrotasks();

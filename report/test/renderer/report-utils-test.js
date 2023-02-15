@@ -40,9 +40,9 @@ describe('util helpers', () => {
   it('builds device emulation string', () => {
     const get = settings => ReportUtils.getEmulationDescriptions(settings).deviceEmulation;
     /* eslint-disable max-len */
-    assert.equal(get({formFactor: 'mobile', screenEmulation: {disabled: false, mobile: true}}), 'Emulated Moto G4');
+    assert.equal(get({formFactor: 'mobile', screenEmulation: {disabled: false, mobile: true}}), 'Emulated Moto G Power');
     assert.equal(get({formFactor: 'mobile', screenEmulation: {disabled: true, mobile: true}}), 'No emulation');
-    assert.equal(get({formFactor: 'mobile', screenEmulation: {disabled: true, mobile: true}, channel: 'devtools'}), 'Emulated Moto G4');
+    assert.equal(get({formFactor: 'mobile', screenEmulation: {disabled: true, mobile: true}, channel: 'devtools'}), 'Emulated Moto G Power');
     assert.equal(get({formFactor: 'desktop', screenEmulation: {disabled: false, mobile: false}}), 'Emulated Desktop');
     assert.equal(get({formFactor: 'desktop', screenEmulation: {disabled: true, mobile: false}}), 'No emulation');
     assert.equal(get({formFactor: 'desktop', screenEmulation: {disabled: true, mobile: true}, channel: 'devtools'}), 'Emulated Desktop');
@@ -94,153 +94,6 @@ describe('util helpers', () => {
   });
 
   describe('#prepareReportResult', () => {
-    describe('backward compatibility', () => {
-      it('corrects underscored `notApplicable` scoreDisplayMode', () => {
-        const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
-
-        let notApplicableCount = 0;
-        Object.values(clonedSampleResult.audits).forEach(audit => {
-          if (audit.scoreDisplayMode === 'notApplicable') {
-            notApplicableCount++;
-            audit.scoreDisplayMode = 'not_applicable';
-          }
-        });
-
-        assert.ok(notApplicableCount > 20); // Make sure something's being tested.
-
-        // Original audit results should be restored.
-        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
-
-        assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
-      });
-
-      it('corrects undefined auditDetails.type to `debugdata`', () => {
-        const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
-
-        // Delete debugdata details types.
-        let undefinedCount = 0;
-        for (const audit of Object.values(clonedSampleResult.audits)) {
-          if (audit.details && audit.details.type === 'debugdata') {
-            undefinedCount++;
-            delete audit.details.type;
-          }
-        }
-        assert.ok(undefinedCount > 4); // Make sure something's being tested.
-        assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
-
-        // Original audit results should be restored.
-        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
-        assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
-      });
-
-      it('corrects `diagnostic` auditDetails.type to `debugdata`', () => {
-        const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
-
-        // Change debugdata details types.
-        let diagnosticCount = 0;
-        for (const audit of Object.values(clonedSampleResult.audits)) {
-          if (audit.details && audit.details.type === 'debugdata') {
-            diagnosticCount++;
-            audit.details.type = 'diagnostic';
-          }
-        }
-        assert.ok(diagnosticCount > 4); // Make sure something's being tested.
-        assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
-
-        // Original audit results should be restored.
-        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
-        assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
-      });
-
-      it('corrects screenshots in the `filmstrip` auditDetails.type', () => {
-        const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
-
-        // Strip filmstrip screenshots of data URL prefix.
-        let filmstripCount = 0;
-        for (const audit of Object.values(clonedSampleResult.audits)) {
-          if (audit.details && audit.details.type === 'filmstrip') {
-            filmstripCount++;
-            for (const screenshot of audit.details.items) {
-              screenshot.data = screenshot.data.slice('data:image/jpeg;base64,'.length);
-            }
-          }
-        }
-        assert.ok(filmstripCount > 0); // Make sure something's being tested.
-        assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
-
-        // Original audit results should be restored.
-        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
-        assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
-      });
-
-      it('moves full-page-screenshot audit', () => {
-        const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
-
-        clonedSampleResult.audits['full-page-screenshot'] = {
-          details: {
-            type: 'full-page-screenshot',
-            ...sampleResult.fullPageScreenshot,
-          },
-        };
-        delete clonedSampleResult.fullPageScreenshot;
-
-        assert.ok(clonedSampleResult.audits['full-page-screenshot'].details.nodes); // Make sure something's being tested.
-        assert.notDeepStrictEqual(clonedSampleResult.audits, sampleResult.audits);
-
-        // Original audit results should be restored.
-        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
-        assert.deepStrictEqual(preparedResult.audits, sampleResult.audits);
-        assert.deepStrictEqual(preparedResult.fullPageScreenshot, sampleResult.fullPageScreenshot);
-      });
-
-      it('corrects performance category without hidden group', () => {
-        const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
-
-        clonedSampleResult.lighthouseVersion = '8.6.0';
-        delete clonedSampleResult.categoryGroups['hidden'];
-        for (const auditRef of clonedSampleResult.categories['performance'].auditRefs) {
-          if (auditRef.group === 'hidden') {
-            delete auditRef.group;
-          } else if (!auditRef.group) {
-            auditRef.group = 'diagnostics';
-          }
-        }
-        assert.notDeepStrictEqual(clonedSampleResult.categories, sampleResult.categories);
-        assert.notDeepStrictEqual(clonedSampleResult.categoryGroups, sampleResult.categoryGroups);
-
-        // Original audit results should be restored.
-        const clonedPreparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
-        const preparedResult = ReportUtils.prepareReportResult(sampleResult);
-        assert.deepStrictEqual(clonedPreparedResult.categories, preparedResult.categories);
-        assert.deepStrictEqual(clonedPreparedResult.categoryGroups, preparedResult.categoryGroups);
-      });
-
-      it('converts old opportunity table column headings to consolidated table headings', () => {
-        const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
-
-        const auditsWithTableDetails = Object.values(clonedSampleResult.audits)
-          .filter(audit => audit.details?.type === 'table');
-        assert.notEqual(auditsWithTableDetails.length, 0);
-        for (const audit of auditsWithTableDetails) {
-          for (const heading of audit.details.headings) {
-            heading.itemType = heading.valueType;
-            heading.text = heading.label;
-            delete heading.valueType;
-            delete heading.label;
-
-            if (heading.subItemsHeading) {
-              heading.subItemsHeading.itemType = heading.subItemsHeading.valueType;
-              // @ts-expect-error
-              delete heading.subItemsHeading.valueType;
-            }
-          }
-        }
-
-        const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
-        assert.deepStrictEqual(sampleResult.audits, preparedResult.audits);
-      });
-    });
-
     it('appends stack pack descriptions to auditRefs', () => {
       const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
       const iconDataURL = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg"%3E%3C/svg%3E';
@@ -265,6 +118,34 @@ describe('util helpers', () => {
       // No stack pack on audit wth no stack pack.
       const interactiveRef = perfAuditRefs.find(ref => ref.id === 'interactive');
       assert.strictEqual(interactiveRef.stackPacks, undefined);
+    });
+
+    it('identifies entities on items of tables with urls', () => {
+      const clonedSampleResult = JSON.parse(JSON.stringify(sampleResult));
+
+      const auditsWithTableDetails = Object.values(clonedSampleResult.audits)
+        .filter(audit => audit.details?.type === 'table');
+      assert.notEqual(auditsWithTableDetails.length, 0);
+
+      // collect audit names that might have urls
+      const auditsThatDontHaveUrls = ['bf-cache', 'font-size']; // no urls in data-set
+      const auditsWithUrls = auditsWithTableDetails.filter(audit => {
+        if (auditsThatDontHaveUrls.includes(audit.id)) return false;
+        const urlFields = ['url', 'source-location'];
+        return audit.details.headings.some(heading =>
+          urlFields.includes(heading.valueType) ||
+          urlFields.includes(heading.subItemsHeading?.valueType)
+        );
+      }).map(audit => audit.id);
+      assert.notEqual(auditsWithUrls.length, 0);
+
+      const preparedResult = ReportUtils.prepareReportResult(clonedSampleResult);
+
+      // ensure each audit that had urls detected to have marked entities.
+      for (const id of auditsWithUrls) {
+        const foundEntities = preparedResult.audits[id].details.items.some(item => item.entity);
+        assert.equal(foundEntities, true);
+      }
     });
   });
 

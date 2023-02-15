@@ -204,6 +204,44 @@ const expectations = {
       lineNumber: '>300',
       columnNumber: '>30',
     }],
+    DevtoolsLog: {
+      _includes: [
+        // Ensure we are getting async call stacks.
+        {
+          method: 'Network.requestWillBeSent',
+          params: {
+            type: 'Image',
+            request: {
+              url: 'http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?async',
+            },
+            initiator: {
+              type: 'script',
+              stack: {
+                callFrames: [],
+                parent: {
+                  description: 'Image',
+                  callFrames: [
+                    {
+                      'functionName': '',
+                      'url': 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                    },
+                  ],
+                  parent: {
+                    description: 'Promise.then',
+                    callFrames: [
+                      {
+                        'functionName': '',
+                        'url': 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
   },
   lhr: {
     requestedUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
@@ -341,7 +379,7 @@ const expectations = {
           ],
         },
       },
-      'password-inputs-can-be-pasted-into': {
+      'paste-preventing-inputs': {
         score: 0,
         details: {
           items: {
@@ -355,9 +393,9 @@ const expectations = {
           items: {
             0: {
               displayedAspectRatio: /^120 x 15/,
-              url: 'http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar1',
+              url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?iar1',
             },
-            length: 1,
+            length: 2,
           },
         },
       },
@@ -498,10 +536,37 @@ const expectations = {
           ],
         },
       },
+      'prioritize-lcp-image': {
+        score: 1,
+        numericValue: 0,
+        details: {
+          items: [{
+            node: {
+              snippet: '<h2 id="toppy" style="background-image:url(\'\');">',
+              nodeLabel: 'Do better web tester page',
+            },
+            url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?lcp',
+            wastedMs: 0,
+          }],
+          debugData: {
+            initiatorPath: [{
+              url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?lcp',
+              initiatorType: 'parser',
+            }, {
+              url: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true',
+              initiatorType: 'parser',
+            }, {
+              url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+              initiatorType: 'other',
+            }],
+            pathLength: 3,
+          },
+        },
+      },
     },
     fullPageScreenshot: {
       screenshot: {
-        width: 360,
+        width: 412,
         // Allow for differences in platforms.
         height: '1350±100',
         data: /^data:image\/webp;.{500,}/,

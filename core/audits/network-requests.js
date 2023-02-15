@@ -65,8 +65,8 @@ class NetworkRequests extends Audit {
         url: UrlUtils.elideDataURI(record.url),
         protocol: record.protocol,
         rendererStartTime: normalizeTime(record.rendererStartTime),
-        startTime: normalizeTime(record.startTime),
-        endTime: normalizeTime(record.endTime),
+        networkRequestTime: normalizeTime(record.networkRequestTime),
+        networkEndTime: normalizeTime(record.networkEndTime),
         finished: record.finished,
         transferSize: record.transferSize,
         resourceSize: record.resourceSize,
@@ -88,8 +88,8 @@ class NetworkRequests extends Audit {
     const headings = [
       {key: 'url', valueType: 'url', label: 'URL'},
       {key: 'protocol', valueType: 'text', label: 'Protocol'},
-      {key: 'startTime', valueType: 'ms', granularity: 1, label: 'Start Time'},
-      {key: 'endTime', valueType: 'ms', granularity: 1, label: 'End Time'},
+      {key: 'networkRequestTime', valueType: 'ms', granularity: 1, label: 'Network Request Time'},
+      {key: 'networkEndTime', valueType: 'ms', granularity: 1, label: 'Network End Time'},
       {
         key: 'transferSize',
         valueType: 'bytes',
