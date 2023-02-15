@@ -934,7 +934,7 @@ Object {
     });
   });
 
-  it('manages cross-process / cross-iframe traces', () => {
+  describe('manages cross-process / cross-iframe traces', () => {
     function summarizeTrace(trace) {
       const processed = TraceProcessor.processTrace(trace);
       const keyEventsLen = processed._keyEvents.length;
@@ -946,34 +946,33 @@ Object {
       [...processed._rendererPidToTid.keys()].forEach(pid => mainFramePids.add(pid));
       return {processEventsPct, frameEventsPct, mainFramePids};
     }
-    // Single PID trace
-    const lcpTraceSummarized = summarizeTrace(lcpTrace);
-    expect(lcpTraceSummarized.mainFramePids.size).toEqual(1);
-    // The primary process events should make up more than 40% of all key trace events
-    expect(lcpTraceSummarized.processEventsPct).toBeGreaterThanOrEqual(0.4);
-    // The main frame's events should make up more than 40% of all key trace events
-    expect(lcpTraceSummarized.frameEventsPct).toBeGreaterThanOrEqual(0.4);
 
-    // Multi PID trace
-    const pidChangeTraceSummarized = summarizeTrace(pidChangeTrace);
-    expect(pidChangeTraceSummarized.mainFramePids.size).toEqual(2);
-    // The primary process events should make up more than 40% of all key trace events
-    expect(pidChangeTraceSummarized.processEventsPct).toBeGreaterThanOrEqual(0.4);
+    it('with a basic single PID trace', () => {
+      const lcpTraceSummarized = summarizeTrace(lcpTrace);
+      expect(lcpTraceSummarized.mainFramePids.size).toEqual(1);
+      // The primary process events should make up more than 40% of all key trace events
+      expect(lcpTraceSummarized.processEventsPct).toBeGreaterThanOrEqual(0.4);
+      // The main frame's events should make up more than 40% of all key trace events
+      expect(lcpTraceSummarized.frameEventsPct).toBeGreaterThanOrEqual(0.4);
+    });
 
-    // The main frame's events should make up more than 40% of all key trace events
-    // TODO: fix!
-    // expect(pidChangeTraceSummarized.frameEventsPct).toBeGreaterThanOrEqual(0.4);
-
+    it('with a multi PID trace', () => {
+      const pidChangeTraceSummarized = summarizeTrace(pidChangeTrace);
+      expect(pidChangeTraceSummarized.mainFramePids.size).toEqual(2);
+      // The primary process events should make up more than 40% of all key trace events
+      expect(pidChangeTraceSummarized.processEventsPct).toBeGreaterThanOrEqual(0.4);
+      // The main frame's events should make up more than 40% of all key trace events
+      // TODO: fix!
+      // expect(pidChangeTraceSummarized.frameEventsPct).toBeGreaterThanOrEqual(0.4);
+    });
 
     // FrameCommittedInBrowser w/o processId, but w/ processPsuedoId, and later a ProcessReadyInBrowser
-    //
-    // A 'normal' FrameCommittedInBrowser's data is:
-    //                 {"frame":"FRAME_ID","name":"","processId":72647,"url":"https://memegen.corp.google.com/"}
-    // But if the processId isn't ready at frame creation, we get this pair:
-    // {"args":{"data":{"frame":"FRAME_ID","name":"","processPseudoId":"0x7ff70022ca00","url":"https://memegen.com/"}},"cat":"disabled-by-default-devtools.timeline","name":"FrameCommittedInBrowser","ph":"I","pid":744,"s":"t","tid":775,"ts":123265406529,"tts":10824502153},
-    // {"args":{"data":{"frame":"FRAME_ID","processId":72647,"processPseudoId":"0x7ff70022ca00"}},"cat":"disabled-by-default-devtools.timeline","name":"ProcessReadyInBrowser","ph":"I","pid":744,"s":"t","tid":775,"ts":123265450207,"tts":10824519750},
-
-    {
+    it('with a processPsuedoId navigation', () => {
+      // A 'normal' FrameCommittedInBrowser's data is:
+      //                 {"frame":"FRAME_ID","name":"","processId":72647,"url":"https://memegen.corp.google.com/"}
+      // But if the processId isn't ready at frame creation, we get this pair:
+      // {"args":{"data":{"frame":"FRAME_ID","name":"","processPseudoId":"0x7ff70022ca00","url":"https://memegen.com/"}},"cat":"disabled-by-default-devtools.timeline","name":"FrameCommittedInBrowser","ph":"I","pid":744,"s":"t","tid":775,"ts":123265406529,"tts":10824502153},
+      // {"args":{"data":{"frame":"FRAME_ID","processId":72647,"processPseudoId":"0x7ff70022ca00"}},"cat":"disabled-by-default-devtools.timeline","name":"ProcessReadyInBrowser","ph":"I","pid":744,"s":"t","tid":775,"ts":123265450207,"tts":10824519750},
       const psuedoProcTrace = JSON.parse(JSON.stringify(decentlyModernTrace));
       const fcibEvt = psuedoProcTrace.traceEvents.find(e => e.name === 'FrameCommittedInBrowser');
       const {url, processId, frame, name} = fcibEvt.args.data;
@@ -990,6 +989,6 @@ Object {
       expect(psuedoProcSummarized.mainFramePids.size).toEqual(1);
       // The primary process events should make up more than 40% of all key trace events
       expect(psuedoProcSummarized.processEventsPct).toBeGreaterThanOrEqual(0.4);
-    }
+    });
   });
 });
