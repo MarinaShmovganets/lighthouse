@@ -6,6 +6,7 @@
 
 import {Audit} from '../audit.js';
 import * as i18n from '../../lib/i18n/i18n.js';
+import {ProcessedTrace} from '../../computed/processed-trace.js';
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on the doctype of a page. This descriptive title is shown to users when the pages's doctype is set to HTML. */
@@ -43,15 +44,16 @@ class Doctype extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
       requiredArtifacts: ['Doctype'],
-      __internalOptionalArtifacts: ['InspectorIssues'],
+      __internalOptionalArtifacts: ['InspectorIssues', 'traces'],
     };
   }
 
   /**
    * @param {LH.Artifacts} artifacts
-   * @return {LH.Audit.Product}
+   * @param {LH.Audit.Context} context
+   * @return {Promise<LH.Audit.Product>}
    */
-  static audit(artifacts) {
+  static async audit(artifacts, context) {
     if (!artifacts.Doctype) {
       return {
         score: 0,
@@ -64,7 +66,16 @@ class Doctype extends Audit {
     const doctypePublicId = artifacts.Doctype.publicId;
     const doctypeSystemId = artifacts.Doctype.systemId;
     const compatMode = artifacts.Doctype.documentCompatMode;
-    const quirksModeIssues = artifacts.InspectorIssues?.quirksModeIssue || [];
+
+    /** @type {LH.Crdp.Audits.QuirksModeIssueDetails[]} */
+    let quirksModeIssues = [];
+    if (artifacts.traces && artifacts.InspectorIssues) {
+      const trace = artifacts.traces[Audit.DEFAULT_PASS];
+      const processedTrace = await ProcessedTrace.request(trace, context);
+      const mainFrameId = processedTrace.mainFrameInfo.frameId;
+      quirksModeIssues =
+        artifacts.InspectorIssues.quirksModeIssue.filter(issue => issue.frameId === mainFrameId);
+    }
 
     // Can only determine limited quirks mode with some helps from the protocol via
     // inspector issues. But cannot get inspector issues in snapshot mode, so in that

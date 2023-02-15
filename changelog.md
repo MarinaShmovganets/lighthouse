@@ -1,3 +1,28 @@
+<a name="10.0.1"></a>
+# 10.0.1 (2023-02-14)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v10.0.0...v10.0.1)
+
+We expect this release to ship in the DevTools of [Chrome 112](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## Core
+
+* reduce DevTools flakiness ([#14782](https://github.com/GoogleChrome/lighthouse/pull/14782))
+* doctype: only consider main frame ([#14795](https://github.com/GoogleChrome/lighthouse/pull/14795))
+* paste-preventing-inputs: rephrase description ([#14794](https://github.com/GoogleChrome/lighthouse/pull/14794))
+
+## Deps
+
+* move quibble to dev deps ([#14780](https://github.com/GoogleChrome/lighthouse/pull/14780))
+
+## Docs
+
+* split changelog at 10.0 ([#14778](https://github.com/GoogleChrome/lighthouse/pull/14778))
+* changelog: minor v10 edits ([#14777](https://github.com/GoogleChrome/lighthouse/pull/14777))
+
+## Misc
+
+* update .npmignore ([#14779](https://github.com/GoogleChrome/lighthouse/pull/14779))
+
 <a name="10.0.0"></a>
 # 10.0.0 (2023-02-09)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v9.6.8...v10.0.0)

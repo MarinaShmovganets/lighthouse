@@ -2,7 +2,7 @@
   "steps": [
     {
       "lhr": {
-        "lighthouseVersion": "10.0.0",
+        "lighthouseVersion": "10.0.1",
         "requestedUrl": "https://www.mikescerealshack.co/",
         "mainDocumentUrl": "https://www.mikescerealshack.co/",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/",
@@ -3032,7 +3032,7 @@
           "paste-preventing-inputs": {
             "id": "paste-preventing-inputs",
             "title": "Allows users to paste into input fields",
-            "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
+            "description": "Preventing input pasting is a bad practice for the UX, and weakens security by blocking password managers.[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -7449,7 +7449,7 @@
     },
     {
       "lhr": {
-        "lighthouseVersion": "10.0.0",
+        "lighthouseVersion": "10.0.1",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/search?q=call+of+duty",
         "fetchTime": "2023-01-13T23:27:51.982Z",
         "gatherMode": "timespan",
@@ -11150,7 +11150,7 @@
     },
     {
       "lhr": {
-        "lighthouseVersion": "10.0.0",
+        "lighthouseVersion": "10.0.1",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/search?q=call+of+duty",
         "fetchTime": "2023-01-13T23:28:01.888Z",
         "gatherMode": "snapshot",
@@ -13136,7 +13136,7 @@
           "paste-preventing-inputs": {
             "id": "paste-preventing-inputs",
             "title": "Allows users to paste into input fields",
-            "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
+            "description": "Preventing input pasting is a bad practice for the UX, and weakens security by blocking password managers.[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -15798,7 +15798,7 @@
     },
     {
       "lhr": {
-        "lighthouseVersion": "10.0.0",
+        "lighthouseVersion": "10.0.1",
         "requestedUrl": "https://www.mikescerealshack.co/corrections",
         "mainDocumentUrl": "https://www.mikescerealshack.co/corrections",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/corrections",
@@ -18791,7 +18791,7 @@
           "paste-preventing-inputs": {
             "id": "paste-preventing-inputs",
             "title": "Allows users to paste into input fields",
-            "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
+            "description": "Preventing input pasting is a bad practice for the UX, and weakens security by blocking password managers.[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
