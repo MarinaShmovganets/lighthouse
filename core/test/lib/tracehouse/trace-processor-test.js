@@ -978,7 +978,7 @@ Object {
       const fcibEvt = psuedoProcTrace.traceEvents.find(e => e.name === 'FrameCommittedInBrowser');
       const {url, processId, frame, name} = fcibEvt.args.data;
       expect(processId).toBeTruthy();
-      fcibEvt.args.data = {frame, name, url, process, processPseudoId: '0xbaabaa'};
+      fcibEvt.args.data = {frame, name, url, processPseudoId: '0xbaabaa'};
 
       const procReadyEvt = JSON.parse(JSON.stringify(fcibEvt));
       procReadyEvt.name = 'ProcessReadyInBrowser';
