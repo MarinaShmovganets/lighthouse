@@ -43,11 +43,11 @@ async function getPageFromConnection(connection) {
     await connection.sendCommand('Target.getTargetInfo', undefined);
   const {frameTree} = await connection.sendCommand('Page.getFrameTree', undefined);
 
-  const pptrConnection = new PptrConnection(
-    mainTargetInfo.url,
-    // @ts-expect-error Hack to access the WRS transport layer.
-    connection.channel_.root_.transport_
-  );
+  // @ts-expect-error Hack to access the WRS/SRS transport layer.
+  const channel = connection.channel_ || connection.rootSessionConnection_;
+  const transport = channel.root_.transport_;
+
+  const pptrConnection = new PptrConnection(mainTargetInfo.url, transport);
 
   const browser = await CDPBrowser._create(
     'chrome',
