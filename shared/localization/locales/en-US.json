@@ -765,7 +765,7 @@
     "message": "Avoids requesting the notification permission on page load"
   },
   "core/audits/dobetterweb/paste-preventing-inputs.js | description": {
-    "message": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/)."
+    "message": "Preventing input pasting is a bad practice for the UX, and weakens security by blocking password managers.[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/)."
   },
   "core/audits/dobetterweb/paste-preventing-inputs.js | failureTitle": {
     "message": "Prevents users from pasting into input fields"
@@ -1145,10 +1145,10 @@
   "core/audits/preload-fonts.js | title": {
     "message": "Fonts with `font-display: optional` are preloaded"
   },
-  "core/audits/preload-lcp-image.js | description": {
+  "core/audits/prioritize-lcp-image.js | description": {
     "message": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/optimize-lcp/#optimize-when-the-resource-is-discovered)."
   },
-  "core/audits/preload-lcp-image.js | title": {
+  "core/audits/prioritize-lcp-image.js | title": {
     "message": "Preload Largest Contentful Paint image"
   },
   "core/audits/redirects.js | description": {
@@ -2819,7 +2819,7 @@
   "node_modules/lighthouse-stack-packs/packs/next.js | offscreen-images": {
     "message": "Use the `next/image` component instead of `<img>` to automatically lazy-load images. [Learn more](https://nextjs.org/docs/basic-features/image-optimization)."
   },
-  "node_modules/lighthouse-stack-packs/packs/next.js | preload-lcp-image": {
+  "node_modules/lighthouse-stack-packs/packs/next.js | prioritize-lcp-image": {
     "message": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority)."
   },
   "node_modules/lighthouse-stack-packs/packs/next.js | render-blocking-resources": {
@@ -2855,7 +2855,7 @@
   "node_modules/lighthouse-stack-packs/packs/nuxt.js | offscreen-images": {
     "message": "Use the `nuxt/image` component and set `loading=\"lazy\"` for offscreen images. [Learn more](https://image.nuxtjs.org/components/nuxt-img#loading)."
   },
-  "node_modules/lighthouse-stack-packs/packs/nuxt.js | preload-lcp-image": {
+  "node_modules/lighthouse-stack-packs/packs/nuxt.js | prioritize-lcp-image": {
     "message": "Use the `nuxt/image` component and specify `preload` for LCP image. [Learn more](https://image.nuxtjs.org/components/nuxt-img#preload)."
   },
   "node_modules/lighthouse-stack-packs/packs/nuxt.js | unsized-images": {

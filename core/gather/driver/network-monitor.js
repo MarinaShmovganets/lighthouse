@@ -95,9 +95,7 @@ class NetworkMonitor extends NetworkMonitorEventEmitter {
     const frameNavigations = this._frameNavigations;
     if (!frameNavigations.length) return {};
 
-    const frameTreeResponse = await this._session.sendCommand('Page.getFrameTree');
-    const mainFrameId = frameTreeResponse.frameTree.frame.id;
-    const mainFrameNavigations = frameNavigations.filter(frame => frame.id === mainFrameId);
+    const mainFrameNavigations = frameNavigations.filter(frame => !frame.parentId);
     if (!mainFrameNavigations.length) log.warn('NetworkMonitor', 'No detected navigations');
 
     // The requested URL is the initiator request for the first frame navigation.

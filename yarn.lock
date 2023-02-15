@@ -5044,10 +5044,10 @@ lighthouse-plugin-publisher-ads@1.5.7-beta:
     intl-messageformat "^4.1.2"
     yargs "^16.1.1"
 
-lighthouse-stack-packs@1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/lighthouse-stack-packs/-/lighthouse-stack-packs-1.9.0.tgz#2353aaab497b01ea7679a1cbcb04ea234f374211"
-  integrity sha512-xV6thXsxoHWgIluhLhp4zQ09c0T2zZNIDXoKy0emRoD2xCGJAFxoabRdyZpY0VnKwW8evMNXnMdPZtukKk2lhA==
+lighthouse-stack-packs@1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/lighthouse-stack-packs/-/lighthouse-stack-packs-1.9.1.tgz#e83f76e302cb3dec717ad6a3af2da07c91d8f8f5"
+  integrity sha512-9prq6oMkVHz3GeCkphq4FHXXdj3M/WPiFWUvJAczLYV8j/oTxsgiHSPMqh1KVV11CP0VTxD40hFC0pDfXF+khQ==
 
 lines-and-columns@^1.1.6:
   version "1.2.4"

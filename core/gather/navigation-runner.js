@@ -309,13 +309,17 @@ async function _navigations(args) {
 }
 
 /**
- * @param {{requestedUrl?: string, driver: Driver, resolvedConfig: LH.Config.ResolvedConfig}} args
+ * @param {{requestedUrl?: string, driver: Driver, resolvedConfig: LH.Config.ResolvedConfig, lhBrowser?: LH.Puppeteer.Browser, lhPage?: LH.Puppeteer.Page}} args
  */
-async function _cleanup({requestedUrl, driver, resolvedConfig}) {
+async function _cleanup({requestedUrl, driver, resolvedConfig, lhBrowser, lhPage}) {
   const didResetStorage = !resolvedConfig.settings.disableStorageReset && requestedUrl;
   if (didResetStorage) await storage.clearDataForOrigin(driver.defaultSession, requestedUrl);
 
   await driver.disconnect();
+
+  // If Lighthouse started the Puppeteer instance then we are responsible for closing it.
+  await lhPage?.close();
+  await lhBrowser?.disconnect();
 }
 
 /**
@@ -338,17 +342,25 @@ async function navigationGather(page, requestor, options = {}) {
     async () => {
       const normalizedRequestor = isCallback ? requestor : UrlUtils.normalizeUrl(requestor);
 
+      /** @type {LH.Puppeteer.Browser|undefined} */
+      let lhBrowser = undefined;
+      /** @type {LH.Puppeteer.Page|undefined} */
+      let lhPage = undefined;
+
       // For navigation mode, we shouldn't connect to a browser in audit mode,
       // therefore we connect to the browser in the gatherFn callback.
       if (!page) {
         const {hostname = DEFAULT_HOSTNAME, port = DEFAULT_PORT} = flags;
-        const browser = await puppeteer.connect({browserURL: `http://${hostname}:${port}`});
-        page = await browser.newPage();
+        lhBrowser = await puppeteer.connect({browserURL: `http://${hostname}:${port}`});
+        lhPage = await lhBrowser.newPage();
+        page = lhPage;
       }
 
       const driver = new Driver(page);
       const context = {
         driver,
+        lhBrowser,
+        lhPage,
         resolvedConfig,
         requestor: normalizedRequestor,
       };

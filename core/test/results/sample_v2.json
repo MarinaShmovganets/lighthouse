@@ -1,5 +1,5 @@
 {
-  "lighthouseVersion": "9.5.0",
+  "lighthouseVersion": "10.0.1",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "mainDocumentUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalDisplayedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -2579,8 +2579,8 @@
         "items": []
       }
     },
-    "preload-lcp-image": {
-      "id": "preload-lcp-image",
+    "prioritize-lcp-image": {
+      "id": "prioritize-lcp-image",
       "title": "Preload Largest Contentful Paint image",
       "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/optimize-lcp/#optimize-when-the-resource-is-discovered).",
       "score": 1,
@@ -4703,7 +4703,6 @@
             "name": "WordPress"
           }
         ],
-        "summary": {},
         "debugData": {
           "type": "debugdata",
           "stacks": [
@@ -4752,7 +4751,7 @@
     "paste-preventing-inputs": {
       "id": "paste-preventing-inputs",
       "title": "Prevents users from pasting into input fields",
-      "description": "Preventing input pasting is a UX anti-pattern, and undermines good security policy. [Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
+      "description": "Preventing input pasting is a bad practice for the UX, and weakens security by blocking password managers.[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
       "score": 0,
       "scoreDisplayMode": "binary",
       "details": {
@@ -4916,8 +4915,7 @@
       "details": {
         "type": "table",
         "headings": [],
-        "items": [],
-        "summary": {}
+        "items": []
       }
     },
     "crawlable-anchors": {
@@ -5350,7 +5348,7 @@
             "unminified-css",
             "unused-css-rules",
             "largest-contentful-paint-element",
-            "preload-lcp-image",
+            "prioritize-lcp-image",
             "unused-javascript",
             "efficient-animated-content",
             "total-byte-weight",
@@ -5481,7 +5479,7 @@
           "weight": 0
         },
         {
-          "id": "preload-lcp-image",
+          "id": "prioritize-lcp-image",
           "weight": 0
         },
         {
@@ -7550,7 +7548,7 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:preload-lcp-image",
+        "name": "lh:audit:prioritize-lcp-image",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8538,7 +8536,7 @@
         "audits[network-server-latency].details.headings[0].label",
         "audits[long-tasks].details.headings[0].label",
         "audits[unsized-images].details.headings[1].label",
-        "audits[preload-lcp-image].details.headings[1].label",
+        "audits[prioritize-lcp-image].details.headings[1].label",
         "audits[uses-long-cache-ttl].details.headings[0].label",
         "audits[total-byte-weight].details.headings[0].label",
         "audits[render-blocking-resources].details.headings[0].label",
@@ -8991,14 +8989,14 @@
       "core/audits/valid-source-maps.js | description": [
         "audits[valid-source-maps].description"
       ],
-      "core/audits/preload-lcp-image.js | title": [
-        "audits[preload-lcp-image].title"
+      "core/audits/prioritize-lcp-image.js | title": [
+        "audits[prioritize-lcp-image].title"
       ],
-      "core/audits/preload-lcp-image.js | description": [
-        "audits[preload-lcp-image].description"
+      "core/audits/prioritize-lcp-image.js | description": [
+        "audits[prioritize-lcp-image].description"
       ],
       "core/lib/i18n/i18n.js | columnWastedBytes": [
-        "audits[preload-lcp-image].details.headings[2].label",
+        "audits[prioritize-lcp-image].details.headings[2].label",
         "audits[render-blocking-resources].details.headings[2].label",
         "audits[unminified-javascript].details.headings[2].label",
         "audits[unused-javascript].details.headings[2].label",

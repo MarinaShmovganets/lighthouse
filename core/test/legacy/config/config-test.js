@@ -1380,6 +1380,19 @@ describe('Config', () => {
         [{path: 'viewport-dimensions', instance: expectedInstance}]);
     });
 
+    it('should sort gatherers by internal priority', async () => {
+      const gatherers = [
+        'bf-cache-failures', // Has internal priority of 1
+        'viewport-dimensions', // Has default internal priority of 0
+      ];
+
+      const merged = await LegacyResolvedConfig.requireGatherers([{gatherers}]);
+
+      assert.deepEqual(
+        merged[0].gatherers.map(g => g.path),
+        ['viewport-dimensions', 'bf-cache-failures']);
+    });
+
     async function loadGatherer(gathererEntry) {
       const resolvedConfig =
         await LegacyResolvedConfig.fromJson({passes: [{gatherers: [gathererEntry]}]});

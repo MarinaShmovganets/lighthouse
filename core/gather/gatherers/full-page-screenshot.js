@@ -222,9 +222,13 @@ class FullPageScreenshot extends FRGatherer {
         await this._resizeViewport(context, deviceMetrics);
       }
 
+      // Issue both commands at once, to reduce the chance that the page changes between capturing
+      // a screenshot and resolving the nodes. https://github.com/GoogleChrome/lighthouse/pull/14763
+      const [screenshot, nodes] =
+        await Promise.all([this._takeScreenshot(context), this._resolveNodes(context)]);
       return {
-        screenshot: await this._takeScreenshot(context),
-        nodes: await this._resolveNodes(context),
+        screenshot,
+        nodes,
       };
     } finally {
       if (!settings.usePassiveGathering) {

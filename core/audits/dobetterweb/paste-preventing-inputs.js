@@ -13,8 +13,8 @@ const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on the ability to paste into input fields. This descriptive title is shown to users when the page does not allow pasting of content into input fields. */
   failureTitle: 'Prevents users from pasting into input fields',
   /** Description of a Lighthouse audit that tells the user why they should allow pasting of content into input fields. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'Preventing input pasting is a UX anti-pattern, ' +
-      'and undermines good security policy. ' +
+  description: 'Preventing input pasting is a bad practice for the UX, ' +
+      'and weakens security by blocking password managers.' +
       '[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).',
 };
 

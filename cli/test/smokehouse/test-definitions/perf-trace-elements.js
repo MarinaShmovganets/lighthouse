@@ -191,7 +191,7 @@ const expectations = {
           },
         },
       },
-      'preload-lcp-image': {
+      'prioritize-lcp-image': {
         score: 1,
         numericValue: 0,
         details: {

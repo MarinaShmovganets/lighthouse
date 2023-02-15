@@ -27,13 +27,13 @@ const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
  * @typedef {Array<{url: string, initiatorType: string}>} InitiatorPath
  */
 
-class PreloadLCPImageAudit extends Audit {
+class PrioritizeLcpImage extends Audit {
   /**
    * @return {LH.Audit.Meta}
    */
   static get meta() {
     return {
-      id: 'preload-lcp-image',
+      id: 'prioritize-lcp-image',
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       supportedModes: ['navigation'],
@@ -92,11 +92,11 @@ class PreloadLCPImageAudit extends Audit {
    */
   static getLCPNodeToPreload(mainResource, graph, lcpUrl) {
     if (!lcpUrl) return {};
-    const {lcpNode, path} = PreloadLCPImageAudit.findLCPNode(graph, lcpUrl);
+    const {lcpNode, path} = PrioritizeLcpImage.findLCPNode(graph, lcpUrl);
     if (!lcpNode || !path) return {};
 
     // eslint-disable-next-line max-len
-    const shouldPreload = PreloadLCPImageAudit.shouldPreloadRequest(lcpNode.record, mainResource, path);
+    const shouldPreload = PrioritizeLcpImage.shouldPreloadRequest(lcpNode.record, mainResource, path);
     const lcpNodeToPreload = shouldPreload ? lcpNode : undefined;
 
     const initiatorPath = [
@@ -119,7 +119,8 @@ class PreloadLCPImageAudit extends Audit {
    * @return {string | undefined}
    */
   static getLcpUrl(trace, processedNavigation) {
-    const lcpEvent = processedNavigation.largestContentfulPaintAllFramesEvt;
+    // Use main-frame-only LCP to match the metric value.
+    const lcpEvent = processedNavigation.largestContentfulPaintEvt;
     if (!lcpEvent) return;
 
     const lcpImagePaintEvent = trace.traceEvents.filter(e => {
@@ -229,8 +230,8 @@ class PreloadLCPImageAudit extends Audit {
    */
   static async audit(artifacts, context) {
     const gatherContext = artifacts.GatherContext;
-    const trace = artifacts.traces[PreloadLCPImageAudit.DEFAULT_PASS];
-    const devtoolsLog = artifacts.devtoolsLogs[PreloadLCPImageAudit.DEFAULT_PASS];
+    const trace = artifacts.traces[PrioritizeLcpImage.DEFAULT_PASS];
+    const devtoolsLog = artifacts.devtoolsLogs[PrioritizeLcpImage.DEFAULT_PASS];
     const URL = artifacts.URL;
     const metricData = {trace, devtoolsLog, gatherContext, settings: context.settings, URL};
     const lcpElement = artifacts.TraceElements
@@ -247,13 +248,13 @@ class PreloadLCPImageAudit extends Audit {
       LoadSimulator.request({devtoolsLog, settings: context.settings}, context),
     ]);
 
-    const lcpUrl = PreloadLCPImageAudit.getLcpUrl(trace, processedNavigation);
+    const lcpUrl = PrioritizeLcpImage.getLcpUrl(trace, processedNavigation);
     const graph = lanternLCP.pessimisticGraph;
     // eslint-disable-next-line max-len
-    const {lcpNodeToPreload, initiatorPath} = PreloadLCPImageAudit.getLCPNodeToPreload(mainResource, graph, lcpUrl);
+    const {lcpNodeToPreload, initiatorPath} = PrioritizeLcpImage.getLCPNodeToPreload(mainResource, graph, lcpUrl);
 
     const {results, wastedMs} =
-      PreloadLCPImageAudit.computeWasteWithGraph(lcpElement, lcpNodeToPreload, graph, simulator);
+      PrioritizeLcpImage.computeWasteWithGraph(lcpElement, lcpNodeToPreload, graph, simulator);
 
     /** @type {LH.Audit.Details.Opportunity['headings']} */
     const headings = [
@@ -261,7 +262,8 @@ class PreloadLCPImageAudit extends Audit {
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
       {key: 'wastedMs', valueType: 'timespanMs', label: str_(i18n.UIStrings.columnWastedMs)},
     ];
-    const details = Audit.makeOpportunityDetails(headings, results, wastedMs);
+    const details = Audit.makeOpportunityDetails(headings, results,
+      {overallSavingsMs: wastedMs});
 
     // If LCP element was an image and had valid network records (regardless of
     // if it should be preloaded), it will be found first in the `initiatorPath`.
@@ -284,5 +286,5 @@ class PreloadLCPImageAudit extends Audit {
   }
 }
 
-export default PreloadLCPImageAudit;
+export default PrioritizeLcpImage;
 export {UIStrings};

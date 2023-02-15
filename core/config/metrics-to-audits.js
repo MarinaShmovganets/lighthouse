@@ -22,7 +22,7 @@ const fcpRelevantAudits = [
 const lcpRelevantAudits = [
   ...fcpRelevantAudits,
   'largest-contentful-paint-element',
-  'preload-lcp-image',
+  'prioritize-lcp-image',
   'unused-javascript',
   'efficient-animated-content',
   'total-byte-weight',
