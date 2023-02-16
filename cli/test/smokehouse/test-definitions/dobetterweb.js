@@ -545,14 +545,15 @@ const expectations = {
               snippet: '<h2 id="toppy" style="background-image:url(\'\');">',
               nodeLabel: 'Do better web tester page',
             },
-            url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?lcp',
+            url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?redirected-lcp',
             wastedMs: 0,
           }],
           debugData: {
             initiatorPath: [{
-              url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?lcp',
+              url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?redirected-lcp',
               initiatorType: 'parser',
             }, {
+              // TOD(bckenny): missing initiator step through redirected image url.
               url: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true',
               initiatorType: 'parser',
             }, {
