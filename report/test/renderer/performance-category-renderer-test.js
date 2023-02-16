@@ -326,7 +326,7 @@ describe('PerfCategoryRenderer', () => {
       expect(url.hash.split('&')).toMatchInlineSnapshot(`
 Array [
   "#FCP=6844",
-  "LCP=9320",
+  "LCP=13320",
   "TBT=1221",
   "CLS=0",
   "SI=8114",
@@ -347,7 +347,7 @@ Array [
         expect(url.hash.split('&')).toMatchInlineSnapshot(`
 Array [
   "#FCP=6844",
-  "LCP=9320",
+  "LCP=13320",
   "TBT=1221",
   "CLS=0.14",
   "SI=8114",
