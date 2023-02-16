@@ -68,17 +68,18 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
       return element;
     }
     const details = audit.result.details;
-    if (details.type !== 'opportunity') {
+    if (details.type !== 'table' || !details.isOpportunity) {
       return element;
     }
 
     // Overwrite the displayValue with opportunity's wastedMs
     // TODO: normalize this to one tagName.
+    const wastedMs = details.summary?.wastedMs || Number.MIN_VALUE;
     const displayEl =
       this.dom.find('span.lh-audit__display-text, div.lh-audit__display-text', element);
-    const sparklineWidthPct = `${details.overallSavingsMs / scale * 100}%`;
+    const sparklineWidthPct = `${wastedMs / scale * 100}%`;
     this.dom.find('div.lh-sparkline__bar', element).style.width = sparklineWidthPct;
-    displayEl.textContent = Globals.i18n.formatSeconds(details.overallSavingsMs, 0.01);
+    displayEl.textContent = Globals.i18n.formatSeconds(wastedMs, 0.01);
 
     // Set [title] tooltips
     if (audit.result.displayValue) {
@@ -98,12 +99,13 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
    * @return {number}
    */
   _getWastedMs(audit) {
-    if (audit.result.details && audit.result.details.type === 'opportunity') {
-      const details = audit.result.details;
-      if (typeof details.overallSavingsMs !== 'number') {
+    if (audit.result.details && audit.result.details.type === 'table' &&
+        audit.result.details.isOpportunity && audit.result.details.summary) {
+      const summary = audit.result.details.summary;
+      if (typeof summary.wastedMs !== 'number') {
         throw new Error('non-opportunity details passed to _getWastedMs');
       }
-      return details.overallSavingsMs;
+      return summary.wastedMs;
     } else {
       return Number.MIN_VALUE;
     }
@@ -165,7 +167,8 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
    */
   _classifyPerformanceAudit(audit) {
     if (audit.group) return null;
-    if (audit.result.details && audit.result.details.type === 'opportunity') {
+    if (audit.result.details && audit.result.details.type === 'table' &&
+        audit.result.details.isOpportunity) {
       return 'load-opportunity';
     }
     return 'diagnostic';

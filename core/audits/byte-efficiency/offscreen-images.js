@@ -233,7 +233,7 @@ class OffscreenImages extends ByteEfficiencyAudit {
         await ProcessedTrace.request(trace, context).then(tot => tot.timestamps.traceEnd));
     }
 
-    /** @type {LH.Audit.Details.Opportunity['headings']} */
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'node', valueType: 'node', label: ''},
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},

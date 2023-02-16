@@ -171,7 +171,9 @@ const expectations = {
       },
       'unminified-css': {
         details: {
-          overallSavingsBytes: '>17000',
+          summary: {
+            wastedBytes: '>17000',
+          },
           items: {
             length: 2,
           },
@@ -182,8 +184,10 @@ const expectations = {
         details: {
           // the specific ms value is not meaningful for this smoketest
           // *some largish amount* of savings should be reported
-          overallSavingsMs: '>500',
-          overallSavingsBytes: '>45000',
+          summary: {
+            wastedMs: '>500',
+            wastedBytes: '>45000',
+          },
           items: [
             {
               url: 'http://localhost:10200/byte-efficiency/script.js',
@@ -212,7 +216,9 @@ const expectations = {
       },
       'unused-css-rules': {
         details: {
-          overallSavingsBytes: '>40000',
+          summary: {
+            wastedBytes: '>40000',
+          },
           items: {
             length: 2,
           },
@@ -223,8 +229,10 @@ const expectations = {
         details: {
           // the specific ms value here is not meaningful for this smoketest
           // *some* savings should be reported
-          overallSavingsMs: '>0',
-          overallSavingsBytes: '35000 +/- 1000',
+          summary: {
+            wastedMs: '>0',
+            wastedBytes: '35000 +/- 1000',
+          },
           items: [
             {
               url: 'http://localhost:10200/byte-efficiency/script.js',
@@ -269,7 +277,9 @@ const expectations = {
       },
       'modern-image-formats': {
         details: {
-          overallSavingsBytes: '137000 +/- 10000',
+          summary: {
+            wastedBytes: '137000 +/- 10000',
+          },
           items: [
             {url: /lighthouse-1024x680.jpg$/},
             {url: /lighthouse-unoptimized.jpg$/},
@@ -285,8 +295,10 @@ const expectations = {
         details: {
           // the specific ms value is not meaningful for this smoketest
           // *some largish amount* of savings should be reported
-          overallSavingsMs: '>700',
-          overallSavingsBytes: '>50000',
+          summary: {
+            wastedMs: '>700',
+            wastedBytes: '>50000',
+          },
           items: {
             length: 3,
           },
@@ -294,7 +306,9 @@ const expectations = {
       },
       'uses-optimized-images': {
         details: {
-          overallSavingsBytes: '>10000',
+          summary: {
+            wastedBytes: '>10000',
+          },
           items: {
             length: 1,
           },
@@ -303,7 +317,9 @@ const expectations = {
       // Check that images aren't TOO BIG.
       'uses-responsive-images': {
         details: {
-          overallSavingsBytes: '169000 +/- 5000',
+          summary: {
+            wastedBytes: '169000 +/- 5000',
+          },
           items: [
             {wastedPercent: '81 +/- 5', url: /lighthouse-1024x680.jpg/},
             {wastedPercent: '88 +/- 5', url: /lighthouse-2048x1356.webp\?size0/},

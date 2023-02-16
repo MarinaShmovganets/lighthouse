@@ -13,7 +13,6 @@ type Details =
   Details.TreemapData |
   Details.Filmstrip |
   Details.List |
-  Details.Opportunity |
   Details.Screenshot |
   Details.Table;
 
@@ -62,15 +61,6 @@ declare module Details {
     items: Array<Table | DebugData>;
   }
 
-  interface Opportunity {
-    type: 'opportunity';
-    overallSavingsMs: number;
-    overallSavingsBytes?: number;
-    headings: TableColumnHeading[];
-    items: OpportunityItem[];
-    debugData?: DebugData;
-  }
-
   interface Screenshot {
     type: 'screenshot';
     timing: number;
@@ -96,6 +86,7 @@ declare module Details {
       wastedBytes?: number;
     };
     debugData?: DebugData;
+    isOpportunity?: boolean;
   }
 
   /** A table item for rows that are nested within a top-level TableItem (row). */

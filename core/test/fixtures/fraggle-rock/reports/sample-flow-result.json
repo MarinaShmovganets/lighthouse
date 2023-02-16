@@ -214,7 +214,7 @@
             "numericUnit": "millisecond",
             "displayValue": "Root document took 20 ms",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [
                 {
                   "key": "url",
@@ -233,7 +233,10 @@
                   "responseTime": 19.687999999999988
                 }
               ],
-              "overallSavingsMs": -80.31200000000001
+              "summary": {
+                "wastedMs": -80.31200000000001
+              },
+              "isOpportunity": true
             }
           },
           "interactive": {
@@ -342,10 +345,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0
+              "isOpportunity": true
             }
           },
           "installable-manifest": {
@@ -604,10 +607,10 @@
             "score": null,
             "scoreDisplayMode": "notApplicable",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0
+              "isOpportunity": true
             }
           },
           "uses-rel-preconnect": {
@@ -621,10 +624,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0
+              "isOpportunity": true
             }
           },
           "font-display": {
@@ -1797,7 +1800,7 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [
                 {
                   "key": "node",
@@ -1837,7 +1840,7 @@
                   "wastedMs": 0
                 }
               ],
-              "overallSavingsMs": 0,
+              "isOpportunity": true,
               "debugData": {
                 "type": "debugdata",
                 "initiatorPath": [
@@ -2572,11 +2575,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "render-blocking-resources": {
@@ -2588,10 +2590,10 @@
             "numericValue": 0,
             "numericUnit": "millisecond",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0
+              "isOpportunity": true
             }
           },
           "unminified-css": {
@@ -2604,11 +2606,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "unminified-javascript": {
@@ -2622,11 +2623,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "unused-css-rules": {
@@ -2639,11 +2639,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "unused-javascript": {
@@ -2656,11 +2655,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "modern-image-formats": {
@@ -2674,11 +2672,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "uses-optimized-images": {
@@ -2692,11 +2689,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "uses-text-compression": {
@@ -2709,11 +2705,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "uses-responsive-images": {
@@ -2726,11 +2721,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "efficient-animated-content": {
@@ -2743,11 +2737,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "duplicated-javascript": {
@@ -2760,11 +2753,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "legacy-javascript": {
@@ -2777,7 +2769,7 @@
             "numericUnit": "millisecond",
             "displayValue": "Potential savings of 0 KiB",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [
                 {
                   "key": "url",
@@ -2824,8 +2816,11 @@
                   "totalBytes": 0
                 }
               ],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 57
+              "summary": {
+                "wastedBytes": 57,
+                "wastedMs": 0
+              },
+              "isOpportunity": true
             }
           },
           "doctype": {
@@ -9045,11 +9040,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "unminified-javascript": {
@@ -9063,11 +9057,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "unused-css-rules": {
@@ -9080,11 +9073,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "unused-javascript": {
@@ -9097,11 +9089,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "modern-image-formats": {
@@ -9115,11 +9106,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "uses-optimized-images": {
@@ -9133,11 +9123,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "uses-text-compression": {
@@ -9150,11 +9139,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "uses-responsive-images": {
@@ -9167,11 +9155,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "efficient-animated-content": {
@@ -9184,11 +9171,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "duplicated-javascript": {
@@ -9201,11 +9187,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "legacy-javascript": {
@@ -9218,11 +9203,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "inspector-issues": {
@@ -16010,7 +15994,7 @@
             "numericUnit": "millisecond",
             "displayValue": "Root document took 10 ms",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [
                 {
                   "key": "url",
@@ -16029,7 +16013,10 @@
                   "responseTime": 10.263
                 }
               ],
-              "overallSavingsMs": -89.737
+              "summary": {
+                "wastedMs": -89.737
+              },
+              "isOpportunity": true
             }
           },
           "interactive": {
@@ -16138,10 +16125,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0
+              "isOpportunity": true
             }
           },
           "installable-manifest": {
@@ -16406,10 +16393,10 @@
             "score": null,
             "scoreDisplayMode": "notApplicable",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0
+              "isOpportunity": true
             }
           },
           "uses-rel-preconnect": {
@@ -16423,10 +16410,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0
+              "isOpportunity": true
             }
           },
           "font-display": {
@@ -17449,7 +17436,7 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [
                 {
                   "key": "node",
@@ -17489,7 +17476,7 @@
                   "wastedMs": 0
                 }
               ],
-              "overallSavingsMs": 0,
+              "isOpportunity": true,
               "debugData": {
                 "type": "debugdata",
                 "initiatorPath": [
@@ -18241,11 +18228,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "render-blocking-resources": {
@@ -18257,10 +18243,10 @@
             "numericValue": 0,
             "numericUnit": "millisecond",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0
+              "isOpportunity": true
             }
           },
           "unminified-css": {
@@ -18273,11 +18259,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "unminified-javascript": {
@@ -18291,11 +18276,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "unused-css-rules": {
@@ -18308,11 +18292,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "unused-javascript": {
@@ -18325,11 +18308,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "modern-image-formats": {
@@ -18343,7 +18325,7 @@
             "displayValue": "Potential savings of 67 KiB",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [
                 {
                   "key": "node",
@@ -18392,8 +18374,11 @@
                   "wastedWebpBytes": 65184
                 }
               ],
-              "overallSavingsMs": 300,
-              "overallSavingsBytes": 68889.75
+              "summary": {
+                "wastedBytes": 68889.75,
+                "wastedMs": 300
+              },
+              "isOpportunity": true
             }
           },
           "uses-optimized-images": {
@@ -18407,11 +18392,10 @@
             "displayValue": "",
             "warnings": [],
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "uses-text-compression": {
@@ -18424,11 +18408,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "uses-responsive-images": {
@@ -18441,7 +18424,7 @@
             "numericUnit": "millisecond",
             "displayValue": "Potential savings of 51 KiB",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [
                 {
                   "key": "node",
@@ -18488,8 +18471,11 @@
                   "wastedPercent": 42.666446934739625
                 }
               ],
-              "overallSavingsMs": 300,
-              "overallSavingsBytes": 52102
+              "summary": {
+                "wastedBytes": 52102,
+                "wastedMs": 300
+              },
+              "isOpportunity": true
             }
           },
           "efficient-animated-content": {
@@ -18502,11 +18488,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "duplicated-javascript": {
@@ -18519,11 +18504,10 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [],
               "items": [],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "legacy-javascript": {
@@ -18536,7 +18520,7 @@
             "numericUnit": "millisecond",
             "displayValue": "",
             "details": {
-              "type": "opportunity",
+              "type": "table",
               "headings": [
                 {
                   "key": "url",
@@ -18583,8 +18567,7 @@
                   "totalBytes": 0
                 }
               ],
-              "overallSavingsMs": 0,
-              "overallSavingsBytes": 0
+              "isOpportunity": true
             }
           },
           "doctype": {

@@ -46,7 +46,7 @@ describe('Resources are fetched over http/2', () => {
     expect(result.details.items).toHaveLength(60);
     // make sure we report savings
     expect(result.numericValue).toMatchInlineSnapshot(`1340`);
-    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`1340`);
+    expect(result.details.summary?.wastedMs).toMatchInlineSnapshot(`1340`);
     // make sure we have a failing score
     expect(result.score).toBeLessThan(0.5);
   });
@@ -72,7 +72,7 @@ describe('Resources are fetched over http/2', () => {
     expect(result.details.items).toHaveLength(30);
     // make sure we report less savings
     expect(result.numericValue).toMatchInlineSnapshot(`320`);
-    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`320`);
+    expect(result.details.summary?.wastedMs).toMatchInlineSnapshot(`320`);
   });
 
   it('should return table items for timespan mode', async () => {
@@ -89,7 +89,7 @@ describe('Resources are fetched over http/2', () => {
     expect(result.details.items).toHaveLength(60);
     // no savings calculated
     expect(result.numericValue).toBeUndefined();
-    expect(result.details.overallSavingsMs).toBeUndefined();
+    expect(result.details.summary?.wastedMs).toBeUndefined();
     // make sure we have a failing score
     expect(result.score).toEqual(0);
   });

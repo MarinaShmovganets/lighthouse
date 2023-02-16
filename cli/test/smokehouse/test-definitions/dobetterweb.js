@@ -413,7 +413,9 @@ const expectations = {
       'efficient-animated-content': {
         score: '<0.5',
         details: {
-          overallSavingsMs: '>2000',
+          summary: {
+            wastedMs: '>2000',
+          },
           items: [
             {
               url: 'http://localhost:10200/dobetterweb/lighthouse-rotating.gif',

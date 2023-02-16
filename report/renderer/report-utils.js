@@ -114,7 +114,7 @@ class ReportUtils {
    */
   static classifyEntities(entities, audit) {
     if (!entities) return;
-    if (audit.details?.type !== 'opportunity' && audit.details?.type !== 'table') {
+    if (audit.details?.type !== 'table') {
       return;
     }
 

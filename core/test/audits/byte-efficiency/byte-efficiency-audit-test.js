@@ -339,7 +339,7 @@ describe('Byte efficiency base audit', () => {
     const modestThrottling = {rttMs: 150, throughputKbps: 1000, cpuSlowdownMultiplier: 2};
     const settings = {throttlingMethod: 'simulate', throttling: modestThrottling};
     const result = await MockAudit.audit(artifacts, {settings, computedCache});
-    expect(result.details.overallSavingsMs).toBeCloseTo(914.2695);
+    expect(result.details.summary?.wastedMs).toBeCloseTo(914.2695);
   });
 
   it('should return n/a if no network records in timespan mode', async () => {
@@ -395,6 +395,6 @@ describe('Byte efficiency base audit', () => {
     };
     const settings = {throttlingMethod: 'devtools', throttling: modestThrottling};
     const result = await MockAudit.audit(artifacts, {settings, computedCache});
-    expect(result.details.overallSavingsMs).toBeCloseTo(575, 1);
+    expect(result.details.summary?.wastedMs).toBeCloseTo(575, 1);
   });
 });

@@ -241,14 +241,13 @@ class UsesHTTP2Audit extends Audit {
     const simulator = await LoadSimulator.request(simulatorOptions, context);
     const wastedMs = UsesHTTP2Audit.computeWasteWithTTIGraph(resources, graph, simulator);
 
-    /** @type {LH.Audit.Details.Opportunity['headings']} */
+    /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
       {key: 'protocol', valueType: 'text', label: str_(UIStrings.columnProtocol)},
     ];
 
-    const details = Audit.makeOpportunityDetails(headings, resources,
-      {overallSavingsMs: wastedMs});
+    const details = Audit.makeTableDetails(headings, resources, {wastedMs, isOpportunity: true});
 
     return {
       displayValue,

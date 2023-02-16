@@ -26,7 +26,9 @@ describe('Performance: server-response-time audit', () => {
       score: 0,
       numericValue: 630,
       details: {
-        overallSavingsMs: 530,
+        summary: {
+          wastedMs: 530,
+        },
         items: [{url: 'https://example.com/', responseTime: 630}],
       },
     });
