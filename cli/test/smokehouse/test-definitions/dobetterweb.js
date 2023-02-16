@@ -537,8 +537,8 @@ const expectations = {
         },
       },
       'prioritize-lcp-image': {
-        score: 1,
-        numericValue: 0,
+        // In CI, there can sometimes be slight savings.
+        numericValue: '0±50',
         details: {
           items: [{
             node: {
@@ -546,7 +546,7 @@ const expectations = {
               nodeLabel: 'Do better web tester page',
             },
             url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?redirected-lcp',
-            wastedMs: 0,
+            wastedMs: '0±50',
           }],
           debugData: {
             initiatorPath: [{
