@@ -340,7 +340,7 @@ describe('Performance: prioritize-lcp-image audit', () => {
     });
   });
 
-  it('should not default to mainResource when the initiator chain is broken', async () => {
+  it('should fall back mainResource in initiator path when chain is broken', async () => {
     const {networkRecords, URL} = mockNetworkRecords();
     // For whatever reason, initiator information isn't available for this image.
     networkRecords[3].initiator = {type: 'other'};

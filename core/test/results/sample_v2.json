@@ -2649,6 +2649,10 @@
           "initiatorPath": [
             {
               "url": "http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?redirected-lcp",
+              "initiatorType": "redirect"
+            },
+            {
+              "url": "http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?lcp&redirect=lighthouse-1024x680.jpg%3Fredirected-lcp",
               "initiatorType": "parser"
             },
             {
@@ -2660,7 +2664,7 @@
               "initiatorType": "other"
             }
           ],
-          "pathLength": 3
+          "pathLength": 4
         }
       }
     },
