@@ -216,9 +216,53 @@ As this flow has multiple steps, the flow report summarizes everything and allow
 
 ![Full flow report screenshot](https://user-images.githubusercontent.com/39191/168932301-cfdbe812-db96-4c6d-b43b-fe5c31f9d192.png)
 
+### Creating a desktop user flow
+
+If you want to test the desktop version of a page with user flows, you need to use the desktop config provided in the Lighthouse package.
+
+```js
+import puppeteer from 'puppeteer';
+import {startFlow, desktopConfig} from 'lighthouse';
+
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+
+const flow = await startFlow(page, {
+  config: desktopConfig,
+});
+```
+
+### Using Puppeteer's emulation settings in a user flow
+
+If you want to inherit the viewport settings set up by Puppeteer, you need to disable Lighthouse's viewport emulation in the `flags` option.
+
+If Puppeteer is emulating a desktop page make sure to use the `desktopConfig` so Lighthouse still scores the results as a desktop page.
+
+```js
+import puppeteer from 'puppeteer';
+import {startFlow, desktopConfig} from 'lighthouse';
+
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+
+const flow = await startFlow(page, {
+  // Puppeteer is emulating a desktop environment,
+  // so we should still use the desktop config.
+  //
+  // If Puppeteer is emulating a mobile device then we can remove the next line.
+  config: desktopConfig,
+  // `flags` will override the Lighthouse emulation settings
+  // to prevent Lighthouse from changing the screen dimensions.
+  flags: {screenEmulation: {disabled: true}},
+});
+
+await page.setViewport({width: 1000, height: 500});
+```
+
 ## Tips and Tricks
 
 - Keep timespan recordings _short_ and focused on a single interaction sequence or page transition.
+- Always audit page navigations with navigation mode, avoid auditing hard page navigations with timespan mode.
 - Use snapshot recordings when a substantial portion of the page content has changed.
 - Always wait for transitions and interactions to finish before ending a timespan. The puppeteer APIs `page.waitForSelector`/`page.waitForFunction`/`page.waitForResponse`/`page.waitForTimeout` are your friends here.
 
