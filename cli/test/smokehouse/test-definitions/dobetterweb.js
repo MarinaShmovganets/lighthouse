@@ -551,16 +551,18 @@ const expectations = {
           debugData: {
             initiatorPath: [{
               url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?redirected-lcp',
+              initiatorType: 'redirect',
+            }, {
+              url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?lcp&redirect=lighthouse-1024x680.jpg%3Fredirected-lcp',
               initiatorType: 'parser',
             }, {
-              // TOD(bckenny): missing initiator step through redirected image url.
               url: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true',
               initiatorType: 'parser',
             }, {
               url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
               initiatorType: 'other',
             }],
-            pathLength: 3,
+            pathLength: 4,
           },
         },
       },

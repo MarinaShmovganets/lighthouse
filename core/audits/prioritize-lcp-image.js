@@ -25,7 +25,8 @@ const UIStrings = {
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
 /**
- * @typedef {Array<{url: string, initiatorType: string}>} InitiatorPath
+ * @typedef {LH.Crdp.Network.Initiator['type']|'redirect'|'fallbackToMain'} InitiatorType
+ * @typedef {Array<{url: string, initiatorType: InitiatorType}>} InitiatorPath
  */
 
 class PrioritizeLcpImage extends Audit {
@@ -47,18 +48,16 @@ class PrioritizeLcpImage extends Audit {
    *
    * @param {LH.Artifacts.NetworkRequest} request
    * @param {LH.Artifacts.NetworkRequest} mainResource
-   * @param {Array<LH.Gatherer.Simulation.GraphNode>} initiatorPath
+   * @param {InitiatorPath} initiatorPath
    * @return {boolean}
    */
   static shouldPreloadRequest(request, mainResource, initiatorPath) {
-    const mainResourceDepth = mainResource.redirects ? mainResource.redirects.length : 0;
-
     // If it's already preloaded, no need to recommend it.
     if (request.isLinkPreload) return false;
     // It's not a request loaded over the network, don't recommend it.
     if (NetworkRequest.isNonNetworkRequest(request)) return false;
     // It's already discoverable from the main document, don't recommend it.
-    if (initiatorPath.length <= mainResourceDepth) return false;
+    if (initiatorPath.length <= 2) return false;
     // Finally, return whether or not it belongs to the main frame
     return request.frameId === mainResource.frameId;
   }
@@ -66,23 +65,55 @@ class PrioritizeLcpImage extends Audit {
   /**
    * @param {LH.Gatherer.Simulation.GraphNode} graph
    * @param {NetworkRequest} lcpRecord
-   * @return {{lcpNode: LH.Gatherer.Simulation.GraphNetworkNode|undefined, path: Array<LH.Gatherer.Simulation.GraphNetworkNode>|undefined}}
+   * @return {LH.Gatherer.Simulation.GraphNetworkNode|undefined}
    */
   static findLCPNode(graph, lcpRecord) {
-    let lcpNode;
-    let path;
-    graph.traverse((node, traversalPath) => {
-      if (node.type !== 'network') return;
+    for (const {node} of graph.traverseGenerator()) {
+      if (node.type !== 'network') continue;
       if (node.record.requestId === lcpRecord.requestId) {
-        lcpNode = node;
-        path =
-          traversalPath.slice(1).filter(initiator => initiator.type === 'network');
+        return node;
       }
-    });
-    return {
-      lcpNode,
-      path,
-    };
+    }
+  }
+
+  /**
+   * Get the initiator path starting with lcpRecord back to mainResource, inclusive.
+   * @param {NetworkRequest} lcpRecord
+   * @param {NetworkRequest} mainResource
+   * @return {InitiatorPath}
+   */
+  static getLcpInitiatorPath(lcpRecord, mainResource) {
+    /** @type {InitiatorPath} */
+    const initiatorPath = [];
+    let mainResourceReached = false;
+    /** @type {NetworkRequest|undefined} */
+    let request = lcpRecord;
+
+    while (request) {
+      mainResourceReached ||= request.requestId === mainResource.requestId;
+
+      /** @type {InitiatorType} */
+      let initiatorType = request.initiator?.type ?? 'other';
+      // Initiator type usually comes from redirect, but 'redirect' more informative for debugData.
+      if (request.initiatorRequest && request.initiatorRequest === request.redirectSource) {
+        initiatorType = 'redirect';
+      }
+      // Sometimes the initiator chain is broken and the best that can be done is stitch
+      // back to the main resource. Note this in the initiatorType.
+      if (!request.initiatorRequest && !mainResourceReached) {
+        initiatorType = 'fallbackToMain';
+      }
+
+      initiatorPath.push({url: request.url, initiatorType});
+
+      // Can't preload before the main resource, so break off initiator path there.
+      if (mainResourceReached) break;
+
+      // Continue up chain, falling back to mainResource if chain is broken.
+      request = request.initiatorRequest || mainResource;
+    }
+
+    return initiatorPath;
   }
 
   /**
@@ -93,17 +124,13 @@ class PrioritizeLcpImage extends Audit {
    */
   static getLCPNodeToPreload(mainResource, graph, lcpRecord) {
     if (!lcpRecord) return {};
-    const {lcpNode, path} = PrioritizeLcpImage.findLCPNode(graph, lcpRecord);
-    if (!lcpNode || !path) return {};
+    const lcpNode = PrioritizeLcpImage.findLCPNode(graph, lcpRecord);
+    const initiatorPath = PrioritizeLcpImage.getLcpInitiatorPath(lcpRecord, mainResource);
+    if (!lcpNode) return {initiatorPath};
 
     // eslint-disable-next-line max-len
-    const shouldPreload = PrioritizeLcpImage.shouldPreloadRequest(lcpNode.record, mainResource, path);
+    const shouldPreload = PrioritizeLcpImage.shouldPreloadRequest(lcpRecord, mainResource, initiatorPath);
     const lcpNodeToPreload = shouldPreload ? lcpNode : undefined;
-
-    const initiatorPath = [
-      {url: lcpNode.record.url, initiatorType: lcpNode.initiatorType},
-      ...path.map(n => ({url: n.record.url, initiatorType: n.initiatorType})),
-    ];
 
     return {
       lcpNodeToPreload,
@@ -276,6 +303,7 @@ class PrioritizeLcpImage extends Audit {
 
     const lcpRecord = PrioritizeLcpImage.getLcpRecord(trace, processedNavigation, networkRecords);
     const graph = lanternLCP.pessimisticGraph;
+    // Note: if moving to LCPAllFrames, mainResource would need to be the LCP frame's main resource.
     const {lcpNodeToPreload, initiatorPath} = PrioritizeLcpImage.getLCPNodeToPreload(mainResource,
         graph, lcpRecord);
 
