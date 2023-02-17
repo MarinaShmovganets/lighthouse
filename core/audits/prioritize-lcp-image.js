@@ -56,7 +56,7 @@ class PrioritizeLcpImage extends Audit {
     if (request.isLinkPreload) return false;
     // It's not a request loaded over the network, don't recommend it.
     if (NetworkRequest.isNonNetworkRequest(request)) return false;
-    // It's already discoverable from the main document, don't recommend it.
+    // It's already discoverable from the main document (a path of [lcpRecord, mainResource]), don't recommend it.
     if (initiatorPath.length <= 2) return false;
     // Finally, return whether or not it belongs to the main frame
     return request.frameId === mainResource.frameId;
@@ -78,6 +78,8 @@ class PrioritizeLcpImage extends Audit {
 
   /**
    * Get the initiator path starting with lcpRecord back to mainResource, inclusive.
+   * Navigation redirects *to* the mainResource are not included.
+   * Path returned will always be at least [lcpRecord, mainResource].
    * @param {NetworkRequest} lcpRecord
    * @param {NetworkRequest} mainResource
    * @return {InitiatorPath}
@@ -94,7 +96,7 @@ class PrioritizeLcpImage extends Audit {
 
       /** @type {InitiatorType} */
       let initiatorType = request.initiator?.type ?? 'other';
-      // Initiator type usually comes from redirect, but 'redirect' more informative for debugData.
+      // Initiator type usually comes from redirect, but 'redirect' is used for more informative debugData.
       if (request.initiatorRequest && request.initiatorRequest === request.redirectSource) {
         initiatorType = 'redirect';
       }
