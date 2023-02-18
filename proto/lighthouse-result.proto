@@ -250,7 +250,7 @@ message LighthouseResult {
   google.protobuf.Value full_page_screenshot = 19;
 
   // Entity classification data.
-  repeated LhrEntity entibties = 20;
+  repeated LhrEntity entities = 20;
 }
 
 // Message containing a category
