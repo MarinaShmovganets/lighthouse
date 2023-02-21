@@ -136,10 +136,10 @@ function resolveArtifactDependencies(artifact, gatherer, artifactDefnsBySymbol) 
  * @return {Promise<LH.Config.AnyArtifactDefn[]>}
  */
 async function resolveArtifactsToDefns(artifacts, configDir) {
+  if (!artifacts || !artifacts.length) throw new Error('No artifacts were defined on the config.');
+
   const status = {msg: 'Resolve artifact definitions', id: 'lh:config:resolveArtifactsToDefns'};
   log.time(status, 'verbose');
-
-  if (!artifacts || !artifacts.length) throw new Error('No artifacts were defined on the config.');
 
   const sortedArtifacts = [...artifacts];
   sortedArtifacts.sort((a, b) => {
