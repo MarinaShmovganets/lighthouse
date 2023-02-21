@@ -14,6 +14,7 @@ import defaultConfig from '../../core/config/default-config.js';
 import {LH_ROOT} from '../../root.js';
 import {getCanonicalLocales} from '../../shared/localization/format.js';
 import {getProtoRoundTrip} from '../../core/test/test-utils.js';
+import { expect } from 'expect';
 
 const {itIfProtoExists} = getProtoRoundTrip();
 
@@ -279,6 +280,11 @@ describe('Lighthouse Viewer', () => {
       new Promise((resolve, reject) => setTimeout(reject, 5_000)),
     ]);
     await ensureNoErrors();
+
+    const content = await viewerPage.$eval('main', el => el.textContent);
+    for (const line of content.split('\n')) {
+      expect(line).not.toContain('undefined');
+    }
   }
 
   describe('Renders old reports', () => {

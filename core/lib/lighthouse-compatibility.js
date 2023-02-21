@@ -106,12 +106,22 @@ function upgradeLhrForCompatibility(lhr) {
 
   // Add some minimal stuff so older reports still work.
   if (!lhr.environment) {
-    // @ts-expect-error
-    lhr.environment = {benchmarkIndex: 0};
+    lhr.environment = {
+      benchmarkIndex: 0,
+      networkUserAgent: lhr.userAgent,
+      hostUserAgent: lhr.userAgent,
+    };
   }
   if (!lhr.configSettings.screenEmulation) {
-    // @ts-expect-error
-    lhr.configSettings.screenEmulation = {};
+    lhr.configSettings.screenEmulation = {
+      width: -1,
+      height: -1,
+      deviceScaleFactor: -1,
+      mobile: lhr.environment?.hostUserAgent ?
+        /mobile/i.test(lhr.environment.hostUserAgent) :
+        true,
+      disabled: false,
+    };
   }
   if (!lhr.i18n) {
     // @ts-expect-error
