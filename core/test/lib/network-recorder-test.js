@@ -695,6 +695,87 @@ describe('network recorder', function() {
     expect(imageRequest.initiatorRequest).toBe(preloadRequest);
   });
 
+  it('should discard failed initiators', () => {
+    const url = 'https://redirecty.test/';
+    const frameId = 'MAIN_FRAME';
+    const redirectInitiator = {
+      type: 'script',
+      stack: {
+        callFrames: [{
+          functionName: 'util.reload',
+          url,
+          scriptId: '1',
+          lineNumber: 4,
+          columnNumber: 1000,
+        }],
+      },
+    };
+
+    // A page uses JS to refresh itself, with a spurious failed request in between.
+    const devtoolsLog = networkRecordsToDevtoolsLog([
+      {
+        url,
+        frameId,
+        requestId: 'ROOT_DOC',
+        resourceType: 'Document',
+        initiator: {type: 'other'},
+        protocol: 'h2',
+        statusCode: 200,
+        failed: false,
+        finished: true,
+        rendererStartTime: 10,
+        networkRequestTime: 15,
+        responseHeadersEndTime: 200,
+        networkEndTime: 300,
+        transferSize: 11_000,
+        resourceSize: 50_000,
+      },
+      {
+        url,
+        frameId,
+        requestId: 'FAILED_DOC',
+        resourceType: 'Document',
+        initiator: redirectInitiator,
+        protocol: '',
+        statusCode: -1,
+        failed: true,
+        finished: true,
+        localizedFailDescription: 'net::ERR_ABORTED',
+        rendererStartTime: 500,
+        networkRequestTime: 500,
+        responseHeadersEndTime: -1,
+        networkEndTime: 501,
+        transferSize: 0,
+        resourceSize: 0,
+      },
+      {
+        url,
+        frameId,
+        requestId: 'REFRESH_DOC',
+        resourceType: 'Document',
+        initiator: redirectInitiator,
+        protocol: 'h3',
+        statusCode: 200,
+        failed: false,
+        finished: true,
+        rendererStartTime: 503,
+        networkRequestTime: 504,
+        responseHeadersEndTime: 700,
+        networkEndTime: 800,
+        transferSize: 10_000,
+        resourceSize: 51_000,
+      },
+    ]);
+
+    const records = NetworkRecorder.recordsFromLogs(devtoolsLog);
+    expect(records).toHaveLength(3);
+
+    const [rootDoc, failedDoc, refreshDoc] = records;
+    expect(rootDoc.initiatorRequest).toBe(undefined);
+    expect(failedDoc.initiatorRequest).toBe(rootDoc);
+    expect(refreshDoc.initiatorRequest).toBe(rootDoc);
+  });
+
   it('should not set initiator when ambiguous', () => {
     const logs = [
       { // initiator A
