@@ -8,13 +8,13 @@ import fs from 'fs';
 import assert from 'assert/strict';
 
 import puppeteer from 'puppeteer';
+import {expect} from 'expect';
 
 import {Server} from '../../cli/test/fixtures/static-server.js';
 import defaultConfig from '../../core/config/default-config.js';
 import {LH_ROOT} from '../../root.js';
 import {getCanonicalLocales} from '../../shared/localization/format.js';
 import {getProtoRoundTrip} from '../../core/test/test-utils.js';
-import { expect } from 'expect';
 
 const {itIfProtoExists} = getProtoRoundTrip();
 

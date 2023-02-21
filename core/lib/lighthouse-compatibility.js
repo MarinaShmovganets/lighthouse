@@ -117,9 +117,7 @@ function upgradeLhrForCompatibility(lhr) {
       width: -1,
       height: -1,
       deviceScaleFactor: -1,
-      mobile: lhr.environment?.hostUserAgent ?
-        /mobile/i.test(lhr.environment.hostUserAgent) :
-        true,
+      mobile: /mobile/i.test(lhr.environment.hostUserAgent),
       disabled: false,
     };
   }
