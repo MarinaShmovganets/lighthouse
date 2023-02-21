@@ -29,6 +29,11 @@ describe('Fraggle Rock Config', () => {
       .rejects.toThrow(/must be an absolute path/);
   });
 
+  it('should throw if no artifacts were defined', async () => {
+    await expect(initializeConfig(gatherMode, {}))
+      .rejects.toThrow(/No artifacts were defined on the config/);
+  });
+
   it('should not mutate the original input', async () => {
     const config = {artifacts: [{id: 'Accessibility', gatherer: 'accessibility'}]};
     const {resolvedConfig} = await initializeConfig(gatherMode, config);

@@ -133,13 +133,13 @@ function resolveArtifactDependencies(artifact, gatherer, artifactDefnsBySymbol) 
  *
  * @param {LH.Config.ArtifactJson[]|null|undefined} artifacts
  * @param {string|undefined} configDir
- * @return {Promise<LH.Config.AnyArtifactDefn[] | null>}
+ * @return {Promise<LH.Config.AnyArtifactDefn[]>}
  */
 async function resolveArtifactsToDefns(artifacts, configDir) {
-  if (!artifacts) return null;
-
   const status = {msg: 'Resolve artifact definitions', id: 'lh:config:resolveArtifactsToDefns'};
   log.time(status, 'verbose');
+
+  if (!artifacts || !artifacts.length) throw new Error('No artifacts were defined on the config.');
 
   const sortedArtifacts = [...artifacts];
   sortedArtifacts.sort((a, b) => {
@@ -224,13 +224,11 @@ function overrideNavigationThrottlingWindows(navigation, settings) {
 }
 
 /**
- * @param {LH.Config.AnyArtifactDefn[]|null|undefined} artifactDefns
+ * @param {LH.Config.AnyArtifactDefn[]} artifactDefns
  * @param {LH.Config.Settings} settings
- * @return {LH.Config.NavigationDefn[] | null}
+ * @return {LH.Config.NavigationDefn[]}
  */
 function resolveFakeNavigations(artifactDefns, settings) {
-  if (!artifactDefns) return null;
-
   const status = {msg: 'Resolve navigation definitions', id: 'lh:config:resolveNavigationsToDefns'};
   log.time(status, 'verbose');
 
