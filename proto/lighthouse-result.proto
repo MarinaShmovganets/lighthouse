@@ -126,7 +126,7 @@ message LighthouseResult {
   map<string, CategoryGroup> category_groups = 11;
 
   // Message containing the configuration settings for the LH run
-  // Next ID: 9
+  // Next ID: 10
   message ConfigSettings {
     // The possible form factors an audit can be run in.
     // This enum served the emulated_form_factor field, but in v7, that field
