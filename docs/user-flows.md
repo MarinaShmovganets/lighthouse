@@ -42,27 +42,25 @@ import {writeFileSync} from 'fs';
 import puppeteer from 'puppeteer';
 import {startFlow} from 'lighthouse';
 
-(async function() {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  const flow = await startFlow(page);
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+const flow = await startFlow(page);
 
-  // Navigate with a URL
-  await flow.navigate('https://example.com');
+// Navigate with a URL
+await flow.navigate('https://example.com');
 
-  // Interaction-initiated navigation via a callback function
-  await flow.navigate(async () => {
-    await page.click('a.link');
-  });
-
-  // Navigate with startNavigation/endNavigation
-  await flow.startNavigation();
+// Interaction-initiated navigation via a callback function
+await flow.navigate(async () => {
   await page.click('a.link');
-  await flow.endNavigation();
+});
 
-  await browser.close();
-  writeFileSync('report.html', await flow.generateReport());
-})();
+// Navigate with startNavigation/endNavigation
+await flow.startNavigation();
+await page.click('a.link');
+await flow.endNavigation();
+
+await browser.close();
+writeFileSync('report.html', await flow.generateReport());
 ```
 </details>
 <br>
@@ -92,21 +90,19 @@ import {writeFileSync} from 'fs';
 import puppeteer from 'puppeteer';
 import {startFlow} from 'lighthouse';
 
-(async function() {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto('https://secret.login');
-  const flow = await startFlow(page);
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+await page.goto('https://secret.login');
+const flow = await startFlow(page);
 
-  await flow.startTimespan();
-  await page.type('#password', 'L1ghth0useR0cks!');
-  await page.click('#login');
-  await page.waitForSelector('#dashboard');
-  await flow.endTimespan();
+await flow.startTimespan();
+await page.type('#password', 'L1ghth0useR0cks!');
+await page.click('#login');
+await page.waitForSelector('#dashboard');
+await flow.endTimespan();
 
-  await browser.close();
-  writeFileSync('report.html', await flow.generateReport());
-})();
+await browser.close();
+writeFileSync('report.html', await flow.generateReport());
 ```
 </details>
 <br>
@@ -127,18 +123,16 @@ import {writeFileSync} from 'fs';
 import puppeteer from 'puppeteer';
 import {startFlow} from 'lighthouse';
 
-(async function() {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto('https://example.com');
-  const flow = await startFlow(page);
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+await page.goto('https://example.com');
+const flow = await startFlow(page);
 
-  await page.click('#expand-sidebar');
-  await flow.snapshot();
+await page.click('#expand-sidebar');
+await flow.snapshot();
 
-  await browser.close();
-  writeFileSync('report.html', await flow.generateReport());
-})();
+await browser.close();
+writeFileSync('report.html', await flow.generateReport());
 ```
 </details>
 <br>
@@ -178,38 +172,36 @@ async function search(page) {
   ]);
 }
 
-(async function() {
-  // Setup the browser and Lighthouse.
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  const flow = await startFlow(page);
+// Setup the browser and Lighthouse.
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+const flow = await startFlow(page);
 
-  // Phase 1 - Navigate to the landing page.
-  await flow.navigate('https://www.bestbuy.com');
+// Phase 1 - Navigate to the landing page.
+await flow.navigate('https://www.bestbuy.com');
 
-  // Phase 2 - Interact with the page and submit the search form.
-  await flow.startTimespan();
-  await search(page);
-  await flow.endTimespan();
+// Phase 2 - Interact with the page and submit the search form.
+await flow.startTimespan();
+await search(page);
+await flow.endTimespan();
 
-  // Phase 3 - Analyze the new state.
-  await flow.snapshot();
+// Phase 3 - Analyze the new state.
+await flow.snapshot();
 
-  // Phase 4 - Navigate to a detail page.
-  await flow.navigate(async () => {
-    const $document = await getDocument(page);
-    const $link = await queries.getByText($document, /Xbox Series X 1TB Console/);
-    $link.click();
-  });
+// Phase 4 - Navigate to a detail page.
+await flow.navigate(async () => {
+  const $document = await getDocument(page);
+  const $link = await queries.getByText($document, /Xbox Series X 1TB Console/);
+  $link.click();
+});
 
-  // Get the comprehensive flow report.
-  writeFileSync('report.html', await flow.generateReport());
-  // Save results as JSON.
-  writeFileSync('flow-result.json', JSON.stringify(await flow.createFlowResult(), null, 2));
+// Get the comprehensive flow report.
+writeFileSync('report.html', await flow.generateReport());
+// Save results as JSON.
+writeFileSync('flow-result.json', JSON.stringify(await flow.createFlowResult(), null, 2));
 
-  // Cleanup.
-  await browser.close();
-})();
+// Cleanup.
+await browser.close();
 ```
 
 As this flow has multiple steps, the flow report summarizes everything and allows you to investigate each aspect in more detail.
@@ -218,7 +210,7 @@ As this flow has multiple steps, the flow report summarizes everything and allow
 
 ### Creating a desktop user flow
 
-If you want to test the desktop version of a page with user flows, you need to use the desktop config provided in the Lighthouse package.
+If you want to test the desktop version of a page with user flows, you can use the desktop config provided in the Lighthouse package, which includes desktop scoring and viewport/performance emulation.
 
 ```js
 import puppeteer from 'puppeteer';
@@ -230,6 +222,8 @@ const page = await browser.newPage();
 const flow = await startFlow(page, {
   config: desktopConfig,
 });
+
+await flow.navigate('https://example.com');
 ```
 
 ### Using Puppeteer's emulation settings in a user flow
@@ -257,6 +251,8 @@ const flow = await startFlow(page, {
 });
 
 await page.setViewport({width: 1000, height: 500});
+
+await flow.navigate('https://example.com');
 ```
 
 ## Tips and Tricks
