@@ -27,7 +27,7 @@ describe('BFCache audit', () => {
 
     const result = await BFCache.audit(artifacts);
 
-    expect(result.displayValue).toBeDisplayString('3 failure reasons');
+    expect(result.displayValue).toBeDisplayString('4 failure reasons');
     expect(result.score).toEqual(0);
 
     if (result.details?.type !== 'table') throw new Error('details were not a table');
