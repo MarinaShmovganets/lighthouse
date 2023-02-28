@@ -9,7 +9,6 @@ import {ByteEfficiencyAudit} from './byte-efficiency/byte-efficiency-audit.js';
 import * as i18n from '../lib/i18n/i18n.js';
 import {ProcessedTrace} from '../computed/processed-trace.js';
 import {NetworkRecords} from '../computed/network-records.js';
-import {MainResource} from '../computed/main-resource.js';
 import {LanternInteractive} from '../computed/metrics/lantern-interactive.js';
 
 const UIStrings = {
@@ -48,12 +47,11 @@ class Redirects extends Audit {
    *
    * Returns network records [/requestedUrl, /firstRedirect, /secondRedirect, /thirdRedirect, /mainDocumentUrl]
    *
-   * @param {LH.Artifacts.NetworkRequest} mainResource
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @param {LH.Artifacts.ProcessedTrace} processedTrace
    * @return {Array<LH.Artifacts.NetworkRequest>}
    */
-  static getDocumentRequestChain(mainResource, networkRecords, processedTrace) {
+  static getDocumentRequestChain(networkRecords, processedTrace) {
     /** @type {Array<LH.Artifacts.NetworkRequest>} */
     const documentRequests = [];
 
@@ -92,7 +90,6 @@ class Redirects extends Audit {
 
     const processedTrace = await ProcessedTrace.request(trace, context);
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
-    const mainResource = await MainResource.request({URL: artifacts.URL, devtoolsLog}, context);
 
     const metricComputationData = {trace, devtoolsLog, gatherContext, settings, URL: artifacts.URL};
     const metricResult = await LanternInteractive.request(metricComputationData, context);
@@ -105,8 +102,7 @@ class Redirects extends Audit {
       }
     }
 
-    const documentRequests = Redirects.getDocumentRequestChain(
-      mainResource, networkRecords, processedTrace);
+    const documentRequests = Redirects.getDocumentRequestChain(networkRecords, processedTrace);
 
     let totalWastedMs = 0;
     const tableRows = [];
