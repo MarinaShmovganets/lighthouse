@@ -104,8 +104,7 @@ async function waitForFunction(session, fn, deps) {
   while (true) {
     try {
       return await evaluateInSession(session, fn, deps);
-    } catch (e) {
-      console.error(e);
+    } catch {
       await new Promise(r => setTimeout(r, 500));
     }
   }
