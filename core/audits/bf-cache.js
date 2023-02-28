@@ -74,6 +74,8 @@ class BFCache extends Audit {
     // TODO: Analyze more than one bf cache failure.
     const {notRestoredReasonsTree} = failures[0];
 
+    let totalIssues = 0;
+
     /** @type {LH.Audit.Details.TableItem[]} */
     const results = [];
 
@@ -81,6 +83,8 @@ class BFCache extends Audit {
       const reasonsMap = notRestoredReasonsTree[failureType];
 
       for (const [reason, frameUrls] of Object.entries(reasonsMap)) {
+        totalIssues += frameUrls.length;
+
         results.push({
           reason: NotRestoredReasonDescription[reason]?.name ?? reason,
           failureType: FAILURE_TYPE_TO_STRING[failureType],
@@ -104,8 +108,8 @@ class BFCache extends Audit {
 
     const details = Audit.makeTableDetails(headings, results);
 
-    const displayValue = results.length ?
-      str_(UIStrings.displayValue, {itemCount: results.length}) :
+    const displayValue = totalIssues ?
+      str_(UIStrings.displayValue, {itemCount: totalIssues}) :
       undefined;
 
     return {

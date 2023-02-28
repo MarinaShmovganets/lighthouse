@@ -8,11 +8,15 @@ import fs from 'fs';
 import assert from 'assert/strict';
 
 import puppeteer from 'puppeteer';
+import {expect} from 'expect';
 
 import {Server} from '../../cli/test/fixtures/static-server.js';
 import defaultConfig from '../../core/config/default-config.js';
 import {LH_ROOT} from '../../root.js';
 import {getCanonicalLocales} from '../../shared/localization/format.js';
+import {getProtoRoundTrip} from '../../core/test/test-utils.js';
+
+const {itIfProtoExists} = getProtoRoundTrip();
 
 const portNumber = 10200;
 const viewerUrl = `http://localhost:${portNumber}/dist/gh-pages/viewer/index.html`;
@@ -264,6 +268,25 @@ describe('Lighthouse Viewer', () => {
     });
   });
 
+  async function verifyLhrLoadsWithNoErrors(lhrFilePath) {
+    await viewerPage.goto(viewerUrl, {waitUntil: 'networkidle2', timeout: 30000});
+    const fileInput = await viewerPage.$('#hidden-file-input');
+    const waitForAck = viewerPage.evaluate(() =>
+      new Promise(resolve =>
+        document.addEventListener('lh-file-upload-test-ack', resolve, {once: true})));
+    await fileInput.uploadFile(lhrFilePath);
+    await Promise.race([
+      waitForAck,
+      new Promise((resolve, reject) => setTimeout(reject, 5_000)),
+    ]);
+    await ensureNoErrors();
+
+    const content = await viewerPage.$eval('main', el => el.textContent);
+    for (const line of content.split('\n')) {
+      expect(line).not.toContain('undefined');
+    }
+  }
+
   describe('Renders old reports', () => {
     [
       'lhr-3.0.0.json',
@@ -273,22 +296,16 @@ describe('Lighthouse Viewer', () => {
       'lhr-8.5.0.json',
     ].forEach((testFilename) => {
       it(`[${testFilename}] should load with no errors`, async () => {
-        await viewerPage.goto(viewerUrl, {waitUntil: 'networkidle2', timeout: 30000});
-        const fileInput = await viewerPage.$('#hidden-file-input');
-        const waitForAck = viewerPage.evaluate(() =>
-          new Promise(resolve =>
-            document.addEventListener('lh-file-upload-test-ack', resolve, {once: true})));
-        await fileInput.uploadFile(`${LH_ROOT}/report/test-assets/${testFilename}`);
-        await Promise.race([
-          waitForAck,
-          new Promise((resolve, reject) => setTimeout(reject, 5_000)),
-        ]);
-        await ensureNoErrors();
+        await verifyLhrLoadsWithNoErrors(`${LH_ROOT}/report/test-assets/${testFilename}`);
       });
     });
   });
 
   describe('PSI', () => {
+    itIfProtoExists('Renders proto roundtrip report', async () => {
+      await verifyLhrLoadsWithNoErrors(`${LH_ROOT}/.tmp/sample_v2_round_trip.json`);
+    });
+
     /** @type {Partial<puppeteer.ResponseForRequest>} */
     let interceptedRequest;
     /** @type {Partial<puppeteer.ResponseForRequest>} */

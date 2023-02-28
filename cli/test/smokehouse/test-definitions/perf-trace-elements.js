@@ -195,13 +195,12 @@ const expectations = {
         score: 1,
         numericValue: 0,
         details: {
-          items: [{
-            url: 'http://localhost:10200/dobetterweb/lighthouse-480x318.jpg',
-          }],
+          items: [],
           debugData: {
             initiatorPath: [{
               url: 'http://localhost:10200/dobetterweb/lighthouse-480x318.jpg',
-              initiatorType: 'other',
+              // Dynamically-added, lazy-loaded images currently have broken initiator chains.
+              initiatorType: 'fallbackToMain',
             }, {
               url: 'http://localhost:10200/perf/trace-elements.html',
               initiatorType: 'other',

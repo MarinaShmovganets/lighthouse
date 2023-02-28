@@ -273,7 +273,9 @@ async function _navigations(args) {
     computedCache,
   } = args;
 
-  if (!resolvedConfig.navigations) throw new Error('No navigations configured');
+  if (!resolvedConfig.artifacts || !resolvedConfig.navigations) {
+    throw new Error('No artifacts were defined on the config');
+  }
 
   /** @type {Partial<LH.FRArtifacts & LH.FRBaseArtifacts>} */
   const artifacts = {};

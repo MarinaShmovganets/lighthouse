@@ -71,6 +71,7 @@ describe('networkRecordsToDevtoolsLog', () => {
       {url: 'https://example.com/2.js', timing: {requestTime: 5}},
       {url: 'https://example.com/3.js', networkEndTime: -1},
       {url: 'https://example.com/4.js', timing: {sendEnd: 1200}},
+      {url: 'https://example.com/5.js', failed: true},
       {},
     ];
 

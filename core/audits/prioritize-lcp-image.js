@@ -12,6 +12,7 @@ import {LanternLargestContentfulPaint} from '../computed/metrics/lantern-largest
 import {LoadSimulator} from '../computed/load-simulator.js';
 import {ByteEfficiencyAudit} from './byte-efficiency/byte-efficiency-audit.js';
 import {ProcessedNavigation} from '../computed/processed-navigation.js';
+import {NetworkRecords} from '../computed/network-records.js';
 
 const UIStrings = {
   /** Title of a lighthouse audit that tells a user to preload an image in order to improve their LCP time. */
@@ -24,7 +25,8 @@ const UIStrings = {
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
 /**
- * @typedef {Array<{url: string, initiatorType: string}>} InitiatorPath
+ * @typedef {LH.Crdp.Network.Initiator['type']|'redirect'|'fallbackToMain'} InitiatorType
+ * @typedef {Array<{url: string, initiatorType: InitiatorType}>} InitiatorPath
  */
 
 class PrioritizeLcpImage extends Audit {
@@ -46,63 +48,91 @@ class PrioritizeLcpImage extends Audit {
    *
    * @param {LH.Artifacts.NetworkRequest} request
    * @param {LH.Artifacts.NetworkRequest} mainResource
-   * @param {Array<LH.Gatherer.Simulation.GraphNode>} initiatorPath
+   * @param {InitiatorPath} initiatorPath
    * @return {boolean}
    */
   static shouldPreloadRequest(request, mainResource, initiatorPath) {
-    const mainResourceDepth = mainResource.redirects ? mainResource.redirects.length : 0;
-
     // If it's already preloaded, no need to recommend it.
     if (request.isLinkPreload) return false;
     // It's not a request loaded over the network, don't recommend it.
     if (NetworkRequest.isNonNetworkRequest(request)) return false;
-    // It's already discoverable from the main document, don't recommend it.
-    if (initiatorPath.length <= mainResourceDepth) return false;
+    // It's already discoverable from the main document (a path of [lcpRecord, mainResource]), don't recommend it.
+    if (initiatorPath.length <= 2) return false;
     // Finally, return whether or not it belongs to the main frame
     return request.frameId === mainResource.frameId;
   }
 
   /**
    * @param {LH.Gatherer.Simulation.GraphNode} graph
-   * @param {string} imageUrl
-   * @return {{lcpNode: LH.Gatherer.Simulation.GraphNetworkNode|undefined, path: Array<LH.Gatherer.Simulation.GraphNetworkNode>|undefined}}
+   * @param {NetworkRequest} lcpRecord
+   * @return {LH.Gatherer.Simulation.GraphNetworkNode|undefined}
    */
-  static findLCPNode(graph, imageUrl) {
-    let lcpNode;
-    let path;
-    graph.traverse((node, traversalPath) => {
-      if (node.type !== 'network') return;
-      if (node.record.url === imageUrl) {
-        lcpNode = node;
-        path =
-          traversalPath.slice(1).filter(initiator => initiator.type === 'network');
+  static findLCPNode(graph, lcpRecord) {
+    for (const {node} of graph.traverseGenerator()) {
+      if (node.type !== 'network') continue;
+      if (node.record.requestId === lcpRecord.requestId) {
+        return node;
       }
-    });
-    return {
-      lcpNode,
-      path,
-    };
+    }
+  }
+
+  /**
+   * Get the initiator path starting with lcpRecord back to mainResource, inclusive.
+   * Navigation redirects *to* the mainResource are not included.
+   * Path returned will always be at least [lcpRecord, mainResource].
+   * @param {NetworkRequest} lcpRecord
+   * @param {NetworkRequest} mainResource
+   * @return {InitiatorPath}
+   */
+  static getLcpInitiatorPath(lcpRecord, mainResource) {
+    /** @type {InitiatorPath} */
+    const initiatorPath = [];
+    let mainResourceReached = false;
+    /** @type {NetworkRequest|undefined} */
+    let request = lcpRecord;
+
+    while (request) {
+      mainResourceReached ||= request.requestId === mainResource.requestId;
+
+      /** @type {InitiatorType} */
+      let initiatorType = request.initiator?.type ?? 'other';
+      // Initiator type usually comes from redirect, but 'redirect' is used for more informative debugData.
+      if (request.initiatorRequest && request.initiatorRequest === request.redirectSource) {
+        initiatorType = 'redirect';
+      }
+      // Sometimes the initiator chain is broken and the best that can be done is stitch
+      // back to the main resource. Note this in the initiatorType.
+      if (!request.initiatorRequest && !mainResourceReached) {
+        initiatorType = 'fallbackToMain';
+      }
+
+      initiatorPath.push({url: request.url, initiatorType});
+
+      // Can't preload before the main resource, so break off initiator path there.
+      if (mainResourceReached) break;
+
+      // Continue up chain, falling back to mainResource if chain is broken.
+      request = request.initiatorRequest || mainResource;
+    }
+
+    return initiatorPath;
   }
 
   /**
    * @param {LH.Artifacts.NetworkRequest} mainResource
    * @param {LH.Gatherer.Simulation.GraphNode} graph
-   * @param {string | undefined} lcpUrl
+   * @param {NetworkRequest|undefined} lcpRecord
    * @return {{lcpNodeToPreload?: LH.Gatherer.Simulation.GraphNetworkNode, initiatorPath?: InitiatorPath}}
    */
-  static getLCPNodeToPreload(mainResource, graph, lcpUrl) {
-    if (!lcpUrl) return {};
-    const {lcpNode, path} = PrioritizeLcpImage.findLCPNode(graph, lcpUrl);
-    if (!lcpNode || !path) return {};
+  static getLCPNodeToPreload(mainResource, graph, lcpRecord) {
+    if (!lcpRecord) return {};
+    const lcpNode = PrioritizeLcpImage.findLCPNode(graph, lcpRecord);
+    const initiatorPath = PrioritizeLcpImage.getLcpInitiatorPath(lcpRecord, mainResource);
+    if (!lcpNode) return {initiatorPath};
 
     // eslint-disable-next-line max-len
-    const shouldPreload = PrioritizeLcpImage.shouldPreloadRequest(lcpNode.record, mainResource, path);
+    const shouldPreload = PrioritizeLcpImage.shouldPreloadRequest(lcpRecord, mainResource, initiatorPath);
     const lcpNodeToPreload = shouldPreload ? lcpNode : undefined;
-
-    const initiatorPath = [
-      {url: lcpNode.record.url, initiatorType: lcpNode.initiatorType},
-      ...path.map(n => ({url: n.record.url, initiatorType: n.initiatorType})),
-    ];
 
     return {
       lcpNodeToPreload,
@@ -111,14 +141,15 @@ class PrioritizeLcpImage extends Audit {
   }
 
   /**
-   * Match the LCP event with the paint event to get the URL of the image actually painted.
+   * Match the LCP event with the paint event to get the request of the image actually painted.
    * This could differ from the `ImageElement` associated with the nodeId if e.g. the LCP
    * was a pseudo-element associated with a node containing a smaller background-image.
    * @param {LH.Trace} trace
    * @param {LH.Artifacts.ProcessedNavigation} processedNavigation
-   * @return {string | undefined}
+   * @param {Array<NetworkRequest>} networkRecords
+   * @return {NetworkRequest|undefined}
    */
-  static getLcpUrl(trace, processedNavigation) {
+  static getLcpRecord(trace, processedNavigation, networkRecords) {
     // Use main-frame-only LCP to match the metric value.
     const lcpEvent = processedNavigation.largestContentfulPaintEvt;
     if (!lcpEvent) return;
@@ -131,7 +162,31 @@ class PrioritizeLcpImage extends Audit {
     // Get last candidate, in case there was more than one.
     }).sort((a, b) => b.ts - a.ts)[0];
 
-    return lcpImagePaintEvent?.args.data?.imageUrl;
+    const lcpUrl = lcpImagePaintEvent?.args.data?.imageUrl;
+    if (!lcpUrl) return;
+
+    const candidates = networkRecords.filter(record => {
+      return record.url === lcpUrl &&
+          record.finished &&
+          // Same frame as LCP trace event.
+          record.frameId === lcpImagePaintEvent.args.frame &&
+          record.networkRequestTime < (processedNavigation.timestamps.largestContentfulPaint || 0);
+    }).map(record => {
+      // Follow any redirects to find the real image request.
+      while (record.redirectDestination) {
+        record = record.redirectDestination;
+      }
+      return record;
+    }).filter(record => {
+      // Don't select if also loaded by some other means (xhr, etc). `resourceType`
+      // isn't set on redirect _sources_, so have to check after following redirects.
+      return record.resourceType === 'Image';
+    });
+
+    // If there are still multiple candidates, at this point it appears the page
+    // simply made multiple requests for the image. The first loaded is the best
+    // guess of the request that made the image available for use.
+    return candidates.sort((a, b) => a.networkEndTime - b.networkEndTime)[0];
   }
 
   /**
@@ -233,7 +288,8 @@ class PrioritizeLcpImage extends Audit {
     const trace = artifacts.traces[PrioritizeLcpImage.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[PrioritizeLcpImage.DEFAULT_PASS];
     const URL = artifacts.URL;
-    const metricData = {trace, devtoolsLog, gatherContext, settings: context.settings, URL};
+    const settings = context.settings;
+    const metricData = {trace, devtoolsLog, gatherContext, settings, URL};
     const lcpElement = artifacts.TraceElements
       .find(element => element.traceEventType === 'largest-contentful-paint');
 
@@ -241,17 +297,17 @@ class PrioritizeLcpImage extends Audit {
       return {score: null, notApplicable: true};
     }
 
-    const [processedNavigation, mainResource, lanternLCP, simulator] = await Promise.all([
-      ProcessedNavigation.request(trace, context),
-      MainResource.request({devtoolsLog, URL}, context),
-      LanternLargestContentfulPaint.request(metricData, context),
-      LoadSimulator.request({devtoolsLog, settings: context.settings}, context),
-    ]);
+    const networkRecords = await NetworkRecords.request(devtoolsLog, context);
+    const processedNavigation = await ProcessedNavigation.request(trace, context);
+    const mainResource = await MainResource.request({devtoolsLog, URL}, context);
+    const lanternLCP = await LanternLargestContentfulPaint.request(metricData, context);
+    const simulator = await LoadSimulator.request({devtoolsLog, settings}, context);
 
-    const lcpUrl = PrioritizeLcpImage.getLcpUrl(trace, processedNavigation);
+    const lcpRecord = PrioritizeLcpImage.getLcpRecord(trace, processedNavigation, networkRecords);
     const graph = lanternLCP.pessimisticGraph;
-    // eslint-disable-next-line max-len
-    const {lcpNodeToPreload, initiatorPath} = PrioritizeLcpImage.getLCPNodeToPreload(mainResource, graph, lcpUrl);
+    // Note: if moving to LCPAllFrames, mainResource would need to be the LCP frame's main resource.
+    const {lcpNodeToPreload, initiatorPath} = PrioritizeLcpImage.getLCPNodeToPreload(mainResource,
+        graph, lcpRecord);
 
     const {results, wastedMs} =
       PrioritizeLcpImage.computeWasteWithGraph(lcpElement, lcpNodeToPreload, graph, simulator);
