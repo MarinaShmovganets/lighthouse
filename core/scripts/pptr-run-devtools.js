@@ -104,7 +104,8 @@ async function waitForFunction(session, fn, deps) {
   while (true) {
     try {
       return await evaluateInSession(session, fn, deps);
-    } catch {
+    } catch (e) {
+      console.error(e);
       await new Promise(r => setTimeout(r, 500));
     }
   }
@@ -172,14 +173,14 @@ async function waitForLighthouseReady() {
   }
   // @ts-expect-error global
   const targetManager = SDK.targetManager || (SDK.TargetManager.TargetManager || SDK.TargetManager).instance();
-  if (targetManager.mainTarget() === null) {
+  if (targetManager.primaryPageTarget() === null) {
     if (targetManager?.observeTargets) {
       await new Promise(resolve => targetManager.observeTargets({
         targetAdded: resolve,
         targetRemoved: () => {},
       }));
     } else {
-      while (targetManager.mainTarget() === null) {
+      while (targetManager.primaryPageTarget() === null) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
     }
