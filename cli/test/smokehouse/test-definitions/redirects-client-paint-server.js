@@ -44,9 +44,12 @@ const expectations = {
         score: '<1',
         numericValue: '>=8000',
         details: {
-          items: {
-            length: 3,
-          },
+          items: [
+            // Conservative wastedMs to avoid flakes.
+            {url: /js-redirect\.html/, wastedMs: '>6000'},
+            {url: /online-only\.html/, wastedMs: '>500'},
+            {url: /redirects-final\.html/, wastedMs: 0},
+          ],
         },
       },
     },

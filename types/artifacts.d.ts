@@ -709,7 +709,7 @@ declare module Artifacts {
     timestamps: TraceTimes;
     /** The relative times from timeOrigin to key events, in milliseconds. */
     timings: TraceTimes;
-    /** The subset of trace events from the page's process, sorted by timestamp. */
+    /** The subset of trace events from the main frame's process, sorted by timestamp. Due to cross-origin navigations, the main frame may have multiple processes, so events may be from more than one process.  */
     processEvents: Array<TraceEvent>;
     /** The subset of trace events from the page's main thread, sorted by timestamp. */
     mainThreadEvents: Array<TraceEvent>;
@@ -977,6 +977,7 @@ export interface TraceEvent {
       processId?: number;
       isLoadingMainFrame?: boolean;
       documentLoaderURL?: string;
+      navigationId?: string;
       frames?: {
         frame: string;
         url: string;

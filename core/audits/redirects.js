@@ -40,12 +40,13 @@ class Redirects extends Audit {
    * This method generates the document request chain including client-side and server-side redirects.
    *
    * Example:
-   *    GET /initialUrl => 302 /firstRedirect
+   *    GET /requestedUrl => 302 /firstRedirect
    *    GET /firstRedirect => 200 /firstRedirect, window.location = '/secondRedirect'
    *    GET /secondRedirect => 302 /thirdRedirect
-   *    GET /thirdRedirect => 200 /mainDocumentUrl
+   *    GET /thirdRedirect => 302 /mainDocumentUrl
+   *    GET /mainDocumentUrl => 200 /mainDocumentUrl
    *
-   * Returns network records [/initialUrl, /firstRedirect, /secondRedirect, /thirdRedirect, /mainDocumentUrl]
+   * Returns network records [/requestedUrl, /firstRedirect, /secondRedirect, /thirdRedirect, /mainDocumentUrl]
    *
    * @param {LH.Artifacts.NetworkRequest} mainResource
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
@@ -63,18 +64,19 @@ class Redirects extends Audit {
       const data = event.args.data || {};
       if (!data.documentLoaderURL || !data.isLoadingMainFrame) continue;
 
-      let networkRecord = networkRecords.find(record => record.url === data.documentLoaderURL);
+      let networkRecord = networkRecords.find(record => record.requestId === data.navigationId);
       while (networkRecord) {
         documentRequests.push(networkRecord);
+        // HTTP redirects won't have separate navStarts, so find through the redirect chain.
         networkRecord = networkRecord.redirectDestination;
       }
     }
 
-    // If we found documents in the trace, just use this directly.
-    if (documentRequests.length) return documentRequests;
+    if (!documentRequests.length) {
+      throw new Error('No navigation requests found');
+    }
 
-    // Use the main resource as a backup if we didn't find any modern navigationStart events
-    return (mainResource.redirects || []).concat(mainResource);
+    return documentRequests;
   }
 
   /**
@@ -96,10 +98,10 @@ class Redirects extends Audit {
     const metricResult = await LanternInteractive.request(metricComputationData, context);
 
     /** @type {Map<string, LH.Gatherer.Simulation.NodeTiming>} */
-    const nodeTimingsByUrl = new Map();
+    const nodeTimingsById = new Map();
     for (const [node, timing] of metricResult.pessimisticEstimate.nodeTimings.entries()) {
       if (node.type === 'network') {
-        nodeTimingsByUrl.set(node.record.url, timing);
+        nodeTimingsById.set(node.record.requestId, timing);
       }
     }
 
@@ -118,8 +120,8 @@ class Redirects extends Audit {
       const initialRequest = documentRequests[i];
       const redirectedRequest = documentRequests[i + 1] || initialRequest;
 
-      const initialTiming = nodeTimingsByUrl.get(initialRequest.url);
-      const redirectedTiming = nodeTimingsByUrl.get(redirectedRequest.url);
+      const initialTiming = nodeTimingsById.get(initialRequest.requestId);
+      const redirectedTiming = nodeTimingsById.get(redirectedRequest.requestId);
       if (!initialTiming || !redirectedTiming) {
         throw new Error('Could not find redirects in graph');
       }
