@@ -30,6 +30,7 @@ import {
   unregisterAllServiceWorkers,
   waitForResult,
 } from '../helpers/lighthouse-helpers.js';
+import packageJson from '../../../../package.json' assert { type: 'json' };
 
 // This test will fail (by default) in headful mode, as the target page never gets painted.
 // To resolve this when debugging, just make sure the target page is visible during the lighthouse run.
@@ -111,7 +112,7 @@ describe('Navigation', async function() {
           assert.strictEqual(numNavigations, 6);
         }
 
-        assert.strictEqual(lhr.lighthouseVersion, '10.0.1');
+        assert.strictEqual(lhr.lighthouseVersion, packageJson.version);
         assert.match(lhr.finalUrl, /^https:\/\/localhost:[0-9]+\/test\/e2e\/resources\/lighthouse\/hello.html/);
 
         assert.strictEqual(lhr.configSettings.throttlingMethod, 'simulate');
