@@ -975,9 +975,9 @@ Object {
       // {"args":{"data":{"frame":"FRAME_ID","processId":72647,"processPseudoId":"0x7ff70022ca00"}},"cat":"disabled-by-default-devtools.timeline","name":"ProcessReadyInBrowser","ph":"I","pid":744,"s":"t","tid":775,"ts":123265450207,"tts":10824519750},
       const psuedoProcTrace = JSON.parse(JSON.stringify(decentlyModernTrace));
       const fcibEvt = psuedoProcTrace.traceEvents.find(e => e.name === 'FrameCommittedInBrowser');
-      const {url, processId, frame, name} = fcibEvt.args.data;
+      const {url, processId, frame} = fcibEvt.args.data;
       expect(processId).toBeTruthy();
-      fcibEvt.args.data = {frame, name, url, processPseudoId: '0xbaabaa'};
+      fcibEvt.args.data = {frame, name: '', url, processPseudoId: '0xbaabaa'};
 
       const procReadyEvt = JSON.parse(JSON.stringify(fcibEvt));
       procReadyEvt.name = 'ProcessReadyInBrowser';
