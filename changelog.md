@@ -6,6 +6,8 @@ We expect this release to ship in the DevTools of [Chrome 113](https://chromiumd
 
 ## Core
 
+* tracing: handle `FrameCommittedInBrowser` with `processPseudoId` ([#14800](https://github.com/GoogleChrome/lighthouse/pull/14800))
+* `redirects`: use `requestId` instead of URL to find requests ([#14838](https://github.com/GoogleChrome/lighthouse/pull/14838))
 * don't use failed network requests as potential initiators ([#14819](https://github.com/GoogleChrome/lighthouse/pull/14819))
 * config: change error message if no `artifacts` are defined ([#14818](https://github.com/GoogleChrome/lighthouse/pull/14818))
 * `bf-cache`: count failures based on affected frames ([#14823](https://github.com/GoogleChrome/lighthouse/pull/14823))
@@ -24,6 +26,8 @@ We expect this release to ship in the DevTools of [Chrome 113](https://chromiumd
 
 ## Tests
 
+* reenable `metrics-tricky-tti` on ToT ([#14790](https://github.com/GoogleChrome/lighthouse/pull/14790))
+* devtools: use new `primaryPageTarget` function ([#14839](https://github.com/GoogleChrome/lighthouse/pull/14839))
 * add roundtrip-proto lhr render test, check for `undefined` ([#14817](https://github.com/GoogleChrome/lighthouse/pull/14817))
 * devtools: sync e2e tests ([#14801](https://github.com/GoogleChrome/lighthouse/pull/14801))
 
