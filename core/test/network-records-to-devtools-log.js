@@ -339,7 +339,8 @@ function getLoadingFailedEvent(networkRecord, index, normalizedTiming) {
     method: 'Network.loadingFailed',
     params: {
       requestId: getBaseRequestId(networkRecord) || `${idBase}.${index}`,
-      timestamp: normalizedTiming.networkEndTime,
+      timestamp: normalizedTiming.networkEndTime / 1000,
+      type: networkRecord.resourceType || undefined,
       errorText: networkRecord.localizedFailDescription || 'Request failed',
     },
   };

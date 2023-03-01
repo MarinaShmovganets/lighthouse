@@ -77,6 +77,10 @@ jobs:
         flags: unit
         file: ./unit-coverage.lcov
 
+    # Runs here because it needs the roundtrip proto.
+    - name: yarn test-viewer
+      run: yarn build-viewer && xvfb-run --auto-servernum bash $GITHUB_WORKSPACE/.github/scripts/test-retry.sh yarn test-viewer
+
   # For windows, just test the potentially platform-specific code.
   unit-windows:
     runs-on: windows-latest
