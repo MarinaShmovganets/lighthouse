@@ -348,6 +348,11 @@
   margin: 0;
 }
 
+.lh-root pre,
+.lh-root code {
+  font-family: var(--report-font-family-monospace);
+}
+
 .lh-root details > summary {
   cursor: pointer;
 }
