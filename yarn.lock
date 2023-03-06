@@ -6055,9 +6055,9 @@ query-string@^4.1.0:
     strict-uri-encode "^1.0.0"
 
 quibble@^0.6.14:
-  version "0.6.16"
-  resolved "https://registry.yarnpkg.com/quibble/-/quibble-0.6.16.tgz#479730844a134a172dbedc7ebfcaca76e02c80a2"
-  integrity sha512-gq0HKVabRNwKOOZitqiHLVGTky/690XG5yOOdadi/tkBJ4WhvcSkbtmWplAgqqzIr2mjYN2wkvCKYqVA5dlldQ==
+  version "0.6.17"
+  resolved "https://registry.yarnpkg.com/quibble/-/quibble-0.6.17.tgz#1c47d40c4ee670fc1a5a4277ee792ca6eec8f4ca"
+  integrity sha512-uybGnGrx1hAhBCmzmVny+ycKaS5F71+q+iWVzbf8x/HyeEMDGeiQFVjWl1zhi4rwfTHa05+/NIExC4L5YRNPjQ==
   dependencies:
     lodash "^4.17.21"
     resolve "^1.22.1"
