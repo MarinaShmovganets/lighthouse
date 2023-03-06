@@ -169,7 +169,6 @@
     "preact": "^10.7.2",
     "pretty-json-stringify": "^0.0.2",
     "puppeteer": "^19.6.0",
-    "quibble": "connorjclark/quibble#fork",
     "resolve": "^1.20.0",
     "rollup": "^2.52.7",
     "rollup-plugin-node-resolve": "^5.2.0",
@@ -179,7 +178,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "tabulator-tables": "^4.9.3",
     "terser": "^5.3.8",
-    "testdouble": "^3.16.5",
+    "testdouble": "^3.16.8",
     "typed-query-selector": "^2.6.1",
     "typescript": "^4.9.4",
     "wait-for-expect": "^3.0.2",
@@ -215,8 +214,7 @@
   },
   "resolutions": {
     "puppeteer/**/devtools-protocol": "0.0.1081726",
-    "puppeteer-core/**/devtools-protocol": "0.0.1081726",
-    "testdouble/**/quibble": "connorjclark/quibble#fork"
+    "puppeteer-core/**/devtools-protocol": "0.0.1081726"
   },
   "repository": "GoogleChrome/lighthouse",
   "keywords": [

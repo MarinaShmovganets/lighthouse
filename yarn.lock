@@ -4377,6 +4377,13 @@ is-core-module@^2.2.0, is-core-module@^2.5.0, is-core-module@^2.8.0:
   dependencies:
     has "^1.0.3"
 
+is-core-module@^2.9.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.11.0.tgz#ad4cb3e3863e814523c96f3f58d26cc570ff0144"
+  integrity sha512-RRjxlvLDkD1YJwDbroBHMb+cukurkDWNyHx7D3oNB5x9rb5ogcksMC5wHCadcXoo67gVr/+3GFySh3134zi6rw==
+  dependencies:
+    has "^1.0.3"
+
 is-data-descriptor@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/is-data-descriptor/-/is-data-descriptor-0.1.4.tgz#0b5ee648388e2c860282e793f1856fec3f301b56"
@@ -5790,7 +5797,7 @@ path-key@^3.1.0:
   resolved "https://registry.yarnpkg.com/path-key/-/path-key-3.1.1.tgz#581f6ade658cbba65a0d3380de7753295054f375"
   integrity sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==
 
-path-parse@^1.0.6:
+path-parse@^1.0.6, path-parse@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
@@ -6047,12 +6054,13 @@ query-string@^4.1.0:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
-quibble@^0.6.7, quibble@connorjclark/quibble#fork:
-  version "0.6.12"
-  resolved "https://codeload.github.com/connorjclark/quibble/tar.gz/f49c6c6122f08a4872a1fafc1d2aca68a7fdc2df"
+quibble@^0.6.14:
+  version "0.6.17"
+  resolved "https://registry.yarnpkg.com/quibble/-/quibble-0.6.17.tgz#1c47d40c4ee670fc1a5a4277ee792ca6eec8f4ca"
+  integrity sha512-uybGnGrx1hAhBCmzmVny+ycKaS5F71+q+iWVzbf8x/HyeEMDGeiQFVjWl1zhi4rwfTHa05+/NIExC4L5YRNPjQ==
   dependencies:
     lodash "^4.17.21"
-    resolve "^1.20.0"
+    resolve "^1.22.1"
 
 quick-lru@^4.0.1:
   version "4.0.1"
@@ -6261,6 +6269,15 @@ resolve@^1.10.0, resolve@^1.11.1, resolve@^1.17.0, resolve@^1.19.0, resolve@^1.2
   dependencies:
     is-core-module "^2.2.0"
     path-parse "^1.0.6"
+
+resolve@^1.22.1:
+  version "1.22.1"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.22.1.tgz#27cb2ebb53f91abb49470a928bba7558066ac177"
+  integrity sha512-nBpuuYuY5jFsli/JIs1oldw6fOQCBioohqWZg/2hiaOybXOft4lonv85uDOKXdf8rhyK159cxU5cDcK/NKk8zw==
+  dependencies:
+    is-core-module "^2.9.0"
+    path-parse "^1.0.7"
+    supports-preserve-symlinks-flag "^1.0.0"
 
 ret@~0.1.10:
   version "0.1.15"
@@ -6812,6 +6829,11 @@ supports-color@^7.0.0, supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
+supports-preserve-symlinks-flag@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
+  integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
 symbol-tree@^3.2.2:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
@@ -6896,13 +6918,13 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
-testdouble@^3.16.5:
-  version "3.16.5"
-  resolved "https://registry.yarnpkg.com/testdouble/-/testdouble-3.16.5.tgz#4e51407b56f542b8cb57c485fff87248eb24d66d"
-  integrity sha512-2/0vR503/X/6LuZzQObpcBtu+KycyEnw7AdX/NPboR7sam1NTuYc128UMW8n7tBDpOPGAKqCUtKVBzvgV6C3bA==
+testdouble@^3.16.8:
+  version "3.16.8"
+  resolved "https://registry.yarnpkg.com/testdouble/-/testdouble-3.16.8.tgz#9c761031f3693d973c726e31a60ee73cd2871c96"
+  integrity sha512-jOKYRJ9mfgDxwuUOj84sl9DWiP1+KpHcgnhjlSHC8h1ZxJT3KD1FAAFVqnqmmyrzc/+0DRbI/U5xo1/K3PLi8w==
   dependencies:
-    lodash "^4.17.15"
-    quibble "^0.6.7"
+    lodash "^4.17.21"
+    quibble "^0.6.14"
     stringify-object-es5 "^2.5.0"
     theredoc "^1.0.0"
 
