@@ -1323,7 +1323,7 @@
     "message": "robots.txt is valid"
   },
   "core/audits/seo/tap-targets.js | description": {
-    "message": "Interactive elements like buttons and links should be large enough (48x48px), and have enough space around them, to be easy enough to tap without overlapping onto other elements. [Learn more about tap targets](https://developer.chrome.com/docs/lighthouse/seo/tap-targets/)."
+    "message": "Interactive elements like buttons and links should be large enough (48x48px), or have enough space around them, to be easy enough to tap without overlapping onto other elements. [Learn more about tap targets](https://developer.chrome.com/docs/lighthouse/seo/tap-targets/)."
   },
   "core/audits/seo/tap-targets.js | displayValue": {
     "message": "{decimalProportion, number, percent} appropriately sized tap targets"

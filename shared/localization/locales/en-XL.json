@@ -1323,7 +1323,7 @@
     "message": "r̂ób̂ót̂ś.t̂x́t̂ íŝ v́âĺîd́"
   },
   "core/audits/seo/tap-targets.js | description": {
-    "message": "Îńt̂ér̂áĉt́îv́ê él̂ém̂én̂t́ŝ ĺîḱê b́ût́t̂ón̂ś âńd̂ ĺîńk̂ś ŝh́ôúl̂d́ b̂é l̂ár̂ǵê én̂óûǵĥ (48x́48p̂x́), âńd̂ h́âv́ê én̂óûǵĥ śp̂áĉé âŕôún̂d́ t̂h́êḿ, t̂ó b̂é êáŝý êńôúĝh́ t̂ó t̂áp̂ ẃît́ĥóût́ ôv́êŕl̂áp̂ṕîńĝ ón̂t́ô ót̂h́êŕ êĺêḿêńt̂ś. [L̂éâŕn̂ ḿôŕê áb̂óût́ t̂áp̂ t́âŕĝét̂ś](https://developer.chrome.com/docs/lighthouse/seo/tap-targets/)."
+    "message": "Îńt̂ér̂áĉt́îv́ê él̂ém̂én̂t́ŝ ĺîḱê b́ût́t̂ón̂ś âńd̂ ĺîńk̂ś ŝh́ôúl̂d́ b̂é l̂ár̂ǵê én̂óûǵĥ (48x́48p̂x́), ôŕ ĥáv̂é êńôúĝh́ ŝṕâćê ár̂óûńd̂ t́ĥém̂, t́ô b́ê éâśŷ én̂óûǵĥ t́ô t́âṕ ŵít̂h́ôút̂ óv̂ér̂ĺâṕp̂ín̂ǵ ôńt̂ó ôt́ĥér̂ él̂ém̂én̂t́ŝ. [Ĺêár̂ń m̂ór̂é âb́ôút̂ t́âṕ t̂ár̂ǵêt́ŝ](https://developer.chrome.com/docs/lighthouse/seo/tap-targets/)."
   },
   "core/audits/seo/tap-targets.js | displayValue": {
     "message": "{decimalProportion, number, percent} âṕp̂ŕôṕr̂íât́êĺŷ śîźêd́ t̂áp̂ t́âŕĝét̂ś"

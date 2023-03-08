@@ -5090,7 +5090,7 @@
     "tap-targets": {
       "id": "tap-targets",
       "title": "Tap targets are not sized appropriately",
-      "description": "Interactive elements like buttons and links should be large enough (48x48px), and have enough space around them, to be easy enough to tap without overlapping onto other elements. [Learn more about tap targets](https://developer.chrome.com/docs/lighthouse/seo/tap-targets/).",
+      "description": "Interactive elements like buttons and links should be large enough (48x48px), or have enough space around them, to be easy enough to tap without overlapping onto other elements. [Learn more about tap targets](https://developer.chrome.com/docs/lighthouse/seo/tap-targets/).",
       "score": 0,
       "scoreDisplayMode": "binary",
       "displayValue": "0% appropriately sized tap targets",
