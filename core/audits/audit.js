@@ -81,7 +81,7 @@ class Audit {
    * @return {LH.Audit.Product|Promise<LH.Audit.Product>}
    */
   static audit(artifacts, context) {
-    throw new Error('audit() method must be overriden');
+    throw new Error('audit() method must be overridden');
   }
 
   /* eslint-enable no-unused-vars */

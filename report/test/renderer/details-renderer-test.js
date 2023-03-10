@@ -965,7 +965,7 @@ describe('DetailsRenderer', () => {
     it('uses the item\'s type over the heading type', () => {
       const details = {
         type: 'table',
-        // valueType is overriden by code object
+        // valueType is overridden by code object
         headings: [{key: 'content', valueType: 'url', label: 'Heading'}],
         items: [
           {content: {type: 'code', value: 'https://codeobject.com'}},
