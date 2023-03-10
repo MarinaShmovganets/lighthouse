@@ -147,10 +147,9 @@
   --sticky-header-background-color: var(--report-background-color);
   --sticky-header-buffer: calc(var(--topbar-height) + var(--sticky-header-height));
   --sticky-header-height: calc(var(--gauge-circle-size-sm) + var(--score-container-padding) * 2);
-  --table-group-header-separator-color: #D4D4D4;
   --table-group-header-background-color: #EEF1F4;
   --table-group-header-text-color: var(--color-gray-700);
-  --table-higlight-background-color: #EEF1F4;
+  --table-higlight-background-color: #F5F7FA;
   --tools-icon-color: var(--color-gray-600);
   --topbar-background-color: var(--color-white);
   --topbar-height: 32px;
@@ -213,10 +212,9 @@
     --toplevel-warning-background-color: hsl(33deg 14% 18%);
     --toplevel-warning-message-text-color: var(--color-orange-700);
     --toplevel-warning-text-color: var(--color-gray-100);
-    --table-group-header-separator-color: #575757;
     --table-group-header-background-color: rgba(186, 196, 206, 0.15);
     --table-group-header-text-color: var(--color-gray-100);
-    --table-higlight-background-color: rgba(186, 196, 206, 0.15);
+    --table-higlight-background-color: rgba(186, 196, 206, 0.09);
 
     /* SVGs */
     --plugin-icon-url: var(--plugin-icon-url-dark);
@@ -1542,7 +1540,6 @@
 }
 
 .lh-row--group td {
-  border-top: 1px solid var(--table-group-header-separator-color);
   font-weight: bold;
   font-size: 1.05em;
   color: var(--table-group-header-text-color);
@@ -1606,7 +1603,7 @@
 }
 
 .lh-row--even {
-  background-color: var(--table-higlight-background-color);
+  background-color: var(--table-group-header-background-color);
 }
 .lh-row--hidden {
   display: none;
