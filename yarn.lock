@@ -5051,6 +5051,11 @@ lighthouse-plugin-publisher-ads@1.5.7-beta:
     intl-messageformat "^4.1.2"
     yargs "^16.1.1"
 
+lighthouse-plugin-soft-navigation@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/lighthouse-plugin-soft-navigation/-/lighthouse-plugin-soft-navigation-1.0.0.tgz#0fea6283adede5059cdce86634785d590d5dbd31"
+  integrity sha512-hXtGifD8+1clfWlsqkMkv0g8Kifbg6FOSJxaw5CEXqN1LMngcdylkQmsqbKV0cApZ24Q8I9eQJtpOV7pXW1kpQ==
+
 lighthouse-stack-packs@1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/lighthouse-stack-packs/-/lighthouse-stack-packs-1.9.1.tgz#e83f76e302cb3dec717ad6a3af2da07c91d8f8f5"
