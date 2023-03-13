@@ -29,6 +29,16 @@ const expectations = {
     requestedUrl: `http://localhost:10200/js-redirect.html?delay=2000&jsDelay=5000&jsRedirect=%2Fredirects-final.html#hash`,
     finalDisplayedUrl: 'http://localhost:10200/redirects-final.html',
     audits: {
+      redirects: {
+        numericValue: '>=6000',
+        details: {
+          items: [
+            // Conservative wastedMs to avoid flakes.
+            {url: /js-redirect\.html/, wastedMs: '>6000'},
+            {url: /redirects-final\.html/, wastedMs: 0},
+          ],
+        },
+      },
     },
     runWarnings: [
       /The page may not be loading as expected because your test URL \(.*js-redirect.html.*\) was redirected to .*redirects-final.html. Try testing the second URL directly./,

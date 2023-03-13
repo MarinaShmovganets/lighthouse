@@ -81,6 +81,23 @@ function upgradeLhrForCompatibility(lhr) {
         }
       }
 
+      // In 10.0, third-party-summary deprecated entity: LinkValue and switched to entity name string
+      if (audit.id === 'third-party-summary') {
+        if (audit.details.type === 'opportunity' || audit.details.type === 'table') {
+          const {headings, items} = audit.details;
+          if (headings[0].valueType === 'link') {
+            // Apply upgrade only if we are dealing with an older version (valueType=link marker).
+            headings[0].valueType = 'text';
+            for (const item of items) {
+              if (typeof item.entity === 'object' && item.entity.type === 'link') {
+                item.entity = item.entity.text;
+              }
+            }
+            audit.details.isEntityGrouped = true;
+          }
+        }
+      }
+
       // TODO: convert printf-style displayValue.
       // Added:   #5099, v3
       // Removed: #6767, v4
@@ -106,12 +123,20 @@ function upgradeLhrForCompatibility(lhr) {
 
   // Add some minimal stuff so older reports still work.
   if (!lhr.environment) {
-    // @ts-expect-error
-    lhr.environment = {benchmarkIndex: 0};
+    lhr.environment = {
+      benchmarkIndex: 0,
+      networkUserAgent: lhr.userAgent,
+      hostUserAgent: lhr.userAgent,
+    };
   }
   if (!lhr.configSettings.screenEmulation) {
-    // @ts-expect-error
-    lhr.configSettings.screenEmulation = {};
+    lhr.configSettings.screenEmulation = {
+      width: -1,
+      height: -1,
+      deviceScaleFactor: -1,
+      mobile: /mobile/i.test(lhr.environment.hostUserAgent),
+      disabled: false,
+    };
   }
   if (!lhr.i18n) {
     // @ts-expect-error

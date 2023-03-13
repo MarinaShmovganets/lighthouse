@@ -102,14 +102,40 @@ const FAILING_CLIENTSIDE = [
   },
 ];
 
+const FAILING_SELF_REDIRECT = [{
+  requestId: '1',
+  url: 'https://redirect.test/',
+  priority: 'VeryHigh',
+  networkRequestTime: 0,
+  responseHeadersEndTime: 500,
+},
+{
+  requestId: '2',
+  url: 'https://redirect.test/',
+  priority: 'VeryHigh',
+  networkRequestTime: 1000,
+  responseHeadersEndTime: 1500,
+},
+{
+  requestId: '3',
+  url: 'https://redirect.test/',
+  priority: 'VeryHigh',
+  networkRequestTime: 3000,
+  responseHeadersEndTime: 3500,
+}];
+
 describe('Performance: Redirects audit', () => {
   const mockArtifacts = (networkRecords, finalDisplayedUrl) => {
     const devtoolsLog = networkRecordsToDevtoolsLog(networkRecords);
     const frameUrl = networkRecords[0].url;
 
+    const trace = createTestTrace({frameUrl, traceEnd: 5000});
+    const navStart = trace.traceEvents.find(e => e.name === 'navigationStart');
+    navStart.args.data.navigationId = '1';
+
     return {
       GatherContext: {gatherMode: 'navigation'},
-      traces: {defaultPass: createTestTrace({frameUrl, traceEnd: 5000})},
+      traces: {defaultPass: trace},
       devtoolsLogs: {defaultPass: devtoolsLog},
       URL: {
         requestedUrl: networkRecords[0].url,
@@ -132,6 +158,7 @@ describe('Performance: Redirects audit', () => {
     secondNavStart.ts++;
     secondNavStart.args.data.isLoadingMainFrame = true;
     secondNavStart.args.data.documentLoaderURL = 'https://www.lisairish.com/';
+    secondNavStart.args.data.navigationId = '2';
 
     const output = await RedirectsAudit.audit(artifacts, context);
     expect(output.details.items).toHaveLength(3);
@@ -207,5 +234,45 @@ describe('Performance: Redirects audit', () => {
       assert.equal(output.details.items.length, 0);
       assert.equal(output.numericValue, 0);
     });
+  });
+
+  it('fails when client-side redirects page to itself', async () => {
+    const context = {settings: {}, computedCache: new Map()};
+    const artifacts = mockArtifacts(FAILING_SELF_REDIRECT, 'https://redirect.test/');
+
+    const traceEvents = artifacts.traces.defaultPass.traceEvents;
+    const navStart = traceEvents.find(e => e.name === 'navigationStart');
+
+    const secondNavStart = JSON.parse(JSON.stringify(navStart));
+    traceEvents.push(secondNavStart);
+    secondNavStart.args.data.navigationId = '2';
+
+    const thirdNavStart = JSON.parse(JSON.stringify(navStart));
+    traceEvents.push(thirdNavStart);
+    thirdNavStart.args.data.navigationId = '3';
+
+    const output = await RedirectsAudit.audit(artifacts, context);
+    expect(output).toMatchObject({
+      score: expect.toBeApproximately(0.24),
+      numericValue: 3000,
+      details: {
+        items: [
+          {url: 'https://redirect.test/', wastedMs: 1000},
+          {url: 'https://redirect.test/', wastedMs: 2000},
+          {url: 'https://redirect.test/', wastedMs: 0},
+        ],
+      },
+    });
+  });
+
+  it('throws when no navigation requests are found', async () => {
+    const artifacts = mockArtifacts(SUCCESS_NOREDIRECT, 'https://www.google.com/');
+    const context = {settings: {}, computedCache: new Map()};
+    const traceEvents = artifacts.traces.defaultPass.traceEvents;
+    const navStart = traceEvents.find(e => e.name === 'navigationStart');
+    navStart.args.data.navigationId = 'NO_MATCHY';
+
+    await expect(RedirectsAudit.audit(artifacts, context)).rejects
+        .toThrow('No navigation requests found');
   });
 });

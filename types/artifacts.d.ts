@@ -11,7 +11,7 @@ import {Simulator} from '../core/lib/dependency-graph/simulator/simulator.js';
 import {LighthouseError} from '../core/lib/lh-error.js';
 import {NetworkRequest as _NetworkRequest} from '../core/lib/network-request.js';
 import speedline from 'speedline-core';
-import TextSourceMap from '../core/lib/cdt/generated/SourceMap.js';
+import * as TextSourceMap from '../core/lib/cdt/generated/SourceMap.js';
 import {ArbitraryEqualityMap} from '../core/lib/arbitrary-equality-map.js';
 import type { TaskNode as _TaskNode } from '../core/lib/tracehouse/main-thread-tasks.js';
 import AuditDetails from './lhr/audit-details.js'
@@ -151,7 +151,7 @@ export interface GathererArtifacts extends PublicGathererArtifacts,LegacyBaseArt
   /** Errors preventing page being installable as PWA. */
   InstallabilityErrors: Artifacts.InstallabilityErrors;
   /** JS coverage information for code used during audit. Keyed by script id. */
-  // 'url' is excluded because it can be overriden by a magic sourceURL= comment, which makes keeping it a dangerous footgun!
+  // 'url' is excluded because it can be overridden by a magic sourceURL= comment, which makes keeping it a dangerous footgun!
   JsUsage: Record<string, Omit<Crdp.Profiler.ScriptCoverage, 'url'>>;
   /** Parsed version of the page's Web App Manifest, or null if none found. */
   Manifest: Artifacts.Manifest | null;
@@ -709,7 +709,7 @@ declare module Artifacts {
     timestamps: TraceTimes;
     /** The relative times from timeOrigin to key events, in milliseconds. */
     timings: TraceTimes;
-    /** The subset of trace events from the page's process, sorted by timestamp. */
+    /** The subset of trace events from the main frame's process, sorted by timestamp. Due to cross-origin navigations, the main frame may have multiple processes, so events may be from more than one process.  */
     processEvents: Array<TraceEvent>;
     /** The subset of trace events from the page's main thread, sorted by timestamp. */
     mainThreadEvents: Array<TraceEvent>;
@@ -977,6 +977,7 @@ export interface TraceEvent {
       processId?: number;
       isLoadingMainFrame?: boolean;
       documentLoaderURL?: string;
+      navigationId?: string;
       frames?: {
         frame: string;
         url: string;

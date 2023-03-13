@@ -115,7 +115,7 @@ describe('LegacyJavaScript audit', () => {
         },
         "totalBytes": 0,
         "url": "https://www.googletagmanager.com/a.js",
-        "wastedBytes": 20104,
+        "wastedBytes": 26896,
       }
     `);
     expect(result.wastedBytesByUrl).toMatchInlineSnapshot(`Map {}`);
@@ -132,7 +132,7 @@ describe('LegacyJavaScript audit', () => {
     expect(result.items[0].subItems.items[0].signal).toEqual('String.prototype.repeat');
     expect(result.wastedBytesByUrl).toMatchInlineSnapshot(`
       Map {
-        "https://www.example.com/a.js" => 20104,
+        "https://www.example.com/a.js" => 26896,
       }
     `);
   });

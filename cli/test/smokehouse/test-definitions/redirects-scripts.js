@@ -11,6 +11,7 @@ const config = {
     onlyAudits: [
       'legacy-javascript',
       'unused-javascript',
+      'redirects',
     ],
   },
 };
@@ -51,6 +52,16 @@ const expectations = {
                 ],
               },
             },
+          ],
+        },
+      },
+      'redirects': {
+        numericValue: '>0',
+        details: {
+          items: [
+            // Conservative wastedMs to avoid flakes.
+            {url: /online-only\.html/, wastedMs: '>0'},
+            {url: /redirects-scripts\.html/, wastedMs: 0},
           ],
         },
       },

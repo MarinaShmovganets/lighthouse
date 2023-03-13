@@ -247,8 +247,11 @@ class NetworkRecorder extends RequestEventEmitter {
 
     const initiatorURL = PageDependencyGraph.getNetworkInitiators(record)[0];
     let candidates = recordsByURL.get(initiatorURL) || [];
-    // The initiator must come before the initiated request.
-    candidates = candidates.filter(c => c.responseHeadersEndTime <= record.networkRequestTime);
+    // The (valid) initiator must come before the initiated request.
+    candidates = candidates.filter(c => {
+      return c.responseHeadersEndTime <= record.networkRequestTime &&
+          c.finished && !c.failed;
+    });
     if (candidates.length > 1) {
       // Disambiguate based on prefetch. Prefetch requests have type 'Other' and cannot
       // initiate requests, so we drop them here.
