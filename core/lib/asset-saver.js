@@ -6,7 +6,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import stream from 'stream';
+import stream from 'stream/promises';
 
 import log from 'lighthouse-logger';
 
