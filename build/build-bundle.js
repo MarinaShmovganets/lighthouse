@@ -18,6 +18,8 @@ import esMain from 'es-main';
 import {rollup} from 'rollup';
 // @ts-expect-error: plugin has no types.
 import PubAdsPlugin from 'lighthouse-plugin-publisher-ads';
+// @ts-expect-error: plugin has no types.
+import SoftNavPlugin from 'lighthouse-plugin-soft-navigation';
 
 import * as rollupPlugins from './rollup-plugins.js';
 import {Runner} from '../core/runner.js';
@@ -38,6 +40,9 @@ const GIT_READABLE_REF =
 /** @type {Array<string>} */
 // @ts-expect-error
 const pubAdsAudits = PubAdsPlugin.audits.map(a => a.path);
+/** @type {Array<string>} */
+// @ts-expect-error
+const softNavAudits = SoftNavPlugin.audits.map(a => a.path);
 
 /** @param {string} file */
 const isDevtools = file =>
@@ -87,11 +92,15 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
     ...Runner.getAuditList().map(gatherer => `../audits/${gatherer}`),
   ];
 
-  // Include lighthouse-plugin-publisher-ads.
+  // Include plugins.
   if (isDevtools(entryPath) || isLightrider(entryPath)) {
     dynamicModulePaths.push('lighthouse-plugin-publisher-ads');
     pubAdsAudits.forEach(pubAdAudit => {
       dynamicModulePaths.push(pubAdAudit);
+    });
+    dynamicModulePaths.push('lighthouse-plugin-soft-navigation');
+    softNavAudits.forEach(softNavAudit => {
+      dynamicModulePaths.push(softNavAudit);
     });
   }
 
@@ -104,7 +113,6 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
   const shimsObj = {
     [require.resolve('../core/legacy/gather/connections/cri.js')]:
       'export const CriConnection = {}',
-    [require.resolve('../package.json')]: `export const version = '${pkg.version}';`,
   };
 
   const modulesToIgnore = [
@@ -170,11 +178,6 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
       }),
       rollupPlugins.shim({
         ...shimsObj,
-        // Allows for plugins to import lighthouse.
-        'lighthouse': `
-          import {Audit} from '${require.resolve('../core/audits/audit.js')}';
-          export {Audit};
-        `,
         'url': `
           export const URL = globalThis.URL;
           export const fileURLToPath = url => url;
@@ -192,7 +195,12 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
       }),
       rollupPlugins.json(),
       rollupPlugins.removeModuleDirCalls(),
-      rollupPlugins.inlineFs({verbose: false}),
+      rollupPlugins.inlineFs({
+        verbose: Boolean(process.env.DEBUG),
+        ignorePaths: [
+          require.resolve('puppeteer-core/lib/esm/puppeteer/common/Page.js'),
+        ],
+      }),
       rollupPlugins.commonjs({
         // https://github.com/rollup/plugins/issues/922
         ignoreGlobal: true,

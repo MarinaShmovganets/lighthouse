@@ -12,7 +12,7 @@
  * We take the backend nodeId from the trace and use it to find the corresponding element in the DOM.
  */
 
-import FRGatherer from '../../fraggle-rock/gather/base-gatherer.js';
+import FRGatherer from '../base-gatherer.js';
 import {resolveNodeIdToObjectId} from '../driver/dom.js';
 import {pageFunctions} from '../../lib/page-functions.js';
 import * as RectHelpers from '../../lib/rect-helpers.js';
@@ -213,14 +213,14 @@ class TraceElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Artifacts.ProcessedTrace} processedTrace
+   * @param {LH.Trace} trace
    * @param {LH.Gatherer.FRTransitionalContext} context
    * @return {Promise<{nodeId: number, type: string} | undefined>}
    */
-  static async getLcpElement(processedTrace, context) {
+  static async getLcpElement(trace, context) {
     let processedNavigation;
     try {
-      processedNavigation = await ProcessedNavigation.request(processedTrace, context);
+      processedNavigation = await ProcessedNavigation.request(trace, context);
     } catch (err) {
       // If we were running in timespan mode and there was no paint, treat LCP as missing.
       if (context.gatherMode === 'timespan' && err.code === LighthouseError.errors.NO_FCP.code) {
@@ -230,8 +230,9 @@ class TraceElements extends FRGatherer {
       throw err;
     }
 
-    // These should exist, but trace types are loose.
+    // Use main-frame-only LCP to match the metric value.
     const lcpData = processedNavigation.largestContentfulPaintEvt?.args?.data;
+    // These should exist, but trace types are loose.
     if (lcpData?.nodeId === undefined || !lcpData.type) return;
 
     return {
@@ -270,7 +271,7 @@ class TraceElements extends FRGatherer {
     const processedTrace = await ProcessedTrace.request(trace, context);
     const {mainThreadEvents} = processedTrace;
 
-    const lcpNodeData = await TraceElements.getLcpElement(processedTrace, context);
+    const lcpNodeData = await TraceElements.getLcpElement(trace, context);
     const clsNodeData = TraceElements.getTopLayoutShiftElements(mainThreadEvents);
     const animatedElementData = await this.getAnimatedElements(mainThreadEvents);
     const responsivenessElementData = await TraceElements.getResponsivenessElement(trace, context);

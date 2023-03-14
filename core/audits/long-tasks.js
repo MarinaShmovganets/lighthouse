@@ -98,13 +98,14 @@ class LongTasks extends Audit {
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       /* eslint-disable max-len */
-      {key: 'url', itemType: 'url', text: str_(i18n.UIStrings.columnURL)},
-      {key: 'startTime', itemType: 'ms', granularity: 1, text: str_(i18n.UIStrings.columnStartTime)},
-      {key: 'duration', itemType: 'ms', granularity: 1, text: str_(i18n.UIStrings.columnDuration)},
+      {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
+      {key: 'startTime', valueType: 'ms', granularity: 1, label: str_(i18n.UIStrings.columnStartTime)},
+      {key: 'duration', valueType: 'ms', granularity: 1, label: str_(i18n.UIStrings.columnDuration)},
       /* eslint-enable max-len */
     ];
 
-    const tableDetails = Audit.makeTableDetails(headings, results);
+    const tableDetails = Audit.makeTableDetails(headings, results,
+      {sortedBy: ['duration'], skipSumming: ['startTime']});
 
     let displayValue;
     if (results.length > 0) {

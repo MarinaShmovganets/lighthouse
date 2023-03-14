@@ -6,7 +6,7 @@
 
 /* global document, window, getComputedStyle, getElementsInDocument, Node, getNodeDetails, getRectCenterPoint */
 
-import FRGatherer from '../../../fraggle-rock/gather/base-gatherer.js';
+import FRGatherer from '../../base-gatherer.js';
 import {pageFunctions} from '../../../lib/page-functions.js';
 import * as RectHelpers from '../../../lib/rect-helpers.js';
 
@@ -281,6 +281,24 @@ function gatherTapTargets(tapTargetsSelector, className) {
 
   return targets;
 }
+
+/**
+ * @param {string} tapTargetsSelector
+ * @param {string} className
+ * @return {LH.Artifacts.TapTarget[]}
+ */
+function gatherTapTargetsAndResetScroll(tapTargetsSelector, className) {
+  const originalScrollPosition = {
+    x: window.scrollX,
+    y: window.scrollY,
+  };
+
+  try {
+    return gatherTapTargets(tapTargetsSelector, className);
+  } finally {
+    window.scrollTo(originalScrollPosition.x, originalScrollPosition.y);
+  }
+}
 /* c8 ignore stop */
 
 class TapTargets extends FRGatherer {
@@ -337,25 +355,27 @@ class TapTargets extends FRGatherer {
     const className = 'lighthouse-disable-pointer-events';
     const styleSheetId = await this.addStyleRule(session, className);
 
-    const tapTargets = await passContext.driver.executionContext.evaluate(gatherTapTargets, {
-      args: [tapTargetsSelector, className],
-      useIsolation: true,
-      deps: [
-        pageFunctions.getNodeDetails,
-        pageFunctions.getElementsInDocument,
-        disableFixedAndStickyElementPointerEvents,
-        elementIsVisible,
-        elementHasAncestorTapTarget,
-        elementCenterIsAtZAxisTop,
-        getClientRects,
-        hasTextNodeSiblingsFormingTextBlock,
-        elementIsInTextBlock,
-        RectHelpers.getRectCenterPoint,
-        pageFunctions.getNodePath,
-        pageFunctions.getNodeSelector,
-        pageFunctions.getNodeLabel,
-      ],
-    });
+    const tapTargets =
+      await passContext.driver.executionContext.evaluate(gatherTapTargetsAndResetScroll, {
+        args: [tapTargetsSelector, className],
+        useIsolation: true,
+        deps: [
+          pageFunctions.getNodeDetails,
+          pageFunctions.getElementsInDocument,
+          disableFixedAndStickyElementPointerEvents,
+          elementIsVisible,
+          elementHasAncestorTapTarget,
+          elementCenterIsAtZAxisTop,
+          getClientRects,
+          hasTextNodeSiblingsFormingTextBlock,
+          elementIsInTextBlock,
+          RectHelpers.getRectCenterPoint,
+          pageFunctions.getNodePath,
+          pageFunctions.getNodeSelector,
+          pageFunctions.getNodeLabel,
+          gatherTapTargets,
+        ],
+      });
 
     await this.removeStyleRule(session, styleSheetId);
 

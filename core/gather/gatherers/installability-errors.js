@@ -6,7 +6,7 @@
 
 import log from 'lighthouse-logger';
 
-import FRGatherer from '../../fraggle-rock/gather/base-gatherer.js';
+import FRGatherer from '../base-gatherer.js';
 
 class InstallabilityErrors extends FRGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
@@ -38,10 +38,18 @@ class InstallabilityErrors extends FRGatherer {
    * @param {LH.Gatherer.FRTransitionalContext} context
    * @return {Promise<LH.Artifacts['InstallabilityErrors']>}
    */
-  getArtifact(context) {
+  async getArtifact(context) {
     const driver = context.driver;
 
-    return InstallabilityErrors.getInstallabilityErrors(driver.defaultSession);
+    try {
+      return await InstallabilityErrors.getInstallabilityErrors(driver.defaultSession);
+    } catch {
+      return {
+        errors: [
+          {errorId: 'protocol-timeout', errorArguments: []},
+        ],
+      };
+    }
   }
 }
 

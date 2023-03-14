@@ -59,7 +59,7 @@ function getElementsInDocument(selector) {
 
   /** @param {NodeListOf<Element>} nodes */
   const _findAllElements = nodes => {
-    for (let i = 0, el; el = nodes[i]; ++i) {
+    for (const el of nodes) {
       if (!selector || realMatchesFn.call(el, selector)) {
         /** @type {ParseSelector<T>} */
         // @ts-expect-error - el is verified as matching above, tsc just can't verify it through the .call().
@@ -160,27 +160,6 @@ function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 
   } catch (_) {
     // As a last resort, fall back to localName.
     return `<${element.localName}>`;
-  }
-}
-
-/**
- * Get the maximum size of a texture the GPU can handle
- * @see https://bugs.chromium.org/p/chromium/issues/detail?id=770769#c13
- * @return {number}
- */
-function getMaxTextureSize() {
-  try {
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl');
-    if (!gl) throw new Error('no webgl');
-    const maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-    return maxTextureSize;
-  } catch (e) {
-    // If the above fails for any reason we need a fallback number;
-    // 4096 is the max texture size on a Pixel 2 XL, so to be conservative we'll use a low value like it.
-    // But we'll subtract 1 just to identify this case later on.
-    const MAX_TEXTURE_SIZE_FALLBACK = 4095;
-    return MAX_TEXTURE_SIZE_FALLBACK;
   }
 }
 
@@ -286,7 +265,7 @@ function getNodePath(node) {
     }
     let index = 0;
     let prevNode;
-    while (prevNode = node.previousSibling) {
+    while (prevNode = node.previousSibling) { // eslint-disable-line no-cond-assign
       node = prevNode;
       // skip empty text nodes
       if (node.nodeType === Node.TEXT_NODE && (node.nodeValue || '').trim().length === 0) continue;
@@ -555,7 +534,6 @@ export const pageFunctions = {
   getElementsInDocument,
   getOuterHTMLSnippet,
   computeBenchmarkIndex,
-  getMaxTextureSize,
   getNodeDetails,
   getNodePath,
   getNodeSelector,

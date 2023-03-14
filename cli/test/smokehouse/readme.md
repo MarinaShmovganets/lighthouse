@@ -6,7 +6,7 @@ By default this is done using the Lighthouse CLI (to exercise the full pipeline)
 
 ## Options
 
-See [`SmokehouseOptions`](https://github.com/GoogleChrome/lighthouse/blob/master/cli/test/smokehouse/smokehouse.js#L23).
+See [`SmokehouseOptions`](https://github.com/GoogleChrome/lighthouse/blob/main/cli/test/smokehouse/smokehouse.js#L23).
 
 ## Test definitions
 
@@ -14,7 +14,7 @@ See [`SmokehouseOptions`](https://github.com/GoogleChrome/lighthouse/blob/master
 | -------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `id`           | `string`                           | The string identifier of the test.                                                                                               |
 | `expectations` | `{lhr: Object, artifacts: Object}` | See below.                                                                                                                       |
-| `config`       | `LH.Config.Json` (optional)        | An optional Lighthouse config. If not specified, the default config is used.                                                     |
+| `config`       | `LH.Config` (optional)        | An optional Lighthouse config. If not specified, the default config is used.                                                     |
 | `runSerially`  | `boolean` (optional)               | An optional flag. If set to true, the test won't be run in parallel to other tests. Useful if the test is performance sensitive. |
 
 ### Expectations
@@ -188,7 +188,7 @@ Smokehouse comes with a core set of test definitions, but it can run any set of 
   const expectations = [{
     lhr: {
       requestedUrl: 'http://localhost:8080/index.html',
-      finalUrl: 'http://localhost:8080/index.html',
+      finalDisplayedUrl: 'http://localhost:8080/index.html',
       audits: {
         'preload-as': {
           score: 1,

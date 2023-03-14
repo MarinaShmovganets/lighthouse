@@ -14,7 +14,7 @@ import {NetworkRecords} from './network-records.js';
 import {NetworkAnalyzer} from '../lib/dependency-graph/simulator/network-analyzer.js';
 
 /** @typedef {import('../lib/dependency-graph/base-node.js').Node} Node */
-/** @typedef {Omit<LH.Artifacts['URL'], 'initialUrl'|'finalUrl'>} URLArtifact */
+/** @typedef {Omit<LH.Artifacts['URL'], 'finalDisplayedUrl'>} URLArtifact */
 
 /**
  * @typedef {Object} NetworkNodeOutput
@@ -468,7 +468,7 @@ class PageDependencyGraph {
    * @return {URLArtifact}
    */
   static getDocumentUrls(devtoolsLog, networkRecords, processedTrace) {
-    const mainFrameId = processedTrace.mainFrameIds.frameId;
+    const mainFrameId = processedTrace.mainFrameInfo.frameId;
 
     /** @type {string|undefined} */
     let requestedUrl;

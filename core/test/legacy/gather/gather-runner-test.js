@@ -4,17 +4,11 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {strict as assert} from 'assert';
+import assert from 'assert/strict';
 
 import jestMock from 'jest-mock';
 
-import {Gatherer} from '../../../gather/gatherers/gatherer.js';
-// import GathererRunner_ from '../../legacy/gather/gather-runner.js';
-// import {Config} from '../../legacy/config/config.js';
-import {LighthouseError} from '../../../lib/lh-error.js';
 import {networkRecordsToDevtoolsLog} from '../../network-records-to-devtools-log.js';
-// import {Driver} from '../../legacy/gather/driver.js';
-import {Connection} from '../../../legacy/gather/connections/connection.js';
 import {createMockSendCommandFn, createMockOnceFn} from '../../gather/mock-commands.js';
 import {
   makeMocksForGatherRunner,
@@ -50,39 +44,36 @@ function createTypeHackedGatherRunner() {
 }
 
 // Some imports needs to be done dynamically, so that their dependencies will be mocked.
-// See: https://jestjs.io/docs/ecmascript-modules#differences-between-esm-and-commonjs
-//      https://github.com/facebook/jest/issues/10025
+// https://github.com/GoogleChrome/lighthouse/blob/main/docs/hacking-tips.md#mocking-modules-with-testdouble
 /** @typedef {import('../../../legacy/gather/driver.js').Driver} Driver */
-/** @type {typeof import('../../../legacy/gather/driver.js').Driver} */
-let Driver;
-/** @type {typeof import('../../../legacy/gather/gather-runner.js').GatherRunner} */
-let GatherRunner_;
-/** @typedef {import('../../../legacy/config/config.js').Config} Config */
-/** @type {typeof import('../../../legacy/config/config.js').Config} */
-let Config;
+/** @typedef {import('../../../legacy/config/config.js').LegacyResolvedConfig} LegacyResolvedConfig */
+/** @typedef {import('../../../legacy/gather/connections/connection.js').Connection} Connection */
+const {Driver} = await import('../../../legacy/gather/driver.js');
+const {GatherRunner: GatherRunner_} = await import('../../../legacy/gather/gather-runner.js');
+const {LegacyResolvedConfig} = await import('../../../legacy/config/config.js');
+const {Gatherer} = await import('../../../gather/gatherers/gatherer.js');
+const {LighthouseError} = await import('../../../lib/lh-error.js');
+const {Connection} = await import('../../../legacy/gather/connections/connection.js');
 
 /** @type {ReturnType<createTypeHackedGatherRunner>} */
 let GatherRunner;
 before(async () => {
-  Driver = (await import('../../../legacy/gather/driver.js')).Driver;
-  GatherRunner_ = (await import('../../../legacy/gather/gather-runner.js')).GatherRunner;
-  Config = (await import('../../../legacy/config/config.js')).Config;
   assertNoSameOriginServiceWorkerClientsMock =
     jestMock.spyOn(GatherRunner_, 'assertNoSameOriginServiceWorkerClients');
   GatherRunner = createTypeHackedGatherRunner();
 });
 
 /**
- * @param {LH.Config.Json} json
+ * @param {LH.Config} json
  */
 async function makeConfig(json) {
-  const config = await Config.fromJson(json);
+  const config = await LegacyResolvedConfig.fromJson(json);
 
   // Since the config is for `gather-runner`, ensure it has `passes`.
   if (!config.passes) {
     throw new Error('gather-runner test configs must have `passes`');
   }
-  return /** @type {Config & {passes: Array<LH.Config.Pass>}} */ (config);
+  return /** @type {LegacyResolvedConfig & {passes: Array<LH.Config.Pass>}} */ (config);
 }
 
 class TestGatherer extends Gatherer {
@@ -154,6 +145,8 @@ beforeEach(async () => {
   driver = new EmulationDriver(connectionStub);
   resetDefaultMockResponses();
 
+  fakeDriver.url = jestMock.fn().mockResolvedValue('about:blank');
+
   const {gotoURL} = await importMock('../../../gather/driver/navigation.js', import.meta);
   gotoURL.mockReset().mockResolvedValue({
     mainDocumentUrl: 'https://example.com',
@@ -174,6 +167,8 @@ describe('GatherRunner', function() {
     const driver = {};
     const {gotoURL} = await importMock('../../../gather/driver/navigation.js', import.meta);
     gotoURL.mockResolvedValue({mainDocumentUrl: url2, warnings: []});
+    driver.url = jestMock.fn()
+      .mockResolvedValueOnce(url2);
 
     const passContext = {
       url: url1,
@@ -184,14 +179,15 @@ describe('GatherRunner', function() {
       },
       baseArtifacts: {
         URL: {
-          finalUrl: url1,
+          finalDisplayedUrl: url1,
         },
       },
+      driver,
     };
 
     return GatherRunner.loadPage(driver, passContext).then(_ => {
       assert.equal(passContext.url, url2);
-      assert.equal(passContext.baseArtifacts.URL.finalUrl, url2);
+      assert.equal(passContext.baseArtifacts.URL.finalDisplayedUrl, url2);
     });
   });
 
@@ -249,6 +245,7 @@ describe('GatherRunner', function() {
     const mainDocumentUrl = 'https://example.com/interstitial';
     const {gotoURL} = await importMock('../../../gather/driver/navigation.js', import.meta);
     gotoURL.mockResolvedValue({mainDocumentUrl, timedOut: false, warnings: []});
+    fakeDriver.url = jestMock.fn().mockResolvedValue(mainDocumentUrl);
     const config = await makeConfig({passes: [{passName: 'defaultPass'}]});
     const options = {
       requestedUrl,
@@ -260,7 +257,11 @@ describe('GatherRunner', function() {
     return GatherRunner.run(config.passes, options).then(artifacts => {
       assert.deepStrictEqual(
         artifacts.URL,
-        {initialUrl: 'about:blank', requestedUrl, mainDocumentUrl, finalUrl: mainDocumentUrl},
+        {
+          requestedUrl,
+          mainDocumentUrl,
+          finalDisplayedUrl: mainDocumentUrl,
+        },
         'did not find expected URL artifact');
     });
   });
@@ -468,7 +469,7 @@ describe('GatherRunner', function() {
 
   it('returns a pageLoadError and no artifacts when there is a network error', async () => {
     const requestedUrl = 'https://example.com';
-    // This page load error should be overriden by ERRORED_DOCUMENT_REQUEST (for being
+    // This page load error should be overridden by ERRORED_DOCUMENT_REQUEST (for being
     // more specific) since the main document network request failed with a 500.
     const navigationError = new LighthouseError(LighthouseError.errors.NO_FCP);
     const driver = Object.assign({}, fakeDriver, {
@@ -644,7 +645,7 @@ describe('GatherRunner', function() {
         return Promise.resolve();
       },
       gotoURL() {
-        return Promise.resolve({finalUrl: '', timedOut: false});
+        return Promise.resolve({finalDisplayedUrl: '', timedOut: false});
       },
     };
 
@@ -684,40 +685,6 @@ describe('GatherRunner', function() {
       assert.equal(calledDevtoolsLogCollect, true);
       assert.strictEqual(passData.devtoolsLog[0], fakeDevtoolsMessage);
     });
-  });
-
-  it('resets scroll position between every gatherer', async () => {
-    class ScrollMcScrollyGatherer extends TestGatherer {
-      /** @param {{driver: Driver}} context */
-      afterPass(context) {
-        context.driver.scrollTo({x: 1000, y: 1000});
-      }
-    }
-
-    const url = 'https://example.com';
-    const driver = Object.assign({}, fakeDriver);
-    const scrollToSpy = jestMock.spyOn(driver, 'scrollTo');
-
-    const passConfig = {
-      recordTrace: true,
-      gatherers: [
-        {instance: new ScrollMcScrollyGatherer()},
-        {instance: new TestGatherer()},
-      ],
-    };
-
-    /** @type {any} Using Test-only gatherer. */
-    const gathererResults = {
-      TestGatherer: [],
-    };
-    const passContext = {url, driver, passConfig, computedCache: new Map()};
-    await GatherRunner.afterPass(passContext, {}, gathererResults);
-    // One time for the afterPass of ScrollMcScrolly, two times for the resets of the two gatherers.
-    expect(scrollToSpy.mock.calls).toEqual([
-      [{x: 1000, y: 1000}],
-      [{x: 0, y: 0}],
-      [{x: 0, y: 0}],
-    ]);
   });
 
   it('does as many passes as are required', async () => {
@@ -1210,7 +1177,7 @@ describe('GatherRunner', function() {
       const unresolvedDriver = Object.assign({}, fakeDriver, {
         online: true,
         gotoURL() {
-          return Promise.resolve({finalUrl: requestedUrl, timedOut: false});
+          return Promise.resolve({finalDisplayedUrl: requestedUrl, timedOut: false});
         },
         endDevtoolsLog() {
           return unresolvedPerfLog;
@@ -1277,8 +1244,8 @@ describe('GatherRunner', function() {
 
       const {gotoURL} = await importMock('../../../gather/driver/navigation.js', import.meta);
       gotoURL
-        .mockResolvedValueOnce({finalUrl: requestedUrl, warnings: []})
-        .mockResolvedValueOnce({finalUrl: requestedUrl, warnings: ['It is too slow']});
+        .mockResolvedValueOnce({finalDisplayedUrl: requestedUrl, warnings: []})
+        .mockResolvedValueOnce({finalDisplayedUrl: requestedUrl, warnings: ['It is too slow']});
 
       return GatherRunner.run(config.passes, {
         driver: timedoutDriver,

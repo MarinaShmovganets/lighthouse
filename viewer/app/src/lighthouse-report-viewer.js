@@ -91,14 +91,9 @@ export class LighthouseReportViewer {
       inputTarget.value = '';
     });
 
-    // A click on the visual placeholder will trigger the hidden file input.
-    const placeholderTarget = find('.viewer-placeholder-inner', document);
-    placeholderTarget.addEventListener('click', e => {
-      const target = /** @type {?Element} */ (e.target);
-
-      if (target && target.localName !== 'input' && target.localName !== 'a') {
-        fileInput.click();
-      }
+    const selectFileEl = find('.viewer-placeholder__file-button', document);
+    selectFileEl.addEventListener('click', _ => {
+      fileInput.click();
     });
   }
 
@@ -301,7 +296,7 @@ export class LighthouseReportViewer {
         history.pushState({}, '', LighthouseReportViewer.APP_URL);
       }
     } catch (e) {
-      logger.error(`Error rendering report: ${e.message}`);
+      logger.error(`Error rendering report: ${e.stack}`);
       container.innerHTML = '';
       throw e;
     } finally {
@@ -340,6 +335,8 @@ export class LighthouseReportViewer {
     } catch (err) {
       logger.error(err.message);
     }
+
+    document.dispatchEvent(new CustomEvent('lh-file-upload-test-ack'));
   }
 
   /**

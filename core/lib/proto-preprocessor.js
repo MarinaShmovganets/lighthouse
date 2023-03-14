@@ -35,6 +35,7 @@ function processForProto(lhr) {
       onlyCategories,
       channel,
       throttling,
+      screenEmulation,
       throttlingMethod} = reportJson.configSettings;
 
     // @ts-expect-error - intentionally only a subset of settings.
@@ -44,6 +45,7 @@ function processForProto(lhr) {
       onlyCategories,
       channel,
       throttling,
+      screenEmulation,
       throttlingMethod};
   }
 

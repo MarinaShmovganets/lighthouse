@@ -24,7 +24,7 @@ class TimingSummary {
      * @param {LH.Trace} trace
      * @param {LH.DevtoolsLog} devtoolsLog
      * @param {LH.Artifacts['GatherContext']} gatherContext
-     * @param {ImmutableObject<LH.Config.Settings>} settings
+     * @param {LH.Util.ImmutableObject<LH.Config.Settings>} settings
      * @param {LH.Artifacts['URL']} URL
      * @param {LH.Artifacts.ComputedContext} context
      * @return {Promise<{metrics: LH.Artifacts.TimingSummary, debugInfo: Record<string,boolean>}>}
@@ -45,7 +45,7 @@ class TimingSummary {
     /* eslint-disable max-len */
 
     const processedTrace = await ProcessedTrace.request(trace, context);
-    const processedNavigation = await requestOrUndefined(ProcessedNavigation, processedTrace);
+    const processedNavigation = await requestOrUndefined(ProcessedNavigation, trace);
     const speedline = await Speedline.request(trace, context);
     const firstContentfulPaint = await requestOrUndefined(FirstContentfulPaint, metricComputationData);
     const firstContentfulPaintAllFrames = await requestOrUndefined(FirstContentfulPaintAllFrames, metricComputationData);
@@ -87,7 +87,7 @@ class TimingSummary {
       cumulativeLayoutShiftMainFrame,
       totalCumulativeLayoutShift,
 
-      // Include all timestamps of interest from trace of tab
+      // Include all timestamps of interest from the processed trace
       observedTimeOrigin: processedTrace.timings.timeOrigin,
       observedTimeOriginTs: processedTrace.timestamps.timeOrigin,
       // For now, navigationStart is always timeOrigin.
@@ -134,7 +134,7 @@ class TimingSummary {
     return {metrics, debugInfo};
   }
   /**
-   * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog, gatherContext: LH.Artifacts['GatherContext']; settings: ImmutableObject<LH.Config.Settings>, URL: LH.Artifacts['URL']}} data
+   * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog, gatherContext: LH.Artifacts['GatherContext']; settings: LH.Util.ImmutableObject<LH.Config.Settings>, URL: LH.Artifacts['URL']}} data
    * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<{metrics: LH.Artifacts.TimingSummary, debugInfo: Record<string,boolean>}>}
    */

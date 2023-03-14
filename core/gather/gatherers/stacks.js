@@ -16,7 +16,7 @@ import {createRequire} from 'module';
 
 import log from 'lighthouse-logger';
 
-import FRGatherer from '../../fraggle-rock/gather/base-gatherer.js';
+import FRGatherer from '../base-gatherer.js';
 
 
 // This is removed by rollup, because the only usage is to resolve a module path
@@ -126,7 +126,11 @@ class Stacks extends FRGatherer {
    * @return {Promise<LH.Artifacts['Stacks']>}
    */
   async getArtifact(context) {
-    return Stacks.collectStacks(context.driver.executionContext);
+    try {
+      return await Stacks.collectStacks(context.driver.executionContext);
+    } catch {
+      return [];
+    }
   }
 }
 

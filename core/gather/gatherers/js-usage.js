@@ -4,7 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import FRGatherer from '../../fraggle-rock/gather/base-gatherer.js';
+import FRGatherer from '../base-gatherer.js';
 
 /**
  * @fileoverview Tracks unused JavaScript
@@ -56,6 +56,11 @@ class JsUsage extends FRGatherer {
         // coverage of code Lighthouse ran to inspect the page, so we ignore this ScriptCoverage.
         // Audits would work the same without this, it is only an optimization (not tracking coverage
         // for scripts we don't care about).
+        continue;
+      }
+
+      // Scripts run via puppeteer's evaluate interface will have this url.
+      if (scriptUsage.url === '__puppeteer_evaluation_script__') {
         continue;
       }
 

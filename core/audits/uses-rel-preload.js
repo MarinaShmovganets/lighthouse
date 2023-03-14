@@ -17,10 +17,10 @@ import {LoadSimulator} from '../computed/load-simulator.js';
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to use <link rel=preload> to initiate important network requests earlier during page load. This is displayed in a list of audit titles that Lighthouse generates. */
   title: 'Preload key requests',
-  /** Description of a Lighthouse audit that tells the user *why* they should preload important network requests. The associated network requests are started halfway through pageload (or later) but should be started at the beginning. This is displayed after a user expands the section to see more. No character length limits. '<link rel=preload>' is the html code the user would include in their page and shouldn't be translated. 'Learn More' becomes link text to additional documentation. */
+  /** Description of a Lighthouse audit that tells the user *why* they should preload important network requests. The associated network requests are started halfway through pageload (or later) but should be started at the beginning. This is displayed after a user expands the section to see more. No character length limits. '<link rel=preload>' is the html code the user would include in their page and shouldn't be translated. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   description: 'Consider using `<link rel=preload>` to prioritize fetching resources that are ' +
     'currently requested later in page load. ' +
-    '[Learn how to preload key requests](https://web.dev/uses-rel-preload/).',
+    '[Learn how to preload key requests](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preload/).',
   /**
    * @description A warning message that is shown when the user tried to follow the advice of the audit, but it's not working as expected. Forgetting to set the `crossorigin` HTML attribute, or setting it to an incorrect value, on the link is a common mistake when adding preload links.
    * @example {https://example.com} preloadURL
@@ -239,7 +239,8 @@ class UsesRelPreloadAudit extends Audit {
       {key: 'url', valueType: 'url', label: str_(i18n.UIStrings.columnURL)},
       {key: 'wastedMs', valueType: 'timespanMs', label: str_(i18n.UIStrings.columnWastedMs)},
     ];
-    const details = Audit.makeOpportunityDetails(headings, results, wastedMs);
+    const details = Audit.makeOpportunityDetails(headings, results,
+      {overallSavingsMs: wastedMs, sortedBy: ['wastedMs']});
 
     return {
       score: ByteEfficiencyAudit.scoreForWastedMs(wastedMs),
@@ -259,7 +260,8 @@ class UsesRelPreloadAudit extends Audit {
   static async audit() {
     // Preload advice is on hold until https://github.com/GoogleChrome/lighthouse/issues/11960
     // is resolved.
-    return {score: 1, notApplicable: true, details: Audit.makeOpportunityDetails([], [], 0)};
+    return {score: 1, notApplicable: true,
+      details: Audit.makeOpportunityDetails([], [], {overallSavingsMs: 0})};
   }
 }
 

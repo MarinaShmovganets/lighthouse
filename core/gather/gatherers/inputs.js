@@ -6,7 +6,7 @@
 
 /* global getNodeDetails */
 
-import FRGatherer from '../../fraggle-rock/gather/base-gatherer.js';
+import FRGatherer from '../base-gatherer.js';
 import {pageFunctions} from '../../lib/page-functions.js';
 
 /* eslint-env browser, node */
@@ -61,6 +61,11 @@ function collectElements() {
       return [...labelElToArtifact.keys()].indexOf(labelEl);
     });
 
+    let preventsPaste;
+    if (!inputEl.readOnly) {
+      preventsPaste = !inputEl.dispatchEvent(new ClipboardEvent('paste', {cancelable: true}));
+    }
+
     inputArtifacts.push({
       parentFormIndex,
       labelIndices,
@@ -74,6 +79,7 @@ function collectElements() {
         // Requires `--enable-features=AutofillShowTypePredictions`.
         prediction: inputEl.getAttribute('autofill-prediction'),
       },
+      preventsPaste,
       // @ts-expect-error - getNodeDetails put into scope via stringification
       node: getNodeDetails(inputEl),
     });
