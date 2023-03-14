@@ -69,6 +69,15 @@ declare module Details {
     headings: TableColumnHeading[];
     items: OpportunityItem[];
     debugData?: DebugData;
+    /**
+     * Columns to sort the items by, during grouping.
+     * If omitted, entity groups will be sorted by the audit ordering vs. the new totals.
+     */
+    sortedBy?: Array<string>;
+    /** Will be true if the table is already grouped by entities. */
+    isEntityGrouped?: boolean;
+    /** Column keys to skip summing. If omitted, all column types supported are summed. */
+    skipSumming?: Array<string>;
   }
 
   interface Screenshot {
@@ -96,6 +105,15 @@ declare module Details {
       wastedBytes?: number;
     };
     debugData?: DebugData;
+    /**
+     * Columns to sort the items by, during grouping.
+     * If omitted, entity groups will be sorted by the audit ordering vs. the new totals.
+     */
+    sortedBy?: Array<string>;
+    /** Will be true if the table is already grouped by entities. */
+    isEntityGrouped?: boolean;
+    /** Column keys to skip summing. If omitted, all column types supported are summed. */
+    skipSumming?: Array<string>;
   }
 
   /** A table item for rows that are nested within a top-level TableItem (row). */

@@ -30,6 +30,18 @@ const expectations = {
     requestedUrl: `http://localhost:10200/js-redirect.html?delay=2000&jsDelay=5000&jsRedirect=%2Fonline-only.html%3Fdelay%3D1000%26redirect%3D%2Fredirects-final.html%253FpushState`,
     finalDisplayedUrl: 'http://localhost:10200/push-state',
     audits: {
+      redirects: {
+        score: '<1',
+        numericValue: '>=8000',
+        details: {
+          items: [
+            // Conservative wastedMs to avoid flakes.
+            {url: /js-redirect\.html/, wastedMs: '>6000'},
+            {url: /online-only\.html/, wastedMs: '>500'},
+            {url: /redirects-final\.html\?pushState/, wastedMs: 0},
+          ],
+        },
+      },
     },
     runWarnings: [
       /The page may not be loading as expected because your test URL \(.*js-redirect.html.*\) was redirected to .*redirects-final.html\?pushState. Try testing the second URL directly./,

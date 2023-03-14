@@ -1,3 +1,40 @@
+<a name="10.0.2"></a>
+# 10.0.2 (2023-02-28)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v10.0.1...v10.0.2)
+
+We expect this release to ship in the DevTools of [Chrome 113](https://chromiumdash.appspot.com/schedule).
+
+## Core
+
+* tracing: handle `FrameCommittedInBrowser` with `processPseudoId` ([#14800](https://github.com/GoogleChrome/lighthouse/pull/14800))
+* `redirects`: use `requestId` instead of URL to find requests ([#14838](https://github.com/GoogleChrome/lighthouse/pull/14838))
+* don't use failed network requests as potential initiators ([#14819](https://github.com/GoogleChrome/lighthouse/pull/14819))
+* config: change error message if no `artifacts` are defined ([#14818](https://github.com/GoogleChrome/lighthouse/pull/14818))
+* `bf-cache`: count failures based on affected frames ([#14823](https://github.com/GoogleChrome/lighthouse/pull/14823))
+* `legacy-javascript`: update polyfill size graph ([#14828](https://github.com/GoogleChrome/lighthouse/pull/14828))
+* `prioritize-lcp-image`: use request initiators for load path ([#14807](https://github.com/GoogleChrome/lighthouse/pull/14807))
+* `prioritize-lcp-image`: better identify lcp request ([#14804](https://github.com/GoogleChrome/lighthouse/pull/14804))
+* types: fix error when using `moduleResolution: "node"` ([#14815](https://github.com/GoogleChrome/lighthouse/pull/14815))
+
+## Clients
+
+* lr: accept multiple `channel` naming conventions ([#14799](https://github.com/GoogleChrome/lighthouse/pull/14799))
+
+## Docs
+
+* user-flows: add desktop config examples ([#14806](https://github.com/GoogleChrome/lighthouse/pull/14806))
+
+## Tests
+
+* reenable `metrics-tricky-tti` on ToT ([#14790](https://github.com/GoogleChrome/lighthouse/pull/14790))
+* devtools: use new `primaryPageTarget` function ([#14839](https://github.com/GoogleChrome/lighthouse/pull/14839))
+* add roundtrip-proto lhr render test, check for `undefined` ([#14817](https://github.com/GoogleChrome/lighthouse/pull/14817))
+* devtools: sync e2e tests ([#14801](https://github.com/GoogleChrome/lighthouse/pull/14801))
+
+## Misc
+
+* proto: add `screenEmulation` to `configSettings` ([#14809](https://github.com/GoogleChrome/lighthouse/pull/14809), [#14826](https://github.com/GoogleChrome/lighthouse/pull/14826))
+
 <a name="10.0.1"></a>
 # 10.0.1 (2023-02-14)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v10.0.0...v10.0.1)
