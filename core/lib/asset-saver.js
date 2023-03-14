@@ -6,6 +6,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import stream from 'stream';
 
 import log from 'lighthouse-logger';
 
@@ -338,9 +339,7 @@ async function saveTrace(traceData, traceFilename) {
   const traceIter = traceJsonGenerator(traceData);
   const writeStream = fs.createWriteStream(traceFilename);
 
-  // Stream is not available in bundled clients, so import dynamically.
-  const stream = await import('stream/promises');
-  await stream.pipeline(traceIter, writeStream);
+  return stream.promises.pipeline(traceIter, writeStream);
 }
 
 /**
@@ -349,12 +348,10 @@ async function saveTrace(traceData, traceFilename) {
  * @param {string} devtoolLogFilename
  * @return {Promise<void>}
  */
-async function saveDevtoolsLog(devtoolsLog, devtoolLogFilename) {
+function saveDevtoolsLog(devtoolsLog, devtoolLogFilename) {
   const writeStream = fs.createWriteStream(devtoolLogFilename);
 
-  // Stream is not available in bundled clients, so import dynamically.
-  const stream = await import('stream/promises');
-  await stream.pipeline(function* () {
+  return stream.promises.pipeline(function* () {
     yield* arrayOfObjectsJsonGenerator(devtoolsLog);
     yield '\n';
   }, writeStream);
