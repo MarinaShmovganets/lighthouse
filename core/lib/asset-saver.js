@@ -7,7 +7,6 @@
 import fs from 'fs';
 import path from 'path';
 import stream from 'stream';
-import util from 'util';
 
 import log from 'lighthouse-logger';
 
@@ -17,15 +16,6 @@ import {MetricTraceEvents} from './traces/metric-trace-events.js';
 import {NetworkAnalysis} from '../computed/network-analysis.js';
 import {LoadSimulator} from '../computed/load-simulator.js';
 import {LighthouseError} from '../lib/lh-error.js';
-
-const {promisify} = util;
-
-// Rollup does not support `promisfy` or `stream.pipeline`. Bundled files
-// don't need anything in this file except for `stringifyReplacer`, so a check for
-// truthiness before using is enough.
-// TODO: Can remove promisify(pipeline) in Node 15.
-// https://nodejs.org/api/stream.html#streams-promises-api
-const pipeline = promisify && promisify(stream.pipeline);
 
 const optionsFilename = 'options.json';
 const artifactsFilename = 'artifacts.json';
@@ -349,7 +339,7 @@ async function saveTrace(traceData, traceFilename) {
   const traceIter = traceJsonGenerator(traceData);
   const writeStream = fs.createWriteStream(traceFilename);
 
-  return pipeline(traceIter, writeStream);
+  await stream.pipeline(traceIter, writeStream);
 }
 
 /**
@@ -358,10 +348,10 @@ async function saveTrace(traceData, traceFilename) {
  * @param {string} devtoolLogFilename
  * @return {Promise<void>}
  */
-function saveDevtoolsLog(devtoolsLog, devtoolLogFilename) {
+async function saveDevtoolsLog(devtoolsLog, devtoolLogFilename) {
   const writeStream = fs.createWriteStream(devtoolLogFilename);
 
-  return pipeline(function* () {
+  await stream.pipeline(function* () {
     yield* arrayOfObjectsJsonGenerator(devtoolsLog);
     yield '\n';
   }, writeStream);
