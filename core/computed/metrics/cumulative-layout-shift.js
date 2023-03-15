@@ -30,6 +30,17 @@ class CumulativeLayoutShift {
     // See https://bugs.chromium.org/p/chromium/issues/detail?id=1094974.
     let mustRespectHadRecentInput = false;
 
+    // Even if emulation was applied before navigating, Chrome will issue a viewport
+    // change event after a navigation starts which is treated as an interaction when
+    // deciding the `had_recent_input` flag. Anything within 500ms of this event should
+    // always be counted for CLS regardless of the `had_recent_input` flag.
+    // See https://bugs.chromium.org/p/chromium/issues/detail?id=1302667
+    let viewportChangeTs = processedTrace.timestamps.timeOrigin;
+    const firstViewportEvent = processedTrace.frameEvents.find(event => event.name === 'viewport');
+    if (firstViewportEvent) {
+      viewportChangeTs = firstViewportEvent.ts;
+    }
+
     for (const event of processedTrace.frameTreeEvents) {
       if (event.name !== 'LayoutShift' ||
           !event.args.data ||
@@ -44,7 +55,7 @@ class CumulativeLayoutShift {
       }
 
       if (event.args.data.had_recent_input) {
-        const timing = (event.ts - processedTrace.timestamps.timeOrigin) / 1000;
+        const timing = (event.ts - viewportChangeTs) / 1000;
         if (timing > RECENT_INPUT_WINDOW || mustRespectHadRecentInput) continue;
       } else {
         mustRespectHadRecentInput = true;
