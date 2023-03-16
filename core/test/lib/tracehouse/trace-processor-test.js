@@ -966,6 +966,26 @@ Object {
       // expect(pidChangeTraceSummarized.frameEventsPct).toBeGreaterThanOrEqual(0.4);
     });
 
+    it('with a --single-process trace', () => {
+      const psuedoProcTrace = JSON.parse(JSON.stringify(decentlyModernTrace));
+
+      const browserThreadIndex = psuedoProcTrace.traceEvents.findIndex(e =>
+        e.name === 'thread_name' &&
+        e.args.name === 'CrBrowserMain');
+      psuedoProcTrace.traceEvents.splice(browserThreadIndex, 1);
+
+      // In a single process trace, all the page events will be in the browser thread.
+      const rendererThreadEvt = psuedoProcTrace.traceEvents.find(e =>
+        e.name === 'thread_name' &&
+        e.args.name === 'CrRendererMain');
+      rendererThreadEvt.args.name = 'CrBrowserMain';
+
+      const pidChangeTraceSummarized = summarizeTrace(psuedoProcTrace);
+      expect(pidChangeTraceSummarized.mainFramePids.size).toEqual(1);
+      // The primary process events should make up more than 40% of all key trace events
+      expect(pidChangeTraceSummarized.processEventsPct).toBeGreaterThanOrEqual(0.4);
+    });
+
     // FrameCommittedInBrowser w/o processId, but w/ processPsuedoId, and later a ProcessReadyInBrowser
     it('with a processPsuedoId navigation', () => {
       // A 'normal' FrameCommittedInBrowser's data is:
