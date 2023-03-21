@@ -8,7 +8,7 @@ import {ByteEfficiencyAudit} from './byte-efficiency-audit.js';
 import * as i18n from '../../lib/i18n/i18n.js';
 import {computeJSTokenLength as computeTokenLength} from '../../lib/minification-estimator.js';
 import {getRequestForScript, isInline} from '../../lib/script-helpers.js';
-import { Util } from '../../../shared/util.js';
+import {Util} from '../../../shared/util.js';
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to minify the page’s JS code to reduce file size. This is displayed in a list of audit titles that Lighthouse generates. */

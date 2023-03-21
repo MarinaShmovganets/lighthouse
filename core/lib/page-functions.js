@@ -6,8 +6,6 @@
 
 import {Util} from '../../shared/util.js';
 
-const truncate = Util.truncate;
-
 /**
  * @fileoverview
  * Helper functions that are passed by `toString()` by Driver to be evaluated in target page.
@@ -505,10 +503,27 @@ function getNodeDetails(element) {
   return details;
 }
 
+/**
+ *
+ * @param {string} string
+ * @param {number} characterLimit
+ * @return {string}
+ */
+function truncate(string, characterLimit) {
+  return Util.truncate(string, characterLimit);
+}
+
+/** @type {string} */
+const truncateRawString = truncate.toString();
+truncate.toString = () => `function truncate(string, characterLimit) {
+  const Util = { ${Util.truncate} };
+  return (${truncateRawString})(string, characterLimit);
+}`;
+
 /** @type {string} */
 const getNodeLabelRawString = getNodeLabel.toString();
 getNodeLabel.toString = () => `function getNodeLabel(element) {
-  function ${truncate};
+  ${truncate};
   return (${getNodeLabelRawString})(element);
 }`;
 
@@ -516,14 +531,14 @@ getNodeLabel.toString = () => `function getNodeLabel(element) {
 const getOuterHTMLSnippetRawString = getOuterHTMLSnippet.toString();
 // eslint-disable-next-line max-len
 getOuterHTMLSnippet.toString = () => `function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 500) {
-  function ${truncate};
+  ${truncate};
   return (${getOuterHTMLSnippetRawString})(element, ignoreAttrs, snippetCharacterLimit);
 }`;
 
 /** @type {string} */
 const getNodeDetailsRawString = getNodeDetails.toString();
 getNodeDetails.toString = () => `function getNodeDetails(element) {
-  function ${truncate};
+  ${truncate};
   ${getNodePath};
   ${getNodeSelector};
   ${getBoundingClientRect};
