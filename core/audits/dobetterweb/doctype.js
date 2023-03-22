@@ -67,7 +67,7 @@ class Doctype extends Audit {
     const doctypeSystemId = artifacts.Doctype.systemId;
     const compatMode = artifacts.Doctype.documentCompatMode;
 
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
+    const trace = artifacts.traces?.[Audit.DEFAULT_PASS];
 
     /** @type {LH.Crdp.Audits.QuirksModeIssueDetails[]} */
     let quirksModeIssues = [];
