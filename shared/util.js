@@ -159,6 +159,7 @@ class Util {
    * @param {string} ellipseSuffix
    */
   static truncate(string, characterLimit, ellipseSuffix = '…') {
+    // Early return for the case where there are fewer bytes than the character limit.
     if (string.length <= characterLimit) {
       return string;
     }
@@ -166,18 +167,14 @@ class Util {
     const segmenter = new Intl.Segmenter(undefined, {granularity: 'grapheme'});
     const iterator = segmenter.segment(string)[Symbol.iterator]();
 
-    let lastSegment;
+    let lastSegmentIndex = 0;
     for (let i = 0; i <= characterLimit - ellipseSuffix.length; i++) {
       const result = iterator.next();
       if (result.done) {
         return string;
       }
 
-      lastSegment = result.value;
-    }
-
-    if (!lastSegment) {
-      return ellipseSuffix;
+      lastSegmentIndex = result.value.index;
     }
 
     for (let i = 0; i < ellipseSuffix.length; i++) {
@@ -186,7 +183,7 @@ class Util {
       }
     }
 
-    return string.slice(0, lastSegment.index) + ellipseSuffix;
+    return string.slice(0, lastSegmentIndex) + ellipseSuffix;
   }
 
   /**

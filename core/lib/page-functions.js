@@ -135,7 +135,7 @@ function getOuterHTMLSnippet(element, ignoreAttrs = [], snippetCharacterLimit = 
 
       // Elide attribute value if too long.
       const truncatedString = truncate(attributeValue, ATTRIBUTE_CHAR_LIMIT);
-      dirty ||= truncatedString !== attributeValue;
+      if (truncatedString !== attributeValue) dirty = true;
       attributeValue = truncatedString;
 
       if (dirty) {

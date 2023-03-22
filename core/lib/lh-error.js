@@ -107,14 +107,14 @@ const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 const LHERROR_SENTINEL = '__LighthouseErrorSentinel';
 const ERROR_SENTINEL = '__ErrorSentinel';
 /**
- * @typedef {{sentinel: '__LighthouseErrorSentinel', code: string, stack?: string, [p: string]: unknown}} SerializedLighthouseError
+ * @typedef {{sentinel: '__LighthouseErrorSentinel', code: string, stack?: string, [p: string]: string|undefined}} SerializedLighthouseError
  * @typedef {{sentinel: '__ErrorSentinel', message: string, code?: string, stack?: string}} SerializedBaseError
  */
 
 class LighthouseError extends Error {
   /**
    * @param {LighthouseErrorDefinition} errorDefinition
-   * @param {Record<string, unknown>=} properties
+   * @param {Record<string, string|undefined>=} properties
    */
   constructor(errorDefinition, properties) {
     super(errorDefinition.code);

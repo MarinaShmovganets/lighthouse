@@ -107,9 +107,10 @@ class UnusedCSS {
         preview = preview.slice(0, firstRuleEnd + 1) + ' …';
       } else {
         // The first rule-set doesn't fit within the preview, just show as many as we can
-        const lastSemicolonIndex = preview.slice(0, PREVIEW_LENGTH).lastIndexOf(';');
+        const truncated = Util.truncate(preview, PREVIEW_LENGTH, '');
+        const lastSemicolonIndex = truncated.lastIndexOf(';');
         preview = lastSemicolonIndex < firstRuleStart ?
-            preview.slice(0, PREVIEW_LENGTH) + '… } …' :
+            truncated + '… } …' :
             preview.slice(0, lastSemicolonIndex + 1) + ' … } …';
       }
     }
