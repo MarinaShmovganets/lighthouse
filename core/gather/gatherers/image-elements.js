@@ -86,6 +86,8 @@ function getHTMLImages(allElements) {
       isInShadowDOM: element.getRootNode() instanceof ShadowRoot,
       // @ts-expect-error - getNodeDetails put into scope via stringification
       node: getNodeDetails(element),
+      // @ts-expect-error - Not in tsc types yet.
+      fetchPriority: element.fetchPriority,
     };
   });
 }
