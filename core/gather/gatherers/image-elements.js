@@ -84,10 +84,9 @@ function getHTMLImages(allElements) {
       isPicture,
       loading: element.loading,
       isInShadowDOM: element.getRootNode() instanceof ShadowRoot,
+      fetchPriority: element.fetchPriority,
       // @ts-expect-error - getNodeDetails put into scope via stringification
       node: getNodeDetails(element),
-      // @ts-expect-error - Not in tsc types yet.
-      fetchPriority: element.fetchPriority,
     };
   });
 }

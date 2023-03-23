@@ -70,7 +70,6 @@ function getLinkElementsInDOM() {
       crossOrigin: link.crossOrigin,
       hrefRaw,
       source,
-      // @ts-expect-error - Not in tsc types yet.
       fetchPriority: link.fetchPriority,
       // @ts-expect-error - put into scope via stringification
       node: getNodeDetails(link),
