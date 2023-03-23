@@ -9892,6 +9892,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?delay=100",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-11-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,9,LINK",
@@ -9916,6 +9917,7 @@
       "crossOrigin": null,
       "hrefRaw": "./unknown404.css?delay=200",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-12-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,10,LINK",
@@ -9940,6 +9942,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?delay=2200",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-13-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,12,LINK",
@@ -9964,6 +9967,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_disabled.css?delay=200&isdisabled",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-14-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,14,LINK",
@@ -9988,6 +9992,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?delay=3000&capped",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-15-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,17,LINK",
@@ -10012,6 +10017,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?delay=2000&async=true",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-16-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,19,LINK",
@@ -10036,6 +10042,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?delay=3000&async=true",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-17-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,21,LINK",
@@ -10060,6 +10067,7 @@
       "crossOrigin": null,
       "hrefRaw": "./empty.css",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-18-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,23,LINK",
@@ -10084,6 +10092,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?scriptActivated&delay=200",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-19-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,40,LINK",
