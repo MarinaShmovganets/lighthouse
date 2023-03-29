@@ -120,7 +120,7 @@ describe('Link Elements gatherer', () => {
     expect(result).toEqual([]);
     expect(passData[0].baseArtifacts.LighthouseRunWarnings).toHaveLength(1);
     expect(passData[0].baseArtifacts.LighthouseRunWarnings[0]).toBeDisplayString(
-      'Error parsing `link` header (Unexpected character "a" at offset 22):\n`<https://example.com/>a`'
+      'Error parsing `link` header (Unexpected character "a" at offset 22): `<https://example.com/>a`'
     );
   });
 });

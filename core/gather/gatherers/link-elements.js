@@ -27,7 +27,7 @@ const UIStrings = {
    * @example {Expected attribute delimiter at offset 94} error
    * @example {<https://assets.calendly.com/assets/booking/css/booking-d0ac32b1.css>; rel=preload; as=style; nopush} error
    */
-  headerParseWarning: 'Error parsing `link` header ({error}):\n`{header}`',
+  headerParseWarning: 'Error parsing `link` header ({error}): `{header}`',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
@@ -139,22 +139,11 @@ class LinkElements extends FRGatherer {
     for (const header of mainDocument.responseHeaders) {
       if (header.name.toLowerCase() !== 'link') continue;
 
-      try {
-        const parsedHeader = LinkHeader.parse(header.value);
+      /** @type {LinkHeader.Reference[]} */
+      let parsedRefs = [];
 
-        for (const link of parsedHeader.refs) {
-          linkElements.push({
-            rel: link.rel || '',
-            href: normalizeUrlOrNull(link.uri, context.baseArtifacts.URL.finalDisplayedUrl),
-            hrefRaw: link.uri || '',
-            hreflang: link.hreflang || '',
-            as: link.as || '',
-            crossOrigin: getCrossoriginFromHeader(link.crossorigin),
-            source: 'headers',
-            fetchPriority: link.fetchpriority,
-            node: null,
-          });
-        }
+      try {
+        parsedRefs = LinkHeader.parse(header.value).refs;
       } catch (err) {
         const truncatedHeader = Util.truncate(header.value, 100);
         const warning = str_(UIStrings.headerParseWarning, {
@@ -162,6 +151,20 @@ class LinkElements extends FRGatherer {
           header: truncatedHeader,
         });
         context.baseArtifacts.LighthouseRunWarnings.push(warning);
+      }
+
+      for (const link of parsedRefs) {
+        linkElements.push({
+          rel: link.rel || '',
+          href: normalizeUrlOrNull(link.uri, context.baseArtifacts.URL.finalDisplayedUrl),
+          hrefRaw: link.uri || '',
+          hreflang: link.hreflang || '',
+          as: link.as || '',
+          crossOrigin: getCrossoriginFromHeader(link.crossorigin),
+          source: 'headers',
+          fetchPriority: link.fetchpriority,
+          node: null,
+        });
       }
     }
 
