@@ -11,6 +11,7 @@ import {LanternFirstMeaningfulPaint} from '../computed/metrics/lantern-first-mea
 import {LanternInteractive} from '../computed/metrics/lantern-interactive.js';
 import {LanternSpeedIndex} from '../computed/metrics/lantern-speed-index.js';
 import {LanternLargestContentfulPaint} from '../computed/metrics/lantern-largest-contentful-paint.js';
+import {TimingSummary} from '../computed/metrics/timing-summary.js';
 
 // Parameters (in ms) for log-normal CDF scoring. To see the curve:
 //   https://www.desmos.com/calculator/bksgkihhj8
@@ -56,6 +57,8 @@ class PredictivePerf extends Audit {
     const si = await LanternSpeedIndex.request(computationData, context);
     const lcp = await LanternLargestContentfulPaint.request(computationData, context);
 
+    const timingSummary = await TimingSummary.request(computationData, context);
+
     const values = {
       roughEstimateOfFCP: fcp.timing,
       optimisticFCP: fcp.optimisticEstimate.timeInMs,
@@ -76,6 +79,9 @@ class PredictivePerf extends Audit {
       roughEstimateOfLCP: lcp.timing,
       optimisticLCP: lcp.optimisticEstimate.timeInMs,
       pessimisticLCP: lcp.pessimisticEstimate.timeInMs,
+
+      roughEstimateOfLCPLoadStart: timingSummary.metrics.lcpLoadStart,
+      roughEstimateOfLCPLoadEnd: timingSummary.metrics.lcpLoadEnd,
     };
 
     const score = Audit.computeLogNormalScore(

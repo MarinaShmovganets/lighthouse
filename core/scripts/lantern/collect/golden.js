@@ -98,6 +98,8 @@ async function main() {
         timeToConsistentlyInteractive: wptMetrics.interactive,
         speedIndex: wptMetrics.speedIndex,
         largestContentfulPaint: wptMetrics.largestContentfulPaint,
+        lcpLoadStart: wptMetrics.lcpLoadStart,
+        lcpLoadEnd: wptMetrics.lcpLoadEnd,
       },
       unthrottled: {
         tracePath: medianUnthrottled.trace,

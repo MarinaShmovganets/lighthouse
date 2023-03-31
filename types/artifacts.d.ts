@@ -788,6 +788,10 @@ declare module Artifacts {
     largestContentfulPaintTs: number | undefined;
     largestContentfulPaintAllFrames: number | undefined;
     largestContentfulPaintAllFramesTs: number | undefined;
+    lcpLoadStart: number | undefined;
+    lcpLoadStartTs: number | undefined;
+    lcpLoadEnd: number | undefined;
+    lcpLoadEndTs: number | undefined;
     interactive: number | undefined;
     interactiveTs: number | undefined;
     speedIndex: number | undefined;

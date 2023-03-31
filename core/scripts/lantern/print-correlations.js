@@ -243,6 +243,9 @@ evaluateAndPrintAccuracy('largestContentfulPaint', 'optimisticLCP');
 evaluateAndPrintAccuracy('largestContentfulPaint', 'pessimisticLCP');
 evaluateAndPrintAccuracy('largestContentfulPaint', 'roughEstimateOfLCP');
 
+evaluateAndPrintAccuracy('lcpLoadStart', 'roughEstimateOfLCPLoadStart');
+evaluateAndPrintAccuracy('lcpLoadEnd', 'roughEstimateOfLCPLoadEnd');
+
 const estimates = allEvaluations.filter(entry => entry.lanternMetric.includes('roughEstimate'));
 const baselineEstimates = baselineEvaluations.filter(entry =>
   entry.lanternMetric.includes('roughEstimate')
