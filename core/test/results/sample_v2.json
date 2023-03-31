@@ -1889,6 +1889,10 @@
             "cumulativeLayoutShift": 0.13570762803819444,
             "cumulativeLayoutShiftMainFrame": 0.13570762803819444,
             "totalCumulativeLayoutShift": 0.13570762803819444,
+            "lcpLoadStart": 10849,
+            "lcpLoadStartTs": 8707549690,
+            "lcpLoadEnd": 12900,
+            "lcpLoadEndTs": 8709600339,
             "observedTimeOrigin": 0,
             "observedTimeOriginTs": 8696700822,
             "observedNavigationStart": 0,
@@ -7548,6 +7552,18 @@
       {
         "startTime": 0,
         "name": "lh:computed:LargestContentfulPaintAllFrames",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:LCPLoadStart",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:LCPLoadEnd",
         "duration": 100,
         "entryType": "measure"
       },
