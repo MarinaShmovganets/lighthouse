@@ -56,6 +56,8 @@ Object {
   "speedIndexTs": 23467606130,
   "totalBlockingTime": 0,
   "totalCumulativeLayoutShift": undefined,
+  "ttfb": 565,
+  "ttfbTs": 23466588051,
 }
 `;
 
@@ -115,6 +117,8 @@ Object {
   "speedIndexTs": undefined,
   "totalBlockingTime": 1205,
   "totalCumulativeLayoutShift": 0,
+  "ttfb": 736,
+  "ttfbTs": undefined,
 }
 `;
 
@@ -174,6 +178,8 @@ Object {
   "speedIndexTs": 225414777015,
   "totalBlockingTime": 48,
   "totalCumulativeLayoutShift": 0,
+  "ttfb": 261,
+  "ttfbTs": 225414432704,
 }
 `;
 
@@ -233,5 +239,7 @@ Object {
   "speedIndexTs": undefined,
   "totalBlockingTime": 777,
   "totalCumulativeLayoutShift": 0,
+  "ttfb": undefined,
+  "ttfbTs": undefined,
 }
 `;

@@ -1893,6 +1893,8 @@
             "lcpLoadStartTs": 8707549690,
             "lcpLoadEnd": 12900,
             "lcpLoadEndTs": 8709600339,
+            "ttfb": 572,
+            "ttfbTs": 8697272590,
             "observedTimeOrigin": 0,
             "observedTimeOriginTs": 8696700822,
             "observedNavigationStart": 0,
@@ -7564,6 +7566,12 @@
       {
         "startTime": 0,
         "name": "lh:computed:LCPLoadEnd",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:TimeToFirstByte",
         "duration": 100,
         "entryType": "measure"
       },

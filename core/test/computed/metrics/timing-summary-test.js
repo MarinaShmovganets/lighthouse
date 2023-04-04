@@ -73,6 +73,8 @@ describe('Timing summary', () => {
         "speedIndexTs": 10328522909,
         "totalBlockingTime": 2.7429999999994834,
         "totalCumulativeLayoutShift": 0.0011656245471340055,
+        "ttfb": undefined,
+        "ttfbTs": undefined,
       }
     `);
     // Includes performance metrics
