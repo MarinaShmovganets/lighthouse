@@ -68,9 +68,10 @@ async function startWptTest(url) {
     k: WPT_KEY,
     f: 'json',
     url,
-    location: 'Dulles_MotoG4:Motorola G (gen 4) - Chrome.3G',
+    location: 'ec2-us-west-1:Chrome.3GFast',
     runs: '1',
     lighthouse: '1',
+    mobile: '1',
     // Make the trace file available over /getgzip.php.
     lighthouseTrace: '1',
     lighthouseScreenshots: '1',

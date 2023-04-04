@@ -243,6 +243,7 @@ evaluateAndPrintAccuracy('largestContentfulPaint', 'optimisticLCP');
 evaluateAndPrintAccuracy('largestContentfulPaint', 'pessimisticLCP');
 evaluateAndPrintAccuracy('largestContentfulPaint', 'roughEstimateOfLCP');
 
+evaluateAndPrintAccuracy('timeToFirstByte', 'roughEstimateOfTTFB');
 evaluateAndPrintAccuracy('lcpLoadStart', 'roughEstimateOfLCPLoadStart');
 evaluateAndPrintAccuracy('lcpLoadEnd', 'roughEstimateOfLCPLoadEnd');
 

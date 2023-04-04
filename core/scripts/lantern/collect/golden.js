@@ -100,6 +100,7 @@ async function main() {
         largestContentfulPaint: wptMetrics.largestContentfulPaint,
         lcpLoadStart: wptMetrics.lcpLoadStart,
         lcpLoadEnd: wptMetrics.lcpLoadEnd,
+        ttfb: wptMetrics.ttfb,
       },
       unthrottled: {
         tracePath: medianUnthrottled.trace,

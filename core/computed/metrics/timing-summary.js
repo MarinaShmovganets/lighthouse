@@ -20,6 +20,7 @@ import {TotalBlockingTime} from './total-blocking-time.js';
 import {makeComputedArtifact} from '../computed-artifact.js';
 import {LCPLoadStart} from './lcp-load-start.js';
 import {LCPLoadEnd} from './lcp-load-end.js';
+import {TimeToFirstByte} from './time-to-first-byte.js';
 
 class TimingSummary {
   /**
@@ -61,6 +62,7 @@ class TimingSummary {
     const totalBlockingTime = await requestOrUndefined(TotalBlockingTime, metricComputationData);
     const lcpLoadStart = await requestOrUndefined(LCPLoadStart, metricComputationData);
     const lcpLoadEnd = await requestOrUndefined(LCPLoadEnd, metricComputationData);
+    const ttfb = await requestOrUndefined(TimeToFirstByte, metricComputationData);
 
     const {
       cumulativeLayoutShift,
@@ -95,6 +97,8 @@ class TimingSummary {
       lcpLoadStartTs: lcpLoadStart?.timestamp,
       lcpLoadEnd: lcpLoadEnd?.timing,
       lcpLoadEndTs: lcpLoadEnd?.timestamp,
+      ttfb: ttfb?.timing,
+      ttfbTs: ttfb?.timestamp,
 
       // Include all timestamps of interest from the processed trace
       observedTimeOrigin: processedTrace.timings.timeOrigin,
