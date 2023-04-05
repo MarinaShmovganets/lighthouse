@@ -49,7 +49,7 @@ class PredictivePerf extends Audit {
     const URL = artifacts.URL;
     /** @type {LH.Config.Settings} */
     // @ts-expect-error - TODO(bckenny): allow optional `throttling` settings
-    const settings = {}; // Use default settings.
+    const settings = {throttlingMethod: 'simulate'}; // Use default settings.
     const computationData = {trace, devtoolsLog, gatherContext, settings, URL};
     const fcp = await LanternFirstContentfulPaint.request(computationData, context);
     const fmp = await LanternFirstMeaningfulPaint.request(computationData, context);
