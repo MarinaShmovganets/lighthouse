@@ -97,8 +97,8 @@ class TimingSummary {
       lcpLoadStartTs: lcpLoadStart?.timestamp,
       lcpLoadEnd: lcpLoadEnd?.timing,
       lcpLoadEndTs: lcpLoadEnd?.timestamp,
-      ttfb: ttfb?.timing,
-      ttfbTs: ttfb?.timestamp,
+      timeToFirstByte: ttfb?.timing,
+      timeToFirstByteTs: ttfb?.timestamp,
 
       // Include all timestamps of interest from the processed trace
       observedTimeOrigin: processedTrace.timings.timeOrigin,

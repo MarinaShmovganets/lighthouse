@@ -71,10 +71,10 @@ describe('Timing summary', () => {
         "observedTraceEndTs": 10341402222,
         "speedIndex": 1335,
         "speedIndexTs": 10328522909,
+        "timeToFirstByte": undefined,
+        "timeToFirstByteTs": undefined,
         "totalBlockingTime": 2.7429999999994834,
         "totalCumulativeLayoutShift": 0.0011656245471340055,
-        "ttfb": undefined,
-        "ttfbTs": undefined,
       }
     `);
     // Includes performance metrics

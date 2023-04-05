@@ -80,7 +80,7 @@ class PredictivePerf extends Audit {
       optimisticLCP: lcp.optimisticEstimate.timeInMs,
       pessimisticLCP: lcp.pessimisticEstimate.timeInMs,
 
-      roughEstimateOfTTFB: timingSummary.metrics.ttfb,
+      roughEstimateOfTTFB: timingSummary.metrics.timeToFirstByte,
       roughEstimateOfLCPLoadStart: timingSummary.metrics.lcpLoadStart,
       roughEstimateOfLCPLoadEnd: timingSummary.metrics.lcpLoadEnd,
     };

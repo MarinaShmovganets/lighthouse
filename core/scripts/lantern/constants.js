@@ -202,6 +202,9 @@ export default {
       roughEstimateOfSI: evaluate('speedIndex', 'roughEstimateOfSI'),
       roughEstimateOfTTI: evaluate('timeToConsistentlyInteractive', 'roughEstimateOfTTI'),
       roughEstimateOfLCP: evaluate('largestContentfulPaint', 'roughEstimateOfLCP'),
+      roughEstimateOfTTFB: evaluate('timeToFirstByte', 'roughEstimateOfTTFB'),
+      roughEstimateOfLCPLoadStart: evaluate('lcpLoadStart', 'roughEstimateOfLCPLoadStart'),
+      roughEstimateOfLCPLoadEnd: evaluate('lcpLoadEnd', 'roughEstimateOfLCPLoadEnd'),
     };
   },
 };

@@ -98,9 +98,9 @@ async function main() {
         timeToConsistentlyInteractive: wptMetrics.interactive,
         speedIndex: wptMetrics.speedIndex,
         largestContentfulPaint: wptMetrics.largestContentfulPaint,
+        timeToFirstByte: wptMetrics.timeToFirstByte,
         lcpLoadStart: wptMetrics.lcpLoadStart,
         lcpLoadEnd: wptMetrics.lcpLoadEnd,
-        ttfb: wptMetrics.ttfb,
       },
       unthrottled: {
         tracePath: medianUnthrottled.trace,
