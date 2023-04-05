@@ -11,6 +11,7 @@ import PrioritizeLcpImage from '../../audits/prioritize-lcp-image.js';
 import {NetworkRecords} from '../network-records.js';
 import {LargestContentfulPaint} from './largest-contentful-paint.js';
 import {ProcessedNavigation} from '../processed-navigation.js';
+import {TimeToFirstByte} from './time-to-first-byte.js';
 
 class LCPLoadStart extends NavigationMetric {
   /**
@@ -58,7 +59,7 @@ class LCPLoadStart extends NavigationMetric {
       PrioritizeLcpImage.getLcpRecord(data.trace, processedNavigation, networkRecords);
 
     if (!lcpRecord) {
-      throw new Error('LCP is not an image');
+      return TimeToFirstByte.computeObservedMetric(data, context);
     }
 
     const timestamp = this.getTimestamp(lcpRecord);
