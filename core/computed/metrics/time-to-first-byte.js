@@ -6,9 +6,6 @@
 
 import {makeComputedArtifact} from '../computed-artifact.js';
 import {NavigationMetric} from './navigation-metric.js';
-import {LighthouseError} from '../../lib/lh-error.js';
-import {LargestContentfulPaint} from './largest-contentful-paint.js';
-import {ProcessedNavigation} from '../processed-navigation.js';
 import {MainResource} from '../main-resource.js';
 
 class TimeToFirstByte extends NavigationMetric {
@@ -18,17 +15,9 @@ class TimeToFirstByte extends NavigationMetric {
    * @return {Promise<LH.Artifacts.Metric>}
    */
   static async computeSimulatedMetric(data, context) {
-    const processedNavigation = await ProcessedNavigation.request(data.trace, context);
-    if (processedNavigation.timings.largestContentfulPaint === undefined) {
-      throw new LighthouseError(LighthouseError.errors.NO_LCP);
-    }
-
-    const lcp = await LargestContentfulPaint.request(data, context);
-    const observedMetric = await this.computeObservedMetric(data, context);
-
-    const throttleRatio = lcp.timing / processedNavigation.timings.largestContentfulPaint;
-    const timing = observedMetric.timing * throttleRatio;
-    return {timing};
+    // It may be beneficial to perform additional calculations for simulated throttling in the future.
+    // For now we should just match the server response time audit.
+    return this.computeObservedMetric(data, context);
   }
 
   /**
