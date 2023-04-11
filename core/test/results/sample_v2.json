@@ -7565,6 +7565,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:computed:LCPRecord",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:computed:LCPLoadEnd",
         "duration": 100,
         "entryType": "measure"
