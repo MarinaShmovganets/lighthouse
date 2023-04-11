@@ -16,6 +16,7 @@
  * @property {number|undefined} timeToConsistentlyInteractive
  * @property {number|undefined} speedIndex
  * @property {number|undefined} largestContentfulPaint
+ * @property {number|undefined} timeToFirstByte
  * @property {number|undefined} lcpLoadStart
  * @property {number|undefined} lcpLoadEnd
  */
