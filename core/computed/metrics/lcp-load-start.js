@@ -7,11 +7,10 @@
 import {makeComputedArtifact} from '../computed-artifact.js';
 import {NavigationMetric} from './navigation-metric.js';
 import {LighthouseError} from '../../lib/lh-error.js';
-import PrioritizeLcpImage from '../../audits/prioritize-lcp-image.js';
-import {NetworkRecords} from '../network-records.js';
 import {LargestContentfulPaint} from './largest-contentful-paint.js';
 import {ProcessedNavigation} from '../processed-navigation.js';
 import {TimeToFirstByte} from './time-to-first-byte.js';
+import {LCPRecord} from '../lcp-record.js';
 
 class LCPLoadStart extends NavigationMetric {
   /**
@@ -53,11 +52,8 @@ class LCPLoadStart extends NavigationMetric {
     }
 
     const timeOriginTs = processedNavigation.timestamps.timeOrigin;
-    const networkRecords = await NetworkRecords.request(data.devtoolsLog, context);
 
-    const lcpRecord =
-      PrioritizeLcpImage.getLcpRecord(data.trace, processedNavigation, networkRecords);
-
+    const lcpRecord = await LCPRecord.request(data, context);
     if (!lcpRecord) {
       return TimeToFirstByte.computeObservedMetric(data, context);
     }
