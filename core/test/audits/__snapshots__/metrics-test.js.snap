@@ -115,8 +115,8 @@ Object {
   "observedTraceEndTs": 713044439102,
   "speedIndex": 3681,
   "speedIndexTs": undefined,
-  "timeToFirstByte": 736,
-  "timeToFirstByteTs": undefined,
+  "timeToFirstByte": 299,
+  "timeToFirstByteTs": 713037322553,
   "totalBlockingTime": 1205,
   "totalCumulativeLayoutShift": 0,
 }
@@ -237,8 +237,8 @@ Object {
   "observedTraceEndTs": 225426711887,
   "speedIndex": 1676,
   "speedIndexTs": undefined,
-  "timeToFirstByte": undefined,
-  "timeToFirstByteTs": undefined,
+  "timeToFirstByte": 261,
+  "timeToFirstByteTs": 225414432704,
   "totalBlockingTime": 777,
   "totalCumulativeLayoutShift": 0,
 }
