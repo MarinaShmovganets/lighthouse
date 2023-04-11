@@ -9,13 +9,11 @@ import fs from 'fs';
 import path from 'path';
 
 import PredictivePerf from '../../audits/predictive-perf.js';
-import {PageDependencyGraph} from '../../computed/page-dependency-graph.js';
 import {Simulator} from '../../lib/dependency-graph/simulator/simulator.js';
 import traceSaver from '../../lib/lantern-trace-saver.js';
 import {LH_ROOT} from '../../../root.js';
 import {readJson} from '../../test/test-utils.js';
-import {NetworkRecords} from '../../computed/network-records.js';
-import {ProcessedTrace} from '../../computed/processed-trace.js';
+import {DocumentUrls} from '../../computed/document-urls.js';
 
 if (process.argv.length !== 4) throw new Error('Usage $0 <trace file> <devtools file>');
 
@@ -25,10 +23,9 @@ async function run() {
   const devtoolsLogs = {defaultPass: readJson(path.resolve(process.cwd(), process.argv[3]))};
   const context = {computedCache: new Map(), settings: {locale: 'en-us'}};
 
-  const networkRecords = await NetworkRecords.request(devtoolsLogs.defaultPass, context);
-  const processedTrace = await ProcessedTrace.request(traces.defaultPass, context);
-  const URL =
-    PageDependencyGraph.getDocumentUrls(devtoolsLogs.defaultPass, networkRecords, processedTrace);
+  const trace = traces.defaultPass;
+  const devtoolsLog = devtoolsLogs.defaultPass;
+  const URL = await DocumentUrls.request({trace, devtoolsLog}, context);
 
   const artifacts = {
     traces,
