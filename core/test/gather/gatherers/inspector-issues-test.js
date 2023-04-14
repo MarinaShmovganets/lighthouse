@@ -127,7 +127,7 @@ function mockCSP(details) {
 }
 
 /**
- * @param {LH.Crdp.Audits.DeprecationIssueDetails['type']} type
+ * @param {string} type
  * @return {LH.Crdp.Audits.InspectorIssue}
  */
 function mockDeprecation(type) {
