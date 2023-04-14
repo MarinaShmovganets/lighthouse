@@ -7,6 +7,7 @@
 import {makeComputedArtifact} from '../computed-artifact.js';
 import {NavigationMetric} from './navigation-metric.js';
 import {MainResource} from '../main-resource.js';
+import {NetworkAnalysis} from '../network-analysis.js';
 
 class TimeToFirstByte extends NavigationMetric {
   /**
@@ -15,9 +16,22 @@ class TimeToFirstByte extends NavigationMetric {
    * @return {Promise<LH.Artifacts.Metric>}
    */
   static async computeSimulatedMetric(data, context) {
-    // It may be beneficial to perform additional calculations for simulated throttling in the future.
-    // For now we should just match the server response time audit.
-    return this.computeObservedMetric(data, context);
+    const mainResource = await MainResource.request(data, context);
+    const networkAnalysis = await NetworkAnalysis.request(data.devtoolsLog, context);
+
+    const observedTTFB = (await this.computeObservedMetric(data, context)).timing;
+    const observedResponseTime =
+      networkAnalysis.serverResponseTimeByOrigin.get(mainResource.parsedURL.securityOrigin);
+    if (!observedResponseTime) throw new Error('Could not compute response time for origin');
+
+    // Estimate when the connection is not warm.
+    // TTFB = DNS + (SSL)? + TCP handshake + 1 RT for request + server response time
+    let roundTrips = 3;
+    if (mainResource.parsedURL.scheme === 'https') roundTrips += 1;
+    const estimatedTTFB = data.settings.throttling.rttMs * roundTrips + observedResponseTime;
+
+    const timing = Math.max(observedTTFB, estimatedTTFB);
+    return {timing};
   }
 
   /**
