@@ -1,15 +1,8 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-
- <a name="10.1.1"></a>
+<a name="10.1.1"></a>
 # 10.1.1 (2023-04-14)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v10.1.0...v10.1.1)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
-
-## Notable Changes
-~~ TODO: Move notable changes here ~~
-
+We expect this release to ship in the DevTools of [Chrome 114](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
 ## Core
 
