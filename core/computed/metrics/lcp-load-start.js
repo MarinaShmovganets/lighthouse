@@ -10,7 +10,7 @@ import {LighthouseError} from '../../lib/lh-error.js';
 import {LargestContentfulPaint} from './largest-contentful-paint.js';
 import {ProcessedNavigation} from '../processed-navigation.js';
 import {TimeToFirstByte} from './time-to-first-byte.js';
-import {LCPRecord} from '../lcp-record.js';
+import {LCPImageRecord} from '../lcp-record.js';
 
 class LCPLoadStart extends NavigationMetric {
   /**
@@ -53,12 +53,12 @@ class LCPLoadStart extends NavigationMetric {
 
     const timeOriginTs = processedNavigation.timestamps.timeOrigin;
 
-    const lcpRecord = await LCPRecord.request(data, context);
-    if (!lcpRecord) {
+    const lcpImageRecord = await LCPImageRecord.request(data, context);
+    if (!lcpImageRecord) {
       return TimeToFirstByte.computeObservedMetric(data, context);
     }
 
-    const timestamp = this.getTimestamp(lcpRecord);
+    const timestamp = this.getTimestamp(lcpImageRecord);
     const timing = (timestamp - timeOriginTs) / 1000;
 
     return {timing, timestamp};

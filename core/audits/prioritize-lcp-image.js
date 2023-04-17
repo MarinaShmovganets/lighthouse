@@ -11,7 +11,7 @@ import {MainResource} from '../computed/main-resource.js';
 import {LanternLargestContentfulPaint} from '../computed/metrics/lantern-largest-contentful-paint.js';
 import {LoadSimulator} from '../computed/load-simulator.js';
 import {ByteEfficiencyAudit} from './byte-efficiency/byte-efficiency-audit.js';
-import {LCPRecord} from '../computed/lcp-record.js';
+import {LCPImageRecord} from '../computed/lcp-record.js';
 
 const UIStrings = {
   /** Title of a lighthouse audit that tells a user to preload an image in order to improve their LCP time. */
@@ -251,11 +251,11 @@ class PrioritizeLcpImage extends Audit {
     const lanternLCP = await LanternLargestContentfulPaint.request(metricData, context);
     const simulator = await LoadSimulator.request({devtoolsLog, settings}, context);
 
-    const lcpRecord = await LCPRecord.request({trace, devtoolsLog}, context);
+    const lcpImageRecord = await LCPImageRecord.request({trace, devtoolsLog}, context);
     const graph = lanternLCP.pessimisticGraph;
     // Note: if moving to LCPAllFrames, mainResource would need to be the LCP frame's main resource.
     const {lcpNodeToPreload, initiatorPath} = PrioritizeLcpImage.getLCPNodeToPreload(mainResource,
-        graph, lcpRecord);
+        graph, lcpImageRecord);
 
     const {results, wastedMs} =
       PrioritizeLcpImage.computeWasteWithGraph(lcpElement, lcpNodeToPreload, graph, simulator);

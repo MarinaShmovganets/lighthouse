@@ -15,7 +15,7 @@ import {LighthouseError} from '../lib/lh-error.js';
  * was a pseudo-element associated with a node containing a smaller background-image.
  */
 
-class LCPRecord {
+class LCPImageRecord {
   /**
    * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog}} data
    * @param {LH.Artifacts.ComputedContext} context
@@ -69,6 +69,6 @@ class LCPRecord {
   }
 }
 
-const LCPRecordComputed = makeComputedArtifact(LCPRecord, ['devtoolsLog', 'trace']);
-export {LCPRecordComputed as LCPRecord};
+const LCPImageRecordComputed = makeComputedArtifact(LCPImageRecord, ['devtoolsLog', 'trace']);
+export {LCPImageRecordComputed as LCPImageRecord};
 
