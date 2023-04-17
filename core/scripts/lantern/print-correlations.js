@@ -100,7 +100,7 @@ function evaluateAndPrintAccuracy(metric, lanternMetric) {
   const baselineOptions = {alwaysGray: !lanternMetric.includes('roughEstimate')};
 
   const strings = [
-    lanternMetric.padEnd(25),
+    lanternMetric.padEnd(30),
     `${toPercentString(actualAccuracy.p50)} ${toBaselineDiffString(
       actualAccuracy.p50,
       baselineAccuracy.p50,
@@ -216,7 +216,7 @@ function findAndPrintFixesRegressions() {
 
 console.log(
   chalk.bold(
-    'Metric'.padEnd(25),
+    'Metric'.padEnd(30),
     'p50 (% Error)'.padEnd(20),
     'p90 (% Error)'.padEnd(20),
     'p95 (% Error)'.padEnd(20)
