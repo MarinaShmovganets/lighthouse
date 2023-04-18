@@ -4,9 +4,8 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {DocumentUrls} from '../../../computed/document-urls.js';
 import {TimingSummary} from '../../../computed/metrics/timing-summary.js';
-import {readJson} from '../../test-utils.js';
+import {getURLArtifactFromDevtoolsLog, readJson} from '../../test-utils.js';
 
 const trace = readJson('../../fixtures/traces/frame-metrics-m90.json', import.meta);
 const devtoolsLog = readJson('../../fixtures/traces/frame-metrics-m90.devtools.log.json', import.meta);
@@ -15,7 +14,7 @@ describe('Timing summary', () => {
   it('contains the correct data', async () => {
     const gatherContext = {gatherMode: 'navigation'};
     const context = {computedCache: new Map()};
-    const URL = await DocumentUrls.request({devtoolsLog, trace}, context);
+    const URL = getURLArtifactFromDevtoolsLog(devtoolsLog);
     const artifacts =
       {URL, settings: {throttlingMethod: 'devtools'}, trace, devtoolsLog, gatherContext};
     const result = await TimingSummary.request(artifacts, context);
