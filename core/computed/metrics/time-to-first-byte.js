@@ -22,7 +22,7 @@ class TimeToFirstByte extends NavigationMetric {
     const observedTTFB = (await this.computeObservedMetric(data, context)).timing;
     const observedResponseTime =
       networkAnalysis.serverResponseTimeByOrigin.get(mainResource.parsedURL.securityOrigin);
-    if (!observedResponseTime) throw new Error('Could not compute response time for origin');
+    if (observedResponseTime === undefined) throw new Error('No response time for origin');
 
     // Estimate when the connection is not warm.
     // TTFB = DNS + (SSL)? + TCP handshake + 1 RT for request + server response time
