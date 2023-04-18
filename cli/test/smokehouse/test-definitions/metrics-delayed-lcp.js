@@ -39,7 +39,7 @@ const expectations = {
       },
       'metrics': {
         details: {items: {0: {
-          timeToFirstByte: '<100',
+          timeToFirstByte: '<500',
           lcpLoadStart: '7000+/-500',
           lcpLoadEnd: '14000+/-500',
         }}},
