@@ -9,7 +9,7 @@ import {LighthouseError} from '../../lib/lh-error.js';
 import {LargestContentfulPaint} from './largest-contentful-paint.js';
 import {ProcessedNavigation} from '../processed-navigation.js';
 import {TimeToFirstByte} from './time-to-first-byte.js';
-import {LCPImageRecord} from '../lcp-record.js';
+import {LCPImageRecord} from '../lcp-image-record.js';
 
 class LCPBreakdown {
   /**
