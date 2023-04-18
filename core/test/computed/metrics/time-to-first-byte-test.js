@@ -30,32 +30,30 @@ function mockData(networkRecords) {
 }
 
 function mockNetworkRecords() {
-  return {
-    networkRecords: [{
-      requestId: '2',
-      priority: 'High',
-      isLinkPreload: false,
-      networkRequestTime: 0,
-      networkEndTime: 300,
-      timing: {sendEnd: 0},
-      transferSize: 300,
-      url: requestedUrl,
-      frameId: 'ROOT_FRAME',
-    },
-    {
-      requestId: '2:redirect',
-      resourceType: 'Document',
-      priority: 'High',
-      isLinkPreload: false,
-      networkRequestTime: 300,
-      responseHeadersEndTime: 400,
-      networkEndTime: 500,
-      timing: {sendEnd: 0, receiveHeadersEnd: 100},
-      transferSize: 16_000,
-      url: mainDocumentUrl,
-      frameId: 'ROOT_FRAME',
-    }],
-  };
+  return [{
+    requestId: '2',
+    priority: 'High',
+    isLinkPreload: false,
+    networkRequestTime: 0,
+    networkEndTime: 300,
+    timing: {sendEnd: 0},
+    transferSize: 300,
+    url: requestedUrl,
+    frameId: 'ROOT_FRAME',
+  },
+  {
+    requestId: '2:redirect',
+    resourceType: 'Document',
+    priority: 'High',
+    isLinkPreload: false,
+    networkRequestTime: 300,
+    responseHeadersEndTime: 400,
+    networkEndTime: 500,
+    timing: {sendEnd: 0, receiveHeadersEnd: 100},
+    transferSize: 16_000,
+    url: mainDocumentUrl,
+    frameId: 'ROOT_FRAME',
+  }];
 }
 
 describe('Metrics: TTFB', () => {
@@ -65,7 +63,7 @@ describe('Metrics: TTFB', () => {
   });
 
   it('should compute predicted value', async () => {
-    const {networkRecords} = mockNetworkRecords();
+    const networkRecords = mockNetworkRecords();
     const data = mockData(networkRecords);
 
     const context = {settings: data.settings, computedCache: new Map()};
@@ -79,7 +77,7 @@ describe('Metrics: TTFB', () => {
 
   it('should compute predicted value with SSL', async () => {
     mainDocumentUrl = 'https://www.example.com:3000';
-    const {networkRecords} = mockNetworkRecords();
+    const networkRecords = mockNetworkRecords();
     const data = mockData(networkRecords);
 
     const context = {settings: data.settings, computedCache: new Map()};
@@ -92,7 +90,7 @@ describe('Metrics: TTFB', () => {
   });
 
   it('should compute an observed value', async () => {
-    const {networkRecords} = mockNetworkRecords();
+    const networkRecords = mockNetworkRecords();
     const data = mockData(networkRecords);
     data.settings.throttlingMethod = 'provided';
 

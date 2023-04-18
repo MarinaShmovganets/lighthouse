@@ -4,9 +4,10 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {LCPImageRecord} from '../../computed/lcp-image-record.js';
-import {createTestTrace} from '../create-test-trace.js';
-import {networkRecordsToDevtoolsLog} from '../network-records-to-devtools-log.js';
+import {LCPBreakdown} from '../../../computed/metrics/lcp-breakdown.js';
+import {createTestTrace} from '../../create-test-trace.js';
+import {networkRecordsToDevtoolsLog} from '../../network-records-to-devtools-log.js';
+import {defaultSettings} from '../../../config/constants.js';
 
 const requestedUrl = 'http://example.com:3000';
 const mainDocumentUrl = 'http://www.example.com:3000';
@@ -16,11 +17,18 @@ const imageUrl = 'http://www.example.com/image.png';
 
 function mockData(networkRecords) {
   return {
+    settings: JSON.parse(JSON.stringify(defaultSettings)),
     trace: createTestTrace({
       traceEnd: 6000,
       largestContentfulPaint: 4500,
     }),
     devtoolsLog: networkRecordsToDevtoolsLog(networkRecords),
+    URL: {
+      requestedUrl,
+      mainDocumentUrl,
+      finalDisplayedUrl: mainDocumentUrl,
+    },
+    gatherContext: {gatherMode: 'navigation'},
   };
 }
 
@@ -31,7 +39,7 @@ function mockNetworkRecords() {
     isLinkPreload: false,
     networkRequestTime: 0,
     networkEndTime: 500,
-    timing: {receiveHeadersEnd: 500},
+    timing: {sendEnd: 0, receiveHeadersEnd: 500},
     transferSize: 400,
     url: requestedUrl,
     frameId: 'ROOT_FRAME',
@@ -42,7 +50,9 @@ function mockNetworkRecords() {
     priority: 'High',
     isLinkPreload: false,
     networkRequestTime: 500,
+    responseHeadersEndTime: 800,
     networkEndTime: 1000,
+    timing: {sendEnd: 0, receiveHeadersEnd: 300},
     transferSize: 16_000,
     url: mainDocumentUrl,
     frameId: 'ROOT_FRAME',
@@ -66,73 +76,60 @@ function mockNetworkRecords() {
     isLinkPreload: false,
     networkRequestTime: 2000,
     networkEndTime: 4500,
-    transferSize: 64_000,
+    transferSize: 640_000,
     url: imageUrl,
     initiator: {type: 'script', url: scriptUrl},
     frameId: 'ROOT_FRAME',
   }];
 }
 
-describe('LCPImageRecord', () => {
-  it('returns the correct LCP network record', async () => {
+describe('LCPBreakdown', () => {
+  it('returns breakdown for image LCP', async () => {
     const networkRecords = mockNetworkRecords();
     const data = mockData(networkRecords);
 
-    const result = await LCPImageRecord.request(data, {computedCache: new Map()});
+    const result = await LCPBreakdown.request(data, {computedCache: new Map()});
 
-    expect(result.requestId).toEqual('4');
+    expect(result.ttfb).toBeCloseTo(800, 0.1);
+    expect(result.loadStart).toBeCloseTo(2579.5, 0.1);
+    expect(result.loadEnd).toBeCloseTo(5804, 0.1);
   });
 
-  it('returns undefined if the LCP was not an image', async () => {
+  it('returns observed for image LCP', async () => {
+    const networkRecords = mockNetworkRecords();
+    const data = mockData(networkRecords);
+    data.settings.throttlingMethod = 'provided';
+
+    const result = await LCPBreakdown.request(data, {computedCache: new Map()});
+
+    expect(result.ttfb).toBeCloseTo(800, 0.1);
+    expect(result.loadStart).toBeCloseTo(2000, 0.1);
+    expect(result.loadEnd).toBeCloseTo(4500, 0.1);
+  });
+
+  it('returns breakdown for text LCP', async () => {
     const networkRecords = mockNetworkRecords();
     const data = mockData(networkRecords);
     const eventIndex =
       data.trace.traceEvents.findIndex(e => e.name === 'LargestImagePaint::Candidate');
     data.trace.traceEvents.splice(eventIndex, 1);
 
-    const result = await LCPImageRecord.request(data, {computedCache: new Map()});
-    expect(result).toBeUndefined();
+    const result = await LCPBreakdown.request(data, {computedCache: new Map()});
+
+    expect(result.ttfb).toBeCloseTo(800, 0.1);
+    expect(result.loadStart).toBeCloseTo(800, 0.1);
+    expect(result.loadEnd).toBeCloseTo(800, 0.1);
   });
 
-  it('returns undefined if the LCP record is missing', async () => {
+  it('throws if there was no LCP', async () => {
     const networkRecords = mockNetworkRecords();
-    const recordIndex = networkRecords.findIndex(r => r.resourceType === 'Image');
-    networkRecords.splice(recordIndex, 1);
-
     const data = mockData(networkRecords);
+    const eventIndex =
+      data.trace.traceEvents.findIndex(e => e.name === 'largestContentfulPaint::Candidate');
+    data.trace.traceEvents.splice(eventIndex, 1);
 
-    const result = await LCPImageRecord.request(data, {computedCache: new Map()});
-    expect(result).toBeUndefined();
-  });
+    const resultPromise = LCPBreakdown.request(data, {computedCache: new Map()});
 
-  it('only considers records from the main frame', async () => {
-    const networkRecords = mockNetworkRecords();
-    const record = networkRecords.find(r => r.resourceType === 'Image');
-    record.frameId = 'CHILD_FRAME';
-
-    const data = mockData(networkRecords);
-
-    const result = await LCPImageRecord.request(data, {computedCache: new Map()});
-    expect(result).toBeUndefined();
-  });
-
-  it('takes first record by end time if multiple match the LCP url', async () => {
-    const networkRecords = mockNetworkRecords();
-    networkRecords.push({
-      requestId: '5',
-      resourceType: 'Image',
-      priority: 'High',
-      isLinkPreload: false,
-      networkRequestTime: 1500,
-      networkEndTime: 5500,
-      transferSize: 64_000,
-      url: imageUrl,
-      initiator: {type: 'script', url: scriptUrl},
-      frameId: 'ROOT_FRAME',
-    });
-    const data = mockData(networkRecords);
-
-    const result = await LCPImageRecord.request(data, {computedCache: new Map()});
-    expect(result.requestId).toEqual('4');
+    await expect(resultPromise).rejects.toThrow('NO_LCP');
   });
 });
