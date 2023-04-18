@@ -791,9 +791,7 @@ declare module Artifacts {
     timeToFirstByte: number | undefined;
     timeToFirstByteTs: number | undefined;
     lcpLoadStart: number | undefined;
-    lcpLoadStartTs: number | undefined;
     lcpLoadEnd: number | undefined;
-    lcpLoadEndTs: number | undefined;
     interactive: number | undefined;
     interactiveTs: number | undefined;
     speedIndex: number | undefined;
