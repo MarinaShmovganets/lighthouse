@@ -9,6 +9,7 @@ import jestMock from 'jest-mock';
 import MetricsAudit from '../../audits/metrics.js';
 import {Interactive} from '../../computed/metrics/interactive.js';
 import {getURLArtifactFromDevtoolsLog, readJson} from '../test-utils.js';
+import {defaultSettings} from '../../config/constants.js';
 
 const pwaTrace = readJson('../fixtures/traces/progressive-app-m60.json', import.meta);
 const pwaDevtoolsLog = readJson('../fixtures/traces/progressive-app-m60.devtools.log.json', import.meta);
@@ -20,6 +21,8 @@ const clsAllFramesTrace = readJson('../fixtures/traces/frame-metrics-m90.json', 
 const clsAllFramesDevtoolsLog = readJson('../fixtures/traces/frame-metrics-m90.devtools.log.json', import.meta);
 const jumpyClsTrace = readJson('../fixtures/traces/jumpy-cls-m90.json', import.meta);
 const jumpyClsDevtoolsLog = readJson('../fixtures/traces/jumpy-cls-m90.devtoolslog.json', import.meta);
+
+const settings = JSON.parse(JSON.stringify(defaultSettings));
 
 describe('Performance: metrics', () => {
   it('evaluates valid input correctly', async () => {
@@ -35,7 +38,10 @@ describe('Performance: metrics', () => {
       },
     };
 
-    const context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
+    const context = {
+      settings: {...settings, throttlingMethod: 'simulate'},
+      computedCache: new Map(),
+    };
     const result = await MetricsAudit.audit(artifacts, context);
     expect(result.details.items[0]).toMatchSnapshot();
   });
@@ -53,7 +59,10 @@ describe('Performance: metrics', () => {
       },
     };
 
-    const context = {settings: {throttlingMethod: 'provided'}, computedCache: new Map()};
+    const context = {
+      settings: {...settings, throttlingMethod: 'provided'},
+      computedCache: new Map(),
+    };
     const result = await MetricsAudit.audit(artifacts, context);
     expect(result.details.items[0]).toMatchSnapshot();
   });
@@ -71,7 +80,10 @@ describe('Performance: metrics', () => {
       },
     };
 
-    const context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
+    const context = {
+      settings: {...settings, throttlingMethod: 'simulate'},
+      computedCache: new Map(),
+    };
     const result = await MetricsAudit.audit(artifacts, context);
     expect(result.details.items[0]).toMatchSnapshot();
   });
@@ -89,7 +101,10 @@ describe('Performance: metrics', () => {
       },
     };
 
-    const context = {settings: {throttlingMethod: 'provided'}, computedCache: new Map()};
+    const context = {
+      settings: {...settings, throttlingMethod: 'provided'},
+      computedCache: new Map(),
+    };
     const result = await MetricsAudit.audit(artifacts, context);
     expect(result.details.items[0]).toMatchSnapshot();
   });
@@ -105,7 +120,10 @@ describe('Performance: metrics', () => {
       },
     };
 
-    const context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
+    const context = {
+      settings: {...settings, throttlingMethod: 'simulate'},
+      computedCache: new Map(),
+    };
     const {details} = await MetricsAudit.audit(artifacts, context);
     expect(details.items[0]).toMatchObject({
       cumulativeLayoutShift: undefined,
@@ -130,7 +148,10 @@ describe('Performance: metrics', () => {
       },
     };
 
-    const context = {settings: {throttlingMethod: 'provided'}, computedCache: new Map()};
+    const context = {
+      settings: {...settings, throttlingMethod: 'provided'},
+      computedCache: new Map(),
+    };
     const {details} = await MetricsAudit.audit(artifacts, context);
 
     // Only a single main-frame shift event, so mfCls and oldCls are equal.
@@ -160,7 +181,10 @@ describe('Performance: metrics', () => {
 
     const mockTTIFn = jestMock.spyOn(Interactive, 'request');
     mockTTIFn.mockRejectedValueOnce(new Error('TTI failed'));
-    const context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
+    const context = {
+      settings: {...settings, throttlingMethod: 'simulate'},
+      computedCache: new Map(),
+    };
     const result = await MetricsAudit.audit(artifacts, context);
     expect(result.details.items[0].interactive).toEqual(undefined);
   });
@@ -178,7 +202,10 @@ describe('Performance: metrics', () => {
       },
     };
 
-    const context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
+    const context = {
+      settings: {...settings, throttlingMethod: 'simulate'},
+      computedCache: new Map(),
+    };
     const {details} = await MetricsAudit.audit(artifacts, context);
     expect(details.items[0]).toMatchObject({
       cumulativeLayoutShift: expect.toBeApproximately(2.268816, 6),
