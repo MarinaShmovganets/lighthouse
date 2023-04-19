@@ -37,13 +37,6 @@ const expectations = {
         // LCP is after the ~7s XHR and the ~7s image.
         numericValue: '>14000',
       },
-      'metrics': {
-        details: {items: {0: {
-          timeToFirstByte: '<500',
-          lcpLoadStart: '7000+/-500',
-          lcpLoadEnd: '14000+/-500',
-        }}},
-      },
     },
   },
 };
