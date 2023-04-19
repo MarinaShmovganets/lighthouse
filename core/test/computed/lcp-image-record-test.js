@@ -135,4 +135,15 @@ describe('LCPImageRecord', () => {
     const result = await LCPImageRecord.request(data, {computedCache: new Map()});
     expect(result.requestId).toEqual('4');
   });
+
+  it('throws if there was no LCP', async () => {
+    const networkRecords = mockNetworkRecords();
+    const data = mockData(networkRecords);
+    const eventIndex =
+      data.trace.traceEvents.findIndex(e => e.name === 'largestContentfulPaint::Candidate');
+    data.trace.traceEvents.splice(eventIndex, 1);
+
+    const resultPromise = LCPImageRecord.request(data, {computedCache: new Map()});
+    await expect(resultPromise).rejects.toThrow('NO_LCP');
+  });
 });
