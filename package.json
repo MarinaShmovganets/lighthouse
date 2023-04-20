@@ -113,6 +113,7 @@
     "@types/chrome": "^0.0.154",
     "@types/configstore": "^4.0.0",
     "@types/cpy": "^5.1.0",
+    "@types/debug": "^4.1.7",
     "@types/eslint": "^8.2.1",
     "@types/estree": "^0.0.50",
     "@types/gh-pages": "^2.0.0",
