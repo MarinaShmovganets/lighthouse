@@ -399,6 +399,7 @@ Other awesome open source projects that use Lighthouse.
 * **[site-audit-seo](https://github.com/viasite/site-audit-seo)** - CLI tool for SEO site audit, crawl site, lighthouse each page. Output to console and tables in csv, xlsx, json, web or Google Drive.
 * **[webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin)** - Run Lighthouse from a Webpack build.
 * **[cypress-audit](https://github.com/mfrachet/cypress-audit)** - Run Lighthouse and Pa11y audits directly in your E2E test suites.
+* **[laravel-lighthouse](https://github.com/logiek/laravel-google-lighthouse)** - Google Chrome Lighthouse Wrapper for Laravel to Auotomatic Audit Website Desktop and Mobile.
 
 ## FAQ
 
