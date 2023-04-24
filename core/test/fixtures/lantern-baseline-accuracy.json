@@ -23,5 +23,8 @@
     "p50": 0.20407433881343817,
     "p90": 0.6299877796078848,
     "p95": 0.8768898488120951
-  }
+  },
+  "roughEstimateOfTTFB": {},
+  "roughEstimateOfLCPLoadStart": {},
+  "roughEstimateOfLCPLoadEnd": {}
 }
