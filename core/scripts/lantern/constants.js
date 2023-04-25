@@ -48,9 +48,6 @@ import {LH_ROOT} from '../../../root.js';
  * @property {number} [timeToConsistentlyInteractive]
  * @property {number} [speedIndex]
  * @property {number} [largestContentfulPaint]
- * @property {number} [timeToFirstByte]
- * @property {number} [lcpLoadStart]
- * @property {number} [lcpLoadEnd]
  */
 
 /**
@@ -70,9 +67,6 @@ import {LH_ROOT} from '../../../root.js';
  * @property {number} roughEstimateOfSI
  * @property {number} roughEstimateOfTTI
  * @property {number} roughEstimateOfLCP
- * @property {number} roughEstimateOfTTFB
- * @property {number} roughEstimateOfLCPLoadStart
- * @property {number} roughEstimateOfLCPLoadEnd
  */
 
 /** @type {Array<string>} */
@@ -202,9 +196,6 @@ export default {
       roughEstimateOfSI: evaluate('speedIndex', 'roughEstimateOfSI'),
       roughEstimateOfTTI: evaluate('timeToConsistentlyInteractive', 'roughEstimateOfTTI'),
       roughEstimateOfLCP: evaluate('largestContentfulPaint', 'roughEstimateOfLCP'),
-      roughEstimateOfTTFB: evaluate('timeToFirstByte', 'roughEstimateOfTTFB'),
-      roughEstimateOfLCPLoadStart: evaluate('lcpLoadStart', 'roughEstimateOfLCPLoadStart'),
-      roughEstimateOfLCPLoadEnd: evaluate('lcpLoadEnd', 'roughEstimateOfLCPLoadEnd'),
     };
   },
 };

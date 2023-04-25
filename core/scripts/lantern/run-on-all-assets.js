@@ -16,9 +16,6 @@
  * @property {number|undefined} timeToConsistentlyInteractive
  * @property {number|undefined} speedIndex
  * @property {number|undefined} largestContentfulPaint
- * @property {number|undefined} timeToFirstByte
- * @property {number|undefined} lcpLoadStart
- * @property {number|undefined} lcpLoadEnd
  */
 /** @typedef {{url:string, unthrottled: GoldenUnthrottled, wpt3g: Wpt3gUnthrottled}} GoldenSite */
 /** @typedef {{sites: GoldenSite[]}} Golden */
