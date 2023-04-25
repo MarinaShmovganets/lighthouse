@@ -8,6 +8,10 @@ import {TimeToFirstByte} from '../../../computed/metrics/time-to-first-byte.js';
 import {createTestTrace} from '../../create-test-trace.js';
 import {networkRecordsToDevtoolsLog} from '../../network-records-to-devtools-log.js';
 import {defaultSettings} from '../../../config/constants.js';
+import {readJson, getURLArtifactFromDevtoolsLog} from '../../test-utils.js';
+
+const trace = readJson('../../fixtures/traces/frame-metrics-m90.json', import.meta);
+const devtoolsLog = readJson('../../fixtures/traces/frame-metrics-m90.devtools.log.json', import.meta);
 
 let requestedUrl = 'http://example.com:3000';
 let mainDocumentUrl = 'http://www.example.com:3000';
@@ -60,6 +64,22 @@ describe('Metrics: TTFB', () => {
   beforeEach(() => {
     requestedUrl = 'http://example.com:3000';
     mainDocumentUrl = 'http://www.example.com:3000';
+  });
+
+  it('should return TTFB for real trace', async () => {
+    const data = {
+      settings: JSON.parse(JSON.stringify(defaultSettings)),
+      trace,
+      devtoolsLog,
+      URL: getURLArtifactFromDevtoolsLog(devtoolsLog),
+      gatherContext: {gatherMode: 'navigation'},
+    };
+
+    const context = {settings: data.settings, computedCache: new Map()};
+    const result = await TimeToFirstByte.request(data, context);
+
+    expect(result.timing).toBeCloseTo(1014.7, 0.1);
+    expect(result.timestamp).toBeUndefined();
   });
 
   it('should compute predicted value', async () => {

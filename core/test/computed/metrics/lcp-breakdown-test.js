@@ -8,6 +8,12 @@ import {LCPBreakdown} from '../../../computed/metrics/lcp-breakdown.js';
 import {createTestTrace} from '../../create-test-trace.js';
 import {networkRecordsToDevtoolsLog} from '../../network-records-to-devtools-log.js';
 import {defaultSettings} from '../../../config/constants.js';
+import {getURLArtifactFromDevtoolsLog, readJson} from '../../test-utils.js';
+
+const textLcpTrace = readJson('../../fixtures/traces/frame-metrics-m90.json', import.meta);
+const textLcpDevtoolsLog = readJson('../../fixtures/traces/frame-metrics-m90.devtools.log.json', import.meta);
+const imageLcpTrace = readJson('../../fixtures/traces/amp-m86.trace.json', import.meta);
+const imageLcpDevtoolsLog = readJson('../../fixtures/traces/amp-m86.devtoolslog.json', import.meta);
 
 const requestedUrl = 'http://example.com:3000';
 const mainDocumentUrl = 'http://www.example.com:3000';
@@ -84,6 +90,38 @@ function mockNetworkRecords() {
 }
 
 describe('LCPBreakdown', () => {
+  it('returns breakdown for a real trace with image LCP', async () => {
+    const data = {
+      settings: JSON.parse(JSON.stringify(defaultSettings)),
+      trace: imageLcpTrace,
+      devtoolsLog: imageLcpDevtoolsLog,
+      URL: getURLArtifactFromDevtoolsLog(imageLcpDevtoolsLog),
+      gatherContext: {gatherMode: 'navigation'},
+    };
+
+    const result = await LCPBreakdown.request(data, {computedCache: new Map()});
+
+    expect(result.ttfb).toBeCloseTo(2393.7, 0.1);
+    expect(result.loadStart).toBeCloseTo(5407.1, 0.1);
+    expect(result.loadEnd).toBeCloseTo(5529.3, 0.1);
+  });
+
+  it('returns breakdown for a real trace with text LCP', async () => {
+    const data = {
+      settings: JSON.parse(JSON.stringify(defaultSettings)),
+      trace: textLcpTrace,
+      devtoolsLog: textLcpDevtoolsLog,
+      URL: getURLArtifactFromDevtoolsLog(textLcpDevtoolsLog),
+      gatherContext: {gatherMode: 'navigation'},
+    };
+
+    const result = await LCPBreakdown.request(data, {computedCache: new Map()});
+
+    expect(result.ttfb).toBeCloseTo(1014.7, 0.1);
+    expect(result.loadStart).toBeCloseTo(1014.7, 0.1);
+    expect(result.loadEnd).toBeCloseTo(1014.7, 0.1);
+  });
+
   it('returns breakdown for image LCP', async () => {
     const networkRecords = mockNetworkRecords();
     const data = mockData(networkRecords);
