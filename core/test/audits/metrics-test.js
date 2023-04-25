@@ -15,6 +15,8 @@ const pwaTrace = readJson('../fixtures/traces/progressive-app-m60.json', import.
 const pwaDevtoolsLog = readJson('../fixtures/traces/progressive-app-m60.devtools.log.json', import.meta);
 const lcpTrace = readJson('../fixtures/traces/lcp-m78.json', import.meta);
 const lcpDevtoolsLog = readJson('../fixtures/traces/lcp-m78.devtools.log.json', import.meta);
+const lcpImageTrace = readJson('../fixtures/traces/amp-m86.trace.json', import.meta);
+const lcpImageDevtoolsLog = readJson('../fixtures/traces/amp-m86.devtoolslog.json', import.meta);
 const lcpAllFramesTrace = readJson('../fixtures/traces/frame-metrics-m89.json', import.meta);
 const lcpAllFramesDevtoolsLog = readJson('../fixtures/traces/frame-metrics-m89.devtools.log.json', import.meta);
 const clsAllFramesTrace = readJson('../fixtures/traces/frame-metrics-m90.json', import.meta);
@@ -103,6 +105,27 @@ describe('Performance: metrics', () => {
 
     const context = {
       settings: {...settings, throttlingMethod: 'provided'},
+      computedCache: new Map(),
+    };
+    const result = await MetricsAudit.audit(artifacts, context);
+    expect(result.details.items[0]).toMatchSnapshot();
+  });
+
+  it('evaluates valid input (with image lcp) correctly', async () => {
+    const URL = getURLArtifactFromDevtoolsLog(lcpImageDevtoolsLog);
+    const artifacts = {
+      URL,
+      GatherContext: {gatherMode: 'navigation'},
+      traces: {
+        [MetricsAudit.DEFAULT_PASS]: lcpImageTrace,
+      },
+      devtoolsLogs: {
+        [MetricsAudit.DEFAULT_PASS]: lcpImageDevtoolsLog,
+      },
+    };
+
+    const context = {
+      settings: {...settings, throttlingMethod: 'simulate'},
       computedCache: new Map(),
     };
     const result = await MetricsAudit.audit(artifacts, context);
