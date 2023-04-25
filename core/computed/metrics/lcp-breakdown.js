@@ -15,7 +15,7 @@ class LCPBreakdown {
   /**
    * @param {LH.Artifacts.MetricComputationDataInput} data
    * @param {LH.Artifacts.ComputedContext} context
-   * @return {Promise<{ttfb: number, loadStart: number, loadEnd: number}>}
+   * @return {Promise<{ttfb: number, loadStart?: number, loadEnd?: number}>}
    */
   static async compute_(data, context) {
     const processedNavigation = await ProcessedNavigation.request(data.trace, context);
@@ -29,7 +29,7 @@ class LCPBreakdown {
 
     const lcpRecord = await LCPImageRecord.request(data, context);
     if (!lcpRecord) {
-      return {ttfb, loadStart: ttfb, loadEnd: ttfb};
+      return {ttfb};
     }
 
     // Official LCP^tm. Will be lantern result if simulated, otherwise same as observedLcp.
