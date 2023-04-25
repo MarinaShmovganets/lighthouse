@@ -49,7 +49,6 @@ class PredictivePerf extends Audit {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const URL = artifacts.URL;
     /** @type {LH.Config.Settings} */
-    // TODO(bckenny): allow optional `throttling` settings
     const settings = JSON.parse(JSON.stringify(defaultSettings)); // Use default settings.
     const computationData = {trace, devtoolsLog, gatherContext, settings, URL};
     const fcp = await LanternFirstContentfulPaint.request(computationData, context);

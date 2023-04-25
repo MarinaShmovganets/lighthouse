@@ -44,6 +44,8 @@ class TimeToFirstByte extends NavigationMetric {
     const timeOriginTs = processedNavigation.timestamps.timeOrigin;
     const mainResource = await MainResource.request(data, context);
 
+    // Technically TTFB is the start of the response headers not the end.
+    // That signal isn't available to us so we use header end time as a best guess.
     const timestamp = mainResource.responseHeadersEndTime * 1000;
     const timing = (timestamp - timeOriginTs) / 1000;
 
