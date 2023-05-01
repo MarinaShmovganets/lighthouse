@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Downloads the latest golden lantern data from gcloud.
+# Regenerates all the trace fixtures from their user flow scripts.
 
 set -e
-
-VERSION="2019-12-17"
 
 DIRNAME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT_PATH="$DIRNAME/../../.."
