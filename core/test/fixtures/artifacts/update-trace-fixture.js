@@ -8,30 +8,33 @@
 
 import * as puppeteer from 'puppeteer';
 
-import {LH_ROOT} from '../../../root.js';
-import {Server} from '../../../cli/test/fixtures/static-server.js';
-import {saveTrace, saveDevtoolsLog} from '../../lib/asset-saver.js';
-import collectMetaAnimation from './trace-fixtures/animation.js';
-import collectMetaUserRedirect from './trace-fixtures/redirect.js';
-import collectMetaUserTimings from './trace-fixtures/user-timings.js';
-import collectMetaUserVideoEmbed from './trace-fixtures/video-embed.js';
+import {LH_ROOT} from '../../../../root.js';
+import {Server} from '../../../../cli/test/fixtures/static-server.js';
+import {saveTrace, saveDevtoolsLog} from '../../../lib/asset-saver.js';
 
-const fixturesDir = `${LH_ROOT}/core/test/fixtures/traces`;
+/**
+ * @typedef CollectMeta
+ * @property {string} name
+ * @property {string} about
+ * @property {(page: puppeteer.Page, port: number) => Promise<LH.UserFlow>} runUserFlow
+ * @property {(artifacts: LH.Artifacts) => void} verify
+ * @property {string|false} saveTrace
+ * @property {string|false} saveDevtoolsLog
+ */
 
-const collectMetas = [
-  collectMetaAnimation,
-  collectMetaUserRedirect,
-  collectMetaUserTimings,
-  collectMetaUserVideoEmbed,
-];
+/**
+ * @param {CollectMeta} collectMeta
+*/
+export async function updateTestFixture(collectMeta) {
+  const fixturesDir = `${LH_ROOT}/core/test/fixtures/traces`;
 
-const browser = await puppeteer.launch();
-const server = new Server(0);
-await server.listen(0, 'localhost');
-const port = server.getPort();
+  const browser = await puppeteer.launch();
+  const server = new Server(0);
+  server.baseDir = `${LH_ROOT}/core/test/fixtures/artifacts/${collectMeta.name}/page`;
+  await server.listen(0, 'localhost');
+  const port = server.getPort();
 
-try {
-  for (const collectMeta of collectMetas) {
+  try {
     const page = await browser.newPage();
     const flow = await collectMeta.runUserFlow(page, port);
     const {artifacts} = flow.createArtifactsJson().gatherSteps[0];
@@ -42,8 +45,8 @@ try {
     if (collectMeta.saveDevtoolsLog) {
       await saveDevtoolsLog(artifacts.DevtoolsLog, `${fixturesDir}/${collectMeta.saveDevtoolsLog}`);
     }
+  } finally {
+    await server.close();
+    await browser.close();
   }
-} finally {
-  await server.close();
-  await browser.close();
 }

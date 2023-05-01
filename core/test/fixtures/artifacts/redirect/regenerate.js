@@ -4,7 +4,8 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {startFlow} from '../../../index.js';
+import {startFlow} from '../../../../index.js';
+import {updateTestFixture} from '../update-trace-fixture.js';
 
 /**
  * @param {import('puppeteer').Page} page
@@ -43,11 +44,11 @@ function verify(artifacts) {
   }
 }
 
-export default {
+await updateTestFixture({
   name: 'redirect',
   about: 'Page with a multiple navigation-initiated redirects and a JS reload',
   saveTrace: 'site-with-redirect.json',
   saveDevtoolsLog: 'site-with-redirect.devtools.log.json',
   runUserFlow,
   verify,
-};
+});
