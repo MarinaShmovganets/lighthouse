@@ -273,6 +273,7 @@ const defaultConfig = {
     'accessibility/meta-viewport',
     'accessibility/object-alt',
     'accessibility/tabindex',
+    'accessibility/td-has-headers',
     'accessibility/td-headers-attr',
     'accessibility/th-has-data-cells',
     'accessibility/valid-lang',
