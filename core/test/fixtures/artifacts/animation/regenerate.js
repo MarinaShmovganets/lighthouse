@@ -5,7 +5,7 @@
  */
 
 import {startFlow} from '../../../../index.js';
-import {updateTestFixture} from '../update-trace-fixture.js';
+import {updateTestFixture} from '../update-test-fixture.js';
 
 /**
  * @param {import('puppeteer').Page} page
