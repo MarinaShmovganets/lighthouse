@@ -2340,22 +2340,22 @@
               {
                 "phase": "TTFB",
                 "timing": 571.7680000019074,
-                "percent": "4.29%"
+                "percent": "4%"
               },
               {
                 "phase": "Load Delay",
                 "timing": 10277.099999996944,
-                "percent": "77.16%"
+                "percent": "77%"
               },
               {
                 "phase": "Load Time",
                 "timing": 2050.6490000002086,
-                "percent": "15.40%"
+                "percent": "15%"
               },
               {
                 "phase": "Render Delay",
                 "timing": 420.4440000009381,
-                "percent": "3.16%"
+                "percent": "3%"
               }
             ]
           }

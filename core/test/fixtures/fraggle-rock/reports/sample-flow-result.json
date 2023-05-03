@@ -1575,22 +1575,22 @@
                     {
                       "phase": "TTFB",
                       "timing": 614.517,
-                      "percent": "45.45%"
+                      "percent": "45%"
                     },
                     {
                       "phase": "Load Delay",
                       "timing": 370.96815338890303,
-                      "percent": "27.44%"
+                      "percent": "27%"
                     },
                     {
                       "phase": "Load Time",
                       "timing": 76.93370773303661,
-                      "percent": "5.69%"
+                      "percent": "6%"
                     },
                     {
                       "phase": "Render Delay",
                       "timing": 289.6881388780603,
-                      "percent": "21.42%"
+                      "percent": "21%"
                     }
                   ]
                 }
@@ -17976,22 +17976,22 @@
                     {
                       "phase": "TTFB",
                       "timing": 602.5712,
-                      "percent": "33.42%"
+                      "percent": "33%"
                     },
                     {
                       "phase": "Load Delay",
                       "timing": 0,
-                      "percent": "0.00%"
+                      "percent": "0%"
                     },
                     {
                       "phase": "Load Time",
                       "timing": 234.3445723189716,
-                      "percent": "13.00%"
+                      "percent": "13%"
                     },
                     {
                       "phase": "Render Delay",
                       "timing": 966.0934276810284,
-                      "percent": "53.58%"
+                      "percent": "54%"
                     }
                   ]
                 }
