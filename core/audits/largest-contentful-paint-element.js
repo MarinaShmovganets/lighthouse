@@ -82,7 +82,7 @@ class LargestContentfulPaintElement extends Audit {
       {phase: str_(UIStrings.itemRenderDelay), timing: renderDelay},
     ].map(result => {
       const percent = 100 * result.timing / metricLcp;
-      const percentStr = `${percent.toFixed(2)}%`;
+      const percentStr = `${percent.toFixed(0)}%`;
       return {...result, percent: percentStr};
     });
 
