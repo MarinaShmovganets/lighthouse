@@ -1520,32 +1520,79 @@
             "scoreDisplayMode": "informative",
             "displayValue": "1 element found",
             "details": {
-              "type": "table",
-              "headings": [
-                {
-                  "key": "node",
-                  "valueType": "node",
-                  "label": "Element"
-                }
-              ],
+              "type": "list",
               "items": [
                 {
-                  "node": {
-                    "type": "node",
-                    "lhId": "page-0-IMG",
-                    "path": "1,HTML,1,BODY,0,DIV,0,DIV,4,IMG",
-                    "selector": "body > div#__next > div.flex > img.h-32",
-                    "boundingRect": {
-                      "top": 192,
-                      "bottom": 320,
-                      "left": 38,
-                      "right": 322,
-                      "width": 284,
-                      "height": 128
+                  "type": "table",
+                  "headings": [
+                    {
+                      "key": "node",
+                      "valueType": "node",
+                      "label": "Element"
+                    }
+                  ],
+                  "items": [
+                    {
+                      "node": {
+                        "type": "node",
+                        "lhId": "page-0-IMG",
+                        "path": "1,HTML,1,BODY,0,DIV,0,DIV,4,IMG",
+                        "selector": "body > div#__next > div.flex > img.h-32",
+                        "boundingRect": {
+                          "top": 192,
+                          "bottom": 320,
+                          "left": 38,
+                          "right": 322,
+                          "width": 284,
+                          "height": 128
+                        },
+                        "snippet": "<img src=\"/logo-text.svg\" class=\"h-32 sm:h-44 mt-12 md:mt-24 mb-8 lg:mb-16\" alt=\"Mike's Cereal Shack Logo\">",
+                        "nodeLabel": "Mike's Cereal Shack Logo"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "table",
+                  "headings": [
+                    {
+                      "key": "phase",
+                      "valueType": "text",
+                      "label": "Phase"
                     },
-                    "snippet": "<img src=\"/logo-text.svg\" class=\"h-32 sm:h-44 mt-12 md:mt-24 mb-8 lg:mb-16\" alt=\"Mike's Cereal Shack Logo\">",
-                    "nodeLabel": "Mike's Cereal Shack Logo"
-                  }
+                    {
+                      "key": "percent",
+                      "valueType": "text",
+                      "label": "% of LCP"
+                    },
+                    {
+                      "key": "timing",
+                      "valueType": "ms",
+                      "label": "Timing"
+                    }
+                  ],
+                  "items": [
+                    {
+                      "phase": "TTFB",
+                      "timing": 614.517,
+                      "percent": "45%"
+                    },
+                    {
+                      "phase": "Load Delay",
+                      "timing": 370.96815338890303,
+                      "percent": "27%"
+                    },
+                    {
+                      "phase": "Load Time",
+                      "timing": 76.93370773303661,
+                      "percent": "6%"
+                    },
+                    {
+                      "phase": "Render Delay",
+                      "timing": 289.6881388780603,
+                      "percent": "21%"
+                    }
+                  ]
                 }
               ]
             }
@@ -2023,14 +2070,14 @@
           "accesskeys": {
             "id": "accesskeys",
             "title": "`[accesskey]` values are unique",
-            "description": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more about access keys](https://dequeuniversity.com/rules/axe/4.6/accesskeys).",
+            "description": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more about access keys](https://dequeuniversity.com/rules/axe/4.7/accesskeys).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-allowed-attr": {
             "id": "aria-allowed-attr",
             "title": "`[aria-*]` attributes match their roles",
-            "description": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn how to match ARIA attributes to their roles](https://dequeuniversity.com/rules/axe/4.6/aria-allowed-attr).",
+            "description": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn how to match ARIA attributes to their roles](https://dequeuniversity.com/rules/axe/4.7/aria-allowed-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2042,14 +2089,14 @@
           "aria-command-name": {
             "id": "aria-command-name",
             "title": "`button`, `link`, and `menuitem` elements have accessible names",
-            "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to make command elements more accessible](https://dequeuniversity.com/rules/axe/4.6/aria-command-name).",
+            "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to make command elements more accessible](https://dequeuniversity.com/rules/axe/4.7/aria-command-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-hidden-body": {
             "id": "aria-hidden-body",
             "title": "`[aria-hidden=\"true\"]` is not present on the document `<body>`",
-            "description": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn how `aria-hidden` affects the document body](https://dequeuniversity.com/rules/axe/4.6/aria-hidden-body).",
+            "description": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn how `aria-hidden` affects the document body](https://dequeuniversity.com/rules/axe/4.7/aria-hidden-body).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2061,7 +2108,7 @@
           "aria-hidden-focus": {
             "id": "aria-hidden-focus",
             "title": "`[aria-hidden=\"true\"]` elements do not contain focusable descendents",
-            "description": "Focusable descendents within an `[aria-hidden=\"true\"]` element prevent those interactive elements from being available to users of assistive technologies like screen readers. [Learn how `aria-hidden` affects focusable elements](https://dequeuniversity.com/rules/axe/4.6/aria-hidden-focus).",
+            "description": "Focusable descendents within an `[aria-hidden=\"true\"]` element prevent those interactive elements from being available to users of assistive technologies like screen readers. [Learn how `aria-hidden` affects focusable elements](https://dequeuniversity.com/rules/axe/4.7/aria-hidden-focus).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2073,28 +2120,28 @@
           "aria-input-field-name": {
             "id": "aria-input-field-name",
             "title": "ARIA input fields have accessible names",
-            "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about input field labels](https://dequeuniversity.com/rules/axe/4.6/aria-input-field-name).",
+            "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about input field labels](https://dequeuniversity.com/rules/axe/4.7/aria-input-field-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-meter-name": {
             "id": "aria-meter-name",
             "title": "ARIA `meter` elements have accessible names",
-            "description": "When a meter element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `meter` elements](https://dequeuniversity.com/rules/axe/4.6/aria-meter-name).",
+            "description": "When a meter element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `meter` elements](https://dequeuniversity.com/rules/axe/4.7/aria-meter-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-progressbar-name": {
             "id": "aria-progressbar-name",
             "title": "ARIA `progressbar` elements have accessible names",
-            "description": "When a `progressbar` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to label `progressbar` elements](https://dequeuniversity.com/rules/axe/4.6/aria-progressbar-name).",
+            "description": "When a `progressbar` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to label `progressbar` elements](https://dequeuniversity.com/rules/axe/4.7/aria-progressbar-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-required-attr": {
             "id": "aria-required-attr",
             "title": "`[role]`s have all required `[aria-*]` attributes",
-            "description": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more about roles and required attributes](https://dequeuniversity.com/rules/axe/4.6/aria-required-attr).",
+            "description": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more about roles and required attributes](https://dequeuniversity.com/rules/axe/4.7/aria-required-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2106,21 +2153,21 @@
           "aria-required-children": {
             "id": "aria-required-children",
             "title": "Elements with an ARIA `[role]` that require children to contain a specific `[role]` have all required children.",
-            "description": "Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. [Learn more about roles and required children elements](https://dequeuniversity.com/rules/axe/4.6/aria-required-children).",
+            "description": "Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. [Learn more about roles and required children elements](https://dequeuniversity.com/rules/axe/4.7/aria-required-children).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-required-parent": {
             "id": "aria-required-parent",
             "title": "`[role]`s are contained by their required parent element",
-            "description": "Some ARIA child roles must be contained by specific parent roles to properly perform their intended accessibility functions. [Learn more about ARIA roles and required parent element](https://dequeuniversity.com/rules/axe/4.6/aria-required-parent).",
+            "description": "Some ARIA child roles must be contained by specific parent roles to properly perform their intended accessibility functions. [Learn more about ARIA roles and required parent element](https://dequeuniversity.com/rules/axe/4.7/aria-required-parent).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-roles": {
             "id": "aria-roles",
             "title": "`[role]` values are valid",
-            "description": "ARIA roles must have valid values in order to perform their intended accessibility functions. [Learn more about valid ARIA roles](https://dequeuniversity.com/rules/axe/4.6/aria-roles).",
+            "description": "ARIA roles must have valid values in order to perform their intended accessibility functions. [Learn more about valid ARIA roles](https://dequeuniversity.com/rules/axe/4.7/aria-roles).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2132,28 +2179,28 @@
           "aria-toggle-field-name": {
             "id": "aria-toggle-field-name",
             "title": "ARIA toggle fields have accessible names",
-            "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about toggle fields](https://dequeuniversity.com/rules/axe/4.6/aria-toggle-field-name).",
+            "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about toggle fields](https://dequeuniversity.com/rules/axe/4.7/aria-toggle-field-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-tooltip-name": {
             "id": "aria-tooltip-name",
             "title": "ARIA `tooltip` elements have accessible names",
-            "description": "When a tooltip element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `tooltip` elements](https://dequeuniversity.com/rules/axe/4.6/aria-tooltip-name).",
+            "description": "When a tooltip element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `tooltip` elements](https://dequeuniversity.com/rules/axe/4.7/aria-tooltip-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-treeitem-name": {
             "id": "aria-treeitem-name",
             "title": "ARIA `treeitem` elements have accessible names",
-            "description": "When a `treeitem` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about labeling `treeitem` elements](https://dequeuniversity.com/rules/axe/4.6/aria-treeitem-name).",
+            "description": "When a `treeitem` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about labeling `treeitem` elements](https://dequeuniversity.com/rules/axe/4.7/aria-treeitem-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-valid-attr-value": {
             "id": "aria-valid-attr-value",
             "title": "`[aria-*]` attributes have valid values",
-            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more about valid values for ARIA attributes](https://dequeuniversity.com/rules/axe/4.6/aria-valid-attr-value).",
+            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more about valid values for ARIA attributes](https://dequeuniversity.com/rules/axe/4.7/aria-valid-attr-value).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2165,7 +2212,7 @@
           "aria-valid-attr": {
             "id": "aria-valid-attr",
             "title": "`[aria-*]` attributes are valid and not misspelled",
-            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. [Learn more about valid ARIA attributes](https://dequeuniversity.com/rules/axe/4.6/aria-valid-attr).",
+            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. [Learn more about valid ARIA attributes](https://dequeuniversity.com/rules/axe/4.7/aria-valid-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2177,7 +2224,7 @@
           "button-name": {
             "id": "button-name",
             "title": "Buttons have an accessible name",
-            "description": "When a button doesn't have an accessible name, screen readers announce it as \"button\", making it unusable for users who rely on screen readers. [Learn how to make buttons more accessible](https://dequeuniversity.com/rules/axe/4.6/button-name).",
+            "description": "When a button doesn't have an accessible name, screen readers announce it as \"button\", making it unusable for users who rely on screen readers. [Learn how to make buttons more accessible](https://dequeuniversity.com/rules/axe/4.7/button-name).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2189,14 +2236,14 @@
           "bypass": {
             "id": "bypass",
             "title": "The page contains a heading, skip link, or landmark region",
-            "description": "Adding ways to bypass repetitive content lets keyboard users navigate the page more efficiently. [Learn more about bypass blocks](https://dequeuniversity.com/rules/axe/4.6/bypass).",
+            "description": "Adding ways to bypass repetitive content lets keyboard users navigate the page more efficiently. [Learn more about bypass blocks](https://dequeuniversity.com/rules/axe/4.7/bypass).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "color-contrast": {
             "id": "color-contrast",
             "title": "Background and foreground colors have a sufficient contrast ratio",
-            "description": "Low-contrast text is difficult or impossible for many users to read. [Learn how to provide sufficient color contrast](https://dequeuniversity.com/rules/axe/4.6/color-contrast).",
+            "description": "Low-contrast text is difficult or impossible for many users to read. [Learn how to provide sufficient color contrast](https://dequeuniversity.com/rules/axe/4.7/color-contrast).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2208,21 +2255,21 @@
           "definition-list": {
             "id": "definition-list",
             "title": "`<dl>`'s contain only properly-ordered `<dt>` and `<dd>` groups, `<script>`, `<template>` or `<div>` elements.",
-            "description": "When definition lists are not properly marked up, screen readers may produce confusing or inaccurate output. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.6/definition-list).",
+            "description": "When definition lists are not properly marked up, screen readers may produce confusing or inaccurate output. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.7/definition-list).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "dlitem": {
             "id": "dlitem",
             "title": "Definition list items are wrapped in `<dl>` elements",
-            "description": "Definition list items (`<dt>` and `<dd>`) must be wrapped in a parent `<dl>` element to ensure that screen readers can properly announce them. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.6/dlitem).",
+            "description": "Definition list items (`<dt>` and `<dd>`) must be wrapped in a parent `<dl>` element to ensure that screen readers can properly announce them. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.7/dlitem).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "document-title": {
             "id": "document-title",
             "title": "Document has a `<title>` element",
-            "description": "The title gives screen reader users an overview of the page, and search engine users rely on it heavily to determine if a page is relevant to their search. [Learn more about document titles](https://dequeuniversity.com/rules/axe/4.6/document-title).",
+            "description": "The title gives screen reader users an overview of the page, and search engine users rely on it heavily to determine if a page is relevant to their search. [Learn more about document titles](https://dequeuniversity.com/rules/axe/4.7/document-title).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2234,35 +2281,35 @@
           "duplicate-id-active": {
             "id": "duplicate-id-active",
             "title": "`[id]` attributes on active, focusable elements are unique",
-            "description": "All focusable elements must have a unique `id` to ensure that they're visible to assistive technologies. [Learn how to fix duplicate `id`s](https://dequeuniversity.com/rules/axe/4.6/duplicate-id-active).",
+            "description": "All focusable elements must have a unique `id` to ensure that they're visible to assistive technologies. [Learn how to fix duplicate `id`s](https://dequeuniversity.com/rules/axe/4.7/duplicate-id-active).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "duplicate-id-aria": {
             "id": "duplicate-id-aria",
             "title": "ARIA IDs are unique",
-            "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn how to fix duplicate ARIA IDs](https://dequeuniversity.com/rules/axe/4.6/duplicate-id-aria).",
+            "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn how to fix duplicate ARIA IDs](https://dequeuniversity.com/rules/axe/4.7/duplicate-id-aria).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "form-field-multiple-labels": {
             "id": "form-field-multiple-labels",
             "title": "No form fields have multiple labels",
-            "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn how to use form labels](https://dequeuniversity.com/rules/axe/4.6/form-field-multiple-labels).",
+            "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn how to use form labels](https://dequeuniversity.com/rules/axe/4.7/form-field-multiple-labels).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "frame-title": {
             "id": "frame-title",
             "title": "`<frame>` or `<iframe>` elements have a title",
-            "description": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more about frame titles](https://dequeuniversity.com/rules/axe/4.6/frame-title).",
+            "description": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more about frame titles](https://dequeuniversity.com/rules/axe/4.7/frame-title).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "heading-order": {
             "id": "heading-order",
             "title": "Heading elements appear in a sequentially-descending order",
-            "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more about heading order](https://dequeuniversity.com/rules/axe/4.6/heading-order).",
+            "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more about heading order](https://dequeuniversity.com/rules/axe/4.7/heading-order).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2274,7 +2321,7 @@
           "html-has-lang": {
             "id": "html-has-lang",
             "title": "`<html>` element has a `[lang]` attribute",
-            "description": "If a page doesn't specify a `lang` attribute, a screen reader assumes that the page is in the default language that the user chose when setting up the screen reader. If the page isn't actually in the default language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.6/html-has-lang).",
+            "description": "If a page doesn't specify a `lang` attribute, a screen reader assumes that the page is in the default language that the user chose when setting up the screen reader. If the page isn't actually in the default language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/html-has-lang).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2286,7 +2333,7 @@
           "html-lang-valid": {
             "id": "html-lang-valid",
             "title": "`<html>` element has a valid value for its `[lang]` attribute",
-            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) helps screen readers announce text properly. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.6/html-lang-valid).",
+            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) helps screen readers announce text properly. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/html-lang-valid).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2298,7 +2345,7 @@
           "image-alt": {
             "id": "image-alt",
             "title": "Image elements have `[alt]` attributes",
-            "description": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.6/image-alt).",
+            "description": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.7/image-alt).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2310,14 +2357,14 @@
           "input-image-alt": {
             "id": "input-image-alt",
             "title": "`<input type=\"image\">` elements have `[alt]` text",
-            "description": "When an image is being used as an `<input>` button, providing alternative text can help screen reader users understand the purpose of the button. [Learn about input image alt text](https://dequeuniversity.com/rules/axe/4.6/input-image-alt).",
+            "description": "When an image is being used as an `<input>` button, providing alternative text can help screen reader users understand the purpose of the button. [Learn about input image alt text](https://dequeuniversity.com/rules/axe/4.7/input-image-alt).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "label": {
             "id": "label",
             "title": "Form elements have associated labels",
-            "description": "Labels ensure that form controls are announced properly by assistive technologies, like screen readers. [Learn more about form element labels](https://dequeuniversity.com/rules/axe/4.6/label).",
+            "description": "Labels ensure that form controls are announced properly by assistive technologies, like screen readers. [Learn more about form element labels](https://dequeuniversity.com/rules/axe/4.7/label).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2329,7 +2376,7 @@
           "link-name": {
             "id": "link-name",
             "title": "Links have a discernible name",
-            "description": "Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. [Learn how to make links accessible](https://dequeuniversity.com/rules/axe/4.6/link-name).",
+            "description": "Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. [Learn how to make links accessible](https://dequeuniversity.com/rules/axe/4.7/link-name).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2341,7 +2388,7 @@
           "list": {
             "id": "list",
             "title": "Lists contain only `<li>` elements and script supporting elements (`<script>` and `<template>`).",
-            "description": "Screen readers have a specific way of announcing lists. Ensuring proper list structure aids screen reader output. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.6/list).",
+            "description": "Screen readers have a specific way of announcing lists. Ensuring proper list structure aids screen reader output. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.7/list).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2353,7 +2400,7 @@
           "listitem": {
             "id": "listitem",
             "title": "List items (`<li>`) are contained within `<ul>`, `<ol>` or `<menu>` parent elements",
-            "description": "Screen readers require list items (`<li>`) to be contained within a parent `<ul>`, `<ol>` or `<menu>` to be announced properly. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.6/listitem).",
+            "description": "Screen readers require list items (`<li>`) to be contained within a parent `<ul>`, `<ol>` or `<menu>` to be announced properly. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.7/listitem).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2365,14 +2412,14 @@
           "meta-refresh": {
             "id": "meta-refresh",
             "title": "The document does not use `<meta http-equiv=\"refresh\">`",
-            "description": "Users do not expect a page to refresh automatically, and doing so will move focus back to the top of the page. This may create a frustrating or confusing experience. [Learn more about the refresh meta tag](https://dequeuniversity.com/rules/axe/4.6/meta-refresh).",
+            "description": "Users do not expect a page to refresh automatically, and doing so will move focus back to the top of the page. This may create a frustrating or confusing experience. [Learn more about the refresh meta tag](https://dequeuniversity.com/rules/axe/4.7/meta-refresh).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "meta-viewport": {
             "id": "meta-viewport",
             "title": "`[user-scalable=\"no\"]` is not used in the `<meta name=\"viewport\">` element and the `[maximum-scale]` attribute is not less than 5.",
-            "description": "Disabling zooming is problematic for users with low vision who rely on screen magnification to properly see the contents of a web page. [Learn more about the viewport meta tag](https://dequeuniversity.com/rules/axe/4.6/meta-viewport).",
+            "description": "Disabling zooming is problematic for users with low vision who rely on screen magnification to properly see the contents of a web page. [Learn more about the viewport meta tag](https://dequeuniversity.com/rules/axe/4.7/meta-viewport).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2384,14 +2431,14 @@
           "object-alt": {
             "id": "object-alt",
             "title": "`<object>` elements have alternate text",
-            "description": "Screen readers cannot translate non-text content. Adding alternate text to `<object>` elements helps screen readers convey meaning to users. [Learn more about alt text for `object` elements](https://dequeuniversity.com/rules/axe/4.6/object-alt).",
+            "description": "Screen readers cannot translate non-text content. Adding alternate text to `<object>` elements helps screen readers convey meaning to users. [Learn more about alt text for `object` elements](https://dequeuniversity.com/rules/axe/4.7/object-alt).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "tabindex": {
             "id": "tabindex",
             "title": "No element has a `[tabindex]` value greater than 0",
-            "description": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more about the `tabindex` attribute](https://dequeuniversity.com/rules/axe/4.6/tabindex).",
+            "description": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more about the `tabindex` attribute](https://dequeuniversity.com/rules/axe/4.7/tabindex).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
@@ -2410,28 +2457,28 @@
           "td-headers-attr": {
             "id": "td-headers-attr",
             "title": "Cells in a `<table>` element that use the `[headers]` attribute refer to table cells within the same table.",
-            "description": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells using the `[headers]` attribute only refer to other cells in the same table may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.6/td-headers-attr).",
+            "description": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells using the `[headers]` attribute only refer to other cells in the same table may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.7/td-headers-attr).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "th-has-data-cells": {
             "id": "th-has-data-cells",
             "title": "`<th>` elements and elements with `[role=\"columnheader\"/\"rowheader\"]` have data cells they describe.",
-            "description": "Screen readers have features to make navigating tables easier. Ensuring table headers always refer to some set of cells may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.6/th-has-data-cells).",
+            "description": "Screen readers have features to make navigating tables easier. Ensuring table headers always refer to some set of cells may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.7/th-has-data-cells).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "valid-lang": {
             "id": "valid-lang",
             "title": "`[lang]` attributes have a valid value",
-            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) on elements helps ensure that text is pronounced correctly by a screen reader. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.6/valid-lang).",
+            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) on elements helps ensure that text is pronounced correctly by a screen reader. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/valid-lang).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "video-caption": {
             "id": "video-caption",
             "title": "`<video>` elements contain a `<track>` element with `[kind=\"captions\"]`",
-            "description": "When a video provides a caption it is easier for deaf and hearing impaired users to access its information. [Learn more about video captions](https://dequeuniversity.com/rules/axe/4.6/video-caption).",
+            "description": "When a video provides a caption it is easier for deaf and hearing impaired users to access its information. [Learn more about video captions](https://dequeuniversity.com/rules/axe/4.7/video-caption).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
@@ -4258,20 +4305,6 @@
         },
         "stackPacks": [
           {
-            "id": "react",
-            "title": "React",
-            "iconDataURL": "data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 841.9 595.3\"><g fill=\"%2361DAFB\"><path d=\"M666.3 296.5c0-32.5-40.7-63.3-103.1-82.4 14.4-63.6 8-114.2-20.2-130.4-6.5-3.8-14.1-5.6-22.4-5.6v22.3c4.6 0 8.3.9 11.4 2.6 13.6 7.8 19.5 37.5 14.9 75.7-1.1 9.4-2.9 19.3-5.1 29.4-19.6-4.8-41-8.5-63.5-10.9-13.5-18.5-27.5-35.3-41.6-50 32.6-30.3 63.2-46.9 84-46.9V78c-27.5 0-63.5 19.6-99.9 53.6-36.4-33.8-72.4-53.2-99.9-53.2v22.3c20.7 0 51.4 16.5 84 46.6-14 14.7-28 31.4-41.3 49.9-22.6 2.4-44 6.1-63.6 11-2.3-10-4-19.7-5.2-29-4.7-38.2 1.1-67.9 14.6-75.8 3-1.8 6.9-2.6 11.5-2.6V78.5c-8.4 0-16 1.8-22.6 5.6-28.1 16.2-34.4 66.7-19.9 130.1-62.2 19.2-102.7 49.9-102.7 82.3 0 32.5 40.7 63.3 103.1 82.4-14.4 63.6-8 114.2 20.2 130.4 6.5 3.8 14.1 5.6 22.5 5.6 27.5 0 63.5-19.6 99.9-53.6 36.4 33.8 72.4 53.2 99.9 53.2 8.4 0 16-1.8 22.6-5.6 28.1-16.2 34.4-66.7 19.9-130.1 62-19.1 102.5-49.9 102.5-82.3zm-130.2-66.7c-3.7 12.9-8.3 26.2-13.5 39.5-4.1-8-8.4-16-13.1-24-4.6-8-9.5-15.8-14.4-23.4 14.2 2.1 27.9 4.7 41 7.9zm-45.8 106.5c-7.8 13.5-15.8 26.3-24.1 38.2-14.9 1.3-30 2-45.2 2-15.1 0-30.2-.7-45-1.9-8.3-11.9-16.4-24.6-24.2-38-7.6-13.1-14.5-26.4-20.8-39.8 6.2-13.4 13.2-26.8 20.7-39.9 7.8-13.5 15.8-26.3 24.1-38.2 14.9-1.3 30-2 45.2-2 15.1 0 30.2.7 45 1.9 8.3 11.9 16.4 24.6 24.2 38 7.6 13.1 14.5 26.4 20.8 39.8-6.3 13.4-13.2 26.8-20.7 39.9zm32.3-13c5.4 13.4 10 26.8 13.8 39.8-13.1 3.2-26.9 5.9-41.2 8 4.9-7.7 9.8-15.6 14.4-23.7 4.6-8 8.9-16.1 13-24.1zM421.2 430c-9.3-9.6-18.6-20.3-27.8-32 9 .4 18.2.7 27.5.7 9.4 0 18.7-.2 27.8-.7-9 11.7-18.3 22.4-27.5 32zm-74.4-58.9c-14.2-2.1-27.9-4.7-41-7.9 3.7-12.9 8.3-26.2 13.5-39.5 4.1 8 8.4 16 13.1 24 4.7 8 9.5 15.8 14.4 23.4zM420.7 163c9.3 9.6 18.6 20.3 27.8 32-9-.4-18.2-.7-27.5-.7-9.4 0-18.7.2-27.8.7 9-11.7 18.3-22.4 27.5-32zm-74 58.9c-4.9 7.7-9.8 15.6-14.4 23.7-4.6 8-8.9 16-13 24-5.4-13.4-10-26.8-13.8-39.8 13.1-3.1 26.9-5.8 41.2-7.9zm-90.5 125.2c-35.4-15.1-58.3-34.9-58.3-50.6 0-15.7 22.9-35.6 58.3-50.6 8.6-3.7 18-7 27.7-10.1 5.7 19.6 13.2 40 22.5 60.9-9.2 20.8-16.6 41.1-22.2 60.6-9.9-3.1-19.3-6.5-28-10.2zM310 490c-13.6-7.8-19.5-37.5-14.9-75.7 1.1-9.4 2.9-19.3 5.1-29.4 19.6 4.8 41 8.5 63.5 10.9 13.5 18.5 27.5 35.3 41.6 50-32.6 30.3-63.2 46.9-84 46.9-4.5-.1-8.3-1-11.3-2.7zm237.2-76.2c4.7 38.2-1.1 67.9-14.6 75.8-3 1.8-6.9 2.6-11.5 2.6-20.7 0-51.4-16.5-84-46.6 14-14.7 28-31.4 41.3-49.9 22.6-2.4 44-6.1 63.6-11 2.3 10.1 4.1 19.8 5.2 29.1zm38.5-66.7c-8.6 3.7-18 7-27.7 10.1-5.7-19.6-13.2-40-22.5-60.9 9.2-20.8 16.6-41.1 22.2-60.6 9.9 3.1 19.3 6.5 28.1 10.2 35.4 15.1 58.3 34.9 58.3 50.6-.1 15.7-23 35.6-58.4 50.6zM320.8 78.4z\"/><circle cx=\"420.9\" cy=\"296.5\" r=\"45.7\"/><path d=\"M520.5 78.1z\"/></g></svg>",
-            "descriptions": {
-              "unminified-css": "If your build system minifies CSS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
-              "unminified-javascript": "If your build system minifies JS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
-              "unused-javascript": "If you are not server-side rendering, [split your JavaScript bundles](https://web.dev/code-splitting-suspense/) with `React.lazy()`. Otherwise, code-split using a third-party library such as [loadable-components](https://www.smooth-code.com/open-source/loadable-components/docs/getting-started/).",
-              "server-response-time": "If you are server-side rendering any React components, consider using `renderToPipeableStream()` or `renderToStaticNodeStream()` to allow the client to receive and hydrate different parts of the markup instead of all at once. [Learn more](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream).",
-              "redirects": "If you are using React Router, minimize usage of the `<Redirect>` component for [route navigations](https://reacttraining.com/react-router/web/api/Redirect).",
-              "user-timings": "Use the React DevTools Profiler, which makes use of the Profiler API, to measure the rendering performance of your components. [Learn more.](https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html)",
-              "dom-size": "Consider using a \"windowing\" library like `react-window` to minimize the number of DOM nodes created if you are rendering many repeated elements on the page. [Learn more](https://web.dev/virtualize-long-lists-react-window/). Also, minimize unnecessary re-renders using [`shouldComponentUpdate`](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action), [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent), or [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) and [skip effects](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects) only until certain dependencies have changed if you are using the `Effect` hook to improve runtime performance."
-            }
-          },
-          {
             "id": "next.js",
             "title": "Next.js",
             "iconDataURL": "data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 207 124\"><path fill=\"%23000\" d=\"M48.942 32.632h38.96v3.082h-35.39v23.193H85.79v3.082H52.513v25.464h35.794v3.081H48.942V32.632Zm42.45 0h4.139l18.343 25.464 18.749-25.464L158.124.287l-41.896 60.485 21.59 29.762h-4.302l-19.642-27.086L94.15 90.534h-4.22l21.751-29.762-20.29-28.14Zm47.967 3.082v-3.082h44.397v3.082h-20.453v54.82h-3.571v-54.82h-20.373ZM.203 32.632h4.464l61.557 91.671-25.439-33.769L3.936 37.011l-.162 53.523H.203zm183.194 53.891c.738 0 1.276-.563 1.276-1.29 0-.727-.538-1.29-1.276-1.29-.73 0-1.277.563-1.277 1.29 0 .727.547 1.29 1.277 1.29Zm3.509-3.393c0 2.146 1.555 3.549 3.822 3.549 2.414 0 3.874-1.446 3.874-3.956v-8.837h-1.946v8.828c0 1.394-.704 2.138-1.946 2.138-1.112 0-1.867-.692-1.893-1.722h-1.911Zm10.24-.113c.14 2.233 2.007 3.662 4.787 3.662 2.97 0 4.83-1.498 4.83-3.887 0-1.878-1.06-2.917-3.632-3.514l-1.38-.338c-1.634-.38-2.294-.891-2.294-1.783 0-1.125 1.025-1.86 2.563-1.86 1.459 0 2.466.718 2.649 1.869h1.893c-.113-2.103-1.971-3.583-4.516-3.583-2.737 0-4.56 1.48-4.56 3.704 0 1.835 1.033 2.926 3.3 3.454l1.616.39c1.659.389 2.388.96 2.388 1.912 0 1.108-1.146 1.913-2.71 1.913-1.676 0-2.84-.753-3.005-1.939h-1.928Z\"/></svg>",
@@ -4288,6 +4321,20 @@
               "user-timings": "Consider using `Next.js Analytics` to measure your app's real-world performance. [Learn more](https://nextjs.org/docs/advanced-features/measuring-performance).",
               "prioritize-lcp-image": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority).",
               "unsized-images": "Use the `next/image` component to make sure images are always sized appropriately. [Learn more](https://nextjs.org/docs/api-reference/next/image#width)."
+            }
+          },
+          {
+            "id": "react",
+            "title": "React",
+            "iconDataURL": "data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 841.9 595.3\"><g fill=\"%2361DAFB\"><path d=\"M666.3 296.5c0-32.5-40.7-63.3-103.1-82.4 14.4-63.6 8-114.2-20.2-130.4-6.5-3.8-14.1-5.6-22.4-5.6v22.3c4.6 0 8.3.9 11.4 2.6 13.6 7.8 19.5 37.5 14.9 75.7-1.1 9.4-2.9 19.3-5.1 29.4-19.6-4.8-41-8.5-63.5-10.9-13.5-18.5-27.5-35.3-41.6-50 32.6-30.3 63.2-46.9 84-46.9V78c-27.5 0-63.5 19.6-99.9 53.6-36.4-33.8-72.4-53.2-99.9-53.2v22.3c20.7 0 51.4 16.5 84 46.6-14 14.7-28 31.4-41.3 49.9-22.6 2.4-44 6.1-63.6 11-2.3-10-4-19.7-5.2-29-4.7-38.2 1.1-67.9 14.6-75.8 3-1.8 6.9-2.6 11.5-2.6V78.5c-8.4 0-16 1.8-22.6 5.6-28.1 16.2-34.4 66.7-19.9 130.1-62.2 19.2-102.7 49.9-102.7 82.3 0 32.5 40.7 63.3 103.1 82.4-14.4 63.6-8 114.2 20.2 130.4 6.5 3.8 14.1 5.6 22.5 5.6 27.5 0 63.5-19.6 99.9-53.6 36.4 33.8 72.4 53.2 99.9 53.2 8.4 0 16-1.8 22.6-5.6 28.1-16.2 34.4-66.7 19.9-130.1 62-19.1 102.5-49.9 102.5-82.3zm-130.2-66.7c-3.7 12.9-8.3 26.2-13.5 39.5-4.1-8-8.4-16-13.1-24-4.6-8-9.5-15.8-14.4-23.4 14.2 2.1 27.9 4.7 41 7.9zm-45.8 106.5c-7.8 13.5-15.8 26.3-24.1 38.2-14.9 1.3-30 2-45.2 2-15.1 0-30.2-.7-45-1.9-8.3-11.9-16.4-24.6-24.2-38-7.6-13.1-14.5-26.4-20.8-39.8 6.2-13.4 13.2-26.8 20.7-39.9 7.8-13.5 15.8-26.3 24.1-38.2 14.9-1.3 30-2 45.2-2 15.1 0 30.2.7 45 1.9 8.3 11.9 16.4 24.6 24.2 38 7.6 13.1 14.5 26.4 20.8 39.8-6.3 13.4-13.2 26.8-20.7 39.9zm32.3-13c5.4 13.4 10 26.8 13.8 39.8-13.1 3.2-26.9 5.9-41.2 8 4.9-7.7 9.8-15.6 14.4-23.7 4.6-8 8.9-16.1 13-24.1zM421.2 430c-9.3-9.6-18.6-20.3-27.8-32 9 .4 18.2.7 27.5.7 9.4 0 18.7-.2 27.8-.7-9 11.7-18.3 22.4-27.5 32zm-74.4-58.9c-14.2-2.1-27.9-4.7-41-7.9 3.7-12.9 8.3-26.2 13.5-39.5 4.1 8 8.4 16 13.1 24 4.7 8 9.5 15.8 14.4 23.4zM420.7 163c9.3 9.6 18.6 20.3 27.8 32-9-.4-18.2-.7-27.5-.7-9.4 0-18.7.2-27.8.7 9-11.7 18.3-22.4 27.5-32zm-74 58.9c-4.9 7.7-9.8 15.6-14.4 23.7-4.6 8-8.9 16-13 24-5.4-13.4-10-26.8-13.8-39.8 13.1-3.1 26.9-5.8 41.2-7.9zm-90.5 125.2c-35.4-15.1-58.3-34.9-58.3-50.6 0-15.7 22.9-35.6 58.3-50.6 8.6-3.7 18-7 27.7-10.1 5.7 19.6 13.2 40 22.5 60.9-9.2 20.8-16.6 41.1-22.2 60.6-9.9-3.1-19.3-6.5-28-10.2zM310 490c-13.6-7.8-19.5-37.5-14.9-75.7 1.1-9.4 2.9-19.3 5.1-29.4 19.6 4.8 41 8.5 63.5 10.9 13.5 18.5 27.5 35.3 41.6 50-32.6 30.3-63.2 46.9-84 46.9-4.5-.1-8.3-1-11.3-2.7zm237.2-76.2c4.7 38.2-1.1 67.9-14.6 75.8-3 1.8-6.9 2.6-11.5 2.6-20.7 0-51.4-16.5-84-46.6 14-14.7 28-31.4 41.3-49.9 22.6-2.4 44-6.1 63.6-11 2.3 10.1 4.1 19.8 5.2 29.1zm38.5-66.7c-8.6 3.7-18 7-27.7 10.1-5.7-19.6-13.2-40-22.5-60.9 9.2-20.8 16.6-41.1 22.2-60.6 9.9 3.1 19.3 6.5 28.1 10.2 35.4 15.1 58.3 34.9 58.3 50.6-.1 15.7-23 35.6-58.4 50.6zM320.8 78.4z\"/><circle cx=\"420.9\" cy=\"296.5\" r=\"45.7\"/><path d=\"M520.5 78.1z\"/></g></svg>",
+            "descriptions": {
+              "unminified-css": "If your build system minifies CSS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
+              "unminified-javascript": "If your build system minifies JS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
+              "unused-javascript": "If you are not server-side rendering, [split your JavaScript bundles](https://web.dev/code-splitting-suspense/) with `React.lazy()`. Otherwise, code-split using a third-party library such as [loadable-components](https://www.smooth-code.com/open-source/loadable-components/docs/getting-started/).",
+              "server-response-time": "If you are server-side rendering any React components, consider using `renderToPipeableStream()` or `renderToStaticNodeStream()` to allow the client to receive and hydrate different parts of the markup instead of all at once. [Learn more](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream).",
+              "redirects": "If you are using React Router, minimize usage of the `<Redirect>` component for [route navigations](https://reacttraining.com/react-router/web/api/Redirect).",
+              "user-timings": "Use the React DevTools Profiler, which makes use of the Profiler API, to measure the rendering performance of your components. [Learn more.](https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html)",
+              "dom-size": "Consider using a \"windowing\" library like `react-window` to minimize the number of DOM nodes created if you are rendering many repeated elements on the page. [Learn more](https://web.dev/virtualize-long-lists-react-window/). Also, minimize unnecessary re-renders using [`shouldComponentUpdate`](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action), [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent), or [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) and [skip effects](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects) only until certain dependencies have changed if you are using the `Effect` hook to improve runtime performance."
             }
           }
         ],
@@ -6892,10 +6939,31 @@
               }
             ],
             "core/lib/i18n/i18n.js | columnElement": [
-              "audits[largest-contentful-paint-element].details.headings[0].label",
+              "audits[largest-contentful-paint-element].details.items[0].headings[0].label",
               "audits[lcp-lazy-loaded].details.headings[0].label",
               "audits[layout-shift-elements].details.headings[0].label",
               "audits[dom-size].details.headings[1].label"
+            ],
+            "core/audits/largest-contentful-paint-element.js | columnPhase": [
+              "audits[largest-contentful-paint-element].details.items[1].headings[0].label"
+            ],
+            "core/audits/largest-contentful-paint-element.js | columnPercentOfLCP": [
+              "audits[largest-contentful-paint-element].details.items[1].headings[1].label"
+            ],
+            "core/audits/largest-contentful-paint-element.js | columnTiming": [
+              "audits[largest-contentful-paint-element].details.items[1].headings[2].label"
+            ],
+            "core/audits/largest-contentful-paint-element.js | itemTTFB": [
+              "audits[largest-contentful-paint-element].details.items[1].items[0].phase"
+            ],
+            "core/audits/largest-contentful-paint-element.js | itemLoadDelay": [
+              "audits[largest-contentful-paint-element].details.items[1].items[1].phase"
+            ],
+            "core/audits/largest-contentful-paint-element.js | itemLoadTime": [
+              "audits[largest-contentful-paint-element].details.items[1].items[2].phase"
+            ],
+            "core/audits/largest-contentful-paint-element.js | itemRenderDelay": [
+              "audits[largest-contentful-paint-element].details.items[1].items[3].phase"
             ],
             "core/audits/lcp-lazy-loaded.js | title": [
               "audits[lcp-lazy-loaded].title"
@@ -7715,62 +7783,62 @@
             "core/config/default-config.js | bestPracticesGeneralGroupTitle": [
               "categoryGroups[best-practices-general].title"
             ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": [
-              "stackPacks[0].descriptions[unminified-css]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-javascript": [
-              "stackPacks[0].descriptions[unminified-javascript]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | unused-javascript": [
-              "stackPacks[0].descriptions[unused-javascript]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": [
-              "stackPacks[0].descriptions[server-response-time]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | redirects": [
-              "stackPacks[0].descriptions.redirects"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | user-timings": [
-              "stackPacks[0].descriptions[user-timings]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | dom-size": [
-              "stackPacks[0].descriptions[dom-size]"
-            ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unused-css-rules": [
-              "stackPacks[1].descriptions[unused-css-rules]"
+              "stackPacks[0].descriptions[unused-css-rules]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | modern-image-formats": [
-              "stackPacks[1].descriptions[modern-image-formats]"
+              "stackPacks[0].descriptions[modern-image-formats]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | offscreen-images": [
-              "stackPacks[1].descriptions[offscreen-images]"
+              "stackPacks[0].descriptions[offscreen-images]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | render-blocking-resources": [
-              "stackPacks[1].descriptions[render-blocking-resources]"
+              "stackPacks[0].descriptions[render-blocking-resources]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unused-javascript": [
-              "stackPacks[1].descriptions[unused-javascript]"
+              "stackPacks[0].descriptions[unused-javascript]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-long-cache-ttl": [
-              "stackPacks[1].descriptions[uses-long-cache-ttl]"
+              "stackPacks[0].descriptions[uses-long-cache-ttl]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-optimized-images": [
-              "stackPacks[1].descriptions[uses-optimized-images]"
+              "stackPacks[0].descriptions[uses-optimized-images]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-text-compression": [
-              "stackPacks[1].descriptions[uses-text-compression]"
+              "stackPacks[0].descriptions[uses-text-compression]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-responsive-images": [
-              "stackPacks[1].descriptions[uses-responsive-images]"
+              "stackPacks[0].descriptions[uses-responsive-images]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | user-timings": [
-              "stackPacks[1].descriptions[user-timings]"
+              "stackPacks[0].descriptions[user-timings]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | prioritize-lcp-image": [
-              "stackPacks[1].descriptions[prioritize-lcp-image]"
+              "stackPacks[0].descriptions[prioritize-lcp-image]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unsized-images": [
-              "stackPacks[1].descriptions[unsized-images]"
+              "stackPacks[0].descriptions[unsized-images]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": [
+              "stackPacks[1].descriptions[unminified-css]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-javascript": [
+              "stackPacks[1].descriptions[unminified-javascript]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | unused-javascript": [
+              "stackPacks[1].descriptions[unused-javascript]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": [
+              "stackPacks[1].descriptions[server-response-time]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | redirects": [
+              "stackPacks[1].descriptions.redirects"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | user-timings": [
+              "stackPacks[1].descriptions[user-timings]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | dom-size": [
+              "stackPacks[1].descriptions[dom-size]"
             ]
           }
         }
@@ -11896,14 +11964,14 @@
           "accesskeys": {
             "id": "accesskeys",
             "title": "`[accesskey]` values are unique",
-            "description": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more about access keys](https://dequeuniversity.com/rules/axe/4.6/accesskeys).",
+            "description": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more about access keys](https://dequeuniversity.com/rules/axe/4.7/accesskeys).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-allowed-attr": {
             "id": "aria-allowed-attr",
             "title": "`[aria-*]` attributes match their roles",
-            "description": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn how to match ARIA attributes to their roles](https://dequeuniversity.com/rules/axe/4.6/aria-allowed-attr).",
+            "description": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn how to match ARIA attributes to their roles](https://dequeuniversity.com/rules/axe/4.7/aria-allowed-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -11915,14 +11983,14 @@
           "aria-command-name": {
             "id": "aria-command-name",
             "title": "`button`, `link`, and `menuitem` elements have accessible names",
-            "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to make command elements more accessible](https://dequeuniversity.com/rules/axe/4.6/aria-command-name).",
+            "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to make command elements more accessible](https://dequeuniversity.com/rules/axe/4.7/aria-command-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-hidden-body": {
             "id": "aria-hidden-body",
             "title": "`[aria-hidden=\"true\"]` is not present on the document `<body>`",
-            "description": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn how `aria-hidden` affects the document body](https://dequeuniversity.com/rules/axe/4.6/aria-hidden-body).",
+            "description": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn how `aria-hidden` affects the document body](https://dequeuniversity.com/rules/axe/4.7/aria-hidden-body).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -11934,7 +12002,7 @@
           "aria-hidden-focus": {
             "id": "aria-hidden-focus",
             "title": "`[aria-hidden=\"true\"]` elements do not contain focusable descendents",
-            "description": "Focusable descendents within an `[aria-hidden=\"true\"]` element prevent those interactive elements from being available to users of assistive technologies like screen readers. [Learn how `aria-hidden` affects focusable elements](https://dequeuniversity.com/rules/axe/4.6/aria-hidden-focus).",
+            "description": "Focusable descendents within an `[aria-hidden=\"true\"]` element prevent those interactive elements from being available to users of assistive technologies like screen readers. [Learn how `aria-hidden` affects focusable elements](https://dequeuniversity.com/rules/axe/4.7/aria-hidden-focus).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -11946,28 +12014,28 @@
           "aria-input-field-name": {
             "id": "aria-input-field-name",
             "title": "ARIA input fields have accessible names",
-            "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about input field labels](https://dequeuniversity.com/rules/axe/4.6/aria-input-field-name).",
+            "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about input field labels](https://dequeuniversity.com/rules/axe/4.7/aria-input-field-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-meter-name": {
             "id": "aria-meter-name",
             "title": "ARIA `meter` elements have accessible names",
-            "description": "When a meter element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `meter` elements](https://dequeuniversity.com/rules/axe/4.6/aria-meter-name).",
+            "description": "When a meter element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `meter` elements](https://dequeuniversity.com/rules/axe/4.7/aria-meter-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-progressbar-name": {
             "id": "aria-progressbar-name",
             "title": "ARIA `progressbar` elements have accessible names",
-            "description": "When a `progressbar` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to label `progressbar` elements](https://dequeuniversity.com/rules/axe/4.6/aria-progressbar-name).",
+            "description": "When a `progressbar` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to label `progressbar` elements](https://dequeuniversity.com/rules/axe/4.7/aria-progressbar-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-required-attr": {
             "id": "aria-required-attr",
             "title": "`[role]`s have all required `[aria-*]` attributes",
-            "description": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more about roles and required attributes](https://dequeuniversity.com/rules/axe/4.6/aria-required-attr).",
+            "description": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more about roles and required attributes](https://dequeuniversity.com/rules/axe/4.7/aria-required-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -11979,21 +12047,21 @@
           "aria-required-children": {
             "id": "aria-required-children",
             "title": "Elements with an ARIA `[role]` that require children to contain a specific `[role]` have all required children.",
-            "description": "Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. [Learn more about roles and required children elements](https://dequeuniversity.com/rules/axe/4.6/aria-required-children).",
+            "description": "Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. [Learn more about roles and required children elements](https://dequeuniversity.com/rules/axe/4.7/aria-required-children).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-required-parent": {
             "id": "aria-required-parent",
             "title": "`[role]`s are contained by their required parent element",
-            "description": "Some ARIA child roles must be contained by specific parent roles to properly perform their intended accessibility functions. [Learn more about ARIA roles and required parent element](https://dequeuniversity.com/rules/axe/4.6/aria-required-parent).",
+            "description": "Some ARIA child roles must be contained by specific parent roles to properly perform their intended accessibility functions. [Learn more about ARIA roles and required parent element](https://dequeuniversity.com/rules/axe/4.7/aria-required-parent).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-roles": {
             "id": "aria-roles",
             "title": "`[role]` values are valid",
-            "description": "ARIA roles must have valid values in order to perform their intended accessibility functions. [Learn more about valid ARIA roles](https://dequeuniversity.com/rules/axe/4.6/aria-roles).",
+            "description": "ARIA roles must have valid values in order to perform their intended accessibility functions. [Learn more about valid ARIA roles](https://dequeuniversity.com/rules/axe/4.7/aria-roles).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -12005,28 +12073,28 @@
           "aria-toggle-field-name": {
             "id": "aria-toggle-field-name",
             "title": "ARIA toggle fields have accessible names",
-            "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about toggle fields](https://dequeuniversity.com/rules/axe/4.6/aria-toggle-field-name).",
+            "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about toggle fields](https://dequeuniversity.com/rules/axe/4.7/aria-toggle-field-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-tooltip-name": {
             "id": "aria-tooltip-name",
             "title": "ARIA `tooltip` elements have accessible names",
-            "description": "When a tooltip element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `tooltip` elements](https://dequeuniversity.com/rules/axe/4.6/aria-tooltip-name).",
+            "description": "When a tooltip element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `tooltip` elements](https://dequeuniversity.com/rules/axe/4.7/aria-tooltip-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-treeitem-name": {
             "id": "aria-treeitem-name",
             "title": "ARIA `treeitem` elements have accessible names",
-            "description": "When a `treeitem` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about labeling `treeitem` elements](https://dequeuniversity.com/rules/axe/4.6/aria-treeitem-name).",
+            "description": "When a `treeitem` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about labeling `treeitem` elements](https://dequeuniversity.com/rules/axe/4.7/aria-treeitem-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-valid-attr-value": {
             "id": "aria-valid-attr-value",
             "title": "`[aria-*]` attributes have valid values",
-            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more about valid values for ARIA attributes](https://dequeuniversity.com/rules/axe/4.6/aria-valid-attr-value).",
+            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more about valid values for ARIA attributes](https://dequeuniversity.com/rules/axe/4.7/aria-valid-attr-value).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -12038,7 +12106,7 @@
           "aria-valid-attr": {
             "id": "aria-valid-attr",
             "title": "`[aria-*]` attributes are valid and not misspelled",
-            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. [Learn more about valid ARIA attributes](https://dequeuniversity.com/rules/axe/4.6/aria-valid-attr).",
+            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. [Learn more about valid ARIA attributes](https://dequeuniversity.com/rules/axe/4.7/aria-valid-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -12050,7 +12118,7 @@
           "button-name": {
             "id": "button-name",
             "title": "Buttons have an accessible name",
-            "description": "When a button doesn't have an accessible name, screen readers announce it as \"button\", making it unusable for users who rely on screen readers. [Learn how to make buttons more accessible](https://dequeuniversity.com/rules/axe/4.6/button-name).",
+            "description": "When a button doesn't have an accessible name, screen readers announce it as \"button\", making it unusable for users who rely on screen readers. [Learn how to make buttons more accessible](https://dequeuniversity.com/rules/axe/4.7/button-name).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -12062,14 +12130,14 @@
           "bypass": {
             "id": "bypass",
             "title": "The page contains a heading, skip link, or landmark region",
-            "description": "Adding ways to bypass repetitive content lets keyboard users navigate the page more efficiently. [Learn more about bypass blocks](https://dequeuniversity.com/rules/axe/4.6/bypass).",
+            "description": "Adding ways to bypass repetitive content lets keyboard users navigate the page more efficiently. [Learn more about bypass blocks](https://dequeuniversity.com/rules/axe/4.7/bypass).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "color-contrast": {
             "id": "color-contrast",
             "title": "Background and foreground colors do not have a sufficient contrast ratio.",
-            "description": "Low-contrast text is difficult or impossible for many users to read. [Learn how to provide sufficient color contrast](https://dequeuniversity.com/rules/axe/4.6/color-contrast).",
+            "description": "Low-contrast text is difficult or impossible for many users to read. [Learn how to provide sufficient color contrast](https://dequeuniversity.com/rules/axe/4.7/color-contrast).",
             "score": 0,
             "scoreDisplayMode": "binary",
             "details": {
@@ -12983,21 +13051,21 @@
           "definition-list": {
             "id": "definition-list",
             "title": "`<dl>`'s contain only properly-ordered `<dt>` and `<dd>` groups, `<script>`, `<template>` or `<div>` elements.",
-            "description": "When definition lists are not properly marked up, screen readers may produce confusing or inaccurate output. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.6/definition-list).",
+            "description": "When definition lists are not properly marked up, screen readers may produce confusing or inaccurate output. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.7/definition-list).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "dlitem": {
             "id": "dlitem",
             "title": "Definition list items are wrapped in `<dl>` elements",
-            "description": "Definition list items (`<dt>` and `<dd>`) must be wrapped in a parent `<dl>` element to ensure that screen readers can properly announce them. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.6/dlitem).",
+            "description": "Definition list items (`<dt>` and `<dd>`) must be wrapped in a parent `<dl>` element to ensure that screen readers can properly announce them. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.7/dlitem).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "document-title": {
             "id": "document-title",
             "title": "Document has a `<title>` element",
-            "description": "The title gives screen reader users an overview of the page, and search engine users rely on it heavily to determine if a page is relevant to their search. [Learn more about document titles](https://dequeuniversity.com/rules/axe/4.6/document-title).",
+            "description": "The title gives screen reader users an overview of the page, and search engine users rely on it heavily to determine if a page is relevant to their search. [Learn more about document titles](https://dequeuniversity.com/rules/axe/4.7/document-title).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13009,35 +13077,35 @@
           "duplicate-id-active": {
             "id": "duplicate-id-active",
             "title": "`[id]` attributes on active, focusable elements are unique",
-            "description": "All focusable elements must have a unique `id` to ensure that they're visible to assistive technologies. [Learn how to fix duplicate `id`s](https://dequeuniversity.com/rules/axe/4.6/duplicate-id-active).",
+            "description": "All focusable elements must have a unique `id` to ensure that they're visible to assistive technologies. [Learn how to fix duplicate `id`s](https://dequeuniversity.com/rules/axe/4.7/duplicate-id-active).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "duplicate-id-aria": {
             "id": "duplicate-id-aria",
             "title": "ARIA IDs are unique",
-            "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn how to fix duplicate ARIA IDs](https://dequeuniversity.com/rules/axe/4.6/duplicate-id-aria).",
+            "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn how to fix duplicate ARIA IDs](https://dequeuniversity.com/rules/axe/4.7/duplicate-id-aria).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "form-field-multiple-labels": {
             "id": "form-field-multiple-labels",
             "title": "No form fields have multiple labels",
-            "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn how to use form labels](https://dequeuniversity.com/rules/axe/4.6/form-field-multiple-labels).",
+            "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn how to use form labels](https://dequeuniversity.com/rules/axe/4.7/form-field-multiple-labels).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "frame-title": {
             "id": "frame-title",
             "title": "`<frame>` or `<iframe>` elements have a title",
-            "description": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more about frame titles](https://dequeuniversity.com/rules/axe/4.6/frame-title).",
+            "description": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more about frame titles](https://dequeuniversity.com/rules/axe/4.7/frame-title).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "heading-order": {
             "id": "heading-order",
             "title": "Heading elements appear in a sequentially-descending order",
-            "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more about heading order](https://dequeuniversity.com/rules/axe/4.6/heading-order).",
+            "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more about heading order](https://dequeuniversity.com/rules/axe/4.7/heading-order).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13049,7 +13117,7 @@
           "html-has-lang": {
             "id": "html-has-lang",
             "title": "`<html>` element has a `[lang]` attribute",
-            "description": "If a page doesn't specify a `lang` attribute, a screen reader assumes that the page is in the default language that the user chose when setting up the screen reader. If the page isn't actually in the default language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.6/html-has-lang).",
+            "description": "If a page doesn't specify a `lang` attribute, a screen reader assumes that the page is in the default language that the user chose when setting up the screen reader. If the page isn't actually in the default language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/html-has-lang).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13061,7 +13129,7 @@
           "html-lang-valid": {
             "id": "html-lang-valid",
             "title": "`<html>` element has a valid value for its `[lang]` attribute",
-            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) helps screen readers announce text properly. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.6/html-lang-valid).",
+            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) helps screen readers announce text properly. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/html-lang-valid).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13073,7 +13141,7 @@
           "image-alt": {
             "id": "image-alt",
             "title": "Image elements do not have `[alt]` attributes",
-            "description": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.6/image-alt).",
+            "description": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.7/image-alt).",
             "score": 0,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13279,14 +13347,14 @@
           "input-image-alt": {
             "id": "input-image-alt",
             "title": "`<input type=\"image\">` elements have `[alt]` text",
-            "description": "When an image is being used as an `<input>` button, providing alternative text can help screen reader users understand the purpose of the button. [Learn about input image alt text](https://dequeuniversity.com/rules/axe/4.6/input-image-alt).",
+            "description": "When an image is being used as an `<input>` button, providing alternative text can help screen reader users understand the purpose of the button. [Learn about input image alt text](https://dequeuniversity.com/rules/axe/4.7/input-image-alt).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "label": {
             "id": "label",
             "title": "Form elements have associated labels",
-            "description": "Labels ensure that form controls are announced properly by assistive technologies, like screen readers. [Learn more about form element labels](https://dequeuniversity.com/rules/axe/4.6/label).",
+            "description": "Labels ensure that form controls are announced properly by assistive technologies, like screen readers. [Learn more about form element labels](https://dequeuniversity.com/rules/axe/4.7/label).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13298,7 +13366,7 @@
           "link-name": {
             "id": "link-name",
             "title": "Links have a discernible name",
-            "description": "Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. [Learn how to make links accessible](https://dequeuniversity.com/rules/axe/4.6/link-name).",
+            "description": "Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. [Learn how to make links accessible](https://dequeuniversity.com/rules/axe/4.7/link-name).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13310,7 +13378,7 @@
           "list": {
             "id": "list",
             "title": "Lists contain only `<li>` elements and script supporting elements (`<script>` and `<template>`).",
-            "description": "Screen readers have a specific way of announcing lists. Ensuring proper list structure aids screen reader output. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.6/list).",
+            "description": "Screen readers have a specific way of announcing lists. Ensuring proper list structure aids screen reader output. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.7/list).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13322,7 +13390,7 @@
           "listitem": {
             "id": "listitem",
             "title": "List items (`<li>`) are contained within `<ul>`, `<ol>` or `<menu>` parent elements",
-            "description": "Screen readers require list items (`<li>`) to be contained within a parent `<ul>`, `<ol>` or `<menu>` to be announced properly. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.6/listitem).",
+            "description": "Screen readers require list items (`<li>`) to be contained within a parent `<ul>`, `<ol>` or `<menu>` to be announced properly. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.7/listitem).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13334,14 +13402,14 @@
           "meta-refresh": {
             "id": "meta-refresh",
             "title": "The document does not use `<meta http-equiv=\"refresh\">`",
-            "description": "Users do not expect a page to refresh automatically, and doing so will move focus back to the top of the page. This may create a frustrating or confusing experience. [Learn more about the refresh meta tag](https://dequeuniversity.com/rules/axe/4.6/meta-refresh).",
+            "description": "Users do not expect a page to refresh automatically, and doing so will move focus back to the top of the page. This may create a frustrating or confusing experience. [Learn more about the refresh meta tag](https://dequeuniversity.com/rules/axe/4.7/meta-refresh).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "meta-viewport": {
             "id": "meta-viewport",
             "title": "`[user-scalable=\"no\"]` is not used in the `<meta name=\"viewport\">` element and the `[maximum-scale]` attribute is not less than 5.",
-            "description": "Disabling zooming is problematic for users with low vision who rely on screen magnification to properly see the contents of a web page. [Learn more about the viewport meta tag](https://dequeuniversity.com/rules/axe/4.6/meta-viewport).",
+            "description": "Disabling zooming is problematic for users with low vision who rely on screen magnification to properly see the contents of a web page. [Learn more about the viewport meta tag](https://dequeuniversity.com/rules/axe/4.7/meta-viewport).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -13353,14 +13421,14 @@
           "object-alt": {
             "id": "object-alt",
             "title": "`<object>` elements have alternate text",
-            "description": "Screen readers cannot translate non-text content. Adding alternate text to `<object>` elements helps screen readers convey meaning to users. [Learn more about alt text for `object` elements](https://dequeuniversity.com/rules/axe/4.6/object-alt).",
+            "description": "Screen readers cannot translate non-text content. Adding alternate text to `<object>` elements helps screen readers convey meaning to users. [Learn more about alt text for `object` elements](https://dequeuniversity.com/rules/axe/4.7/object-alt).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "tabindex": {
             "id": "tabindex",
             "title": "No element has a `[tabindex]` value greater than 0",
-            "description": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more about the `tabindex` attribute](https://dequeuniversity.com/rules/axe/4.6/tabindex).",
+            "description": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more about the `tabindex` attribute](https://dequeuniversity.com/rules/axe/4.7/tabindex).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
@@ -13379,28 +13447,28 @@
           "td-headers-attr": {
             "id": "td-headers-attr",
             "title": "Cells in a `<table>` element that use the `[headers]` attribute refer to table cells within the same table.",
-            "description": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells using the `[headers]` attribute only refer to other cells in the same table may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.6/td-headers-attr).",
+            "description": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells using the `[headers]` attribute only refer to other cells in the same table may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.7/td-headers-attr).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "th-has-data-cells": {
             "id": "th-has-data-cells",
             "title": "`<th>` elements and elements with `[role=\"columnheader\"/\"rowheader\"]` have data cells they describe.",
-            "description": "Screen readers have features to make navigating tables easier. Ensuring table headers always refer to some set of cells may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.6/th-has-data-cells).",
+            "description": "Screen readers have features to make navigating tables easier. Ensuring table headers always refer to some set of cells may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.7/th-has-data-cells).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "valid-lang": {
             "id": "valid-lang",
             "title": "`[lang]` attributes have a valid value",
-            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) on elements helps ensure that text is pronounced correctly by a screen reader. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.6/valid-lang).",
+            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) on elements helps ensure that text is pronounced correctly by a screen reader. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/valid-lang).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "video-caption": {
             "id": "video-caption",
             "title": "`<video>` elements contain a `<track>` element with `[kind=\"captions\"]`",
-            "description": "When a video provides a caption it is easier for deaf and hearing impaired users to access its information. [Learn more about video captions](https://dequeuniversity.com/rules/axe/4.6/video-caption).",
+            "description": "When a video provides a caption it is easier for deaf and hearing impaired users to access its information. [Learn more about video captions](https://dequeuniversity.com/rules/axe/4.7/video-caption).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
@@ -14414,20 +14482,6 @@
         },
         "stackPacks": [
           {
-            "id": "react",
-            "title": "React",
-            "iconDataURL": "data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 841.9 595.3\"><g fill=\"%2361DAFB\"><path d=\"M666.3 296.5c0-32.5-40.7-63.3-103.1-82.4 14.4-63.6 8-114.2-20.2-130.4-6.5-3.8-14.1-5.6-22.4-5.6v22.3c4.6 0 8.3.9 11.4 2.6 13.6 7.8 19.5 37.5 14.9 75.7-1.1 9.4-2.9 19.3-5.1 29.4-19.6-4.8-41-8.5-63.5-10.9-13.5-18.5-27.5-35.3-41.6-50 32.6-30.3 63.2-46.9 84-46.9V78c-27.5 0-63.5 19.6-99.9 53.6-36.4-33.8-72.4-53.2-99.9-53.2v22.3c20.7 0 51.4 16.5 84 46.6-14 14.7-28 31.4-41.3 49.9-22.6 2.4-44 6.1-63.6 11-2.3-10-4-19.7-5.2-29-4.7-38.2 1.1-67.9 14.6-75.8 3-1.8 6.9-2.6 11.5-2.6V78.5c-8.4 0-16 1.8-22.6 5.6-28.1 16.2-34.4 66.7-19.9 130.1-62.2 19.2-102.7 49.9-102.7 82.3 0 32.5 40.7 63.3 103.1 82.4-14.4 63.6-8 114.2 20.2 130.4 6.5 3.8 14.1 5.6 22.5 5.6 27.5 0 63.5-19.6 99.9-53.6 36.4 33.8 72.4 53.2 99.9 53.2 8.4 0 16-1.8 22.6-5.6 28.1-16.2 34.4-66.7 19.9-130.1 62-19.1 102.5-49.9 102.5-82.3zm-130.2-66.7c-3.7 12.9-8.3 26.2-13.5 39.5-4.1-8-8.4-16-13.1-24-4.6-8-9.5-15.8-14.4-23.4 14.2 2.1 27.9 4.7 41 7.9zm-45.8 106.5c-7.8 13.5-15.8 26.3-24.1 38.2-14.9 1.3-30 2-45.2 2-15.1 0-30.2-.7-45-1.9-8.3-11.9-16.4-24.6-24.2-38-7.6-13.1-14.5-26.4-20.8-39.8 6.2-13.4 13.2-26.8 20.7-39.9 7.8-13.5 15.8-26.3 24.1-38.2 14.9-1.3 30-2 45.2-2 15.1 0 30.2.7 45 1.9 8.3 11.9 16.4 24.6 24.2 38 7.6 13.1 14.5 26.4 20.8 39.8-6.3 13.4-13.2 26.8-20.7 39.9zm32.3-13c5.4 13.4 10 26.8 13.8 39.8-13.1 3.2-26.9 5.9-41.2 8 4.9-7.7 9.8-15.6 14.4-23.7 4.6-8 8.9-16.1 13-24.1zM421.2 430c-9.3-9.6-18.6-20.3-27.8-32 9 .4 18.2.7 27.5.7 9.4 0 18.7-.2 27.8-.7-9 11.7-18.3 22.4-27.5 32zm-74.4-58.9c-14.2-2.1-27.9-4.7-41-7.9 3.7-12.9 8.3-26.2 13.5-39.5 4.1 8 8.4 16 13.1 24 4.7 8 9.5 15.8 14.4 23.4zM420.7 163c9.3 9.6 18.6 20.3 27.8 32-9-.4-18.2-.7-27.5-.7-9.4 0-18.7.2-27.8.7 9-11.7 18.3-22.4 27.5-32zm-74 58.9c-4.9 7.7-9.8 15.6-14.4 23.7-4.6 8-8.9 16-13 24-5.4-13.4-10-26.8-13.8-39.8 13.1-3.1 26.9-5.8 41.2-7.9zm-90.5 125.2c-35.4-15.1-58.3-34.9-58.3-50.6 0-15.7 22.9-35.6 58.3-50.6 8.6-3.7 18-7 27.7-10.1 5.7 19.6 13.2 40 22.5 60.9-9.2 20.8-16.6 41.1-22.2 60.6-9.9-3.1-19.3-6.5-28-10.2zM310 490c-13.6-7.8-19.5-37.5-14.9-75.7 1.1-9.4 2.9-19.3 5.1-29.4 19.6 4.8 41 8.5 63.5 10.9 13.5 18.5 27.5 35.3 41.6 50-32.6 30.3-63.2 46.9-84 46.9-4.5-.1-8.3-1-11.3-2.7zm237.2-76.2c4.7 38.2-1.1 67.9-14.6 75.8-3 1.8-6.9 2.6-11.5 2.6-20.7 0-51.4-16.5-84-46.6 14-14.7 28-31.4 41.3-49.9 22.6-2.4 44-6.1 63.6-11 2.3 10.1 4.1 19.8 5.2 29.1zm38.5-66.7c-8.6 3.7-18 7-27.7 10.1-5.7-19.6-13.2-40-22.5-60.9 9.2-20.8 16.6-41.1 22.2-60.6 9.9 3.1 19.3 6.5 28.1 10.2 35.4 15.1 58.3 34.9 58.3 50.6-.1 15.7-23 35.6-58.4 50.6zM320.8 78.4z\"/><circle cx=\"420.9\" cy=\"296.5\" r=\"45.7\"/><path d=\"M520.5 78.1z\"/></g></svg>",
-            "descriptions": {
-              "unminified-css": "If your build system minifies CSS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
-              "unminified-javascript": "If your build system minifies JS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
-              "unused-javascript": "If you are not server-side rendering, [split your JavaScript bundles](https://web.dev/code-splitting-suspense/) with `React.lazy()`. Otherwise, code-split using a third-party library such as [loadable-components](https://www.smooth-code.com/open-source/loadable-components/docs/getting-started/).",
-              "server-response-time": "If you are server-side rendering any React components, consider using `renderToPipeableStream()` or `renderToStaticNodeStream()` to allow the client to receive and hydrate different parts of the markup instead of all at once. [Learn more](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream).",
-              "redirects": "If you are using React Router, minimize usage of the `<Redirect>` component for [route navigations](https://reacttraining.com/react-router/web/api/Redirect).",
-              "user-timings": "Use the React DevTools Profiler, which makes use of the Profiler API, to measure the rendering performance of your components. [Learn more.](https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html)",
-              "dom-size": "Consider using a \"windowing\" library like `react-window` to minimize the number of DOM nodes created if you are rendering many repeated elements on the page. [Learn more](https://web.dev/virtualize-long-lists-react-window/). Also, minimize unnecessary re-renders using [`shouldComponentUpdate`](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action), [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent), or [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) and [skip effects](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects) only until certain dependencies have changed if you are using the `Effect` hook to improve runtime performance."
-            }
-          },
-          {
             "id": "next.js",
             "title": "Next.js",
             "iconDataURL": "data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 207 124\"><path fill=\"%23000\" d=\"M48.942 32.632h38.96v3.082h-35.39v23.193H85.79v3.082H52.513v25.464h35.794v3.081H48.942V32.632Zm42.45 0h4.139l18.343 25.464 18.749-25.464L158.124.287l-41.896 60.485 21.59 29.762h-4.302l-19.642-27.086L94.15 90.534h-4.22l21.751-29.762-20.29-28.14Zm47.967 3.082v-3.082h44.397v3.082h-20.453v54.82h-3.571v-54.82h-20.373ZM.203 32.632h4.464l61.557 91.671-25.439-33.769L3.936 37.011l-.162 53.523H.203zm183.194 53.891c.738 0 1.276-.563 1.276-1.29 0-.727-.538-1.29-1.276-1.29-.73 0-1.277.563-1.277 1.29 0 .727.547 1.29 1.277 1.29Zm3.509-3.393c0 2.146 1.555 3.549 3.822 3.549 2.414 0 3.874-1.446 3.874-3.956v-8.837h-1.946v8.828c0 1.394-.704 2.138-1.946 2.138-1.112 0-1.867-.692-1.893-1.722h-1.911Zm10.24-.113c.14 2.233 2.007 3.662 4.787 3.662 2.97 0 4.83-1.498 4.83-3.887 0-1.878-1.06-2.917-3.632-3.514l-1.38-.338c-1.634-.38-2.294-.891-2.294-1.783 0-1.125 1.025-1.86 2.563-1.86 1.459 0 2.466.718 2.649 1.869h1.893c-.113-2.103-1.971-3.583-4.516-3.583-2.737 0-4.56 1.48-4.56 3.704 0 1.835 1.033 2.926 3.3 3.454l1.616.39c1.659.389 2.388.96 2.388 1.912 0 1.108-1.146 1.913-2.71 1.913-1.676 0-2.84-.753-3.005-1.939h-1.928Z\"/></svg>",
@@ -14444,6 +14498,20 @@
               "user-timings": "Consider using `Next.js Analytics` to measure your app's real-world performance. [Learn more](https://nextjs.org/docs/advanced-features/measuring-performance).",
               "prioritize-lcp-image": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority).",
               "unsized-images": "Use the `next/image` component to make sure images are always sized appropriately. [Learn more](https://nextjs.org/docs/api-reference/next/image#width)."
+            }
+          },
+          {
+            "id": "react",
+            "title": "React",
+            "iconDataURL": "data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 841.9 595.3\"><g fill=\"%2361DAFB\"><path d=\"M666.3 296.5c0-32.5-40.7-63.3-103.1-82.4 14.4-63.6 8-114.2-20.2-130.4-6.5-3.8-14.1-5.6-22.4-5.6v22.3c4.6 0 8.3.9 11.4 2.6 13.6 7.8 19.5 37.5 14.9 75.7-1.1 9.4-2.9 19.3-5.1 29.4-19.6-4.8-41-8.5-63.5-10.9-13.5-18.5-27.5-35.3-41.6-50 32.6-30.3 63.2-46.9 84-46.9V78c-27.5 0-63.5 19.6-99.9 53.6-36.4-33.8-72.4-53.2-99.9-53.2v22.3c20.7 0 51.4 16.5 84 46.6-14 14.7-28 31.4-41.3 49.9-22.6 2.4-44 6.1-63.6 11-2.3-10-4-19.7-5.2-29-4.7-38.2 1.1-67.9 14.6-75.8 3-1.8 6.9-2.6 11.5-2.6V78.5c-8.4 0-16 1.8-22.6 5.6-28.1 16.2-34.4 66.7-19.9 130.1-62.2 19.2-102.7 49.9-102.7 82.3 0 32.5 40.7 63.3 103.1 82.4-14.4 63.6-8 114.2 20.2 130.4 6.5 3.8 14.1 5.6 22.5 5.6 27.5 0 63.5-19.6 99.9-53.6 36.4 33.8 72.4 53.2 99.9 53.2 8.4 0 16-1.8 22.6-5.6 28.1-16.2 34.4-66.7 19.9-130.1 62-19.1 102.5-49.9 102.5-82.3zm-130.2-66.7c-3.7 12.9-8.3 26.2-13.5 39.5-4.1-8-8.4-16-13.1-24-4.6-8-9.5-15.8-14.4-23.4 14.2 2.1 27.9 4.7 41 7.9zm-45.8 106.5c-7.8 13.5-15.8 26.3-24.1 38.2-14.9 1.3-30 2-45.2 2-15.1 0-30.2-.7-45-1.9-8.3-11.9-16.4-24.6-24.2-38-7.6-13.1-14.5-26.4-20.8-39.8 6.2-13.4 13.2-26.8 20.7-39.9 7.8-13.5 15.8-26.3 24.1-38.2 14.9-1.3 30-2 45.2-2 15.1 0 30.2.7 45 1.9 8.3 11.9 16.4 24.6 24.2 38 7.6 13.1 14.5 26.4 20.8 39.8-6.3 13.4-13.2 26.8-20.7 39.9zm32.3-13c5.4 13.4 10 26.8 13.8 39.8-13.1 3.2-26.9 5.9-41.2 8 4.9-7.7 9.8-15.6 14.4-23.7 4.6-8 8.9-16.1 13-24.1zM421.2 430c-9.3-9.6-18.6-20.3-27.8-32 9 .4 18.2.7 27.5.7 9.4 0 18.7-.2 27.8-.7-9 11.7-18.3 22.4-27.5 32zm-74.4-58.9c-14.2-2.1-27.9-4.7-41-7.9 3.7-12.9 8.3-26.2 13.5-39.5 4.1 8 8.4 16 13.1 24 4.7 8 9.5 15.8 14.4 23.4zM420.7 163c9.3 9.6 18.6 20.3 27.8 32-9-.4-18.2-.7-27.5-.7-9.4 0-18.7.2-27.8.7 9-11.7 18.3-22.4 27.5-32zm-74 58.9c-4.9 7.7-9.8 15.6-14.4 23.7-4.6 8-8.9 16-13 24-5.4-13.4-10-26.8-13.8-39.8 13.1-3.1 26.9-5.8 41.2-7.9zm-90.5 125.2c-35.4-15.1-58.3-34.9-58.3-50.6 0-15.7 22.9-35.6 58.3-50.6 8.6-3.7 18-7 27.7-10.1 5.7 19.6 13.2 40 22.5 60.9-9.2 20.8-16.6 41.1-22.2 60.6-9.9-3.1-19.3-6.5-28-10.2zM310 490c-13.6-7.8-19.5-37.5-14.9-75.7 1.1-9.4 2.9-19.3 5.1-29.4 19.6 4.8 41 8.5 63.5 10.9 13.5 18.5 27.5 35.3 41.6 50-32.6 30.3-63.2 46.9-84 46.9-4.5-.1-8.3-1-11.3-2.7zm237.2-76.2c4.7 38.2-1.1 67.9-14.6 75.8-3 1.8-6.9 2.6-11.5 2.6-20.7 0-51.4-16.5-84-46.6 14-14.7 28-31.4 41.3-49.9 22.6-2.4 44-6.1 63.6-11 2.3 10.1 4.1 19.8 5.2 29.1zm38.5-66.7c-8.6 3.7-18 7-27.7 10.1-5.7-19.6-13.2-40-22.5-60.9 9.2-20.8 16.6-41.1 22.2-60.6 9.9 3.1 19.3 6.5 28.1 10.2 35.4 15.1 58.3 34.9 58.3 50.6-.1 15.7-23 35.6-58.4 50.6zM320.8 78.4z\"/><circle cx=\"420.9\" cy=\"296.5\" r=\"45.7\"/><path d=\"M520.5 78.1z\"/></g></svg>",
+            "descriptions": {
+              "unminified-css": "If your build system minifies CSS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
+              "unminified-javascript": "If your build system minifies JS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
+              "unused-javascript": "If you are not server-side rendering, [split your JavaScript bundles](https://web.dev/code-splitting-suspense/) with `React.lazy()`. Otherwise, code-split using a third-party library such as [loadable-components](https://www.smooth-code.com/open-source/loadable-components/docs/getting-started/).",
+              "server-response-time": "If you are server-side rendering any React components, consider using `renderToPipeableStream()` or `renderToStaticNodeStream()` to allow the client to receive and hydrate different parts of the markup instead of all at once. [Learn more](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream).",
+              "redirects": "If you are using React Router, minimize usage of the `<Redirect>` component for [route navigations](https://reacttraining.com/react-router/web/api/Redirect).",
+              "user-timings": "Use the React DevTools Profiler, which makes use of the Profiler API, to measure the rendering performance of your components. [Learn more.](https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html)",
+              "dom-size": "Consider using a \"windowing\" library like `react-window` to minimize the number of DOM nodes created if you are rendering many repeated elements on the page. [Learn more](https://web.dev/virtualize-long-lists-react-window/). Also, minimize unnecessary re-renders using [`shouldComponentUpdate`](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action), [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent), or [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) and [skip effects](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects) only until certain dependencies have changed if you are using the `Effect` hook to improve runtime performance."
             }
           }
         ],
@@ -16380,62 +16448,62 @@
             "core/config/default-config.js | bestPracticesGeneralGroupTitle": [
               "categoryGroups[best-practices-general].title"
             ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": [
-              "stackPacks[0].descriptions[unminified-css]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-javascript": [
-              "stackPacks[0].descriptions[unminified-javascript]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | unused-javascript": [
-              "stackPacks[0].descriptions[unused-javascript]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": [
-              "stackPacks[0].descriptions[server-response-time]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | redirects": [
-              "stackPacks[0].descriptions.redirects"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | user-timings": [
-              "stackPacks[0].descriptions[user-timings]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | dom-size": [
-              "stackPacks[0].descriptions[dom-size]"
-            ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unused-css-rules": [
-              "stackPacks[1].descriptions[unused-css-rules]"
+              "stackPacks[0].descriptions[unused-css-rules]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | modern-image-formats": [
-              "stackPacks[1].descriptions[modern-image-formats]"
+              "stackPacks[0].descriptions[modern-image-formats]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | offscreen-images": [
-              "stackPacks[1].descriptions[offscreen-images]"
+              "stackPacks[0].descriptions[offscreen-images]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | render-blocking-resources": [
-              "stackPacks[1].descriptions[render-blocking-resources]"
+              "stackPacks[0].descriptions[render-blocking-resources]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unused-javascript": [
-              "stackPacks[1].descriptions[unused-javascript]"
+              "stackPacks[0].descriptions[unused-javascript]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-long-cache-ttl": [
-              "stackPacks[1].descriptions[uses-long-cache-ttl]"
+              "stackPacks[0].descriptions[uses-long-cache-ttl]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-optimized-images": [
-              "stackPacks[1].descriptions[uses-optimized-images]"
+              "stackPacks[0].descriptions[uses-optimized-images]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-text-compression": [
-              "stackPacks[1].descriptions[uses-text-compression]"
+              "stackPacks[0].descriptions[uses-text-compression]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-responsive-images": [
-              "stackPacks[1].descriptions[uses-responsive-images]"
+              "stackPacks[0].descriptions[uses-responsive-images]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | user-timings": [
-              "stackPacks[1].descriptions[user-timings]"
+              "stackPacks[0].descriptions[user-timings]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | prioritize-lcp-image": [
-              "stackPacks[1].descriptions[prioritize-lcp-image]"
+              "stackPacks[0].descriptions[prioritize-lcp-image]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unsized-images": [
-              "stackPacks[1].descriptions[unsized-images]"
+              "stackPacks[0].descriptions[unsized-images]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": [
+              "stackPacks[1].descriptions[unminified-css]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-javascript": [
+              "stackPacks[1].descriptions[unminified-javascript]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | unused-javascript": [
+              "stackPacks[1].descriptions[unused-javascript]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": [
+              "stackPacks[1].descriptions[server-response-time]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | redirects": [
+              "stackPacks[1].descriptions.redirects"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | user-timings": [
+              "stackPacks[1].descriptions[user-timings]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | dom-size": [
+              "stackPacks[1].descriptions[dom-size]"
             ]
           }
         }
@@ -17911,32 +17979,79 @@
             "scoreDisplayMode": "informative",
             "displayValue": "1 element found",
             "details": {
-              "type": "table",
-              "headings": [
-                {
-                  "key": "node",
-                  "valueType": "node",
-                  "label": "Element"
-                }
-              ],
+              "type": "list",
               "items": [
                 {
-                  "node": {
-                    "type": "node",
-                    "lhId": "page-0-IMG",
-                    "path": "1,HTML,1,BODY,0,DIV,0,DIV,3,MAIN,2,DIV,0,IMG",
-                    "selector": "div.flex > main#main-content > div.flex > img.rounded-md",
-                    "boundingRect": {
-                      "top": 228,
-                      "bottom": 388,
-                      "left": 38,
-                      "right": 322,
-                      "width": 284,
-                      "height": 160
+                  "type": "table",
+                  "headings": [
+                    {
+                      "key": "node",
+                      "valueType": "node",
+                      "label": "Element"
+                    }
+                  ],
+                  "items": [
+                    {
+                      "node": {
+                        "type": "node",
+                        "lhId": "page-0-IMG",
+                        "path": "1,HTML,1,BODY,0,DIV,0,DIV,3,MAIN,2,DIV,0,IMG",
+                        "selector": "div.flex > main#main-content > div.flex > img.rounded-md",
+                        "boundingRect": {
+                          "top": 228,
+                          "bottom": 388,
+                          "left": 38,
+                          "right": 322,
+                          "width": 284,
+                          "height": 160
+                        },
+                        "snippet": "<img class=\"rounded-md h-40 sm:h-48 md:h-60 lg:h-80\" src=\"/oscar-actually.jpg\">",
+                        "nodeLabel": "div.flex > main#main-content > div.flex > img.rounded-md"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "table",
+                  "headings": [
+                    {
+                      "key": "phase",
+                      "valueType": "text",
+                      "label": "Phase"
                     },
-                    "snippet": "<img class=\"rounded-md h-40 sm:h-48 md:h-60 lg:h-80\" src=\"/oscar-actually.jpg\">",
-                    "nodeLabel": "div.flex > main#main-content > div.flex > img.rounded-md"
-                  }
+                    {
+                      "key": "percent",
+                      "valueType": "text",
+                      "label": "% of LCP"
+                    },
+                    {
+                      "key": "timing",
+                      "valueType": "ms",
+                      "label": "Timing"
+                    }
+                  ],
+                  "items": [
+                    {
+                      "phase": "TTFB",
+                      "timing": 602.5712,
+                      "percent": "33%"
+                    },
+                    {
+                      "phase": "Load Delay",
+                      "timing": 0,
+                      "percent": "0%"
+                    },
+                    {
+                      "phase": "Load Time",
+                      "timing": 234.3445723189716,
+                      "percent": "13%"
+                    },
+                    {
+                      "phase": "Render Delay",
+                      "timing": 966.0934276810284,
+                      "percent": "54%"
+                    }
+                  ]
                 }
               ]
             }
@@ -18314,14 +18429,14 @@
           "accesskeys": {
             "id": "accesskeys",
             "title": "`[accesskey]` values are unique",
-            "description": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more about access keys](https://dequeuniversity.com/rules/axe/4.6/accesskeys).",
+            "description": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more about access keys](https://dequeuniversity.com/rules/axe/4.7/accesskeys).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-allowed-attr": {
             "id": "aria-allowed-attr",
             "title": "`[aria-*]` attributes match their roles",
-            "description": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn how to match ARIA attributes to their roles](https://dequeuniversity.com/rules/axe/4.6/aria-allowed-attr).",
+            "description": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn how to match ARIA attributes to their roles](https://dequeuniversity.com/rules/axe/4.7/aria-allowed-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18333,14 +18448,14 @@
           "aria-command-name": {
             "id": "aria-command-name",
             "title": "`button`, `link`, and `menuitem` elements have accessible names",
-            "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to make command elements more accessible](https://dequeuniversity.com/rules/axe/4.6/aria-command-name).",
+            "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to make command elements more accessible](https://dequeuniversity.com/rules/axe/4.7/aria-command-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-hidden-body": {
             "id": "aria-hidden-body",
             "title": "`[aria-hidden=\"true\"]` is not present on the document `<body>`",
-            "description": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn how `aria-hidden` affects the document body](https://dequeuniversity.com/rules/axe/4.6/aria-hidden-body).",
+            "description": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn how `aria-hidden` affects the document body](https://dequeuniversity.com/rules/axe/4.7/aria-hidden-body).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18352,7 +18467,7 @@
           "aria-hidden-focus": {
             "id": "aria-hidden-focus",
             "title": "`[aria-hidden=\"true\"]` elements do not contain focusable descendents",
-            "description": "Focusable descendents within an `[aria-hidden=\"true\"]` element prevent those interactive elements from being available to users of assistive technologies like screen readers. [Learn how `aria-hidden` affects focusable elements](https://dequeuniversity.com/rules/axe/4.6/aria-hidden-focus).",
+            "description": "Focusable descendents within an `[aria-hidden=\"true\"]` element prevent those interactive elements from being available to users of assistive technologies like screen readers. [Learn how `aria-hidden` affects focusable elements](https://dequeuniversity.com/rules/axe/4.7/aria-hidden-focus).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18364,28 +18479,28 @@
           "aria-input-field-name": {
             "id": "aria-input-field-name",
             "title": "ARIA input fields have accessible names",
-            "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about input field labels](https://dequeuniversity.com/rules/axe/4.6/aria-input-field-name).",
+            "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about input field labels](https://dequeuniversity.com/rules/axe/4.7/aria-input-field-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-meter-name": {
             "id": "aria-meter-name",
             "title": "ARIA `meter` elements have accessible names",
-            "description": "When a meter element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `meter` elements](https://dequeuniversity.com/rules/axe/4.6/aria-meter-name).",
+            "description": "When a meter element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `meter` elements](https://dequeuniversity.com/rules/axe/4.7/aria-meter-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-progressbar-name": {
             "id": "aria-progressbar-name",
             "title": "ARIA `progressbar` elements have accessible names",
-            "description": "When a `progressbar` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to label `progressbar` elements](https://dequeuniversity.com/rules/axe/4.6/aria-progressbar-name).",
+            "description": "When a `progressbar` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to label `progressbar` elements](https://dequeuniversity.com/rules/axe/4.7/aria-progressbar-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-required-attr": {
             "id": "aria-required-attr",
             "title": "`[role]`s have all required `[aria-*]` attributes",
-            "description": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more about roles and required attributes](https://dequeuniversity.com/rules/axe/4.6/aria-required-attr).",
+            "description": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more about roles and required attributes](https://dequeuniversity.com/rules/axe/4.7/aria-required-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18397,21 +18512,21 @@
           "aria-required-children": {
             "id": "aria-required-children",
             "title": "Elements with an ARIA `[role]` that require children to contain a specific `[role]` have all required children.",
-            "description": "Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. [Learn more about roles and required children elements](https://dequeuniversity.com/rules/axe/4.6/aria-required-children).",
+            "description": "Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. [Learn more about roles and required children elements](https://dequeuniversity.com/rules/axe/4.7/aria-required-children).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-required-parent": {
             "id": "aria-required-parent",
             "title": "`[role]`s are contained by their required parent element",
-            "description": "Some ARIA child roles must be contained by specific parent roles to properly perform their intended accessibility functions. [Learn more about ARIA roles and required parent element](https://dequeuniversity.com/rules/axe/4.6/aria-required-parent).",
+            "description": "Some ARIA child roles must be contained by specific parent roles to properly perform their intended accessibility functions. [Learn more about ARIA roles and required parent element](https://dequeuniversity.com/rules/axe/4.7/aria-required-parent).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-roles": {
             "id": "aria-roles",
             "title": "`[role]` values are valid",
-            "description": "ARIA roles must have valid values in order to perform their intended accessibility functions. [Learn more about valid ARIA roles](https://dequeuniversity.com/rules/axe/4.6/aria-roles).",
+            "description": "ARIA roles must have valid values in order to perform their intended accessibility functions. [Learn more about valid ARIA roles](https://dequeuniversity.com/rules/axe/4.7/aria-roles).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18423,28 +18538,28 @@
           "aria-toggle-field-name": {
             "id": "aria-toggle-field-name",
             "title": "ARIA toggle fields have accessible names",
-            "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about toggle fields](https://dequeuniversity.com/rules/axe/4.6/aria-toggle-field-name).",
+            "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about toggle fields](https://dequeuniversity.com/rules/axe/4.7/aria-toggle-field-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-tooltip-name": {
             "id": "aria-tooltip-name",
             "title": "ARIA `tooltip` elements have accessible names",
-            "description": "When a tooltip element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `tooltip` elements](https://dequeuniversity.com/rules/axe/4.6/aria-tooltip-name).",
+            "description": "When a tooltip element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `tooltip` elements](https://dequeuniversity.com/rules/axe/4.7/aria-tooltip-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-treeitem-name": {
             "id": "aria-treeitem-name",
             "title": "ARIA `treeitem` elements have accessible names",
-            "description": "When a `treeitem` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about labeling `treeitem` elements](https://dequeuniversity.com/rules/axe/4.6/aria-treeitem-name).",
+            "description": "When a `treeitem` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about labeling `treeitem` elements](https://dequeuniversity.com/rules/axe/4.7/aria-treeitem-name).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "aria-valid-attr-value": {
             "id": "aria-valid-attr-value",
             "title": "`[aria-*]` attributes have valid values",
-            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more about valid values for ARIA attributes](https://dequeuniversity.com/rules/axe/4.6/aria-valid-attr-value).",
+            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more about valid values for ARIA attributes](https://dequeuniversity.com/rules/axe/4.7/aria-valid-attr-value).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18456,7 +18571,7 @@
           "aria-valid-attr": {
             "id": "aria-valid-attr",
             "title": "`[aria-*]` attributes are valid and not misspelled",
-            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. [Learn more about valid ARIA attributes](https://dequeuniversity.com/rules/axe/4.6/aria-valid-attr).",
+            "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. [Learn more about valid ARIA attributes](https://dequeuniversity.com/rules/axe/4.7/aria-valid-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18468,7 +18583,7 @@
           "button-name": {
             "id": "button-name",
             "title": "Buttons have an accessible name",
-            "description": "When a button doesn't have an accessible name, screen readers announce it as \"button\", making it unusable for users who rely on screen readers. [Learn how to make buttons more accessible](https://dequeuniversity.com/rules/axe/4.6/button-name).",
+            "description": "When a button doesn't have an accessible name, screen readers announce it as \"button\", making it unusable for users who rely on screen readers. [Learn how to make buttons more accessible](https://dequeuniversity.com/rules/axe/4.7/button-name).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18480,14 +18595,14 @@
           "bypass": {
             "id": "bypass",
             "title": "The page contains a heading, skip link, or landmark region",
-            "description": "Adding ways to bypass repetitive content lets keyboard users navigate the page more efficiently. [Learn more about bypass blocks](https://dequeuniversity.com/rules/axe/4.6/bypass).",
+            "description": "Adding ways to bypass repetitive content lets keyboard users navigate the page more efficiently. [Learn more about bypass blocks](https://dequeuniversity.com/rules/axe/4.7/bypass).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "color-contrast": {
             "id": "color-contrast",
             "title": "Background and foreground colors have a sufficient contrast ratio",
-            "description": "Low-contrast text is difficult or impossible for many users to read. [Learn how to provide sufficient color contrast](https://dequeuniversity.com/rules/axe/4.6/color-contrast).",
+            "description": "Low-contrast text is difficult or impossible for many users to read. [Learn how to provide sufficient color contrast](https://dequeuniversity.com/rules/axe/4.7/color-contrast).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18499,21 +18614,21 @@
           "definition-list": {
             "id": "definition-list",
             "title": "`<dl>`'s contain only properly-ordered `<dt>` and `<dd>` groups, `<script>`, `<template>` or `<div>` elements.",
-            "description": "When definition lists are not properly marked up, screen readers may produce confusing or inaccurate output. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.6/definition-list).",
+            "description": "When definition lists are not properly marked up, screen readers may produce confusing or inaccurate output. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.7/definition-list).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "dlitem": {
             "id": "dlitem",
             "title": "Definition list items are wrapped in `<dl>` elements",
-            "description": "Definition list items (`<dt>` and `<dd>`) must be wrapped in a parent `<dl>` element to ensure that screen readers can properly announce them. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.6/dlitem).",
+            "description": "Definition list items (`<dt>` and `<dd>`) must be wrapped in a parent `<dl>` element to ensure that screen readers can properly announce them. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.7/dlitem).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "document-title": {
             "id": "document-title",
             "title": "Document has a `<title>` element",
-            "description": "The title gives screen reader users an overview of the page, and search engine users rely on it heavily to determine if a page is relevant to their search. [Learn more about document titles](https://dequeuniversity.com/rules/axe/4.6/document-title).",
+            "description": "The title gives screen reader users an overview of the page, and search engine users rely on it heavily to determine if a page is relevant to their search. [Learn more about document titles](https://dequeuniversity.com/rules/axe/4.7/document-title).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18525,35 +18640,35 @@
           "duplicate-id-active": {
             "id": "duplicate-id-active",
             "title": "`[id]` attributes on active, focusable elements are unique",
-            "description": "All focusable elements must have a unique `id` to ensure that they're visible to assistive technologies. [Learn how to fix duplicate `id`s](https://dequeuniversity.com/rules/axe/4.6/duplicate-id-active).",
+            "description": "All focusable elements must have a unique `id` to ensure that they're visible to assistive technologies. [Learn how to fix duplicate `id`s](https://dequeuniversity.com/rules/axe/4.7/duplicate-id-active).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "duplicate-id-aria": {
             "id": "duplicate-id-aria",
             "title": "ARIA IDs are unique",
-            "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn how to fix duplicate ARIA IDs](https://dequeuniversity.com/rules/axe/4.6/duplicate-id-aria).",
+            "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn how to fix duplicate ARIA IDs](https://dequeuniversity.com/rules/axe/4.7/duplicate-id-aria).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "form-field-multiple-labels": {
             "id": "form-field-multiple-labels",
             "title": "No form fields have multiple labels",
-            "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn how to use form labels](https://dequeuniversity.com/rules/axe/4.6/form-field-multiple-labels).",
+            "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn how to use form labels](https://dequeuniversity.com/rules/axe/4.7/form-field-multiple-labels).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "frame-title": {
             "id": "frame-title",
             "title": "`<frame>` or `<iframe>` elements have a title",
-            "description": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more about frame titles](https://dequeuniversity.com/rules/axe/4.6/frame-title).",
+            "description": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more about frame titles](https://dequeuniversity.com/rules/axe/4.7/frame-title).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "heading-order": {
             "id": "heading-order",
             "title": "Heading elements appear in a sequentially-descending order",
-            "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more about heading order](https://dequeuniversity.com/rules/axe/4.6/heading-order).",
+            "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more about heading order](https://dequeuniversity.com/rules/axe/4.7/heading-order).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18565,7 +18680,7 @@
           "html-has-lang": {
             "id": "html-has-lang",
             "title": "`<html>` element has a `[lang]` attribute",
-            "description": "If a page doesn't specify a `lang` attribute, a screen reader assumes that the page is in the default language that the user chose when setting up the screen reader. If the page isn't actually in the default language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.6/html-has-lang).",
+            "description": "If a page doesn't specify a `lang` attribute, a screen reader assumes that the page is in the default language that the user chose when setting up the screen reader. If the page isn't actually in the default language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/html-has-lang).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18577,7 +18692,7 @@
           "html-lang-valid": {
             "id": "html-lang-valid",
             "title": "`<html>` element has a valid value for its `[lang]` attribute",
-            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) helps screen readers announce text properly. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.6/html-lang-valid).",
+            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) helps screen readers announce text properly. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/html-lang-valid).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18589,7 +18704,7 @@
           "image-alt": {
             "id": "image-alt",
             "title": "Image elements do not have `[alt]` attributes",
-            "description": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.6/image-alt).",
+            "description": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.7/image-alt).",
             "score": 0,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18643,14 +18758,14 @@
           "input-image-alt": {
             "id": "input-image-alt",
             "title": "`<input type=\"image\">` elements have `[alt]` text",
-            "description": "When an image is being used as an `<input>` button, providing alternative text can help screen reader users understand the purpose of the button. [Learn about input image alt text](https://dequeuniversity.com/rules/axe/4.6/input-image-alt).",
+            "description": "When an image is being used as an `<input>` button, providing alternative text can help screen reader users understand the purpose of the button. [Learn about input image alt text](https://dequeuniversity.com/rules/axe/4.7/input-image-alt).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "label": {
             "id": "label",
             "title": "Form elements have associated labels",
-            "description": "Labels ensure that form controls are announced properly by assistive technologies, like screen readers. [Learn more about form element labels](https://dequeuniversity.com/rules/axe/4.6/label).",
+            "description": "Labels ensure that form controls are announced properly by assistive technologies, like screen readers. [Learn more about form element labels](https://dequeuniversity.com/rules/axe/4.7/label).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18662,7 +18777,7 @@
           "link-name": {
             "id": "link-name",
             "title": "Links have a discernible name",
-            "description": "Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. [Learn how to make links accessible](https://dequeuniversity.com/rules/axe/4.6/link-name).",
+            "description": "Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. [Learn how to make links accessible](https://dequeuniversity.com/rules/axe/4.7/link-name).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18674,7 +18789,7 @@
           "list": {
             "id": "list",
             "title": "Lists contain only `<li>` elements and script supporting elements (`<script>` and `<template>`).",
-            "description": "Screen readers have a specific way of announcing lists. Ensuring proper list structure aids screen reader output. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.6/list).",
+            "description": "Screen readers have a specific way of announcing lists. Ensuring proper list structure aids screen reader output. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.7/list).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18686,7 +18801,7 @@
           "listitem": {
             "id": "listitem",
             "title": "List items (`<li>`) are contained within `<ul>`, `<ol>` or `<menu>` parent elements",
-            "description": "Screen readers require list items (`<li>`) to be contained within a parent `<ul>`, `<ol>` or `<menu>` to be announced properly. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.6/listitem).",
+            "description": "Screen readers require list items (`<li>`) to be contained within a parent `<ul>`, `<ol>` or `<menu>` to be announced properly. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.7/listitem).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18698,14 +18813,14 @@
           "meta-refresh": {
             "id": "meta-refresh",
             "title": "The document does not use `<meta http-equiv=\"refresh\">`",
-            "description": "Users do not expect a page to refresh automatically, and doing so will move focus back to the top of the page. This may create a frustrating or confusing experience. [Learn more about the refresh meta tag](https://dequeuniversity.com/rules/axe/4.6/meta-refresh).",
+            "description": "Users do not expect a page to refresh automatically, and doing so will move focus back to the top of the page. This may create a frustrating or confusing experience. [Learn more about the refresh meta tag](https://dequeuniversity.com/rules/axe/4.7/meta-refresh).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "meta-viewport": {
             "id": "meta-viewport",
             "title": "`[user-scalable=\"no\"]` is not used in the `<meta name=\"viewport\">` element and the `[maximum-scale]` attribute is not less than 5.",
-            "description": "Disabling zooming is problematic for users with low vision who rely on screen magnification to properly see the contents of a web page. [Learn more about the viewport meta tag](https://dequeuniversity.com/rules/axe/4.6/meta-viewport).",
+            "description": "Disabling zooming is problematic for users with low vision who rely on screen magnification to properly see the contents of a web page. [Learn more about the viewport meta tag](https://dequeuniversity.com/rules/axe/4.7/meta-viewport).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18717,14 +18832,14 @@
           "object-alt": {
             "id": "object-alt",
             "title": "`<object>` elements have alternate text",
-            "description": "Screen readers cannot translate non-text content. Adding alternate text to `<object>` elements helps screen readers convey meaning to users. [Learn more about alt text for `object` elements](https://dequeuniversity.com/rules/axe/4.6/object-alt).",
+            "description": "Screen readers cannot translate non-text content. Adding alternate text to `<object>` elements helps screen readers convey meaning to users. [Learn more about alt text for `object` elements](https://dequeuniversity.com/rules/axe/4.7/object-alt).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "tabindex": {
             "id": "tabindex",
             "title": "No element has a `[tabindex]` value greater than 0",
-            "description": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more about the `tabindex` attribute](https://dequeuniversity.com/rules/axe/4.6/tabindex).",
+            "description": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more about the `tabindex` attribute](https://dequeuniversity.com/rules/axe/4.7/tabindex).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
@@ -18743,28 +18858,28 @@
           "td-headers-attr": {
             "id": "td-headers-attr",
             "title": "Cells in a `<table>` element that use the `[headers]` attribute refer to table cells within the same table.",
-            "description": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells using the `[headers]` attribute only refer to other cells in the same table may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.6/td-headers-attr).",
+            "description": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells using the `[headers]` attribute only refer to other cells in the same table may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.7/td-headers-attr).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "th-has-data-cells": {
             "id": "th-has-data-cells",
             "title": "`<th>` elements and elements with `[role=\"columnheader\"/\"rowheader\"]` have data cells they describe.",
-            "description": "Screen readers have features to make navigating tables easier. Ensuring table headers always refer to some set of cells may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.6/th-has-data-cells).",
+            "description": "Screen readers have features to make navigating tables easier. Ensuring table headers always refer to some set of cells may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.7/th-has-data-cells).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "valid-lang": {
             "id": "valid-lang",
             "title": "`[lang]` attributes have a valid value",
-            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) on elements helps ensure that text is pronounced correctly by a screen reader. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.6/valid-lang).",
+            "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) on elements helps ensure that text is pronounced correctly by a screen reader. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/valid-lang).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
           "video-caption": {
             "id": "video-caption",
             "title": "`<video>` elements contain a `<track>` element with `[kind=\"captions\"]`",
-            "description": "When a video provides a caption it is easier for deaf and hearing impaired users to access its information. [Learn more about video captions](https://dequeuniversity.com/rules/axe/4.6/video-caption).",
+            "description": "When a video provides a caption it is easier for deaf and hearing impaired users to access its information. [Learn more about video captions](https://dequeuniversity.com/rules/axe/4.7/video-caption).",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
@@ -20718,20 +20833,6 @@
         },
         "stackPacks": [
           {
-            "id": "react",
-            "title": "React",
-            "iconDataURL": "data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 841.9 595.3\"><g fill=\"%2361DAFB\"><path d=\"M666.3 296.5c0-32.5-40.7-63.3-103.1-82.4 14.4-63.6 8-114.2-20.2-130.4-6.5-3.8-14.1-5.6-22.4-5.6v22.3c4.6 0 8.3.9 11.4 2.6 13.6 7.8 19.5 37.5 14.9 75.7-1.1 9.4-2.9 19.3-5.1 29.4-19.6-4.8-41-8.5-63.5-10.9-13.5-18.5-27.5-35.3-41.6-50 32.6-30.3 63.2-46.9 84-46.9V78c-27.5 0-63.5 19.6-99.9 53.6-36.4-33.8-72.4-53.2-99.9-53.2v22.3c20.7 0 51.4 16.5 84 46.6-14 14.7-28 31.4-41.3 49.9-22.6 2.4-44 6.1-63.6 11-2.3-10-4-19.7-5.2-29-4.7-38.2 1.1-67.9 14.6-75.8 3-1.8 6.9-2.6 11.5-2.6V78.5c-8.4 0-16 1.8-22.6 5.6-28.1 16.2-34.4 66.7-19.9 130.1-62.2 19.2-102.7 49.9-102.7 82.3 0 32.5 40.7 63.3 103.1 82.4-14.4 63.6-8 114.2 20.2 130.4 6.5 3.8 14.1 5.6 22.5 5.6 27.5 0 63.5-19.6 99.9-53.6 36.4 33.8 72.4 53.2 99.9 53.2 8.4 0 16-1.8 22.6-5.6 28.1-16.2 34.4-66.7 19.9-130.1 62-19.1 102.5-49.9 102.5-82.3zm-130.2-66.7c-3.7 12.9-8.3 26.2-13.5 39.5-4.1-8-8.4-16-13.1-24-4.6-8-9.5-15.8-14.4-23.4 14.2 2.1 27.9 4.7 41 7.9zm-45.8 106.5c-7.8 13.5-15.8 26.3-24.1 38.2-14.9 1.3-30 2-45.2 2-15.1 0-30.2-.7-45-1.9-8.3-11.9-16.4-24.6-24.2-38-7.6-13.1-14.5-26.4-20.8-39.8 6.2-13.4 13.2-26.8 20.7-39.9 7.8-13.5 15.8-26.3 24.1-38.2 14.9-1.3 30-2 45.2-2 15.1 0 30.2.7 45 1.9 8.3 11.9 16.4 24.6 24.2 38 7.6 13.1 14.5 26.4 20.8 39.8-6.3 13.4-13.2 26.8-20.7 39.9zm32.3-13c5.4 13.4 10 26.8 13.8 39.8-13.1 3.2-26.9 5.9-41.2 8 4.9-7.7 9.8-15.6 14.4-23.7 4.6-8 8.9-16.1 13-24.1zM421.2 430c-9.3-9.6-18.6-20.3-27.8-32 9 .4 18.2.7 27.5.7 9.4 0 18.7-.2 27.8-.7-9 11.7-18.3 22.4-27.5 32zm-74.4-58.9c-14.2-2.1-27.9-4.7-41-7.9 3.7-12.9 8.3-26.2 13.5-39.5 4.1 8 8.4 16 13.1 24 4.7 8 9.5 15.8 14.4 23.4zM420.7 163c9.3 9.6 18.6 20.3 27.8 32-9-.4-18.2-.7-27.5-.7-9.4 0-18.7.2-27.8.7 9-11.7 18.3-22.4 27.5-32zm-74 58.9c-4.9 7.7-9.8 15.6-14.4 23.7-4.6 8-8.9 16-13 24-5.4-13.4-10-26.8-13.8-39.8 13.1-3.1 26.9-5.8 41.2-7.9zm-90.5 125.2c-35.4-15.1-58.3-34.9-58.3-50.6 0-15.7 22.9-35.6 58.3-50.6 8.6-3.7 18-7 27.7-10.1 5.7 19.6 13.2 40 22.5 60.9-9.2 20.8-16.6 41.1-22.2 60.6-9.9-3.1-19.3-6.5-28-10.2zM310 490c-13.6-7.8-19.5-37.5-14.9-75.7 1.1-9.4 2.9-19.3 5.1-29.4 19.6 4.8 41 8.5 63.5 10.9 13.5 18.5 27.5 35.3 41.6 50-32.6 30.3-63.2 46.9-84 46.9-4.5-.1-8.3-1-11.3-2.7zm237.2-76.2c4.7 38.2-1.1 67.9-14.6 75.8-3 1.8-6.9 2.6-11.5 2.6-20.7 0-51.4-16.5-84-46.6 14-14.7 28-31.4 41.3-49.9 22.6-2.4 44-6.1 63.6-11 2.3 10.1 4.1 19.8 5.2 29.1zm38.5-66.7c-8.6 3.7-18 7-27.7 10.1-5.7-19.6-13.2-40-22.5-60.9 9.2-20.8 16.6-41.1 22.2-60.6 9.9 3.1 19.3 6.5 28.1 10.2 35.4 15.1 58.3 34.9 58.3 50.6-.1 15.7-23 35.6-58.4 50.6zM320.8 78.4z\"/><circle cx=\"420.9\" cy=\"296.5\" r=\"45.7\"/><path d=\"M520.5 78.1z\"/></g></svg>",
-            "descriptions": {
-              "unminified-css": "If your build system minifies CSS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
-              "unminified-javascript": "If your build system minifies JS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
-              "unused-javascript": "If you are not server-side rendering, [split your JavaScript bundles](https://web.dev/code-splitting-suspense/) with `React.lazy()`. Otherwise, code-split using a third-party library such as [loadable-components](https://www.smooth-code.com/open-source/loadable-components/docs/getting-started/).",
-              "server-response-time": "If you are server-side rendering any React components, consider using `renderToPipeableStream()` or `renderToStaticNodeStream()` to allow the client to receive and hydrate different parts of the markup instead of all at once. [Learn more](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream).",
-              "redirects": "If you are using React Router, minimize usage of the `<Redirect>` component for [route navigations](https://reacttraining.com/react-router/web/api/Redirect).",
-              "user-timings": "Use the React DevTools Profiler, which makes use of the Profiler API, to measure the rendering performance of your components. [Learn more.](https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html)",
-              "dom-size": "Consider using a \"windowing\" library like `react-window` to minimize the number of DOM nodes created if you are rendering many repeated elements on the page. [Learn more](https://web.dev/virtualize-long-lists-react-window/). Also, minimize unnecessary re-renders using [`shouldComponentUpdate`](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action), [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent), or [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) and [skip effects](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects) only until certain dependencies have changed if you are using the `Effect` hook to improve runtime performance."
-            }
-          },
-          {
             "id": "next.js",
             "title": "Next.js",
             "iconDataURL": "data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 207 124\"><path fill=\"%23000\" d=\"M48.942 32.632h38.96v3.082h-35.39v23.193H85.79v3.082H52.513v25.464h35.794v3.081H48.942V32.632Zm42.45 0h4.139l18.343 25.464 18.749-25.464L158.124.287l-41.896 60.485 21.59 29.762h-4.302l-19.642-27.086L94.15 90.534h-4.22l21.751-29.762-20.29-28.14Zm47.967 3.082v-3.082h44.397v3.082h-20.453v54.82h-3.571v-54.82h-20.373ZM.203 32.632h4.464l61.557 91.671-25.439-33.769L3.936 37.011l-.162 53.523H.203zm183.194 53.891c.738 0 1.276-.563 1.276-1.29 0-.727-.538-1.29-1.276-1.29-.73 0-1.277.563-1.277 1.29 0 .727.547 1.29 1.277 1.29Zm3.509-3.393c0 2.146 1.555 3.549 3.822 3.549 2.414 0 3.874-1.446 3.874-3.956v-8.837h-1.946v8.828c0 1.394-.704 2.138-1.946 2.138-1.112 0-1.867-.692-1.893-1.722h-1.911Zm10.24-.113c.14 2.233 2.007 3.662 4.787 3.662 2.97 0 4.83-1.498 4.83-3.887 0-1.878-1.06-2.917-3.632-3.514l-1.38-.338c-1.634-.38-2.294-.891-2.294-1.783 0-1.125 1.025-1.86 2.563-1.86 1.459 0 2.466.718 2.649 1.869h1.893c-.113-2.103-1.971-3.583-4.516-3.583-2.737 0-4.56 1.48-4.56 3.704 0 1.835 1.033 2.926 3.3 3.454l1.616.39c1.659.389 2.388.96 2.388 1.912 0 1.108-1.146 1.913-2.71 1.913-1.676 0-2.84-.753-3.005-1.939h-1.928Z\"/></svg>",
@@ -20748,6 +20849,20 @@
               "user-timings": "Consider using `Next.js Analytics` to measure your app's real-world performance. [Learn more](https://nextjs.org/docs/advanced-features/measuring-performance).",
               "prioritize-lcp-image": "Use the `next/image` component and set \"priority\" to true to preload LCP image. [Learn more](https://nextjs.org/docs/api-reference/next/image#priority).",
               "unsized-images": "Use the `next/image` component to make sure images are always sized appropriately. [Learn more](https://nextjs.org/docs/api-reference/next/image#width)."
+            }
+          },
+          {
+            "id": "react",
+            "title": "React",
+            "iconDataURL": "data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 841.9 595.3\"><g fill=\"%2361DAFB\"><path d=\"M666.3 296.5c0-32.5-40.7-63.3-103.1-82.4 14.4-63.6 8-114.2-20.2-130.4-6.5-3.8-14.1-5.6-22.4-5.6v22.3c4.6 0 8.3.9 11.4 2.6 13.6 7.8 19.5 37.5 14.9 75.7-1.1 9.4-2.9 19.3-5.1 29.4-19.6-4.8-41-8.5-63.5-10.9-13.5-18.5-27.5-35.3-41.6-50 32.6-30.3 63.2-46.9 84-46.9V78c-27.5 0-63.5 19.6-99.9 53.6-36.4-33.8-72.4-53.2-99.9-53.2v22.3c20.7 0 51.4 16.5 84 46.6-14 14.7-28 31.4-41.3 49.9-22.6 2.4-44 6.1-63.6 11-2.3-10-4-19.7-5.2-29-4.7-38.2 1.1-67.9 14.6-75.8 3-1.8 6.9-2.6 11.5-2.6V78.5c-8.4 0-16 1.8-22.6 5.6-28.1 16.2-34.4 66.7-19.9 130.1-62.2 19.2-102.7 49.9-102.7 82.3 0 32.5 40.7 63.3 103.1 82.4-14.4 63.6-8 114.2 20.2 130.4 6.5 3.8 14.1 5.6 22.5 5.6 27.5 0 63.5-19.6 99.9-53.6 36.4 33.8 72.4 53.2 99.9 53.2 8.4 0 16-1.8 22.6-5.6 28.1-16.2 34.4-66.7 19.9-130.1 62-19.1 102.5-49.9 102.5-82.3zm-130.2-66.7c-3.7 12.9-8.3 26.2-13.5 39.5-4.1-8-8.4-16-13.1-24-4.6-8-9.5-15.8-14.4-23.4 14.2 2.1 27.9 4.7 41 7.9zm-45.8 106.5c-7.8 13.5-15.8 26.3-24.1 38.2-14.9 1.3-30 2-45.2 2-15.1 0-30.2-.7-45-1.9-8.3-11.9-16.4-24.6-24.2-38-7.6-13.1-14.5-26.4-20.8-39.8 6.2-13.4 13.2-26.8 20.7-39.9 7.8-13.5 15.8-26.3 24.1-38.2 14.9-1.3 30-2 45.2-2 15.1 0 30.2.7 45 1.9 8.3 11.9 16.4 24.6 24.2 38 7.6 13.1 14.5 26.4 20.8 39.8-6.3 13.4-13.2 26.8-20.7 39.9zm32.3-13c5.4 13.4 10 26.8 13.8 39.8-13.1 3.2-26.9 5.9-41.2 8 4.9-7.7 9.8-15.6 14.4-23.7 4.6-8 8.9-16.1 13-24.1zM421.2 430c-9.3-9.6-18.6-20.3-27.8-32 9 .4 18.2.7 27.5.7 9.4 0 18.7-.2 27.8-.7-9 11.7-18.3 22.4-27.5 32zm-74.4-58.9c-14.2-2.1-27.9-4.7-41-7.9 3.7-12.9 8.3-26.2 13.5-39.5 4.1 8 8.4 16 13.1 24 4.7 8 9.5 15.8 14.4 23.4zM420.7 163c9.3 9.6 18.6 20.3 27.8 32-9-.4-18.2-.7-27.5-.7-9.4 0-18.7.2-27.8.7 9-11.7 18.3-22.4 27.5-32zm-74 58.9c-4.9 7.7-9.8 15.6-14.4 23.7-4.6 8-8.9 16-13 24-5.4-13.4-10-26.8-13.8-39.8 13.1-3.1 26.9-5.8 41.2-7.9zm-90.5 125.2c-35.4-15.1-58.3-34.9-58.3-50.6 0-15.7 22.9-35.6 58.3-50.6 8.6-3.7 18-7 27.7-10.1 5.7 19.6 13.2 40 22.5 60.9-9.2 20.8-16.6 41.1-22.2 60.6-9.9-3.1-19.3-6.5-28-10.2zM310 490c-13.6-7.8-19.5-37.5-14.9-75.7 1.1-9.4 2.9-19.3 5.1-29.4 19.6 4.8 41 8.5 63.5 10.9 13.5 18.5 27.5 35.3 41.6 50-32.6 30.3-63.2 46.9-84 46.9-4.5-.1-8.3-1-11.3-2.7zm237.2-76.2c4.7 38.2-1.1 67.9-14.6 75.8-3 1.8-6.9 2.6-11.5 2.6-20.7 0-51.4-16.5-84-46.6 14-14.7 28-31.4 41.3-49.9 22.6-2.4 44-6.1 63.6-11 2.3 10.1 4.1 19.8 5.2 29.1zm38.5-66.7c-8.6 3.7-18 7-27.7 10.1-5.7-19.6-13.2-40-22.5-60.9 9.2-20.8 16.6-41.1 22.2-60.6 9.9 3.1 19.3 6.5 28.1 10.2 35.4 15.1 58.3 34.9 58.3 50.6-.1 15.7-23 35.6-58.4 50.6zM320.8 78.4z\"/><circle cx=\"420.9\" cy=\"296.5\" r=\"45.7\"/><path d=\"M520.5 78.1z\"/></g></svg>",
+            "descriptions": {
+              "unminified-css": "If your build system minifies CSS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
+              "unminified-javascript": "If your build system minifies JS files automatically, ensure that you are deploying the production build of your application. You can check this with the React Developer Tools extension. [Learn more](https://reactjs.org/docs/optimizing-performance.html#use-the-production-build).",
+              "unused-javascript": "If you are not server-side rendering, [split your JavaScript bundles](https://web.dev/code-splitting-suspense/) with `React.lazy()`. Otherwise, code-split using a third-party library such as [loadable-components](https://www.smooth-code.com/open-source/loadable-components/docs/getting-started/).",
+              "server-response-time": "If you are server-side rendering any React components, consider using `renderToPipeableStream()` or `renderToStaticNodeStream()` to allow the client to receive and hydrate different parts of the markup instead of all at once. [Learn more](https://reactjs.org/docs/react-dom-server.html#renderToPipeableStream).",
+              "redirects": "If you are using React Router, minimize usage of the `<Redirect>` component for [route navigations](https://reacttraining.com/react-router/web/api/Redirect).",
+              "user-timings": "Use the React DevTools Profiler, which makes use of the Profiler API, to measure the rendering performance of your components. [Learn more.](https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html)",
+              "dom-size": "Consider using a \"windowing\" library like `react-window` to minimize the number of DOM nodes created if you are rendering many repeated elements on the page. [Learn more](https://web.dev/virtualize-long-lists-react-window/). Also, minimize unnecessary re-renders using [`shouldComponentUpdate`](https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action), [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent), or [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) and [skip effects](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects) only until certain dependencies have changed if you are using the `Effect` hook to improve runtime performance."
             }
           }
         ],
@@ -23322,9 +23437,30 @@
               }
             ],
             "core/lib/i18n/i18n.js | columnElement": [
-              "audits[largest-contentful-paint-element].details.headings[0].label",
+              "audits[largest-contentful-paint-element].details.items[0].headings[0].label",
               "audits[lcp-lazy-loaded].details.headings[0].label",
               "audits[dom-size].details.headings[1].label"
+            ],
+            "core/audits/largest-contentful-paint-element.js | columnPhase": [
+              "audits[largest-contentful-paint-element].details.items[1].headings[0].label"
+            ],
+            "core/audits/largest-contentful-paint-element.js | columnPercentOfLCP": [
+              "audits[largest-contentful-paint-element].details.items[1].headings[1].label"
+            ],
+            "core/audits/largest-contentful-paint-element.js | columnTiming": [
+              "audits[largest-contentful-paint-element].details.items[1].headings[2].label"
+            ],
+            "core/audits/largest-contentful-paint-element.js | itemTTFB": [
+              "audits[largest-contentful-paint-element].details.items[1].items[0].phase"
+            ],
+            "core/audits/largest-contentful-paint-element.js | itemLoadDelay": [
+              "audits[largest-contentful-paint-element].details.items[1].items[1].phase"
+            ],
+            "core/audits/largest-contentful-paint-element.js | itemLoadTime": [
+              "audits[largest-contentful-paint-element].details.items[1].items[2].phase"
+            ],
+            "core/audits/largest-contentful-paint-element.js | itemRenderDelay": [
+              "audits[largest-contentful-paint-element].details.items[1].items[3].phase"
             ],
             "core/audits/lcp-lazy-loaded.js | title": [
               "audits[lcp-lazy-loaded].title"
@@ -24165,62 +24301,62 @@
             "core/config/default-config.js | bestPracticesGeneralGroupTitle": [
               "categoryGroups[best-practices-general].title"
             ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": [
-              "stackPacks[0].descriptions[unminified-css]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-javascript": [
-              "stackPacks[0].descriptions[unminified-javascript]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | unused-javascript": [
-              "stackPacks[0].descriptions[unused-javascript]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": [
-              "stackPacks[0].descriptions[server-response-time]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | redirects": [
-              "stackPacks[0].descriptions.redirects"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | user-timings": [
-              "stackPacks[0].descriptions[user-timings]"
-            ],
-            "node_modules/lighthouse-stack-packs/packs/react.js | dom-size": [
-              "stackPacks[0].descriptions[dom-size]"
-            ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unused-css-rules": [
-              "stackPacks[1].descriptions[unused-css-rules]"
+              "stackPacks[0].descriptions[unused-css-rules]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | modern-image-formats": [
-              "stackPacks[1].descriptions[modern-image-formats]"
+              "stackPacks[0].descriptions[modern-image-formats]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | offscreen-images": [
-              "stackPacks[1].descriptions[offscreen-images]"
+              "stackPacks[0].descriptions[offscreen-images]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | render-blocking-resources": [
-              "stackPacks[1].descriptions[render-blocking-resources]"
+              "stackPacks[0].descriptions[render-blocking-resources]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unused-javascript": [
-              "stackPacks[1].descriptions[unused-javascript]"
+              "stackPacks[0].descriptions[unused-javascript]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-long-cache-ttl": [
-              "stackPacks[1].descriptions[uses-long-cache-ttl]"
+              "stackPacks[0].descriptions[uses-long-cache-ttl]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-optimized-images": [
-              "stackPacks[1].descriptions[uses-optimized-images]"
+              "stackPacks[0].descriptions[uses-optimized-images]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-text-compression": [
-              "stackPacks[1].descriptions[uses-text-compression]"
+              "stackPacks[0].descriptions[uses-text-compression]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | uses-responsive-images": [
-              "stackPacks[1].descriptions[uses-responsive-images]"
+              "stackPacks[0].descriptions[uses-responsive-images]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | user-timings": [
-              "stackPacks[1].descriptions[user-timings]"
+              "stackPacks[0].descriptions[user-timings]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | prioritize-lcp-image": [
-              "stackPacks[1].descriptions[prioritize-lcp-image]"
+              "stackPacks[0].descriptions[prioritize-lcp-image]"
             ],
             "node_modules/lighthouse-stack-packs/packs/next.js.js | unsized-images": [
-              "stackPacks[1].descriptions[unsized-images]"
+              "stackPacks[0].descriptions[unsized-images]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-css": [
+              "stackPacks[1].descriptions[unminified-css]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | unminified-javascript": [
+              "stackPacks[1].descriptions[unminified-javascript]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | unused-javascript": [
+              "stackPacks[1].descriptions[unused-javascript]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | server-response-time": [
+              "stackPacks[1].descriptions[server-response-time]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | redirects": [
+              "stackPacks[1].descriptions.redirects"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | user-timings": [
+              "stackPacks[1].descriptions[user-timings]"
+            ],
+            "node_modules/lighthouse-stack-packs/packs/react.js | dom-size": [
+              "stackPacks[1].descriptions[dom-size]"
             ]
           }
         }
