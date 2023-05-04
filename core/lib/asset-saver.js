@@ -7,6 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import stream from 'stream';
+import url from 'url';
 
 import log from 'lighthouse-logger';
 
@@ -16,6 +17,7 @@ import {MetricTraceEvents} from './traces/metric-trace-events.js';
 import {NetworkAnalysis} from '../computed/network-analysis.js';
 import {LoadSimulator} from '../computed/load-simulator.js';
 import {LighthouseError} from '../lib/lh-error.js';
+import {LH_ROOT} from '../../root.js';
 
 const optionsFilename = 'options.json';
 const artifactsFilename = 'artifacts.json';
@@ -425,6 +427,20 @@ function normalizeTimingEntries(timings) {
   }
 }
 
+/**
+ * @param {LH.Result} lhr
+ */
+function elideErrorStacks(lhr) {
+  const baseCallFrameUrl = url.pathToFileURL(LH_ROOT);
+  for (const auditResult of Object.values(lhr.audits)) {
+    if (auditResult.errorStack) {
+      auditResult.errorStack = auditResult.errorStack
+        .replaceAll(baseCallFrameUrl.href, '')
+        .replaceAll(/:[^)]+\)/g, ':elided:elided');
+    }
+  }
+}
+
 export {
   saveArtifacts,
   saveFlowArtifacts,
@@ -438,4 +454,5 @@ export {
   saveLanternNetworkData,
   stringifyReplacer,
   normalizeTimingEntries,
+  elideErrorStacks,
 };
