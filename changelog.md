@@ -27,8 +27,6 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 * predictive-perf: add URL as requiredArtifact ([#15028](https://github.com/GoogleChrome/lighthouse/pull/15028))
 * runner: handle erroneous screenshot ([#14981](https://github.com/GoogleChrome/lighthouse/pull/14981))
 * stack-packs: sort packs in order we defined them ([#15039](https://github.com/GoogleChrome/lighthouse/pull/15039))
-* test: move regenerated fixtures to new folders ([#15031](https://github.com/GoogleChrome/lighthouse/pull/15031))
-* test: add user flows to generate some fixtures ([#15005](https://github.com/GoogleChrome/lighthouse/pull/15005))
 
 ## Report
 
@@ -56,6 +54,8 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 ## Tests
 
 * devtools: sync e2e ([#14995](https://github.com/GoogleChrome/lighthouse/pull/14995))
+* move regenerated fixtures to new folders ([#15031](https://github.com/GoogleChrome/lighthouse/pull/15031))
+* add user flows to generate some fixtures ([#15005](https://github.com/GoogleChrome/lighthouse/pull/15005))
 
 ## Misc
 
