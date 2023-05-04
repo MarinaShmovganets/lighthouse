@@ -604,7 +604,7 @@ describe('Runner', () => {
         assert.strictEqual(auditResult.score, null);
         assert.strictEqual(auditResult.scoreDisplayMode, 'error');
         assert.ok(auditResult.errorMessage.includes(errorMessage));
-        assert.ok(auditResult.errorStack.includes('at Function.audit'));
+        assert.ok(auditResult.errorStack.match(/at [a-zA-Z]*.audit/));
       });
     });
 
@@ -634,7 +634,7 @@ describe('Runner', () => {
         assert.strictEqual(auditResult.score, null);
         assert.strictEqual(auditResult.scoreDisplayMode, 'error');
         assert.ok(auditResult.errorMessage.includes(errorMessage));
-        assert.ok(auditResult.errorStack.includes('at Function.aFn'));
+        assert.ok(auditResult.errorStack.match(/at [a-zA-Z]*.aFn/));
       });
     });
   });
