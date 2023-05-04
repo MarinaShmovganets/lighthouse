@@ -229,9 +229,9 @@ describe('asset-saver helper', () => {
       assert.strictEqual(artifacts.LighthouseRunWarnings.length, 2);
       assert.strictEqual(artifacts.URL.requestedUrl, 'https://www.reddit.com/r/nba');
       assert.strictEqual(artifacts.devtoolsLogs.defaultPass.length, 555);
-      assert.strictEqual(artifacts.traces.defaultPass.traceEvents.length, 13);
+      assert.strictEqual(artifacts.traces.defaultPass.traceEvents.length, 14);
       assert.strictEqual(artifacts.DevtoolsLog.length, 555);
-      assert.strictEqual(artifacts.Trace.traceEvents.length, 13);
+      assert.strictEqual(artifacts.Trace.traceEvents.length, 14);
     });
   });
 
@@ -241,10 +241,10 @@ describe('asset-saver helper', () => {
       const flowArtifacts = await assetSaver.loadFlowArtifacts(artifactsPath);
 
       expect(flowArtifacts.gatherSteps.map(gatherStep => gatherStep.flags)).toEqual([
-        {skipAboutBlank: true},
-        {name: 'Search input'},
-        {name: 'Search results'},
-        {skipAboutBlank: true, disableStorageReset: true},
+        {skipAboutBlank: true, usePassiveGathering: true},
+        {name: 'Search input', usePassiveGathering: true},
+        {name: 'Search results', usePassiveGathering: true},
+        {skipAboutBlank: true, disableStorageReset: true, usePassiveGathering: true},
       ]);
 
       const artifactsList = flowArtifacts.gatherSteps.map(gatherStep => gatherStep.artifacts);

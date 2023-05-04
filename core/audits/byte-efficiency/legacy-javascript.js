@@ -19,10 +19,11 @@
 
 import fs from 'fs';
 
+import {Audit} from '../audit.js';
 import {ByteEfficiencyAudit} from './byte-efficiency-audit.js';
+import {EntityClassification} from '../../computed/entity-classification.js';
 import {JSBundles} from '../../computed/js-bundles.js';
 import * as i18n from '../../lib/i18n/i18n.js';
-import thirdPartyWeb from '../../lib/third-party-web.js';
 import {getRequestForScript} from '../../lib/script-helpers.js';
 import {LH_ROOT} from '../../../root.js';
 
@@ -176,7 +177,12 @@ class LegacyJavascript extends ByteEfficiencyAudit {
   }
 
   static getPolyfillData() {
-    return [
+    /** @type {Array<{name: string, modules: string[], corejs?: boolean}>} */
+    const data = [
+      {name: 'focus-visible', modules: ['focus-visible']},
+    ];
+
+    const coreJsPolyfills = [
       ['Array.prototype.fill', 'es6.array.fill'],
       ['Array.prototype.filter', 'es6.array.filter'],
       ['Array.prototype.find', 'es6.array.find'],
@@ -221,19 +227,35 @@ class LegacyJavascript extends ByteEfficiencyAudit {
       ['String.fromCodePoint', 'es6.string.from-code-point'],
       ['String.raw', 'es6.string.raw'],
       ['String.prototype.repeat', 'es6.string.repeat'],
-      ['Array.prototype.includes', 'es7.array.includes'],
       ['Object.entries', 'es7.object.entries'],
       ['Object.getOwnPropertyDescriptors', 'es7.object.get-own-property-descriptors'],
       ['Object.values', 'es7.object.values'],
-    ].map(data => {
-      const [name, coreJs2Module] = data;
-      return {
+    ];
+
+    for (const [name, coreJs2Module] of coreJsPolyfills) {
+      data.push({
         name,
-        coreJs2Module,
-        coreJs3Module: coreJs2Module
-          .replace('es6.', 'es.')
-          .replace('es7.', 'es.')
-          .replace('typed.', 'typed-array.'),
+        modules: [
+          coreJs2Module,
+          // corejs 3 module name
+          coreJs2Module
+            .replace('es6.', 'es.')
+            .replace('es7.', 'es.')
+            .replace('typed.', 'typed-array.'),
+        ],
+        corejs: true,
+      });
+    }
+
+    return data;
+  }
+
+  static getCoreJsPolyfillData() {
+    return this.getPolyfillData().filter(d => d.corejs).map(d => {
+      return {
+        name: d.name,
+        coreJs2Module: d.modules[0],
+        coreJs3Module: d.modules[1],
       };
     });
   }
@@ -242,15 +264,20 @@ class LegacyJavascript extends ByteEfficiencyAudit {
    * @return {Pattern[]}
    */
   static getPolyfillPatterns() {
-    return this.getPolyfillData().map(({name}) => {
+    /** @type {Pattern[]} */
+    const patterns = [];
+
+    for (const {name} of this.getCoreJsPolyfillData()) {
       const parts = name.split('.');
       const object = parts.length > 1 ? parts.slice(0, parts.length - 1).join('.') : null;
       const property = parts[parts.length - 1];
-      return {
+      patterns.push({
         name,
         expression: this.buildPolyfillExpression(object, property),
-      };
-    });
+      });
+    }
+
+    return patterns;
   }
 
   /**
@@ -265,7 +292,7 @@ class LegacyJavascript extends ByteEfficiencyAudit {
       },
       {
         name: '@babel/plugin-transform-regenerator',
-        expression: /regeneratorRuntime\.a?wrap/.source,
+        expression: /regeneratorRuntime\(?\)?\.a?wrap/.source,
         // Example of this transform: https://gist.github.com/connorjclark/af8bccfff377ac44efc104a79bc75da2
         // `regeneratorRuntime.awrap` is generated for every usage of `await`, and adds ~80 bytes each.
         estimateBytes: result => result.count * 80,
@@ -301,12 +328,12 @@ class LegacyJavascript extends ByteEfficiencyAudit {
       // If it's a bundle with source maps, add in the polyfill modules by name too.
       const bundle = bundles.find(b => b.script.scriptId === script.scriptId);
       if (bundle) {
-        for (const {coreJs2Module, coreJs3Module, name} of polyfillData) {
+        for (const {name, modules} of polyfillData) {
           // Skip if the pattern matching found a match for this polyfill.
           if (matches.some(m => m.name === name)) continue;
 
           const source = bundle.rawMap.sources.find(source =>
-            source.endsWith(`${coreJs2Module}.js`) || source.endsWith(`${coreJs3Module}.js`));
+            modules.some(module => source.endsWith(`${module}.js`)));
           if (!source) continue;
 
           const mapping = bundle.map.mappings().find(m => m.sourceURL === source);
@@ -344,7 +371,6 @@ class LegacyJavascript extends ByteEfficiencyAudit {
       }
     }
 
-    if (polyfillResults.length > 0) estimatedWastedBytesFromPolyfills += graph.baseSize;
     estimatedWastedBytesFromPolyfills += [...modulesSeen].reduce((acc, moduleIndex) => {
       return acc + graph.moduleSizes[moduleIndex];
     }, 0);
@@ -401,7 +427,10 @@ class LegacyJavascript extends ByteEfficiencyAudit {
    * @return {Promise<ByteEfficiencyProduct>}
    */
   static async audit_(artifacts, networkRecords, context) {
-    const mainDocumentEntity = thirdPartyWeb.getEntity(artifacts.URL.finalDisplayedUrl);
+    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const classifiedEntities = await EntityClassification.request(
+      {URL: artifacts.URL, devtoolsLog}, context);
+
     const bundles = await JSBundles.request(artifacts, context);
 
     /** @type {Item[]} */
@@ -450,7 +479,7 @@ class LegacyJavascript extends ByteEfficiencyAudit {
     const wastedBytesByUrl = new Map();
     for (const item of items) {
       // Only estimate savings if first party code has legacy code.
-      if (thirdPartyWeb.isFirstParty(item.url, mainDocumentEntity)) {
+      if (classifiedEntities.isFirstParty(item.url)) {
         wastedBytesByUrl.set(item.url, item.wastedBytes);
       }
     }

@@ -203,6 +203,8 @@ function getTestFiles() {
     grep = new RegExp(titles.map(escapeRegex).join('|'));
 
     filteredTests = filteredTests.filter(file => failedTests.some(failed => failed.file === file));
+  } else if (argv.t) {
+    grep = argv.t;
   }
 
   if (filterFilePatterns.length) {
@@ -255,7 +257,7 @@ function exit({numberFailures, numberMochaInvocations}) {
 
 /**
  * @typedef OurMochaArgs
- * @property {RegExp | undefined} grep
+ * @property {RegExp | string | undefined} grep
  * @property {boolean} bail
  * @property {boolean} parallel
  * @property {string | undefined} require

@@ -16,7 +16,7 @@ const UIStrings = {
   'failureTitle': 'Web app manifest or service worker do not meet the installability requirements',
   /** Description of a Lighthouse audit that tells the user why installability is important for webapps. This is displayed after a user expands the section to see more. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   'description': `Service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. With proper service worker and manifest implementations, browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. [Learn more about manifest installability requirements](https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest/).`,
-  /** Description Table column header for the observed value of the Installability failure reason statistic. */
+  /** Label for a column in a data table; entries in the column will be a string explaining why a failure occurred. */
   'columnValue': 'Failure reason',
   /**
    * @description [ICU Syntax] Label for an audit identifying the number of installability errors found in the page.
@@ -44,6 +44,7 @@ const UIStrings = {
   'manifest-display-not-supported': `Manifest 'display' property must be one of 'standalone', 'fullscreen', or 'minimal-ui'`,
   /** Error message explaining that the manifest could not be fetched, might be empty, or could not be parsed. */
   'manifest-empty': `Manifest could not be fetched, is empty, or could not be parsed`,
+  // TODO: This error was removed in M114, we can remove this message when it hits stable.
   /** Error message explaining that no matching service worker was detected,
    * and provides a suggestion to reload the page or check whether the scope of the service worker
    * for the current page encloses the scope and start URL from the manifest. */
@@ -97,6 +98,7 @@ const UIStrings = {
   /** Message logged when the web app has been uninstalled o desktop, signalling that the install banner state is being reset. */
   'pipeline-restarted': 'PWA has been uninstalled and installability checks resetting.',
   /**
+   * TODO: This error was removed in M114, we can remove this message when it hits stable.
    * @description Error message explaining that the URL of the manifest uses a scheme that is not supported on Android.
    * @example {data:} scheme
    */

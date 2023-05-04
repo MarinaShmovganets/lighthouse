@@ -7,11 +7,11 @@
 import lighthouseStackPacksDep from 'lighthouse-stack-packs';
 
 import {initializeConfig} from '../../config/config.js';
-import {stackPacksToInclude} from '../../lib/stack-packs.js';
+import {stackPacksToInclude, getStackPacks} from '../../lib/stack-packs.js';
 
 async function getAuditIds() {
-  const {config} = await initializeConfig('navigation');
-  return config.audits.map(a => a.implementation.meta.id);
+  const {resolvedConfig} = await initializeConfig('navigation');
+  return resolvedConfig.audits.map(a => a.implementation.meta.id);
 }
 
 describe('stack-packs lib', () => {
@@ -20,6 +20,27 @@ describe('stack-packs lib', () => {
       .filter(p => !stackPacksToInclude.find(p2 => p2.packId === p.id))
       .map(p => p.id);
     expect(result).toEqual([]);
+  });
+
+  it('returns packs from page stacks', () => {
+    expect(getStackPacks([])).toEqual([]);
+    expect(getStackPacks([{detector: 'js', id: 'i-dont-know-you'}])).toEqual([]);
+
+    const packs = getStackPacks([
+      {detector: 'js', id: 'wordpress'},
+      {detector: 'js', id: 'react'},
+    ]);
+
+    expect(packs.map(pack => pack.id)).toEqual(['wordpress', 'react']);
+  });
+
+  it('returns packs from page stacks in order defined by us', () => {
+    const packs = getStackPacks([
+      {detector: 'js', id: 'react'},
+      {detector: 'js', id: 'wordpress'},
+    ]);
+
+    expect(packs.map(pack => pack.id)).toEqual(['wordpress', 'react']);
   });
 });
 
@@ -32,6 +53,7 @@ Array [
   "angular",
   "drupal",
   "ezoic",
+  "gatsby",
   "joomla",
   "magento",
   "next.js",
@@ -39,6 +61,7 @@ Array [
   "octobercms",
   "react",
   "wordpress",
+  "wp-rocket",
 ]
 `);
   });
@@ -111,6 +134,20 @@ Array [
     ],
   },
   Object {
+    "id": "gatsby",
+    "keys": Array [
+      "unused-css-rules",
+      "modern-image-formats",
+      "offscreen-images",
+      "render-blocking-resources",
+      "unused-javascript",
+      "uses-long-cache-ttl",
+      "uses-optimized-images",
+      "uses-responsive-images",
+      "prioritize-lcp-image",
+    ],
+  },
+  Object {
     "id": "joomla",
     "keys": Array [
       "unused-css-rules",
@@ -159,7 +196,7 @@ Array [
       "uses-text-compression",
       "uses-responsive-images",
       "user-timings",
-      "preload-lcp-image",
+      "prioritize-lcp-image",
       "unsized-images",
     ],
   },
@@ -170,7 +207,7 @@ Array [
       "offscreen-images",
       "uses-optimized-images",
       "uses-responsive-images",
-      "preload-lcp-image",
+      "prioritize-lcp-image",
       "unsized-images",
     ],
   },
@@ -222,6 +259,21 @@ Array [
       "uses-text-compression",
       "uses-responsive-images",
       "server-response-time",
+    ],
+  },
+  Object {
+    "id": "wp-rocket",
+    "keys": Array [
+      "unused-css-rules",
+      "modern-image-formats",
+      "unused-javascript",
+      "render-blocking-resources",
+      "unminified-css",
+      "unminified-javascript",
+      "uses-optimized-images",
+      "uses-rel-preconnect",
+      "uses-rel-preload",
+      "offscreen-images",
     ],
   },
 ]

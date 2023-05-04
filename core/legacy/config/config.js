@@ -41,10 +41,7 @@ const BASE_ARTIFACT_BLANKS = {
   NetworkUserAgent: '',
   BenchmarkIndex: '',
   BenchmarkIndexes: '',
-  WebAppManifest: '',
   GatherContext: '',
-  InstallabilityErrors: '',
-  Stacks: '',
   traces: '',
   devtoolsLogs: '',
   settings: '',
@@ -54,16 +51,37 @@ const BASE_ARTIFACT_BLANKS = {
 };
 const BASE_ARTIFACT_NAMES = Object.keys(BASE_ARTIFACT_BLANKS);
 
+// These were legacy base artifacts, but we need certain gatherers (e.g. bfcache) to run after them.
+// The order is controlled by the config, but still need to force them to run every time.
+const alwaysRunArtifactIds = [
+  'WebAppManifest',
+  'InstallabilityErrors',
+  'Stacks',
+  'FullPageScreenshot',
+];
+
 /**
- * @param {Config['passes']} passes
- * @param {Config['audits']} audits
+ * Certain gatherers are destructive to the page state.
+ * We should ensure that these gatherers run after any custom gatherers.
+ * The default priority should be 0.
+ * TODO: Make this an official part of the config or design a different solution.
+ * @type {Record<string, number|undefined>}
+ */
+const internalGathererPriorities = {
+  FullPageScreenshot: 1,
+  BFCacheFailures: 1,
+};
+
+/**
+ * @param {LegacyResolvedConfig['passes']} passes
+ * @param {LegacyResolvedConfig['audits']} audits
  */
 function assertValidPasses(passes, audits) {
   if (!Array.isArray(passes)) {
     return;
   }
 
-  const requestedGatherers = Config.getGatherersRequestedByAudits(audits);
+  const requestedGatherers = LegacyResolvedConfig.getGatherersRequestedByAudits(audits);
   // Base artifacts are provided by GatherRunner, so start foundGatherers with them.
   const foundGatherers = new Set(BASE_ARTIFACT_NAMES);
 
@@ -79,7 +97,8 @@ function assertValidPasses(passes, audits) {
       const gatherer = gathererDefn.instance;
       foundGatherers.add(gatherer.name);
       const isGatherRequiredByAudits = requestedGatherers.has(gatherer.name);
-      if (!isGatherRequiredByAudits) {
+      const isAlwaysRunArtifact = alwaysRunArtifactIds.includes(gatherer.name);
+      if (!isGatherRequiredByAudits && !isAlwaysRunArtifact) {
         const msg = `${gatherer.name} gatherer requested, however no audit requires it.`;
         log.warn('config', msg);
       }
@@ -129,23 +148,23 @@ function assertValidGatherer(gathererInstance, gathererName) {
 }
 
 /**
- * @implements {LH.Config.Config}
+ * @implements {LH.Config.LegacyResolvedConfig}
  */
-class Config {
+class LegacyResolvedConfig {
   /**
    * Resolves the provided config (inherits from extended config, if set), resolves
    * all referenced modules, and validates.
-   * @param {LH.Config.Json=} configJSON If not provided, uses the default config.
+   * @param {LH.Config=} config If not provided, uses the default config.
    * @param {LH.Flags=} flags
-   * @return {Promise<Config>}
+   * @return {Promise<LegacyResolvedConfig>}
    */
-  static async fromJson(configJSON, flags) {
+  static async fromJson(config, flags) {
     const status = {msg: 'Create config', id: 'lh:init:config'};
     log.time(status, 'verbose');
     let configPath = flags?.configPath;
 
-    if (!configJSON) {
-      configJSON = legacyDefaultConfig;
+    if (!config) {
+      config = legacyDefaultConfig;
       configPath = path.resolve(getModuleDirectory(import.meta), defaultConfigPath);
     }
 
@@ -154,43 +173,44 @@ class Config {
     }
 
     // We don't want to mutate the original config object
-    configJSON = deepCloneConfigJson(configJSON);
+    config = deepCloneConfigJson(config);
 
     // Extend the default config if specified
-    if (configJSON.extends) {
-      if (configJSON.extends !== 'lighthouse:default') {
+    if (config.extends) {
+      if (config.extends !== 'lighthouse:default') {
         throw new Error('`lighthouse:default` is the only valid extension method.');
       }
-      configJSON = Config.extendConfigJSON(deepCloneConfigJson(legacyDefaultConfig), configJSON);
+      config = LegacyResolvedConfig.extendConfigJSON(
+        deepCloneConfigJson(legacyDefaultConfig), config);
     }
 
     // The directory of the config path, if one was provided.
     const configDir = configPath ? path.dirname(configPath) : undefined;
 
     // Validate and merge in plugins (if any).
-    configJSON = await mergePlugins(configJSON, configDir, flags);
+    config = await mergePlugins(config, configDir, flags);
 
-    const settings = resolveSettings(configJSON.settings || {}, flags);
+    const settings = resolveSettings(config.settings || {}, flags);
 
     // Augment passes with necessary defaults and require gatherers.
-    const passesWithDefaults = Config.augmentPassesWithDefaults(configJSON.passes);
-    Config.adjustDefaultPassForThrottling(settings, passesWithDefaults);
-    const passes = await Config.requireGatherers(passesWithDefaults, configDir);
+    const passesWithDefaults = LegacyResolvedConfig.augmentPassesWithDefaults(config.passes);
+    LegacyResolvedConfig.adjustDefaultPassForThrottling(settings, passesWithDefaults);
+    const passes = await LegacyResolvedConfig.requireGatherers(passesWithDefaults, configDir);
 
-    const audits = await Config.requireAudits(configJSON.audits, configDir);
+    const audits = await LegacyResolvedConfig.requireAudits(config.audits, configDir);
 
-    const config = new Config(configJSON, {settings, passes, audits});
+    const resolvedConfig = new LegacyResolvedConfig(config, {settings, passes, audits});
     log.timeEnd(status);
-    return config;
+    return resolvedConfig;
   }
 
   /**
    * @deprecated `Config.fromJson` should be used instead.
    * @constructor
-   * @param {LH.Config.Json} configJSON
+   * @param {LH.Config} config
    * @param {{settings: LH.Config.Settings, passes: ?LH.Config.Pass[], audits: ?LH.Config.AuditDefn[]}} opts
    */
-  constructor(configJSON, opts) {
+  constructor(config, opts) {
     /** @type {LH.Config.Settings} */
     this.settings = opts.settings;
     /** @type {?Array<LH.Config.Pass>} */
@@ -198,11 +218,11 @@ class Config {
     /** @type {?Array<LH.Config.AuditDefn>} */
     this.audits = opts.audits;
     /** @type {?Record<string, LH.Config.Category>} */
-    this.categories = configJSON.categories || null;
+    this.categories = config.categories || null;
     /** @type {?Record<string, LH.Config.Group>} */
-    this.groups = configJSON.groups || null;
+    this.groups = config.groups || null;
 
-    Config.filterConfigIfNeeded(this);
+    LegacyResolvedConfig.filterConfigIfNeeded(this);
 
     assertValidPasses(this.passes, this.audits);
     validation.assertValidCategories(this.categories, this.audits, this.groups);
@@ -244,9 +264,9 @@ class Config {
   }
 
   /**
-   * @param {LH.Config.Json} baseJSON The JSON of the configuration to extend
-   * @param {LH.Config.Json} extendJSON The JSON of the extensions
-   * @return {LH.Config.Json}
+   * @param {LH.Config} baseJSON The JSON of the configuration to extend
+   * @param {LH.Config} extendJSON The JSON of the extensions
+   * @return {LH.Config}
    */
   static extendConfigJSON(baseJSON, extendJSON) {
     if (extendJSON.passes && baseJSON.passes) {
@@ -269,7 +289,7 @@ class Config {
   }
 
   /**
-   * @param {LH.Config.Json['passes']} passes
+   * @param {LH.Config['passes']} passes
    * @return {?Array<Required<LH.Config.PassJson>>}
    */
   static augmentPassesWithDefaults(passes) {
@@ -308,27 +328,37 @@ class Config {
 
   /**
    * Filter out any unrequested items from the config, based on requested categories or audits.
-   * @param {Config} config
+   * @param {LegacyResolvedConfig} config
    */
   static filterConfigIfNeeded(config) {
     const settings = config.settings;
-    if (!settings.onlyCategories && !settings.onlyAudits && !settings.skipAudits) {
+    // eslint-disable-next-line max-len
+    if (!settings.onlyCategories && !settings.onlyAudits && !settings.skipAudits && !settings.disableFullPageScreenshot) {
       return;
     }
 
     // 1. Filter to just the chosen categories/audits
-    const {categories, requestedAuditNames} = Config.filterCategoriesAndAudits(config.categories,
-      settings);
+    const {categories, requestedAuditNames} =
+      LegacyResolvedConfig.filterCategoriesAndAudits(config.categories, settings);
 
     // 2. Resolve which audits will need to run
     const audits = config.audits && config.audits.filter(auditDefn =>
         requestedAuditNames.has(auditDefn.implementation.meta.id));
 
     // 3. Resolve which gatherers will need to run
-    const requestedGathererIds = Config.getGatherersRequestedByAudits(audits);
+    const requestedGathererIds = LegacyResolvedConfig.getGatherersRequestedByAudits(audits);
+    for (const gathererId of alwaysRunArtifactIds) {
+      requestedGathererIds.add(gathererId);
+    }
+
+    // Remove FullPageScreenshot if we explicitly exclude it.
+    if (settings.disableFullPageScreenshot) {
+      requestedGathererIds.delete('FullPageScreenshot');
+    }
 
     // 4. Filter to only the neccessary passes
-    const passes = Config.generatePassesNeededByGatherers(config.passes, requestedGathererIds);
+    const passes =
+      LegacyResolvedConfig.generatePassesNeededByGatherers(config.passes, requestedGathererIds);
 
     config.categories = categories;
     config.audits = audits;
@@ -337,9 +367,9 @@ class Config {
 
   /**
    * Filter out any unrequested categories or audits from the categories object.
-   * @param {Config['categories']} oldCategories
+   * @param {LegacyResolvedConfig['categories']} oldCategories
    * @param {LH.Config.Settings} settings
-   * @return {{categories: Config['categories'], requestedAuditNames: Set<string>}}
+   * @return {{categories: LegacyResolvedConfig['categories'], requestedAuditNames: Set<string>}}
    */
   static filterCategoriesAndAudits(oldCategories, settings) {
     if (!oldCategories) {
@@ -350,7 +380,7 @@ class Config {
       throw new Error('Cannot set both skipAudits and onlyAudits');
     }
 
-    /** @type {NonNullable<Config['categories']>} */
+    /** @type {NonNullable<LegacyResolvedConfig['categories']>} */
     const categories = {};
     const filterByIncludedCategory = !!settings.onlyCategories;
     const filterByIncludedAudit = !!settings.onlyAudits;
@@ -411,20 +441,12 @@ class Config {
       }
     });
 
-    // The `full-page-screenshot` audit belongs to no category, but we still want to include
-    // it (unless explictly excluded) because there are audits in every category that can use it.
-    const explicitlyExcludesFullPageScreenshot =
-      settings.skipAudits && settings.skipAudits.includes('full-page-screenshot');
-    if (!explicitlyExcludesFullPageScreenshot && (settings.onlyCategories || settings.skipAudits)) {
-      includedAudits.add('full-page-screenshot');
-    }
-
     return {categories, requestedAuditNames: includedAudits};
   }
 
   /**
    * From some requested audits, return names of all required and optional artifacts
-   * @param {Config['audits']} audits
+   * @param {LegacyResolvedConfig['audits']} audits
    * @return {Set<string>}
    */
   static getGatherersRequestedByAudits(audits) {
@@ -447,9 +469,9 @@ class Config {
 
   /**
    * Filters to only requested passes and gatherers, returning a new passes array.
-   * @param {Config['passes']} passes
+   * @param {LegacyResolvedConfig['passes']} passes
    * @param {Set<string>} requestedGatherers
-   * @return {Config['passes']}
+   * @return {LegacyResolvedConfig['passes']}
    */
   static generatePassesNeededByGatherers(passes, requestedGatherers) {
     if (!passes) {
@@ -486,9 +508,9 @@ class Config {
    * Take an array of audits and audit paths and require any paths (possibly
    * relative to the optional `configDir`) using `resolveModulePath`,
    * leaving only an array of AuditDefns.
-   * @param {LH.Config.Json['audits']} audits
+   * @param {LH.Config['audits']} audits
    * @param {string=} configDir
-   * @return {Promise<Config['audits']>}
+   * @return {Promise<LegacyResolvedConfig['audits']>}
    */
   static async requireAudits(audits, configDir) {
     const status = {msg: 'Requiring audits', id: 'lh:config:requireAudits'};
@@ -504,7 +526,7 @@ class Config {
    * provided) using `resolveModulePath`, returning an array of full Passes.
    * @param {?Array<Required<LH.Config.PassJson>>} passes
    * @param {string=} configDir
-   * @return {Promise<Config['passes']>}
+   * @return {Promise<LegacyResolvedConfig['passes']>}
    */
   static async requireGatherers(passes, configDir) {
     if (!passes) {
@@ -526,6 +548,12 @@ class Config {
       );
       uniqueDefns.forEach(gatherer => assertValidGatherer(gatherer.instance, gatherer.path));
 
+      uniqueDefns.sort((a, b) => {
+        const aPriority = internalGathererPriorities[a.instance.name] || 0;
+        const bPriority = internalGathererPriorities[b.instance.name] || 0;
+        return aPriority - bPriority;
+      });
+
       return Object.assign(pass, {gatherers: uniqueDefns});
     });
     const fullPasses = await Promise.all(fullPassesPromises);
@@ -535,4 +563,4 @@ class Config {
   }
 }
 
-export {Config};
+export {LegacyResolvedConfig};

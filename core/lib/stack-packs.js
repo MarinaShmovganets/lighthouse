@@ -16,8 +16,16 @@ import * as i18n from './i18n/i18n.js';
  */
 const stackPacksToInclude = [
   {
+    packId: 'gatsby',
+    requiredStacks: ['js:gatsby'],
+  },
+  {
     packId: 'wordpress',
     requiredStacks: ['js:wordpress'],
+  },
+  {
+    packId: 'wp-rocket',
+    requiredStacks: ['js:wp-rocket'],
   },
   {
     packId: 'ezoic',
@@ -63,10 +71,12 @@ const stackPacksToInclude = [
 
 /**
  * Returns all packs that match the stacks found in the page.
- * @param {LH.Artifacts['Stacks']} pageStacks
+ * @param {LH.Artifacts['Stacks']|undefined} pageStacks
  * @return {LH.RawIcu<Array<LH.Result.StackPack>>}
  */
 function getStackPacks(pageStacks) {
+  if (!pageStacks) return [];
+
   /** @type {LH.RawIcu<Array<LH.Result.StackPack>>} */
   const packs = [];
 
@@ -111,7 +121,11 @@ function getStackPacks(pageStacks) {
     });
   }
 
-  return packs;
+  return packs.sort((a, b) => {
+    const aVal = stackPacksToInclude.findIndex(p => p.packId === a.id);
+    const bVal = stackPacksToInclude.findIndex(p => p.packId === b.id);
+    return aVal - bVal;
+  });
 }
 
 export {

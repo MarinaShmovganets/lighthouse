@@ -24,21 +24,26 @@
 /** @typedef {LH.FormattedIcu<LH.Audit.Details.TableItem>} TableItem */
 /** @typedef {LH.FormattedIcu<LH.Audit.Details.ItemValue>} TableItemValue */
 /** @typedef {LH.FormattedIcu<LH.Audit.Details.TableColumnHeading>} TableColumnHeading */
+/** @typedef {LH.FormattedIcu<LH.Audit.Details.Table | LH.Audit.Details.Opportunity>} TableLike */
 
-import {Util} from './util.js';
+import {Util} from '../../shared/util.js';
 import {CriticalRequestChainRenderer} from './crc-details-renderer.js';
 import {ElementScreenshotRenderer} from './element-screenshot-renderer.js';
+import {Globals} from './report-globals.js';
+import {ReportUtils} from './report-utils.js';
 
 const URL_PREFIXES = ['http://', 'https://', 'data:'];
+const SUMMABLE_VALUETYPES = ['bytes', 'numeric', 'ms', 'timespanMs'];
 
 export class DetailsRenderer {
   /**
    * @param {DOM} dom
-   * @param {{fullPageScreenshot?: LH.Audit.Details.FullPageScreenshot}} [options]
+   * @param {{fullPageScreenshot?: LH.Result.FullPageScreenshot, entities?: LH.Result.Entities}} [options]
    */
   constructor(dom, options = {}) {
     this._dom = dom;
     this._fullPageScreenshot = options.fullPageScreenshot;
+    this._entities = options.entities;
   }
 
   /**
@@ -60,13 +65,12 @@ export class DetailsRenderer {
       // Internal-only details, not for rendering.
       case 'screenshot':
       case 'debugdata':
-      case 'full-page-screenshot':
       case 'treemap-data':
         return null;
 
       default: {
-        // @ts-expect-error tsc thinks this is unreachable, but be forward compatible
-        // with new unexpected detail types.
+        // @ts-expect-error - all detail types need to be handled above so tsc thinks this is unreachable.
+        // Call _renderUnknown() to be forward compatible with new, unexpected detail types.
         return this._renderUnknown(details.type, details);
       }
     }
@@ -78,9 +82,9 @@ export class DetailsRenderer {
    */
   _renderBytes(details) {
     // TODO: handle displayUnit once we have something other than 'KiB'
-    const value = Util.i18n.formatBytesToKiB(details.value, details.granularity || 0.1);
+    const value = Globals.i18n.formatBytesToKiB(details.value, details.granularity || 0.1);
     const textEl = this._renderText(value);
-    textEl.title = Util.i18n.formatBytes(details.value);
+    textEl.title = Globals.i18n.formatBytes(details.value);
     return textEl;
   }
 
@@ -91,9 +95,9 @@ export class DetailsRenderer {
   _renderMilliseconds(details) {
     let value;
     if (details.displayUnit === 'duration') {
-      value = Util.i18n.formatDuration(details.value);
+      value = Globals.i18n.formatDuration(details.value);
     } else {
-      value = Util.i18n.formatMilliseconds(details.value, details.granularity || 10);
+      value = Globals.i18n.formatMilliseconds(details.value, details.granularity || 10);
     }
 
     return this._renderText(value);
@@ -172,7 +176,7 @@ export class DetailsRenderer {
    * @return {Element}
    */
   _renderNumeric(details) {
-    const value = Util.i18n.formatNumber(details.value, details.granularity || 0.1);
+    const value = Globals.i18n.formatNumber(details.value, details.granularity || 0.1);
     const element = this._dom.createElement('div', 'lh-numeric');
     element.textContent = value;
     return element;
@@ -376,7 +380,110 @@ export class DetailsRenderer {
   }
 
   /**
-   * @param {{headings: TableColumnHeading[], items: TableItem[]}} details
+   * Adorn a table row element with entity chips based on [data-entity] attribute.
+   * @param {HTMLTableRowElement} rowEl
+   */
+  _adornEntityGroupRow(rowEl) {
+    const entityName = rowEl.dataset.entity;
+    if (!entityName) return;
+    const matchedEntity = this._entities?.find(e => e.name === entityName);
+    if (!matchedEntity) return;
+
+    const firstTdEl = this._dom.find('td', rowEl);
+
+    if (matchedEntity.category) {
+      const categoryChipEl = this._dom.createElement('span');
+      categoryChipEl.classList.add('lh-audit__adorn');
+      categoryChipEl.textContent = matchedEntity.category;
+      firstTdEl.append(' ', categoryChipEl);
+    }
+
+    if (matchedEntity.isFirstParty) {
+      const firstPartyChipEl = this._dom.createElement('span');
+      firstPartyChipEl.classList.add('lh-audit__adorn', 'lh-audit__adorn1p');
+      firstPartyChipEl.textContent = Globals.strings.firstPartyChipLabel;
+      firstTdEl.append(' ', firstPartyChipEl);
+    }
+
+    if (matchedEntity.homepage) {
+      const entityLinkEl = this._dom.createElement('a');
+      entityLinkEl.href = matchedEntity.homepage;
+      entityLinkEl.target = '_blank';
+      entityLinkEl.title = Globals.strings.openInANewTabTooltip;
+      entityLinkEl.classList.add('lh-report-icon--external');
+      firstTdEl.append(' ', entityLinkEl);
+    }
+  }
+
+  /**
+   * Renders an entity-grouped row.
+   * @param {TableItem} item
+   * @param {LH.Audit.Details.TableColumnHeading[]} headings
+   */
+  _renderEntityGroupRow(item, headings) {
+    const entityColumnHeading = {...headings[0]};
+    // In subitem-situations (unused-javascript), ensure Entity name is not rendered as code, etc.
+    entityColumnHeading.valueType = 'text';
+    const groupedRowHeadings = [entityColumnHeading, ...headings.slice(1)];
+    const fragment = this._dom.createFragment();
+    fragment.append(this._renderTableRow(item, groupedRowHeadings));
+    this._dom.find('tr', fragment).classList.add('lh-row--group');
+    return fragment;
+  }
+
+  /**
+   * Returns an array of entity-grouped TableItems to use as the top-level rows in
+   * an grouped table. Each table item returned represents a unique entity, with every
+   * applicable key that can be grouped as a property. Optionally, supported columns are
+   * summed by entity, and sorted by specified keys.
+   * @param {TableLike} details
+   * @return {TableItem[]}
+   */
+  _getEntityGroupItems(details) {
+    const {items, headings, sortedBy} = details;
+    // Exclude entity-grouped audits and results without entity classification.
+    // Eg. Third-party Summary comes entity-grouped.
+    if (!items.length || details.isEntityGrouped || !items.some(item => item.entity)) {
+      return [];
+    }
+
+    const skippedColumns = new Set(details.skipSumming || []);
+    /** @type {string[]} */
+    const summableColumns = [];
+    for (const heading of headings) {
+      if (!heading.key || skippedColumns.has(heading.key)) continue;
+      if (SUMMABLE_VALUETYPES.includes(heading.valueType)) {
+        summableColumns.push(heading.key);
+      }
+    }
+
+    // Grab the first column's key to group by entity
+    const firstColumnKey = headings[0].key;
+    if (!firstColumnKey) return [];
+
+    /** @type {Map<string | undefined, TableItem>} */
+    const byEntity = new Map();
+    for (const item of items) {
+      const entityName = typeof item.entity === 'string' ? item.entity : undefined;
+      const groupedItem = byEntity.get(entityName) || {
+        [firstColumnKey]: entityName || Globals.strings.unattributable,
+        entity: entityName,
+      };
+      for (const key of summableColumns) {
+        groupedItem[key] = Number(groupedItem[key] || 0) + Number(item[key] || 0);
+      }
+      byEntity.set(entityName, groupedItem);
+    }
+
+    const result = [...byEntity.values()];
+    if (sortedBy) {
+      result.sort(ReportUtils.getTableItemSortComparator(sortedBy));
+    }
+    return result;
+  }
+
+  /**
+   * @param {TableLike} details
    * @return {Element}
    */
   _renderTable(details) {
@@ -394,16 +501,45 @@ export class DetailsRenderer {
       this._dom.createChildOf(theadTrElem, 'th', classes).append(labelEl);
     }
 
+    const entityItems = this._getEntityGroupItems(details);
     const tbodyElem = this._dom.createChildOf(tableElem, 'tbody');
-    let even = true;
-    for (const item of details.items) {
-      const rowsFragment = this._renderTableRowsFromItem(item, details.headings);
-      for (const rowEl of this._dom.findAll('tr', rowsFragment)) {
-        // For zebra styling.
-        rowEl.classList.add(even ? 'lh-row--even' : 'lh-row--odd');
+    if (entityItems.length) {
+      for (const entityItem of entityItems) {
+        const entityName = typeof entityItem.entity === 'string' ? entityItem.entity : undefined;
+        const entityGroupFragment = this._renderEntityGroupRow(entityItem, details.headings);
+        // Render all the items that match the heading row
+        for (const item of details.items.filter((item) => item.entity === entityName)) {
+          entityGroupFragment.append(this._renderTableRowsFromItem(item, details.headings));
+        }
+        const rowEls = this._dom.findAll('tr', entityGroupFragment);
+        if (entityName && rowEls.length) {
+          rowEls.forEach(row => row.dataset.entity = entityName);
+          this._adornEntityGroupRow(rowEls[0]);
+        }
+        tbodyElem.append(entityGroupFragment);
       }
-      even = !even;
-      tbodyElem.append(rowsFragment);
+    } else {
+      let even = true;
+      for (const item of details.items) {
+        const rowsFragment = this._renderTableRowsFromItem(item, details.headings);
+        const rowEls = this._dom.findAll('tr', rowsFragment);
+        const firstRowEl = rowEls[0];
+        if (typeof item.entity === 'string') {
+          firstRowEl.dataset.entity = item.entity;
+        }
+        if (details.isEntityGrouped && item.entity) {
+          // If the audit is already grouped, consider first row as a heading row.
+          firstRowEl.classList.add('lh-row--group');
+          this._adornEntityGroupRow(firstRowEl);
+        } else {
+          for (const rowEl of rowEls) {
+            // For zebra styling (same shade for a row and its sub-rows).
+            rowEl.classList.add(even ? 'lh-row--even' : 'lh-row--odd');
+          }
+        }
+        even = !even;
+        tbodyElem.append(rowsFragment);
+      }
     }
 
     return tableElem;

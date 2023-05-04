@@ -40,7 +40,7 @@ class Metric {
   /**
    * @param {LH.Artifacts.MetricComputationData} data
    * @param {LH.Artifacts.ComputedContext} context
-   * @return {Promise<LH.Artifacts.LanternMetric>}
+   * @return {Promise<LH.Artifacts.LanternMetric|LH.Artifacts.Metric>}
    */
   static computeSimulatedMetric(data, context) { // eslint-disable-line no-unused-vars
     throw new Error('Unimplemented');
@@ -70,7 +70,7 @@ class Metric {
 
     const processedTrace = await ProcessedTrace.request(trace, context);
     const processedNavigation = gatherContext.gatherMode === 'timespan' ?
-      undefined : await ProcessedNavigation.request(processedTrace, context);
+      undefined : await ProcessedNavigation.request(trace, context);
 
     const augmentedData = Object.assign({
       networkRecords: await NetworkRecords.request(devtoolsLog, context),

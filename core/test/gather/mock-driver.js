@@ -231,7 +231,7 @@ function createMockContext() {
     computedCache: new Map(),
     dependencies: {},
     baseArtifacts: createMockBaseArtifacts(),
-    settings: constants.defaultSettings,
+    settings: JSON.parse(JSON.stringify(constants.defaultSettings)),
 
     /** @return {LH.Gatherer.FRTransitionalContext} */
     asContext() {
@@ -254,6 +254,7 @@ async function mockDriverSubmodules() {
     prepareTargetForTimespanMode: fnAny(),
     prepareTargetForNavigationMode: fnAny(),
     prepareTargetForIndividualNavigation: fnAny(),
+    enableAsyncStacks: fnAny().mockReturnValue(fnAny()),
   };
   const storageMock = {clearDataForOrigin: fnAny()};
   const emulationMock = {

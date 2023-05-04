@@ -4,9 +4,9 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Artifacts} from './artifacts';
-import LHResult from './lhr/lhr';
-import {SharedFlagsSettings, OutputMode} from './lhr/settings';
+import {Artifacts} from './artifacts.js';
+import LHResult from './lhr/lhr.js';
+import {SharedFlagsSettings, OutputMode} from './lhr/settings.js';
 
 /**
  * Extends the flags in SharedFlagsSettings with flags used to configure the
@@ -18,7 +18,7 @@ export interface Flags extends SharedFlagsSettings {
   /** The hostname to use for the debugging protocol, if manually connecting. */
   hostname?: string;
   /** The level of logging to enable. */
-  logLevel?: 'silent'|'error'|'info'|'verbose';
+  logLevel?: 'silent'|'error'|'warn'|'info'|'verbose';
   /** The path to the config JSON. */
   configPath?: string;
   /** Run the specified plugins. */
@@ -71,6 +71,10 @@ export interface CliFlags extends Flags {
 export interface RunnerResult {
   lhr: LHResult;
   report: string|string[];
+  /**
+   * @internal
+   * WARNING: Some artifacts are not guaranteed to be stable. The structure is subject to change in minor releases.
+   */
   artifacts: Artifacts;
 }
 

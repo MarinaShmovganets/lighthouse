@@ -4,9 +4,11 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import thirdPartyWeb from '../lib/third-party-web.js';
 import {Audit} from './audit.js';
+import {EntityClassification} from '../computed/entity-classification.js';
 import * as i18n from '../lib/i18n/i18n.js';
+import {Util} from '../../shared/util.js';
+import UrlUtils from '../lib/url-utils.js';
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on HTTP to HTTPS redirects. This descriptive title is shown to users when HTTP traffic is redirected to HTTPS. */
@@ -17,7 +19,7 @@ const UIStrings = {
   description: 'Source maps translate minified code to the original source code. This helps ' +
     'developers debug in production. In addition, Lighthouse is able to provide further ' +
     'insights. Consider deploying source maps to take advantage of these benefits. ' +
-    '[Learn more about source maps](https://developers.google.com/web/tools/chrome-devtools/javascript/source-maps).',
+    '[Learn more about source maps](https://developer.chrome.com/docs/devtools/javascript/source-maps/).',
   /** Label for a column in a data table. Entries will be URLs to JavaScript source maps. */
   columnMapURL: 'Map URL',
   /** Label for a possible error message indicating that a source map for a large, first-party JavaScript script is missing. */
@@ -43,31 +45,35 @@ class ValidSourceMaps extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['Scripts', 'SourceMaps', 'URL'],
+      requiredArtifacts: ['Scripts', 'SourceMaps', 'URL', 'devtoolsLogs'],
     };
   }
 
   /**
    * Returns true if the size of the script exceeds a static threshold.
    * @param {LH.Artifacts.Script} script
-   * @param {string} finalURL
+   * @param {LH.Artifacts.EntityClassification} classifiedEntities
    * @return {boolean}
    */
-  static isLargeFirstPartyJS(script, finalURL) {
-    if (!script.length) return false;
+  static isLargeFirstPartyJS(script, classifiedEntities) {
+    const url = script.url;
+    if (!script.length || !url) return false;
+    if (!UrlUtils.isValid(url)) return false;
+    if (!Util.createOrReturnURL(url).protocol.startsWith('http')) return false;
 
     const isLargeJS = script.length >= LARGE_JS_BYTE_THRESHOLD;
-    const isFirstPartyJS = script.url ?
-      thirdPartyWeb.isFirstParty(script.url, thirdPartyWeb.getEntity(finalURL)) : false;
-
-    return isLargeJS && isFirstPartyJS;
+    return classifiedEntities.isFirstParty(url) && isLargeJS;
   }
 
   /**
    * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
    */
-  static async audit(artifacts) {
+  static async audit(artifacts, context) {
     const {SourceMaps} = artifacts;
+    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const classifiedEntities = await EntityClassification.request(
+      {URL: artifacts.URL, devtoolsLog}, context);
 
     /** @type {Set<string>} */
     const isMissingMapForLargeFirstPartyScriptUrl = new Set();
@@ -77,7 +83,7 @@ class ValidSourceMaps extends Audit {
     for (const script of artifacts.Scripts) {
       const sourceMap = SourceMaps.find(m => m.scriptId === script.scriptId);
       const errors = [];
-      const isLargeFirstParty = this.isLargeFirstPartyJS(script, artifacts.URL.finalDisplayedUrl);
+      const isLargeFirstParty = this.isLargeFirstPartyJS(script, classifiedEntities);
 
       if (isLargeFirstParty && (!sourceMap || !sourceMap.map)) {
         missingMapsForLargeFirstPartyFile = true;

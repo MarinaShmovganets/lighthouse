@@ -4,11 +4,30 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+import * as LH from '../../types/lh.js';
 import {isUnderTest} from '../lib/lh-env.js';
 import * as statistics from '../lib/statistics.js';
-import {Util} from '../util.cjs';
+import {Util} from '../../shared/util.js';
 
 const DEFAULT_PASS = 'defaultPass';
+
+/**
+ * @typedef TableOptions
+ * @property {number=} wastedMs
+ * @property {number=} wastedBytes
+ * @property {LH.Audit.Details.Table['sortedBy']=} sortedBy
+ * @property {LH.Audit.Details.Table['skipSumming']=} skipSumming
+ * @property {LH.Audit.Details.Table['isEntityGrouped']=} isEntityGrouped
+ */
+
+/**
+ * @typedef OpportunityOptions
+ * @property {number} overallSavingsMs
+ * @property {number=} overallSavingsBytes
+ * @property {LH.Audit.Details.Opportunity['sortedBy']=} sortedBy
+ * @property {LH.Audit.Details.Opportunity['skipSumming']=} skipSumming
+ * @property {LH.Audit.Details.Opportunity['isEntityGrouped']=} isEntityGrouped
+ */
 
 /**
  * Clamp figure to 2 decimal places
@@ -62,7 +81,7 @@ class Audit {
    * @return {LH.Audit.Product|Promise<LH.Audit.Product>}
    */
   static audit(artifacts, context) {
-    throw new Error('audit() method must be overriden');
+    throw new Error('audit() method must be overridden');
   }
 
   /* eslint-enable no-unused-vars */
@@ -122,10 +141,12 @@ class Audit {
   /**
    * @param {LH.Audit.Details.Table['headings']} headings
    * @param {LH.Audit.Details.Table['items']} results
-   * @param {LH.Audit.Details.Table['summary']=} summary
+   * @param {TableOptions=} options
    * @return {LH.Audit.Details.Table}
    */
-  static makeTableDetails(headings, results, summary) {
+  static makeTableDetails(headings, results, options = {}) {
+    const {wastedBytes, wastedMs, sortedBy, skipSumming, isEntityGrouped} = options;
+    const summary = (wastedBytes || wastedMs) ? {wastedBytes, wastedMs} : undefined;
     if (results.length === 0) {
       return {
         type: 'table',
@@ -142,6 +163,9 @@ class Audit {
       headings: headings,
       items: results,
       summary,
+      sortedBy,
+      skipSumming,
+      isEntityGrouped,
     };
   }
 
@@ -201,7 +225,7 @@ class Audit {
       const lineNumber = lineIndex + 1;
       /** @type LH.Audit.Details.SnippetValue['lines'][0] */
       const lineDetail = {
-        content: line.slice(0, maxLineLength),
+        content: Util.truncate(line, maxLineLength),
         lineNumber,
       };
       if (line.length > maxLineLength) {
@@ -214,12 +238,12 @@ class Audit {
   /**
    * @param {LH.Audit.Details.Opportunity['headings']} headings
    * @param {LH.Audit.Details.Opportunity['items']} items
-   * @param {number} overallSavingsMs
-   * @param {number=} overallSavingsBytes
+   * @param {OpportunityOptions} options
    * @return {LH.Audit.Details.Opportunity}
    */
-  static makeOpportunityDetails(headings, items, overallSavingsMs, overallSavingsBytes) {
+  static makeOpportunityDetails(headings, items, options) {
     Audit.assertHeadingKeysExist(headings, items);
+    const {overallSavingsMs, overallSavingsBytes, sortedBy, skipSumming, isEntityGrouped} = options;
 
     return {
       type: 'opportunity',
@@ -227,6 +251,9 @@ class Audit {
       items,
       overallSavingsMs,
       overallSavingsBytes,
+      sortedBy,
+      skipSumming,
+      isEntityGrouped,
     };
   }
 

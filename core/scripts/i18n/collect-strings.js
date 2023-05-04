@@ -18,7 +18,7 @@ import MessageParser from 'intl-messageformat-parser';
 import esMain from 'es-main';
 import isDeepEqual from 'lodash/isEqual.js';
 
-import {Util} from '../../util.cjs';
+import {Util} from '../../../shared/util.js';
 import {collectAndBakeCtcStrings} from './bake-ctc-to-lhl.js';
 import {pruneObsoleteLhlMessages} from './prune-obsolete-lhl-messages.js';
 import {countTranslatedMessages} from './count-translated.js';
@@ -714,6 +714,8 @@ function checkKnownFixedCollisions(strings) {
       'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
       'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
       'Consider uploading your GIF to a service which will make it available to embed as an HTML5 video.',
+      'Document contains a $MARKDOWN_SNIPPET_0$ that triggers $MARKDOWN_SNIPPET_1$',
+      'Document contains a $MARKDOWN_SNIPPET_0$ that triggers $MARKDOWN_SNIPPET_1$',
       'Document has a valid $MARKDOWN_SNIPPET_0$',
       'Document has a valid $MARKDOWN_SNIPPET_0$',
       'Failing Elements',
@@ -728,8 +730,16 @@ function checkKnownFixedCollisions(strings) {
       'Potential Savings',
       'The page was evicted from the cache to allow another page to be cached.',
       'The page was evicted from the cache to allow another page to be cached.',
+      'Use $MARKDOWN_SNIPPET_0$ to detect unused JavaScript code. $LINK_START_0$Learn more$LINK_END_0$',
+      'Use $MARKDOWN_SNIPPET_0$ to detect unused JavaScript code. $LINK_START_0$Learn more$LINK_END_0$',
       'Use the $MARKDOWN_SNIPPET_0$ component and set the appropriate $MARKDOWN_SNIPPET_1$. $LINK_START_0$Learn more$LINK_END_0$.',
       'Use the $MARKDOWN_SNIPPET_0$ component and set the appropriate $MARKDOWN_SNIPPET_1$. $LINK_START_0$Learn more$LINK_END_0$.',
+      'Use the $MARKDOWN_SNIPPET_0$ component instead of $MARKDOWN_SNIPPET_1$ to adjust image quality. $LINK_START_0$Learn more$LINK_END_0$.',
+      'Use the $MARKDOWN_SNIPPET_0$ component instead of $MARKDOWN_SNIPPET_1$ to adjust image quality. $LINK_START_0$Learn more$LINK_END_0$.',
+      'Use the $MARKDOWN_SNIPPET_0$ component instead of $MARKDOWN_SNIPPET_1$ to automatically lazy-load images. $LINK_START_0$Learn more$LINK_END_0$.',
+      'Use the $MARKDOWN_SNIPPET_0$ component instead of $MARKDOWN_SNIPPET_1$ to automatically lazy-load images. $LINK_START_0$Learn more$LINK_END_0$.',
+      'Use the $MARKDOWN_SNIPPET_0$ component instead of $MARKDOWN_SNIPPET_1$ to automatically optimize image format. $LINK_START_0$Learn more$LINK_END_0$.',
+      'Use the $MARKDOWN_SNIPPET_0$ component instead of $MARKDOWN_SNIPPET_1$ to automatically optimize image format. $LINK_START_0$Learn more$LINK_END_0$.',
     ]);
   } catch (err) {
     console.log('The number of duplicate strings has changed. Consider duplicating the `description` to match existing strings so they\'re translated together or update this assertion if they must absolutely be translated separately');

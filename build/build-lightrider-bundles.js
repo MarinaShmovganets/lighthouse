@@ -36,6 +36,9 @@ async function buildReportGenerator() {
       rollupPlugins.shim({
         [`${LH_ROOT}/report/generator/flow-report-assets.js`]: 'export const flowReportAssets = {}',
         'fs': 'export default {}',
+        'module': 'export function createRequire(){}',
+        'path': 'export default {}',
+        'url': 'export default {}',
       }),
     ],
   });

@@ -115,7 +115,7 @@ describe('LegacyJavaScript audit', () => {
         },
         "totalBytes": 0,
         "url": "https://www.googletagmanager.com/a.js",
-        "wastedBytes": 20104,
+        "wastedBytes": 26896,
       }
     `);
     expect(result.wastedBytesByUrl).toMatchInlineSnapshot(`Map {}`);
@@ -132,7 +132,7 @@ describe('LegacyJavaScript audit', () => {
     expect(result.items[0].subItems.items[0].signal).toEqual('String.prototype.repeat');
     expect(result.wastedBytesByUrl).toMatchInlineSnapshot(`
       Map {
-        "https://www.example.com/a.js" => 20104,
+        "https://www.example.com/a.js" => 26896,
       }
     `);
   });
@@ -140,14 +140,14 @@ describe('LegacyJavaScript audit', () => {
   it('fails code with multiple legacy polyfills', async () => {
     const result = await getResult([
       {
-        code: 'String.prototype.repeat = function() {}; Array.prototype.includes = function() {}',
+        code: 'String.prototype.repeat = function() {}; Array.prototype.forEach = function() {}',
         url: 'https://www.example.com/a.js',
       },
     ]);
     expect(result.items).toHaveLength(1);
     expect(result.items[0].subItems.items).toMatchObject([
       {signal: 'String.prototype.repeat'},
-      {signal: 'Array.prototype.includes'},
+      {signal: 'Array.prototype.forEach'},
     ]);
   });
 
@@ -250,6 +250,28 @@ describe('LegacyJavaScript audit', () => {
         location: {line: 1, column: 0},
       },
     ]);
+  });
+
+  it('detects non-corejs modules from source maps', async () => {
+    const map = {
+      sources: ['node_modules/focus-visible/dist/focus-visible.js'],
+      mappings: 'blah',
+    };
+    const script = {
+      code: '// blah blah blah',
+      url: 'https://www.example.com/0.js',
+      map,
+    };
+    const result = await getResult([script]);
+
+    expect(result.items).toHaveLength(1);
+    expect(result.items[0].subItems.items).toMatchObject([
+      {
+        signal: 'focus-visible',
+        location: {line: 0, column: 0},
+      },
+    ]);
+    expect(result.items[0].wastedBytes).toBe(3000);
   });
 });
 

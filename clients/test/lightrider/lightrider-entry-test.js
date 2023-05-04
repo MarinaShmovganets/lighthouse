@@ -33,8 +33,10 @@ describe('lightrider-entry', () => {
 
       const result = await runLighthouseInLR(mockConnection, url, {output}, {});
       const parsedResult = JSON.parse(result);
-      assert.strictEqual(parsedResult.runtimeError.code, connectionError.code);
-      assert.ok(parsedResult.runtimeError.message.includes(connectionError.friendlyMessage));
+      expect(parsedResult.runtimeError).toMatchObject({
+        code: connectionError.code,
+        message: expect.stringContaining(connectionError.message),
+      });
     });
 
     it('returns an unknown-runtimeError LHR when lighthouse throws an unknown error', async () => {
@@ -65,8 +67,8 @@ describe('lightrider-entry', () => {
       const url = 'https://example.com';
 
       await runLighthouseInLR(mockConnection, url, {}, {});
-      const config = runStub.mock.calls[0][1].config;
-      assert.equal(config.settings.channel, 'lr');
+      const resolvedConfig = runStub.mock.calls[0][1].resolvedConfig;
+      assert.equal(resolvedConfig.settings.channel, 'lr');
 
       runStub.mockRestore();
     });
@@ -79,8 +81,8 @@ describe('lightrider-entry', () => {
 
       const lrDevice = 'desktop';
       await runLighthouseInLR(mockConnection, url, {}, {lrDevice});
-      const config = runStub.mock.calls[0][1].config;
-      assert.equal(config.settings.formFactor, 'desktop');
+      const resolvedConfig = runStub.mock.calls[0][1].resolvedConfig;
+      assert.equal(resolvedConfig.settings.formFactor, 'desktop');
 
       runStub.mockRestore();
     });
@@ -93,8 +95,8 @@ describe('lightrider-entry', () => {
 
       const lrDevice = 'mobile';
       await runLighthouseInLR(mockConnection, url, {}, {lrDevice});
-      const config = runStub.mock.calls[0][1].config;
-      assert.equal(config.settings.formFactor, 'mobile');
+      const resolvedConfig = runStub.mock.calls[0][1].resolvedConfig;
+      assert.equal(resolvedConfig.settings.formFactor, 'mobile');
 
       runStub.mockRestore();
     });
@@ -112,9 +114,9 @@ describe('lightrider-entry', () => {
         },
       };
       await runLighthouseInLR(mockConnection, url, {}, {configOverride});
-      const config = runStub.mock.calls[0][1].config;
-      assert.equal(config.settings.onlyAudits.length, 1);
-      assert.equal(config.settings.onlyAudits[0], 'network-requests');
+      const resolvedConfig = runStub.mock.calls[0][1].resolvedConfig;
+      assert.equal(resolvedConfig.settings.onlyAudits.length, 1);
+      assert.equal(resolvedConfig.settings.onlyAudits[0], 'network-requests');
 
       runStub.mockRestore();
     });

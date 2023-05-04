@@ -16,10 +16,7 @@ import * as prepare from '../../gather/driver/prepare.js';
 import * as storage from '../../gather/driver/storage.js';
 import * as navigation from '../../gather/driver/navigation.js';
 import * as serviceWorkers from '../../gather/driver/service-workers.js';
-import WebAppManifest from '../../gather/gatherers/web-app-manifest.js';
-import InstallabilityErrors from '../../gather/gatherers/installability-errors.js';
 import NetworkUserAgent from '../../gather/gatherers/network-user-agent.js';
-import Stacks from '../../gather/gatherers/stacks.js';
 import {finalizeArtifacts} from '../../gather/base-artifacts.js';
 import UrlUtils from '../../lib/url-utils.js';
 
@@ -238,7 +235,7 @@ class GatherRunner {
       id: `lh:gather:getDevtoolsLog`,
     };
     log.time(status);
-    const devtoolsLog = driver.endDevtoolsLog();
+    const devtoolsLog = await driver.endDevtoolsLog();
     const networkRecords = await NetworkRecords.request(devtoolsLog, passContext);
     log.timeEnd(status);
 
@@ -313,16 +310,11 @@ class GatherRunner {
    * @return {Promise<void>}
    */
   static async afterPass(passContext, loadData, gathererResults) {
-    const driver = passContext.driver;
     const config = passContext.passConfig;
     const gatherers = config.gatherers;
 
     const apStatus = {msg: `Running afterPass methods`, id: `lh:gather:afterPass`};
     log.time(apStatus, 'verbose');
-
-    // Some gatherers scroll the page which can cause unexpected results for other gatherers.
-    // We reset the scroll position in between each gatherer.
-    const scrollPosition = await driver.getScrollPosition();
 
     for (const gathererDefn of gatherers) {
       const gatherer = gathererDefn.instance;
@@ -339,7 +331,6 @@ class GatherRunner {
       gathererResult.push(artifactPromise);
       gathererResults[gatherer.name] = gathererResult;
       await artifactPromise.catch(() => {});
-      await driver.scrollTo(scrollPosition);
       log.timeEnd(status);
     }
     log.timeEnd(apStatus);
@@ -401,9 +392,6 @@ class GatherRunner {
       HostUserAgent: hostUserAgent,
       NetworkUserAgent: '', // updated later
       BenchmarkIndex: 0, // updated later
-      WebAppManifest: null, // updated later
-      InstallabilityErrors: {errors: []}, // updated later
-      Stacks: [], // updated later
       traces: {},
       devtoolsLogs: {},
       settings: options.settings,
@@ -429,37 +417,6 @@ class GatherRunner {
     log.time(status);
 
     const baseArtifacts = passContext.baseArtifacts;
-
-    // Fetch the manifest, if it exists.
-    try {
-      baseArtifacts.WebAppManifest = await WebAppManifest.getWebAppManifest(
-        passContext.driver.defaultSession, passContext.url);
-    } catch (err) {
-      log.error('GatherRunner WebAppManifest', err);
-      baseArtifacts.WebAppManifest = null;
-    }
-
-    try {
-      baseArtifacts.InstallabilityErrors = await InstallabilityErrors.getInstallabilityErrors(
-        passContext.driver.defaultSession);
-    } catch (err) {
-      log.error('GatherRunner InstallabilityErrors', err);
-      baseArtifacts.InstallabilityErrors = {
-        errors: [
-          {
-            errorId: 'protocol-timeout',
-            errorArguments: [],
-          },
-        ],
-      };
-    }
-
-    try {
-      baseArtifacts.Stacks = await Stacks.collectStacks(passContext.driver.executionContext);
-    } catch (err) {
-      log.error('GatherRunner Stacks', err);
-      baseArtifacts.Stacks = [];
-    }
 
     // Find the NetworkUserAgent actually used in the devtoolsLogs.
     const devtoolsLog = baseArtifacts.devtoolsLogs[passContext.passConfig.passName];
@@ -495,7 +452,7 @@ class GatherRunner {
       // Add a `bidx=20` query param, eg: https://www.example.com/?bidx=50
       const parsedUrl = UrlUtils.isValid(options.requestedUrl) && new URL(options.requestedUrl);
       if (options.settings.channel === 'lr' && parsedUrl && parsedUrl.searchParams.has('bidx')) {
-        const bidxRunCount = parsedUrl.searchParams.get('bidx') || 0;
+        const bidxRunCount = Number(parsedUrl.searchParams.get('bidx')) || 0;
         // Add the first bidx into the new set
         const indexes = [baseArtifacts.BenchmarkIndex];
         for (let i = 0; i < bidxRunCount; i++) {

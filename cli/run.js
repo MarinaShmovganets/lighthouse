@@ -209,7 +209,7 @@ async function potentiallyKillChrome(launchedChrome) {
 /**
  * @param {string} url
  * @param {LH.CliFlags} flags
- * @param {LH.Config.Json|undefined} config
+ * @param {LH.Config|undefined} config
  * @return {Promise<LH.RunnerResult|undefined>}
  */
 async function runLighthouse(url, flags, config) {
@@ -241,7 +241,7 @@ async function runLighthouse(url, flags, config) {
     if (flags.legacyNavigation) {
       log.warn('CLI', 'Legacy navigation CLI is deprecated');
       flags.channel = 'legacy-navigation-cli';
-    } else {
+    } else if (!flags.channel) {
       flags.channel = 'cli';
     }
 

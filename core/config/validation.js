@@ -39,16 +39,16 @@ function isValidArtifactDependency(dependent, dependency) {
 
 /**
  * Throws if pluginName is invalid or (somehow) collides with a category in the
- * configJSON being added to.
- * @param {LH.Config.Json} configJSON
+ * config being added to.
+ * @param {LH.Config} config
  * @param {string} pluginName
  */
-function assertValidPluginName(configJSON, pluginName) {
+function assertValidPluginName(config, pluginName) {
   if (!pluginName.startsWith('lighthouse-plugin-')) {
     throw new Error(`plugin name '${pluginName}' does not start with 'lighthouse-plugin-'`);
   }
 
-  if (configJSON.categories?.[pluginName]) {
+  if (config.categories?.[pluginName]) {
     throw new Error(`plugin name '${pluginName}' not allowed because it is the id of a category already found in config`); // eslint-disable-line max-len
   }
 }
@@ -79,7 +79,7 @@ function assertValidFRGatherer(gathererDefn) {
 
 /**
  * Throws an error if the provided object does not implement the required navigations interface.
- * @param {LH.Config.FRConfig['navigations']} navigationsDefn
+ * @param {LH.Config.ResolvedConfig['navigations']} navigationsDefn
  * @return {{warnings: string[]}}
  */
 function assertValidFRNavigations(navigationsDefn) {
@@ -164,9 +164,9 @@ function assertValidAudit(auditDefinition) {
 }
 
 /**
- * @param {LH.Config.FRConfig['categories']} categories
- * @param {LH.Config.FRConfig['audits']} audits
- * @param {LH.Config.FRConfig['groups']} groups
+ * @param {LH.Config.ResolvedConfig['categories']} categories
+ * @param {LH.Config.ResolvedConfig['audits']} audits
+ * @param {LH.Config.ResolvedConfig['groups']} groups
  */
 function assertValidCategories(categories, audits, groups) {
   if (!categories) {
@@ -247,22 +247,22 @@ function assertArtifactTopologicalOrder(navigations) {
 }
 
 /**
- * @param {LH.Config.FRConfig} config
+ * @param {LH.Config.ResolvedConfig} resolvedConfig
  * @return {{warnings: string[]}}
  */
-function assertValidConfig(config) {
-  const {warnings} = assertValidFRNavigations(config.navigations);
+function assertValidConfig(resolvedConfig) {
+  const {warnings} = assertValidFRNavigations(resolvedConfig.navigations);
 
-  for (const artifactDefn of config.artifacts || []) {
+  for (const artifactDefn of resolvedConfig.artifacts || []) {
     assertValidFRGatherer(artifactDefn.gatherer);
   }
 
-  for (const auditDefn of config.audits || []) {
+  for (const auditDefn of resolvedConfig.audits || []) {
     assertValidAudit(auditDefn);
   }
 
-  assertValidCategories(config.categories, config.audits, config.groups);
-  assertValidSettings(config.settings);
+  assertValidCategories(resolvedConfig.categories, resolvedConfig.audits, resolvedConfig.groups);
+  assertValidSettings(resolvedConfig.settings);
   return {warnings};
 }
 

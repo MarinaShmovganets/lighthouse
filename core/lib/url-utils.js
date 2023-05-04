@@ -4,7 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Util} from '../util.cjs';
+import {Util} from '../../shared/util.js';
 import {LighthouseError} from './lh-error.js';
 
 /** @typedef {import('./network-request.js').NetworkRequest} NetworkRequest */
@@ -22,6 +22,7 @@ const NON_NETWORK_SCHEMES = [
   'intent', // @see https://developer.chrome.com/docs/multidevice/android/intents/
   'file', // @see https://en.wikipedia.org/wiki/File_URI_scheme
   'filesystem', // @see https://developer.mozilla.org/en-US/docs/Web/API/FileSystem
+  'chrome-extension',
 ];
 
 /**
@@ -138,7 +139,7 @@ class UrlUtils {
   static elideDataURI(url) {
     try {
       const parsed = new URL(url);
-      return parsed.protocol === 'data:' ? url.slice(0, 100) : url;
+      return parsed.protocol === 'data:' ? Util.truncate(url, 100) : url;
     } catch (e) {
       return url;
     }

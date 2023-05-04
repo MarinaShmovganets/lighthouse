@@ -38,19 +38,31 @@ const defaultConfigPath = path.join(
 );
 
 /**
- * @param {LH.Config.Json|undefined} configJSON
- * @param {{configPath?: string}} context
- * @return {{configWorkingCopy: LH.Config.Json, configDir?: string, configPath?: string}}
+ * Certain gatherers are destructive to the page state.
+ * We should ensure that these gatherers run after any custom gatherers.
+ * The default priority should be 0.
+ * TODO: Make this an official part of the config or design a different solution.
+ * @type {Record<string, number|undefined>}
  */
-function resolveWorkingCopy(configJSON, context) {
+const internalArtifactPriorities = {
+  FullPageScreenshot: 1,
+  BFCacheFailures: 1,
+};
+
+/**
+ * @param {LH.Config|undefined} config
+ * @param {{configPath?: string}} context
+ * @return {{configWorkingCopy: LH.Config, configDir?: string, configPath?: string}}
+ */
+function resolveWorkingCopy(config, context) {
   let {configPath} = context;
 
   if (configPath && !path.isAbsolute(configPath)) {
     throw new Error('configPath must be an absolute path');
   }
 
-  if (!configJSON) {
-    configJSON = defaultConfig;
+  if (!config) {
+    config = defaultConfig;
     configPath = defaultConfigPath;
   }
 
@@ -58,24 +70,24 @@ function resolveWorkingCopy(configJSON, context) {
   const configDir = configPath ? path.dirname(configPath) : undefined;
 
   return {
-    configWorkingCopy: deepCloneConfigJson(configJSON),
+    configWorkingCopy: deepCloneConfigJson(config),
     configPath,
     configDir,
   };
 }
 
 /**
- * @param {LH.Config.Json} configJSON
- * @return {LH.Config.Json}
+ * @param {LH.Config} config
+ * @return {LH.Config}
  */
-function resolveExtensions(configJSON) {
-  if (!configJSON.extends) return configJSON;
+function resolveExtensions(config) {
+  if (!config.extends) return config;
 
-  if (configJSON.extends !== 'lighthouse:default') {
+  if (config.extends !== 'lighthouse:default') {
     throw new Error('`lighthouse:default` is the only valid extension method.');
   }
 
-  const {artifacts, ...extensionJSON} = configJSON;
+  const {artifacts, ...extensionJSON} = config;
   const defaultClone = deepCloneConfigJson(defaultConfig);
   const mergedConfig = mergeConfigFragment(defaultClone, extensionJSON);
 
@@ -129,12 +141,19 @@ async function resolveArtifactsToDefns(artifacts, configDir) {
   const status = {msg: 'Resolve artifact definitions', id: 'lh:config:resolveArtifactsToDefns'};
   log.time(status, 'verbose');
 
+  const sortedArtifacts = [...artifacts];
+  sortedArtifacts.sort((a, b) => {
+    const aPriority = internalArtifactPriorities[a.id] || 0;
+    const bPriority = internalArtifactPriorities[b.id] || 0;
+    return aPriority - bPriority;
+  });
+
   /** @type {Map<Symbol, LH.Config.AnyArtifactDefn>} */
   const artifactDefnsBySymbol = new Map();
 
   const coreGathererList = Runner.getGathererList();
   const artifactDefns = [];
-  for (const artifactJson of artifacts) {
+  for (const artifactJson of sortedArtifacts) {
     /** @type {LH.Config.GathererJson} */
     // @ts-expect-error - remove when legacy runner path is removed.
     const gathererJson = artifactJson.gatherer;
@@ -236,15 +255,15 @@ function resolveFakeNavigations(artifactDefns, settings) {
 
 /**
  * @param {LH.Gatherer.GatherMode} gatherMode
- * @param {LH.Config.Json=} configJSON
+ * @param {LH.Config=} config
  * @param {LH.Flags=} flags
- * @return {Promise<{config: LH.Config.FRConfig, warnings: string[]}>}
+ * @return {Promise<{resolvedConfig: LH.Config.ResolvedConfig, warnings: string[]}>}
  */
-async function initializeConfig(gatherMode, configJSON, flags = {}) {
+async function initializeConfig(gatherMode, config, flags = {}) {
   const status = {msg: 'Initialize config', id: 'lh:config'};
   log.time(status, 'verbose');
 
-  let {configWorkingCopy, configDir} = resolveWorkingCopy(configJSON, flags);
+  let {configWorkingCopy, configDir} = resolveWorkingCopy(config, flags);
 
   configWorkingCopy = resolveExtensions(configWorkingCopy);
   configWorkingCopy = await mergePlugins(configWorkingCopy, configDir, flags);
@@ -256,8 +275,8 @@ async function initializeConfig(gatherMode, configJSON, flags = {}) {
 
   const navigations = resolveFakeNavigations(artifacts, settings);
 
-  /** @type {LH.Config.FRConfig} */
-  let config = {
+  /** @type {LH.Config.ResolvedConfig} */
+  let resolvedConfig = {
     artifacts,
     navigations,
     audits: await resolveAuditsToDefns(configWorkingCopy.audits, configDir),
@@ -266,25 +285,25 @@ async function initializeConfig(gatherMode, configJSON, flags = {}) {
     settings,
   };
 
-  const {warnings} = assertValidConfig(config);
+  const {warnings} = assertValidConfig(resolvedConfig);
 
-  config = filterConfigByGatherMode(config, gatherMode);
-  config = filterConfigByExplicitFilters(config, settings);
+  resolvedConfig = filterConfigByGatherMode(resolvedConfig, gatherMode);
+  resolvedConfig = filterConfigByExplicitFilters(resolvedConfig, settings);
 
   log.timeEnd(status);
-  return {config, warnings};
+  return {resolvedConfig, warnings};
 }
 
 /**
- * @param {LH.Config.FRConfig} config
+ * @param {LH.Config.ResolvedConfig} resolvedConfig
  * @return {string}
  */
-function getConfigDisplayString(config) {
-  /** @type {LH.Config.FRConfig} */
-  const jsonConfig = JSON.parse(JSON.stringify(config));
+function getConfigDisplayString(resolvedConfig) {
+  /** @type {LH.Config.ResolvedConfig} */
+  const resolvedConfigCopy = JSON.parse(JSON.stringify(resolvedConfig));
 
-  if (jsonConfig.navigations) {
-    for (const navigation of jsonConfig.navigations) {
+  if (resolvedConfigCopy.navigations) {
+    for (const navigation of resolvedConfigCopy.navigations) {
       for (let i = 0; i < navigation.artifacts.length; ++i) {
         // @ts-expect-error Breaking the Config.AnyArtifactDefn type.
         navigation.artifacts[i] = navigation.artifacts[i].id;
@@ -292,8 +311,8 @@ function getConfigDisplayString(config) {
     }
   }
 
-  if (jsonConfig.artifacts) {
-    for (const artifactDefn of jsonConfig.artifacts) {
+  if (resolvedConfigCopy.artifacts) {
+    for (const artifactDefn of resolvedConfigCopy.artifacts) {
       // @ts-expect-error Breaking the Config.AnyArtifactDefn type.
       artifactDefn.gatherer = artifactDefn.gatherer.path;
       // Dependencies are not declared on Config JSON
@@ -301,8 +320,8 @@ function getConfigDisplayString(config) {
     }
   }
 
-  if (jsonConfig.audits) {
-    for (const auditDefn of jsonConfig.audits) {
+  if (resolvedConfigCopy.audits) {
+    for (const auditDefn of resolvedConfigCopy.audits) {
       // @ts-expect-error Breaking the Config.AuditDefn type.
       auditDefn.implementation = undefined;
       if (Object.keys(auditDefn.options).length === 0) {
@@ -313,9 +332,9 @@ function getConfigDisplayString(config) {
   }
 
   // Printed config is more useful with localized strings.
-  format.replaceIcuMessages(jsonConfig, jsonConfig.settings.locale);
+  format.replaceIcuMessages(resolvedConfigCopy, resolvedConfigCopy.settings.locale);
 
-  return JSON.stringify(jsonConfig, null, 2);
+  return JSON.stringify(resolvedConfigCopy, null, 2);
 }
 
 export {

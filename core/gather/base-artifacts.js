@@ -12,12 +12,12 @@ import {
 } from './driver/environment.js';
 
 /**
- * @param {LH.Config.FRConfig} config
+ * @param {LH.Config.ResolvedConfig} resolvedConfig
  * @param {LH.Gatherer.FRTransitionalDriver} driver
  * @param {{gatherMode: LH.Gatherer.GatherMode}} context
  * @return {Promise<LH.BaseArtifacts>}
  */
-async function getBaseArtifacts(config, driver, context) {
+async function getBaseArtifacts(resolvedConfig, driver, context) {
   const BenchmarkIndex = await getBenchmarkIndex(driver.executionContext);
   const {userAgent} = await getBrowserVersion(driver.defaultSession);
 
@@ -26,7 +26,7 @@ async function getBaseArtifacts(config, driver, context) {
     fetchTime: new Date().toJSON(),
     Timing: [],
     LighthouseRunWarnings: [],
-    settings: config.settings,
+    settings: resolvedConfig.settings,
     // Environment artifacts that can always be computed.
     BenchmarkIndex,
     HostUserAgent: userAgent,
@@ -39,10 +39,7 @@ async function getBaseArtifacts(config, driver, context) {
     PageLoadError: null,
     GatherContext: context,
     // Artifacts that have been replaced by regular gatherers in Fraggle Rock.
-    Stacks: [],
     NetworkUserAgent: '',
-    WebAppManifest: null,
-    InstallabilityErrors: {errors: []},
     traces: {},
     devtoolsLogs: {},
   };

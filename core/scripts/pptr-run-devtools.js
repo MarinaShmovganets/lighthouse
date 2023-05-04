@@ -25,7 +25,7 @@ import fs from 'fs';
 import readline from 'readline';
 import {fileURLToPath} from 'url';
 
-import puppeteer from 'puppeteer-core';
+import * as puppeteer from 'puppeteer-core';
 import yargs from 'yargs';
 import * as yargsHelpers from 'yargs/helpers';
 import {getChromePath} from 'chrome-launcher';
@@ -138,7 +138,7 @@ function addSniffer(receiver, methodName, override) {
       Array.prototype.push.call(args, result);
       override.apply(this, args);
     } catch (e) {
-      throw new Error('Exception in overriden method \'' + methodName + '\': ' + e);
+      throw new Error('Exception in overridden method \'' + methodName + '\': ' + e);
     }
     return result;
   };
@@ -172,14 +172,14 @@ async function waitForLighthouseReady() {
   }
   // @ts-expect-error global
   const targetManager = SDK.targetManager || (SDK.TargetManager.TargetManager || SDK.TargetManager).instance();
-  if (targetManager.mainTarget() === null) {
+  if (targetManager.primaryPageTarget() === null) {
     if (targetManager?.observeTargets) {
       await new Promise(resolve => targetManager.observeTargets({
         targetAdded: resolve,
         targetRemoved: () => {},
       }));
     } else {
-      while (targetManager.mainTarget() === null) {
+      while (targetManager.primaryPageTarget() === null) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
     }
@@ -244,7 +244,7 @@ function disableLegacyNavigation() {
 
 /**
  * @param {puppeteer.CDPSession} inspectorSession
- * @param {LH.Config.Json} config
+ * @param {LH.Config} config
  */
 async function installCustomLighthouseConfig(inspectorSession, config) {
   // Prevent modification for tests that are retried.
@@ -267,7 +267,7 @@ async function installCustomLighthouseConfig(inspectorSession, config) {
 
   await evaluateInSession(
     inspectorSession,
-    `UI.panels.lighthouse.protocolService.configForTesting = ${JSON.stringify(config)}`
+    `UI.panels.lighthouse.controller.protocolService.configForTesting = ${JSON.stringify(config)}`
   );
 }
 
@@ -296,7 +296,7 @@ function dismissDialog(dialog) {
 
 /**
  * @param {string} url
- * @param {{config?: LH.Config.Json, chromeFlags?: string[], useLegacyNavigation?: boolean}} [options]
+ * @param {{config?: LH.Config, chromeFlags?: string[], useLegacyNavigation?: boolean}} [options]
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, logs: string[]}>}
  */
 async function testUrlFromDevtools(url, options = {}) {
@@ -367,7 +367,7 @@ async function readUrlList() {
 async function main() {
   const chromeFlags = parseChromeFlags(argv['chromeFlags']);
   const outputDir = argv['output-dir'];
-  /** @type {LH.Config.Json=} */
+  /** @type {LH.Config=} */
   const config = argv.config ? JSON.parse(argv.config) : undefined;
 
   // Create output directory.

@@ -20,7 +20,7 @@ import mobileConfig from '../../core/config/lr-mobile-config.js';
 import desktopConfig from '../../core/config/lr-desktop-config.js';
 import {pageFunctions} from '../../core/lib/page-functions.js';
 
-/** @type {Record<'mobile'|'desktop', LH.Config.Json>} */
+/** @type {Record<'mobile'|'desktop', LH.Config>} */
 const LR_PRESETS = {
   mobile: mobileConfig,
   desktop: desktopConfig,
@@ -43,11 +43,11 @@ async function getPageFromConnection(connection) {
     await connection.sendCommand('Target.getTargetInfo', undefined);
   const {frameTree} = await connection.sendCommand('Page.getFrameTree', undefined);
 
-  const pptrConnection = new PptrConnection(
-    mainTargetInfo.url,
-    // @ts-expect-error Hack to access the WRS transport layer.
-    connection.channel_.root_.transport_
-  );
+  // @ts-expect-error Hack to access the WRS/SRS transport layer.
+  const channel = connection.channel_ || connection.rootSessionConnection_;
+  const transport = channel.root_.transport_;
+
+  const pptrConnection = new PptrConnection(mainTargetInfo.url, transport);
 
   const browser = await CDPBrowser._create(
     'chrome',
@@ -75,7 +75,7 @@ async function getPageFromConnection(connection) {
  * @param {Connection} connection
  * @param {string} url
  * @param {LH.Flags} flags Lighthouse flags
- * @param {{lrDevice?: 'desktop'|'mobile', categoryIDs?: Array<string>, logAssets: boolean, configOverride?: LH.Config.Json, useFraggleRock?: boolean}} lrOpts Options coming from Lightrider
+ * @param {{lrDevice?: 'desktop'|'mobile', categoryIDs?: Array<string>, logAssets: boolean, configOverride?: LH.Config, useFraggleRock?: boolean}} lrOpts Options coming from Lightrider
  * @return {Promise<string>}
  */
 async function runLighthouseInLR(connection, url, flags, lrOpts) {
