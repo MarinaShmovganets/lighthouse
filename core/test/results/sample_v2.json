@@ -3746,6 +3746,18 @@
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
+    "td-has-header": {
+      "id": "td-has-header",
+      "title": "Large `<table>` elements have at least one or more `[header]` attribute",
+      "description": "Screen readers have features to make navigating tables easier. Ensuring large tables are properly marked up may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.6/td-has-header).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
     "td-headers-attr": {
       "id": "td-headers-attr",
       "title": "Cells in a `<table>` element that use the `[headers]` attribute refer to table cells within the same table.",
@@ -6008,6 +6020,11 @@
           "group": "a11y-navigation"
         },
         {
+          "id": "td-has-header",
+          "weight": 10,
+          "group": "a11y-tables-lists"
+        },
+        {
           "id": "td-headers-attr",
           "weight": 0,
           "group": "a11y-tables-lists"
@@ -6069,7 +6086,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 0.77
+      "score": 0.79
     },
     "best-practices": {
       "title": "Best Practices",
@@ -8346,6 +8363,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:td-has-header",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:td-headers-attr",
         "duration": 100,
         "entryType": "measure"
@@ -9726,6 +9749,12 @@
       ],
       "core/audits/accessibility/tabindex.js | description": [
         "audits.tabindex.description"
+      ],
+      "core/audits/accessibility/td-has-header.js | title": [
+        "audits[td-has-header].title"
+      ],
+      "core/audits/accessibility/td-has-header.js | description": [
+        "audits[td-has-header].description"
       ],
       "core/audits/accessibility/td-headers-attr.js | title": [
         "audits[td-headers-attr].title"
