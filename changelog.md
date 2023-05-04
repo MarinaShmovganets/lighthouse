@@ -1,15 +1,18 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Eric K @doteric
- <a name="10.2.0"></a>
+<a name="10.2.0"></a>
 # 10.2.0 (2023-05-04)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v10.1.1...v10.2.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 115](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## New Contributors
+
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+- Eric K @doteric
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
+* largest-contentful-paint-element: add phases table ([#14891](https://github.com/GoogleChrome/lighthouse/pull/14891))
 
 ## Core
 
@@ -21,7 +24,6 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 * fix viewport when running over adb ([#14937](https://github.com/GoogleChrome/lighthouse/pull/14937))
 * driver: warn about remaining inflight requests urls ([#14963](https://github.com/GoogleChrome/lighthouse/pull/14963))
 * entity-classification: classify unknown urls as "unattributable" ([#15009](https://github.com/GoogleChrome/lighthouse/pull/15009))
-* largest-contentful-paint-element: add phases table ([#14891](https://github.com/GoogleChrome/lighthouse/pull/14891))
 * predictive-perf: add URL as requiredArtifact ([#15028](https://github.com/GoogleChrome/lighthouse/pull/15028))
 * runner: handle erroneous screenshot ([#14981](https://github.com/GoogleChrome/lighthouse/pull/14981))
 * stack-packs: sort packs in order we defined them ([#15039](https://github.com/GoogleChrome/lighthouse/pull/15039))
