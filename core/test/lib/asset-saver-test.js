@@ -370,7 +370,9 @@ describe('asset-saver helper', () => {
       // Use an LighthouseError that has an ICU replacement.
       const protocolMethod = 'Page.getFastness';
       const lhError = new LighthouseError(
-        LighthouseError.errors.PROTOCOL_TIMEOUT, {protocolMethod}, new Error('the cause'));
+        LighthouseError.errors.PROTOCOL_TIMEOUT,
+        {protocolMethod},
+        {cause: new Error('the cause')});
 
       const artifacts = {
         traces: {},

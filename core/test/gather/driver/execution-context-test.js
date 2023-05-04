@@ -209,6 +209,7 @@ describe('.evaluateAsync', () => {
       .mockResponse('Page.enable')
       .mockResponse('Runtime.enable')
       .mockResponse('Page.getResourceTree', {frameTree: {frame: {id: '1337'}}})
+      .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: '1337'}}})
       .mockResponse('Page.createIsolatedWorld', {executionContextId: 9001})
       .mockResponse('Runtime.evaluate', {exceptionDetails});
 

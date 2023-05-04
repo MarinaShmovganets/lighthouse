@@ -610,7 +610,7 @@ describe('Runner', () => {
 
     it('produces an error audit result that prefers cause stack', async () => {
       const errorMessage = 'Audit yourself';
-      const config = await Config.fromJson({
+      const resolvedConfig = await LegacyResolvedConfig.fromJson({
         settings: {
           auditMode: moduleDir + '/fixtures/artifacts/empty-artifacts/',
         },
@@ -629,7 +629,7 @@ describe('Runner', () => {
         ],
       });
 
-      return runGatherAndAudit({}, {config}).then(results => {
+      return runGatherAndAudit({}, {resolvedConfig}).then(results => {
         const auditResult = results.lhr.audits['throwy-audit'];
         assert.strictEqual(auditResult.score, null);
         assert.strictEqual(auditResult.scoreDisplayMode, 'error');
