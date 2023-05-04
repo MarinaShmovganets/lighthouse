@@ -19,7 +19,7 @@ class EntityClassification {
    * @param {string=} optionalName
    * @return {LH.Artifacts.Entity}
    */
-  static makupChromeExtensionEntity(entityCache, url, optionalName) {
+  static makeupChromeExtensionEntity_(entityCache, url, optionalName) {
     const origin = Util.getChromeExtensionOrigin(url);
     const host = new URL(origin).host;
     const name = optionalName || host;
@@ -48,12 +48,12 @@ class EntityClassification {
    * @param {string} url
    * @return {LH.Artifacts.Entity | undefined}
    */
-  static makeUpAnEntity(entityCache, url) {
+  static makeUpAnEntity_(entityCache, url) {
     if (!UrlUtils.isValid(url)) return;
 
     const parsedUrl = Util.createOrReturnURL(url);
     if (parsedUrl.protocol === 'chrome-extension:') {
-      return EntityClassification.makupChromeExtensionEntity(entityCache, url);
+      return EntityClassification.makeupChromeExtensionEntity_(entityCache, url);
     }
 
     // Make up an entity only for valid http/https URLs.
@@ -91,7 +91,7 @@ class EntityClassification {
       if (!origin.startsWith('chrome-extension:')) continue;
       if (entityCache.has(origin)) continue;
 
-      EntityClassification.makupChromeExtensionEntity(entityCache, origin,
+      EntityClassification.makeupChromeExtensionEntity_(entityCache, origin,
         entry.params.context.name);
     }
   }
@@ -117,7 +117,7 @@ class EntityClassification {
       if (entityByUrl.has(url)) continue;
 
       const entity = thirdPartyWeb.getEntity(url) ||
-        EntityClassification.makeUpAnEntity(madeUpEntityCache, url);
+        EntityClassification.makeUpAnEntity_(madeUpEntityCache, url);
       if (!entity) continue;
 
       const entityURLs = urlsByEntity.get(entity) || new Set();
@@ -131,7 +131,7 @@ class EntityClassification {
     // See https://github.com/GoogleChrome/lighthouse/issues/13706
     const firstPartyUrl = data.URL.mainDocumentUrl || data.URL.finalDisplayedUrl;
     const firstParty = thirdPartyWeb.getEntity(firstPartyUrl) ||
-      EntityClassification.makeUpAnEntity(madeUpEntityCache, firstPartyUrl);
+      EntityClassification.makeUpAnEntity_(madeUpEntityCache, firstPartyUrl);
 
     /**
      * Convenience function to check if a URL belongs to first party.
