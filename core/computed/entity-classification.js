@@ -16,18 +16,50 @@ class EntityClassification {
   /**
    * @param {EntityCache} entityCache
    * @param {string} url
+   * @param {string=} optionalName
+   * @return {LH.Artifacts.Entity}
+   */
+  static makupChromeExtensionEntity(entityCache, url, optionalName) {
+    const origin = Util.getChromeExtensionOrigin(url);
+    const host = new URL(origin).host;
+    const name = optionalName || host;
+
+    const cachedEntity = entityCache.get(origin);
+    if (cachedEntity) return cachedEntity;
+
+    const chromeExtensionEntity = {
+      name,
+      company: name,
+      category: 'Chrome Extension',
+      homepage: 'https://chromewebstore.google.com/detail/' + host,
+      categories: [],
+      domains: [],
+      averageExecutionTime: 0,
+      totalExecutionTime: 0,
+      totalOccurrences: 0,
+    };
+
+    entityCache.set(origin, chromeExtensionEntity);
+    return chromeExtensionEntity;
+  }
+
+  /**
+   * @param {EntityCache} entityCache
+   * @param {string} url
    * @return {LH.Artifacts.Entity | undefined}
    */
   static makeUpAnEntity(entityCache, url) {
     if (!UrlUtils.isValid(url)) return;
 
     const parsedUrl = Util.createOrReturnURL(url);
-    const isChromeExtension = parsedUrl.protocol === 'chrome-extension:';
-    // Make up an entity only for valid http/https URLs and Chrome extensions.
-    if (!isChromeExtension && !parsedUrl.protocol.startsWith('http')) return;
+    if (parsedUrl.protocol === 'chrome-extension:') {
+      return EntityClassification.makupChromeExtensionEntity(entityCache, url);
+    }
 
-    const rootDomain = isChromeExtension ?
-      Util.getChromeExtensionOrigin(url) : Util.getRootDomain(url);
+    // Make up an entity only for valid http/https URLs.
+    if (!parsedUrl.protocol.startsWith('http')) return;
+
+    const rootDomain = Util.getRootDomain(url);
     if (!rootDomain) return;
     if (entityCache.has(rootDomain)) return entityCache.get(rootDomain);
 
@@ -36,7 +68,7 @@ class EntityClassification {
       company: rootDomain,
       category: '',
       categories: [],
-      domains: isChromeExtension ? [] : [rootDomain],
+      domains: [rootDomain],
       averageExecutionTime: 0,
       totalExecutionTime: 0,
       totalOccurrences: 0,
@@ -59,19 +91,8 @@ class EntityClassification {
       if (!origin.startsWith('chrome-extension:')) continue;
       if (entityCache.has(origin)) continue;
 
-      const name = entry.params.context.name;
-      const host = new URL(origin).host;
-      entityCache.set(origin, {
-        name,
-        company: name,
-        category: 'Chrome Extension',
-        homepage: 'https://chromewebstore.google.com/detail/' + host,
-        categories: [],
-        domains: [],
-        averageExecutionTime: 0,
-        totalExecutionTime: 0,
-        totalOccurrences: 0,
-      });
+      EntityClassification.makupChromeExtensionEntity(entityCache, origin,
+        entry.params.context.name);
     }
   }
 
