@@ -436,7 +436,7 @@ function elideAuditErrorStacks(lhr) {
     if (auditResult.errorStack) {
       auditResult.errorStack = auditResult.errorStack
         // Make paths relative to the repo root.
-        .replaceAll(baseCallFrameUrl.href, '')
+        .replaceAll(baseCallFrameUrl.pathname, '')
         // Remove line/col info.
         .replaceAll(/:\d+:\d+/g, '');
     }

@@ -459,12 +459,12 @@ describe('asset-saver helper', () => {
 
       // eslint-disable-next-line max-len
       expect(lhr.audits['bf-cache'].errorStack).toEqual(`Error: LighthouseError: ERRORED_REQUIRED_ARTIFACT
-      at Runner._runAudit (/Users/cjamcl/src/lighthouse/core/runner.js)
-      at Runner._runAudits (/Users/cjamcl/src/lighthouse/core/runner.js)
+      at Runner._runAudit (/core/runner.js)
+      at Runner._runAudits (/core/runner.js)
       at process.processTicksAndRejections (node:internal/process/task_queues)
-      at async Runner.audit (/Users/cjamcl/src/lighthouse/core/runner.js)
-      at async runLighthouse (/Users/cjamcl/src/lighthouse/cli/run.js)
-      at async /Users/cjamcl/src/lighthouse/cli/index.js
+      at async Runner.audit (/core/runner.js)
+      at async runLighthouse (/cli/run.js)
+      at async /cli/index.js
       at <anonymous>`);
     });
   });
