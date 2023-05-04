@@ -430,13 +430,15 @@ function normalizeTimingEntries(timings) {
 /**
  * @param {LH.Result} lhr
  */
-function elideErrorStacks(lhr) {
+function elideAuditErrorStacks(lhr) {
   const baseCallFrameUrl = url.pathToFileURL(LH_ROOT);
   for (const auditResult of Object.values(lhr.audits)) {
     if (auditResult.errorStack) {
       auditResult.errorStack = auditResult.errorStack
+        // Make paths relative to the repo root.
         .replaceAll(baseCallFrameUrl.href, '')
-        .replaceAll(/:[^)]+\)/g, ':elided:elided');
+        // Remove line/col info.
+        .replaceAll(/:\d+:\d+/g, '');
     }
   }
 }
@@ -454,5 +456,5 @@ export {
   saveLanternNetworkData,
   stringifyReplacer,
   normalizeTimingEntries,
-  elideErrorStacks,
+  elideAuditErrorStacks,
 };

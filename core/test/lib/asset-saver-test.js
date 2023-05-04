@@ -443,4 +443,29 @@ describe('asset-saver helper', () => {
       });
     });
   });
+
+  describe('elideAuditErrorStacks', () => {
+    it('elides correctly', async () => {
+      const lhr = JSON.parse(JSON.stringify(dbwResults));
+      lhr.audits['bf-cache'].errorStack = `Error: LighthouseError: ERRORED_REQUIRED_ARTIFACT
+      at Runner._runAudit (${LH_ROOT}/core/runner.js:431:25)
+      at Runner._runAudits (${LH_ROOT}/core/runner.js:370:40)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async Runner.audit (${LH_ROOT}/core/runner.js:62:32)
+      at async runLighthouse (${LH_ROOT}/cli/run.js:250:8)
+      at async ${LH_ROOT}/cli/index.js:10:1
+      at <anonymous>:1:1`;
+      assetSaver.elideAuditErrorStacks(lhr);
+
+      // eslint-disable-next-line max-len
+      expect(lhr.audits['bf-cache'].errorStack).toEqual(`Error: LighthouseError: ERRORED_REQUIRED_ARTIFACT
+      at Runner._runAudit (/Users/cjamcl/src/lighthouse/core/runner.js)
+      at Runner._runAudits (/Users/cjamcl/src/lighthouse/core/runner.js)
+      at process.processTicksAndRejections (node:internal/process/task_queues)
+      at async Runner.audit (/Users/cjamcl/src/lighthouse/core/runner.js)
+      at async runLighthouse (/Users/cjamcl/src/lighthouse/cli/run.js)
+      at async /Users/cjamcl/src/lighthouse/cli/index.js
+      at <anonymous>`);
+    });
+  });
 });

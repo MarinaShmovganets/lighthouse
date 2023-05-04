@@ -126,10 +126,10 @@ class ExecutionContext {
     this._session.setNextProtocolTimeout(timeout);
     const response = await this._session.sendCommand('Runtime.evaluate', evaluationParams);
 
-    // An error occurred before we could even create a Promise, should be *very* rare.
-    // Also occurs when the expression is not valid JavaScript.
     const ex = response.exceptionDetails;
     if (ex) {
+      // An error occurred before we could even create a Promise, should be *very* rare.
+      // Also occurs when the expression is not valid JavaScript.
       const elidedExpression = expression.replace(/\s+/g, ' ').substring(0, 100);
       const messageLines = [
         'Runtime.evaluate exception',
