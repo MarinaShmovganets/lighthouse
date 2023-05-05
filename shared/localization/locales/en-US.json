@@ -363,13 +363,13 @@
     "message": "No element has a `[tabindex]` value greater than 0"
   },
   "core/audits/accessibility/td-has-header.js | description": {
-    "message": "Screen readers have features to make navigating tables easier. Ensuring that large tables are properly marked up may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.7/td-has-header)."
+    "message": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells use the `[headers]` attribute in a large (3 or more cells wide and high) table may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.7/td-has-header)."
   },
   "core/audits/accessibility/td-has-header.js | failureTitle": {
-    "message": "Large `<table>` elements do not have at least one or more `[header]` attributes."
+    "message": "Cells in a large `<table>` do not have a `[header]` attribute."
   },
   "core/audits/accessibility/td-has-header.js | title": {
-    "message": "Large `<table>` elements have at least one or more `[header]` attributes."
+    "message": "Cells in a large `<table>` have a `[header]` attribute."
   },
   "core/audits/accessibility/td-headers-attr.js | description": {
     "message": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells using the `[headers]` attribute only refer to other cells in the same table may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.7/td-headers-attr)."
