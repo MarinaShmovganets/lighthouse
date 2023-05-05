@@ -3748,8 +3748,8 @@
     },
     "td-has-header": {
       "id": "td-has-header",
-      "title": "Large `<table>` elements have at least one or more `[header]` attribute",
-      "description": "Screen readers have features to make navigating tables easier. Ensuring large tables are properly marked up may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.6/td-has-header).",
+      "title": "Large `<table>` elements have at least one or more `[header]` attributes.",
+      "description": "Screen readers have features to make navigating tables easier. Ensuring that large tables are properly marked up may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.7/td-has-header).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
