@@ -14,13 +14,14 @@ import * as i18n from '../../lib/i18n/i18n.js';
 
 const UIStrings = {
   /** Title of an accesibility audit that evaluates if all large table elements use the headers HTML attribute. This title is descriptive of the successful state and is shown to users when no user action is required. */
-  title: 'Large `<table>` elements have at least one or more `[header]` attributes.',
+  title: '`<td>` elements in a large `<table>` has one or more table headers.',
   /** Title of an accesibility audit that evaluates if all large table elements use the headers HTML attribute. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
-  failureTitle: 'Large `<table>` elements do not have at least one or more `[header]` attributes.',
+  failureTitle: '`<td>` elements in a large `<table>` do not have one or more table headers.',
   /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   description: 'Screen readers have features to make navigating tables easier. Ensuring ' +
-      'that large tables are properly marked up may improve the experience for screen reader users. ' +
-      '[Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.7/td-has-header).',
+      'that `<td>` elements in a large (3 or more cells wide and high) table have an associated ' +
+      'table header may improve the experience for screen reader users. ' + 
+      '[Learn more about table headers](https://dequeuniversity.com/rules/axe/4.7/td-has-header).',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
