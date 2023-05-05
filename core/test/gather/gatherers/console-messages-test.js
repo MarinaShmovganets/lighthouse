@@ -65,7 +65,7 @@ describe('ConsoleMessages', () => {
     await consoleGatherer.beforePass(options);
     driver.defaultSession.fireForTest('Runtime.exceptionThrown', runtimeEx);
 
-    const artifact = await consoleGatherer.afterPass(options);
+    const artifact = await consoleGatherer.getArtifact(options);
 
     assert.equal(artifact.length, 1);
     assert.equal(artifact[0].source, 'exception');
@@ -107,7 +107,7 @@ describe('ConsoleMessages', () => {
     await consoleGatherer.beforePass(options);
     driver.defaultSession.fireForTest('Runtime.consoleAPICalled', consoleWarnEvent);
 
-    const artifact = await consoleGatherer.afterPass(options);
+    const artifact = await consoleGatherer.getArtifact(options);
 
     assert.equal(artifact.length, 1);
     assert.equal(artifact[0].source, 'console.warn');
@@ -139,7 +139,7 @@ describe('ConsoleMessages', () => {
     await consoleGatherer.beforePass(options);
     driver.defaultSession.fireForTest('Runtime.consoleAPICalled', consoleWarnEvent);
 
-    const artifact = await consoleGatherer.afterPass(options);
+    const artifact = await consoleGatherer.getArtifact(options);
 
     assert.equal(artifact.length, 1);
     assert.equal(artifact[0].source, 'console.warn');
@@ -263,7 +263,7 @@ describe('ConsoleMessages', () => {
     await consoleGatherer.beforePass(options);
     driver.defaultSession.fireForTest('Runtime.consoleAPICalled', consoleWarnEvent);
 
-    const artifact = await consoleGatherer.afterPass(options);
+    const artifact = await consoleGatherer.getArtifact(options);
 
     assert.equal(artifact.length, 1);
     assert.equal(artifact[0].source, 'console.warn');
@@ -321,7 +321,7 @@ describe('ConsoleMessages', () => {
     await consoleGatherer.beforePass(options);
     driver.defaultSession.fireForTest('Runtime.consoleAPICalled', consoleErrorEvent);
 
-    const artifact = await consoleGatherer.afterPass(options);
+    const artifact = await consoleGatherer.getArtifact(options);
 
     assert.equal(artifact.length, 1);
     assert.equal(artifact[0].source, 'console.error');
@@ -361,7 +361,7 @@ describe('ConsoleMessages', () => {
     await consoleGatherer.beforePass(options);
     driver.defaultSession.fireForTest('Runtime.consoleAPICalled', consoleLog);
 
-    const artifact = await consoleGatherer.afterPass(options);
+    const artifact = await consoleGatherer.getArtifact(options);
 
     assert.equal(artifact.length, 0);
   });
@@ -410,7 +410,7 @@ describe('ConsoleMessages', () => {
     driver.defaultSession.fireForTest('Log.entryAdded', logEntries[0]);
     driver.defaultSession.fireForTest('Log.entryAdded', logEntries[1]);
 
-    const artifact = await consoleGatherer.afterPass(options);
+    const artifact = await consoleGatherer.getArtifact(options);
 
     assert.equal(artifact.length, 2);
 
