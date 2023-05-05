@@ -24,7 +24,7 @@ describe('Has inspector issues audit', () => {
       navigatorUserAgentIssue: [],
       quirksModeIssue: [],
       cookieIssue: [],
-      sharedArrayBufferIssue: []
+      sharedArrayBufferIssue: [],
     };
   });
 
