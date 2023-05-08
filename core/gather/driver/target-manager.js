@@ -47,9 +47,14 @@ class TargetManager extends ProtocolEventEmitter {
      * @type {Map<string, TargetWithSession>}
      */
     this._targetIdToTargets = new Map();
+    /** @type {Array<LH.Crdp.Runtime.ExecutionContextDescription>} */
+    this._executionContextDescriptions = [];
 
     this._onSessionAttached = this._onSessionAttached.bind(this);
     this._onFrameNavigated = this._onFrameNavigated.bind(this);
+    this._onExecutionContextCreated = this._onExecutionContextCreated.bind(this);
+    this._onExecutionContextDestroyed = this._onExecutionContextDestroyed.bind(this);
+    this._onExecutionContextsCleared = this._onExecutionContextsCleared.bind(this);
   }
 
   /**
@@ -95,6 +100,10 @@ class TargetManager extends ProtocolEventEmitter {
   rootSession() {
     const rootSessionId = this._rootCdpSession.id();
     return this._findSession(rootSessionId);
+  }
+
+  executionContexts() {
+    return [...this._executionContextDescriptions];
   }
 
   /**
@@ -154,6 +163,35 @@ class TargetManager extends ProtocolEventEmitter {
   }
 
   /**
+   * @param {LH.Crdp.Runtime.ExecutionContextCreatedEvent} event
+   */
+  _onExecutionContextCreated(event) {
+    if (event.context.name === '__puppeteer_utility_world__') return;
+    if (event.context.name === 'lighthouse_isolated_context') return;
+
+    const index = this._executionContextDescriptions.findIndex(d =>
+      d.uniqueId === event.context.uniqueId);
+    if (index === -1) {
+      this._executionContextDescriptions.push(event.context);
+    }
+  }
+
+  /**
+   * @param {LH.Crdp.Runtime.ExecutionContextDestroyedEvent} event
+   */
+  _onExecutionContextDestroyed(event) {
+    const index = this._executionContextDescriptions.findIndex(d =>
+      d.uniqueId === event.executionContextUniqueId);
+    if (index !== -1) {
+      this._executionContextDescriptions.splice(index, 1);
+    }
+  }
+
+  _onExecutionContextsCleared() {
+    this._executionContextDescriptions = [];
+  }
+
+  /**
    * Returns a listener for all protocol events from session, and augments the
    * event with the sessionId.
    * @param {LH.Protocol.TargetType} targetType
@@ -185,8 +223,12 @@ class TargetManager extends ProtocolEventEmitter {
     this._targetIdToTargets = new Map();
 
     this._rootCdpSession.on('Page.frameNavigated', this._onFrameNavigated);
+    this._rootCdpSession.on('Runtime.executionContextCreated', this._onExecutionContextCreated);
+    this._rootCdpSession.on('Runtime.executionContextDestroyed', this._onExecutionContextDestroyed);
+    this._rootCdpSession.on('Runtime.executionContextsCleared', this._onExecutionContextsCleared);
 
     await this._rootCdpSession.send('Page.enable');
+    await this._rootCdpSession.send('Runtime.enable');
 
     // Start with the already attached root session.
     await this._onSessionAttached(this._rootCdpSession);
@@ -197,14 +239,22 @@ class TargetManager extends ProtocolEventEmitter {
    */
   async disable() {
     this._rootCdpSession.off('Page.frameNavigated', this._onFrameNavigated);
+    this._rootCdpSession.off('Runtime.executionContextCreated', this._onExecutionContextCreated);
+    this._rootCdpSession.off('Runtime.executionContextDestroyed',
+      this._onExecutionContextDestroyed);
+    this._rootCdpSession.off('Runtime.executionContextsCleared', this._onExecutionContextsCleared);
 
     for (const {cdpSession, protocolListener} of this._targetIdToTargets.values()) {
       cdpSession.off('*', protocolListener);
       cdpSession.off('sessionattached', this._onSessionAttached);
     }
 
+    await this._rootCdpSession.send('Page.disable');
+    await this._rootCdpSession.send('Runtime.disable');
+
     this._enabled = false;
     this._targetIdToTargets = new Map();
+    this._executionContextDescriptions = [];
   }
 }
 
