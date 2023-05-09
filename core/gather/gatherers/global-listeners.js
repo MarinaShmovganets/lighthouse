@@ -11,6 +11,8 @@
  * around page unload, but this can be expanded in the future.
  */
 
+import log from 'lighthouse-logger';
+
 import FRGatherer from '../base-gatherer.js';
 
 class GlobalListeners extends FRGatherer {
@@ -79,7 +81,7 @@ class GlobalListeners extends FRGatherer {
         objectId = result.objectId;
       } catch (err) {
         // Execution context is no longer valid, but don't let that fail the gatherer.
-        console.error(err);
+        log.warn('Execution context is no longer valid', executionContext, err);
         continue;
       }
 

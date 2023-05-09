@@ -102,7 +102,7 @@ class Driver {
         return this.defaultSession;
       },
       // For legacy driver, only bother supporting access to the default execution context.
-      executionContexts: () => {
+      mainFrameExecutionContexts: () => {
         // @ts-expect-error - undefined ids are OK for purposes of calling protocol commands like Runtime.evaluate.
         return [/** @type {LH.Crdp.Runtime.ExecutionContextDescription} */({
           id: undefined,
@@ -111,9 +111,6 @@ class Driver {
           name: '',
           auxData: {isDefault: true, type: 'default', frameId: ''},
         })];
-      },
-      mainFrameExecutionContexts: () => {
-        return this.targetManager.executionContexts();
       },
       /**
        * Bind to *any* protocol event.

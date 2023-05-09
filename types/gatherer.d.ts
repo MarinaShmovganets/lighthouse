@@ -47,7 +47,6 @@ declare module Gatherer {
     url: () => Promise<string>;
     targetManager: {
       rootSession(): FRProtocolSession;
-      executionContexts(): Array<Crdp.Runtime.ExecutionContextDescription>;
       mainFrameExecutionContexts(): Array<Crdp.Runtime.ExecutionContextDescription>;
       on(event: 'protocolevent', callback: (payload: Protocol.RawEventMessage) => void): void
       off(event: 'protocolevent', callback: (payload: Protocol.RawEventMessage) => void): void

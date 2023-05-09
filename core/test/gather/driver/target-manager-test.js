@@ -40,6 +40,7 @@ describe('TargetManager', () => {
     sendMock = sessionMock.send;
     sendMock
       .mockResponse('Page.enable')
+      .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: 'mainFrameId'}}})
       .mockResponse('Runtime.enable')
       .mockResponse('Page.disable')
       .mockResponse('Runtime.disable')
@@ -58,6 +59,7 @@ describe('TargetManager', () => {
 
       expect(sendMock.findAllInvocations('Target.setAutoAttach')).toHaveLength(1);
       expect(sendMock.findAllInvocations('Runtime.runIfWaitingForDebugger')).toHaveLength(1);
+      expect(targetManager._mainFrameId).toEqual('mainFrameId');
     });
 
     it('should autoattach to further unique sessions', async () => {
@@ -261,6 +263,7 @@ describe('TargetManager', () => {
       // Still mock command responses at session level.
       rootSession.send = createMockSendCommandFn({useSessionId: false})
         .mockResponse('Page.enable')
+        .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: ''}}})
         .mockResponse('Runtime.enable')
         .mockResponse('Target.getTargetInfo', {targetInfo: rootTargetInfo})
         .mockResponse('Network.enable')
@@ -331,6 +334,7 @@ describe('TargetManager', () => {
       // Still mock command responses at session level.
       rootSession.send = createMockSendCommandFn({useSessionId: false})
         .mockResponse('Page.enable')
+        .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: ''}}})
         .mockResponse('Runtime.enable')
         .mockResponse('Target.getTargetInfo', {targetInfo})
         .mockResponse('Network.enable')

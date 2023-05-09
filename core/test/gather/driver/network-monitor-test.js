@@ -38,6 +38,7 @@ describe('NetworkMonitor', () => {
     const cdpSessionMock = createMockCdpSession(id);
     cdpSessionMock.send
       .mockResponse('Page.enable')
+      .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: 'mainFrameId'}}})
       .mockResponse('Runtime.enable')
       .mockResponse('Target.getTargetInfo', {targetInfo: {type: targetType, targetId: id}})
       .mockResponse('Network.enable')
