@@ -48,8 +48,8 @@ class TargetManager extends ProtocolEventEmitter {
      * @type {Map<string, TargetWithSession>}
      */
     this._targetIdToTargets = new Map();
-    /** @type {Array<LH.Crdp.Runtime.ExecutionContextDescription>} */
-    this._executionContextDescriptions = [];
+    /** @type {Map<LH.Crdp.Runtime.ExecutionContextDescription['uniqueId'], LH.Crdp.Runtime.ExecutionContextDescription>} */
+    this._executionContextIdToDescriptions = new Map();
 
     this._onSessionAttached = this._onSessionAttached.bind(this);
     this._onFrameNavigated = this._onFrameNavigated.bind(this);
@@ -104,11 +104,11 @@ class TargetManager extends ProtocolEventEmitter {
   }
 
   executionContexts() {
-    return [...this._executionContextDescriptions];
+    return [...this._executionContextIdToDescriptions.values()];
   }
 
   mainFrameExecutionContexts() {
-    return this._executionContextDescriptions.filter(executionContext => {
+    return this.executionContexts().filter(executionContext => {
       return executionContext.auxData.frameId === this._mainFrameId;
     });
   }
@@ -181,26 +181,18 @@ class TargetManager extends ProtocolEventEmitter {
     if (event.context.name === '__puppeteer_utility_world__') return;
     if (event.context.name === 'lighthouse_isolated_context') return;
 
-    const index = this._executionContextDescriptions.findIndex(d =>
-      d.uniqueId === event.context.uniqueId);
-    if (index === -1) {
-      this._executionContextDescriptions.push(event.context);
-    }
+    this._executionContextIdToDescriptions.set(event.context.uniqueId, event.context);
   }
 
   /**
    * @param {LH.Crdp.Runtime.ExecutionContextDestroyedEvent} event
    */
   _onExecutionContextDestroyed(event) {
-    const index = this._executionContextDescriptions.findIndex(d =>
-      d.uniqueId === event.executionContextUniqueId);
-    if (index !== -1) {
-      this._executionContextDescriptions.splice(index, 1);
-    }
+    this._executionContextIdToDescriptions.delete(event.executionContextUniqueId);
   }
 
   _onExecutionContextsCleared() {
-    this._executionContextDescriptions = [];
+    this._executionContextIdToDescriptions.clear();
   }
 
   /**
@@ -233,6 +225,7 @@ class TargetManager extends ProtocolEventEmitter {
 
     this._enabled = true;
     this._targetIdToTargets = new Map();
+    this._executionContextIdToDescriptions = new Map();
 
     this._rootCdpSession.on('Page.frameNavigated', this._onFrameNavigated);
     this._rootCdpSession.on('Runtime.executionContextCreated', this._onExecutionContextCreated);
@@ -266,7 +259,7 @@ class TargetManager extends ProtocolEventEmitter {
 
     this._enabled = false;
     this._targetIdToTargets = new Map();
-    this._executionContextDescriptions = [];
+    this._executionContextIdToDescriptions = new Map();
   }
 }
 
