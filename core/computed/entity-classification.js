@@ -48,7 +48,7 @@ class EntityClassification {
    * @param {string} url
    * @return {LH.Artifacts.Entity | undefined}
    */
-  static makeUpAnEntity_(entityCache, url) {
+  static _makeUpAnEntity(entityCache, url) {
     if (!UrlUtils.isValid(url)) return;
 
     const parsedUrl = Util.createOrReturnURL(url);
@@ -83,7 +83,7 @@ class EntityClassification {
    * @param {EntityCache} entityCache
    * @param {LH.DevtoolsLog} devtoolsLog
    */
-  static preloadChromeExtensionsToCache_(entityCache, devtoolsLog) {
+  static _preloadChromeExtensionsToCache(entityCache, devtoolsLog) {
     for (const entry of devtoolsLog.values()) {
       if (entry.method !== 'Runtime.executionContextCreated') continue;
 
@@ -110,14 +110,14 @@ class EntityClassification {
     /** @type {Map<LH.Artifacts.Entity, Set<string>>} */
     const urlsByEntity = new Map();
 
-    EntityClassification.preloadChromeExtensionsToCache_(madeUpEntityCache, data.devtoolsLog);
+    EntityClassification._preloadChromeExtensionsToCache(madeUpEntityCache, data.devtoolsLog);
 
     for (const record of networkRecords) {
       const {url} = record;
       if (entityByUrl.has(url)) continue;
 
       const entity = thirdPartyWeb.getEntity(url) ||
-        EntityClassification.makeUpAnEntity_(madeUpEntityCache, url);
+        EntityClassification._makeUpAnEntity(madeUpEntityCache, url);
       if (!entity) continue;
 
       const entityURLs = urlsByEntity.get(entity) || new Set();
@@ -131,7 +131,7 @@ class EntityClassification {
     // See https://github.com/GoogleChrome/lighthouse/issues/13706
     const firstPartyUrl = data.URL.mainDocumentUrl || data.URL.finalDisplayedUrl;
     const firstParty = thirdPartyWeb.getEntity(firstPartyUrl) ||
-      EntityClassification.makeUpAnEntity_(madeUpEntityCache, firstPartyUrl);
+      EntityClassification._makeUpAnEntity(madeUpEntityCache, firstPartyUrl);
 
     /**
      * Convenience function to check if a URL belongs to first party.
