@@ -109,7 +109,11 @@ class Driver {
           uniqueId: undefined,
           origin: '',
           name: '',
+          auxData: {isDefault: true, type: 'default', frameId: ''},
         })];
+      },
+      mainFrameExecutionContexts: () => {
+        return this.targetManager.executionContexts();
       },
       /**
        * Bind to *any* protocol event.

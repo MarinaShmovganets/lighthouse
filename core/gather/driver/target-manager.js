@@ -40,6 +40,7 @@ class TargetManager extends ProtocolEventEmitter {
 
     this._enabled = false;
     this._rootCdpSession = cdpSession;
+    this._mainFrameId = '';
 
     /**
      * A map of target id to target/session information. Used to ensure unique
@@ -106,10 +107,17 @@ class TargetManager extends ProtocolEventEmitter {
     return [...this._executionContextDescriptions];
   }
 
+  mainFrameExecutionContexts() {
+    return this._executionContextDescriptions.filter(executionContext => {
+      return executionContext.auxData.frameId === this._mainFrameId;
+    });
+  }
+
   /**
    * @param {LH.Puppeteer.CDPSession} cdpSession
    */
   async _onSessionAttached(cdpSession) {
+    const isRootSession = this._rootCdpSession === cdpSession;
     const newSession = new ProtocolSession(cdpSession);
 
     try {
@@ -124,6 +132,7 @@ class TargetManager extends ProtocolEventEmitter {
       const targetId = target.targetInfo.targetId;
       if (this._targetIdToTargets.has(targetId)) return;
 
+      if (isRootSession) this._mainFrameId = targetId;
       newSession.setTargetInfo(target.targetInfo);
       const targetName = target.targetInfo.url || target.targetInfo.targetId;
       log.verbose('target-manager', `target ${targetName} attached`);
@@ -166,6 +175,9 @@ class TargetManager extends ProtocolEventEmitter {
    * @param {LH.Crdp.Runtime.ExecutionContextCreatedEvent} event
    */
   _onExecutionContextCreated(event) {
+    // This execution context was made via the protocol (e.g. by us or Puppeteer).
+    if (event.context.origin === '://' || event.context.origin === '') return;
+    // Just in case the above changes somehow.
     if (event.context.name === '__puppeteer_utility_world__') return;
     if (event.context.name === 'lighthouse_isolated_context') return;
 

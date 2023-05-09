@@ -64,7 +64,7 @@ class GlobalListeners extends FRGatherer {
     /** @type {Array<LH.Artifacts.GlobalListener>} */
     const listeners = [];
 
-    for (const executionContext of passContext.driver.targetManager.executionContexts()) {
+    for (const executionContext of passContext.driver.targetManager.mainFrameExecutionContexts()) {
       // Get a RemoteObject handle to `window`.
       let objectId;
       try {
