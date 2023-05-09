@@ -16,13 +16,13 @@ class EntityClassification {
   /**
    * @param {EntityCache} entityCache
    * @param {string} url
-   * @param {string=} optionalName
+   * @param {string=} extensionName
    * @return {LH.Artifacts.Entity}
    */
-  static makeupChromeExtensionEntity_(entityCache, url, optionalName) {
+  static makeupChromeExtensionEntity_(entityCache, url, extensionName) {
     const origin = Util.getChromeExtensionOrigin(url);
     const host = new URL(origin).host;
-    const name = optionalName || host;
+    const name = extensionName || host;
 
     const cachedEntity = entityCache.get(origin);
     if (cachedEntity) return cachedEntity;
