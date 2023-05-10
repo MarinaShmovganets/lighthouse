@@ -617,7 +617,6 @@ declare module Artifacts {
     quirksModeIssue: Crdp.Audits.QuirksModeIssueDetails[];
     cookieIssue: Crdp.Audits.CookieIssueDetails[];
     sharedArrayBufferIssue: Crdp.Audits.SharedArrayBufferIssueDetails[];
-    twaQualityEnforcement: Crdp.Audits.TrustedWebActivityIssueDetails[];
   }
 
   // Computed artifact types below.
@@ -789,6 +788,10 @@ declare module Artifacts {
     largestContentfulPaintTs: number | undefined;
     largestContentfulPaintAllFrames: number | undefined;
     largestContentfulPaintAllFramesTs: number | undefined;
+    timeToFirstByte: number | undefined;
+    timeToFirstByteTs: number | undefined;
+    lcpLoadStart: number | undefined;
+    lcpLoadEnd: number | undefined;
     interactive: number | undefined;
     interactiveTs: number | undefined;
     speedIndex: number | undefined;
