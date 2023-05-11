@@ -40,7 +40,10 @@ class LayoutShiftElements extends Audit {
     const clsElements = artifacts.TraceElements
       .filter(element => element.traceEventType === 'layout-shift');
 
+    let clsSavings = 0;
     const clsElementData = clsElements.map(element => {
+      clsSavings += element.score || 0;
+
       return {
         node: Audit.makeNodeItem(element.node),
         score: element.score,
@@ -60,6 +63,8 @@ class LayoutShiftElements extends Audit {
       displayValue = str_(i18n.UIStrings.displayValueElementsFound,
         {nodeCount: clsElementData.length});
     }
+
+    details.metricSavings = {CLS: clsSavings};
 
     return {
       score: 1,
