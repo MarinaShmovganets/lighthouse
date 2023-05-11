@@ -1756,7 +1756,10 @@
                   },
                   "score": 0.00036762719987422577
                 }
-              ]
+              ],
+              "metricSavings": {
+                "CLS": 0.002631263732910156
+              }
             }
           },
           "long-tasks": {
@@ -9085,7 +9088,10 @@
                   },
                   "score": 0.13125
                 }
-              ]
+              ],
+              "metricSavings": {
+                "CLS": 0.13125
+              }
             }
           },
           "long-tasks": {
@@ -18052,7 +18058,10 @@
             "details": {
               "type": "table",
               "headings": [],
-              "items": []
+              "items": [],
+              "metricSavings": {
+                "CLS": 0
+              }
             }
           },
           "long-tasks": {
