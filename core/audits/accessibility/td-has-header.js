@@ -19,8 +19,8 @@ const UIStrings = {
   failureTitle: '`<td>` elements in a large `<table>` do not have table headers.',
   /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   description: 'Screen readers have features to make navigating tables easier. Ensuring ' +
-      'that `<td>` elements in a large table (3 or more cells in width and height) have an associated ' +
-      'table header may improve the experience for screen reader users. ' +
+      'that `<td>` elements in a large table (3 or more cells in width and height) have an ' +
+      'associated table header may improve the experience for screen reader users. ' +
       '[Learn more about table headers](https://dequeuniversity.com/rules/axe/4.7/td-has-header).',
 };
 

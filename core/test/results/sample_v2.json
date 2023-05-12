@@ -3752,8 +3752,8 @@
     },
     "td-has-header": {
       "id": "td-has-header",
-      "title": "`<td>` elements in a large `<table>` has one or more table headers.",
-      "description": "Screen readers have features to make navigating tables easier. Ensuring that `<td>` elements in a large (3 or more cells wide and high) table have an associated table header may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.7/td-has-header).",
+      "title": "`<td>` elements in a large `<table>` have one or more table headers.",
+      "description": "Screen readers have features to make navigating tables easier. Ensuring that `<td>` elements in a large table (3 or more cells in width and height) have an associated table header may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.7/td-has-header).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
