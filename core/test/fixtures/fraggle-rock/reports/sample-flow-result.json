@@ -213,6 +213,10 @@
             "numericValue": 19.687999999999988,
             "numericUnit": "millisecond",
             "displayValue": "Root document took 20 ms",
+            "_metricSavings": {
+              "FCP": 0,
+              "LCP": 0
+            },
             "details": {
               "type": "opportunity",
               "headings": [
@@ -233,11 +237,7 @@
                   "responseTime": 19.687999999999988
                 }
               ],
-              "overallSavingsMs": 0,
-              "metricSavings": {
-                "FCP": 0,
-                "LCP": 0
-              }
+              "overallSavingsMs": 0
             }
           },
           "interactive": {
@@ -16669,6 +16669,10 @@
             "numericValue": 10.263,
             "numericUnit": "millisecond",
             "displayValue": "Root document took 10 ms",
+            "_metricSavings": {
+              "FCP": 0,
+              "LCP": 0
+            },
             "details": {
               "type": "opportunity",
               "headings": [
@@ -16689,11 +16693,7 @@
                   "responseTime": 10.263
                 }
               ],
-              "overallSavingsMs": 0,
-              "metricSavings": {
-                "FCP": 0,
-                "LCP": 0
-              }
+              "overallSavingsMs": 0
             }
           },
           "interactive": {
