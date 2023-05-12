@@ -213,7 +213,7 @@
             "numericValue": 19.687999999999988,
             "numericUnit": "millisecond",
             "displayValue": "Root document took 20 ms",
-            "_metricSavings": {
+            "metricSavings": {
               "FCP": 0,
               "LCP": 0
             },
@@ -16669,7 +16669,7 @@
             "numericValue": 10.263,
             "numericUnit": "millisecond",
             "displayValue": "Root document took 10 ms",
-            "_metricSavings": {
+            "metricSavings": {
               "FCP": 0,
               "LCP": 0
             },

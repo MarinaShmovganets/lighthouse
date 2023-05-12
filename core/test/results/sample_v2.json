@@ -316,7 +316,7 @@
       "numericValue": 568.468,
       "numericUnit": "millisecond",
       "displayValue": "Root document took 570 ms",
-      "_metricSavings": {
+      "metricSavings": {
         "FCP": 468.46799999999996,
         "LCP": 468.46799999999996
       },

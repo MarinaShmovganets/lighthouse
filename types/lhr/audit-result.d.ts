@@ -59,7 +59,7 @@ export interface Result {
   /** A more detailed description that describes why the audit is important and links to Lighthouse documentation on the audit; markdown links supported. */
   description: string;
   /** [EXPERIMENTAL] Estimates of how much this audit affects various performance metrics. Values will be in the unit of the respective metrics. */
-  _metricSavings?: MetricSavings;
+  metricSavings?: MetricSavings;
   /** A numeric value that has a meaning specific to the audit, e.g. the number of nodes in the DOM or the timestamp of a specific load event. More information can be found in the audit details, if present. */
   numericValue?: number;
   /** The unit of `numericValue`, used when the consumer wishes to convert numericValue to a display string. */

@@ -380,7 +380,7 @@ message AuditResult {
 
   // [EXPERIMENTAL] Estimates of how much this audit affects various performance
   // metrics. Values will be in the unit of the respective metrics.
-  google.protobuf.Struct _metricSavings = 13;
+  google.protobuf.Struct metric_savings = 13;
 }
 
 // Message containing the i18n data for the LHR - Version 1
