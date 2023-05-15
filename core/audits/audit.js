@@ -408,7 +408,6 @@ class Audit {
       explanation: product.explanation,
       errorMessage: product.errorMessage,
       warnings: product.warnings,
-      metricSavings: product.metricSavings,
 
       details: product.details,
     };

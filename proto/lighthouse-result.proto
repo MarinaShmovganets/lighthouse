@@ -377,10 +377,6 @@ message AuditResult {
   // The unit of the numeric_value field. Used to format the numeric value for
   // display.
   string numeric_unit = 12;
-
-  // [EXPERIMENTAL] Estimates of how much this audit affects various performance
-  // metrics. Values will be in the unit of the respective metrics.
-  google.protobuf.Struct metric_savings = 13;
 }
 
 // Message containing the i18n data for the LHR - Version 1

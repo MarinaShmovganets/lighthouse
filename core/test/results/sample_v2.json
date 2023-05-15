@@ -316,10 +316,6 @@
       "numericValue": 568.468,
       "numericUnit": "millisecond",
       "displayValue": "Root document took 570 ms",
-      "metricSavings": {
-        "FCP": 468.46799999999996,
-        "LCP": 468.46799999999996
-      },
       "details": {
         "type": "opportunity",
         "headings": [

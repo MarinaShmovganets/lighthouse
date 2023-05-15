@@ -213,10 +213,6 @@
             "numericValue": 19.687999999999988,
             "numericUnit": "millisecond",
             "displayValue": "Root document took 20 ms",
-            "metricSavings": {
-              "FCP": 0,
-              "LCP": 0
-            },
             "details": {
               "type": "opportunity",
               "headings": [
@@ -16669,10 +16665,6 @@
             "numericValue": 10.263,
             "numericUnit": "millisecond",
             "displayValue": "Root document took 10 ms",
-            "metricSavings": {
-              "FCP": 0,
-              "LCP": 0
-            },
             "details": {
               "type": "opportunity",
               "headings": [
