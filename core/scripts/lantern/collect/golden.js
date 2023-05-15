@@ -54,6 +54,7 @@ function makeGolden(log, summary) {
       unthrottled: {
         tracePath: unthrottled.trace,
         devtoolsLogPath: unthrottled.devtoolsLog,
+        lhrPath: unthrottled.lhr,
       },
     });
   }
