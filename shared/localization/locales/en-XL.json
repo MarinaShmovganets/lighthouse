@@ -362,6 +362,15 @@
   "core/audits/accessibility/tabindex.js | title": {
     "message": "N̂ó êĺêḿêńt̂ h́âś â `[tabindex]` v́âĺûé ĝŕêát̂ér̂ t́ĥán̂ 0"
   },
+  "core/audits/accessibility/table-fake-caption.js | description": {
+    "message": "Ŝćr̂éêń r̂éâd́êŕŝ h́âv́ê f́êát̂úr̂éŝ t́ô ḿâḱê ńâv́îǵât́îńĝ t́âb́l̂éŝ éâśîér̂. Én̂śûŕîńĝ t́ĥát̂ t́âb́l̂éŝ úŝé t̂h́ê áĉt́ûál̂ ćâṕt̂íôń êĺêḿêńt̂ ín̂śt̂éâd́ ôf́ ĉél̂ĺŝ ẃît́ĥ t́ĥé `[colspan]` ât́t̂ŕîb́ût́ê ḿâý îḿp̂ŕôv́ê t́ĥé êx́p̂ér̂íêńĉé f̂ór̂ śĉŕêén̂ ŕêád̂ér̂ úŝér̂ś. [L̂éâŕn̂ ḿôŕê áb̂óût́ ĉáp̂t́îón̂ś](https://dequeuniversity.com/rules/axe/4.7/table-fake-caption)."
+  },
+  "core/audits/accessibility/table-fake-caption.js | failureTitle": {
+    "message": "T̂áb̂ĺêś d̂ó n̂ót̂ úŝé `<caption>` îńŝt́êád̂ óf̂ ćêĺl̂ś ŵít̂h́ t̂h́ê `[colspan]` át̂t́r̂íb̂út̂é t̂ó îńd̂íĉát̂é â ćâṕt̂íôń."
+  },
+  "core/audits/accessibility/table-fake-caption.js | title": {
+    "message": "T̂áb̂ĺêś ûśê `<caption>` ín̂śt̂éâd́ ôf́ ĉél̂ĺŝ ẃît́ĥ t́ĥé `[colspan]` ât́t̂ŕîb́ût́ê t́ô ín̂d́îćât́ê á ĉáp̂t́îón̂."
+  },
   "core/audits/accessibility/td-has-header.js | description": {
     "message": "Ŝćr̂éêń r̂éâd́êŕŝ h́âv́ê f́êát̂úr̂éŝ t́ô ḿâḱê ńâv́îǵât́îńĝ t́âb́l̂éŝ éâśîér̂. Én̂śûŕîńĝ t́ĥát̂ `<td>` él̂ém̂én̂t́ŝ ín̂ á l̂ár̂ǵê t́âb́l̂é (3 ôŕ m̂ór̂é ĉél̂ĺŝ ín̂ ẃîd́t̂h́ âńd̂ h́êíĝh́t̂) h́âv́ê án̂ áŝśôćîát̂éd̂ t́âb́l̂é ĥéâd́êŕ m̂áŷ ím̂ṕr̂óv̂é t̂h́ê éx̂ṕêŕîén̂ćê f́ôŕ ŝćr̂éêń r̂éâd́êŕ ûśêŕŝ. [Ĺêár̂ń m̂ór̂é âb́ôút̂ t́âb́l̂é ĥéâd́êŕŝ](https://dequeuniversity.com/rules/axe/4.7/td-has-header)."
   },

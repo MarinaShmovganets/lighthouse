@@ -362,6 +362,15 @@
   "core/audits/accessibility/tabindex.js | title": {
     "message": "No element has a `[tabindex]` value greater than 0"
   },
+  "core/audits/accessibility/table-fake-caption.js | description": {
+    "message": "Screen readers have features to make navigating tables easier. Ensuring that tables use the actual caption element instead of cells with the `[colspan]` attribute may improve the experience for screen reader users. [Learn more about captions](https://dequeuniversity.com/rules/axe/4.7/table-fake-caption)."
+  },
+  "core/audits/accessibility/table-fake-caption.js | failureTitle": {
+    "message": "Tables do not use `<caption>` instead of cells with the `[colspan]` attribute to indicate a caption."
+  },
+  "core/audits/accessibility/table-fake-caption.js | title": {
+    "message": "Tables use `<caption>` instead of cells with the `[colspan]` attribute to indicate a caption."
+  },
   "core/audits/accessibility/td-has-header.js | description": {
     "message": "Screen readers have features to make navigating tables easier. Ensuring that `<td>` elements in a large table (3 or more cells in width and height) have an associated table header may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.7/td-has-header)."
   },

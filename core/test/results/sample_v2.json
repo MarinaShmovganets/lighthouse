@@ -3750,6 +3750,18 @@
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
+    "table-fake-caption": {
+      "id": "table-fake-caption",
+      "title": "Tables use `<caption>` instead of cells with the `[colspan]` attribute to indicate a caption.",
+      "description": "Screen readers have features to make navigating tables easier. Ensuring that tables use the actual caption element instead of cells with the `[colspan]` attribute may improve the experience for screen reader users. [Learn more about captions](https://dequeuniversity.com/rules/axe/4.7/table-fake-caption).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
     "td-has-header": {
       "id": "td-has-header",
       "title": "`<td>` elements in a large `<table>` have one or more table headers.",
@@ -6022,6 +6034,11 @@
           "id": "tabindex",
           "weight": 0,
           "group": "a11y-navigation"
+        },
+        {
+          "id": "table-fake-caption",
+          "weight": 3,
+          "group": "a11y-tables-lists"
         },
         {
           "id": "td-has-header",
@@ -8367,6 +8384,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:table-fake-caption",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:td-has-header",
         "duration": 100,
         "entryType": "measure"
@@ -9753,6 +9776,12 @@
       ],
       "core/audits/accessibility/tabindex.js | description": [
         "audits.tabindex.description"
+      ],
+      "core/audits/accessibility/table-fake-caption.js | title": [
+        "audits[table-fake-caption].title"
+      ],
+      "core/audits/accessibility/table-fake-caption.js | description": [
+        "audits[table-fake-caption].description"
       ],
       "core/audits/accessibility/td-has-header.js | title": [
         "audits[td-has-header].title"
