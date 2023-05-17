@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Ensure that large tables have `[header]` attributes.
+ * @fileoverview Ensure that tables use `<caption>` instead of colspan for a caption.
  * See base class in axe-audit.js for audit() implementation.
  */
 
