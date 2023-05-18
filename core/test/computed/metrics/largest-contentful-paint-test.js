@@ -25,9 +25,9 @@ describe('Metrics: LCP', () => {
       settings, URL}, context);
 
     expect({
-  timing: Math.round(result.timing),
-  optimistic: Math.round(result.optimisticEstimate.timeInMs),
-  pessimistic: Math.round(result.pessimisticEstimate.timeInMs) }).
+      timing: Math.round(result.timing),
+      optimistic: Math.round(result.optimisticEstimate.timeInMs),
+      pessimistic: Math.round(result.pessimisticEstimate.timeInMs)}).
 toMatchInlineSnapshot(`
 Object {
   "optimistic": 2291,
