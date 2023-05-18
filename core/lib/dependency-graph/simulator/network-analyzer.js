@@ -53,8 +53,8 @@ class NetworkAnalyzer {
     values.sort((a, b) => a - b);
 
     let median;
-    if (values.length <= 1) {
-      median = values[0];
+    if (values.length === 0) {
+      median = undefined;
     } else if (values.length % 2 === 0) {
       const a = values[Math.floor((values.length - 1) / 2)];
       const b = values[Math.floor((values.length - 1) / 2) + 1];
