@@ -698,6 +698,22 @@ const expectations = {
           ],
         },
       },
+      'table-fake-caption': {
+        score: 0,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > table#table-fake-caption',
+                'snippet': '<table id="table-fake-caption" role="grid">',
+                'explanation': 'Fix all of the following:\n  The first child of the table should be a caption instead of a table cell',
+                'nodeLabel': 'FOO\nfoo\tfoo\n',
+              },
+            },
+          ],
+        },
+      },
       'td-has-header': {
         score: 0,
         details: {
