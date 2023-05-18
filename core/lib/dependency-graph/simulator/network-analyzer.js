@@ -50,12 +50,12 @@ class NetworkAnalyzer {
    * @return {Summary}
    */
   static getSummary(values) {
+    if (!values.length) throw new Error('Expected at least one value to make summary');
+
     values.sort((a, b) => a - b);
 
     let median;
-    if (values.length === 0) {
-      median = undefined;
-    } else if (values.length % 2 === 0) {
+    if (values.length % 2 === 0) {
       const a = values[Math.floor((values.length - 1) / 2)];
       const b = values[Math.floor((values.length - 1) / 2) + 1];
       median = (a + b) / 2;
