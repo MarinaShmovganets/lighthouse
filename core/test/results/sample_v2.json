@@ -3180,6 +3180,18 @@
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
+    "frame-focusable-content": {
+      "id": "frame-focusable-content",
+      "title": "`<frame>` or `<iframe>` elements with focusable content do not have `tabindex=\"-1\"`.",
+      "description": "A negative tabindex prevents the browser from redirecting focus to the frame's contents, which causes the frame's contents to be skipped in keyboard navigation. [Learn more about frames and iframes](https://dequeuniversity.com/rules/axe/4.7/frame-focusable-content).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
     "frame-title": {
       "id": "frame-title",
       "title": "`<frame>` or `<iframe>` elements have a title",
@@ -5978,6 +5990,11 @@
           "group": "a11y-names-labels"
         },
         {
+          "id": "frame-focusable-content",
+          "weight": 3,
+          "group": "a11y-navigation"
+        },
+        {
           "id": "frame-title",
           "weight": 0,
           "group": "a11y-names-labels"
@@ -8317,6 +8334,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:frame-focusable-content",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:frame-title",
         "duration": 100,
         "entryType": "measure"
@@ -9707,6 +9730,12 @@
       ],
       "core/audits/accessibility/form-field-multiple-labels.js | description": [
         "audits[form-field-multiple-labels].description"
+      ],
+      "core/audits/accessibility/frame-focusable-content.js | title": [
+        "audits[frame-focusable-content].title"
+      ],
+      "core/audits/accessibility/frame-focusable-content.js | description": [
+        "audits[frame-focusable-content].description"
       ],
       "core/audits/accessibility/frame-title.js | title": [
         "audits[frame-title].title"
