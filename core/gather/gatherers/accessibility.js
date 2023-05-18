@@ -46,7 +46,7 @@ async function runA11yChecks() {
       'audio-caption': {enabled: false},
       'blink': {enabled: false},
       'duplicate-id': {enabled: false},
-      'frame-focusable-content': {enabled: false},
+      'frame-focusable-content': {enabled: true},
       'heading-order': {enabled: true},
       'html-xml-lang-mismatch': {enabled: true},
       'identical-links-same-purpose': {enabled: false},

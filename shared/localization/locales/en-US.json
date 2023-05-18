@@ -236,6 +236,15 @@
   "core/audits/accessibility/form-field-multiple-labels.js | title": {
     "message": "No form fields have multiple labels"
   },
+  "core/audits/accessibility/frame-focusable-content.js | description": {
+    "message": "A negative tabindex prevents the browser from redirecting focus to the frame's contents, which causes the frame's contents to be skipped in keyboard navigation. [Learn more about frames and iframes](https://dequeuniversity.com/rules/axe/4.7/frame-focusable-content)."
+  },
+  "core/audits/accessibility/frame-focusable-content.js | failureTitle": {
+    "message": "`<frame>` or `<iframe>` elements with focusable content have `tabindex=\"-1\"`."
+  },
+  "core/audits/accessibility/frame-focusable-content.js | title": {
+    "message": "`<frame>` or `<iframe>` elements with focusable content do not have `tabindex=\"-1\"`."
+  },
   "core/audits/accessibility/frame-title.js | description": {
     "message": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more about frame titles](https://dequeuniversity.com/rules/axe/4.7/frame-title)."
   },
