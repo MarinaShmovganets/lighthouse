@@ -272,6 +272,15 @@
   "core/audits/accessibility/html-lang-valid.js | title": {
     "message": "`<html>` element has a valid value for its `[lang]` attribute"
   },
+  "core/audits/accessibility/html-xml-lang-mismatch.js | description": {
+    "message": "If the webpage does not specify a consistent language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/html-xml-lang-mismatch)."
+  },
+  "core/audits/accessibility/html-xml-lang-mismatch.js | failureTitle": {
+    "message": "`<html>` element does not have an `[xml:lang]` attribute with the same value as the `[lang]` attribute."
+  },
+  "core/audits/accessibility/html-xml-lang-mismatch.js | title": {
+    "message": "`<html>` element has an `[xml:lang]` attribute with the same value as the `[lang]` attribute."
+  },
   "core/audits/accessibility/image-alt.js | description": {
     "message": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.7/image-alt)."
   },
