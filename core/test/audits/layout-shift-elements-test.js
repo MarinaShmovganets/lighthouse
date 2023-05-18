@@ -51,7 +51,7 @@ describe('Performance: layout-shift-elements audit', () => {
     const auditResult = await LayoutShiftElementsAudit.audit(artifacts, {computedCache: new Map()});
     expect(auditResult.score).toEqual(1);
     expect(auditResult.displayValue).toBeDisplayString('1 element found');
-    expect(auditResult.details.metricSavings).toEqual({CLS: 0.4});
+    expect(auditResult.metricSavings).toEqual({CLS: 0.4});
     expect(auditResult.details.items).toHaveLength(1);
     expect(auditResult.details.items[0]).toHaveProperty('node');
     expect(auditResult.details.items[0].node).toHaveProperty('type', 'node');
@@ -91,7 +91,7 @@ describe('Performance: layout-shift-elements audit', () => {
     expect(auditResult.score).toEqual(1);
     expect(auditResult.notApplicable).toEqual(true);
     expect(auditResult.displayValue).toBeUndefined();
-    expect(auditResult.details.metricSavings).toEqual({CLS: 0});
+    expect(auditResult.metricSavings).toEqual({CLS: 0});
     expect(auditResult.details.items).toHaveLength(0);
   });
 });
