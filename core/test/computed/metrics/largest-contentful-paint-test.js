@@ -25,16 +25,16 @@ describe('Metrics: LCP', () => {
       settings, URL}, context);
 
     expect({
-      timing: Math.round(result.timing),
-      optimistic: Math.round(result.optimisticEstimate.timeInMs),
-      pessimistic: Math.round(result.pessimisticEstimate.timeInMs),
-    }).toMatchInlineSnapshot(`
-      Object {
-        "optimistic": 2289,
-        "pessimistic": 3228,
-        "timing": 2758,
-      }
-    `);
+  timing: Math.round(result.timing),
+  optimistic: Math.round(result.optimisticEstimate.timeInMs),
+  pessimistic: Math.round(result.pessimisticEstimate.timeInMs) }).
+toMatchInlineSnapshot(`
+Object {
+  "optimistic": 2291,
+  "pessimistic": 3230,
+  "timing": 2761,
+}
+`);
   });
 
   it('should compute an observed value', async () => {

@@ -50,7 +50,7 @@ class NetworkAnalyzer {
    * @return {Summary}
    */
   static getSummary(values) {
-    if (!values.length) throw new Error('Expected at least one value to make summary');
+    // if (!values.length) throw new Error('Expected at least one value to make summary');
 
     values.sort((a, b) => a - b);
 
