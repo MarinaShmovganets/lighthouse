@@ -55,9 +55,12 @@ describe('CategoryScore', () => {
     );
 
     const link = root.getByRole('link') as HTMLAnchorElement;
+    const lhGaugePercentage = root.getByTitle('Error!') as HTMLDivElement;
 
     expect(link.href).toEqual('file:///Users/example/report.html/#seo');
-    expect(root.getByText('?')).toBeTruthy();
+    expect(lhGaugePercentage).toBeTruthy();
+    expect(lhGaugePercentage.textContent).toBe('');
+    expect(lhGaugePercentage.firstChild?.nodeName).toBe('svg');
   });
 
   it('renders category fraction', () => {
