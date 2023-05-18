@@ -35,7 +35,7 @@ const expectations = {
                 'type': 'node',
                 'selector': 'body > section > div#aria-allowed-attr',
                 'snippet': '<div id="aria-allowed-attr" role="alert" aria-checked="true">',
-                'explanation': 'Fix any of the following:\n  ARIA attribute is not allowed: aria-checked="true"',
+                'explanation': 'Fix all of the following:\n  ARIA attribute is not allowed: aria-checked="true"',
                 'nodeLabel': 'body > section > div#aria-allowed-attr',
               },
             },
@@ -693,6 +693,22 @@ const expectations = {
                 'snippet': '<div id="tabindex" tabindex="10">',
                 'explanation': 'Fix any of the following:\n  Element has a tabindex greater than 0',
                 'nodeLabel': 'body > section > div#tabindex',
+              },
+            },
+          ],
+        },
+      },
+      'td-has-header': {
+        score: 0,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > table#td-has-header',
+                'snippet': '<table id="td-has-header">',
+                'explanation': 'Fix all of the following:\n  Some non-empty data cells do not have table headers',
+                'nodeLabel': 'FOO\tFOO\tFOO\tFOO\nfoo\tfoo\tfoo\tfoo\nfoo\tfoo\tfoo\tfoo\nfoo\tfoo\tfoo\tfoo',
               },
             },
           ],
