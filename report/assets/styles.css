@@ -580,18 +580,6 @@
   top: var(--score-container-padding);
 }
 
-.lh-sticky-header .lh-gauge__wrapper--fail .lh-gauge--error {
-  height: calc(var(--score-icon-size) * 3.25);
-  background-position: center;
-  top: calc(var(--score-container-padding) / 2);
-}
-
-.lh-gauge__wrapper--fail:not([href]) .lh-gauge--error {
-  background-image: var(--error-icon-url);
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
 .lh-audit--manual .lh-audit__display-text,
 .lh-audit--notapplicable .lh-audit__display-text {
   color: var(--color-gray-600);
