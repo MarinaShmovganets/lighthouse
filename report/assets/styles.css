@@ -574,19 +574,24 @@
 }
 
 .lh-gauge__wrapper--fail .lh-gauge--error {
-  top: calc(var(--gauge-circle-size) / 1.9 - var(--score-container-padding));
-  left: 9px;
+  background-image: var(--error-icon-url);
+  background-repeat: no-repeat;
+  left: 36px;
+  top: 8px;
+}
+
+.lh-sticky-header .lh-gauge__wrapper--fail .lh-gauge--error {
+  height: calc(var(--score-icon-size) * 3.25);
+  left: 10px;
+  top: 4px;
 }
 
 .lh-gauge__wrapper--fail:not([href]) .lh-gauge--error {
   background-image: var(--error-icon-url);
   background-repeat: no-repeat;
-  left: 151px;
-  top: 7px;
-}
-
-.lh-gauge__wrapper--fail:not([href]) .lh-gauge--error svg {
-  display: none;
+  height: 120px;
+  left: 139px;
+  top: -5px;
 }
 
 .lh-audit--manual .lh-audit__display-text,

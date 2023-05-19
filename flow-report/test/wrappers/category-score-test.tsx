@@ -60,7 +60,6 @@ describe('CategoryScore', () => {
     expect(link.href).toEqual('file:///Users/example/report.html/#seo');
     expect(lhGaugePercentage).toBeTruthy();
     expect(lhGaugePercentage.textContent).toBe('');
-    expect(lhGaugePercentage.firstChild?.nodeName).toBe('svg');
   });
 
   it('renders category fraction', () => {

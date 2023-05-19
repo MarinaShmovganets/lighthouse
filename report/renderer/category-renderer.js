@@ -180,27 +180,6 @@ export class CategoryRenderer {
   }
 
   /**
-   * @return {Element}
-   */
-  _createErrorIcon() {
-    const ns = 'http://www.w3.org/2000/svg';
-    const svg = this.dom.createElementNS(ns, 'svg');
-    const path1 = this.dom.createElementNS(ns, 'path');
-    const path2 = this.dom.createElementNS(ns, 'path');
-    svg.setAttribute('viewBox', '0 0 36 36');
-    svg.setAttribute('xmlns', ns);
-    svg.setAttribute('width', '36px');
-    svg.setAttribute('height', '36px');
-    path1.setAttribute('d', 'M7.5 22H10.5V19H7.5V22Z');
-    path1.setAttribute('fill', '#FF4E42');
-    path2.setAttribute('d', 'M7.5 16H10.5V7H7.5V16Z');
-    path2.setAttribute('fill', '#FF4E42');
-    svg.appendChild(path1);
-    svg.appendChild(path2);
-    return svg;
-  }
-
-  /**
    * @param {Element} element DOM node to populate with values.
    * @param {number|null} score
    * @param {string} scoreDisplayMode
@@ -416,7 +395,6 @@ export class CategoryRenderer {
     if (category.score === null) {
       percentageEl.classList.add('lh-gauge--error');
       percentageEl.textContent = '';
-      percentageEl.appendChild(this._createErrorIcon());
       percentageEl.title = Globals.strings.errorLabel;
     }
 
