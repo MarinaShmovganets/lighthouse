@@ -568,7 +568,7 @@
   background-repeat: no-repeat;
   width: calc(var(--score-icon-size) * 2.4);
   height: calc(var(--score-icon-size) * 2.4);
-  transform: translateX(-6px);
+  background-position: center;
   margin-right: 0;
   border: none;
 }
@@ -576,22 +576,20 @@
 .lh-gauge__wrapper--fail .lh-gauge--error {
   background-image: var(--error-icon-url);
   background-repeat: no-repeat;
-  left: 36px;
-  top: 8px;
+  background-position: center;
+  top: var(--score-container-padding);
 }
 
 .lh-sticky-header .lh-gauge__wrapper--fail .lh-gauge--error {
   height: calc(var(--score-icon-size) * 3.25);
-  left: 10px;
-  top: 4px;
+  background-position: center;
+  top: calc(var(--score-container-padding) / 2);
 }
 
 .lh-gauge__wrapper--fail:not([href]) .lh-gauge--error {
   background-image: var(--error-icon-url);
   background-repeat: no-repeat;
-  height: 120px;
-  left: 139px;
-  top: -5px;
+  background-position: center;
 }
 
 .lh-audit--manual .lh-audit__display-text,
