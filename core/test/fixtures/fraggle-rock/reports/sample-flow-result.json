@@ -2299,18 +2299,6 @@
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
-          "frame-focusable-content": {
-            "id": "frame-focusable-content",
-            "title": "`<frame>` or `<iframe>` elements with focusable content do not have `tabindex=\"-1\"`.",
-            "description": "A negative tabindex prevents the browser from redirecting focus to the frame's contents, which causes the frame's contents to be skipped in keyboard navigation. [Learn more about frames and iframes](https://dequeuniversity.com/rules/axe/4.7/frame-focusable-content).",
-            "score": 1,
-            "scoreDisplayMode": "binary",
-            "details": {
-              "type": "table",
-              "headings": [],
-              "items": []
-            }
-          },
           "frame-title": {
             "id": "frame-title",
             "title": "`<frame>` or `<iframe>` elements have a title",
@@ -2370,6 +2358,18 @@
             "id": "image-alt",
             "title": "Image elements have `[alt]` attributes",
             "description": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.7/image-alt).",
+            "score": 1,
+            "scoreDisplayMode": "binary",
+            "details": {
+              "type": "table",
+              "headings": [],
+              "items": []
+            }
+          },
+          "input-button-name": {
+            "id": "input-button-name",
+            "title": "Input buttons have discernible text.",
+            "description": "Adding discernable and accessible text to input buttons may help screen reader users understand the purpose of the input button. [Learn more about input buttons](https://dequeuniversity.com/rules/axe/4.7/input-button-name).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -3880,11 +3880,6 @@
                 "group": "a11y-names-labels"
               },
               {
-                "id": "frame-focusable-content",
-                "weight": 3,
-                "group": "a11y-navigation"
-              },
-              {
                 "id": "frame-title",
                 "weight": 0,
                 "group": "a11y-names-labels"
@@ -3911,6 +3906,11 @@
               },
               {
                 "id": "image-alt",
+                "weight": 10,
+                "group": "a11y-names-labels"
+              },
+              {
+                "id": "input-button-name",
                 "weight": 10,
                 "group": "a11y-names-labels"
               },
@@ -6056,43 +6056,43 @@
             },
             {
               "startTime": 199,
-              "name": "lh:audit:frame-focusable-content",
-              "duration": 1,
-              "entryType": "measure"
-            },
-            {
-              "startTime": 200,
               "name": "lh:audit:frame-title",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 201,
+              "startTime": 200,
               "name": "lh:audit:heading-order",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 202,
+              "startTime": 201,
               "name": "lh:audit:html-has-lang",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 203,
+              "startTime": 202,
               "name": "lh:audit:html-lang-valid",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 204,
+              "startTime": 203,
               "name": "lh:audit:html-xml-lang-mismatch",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 205,
+              "startTime": 204,
               "name": "lh:audit:image-alt",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 205,
+              "name": "lh:audit:input-button-name",
               "duration": 1,
               "entryType": "measure"
             },
@@ -7288,12 +7288,6 @@
             "core/audits/accessibility/form-field-multiple-labels.js | description": [
               "audits[form-field-multiple-labels].description"
             ],
-            "core/audits/accessibility/frame-focusable-content.js | title": [
-              "audits[frame-focusable-content].title"
-            ],
-            "core/audits/accessibility/frame-focusable-content.js | description": [
-              "audits[frame-focusable-content].description"
-            ],
             "core/audits/accessibility/frame-title.js | title": [
               "audits[frame-title].title"
             ],
@@ -7329,6 +7323,12 @@
             ],
             "core/audits/accessibility/image-alt.js | description": [
               "audits[image-alt].description"
+            ],
+            "core/audits/accessibility/input-button-name.js | title": [
+              "audits[input-button-name].title"
+            ],
+            "core/audits/accessibility/input-button-name.js | description": [
+              "audits[input-button-name].description"
             ],
             "core/audits/accessibility/input-image-alt.js | title": [
               "audits[input-image-alt].title"
@@ -13182,18 +13182,6 @@
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
-          "frame-focusable-content": {
-            "id": "frame-focusable-content",
-            "title": "`<frame>` or `<iframe>` elements with focusable content do not have `tabindex=\"-1\"`.",
-            "description": "A negative tabindex prevents the browser from redirecting focus to the frame's contents, which causes the frame's contents to be skipped in keyboard navigation. [Learn more about frames and iframes](https://dequeuniversity.com/rules/axe/4.7/frame-focusable-content).",
-            "score": 1,
-            "scoreDisplayMode": "binary",
-            "details": {
-              "type": "table",
-              "headings": [],
-              "items": []
-            }
-          },
           "frame-title": {
             "id": "frame-title",
             "title": "`<frame>` or `<iframe>` elements have a title",
@@ -13453,6 +13441,18 @@
                   "ACT"
                 ]
               }
+            }
+          },
+          "input-button-name": {
+            "id": "input-button-name",
+            "title": "Input buttons have discernible text.",
+            "description": "Adding discernable and accessible text to input buttons may help screen reader users understand the purpose of the input button. [Learn more about input buttons](https://dequeuniversity.com/rules/axe/4.7/input-button-name).",
+            "score": 1,
+            "scoreDisplayMode": "binary",
+            "details": {
+              "type": "table",
+              "headings": [],
+              "items": []
             }
           },
           "input-image-alt": {
@@ -14278,11 +14278,6 @@
                 "group": "a11y-names-labels"
               },
               {
-                "id": "frame-focusable-content",
-                "weight": 3,
-                "group": "a11y-navigation"
-              },
-              {
                 "id": "frame-title",
                 "weight": 0,
                 "group": "a11y-names-labels"
@@ -14309,6 +14304,11 @@
               },
               {
                 "id": "image-alt",
+                "weight": 10,
+                "group": "a11y-names-labels"
+              },
+              {
+                "id": "input-button-name",
                 "weight": 10,
                 "group": "a11y-names-labels"
               },
@@ -15670,43 +15670,43 @@
             },
             {
               "startTime": 58,
-              "name": "lh:audit:frame-focusable-content",
-              "duration": 1,
-              "entryType": "measure"
-            },
-            {
-              "startTime": 59,
               "name": "lh:audit:frame-title",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 60,
+              "startTime": 59,
               "name": "lh:audit:heading-order",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 61,
+              "startTime": 60,
               "name": "lh:audit:html-has-lang",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 62,
+              "startTime": 61,
               "name": "lh:audit:html-lang-valid",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 63,
+              "startTime": 62,
               "name": "lh:audit:html-xml-lang-mismatch",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 64,
+              "startTime": 63,
               "name": "lh:audit:image-alt",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 64,
+              "name": "lh:audit:input-button-name",
               "duration": 1,
               "entryType": "measure"
             },
@@ -16205,12 +16205,6 @@
             "core/audits/accessibility/form-field-multiple-labels.js | description": [
               "audits[form-field-multiple-labels].description"
             ],
-            "core/audits/accessibility/frame-focusable-content.js | title": [
-              "audits[frame-focusable-content].title"
-            ],
-            "core/audits/accessibility/frame-focusable-content.js | description": [
-              "audits[frame-focusable-content].description"
-            ],
             "core/audits/accessibility/frame-title.js | title": [
               "audits[frame-title].title"
             ],
@@ -16246,6 +16240,12 @@
             ],
             "core/audits/accessibility/image-alt.js | description": [
               "audits[image-alt].description"
+            ],
+            "core/audits/accessibility/input-button-name.js | title": [
+              "audits[input-button-name].title"
+            ],
+            "core/audits/accessibility/input-button-name.js | description": [
+              "audits[input-button-name].description"
             ],
             "core/audits/accessibility/input-image-alt.js | title": [
               "audits[input-image-alt].title"
@@ -18832,18 +18832,6 @@
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
-          "frame-focusable-content": {
-            "id": "frame-focusable-content",
-            "title": "`<frame>` or `<iframe>` elements with focusable content do not have `tabindex=\"-1\"`.",
-            "description": "A negative tabindex prevents the browser from redirecting focus to the frame's contents, which causes the frame's contents to be skipped in keyboard navigation. [Learn more about frames and iframes](https://dequeuniversity.com/rules/axe/4.7/frame-focusable-content).",
-            "score": 1,
-            "scoreDisplayMode": "binary",
-            "details": {
-              "type": "table",
-              "headings": [],
-              "items": []
-            }
-          },
           "frame-title": {
             "id": "frame-title",
             "title": "`<frame>` or `<iframe>` elements have a title",
@@ -18951,6 +18939,18 @@
                   "ACT"
                 ]
               }
+            }
+          },
+          "input-button-name": {
+            "id": "input-button-name",
+            "title": "Input buttons have discernible text.",
+            "description": "Adding discernable and accessible text to input buttons may help screen reader users understand the purpose of the input button. [Learn more about input buttons](https://dequeuniversity.com/rules/axe/4.7/input-button-name).",
+            "score": 1,
+            "scoreDisplayMode": "binary",
+            "details": {
+              "type": "table",
+              "headings": [],
+              "items": []
             }
           },
           "input-image-alt": {
@@ -20582,11 +20582,6 @@
                 "group": "a11y-names-labels"
               },
               {
-                "id": "frame-focusable-content",
-                "weight": 3,
-                "group": "a11y-navigation"
-              },
-              {
                 "id": "frame-title",
                 "weight": 0,
                 "group": "a11y-names-labels"
@@ -20613,6 +20608,11 @@
               },
               {
                 "id": "image-alt",
+                "weight": 10,
+                "group": "a11y-names-labels"
+              },
+              {
+                "id": "input-button-name",
                 "weight": 10,
                 "group": "a11y-names-labels"
               },
@@ -22732,43 +22732,43 @@
             },
             {
               "startTime": 196,
-              "name": "lh:audit:frame-focusable-content",
-              "duration": 1,
-              "entryType": "measure"
-            },
-            {
-              "startTime": 197,
               "name": "lh:audit:frame-title",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 198,
+              "startTime": 197,
               "name": "lh:audit:heading-order",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 199,
+              "startTime": 198,
               "name": "lh:audit:html-has-lang",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 200,
+              "startTime": 199,
               "name": "lh:audit:html-lang-valid",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 201,
+              "startTime": 200,
               "name": "lh:audit:html-xml-lang-mismatch",
               "duration": 1,
               "entryType": "measure"
             },
             {
-              "startTime": 202,
+              "startTime": 201,
               "name": "lh:audit:image-alt",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 202,
+              "name": "lh:audit:input-button-name",
               "duration": 1,
               "entryType": "measure"
             },
@@ -23956,12 +23956,6 @@
             "core/audits/accessibility/form-field-multiple-labels.js | description": [
               "audits[form-field-multiple-labels].description"
             ],
-            "core/audits/accessibility/frame-focusable-content.js | title": [
-              "audits[frame-focusable-content].title"
-            ],
-            "core/audits/accessibility/frame-focusable-content.js | description": [
-              "audits[frame-focusable-content].description"
-            ],
             "core/audits/accessibility/frame-title.js | title": [
               "audits[frame-title].title"
             ],
@@ -24000,6 +23994,12 @@
             ],
             "core/lib/i18n/i18n.js | columnFailingElem": [
               "audits[image-alt].details.headings[0].label"
+            ],
+            "core/audits/accessibility/input-button-name.js | title": [
+              "audits[input-button-name].title"
+            ],
+            "core/audits/accessibility/input-button-name.js | description": [
+              "audits[input-button-name].description"
             ],
             "core/audits/accessibility/input-image-alt.js | title": [
               "audits[input-image-alt].title"

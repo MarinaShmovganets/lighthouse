@@ -236,15 +236,6 @@
   "core/audits/accessibility/form-field-multiple-labels.js | title": {
     "message": "N̂ó f̂ór̂ḿ f̂íêĺd̂ś ĥáv̂é m̂úl̂t́îṕl̂é l̂áb̂él̂ś"
   },
-  "core/audits/accessibility/frame-focusable-content.js | description": {
-    "message": "Â ńêǵât́îv́ê t́âb́îńd̂éx̂ ṕr̂év̂én̂t́ŝ t́ĥé b̂ŕôẃŝér̂ f́r̂óm̂ ŕêd́îŕêćt̂ín̂ǵ f̂óĉúŝ t́ô t́ĥé f̂ŕâḿê'ś ĉón̂t́êńt̂ś, ŵh́îćĥ ćâúŝéŝ t́ĥé f̂ŕâḿê'ś ĉón̂t́êńt̂ś t̂ó b̂é ŝḱîṕp̂éd̂ ín̂ ḱêýb̂óâŕd̂ ńâv́îǵât́îón̂. [Ĺêár̂ń m̂ór̂é âb́ôút̂ f́r̂ám̂éŝ án̂d́ îf́r̂ám̂éŝ](https://dequeuniversity.com/rules/axe/4.7/frame-focusable-content)."
-  },
-  "core/audits/accessibility/frame-focusable-content.js | failureTitle": {
-    "message": "`<frame>` ôŕ `<iframe>` êĺêḿêńt̂ś ŵít̂h́ f̂óĉúŝáb̂ĺê ćôńt̂én̂t́ ĥáv̂é `tabindex=\"-1\"`."
-  },
-  "core/audits/accessibility/frame-focusable-content.js | title": {
-    "message": "`<frame>` ôŕ `<iframe>` êĺêḿêńt̂ś ŵít̂h́ f̂óĉúŝáb̂ĺê ćôńt̂én̂t́ d̂ó n̂ót̂ h́âv́ê `tabindex=\"-1\"`."
-  },
   "core/audits/accessibility/frame-title.js | description": {
     "message": "Ŝćr̂éêń r̂éâd́êŕ ûśêŕŝ ŕêĺŷ ón̂ f́r̂ám̂é t̂ít̂ĺêś t̂ó d̂éŝćr̂íb̂é t̂h́ê ćôńt̂én̂t́ŝ óf̂ f́r̂ám̂éŝ. [Ĺêár̂ń m̂ór̂é âb́ôút̂ f́r̂ám̂é t̂ít̂ĺêś](https://dequeuniversity.com/rules/axe/4.7/frame-title)."
   },
@@ -298,6 +289,15 @@
   },
   "core/audits/accessibility/image-alt.js | title": {
     "message": "Îḿâǵê él̂ém̂én̂t́ŝ h́âv́ê `[alt]` át̂t́r̂íb̂út̂éŝ"
+  },
+  "core/audits/accessibility/input-button-name.js | description": {
+    "message": "Âd́d̂ín̂ǵ d̂íŝćêŕn̂áb̂ĺê án̂d́ âćĉéŝśîb́l̂é t̂éx̂t́ t̂ó îńp̂út̂ b́ût́t̂ón̂ś m̂áŷ h́êĺp̂ śĉŕêén̂ ŕêád̂ér̂ úŝér̂ś ûńd̂ér̂śt̂án̂d́ t̂h́ê ṕûŕp̂óŝé ôf́ t̂h́ê ín̂ṕût́ b̂út̂t́ôń. [L̂éâŕn̂ ḿôŕê áb̂óût́ îńp̂út̂ b́ût́t̂ón̂ś](https://dequeuniversity.com/rules/axe/4.7/input-button-name)."
+  },
+  "core/audits/accessibility/input-button-name.js | failureTitle": {
+    "message": "Îńp̂út̂ b́ût́t̂ón̂ś d̂ó n̂ót̂ h́âv́ê d́îśĉér̂ńîb́l̂é t̂éx̂t́."
+  },
+  "core/audits/accessibility/input-button-name.js | title": {
+    "message": "Îńp̂út̂ b́ût́t̂ón̂ś ĥáv̂é d̂íŝćêŕn̂íb̂ĺê t́êx́t̂."
   },
   "core/audits/accessibility/input-image-alt.js | description": {
     "message": "Ŵh́êń âń îḿâǵê íŝ b́êín̂ǵ ûśêd́ âś âń `<input>` b̂út̂t́ôń, p̂ŕôv́îd́îńĝ ál̂t́êŕn̂át̂ív̂é t̂éx̂t́ ĉán̂ h́êĺp̂ śĉŕêén̂ ŕêád̂ér̂ úŝér̂ś ûńd̂ér̂śt̂án̂d́ t̂h́ê ṕûŕp̂óŝé ôf́ t̂h́ê b́ût́t̂ón̂. [Ĺêár̂ń âb́ôút̂ ín̂ṕût́ îḿâǵê ál̂t́ t̂éx̂t́](https://dequeuniversity.com/rules/axe/4.7/input-image-alt)."
