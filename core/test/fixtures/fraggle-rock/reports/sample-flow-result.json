@@ -1204,7 +1204,7 @@
                 },
                 {
                   "origin": "https://fonts.gstatic.com",
-                  "serverResponseTime": 16.217999999999993
+                  "serverResponseTime": 17.328999999999994
                 },
                 {
                   "origin": "https://www.mikescerealshack.co",
@@ -8853,7 +8853,7 @@
                 },
                 {
                   "origin": "https://mnl4bjjsnz-dsn.algolia.net",
-                  "serverResponseTime": 0
+                  "serverResponseTime": 263.2025
                 }
               ],
               "sortedBy": [
@@ -17870,7 +17870,7 @@
                 },
                 {
                   "origin": "https://fonts.gstatic.com",
-                  "serverResponseTime": 0.874
+                  "serverResponseTime": 0.9365
                 }
               ],
               "sortedBy": [
@@ -19349,7 +19349,7 @@
             "id": "modern-image-formats",
             "title": "Serve images in next-gen formats",
             "description": "Image formats like WebP and AVIF often provide better compression than PNG or JPEG, which means faster downloads and less data consumption. [Learn more about modern image formats](https://developer.chrome.com/docs/lighthouse/performance/uses-webp-images/).",
-            "score": 0.75,
+            "score": 0.78,
             "scoreDisplayMode": "numeric",
             "numericValue": 300,
             "numericUnit": "millisecond",
@@ -19457,7 +19457,7 @@
             "id": "uses-responsive-images",
             "title": "Properly size images",
             "description": "Serve images that are appropriately-sized to save cellular data and improve load time. [Learn how to size images](https://developer.chrome.com/docs/lighthouse/performance/uses-responsive-images/).",
-            "score": 0.75,
+            "score": 0.78,
             "scoreDisplayMode": "numeric",
             "numericValue": 300,
             "numericUnit": "millisecond",
