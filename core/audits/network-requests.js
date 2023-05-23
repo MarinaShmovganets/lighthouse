@@ -69,8 +69,7 @@ class NetworkRequests extends Audit {
         ((record.frameId === mainFrameId) || undefined) :
         undefined;
 
-      const isFirstParty = classifiedEntities.isFirstParty(record.url);
-      const isThirdParty = !isFirstParty;
+      const entity = classifiedEntities.entityByUrl.get(record.url);
 
       return {
         url: UrlUtils.elideDataURI(record.url),
@@ -88,8 +87,7 @@ class NetworkRequests extends Audit {
         priority: record.priority,
         isLinkPreload,
         experimentalFromMainFrame,
-        isFirstParty,
-        isThirdParty,
+        entity,
         lrEndTimeDeltaMs: endTimeDeltaMs, // Only exists on Lightrider runs
         lrTCPMs: TCPMs, // Only exists on Lightrider runs
         lrRequestMs: requestMs, // Only exists on Lightrider runs
