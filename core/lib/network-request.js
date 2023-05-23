@@ -375,7 +375,12 @@ class NetworkRequest {
     if (timing.requestTime === 0 || timing.receiveHeadersEnd === -1) return;
 
     // Take networkRequestTime and responseHeadersEndTime from timing data for better accuracy.
+    // Before this, networkRequestTime and responseHeadersEndTime were set to bogus values based on
+    // CDP event timestamps, though they should be somewhat close to the network timings.
+    // Note: requests served from cache never run this function, so they use the "bogus" values.
+
     // Timing's requestTime is a baseline in seconds, rest of the numbers there are ticks in millis.
+    // See https://raw.githubusercontent.com/GoogleChrome/lighthouse/main/docs/Network-Timings.svg
     this.networkRequestTime = timing.requestTime * 1000;
     const headersReceivedTime = this.networkRequestTime + timing.receiveHeadersEnd;
     // This was set in `_onResponse` as that event's timestamp.
