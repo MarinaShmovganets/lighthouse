@@ -46,11 +46,8 @@ class NetworkRequests extends Audit {
     // for the general solution to this.
     /** @type {string|undefined} */
     let mainFrameId;
-    if (artifacts.GatherContext.gatherMode === "navigation") {
-      const mainResource = await MainResource.request(
-        { devtoolsLog, URL: artifacts.URL },
-        context
-      );
+    if (artifacts.GatherContext.gatherMode === 'navigation') {
+      const mainResource = await MainResource.request({devtoolsLog, URL: artifacts.URL}, context);
       mainFrameId = mainResource.frameId;
     }
 
