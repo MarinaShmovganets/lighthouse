@@ -33,9 +33,7 @@ class NetworkRequests extends Audit {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const records = await NetworkRecords.request(devtoolsLog, context);
     const classifiedEntities = await EntityClassification.request(
-      { URL: artifacts.URL, devtoolsLog },
-      context
-    );
+      {URL: artifacts.URL, devtoolsLog}, context);
     const earliestRendererStartTime = records.reduce(
       (min, record) => Math.min(min, record.rendererStartTime),
       Infinity
