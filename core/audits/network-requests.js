@@ -8,6 +8,7 @@ import {Audit} from './audit.js';
 import UrlUtils from '../lib/url-utils.js';
 import {NetworkRecords} from '../computed/network-records.js';
 import {MainResource} from '../computed/main-resource.js';
+import {EntityClassification} from '../computed/entity-classification.js';
 
 class NetworkRequests extends Audit {
   /**
@@ -31,6 +32,10 @@ class NetworkRequests extends Audit {
   static async audit(artifacts, context) {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const records = await NetworkRecords.request(devtoolsLog, context);
+    const classifiedEntities = await EntityClassification.request(
+      { URL: artifacts.URL, devtoolsLog },
+      context
+    );
     const earliestRendererStartTime = records.reduce(
       (min, record) => Math.min(min, record.rendererStartTime),
       Infinity
@@ -41,8 +46,11 @@ class NetworkRequests extends Audit {
     // for the general solution to this.
     /** @type {string|undefined} */
     let mainFrameId;
-    if (artifacts.GatherContext.gatherMode === 'navigation') {
-      const mainResource = await MainResource.request({devtoolsLog, URL: artifacts.URL}, context);
+    if (artifacts.GatherContext.gatherMode === "navigation") {
+      const mainResource = await MainResource.request(
+        { devtoolsLog, URL: artifacts.URL },
+        context
+      );
       mainFrameId = mainResource.frameId;
     }
 
@@ -61,6 +69,9 @@ class NetworkRequests extends Audit {
         ((record.frameId === mainFrameId) || undefined) :
         undefined;
 
+      const isFirstParty = classifiedEntities.isFirstParty(record.url);
+      const isThirdParty = !isFirstParty;
+
       return {
         url: UrlUtils.elideDataURI(record.url),
         sessionTargetType: record.sessionTargetType,
@@ -77,6 +88,8 @@ class NetworkRequests extends Audit {
         priority: record.priority,
         isLinkPreload,
         experimentalFromMainFrame,
+        isFirstParty,
+        isThirdParty,
         lrEndTimeDeltaMs: endTimeDeltaMs, // Only exists on Lightrider runs
         lrTCPMs: TCPMs, // Only exists on Lightrider runs
         lrRequestMs: requestMs, // Only exists on Lightrider runs
