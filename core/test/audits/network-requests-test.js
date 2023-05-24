@@ -186,12 +186,10 @@ describe('Network requests audit', () => {
 
     expect(output.details.items).toMatchObject([{
       url: 'https://example.com/',
-      isFirstParty: true,
-      isThirdParty: false,
+      entityName: 'example.com',
     }, {
       url: 'https://www.googletagmanager.com/gtm.js',
-      isFirstParty: false,
-      isThirdParty: true,
+      entityName: 'Google Tag Manager',
     }]);
   });
 });
