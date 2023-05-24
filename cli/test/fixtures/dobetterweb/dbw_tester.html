@@ -468,7 +468,7 @@ if (location.search === '') {
 <script>window.fetch = () => new Promise(r => setTimeout(r, 90000));</script>
 
 <!-- FAIL(is-on-https): requires a non-localhost http file -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://0.0.0.0:10503/dobetterweb/third_party/fake-jquery.js"></script>
 
 <!-- Filesystem URL shouldn't be flagged is-on-https. -->
 <script>
