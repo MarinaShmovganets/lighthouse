@@ -585,6 +585,22 @@ const expectations = {
           },
         },
       },
+      'network-rtt': {
+        details: {
+          items: [
+            {origin: 'http://localhost:10200', rtt: '>0'},
+            {origin: 'http://0.0.0.0:10503', rtt: '>0'},
+          ],
+        },
+      },
+      'network-server-latency': {
+        details: {
+          items: [
+            {origin: 'http://localhost:10200', serverResponseTime: '>0'},
+            {origin: 'http://0.0.0.0:10503', serverResponseTime: '>0'},
+          ],
+        },
+      },
       'metrics': {
         // Flaky in DevTools
         _excludeRunner: 'devtools',
