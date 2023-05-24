@@ -276,7 +276,7 @@
     "message": "Îf́ t̂h́ê ẃêb́p̂áĝé d̂óêś n̂ót̂ śp̂éĉíf̂ý â ćôńŝíŝt́êńt̂ ĺâńĝúâǵê, t́ĥén̂ t́ĥé ŝćr̂éêń r̂éâd́êŕ m̂íĝh́t̂ ńôt́ âńn̂óûńĉé t̂h́ê ṕâǵê'ś t̂éx̂t́ ĉór̂ŕêćt̂ĺŷ. [Ĺêár̂ń m̂ór̂é âb́ôút̂ t́ĥé `lang` ât́t̂ŕîb́ût́ê](https://dequeuniversity.com/rules/axe/4.7/html-xml-lang-mismatch)."
   },
   "core/audits/accessibility/html-xml-lang-mismatch.js | failureTitle": {
-    "message": "`<html>` êĺêḿêńt̂ d́ôéŝ ńôt́ ĥáv̂é âń `[xml:lang]` ât́t̂ŕîb́ût́ê ẃît́ĥ t́ĥé ŝám̂é v̂ál̂úê áŝ t́ĥé `[lang]` ât́t̂ŕîb́ût́ê."
+    "message": "`<html>` êĺêḿêńt̂ d́ôéŝ ńôt́ ĥáv̂é âń `[xml:lang]` ât́t̂ŕîb́ût́ê ẃît́ĥ t́ĥé ŝám̂é b̂áŝé l̂án̂ǵûáĝé âś t̂h́ê `[lang]` át̂t́r̂íb̂út̂é."
   },
   "core/audits/accessibility/html-xml-lang-mismatch.js | title": {
     "message": "`<html>` êĺêḿêńt̂ h́âś âń `[xml:lang]` ât́t̂ŕîb́ût́ê ẃît́ĥ t́ĥé ŝám̂é b̂áŝé l̂án̂ǵûáĝé âś t̂h́ê `[lang]` át̂t́r̂íb̂út̂é."

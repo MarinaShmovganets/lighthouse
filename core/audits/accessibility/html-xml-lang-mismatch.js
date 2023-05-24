@@ -18,8 +18,8 @@ const UIStrings = {
   title: '`<html>` element has an `[xml:lang]` attribute with the same base language as the ' +
       '`[lang]` attribute.',
   /** Title of an accesibility audit that evaluates if the xml:lang attribute, if present, has the same base language as the `lang` attribute. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
-  failureTitle: '`<html>` element does not have an `[xml:lang]` attribute with the same value ' +
-      'as the `[lang]` attribute.',
+  failureTitle: '`<html>` element does not have an `[xml:lang]` attribute with the same base ' +
+      'language as the `[lang]` attribute.',
   /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   description: 'If the webpage does not specify a consistent language, then the screen ' +
       'reader might not announce the page\'s text correctly. ' +

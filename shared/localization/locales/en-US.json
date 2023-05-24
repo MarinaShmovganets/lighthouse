@@ -276,7 +276,7 @@
     "message": "If the webpage does not specify a consistent language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/html-xml-lang-mismatch)."
   },
   "core/audits/accessibility/html-xml-lang-mismatch.js | failureTitle": {
-    "message": "`<html>` element does not have an `[xml:lang]` attribute with the same value as the `[lang]` attribute."
+    "message": "`<html>` element does not have an `[xml:lang]` attribute with the same base language as the `[lang]` attribute."
   },
   "core/audits/accessibility/html-xml-lang-mismatch.js | title": {
     "message": "`<html>` element has an `[xml:lang]` attribute with the same base language as the `[lang]` attribute."
