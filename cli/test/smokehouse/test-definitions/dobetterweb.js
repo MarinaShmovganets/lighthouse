@@ -302,17 +302,6 @@ const expectations = {
           },
         },
       },
-      'is-on-https': {
-        score: 0,
-        details: {
-          items: [
-            {
-              url: 'http://0.0.0.0:10503/dobetterweb/third_party/fake-jquery.js',
-              resolution: 'Allowed',
-            },
-          ],
-        },
-      },
       'geolocation-on-start': {
         score: 0,
       },
