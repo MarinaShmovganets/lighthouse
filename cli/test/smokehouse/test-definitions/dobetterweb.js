@@ -307,7 +307,7 @@ const expectations = {
         details: {
           items: [
             {
-              url: 'http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js',
+              url: 'http://0.0.0.0:10503/dobetterweb/third_party/fake-jquery.js',
               resolution: 'Allowed',
             },
           ],
