@@ -186,10 +186,10 @@ describe('Network requests audit', () => {
 
     expect(output.details.items).toMatchObject([{
       url: 'https://example.com/',
-      entityName: 'example.com',
+      entity: 'example.com',
     }, {
       url: 'https://www.googletagmanager.com/gtm.js',
-      entityName: 'Google Tag Manager',
+      entity: 'Google Tag Manager',
     }]);
   });
 });

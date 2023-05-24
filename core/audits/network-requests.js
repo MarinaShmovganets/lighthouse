@@ -83,7 +83,7 @@ class NetworkRequests extends Audit {
         priority: record.priority,
         isLinkPreload,
         experimentalFromMainFrame,
-        entityName,
+        entity: entityName,
         lrEndTimeDeltaMs: endTimeDeltaMs, // Only exists on Lightrider runs
         lrTCPMs: TCPMs, // Only exists on Lightrider runs
         lrRequestMs: requestMs, // Only exists on Lightrider runs
