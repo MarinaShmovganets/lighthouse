@@ -15,7 +15,7 @@ import * as i18n from '../../lib/i18n/i18n.js';
 
 const UIStrings = {
   /** Title of an accesibility audit that evaluates if the xml:lang attribute, if present, has the same value as the `lang` attribute. This title is descriptive of the successful state and is shown to users when no user action is required. */
-  title: '`<html>` element has an `[xml:lang]` attribute with the same value as the `[lang]` ' +
+  title: '`<html>` element has an `[xml:lang]` attribute with the same base language as the `[lang]` ' +
       'attribute.',
   /** Title of an accesibility audit that evaluates if the xml:lang attribute, if present, has the same value as the `lang` attribute. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
   failureTitle: '`<html>` element does not have an `[xml:lang]` attribute with the same value ' +
