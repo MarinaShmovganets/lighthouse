@@ -3256,7 +3256,7 @@
     },
     "html-xml-lang-mismatch": {
       "id": "html-xml-lang-mismatch",
-      "title": "`<html>` element has an `[xml:lang]` attribute with the same value as the `[lang]` attribute.",
+      "title": "`<html>` element has an `[xml:lang]` attribute with the same base language as the `[lang]` attribute.",
       "description": "If the webpage does not specify a consistent language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/html-xml-lang-mismatch).",
       "score": 1,
       "scoreDisplayMode": "binary",

@@ -279,7 +279,7 @@
     "message": "`<html>` element does not have an `[xml:lang]` attribute with the same value as the `[lang]` attribute."
   },
   "core/audits/accessibility/html-xml-lang-mismatch.js | title": {
-    "message": "`<html>` element has an `[xml:lang]` attribute with the same value as the `[lang]` attribute."
+    "message": "`<html>` element has an `[xml:lang]` attribute with the same base language as the `[lang]` attribute."
   },
   "core/audits/accessibility/image-alt.js | description": {
     "message": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.7/image-alt)."

@@ -279,7 +279,7 @@
     "message": "`<html>` êĺêḿêńt̂ d́ôéŝ ńôt́ ĥáv̂é âń `[xml:lang]` ât́t̂ŕîb́ût́ê ẃît́ĥ t́ĥé ŝám̂é v̂ál̂úê áŝ t́ĥé `[lang]` ât́t̂ŕîb́ût́ê."
   },
   "core/audits/accessibility/html-xml-lang-mismatch.js | title": {
-    "message": "`<html>` êĺêḿêńt̂ h́âś âń `[xml:lang]` ât́t̂ŕîb́ût́ê ẃît́ĥ t́ĥé ŝám̂é v̂ál̂úê áŝ t́ĥé `[lang]` ât́t̂ŕîb́ût́ê."
+    "message": "`<html>` êĺêḿêńt̂ h́âś âń `[xml:lang]` ât́t̂ŕîb́ût́ê ẃît́ĥ t́ĥé ŝám̂é b̂áŝé l̂án̂ǵûáĝé âś t̂h́ê `[lang]` át̂t́r̂íb̂út̂é."
   },
   "core/audits/accessibility/image-alt.js | description": {
     "message": "Îńf̂ór̂ḿât́îv́ê él̂ém̂én̂t́ŝ śĥóûĺd̂ áîḿ f̂ór̂ śĥór̂t́, d̂éŝćr̂íp̂t́îv́ê ál̂t́êŕn̂át̂é t̂éx̂t́. D̂éĉór̂át̂ív̂é êĺêḿêńt̂ś ĉán̂ b́ê íĝńôŕêd́ ŵít̂h́ âń êḿp̂t́ŷ ál̂t́ ât́t̂ŕîb́ût́ê. [Ĺêár̂ń m̂ór̂é âb́ôút̂ t́ĥé `alt` ât́t̂ŕîb́ût́ê](https://dequeuniversity.com/rules/axe/4.7/image-alt)."
