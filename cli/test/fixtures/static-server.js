@@ -257,7 +257,7 @@ async function createServers() {
     return server;
   });
 
-  const outcomes = await Promise.allSettled(servers.map(s => s.listen(s._port, 'localhost')));
+  const outcomes = await Promise.allSettled(servers.map(s => s.listen(s._port, '0.0.0.0')));
   if (outcomes.some(o => o.status === 'rejected')) {
     if (outcomes.every(o => o.reason.message.includes('already'))) {
       console.warn('😧 Server already up. Continuing…');
