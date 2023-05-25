@@ -65,7 +65,6 @@ class NetworkRequests extends Audit {
         undefined;
 
       const entity = classifiedEntities.entityByUrl.get(record.url);
-      const entityName = entity?.name || undefined;
 
       return {
         url: UrlUtils.elideDataURI(record.url),
@@ -83,7 +82,7 @@ class NetworkRequests extends Audit {
         priority: record.priority,
         isLinkPreload,
         experimentalFromMainFrame,
-        entity: entityName,
+        entity: entity?.name,
         lrEndTimeDeltaMs: endTimeDeltaMs, // Only exists on Lightrider runs
         lrTCPMs: TCPMs, // Only exists on Lightrider runs
         lrRequestMs: requestMs, // Only exists on Lightrider runs
