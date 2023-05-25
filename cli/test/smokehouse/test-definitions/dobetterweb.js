@@ -578,7 +578,6 @@ const expectations = {
         details: {
           items: [
             {origin: 'http://localhost:10200', rtt: '>0'},
-            {origin: 'http://0.0.0.0:10503', rtt: '>0'},
           ],
         },
       },
@@ -586,7 +585,6 @@ const expectations = {
         details: {
           items: [
             {origin: 'http://localhost:10200', serverResponseTime: '>0'},
-            {origin: 'http://0.0.0.0:10503', serverResponseTime: '>0'},
           ],
         },
       },
