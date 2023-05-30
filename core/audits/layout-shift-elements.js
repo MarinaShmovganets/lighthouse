@@ -63,7 +63,7 @@ class LayoutShiftElements extends Audit {
         {nodeCount: clsElementData.length});
     }
 
-    const {cumulativeLayoutShift: clsSavings} =
+    const clsSavings =
       await CumulativeLayoutShift.request(artifacts.traces[Audit.DEFAULT_PASS], context);
 
     return {

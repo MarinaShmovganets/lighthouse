@@ -23,11 +23,7 @@ describe('Metrics: CLS', () => {
   describe('real traces', () => {
     it('calculates (all main frame) CLS for a trace', async () => {
       const result = await CumulativeLayoutShift.request(jumpyClsTrace, context);
-      expect(result).toEqual({
-        cumulativeLayoutShift: expect.toBeApproximately(2.268816, 6),
-        cumulativeLayoutShiftMainFrame: expect.toBeApproximately(2.268816, 6),
-        totalCumulativeLayoutShift: expect.toBeApproximately(4.809794, 6),
-      });
+      expect(result).toBeApproximately(2.268816, 6);
     });
 
     it('throws if layout shift events are found without weighted_score_delta', async () => {
@@ -37,20 +33,12 @@ describe('Metrics: CLS', () => {
 
     it('calculates CLS values for a trace with CLS events over more than one frame', async () => {
       const result = await CumulativeLayoutShift.request(allFramesMetricsTrace, context);
-      expect(result).toEqual({
-        cumulativeLayoutShift: 0.026463014612806653,
-        cumulativeLayoutShiftMainFrame: 0.0011656245471340055,
-        totalCumulativeLayoutShift: 0.0011656245471340055,
-      });
+      expect(result).toEqual(0.026463014612806653);
     });
 
     it('returns 0 for a trace with no CLS events', async () => {
       const result = await CumulativeLayoutShift.request(preClsTrace, context);
-      expect(result).toEqual({
-        cumulativeLayoutShift: 0,
-        cumulativeLayoutShiftMainFrame: 0,
-        totalCumulativeLayoutShift: 0,
-      });
+      expect(result).toEqual(0);
     });
   });
 
@@ -120,11 +108,7 @@ describe('Metrics: CLS', () => {
           {score: 1, ts: 4, had_recent_input: false},
         ]);
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toEqual({
-          cumulativeLayoutShift: 4,
-          cumulativeLayoutShiftMainFrame: 4,
-          totalCumulativeLayoutShift: 4,
-        });
+        expect(result).toEqual(4);
       });
 
       it('should not count later shift events if input it true', async () => {
@@ -137,11 +121,7 @@ describe('Metrics: CLS', () => {
           {score: 1, ts: 5, had_recent_input: true},
         ]);
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toEqual({
-          cumulativeLayoutShift: 3,
-          cumulativeLayoutShiftMainFrame: 3,
-          totalCumulativeLayoutShift: 3,
-        });
+        expect(result).toEqual(3);
       });
 
       it('calculates from a uniform distribution of layout shift events', async () => {
@@ -155,11 +135,7 @@ describe('Metrics: CLS', () => {
         const trace = makeTrace(shiftEvents);
 
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toEqual({
-          cumulativeLayoutShift: 0.75,
-          cumulativeLayoutShiftMainFrame: 0.75,
-          totalCumulativeLayoutShift: 3.75, // 30 * 0.125
-        });
+        expect(result).toEqual(0.75);
       });
 
       it('calculates from three clusters of layout shift events', async () => {
@@ -180,11 +156,7 @@ describe('Metrics: CLS', () => {
         const trace = makeTrace(shiftEvents);
 
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toEqual({
-          cumulativeLayoutShift: 1.0625,
-          cumulativeLayoutShiftMainFrame: 1.0625,
-          totalCumulativeLayoutShift: 1.375,
-        });
+        expect(result).toEqual(1.0625);
       });
 
       it('calculates the same LS score from a tiny extra small cluster of events', async () => {
@@ -198,11 +170,8 @@ describe('Metrics: CLS', () => {
         const trace = makeTrace(shiftEvents);
 
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toEqual({
-          cumulativeLayoutShift: 3.75, // 30 * 0.125
-          cumulativeLayoutShiftMainFrame: 3.75,
-          totalCumulativeLayoutShift: 3.75,
-        });
+        // 30 * 0.125
+        expect(result).toEqual(3.75);
       });
 
       it('includes events with recent input at start of trace, but ignores others', async () => {
@@ -222,11 +191,7 @@ describe('Metrics: CLS', () => {
         const trace = makeTrace(shiftEvents);
 
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toEqual({
-          cumulativeLayoutShift: 3,
-          cumulativeLayoutShiftMainFrame: 3,
-          totalCumulativeLayoutShift: 3,
-        });
+        expect(result).toEqual(3);
       });
     });
 
@@ -243,11 +208,8 @@ describe('Metrics: CLS', () => {
         const trace = makeTrace(shiftEvents);
 
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toEqual({
-          cumulativeLayoutShift: 0.75, // Same value as single-frame uniformly distributed.
-          cumulativeLayoutShiftMainFrame: 0.125, // All 1s gaps, so only one event per cluster.
-          totalCumulativeLayoutShift: 1.875, // 0.125 * 15
-        });
+        // Same value as single-frame uniformly distributed.
+        expect(result).toEqual(0.75);
       });
 
       it('includes events with recent input at start of trace, but ignores others', async () => {
@@ -272,11 +234,7 @@ describe('Metrics: CLS', () => {
         const trace = makeTrace(shiftEvents);
 
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toMatchObject({
-          cumulativeLayoutShift: 4,
-          cumulativeLayoutShiftMainFrame: 2,
-          totalCumulativeLayoutShift: 2,
-        });
+        expect(result).toEqual(4);
       });
 
       it('includes recent input events near first viewport event, but ignores others', async () => {
@@ -327,11 +285,7 @@ describe('Metrics: CLS', () => {
         });
 
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toMatchObject({
-          cumulativeLayoutShift: 5,
-          cumulativeLayoutShiftMainFrame: 3,
-          totalCumulativeLayoutShift: 3,
-        });
+        expect(result).toEqual(5);
       });
 
       it('uses layout shift score weighted by frame size', async () => {
@@ -343,11 +297,7 @@ describe('Metrics: CLS', () => {
         const trace = makeTrace(shiftEvents);
 
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toMatchObject({
-          cumulativeLayoutShift: 4,
-          cumulativeLayoutShiftMainFrame: 2,
-          totalCumulativeLayoutShift: 2,
-        });
+        expect(result).toEqual(4);
       });
 
       it('ignores layout shift data from other tabs', async () => {
@@ -372,11 +322,7 @@ describe('Metrics: CLS', () => {
           /* eslint-enable max-len */
         );
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toMatchObject({
-          cumulativeLayoutShift: 3,
-          cumulativeLayoutShiftMainFrame: 1,
-          totalCumulativeLayoutShift: 1,
-        });
+        expect(result).toEqual(3);
       });
     });
 
@@ -392,11 +338,7 @@ describe('Metrics: CLS', () => {
         ];
         const trace = makeTrace(shiftEvents);
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toMatchObject({
-          cumulativeLayoutShift: 6,
-          cumulativeLayoutShiftMainFrame: 6,
-          totalCumulativeLayoutShift: 6,
-        });
+        expect(result).toEqual(6);
       });
 
       it('counts gaps > 1s and limits cluster length to <= 5s (multiple frames)', async () => {
@@ -411,11 +353,7 @@ describe('Metrics: CLS', () => {
         ];
         const trace = makeTrace(shiftEvents);
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toMatchObject({
-          cumulativeLayoutShift: 6,
-          cumulativeLayoutShiftMainFrame: 1,
-          totalCumulativeLayoutShift: 4,
-        });
+        expect(result).toEqual(6);
       });
 
       it('only counts gaps > 1s', async () => {
@@ -425,11 +363,7 @@ describe('Metrics: CLS', () => {
         ];
         const trace = makeTrace(shiftEvents);
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toMatchObject({
-          cumulativeLayoutShift: 2,
-          cumulativeLayoutShiftMainFrame: 2,
-          totalCumulativeLayoutShift: 2,
-        });
+        expect(result).toEqual(2);
       });
 
       it('only counts gaps > 1s (multiple frames)', async () => {
@@ -439,11 +373,7 @@ describe('Metrics: CLS', () => {
         ];
         const trace = makeTrace(shiftEvents);
         const result = await CumulativeLayoutShift.request(trace, context);
-        expect(result).toMatchObject({
-          cumulativeLayoutShift: 2,
-          cumulativeLayoutShiftMainFrame: 1,
-          totalCumulativeLayoutShift: 1,
-        });
+        expect(result).toEqual(2);
       });
     });
   });

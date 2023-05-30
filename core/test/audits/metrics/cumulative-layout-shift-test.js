@@ -28,13 +28,6 @@ describe('Cumulative Layout Shift', () => {
       score: 0,
       numericValue: expect.toBeApproximately(2.268816, 6),
       numericUnit: 'unitless',
-      details: {
-        type: 'debugdata',
-        items: [{
-          cumulativeLayoutShiftMainFrame: expect.toBeApproximately(2.268816, 6),
-          totalCumulativeLayoutShift: expect.toBeApproximately(4.809794, 6),
-        }],
-      },
     });
   });
 });

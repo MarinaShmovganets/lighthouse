@@ -195,16 +195,7 @@
       "scoreDisplayMode": "numeric",
       "numericValue": 0.13570762803819444,
       "numericUnit": "unitless",
-      "displayValue": "0.136",
-      "details": {
-        "type": "debugdata",
-        "items": [
-          {
-            "cumulativeLayoutShiftMainFrame": 0.13570762803819444,
-            "totalCumulativeLayoutShift": 0.13570762803819444
-          }
-        ]
-      }
+      "displayValue": "0.136"
     },
     "errors-in-console": {
       "id": "errors-in-console",
@@ -1941,8 +1932,6 @@
             "totalBlockingTime": 1221,
             "maxPotentialFID": 1175,
             "cumulativeLayoutShift": 0.13570762803819444,
-            "cumulativeLayoutShiftMainFrame": 0.13570762803819444,
-            "totalCumulativeLayoutShift": 0.13570762803819444,
             "lcpLoadStart": 10849,
             "lcpLoadEnd": 12900,
             "timeToFirstByte": 572,
@@ -1970,8 +1959,6 @@
             "observedDomContentLoaded": 8186,
             "observedDomContentLoadedTs": 8704886496,
             "observedCumulativeLayoutShift": 0.13570762803819444,
-            "observedCumulativeLayoutShiftMainFrame": 0.13570762803819444,
-            "observedTotalCumulativeLayoutShift": 0.13570762803819444,
             "observedFirstVisualChange": 8058,
             "observedFirstVisualChangeTs": 8704758822,
             "observedLastVisualChange": 8893,

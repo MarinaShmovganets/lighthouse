@@ -181,16 +181,7 @@
             "scoreDisplayMode": "numeric",
             "numericValue": 0.002631263732910156,
             "numericUnit": "unitless",
-            "displayValue": "0.003",
-            "details": {
-              "type": "debugdata",
-              "items": [
-                {
-                  "cumulativeLayoutShiftMainFrame": 0.002631263732910156,
-                  "totalCumulativeLayoutShift": 0.002631263732910156
-                }
-              ]
-            }
+            "displayValue": "0.003"
           },
           "errors-in-console": {
             "id": "errors-in-console",
@@ -1317,8 +1308,6 @@
                   "totalBlockingTime": 143,
                   "maxPotentialFID": 193,
                   "cumulativeLayoutShift": 0.002631263732910156,
-                  "cumulativeLayoutShiftMainFrame": 0.002631263732910156,
-                  "totalCumulativeLayoutShift": 0.002631263732910156,
                   "lcpLoadStart": 985,
                   "lcpLoadEnd": 1062,
                   "timeToFirstByte": 615,
@@ -1345,8 +1334,6 @@
                   "observedDomContentLoaded": 255,
                   "observedDomContentLoadedTs": 183713237485,
                   "observedCumulativeLayoutShift": 0.002631263732910156,
-                  "observedCumulativeLayoutShiftMainFrame": 0.002631263732910156,
-                  "observedTotalCumulativeLayoutShift": 0.002631263732910156,
                   "observedFirstVisualChange": 341,
                   "observedFirstVisualChangeTs": 183713323617,
                   "observedLastVisualChange": 575,
@@ -8066,16 +8053,7 @@
             "scoreDisplayMode": "numeric",
             "numericValue": 0.13125,
             "numericUnit": "unitless",
-            "displayValue": "0.131",
-            "details": {
-              "type": "debugdata",
-              "items": [
-                {
-                  "cumulativeLayoutShiftMainFrame": 0.13125,
-                  "totalCumulativeLayoutShift": 0.13125
-                }
-              ]
-            }
+            "displayValue": "0.131"
           },
           "experimental-interaction-to-next-paint": {
             "id": "experimental-interaction-to-next-paint",
@@ -16906,16 +16884,7 @@
             "scoreDisplayMode": "numeric",
             "numericValue": 0,
             "numericUnit": "unitless",
-            "displayValue": "0",
-            "details": {
-              "type": "debugdata",
-              "items": [
-                {
-                  "cumulativeLayoutShiftMainFrame": 0,
-                  "totalCumulativeLayoutShift": 0
-                }
-              ]
-            }
+            "displayValue": "0"
           },
           "errors-in-console": {
             "id": "errors-in-console",
@@ -18006,8 +17975,6 @@
                   "totalBlockingTime": 13,
                   "maxPotentialFID": 76,
                   "cumulativeLayoutShift": 0,
-                  "cumulativeLayoutShiftMainFrame": 0,
-                  "totalCumulativeLayoutShift": 0,
                   "lcpLoadStart": 603,
                   "lcpLoadEnd": 837,
                   "timeToFirstByte": 603,
@@ -18034,8 +18001,6 @@
                   "observedDomContentLoaded": 45,
                   "observedDomContentLoadedTs": 183729805229,
                   "observedCumulativeLayoutShift": 0,
-                  "observedCumulativeLayoutShiftMainFrame": 0,
-                  "observedTotalCumulativeLayoutShift": 0,
                   "observedFirstVisualChange": 89,
                   "observedFirstVisualChangeTs": 183729849318,
                   "observedLastVisualChange": 505,

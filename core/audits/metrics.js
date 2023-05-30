@@ -10,11 +10,7 @@ import {TimingSummary} from '../computed/metrics/timing-summary.js';
 /** @type {Set<keyof LH.Artifacts.TimingSummary>} */
 const DECIMAL_METRIC_KEYS = new Set([
   'cumulativeLayoutShift',
-  'cumulativeLayoutShiftMainFrame',
-  'totalCumulativeLayoutShift',
   'observedCumulativeLayoutShift',
-  'observedCumulativeLayoutShiftMainFrame',
-  'observedTotalCumulativeLayoutShift',
 ]);
 
 class Metrics extends Audit {
