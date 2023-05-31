@@ -303,6 +303,7 @@ declare module Details {
     value: number,
     granularity?: number,
   }
+
 }
 
 export default Details;
