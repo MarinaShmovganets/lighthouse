@@ -51,7 +51,7 @@ class TimeToFirstByte extends NavigationMetric {
     const timestampMs =
       mainResource.timing.requestTime * 1000 + mainResource.timing.receiveHeadersStart;
     const timestamp = timestampMs * 1000;
-    const timing = timestampMs - timeOriginTs / 1000;
+    const timing = (timestamp - timeOriginTs) / 1000;
     return {timing, timestamp};
   }
 }
