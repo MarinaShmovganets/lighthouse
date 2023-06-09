@@ -3,6 +3,7 @@
 exports[`Performance: metrics evaluates valid input (with image lcp) correctly 1`] = `
 Object {
   "cumulativeLayoutShift": 0,
+  "cumulativeLayoutShiftMainFrame": 0,
   "firstContentfulPaint": 3313,
   "firstContentfulPaintAllFrames": undefined,
   "firstContentfulPaintAllFramesTs": undefined,
@@ -19,6 +20,7 @@ Object {
   "lcpLoadStart": 5449,
   "maxPotentialFID": 160,
   "observedCumulativeLayoutShift": 0,
+  "observedCumulativeLayoutShiftMainFrame": 0,
   "observedDomContentLoaded": 2474,
   "observedDomContentLoadedTs": 760623117637,
   "observedFirstContentfulPaint": 2685,
@@ -58,6 +60,7 @@ Object {
 exports[`Performance: metrics evaluates valid input (with lcp from all frames) correctly 1`] = `
 Object {
   "cumulativeLayoutShift": undefined,
+  "cumulativeLayoutShiftMainFrame": undefined,
   "firstContentfulPaint": 863,
   "firstContentfulPaintAllFrames": 683,
   "firstContentfulPaintAllFramesTs": 23466705983,
@@ -74,6 +77,7 @@ Object {
   "lcpLoadStart": undefined,
   "maxPotentialFID": 16,
   "observedCumulativeLayoutShift": undefined,
+  "observedCumulativeLayoutShiftMainFrame": undefined,
   "observedDomContentLoaded": 596,
   "observedDomContentLoadedTs": 23466619325,
   "observedFirstContentfulPaint": 863,
@@ -113,6 +117,7 @@ Object {
 exports[`Performance: metrics evaluates valid input (with lcp) correctly 1`] = `
 Object {
   "cumulativeLayoutShift": 0,
+  "cumulativeLayoutShiftMainFrame": 0,
   "firstContentfulPaint": 2291,
   "firstContentfulPaintAllFrames": undefined,
   "firstContentfulPaintAllFramesTs": undefined,
@@ -129,6 +134,7 @@ Object {
   "lcpLoadStart": undefined,
   "maxPotentialFID": 1336,
   "observedCumulativeLayoutShift": 0,
+  "observedCumulativeLayoutShiftMainFrame": 0,
   "observedDomContentLoaded": 1513,
   "observedDomContentLoadedTs": 713038536140,
   "observedFirstContentfulPaint": 1122,
@@ -168,6 +174,7 @@ Object {
 exports[`Performance: metrics evaluates valid input correctly (throttlingMethod=provided) 1`] = `
 Object {
   "cumulativeLayoutShift": 0,
+  "cumulativeLayoutShiftMainFrame": 0,
   "firstContentfulPaint": 499,
   "firstContentfulPaintAllFrames": 499,
   "firstContentfulPaintAllFramesTs": 225414670885,
@@ -184,6 +191,7 @@ Object {
   "lcpLoadStart": undefined,
   "maxPotentialFID": 198,
   "observedCumulativeLayoutShift": 0,
+  "observedCumulativeLayoutShiftMainFrame": 0,
   "observedDomContentLoaded": 560,
   "observedDomContentLoadedTs": 225414732309,
   "observedFirstContentfulPaint": 499,
@@ -223,6 +231,7 @@ Object {
 exports[`Performance: metrics evaluates valid input correctly 1`] = `
 Object {
   "cumulativeLayoutShift": 0,
+  "cumulativeLayoutShiftMainFrame": 0,
   "firstContentfulPaint": 1337,
   "firstContentfulPaintAllFrames": undefined,
   "firstContentfulPaintAllFramesTs": undefined,
@@ -239,6 +248,7 @@ Object {
   "lcpLoadStart": undefined,
   "maxPotentialFID": 396,
   "observedCumulativeLayoutShift": 0,
+  "observedCumulativeLayoutShiftMainFrame": 0,
   "observedDomContentLoaded": 560,
   "observedDomContentLoadedTs": 225414732309,
   "observedFirstContentfulPaint": 499,
