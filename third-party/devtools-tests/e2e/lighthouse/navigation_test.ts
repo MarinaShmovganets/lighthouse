@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import {assert} from 'chai';
-import type * as puppeteer from 'puppeteer';
 
 import {expectError} from '../../conductor/events.js';
 import {
@@ -34,18 +33,11 @@ import {
 // This test will fail (by default) in headful mode, as the target page never gets painted.
 // To resolve this when debugging, just make sure the target page is visible during the lighthouse run.
 
-describe.skipOnParallel('Navigation', async function() {
+describe('Navigation', async function() {
   // The tests in this suite are particularly slow
-  if (this.timeout() !== 0) {
-    this.timeout(60_000);
-  }
+  this.timeout(60_000);
 
-  let consoleLog: string[] = [];
-  const consoleListener = (e: puppeteer.ConsoleMessage) => {
-    consoleLog.push(e.text());
-  };
-
-  beforeEach(async () => {
+  beforeEach(() => {
     // https://github.com/GoogleChrome/lighthouse/issues/14572
     expectError(/Request CacheStorage\.requestCacheNames failed/);
 
@@ -55,21 +47,10 @@ describe.skipOnParallel('Navigation', async function() {
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
-
-    consoleLog = [];
-    const {frontend} = await getBrowserAndPages();
-    frontend.on('console', consoleListener);
   });
 
-  afterEach(async function() {
+  afterEach(async () => {
     await unregisterAllServiceWorkers();
-
-    const {frontend} = await getBrowserAndPages();
-    frontend.off('console', consoleListener);
-
-    if (this.currentTest?.isFailed()) {
-      console.error(consoleLog.join('\n'));
-    }
   });
 
   const modes = ['legacy', 'FR'];
@@ -113,7 +94,7 @@ describe.skipOnParallel('Navigation', async function() {
           assert.strictEqual(numNavigations, 6);
         }
 
-        assert.strictEqual(lhr.lighthouseVersion, '10.2.0');
+        assert.strictEqual(lhr.lighthouseVersion, '10.0.0');
         assert.match(lhr.finalUrl, /^https:\/\/localhost:[0-9]+\/test\/e2e\/resources\/lighthouse\/hello.html/);
 
         assert.strictEqual(lhr.configSettings.throttlingMethod, 'simulate');
@@ -133,7 +114,7 @@ describe.skipOnParallel('Navigation', async function() {
         });
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-        assert.strictEqual(auditResults.length, 177);
+        assert.strictEqual(auditResults.length, 173);
         assert.deepStrictEqual(erroredAudits, []);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
@@ -185,25 +166,24 @@ describe.skipOnParallel('Navigation', async function() {
 
         const waitForHtml = await interceptNextFileSave();
 
-        // For some reason the CDP click command doesn't work here even if the tools menu is open.
-        await reportEl.$eval(
-            'a[data-action="save-html"]:not(.hidden)', saveHtmlEl => (saveHtmlEl as HTMLElement).click());
+        // Converting to ESM changed the shape of the report generator global from Lighthouse.ReportGenerator to Lighthouse.ReportGenerator.ReportGenerator.
+        // TODO: Update the report generator usage once the changes land in DevTools.
+        //
+        // // For some reason the CDP click command doesn't work here even if the tools menu is open.
+        // await reportEl.$eval(
+        //     'a[data-action="save-html"]:not(.hidden)', saveHtmlEl => (saveHtmlEl as HTMLElement).click());
 
-        const htmlContent = await waitForHtml();
-        const iframeHandle = await renderHtmlInIframe(htmlContent);
-        const iframeAuditDivs = await iframeHandle.$$('.lh-audit');
-        const frontendAuditDivs = await reportEl.$$('.lh-audit');
-        assert.strictEqual(frontendAuditDivs.length, iframeAuditDivs.length);
+        // const htmlContent = await waitForHtml();
+        // const iframeHandle = await renderHtmlInIframe(htmlContent);
+        // const iframeAuditDivs = await iframeHandle.$$('.lh-audit');
+        // const frontendAuditDivs = await reportEl.$$('.lh-audit');
+        // assert.strictEqual(frontendAuditDivs.length, iframeAuditDivs.length);
 
         // Ensure service worker was cleared.
         assert.strictEqual(await getServiceWorkerCount(), 0);
       });
 
       it('successfully returns a Lighthouse report with DevTools throttling', async () => {
-        // [crbug.com/1427407] Flaky in legacy mode
-        if (mode === 'legacy') {
-          return;
-        }
         await navigateToLighthouseTab('lighthouse/hello.html');
 
         await setThrottlingMethod('devtools');
@@ -222,7 +202,7 @@ describe.skipOnParallel('Navigation', async function() {
         ];
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, flakyAudits);
-        assert.strictEqual(auditResults.length, 154);
+        assert.strictEqual(auditResults.length, 150);
         assert.deepStrictEqual(erroredAudits, []);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
