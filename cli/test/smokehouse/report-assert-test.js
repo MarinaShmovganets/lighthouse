@@ -245,7 +245,7 @@ describe('getAssertionReport', () => {
     const report = getAssertionReport({lhr, artifacts}, {
       lhr: {
         audits: {
-          'cumulative-layout-shift': {
+          'splash-screen': {
             details: {
               items: [],
             },
@@ -263,7 +263,7 @@ describe('getAssertionReport', () => {
     const report = getAssertionReport({lhr, artifacts}, {
       lhr: {
         audits: {
-          'cumulative-layout-shift-no-exist': {
+          'audit-no-exist': {
             details: {
               items: [],
             },
@@ -281,9 +281,9 @@ describe('getAssertionReport', () => {
     const report = getAssertionReport({lhr, artifacts}, {
       lhr: {
         audits: {
-          'cumulative-layout-shift': {
+          'redirects': {
             details: {
-              items: [],
+              items: [{blah: 1}],
               blah: 123,
             },
           },

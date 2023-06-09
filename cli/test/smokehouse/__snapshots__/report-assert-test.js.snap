@@ -1,58 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getAssertionReport works (multiple failing) 1`] = `
-"X difference at cumulative-layout-shift audit.details.items.length
-              expected: []
-                 found: [{\\"cumulativeLayoutShiftMainFrame\\":0.13570762803819444,\\"totalCumulativeLayoutShift\\":0.13570762803819444}]
+"X difference at redirects audit.details.items[0]
+              expected: {\\"blah\\":1}
+                 found: undefined
 
 
-  X difference at cumulative-layout-shift audit.details.blah
+  X difference at redirects audit.details.items.length
+              expected: [{\\"blah\\":1}]
+                 found: []
+
+
+  X difference at redirects audit.details.blah
               expected: 123
                  found: undefined
 
           found result:
       {
-        \\"id\\": \\"cumulative-layout-shift\\",
-        \\"title\\": \\"Cumulative Layout Shift\\",
-        \\"description\\": \\"Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/cls/).\\",
-        \\"score\\": 0.8,
+        \\"id\\": \\"redirects\\",
+        \\"title\\": \\"Avoid multiple page redirects\\",
+        \\"description\\": \\"Redirects introduce additional delays before the page can be loaded. [Learn how to avoid page redirects](https://developer.chrome.com/docs/lighthouse/performance/redirects/).\\",
+        \\"score\\": 1,
         \\"scoreDisplayMode\\": \\"numeric\\",
-        \\"numericValue\\": 0.13570762803819444,
-        \\"numericUnit\\": \\"unitless\\",
-        \\"displayValue\\": \\"0.136\\",
+        \\"numericValue\\": 0,
+        \\"numericUnit\\": \\"millisecond\\",
+        \\"displayValue\\": \\"\\",
         \\"details\\": {
-          \\"type\\": \\"debugdata\\",
-          \\"items\\": [
-            {
-              \\"cumulativeLayoutShiftMainFrame\\": 0.13570762803819444,
-              \\"totalCumulativeLayoutShift\\": 0.13570762803819444
-            }
-          ]
+          \\"type\\": \\"opportunity\\",
+          \\"headings\\": [],
+          \\"items\\": [],
+          \\"overallSavingsMs\\": 0
         }
       }"
 `;
 
 exports[`getAssertionReport works (trivial failing) 1`] = `
-"X difference at cumulative-layout-shift audit.details.items.length
+"X difference at splash-screen audit.details.items.length
               expected: []
-                 found: [{\\"cumulativeLayoutShiftMainFrame\\":0.13570762803819444,\\"totalCumulativeLayoutShift\\":0.13570762803819444}]
+                 found: [{\\"failures\\":[\\"No manifest was fetched\\"],\\"isParseFailure\\":true,\\"parseFailureReason\\":\\"No manifest was fetched\\"}]
 
           found result:
       {
-        \\"id\\": \\"cumulative-layout-shift\\",
-        \\"title\\": \\"Cumulative Layout Shift\\",
-        \\"description\\": \\"Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/cls/).\\",
-        \\"score\\": 0.8,
-        \\"scoreDisplayMode\\": \\"numeric\\",
-        \\"numericValue\\": 0.13570762803819444,
-        \\"numericUnit\\": \\"unitless\\",
-        \\"displayValue\\": \\"0.136\\",
+        \\"id\\": \\"splash-screen\\",
+        \\"title\\": \\"Is not configured for a custom splash screen\\",
+        \\"description\\": \\"A themed splash screen ensures a high-quality experience when users launch your app from their homescreens. [Learn more about splash screens](https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/).\\",
+        \\"score\\": 0,
+        \\"scoreDisplayMode\\": \\"binary\\",
+        \\"explanation\\": \\"Failures: No manifest was fetched.\\",
         \\"details\\": {
           \\"type\\": \\"debugdata\\",
           \\"items\\": [
             {
-              \\"cumulativeLayoutShiftMainFrame\\": 0.13570762803819444,
-              \\"totalCumulativeLayoutShift\\": 0.13570762803819444
+              \\"failures\\": [
+                \\"No manifest was fetched\\"
+              ],
+              \\"isParseFailure\\": true,
+              \\"parseFailureReason\\": \\"No manifest was fetched\\"
             }
           ]
         }
@@ -60,9 +63,9 @@ exports[`getAssertionReport works (trivial failing) 1`] = `
 `;
 
 exports[`getAssertionReport works (trivial failing, actual undefined) 1`] = `
-"Error: Config did not trigger run of expected audit cumulative-layout-shift-no-exist
+"Error: Config did not trigger run of expected audit audit-no-exist
 
-  X difference at cumulative-layout-shift-no-exist audit
+  X difference at audit-no-exist audit
               expected: {\\"details\\":{\\"items\\":[]}}
                  found: undefined
 
