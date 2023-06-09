@@ -801,12 +801,14 @@ declare module Artifacts {
     speedIndexTs: number | undefined;
     maxPotentialFID: number | undefined;
     cumulativeLayoutShift: number | undefined;
+    cumulativeLayoutShiftMainFrame: number | undefined;
     totalBlockingTime: number | undefined;
     observedTimeOrigin: number;
     observedTimeOriginTs: number;
     observedNavigationStart: number | undefined;
     observedNavigationStartTs: number | undefined;
     observedCumulativeLayoutShift: number | undefined;
+    observedCumulativeLayoutShiftMainFrame: number | undefined;
     observedFirstPaint: number | undefined;
     observedFirstPaintTs: number | undefined;
     observedFirstContentfulPaint: number | undefined;

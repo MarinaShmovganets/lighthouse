@@ -104,12 +104,19 @@ class CumulativeLayoutShift {
   /**
    * @param {LH.Trace} trace
    * @param {LH.Artifacts.ComputedContext} context
-   * @return {Promise<number>}
+   * @return {Promise<{cumulativeLayoutShift: number, cumulativeLayoutShiftMainFrame: number}>}
    */
   static async compute_(trace, context) {
     const processedTrace = await ProcessedTrace.request(trace, context);
-    const allFrameShiftEvents = CumulativeLayoutShift.getLayoutShiftEvents(processedTrace);
-    return CumulativeLayoutShift.calculate(allFrameShiftEvents);
+
+    const allFrameShiftEvents =
+        CumulativeLayoutShift.getLayoutShiftEvents(processedTrace);
+    const mainFrameShiftEvents = allFrameShiftEvents.filter(e => e.isMainFrame);
+
+    return {
+      cumulativeLayoutShift: CumulativeLayoutShift.calculate(allFrameShiftEvents),
+      cumulativeLayoutShiftMainFrame: CumulativeLayoutShift.calculate(mainFrameShiftEvents),
+    };
   }
 }
 

@@ -55,12 +55,17 @@ class TimingSummary {
     const largestContentfulPaint = await requestOrUndefined(LargestContentfulPaint, metricComputationData);
     const largestContentfulPaintAllFrames = await requestOrUndefined(LargestContentfulPaintAllFrames, metricComputationData);
     const interactive = await requestOrUndefined(Interactive, metricComputationData);
-    const cumulativeLayoutShift = await requestOrUndefined(CumulativeLayoutShift, trace);
+    const cumulativeLayoutShiftValues = await requestOrUndefined(CumulativeLayoutShift, trace);
     const maxPotentialFID = await requestOrUndefined(MaxPotentialFID, metricComputationData);
     const speedIndex = await requestOrUndefined(SpeedIndex, metricComputationData);
     const totalBlockingTime = await requestOrUndefined(TotalBlockingTime, metricComputationData);
     const lcpBreakdown = await requestOrUndefined(LCPBreakdown, metricComputationData);
     const ttfb = await requestOrUndefined(TimeToFirstByte, metricComputationData);
+
+    const {
+      cumulativeLayoutShift,
+      cumulativeLayoutShiftMainFrame,
+    } = cumulativeLayoutShiftValues || {};
 
     /** @type {LH.Artifacts.TimingSummary} */
     const metrics = {
@@ -82,6 +87,7 @@ class TimingSummary {
       totalBlockingTime: totalBlockingTime?.timing,
       maxPotentialFID: maxPotentialFID?.timing,
       cumulativeLayoutShift,
+      cumulativeLayoutShiftMainFrame,
 
       lcpLoadStart: lcpBreakdown?.loadStart,
       lcpLoadEnd: lcpBreakdown?.loadEnd,
@@ -114,6 +120,7 @@ class TimingSummary {
       observedDomContentLoaded: processedNavigation?.timings.domContentLoaded,
       observedDomContentLoadedTs: processedNavigation?.timestamps.domContentLoaded,
       observedCumulativeLayoutShift: cumulativeLayoutShift,
+      observedCumulativeLayoutShiftMainFrame: cumulativeLayoutShiftMainFrame,
 
       // Include some visual metrics from speedline
       observedFirstVisualChange: speedline.first,
