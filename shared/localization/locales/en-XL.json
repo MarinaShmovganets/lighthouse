@@ -1409,6 +1409,9 @@
   "core/audits/server-response-time.js | failureTitle": {
     "message": "R̂éd̂úĉé îńît́îál̂ śêŕv̂ér̂ ŕêśp̂ón̂śê t́îḿê"
   },
+  "core/audits/server-response-time.js | missingTimingWarning": {
+    "message": "M̂íŝśîńĝ t́îḿîńĝ ín̂f́ôŕm̂át̂íôń n̂éêd́êd́ t̂ó d̂ét̂ér̂ḿîńê t́ĥé ŝér̂v́êŕ r̂éŝṕôńŝé t̂ím̂é"
+  },
   "core/audits/server-response-time.js | title": {
     "message": "Îńît́îál̂ śêŕv̂ér̂ ŕêśp̂ón̂śê t́îḿê ẃâś ŝh́ôŕt̂"
   },

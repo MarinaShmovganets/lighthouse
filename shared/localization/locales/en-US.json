@@ -1409,6 +1409,9 @@
   "core/audits/server-response-time.js | failureTitle": {
     "message": "Reduce initial server response time"
   },
+  "core/audits/server-response-time.js | missingTimingWarning": {
+    "message": "Missing timing information needed to determine the server response time"
+  },
   "core/audits/server-response-time.js | title": {
     "message": "Initial server response time was short"
   },

@@ -17,6 +17,8 @@ const UIStrings = {
   description: 'Keep the server response time for the main document short because all other requests depend on it. [Learn more about the Time to First Byte metric](https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/).',
   /** Used to summarize the total Server Response Time duration for the primary HTML response. The `{timeInMs}` placeholder will be replaced with the time duration, shown in milliseconds (e.g. 210 ms) */
   displayValue: `Root document took {timeInMs, number, milliseconds}\xa0ms`,
+  /** A message displayed in a Lighthouse audit result warning that the server response time could not be determined. */
+  missingTimingWarning: 'Missing timing information needed to determine the server response time',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
@@ -43,10 +45,15 @@ class ServerResponseTime extends Audit {
 
   /**
    * @param {LH.Artifacts.NetworkRequest} record
+   * @return {number|null}
    */
   static calculateResponseTime(record) {
-    const timing = record.timing;
-    return timing ? timing.receiveHeadersStart - timing.sendEnd : 0;
+    // Lightrider does not have timings for sendEnd, but we do have this timing which should be
+    // close.
+    if (global.isLightrider && record.lrStatistics) return record.lrStatistics.requestMs;
+
+    if (!record.timing) return null;
+    return record.timing.receiveHeadersStart - record.timing.sendEnd;
   }
 
   /**
@@ -61,6 +68,14 @@ class ServerResponseTime extends Audit {
     const mainResource = await MainResource.request({devtoolsLog, URL: artifacts.URL}, context);
 
     const responseTime = ServerResponseTime.calculateResponseTime(mainResource);
+    if (responseTime === null) {
+      return {
+        score: 0,
+        runWarnings: [str_(UIStrings.missingTimingWarning)],
+        notApplicable: true,
+      };
+    }
+
     const passed = responseTime < TOO_SLOW_THRESHOLD_MS;
     const displayValue = str_(UIStrings.displayValue, {timeInMs: responseTime});
 
