@@ -144,6 +144,7 @@ const expectations = {
     audits: {
       'largest-contentful-paint-element': {
         score: null,
+        displayValue: /\d+\xa0ms/,
         details: {
           items: {
             0: {
