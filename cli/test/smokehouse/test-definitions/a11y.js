@@ -35,7 +35,7 @@ const expectations = {
                 'type': 'node',
                 'selector': 'body > section > div#aria-allowed-attr',
                 'snippet': '<div id="aria-allowed-attr" role="alert" aria-checked="true">',
-                'explanation': 'Fix any of the following:\n  ARIA attribute is not allowed: aria-checked="true"',
+                'explanation': 'Fix all of the following:\n  ARIA attribute is not allowed: aria-checked="true"',
                 'nodeLabel': 'body > section > div#aria-allowed-attr',
               },
             },
@@ -552,6 +552,10 @@ const expectations = {
           ],
         },
       },
+      'html-xml-lang-mismatch': {
+        score: null,
+        scoreDisplayMode: 'notApplicable',
+      },
       'image-alt': {
         score: 0,
         details: {
@@ -563,6 +567,22 @@ const expectations = {
                 'snippet': '<img id="image-alt" src="./bogus.jpg">',
                 'explanation': 'Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element\'s default semantics were not overridden with role="none" or role="presentation"',
                 'nodeLabel': 'body > section > img#image-alt',
+              },
+            },
+          ],
+        },
+      },
+      'input-button-name': {
+        score: 0,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > form > input#input-button-name',
+                'snippet': '<input type="button" id="input-button-name">',
+                'explanation': 'Fix any of the following:\n  Element has a value attribute and the value attribute is empty\n  Element has no value attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element\'s default semantics were not overridden with role="none" or role="presentation"',
+                'nodeLabel': 'body > section > form > input#input-button-name',
               },
             },
           ],
@@ -693,6 +713,38 @@ const expectations = {
                 'snippet': '<div id="tabindex" tabindex="10">',
                 'explanation': 'Fix any of the following:\n  Element has a tabindex greater than 0',
                 'nodeLabel': 'body > section > div#tabindex',
+              },
+            },
+          ],
+        },
+      },
+      'table-fake-caption': {
+        score: 0,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > table#table-fake-caption',
+                'snippet': '<table id="table-fake-caption" role="grid">',
+                'explanation': 'Fix all of the following:\n  The first child of the table should be a caption instead of a table cell',
+                'nodeLabel': 'FOO\nfoo\tfoo\n',
+              },
+            },
+          ],
+        },
+      },
+      'td-has-header': {
+        score: 0,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > table#td-has-header',
+                'snippet': '<table id="td-has-header">',
+                'explanation': 'Fix all of the following:\n  Some non-empty data cells do not have table headers',
+                'nodeLabel': 'FOO\tFOO\tFOO\tFOO\nfoo\tfoo\tfoo\tfoo\nfoo\tfoo\tfoo\tfoo\nfoo\tfoo\tfoo\tfoo',
               },
             },
           ],

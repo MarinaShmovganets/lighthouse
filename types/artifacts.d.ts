@@ -410,6 +410,7 @@ declare module Artifacts {
     target: string
     node: NodeDetails
     onclick: string
+    id: string
     listeners?: Array<{
       type: Crdp.DOMDebugger.EventListener['type']
     }>
@@ -617,6 +618,8 @@ declare module Artifacts {
     quirksModeIssue: Crdp.Audits.QuirksModeIssueDetails[];
     cookieIssue: Crdp.Audits.CookieIssueDetails[];
     sharedArrayBufferIssue: Crdp.Audits.SharedArrayBufferIssueDetails[];
+    stylesheetLoadingIssue: Crdp.Audits.StylesheetLoadingIssueDetails[];
+    federatedAuthUserInfoRequestIssue: Crdp.Audits.FederatedAuthUserInfoRequestIssueDetails[];
   }
 
   // Computed artifact types below.
@@ -948,6 +951,12 @@ declare module Artifacts {
     // Convenience methods.
     isFirstParty: (url: string) => boolean;
   }
+
+  interface TraceImpactedNode {
+    node_id: number;
+    old_rect?: Array<number>;
+    new_rect?: Array<number>;
+  }
 }
 
 export interface Trace {
@@ -1017,11 +1026,7 @@ export interface TraceEvent {
       nodeId?: number;
       DOMNodeId?: number;
       imageUrl?: string;
-      impacted_nodes?: Array<{
-        node_id: number,
-        old_rect?: Array<number>,
-        new_rect?: Array<number>,
-      }>;
+      impacted_nodes?: Artifacts.TraceImpactedNode[];
       score?: number;
       weighted_score_delta?: number;
       had_recent_input?: boolean;
