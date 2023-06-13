@@ -1,17 +1,16 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Derek Perkins @derekperkins
-Rob McGuire @robatron
-Aditya Dharmawan Saputra @adityadees
- <a name="10.3.0"></a>
+<a name="10.3.0"></a>
 # 10.3.0 (2023-06-13)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v10.2.0...v10.3.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 116](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
+## New Contributors
 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+- Derek Perkins @derekperkins
+- Rob McGuire @robatron
+- Aditya Dharmawan Saputra @adityadees
 
 ## New Audits
 
