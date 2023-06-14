@@ -67,6 +67,10 @@ const stackPacksToInclude = [
     packId: 'react',
     requiredStacks: ['js:react'],
   },
+  {
+    packId: 'wix',
+    requiredStacks: ['js:wix'],
+  },
 ];
 
 /**
