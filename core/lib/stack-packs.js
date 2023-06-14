@@ -24,6 +24,10 @@ const stackPacksToInclude = [
     requiredStacks: ['js:wordpress'],
   },
   {
+    packId: 'wix',
+    requiredStacks: ['js:wix'],
+  },
+  {
     packId: 'wp-rocket',
     requiredStacks: ['js:wp-rocket'],
   },
@@ -66,10 +70,6 @@ const stackPacksToInclude = [
   {
     packId: 'react',
     requiredStacks: ['js:react'],
-  },
-  {
-    packId: 'wix',
-    requiredStacks: ['js:wix'],
   },
 ];
 
