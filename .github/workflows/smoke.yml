@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request: # run on all PRs, not just PRs to a particular branch
 
+env:
+  PUPPETEER_SKIP_DOWNLOAD: 1
+
 jobs:
   # `smoke` runs as a matrix across 6 jobs:
   #  * The smoke tests are split into 3 batches, to parallelize.
@@ -47,7 +50,7 @@ jobs:
       working-directory: /home/runner
       run: bash $GITHUB_WORKSPACE/core/scripts/download-chrome.sh && mv chrome-linux chrome-linux-tot
 
-    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
+    - run: yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: yarn reset-link
 
@@ -100,7 +103,6 @@ jobs:
     - name: Install Chrome ToT
       run: bash ${env:GITHUB_WORKSPACE}\core\scripts\download-chrome.sh
 
-    - run: set PUPPETEER_SKIP_DOWNLOAD=1
     - run: yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
 
@@ -141,7 +143,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
+    - run: yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: yarn reset-link
 
@@ -189,7 +191,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
+    - run: yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: yarn build-devtools
 
@@ -237,7 +239,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
+    - run: yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: yarn build-devtools
 
