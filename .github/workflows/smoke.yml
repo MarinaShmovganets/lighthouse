@@ -47,7 +47,7 @@ jobs:
       working-directory: /home/runner
       run: bash $GITHUB_WORKSPACE/core/scripts/download-chrome.sh && mv chrome-linux chrome-linux-tot
 
-    - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: yarn reset-link
 
@@ -100,6 +100,7 @@ jobs:
     - name: Install Chrome ToT
       run: bash ${env:GITHUB_WORKSPACE}\core\scripts\download-chrome.sh
 
+    - run: set PUPPETEER_SKIP_DOWNLOAD=1
     - run: yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
 
@@ -140,7 +141,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: yarn reset-link
 
@@ -188,7 +189,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: yarn build-devtools
 
@@ -236,7 +237,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: yarn build-devtools
 

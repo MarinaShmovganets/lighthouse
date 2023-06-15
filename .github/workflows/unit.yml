@@ -45,7 +45,7 @@ jobs:
         python3 -m pip install --upgrade pip
         pip install protobuf==3.20
 
-    - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: yarn reset-link
 
@@ -95,7 +95,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
 
     - run: yarn unit-cli

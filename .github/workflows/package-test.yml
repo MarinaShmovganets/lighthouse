@@ -21,7 +21,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: sudo apt-get install xvfb
 
@@ -45,7 +45,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - run: yarn install --frozen-lockfile --network-timeout 1000000
+    - run: PUPPETEER_SKIP_DOWNLOAD=1 yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
     - run: sudo apt-get install xvfb
 
