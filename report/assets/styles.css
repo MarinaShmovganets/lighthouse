@@ -670,7 +670,10 @@
 }
 
 .lh-metricfilter__radio {
-  /* Instead of hiding, position of screen so it's still accessible to screen readers */
+  /*
+   * Instead of hiding, position offscreen so it's still accessible to screen readers
+   * https://bugs.chromium.org/p/chromium/issues/detail?id=1439785
+   */
   position: fixed;
   left: -9999px;
 }
