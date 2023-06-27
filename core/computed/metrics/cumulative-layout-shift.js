@@ -7,7 +7,7 @@
 import {makeComputedArtifact} from '../computed-artifact.js';
 import {ProcessedTrace} from '../processed-trace.js';
 
-/** @typedef {{ts: number, isMainFrame: boolean, weightedScore: number}} LayoutShiftEvent */
+/** @typedef {{ts: number, isMainFrame: boolean, weightedScore: number, impactedNodes?: LH.Artifacts.TraceImpactedNode[]}} LayoutShiftEvent */
 
 const RECENT_INPUT_WINDOW = 500;
 
@@ -65,6 +65,7 @@ class CumulativeLayoutShift {
         ts: event.ts,
         isMainFrame: event.args.data.is_main_frame,
         weightedScore: event.args.data.weighted_score_delta,
+        impactedNodes: event.args.data.impacted_nodes,
       });
     }
 
@@ -101,18 +102,9 @@ class CumulativeLayoutShift {
   }
 
   /**
-   * Sum all layout shift events from the entire trace.
-   * @param {Array<LayoutShiftEvent>} layoutShiftEvents
-   * @return {number}
-   */
-  static calculateTotalCumulativeLayoutShift(layoutShiftEvents) {
-    return layoutShiftEvents.reduce((sum, e) => sum += e.weightedScore, 0);
-  }
-
-  /**
    * @param {LH.Trace} trace
    * @param {LH.Artifacts.ComputedContext} context
-   * @return {Promise<{cumulativeLayoutShift: number, cumulativeLayoutShiftMainFrame: number, totalCumulativeLayoutShift: number}>}
+   * @return {Promise<{cumulativeLayoutShift: number, cumulativeLayoutShiftMainFrame: number}>}
    */
   static async compute_(trace, context) {
     const processedTrace = await ProcessedTrace.request(trace, context);
@@ -121,14 +113,9 @@ class CumulativeLayoutShift {
         CumulativeLayoutShift.getLayoutShiftEvents(processedTrace);
     const mainFrameShiftEvents = allFrameShiftEvents.filter(e => e.isMainFrame);
 
-    // The original Cumulative Layout Shift metric, the sum of all main-frame shift events.
-    const totalCumulativeLayoutShift =
-        CumulativeLayoutShift.calculateTotalCumulativeLayoutShift(mainFrameShiftEvents);
-
     return {
       cumulativeLayoutShift: CumulativeLayoutShift.calculate(allFrameShiftEvents),
       cumulativeLayoutShiftMainFrame: CumulativeLayoutShift.calculate(mainFrameShiftEvents),
-      totalCumulativeLayoutShift,
     };
   }
 }

@@ -41,6 +41,7 @@ Array [
   "corsIssueDetails",
   "deprecationIssueDetails",
   "federatedAuthRequestIssueDetails",
+  "federatedAuthUserInfoRequestIssueDetails",
   "genericIssueDetails",
   "heavyAdIssueDetails",
   "lowTextContrastIssueDetails",
@@ -48,7 +49,7 @@ Array [
   "navigatorUserAgentIssueDetails",
   "quirksModeIssueDetails",
   "sharedArrayBufferIssueDetails",
-  "twaQualityEnforcementDetails",
+  "stylesheetLoadingIssueDetails",
 ]
 `);
   });

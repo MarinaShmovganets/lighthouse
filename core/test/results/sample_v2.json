@@ -1,5 +1,5 @@
 {
-  "lighthouseVersion": "10.2.0",
+  "lighthouseVersion": "10.3.0",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "mainDocumentUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalDisplayedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -200,8 +200,7 @@
         "type": "debugdata",
         "items": [
           {
-            "cumulativeLayoutShiftMainFrame": 0.13570762803819444,
-            "totalCumulativeLayoutShift": 0.13570762803819444
+            "cumulativeLayoutShiftMainFrame": 0.13570762803819444
           }
         ]
       }
@@ -1277,7 +1276,8 @@
             "mimeType": "text/html",
             "resourceType": "Document",
             "priority": "VeryHigh",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=100",
@@ -1293,7 +1293,8 @@
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
             "priority": "VeryHigh",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
@@ -1309,7 +1310,8 @@
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
             "priority": "VeryHigh",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2200",
@@ -1325,7 +1327,8 @@
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
             "priority": "VeryHigh",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_disabled.css?delay=200&isdisabled",
@@ -1341,7 +1344,8 @@
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
             "priority": "VeryHigh",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&capped",
@@ -1357,7 +1361,8 @@
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
             "priority": "VeryHigh",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true",
@@ -1374,7 +1379,8 @@
             "resourceType": "Stylesheet",
             "priority": "VeryHigh",
             "isLinkPreload": true,
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true",
@@ -1390,7 +1396,8 @@
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
             "priority": "VeryHigh",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.js",
@@ -1406,7 +1413,8 @@
             "mimeType": "application/javascript",
             "resourceType": "Script",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/empty_module.js?delay=500",
@@ -1422,7 +1430,8 @@
             "mimeType": "application/javascript",
             "resourceType": "Script",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/empty.css",
@@ -1438,7 +1447,8 @@
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
             "priority": "VeryLow",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000",
@@ -1454,7 +1464,8 @@
             "mimeType": "application/javascript",
             "resourceType": "Script",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar1",
@@ -1470,7 +1481,8 @@
             "mimeType": "image/jpeg",
             "resourceType": "Image",
             "priority": "Low",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr1",
@@ -1486,7 +1498,8 @@
             "mimeType": "image/jpeg",
             "resourceType": "Image",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr2",
@@ -1502,7 +1515,8 @@
             "mimeType": "image/jpeg",
             "resourceType": "Image",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?isr3",
@@ -1518,7 +1532,8 @@
             "mimeType": "image/jpeg",
             "resourceType": "Image",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg",
@@ -1534,7 +1549,8 @@
             "mimeType": "image/jpeg",
             "resourceType": "Image",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-rotating.gif",
@@ -1550,7 +1566,8 @@
             "mimeType": "image/gif",
             "resourceType": "Image",
             "priority": "Low",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js",
@@ -1566,7 +1583,8 @@
             "mimeType": "application/javascript",
             "resourceType": "Script",
             "priority": "Medium",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js",
@@ -1582,7 +1600,8 @@
             "mimeType": "text/javascript",
             "resourceType": "Script",
             "priority": "Medium",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "Google CDN"
           },
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar2",
@@ -1598,7 +1617,8 @@
             "mimeType": "image/jpeg",
             "resourceType": "Image",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200",
@@ -1614,7 +1634,8 @@
             "mimeType": "text/css",
             "resourceType": "Stylesheet",
             "priority": "VeryHigh",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -1630,7 +1651,8 @@
             "mimeType": "text/html",
             "resourceType": "XHR",
             "priority": "VeryHigh",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "blob:http://localhost:10200/3f2bc9df-684b-4541-837c-1590152ef65d",
@@ -1678,7 +1700,8 @@
             "mimeType": "image/vnd.microsoft.icon",
             "resourceType": "Other",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?lcp&redirect=lighthouse-1024x680.jpg%3Fredirected-lcp",
@@ -1693,7 +1716,8 @@
             "statusCode": 302,
             "mimeType": "",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           },
           {
             "url": "http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?redirected-lcp",
@@ -1709,7 +1733,8 @@
             "mimeType": "image/jpeg",
             "resourceType": "Image",
             "priority": "High",
-            "experimentalFromMainFrame": true
+            "experimentalFromMainFrame": true,
+            "entity": "localhost"
           }
         ],
         "debugData": {
@@ -1916,7 +1941,6 @@
             "maxPotentialFID": 1175,
             "cumulativeLayoutShift": 0.13570762803819444,
             "cumulativeLayoutShiftMainFrame": 0.13570762803819444,
-            "totalCumulativeLayoutShift": 0.13570762803819444,
             "lcpLoadStart": 10849,
             "lcpLoadEnd": 12900,
             "timeToFirstByte": 572,
@@ -1945,7 +1969,6 @@
             "observedDomContentLoadedTs": 8704886496,
             "observedCumulativeLayoutShift": 0.13570762803819444,
             "observedCumulativeLayoutShiftMainFrame": 0.13570762803819444,
-            "observedTotalCumulativeLayoutShift": 0.13570762803819444,
             "observedFirstVisualChange": 8058,
             "observedFirstVisualChangeTs": 8704758822,
             "observedLastVisualChange": 8893,
@@ -2283,7 +2306,7 @@
       "description": "This is the largest contentful element painted within the viewport. [Learn more about the Largest Contentful Paint element](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/)",
       "score": null,
       "scoreDisplayMode": "informative",
-      "displayValue": "1 element found",
+      "displayValue": "13,320 ms",
       "details": {
         "type": "list",
         "items": [
@@ -2970,6 +2993,18 @@
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
+    "aria-dialog-name": {
+      "id": "aria-dialog-name",
+      "title": "Elements with `role=\"dialog\"` or `role=\"alertdialog\"` have accessible names.",
+      "description": "ARIA dialog elements without accessible names may prevent screen readers users from discerning the purpose of these elements. [Learn how to make ARIA dialog elements more accessible](https://dequeuniversity.com/rules/axe/4.7/aria-dialog-name).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
     "aria-hidden-body": {
       "id": "aria-hidden-body",
       "title": "`[aria-hidden=\"true\"]` is not present on the document `<body>`",
@@ -3040,6 +3075,18 @@
       "id": "aria-roles",
       "title": "`[role]` values are valid",
       "description": "ARIA roles must have valid values in order to perform their intended accessibility functions. [Learn more about valid ARIA roles](https://dequeuniversity.com/rules/axe/4.7/aria-roles).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
+    "aria-text": {
+      "id": "aria-text",
+      "title": "Elements with the `role=text` attribute do not have focusable descendents.",
+      "description": "Adding `role=text` around a text node split by markup enables VoiceOver to treat it as one phrase, but the element's focusable descendents will not be announced. [Learn more about the `role=text` attribute](https://dequeuniversity.com/rules/axe/4.7/aria-text).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -3254,6 +3301,18 @@
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
+    "html-xml-lang-mismatch": {
+      "id": "html-xml-lang-mismatch",
+      "title": "`<html>` element has an `[xml:lang]` attribute with the same base language as the `[lang]` attribute.",
+      "description": "If the webpage does not specify a consistent language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.7/html-xml-lang-mismatch).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
     "image-alt": {
       "id": "image-alt",
       "title": "Image elements do not have `[alt]` attributes",
@@ -3460,6 +3519,13 @@
         }
       }
     },
+    "input-button-name": {
+      "id": "input-button-name",
+      "title": "Input buttons have discernible text.",
+      "description": "Adding discernable and accessible text to input buttons may help screen reader users understand the purpose of the input button. [Learn more about input buttons](https://dequeuniversity.com/rules/axe/4.7/input-button-name).",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
+    },
     "input-image-alt": {
       "id": "input-image-alt",
       "title": "`<input type=\"image\">` elements have `[alt]` text",
@@ -3634,6 +3700,18 @@
         }
       }
     },
+    "link-in-text-block": {
+      "id": "link-in-text-block",
+      "title": "Links are distinguishable without relying on color.",
+      "description": "Low-contrast text is difficult or impossible for many users to read. Link text that is discernible improves the experience for users with low vision. [Learn how to make links distinguishable](https://dequeuniversity.com/rules/axe/4.7/link-in-text-block).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
     "list": {
       "id": "list",
       "title": "Lists contain only `<li>` elements and script supporting elements (`<script>` and `<template>`).",
@@ -3739,12 +3817,43 @@
         }
       }
     },
+    "select-name": {
+      "id": "select-name",
+      "title": "Select elements have associated label elements.",
+      "description": "Form elements without effective labels can create frustrating experiences for screen reader users. [Learn more about the `select` element](https://dequeuniversity.com/rules/axe/4.7/select-name).",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
+    },
     "tabindex": {
       "id": "tabindex",
       "title": "No element has a `[tabindex]` value greater than 0",
       "description": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more about the `tabindex` attribute](https://dequeuniversity.com/rules/axe/4.7/tabindex).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
+    },
+    "table-fake-caption": {
+      "id": "table-fake-caption",
+      "title": "Tables use `<caption>` instead of cells with the `[colspan]` attribute to indicate a caption.",
+      "description": "Screen readers have features to make navigating tables easier. Ensuring that tables use the actual caption element instead of cells with the `[colspan]` attribute may improve the experience for screen reader users. [Learn more about captions](https://dequeuniversity.com/rules/axe/4.7/table-fake-caption).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
+    "td-has-header": {
+      "id": "td-has-header",
+      "title": "`<td>` elements in a large `<table>` have one or more table headers.",
+      "description": "Screen readers have features to make navigating tables easier. Ensuring that `<td>` elements in a large table (3 or more cells in width and height) have an associated table header may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.7/td-has-header).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
     },
     "td-headers-attr": {
       "id": "td-headers-attr",
@@ -4199,7 +4308,7 @@
       "id": "unminified-javascript",
       "title": "Minify JavaScript",
       "description": "Minifying JavaScript files can reduce payload sizes and script parse time. [Learn how to minify JavaScript](https://developer.chrome.com/docs/lighthouse/performance/unminified-javascript/).",
-      "score": 0.45,
+      "score": 0.43,
       "scoreDisplayMode": "numeric",
       "numericValue": 1200,
       "numericUnit": "millisecond",
@@ -4263,7 +4372,7 @@
       "id": "unused-javascript",
       "title": "Reduce unused JavaScript",
       "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. [Learn how to reduce unused JavaScript](https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/).",
-      "score": 0.5,
+      "score": 0.56,
       "scoreDisplayMode": "numeric",
       "numericValue": 750,
       "numericUnit": "millisecond",
@@ -4322,7 +4431,7 @@
       "id": "modern-image-formats",
       "title": "Serve images in next-gen formats",
       "description": "Image formats like WebP and AVIF often provide better compression than PNG or JPEG, which means faster downloads and less data consumption. [Learn more about modern image formats](https://developer.chrome.com/docs/lighthouse/performance/uses-webp-images/).",
-      "score": 0.67,
+      "score": 0.69,
       "scoreDisplayMode": "numeric",
       "numericValue": 450,
       "numericUnit": "millisecond",
@@ -4450,7 +4559,7 @@
       "id": "uses-text-compression",
       "title": "Enable text compression",
       "description": "Text-based resources should be served with compression (gzip, deflate or brotli) to minimize total network bytes. [Learn more about text compression](https://developer.chrome.com/docs/lighthouse/performance/uses-text-compression/).",
-      "score": 0.31,
+      "score": 0.25,
       "scoreDisplayMode": "numeric",
       "numericValue": 2400,
       "numericUnit": "millisecond",
@@ -4579,7 +4688,7 @@
       "id": "legacy-javascript",
       "title": "Avoid serving legacy JavaScript to modern browsers",
       "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/publish-modern-javascript/)",
-      "score": 0.67,
+      "score": 0.69,
       "scoreDisplayMode": "numeric",
       "numericValue": 450,
       "numericUnit": "millisecond",
@@ -5823,6 +5932,11 @@
           "group": "a11y-aria"
         },
         {
+          "id": "aria-dialog-name",
+          "weight": 3,
+          "group": "a11y-aria"
+        },
+        {
           "id": "aria-hidden-body",
           "weight": 10,
           "group": "a11y-aria"
@@ -5865,6 +5979,11 @@
         {
           "id": "aria-roles",
           "weight": 10,
+          "group": "a11y-aria"
+        },
+        {
+          "id": "aria-text",
+          "weight": 3,
           "group": "a11y-aria"
         },
         {
@@ -5958,8 +6077,18 @@
           "group": "a11y-language"
         },
         {
+          "id": "html-xml-lang-mismatch",
+          "weight": 2,
+          "group": "a11y-language"
+        },
+        {
           "id": "image-alt",
           "weight": 10,
+          "group": "a11y-names-labels"
+        },
+        {
+          "id": "input-button-name",
+          "weight": 0,
           "group": "a11y-names-labels"
         },
         {
@@ -5971,6 +6100,11 @@
           "id": "label",
           "weight": 10,
           "group": "a11y-names-labels"
+        },
+        {
+          "id": "link-in-text-block",
+          "weight": 3,
+          "group": "a11y-color-contrast"
         },
         {
           "id": "link-name",
@@ -6003,9 +6137,24 @@
           "group": "a11y-names-labels"
         },
         {
+          "id": "select-name",
+          "weight": 0,
+          "group": "a11y-names-labels"
+        },
+        {
           "id": "tabindex",
           "weight": 0,
           "group": "a11y-navigation"
+        },
+        {
+          "id": "table-fake-caption",
+          "weight": 3,
+          "group": "a11y-tables-lists"
+        },
+        {
+          "id": "td-has-header",
+          "weight": 10,
+          "group": "a11y-tables-lists"
         },
         {
           "id": "td-headers-attr",
@@ -6069,7 +6218,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 0.77
+      "score": 0.81
     },
     "best-practices": {
       "title": "Best Practices",
@@ -7812,6 +7961,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:computed:EntityClassification",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:network-rtt",
         "duration": 100,
         "entryType": "measure"
@@ -7879,12 +8034,6 @@
       {
         "startTime": 0,
         "name": "lh:computed:ResourceSummary",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:computed:EntityClassification",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8124,6 +8273,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:aria-dialog-name",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:aria-hidden-body",
         "duration": 100,
         "entryType": "measure"
@@ -8173,6 +8328,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:aria-roles",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:aria-text",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8286,7 +8447,19 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:html-xml-lang-mismatch",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:image-alt",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:input-button-name",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8305,6 +8478,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:link-name",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:link-in-text-block",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8340,7 +8519,25 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:select-name",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:tabindex",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:table-fake-caption",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:td-has-header",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8896,6 +9093,12 @@
             "timeInMs": 582.2760000000001
           },
           "path": "audits[network-server-latency].displayValue"
+        },
+        {
+          "values": {
+            "timeInMs": 13319.961
+          },
+          "path": "audits[largest-contentful-paint-element].displayValue"
         }
       ],
       "core/lib/i18n/i18n.js | maxPotentialFIDMetric": [
@@ -9316,20 +9519,6 @@
       "core/audits/largest-contentful-paint-element.js | description": [
         "audits[largest-contentful-paint-element].description"
       ],
-      "core/lib/i18n/i18n.js | displayValueElementsFound": [
-        {
-          "values": {
-            "nodeCount": 1
-          },
-          "path": "audits[largest-contentful-paint-element].displayValue"
-        },
-        {
-          "values": {
-            "nodeCount": 5
-          },
-          "path": "audits[layout-shift-elements].displayValue"
-        }
-      ],
       "core/lib/i18n/i18n.js | columnElement": [
         "audits[largest-contentful-paint-element].details.items[0].headings[0].label",
         "audits[layout-shift-elements].details.headings[0].label",
@@ -9368,6 +9557,14 @@
       ],
       "core/audits/layout-shift-elements.js | description": [
         "audits[layout-shift-elements].description"
+      ],
+      "core/lib/i18n/i18n.js | displayValueElementsFound": [
+        {
+          "values": {
+            "nodeCount": 5
+          },
+          "path": "audits[layout-shift-elements].displayValue"
+        }
       ],
       "core/audits/layout-shift-elements.js | columnContribution": [
         "audits[layout-shift-elements].details.headings[1].label"
@@ -9497,6 +9694,12 @@
       "core/audits/accessibility/aria-command-name.js | description": [
         "audits[aria-command-name].description"
       ],
+      "core/audits/accessibility/aria-dialog-name.js | title": [
+        "audits[aria-dialog-name].title"
+      ],
+      "core/audits/accessibility/aria-dialog-name.js | description": [
+        "audits[aria-dialog-name].description"
+      ],
       "core/audits/accessibility/aria-hidden-body.js | title": [
         "audits[aria-hidden-body].title"
       ],
@@ -9550,6 +9753,12 @@
       ],
       "core/audits/accessibility/aria-roles.js | description": [
         "audits[aria-roles].description"
+      ],
+      "core/audits/accessibility/aria-text.js | title": [
+        "audits[aria-text].title"
+      ],
+      "core/audits/accessibility/aria-text.js | description": [
+        "audits[aria-text].description"
       ],
       "core/audits/accessibility/aria-toggle-field-name.js | title": [
         "audits[aria-toggle-field-name].title"
@@ -9667,11 +9876,23 @@
       "core/audits/accessibility/html-lang-valid.js | description": [
         "audits[html-lang-valid].description"
       ],
+      "core/audits/accessibility/html-xml-lang-mismatch.js | title": [
+        "audits[html-xml-lang-mismatch].title"
+      ],
+      "core/audits/accessibility/html-xml-lang-mismatch.js | description": [
+        "audits[html-xml-lang-mismatch].description"
+      ],
       "core/audits/accessibility/image-alt.js | failureTitle": [
         "audits[image-alt].title"
       ],
       "core/audits/accessibility/image-alt.js | description": [
         "audits[image-alt].description"
+      ],
+      "core/audits/accessibility/input-button-name.js | title": [
+        "audits[input-button-name].title"
+      ],
+      "core/audits/accessibility/input-button-name.js | description": [
+        "audits[input-button-name].description"
       ],
       "core/audits/accessibility/input-image-alt.js | title": [
         "audits[input-image-alt].title"
@@ -9690,6 +9911,12 @@
       ],
       "core/audits/accessibility/link-name.js | description": [
         "audits[link-name].description"
+      ],
+      "core/audits/accessibility/link-in-text-block.js | title": [
+        "audits[link-in-text-block].title"
+      ],
+      "core/audits/accessibility/link-in-text-block.js | description": [
+        "audits[link-in-text-block].description"
       ],
       "core/audits/accessibility/list.js | title": [
         "audits.list.title"
@@ -9721,11 +9948,29 @@
       "core/audits/accessibility/object-alt.js | description": [
         "audits[object-alt].description"
       ],
+      "core/audits/accessibility/select-name.js | title": [
+        "audits[select-name].title"
+      ],
+      "core/audits/accessibility/select-name.js | description": [
+        "audits[select-name].description"
+      ],
       "core/audits/accessibility/tabindex.js | title": [
         "audits.tabindex.title"
       ],
       "core/audits/accessibility/tabindex.js | description": [
         "audits.tabindex.description"
+      ],
+      "core/audits/accessibility/table-fake-caption.js | title": [
+        "audits[table-fake-caption].title"
+      ],
+      "core/audits/accessibility/table-fake-caption.js | description": [
+        "audits[table-fake-caption].description"
+      ],
+      "core/audits/accessibility/td-has-header.js | title": [
+        "audits[td-has-header].title"
+      ],
+      "core/audits/accessibility/td-has-header.js | description": [
+        "audits[td-has-header].description"
       ],
       "core/audits/accessibility/td-headers-attr.js | title": [
         "audits[td-headers-attr].title"

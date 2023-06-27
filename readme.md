@@ -297,6 +297,12 @@ for more info.
 # lint and test all files
 yarn test
 
+# run all unit tests
+yarn unit
+
+# run a given unit test (e.g. core/test/audits/byte-efficiency/uses-long-cache-ttl-test.js)
+yarn mocha uses-long-cache-ttl
+
 # watch for file changes and run tests
 #   Requires http://entrproject.org : brew install entr
 yarn watch
@@ -399,6 +405,7 @@ Other awesome open source projects that use Lighthouse.
 * **[site-audit-seo](https://github.com/viasite/site-audit-seo)** - CLI tool for SEO site audit, crawl site, lighthouse each page. Output to console and tables in csv, xlsx, json, web or Google Drive.
 * **[webpack-lighthouse-plugin](https://github.com/addyosmani/webpack-lighthouse-plugin)** - Run Lighthouse from a Webpack build.
 * **[cypress-audit](https://github.com/mfrachet/cypress-audit)** - Run Lighthouse and Pa11y audits directly in your E2E test suites.
+* **[laravel-lighthouse](https://github.com/adityadees/laravel-lighthouse)** - Google Lighthouse wrapper for laravel framework to run Google Lighthouse CLI with custom option and can automatically save result in your server directory.
 
 ## FAQ
 

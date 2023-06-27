@@ -24,6 +24,14 @@ interface ScoreDisplayModes {
 
 type ScoreDisplayMode = ScoreDisplayModes[keyof ScoreDisplayModes];
 
+interface MetricSavings {
+  LCP?: number;
+  FCP?: number;
+  CLS?: number;
+  TBT?: number;
+  INP?: number;
+}
+
 /** Audit result returned in Lighthouse report. All audits offer a description and score of 0-1. */
 export interface Result {
   displayValue?: string;
@@ -31,6 +39,8 @@ export interface Result {
   explanation?: string;
   /** Error message from any exception thrown while running this audit. */
   errorMessage?: string;
+  /** Error stack from any exception thrown while running this audit. */
+  errorStack?: string;
   warnings?: string[];
   /** The scored value of the audit, provided in the range `0-1`, or null if `scoreDisplayMode` indicates not scored. */
   score: number|null;
