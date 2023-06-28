@@ -3216,6 +3216,13 @@
         "items": []
       }
     },
+    "empty-heading": {
+      "id": "empty-heading",
+      "title": "All heading elements contain content.",
+      "description": "A heading with no content or inaccessible text prevent screen reader users from accessing information on the page's structure. [Learn more about headings](https://dequeuniversity.com/rules/axe/4.7/empty-heading).",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
+    },
     "form-field-multiple-labels": {
       "id": "form-field-multiple-labels",
       "title": "No form fields have multiple labels",
@@ -3312,6 +3319,13 @@
         "headings": [],
         "items": []
       }
+    },
+    "identical-links-same-purpose": {
+      "id": "identical-links-same-purpose",
+      "title": "Identical links have the same purpose.",
+      "description": "Links with the same destination should have the same description, to help users understand the link's purpose and decide whether to follow it. [Learn more about identical links](https://dequeuniversity.com/rules/axe/4.7/identical-links-same-purpose).",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
     },
     "image-alt": {
       "id": "image-alt",
@@ -6215,6 +6229,16 @@
         {
           "id": "use-landmarks",
           "weight": 0
+        },
+        {
+          "id": "empty-heading",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "identical-links-same-purpose",
+          "weight": 0,
+          "group": "hidden"
         }
       ],
       "id": "accessibility",
@@ -8417,6 +8441,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:empty-heading",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:form-field-multiple-labels",
         "duration": 100,
         "entryType": "measure"
@@ -8448,6 +8478,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:html-xml-lang-mismatch",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:identical-links-same-purpose",
         "duration": 100,
         "entryType": "measure"
       },
@@ -9838,6 +9874,12 @@
       "core/audits/accessibility/duplicate-id-aria.js | description": [
         "audits[duplicate-id-aria].description"
       ],
+      "core/audits/accessibility/empty-heading.js | title": [
+        "audits[empty-heading].title"
+      ],
+      "core/audits/accessibility/empty-heading.js | description": [
+        "audits[empty-heading].description"
+      ],
       "core/audits/accessibility/form-field-multiple-labels.js | title": [
         "audits[form-field-multiple-labels].title"
       ],
@@ -9881,6 +9923,12 @@
       ],
       "core/audits/accessibility/html-xml-lang-mismatch.js | description": [
         "audits[html-xml-lang-mismatch].description"
+      ],
+      "core/audits/accessibility/identical-links-same-purpose.js | title": [
+        "audits[identical-links-same-purpose].title"
+      ],
+      "core/audits/accessibility/identical-links-same-purpose.js | description": [
+        "audits[identical-links-same-purpose].description"
       ],
       "core/audits/accessibility/image-alt.js | failureTitle": [
         "audits[image-alt].title"

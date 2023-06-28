@@ -245,6 +245,15 @@
   "core/audits/accessibility/duplicate-id-aria.js | title": {
     "message": "ÂŔÎÁ ÎD́ŝ ár̂é ûńîq́ûé"
   },
+  "core/audits/accessibility/empty-heading.js | description": {
+    "message": "Â h́êád̂ín̂ǵ ŵít̂h́ n̂ó ĉón̂t́êńt̂ ór̂ ín̂áĉćêśŝíb̂ĺê t́êx́t̂ ṕr̂év̂én̂t́ ŝćr̂éêń r̂éâd́êŕ ûśêŕŝ f́r̂óm̂ áĉćêśŝín̂ǵ îńf̂ór̂ḿât́îón̂ ón̂ t́ĥé p̂áĝé'ŝ śt̂ŕûćt̂úr̂é. [L̂éâŕn̂ ḿôŕê áb̂óût́ ĥéâd́îńĝś](https://dequeuniversity.com/rules/axe/4.7/empty-heading)."
+  },
+  "core/audits/accessibility/empty-heading.js | failureTitle": {
+    "message": "Ĥéâd́îńĝ él̂ém̂én̂t́ŝ d́ô ńôt́ ĉón̂t́âín̂ ćôńt̂én̂t́."
+  },
+  "core/audits/accessibility/empty-heading.js | title": {
+    "message": "Âĺl̂ h́êád̂ín̂ǵ êĺêḿêńt̂ś ĉón̂t́âín̂ ćôńt̂én̂t́."
+  },
   "core/audits/accessibility/form-field-multiple-labels.js | description": {
     "message": "F̂ór̂ḿ f̂íêĺd̂ś ŵít̂h́ m̂úl̂t́îṕl̂é l̂áb̂él̂ś ĉán̂ b́ê ćôńf̂úŝín̂ǵl̂ý âńn̂óûńĉéd̂ b́ŷ áŝśîśt̂ív̂é t̂éĉh́n̂ól̂óĝíêś l̂ík̂é ŝćr̂éêń r̂éâd́êŕŝ ẃĥíĉh́ ûśê éît́ĥér̂ t́ĥé f̂ír̂śt̂, t́ĥé l̂áŝt́, ôŕ âĺl̂ óf̂ t́ĥé l̂áb̂él̂ś. [L̂éâŕn̂ h́ôẃ t̂ó ûśê f́ôŕm̂ ĺâb́êĺŝ](https://dequeuniversity.com/rules/axe/4.7/form-field-multiple-labels)."
   },
@@ -298,6 +307,15 @@
   },
   "core/audits/accessibility/html-xml-lang-mismatch.js | title": {
     "message": "`<html>` êĺêḿêńt̂ h́âś âń `[xml:lang]` ât́t̂ŕîb́ût́ê ẃît́ĥ t́ĥé ŝám̂é b̂áŝé l̂án̂ǵûáĝé âś t̂h́ê `[lang]` át̂t́r̂íb̂út̂é."
+  },
+  "core/audits/accessibility/identical-links-same-purpose.js | description": {
+    "message": "L̂ín̂ḱŝ ẃît́ĥ t́ĥé ŝám̂é d̂éŝt́îńât́îón̂ śĥóûĺd̂ h́âv́ê t́ĥé ŝám̂é d̂éŝćr̂íp̂t́îón̂, t́ô h́êĺp̂ úŝér̂ś ûńd̂ér̂śt̂án̂d́ t̂h́ê ĺîńk̂'ś p̂úr̂ṕôśê án̂d́ d̂éĉíd̂é ŵh́êt́ĥér̂ t́ô f́ôĺl̂óŵ ít̂. [Ĺêár̂ń m̂ór̂é âb́ôút̂ íd̂én̂t́îćâĺ l̂ín̂ḱŝ](https://dequeuniversity.com/rules/axe/4.7/identical-links-same-purpose)."
+  },
+  "core/audits/accessibility/identical-links-same-purpose.js | failureTitle": {
+    "message": "Îd́êńt̂íĉál̂ ĺîńk̂ś d̂ó n̂ót̂ h́âv́ê t́ĥé ŝám̂é p̂úr̂ṕôśê."
+  },
+  "core/audits/accessibility/identical-links-same-purpose.js | title": {
+    "message": "Îd́êńt̂íĉál̂ ĺîńk̂ś ĥáv̂é t̂h́ê śâḿê ṕûŕp̂óŝé."
   },
   "core/audits/accessibility/image-alt.js | description": {
     "message": "Îńf̂ór̂ḿât́îv́ê él̂ém̂én̂t́ŝ śĥóûĺd̂ áîḿ f̂ór̂ śĥór̂t́, d̂éŝćr̂íp̂t́îv́ê ál̂t́êŕn̂át̂é t̂éx̂t́. D̂éĉór̂át̂ív̂é êĺêḿêńt̂ś ĉán̂ b́ê íĝńôŕêd́ ŵít̂h́ âń êḿp̂t́ŷ ál̂t́ ât́t̂ŕîb́ût́ê. [Ĺêár̂ń m̂ór̂é âb́ôút̂ t́ĥé `alt` ât́t̂ŕîb́ût́ê](https://dequeuniversity.com/rules/axe/4.7/image-alt)."
@@ -3097,21 +3115,6 @@
   },
   "node_modules/lighthouse-stack-packs/packs/react.js | user-timings": {
     "message": "Ûśê t́ĥé R̂éâćt̂ D́êv́T̂óôĺŝ Ṕr̂óf̂íl̂ér̂, ẃĥíĉh́ m̂ák̂éŝ úŝé ôf́ t̂h́ê Ṕr̂óf̂íl̂ér̂ ÁP̂Í, t̂ó m̂éâśûŕê t́ĥé r̂én̂d́êŕîńĝ ṕêŕf̂ór̂ḿâńĉé ôf́ ŷóûŕ ĉóm̂ṕôńêńt̂ś. [L̂éâŕn̂ ḿôŕê.](https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html)"
-  },
-  "node_modules/lighthouse-stack-packs/packs/wix.js | efficient-animated-content": {
-    "message": "P̂ĺâćê v́îd́êóŝ ín̂śîd́ê `VideoBoxes`, ćûśt̂óm̂íẑé t̂h́êḿ ûśîńĝ `Video Masks` ór̂ ád̂d́ `Transparent Videos`. [L̂éâŕn̂ ḿôŕê](https://support.wix.com/en/article/wix-video-about-wix-video)."
-  },
-  "node_modules/lighthouse-stack-packs/packs/wix.js | modern-image-formats": {
-    "message": "Ûṕl̂óâd́ îḿâǵêś ûśîńĝ `Wix Media Manager` t́ô én̂śûŕê t́ĥéŷ ár̂é âút̂óm̂át̂íĉál̂ĺŷ śêŕv̂éd̂ áŝ Ẃêb́P̂. F́îńd̂ [ḿôŕê ẃâýŝ t́ô óp̂t́îḿîźê](https://support.wix.com/en/article/site-performance-optimizing-your-media) ýôúr̂ śît́ê'ś m̂éd̂íâ."
-  },
-  "node_modules/lighthouse-stack-packs/packs/wix.js | render-blocking-resources": {
-    "message": "Ŵh́êń [âd́d̂ín̂ǵ t̂h́îŕd̂-ṕâŕt̂ý ĉód̂é](https://support.wix.com/en/article/site-performance-using-third-party-code-on-your-site) îń t̂h́ê `Custom Code` t́âb́ ôf́ ŷóûŕ ŝít̂é'ŝ d́âśĥb́ôár̂d́, m̂ák̂é ŝúr̂é ît́'ŝ d́êf́êŕr̂éd̂ ór̂ ĺôád̂éd̂ át̂ t́ĥé êńd̂ óf̂ t́ĥé ĉód̂é b̂ód̂ý. Ŵh́êŕê ṕôśŝíb̂ĺê, úŝé Ŵíx̂’ś [îńt̂éĝŕât́îón̂ś](https://support.wix.com/en/article/about-marketing-integrations) t̂ó êḿb̂éd̂ ḿâŕk̂ét̂ín̂ǵ t̂óôĺŝ ón̂ ýôúr̂ śît́ê. "
-  },
-  "node_modules/lighthouse-stack-packs/packs/wix.js | server-response-time": {
-    "message": "Ŵíx̂ út̂íl̂íẑéŝ ĆD̂Ńŝ án̂d́ ĉáĉh́îńĝ t́ô śêŕv̂é r̂éŝṕôńŝéŝ áŝ f́âśt̂ áŝ ṕôśŝíb̂ĺê f́ôŕ m̂óŝt́ v̂íŝít̂ór̂ś. Ĉón̂śîd́êŕ [m̂án̂úâĺl̂ý êńâb́l̂ín̂ǵ ĉáĉh́îńĝ](https://support.wix.com/en/article/site-performance-caching-pages-to-optimize-loading-speed) f́ôŕ ŷóûŕ ŝít̂é, êśp̂éĉíâĺl̂ý îf́ ûśîńĝ `Velo`."
-  },
-  "node_modules/lighthouse-stack-packs/packs/wix.js | unused-javascript": {
-    "message": "R̂év̂íêẃ âńŷ t́ĥír̂d́-p̂ár̂t́ŷ ćôd́ê ýôú'v̂é âd́d̂éd̂ t́ô ýôúr̂ śît́ê ín̂ t́ĥé `Custom Code` t̂áb̂ óf̂ ýôúr̂ śît́ê'ś d̂áŝh́b̂óâŕd̂ án̂d́ ôńl̂ý k̂éêṕ t̂h́ê śêŕv̂íĉéŝ t́ĥát̂ ár̂é n̂éĉéŝśâŕŷ t́ô ýôúr̂ śît́ê. [F́îńd̂ óût́ m̂ór̂é](https://support.wix.com/en/article/site-performance-removing-unused-javascript)."
   },
   "node_modules/lighthouse-stack-packs/packs/wordpress.js | efficient-animated-content": {
     "message": "Ĉón̂śîd́êŕ ûṕl̂óâd́îńĝ ýôúr̂ ǴÎF́ t̂ó â śêŕv̂íĉé ŵh́îćĥ ẃîĺl̂ ḿâḱê ít̂ áv̂áîĺâb́l̂é t̂ó êḿb̂éd̂ áŝ án̂ H́T̂ḾL̂5 v́îd́êó."
