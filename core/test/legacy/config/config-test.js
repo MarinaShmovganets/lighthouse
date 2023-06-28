@@ -741,7 +741,7 @@ describe('Config', () => {
           onlyAudits: ['first-meaningful-paint'],
           skipAudits: ['first-meaningful-paint'],
         },
-      }).catch(err => console.log(err));
+      });
     });
   });
 
