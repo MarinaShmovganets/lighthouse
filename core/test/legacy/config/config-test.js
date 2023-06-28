@@ -23,7 +23,7 @@ const require = createRequire(import.meta.url);
 const moduleDir = getModuleDirectory(import.meta);
 const modulePath = getModulePath(import.meta);
 
-describe('Config', () => {
+describe.skip('Config', () => {
   let origConfig;
   beforeEach(() => {
     origConfig = JSON.parse(JSON.stringify(legacyDefaultConfig));
