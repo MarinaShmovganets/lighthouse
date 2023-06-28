@@ -430,6 +430,10 @@ describe('.resolveGathererToDefn', () => {
     await expect(resolveGathererToDefn({})).rejects.toThrow(/Invalid Gatherer type/);
   });
 
+  it('throws for invalid path type', async () => {
+    await expect(resolveGathererToDefn({path: 1234})).rejects.toThrow(/Invalid Gatherer type/);
+  });
+
   it('throws but not for missing gatherer when it has a node dependency error', async () => {
     const resultPromise =
       resolveGathererToDefn('../fixtures/invalid-gatherers/require-error.js', [], moduleDir);
