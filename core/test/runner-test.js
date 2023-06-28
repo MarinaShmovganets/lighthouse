@@ -657,7 +657,7 @@ describe('Runner', () => {
 
     it('produces an error audit result that prefers cause stack', async () => {
       const errorMessage = 'Audit yourself';
-      const resolvedConfig = await LegacyResolvedConfig.fromJson({
+      const {resolvedConfig} = await initializeConfig('navigation', {
         settings: {
           auditMode: moduleDir + '/fixtures/artifacts/empty-artifacts/',
         },
