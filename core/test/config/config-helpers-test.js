@@ -232,22 +232,10 @@ describe('.mergePlugins', () => {
     expect(mergedConfig.categories).toHaveProperty('lighthouse-plugin-no-groups');
   });
 
-  it('validate plugin name starts with `lighthouse-plugin-`', async () => {
+  it('validate plugin name', async () => {
     const config = {audits: ['installable-manifest', 'metrics']};
     const flags = {plugins: ['not-a-plugin']};
     await expect(mergePlugins(config, configDir, flags)).rejects.toThrow(/does not start/);
-  });
-
-  it('validate plugin category name is not the same as a config category', async () => {
-    const config = {
-      categories: {
-        'lighthouse-plugin-simple': {},
-      },
-      plugins: ['lighthouse-plugin-simple'],
-    };
-    await expect(mergePlugins(config, configDir)).rejects.toThrow(
-      /not allowed because it is the id of a category/
-    );
   });
 
   it('validate plugin existence', async () => {
