@@ -232,10 +232,22 @@ describe('.mergePlugins', () => {
     expect(mergedConfig.categories).toHaveProperty('lighthouse-plugin-no-groups');
   });
 
-  it('validate plugin name', async () => {
+  it('validate plugin name starts with `lighthouse-plugin-`', async () => {
     const config = {audits: ['installable-manifest', 'metrics']};
     const flags = {plugins: ['not-a-plugin']};
     await expect(mergePlugins(config, configDir, flags)).rejects.toThrow(/does not start/);
+  });
+
+  it('validate plugin category name is not the same as a config category', async () => {
+    const config = {
+      categories: {
+        'lighthouse-plugin-simple': {},
+      },
+      plugins: ['lighthouse-plugin-simple'],
+    };
+    await expect(mergePlugins(config, configDir)).rejects.toThrow(
+      /not allowed because it is the id of a category/
+    );
   });
 
   it('validate plugin existence', async () => {
@@ -272,6 +284,28 @@ describe('.resolveSettings', () => {
     const settings = resolveSettings({}, {nonsense: 1, output: 'html'});
     expect(settings.output).toEqual('html');
     expect(settings).not.toHaveProperty('nonsense');
+  });
+
+  describe('sets UA string', () => {
+    it('to default value if provided value is undefined', () => {
+      const settings = resolveSettings({}, {emulatedUserAgent: undefined});
+      expect(settings.emulatedUserAgent).toMatch(/^Mozilla\/5.*moto.*Chrome/);
+    });
+
+    it('to default value if provided value is true', () => {
+      const settings = resolveSettings({}, {emulatedUserAgent: true});
+      expect(settings.emulatedUserAgent).toMatch(/^Mozilla\/5.*moto.*Chrome/);
+    });
+
+    it('to false if provided value is false', () => {
+      const settings = resolveSettings({}, {emulatedUserAgent: false});
+      expect(settings.emulatedUserAgent).toEqual(false);
+    });
+
+    it('to the provided string value if present', () => {
+      const settings = resolveSettings({}, {emulatedUserAgent: 'Random UA'});
+      expect(settings.emulatedUserAgent).toEqual('Random UA');
+    });
   });
 
   describe('budgets', () => {
@@ -360,6 +394,19 @@ describe('.resolveGathererToDefn', () => {
     });
   });
 
+  it('should find custom gatherers', async () => {
+    const result1 =
+      await resolveGathererToDefn('../fixtures/valid-custom-gatherer', [], moduleDir);
+    const result2 =
+      await resolveGathererToDefn('../fixtures/valid-custom-gatherer.js', [], moduleDir);
+    const result3 =
+      await resolveGathererToDefn('../fixtures/valid-custom-gatherer.cjs', [], moduleDir);
+
+    expect(result1).toMatchObject({path: '../fixtures/valid-custom-gatherer'});
+    expect(result2).toMatchObject({path: '../fixtures/valid-custom-gatherer.js'});
+    expect(result3).toMatchObject({path: '../fixtures/valid-custom-gatherer.cjs'});
+  });
+
   it('should expand gatherer impl short-hand', async () => {
     const result = await resolveGathererToDefn({implementation: ImageElementsGatherer}, coreList);
     expect(result).toEqual({
@@ -368,8 +415,28 @@ describe('.resolveGathererToDefn', () => {
     });
   });
 
+  it('should expand gatherer instance short-hand', async () => {
+    const result = await resolveGathererToDefn({instance: new ImageElementsGatherer()}, coreList);
+    expect(result).toEqual({
+      instance: expect.any(ImageElementsGatherer),
+    });
+  });
+
+  it('should expand gatherer instance directly', async () => {
+    const result = await resolveGathererToDefn(new ImageElementsGatherer(), coreList);
+    expect(result).toEqual({
+      instance: expect.any(ImageElementsGatherer),
+    });
+  });
+
   it('throws for invalid gathererDefn', async () => {
     await expect(resolveGathererToDefn({})).rejects.toThrow(/Invalid Gatherer type/);
+  });
+
+  it('throws but not for missing gatherer when it has a node dependency error', async () => {
+    const resultPromise =
+      resolveGathererToDefn('../fixtures/invalid-gatherers/require-error.js', [], moduleDir);
+    await expect(resultPromise).rejects.toThrow(/Cannot find module/);
   });
 });
 
@@ -380,12 +447,37 @@ describe('.resolveAuditsToDefns', () => {
     expect(result).toEqual([{path: 'user-timings', options: {}, implementation: UserTimingsAudit}]);
   });
 
+  it('should expand audit impl short-hand', async () => {
+    const result = await resolveAuditsToDefns([{implementation: UserTimingsAudit}]);
+
+    expect(result).toEqual([{options: {}, implementation: UserTimingsAudit}]);
+  });
+
+  it('should expand audit impl directly', async () => {
+    const result = await resolveAuditsToDefns([UserTimingsAudit]);
+
+    expect(result).toEqual([{options: {}, implementation: UserTimingsAudit}]);
+  });
+
   it('should find relative to configDir', async () => {
     const configDir = path.resolve(moduleDir, '../../');
     const result = await resolveAuditsToDefns(['audits/user-timings'], configDir);
 
     expect(result).toEqual([
       {path: 'audits/user-timings', options: {}, implementation: UserTimingsAudit},
+    ]);
+  });
+
+  it('should find custom audits', async () => {
+    const result = await resolveAuditsToDefns([
+      '../fixtures/valid-custom-audit',
+      '../fixtures/valid-custom-audit.js',
+      '../fixtures/valid-custom-audit.cjs',
+    ], moduleDir);
+    expect(result).toMatchObject([
+      {path: '../fixtures/valid-custom-audit', options: {}},
+      {path: '../fixtures/valid-custom-audit.js', options: {}},
+      {path: '../fixtures/valid-custom-audit.cjs', options: {}},
     ]);
   });
 
@@ -411,6 +503,13 @@ describe('.resolveAuditsToDefns', () => {
   it('throws for invalid auditDefns', async () => {
     await expect(resolveAuditsToDefns([new Gatherer()])).rejects.toThrow(/Invalid Audit type/);
   });
+
+  it('throws but not for missing audit when it has a node dependency error', async () => {
+    const resultPromise = resolveAuditsToDefns([
+      '../fixtures/invalid-audits/require-error.js',
+    ], moduleDir);
+    await expect(resultPromise).rejects.toThrow(/Cannot find module/);
+  });
 });
 
 describe('.resolveModulePath', () => {
@@ -424,6 +523,12 @@ describe('.resolveModulePath', () => {
     const pluginName = 'chrome-launcher';
     const pathToPlugin = resolveModulePath(pluginName, null, 'plugin');
     expect(pathToPlugin).toEqual(require.resolve(pluginName));
+  });
+
+  it('throws for unknown resource', async () => {
+    expect(() => {
+      resolveModulePath('unknown', null, 'audit');
+    }).toThrow(/Unable to locate audit: `unknown`/);
   });
 
   describe('plugin paths to a file', () => {
