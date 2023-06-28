@@ -375,8 +375,17 @@ describe('.resolveSettings', () => {
 describe('.resolveGathererToDefn', () => {
   const coreList = Runner.getGathererList();
 
-  it('should expand gatherer path short-hand', async () => {
+  it('should expand core gatherer', async () => {
     const result = await resolveGathererToDefn('image-elements', coreList);
+    expect(result).toEqual({
+      path: 'image-elements',
+      implementation: ImageElementsGatherer,
+      instance: expect.any(ImageElementsGatherer),
+    });
+  });
+
+  it('should expand gatherer path short-hand', async () => {
+    const result = await resolveGathererToDefn({path: 'image-elements'}, coreList);
     expect(result).toEqual({
       path: 'image-elements',
       implementation: ImageElementsGatherer,
@@ -441,8 +450,14 @@ describe('.resolveGathererToDefn', () => {
 });
 
 describe('.resolveAuditsToDefns', () => {
-  it('should expand audit short-hand', async () => {
+  it('should expand core audit', async () => {
     const result = await resolveAuditsToDefns(['user-timings']);
+
+    expect(result).toEqual([{path: 'user-timings', options: {}, implementation: UserTimingsAudit}]);
+  });
+
+  it('should expand audit path short-hand', async () => {
+    const result = await resolveAuditsToDefns([{path: 'user-timings'}]);
 
     expect(result).toEqual([{path: 'user-timings', options: {}, implementation: UserTimingsAudit}]);
   });
