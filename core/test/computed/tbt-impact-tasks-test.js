@@ -234,6 +234,7 @@ describe('TBTImpactTasks', () => {
       };
 
       const tasks = await TBTImpactTasks.request(metricComputationData, context);
+      expect(tasks.every(t => t.selfTbtImpact >= 0)).toBeTruthy();
 
       const tasksImpactingTbt = tasks.filter(t => t.tbtImpact);
       expect(tasksImpactingTbt.length).toMatchInlineSnapshot(`59`);
@@ -276,6 +277,7 @@ describe('TBTImpactTasks', () => {
       };
 
       const tasks = await TBTImpactTasks.request(metricComputationData, context);
+      expect(tasks.every(t => t.selfTbtImpact >= 0)).toBeTruthy();
 
       const tasksImpactingTbt = tasks.filter(t => t.tbtImpact);
       expect(tasksImpactingTbt.length).toMatchInlineSnapshot(`5`);
