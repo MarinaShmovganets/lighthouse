@@ -14,49 +14,52 @@ import {MainThreadTasks} from '../../computed/main-thread-tasks.js';
 
 const trace = readJson('../fixtures/traces/lcp-m78.json', import.meta);
 const devtoolsLog = readJson('../fixtures/traces/lcp-m78.devtools.log.json', import.meta);
-const mainDocumentUrl = 'https://example.com';
 
 describe('TBTImpactTasks', () => {
+  const mainDocumentUrl = 'https://example.com';
   /** @type {LH.Config.Settings} */
   let settings;
   /** @type {LH.Artifacts.ComputedContext} */
   let context;
-  /** @type {LH.Artifacts.MetricComputationDataInput} */
-  let metricComputationData;
 
   beforeEach(() => {
     context = {computedCache: new Map()};
     settings = JSON.parse(JSON.stringify(defaultSettings));
-
-    metricComputationData = {
-      trace: createTestTrace({
-        traceEnd: 10_000,
-        frameUrl: mainDocumentUrl,
-        topLevelTasks: [
-          // Add long task to defer TTI
-          {ts: 1000, duration: 1000},
-        ],
-      }),
-      devtoolsLog: networkRecordsToDevtoolsLog([{
-        requestId: '1',
-        priority: 'High',
-        networkRequestTime: 0,
-        networkEndTime: 500,
-        transferSize: 400,
-        url: mainDocumentUrl,
-        frameId: rootFrame,
-      }]),
-      URL: {
-        requestedUrl: mainDocumentUrl,
-        mainDocumentUrl,
-        finalDisplayedUrl: mainDocumentUrl,
-      },
-      gatherContext: {gatherMode: 'navigation'},
-      settings,
-    };
   });
 
   describe('getTbtBounds', () => {
+    /** @type {LH.Artifacts.MetricComputationDataInput} */
+    let metricComputationData;
+
+    beforeEach(() => {
+      metricComputationData = {
+        trace: createTestTrace({
+          traceEnd: 10_000,
+          frameUrl: mainDocumentUrl,
+          topLevelTasks: [
+            // Add long task to defer TTI
+            {ts: 1000, duration: 1000},
+          ],
+        }),
+        devtoolsLog: networkRecordsToDevtoolsLog([{
+          requestId: '1',
+          priority: 'High',
+          networkRequestTime: 0,
+          networkEndTime: 500,
+          transferSize: 400,
+          url: mainDocumentUrl,
+          frameId: rootFrame,
+        }]),
+        URL: {
+          requestedUrl: mainDocumentUrl,
+          mainDocumentUrl,
+          finalDisplayedUrl: mainDocumentUrl,
+        },
+        gatherContext: {gatherMode: 'navigation'},
+        settings,
+      };
+    });
+
     it('gets start/end times for lantern', async () => {
       const {startTimeMs, endTimeMs} =
         await TBTImpactTasks.getTbtBounds(metricComputationData, context);
