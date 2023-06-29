@@ -260,8 +260,9 @@ export class CategoryRenderer {
 
     for (const auditRef of auditRefs) {
       const groupId = auditRef.group || notAGroup;
-      if (groupId === 'hidden')
+      if (groupId === 'hidden') {
         continue;
+      }
       const groupAuditRefs = grouped.get(groupId) || [];
       groupAuditRefs.push(auditRef);
       grouped.set(groupId, groupAuditRefs);
