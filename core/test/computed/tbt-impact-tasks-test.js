@@ -134,6 +134,94 @@ describe('TBTImpactTasks', () => {
     });
   });
 
+  describe('computeImpactsFromLantern', () => {
+    /**
+     * Creates a fake lantern node timings map for the given tasks.
+     * Assumes the throttling scales the task timing linearly by `linearScale`.
+     * @param {LH.Artifacts.TaskNode[]} tasks
+     * @param {number} linearScale
+     * @return {LH.Gatherer.Simulation.Result['nodeTimings']}
+     */
+    function mockLanternTimings(tasks, linearScale) {
+      /** @type {LH.Gatherer.Simulation.Result['nodeTimings']} */
+      const tbtNodeTimings = new Map();
+
+      for (const task of tasks) {
+        // Only top level tasks will have a CPU node in lantern
+        if (task.parent) continue;
+
+        /** @type {LH.Gatherer.Simulation.GraphCPUNode} */
+        // @ts-expect-error fake CPU node to use as a map key
+        const node = {
+          type: 'cpu',
+          event: task.event,
+        };
+
+        tbtNodeTimings.set(node, {
+          startTime: task.startTime * linearScale,
+          endTime: task.endTime * linearScale,
+          duration: task.duration * linearScale,
+        });
+      }
+
+      return tbtNodeTimings;
+    }
+
+    it('computes correct task impacts', async () => {
+      const trace = createTestTrace({
+        traceEnd: 10_000,
+        topLevelTasks: [
+          {
+            ts: 2000, // 8000 scaled up
+            duration: 4000, // 16_000 scaled up
+            children: [
+              // ts: 8400, dur: 2000 scaled up
+              {ts: 2100, duration: 500, url: mainDocumentUrl},
+              // ts: 12_400, dur: 2000 scaled up
+              {ts: 3100, duration: 500, url: mainDocumentUrl},
+            ],
+          },
+          {
+            ts: 6000, // 24_000 scaled up
+            duration: 3000, // 12_000 scaled up
+          },
+        ],
+      });
+
+      const tasks = await MainThreadTasks.request(trace, context);
+      expect(tasks).toHaveLength(5);
+
+      const tbtNodeTimings = mockLanternTimings(tasks, 4);
+      expect(tbtNodeTimings.size).toEqual(3); // 2 top level tasks + 1 in the trace by default
+
+      const tbtImpactTasks =
+        TBTImpactTasks.computeImpactsFromLantern(tasks, tbtNodeTimings, 8800, 28_000);
+      expect(tbtImpactTasks).toMatchObject([
+        {
+          tbtImpact: 15_150, // 16_000 (dur) - 800 (FCP cutoff) - 50 (blocking threshold)
+          selfTbtImpact: 11562.5, // 15_150 - 1593.75 - 1993.75
+        },
+        {
+          tbtImpact: 1593.75, // 2000 (dur) - 400 (FCP cutoff) - 6.25 (50 * 2000 / 16_000)
+          selfTbtImpact: 1593.75, // No children
+        },
+        {
+          tbtImpact: 1993.75, // 2000 (dur) - 6.25 (50 * 2000 / 16_000)
+          selfTbtImpact: 1993.75, // No children
+        },
+        {
+          tbtImpact: 3950, // 12_000 (dur) - 8000 (TTI cutoff) - 50
+          selfTbtImpact: 3950, // No children
+        },
+        {
+          // Included in test trace by default
+          tbtImpact: 0,
+          selfTbtImpact: 0,
+        },
+      ]);
+    });
+  });
+
   describe('works on real artifacts', () => {
     it('with lantern', async () => {
       /** @type {LH.Artifacts.MetricComputationDataInput} */
