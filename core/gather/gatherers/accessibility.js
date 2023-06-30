@@ -69,6 +69,7 @@ async function runA11yChecks() {
       'svg-img-alt': {enabled: false},
       'tabindex': {enabled: true},
       'table-fake-caption': {enabled: true},
+      'target-size': {enabled: true},
       'td-has-header': {enabled: true},
     },
   });

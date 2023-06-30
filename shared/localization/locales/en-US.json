@@ -452,6 +452,15 @@
   "core/audits/accessibility/table-fake-caption.js | title": {
     "message": "Tables use `<caption>` instead of cells with the `[colspan]` attribute to indicate a caption."
   },
+  "core/audits/accessibility/target-size.js | description": {
+    "message": "Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls activate the targets. [Learn more about touch targets](https://dequeuniversity.com/rules/axe/4.7/target-size)."
+  },
+  "core/audits/accessibility/target-size.js | failureTitle": {
+    "message": "Touch targets do not have sufficient size or spacing."
+  },
+  "core/audits/accessibility/target-size.js | title": {
+    "message": "Touch targets have sufficient size and spacing."
+  },
   "core/audits/accessibility/td-has-header.js | description": {
     "message": "Screen readers have features to make navigating tables easier. Ensuring that `<td>` elements in a large table (3 or more cells in width and height) have an associated table header may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.7/td-has-header)."
   },

@@ -283,6 +283,7 @@ const defaultConfig = {
     'accessibility/select-name',
     'accessibility/tabindex',
     'accessibility/table-fake-caption',
+    'accessibility/target-size',
     'accessibility/td-has-header',
     'accessibility/td-headers-attr',
     'accessibility/th-has-data-cells',
@@ -575,6 +576,7 @@ const defaultConfig = {
         {id: 'empty-heading', weight: 0, group: 'hidden'},
         {id: 'identical-links-same-purpose', weight: 0, group: 'hidden'},
         {id: 'landmark-one-main', weight: 0, group: 'hidden'},
+        {id: 'target-size', weight: 0, group: 'hidden'},
       ],
     },
     'best-practices': {
