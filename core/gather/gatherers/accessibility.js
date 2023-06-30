@@ -55,6 +55,7 @@ async function runA11yChecks() {
       'html-xml-lang-mismatch': {enabled: true},
       'identical-links-same-purpose': {enabled: true},
       'input-button-name': {enabled: true},
+      'landmark-one-main': {enabled: true},
       'link-in-text-block': {enabled: true},
       'marquee': {enabled: false},
       'meta-viewport': {enabled: true},

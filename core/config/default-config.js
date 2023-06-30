@@ -272,6 +272,7 @@ const defaultConfig = {
     'accessibility/input-button-name',
     'accessibility/input-image-alt',
     'accessibility/label',
+    'accessibility/landmark-one-main',
     'accessibility/link-name',
     'accessibility/link-in-text-block',
     'accessibility/list',
@@ -573,6 +574,7 @@ const defaultConfig = {
         // Hidden audits
         {id: 'empty-heading', weight: 0, group: 'hidden'},
         {id: 'identical-links-same-purpose', weight: 0, group: 'hidden'},
+        {id: 'landmark-one-main', weight: 0, group: 'hidden'},
       ],
     },
     'best-practices': {

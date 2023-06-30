@@ -3640,6 +3640,13 @@
         }
       }
     },
+    "landmark-one-main": {
+      "id": "landmark-one-main",
+      "title": "Document has a main landmark.",
+      "description": "One main landmark helps screen reader users navigate a web page. [Learn more about landmarks](https://dequeuniversity.com/rules/axe/4.7/landmark-one-main).",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
+    },
     "link-name": {
       "id": "link-name",
       "title": "Links do not have a discernible name",
@@ -6239,6 +6246,11 @@
           "id": "identical-links-same-purpose",
           "weight": 0,
           "group": "hidden"
+        },
+        {
+          "id": "landmark-one-main",
+          "weight": 0,
+          "group": "hidden"
         }
       ],
       "id": "accessibility",
@@ -8513,6 +8525,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:landmark-one-main",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:link-name",
         "duration": 100,
         "entryType": "measure"
@@ -9953,6 +9971,12 @@
       ],
       "core/audits/accessibility/label.js | description": [
         "audits.label.description"
+      ],
+      "core/audits/accessibility/landmark-one-main.js | title": [
+        "audits[landmark-one-main].title"
+      ],
+      "core/audits/accessibility/landmark-one-main.js | description": [
+        "audits[landmark-one-main].description"
       ],
       "core/audits/accessibility/link-name.js | failureTitle": [
         "audits[link-name].title"

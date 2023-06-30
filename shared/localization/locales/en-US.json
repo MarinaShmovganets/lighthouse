@@ -353,6 +353,15 @@
   "core/audits/accessibility/label.js | title": {
     "message": "Form elements have associated labels"
   },
+  "core/audits/accessibility/landmark-one-main.js | description": {
+    "message": "One main landmark helps screen reader users navigate a web page. [Learn more about landmarks](https://dequeuniversity.com/rules/axe/4.7/landmark-one-main)."
+  },
+  "core/audits/accessibility/landmark-one-main.js | failureTitle": {
+    "message": "Document does not have a main landmark."
+  },
+  "core/audits/accessibility/landmark-one-main.js | title": {
+    "message": "Document has a main landmark."
+  },
   "core/audits/accessibility/link-in-text-block.js | description": {
     "message": "Low-contrast text is difficult or impossible for many users to read. Link text that is discernible improves the experience for users with low vision. [Learn how to make links distinguishable](https://dequeuniversity.com/rules/axe/4.7/link-in-text-block)."
   },

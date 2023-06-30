@@ -690,6 +690,22 @@ const expectations = {
       //     ],
       //   },
       // },
+      'landmark-one-main': {
+        score: null,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'html',
+                'snippet': '<html>',
+                'explanation': 'Fix all of the following:\n  Document does not have a main landmark',
+                'nodeLabel': 'html',
+              },
+            },
+          ],
+        },
+      },
       'link-in-text-block': {
         score: 0,
         details: {
