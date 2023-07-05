@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import {assert} from 'chai';
-import type * as puppeteer from 'puppeteer';
+import type * as puppeteer from 'puppeteer-core';
 
 import {expectError} from '../../conductor/events.js';
 import {
@@ -133,7 +133,7 @@ describe('Navigation', async function() {
         });
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-        assert.strictEqual(auditResults.length, 177);
+        assert.strictEqual(auditResults.length, 181);
         assert.deepStrictEqual(erroredAudits, []);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
@@ -222,7 +222,7 @@ describe('Navigation', async function() {
         ];
 
         const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, flakyAudits);
-        assert.strictEqual(auditResults.length, 154);
+        assert.strictEqual(auditResults.length, 158);
         assert.deepStrictEqual(erroredAudits, []);
         assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
           'service-worker',
