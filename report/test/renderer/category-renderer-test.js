@@ -400,11 +400,10 @@ describe('CategoryRenderer', () => {
 
       categoryGroupIds.forEach(groupId => {
         const selector = `.lh-audit-group--${groupId}`;
-        if (groupId === 'hidden') {
-          continue;
+        if (groupId !== 'hidden') {
+          assert.equal(categoryElem.querySelectorAll(selector).length, 1,
+            `could not find '${selector}'`);
         }
-        assert.equal(categoryElem.querySelectorAll(selector).length, 1,
-          `could not find '${selector}'`);
       });
     });
   });
