@@ -157,7 +157,7 @@ class Redirects extends Audit {
       metricSavings: {
         LCP: totalWastedMs,
         FCP: totalWastedMs,
-      }
+      },
     };
   }
 }
