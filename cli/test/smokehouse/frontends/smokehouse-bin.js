@@ -234,7 +234,7 @@ async function begin() {
 
     // Save failed runs to directory. In CI, this is uploaded as an artifact.
     const failuresDir = `${LH_ROOT}/.tmp/smokehouse-failures`;
-    fs.rmSync(failuresDir, {recursive: true});
+    fs.rmSync(failuresDir, {recursive: true, force: true});
     fs.mkdirSync(failuresDir);
 
     for (const testResult of failedTestResults) {
