@@ -15,8 +15,6 @@ import {getJavaScriptURLs, getAttributableURLForTask} from '../lib/tracehouse/ta
 /** We don't always have timing data for short tasks, if we're missing timing data. Treat it as though it were 0ms. */
 const DEFAULT_TIMING = {startTime: 0, endTime: 0, duration: 0};
 const DISPLAYED_TASK_COUNT = 20;
-// 99% of the May 2023 HTTP Archive run had fewer than 150 long tasks.
-const DEBUG_TASK_COUNT = 150;
 
 const UIStrings = {
   /** Title of a diagnostic LH audit that provides details on the longest running tasks that occur when the page loads. */
@@ -234,8 +232,7 @@ class LongTasks extends Audit {
     const tableDetails = Audit.makeTableDetails(headings, results,
       {sortedBy: ['duration'], skipSumming: ['startTime']});
 
-    const debugTasks = longTasks.splice(0, DEBUG_TASK_COUNT);
-    tableDetails.debugData = LongTasks.makeDebugData(debugTasks, jsURLs, taskTimingsByEvent);
+    tableDetails.debugData = LongTasks.makeDebugData(longTasks, jsURLs, taskTimingsByEvent);
 
     let displayValue;
     if (results.length > 0) {
