@@ -1,15 +1,14 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Sanjaiyan Parthipan @sanjaiyan-dev
- <a name="10.4.0"></a>
+<a name="10.4.0"></a>
 # 10.4.0 (2023-07-10)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v10.3.0...v10.4.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 117](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
+## New Contributors
 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+- Sanjaiyan Parthipan @sanjaiyan-dev
 
 ## New Audits
 
