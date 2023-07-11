@@ -8,8 +8,6 @@
  * @fileoverview A runner that launches Chrome and executes Lighthouse via DevTools.
  */
 
-import fs from 'fs';
-import os from 'os';
 import {execFileSync} from 'child_process';
 
 import {LH_ROOT} from '../../../../root.js';
