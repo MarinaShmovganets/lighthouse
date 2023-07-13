@@ -82,13 +82,10 @@ declare module Config {
 
   type GathererJson = {
     path: string;
-    options?: {};
   } | {
     implementation: ClassOf<Gatherer.FRGathererInstance>;
-    options?: {};
   } | {
     instance: Gatherer.FRGathererInstance;
-    options?: {};
   } | Gatherer.FRGathererInstance | ClassOf<Gatherer.FRGathererInstance> | string;
 
   interface CategoryJson {
