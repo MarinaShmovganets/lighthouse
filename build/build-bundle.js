@@ -112,7 +112,14 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
     [require.resolve('../core/legacy/gather/connections/cri.js')]:
       'export const CriConnection = {}',
     // zlib's decompression code is very large and we don't need it.
-    '__zlib-lib/inflate': '',
+    // We export empty functions, instead of an empty module, simply to silence warnings
+    // about no exports.
+    '__zlib-lib/inflate': `
+      export function inflateInit2() {};
+      export function inflate() {};
+      export function inflateEnd() {};
+      export function inflateReset() {};
+    `,
   };
 
   const modulesToIgnore = [
