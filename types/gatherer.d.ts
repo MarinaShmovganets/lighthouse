@@ -117,7 +117,6 @@ declare module Gatherer {
   type FRGatherPhase = keyof Omit<Gatherer.FRGathererInstance, 'name'|'meta'>
 
   interface FRGathererInstance<TDependencies extends DependencyKey = DefaultDependenciesKey> {
-    name: keyof GathererArtifacts; // temporary COMPAT measure until artifact config support is available
     meta: GathererMeta<TDependencies>;
     startInstrumentation(context: FRTransitionalContext<DefaultDependenciesKey>): Promise<void>|void;
     startSensitiveInstrumentation(context: FRTransitionalContext<DefaultDependenciesKey>): Promise<void>|void;

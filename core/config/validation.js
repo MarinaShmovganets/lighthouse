@@ -47,25 +47,24 @@ function assertValidPluginName(config, pluginName) {
 
 /**
  * Throws an error if the provided object does not implement the required Fraggle Rock gatherer interface.
- * @param {LH.Config.AnyFRGathererDefn} gathererDefn
+ * @param {LH.Config.AnyArtifactDefn} artifactDefn
  */
-function assertValidFRGatherer(gathererDefn) {
-  const gatherer = gathererDefn.instance;
-  const gathererName = gatherer.name;
+function assertValidArtifact(artifactDefn) {
+  const gatherer = artifactDefn.gatherer.instance;
 
   if (typeof gatherer.meta !== 'object') {
-    throw new Error(`${gathererName} gatherer did not provide a meta object.`);
+    throw new Error(`Gatherer for ${artifactDefn.id} did not provide a meta object.`);
   }
 
   if (gatherer.meta.supportedModes.length === 0) {
-    throw new Error(`${gathererName} gatherer did not support any gather modes.`);
+    throw new Error(`Gatherer for ${artifactDefn.id} did not support any gather modes.`);
   }
 
   if (
     typeof gatherer.getArtifact !== 'function' ||
     gatherer.getArtifact === BaseFRGatherer.prototype.getArtifact
   ) {
-    throw new Error(`${gathererName} gatherer did not define a "getArtifact" method.`);
+    throw new Error(`Gatherer for ${artifactDefn.id} did not define a "getArtifact" method.`);
   }
 }
 
@@ -258,7 +257,7 @@ function assertValidConfig(resolvedConfig) {
       throw new Error(`Config defined multiple artifacts with id '${artifactDefn.id}'`);
     }
     artifactIds.add(artifactDefn.id);
-    assertValidFRGatherer(artifactDefn.gatherer);
+    assertValidArtifact(artifactDefn);
   }
 
   for (const auditDefn of resolvedConfig.audits || []) {
@@ -303,7 +302,7 @@ function throwInvalidArtifactDependency(artifactId, dependencyKey) {
 export {
   isValidArtifactDependency,
   assertValidPluginName,
-  assertValidFRGatherer,
+  assertValidArtifact,
   assertValidFRNavigations,
   assertValidAudit,
   assertValidCategories,

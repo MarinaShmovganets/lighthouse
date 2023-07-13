@@ -97,7 +97,6 @@ function createMockGathererInstance(meta) {
 
     /** @return {LH.Gatherer.AnyFRGathererInstance} */
     asGatherer() {
-      // @ts-expect-error - We'll rely on the tests passing to know this matches.
       return this;
     },
   };

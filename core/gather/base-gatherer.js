@@ -54,20 +54,6 @@ class FRGatherer {
    * @return {LH.Gatherer.PhaseResult}
    */
   getArtifact(passContext) { }
-
-  /**
-   * Legacy property used to define the artifact ID. In Fraggle Rock, the artifact ID lives on the config.
-   * @return {keyof LH.GathererArtifacts}
-   */
-  get name() {
-    let name = this.constructor.name;
-    // Rollup will mangle class names in an known way–just trim until `$`.
-    if (name.includes('$')) {
-      name = name.substr(0, name.indexOf('$'));
-    }
-    // @ts-expect-error - assume that class name has been added to LH.GathererArtifacts.
-    return name;
-  }
 }
 
 export default FRGatherer;

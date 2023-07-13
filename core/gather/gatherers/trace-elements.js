@@ -296,7 +296,7 @@ class TraceElements extends FRGatherer {
           });
         } catch (err) {
           Sentry.captureException(err, {
-            tags: {gatherer: this.name},
+            tags: {gatherer: 'TraceElements'},
             level: 'error',
           });
           continue;
