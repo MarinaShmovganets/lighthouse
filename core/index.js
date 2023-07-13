@@ -4,8 +4,6 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import process from 'process';
-
 import log from 'lighthouse-logger';
 
 import {Runner} from './runner.js';
@@ -19,13 +17,6 @@ import {startTimespanGather} from './gather/timespan-runner.js';
 import {snapshotGather} from './gather/snapshot-runner.js';
 import {navigationGather} from './gather/navigation-runner.js';
 import * as LH from '../types/lh.js';
-
-// Needed for bundler.
-// eslint-disable-next-line no-undef
-if (!globalThis.process) {
-  // eslint-disable-next-line no-undef
-  globalThis.process = process;
-}
 
 /** @typedef {import('./legacy/gather/connections/connection.js').Connection} Connection */
 

@@ -160,6 +160,7 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
     banner: {js: banner},
     // Because of page-functions!
     keepNames: true,
+    inject: ['./build/process-global.js'],
     /** @type {esbuild.Plugin[]} */
     plugins: [
       plugins.replaceModules({
