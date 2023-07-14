@@ -5,7 +5,7 @@
  */
 
 import {Audit} from '../audits/audit.js';
-import BaseFRGatherer from '../gather/base-gatherer.js';
+import BaseGatherer from '../gather/base-gatherer.js';
 import * as i18n from '../lib/i18n/i18n.js';
 
 /**
@@ -62,7 +62,7 @@ function assertValidArtifact(artifactDefn) {
 
   if (
     typeof gatherer.getArtifact !== 'function' ||
-    gatherer.getArtifact === BaseFRGatherer.prototype.getArtifact
+    gatherer.getArtifact === BaseGatherer.prototype.getArtifact
   ) {
     throw new Error(`Gatherer for ${artifactDefn.id} did not define a "getArtifact" method.`);
   }

@@ -83,10 +83,10 @@ declare module Config {
   type GathererJson = {
     path: string;
   } | {
-    implementation: ClassOf<Gatherer.FRGathererInstance>;
+    implementation: ClassOf<Gatherer.GathererInstance>;
   } | {
-    instance: Gatherer.FRGathererInstance;
-  } | Gatherer.FRGathererInstance | ClassOf<Gatherer.FRGathererInstance> | string;
+    instance: Gatherer.GathererInstance;
+  } | Gatherer.GathererInstance | ClassOf<Gatherer.GathererInstance> | string;
 
   interface CategoryJson {
     title: string | IcuMessage;
@@ -143,8 +143,8 @@ declare module Config {
   type AnyArtifactDefn = ArtifactDefnExpander<Gatherer.DefaultDependenciesKey>|ArtifactDefnExpander<Gatherer.DependencyKey>
 
   interface FRGathererDefn<TDependencies extends Gatherer.DependencyKey = Gatherer.DependencyKey> {
-    implementation?: ClassOf<Gatherer.FRGathererInstance<TDependencies>>;
-    instance: Gatherer.FRGathererInstance<TDependencies>;
+    implementation?: ClassOf<Gatherer.GathererInstance<TDependencies>>;
+    instance: Gatherer.GathererInstance<TDependencies>;
     path?: string;
   }
 
@@ -156,8 +156,8 @@ declare module Config {
   type AnyFRGathererDefn = FRGathererDefnExpander<Gatherer.DefaultDependenciesKey>|FRGathererDefnExpander<Gatherer.DependencyKey>
 
   interface GathererDefn {
-    implementation?: ClassOf<Gatherer.FRGathererInstance>;
-    instance: Gatherer.FRGathererInstance;
+    implementation?: ClassOf<Gatherer.GathererInstance>;
+    instance: Gatherer.GathererInstance;
     path?: string;
   }
 
