@@ -214,21 +214,23 @@ async function saveArtifacts(artifacts, basePath) {
     }
   }
 
-  // `traces` and `devtoolsLogs` are duplicate compat artifacts, so extract them here.
-  // `DevtoolsLog` and `Trace` will always be the 'defaultPass' version from the compat versions.
+  // `DevtoolsLog` and `Trace` will always be the 'defaultPass' version.
+  // We don't need to save them twice, so extract them here.
   // eslint-disable-next-line no-unused-vars
   const {traces, devtoolsLogs, DevtoolsLog, Trace, ...restArtifacts} = artifacts;
 
   // save traces
-  if (Trace) {
-    // TODO: Remove defaultPass prefix.
-    await saveTrace(Trace, `${basePath}/defaultPass${traceSuffix}`);
+  if (traces) {
+    for (const [passName, trace] of Object.entries(traces)) {
+      await saveTrace(trace, `${basePath}/${passName}${traceSuffix}`);
+    }
   }
 
   // save devtools log
-  if (DevtoolsLog) {
-    // TODO: Remove defaultPass prefix.
-    await saveDevtoolsLog(DevtoolsLog, `${basePath}/defaultPass${devtoolsLogSuffix}`);
+  if (devtoolsLogs) {
+    for (const [passName, devtoolsLog] of Object.entries(devtoolsLogs)) {
+      await saveDevtoolsLog(devtoolsLog, `${basePath}/${passName}${devtoolsLogSuffix}`);
+    }
   }
 
   // save everything else, using a replacer to serialize LighthouseErrors in the artifacts.
