@@ -118,7 +118,6 @@ describe('Navigation', async function() {
     assert.strictEqual(auditResults.length, 185);
     assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
-      'service-worker',
       'installable-manifest',
       'splash-screen',
       'themed-omnibox',
@@ -202,7 +201,6 @@ describe('Navigation', async function() {
     assert.strictEqual(auditResults.length, 162);
     assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
-      'service-worker',
       'installable-manifest',
       'splash-screen',
       'themed-omnibox',
