@@ -150,15 +150,15 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   TagsBlockingFirstPaint: Artifacts.TagBlockingFirstPaint[];
   /** Information about tap targets including their position and size. */
   TapTargets: Artifacts.TapTarget[];
-  /** The primary log of devtools protocol activity. */
+  /** The primary trace taken over the entire run. */
   Trace: Trace;
   /** Elements associated with metrics (ie: Largest Contentful Paint element). */
   TraceElements: Artifacts.TraceElement[];
   /** Parsed version of the page's Web App Manifest, or null if none found. */
   WebAppManifest: Artifacts.Manifest | null;
-  /** A set of page-load traces, keyed by passName. */
+  /** COMPAT: A set of traces, keyed by passName. */
   traces: {[passName: string]: Trace};
-  /** A set of DevTools debugger protocol records, keyed by passName. */
+  /** COMPAT: A set of DevTools debugger protocol records, keyed by passName. */
   devtoolsLogs: {[passName: string]: DevtoolsLog};
 }
 
