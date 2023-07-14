@@ -10,8 +10,8 @@
  * @property {LH.Puppeteer.Page} page
  * @property {Array<LH.Config.AnyArtifactDefn>} artifactDefinitions
  * @property {ArtifactState} artifactState
- * @property {LH.FRBaseArtifacts} baseArtifacts
- * @property {LH.Gatherer.FRGatherPhase} phase
+ * @property {LH.BaseArtifacts} baseArtifacts
+ * @property {LH.Gatherer.GatherPhase} phase
  * @property {LH.Gatherer.GatherMode} gatherMode
  * @property {Map<string, LH.ArbitraryEqualityMap>} computedCache
  * @property {LH.Config.Settings} settings
@@ -21,7 +21,7 @@
 
 /** @typedef {Record<CollectPhaseArtifactOptions['phase'], IntermediateArtifacts>} ArtifactState */
 
-/** @typedef {LH.Gatherer.FRTransitionalContext<LH.Gatherer.DependencyKey>['dependencies']} Dependencies */
+/** @typedef {LH.Gatherer.Context<LH.Gatherer.DependencyKey>['dependencies']} Dependencies */
 
 import log from 'lighthouse-logger';
 
