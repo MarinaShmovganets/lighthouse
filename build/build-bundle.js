@@ -109,8 +109,6 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
 
   /** @type {Record<string, string>} */
   const shimsObj = {
-    [require.resolve('../core/legacy/gather/connections/cri.js')]:
-      'export const CriConnection = {}',
     // zlib's decompression code is very large and we don't need it.
     // We export empty functions, instead of an empty module, simply to silence warnings
     // about no exports.
