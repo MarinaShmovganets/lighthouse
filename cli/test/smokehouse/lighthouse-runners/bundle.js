@@ -56,24 +56,26 @@ async function runBundledLighthouse(url, config, testRunnerOptions) {
 
   const originalBuffer = global.Buffer;
   const originalRequire = global.require;
+  const originalProcess = global.process;
   if (typeof globalThis === 'undefined') {
     // @ts-expect-error - exposing for loading of dt-bundle.
     global.globalThis = global;
   }
-
-  // Launch and connect to Chrome.
-  const launchedChrome = await ChromeLauncher.launch();
-  const port = launchedChrome.port;
 
   // Load bundle, which creates a `global.runBundledLighthouse`.
   await import(LH_ROOT + '/dist/lighthouse-dt-bundle.js');
 
   global.require = originalRequire;
   global.Buffer = originalBuffer;
+  global.process = originalProcess;
 
   /** @type {import('../../../../core/index.js')['default']} */
   // @ts-expect-error - not worth giving test global an actual type.
   const lighthouse = global.runBundledLighthouse;
+
+  // Launch and connect to Chrome.
+  const launchedChrome = await ChromeLauncher.launch();
+  const port = launchedChrome.port;
 
   // Run Lighthouse.
   try {
