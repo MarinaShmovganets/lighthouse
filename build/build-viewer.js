@@ -7,7 +7,6 @@
 import {createRequire} from 'module';
 
 import esbuild from 'esbuild';
-import * as terser from 'terser';
 
 import * as plugins from './esbuild-plugins.js';
 import {GhPagesApp} from './gh-pages-app.js';
@@ -20,7 +19,7 @@ async function buildReportGenerator() {
     entryPoints: ['report/generator/report-generator.js'],
     write: false,
     bundle: true,
-    minify: false,
+    minify: !process.env.DEBUG,
     plugins: [
       plugins.umd('ReportGenerator'),
       plugins.replaceModules({
@@ -35,18 +34,7 @@ async function buildReportGenerator() {
   });
 
   // @ts-expect-error placed here by the umd plugin.
-  let code = result.outputFiles[0].textUmd;
-
-  if (!process.env.DEBUG) {
-    code = (await terser.minify(code, {
-      mangle: false,
-      format: {
-        max_line_len: 1000,
-      },
-    })).code || '';
-  }
-
-  return code;
+  return result.outputFiles[0].textUmd;
 }
 
 /**
