@@ -132,6 +132,7 @@ async function buildUmdBundle() {
     entryPoints: ['report/clients/bundle.js'],
     outfile: 'dist/report/bundle.umd.js',
     bundle: true,
+    // We do not minify, because this is pulled into google3 and minified there anyhow.
     minify: false,
     plugins: [
       plugins.umd('report'),
