@@ -167,6 +167,9 @@ class ExecutionContext {
     deps = [pageFunctions.esbuildFunctionNameStubString, ...deps || []];
     return deps.map(dep => {
       if (typeof dep === 'function') {
+        // esbuild will change the actual function name (ie. function actualName() {})
+        // always, despite minification settings, but preserve the real name in `actualName.name`
+        // (see esbuildFunctionNameStubString).
         return `const ${dep.name} = ${dep}`;
       } else {
         return dep;
