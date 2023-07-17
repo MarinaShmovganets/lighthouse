@@ -14,6 +14,7 @@ import {LoadSimulator} from '../computed/load-simulator.js';
 import {ProcessedNavigation} from '../computed/processed-navigation.js';
 import {PageDependencyGraph} from '../computed/page-dependency-graph.js';
 import {LanternLargestContentfulPaint} from '../computed/metrics/lantern-largest-contentful-paint.js';
+import {LanternFirstContentfulPaint} from '../computed/metrics/lantern-first-contentful-paint.js';
 
 // Preconnect establishes a "clean" socket. Chrome's socket manager will keep an unused socket
 // around for 10s. Meaning, the time delta between processing preconnect a request should be <10s,
@@ -126,6 +127,7 @@ class UsesRelPreconnectAudit extends Audit {
     const settings = context.settings;
 
     let maxWasted = 0;
+    let maxWastedFCP = 0;
     /** @type {Array<LH.IcuMessage>} */
     const warnings = [];
 
@@ -145,6 +147,13 @@ class UsesRelPreconnectAudit extends Audit {
     const lcpGraphURLs = new Set();
     lcpGraph.traverse(node => {
       if (node.type === 'network' ) lcpGraphURLs.add(node.record.url);
+    });
+
+    const fcpGraph =
+      await LanternFirstContentfulPaint.getPessimisticGraph(pageGraph, processedNavigation);
+    const fcpGraphURLs = new Set();
+    fcpGraph.traverse(node => {
+      if (node.type === 'network' ) fcpGraphURLs.add(node.record.url);
     });
 
     /** @type {Map<string, LH.Artifacts.NetworkRequest[]>}  */
@@ -217,6 +226,10 @@ class UsesRelPreconnectAudit extends Audit {
       }
 
       maxWasted = Math.max(wastedMs, maxWasted);
+
+      if (fcpGraphURLs.has(firstRecordOfOrigin.url)) {
+        maxWastedFCP = Math.max(wastedMs, maxWasted);
+      }
       results.push({
         url: securityOrigin,
         wastedMs: wastedMs,
@@ -240,6 +253,7 @@ class UsesRelPreconnectAudit extends Audit {
         score: 1,
         warnings: preconnectLinks.length >= 3 ?
           [...warnings, str_(UIStrings.tooManyPreconnectLinksWarning)] : warnings,
+        metricSavings: {LCP: maxWasted, FCP: maxWastedFCP},
       };
     }
 
@@ -261,6 +275,7 @@ class UsesRelPreconnectAudit extends Audit {
         '',
       warnings,
       details,
+      metricSavings: {LCP: maxWasted, FCP: maxWastedFCP},
     };
   }
 }

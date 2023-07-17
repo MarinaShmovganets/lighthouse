@@ -14,6 +14,7 @@ const mainResource = {
   url: 'https://www.example.com/',
   timing: {receiveHeadersEnd: 0.5},
   networkEndTime: 1000,
+  priority: 'High',
 };
 
 function buildArtifacts(networkRecords) {
