@@ -29,5 +29,3 @@ function stringify(mainFn, args, deps) {
 const indirectEval = eval;
 const result = indirectEval(stringify(pageFunctions.computeBenchmarkIndex, [], []));
 if (typeof result !== 'number') throw new Error(`expected number, but got ${result}`);
-
-export {pageFunctions};

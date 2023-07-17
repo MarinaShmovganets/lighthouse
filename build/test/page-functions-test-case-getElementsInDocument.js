@@ -78,5 +78,3 @@ const result = indirectEval(stringify(mainFn, [], [
 if (!result || result.length !== 1 || result[0].innerText !== 'interesting') {
   throw new Error(`unexpected result, got ${JSON.stringify(result, null, 2)}`);
 }
-
-export {pageFunctions};

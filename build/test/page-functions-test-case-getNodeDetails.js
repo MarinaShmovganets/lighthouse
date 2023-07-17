@@ -63,5 +63,3 @@ const result = indirectEval(stringify(mainFn, [], [pageFunctions.getNodeDetails]
 if (result.lhId !== 'page-0-FakeHTMLElement' || result.boundingRect.left !== 42) {
   throw new Error(`unexpected result, got ${JSON.stringify(result, null, 2)}`);
 }
-
-export {pageFunctions};
