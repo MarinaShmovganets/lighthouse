@@ -127,7 +127,7 @@ class Log {
   }
 
   /**
-   * @param {{msg: string, id: string, args: any[]}} status
+   * @param {{msg: string, id: string, args?: any[]}} status
    * @param {string} level
    */
   static time({msg, id, args = []}, level = 'log') {
@@ -136,7 +136,7 @@ class Log {
   }
 
   /**
-   * @param {{msg: string, id: string, args: any[]}} status
+   * @param {{msg: string, id: string, args?: any[]}} status
    * @param {string} level
    */
   static timeEnd({msg, id, args = []}, level = 'verbose') {
