@@ -35,12 +35,12 @@ fakeWindow.Node = class FakeNode {
     ];
   }
 };
-fakeWindow.Element = class FakeElement extends fakeWindow.Node{
+fakeWindow.Element = class FakeElement extends fakeWindow.Node {
   matches() {
     return true;
   }
 };
-fakeWindow.HTMLElement = class FakeHTMLElement extends fakeWindow.Element{};
+fakeWindow.HTMLElement = class FakeHTMLElement extends fakeWindow.Element {};
 
 // @ts-expect-error
 globalThis.window = fakeWindow;
