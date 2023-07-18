@@ -4946,10 +4946,10 @@ lighthouse-logger@^1.0.0:
     debug "^2.6.9"
     marky "^1.2.2"
 
-lighthouse-logger@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/lighthouse-logger/-/lighthouse-logger-2.0.0.tgz#37202bea0721a23a922c9e2b59f3ba1fb9c67648"
-  integrity sha512-DiUtWQ1vo4lSCSlvpWvbK1pDFmyD+xau/yFzfVT7k9J1/mtv7nQ7AeS74ryDjYbAXaPWphOGBQqoeDsN8U076g==
+lighthouse-logger@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/lighthouse-logger/-/lighthouse-logger-2.0.1.tgz#48895f639b61cca89346bb6f47f7403a3895fa02"
+  integrity sha512-ioBrW3s2i97noEmnXxmUq7cjIcVRjT5HBpAYy8zE11CxU9HqlWHHeRxfeN1tn8F7OEMVPIC9x1f8t3Z7US9ehQ==
   dependencies:
     debug "^2.6.9"
     marky "^1.2.2"
