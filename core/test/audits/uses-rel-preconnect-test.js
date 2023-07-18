@@ -21,6 +21,7 @@ function buildArtifacts(networkRecords) {
   const trace = createTestTrace({
     timeOrigin: 0,
     largestContentfulPaint: 5000,
+    firstContentfulPaint: 5000,
     topLevelTasks: [{ts: 1000, duration: 50}],
   });
   const devtoolsLog = networkRecordsToDevtoolsLog(networkRecords);
@@ -178,6 +179,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
           connectEnd: 300,
           receiveHeadersEnd: 2.3,
         },
+        priority: 'High',
       },
       {
         url: 'https://cdn.example.com/second',
@@ -189,17 +191,19 @@ describe('Performance: uses-rel-preconnect audit', () => {
           connectEnd: 400,
           receiveHeadersEnd: 3.4,
         },
+        priority: 'High',
       },
     ];
 
     const artifacts = buildArtifacts(networkRecords);
     const context = {settings: {}, computedCache: new Map()};
-    const {numericValue, details} = await UsesRelPreconnect.audit(artifacts, context);
+    const {numericValue, details, metricSavings} = await UsesRelPreconnect.audit(artifacts, context);
     assert.equal(numericValue, 300);
     assert.equal(details.items.length, 1);
     assert.deepStrictEqual(details.items, [
       {url: 'https://cdn.example.com', wastedMs: 300},
     ]);
+    assert.deepStrictEqual(metricSavings, {LCP: 300, FCP: 300});
   });
 
   it(`should give a list of important preconnected origins`, async () => {
@@ -215,6 +219,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
           connectEnd: 300,
           receiveHeadersEnd: 2.3,
         },
+        priority: 'High',
       },
       {
         url: 'https://othercdn.example.com/second',
@@ -226,6 +231,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
           connectEnd: 600,
           receiveHeadersEnd: 1.8,
         },
+        priority: 'High',
       },
       {
         url: 'https://unimportant.example.com/second',
@@ -238,6 +244,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
           connectEnd: 600,
           receiveHeadersEnd: 1.8,
         },
+        priority: 'High',
       },
     ];
 
@@ -247,6 +254,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
       numericValue,
       details,
       warnings,
+      metricSavings,
     } = await UsesRelPreconnect.audit(artifacts, context);
     assert.equal(numericValue, 300);
     assert.equal(details.items.length, 2);
@@ -254,6 +262,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
       {url: 'https://othercdn.example.com', wastedMs: 300},
       {url: 'http://cdn.example.com', wastedMs: 150},
     ]);
+    assert.deepStrictEqual(metricSavings, {LCP: 300, FCP: 300});
     assert.equal(warnings.length, 0);
   });
 
