@@ -16,7 +16,7 @@ import {pageFunctions} from '../../core/lib/page-functions.js';
  */
 function stringify(mainFn, args, deps) {
   const argsSerialized = ExecutionContext.serializeArguments(args);
-  const depsSerialized = ExecutionContext.prototype._serializeDeps(deps);
+  const depsSerialized = ExecutionContext.serializeDeps(deps);
   const expression = `(() => {
     ${depsSerialized}
     return (${mainFn})(${argsSerialized});
