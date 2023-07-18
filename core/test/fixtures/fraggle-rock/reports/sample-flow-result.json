@@ -8376,8 +8376,8 @@
               ]
             }
           },
-          "experimental-interaction-to-next-paint": {
-            "id": "experimental-interaction-to-next-paint",
+          "interaction-to-next-paint": {
+            "id": "interaction-to-next-paint",
             "title": "Interaction to Next Paint",
             "description": "Interaction to Next Paint measures page responsiveness, how long it takes the page to visibly respond to user input. [Learn more about the Interaction to Next Paint metric](https://web.dev/inp/).",
             "score": 1,
@@ -10542,7 +10542,7 @@
                 ]
               },
               {
-                "id": "experimental-interaction-to-next-paint",
+                "id": "interaction-to-next-paint",
                 "weight": 0,
                 "group": "metrics",
                 "acronym": "INP",
@@ -11298,7 +11298,7 @@
             },
             {
               "startTime": 48,
-              "name": "lh:audit:experimental-interaction-to-next-paint",
+              "name": "lh:audit:interaction-to-next-paint",
               "duration": 1,
               "entryType": "measure"
             },
@@ -11712,7 +11712,7 @@
                 "values": {
                   "timeInMs": 64
                 },
-                "path": "audits[experimental-interaction-to-next-paint].displayValue"
+                "path": "audits[interaction-to-next-paint].displayValue"
               },
               {
                 "values": {
@@ -11734,10 +11734,10 @@
               "audits[cumulative-layout-shift].description"
             ],
             "core/lib/i18n/i18n.js | interactionToNextPaint": [
-              "audits[experimental-interaction-to-next-paint].title"
+              "audits[interaction-to-next-paint].title"
             ],
-            "core/audits/metrics/experimental-interaction-to-next-paint.js | description": [
-              "audits[experimental-interaction-to-next-paint].description"
+            "core/audits/metrics/interaction-to-next-paint.js | description": [
+              "audits[interaction-to-next-paint].description"
             ],
             "core/audits/errors-in-console.js | title": [
               "audits[errors-in-console].title"
