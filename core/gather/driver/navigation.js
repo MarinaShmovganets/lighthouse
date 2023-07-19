@@ -91,7 +91,6 @@ async function gotoURL(driver, requestor, options) {
   const networkMonitor = driver.networkMonitor;
 
   // Enable the events and network monitor needed to track navigation progress.
-  await networkMonitor.enable();
   await session.sendCommand('Page.enable');
   await session.sendCommand('Page.setLifecycleEventsEnabled', {enabled: true});
 
@@ -143,7 +142,6 @@ async function gotoURL(driver, requestor, options) {
 
   // Bring `Page.navigate` errors back into the promise chain. See https://github.com/GoogleChrome/lighthouse/pull/6739.
   await waitForNavigationTriggered;
-  await networkMonitor.disable();
 
   if (options.debugNavigation) {
     await waitForUserToContinue(driver);

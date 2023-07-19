@@ -83,6 +83,7 @@ class Driver {
     this._targetManager = new TargetManager(cdpSession);
     await this._targetManager.enable();
     this._networkMonitor = new NetworkMonitor(this._targetManager);
+    await this._networkMonitor.enable();
     this.defaultSession = this._targetManager.rootSession();
     this._executionContext = new ExecutionContext(this.defaultSession);
     this._fetcher = new Fetcher(this.defaultSession);
@@ -93,6 +94,7 @@ class Driver {
   async disconnect() {
     if (this.defaultSession === throwingSession) return;
     await this._targetManager?.disable();
+    await this._networkMonitor?.disable();
     await this.defaultSession.dispose();
   }
 }

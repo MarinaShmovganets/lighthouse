@@ -96,7 +96,6 @@ class FullPageScreenshot extends BaseGatherer {
       idleEvent: 'network-critical-idle',
       isIdle: recorder => recorder.isCriticalIdle(),
     });
-    await networkMonitor.enable();
 
     await session.sendCommand('Emulation.setDeviceMetricsOverride', {
       mobile: deviceMetrics.mobile,
@@ -112,7 +111,6 @@ class FullPageScreenshot extends BaseGatherer {
       waitForNetworkIdleResult.promise,
     ]);
     waitForNetworkIdleResult.cancel();
-    await networkMonitor.disable();
 
     // Now that new resources are (probably) fetched, wait long enough for a layout.
     await context.driver.executionContext.evaluate(waitForDoubleRaf, {args: []});
