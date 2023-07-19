@@ -89,7 +89,7 @@ describe('Fraggle Rock Config', () => {
     const nonFRGatherer = new BaseGatherer();
     nonFRGatherer.getArtifact = jestMock.fn();
     const config = {artifacts: [{id: 'LegacyGather', gatherer: {instance: nonFRGatherer}}]};
-    await expect(initializeConfig(gatherMode, config)).rejects.toThrow(/FRGatherer gatherer/);
+    await expect(initializeConfig(gatherMode, config)).rejects.toThrow(/Gatherer for LegacyGather/);
   });
 
   it('should filter configuration by gatherMode', async () => {
@@ -140,10 +140,26 @@ describe('Fraggle Rock Config', () => {
     });
   });
 
+  it('is idempotent when using the resolved config as the config input', async () => {
+    const config = {
+      extends: 'lighthouse:default',
+      settings: {
+        onlyCategories: ['seo'],
+      },
+    };
+
+    const {resolvedConfig} = await initializeConfig('navigation', config);
+    expect(Object.keys(resolvedConfig.categories || {})).toEqual(['seo']);
+    expect(resolvedConfig.settings.onlyCategories).toEqual(['seo']);
+
+    const {resolvedConfig: resolvedConfig2} = await initializeConfig('navigation', resolvedConfig);
+    expect(resolvedConfig2).toEqual(resolvedConfig);
+  });
+
   describe('resolveArtifactDependencies', () => {
-    /** @type {LH.Gatherer.FRGathererInstance} */
+    /** @type {LH.Gatherer.GathererInstance} */
     let dependencyGatherer;
-    /** @type {LH.Gatherer.FRGathererInstance<'ImageElements'>} */
+    /** @type {LH.Gatherer.GathererInstance<'ImageElements'>} */
     let dependentGatherer;
     /** @type {LH.Config} */
     let config;
@@ -427,6 +443,12 @@ describe('Fraggle Rock Config', () => {
       if (!hasCategory) {
         expect(resolvedConfig.categories.performance.auditRefs).toContain('extra-audit');
       }
+    });
+
+    it('should only accept "lighthouse:default" as the extension method', async () => {
+      extensionConfig.extends = 'something:else';
+      const resolvedConfigPromise = initializeConfig('navigation', extensionConfig);
+      await expect(resolvedConfigPromise).rejects.toThrow(/`lighthouse:default` is the only valid/);
     });
   });
 

@@ -11,8 +11,6 @@ import path from 'path';
 import log from 'lighthouse-logger';
 import isDeepEqual from 'lodash/isEqual.js';
 
-import {Driver} from './legacy/gather/driver.js';
-import {GatherRunner} from './legacy/gather/gather-runner.js';
 import {ReportScoring} from './scoring.js';
 import {Audit} from './audits/audit.js';
 import * as format from '../shared/localization/format.js';
@@ -28,15 +26,12 @@ import UrlUtils from './lib/url-utils.js';
 
 const moduleDir = getModuleDirectory(import.meta);
 
-/** @typedef {import('./legacy/gather/connections/connection.js').Connection} Connection */
 /** @typedef {import('./lib/arbitrary-equality-map.js').ArbitraryEqualityMap} ArbitraryEqualityMap */
-/** @typedef {LH.Config.LegacyResolvedConfig} Config */
 
 class Runner {
   /**
-   * @template {LH.Config.LegacyResolvedConfig | LH.Config.ResolvedConfig} TConfig
    * @param {LH.Artifacts} artifacts
-   * @param {{resolvedConfig: TConfig, driverMock?: Driver, computedCache: Map<string, ArbitraryEqualityMap>}} options
+   * @param {{resolvedConfig: LH.Config.ResolvedConfig, computedCache: Map<string, ArbitraryEqualityMap>}} options
    * @return {Promise<LH.RunnerResult|undefined>}
    */
   static async audit(artifacts, options) {
@@ -153,7 +148,7 @@ class Runner {
    * @param {LH.Artifacts.ComputedContext} context
    */
   static async getEntityClassification(artifacts, context) {
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const devtoolsLog = artifacts.devtoolsLogs?.[Audit.DEFAULT_PASS];
     if (!devtoolsLog) return;
     const classifiedEntities = await EntityClassification.request(
       {URL: artifacts.URL, devtoolsLog}, context);
@@ -188,9 +183,8 @@ class Runner {
    * -G and -A will run partial lighthouse pipelines,
    * and -GA will run everything plus save artifacts and lhr to disk.
    *
-   * @template {LH.Config.LegacyResolvedConfig | LH.Config.ResolvedConfig} TConfig
-   * @param {(runnerData: {resolvedConfig: TConfig, driverMock?: Driver}) => Promise<LH.Artifacts>} gatherFn
-   * @param {{resolvedConfig: TConfig, driverMock?: Driver, computedCache: Map<string, ArbitraryEqualityMap>}} options
+   * @param {(runnerData: {resolvedConfig: LH.Config.ResolvedConfig}) => Promise<LH.Artifacts>} gatherFn
+   * @param {{resolvedConfig: LH.Config.ResolvedConfig, computedCache: Map<string, ArbitraryEqualityMap>}} options
    * @return {Promise<LH.Artifacts>}
    */
   static async gather(gatherFn, options) {
@@ -217,7 +211,6 @@ class Runner {
 
         artifacts = await gatherFn({
           resolvedConfig: options.resolvedConfig,
-          driverMock: options.driverMock,
         });
 
         log.timeEnd(runnerStatus);
@@ -289,28 +282,6 @@ class Runner {
     const gatherTiming = gatherEntry?.duration || 0;
     const auditTiming = auditEntry?.duration || 0;
     return {entries: timingEntries, total: gatherTiming + auditTiming};
-  }
-
-  /**
-   * Establish connection, load page and collect all required artifacts
-   * @param {string} requestedUrl
-   * @param {{resolvedConfig: Config, computedCache: Map<string, ArbitraryEqualityMap>, driverMock?: Driver}} runnerOpts
-   * @param {Connection} connection
-   * @return {Promise<LH.Artifacts>}
-   */
-  static async _gatherArtifactsFromBrowser(requestedUrl, runnerOpts, connection) {
-    if (!runnerOpts.resolvedConfig.passes) {
-      throw new Error('No browser artifacts are either provided or requested.');
-    }
-    const driver = runnerOpts.driverMock || new Driver(connection);
-    const gatherOpts = {
-      driver,
-      requestedUrl,
-      settings: runnerOpts.resolvedConfig.settings,
-      computedCache: runnerOpts.computedCache,
-    };
-    const artifacts = await GatherRunner.run(runnerOpts.resolvedConfig.passes, gatherOpts);
-    return artifacts;
   }
 
   /**
@@ -419,15 +390,11 @@ class Runner {
           // @ts-expect-error: TODO why is this a type error now?
           const artifactError = artifacts[artifactName];
 
-          Sentry.captureException(artifactError, {
-            tags: {gatherer: artifactName},
-            level: 'error',
-          });
-
           log.warn('Runner', `${artifactName} gatherer, required by audit ${audit.meta.id},` +
             ` encountered an error: ${artifactError.message}`);
 
-          // Create a friendlier display error and mark it as expected to avoid duplicates in Sentry
+          // Create a friendlier display error and mark it as expected to avoid duplicates in Sentry.
+          // The artifact error was already sent to Sentry in `collectPhaseArtifacts`.
           const error = new LighthouseError(LighthouseError.errors.ERRORED_REQUIRED_ARTIFACT,
               {artifactName, errorMessage: artifactError.message}, {cause: artifactError});
           // @ts-expect-error Non-standard property added to Error

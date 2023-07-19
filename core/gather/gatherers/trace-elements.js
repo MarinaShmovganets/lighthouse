@@ -12,7 +12,7 @@
  * We take the backend nodeId from the trace and use it to find the corresponding element in the DOM.
  */
 
-import FRGatherer from '../base-gatherer.js';
+import BaseGatherer from '../base-gatherer.js';
 import {resolveNodeIdToObjectId} from '../driver/dom.js';
 import {pageFunctions} from '../../lib/page-functions.js';
 import * as RectHelpers from '../../lib/rect-helpers.js';
@@ -41,7 +41,7 @@ function getNodeDetailsData() {
 }
 /* c8 ignore stop */
 
-class TraceElements extends FRGatherer {
+class TraceElements extends BaseGatherer {
   /** @type {LH.Gatherer.GathererMeta<'Trace'>} */
   meta = {
     supportedModes: ['timespan', 'navigation'],
@@ -135,7 +135,7 @@ class TraceElements extends FRGatherer {
 
   /**
    * @param {LH.Trace} trace
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    * @return {Promise<TraceElementData|undefined>}
    */
   static async getResponsivenessElement(trace, context) {
@@ -205,7 +205,7 @@ class TraceElements extends FRGatherer {
 
   /**
    * @param {LH.Trace} trace
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    * @return {Promise<{nodeId: number, type: string} | undefined>}
    */
   static async getLcpElement(trace, context) {
@@ -233,7 +233,7 @@ class TraceElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    */
   async startInstrumentation(context) {
     await context.driver.defaultSession.sendCommand('Animation.enable');
@@ -241,7 +241,7 @@ class TraceElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    */
   async stopInstrumentation(context) {
     context.driver.defaultSession.off('Animation.animationStarted', this._onAnimationStarted);
@@ -249,12 +249,13 @@ class TraceElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
-   * @param {LH.Trace|undefined} trace
-   * @return {Promise<LH.Artifacts['TraceElements']>}
+   * @param {LH.Gatherer.Context<'Trace'>} context
+   * @return {Promise<LH.Artifacts.TraceElement[]>}
    */
-  async _getArtifact(context, trace) {
+  async getArtifact(context) {
     const session = context.driver.defaultSession;
+
+    const trace = context.dependencies.Trace;
     if (!trace) {
       throw new Error('Trace is missing!');
     }
@@ -286,6 +287,7 @@ class TraceElements extends FRGatherer {
           response = await session.sendCommand('Runtime.callFunctionOn', {
             objectId,
             functionDeclaration: `function () {
+              ${pageFunctions.esbuildFunctionNameStubString}
               ${getNodeDetailsData.toString()};
               ${pageFunctions.getNodeDetails};
               return getNodeDetailsData.call(this);
@@ -295,7 +297,7 @@ class TraceElements extends FRGatherer {
           });
         } catch (err) {
           Sentry.captureException(err, {
-            tags: {gatherer: this.name},
+            tags: {gatherer: 'TraceElements'},
             level: 'error',
           });
           continue;
@@ -315,25 +317,6 @@ class TraceElements extends FRGatherer {
     }
 
     return traceElements;
-  }
-
-  /**
-   * @param {LH.Gatherer.FRTransitionalContext<'Trace'>} context
-   * @return {Promise<LH.Artifacts.TraceElement[]>}
-   */
-  async getArtifact(context) {
-    return this._getArtifact(context, context.dependencies.Trace);
-  }
-
-  /**
-   * @param {LH.Gatherer.PassContext} passContext
-   * @param {LH.Gatherer.LoadData} loadData
-   * @return {Promise<LH.Artifacts.TraceElement[]>}
-   */
-  async afterPass(passContext, loadData) {
-    const context = {...passContext, dependencies: {}};
-    await this.stopInstrumentation(context);
-    return this._getArtifact(context, loadData.trace);
   }
 }
 
