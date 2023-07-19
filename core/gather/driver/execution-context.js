@@ -287,7 +287,7 @@ class ExecutionContext {
         const runtimeName = pageFunctions.getRuntimeFunctionName(dep);
         if (runtimeName !== dep.name) {
           // In addition to exposing the mangled name, also expose the original as an alias.
-          return `${output}; const ${dep.name} = ${pageFunctions.getRuntimeFunctionName(dep)};`;
+          return `${output}; const ${dep.name} = ${runtimeName};`;
         } else {
           return output;
         }
