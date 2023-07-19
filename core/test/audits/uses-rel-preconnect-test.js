@@ -359,17 +359,6 @@ describe('Performance: uses-rel-preconnect audit', () => {
     const networkRecords = [
       mainResource,
       {
-        url: 'https://cdn.example.com/first',
-        initiator: {},
-        networkRequestTime: 3000,
-        timing: {
-          dnsStart: 300,
-          connectStart: 350,
-          connectEnd: 400,
-        },
-        priority: 'High',
-      },
-      {
         url: 'https://cdn.example.com/second',
         initiator: {},
         networkRequestTime: 4000, // starts *after* FCP
