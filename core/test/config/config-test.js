@@ -89,7 +89,7 @@ describe('Fraggle Rock Config', () => {
     const nonFRGatherer = new BaseGatherer();
     nonFRGatherer.getArtifact = jestMock.fn();
     const config = {artifacts: [{id: 'LegacyGather', gatherer: {instance: nonFRGatherer}}]};
-    await expect(initializeConfig(gatherMode, config)).rejects.toThrow(/FRGatherer gatherer/);
+    await expect(initializeConfig(gatherMode, config)).rejects.toThrow(/Gatherer for LegacyGather/);
   });
 
   it('should filter configuration by gatherMode', async () => {
@@ -157,9 +157,9 @@ describe('Fraggle Rock Config', () => {
   });
 
   describe('resolveArtifactDependencies', () => {
-    /** @type {LH.Gatherer.FRGathererInstance} */
+    /** @type {LH.Gatherer.GathererInstance} */
     let dependencyGatherer;
-    /** @type {LH.Gatherer.FRGathererInstance<'ImageElements'>} */
+    /** @type {LH.Gatherer.GathererInstance<'ImageElements'>} */
     let dependentGatherer;
     /** @type {LH.Config} */
     let config;

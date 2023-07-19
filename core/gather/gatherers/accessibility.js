@@ -6,7 +6,7 @@
 
 /* global window, document, getNodeDetails */
 
-import FRGatherer from '../base-gatherer.js';
+import BaseGatherer from '../base-gatherer.js';
 import {axeSource} from '../../lib/axe.js';
 import {pageFunctions} from '../../lib/page-functions.js';
 
@@ -48,12 +48,14 @@ async function runA11yChecks() {
       'audio-caption': {enabled: false},
       'blink': {enabled: false},
       'duplicate-id': {enabled: false},
+      'empty-heading': {enabled: true},
       'frame-focusable-content': {enabled: false},
       'frame-title-unique': {enabled: false},
       'heading-order': {enabled: true},
       'html-xml-lang-mismatch': {enabled: true},
-      'identical-links-same-purpose': {enabled: false},
+      'identical-links-same-purpose': {enabled: true},
       'input-button-name': {enabled: true},
+      'landmark-one-main': {enabled: true},
       'link-in-text-block': {enabled: true},
       'marquee': {enabled: false},
       'meta-viewport': {enabled: true},
@@ -67,6 +69,7 @@ async function runA11yChecks() {
       'svg-img-alt': {enabled: false},
       'tabindex': {enabled: true},
       'table-fake-caption': {enabled: true},
+      'target-size': {enabled: true},
       'td-has-header': {enabled: true},
     },
   });
@@ -166,7 +169,7 @@ function createAxeRuleResultArtifact(result) {
 }
 /* c8 ignore stop */
 
-class Accessibility extends FRGatherer {
+class Accessibility extends BaseGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['snapshot', 'navigation'],
@@ -178,7 +181,7 @@ class Accessibility extends FRGatherer {
   };
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} passContext
+   * @param {LH.Gatherer.Context} passContext
    * @return {Promise<LH.Artifacts.Accessibility>}
    */
   getArtifact(passContext) {

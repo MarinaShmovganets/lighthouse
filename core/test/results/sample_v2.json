@@ -1,5 +1,5 @@
 {
-  "lighthouseVersion": "10.3.0",
+  "lighthouseVersion": "10.4.0",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "mainDocumentUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalDisplayedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -45,13 +45,6 @@
           }
         ]
       }
-    },
-    "service-worker": {
-      "id": "service-worker",
-      "title": "Does not register a service worker that controls page and `start_url`",
-      "description": "The service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. [Learn more about Service Workers](https://developer.chrome.com/docs/lighthouse/pwa/service-worker/).",
-      "score": 0,
-      "scoreDisplayMode": "binary"
     },
     "viewport": {
       "id": "viewport",
@@ -2558,7 +2551,36 @@
         ],
         "skipSumming": [
           "startTime"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "urls": [
+            "http://localhost:10200/dobetterweb/dbw_tester.html",
+            "http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js"
+          ],
+          "tasks": [
+            {
+              "urlIndex": 0,
+              "startTime": 6845.8,
+              "duration": 1174.9,
+              "other": 0.8,
+              "parseHTML": 0.6,
+              "scriptEvaluation": 1170.7,
+              "scriptParseCompile": 2.5,
+              "styleLayout": 0.2
+            },
+            {
+              "urlIndex": 1,
+              "startTime": 8044.8,
+              "duration": 145.8,
+              "other": 0.1,
+              "parseHTML": 13.5,
+              "scriptEvaluation": 120.7,
+              "scriptParseCompile": 10.4,
+              "styleLayout": 1.2
+            }
+          ]
+        }
       }
     },
     "no-unload-listeners": {
@@ -3216,6 +3238,13 @@
         "items": []
       }
     },
+    "empty-heading": {
+      "id": "empty-heading",
+      "title": "All heading elements contain content.",
+      "description": "A heading with no content or inaccessible text prevent screen reader users from accessing information on the page's structure. [Learn more about headings](https://dequeuniversity.com/rules/axe/4.7/empty-heading).",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
+    },
     "form-field-multiple-labels": {
       "id": "form-field-multiple-labels",
       "title": "No form fields have multiple labels",
@@ -3312,6 +3341,13 @@
         "headings": [],
         "items": []
       }
+    },
+    "identical-links-same-purpose": {
+      "id": "identical-links-same-purpose",
+      "title": "Identical links have the same purpose.",
+      "description": "Links with the same destination should have the same description, to help users understand the link's purpose and decide whether to follow it. [Learn more about identical links](https://dequeuniversity.com/rules/axe/4.7/identical-links-same-purpose).",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
     },
     "image-alt": {
       "id": "image-alt",
@@ -3626,6 +3662,13 @@
         }
       }
     },
+    "landmark-one-main": {
+      "id": "landmark-one-main",
+      "title": "Document has a main landmark.",
+      "description": "One main landmark helps screen reader users navigate a web page. [Learn more about landmarks](https://dequeuniversity.com/rules/axe/4.7/landmark-one-main).",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
+    },
     "link-name": {
       "id": "link-name",
       "title": "Links do not have a discernible name",
@@ -3842,6 +3885,13 @@
         "headings": [],
         "items": []
       }
+    },
+    "target-size": {
+      "id": "target-size",
+      "title": "Touch targets have sufficient size and spacing.",
+      "description": "Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls activate the targets. [Learn more about touch targets](https://dequeuniversity.com/rules/axe/4.7/target-size).",
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
     },
     "td-has-header": {
       "id": "td-has-header",
@@ -4218,7 +4268,14 @@
         "overallSavingsBytes": 0,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
       }
     },
     "render-blocking-resources": {
@@ -4301,7 +4358,14 @@
         "overallSavingsBytes": 0,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
       }
     },
     "unminified-javascript": {
@@ -4345,7 +4409,14 @@
         "overallSavingsBytes": 83568,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 300
+          }
+        }
       }
     },
     "unused-css-rules": {
@@ -4365,7 +4436,14 @@
         "overallSavingsBytes": 0,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
       }
     },
     "unused-javascript": {
@@ -4424,7 +4502,14 @@
         "overallSavingsBytes": 65111,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 450
+          }
+        }
       }
     },
     "modern-image-formats": {
@@ -4531,7 +4616,14 @@
         "overallSavingsBytes": 77874.3,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 450
+          }
+        }
       }
     },
     "uses-optimized-images": {
@@ -4552,7 +4644,14 @@
         "overallSavingsBytes": 0,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
       }
     },
     "uses-text-compression": {
@@ -4599,7 +4698,14 @@
         "overallSavingsBytes": 146478,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 150,
+            "LCP": 750
+          }
+        }
       }
     },
     "uses-responsive-images": {
@@ -4619,7 +4725,14 @@
         "overallSavingsBytes": 0,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
       }
     },
     "efficient-animated-content": {
@@ -4661,7 +4774,14 @@
         "overallSavingsBytes": 682028,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 3300
+          }
+        }
       }
     },
     "duplicated-javascript": {
@@ -4681,7 +4801,14 @@
         "overallSavingsBytes": 0,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
       }
     },
     "legacy-javascript": {
@@ -4755,7 +4882,14 @@
         "overallSavingsBytes": 26622,
         "sortedBy": [
           "wastedBytes"
-        ]
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
       }
     },
     "doctype": {
@@ -6215,6 +6349,26 @@
         {
           "id": "use-landmarks",
           "weight": 0
+        },
+        {
+          "id": "empty-heading",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "identical-links-same-purpose",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "landmark-one-main",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "target-size",
+          "weight": 0,
+          "group": "hidden"
         }
       ],
       "id": "accessibility",
@@ -6413,11 +6567,6 @@
           "group": "pwa-installable"
         },
         {
-          "id": "service-worker",
-          "weight": 1,
-          "group": "pwa-optimized"
-        },
-        {
           "id": "splash-screen",
           "weight": 1,
           "group": "pwa-optimized"
@@ -6456,7 +6605,7 @@
         }
       ],
       "id": "pwa",
-      "score": 0.33
+      "score": 0.38
     }
   },
   "categoryGroups": {
@@ -7613,12 +7762,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:service-worker",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:viewport",
         "duration": 100,
         "entryType": "measure"
@@ -8417,6 +8560,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:empty-heading",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:form-field-multiple-labels",
         "duration": 100,
         "entryType": "measure"
@@ -8453,6 +8602,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:identical-links-same-purpose",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:image-alt",
         "duration": 100,
         "entryType": "measure"
@@ -8472,6 +8627,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:label",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:landmark-one-main",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8532,6 +8693,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:table-fake-caption",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:target-size",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8980,12 +9147,6 @@
       ],
       "core/audits/is-on-https.js | allowed": [
         "audits[is-on-https].details.items[0].resolution"
-      ],
-      "core/audits/service-worker.js | failureTitle": [
-        "audits[service-worker].title"
-      ],
-      "core/audits/service-worker.js | description": [
-        "audits[service-worker].description"
       ],
       "core/audits/viewport.js | title": [
         "audits.viewport.title"
@@ -9838,6 +9999,12 @@
       "core/audits/accessibility/duplicate-id-aria.js | description": [
         "audits[duplicate-id-aria].description"
       ],
+      "core/audits/accessibility/empty-heading.js | title": [
+        "audits[empty-heading].title"
+      ],
+      "core/audits/accessibility/empty-heading.js | description": [
+        "audits[empty-heading].description"
+      ],
       "core/audits/accessibility/form-field-multiple-labels.js | title": [
         "audits[form-field-multiple-labels].title"
       ],
@@ -9882,6 +10049,12 @@
       "core/audits/accessibility/html-xml-lang-mismatch.js | description": [
         "audits[html-xml-lang-mismatch].description"
       ],
+      "core/audits/accessibility/identical-links-same-purpose.js | title": [
+        "audits[identical-links-same-purpose].title"
+      ],
+      "core/audits/accessibility/identical-links-same-purpose.js | description": [
+        "audits[identical-links-same-purpose].description"
+      ],
       "core/audits/accessibility/image-alt.js | failureTitle": [
         "audits[image-alt].title"
       ],
@@ -9905,6 +10078,12 @@
       ],
       "core/audits/accessibility/label.js | description": [
         "audits.label.description"
+      ],
+      "core/audits/accessibility/landmark-one-main.js | title": [
+        "audits[landmark-one-main].title"
+      ],
+      "core/audits/accessibility/landmark-one-main.js | description": [
+        "audits[landmark-one-main].description"
       ],
       "core/audits/accessibility/link-name.js | failureTitle": [
         "audits[link-name].title"
@@ -9965,6 +10144,12 @@
       ],
       "core/audits/accessibility/table-fake-caption.js | description": [
         "audits[table-fake-caption].description"
+      ],
+      "core/audits/accessibility/target-size.js | title": [
+        "audits[target-size].title"
+      ],
+      "core/audits/accessibility/target-size.js | description": [
+        "audits[target-size].description"
       ],
       "core/audits/accessibility/td-has-header.js | title": [
         "audits[td-has-header].title"
