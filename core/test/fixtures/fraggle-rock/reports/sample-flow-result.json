@@ -1828,21 +1828,21 @@
                 "tasks": [
                   {
                     "urlIndex": 0,
-                    "startTime": 2135.7,
+                    "startTime": 2176.1,
                     "duration": 193,
                     "other": 193,
                     "scriptEvaluation": 0
                   },
                   {
                     "urlIndex": 1,
-                    "startTime": 769.8,
+                    "startTime": 779.9,
                     "duration": 127,
                     "other": 127,
                     "scriptEvaluation": 0
                   },
                   {
                     "urlIndex": 1,
-                    "startTime": 965.8,
+                    "startTime": 975.9,
                     "duration": 96,
                     "other": 96,
                     "paintCompositeRender": 0,
