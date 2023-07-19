@@ -17,11 +17,11 @@ const mainResource = {
   priority: 'High',
 };
 
-function buildArtifacts(networkRecords) {
+function buildArtifacts(networkRecords, fcpTs) {
   const trace = createTestTrace({
     timeOrigin: 0,
     largestContentfulPaint: 5000,
-    firstContentfulPaint: 5000,
+    firstContentfulPaint: fcpTs ? fcpTs : 5000,
     topLevelTasks: [{ts: 1000, duration: 50}],
   });
   const devtoolsLog = networkRecordsToDevtoolsLog(networkRecords);
@@ -197,7 +197,8 @@ describe('Performance: uses-rel-preconnect audit', () => {
 
     const artifacts = buildArtifacts(networkRecords);
     const context = {settings: {}, computedCache: new Map()};
-    const {numericValue, details, metricSavings} = await UsesRelPreconnect.audit(artifacts, context);
+    const {numericValue, details, metricSavings} =
+      await UsesRelPreconnect.audit(artifacts, context);
     assert.equal(numericValue, 300);
     assert.equal(details.items.length, 1);
     assert.deepStrictEqual(details.items, [
@@ -352,5 +353,45 @@ describe('Performance: uses-rel-preconnect audit', () => {
     const result = await UsesRelPreconnect.audit(artifacts, context);
     assert.equal(result.score, 1);
     assert.equal(result.warnings.length, 1);
+  });
+
+  it(`should have LCP savings and not FCP savings `, async () => {
+    const networkRecords = [
+      mainResource,
+      {
+        url: 'https://cdn.example.com/first',
+        initiator: {},
+        networkRequestTime: 3000,
+        timing: {
+          dnsStart: 300,
+          connectStart: 350,
+          connectEnd: 400,
+        },
+        priority: 'High',
+      },
+      {
+        url: 'https://cdn.example.com/second',
+        initiator: {},
+        networkRequestTime: 4000,
+        networkEndTime: 4500, // ends *before* LCP
+        timing: {
+          dnsStart: 100,
+          connectStart: 200,
+          connectEnd: 300,
+        },
+        priority: 'High',
+      },
+    ];
+
+    const artifacts = buildArtifacts(networkRecords, 4000);
+    const context = {settings: {}, computedCache: new Map()};
+    const {numericValue, details, metricSavings} =
+      await UsesRelPreconnect.audit(artifacts, context);
+    assert.equal(numericValue, 300);
+    assert.equal(details.items.length, 1);
+    assert.deepStrictEqual(details.items, [
+      {url: 'https://cdn.example.com', wastedMs: 300},
+    ]);
+    assert.deepStrictEqual(metricSavings, {LCP: 300, FCP: 0});
   });
 });

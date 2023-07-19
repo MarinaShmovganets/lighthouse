@@ -126,8 +126,8 @@ class UsesRelPreconnectAudit extends Audit {
     const devtoolsLog = artifacts.devtoolsLogs[UsesRelPreconnectAudit.DEFAULT_PASS];
     const settings = context.settings;
 
-    let maxWasted = 0;
-    let maxWastedFCP = 0;
+    let maxWastedLcp = 0;
+    let maxWastedFcp = 0;
     /** @type {Array<LH.IcuMessage>} */
     const warnings = [];
 
@@ -225,10 +225,10 @@ class UsesRelPreconnectAudit extends Audit {
         return;
       }
 
-      maxWasted = Math.max(wastedMs, maxWasted);
+      maxWastedLcp = Math.max(wastedMs, maxWastedLcp);
 
       if (fcpGraphURLs.has(firstRecordOfOrigin.url)) {
-        maxWastedFCP = Math.max(wastedMs, maxWasted);
+        maxWastedFcp = Math.max(wastedMs, maxWastedLcp);
       }
       results.push({
         url: securityOrigin,
@@ -253,7 +253,7 @@ class UsesRelPreconnectAudit extends Audit {
         score: 1,
         warnings: preconnectLinks.length >= 3 ?
           [...warnings, str_(UIStrings.tooManyPreconnectLinksWarning)] : warnings,
-        metricSavings: {LCP: maxWasted, FCP: maxWastedFCP},
+        metricSavings: {LCP: maxWastedLcp, FCP: maxWastedFcp},
       };
     }
 
@@ -264,18 +264,18 @@ class UsesRelPreconnectAudit extends Audit {
     ];
 
     const details = Audit.makeOpportunityDetails(headings, results,
-      {overallSavingsMs: maxWasted, sortedBy: ['wastedMs']});
+      {overallSavingsMs: maxWastedLcp, sortedBy: ['wastedMs']});
 
     return {
-      score: ByteEfficiencyAudit.scoreForWastedMs(maxWasted),
-      numericValue: maxWasted,
+      score: ByteEfficiencyAudit.scoreForWastedMs(maxWastedLcp),
+      numericValue: maxWastedLcp,
       numericUnit: 'millisecond',
-      displayValue: maxWasted ?
-        str_(i18n.UIStrings.displayValueMsSavings, {wastedMs: maxWasted}) :
+      displayValue: maxWastedLcp ?
+        str_(i18n.UIStrings.displayValueMsSavings, {wastedMs: maxWastedLcp}) :
         '',
       warnings,
       details,
-      metricSavings: {LCP: maxWasted, FCP: maxWastedFCP},
+      metricSavings: {LCP: maxWastedLcp, FCP: maxWastedFcp},
     };
   }
 }
