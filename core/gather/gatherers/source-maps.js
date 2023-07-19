@@ -4,12 +4,13 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import FRGatherer from '../base-gatherer.js';
+import SDK from '../../lib/cdt/SDK.js';
+import BaseGatherer from '../base-gatherer.js';
 
 /**
  * @fileoverview Gets JavaScript source maps.
  */
-class SourceMaps extends FRGatherer {
+class SourceMaps extends BaseGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['timespan', 'navigation'],
@@ -23,7 +24,7 @@ class SourceMaps extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalDriver} driver
+   * @param {LH.Gatherer.Driver} driver
    * @param {string} sourceMapUrl
    * @return {Promise<LH.Artifacts.RawSourceMap>}
    */
@@ -32,7 +33,7 @@ class SourceMaps extends FRGatherer {
     if (response.content === null) {
       throw new Error(`Failed fetching source map (${response.status})`);
     }
-    return JSON.parse(response.content);
+    return SDK.SourceMap.parseSourceMap(response.content);
   }
 
   /**
@@ -41,7 +42,7 @@ class SourceMaps extends FRGatherer {
    */
   parseSourceMapFromDataUrl(sourceMapURL) {
     const buffer = Buffer.from(sourceMapURL.split(',')[1], 'base64');
-    return JSON.parse(buffer.toString());
+    return SDK.SourceMap.parseSourceMap(buffer.toString());
   }
 
   /**
@@ -67,7 +68,7 @@ class SourceMaps extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalDriver} driver
+   * @param {LH.Gatherer.Driver} driver
    * @param {LH.Crdp.Debugger.ScriptParsedEvent} event
    * @return {Promise<LH.Artifacts.SourceMap>}
    */
@@ -124,7 +125,7 @@ class SourceMaps extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    */
   async startSensitiveInstrumentation(context) {
     const session = context.driver.defaultSession;
@@ -133,7 +134,7 @@ class SourceMaps extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    */
   async stopSensitiveInstrumentation(context) {
     const session = context.driver.defaultSession;
@@ -142,7 +143,7 @@ class SourceMaps extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    * @return {Promise<LH.Artifacts['SourceMaps']>}
    */
   async getArtifact(context) {

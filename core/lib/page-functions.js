@@ -513,6 +513,14 @@ function truncate(string, characterLimit) {
   return Util.truncate(string, characterLimit);
 }
 
+// This is to support bundled lighthouse.
+// esbuild calls every function with a builtin `__name` (since we set keepNames: true),
+// whose purpose is to store the real name of the function so that esbuild can rename it to avoid
+// collisions. Anywhere we inject dynamically generated code at runtime for the browser to process,
+// we must manually include this function (because esbuild only does so once at the top scope of
+// the bundle, which is irrelevant for code executed in the browser).
+const esbuildFunctionNameStubString = 'var __name=(fn)=>fn;';
+
 /** @type {string} */
 const truncateRawString = truncate.toString();
 truncate.toString = () => `function truncate(string, characterLimit) {
@@ -560,4 +568,5 @@ export const pageFunctions = {
   wrapRequestIdleCallback,
   getBoundingClientRect,
   truncate,
+  esbuildFunctionNameStubString,
 };

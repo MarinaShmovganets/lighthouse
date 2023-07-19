@@ -8,6 +8,7 @@ on:
 env:
   DEPOT_TOOLS_PATH: ${{ github.workspace }}/depot-tools
   DEVTOOLS_PATH: ${{ github.workspace }}/devtools-frontend
+  PUPPETEER_SKIP_DOWNLOAD: 1
 
 jobs:
   build:
@@ -175,4 +176,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Smokehouse (devtools smoke)
-        path: ${{ github.workspace }}/lighthouse/.tmp/smokehouse-ci-failures/
+        path: ${{ github.workspace }}/lighthouse/.tmp/smokehouse-failures/
