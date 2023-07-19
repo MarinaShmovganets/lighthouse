@@ -17376,7 +17376,7 @@
             "description": "First Contentful Paint marks the time at which the first text or image is painted. [Learn more about the First Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/).",
             "score": 1,
             "scoreDisplayMode": "numeric",
-            "numericValue": 866.7026,
+            "numericValue": 866.7448999999999,
             "numericUnit": "millisecond",
             "displayValue": "0.9 s"
           },
@@ -17386,7 +17386,7 @@
             "description": "Largest Contentful Paint marks the time at which the largest text or image is painted. [Learn more about the Largest Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/)",
             "score": 0.98,
             "scoreDisplayMode": "numeric",
-            "numericValue": 1803.0092,
+            "numericValue": 1803.2048,
             "numericUnit": "millisecond",
             "displayValue": "1.8 s"
           },
@@ -17396,7 +17396,7 @@
             "description": "First Meaningful Paint measures when the primary content of a page is visible. [Learn more about the First Meaningful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/first-meaningful-paint/).",
             "score": 1,
             "scoreDisplayMode": "numeric",
-            "numericValue": 866.7026,
+            "numericValue": 866.7448999999999,
             "numericUnit": "millisecond",
             "displayValue": "0.9 s"
           },
@@ -17406,7 +17406,7 @@
             "description": "Speed Index shows how quickly the contents of a page are visibly populated. [Learn more about the Speed Index metric](https://developer.chrome.com/docs/lighthouse/performance/speed-index/).",
             "score": 1,
             "scoreDisplayMode": "numeric",
-            "numericValue": 866.7026,
+            "numericValue": 866.7448999999999,
             "numericUnit": "millisecond",
             "displayValue": "0.9 s"
           },
@@ -17564,7 +17564,7 @@
             "description": "Time to Interactive is the amount of time it takes for the page to become fully interactive. [Learn more about the Time to Interactive metric](https://developer.chrome.com/docs/lighthouse/performance/interactive/).",
             "score": 1,
             "scoreDisplayMode": "numeric",
-            "numericValue": 925.2026,
+            "numericValue": 925.2448999999999,
             "numericUnit": "millisecond",
             "displayValue": "0.9 s"
           },
@@ -17997,10 +17997,10 @@
                   "numTasksOver50ms": 0,
                   "numTasksOver100ms": 0,
                   "numTasksOver500ms": 0,
-                  "rtt": 0.003,
+                  "rtt": 0.0045,
                   "throughput": 48594453.24888648,
-                  "maxRtt": 0.0468,
-                  "maxServerLatency": 3.5377,
+                  "maxRtt": 0.0702,
+                  "maxServerLatency": 3.53605,
                   "totalByteWeight": 127688,
                   "totalTaskTime": 113.59800000000007,
                   "mainDocumentTransferSize": 3596
@@ -18449,7 +18449,7 @@
             "description": "Network round trip times (RTT) have a large impact on performance. If the RTT to an origin is high, it's an indication that servers closer to the user could improve performance. [Learn more about the Round Trip Time](https://hpbn.co/primer-on-latency-and-bandwidth/).",
             "score": null,
             "scoreDisplayMode": "informative",
-            "numericValue": 0.0468,
+            "numericValue": 0.0702,
             "numericUnit": "millisecond",
             "displayValue": "0 ms",
             "details": {
@@ -18470,19 +18470,19 @@
               "items": [
                 {
                   "origin": "https://www.mikescerealshack.co",
-                  "rtt": 0.0468
+                  "rtt": 0.0702
                 },
                 {
                   "origin": "https://events.mikescerealshack.co",
-                  "rtt": 0.0039
+                  "rtt": 0.00585
                 },
                 {
                   "origin": "https://fonts.googleapis.com",
-                  "rtt": 0.0033000000000000004
+                  "rtt": 0.00495
                 },
                 {
                   "origin": "https://fonts.gstatic.com",
-                  "rtt": 0.003
+                  "rtt": 0.0045
                 }
               ],
               "sortedBy": [
@@ -18496,7 +18496,7 @@
             "description": "Server latencies can impact web performance. If the server latency of an origin is high, it's an indication the server is overloaded or has poor backend performance. [Learn more about server response time](https://hpbn.co/primer-on-web-performance/#analyzing-the-resource-waterfall).",
             "score": null,
             "scoreDisplayMode": "informative",
-            "numericValue": 3.5377,
+            "numericValue": 3.53605,
             "numericUnit": "millisecond",
             "displayValue": "0 ms",
             "details": {
@@ -18517,19 +18517,19 @@
               "items": [
                 {
                   "origin": "https://fonts.googleapis.com",
-                  "serverResponseTime": 3.5377
+                  "serverResponseTime": 3.53605
                 },
                 {
                   "origin": "https://www.mikescerealshack.co",
-                  "serverResponseTime": 2.5712
+                  "serverResponseTime": 2.5478000000000005
                 },
                 {
                   "origin": "https://events.mikescerealshack.co",
-                  "serverResponseTime": 1.5821
+                  "serverResponseTime": 1.5801500000000002
                 },
                 {
                   "origin": "https://fonts.gstatic.com",
-                  "serverResponseTime": 0.9365
+                  "serverResponseTime": 0.935
                 }
               ],
               "sortedBy": [
@@ -18864,7 +18864,7 @@
                   "items": [
                     {
                       "phase": "TTFB",
-                      "timing": 602.5712,
+                      "timing": 602.5478,
                       "percent": "33%"
                     },
                     {
@@ -18874,12 +18874,12 @@
                     },
                     {
                       "phase": "Load Time",
-                      "timing": 234.3445723189716,
+                      "timing": 234.45876538040773,
                       "percent": "13%"
                     },
                     {
                       "phase": "Render Delay",
-                      "timing": 966.0934276810284,
+                      "timing": 966.1982346195922,
                       "percent": "54%"
                     }
                   ]
@@ -18968,12 +18968,12 @@
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/framework.9d524150d48315f49e80.js",
                   "duration": 76,
-                  "startTime": 907.7026
+                  "startTime": 907.7448999999999
                 },
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/main-1f8481d632114a408557.js",
                   "duration": 63,
-                  "startTime": 752.7026
+                  "startTime": 752.7448999999999
                 }
               ],
               "sortedBy": [
@@ -24175,31 +24175,31 @@
             "core/lib/i18n/i18n.js | seconds": [
               {
                 "values": {
-                  "timeInMs": 866.7026
+                  "timeInMs": 866.7448999999999
                 },
                 "path": "audits[first-contentful-paint].displayValue"
               },
               {
                 "values": {
-                  "timeInMs": 1803.0092
+                  "timeInMs": 1803.2048
                 },
                 "path": "audits[largest-contentful-paint].displayValue"
               },
               {
                 "values": {
-                  "timeInMs": 866.7026
+                  "timeInMs": 866.7448999999999
                 },
                 "path": "audits[first-meaningful-paint].displayValue"
               },
               {
                 "values": {
-                  "timeInMs": 866.7026
+                  "timeInMs": 866.7448999999999
                 },
                 "path": "audits[speed-index].displayValue"
               },
               {
                 "values": {
-                  "timeInMs": 925.2026
+                  "timeInMs": 925.2448999999999
                 },
                 "path": "audits.interactive.displayValue"
               },
@@ -24255,13 +24255,13 @@
               },
               {
                 "values": {
-                  "timeInMs": 0.0468
+                  "timeInMs": 0.0702
                 },
                 "path": "audits[network-rtt].displayValue"
               },
               {
                 "values": {
-                  "timeInMs": 3.5377
+                  "timeInMs": 3.53605
                 },
                 "path": "audits[network-server-latency].displayValue"
               },

@@ -91,7 +91,7 @@ describe('Metrics: TTFB', () => {
 
     // 3 * 150 RTT + 99 server response time
     // 99 Comes from (100ms observed TTFB - 1ms observed RTT)
-    expect(result.timing).toEqual(549);
+    expect(result.timing).toEqual(548.5);
     expect(result.timestamp).toBeUndefined();
   });
 
@@ -105,7 +105,7 @@ describe('Metrics: TTFB', () => {
 
     // 4 * 150 RTT + 99.1 server response time
     // 99.1 Comes from (100ms observed TTFB - 0.9ms observed RTT)
-    expect(result.timing).toEqual(699.1);
+    expect(result.timing).toEqual(699);
     expect(result.timestamp).toBeUndefined();
   });
 

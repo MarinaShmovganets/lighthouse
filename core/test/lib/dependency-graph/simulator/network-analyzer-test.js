@@ -173,10 +173,21 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
     });
 
     it('should infer from sendStart when available', () => {
-      const timing = {sendStart: 150};
+      const timing = {sendStart: 100, dnsStart: -1, dnsEnd: -1};
       // this record took 150ms before Chrome could send the request
-      // i.e. DNS (maybe) + queuing (maybe) + TCP handshake took ~100ms
-      // 150ms / 3 round trips ~= 50ms RTT
+      // i.e. queuing (maybe) + TCP handshake took ~100ms
+      // 100ms / 2 round trips ~= 50ms RTT
+      const record = createRecord({networkRequestTime: 0, networkEndTime: 1, timing});
+      const result = NetworkAnalyzer.estimateRTTByOrigin([record], {coarseEstimateMultiplier: 1});
+      const expected = {min: 50, max: 50, avg: 50, median: 50};
+      assert.deepStrictEqual(result.get('https://example.com'), expected);
+    });
+
+    it('should infer from sendStart when available, and exclude dns', () => {
+      const timing = {sendStart: 150, dnsStart: 0, dnsEnd: 50};
+      // this record took 150ms before Chrome could send the request
+      // i.e. queuing (maybe) + TCP handshake took ~100ms
+      // (150ms - 50ms) / 2 round trips ~= 50ms RTT
       const record = createRecord({networkRequestTime: 0, networkEndTime: 1, timing});
       const result = NetworkAnalyzer.estimateRTTByOrigin([record], {coarseEstimateMultiplier: 1});
       const expected = {min: 50, max: 50, avg: 50, median: 50};
@@ -199,7 +210,7 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
     });
 
     it('should infer from TTFB when available', () => {
-      const timing = {receiveHeadersEnd: 1000};
+      const timing = {receiveHeadersEnd: 1000, dnsStart: 0, dnsEnd: 150};
       const record = createRecord({networkRequestTime: 0, networkEndTime: 1, timing,
         resourceType: 'Other'});
       const result = NetworkAnalyzer.estimateRTTByOrigin([record], {
@@ -210,12 +221,14 @@ describe('DependencyGraph/Simulator/NetworkAnalyzer', () => {
       // which needs ~4 RTs. We don't know its resource type so it'll be assumed that 40% of it was
       // server response time.
       // 600 ms / 4 = 150ms
+      // But: one of those RTs is from DNS, which we want to ignore
+      // (600ms - 150ms) / 3 RTs = 150ms
       const expected = {min: 150, max: 150, avg: 150, median: 150};
       assert.deepStrictEqual(result.get('https://example.com'), expected);
     });
 
     it('should handle untrustworthy connection information', () => {
-      const timing = {sendStart: 150};
+      const timing = {sendStart: 100};
       const recordA = createRecord({networkRequestTime: 0, networkEndTime: 1, timing,
         connectionReused: true});
       const recordB = createRecord({

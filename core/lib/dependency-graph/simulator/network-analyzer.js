@@ -203,11 +203,15 @@ class NetworkAnalyzer {
       if (!Number.isFinite(timing.sendStart) || timing.sendStart < 0) return;
 
       // Assume everything before sendStart was just DNS + (SSL)? + TCP handshake
-      // 1 RT for DNS, 1 RT (maybe) for SSL, 1 RT for TCP
-      let roundTrips = 1;
+      // 1 RT (maybe) for SSL, 1 RT for TCP
+      // DNS is not included because
+      // 1) it is very variable in terms of how many hops it could be (as little as 0, if cached locally)
+      // 2) it doesn't even communicate with the server, so it is useless for RTT calculation.
+      let roundTrips = 0;
       if (!record.protocol.startsWith('h3')) roundTrips += 1; // TCP
       if (record.parsedURL.scheme === 'https') roundTrips += 1;
-      return timing.sendStart / roundTrips;
+      const dnsTime = timing.dnsStart >= 0 ? timing.dnsEnd - timing.dnsStart : 0;
+      return (timing.sendStart - dnsTime) / roundTrips;
     });
   }
 
@@ -237,13 +241,15 @@ class NetworkAnalyzer {
       // When connection was fresh...
       // TTFB = DNS + (SSL)? + TCP handshake + 1 RT for request + server response time
       if (!connectionReused) {
-        roundTrips += 1; // DNS
+        // We purposely exclude DNS from RTT estimate, as it is unrelated to RTT to the server.
         if (!record.protocol.startsWith('h3')) roundTrips += 1; // TCP
         if (record.parsedURL.scheme === 'https') roundTrips += 1; // SSL
       }
 
-      // subtract out our estimated server response time
-      return Math.max((timing.receiveHeadersEnd - estimatedServerResponseTime) / roundTrips, 3);
+      // subtract out our estimated server response time and dns time
+      const dnsTime = timing.dnsStart >= 0 ? timing.dnsEnd - timing.dnsStart : 0;
+      const duration = timing.receiveHeadersEnd - estimatedServerResponseTime - dnsTime;
+      return Math.max(duration / roundTrips, 3);
     });
   }
 

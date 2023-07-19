@@ -114,11 +114,11 @@ describe('Performance: largest-contentful-paint-element audit', () => {
     expect(auditResult.details.items[1].items[0].phase).toBeDisplayString('TTFB');
     expect(auditResult.details.items[1].items[0].timing).toBeCloseTo(800, 0.1);
     expect(auditResult.details.items[1].items[1].phase).toBeDisplayString('Load Delay');
-    expect(auditResult.details.items[1].items[1].timing).toBeCloseTo(651, 0.1);
+    expect(auditResult.details.items[1].items[1].timing).toBeCloseTo(650.25, 0.1);
     expect(auditResult.details.items[1].items[2].phase).toBeDisplayString('Load Time');
-    expect(auditResult.details.items[1].items[2].timing).toBeCloseTo(1813.7, 0.1);
+    expect(auditResult.details.items[1].items[2].timing).toBeCloseTo(1812.8, 0.1);
     expect(auditResult.details.items[1].items[3].phase).toBeDisplayString('Render Delay');
-    expect(auditResult.details.items[1].items[3].timing).toBeCloseTo(2539.2, 0.1);
+    expect(auditResult.details.items[1].items[3].timing).toBeCloseTo(2537.9, 0.1);
   });
 
   it('doesn\'t throw an error when there is nothing to show', async () => {
