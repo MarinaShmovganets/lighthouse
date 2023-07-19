@@ -540,24 +540,34 @@ function isBundledEnvironment() {
 // the bundle, which is irrelevant for code executed in the browser).
 // When minified, esbuild will mangle the name of this wrapper function, so we need to determine what it
 // is at runtime in order to recreate it within the page.
-const functionAsString = (()=>{
-  // eslint-disable-next-line no-unused-vars
-  const a = ()=>{};
-}).toString()
-  // When not minified, esbuild annotates the call to this function wrapper with PURE.
-  // We know further that the name of the wrapper function should be `__name`, but let's not
-  // hardcode that. Remove the PURE annotation to simplify the regex.
-  .replace('/* @__PURE__ */', '');
-const functionStringMatch = functionAsString.match(/=\s*([\w_]+)\(/);
-if (!functionStringMatch && isBundledEnvironment()) {
-  throw new Error('Could not determine esbuild function wrapper name');
-}
+const esbuildFunctionWrapperString = createEsbuildFunctionWrapper();
 
-let esbuildFunctionWrapperString = '';
-if (functionStringMatch) {
-  esbuildFunctionWrapperString =
-    // eslint-disable-next-line max-len
-    `var ${functionStringMatch[1]}=(fn, value) => Object.defineProperty(fn, 'name', {value, configurable: true});`;
+function createEsbuildFunctionWrapper() {
+  if (!isBundledEnvironment()) {
+    return '';
+  }
+
+  const functionAsString = (()=>{
+    // eslint-disable-next-line no-unused-vars
+    const a = ()=>{};
+  }).toString()
+    // When not minified, esbuild annotates the call to this function wrapper with PURE.
+    // We know further that the name of the wrapper function should be `__name`, but let's not
+    // hardcode that. Remove the PURE annotation to simplify the regex.
+    .replace('/* @__PURE__ */', '');
+  const functionStringMatch = functionAsString.match(/=\s*([\w_]+)\(/);
+  if (!functionStringMatch) {
+    throw new Error('Could not determine esbuild function wrapper name');
+  }
+
+  /**
+   * @param {Function} fn
+   * @param {string} value
+   */
+  const esbuildFunctionWrapper = (fn, value) =>
+    Object.defineProperty(fn, 'name', {value, configurable: true});
+  const wrapperFnName = functionStringMatch[1];
+  return `let ${wrapperFnName}=${esbuildFunctionWrapper}`;
 }
 
 /**
@@ -569,7 +579,6 @@ function getRuntimeFunctionName(fn) {
   if (!match) throw new Error(`could not find function name for: ${fn}`);
   return match[1];
 }
-getRuntimeFunctionName(truncate);
 
 // We setup a number of our page functions to automatically include their dependencies.
 // Because of esbuild bundling, we must refer to the actual (mangled) runtime function name.
