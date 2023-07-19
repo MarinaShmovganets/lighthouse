@@ -372,7 +372,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
       {
         url: 'https://cdn.example.com/second',
         initiator: {},
-        networkRequestTime: 4000,
+        networkRequestTime: 4000, // starts *after* FCP
         networkEndTime: 4500, // ends *before* LCP
         timing: {
           dnsStart: 100,
