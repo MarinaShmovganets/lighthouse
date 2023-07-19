@@ -355,7 +355,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
     assert.equal(result.warnings.length, 1);
   });
 
-  it(`should have LCP savings and not FCP savings `, async () => {
+  it('should have LCP savings and not FCP savings', async () => {
     const networkRecords = [
       mainResource,
       {
