@@ -9,7 +9,6 @@
 import BaseGatherer from '../base-gatherer.js';
 import * as emulation from '../../lib/emulation.js';
 import {pageFunctions} from '../../lib/page-functions.js';
-import {NetworkMonitor} from '../driver/network-monitor.js';
 import {waitForNetworkIdle} from '../driver/wait-for-condition.js';
 
 // JPEG quality setting
@@ -89,7 +88,7 @@ class FullPageScreenshot extends BaseGatherer {
     const height = Math.min(fullHeight, MAX_WEBP_SIZE);
 
     // Setup network monitor before we change the viewport.
-    const networkMonitor = new NetworkMonitor(context.driver.targetManager);
+    const networkMonitor = context.driver.networkMonitor;
     const waitForNetworkIdleResult = waitForNetworkIdle(session, networkMonitor, {
       pretendDCLAlreadyFired: true,
       networkQuietThresholdMs: 1000,

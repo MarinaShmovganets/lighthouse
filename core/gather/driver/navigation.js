@@ -6,7 +6,6 @@
 
 import log from 'lighthouse-logger';
 
-import {NetworkMonitor} from './network-monitor.js';
 import {waitForFullyLoaded, waitForFrameNavigated, waitForUserToContinue} from './wait-for-condition.js'; // eslint-disable-line max-len
 import * as constants from '../../config/constants.js';
 import * as i18n from '../../lib/i18n/i18n.js';
@@ -89,7 +88,7 @@ async function gotoURL(driver, requestor, options) {
   log.time(status);
 
   const session = driver.defaultSession;
-  const networkMonitor = new NetworkMonitor(driver.targetManager);
+  const networkMonitor = driver.networkMonitor;
 
   // Enable the events and network monitor needed to track navigation progress.
   await networkMonitor.enable();

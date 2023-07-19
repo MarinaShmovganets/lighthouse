@@ -9,6 +9,7 @@ import log from 'lighthouse-logger';
 import {ExecutionContext} from './driver/execution-context.js';
 import {TargetManager} from './driver/target-manager.js';
 import {Fetcher} from './fetcher.js';
+import {NetworkMonitor} from './driver/network-monitor.js';
 
 /** @return {*} */
 const throwNotConnectedFn = () => {
@@ -37,6 +38,8 @@ class Driver {
     this._page = page;
     /** @type {TargetManager|undefined} */
     this._targetManager = undefined;
+    /** @type {NetworkMonitor|undefined} */
+    this._networkMonitor = undefined;
     /** @type {ExecutionContext|undefined} */
     this._executionContext = undefined;
     /** @type {Fetcher|undefined} */
@@ -51,7 +54,6 @@ class Driver {
     return this._executionContext;
   }
 
-  /** @return {Fetcher} */
   get fetcher() {
     if (!this._fetcher) return throwNotConnectedFn();
     return this._fetcher;
@@ -60,6 +62,11 @@ class Driver {
   get targetManager() {
     if (!this._targetManager) return throwNotConnectedFn();
     return this._targetManager;
+  }
+
+  get networkMonitor() {
+    if (!this._networkMonitor) return throwNotConnectedFn();
+    return this._networkMonitor;
   }
 
   /** @return {Promise<string>} */
@@ -75,6 +82,7 @@ class Driver {
     const cdpSession = await this._page.target().createCDPSession();
     this._targetManager = new TargetManager(cdpSession);
     await this._targetManager.enable();
+    this._networkMonitor = new NetworkMonitor(this._targetManager);
     this.defaultSession = this._targetManager.rootSession();
     this._executionContext = new ExecutionContext(this.defaultSession);
     this._fetcher = new Fetcher(this.defaultSession);
