@@ -16,7 +16,7 @@ import {ReportGenerator} from '../../generator/report-generator.js';
 import {readJson} from '../../../core/test/test-utils.js';
 
 const sampleResults = readJson('core/test/results/sample_v2.json');
-const sampleFlowResult = readJson('core/test/fixtures/fraggle-rock/reports/sample-flow-result.json');
+const sampleFlowResult = readJson('core/test/fixtures/user-flows/reports/sample-flow-result.json');
 
 describe('ReportGenerator', () => {
   describe('#replaceStrings', () => {
@@ -107,10 +107,10 @@ describe('ReportGenerator', () => {
 
 category,score
 \\"performance\\",\\"0.28\\"
-\\"accessibility\\",\\"0.8\\"
+\\"accessibility\\",\\"0.81\\"
 \\"best-practices\\",\\"0.33\\"
 \\"seo\\",\\"0.67\\"
-\\"pwa\\",\\"0.33\\"
+\\"pwa\\",\\"0.38\\"
 
 category,audit,score,displayValue,description
 \\"performance\\",\\"first-contentful-paint\\",\\"0.01\\",\\"6.8 s\\",\\"First Contentful Paint marks the time at which the first text or image is painted. [Learn more about the First Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/).\\"

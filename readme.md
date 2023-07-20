@@ -297,6 +297,12 @@ for more info.
 # lint and test all files
 yarn test
 
+# run all unit tests
+yarn unit
+
+# run a given unit test (e.g. core/test/audits/byte-efficiency/uses-long-cache-ttl-test.js)
+yarn mocha uses-long-cache-ttl
+
 # watch for file changes and run tests
 #   Requires http://entrproject.org : brew install entr
 yarn watch
@@ -330,6 +336,8 @@ This section details services that have integrated Lighthouse data. If you're wo
 * **[DebugBear](https://www.debugbear.com/)** - DebugBear is a website monitoring tool based on Lighthouse. See how your scores and metrics changed over time, with a focus on understanding what caused each change. DebugBear is a paid product with a free 30-day trial.
 
 * **[Treo](https://treo.sh)** - Treo is Lighthouse as a Service. It provides regression testing, geographical regions, custom networks, and integrations with GitHub & Slack. Treo is a paid product with plans for solo-developers and teams.
+
+* **[PageVitals](https://pagevitals.com)** - PageVitals combines Lighthouse, CrUX and real-user monitoring data to monitor the performance of websites. See how your website performs over time and get alerted if it gets too slow. Drill down and find the real cause of any performance issue. PageVitals is a paid product with a free 14-day trial.
 
 * **[Alertdesk](https://www.alertdesk.com/)** - Alertdesk is based on Lighthouse and helps you to keep track of your site’s quality & performance. Run daily quality & performance tests from both Mobile and Desktop and dive into the powerful & intuitive reports. You can also monitor your uptime (every minute - 24/7) & domain health. Alertdesk is a paid product with a free 14-day trial.
 

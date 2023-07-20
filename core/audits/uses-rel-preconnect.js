@@ -14,6 +14,7 @@ import {LoadSimulator} from '../computed/load-simulator.js';
 import {ProcessedNavigation} from '../computed/processed-navigation.js';
 import {PageDependencyGraph} from '../computed/page-dependency-graph.js';
 import {LanternLargestContentfulPaint} from '../computed/metrics/lantern-largest-contentful-paint.js';
+import {LanternFirstContentfulPaint} from '../computed/metrics/lantern-first-contentful-paint.js';
 
 // Preconnect establishes a "clean" socket. Chrome's socket manager will keep an unused socket
 // around for 10s. Meaning, the time delta between processing preconnect a request should be <10s,
@@ -72,7 +73,7 @@ class UsesRelPreconnectAudit extends Audit {
    * @return {boolean}
    */
   static hasValidTiming(record) {
-    return !!record.timing && record.timing.connectEnd > 0 && record.timing.connectStart > 0;
+    return !!record.timing && record.timing.connectEnd >= 0 && record.timing.connectStart >= 0;
   }
 
   /**
@@ -81,11 +82,27 @@ class UsesRelPreconnectAudit extends Audit {
    * @return {boolean}
    */
   static hasAlreadyConnectedToOrigin(record) {
-    return (
-      !!record.timing &&
+    if (!record.timing) return false;
+
+    // When these values are given as -1, that means the page has
+    // a connection for this origin and paid these costs already.
+    if (
+      record.timing.dnsStart === -1 && record.timing.dnsEnd === -1 &&
+      record.timing.connectStart === -1 && record.timing.connectEnd === -1
+    ) {
+      return true;
+    }
+
+    // Less understood: if the connection setup took no time at all, consider
+    // it the same as the above. It is unclear if this is correct, or is even possible.
+    if (
       record.timing.dnsEnd - record.timing.dnsStart === 0 &&
       record.timing.connectEnd - record.timing.connectStart === 0
-    );
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -109,7 +126,8 @@ class UsesRelPreconnectAudit extends Audit {
     const devtoolsLog = artifacts.devtoolsLogs[UsesRelPreconnectAudit.DEFAULT_PASS];
     const settings = context.settings;
 
-    let maxWasted = 0;
+    let maxWastedLcp = 0;
+    let maxWastedFcp = 0;
     /** @type {Array<LH.IcuMessage>} */
     const warnings = [];
 
@@ -128,7 +146,14 @@ class UsesRelPreconnectAudit extends Audit {
     /** @type {Set<string>} */
     const lcpGraphURLs = new Set();
     lcpGraph.traverse(node => {
-      if (node.type === 'network' ) lcpGraphURLs.add(node.record.url);
+      if (node.type === 'network') lcpGraphURLs.add(node.record.url);
+    });
+
+    const fcpGraph =
+      await LanternFirstContentfulPaint.getPessimisticGraph(pageGraph, processedNavigation);
+    const fcpGraphURLs = new Set();
+    fcpGraph.traverse(node => {
+      if (node.type === 'network') fcpGraphURLs.add(node.record.url);
     });
 
     /** @type {Map<string, LH.Artifacts.NetworkRequest[]>}  */
@@ -200,7 +225,11 @@ class UsesRelPreconnectAudit extends Audit {
         return;
       }
 
-      maxWasted = Math.max(wastedMs, maxWasted);
+      maxWastedLcp = Math.max(wastedMs, maxWastedLcp);
+
+      if (fcpGraphURLs.has(firstRecordOfOrigin.url)) {
+        maxWastedFcp = Math.max(wastedMs, maxWastedLcp);
+      }
       results.push({
         url: securityOrigin,
         wastedMs: wastedMs,
@@ -224,6 +253,7 @@ class UsesRelPreconnectAudit extends Audit {
         score: 1,
         warnings: preconnectLinks.length >= 3 ?
           [...warnings, str_(UIStrings.tooManyPreconnectLinksWarning)] : warnings,
+        metricSavings: {LCP: maxWastedLcp, FCP: maxWastedFcp},
       };
     }
 
@@ -234,17 +264,18 @@ class UsesRelPreconnectAudit extends Audit {
     ];
 
     const details = Audit.makeOpportunityDetails(headings, results,
-      {overallSavingsMs: maxWasted, sortedBy: ['wastedMs']});
+      {overallSavingsMs: maxWastedLcp, sortedBy: ['wastedMs']});
 
     return {
-      score: ByteEfficiencyAudit.scoreForWastedMs(maxWasted),
-      numericValue: maxWasted,
+      score: ByteEfficiencyAudit.scoreForWastedMs(maxWastedLcp),
+      numericValue: maxWastedLcp,
       numericUnit: 'millisecond',
-      displayValue: maxWasted ?
-        str_(i18n.UIStrings.displayValueMsSavings, {wastedMs: maxWasted}) :
+      displayValue: maxWastedLcp ?
+        str_(i18n.UIStrings.displayValueMsSavings, {wastedMs: maxWastedLcp}) :
         '',
       warnings,
       details,
+      metricSavings: {LCP: maxWastedLcp, FCP: maxWastedFcp},
     };
   }
 }

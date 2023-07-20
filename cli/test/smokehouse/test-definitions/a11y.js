@@ -42,6 +42,46 @@ const expectations = {
           ],
         },
       },
+      'aria-command-name': {
+        score: 0,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'boundingRect': {
+                  'width': '>0',
+                  'height': 0,
+                },
+                'selector': 'body > section > div#aria-command-name',
+                'snippet': '<div id="aria-command-name" role="button">',
+                'explanation': 'Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute',
+                'nodeLabel': 'body > section > div#aria-command-name',
+              },
+            },
+          ],
+        },
+      },
+      'aria-dialog-name': {
+        score: 0,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'boundingRect': {
+                  'width': '>0',
+                  'height': 0,
+                },
+                'selector': 'body > section > div#aria-dialog-name',
+                'snippet': '<div role="alertdialog" id="aria-dialog-name" aria-label="">',
+                'explanation': 'Fix any of the following:\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute',
+                'nodeLabel': 'body > section > div#aria-dialog-name',
+              },
+            },
+          ],
+        },
+      },
       'aria-hidden-body': {
         score: 1,
         details: {
@@ -150,26 +190,6 @@ const expectations = {
           ],
         },
       },
-      'aria-command-name': {
-        score: 0,
-        details: {
-          items: [
-            {
-              node: {
-                'type': 'node',
-                'boundingRect': {
-                  'width': '>0',
-                  'height': 0,
-                },
-                'selector': 'body > section > div#aria-command-name',
-                'snippet': '<div id="aria-command-name" role="button">',
-                'explanation': 'Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute',
-                'nodeLabel': 'body > section > div#aria-command-name',
-              },
-            },
-          ],
-        },
-      },
       'aria-tooltip-name': {
         score: 0,
         details: {
@@ -238,6 +258,22 @@ const expectations = {
           ],
         },
       },
+      'aria-text': {
+        score: 0,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > span#aria-text',
+                'snippet': '<span role="text" id="aria-text">',
+                'explanation': 'Fix any of the following:\n  Element has focusable descendants',
+                'nodeLabel': 'Not announced',
+              },
+            },
+          ],
+        },
+      },
       'aria-toggle-field-name': {
         score: 0,
         details: {
@@ -246,7 +282,7 @@ const expectations = {
               node: {
                 'type': 'node',
                 'selector': 'body > section > div#aria-required-attr',
-                'path': '2,HTML,1,BODY,19,SECTION,0,DIV',
+                'path': '2,HTML,1,BODY,21,SECTION,0,DIV',
                 'snippet': '<div id="aria-required-attr" role="checkbox">',
                 'explanation': 'Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute',
                 'nodeLabel': 'body > section > div#aria-required-attr',
@@ -256,7 +292,7 @@ const expectations = {
               node: {
                 'type': 'node',
                 'selector': 'body > section > div > div#aria-required-parent',
-                'path': '2,HTML,1,BODY,23,SECTION,0,DIV,0,DIV',
+                'path': '2,HTML,1,BODY,25,SECTION,0,DIV,0,DIV',
                 'snippet': '<div id="aria-required-parent" role="option">',
                 'nodeLabel': 'body > section > div > div#aria-required-parent',
               },
@@ -265,7 +301,7 @@ const expectations = {
               node: {
                 'type': 'node',
                 'selector': 'body > section > div#aria-valid-attr',
-                'path': '2,HTML,1,BODY,27,SECTION,0,DIV',
+                'path': '2,HTML,1,BODY,31,SECTION,0,DIV',
                 'snippet': '<div id="aria-valid-attr" role="checkbox" aria-chked="true">',
                 'nodeLabel': 'body > section > div#aria-valid-attr',
               },
@@ -274,7 +310,7 @@ const expectations = {
               node: {
                 'type': 'node',
                 'selector': 'body > section > div#aria-valid-attr-value',
-                'path': '2,HTML,1,BODY,29,SECTION,0,DIV',
+                'path': '2,HTML,1,BODY,33,SECTION,0,DIV',
                 'snippet': '<div id="aria-valid-attr-value" role="checkbox" aria-checked="0">',
                 'nodeLabel': 'body > section > div#aria-valid-attr-value',
               },
@@ -408,7 +444,7 @@ const expectations = {
               node: {
                 'type': 'node',
                 'selector': 'body > section > textarea#duplicate-id-active',
-                'path': '2,HTML,1,BODY,39,SECTION,0,TEXTAREA',
+                'path': '2,HTML,1,BODY,43,SECTION,0,TEXTAREA',
                 'snippet': '<textarea id="duplicate-id-active" aria-label="text1">',
                 'explanation': 'Fix any of the following:\n  Document has active elements with the same id attribute: duplicate-id-active',
                 'nodeLabel': 'text1',
@@ -419,7 +455,7 @@ const expectations = {
                   {
                     relatedNode: {
                       'type': 'node',
-                      'path': '2,HTML,1,BODY,39,SECTION,1,TEXTAREA',
+                      'path': '2,HTML,1,BODY,43,SECTION,1,TEXTAREA',
                       'selector': 'body > section > textarea#duplicate-id-active',
                       'snippet': '<textarea id="duplicate-id-active" aria-label="text2">',
                       'nodeLabel': 'text2',
@@ -439,7 +475,7 @@ const expectations = {
               node: {
                 'type': 'node',
                 'selector': 'body > section > div#duplicate-id-aria',
-                'path': '2,HTML,1,BODY,41,SECTION,0,DIV',
+                'path': '2,HTML,1,BODY,45,SECTION,0,DIV',
                 'snippet': '<div id="duplicate-id-aria" class="duplicate-id-aria">',
                 'explanation': 'Fix any of the following:\n  Document has multiple elements referenced with ARIA with the same id attribute: duplicate-id-aria',
                 'nodeLabel': 'body > section > div#duplicate-id-aria',
@@ -450,13 +486,29 @@ const expectations = {
                   {
                     relatedNode: {
                       'type': 'node',
-                      'path': '2,HTML,1,BODY,41,SECTION,0,DIV,0,DIV',
+                      'path': '2,HTML,1,BODY,45,SECTION,0,DIV,0,DIV',
                       'selector': 'body > section > div#duplicate-id-aria > div#duplicate-id-aria',
                       'snippet': '<div id="duplicate-id-aria">',
                       'nodeLabel': 'body > section > div#duplicate-id-aria > div#duplicate-id-aria',
                     },
                   },
                 ],
+              },
+            },
+          ],
+        },
+      },
+      'empty-heading': {
+        score: null,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > h1#empty-heading',
+                'snippet': '<h1 id="empty-heading">',
+                'explanation': 'Fix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute',
+                'nodeLabel': 'body > section > h1#empty-heading',
               },
             },
           ],
@@ -471,7 +523,7 @@ const expectations = {
               node: {
                 'type': 'node',
                 'selector': 'body > section > input#form-field-multiple-labels',
-                'path': '2,HTML,1,BODY,43,SECTION,2,INPUT',
+                'path': '2,HTML,1,BODY,49,SECTION,2,INPUT',
                 'snippet': '<input type="checkbox" id="form-field-multiple-labels">',
                 'explanation': 'Fix all of the following:\n  Multiple label elements is not widely supported in assistive technologies. Ensure the first label contains all necessary information.',
                 'nodeLabel': 'body > section > input#form-field-multiple-labels',
@@ -482,7 +534,7 @@ const expectations = {
                   {
                     relatedNode: {
                       'type': 'node',
-                      'path': '2,HTML,1,BODY,43,SECTION,0,LABEL',
+                      'path': '2,HTML,1,BODY,49,SECTION,0,LABEL',
                       'selector': 'body > section > label#label1',
                       'snippet': '<label for="form-field-multiple-labels" id="label1">',
                       'nodeLabel': 'label1',
@@ -491,7 +543,7 @@ const expectations = {
                   {
                     relatedNode: {
                       'type': 'node',
-                      'path': '2,HTML,1,BODY,43,SECTION,1,LABEL',
+                      'path': '2,HTML,1,BODY,49,SECTION,1,LABEL',
                       'selector': 'body > section > label',
                       'snippet': '<label for="form-field-multiple-labels">',
                       'nodeLabel': 'label2',
@@ -527,7 +579,7 @@ const expectations = {
               node: {
                 'type': 'node',
                 'selector': 'body > section > h3',
-                'path': '2,HTML,1,BODY,47,SECTION,1,H3',
+                'path': '2,HTML,1,BODY,53,SECTION,1,H3',
                 'snippet': '<h3>',
                 'explanation': 'Fix any of the following:\n  Heading order invalid',
                 'nodeLabel': 'sub-sub-header',
@@ -555,6 +607,22 @@ const expectations = {
       'html-xml-lang-mismatch': {
         score: null,
         scoreDisplayMode: 'notApplicable',
+      },
+      'identical-links-same-purpose': {
+        score: null,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > a#identical-links-same-purpose-1',
+                'snippet': '<a id="identical-links-same-purpose-1" href="https://example.com/" aria-label="a link">',
+                'explanation': 'Fix all of the following:\n  Check that links have the same purpose, or are intentionally ambiguous.',
+                'nodeLabel': 'a link',
+              },
+            },
+          ],
+        },
       },
       'image-alt': {
         score: 0,
@@ -622,6 +690,38 @@ const expectations = {
       //     ],
       //   },
       // },
+      'landmark-one-main': {
+        score: null,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'html',
+                'snippet': '<html>',
+                'explanation': 'Fix all of the following:\n  Document does not have a main landmark',
+                'nodeLabel': 'html',
+              },
+            },
+          ],
+        },
+      },
+      'link-in-text-block': {
+        score: 0,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > p > a#link-in-text-block',
+                'snippet': '<a style="text-decoration: none; color: blue" href="#" id="link-in-text-block">',
+                'explanation': 'Fix any of the following:\n  The link has insufficient color contrast of 2.44:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0000ff, surrounding text: #000000)\n  The link has no styling (such as underline) to distinguish it from the surrounding text',
+                'nodeLabel': 'link text ',
+              },
+            },
+          ],
+        },
+      },
       'link-name': {
         score: 0,
         details: {
@@ -702,6 +802,22 @@ const expectations = {
           ],
         },
       },
+      'select-name': {
+        score: 0,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > select#select-name',
+                'snippet': '<select id="select-name">',
+                'explanation': 'Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element\'s default semantics were not overridden with role="none" or role="presentation"',
+                'nodeLabel': 'body > section > select#select-name',
+              },
+            },
+          ],
+        },
+      },
       'tabindex': {
         score: 0,
         details: {
@@ -729,6 +845,23 @@ const expectations = {
                 'snippet': '<table id="table-fake-caption" role="grid">',
                 'explanation': 'Fix all of the following:\n  The first child of the table should be a caption instead of a table cell',
                 'nodeLabel': 'FOO\nfoo\tfoo\n',
+              },
+            },
+          ],
+        },
+      },
+      'target-size': {
+        score: null,
+        details: {
+          items: [
+            {
+              node: {
+                'type': 'node',
+                'selector': 'body > section > span#target-size-2',
+                'snippet': '<span role="button" tabindex="0" id="target-size-2">',
+                // Exact target size can vary depending on the device.
+                'explanation': /^Fix any of the following:\n {2}Target has insufficient size \([0-9]+px by [0-9]+px, should be at least 24px by 24px\)\n {2}Target has insufficient offset from its closest neighbor \([0-9]+px should be at least 24px\)$/,
+                'nodeLabel': 'o',
               },
             },
           ],

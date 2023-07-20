@@ -60,10 +60,10 @@ A Lighthouse plugin is just a node module with a name that starts with `lighthou
   "name": "lighthouse-plugin-cats",
   "main": "plugin.js",
   "peerDependencies": {
-    "lighthouse": "^10.2.0"
+    "lighthouse": "^10.4.0"
   },
   "devDependencies": {
-    "lighthouse": "^10.2.0"
+    "lighthouse": "^10.4.0"
   }
 }
 ```
@@ -99,7 +99,7 @@ These files contain the logic that will generate results for the Lighthouse repo
 **Example `audits/has-cat-images.js`**
 
 ```js
-import {Audit} = from 'lighthouse';
+import {Audit} from 'lighthouse';
 
 class CatAudit extends Audit {
   static get meta() {

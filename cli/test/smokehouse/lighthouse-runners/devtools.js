@@ -8,8 +8,6 @@
  * @fileoverview A runner that launches Chrome and executes Lighthouse via DevTools.
  */
 
-import fs from 'fs';
-import os from 'os';
 import {execFileSync} from 'child_process';
 
 import {LH_ROOT} from '../../../../root.js';
@@ -42,25 +40,16 @@ async function setup() {
  * CHROME_PATH determines which Chrome is used–otherwise the default is puppeteer's chrome binary.
  * @param {string} url
  * @param {LH.Config=} config
- * @param {{isDebug?: boolean, useLegacyNavigation?: boolean}=} testRunnerOptions
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */
-async function runLighthouse(url, config, testRunnerOptions = {}) {
+async function runLighthouse(url, config) {
   const chromeFlags = [
     `--custom-devtools-frontend=file://${devtoolsDir}/out/LighthouseIntegration/gen/front_end`,
   ];
   const {lhr, artifacts, logs} = await testUrlFromDevtools(url, {
     config,
     chromeFlags,
-    useLegacyNavigation: testRunnerOptions.useLegacyNavigation,
   });
-
-  if (testRunnerOptions.isDebug) {
-    const outputDir = fs.mkdtempSync(os.tmpdir() + '/lh-smoke-cdt-runner-');
-    fs.writeFileSync(`${outputDir}/lhr.json`, JSON.stringify(lhr));
-    fs.writeFileSync(`${outputDir}/artifacts.json`, JSON.stringify(artifacts));
-    console.log(`${url} results saved at ${outputDir}`);
-  }
 
   const log = logs.join('') + '\n';
   return {lhr, artifacts, log};
