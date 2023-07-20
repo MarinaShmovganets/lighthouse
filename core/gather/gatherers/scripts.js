@@ -48,7 +48,7 @@ function isLighthouseRuntimeEvaluateScript(script) {
  * @fileoverview Gets JavaScript file contents.
  */
 class Scripts extends BaseGatherer {
-  static symbol = Symbol('DevtoolsLog');
+  static symbol = Symbol('Scripts');
 
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
