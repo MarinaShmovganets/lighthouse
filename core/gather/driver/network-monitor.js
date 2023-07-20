@@ -30,7 +30,6 @@ class NetworkMonitor extends NetworkMonitorEventEmitter {
   /** @type {Array<LH.Crdp.Page.Frame>} */
   _frameNavigations = [];
 
-  // TODO(FR-COMPAT): switch to real TargetManager when legacy removed.
   /** @param {LH.Gatherer.Driver['targetManager']} targetManager */
   constructor(targetManager) {
     super();

@@ -91,9 +91,8 @@ class Scripts extends BaseGatherer {
 
     session.off('Debugger.scriptParsed', this.onScriptParsed);
 
-    // Without this line the Debugger domain will be off in FR runner,
-    // because only the legacy gatherer has special handling for multiple,
-    // overlapped enabled/disable calls.
+    // Without this line the Debugger domain will be off due
+    // to overlapped enabled/disable calls in other gatherers.
     await session.sendCommand('Debugger.enable');
 
     // If run on a mobile device, be sensitive to memory limitations and only
