@@ -48,8 +48,11 @@ function isLighthouseRuntimeEvaluateScript(script) {
  * @fileoverview Gets JavaScript file contents.
  */
 class Scripts extends BaseGatherer {
+  static symbol = Symbol('Scripts');
+
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
+    symbol: Scripts.symbol,
     supportedModes: ['timespan', 'navigation'],
   };
 
@@ -90,10 +93,6 @@ class Scripts extends BaseGatherer {
     const formFactor = context.baseArtifacts.HostFormFactor;
 
     session.off('Debugger.scriptParsed', this.onScriptParsed);
-
-    // Without this line the Debugger domain will be off due
-    // to overlapped enabled/disable calls in other gatherers.
-    await session.sendCommand('Debugger.enable');
 
     // If run on a mobile device, be sensitive to memory limitations and only
     // request one at a time.
