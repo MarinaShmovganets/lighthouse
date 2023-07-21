@@ -498,7 +498,7 @@
     "message": "T̂áb̂ĺêś ûśê `<caption>` ín̂śt̂éâd́ ôf́ ĉél̂ĺŝ ẃît́ĥ t́ĥé `[colspan]` ât́t̂ŕîb́ût́ê t́ô ín̂d́îćât́ê á ĉáp̂t́îón̂."
   },
   "core/audits/accessibility/target-size.js | description": {
-    "message": "T̂óûćĥ t́âŕĝét̂ś ŵít̂h́ ŝúf̂f́îćîén̂t́ ŝíẑé âńd̂ śp̂áĉín̂ǵ ĥél̂ṕ ûśêŕŝ ẃĥó m̂áŷ h́âv́ê d́îf́f̂íĉúl̂t́ŷ t́âŕĝét̂ín̂ǵ ŝḿâĺl̂ ćôńt̂ŕôĺŝ áĉt́îv́ât́ê t́ĥé t̂ár̂ǵêt́ŝ. [Ĺêár̂ń m̂ór̂é âb́ôút̂ t́ôúĉh́ t̂ár̂ǵêt́ŝ](https://dequeuniversity.com/rules/axe/4.7/target-size)."
+    "message": "T̂óûćĥ t́âŕĝét̂ś ŵít̂h́ ŝúf̂f́îćîén̂t́ ŝíẑé âńd̂ śp̂áĉín̂ǵ ĥél̂ṕ ûśêŕŝ ẃĥó m̂áŷ h́âv́ê d́îf́f̂íĉúl̂t́ŷ t́âŕĝét̂ín̂ǵ ŝḿâĺl̂ ćôńt̂ŕôĺŝ t́ô áĉt́îv́ât́ê t́ĥé t̂ár̂ǵêt́ŝ. [Ĺêár̂ń m̂ór̂é âb́ôút̂ t́ôúĉh́ t̂ár̂ǵêt́ŝ](https://dequeuniversity.com/rules/axe/4.7/target-size)."
   },
   "core/audits/accessibility/target-size.js | failureTitle": {
     "message": "T̂óûćĥ t́âŕĝét̂ś d̂ó n̂ót̂ h́âv́ê śûf́f̂íĉíêńt̂ śîźê ór̂ śp̂áĉín̂ǵ."
