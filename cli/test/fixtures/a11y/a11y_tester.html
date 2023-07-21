@@ -24,6 +24,10 @@
         aria-checked="true">
       </div>
     </section>
+    <p>aria-allowed-role</p>
+    <section>
+      <aside id="aria-allowed-role" role="doc-foreword"></aside>
+    </section>
     <p>aria-command-name</p>
     <section>
       <div id="aria-command-name" role="button"></div>
@@ -176,6 +180,12 @@
         src="./bogus.jpg">
       </img>
     </section>
+    <p>image-redundant-alt</p>
+    <section>
+      <ul>
+        <li><img id="image-redundant-alt" alt="foo bar" />foo bar</li>
+      </ul>
+    </section>
     <p>input-button-name</p>
     <section>
       <form action="#">
@@ -193,6 +203,10 @@
           id="label"
           type="text">
       </form>
+    </section>
+    <p>label-content-name-mismatch</p>
+    <section>
+        <button id="label-content-name-mismatch" aria-label="foo">foo bar</button>
     </section>
     <p>layout-table</p>
     <section>
@@ -240,6 +254,13 @@
         id="tabindex"
         tabindex="10">
       </div>
+    </section>
+    <p>table-duplicate-name</p>
+    <section>
+      <table id="table-duplicate-name" summary="i'm a table">
+        <caption>i'm a table</caption>
+        <tr><td>foo</td><td>foo</td><tr>
+      </table>
     </section>
     <p>table-fake-caption</p>
     <section>

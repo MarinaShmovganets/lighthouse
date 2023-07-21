@@ -3867,12 +3867,36 @@
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
+    "skip-link": {
+      "id": "skip-link",
+      "title": "Skip links are focusable.",
+      "description": "Including a skip link can help users skip to the main content to save time. [Learn more about skip links](https://dequeuniversity.com/rules/axe/4.7/skip-link).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
     "tabindex": {
       "id": "tabindex",
       "title": "No element has a `[tabindex]` value greater than 0",
       "description": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more about the `tabindex` attribute](https://dequeuniversity.com/rules/axe/4.7/tabindex).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
+    },
+    "table-duplicate-name": {
+      "id": "table-duplicate-name",
+      "title": "Tables have different content in the summary attribute and `<caption>`.",
+      "description": "The summary attribute should describe the table structure, while `<caption>` should have the onscreen title. Accurate table mark-up helps users of screen readers. [Learn more about summary and caption](https://dequeuniversity.com/rules/axe/4.7/table-duplicate-name).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
     },
     "table-fake-caption": {
       "id": "table-fake-caption",
@@ -6276,9 +6300,19 @@
           "group": "a11y-names-labels"
         },
         {
+          "id": "skip-link",
+          "weight": 3,
+          "group": "a11y-names-labels"
+        },
+        {
           "id": "tabindex",
           "weight": 0,
           "group": "a11y-navigation"
+        },
+        {
+          "id": "table-duplicate-name",
+          "weight": 1,
+          "group": "a11y-tables-lists"
         },
         {
           "id": "table-fake-caption",
@@ -8686,7 +8720,19 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:skip-link",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:tabindex",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:table-duplicate-name",
         "duration": 100,
         "entryType": "measure"
       },
@@ -10133,11 +10179,23 @@
       "core/audits/accessibility/select-name.js | description": [
         "audits[select-name].description"
       ],
+      "core/audits/accessibility/skip-link.js | title": [
+        "audits[skip-link].title"
+      ],
+      "core/audits/accessibility/skip-link.js | description": [
+        "audits[skip-link].description"
+      ],
       "core/audits/accessibility/tabindex.js | title": [
         "audits.tabindex.title"
       ],
       "core/audits/accessibility/tabindex.js | description": [
         "audits.tabindex.description"
+      ],
+      "core/audits/accessibility/table-duplicate-name.js | title": [
+        "audits[table-duplicate-name].title"
+      ],
+      "core/audits/accessibility/table-duplicate-name.js | description": [
+        "audits[table-duplicate-name].description"
       ],
       "core/audits/accessibility/table-fake-caption.js | title": [
         "audits[table-fake-caption].title"
