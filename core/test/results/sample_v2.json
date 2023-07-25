@@ -6132,7 +6132,7 @@
         },
         {
           "id": "aria-dialog-name",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-aria"
         },
         {
@@ -6177,12 +6177,12 @@
         },
         {
           "id": "aria-roles",
-          "weight": 10,
+          "weight": 7,
           "group": "a11y-aria"
         },
         {
           "id": "aria-text",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-aria"
         },
         {
@@ -6222,7 +6222,7 @@
         },
         {
           "id": "color-contrast",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-color-contrast"
         },
         {
@@ -6237,7 +6237,7 @@
         },
         {
           "id": "document-title",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-names-labels"
         },
         {
@@ -6262,12 +6262,12 @@
         },
         {
           "id": "heading-order",
-          "weight": 2,
+          "weight": 3,
           "group": "a11y-navigation"
         },
         {
           "id": "html-has-lang",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-language"
         },
         {
@@ -6277,7 +6277,7 @@
         },
         {
           "id": "html-xml-lang-mismatch",
-          "weight": 2,
+          "weight": 3,
           "group": "a11y-language"
         },
         {
@@ -6302,27 +6302,22 @@
         },
         {
           "id": "label-content-name-mismatch",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-names-labels"
         },
         {
           "id": "label",
-          "weight": 10,
-          "group": "a11y-names-labels"
-        },
-        {
-          "id": "label-content-name-mismatch",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-names-labels"
         },
         {
           "id": "link-in-text-block",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-color-contrast"
         },
         {
           "id": "link-name",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-names-labels"
         },
         {
@@ -6347,7 +6342,7 @@
         },
         {
           "id": "object-alt",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-names-labels"
         },
         {
@@ -6372,7 +6367,7 @@
         },
         {
           "id": "table-fake-caption",
-          "weight": 3,
+          "weight": 7,
           "group": "a11y-tables-lists"
         },
         {
@@ -6462,7 +6457,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 0.82
+      "score": 0.81
     },
     "best-practices": {
       "title": "Best Practices",
