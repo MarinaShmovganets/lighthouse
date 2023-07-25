@@ -274,7 +274,6 @@ const defaultConfig = {
     'accessibility/input-image-alt',
     'accessibility/label-content-name-mismatch',
     'accessibility/label',
-    'accessibility/label-content-name-mismatch',
     'accessibility/landmark-one-main',
     'accessibility/link-name',
     'accessibility/link-in-text-block',
