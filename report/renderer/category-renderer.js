@@ -310,13 +310,14 @@ export class CategoryRenderer {
    * in a collapsed state.
    * @param {Exclude<TopLevelClumpId, 'failed'>} clumpId
    * @param {{auditRefs: Array<LH.ReportResult.AuditRef>, description?: string}} clumpOpts
+   * @param {boolean} openByDefault
    * @return {!Element}
    */
-  renderClump(clumpId, {auditRefs, description}) {
+  renderClump(clumpId, {auditRefs, description}, openByDefault = false) {
     const clumpComponent = this.dom.createComponent('clump');
     const clumpElement = this.dom.find('.lh-clump', clumpComponent);
 
-    if (clumpId === 'warning') {
+    if (clumpId === 'warning' || openByDefault) {
       clumpElement.setAttribute('open', '');
     }
 
@@ -571,7 +572,11 @@ export class CategoryRenderer {
       }
 
       const description = clumpId === 'manual' ? category.manualDescription : undefined;
-      const clumpElem = this.renderClump(clumpId, {auditRefs, description});
+      const scoreOutOf100 = Math.round(Number(category.score) * 100);
+      // Expand the manual a11y checks upon scoring 100.
+      const openByDefault =
+        (category.id === 'accessibility' && clumpId === 'manual' && scoreOutOf100 === 100);
+      const clumpElem = this.renderClump(clumpId, {auditRefs, description}, openByDefault);
       element.append(clumpElem);
     }
 
