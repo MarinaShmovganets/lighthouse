@@ -66,7 +66,7 @@ class LongTasks extends Audit {
       scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'URL'],
+      requiredArtifacts: ['Trace', 'DevtoolsLog', 'URL'],
     };
   }
 
@@ -174,9 +174,9 @@ class LongTasks extends Audit {
   static async audit(artifacts, context) {
     const settings = context.settings || {};
     const URL = artifacts.URL;
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
+    const trace = artifacts.Trace;
     const tasks = await MainThreadTasks.request(trace, context);
-    const devtoolsLog = artifacts.devtoolsLogs[LongTasks.DEFAULT_PASS];
+    const devtoolsLog = artifacts.DevtoolsLog;
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
 
     /** @type {Map<LH.TraceEvent, LH.Gatherer.Simulation.NodeTiming>|undefined} */

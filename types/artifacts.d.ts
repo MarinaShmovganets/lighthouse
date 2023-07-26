@@ -156,10 +156,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   TraceElements: Artifacts.TraceElement[];
   /** Parsed version of the page's Web App Manifest, or null if none found. */
   WebAppManifest: Artifacts.Manifest | null;
-  /** COMPAT: A set of traces, keyed by passName. */
-  traces: {[passName: string]: Trace};
-  /** COMPAT: A set of DevTools debugger protocol records, keyed by passName. */
-  devtoolsLogs: {[passName: string]: DevtoolsLog};
 }
 
 declare module Artifacts {

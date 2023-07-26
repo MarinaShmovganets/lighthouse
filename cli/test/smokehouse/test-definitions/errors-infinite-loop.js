@@ -37,18 +37,14 @@ const expectations = {
     audits: {
       'first-contentful-paint': {
         scoreDisplayMode: 'error',
-        errorMessage: 'Required traces gatherer did not run.',
+        errorMessage: /NO_FCP/,
       },
     },
   },
   artifacts: {
     PageLoadError: {code: 'PAGE_HUNG'},
-    devtoolsLogs: {
-      'pageLoadError-default': {...NONEMPTY_ARRAY},
-    },
-    traces: {
-      'pageLoadError-default': {traceEvents: NONEMPTY_ARRAY},
-    },
+    DevtoolsLog: {...NONEMPTY_ARRAY},
+    Trace: {traceEvents: NONEMPTY_ARRAY},
   },
 };
 

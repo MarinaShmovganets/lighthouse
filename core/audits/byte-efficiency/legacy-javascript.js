@@ -118,7 +118,7 @@ class LegacyJavascript extends ByteEfficiencyAudit {
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
       description: str_(UIStrings.description),
       title: str_(UIStrings.title),
-      requiredArtifacts: ['devtoolsLogs', 'traces', 'Scripts', 'SourceMaps',
+      requiredArtifacts: ['DevtoolsLog', 'Trace', 'Scripts', 'SourceMaps',
         'GatherContext', 'URL'],
     };
   }
@@ -427,7 +427,7 @@ class LegacyJavascript extends ByteEfficiencyAudit {
    * @return {Promise<ByteEfficiencyProduct>}
    */
   static async audit_(artifacts, networkRecords, context) {
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const devtoolsLog = artifacts.DevtoolsLog;
     const classifiedEntities = await EntityClassification.request(
       {URL: artifacts.URL, devtoolsLog}, context);
 

@@ -37,7 +37,7 @@ class ServerResponseTime extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
       supportedModes: ['navigation'],
-      requiredArtifacts: ['devtoolsLogs', 'URL', 'GatherContext'],
+      requiredArtifacts: ['DevtoolsLog', 'URL', 'GatherContext'],
     };
   }
 
@@ -60,7 +60,7 @@ class ServerResponseTime extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const devtoolsLog = artifacts.DevtoolsLog;
 
     /** @type {LH.Artifacts.NetworkRequest} */
     const mainResource = await MainResource.request({devtoolsLog, URL: artifacts.URL}, context);

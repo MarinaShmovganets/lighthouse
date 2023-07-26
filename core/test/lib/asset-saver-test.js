@@ -10,7 +10,6 @@ import fs from 'fs';
 import * as assetSaver from '../../lib/asset-saver.js';
 import {MetricTraceEvents} from '../../lib/traces/metric-trace-events.js';
 import {LighthouseError} from '../../lib/lh-error.js';
-import {Audit} from '../../audits/audit.js';
 import {LH_ROOT} from '../../../root.js';
 import {getModuleDirectory} from '../../../esm-utils.js';
 import {readJson} from '../test-utils.js';
@@ -37,14 +36,8 @@ describe('asset-saver helper', () => {
     before(() => {
       fs.mkdirSync(tmpDir, {recursive: true});
       const artifacts = {
-        devtoolsLogs: {
-          [Audit.DEFAULT_PASS]: [{message: 'first'}, {message: 'second'}],
-        },
-        traces: {
-          [Audit.DEFAULT_PASS]: {
-            traceEvents,
-          },
-        },
+        DevtoolsLog: [{message: 'first'}, {message: 'second'}],
+        Trace: {traceEvents},
       };
 
       return assetSaver.saveAssets(artifacts, dbwResults.audits, `${tmpDir}/the_file`);
@@ -73,10 +66,8 @@ describe('asset-saver helper', () => {
     it('adds fake events to trace', () => {
       const countEvents = trace => trace.traceEvents.length;
       const mockArtifacts = {
-        devtoolsLogs: {},
-        traces: {
-          defaultPass: dbwTrace,
-        },
+        DevtoolsLog: undefined,
+        Trace: dbwTrace,
       };
       const beforeCount = countEvents(dbwTrace);
       return assetSaver.prepareAssets(mockArtifacts, dbwResults.audits).then(preparedAssets => {
@@ -205,7 +196,7 @@ describe('asset-saver helper', () => {
       fs.unlinkSync(devtoolsLogFilename);
     });
 
-    it('prints devtoolsLogs with an event per line', async () => {
+    it('prints devtoolsLog with an event per line', async () => {
       const devtoolsLog = [
         {method: 'Network.requestServedFromCache', params: {requestId: '1.22'}},
         {method: 'Network.responseReceived', params: {status: 301, headers: {':method': 'POST'}}},
@@ -228,8 +219,6 @@ describe('asset-saver helper', () => {
       const artifacts = await assetSaver.loadArtifacts(artifactsPath);
       assert.strictEqual(artifacts.LighthouseRunWarnings.length, 2);
       assert.strictEqual(artifacts.URL.requestedUrl, 'https://www.reddit.com/r/nba');
-      assert.strictEqual(artifacts.devtoolsLogs.defaultPass.length, 555);
-      assert.strictEqual(artifacts.traces.defaultPass.traceEvents.length, 14);
       assert.strictEqual(artifacts.DevtoolsLog.length, 555);
       assert.strictEqual(artifacts.Trace.traceEvents.length, 14);
     });
@@ -351,8 +340,6 @@ describe('asset-saver helper', () => {
       error.code = 'ECONNREFUSED';
 
       const artifacts = {
-        traces: {},
-        devtoolsLogs: {},
         ViewportDimensions: error,
       };
 
@@ -375,8 +362,6 @@ describe('asset-saver helper', () => {
         {cause: new Error('the cause')});
 
       const artifacts = {
-        traces: {},
-        devtoolsLogs: {},
         ScriptElements: lhError,
       };
 
@@ -397,12 +382,8 @@ describe('asset-saver helper', () => {
 
     it('saves artifacts in files concluding with a newline', async () => {
       const artifacts = {
-        devtoolsLogs: {
-          [Audit.DEFAULT_PASS]: [{method: 'first'}, {method: 'second'}],
-        },
-        traces: {
-          [Audit.DEFAULT_PASS]: {traceEvents: traceEvents.slice(0, 100)},
-        },
+        DevtoolsLog: [{method: 'first'}, {method: 'second'}],
+        Trace: {traceEvents: traceEvents.slice(0, 100)},
         RobotsTxt: {status: 404, content: null},
       };
       await assetSaver.saveArtifacts(artifacts, outputPath);

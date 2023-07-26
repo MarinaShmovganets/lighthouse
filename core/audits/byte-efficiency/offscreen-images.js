@@ -50,8 +50,8 @@ class OffscreenImages extends ByteEfficiencyAudit {
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
       supportedModes: ['navigation'],
-      requiredArtifacts: ['ImageElements', 'ViewportDimensions', 'GatherContext', 'devtoolsLogs',
-        'traces', 'URL'],
+      requiredArtifacts: ['ImageElements', 'ViewportDimensions', 'GatherContext', 'DevtoolsLog',
+        'Trace', 'URL'],
     };
   }
 
@@ -180,8 +180,8 @@ class OffscreenImages extends ByteEfficiencyAudit {
     const images = artifacts.ImageElements;
     const viewportDimensions = artifacts.ViewportDimensions;
     const gatherContext = artifacts.GatherContext;
-    const trace = artifacts.traces[ByteEfficiencyAudit.DEFAULT_PASS];
-    const devtoolsLog = artifacts.devtoolsLogs[ByteEfficiencyAudit.DEFAULT_PASS];
+    const trace = artifacts.Trace;
+    const devtoolsLog = artifacts.DevtoolsLog;
     const URL = artifacts.URL;
 
     /** @type {string[]} */

@@ -31,7 +31,7 @@ class Redirects extends Audit {
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       supportedModes: ['navigation'],
-      requiredArtifacts: ['URL', 'GatherContext', 'devtoolsLogs', 'traces'],
+      requiredArtifacts: ['URL', 'GatherContext', 'DevtoolsLog', 'Trace'],
     };
   }
 
@@ -84,8 +84,8 @@ class Redirects extends Audit {
    */
   static async audit(artifacts, context) {
     const settings = context.settings;
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const trace = artifacts.Trace;
+    const devtoolsLog = artifacts.DevtoolsLog;
     const gatherContext = artifacts.GatherContext;
 
     const processedTrace = await ProcessedTrace.request(trace, context);

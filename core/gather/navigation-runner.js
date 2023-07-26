@@ -187,9 +187,8 @@ async function _computeNavigationResult(
 
     /** @type {Partial<LH.GathererArtifacts>} */
     const artifacts = {};
-    const pageLoadErrorId = `pageLoadError-${navigationContext.navigation.id}`;
-    if (debugData.devtoolsLog) artifacts.devtoolsLogs = {[pageLoadErrorId]: debugData.devtoolsLog};
-    if (debugData.trace) artifacts.traces = {[pageLoadErrorId]: debugData.trace};
+    if (debugData.devtoolsLog) artifacts.DevtoolsLog = debugData.devtoolsLog;
+    if (debugData.trace) artifacts.Trace = debugData.trace;
 
     return {
       pageLoadError,

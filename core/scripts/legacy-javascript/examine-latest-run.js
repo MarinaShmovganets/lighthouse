@@ -32,7 +32,7 @@ async function main() {
   const artifacts = readJson(`${LATEST_RUN_DIR}/artifacts.json`);
   const devtoolsLog = readJson(`${LATEST_RUN_DIR}/defaultPass.devtoolslog.json`);
   const scripts = artifacts.Scripts;
-  artifacts.devtoolsLogs = {defaultPass: devtoolsLog};
+  artifacts.DevtoolsLog = devtoolsLog;
 
   const auditResults = await LegacyJavascript.audit(artifacts, {
     computedCache: new Map(),

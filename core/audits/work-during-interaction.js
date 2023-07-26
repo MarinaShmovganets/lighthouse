@@ -60,7 +60,7 @@ class WorkDuringInteraction extends Audit {
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       supportedModes: ['timespan'],
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'TraceElements'],
+      requiredArtifacts: ['Trace', 'DevtoolsLog', 'TraceElements'],
     };
   }
 
@@ -231,7 +231,7 @@ class WorkDuringInteraction extends Audit {
       };
     }
 
-    const trace = artifacts.traces[WorkDuringInteraction.DEFAULT_PASS];
+    const trace = artifacts.Trace;
     const metricData = {trace, settings};
     const interactionEvent = await Responsiveness.request(metricData, context);
     // If no interaction, diagnostic audit is n/a.
@@ -255,7 +255,7 @@ class WorkDuringInteraction extends Audit {
     const traceElementItem = WorkDuringInteraction.getTraceElementTable(artifacts.TraceElements);
     if (traceElementItem) auditDetailsItems.push(traceElementItem);
 
-    const devtoolsLog = artifacts.devtoolsLogs[WorkDuringInteraction.DEFAULT_PASS];
+    const devtoolsLog = artifacts.DevtoolsLog;
     // Network records will usually be empty for timespans.
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
     const processedTrace = await ProcessedTrace.request(trace, context);

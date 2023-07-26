@@ -53,26 +53,23 @@ function loadArtifacts(basePath) {
 
   const filenames = fs.readdirSync(basePath);
 
-  // load devtoolsLogs
-  artifacts.devtoolsLogs = {};
+  // load devtoolsLog
   filenames.filter(f => f.endsWith(devtoolsLogSuffix)).forEach(filename => {
     const passName = filename.replace(devtoolsLogSuffix, '');
     const devtoolsLog = JSON.parse(fs.readFileSync(path.join(basePath, filename), 'utf8'));
-    artifacts.devtoolsLogs[passName] = devtoolsLog;
+    artifacts.DevtoolsLog = devtoolsLog;
     if (passName === 'defaultPass') {
       artifacts.DevtoolsLog = devtoolsLog;
     }
   });
 
-  // load traces
-  artifacts.traces = {};
+  // load trace
   filenames.filter(f => f.endsWith(traceSuffix)).forEach(filename => {
     const file = fs.readFileSync(path.join(basePath, filename), {encoding: 'utf-8'});
     const trace = JSON.parse(file);
     const passName = filename.replace(traceSuffix, '');
-    artifacts.traces[passName] = Array.isArray(trace) ? {traceEvents: trace} : trace;
     if (passName === 'defaultPass') {
-      artifacts.Trace = artifacts.traces[passName];
+      artifacts.Trace = Array.isArray(trace) ? {traceEvents: trace} : trace;
     }
   });
 
@@ -195,7 +192,7 @@ async function saveFlowArtifacts(flowArtifacts, basePath) {
 
 /**
  * Save artifacts object mostly to single file located at basePath/artifacts.json.
- * Also save the traces & devtoolsLogs to their own files
+ * Also save the trace & devtoolsLog to their own files
  * @param {LH.Artifacts} artifacts
  * @param {string} basePath
  * @return {Promise<void>}
@@ -214,23 +211,18 @@ async function saveArtifacts(artifacts, basePath) {
     }
   }
 
-  // `DevtoolsLog` and `Trace` will always be the 'defaultPass' version.
-  // We don't need to save them twice, so extract them here.
-  // eslint-disable-next-line no-unused-vars
-  const {traces, devtoolsLogs, DevtoolsLog, Trace, ...restArtifacts} = artifacts;
+  const {DevtoolsLog, Trace, ...restArtifacts} = artifacts;
 
-  // save traces
-  if (traces) {
-    for (const [passName, trace] of Object.entries(traces)) {
-      await saveTrace(trace, `${basePath}/${passName}${traceSuffix}`);
-    }
+  // save trace
+  if (Trace) {
+    // TODO: Remove "defaultPass" prefix
+    await saveTrace(Trace, `${basePath}/defaultPass${traceSuffix}`);
   }
 
   // save devtools log
-  if (devtoolsLogs) {
-    for (const [passName, devtoolsLog] of Object.entries(devtoolsLogs)) {
-      await saveDevtoolsLog(devtoolsLog, `${basePath}/${passName}${devtoolsLogSuffix}`);
-    }
+  if (DevtoolsLog) {
+    // TODO: Remove "defaultPass" prefix
+    await saveDevtoolsLog(DevtoolsLog, `${basePath}/defaultPass${devtoolsLogSuffix}`);
   }
 
   // save everything else, using a replacer to serialize LighthouseErrors in the artifacts.
@@ -256,26 +248,24 @@ function saveLhr(lhr, basePath) {
  * @return {Promise<Array<PreparedAssets>>}
  */
 async function prepareAssets(artifacts, audits) {
-  const passNames = Object.keys(artifacts.traces);
   /** @type {Array<PreparedAssets>} */
   const assets = [];
 
-  for (const passName of passNames) {
-    const trace = artifacts.traces[passName];
-    const devtoolsLog = artifacts.devtoolsLogs[passName];
+  const trace = artifacts.Trace;
+  const devtoolsLog = artifacts.DevtoolsLog;
 
-    const traceData = Object.assign({}, trace);
-    if (audits) {
-      const evts = new MetricTraceEvents(traceData.traceEvents, audits).generateFakeEvents();
-      traceData.traceEvents = traceData.traceEvents.concat(evts);
-    }
-
-    assets.push({
-      passName,
-      traceData,
-      devtoolsLog,
-    });
+  const traceData = Object.assign({}, trace);
+  if (audits) {
+    const evts = new MetricTraceEvents(traceData.traceEvents, audits).generateFakeEvents();
+    traceData.traceEvents = traceData.traceEvents.concat(evts);
   }
+
+  assets.push({
+    // TODO: Remove "defaultPass" prefix
+    passName: 'defaultPass',
+    traceData,
+    devtoolsLog,
+  });
 
   return assets;
 }

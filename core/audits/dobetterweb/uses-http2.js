@@ -61,7 +61,7 @@ class UsesHTTP2Audit extends Audit {
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       supportedModes: ['timespan', 'navigation'],
-      requiredArtifacts: ['URL', 'devtoolsLogs', 'traces', 'GatherContext'],
+      requiredArtifacts: ['URL', 'DevtoolsLog', 'Trace', 'GatherContext'],
     };
   }
 
@@ -203,8 +203,8 @@ class UsesHTTP2Audit extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const trace = artifacts.Trace;
+    const devtoolsLog = artifacts.DevtoolsLog;
     const URL = artifacts.URL;
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
     const classifiedEntities = await EntityClassification.request({URL, devtoolsLog}, context);

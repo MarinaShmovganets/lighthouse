@@ -35,7 +35,7 @@ class TotalByteWeight extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['devtoolsLogs'],
+      requiredArtifacts: ['DevtoolsLog'],
     };
   }
 
@@ -58,7 +58,7 @@ class TotalByteWeight extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const devtoolsLog = artifacts.DevtoolsLog;
     const records = await NetworkRecords.request(devtoolsLog, context);
 
     let totalBytes = 0;

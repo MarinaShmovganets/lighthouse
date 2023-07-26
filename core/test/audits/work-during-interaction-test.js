@@ -289,7 +289,7 @@ Object {
 
   it('is not applicable if no interactions occurred in trace', async () => {
     const {artifacts, context} = getTestData();
-    artifacts.traces[WorkDuringInteraction.DEFAULT_PASS] = noInteractionTrace;
+    artifacts.Trace = noInteractionTrace;
     const result = await WorkDuringInteraction.audit(artifacts, context);
     expect(result).toMatchObject({
       score: null,

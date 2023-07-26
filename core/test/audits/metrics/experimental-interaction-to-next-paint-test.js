@@ -70,7 +70,7 @@ describe('Interaction to Next Paint', () => {
 
   it('is not applicable if no interactions occurred in trace', async () => {
     const {artifacts, context} = getTestData();
-    artifacts.traces[ExperimentalInteractionToNextPaint.DEFAULT_PASS] = noInteractionTrace;
+    artifacts.Trace = noInteractionTrace;
     const result = await ExperimentalInteractionToNextPaint.audit(artifacts, context);
     expect(result).toMatchObject({
       score: null,

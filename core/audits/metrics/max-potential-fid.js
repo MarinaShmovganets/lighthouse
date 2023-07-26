@@ -33,7 +33,7 @@ class MaxPotentialFID extends Audit {
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       supportedModes: ['navigation'],
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'GatherContext', 'URL'],
+      requiredArtifacts: ['Trace', 'DevtoolsLog', 'GatherContext', 'URL'],
     };
   }
 
@@ -54,8 +54,8 @@ class MaxPotentialFID extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const trace = artifacts.Trace;
+    const devtoolsLog = artifacts.DevtoolsLog;
     const gatherContext = artifacts.GatherContext;
     const metricComputationData = {trace, devtoolsLog, gatherContext,
       settings: context.settings, URL: artifacts.URL};

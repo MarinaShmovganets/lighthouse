@@ -164,10 +164,6 @@ const defaultConfig = {
     {id: 'ViewportDimensions', gatherer: 'viewport-dimensions'},
     {id: 'WebAppManifest', gatherer: 'web-app-manifest'},
 
-    // Artifact copies are renamed for compatibility with legacy artifacts.
-    {id: 'devtoolsLogs', gatherer: 'devtools-log-compat'},
-    {id: 'traces', gatherer: 'trace-compat'},
-
     // FullPageScreenshot comes at the end so all other node analysis is captured.
     {id: 'FullPageScreenshot', gatherer: 'full-page-screenshot'},
 

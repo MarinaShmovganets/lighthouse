@@ -148,7 +148,7 @@ class Runner {
    * @param {LH.Artifacts.ComputedContext} context
    */
   static async getEntityClassification(artifacts, context) {
-    const devtoolsLog = artifacts.devtoolsLogs?.[Audit.DEFAULT_PASS];
+    const devtoolsLog = artifacts.DevtoolsLog;
     if (!devtoolsLog) return;
     const classifiedEntities = await EntityClassification.request(
       {URL: artifacts.URL, devtoolsLog}, context);
@@ -369,15 +369,7 @@ class Runner {
     try {
       // Return an early error if an artifact required for the audit is missing or an error.
       for (const artifactName of audit.meta.requiredArtifacts) {
-        const noArtifact = artifacts[artifactName] === undefined;
-
-        // If trace/devtoolsLog required, check that DEFAULT_PASS trace/devtoolsLog exists.
-        // NOTE: for now, not a pass-specific check of traces or devtoolsLogs.
-        const noRequiredTrace = artifactName === 'traces' && !artifacts.traces[Audit.DEFAULT_PASS];
-        const noRequiredDevtoolsLog = artifactName === 'devtoolsLogs' &&
-            !artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-
-        if (noArtifact || noRequiredTrace || noRequiredDevtoolsLog) {
+        if (artifacts[artifactName] === undefined) {
           log.warn('Runner',
               `${artifactName} gatherer, required by audit ${audit.meta.id}, did not run.`);
           throw new LighthouseError(

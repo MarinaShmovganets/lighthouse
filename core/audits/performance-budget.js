@@ -40,7 +40,7 @@ class ResourceBudget extends Audit {
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
       supportedModes: ['navigation'],
-      requiredArtifacts: ['devtoolsLogs', 'URL'],
+      requiredArtifacts: ['DevtoolsLog', 'URL'],
     };
   }
 
@@ -120,7 +120,7 @@ class ResourceBudget extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const devtoolsLog = artifacts.DevtoolsLog;
     const data = {devtoolsLog, URL: artifacts.URL, budgets: context.settings.budgets};
     const summary = await ResourceSummary.request(data, context);
     const mainResource = await MainResource.request({URL: artifacts.URL, devtoolsLog}, context);

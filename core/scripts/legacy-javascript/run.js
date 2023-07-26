@@ -141,18 +141,16 @@ function getLegacyJavascriptResults(code, map, {sourceMaps}) {
     {url: documentUrl, requestId: '1000.1', resourceType: /** @type {const} */ ('Document')},
     {url: scriptUrl, requestId: '1000.2'},
   ];
-  const devtoolsLogs = networkRecordsToDevtoolsLog(networkRecords);
+  const devtoolsLog = networkRecordsToDevtoolsLog(networkRecords);
 
-  /** @type {Pick<LH.Artifacts, 'devtoolsLogs'|'URL'|'Scripts'|'SourceMaps'>} */
+  /** @type {Pick<LH.Artifacts, 'DevtoolsLog'|'URL'|'Scripts'|'SourceMaps'>} */
   const artifacts = {
     URL: {
       requestedUrl: documentUrl,
       mainDocumentUrl: documentUrl,
       finalDisplayedUrl: documentUrl,
     },
-    devtoolsLogs: {
-      [LegacyJavascript.DEFAULT_PASS]: devtoolsLogs,
-    },
+    DevtoolsLog: devtoolsLog,
     Scripts: [
       // @ts-expect-error - partial Script excluding unused properties
       {scriptId, url: scriptUrl, content: code},

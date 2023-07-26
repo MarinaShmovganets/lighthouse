@@ -61,7 +61,7 @@ class HTTPS extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['devtoolsLogs', 'InspectorIssues'],
+      requiredArtifacts: ['DevtoolsLog', 'InspectorIssues'],
     };
   }
 
@@ -71,8 +71,8 @@ class HTTPS extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const devtoolsLogs = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
-    const networkRecords = await NetworkRecords.request(devtoolsLogs, context);
+    const devtoolsLog = artifacts.DevtoolsLog;
+    const networkRecords = await NetworkRecords.request(devtoolsLog, context);
     const insecureURLs = networkRecords
       .filter(record => !NetworkRequest.isSecureRequest(record))
       .map(record => UrlUtils.elideDataURI(record.url));

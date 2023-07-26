@@ -62,7 +62,7 @@ class UsesRelPreconnectAudit extends Audit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       supportedModes: ['navigation'],
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'URL', 'LinkElements'],
+      requiredArtifacts: ['Trace', 'DevtoolsLog', 'URL', 'LinkElements'],
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
     };
   }
@@ -122,8 +122,8 @@ class UsesRelPreconnectAudit extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const trace = artifacts.traces[UsesRelPreconnectAudit.DEFAULT_PASS];
-    const devtoolsLog = artifacts.devtoolsLogs[UsesRelPreconnectAudit.DEFAULT_PASS];
+    const trace = artifacts.Trace;
+    const devtoolsLog = artifacts.DevtoolsLog;
     const settings = context.settings;
 
     let maxWastedLcp = 0;

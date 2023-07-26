@@ -37,7 +37,7 @@ class CriticalRequestChains extends Audit {
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
       supportedModes: ['navigation'],
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'URL'],
+      requiredArtifacts: ['Trace', 'DevtoolsLog', 'URL'],
     };
   }
 
@@ -167,8 +167,8 @@ class CriticalRequestChains extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const trace = artifacts.Trace;
+    const devtoolsLog = artifacts.DevtoolsLog;
     const URL = artifacts.URL;
     const chains = await ComputedChains.request({devtoolsLog, trace, URL}, context);
     let chainCount = 0;

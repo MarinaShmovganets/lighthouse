@@ -33,7 +33,7 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['CSSUsage', 'URL', 'devtoolsLogs', 'traces', 'GatherContext'],
+      requiredArtifacts: ['CSSUsage', 'URL', 'DevtoolsLog', 'Trace', 'GatherContext'],
     };
   }
 
@@ -46,7 +46,7 @@ class UnusedCSSRules extends ByteEfficiencyAudit {
   static async audit_(artifacts, _, context) {
     const unusedCssItems = await UnusedCSS.request({
       CSSUsage: artifacts.CSSUsage,
-      devtoolsLog: artifacts.devtoolsLogs[ByteEfficiencyAudit.DEFAULT_PASS],
+      devtoolsLog: artifacts.DevtoolsLog,
     }, context);
     const items = unusedCssItems
       .filter(sheet => sheet && sheet.wastedBytes > IGNORE_THRESHOLD_IN_BYTES);

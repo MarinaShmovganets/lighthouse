@@ -161,8 +161,6 @@ async function generateErrorLHR() {
     GatherContext: {gatherMode: 'navigation'},
     Timing: [],
     PageLoadError: null,
-    devtoolsLogs: {},
-    traces: {},
   };
 
   // Save artifacts to disk then run `lighthouse -A` with them.

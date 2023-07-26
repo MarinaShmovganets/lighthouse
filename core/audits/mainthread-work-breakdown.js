@@ -42,7 +42,7 @@ class MainThreadWorkBreakdown extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      requiredArtifacts: ['traces'],
+      requiredArtifacts: ['Trace'],
     };
   }
 
@@ -80,7 +80,7 @@ class MainThreadWorkBreakdown extends Audit {
    */
   static async audit(artifacts, context) {
     const settings = context.settings || {};
-    const trace = artifacts.traces[MainThreadWorkBreakdown.DEFAULT_PASS];
+    const trace = artifacts.Trace;
 
     const tasks = await MainThreadTasks.request(trace, context);
     const multiplier = settings.throttlingMethod === 'simulate' ?

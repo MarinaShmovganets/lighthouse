@@ -117,7 +117,7 @@ class RenderBlockingResources extends Audit {
       description: str_(UIStrings.description),
       // TODO: look into adding an `optionalArtifacts` property that captures the non-required nature
       // of CSSUsage
-      requiredArtifacts: ['URL', 'TagsBlockingFirstPaint', 'traces', 'devtoolsLogs', 'CSSUsage',
+      requiredArtifacts: ['URL', 'TagsBlockingFirstPaint', 'Trace', 'DevtoolsLog', 'CSSUsage',
         'GatherContext', 'Stacks'],
     };
   }
@@ -129,8 +129,8 @@ class RenderBlockingResources extends Audit {
    */
   static async computeResults(artifacts, context) {
     const gatherContext = artifacts.GatherContext;
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const trace = artifacts.Trace;
+    const devtoolsLog = artifacts.DevtoolsLog;
     const simulatorData = {devtoolsLog, settings: context.settings};
     const processedNavigation = await ProcessedNavigation.request(trace, context);
     const simulator = await LoadSimulator.request(simulatorData, context);
@@ -260,7 +260,7 @@ class RenderBlockingResources extends Audit {
     try {
       const unusedCssItems = await UnusedCSS.request({
         CSSUsage: artifacts.CSSUsage,
-        devtoolsLog: artifacts.devtoolsLogs[Audit.DEFAULT_PASS],
+        devtoolsLog: artifacts.DevtoolsLog,
       }, context);
       for (const item of unusedCssItems) {
         wastedBytesByUrl.set(item.url, item.wastedBytes);
