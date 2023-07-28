@@ -104,9 +104,10 @@ describe('ReportUIFeatures', () => {
 
     describe('view trace button', () => {
       it('is shown in report if callback provided and not simulated throttling', () => {
+        const onViewTrace = jestMock.fn();
         const lhr = JSON.parse(JSON.stringify(sampleResults));
         lhr.configSettings.throttlingMethod = 'devtools';
-        const container = render(lhr, {onViewTrace: () => {}});
+        const container = render(lhr, {onViewTrace});
 
         const buttons = dom.findAll('.lh-button', container);
         expect(buttons).toHaveLength(3);
@@ -117,12 +118,16 @@ describe('ReportUIFeatures', () => {
 
         const viewTraceButton = buttons[2];
         expect(viewTraceButton.textContent).toEqual('View Trace');
+
+        viewTraceButton.click();
+        expect(onViewTrace).toHaveBeenCalled();
       });
 
       it('is shown in dropdown if callback provided and using simulated throttling', () => {
+        const onViewTrace = jestMock.fn();
         const lhr = JSON.parse(JSON.stringify(sampleResults));
         lhr.configSettings.throttlingMethod = 'simulate';
-        const container = render(lhr, {onViewTrace: () => {}});
+        const container = render(lhr, {onViewTrace});
 
         const buttons = dom.findAll('.lh-button', container);
         expect(buttons).toHaveLength(2);
@@ -131,6 +136,9 @@ describe('ReportUIFeatures', () => {
           dom.find('a[data-action="view-unthrottled-trace"]', container);
         expect(viewUnthrottledTraceButton.classList).not.toContain('lh-hidden');
         expect(viewUnthrottledTraceButton.textContent).toEqual('View Unthrottled Trace');
+
+        viewUnthrottledTraceButton.click();
+        expect(onViewTrace).toHaveBeenCalled();
       });
 
       it('is not shown in dropdown or report if callback not provided', () => {
