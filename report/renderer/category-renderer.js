@@ -309,15 +309,14 @@ export class CategoryRenderer {
    * Take a set of audits and render in a top-level, expandable clump that starts
    * in a collapsed state.
    * @param {Exclude<TopLevelClumpId, 'failed'>} clumpId
-   * @param {{auditRefs: Array<LH.ReportResult.AuditRef>, description?: string}} clumpOpts
-   * @param {boolean} openByDefault
+   * @param {{auditRefs: Array<LH.ReportResult.AuditRef>, description?: string, openByDefault?: boolean}} clumpOpts
    * @return {!Element}
    */
-  renderClump(clumpId, {auditRefs, description}, openByDefault = false) {
+  renderClump(clumpId, {auditRefs, description, openByDefault}) {
     const clumpComponent = this.dom.createComponent('clump');
     const clumpElement = this.dom.find('.lh-clump', clumpComponent);
 
-    if (clumpId === 'warning' || openByDefault) {
+    if (openByDefault) {
       clumpElement.setAttribute('open', '');
     }
 
@@ -560,6 +559,7 @@ export class CategoryRenderer {
       });
     }
 
+    const numFailingAudits = clumps.get('failed')?.length;
     // Render each clump.
     for (const [clumpId, auditRefs] of clumps) {
       if (auditRefs.length === 0) continue;
@@ -572,11 +572,10 @@ export class CategoryRenderer {
       }
 
       const description = clumpId === 'manual' ? category.manualDescription : undefined;
-      const scoreOutOf100 = Math.round(Number(category.score) * 100);
-      // Expand the manual a11y checks upon scoring 100.
+      // Expand on warning, or manual audits when there are no failing audits.
       const openByDefault =
-        (category.id === 'accessibility' && clumpId === 'manual' && scoreOutOf100 === 100);
-      const clumpElem = this.renderClump(clumpId, {auditRefs, description}, openByDefault);
+        clumpId === 'warning' || (clumpId === 'manual' && numFailingAudits === 0);
+      const clumpElem = this.renderClump(clumpId, {auditRefs, description, openByDefault});
       element.append(clumpElem);
     }
 
