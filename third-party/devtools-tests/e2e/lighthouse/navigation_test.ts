@@ -245,8 +245,8 @@ describe('Navigation', async function() {
     assert.notInclude(lhr.configSettings.emulatedUserAgent, 'Mobile');
     assert.notInclude(lhr.environment.networkUserAgent, 'Mobile');
 
-    const openTreemapButton = await $textContent('Ver gráfico de rectángulos', reportEl);
-    assert.ok(openTreemapButton);
+    const viewTreemapButton = await $textContent('Ver gráfico de rectángulos', reportEl);
+    assert.ok(viewTreemapButton);
 
     const footerIssueText = await reportEl.$eval('.lh-footer__version_issue', footerIssueEl => {
       return footerIssueEl.textContent;
