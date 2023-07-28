@@ -474,7 +474,7 @@ describe('CategoryRenderer', () => {
       const manualClumpEl = auditDOM.querySelector('.lh-clump--manual');
       const isExpanded = manualClumpEl.hasAttribute('open');
       assert.ok(isExpanded, 'Manual audit group should be expanded if there are 0 failing audits');
-    })
+    });
 
     it('only passing audits with warnings show in warnings section', () => {
       const failingWarning = 'Failed and warned';
