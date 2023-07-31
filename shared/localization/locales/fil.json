@@ -1109,9 +1109,6 @@
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "Sinusukat ng Cumulative Layout Shift ang paggalaw ng mga nakikitang element sa loob ng viewport. [Matuto pa tungkol sa sukatang Cumulative Layout Shift](https://web.dev/cls/)."
   },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "Sinusukat ng Interaction to Next Paint ang pagiging responsive ng page, kung gaano katagal bago makitang tumutugon ang page sa input ng user. [Matuto pa tungkol sa sukatang Interaction to Next Paint](https://web.dev/inp/)."
-  },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "Minamarkahan ng First Contentful Paint ang tagal bago ma-paint ang unang text o larawan. [Matuto pa tungkol sa sukatang First Contentful Paint](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
   },
@@ -3262,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Tinantya at puwedeng mag-iba ang mga value. [Kinakalkula ang score ng performance](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) nang direkta mula sa mga sukatang ito."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Tingnan ang Orihinal na Trace"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Tingnan ang Trace"

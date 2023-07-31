@@ -1109,9 +1109,6 @@
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "Kumulatiivinen asettelumuutos mittaa näkymässä olevien elementtien liikettä. [Lue lisää Kumulatiivinen asettelumuutos ‐mittarista](https://web.dev/cls/)."
   },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "Interaktiosta seuraavaan renderöintiin ‐mittari mittaa sivun responsiivisuutta eli sitä, kuinka pian sivu vastaa näkyvästi käyttäjän palautteeseen. [Lue lisää Interaktiosta seuraavaan renderöintiin ‐mittarista](https://web.dev/inp/)."
-  },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "Ensimmäinen sisällön renderöinti kertoo, milloin ensimmäinen tekstikohde tai kuva renderöidään. [Lue lisää Ensimmäinen sisällön renderöinti ‐mittarista](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
   },
@@ -3262,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Arvot ovat arvioita ja voivat vaihdella. [Tehokkuusprosentti lasketaan](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) suoraan näistä mittareista."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Näytä alkuperäinen jälki"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Näytä jälki"

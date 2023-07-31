@@ -1109,9 +1109,6 @@
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "「累計版面配置轉移」會測量檢視區內可見元素的移動。[進一步瞭解「累計版面配置轉移」數據](https://web.dev/cls/)。"
   },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "「互動至下一個繪製」會測量網頁回應速度，亦即網頁明顯回應使用者輸入內容所需的時間。[進一步瞭解「互動至下一個繪製」數據](https://web.dev/inp/)。"
-  },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "「首次內容繪製時間」標示繪製首個文字/首張圖片的時間。[進一步瞭解「首次內容繪製時間」數據](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)。"
   },
@@ -3262,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "此為預計值，可能與實際值有所不同。[效能分數將利用這些數據直接計算](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/)。"
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "查看原始追蹤記錄"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "檢視追蹤記錄"

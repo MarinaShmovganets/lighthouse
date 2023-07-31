@@ -1109,9 +1109,6 @@
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "Akkumulert utseendeforskyvning (CLS) måler bevegelsene til synlige elementer i det synlige området. [Finn ut mer om beregningen Akkumulert utseendeforskyvning (CLS)](https://web.dev/cls/)."
   },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "Tid fra interaksjon til neste opptegning måler hvor responsiv siden er, altså hvor lang tid siden bruker på å gi en synlig respons på inndata fra brukerne. [Finn ut mer om beregningen Tid fra interaksjon til neste opptegning](https://web.dev/inp/)."
-  },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "Den første innholdsrike opptegningen (FCP) markerer den første gangen tekst eller bilder tegnes opp. [Finn ut mer om beregningen Første innholdsrike opptegning (FCP)](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
   },
@@ -3262,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Verdiene er anslått og kan variere. [Beregningen av ytelsespoengsummen](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) er basert direkte på disse verdiene."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Vis opprinnelig sporing"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Vis sporing"

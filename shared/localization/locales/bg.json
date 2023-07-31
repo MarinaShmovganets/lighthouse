@@ -1109,9 +1109,6 @@
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "Показателят „Кумулативни структурни промени (CLS)“ измерва движението на видимите елементи в прозоречния изглед. [Научете повече за този показател](https://web.dev/cls/)."
   },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "Показателят „Изобразяване след взаимодействие“ измерва колко време е необходимо на страницата, за да реагира визуално след входящи данни от действие на потребител. [Научете повече за този показател](https://web.dev/inp/)."
-  },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "Показателят „Първо изобразяване на съдържание (FCP)“ указва след колко време се изобразява първият текстов или графичен елемент. [Научете повече за този показател](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
   },
@@ -3262,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Стойностите са приблизителни и може да варират. [Рейтингът за ефективността се изчислява](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) директно от тези показатели."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Преглед на първоначалното трасиране"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Преглед на трасирането"

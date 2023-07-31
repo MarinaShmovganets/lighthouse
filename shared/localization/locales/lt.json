@@ -1109,9 +1109,6 @@
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "Nustatant kaupiamąjį išdėstymo poslinkį įvertinamas peržiūros srityje matomų elementų judėjimas. [Sužinokite daugiau apie kaupiamojo išdėstymo poslinkio metriką](https://web.dev/cls/)."
   },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "Laikas nuo sąveikos iki kito žymėjimo įvertina puslapio atsako laiką: kiek laiko praeina, kol matomas puslapio atsakas į naudotojo įvestį. [Sužinokite daugiau apie laiką nuo sąveikos iki kito žymėjimo](https://web.dev/inp/)."
-  },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "Pirmas turiningas žymėjimas nurodo laiką, kada pažymimas pirmasis tekstas ar vaizdas. [Sužinokite daugiau apie pirmo turiningo žymėjimo metriką](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
   },
@@ -3262,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Vertės yra apytikslės ir gali skirtis. [Našumo įvertinimas apskaičiuojamas](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) tiesiogiai pagal šias metrikas."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Žr. pradinį pėdsaką"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Žr. pėdsaką"

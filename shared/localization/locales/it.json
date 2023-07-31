@@ -1109,9 +1109,6 @@
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "La metrica Cumulative Layout Shift misura lo spostamento degli elementi visibili all'interno dell'area visibile. [Scopri di più sulla metrica Cumulative Layout Shift](https://web.dev/cls/)."
   },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "L'interazione con Next Paint misura l'adattabilità della pagina, il tempo necessario alla pagina per rispondere in modo visibile all'input utente. [Scopri di più sulla metrica Interaction to Next Paint](https://web.dev/inp/)."
-  },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "First Contentful Paint indica il momento in cui vengono visualizzati il primo testo o la prima immagine. [Scopri di più sulla metrica First Contentful Paint](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
   },
@@ -3262,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "I valori sono delle stime e potrebbero variare. Il [punteggio relativo alle prestazioni viene calcolato](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) direttamente in base a queste metriche."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Visualizza traccia originale"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Visualizza traccia"
