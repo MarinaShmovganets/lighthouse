@@ -5,12 +5,47 @@
  */
 
 import UsesHTTP2Audit from '../../../audits/dobetterweb/uses-http2.js';
-import {NetworkRecords} from '../../../computed/network-records.js';
 import {networkRecordsToDevtoolsLog} from '../../network-records-to-devtools-log.js';
-import {getURLArtifactFromDevtoolsLog, readJson} from '../../test-utils.js';
+import {createTestTrace} from '../../create-test-trace.js';
 
-const trace = readJson('../../fixtures/traces/progressive-app-m60.json', import.meta);
-const devtoolsLog = readJson('../../fixtures/traces/progressive-app-m60.devtools.log.json', import.meta);
+const mainResources = [{
+  url: 'https://www.example.com/',
+  priority: 'High',
+  protocol: 'HTTP/2',
+},
+{
+  url: 'https://www.example.com/',
+  priority: 'High',
+  protocol: 'HTTP/2',
+},
+{
+  url: 'https://www.example.com/',
+  priority: 'High',
+}];
+
+function buildArtifacts(networkRecords) {
+  const frameUrl = networkRecords[0].url;
+  const trace = createTestTrace({
+    frameUrl,
+    timeOrigin: 0,
+    topLevelTasks: [{ts: 1000, duration: 50}],
+    largestContentfulPaint: 5000,
+    firstContentfulPaint: 2000,
+  });
+  const devtoolsLog = networkRecordsToDevtoolsLog(networkRecords);
+
+  return {
+    LinkElements: [],
+    URL: {
+      requestedUrl: mainResources[0].url,
+      mainDocumentUrl: mainResources[0].url,
+      finalDisplayedUrl: mainResources[0].url,
+    },
+    devtoolsLogs: {defaultPass: devtoolsLog},
+    traces: {defaultPass: trace},
+    GatherContext: {gatherMode: 'navigation'},
+  };
+}
 
 describe('Resources are fetched over http/2', () => {
   let artifacts = {};
@@ -18,13 +53,7 @@ describe('Resources are fetched over http/2', () => {
 
   beforeEach(() => {
     context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
-
-    artifacts = {
-      traces: {defaultPass: trace},
-      devtoolsLogs: {defaultPass: devtoolsLog},
-      GatherContext: {gatherMode: 'navigation'},
-      URL: getURLArtifactFromDevtoolsLog(devtoolsLog),
-    };
+    artifacts = buildArtifacts(mainResources);
   });
 
   it('should pass when resources are requested via http/2', async () => {
@@ -34,63 +63,155 @@ describe('Resources are fetched over http/2', () => {
   });
 
   it('should fail when resources are requested via http/1.x', async () => {
-    const records = await NetworkRecords.compute_(artifacts.devtoolsLogs.defaultPass);
-    records.forEach(record => (record.protocol = 'HTTP/1.1'));
-    artifacts.devtoolsLogs.defaultPass = networkRecordsToDevtoolsLog(records);
+    const networkRecords = [
+      {
+        url: 'https://www.example.com/4',
+        transferSize: 200_000,
+        timing: {sendEnd: 0},
+        networkEndTime: 3000,
+        priority: 'High',
+        protocol: 'HTTP/1.1',
+      },
+      {
+        url: 'https://www.example.com/5',
+        transferSize: 600_000,
+        networkEndTime: 2000,
+        priority: 'High',
+        protocol: 'HTTP/1.1',
+      },
+      {
+        url: 'https://www.example.com/6',
+        transferSize: 600_000,
+        networkEndTime: 5000,
+        priority: 'High',
+        protocol: 'HTTP/1.1',
+      },
+      {
+        url: 'https://www.googletagmanager.com/',
+        priority: 'High',
+        protocol: 'HTTP/1.1',
+      },
+      {
+        url: 'https://www.google-analytics.com/analytics.js',
+        protocol: 'HTTP/1.1',
+      },
+      ...mainResources,
+    ];
+
+    artifacts.devtoolsLogs.defaultPass =
+       networkRecordsToDevtoolsLog(networkRecords);
+
     const result = await UsesHTTP2Audit.audit(artifacts, context);
     const hosts = new Set(result.details.items.map(item => new URL(item.url).host));
 
     // make sure we don't pull in domains with only a few requests (GTM, GA)
-    expect(hosts).toEqual(new Set(['pwa.rocks']));
+    expect(hosts).toEqual(new Set(['www.example.com']));
     // make sure we flag all the rest
-    expect(result.details.items).toHaveLength(60);
+    expect(result.details.items).toHaveLength(4);
     // make sure we report savings
-    expect(result.numericValue).toMatchInlineSnapshot(`1340`);
-    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`1340`);
+    expect(result.numericValue).toMatchInlineSnapshot(`1150`);
+    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`1150`);
     // make sure we have a failing score
     expect(result.score).toBeLessThan(0.5);
+    expect(result.metricSavings).toEqual({LCP: 1150, FCP: 1150});
   });
 
   it('should ignore service worker requests', async () => {
-    const records = await NetworkRecords.compute_(artifacts.devtoolsLogs.defaultPass);
-    records.forEach(record => (record.protocol = 'HTTP/1.1'));
-    records.slice(30).forEach(record => {
-      // Force the records we're making service worker to another origin.
-      // Because it doesn't make sense to have half H2 half not to the same origin.
-      const url = record.url;
-      if (url.includes('pwa.rocks')) record.url = url.replace('pwa.rocks', 'pwa2.rocks');
-      record.fetchedViaServiceWorker = true;
-      delete record.parsedURL;
-    });
+    const networkRecords = [
+      {
+        url: 'https://www.example.com/sw',
+        fetchedViaServiceWorker: true,
+        protocol: 'HTTP/1.1',
+        priority: 'High',
+      },
+      {
+        url: 'https://www.example.com/sw2',
+        fetchedViaServiceWorker: true,
+        protocol: 'HTTP/1.1',
+        priority: 'High',
+      },
+      {
+        url: 'https://www.example.com/sw3',
+        fetchedViaServiceWorker: true,
+        protocol: 'HTTP/1.1',
+        priority: 'High',
+      },
+      {
+        url: 'https://www.example.com/sw4',
+        fetchedViaServiceWorker: true,
+        protocol: 'HTTP/1.1',
+        priority: 'High',
+      },
+      {
+        url: 'https://www.example.com/sw6',
+        fetchedViaServiceWorker: true,
+        protocol: 'HTTP/1.1',
+        priority: 'High',
+      },
+      {
+        url: 'https://www.example.com/sw7',
+        networkRequestTime: 2000, // after FCP
+        transferSize: 500_000,
+        protocol: 'HTTP/1.1',
+        priority: 'High',
+      },
+      ...mainResources];
 
-    artifacts.devtoolsLogs.defaultPass = networkRecordsToDevtoolsLog(records);
+    artifacts.devtoolsLogs.defaultPass = networkRecordsToDevtoolsLog(networkRecords);
+
     const result = await UsesHTTP2Audit.audit(artifacts, context);
     const urls = new Set(result.details.items.map(item => item.url));
 
     // make sure we flag only the non-sw ones
-    expect(urls).not.toContain(records[30].url);
-    expect(result.details.items).toHaveLength(30);
+    expect(urls).not.toContain(networkRecords[1].url);
+    expect(result.details.items).toHaveLength(2);
     // make sure we report less savings
-    expect(result.numericValue).toMatchInlineSnapshot(`360`);
-    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`360`);
+    expect(result.numericValue).toMatchInlineSnapshot(`180`);
+    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`180`);
+    expect(result.metricSavings).toEqual({LCP: 180, FCP: 0});
   });
 
   it('should return table items for timespan mode', async () => {
-    const records = await NetworkRecords.compute_(artifacts.devtoolsLogs.defaultPass);
-    records.forEach(record => (record.protocol = 'HTTP/1.1'));
-    artifacts.devtoolsLogs.defaultPass = networkRecordsToDevtoolsLog(records);
+    const networkRecords = [
+      {
+        url: 'https://www.example.com/4',
+        transferSize: 100_000,
+        timing: {sendEnd: 0},
+        priority: 'High',
+        protocol: 'HTTP/1.1',
+      },
+      {
+        url: 'https://www.example.com/5',
+        transferSize: 600_000,
+        priority: 'High',
+        protocol: 'HTTP/1.1',
+      },
+      {
+        url: 'https://www.example.com/6',
+        transferSize: 600_000,
+        priority: 'High',
+        protocol: 'HTTP/1.1',
+      },
+      {
+        url: 'https://www.example.com/',
+        priority: 'High',
+        protocol: 'HTTP/1.1',
+      },
+      ...mainResources];
+    artifacts.devtoolsLogs.defaultPass = networkRecordsToDevtoolsLog(networkRecords);
     artifacts.GatherContext.gatherMode = 'timespan';
     const result = await UsesHTTP2Audit.audit(artifacts, context);
     const hosts = new Set(result.details.items.map(item => new URL(item.url).host));
 
     // make sure we don't pull in domains with only a few requests (GTM, GA)
-    expect(hosts).toEqual(new Set(['pwa.rocks']));
+    expect(hosts).toEqual(new Set(['www.example.com']));
     // make sure we flag all the rest
-    expect(result.details.items).toHaveLength(60);
+    expect(result.details.items).toHaveLength(4);
     // no savings calculated
     expect(result.numericValue).toBeUndefined();
     expect(result.details.overallSavingsMs).toBeUndefined();
     // make sure we have a failing score
     expect(result.score).toEqual(0);
+    expect(result.metricSavings).toBeUndefined();
   });
 });
