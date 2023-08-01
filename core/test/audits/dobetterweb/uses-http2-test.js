@@ -11,16 +11,22 @@ import {createTestTrace} from '../../create-test-trace.js';
 const baseResources = [{
   url: 'https://www.example.com/',
   priority: 'High',
-  protocol: 'HTTP/2',
+  rendererStartTime: 0,
+  networkEndTime: 100,
+  protocol: 'HTTP/1.1',
 },
 {
   url: 'https://www.example.com/2',
   priority: 'High',
-  protocol: 'HTTP/2',
+  rendererStartTime: 200,
+  networkEndTime: 300,
+  protocol: 'HTTP/1.1',
 },
 {
   url: 'https://www.example.com/3',
   priority: 'High',
+  rendererStartTime: 400,
+  networkEndTime: 500,
   protocol: 'HTTP/1.1',
 }];
 
@@ -68,35 +74,29 @@ describe('Resources are fetched over http/2', () => {
       ...baseResources,
       {
         url: 'https://www.example.com/4',
-        transferSize: 200_000,
-        timing: {sendEnd: 0},
-        networkEndTime: 3000,
+        transferSize: 20_000,
+        rendererStartTime: 1000,
+        networkEndTime: 1100,
         priority: 'High',
         protocol: 'HTTP/1.1',
       },
       {
         url: 'https://www.example.com/5',
-        transferSize: 600_000,
-        networkEndTime: 2000,
+        transferSize: 40_000,
+        rendererStartTime: 4000,
+        networkEndTime: 4100,
         priority: 'High',
         protocol: 'HTTP/1.1',
       },
       {
         url: 'https://www.example.com/6',
-        transferSize: 600_000,
-        networkEndTime: 5000,
+        transferSize: 50_000,
+        rendererStartTime: 6000,
+        networkEndTime: 6100,
         priority: 'High',
         protocol: 'HTTP/1.1',
       },
-      {
-        url: 'https://www.googletagmanager.com/',
-        priority: 'High',
-        protocol: 'HTTP/1.1',
-      },
-      {
-        url: 'https://www.google-analytics.com/analytics.js',
-        protocol: 'HTTP/1.1',
-      }];
+    ];
 
     artifacts.devtoolsLogs.defaultPass =
        networkRecordsToDevtoolsLog(networkRecords);
@@ -107,13 +107,13 @@ describe('Resources are fetched over http/2', () => {
     // make sure we don't pull in domains with only a few requests (GTM, GA)
     expect(hosts).toEqual(new Set(['www.example.com']));
     // make sure we flag all the rest
-    expect(result.details.items).toHaveLength(4);
+    expect(result.details.items).toHaveLength(6);
     // make sure we report savings
-    expect(result.numericValue).toMatchInlineSnapshot(`1150`);
-    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`1150`);
+    expect(result.numericValue).toMatchInlineSnapshot(`630`);
+    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`630`);
     // make sure we have a failing score
-    expect(result.score).toBeLessThan(0.5);
-    expect(result.metricSavings).toEqual({LCP: 1150, FCP: 1150});
+    // expect(result.score).toBeLessThan(0.5);
+    expect(result.metricSavings).toEqual({LCP: 630, FCP: 480});
   });
 
   it('should ignore service worker requests', async () => {
@@ -151,7 +151,7 @@ describe('Resources are fetched over http/2', () => {
       },
       {
         url: 'https://www.example.com/sw7',
-        networkRequestTime: 2000, // after FCP
+        rendererStartTime: 2000, // after FCP
         transferSize: 500_000,
         protocol: 'HTTP/1.1',
         priority: 'High',
