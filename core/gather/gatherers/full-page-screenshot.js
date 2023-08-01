@@ -13,7 +13,7 @@ import {waitForNetworkIdle} from '../driver/wait-for-condition.js';
 // JPEG quality setting
 // Exploration and examples of reports using different quality settings: https://docs.google.com/document/d/1ZSffucIca9XDW2eEwfoevrk-OTl7WQFeMf0CgeJAA8M/edit#
 // Note: this analysis was done for JPEG, but now we use WEBP.
-const FULL_PAGE_SCREENSHOT_QUALITY = process.env.LH_FPS_TEST ? 30 : 100;
+const FULL_PAGE_SCREENSHOT_QUALITY = process.env.LH_FPS_TEST ? 100 : 30;
 
 // https://developers.google.com/speed/webp/faq#what_is_the_maximum_size_a_webp_image_can_be
 const MAX_WEBP_SIZE = 16383;

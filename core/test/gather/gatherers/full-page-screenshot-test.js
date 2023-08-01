@@ -232,9 +232,6 @@ describe('FullPageScreenshot gatherer', () => {
       server = new Server(port);
       await server.listen(port, '127.0.0.1');
       serverBaseUrl = `http://localhost:${server.getPort()}`;
-
-      // Tell gatherer to use 100 quality.
-      process.env.LH_FPS_TEST = '1';
     });
 
     after(async () => {
