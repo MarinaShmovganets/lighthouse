@@ -322,6 +322,8 @@ describe('FullPageScreenshot gatherer', () => {
 
           const right = Math.min(node.right, canvasEl.width - 1);
           const bottom = Math.min(node.bottom, canvasEl.height - 1);
+          const width = right - node.left;
+          const height = bottom - node.top;
 
           let pixelDifferCount = 0;
           const debugData = [];
@@ -353,7 +355,7 @@ describe('FullPageScreenshot gatherer', () => {
           //   * last two columns
           // The following value takes this into account. Much more pixels than this differing, and we've likely got a visual mismatch.
           // It's an overcount, but the math is simpler and we want some additional leeway anyhow.
-          const differingPixelCountThreshold = node.width * 5 + node.height * 3;
+          const differingPixelCountThreshold = width * 5 + height * 3;
           result.success = pixelDifferCount < differingPixelCountThreshold;
 
           if (options.debugFormat) result.debugData = debugData;
