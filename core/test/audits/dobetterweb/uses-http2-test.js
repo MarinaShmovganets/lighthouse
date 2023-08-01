@@ -193,7 +193,8 @@ describe('Resources are fetched over http/2', () => {
         transferSize: 600_000,
         priority: 'High',
         protocol: 'HTTP/1.1',
-      }];
+      },
+    ];
     artifacts.devtoolsLogs.defaultPass = networkRecordsToDevtoolsLog(networkRecords);
     artifacts.GatherContext.gatherMode = 'timespan';
     const result = await UsesHTTP2Audit.audit(artifacts, context);
