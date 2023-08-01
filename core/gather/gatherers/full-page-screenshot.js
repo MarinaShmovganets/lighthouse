@@ -13,7 +13,7 @@ import {waitForNetworkIdle} from '../driver/wait-for-condition.js';
 // JPEG quality setting
 // Exploration and examples of reports using different quality settings: https://docs.google.com/document/d/1ZSffucIca9XDW2eEwfoevrk-OTl7WQFeMf0CgeJAA8M/edit#
 // Note: this analysis was done for JPEG, but now we use WEBP.
-const FULL_PAGE_SCREENSHOT_QUALITY = 30;
+const FULL_PAGE_SCREENSHOT_QUALITY = process.env.LH_FPS_TEST ? 30 : 100;
 
 // https://developers.google.com/speed/webp/faq#what_is_the_maximum_size_a_webp_image_can_be
 const MAX_WEBP_SIZE = 16383;
@@ -159,7 +159,7 @@ class FullPageScreenshot extends BaseGatherer {
       for (const [node, id] of lhIdToElements.entries()) {
         // @ts-expect-error - getBoundingClientRect put into scope via stringification
         const rect = getBoundingClientRect(node);
-        nodes[id] = rect;
+        nodes[id] = {id: node.id, ...rect};
       }
 
       return nodes;
