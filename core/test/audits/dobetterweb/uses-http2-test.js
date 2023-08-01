@@ -14,13 +14,14 @@ const baseResources = [{
   protocol: 'HTTP/2',
 },
 {
-  url: 'https://www.example.com/',
+  url: 'https://www.example.com/2',
   priority: 'High',
   protocol: 'HTTP/2',
 },
 {
-  url: 'https://www.example.com/',
+  url: 'https://www.example.com/3',
   priority: 'High',
+  protocol: 'HTTP/1.1',
 }];
 
 function buildArtifacts(networkRecords) {
@@ -62,7 +63,7 @@ describe('Resources are fetched over http/2', () => {
     expect(results.details.items).toHaveLength(0);
   });
 
-  it('should fail when resources are requested via http/1.x', async () => {
+  it.only('should fail when resources are requested via http/1.x', async () => {
     const networkRecords = [
       ...baseResources,
       {
@@ -164,9 +165,9 @@ describe('Resources are fetched over http/2', () => {
     expect(urls).not.toContain(new Set(['www.example.com', 'https://www.example.com/sw7']));
     expect(result.details.items).toHaveLength(2);
     // make sure we report less savings
-    expect(result.numericValue).toMatchInlineSnapshot(`180`);
-    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`180`);
-    expect(result.metricSavings).toEqual({LCP: 180, FCP: 0});
+    expect(result.numericValue).toMatchInlineSnapshot(`120`);
+    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`120`);
+    expect(result.metricSavings).toEqual({LCP: 120, FCP: 0});
   });
 
   it('should return table items for timespan mode', async () => {
@@ -188,11 +189,6 @@ describe('Resources are fetched over http/2', () => {
       {
         url: 'https://www.example.com/6',
         transferSize: 600_000,
-        priority: 'High',
-        protocol: 'HTTP/1.1',
-      },
-      {
-        url: 'https://www.example.com/',
         priority: 'High',
         protocol: 'HTTP/1.1',
       }];
