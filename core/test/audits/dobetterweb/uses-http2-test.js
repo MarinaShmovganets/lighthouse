@@ -155,14 +155,16 @@ describe('Resources are fetched over http/2', () => {
         transferSize: 50_000,
         protocol: 'HTTP/1.1',
         priority: 'High',
-      }];
+      },
+    ];
     artifacts.devtoolsLogs.defaultPass = networkRecordsToDevtoolsLog(networkRecords);
 
     const result = await UsesHTTP2Audit.audit(artifacts, context);
     const urls = new Set(result.details.items.map(item => item.url));
 
     // make sure we flag only the non-sw ones
-    expect(urls).not.toContain(new Set(['www.example.com', 'https://www.example.com/sw7']));
+    expect(urls).not.toContain('https://www.example.com/');
+    expect(urls).not.toContain('https://www.example.com/sw7');
     expect(result.details.items).toHaveLength(4);
     // make sure we report less savings
     expect(result.numericValue).toMatchInlineSnapshot(`690`);
