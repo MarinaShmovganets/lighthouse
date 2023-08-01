@@ -4,7 +4,10 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-// node core/scripts/full-page-screenshot-debug.js latest-run/lhr.report.json  | xargs "$CHROME_PATH"
+// To open result in chrome:
+//   node core/scripts/full-page-screenshot-debug.js latest-run/lhr.report.json  | xargs "$CHROME_PATH"
+// But, it might be too large for xargs:
+//   node core/scripts/full-page-screenshot-debug.js latest-run/lhr.report.json | code -
 
 import * as fs from 'fs';
 
