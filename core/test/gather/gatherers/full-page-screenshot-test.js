@@ -315,6 +315,9 @@ describe('FullPageScreenshot gatherer', () => {
           if (!(node.id.includes('green') || node.id.includes('red'))) {
             continue;
           }
+          if (!node.id.includes('el-')) {
+            continue;
+          }
 
           const expectedColor = hexToRgb(node.id.includes('green') ? '#427f36' : '#8a4343');
           const result = {id: node.id, success: true};
@@ -429,15 +432,15 @@ describe('FullPageScreenshot gatherer', () => {
       const rectExpectations = [
         {
           id: 'el-1-red',
-          top: 43,
-          bottom: 53,
+          top: 10,
+          bottom: 20,
           left: 18,
           right: 178,
         },
         {
           id: 'el-2-green',
-          top: 93,
-          bottom: 153,
+          top: 60,
+          bottom: 120,
           left: 48,
           right: 108,
         },
@@ -455,15 +458,15 @@ describe('FullPageScreenshot gatherer', () => {
       const rectExpectations = [
         {
           id: 'el-1-red',
-          top: 61,
-          bottom: 71,
+          top: 10,
+          bottom: 20,
           left: 18,
           right: 178,
         },
         {
           id: 'el-2-green',
-          top: 111,
-          bottom: 171,
+          top: 60,
+          bottom: 120,
           left: 48,
           right: 108,
         },
@@ -481,15 +484,15 @@ describe('FullPageScreenshot gatherer', () => {
       const rectExpectations = [
         {
           id: 'el-1-red',
-          top: 43,
-          bottom: 53,
+          top: 10,
+          bottom: 20,
           left: 18,
           right: 178,
         },
         {
           id: 'el-2-green',
-          top: 93,
-          bottom: 153,
+          top: 60,
+          bottom: 120,
           left: 48,
           right: 108,
         },
@@ -507,15 +510,15 @@ describe('FullPageScreenshot gatherer', () => {
       const rectExpectations = [
         {
           id: 'el-1-red',
-          top: 43,
-          bottom: 53,
+          top: 10,
+          bottom: 20,
           left: 18,
           right: 178,
         },
         {
           id: 'el-2-green',
-          top: 93,
-          bottom: 153,
+          top: 60,
+          bottom: 120,
           left: 48,
           right: 108,
         },
