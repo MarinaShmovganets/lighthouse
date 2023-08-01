@@ -73,7 +73,7 @@ class UsesHTTP2Audit extends Audit {
    * @param {Array<{url: string}>} results
    * @param {Node} graph
    * @param {Simulator} simulator
-   * @param {{label?: string, providedWastedBytesByUrl?: Map<string, number>}=} options
+   * @param {{label?: string}=} options
    * @return {{savings: number, simulationBefore: LH.Gatherer.Simulation.Result, simulationAfter: LH.Gatherer.Simulation.Result}}
    */
   static computeWasteWithGraph(results, graph, simulator, options) {
@@ -125,14 +125,12 @@ class UsesHTTP2Audit extends Audit {
    * @param {Array<{url: string}>} results
    * @param {Node} graph
    * @param {Simulator} simulator
-   * @param {{includeLoad?: boolean, providedWastedBytesByUrl?: Map<string, number>}=} options
    * @return {number}
    */
-  static computeWasteWithTTIGraph(results, graph, simulator, options) {
-    options = Object.assign({includeLoad: true}, options);
+  static computeWasteWithTTIGraph(results, graph, simulator) {
     const {savings: savingsOnOverallLoad, simulationBefore, simulationAfter} =
       this.computeWasteWithGraph(results, graph, simulator, {
-        ...options,
+        includeLoad: true,
         label: 'tti',
       });
 
@@ -140,8 +138,7 @@ class UsesHTTP2Audit extends Audit {
       LanternInteractive.getLastLongTaskEndTime(simulationBefore.nodeTimings) -
       LanternInteractive.getLastLongTaskEndTime(simulationAfter.nodeTimings);
 
-    let savings = savingsOnTTI;
-    if (options.includeLoad) savings = Math.max(savingsOnTTI, savingsOnOverallLoad);
+    const savings = Math.max(savingsOnTTI, savingsOnOverallLoad);
 
     // Round waste to nearest 10ms
     return Math.round(Math.max(savings, 0) / 10) * 10;

@@ -8,7 +8,7 @@ import UsesHTTP2Audit from '../../../audits/dobetterweb/uses-http2.js';
 import {networkRecordsToDevtoolsLog} from '../../network-records-to-devtools-log.js';
 import {createTestTrace} from '../../create-test-trace.js';
 
-const mainResources = [{
+const baseResources = [{
   url: 'https://www.example.com/',
   priority: 'High',
   protocol: 'HTTP/2',
@@ -37,9 +37,9 @@ function buildArtifacts(networkRecords) {
   return {
     LinkElements: [],
     URL: {
-      requestedUrl: mainResources[0].url,
-      mainDocumentUrl: mainResources[0].url,
-      finalDisplayedUrl: mainResources[0].url,
+      requestedUrl: baseResources[0].url,
+      mainDocumentUrl: baseResources[0].url,
+      finalDisplayedUrl: baseResources[0].url,
     },
     devtoolsLogs: {defaultPass: devtoolsLog},
     traces: {defaultPass: trace},
@@ -53,7 +53,7 @@ describe('Resources are fetched over http/2', () => {
 
   beforeEach(() => {
     context = {settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
-    artifacts = buildArtifacts(mainResources);
+    artifacts = buildArtifacts(baseResources);
   });
 
   it('should pass when resources are requested via http/2', async () => {
@@ -64,6 +64,7 @@ describe('Resources are fetched over http/2', () => {
 
   it('should fail when resources are requested via http/1.x', async () => {
     const networkRecords = [
+      ...baseResources,
       {
         url: 'https://www.example.com/4',
         transferSize: 200_000,
@@ -94,9 +95,7 @@ describe('Resources are fetched over http/2', () => {
       {
         url: 'https://www.google-analytics.com/analytics.js',
         protocol: 'HTTP/1.1',
-      },
-      ...mainResources,
-    ];
+      }];
 
     artifacts.devtoolsLogs.defaultPass =
        networkRecordsToDevtoolsLog(networkRecords);
@@ -118,6 +117,7 @@ describe('Resources are fetched over http/2', () => {
 
   it('should ignore service worker requests', async () => {
     const networkRecords = [
+      ...baseResources,
       {
         url: 'https://www.example.com/sw',
         fetchedViaServiceWorker: true,
@@ -154,16 +154,14 @@ describe('Resources are fetched over http/2', () => {
         transferSize: 500_000,
         protocol: 'HTTP/1.1',
         priority: 'High',
-      },
-      ...mainResources];
-
+      }];
     artifacts.devtoolsLogs.defaultPass = networkRecordsToDevtoolsLog(networkRecords);
 
     const result = await UsesHTTP2Audit.audit(artifacts, context);
     const urls = new Set(result.details.items.map(item => item.url));
 
     // make sure we flag only the non-sw ones
-    expect(urls).not.toContain(networkRecords[1].url);
+    expect(urls).not.toContain(new Set(['www.example.com', 'https://www.example.com/sw7']));
     expect(result.details.items).toHaveLength(2);
     // make sure we report less savings
     expect(result.numericValue).toMatchInlineSnapshot(`180`);
@@ -173,6 +171,7 @@ describe('Resources are fetched over http/2', () => {
 
   it('should return table items for timespan mode', async () => {
     const networkRecords = [
+      ...baseResources,
       {
         url: 'https://www.example.com/4',
         transferSize: 100_000,
@@ -196,8 +195,7 @@ describe('Resources are fetched over http/2', () => {
         url: 'https://www.example.com/',
         priority: 'High',
         protocol: 'HTTP/1.1',
-      },
-      ...mainResources];
+      }];
     artifacts.devtoolsLogs.defaultPass = networkRecordsToDevtoolsLog(networkRecords);
     artifacts.GatherContext.gatherMode = 'timespan';
     const result = await UsesHTTP2Audit.audit(artifacts, context);
