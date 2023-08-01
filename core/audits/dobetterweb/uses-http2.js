@@ -128,10 +128,10 @@ class UsesHTTP2Audit extends Audit {
    * @return {number}
    */
   static computeWasteWithTTIGraph(results, graph, simulator) {
+    const options = Object.assign({includeLoad: true, label: 'tti'});
     const {savings: savingsOnOverallLoad, simulationBefore, simulationAfter} =
       this.computeWasteWithGraph(results, graph, simulator, {
-        includeLoad: true,
-        label: 'tti',
+        ...options,
       });
 
     const savingsOnTTI =
@@ -279,7 +279,7 @@ class UsesHTTP2Audit extends Audit {
     } = await LanternLargestContentfulPaint.request(metricComputationInput, context);
 
     const wastedMsTti = UsesHTTP2Audit.computeWasteWithTTIGraph(
-      resources, pageGraph, simulator, {includeLoad: true});
+      resources, pageGraph, simulator);
     const wasteFcp =
       UsesHTTP2Audit.computeWasteWithGraph(resources,
         fcpGraph, simulator, {label: 'fcp'});
