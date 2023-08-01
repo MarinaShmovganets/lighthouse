@@ -69,7 +69,7 @@ describe('Resources are fetched over http/2', () => {
     expect(results.details.items).toHaveLength(0);
   });
 
-  it.only('should fail when resources are requested via http/1.x', async () => {
+  it('should fail when resources are requested via http/1.x', async () => {
     const networkRecords = [
       ...baseResources,
       {
@@ -152,7 +152,7 @@ describe('Resources are fetched over http/2', () => {
       {
         url: 'https://www.example.com/sw7',
         rendererStartTime: 2000, // after FCP
-        transferSize: 500_000,
+        transferSize: 50_000,
         protocol: 'HTTP/1.1',
         priority: 'High',
       }];
@@ -163,11 +163,11 @@ describe('Resources are fetched over http/2', () => {
 
     // make sure we flag only the non-sw ones
     expect(urls).not.toContain(new Set(['www.example.com', 'https://www.example.com/sw7']));
-    expect(result.details.items).toHaveLength(2);
+    expect(result.details.items).toHaveLength(4);
     // make sure we report less savings
-    expect(result.numericValue).toMatchInlineSnapshot(`120`);
-    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`120`);
-    expect(result.metricSavings).toEqual({LCP: 120, FCP: 0});
+    expect(result.numericValue).toMatchInlineSnapshot(`690`);
+    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`690`);
+    expect(result.metricSavings).toEqual({LCP: 690, FCP: 480});
   });
 
   it('should return table items for timespan mode', async () => {
@@ -200,7 +200,7 @@ describe('Resources are fetched over http/2', () => {
     // make sure we don't pull in domains with only a few requests (GTM, GA)
     expect(hosts).toEqual(new Set(['www.example.com']));
     // make sure we flag all the rest
-    expect(result.details.items).toHaveLength(4);
+    expect(result.details.items).toHaveLength(6);
     // no savings calculated
     expect(result.numericValue).toBeUndefined();
     expect(result.details.overallSavingsMs).toBeUndefined();
