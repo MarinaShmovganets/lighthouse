@@ -128,10 +128,9 @@ class UsesHTTP2Audit extends Audit {
    * @return {number}
    */
   static computeWasteWithTTIGraph(results, graph, simulator) {
-    const options = Object.assign({includeLoad: true, label: 'tti'});
     const {savings: savingsOnOverallLoad, simulationBefore, simulationAfter} =
       this.computeWasteWithGraph(results, graph, simulator, {
-        ...options,
+        label: 'tti',
       });
 
     const savingsOnTTI =

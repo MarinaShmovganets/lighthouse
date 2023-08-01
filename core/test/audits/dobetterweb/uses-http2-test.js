@@ -132,25 +132,7 @@ describe('Resources are fetched over http/2', () => {
         priority: 'High',
       },
       {
-        url: 'https://www.example.com/sw3',
-        fetchedViaServiceWorker: true,
-        protocol: 'HTTP/1.1',
-        priority: 'High',
-      },
-      {
-        url: 'https://www.example.com/sw4',
-        fetchedViaServiceWorker: true,
-        protocol: 'HTTP/1.1',
-        priority: 'High',
-      },
-      {
-        url: 'https://www.example.com/sw6',
-        fetchedViaServiceWorker: true,
-        protocol: 'HTTP/1.1',
-        priority: 'High',
-      },
-      {
-        url: 'https://www.example.com/sw7',
+        url: 'https://www.example.com/4',
         rendererStartTime: 2000, // after FCP
         transferSize: 50_000,
         protocol: 'HTTP/1.1',
@@ -163,13 +145,13 @@ describe('Resources are fetched over http/2', () => {
     const urls = new Set(result.details.items.map(item => item.url));
 
     // make sure we flag only the non-sw ones
-    expect(urls).not.toContain('https://www.example.com/');
-    expect(urls).not.toContain('https://www.example.com/sw7');
+    expect(urls).not.toContain('https://www.example.com/sw');
+    expect(urls).not.toContain('https://www.example.com/sw2');
     expect(result.details.items).toHaveLength(4);
     // make sure we report less savings
-    expect(result.numericValue).toMatchInlineSnapshot(`690`);
-    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`690`);
-    expect(result.metricSavings).toEqual({LCP: 690, FCP: 480});
+    expect(result.numericValue).toMatchInlineSnapshot(`630`);
+    expect(result.details.overallSavingsMs).toMatchInlineSnapshot(`630`);
+    expect(result.metricSavings).toEqual({LCP: 630, FCP: 480});
   });
 
   it('should return table items for timespan mode', async () => {
