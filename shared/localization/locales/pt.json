@@ -938,9 +938,6 @@
   "core/audits/installable-manifest.js | no-manifest": {
     "message": "A página não tem um URL de manifesto <link>"
   },
-  "core/audits/installable-manifest.js | no-matching-service-worker": {
-    "message": "Nenhum service worker correspondente foi detectado. Pode ser necessário atualizar a página ou conferir se o escopo do service worker da página atual inclui o escopo e o URL de início do manifesto."
-  },
   "core/audits/installable-manifest.js | no-url-for-service-worker": {
     "message": "Não foi possível verificar o service worker sem um campo \"start_url\" no manifesto"
   },
@@ -1111,9 +1108,6 @@
   },
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "\"Mudança de layout cumulativa\" mede o movimento de elementos visíveis na janela de visualização. [Saiba mais sobre a métrica \"Mudança de layout cumulativa\"](https://web.dev/cls/)."
-  },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "A métrica \"Interação com a próxima exibição\" mede a capacidade de resposta da página, ou seja, quanto tempo a página leva para responder de maneira visível à entrada do usuário. [Saiba mais sobre a métrica \"Interação com a próxima exibição\"](https://web.dev/inp/)."
   },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "\"Primeira exibição de conteúdo\" marca o momento em que o primeiro texto ou imagem é disponibilizado. [Saiba mais sobre a métrica \"Primeira exibição de conteúdo\"](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
@@ -1411,27 +1405,6 @@
   },
   "core/audits/server-response-time.js | title": {
     "message": "O tempo de resposta inicial do servidor foi curto"
-  },
-  "core/audits/service-worker.js | description": {
-    "message": "O service worker é a tecnologia que permite que seu app use muitos recursos do Progressive Web App, por exemplo, disponibilidade off-line, adicionar à tela inicial e notificações de push. [Saiba mais sobre os service workers](https://developer.chrome.com/docs/lighthouse/pwa/service-worker/)."
-  },
-  "core/audits/service-worker.js | explanationBadManifest": {
-    "message": "Esta página é controlada por um service worker, no entanto, nenhum `start_url` foi encontrado porque o manifesto não foi analisado como um JSON válido."
-  },
-  "core/audits/service-worker.js | explanationBadStartUrl": {
-    "message": "Esta página é controlada por um service worker, no entanto, a `start_url` ({startUrl}) não está no escopo dele ({scopeUrl})"
-  },
-  "core/audits/service-worker.js | explanationNoManifest": {
-    "message": "Esta página é controlada por um service worker, no entanto, nenhuma `start_url` foi encontrada porque nenhum manifesto foi recuperado."
-  },
-  "core/audits/service-worker.js | explanationOutOfScope": {
-    "message": "Esta origem tem um ou mais service workers, no entanto, a página ({pageUrl}) não está em escopo."
-  },
-  "core/audits/service-worker.js | failureTitle": {
-    "message": "Não há registro de um service worker que controle a página e `start_url`"
-  },
-  "core/audits/service-worker.js | title": {
-    "message": "Há registro de um service worker que controla a página e `start_url`"
   },
   "core/audits/splash-screen.js | description": {
     "message": "Uma tela de apresentação personalizada garante uma experiência de alta qualidade quando os usuários abrem o aplicativo na tela inicial. [Saiba mais sobre telas de apresentação](https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/)."
@@ -3286,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Os valores são estimados e podem variar. O [índice de desempenho é calculado](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) diretamente por essas métricas."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Ver rastro original"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Ver rastro"

@@ -7,8 +7,7 @@
 import {defaultSettings, defaultNavigationConfig} from '../../config/constants.js';
 import defaultConfig from '../../config/default-config.js';
 import {Audit as BaseAudit} from '../../audits/audit.js';
-import BaseFRGatherer from '../../gather/base-gatherer.js';
-import {Gatherer as BaseLegacyGatherer} from '../../gather/gatherers/gatherer.js';
+import BaseGatherer from '../../gather/base-gatherer.js';
 import * as validation from '../../config/validation.js';
 import {initializeConfig} from '../../config/config.js';
 
@@ -30,7 +29,7 @@ beforeEach(() => {
   ExampleAudit = ExampleAudit_;
 });
 
-describe('Fraggle Rock Config Validation', () => {
+describe('Config Validation', () => {
   describe('assertValidConfig', () => {
     it('should throw if multiple artifacts have the same id', async () => {
       const {resolvedConfig} = await initializeConfig('navigation');
@@ -42,16 +41,6 @@ describe('Fraggle Rock Config Validation', () => {
       resolvedConfig.artifacts.push(imageElArtifact);
 
       expect(() => validation.assertValidConfig(resolvedConfig)).toThrow(/Config defined multiple/);
-    });
-  });
-
-  describe('isFRGathererDefn', () => {
-    it('should identify fraggle rock gatherer definitions', () => {
-      expect(validation.isFRGathererDefn({instance: new BaseFRGatherer()})).toBe(true);
-    });
-
-    it('should identify legacy gatherer definitions', () => {
-      expect(validation.isFRGathererDefn({instance: new BaseLegacyGatherer()})).toBe(false);
     });
   });
 
@@ -71,9 +60,9 @@ describe('Fraggle Rock Config Validation', () => {
 
     for (const {dependent, dependency, isValid} of combinations) {
       it(`should identify ${dependent.join(',')} / ${dependency.join(',')} correctly`, () => {
-        const dependentDefn = {instance: new BaseFRGatherer()};
+        const dependentDefn = {instance: new BaseGatherer()};
         dependentDefn.instance.meta.supportedModes = dependent;
-        const dependencyDefn = {instance: new BaseFRGatherer()};
+        const dependencyDefn = {instance: new BaseGatherer()};
         dependencyDefn.instance.meta.supportedModes = dependency;
         expect(validation.isValidArtifactDependency(dependentDefn, dependencyDefn)).toBe(isValid);
       });
@@ -95,38 +84,41 @@ describe('Fraggle Rock Config Validation', () => {
     });
   });
 
-  describe('.assertValidFRGatherer', () => {
+  describe('.assertValidArtifact', () => {
     it('should throw if gatherer does not have a meta object', () => {
-      const gatherer = new BaseFRGatherer();
+      const gatherer = new BaseGatherer();
       // @ts-expect-error - We are intentionally creating a malformed input.
       gatherer.meta = undefined;
 
       const gathererDefn = {instance: gatherer};
-      const invocation = () => validation.assertValidFRGatherer(gathererDefn);
+      const artifactDefn = {id: 'NewArtifact', gatherer: gathererDefn};
+      const invocation = () => validation.assertValidArtifact(artifactDefn);
       expect(invocation).toThrow(/did not provide a meta/);
     });
 
     it('should throw if gatherer does not have a supported modes', () => {
-      const gathererDefn = {instance: new BaseFRGatherer()};
-      const invocation = () => validation.assertValidFRGatherer(gathererDefn);
+      const gathererDefn = {instance: new BaseGatherer()};
+      const artifactDefn = {id: 'NewArtifact', gatherer: gathererDefn};
+      const invocation = () => validation.assertValidArtifact(artifactDefn);
       expect(invocation).toThrow(/did not support any gather modes/);
     });
 
     it('should throw if gatherer does define getArtifact', () => {
-      const gatherer = new BaseFRGatherer();
+      const gatherer = new BaseGatherer();
       gatherer.meta = {supportedModes: ['navigation']};
 
       const gathererDefn = {instance: gatherer};
-      const invocation = () => validation.assertValidFRGatherer(gathererDefn);
+      const artifactDefn = {id: 'NewArtifact', gatherer: gathererDefn};
+      const invocation = () => validation.assertValidArtifact(artifactDefn);
       expect(invocation).toThrow(/did not define.*getArtifact/);
     });
   });
 
-  describe('.assertValidFRNavigations', () => {
+  describe('.assertValidNavigations', () => {
     it('should add warning if navigations uses non-fatal loadFailureMode', () => {
       /** @type {Array<LH.Config.NavigationDefn>} */
       const navigations = [{...defaultNavigationConfig, loadFailureMode: 'warn', artifacts: []}];
-      const {warnings} = validation.assertValidFRNavigations(navigations);
+      const {warnings} = validation.assertValidNavigations(navigations);
       expect(warnings).toHaveLength(1);
       expect(warnings[0]).toContain('but had a failure mode');
       expect(navigations[0].loadFailureMode).toEqual('fatal');
@@ -140,7 +132,7 @@ describe('Fraggle Rock Config Validation', () => {
         {...defaultNavigationConfig, id: 'second', artifacts: []},
         {...defaultNavigationConfig, id: 'first', artifacts: []},
       ];
-      const invocation = () => validation.assertValidFRNavigations(navigations);
+      const invocation = () => validation.assertValidNavigations(navigations);
       expect(invocation).toThrow(/must have unique.*but "first" was repeated/);
     });
   });

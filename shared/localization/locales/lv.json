@@ -938,9 +938,6 @@
   "core/audits/installable-manifest.js | no-manifest": {
     "message": "Lapā nav <link> taga ar manifesta vietrādi URL"
   },
-  "core/audits/installable-manifest.js | no-matching-service-worker": {
-    "message": "Netika atrasts atbilstošs pakalpojumu skripts. Iespējams, būs atkārtoti jāielādē lapa vai jāpārliecinās, ka pašreizējās lapas pakalpojumu skripta tvērumā ir iekļauts manifestā norādītais tvērums un sākuma URL."
-  },
   "core/audits/installable-manifest.js | no-url-for-service-worker": {
     "message": "Nevarēja pārbaudīt pakalpojumu skriptu, jo manifestā nav lauka “start_url”"
   },
@@ -1111,9 +1108,6 @@
   },
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "Cumulative Layout Shift norāda redzamo elementu kustību skatvietā. [Uzziniet vairāk par rādītāju “Cumulative Layout Shift”](https://web.dev/cls/)."
-  },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "Interaction to Next Paint nosaka lapas atbildi — laiku, kas lapai nepieciešams, lai redzami reaģētu uz lietotāja ievadi. [Uzziniet vairāk par rādītāju “Interaction to Next Paint”](https://web.dev/inp/)."
   },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "Rādītājs “First Contentful Paint” ataino laiku, kad tiek atveidots pirmais teksts vai attēls. [Uzziniet vairāk par rādītāju “First Contentful Paint”](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
@@ -1411,27 +1405,6 @@
   },
   "core/audits/server-response-time.js | title": {
     "message": "Sākotnējās servera atbildes laika bija īss"
-  },
-  "core/audits/service-worker.js | description": {
-    "message": "Pakalpojumu skripts ir tehnoloģija, kas palīdz nodrošināt daudzas progresīvo tīmekļa lietotņu funkcijas, piemēram, lietotnes izmantošanu bezsaistē, pievienošanu sākuma ekrānam un informatīvos paziņojumus. [Uzziniet vairāk par pakalpojumu skriptiem](https://developer.chrome.com/docs/lighthouse/pwa/service-worker/)."
-  },
-  "core/audits/service-worker.js | explanationBadManifest": {
-    "message": "Lapu kontrolē pakalpojumu skripts, taču netika atrasts `start_url`, jo neizdevās analizēt manifestu kā derīgu JSON failu"
-  },
-  "core/audits/service-worker.js | explanationBadStartUrl": {
-    "message": "Lapu kontrolē pakalpojumu skripts, taču vietrādis URL `start_url` ({startUrl}) nav ietverts pakalpojumu skripta tvērumā ({scopeUrl})"
-  },
-  "core/audits/service-worker.js | explanationNoManifest": {
-    "message": "Lapu kontrolē pakalpojumu skripts, taču netika atrasts `start_url`, jo manifests netika ienests."
-  },
-  "core/audits/service-worker.js | explanationOutOfScope": {
-    "message": "Šim sākumpunktam ir viens vai vairāki pakalpojumu skripti, taču attiecīgā lapa ({pageUrl}) nav tvērumā."
-  },
-  "core/audits/service-worker.js | failureTitle": {
-    "message": "Nav reģistrēts pakalpojumu skripts, kas kontrolētu lapu un `start_url`"
-  },
-  "core/audits/service-worker.js | title": {
-    "message": "Ir reģistrēts pakalpojumu skripts, kas kontrolē lapu un `start_url`"
   },
   "core/audits/splash-screen.js | description": {
     "message": "Uzplaiksnījuma ekrāns ar piemērotu motīvu nodrošina labu pieredzi, lietotājiem palaižot lietotni no sākuma ekrāna. [Uzziniet vairāk par uzplaiksnījuma ekrāniem](https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/)."
@@ -3286,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Vērtības ir aptuvenas un var atšķirties. [Veiktspējas rezultāts tiek aprēķināts](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/), pamatojoties tieši uz šiem metrikas veidiem."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Skatīt sākotnējo trasējumu"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Skatīt trasējumu"

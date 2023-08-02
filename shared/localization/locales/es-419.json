@@ -938,9 +938,6 @@
   "core/audits/installable-manifest.js | no-manifest": {
     "message": "La página no tiene la URL <link> del manifiesto"
   },
-  "core/audits/installable-manifest.js | no-matching-service-worker": {
-    "message": "No se detectó un service worker coincidente. Es posible que debas volver a cargar la página o revisar que el alcance del service worker de la página actual abarque el alcance y la URL de inicio del manifiesto."
-  },
   "core/audits/installable-manifest.js | no-url-for-service-worker": {
     "message": "No se pudo verificar el service worker porque no se incluyó el campo \"start_url\" en el manifiesto"
   },
@@ -1111,9 +1108,6 @@
   },
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "El Cambio de diseño acumulado mide el movimiento de los elementos visibles dentro del viewport. [Obtén más información sobre la métrica de Cambio de diseño acumulado](https://web.dev/cls/)."
-  },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "La Interacción a la siguiente pintura mide la capacidad de respuesta de la página, es decir, cuánto tarda en responder de manera visible a las entradas del usuario. [Obtén más información sobre la métrica de Interacción a la siguiente pintura](https://web.dev/inp/)."
   },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "El primer procesamiento de imagen con contenido indica el momento en el que se visualiza en la pantalla el primer texto o imagen. [Obtén más información sobre la métrica de Primer procesamiento de imagen con contenido](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
@@ -1411,27 +1405,6 @@
   },
   "core/audits/server-response-time.js | title": {
     "message": "El tiempo de respuesta inicial del servidor fue breve"
-  },
-  "core/audits/service-worker.js | description": {
-    "message": "El service worker es la tecnología que permite que tu app use varias funciones de app web progresiva, como el modo sin conexión, el agregado a la pantalla principal y las notificaciones push. [Obtén más información sobre los service workers](https://developer.chrome.com/docs/lighthouse/pwa/service-worker/)."
-  },
-  "core/audits/service-worker.js | explanationBadManifest": {
-    "message": "Un service worker controla esta página, pero no se encontró ningún atributo `start_url` porque no se pudo analizar el archivo de manifiesto como un JSON válido"
-  },
-  "core/audits/service-worker.js | explanationBadStartUrl": {
-    "message": "Un service worker controla esta página, pero el atributo `start_url` ({startUrl}) está fuera del alcance del service worker ({scopeUrl})"
-  },
-  "core/audits/service-worker.js | explanationNoManifest": {
-    "message": "Un service worker controla esta página, pero no se encontró el atributo `start_url` porque no se obtuvo ningún manifiesto."
-  },
-  "core/audits/service-worker.js | explanationOutOfScope": {
-    "message": "Este origen tiene al menos un service worker, pero la página ({pageUrl}) no está dentro del alcance."
-  },
-  "core/audits/service-worker.js | failureTitle": {
-    "message": "No registra un service worker que controle la página y `start_url`"
-  },
-  "core/audits/service-worker.js | title": {
-    "message": "Registra un service worker que controle la página y `start_url`"
   },
   "core/audits/splash-screen.js | description": {
     "message": "El uso de una pantalla de presentación con un tema asegura que los usuarios tengan una experiencia de alta calidad al iniciar tu app desde sus pantallas principales. [Obtén más información sobre las pantallas de presentación](https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/)."
@@ -3286,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Los valores son estimados y pueden variar. La [medición del rendimiento se calcula](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) directamente a partir de estas métricas."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Ver registro original"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Ver registro"

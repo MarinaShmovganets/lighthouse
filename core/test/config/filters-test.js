@@ -11,7 +11,7 @@ import BaseGatherer from '../../gather/base-gatherer.js';
 import {defaultSettings, defaultNavigationConfig} from '../../config/constants.js';
 import * as filters from '../../config/filters.js';
 
-describe('Fraggle Rock Config Filtering', () => {
+describe('Config Filtering', () => {
   const snapshotGatherer = new BaseGatherer();
   snapshotGatherer.meta = {supportedModes: ['snapshot']};
   const timespanGatherer = new BaseGatherer();
@@ -156,7 +156,7 @@ describe('Fraggle Rock Config Filtering', () => {
       base.meta = {supportedModes: ['snapshot'], symbol: baseSymbol};
 
       const dependentSymbol = Symbol('dependentGatherer');
-      /** @type {LH.Gatherer.FRGathererInstance<'Accessibility'>} */
+      /** @type {LH.Gatherer.GathererInstance<'Accessibility'>} */
       const dependent = Object.assign(new BaseGatherer(), {
         meta: {
           supportedModes: ['snapshot'],
@@ -165,7 +165,7 @@ describe('Fraggle Rock Config Filtering', () => {
         },
       });
 
-      /** @type {LH.Gatherer.FRGathererInstance<'Accessibility'>} */
+      /** @type {LH.Gatherer.GathererInstance<'Accessibility'>} */
       const dependentsDependent = Object.assign(new BaseGatherer(), {
         meta: {
           supportedModes: ['snapshot'],

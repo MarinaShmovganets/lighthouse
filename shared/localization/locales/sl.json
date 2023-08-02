@@ -938,9 +938,6 @@
   "core/audits/installable-manifest.js | no-manifest": {
     "message": "Stran nima URL-ja manifesta <link>"
   },
-  "core/audits/installable-manifest.js | no-matching-service-worker": {
-    "message": "Noben ujemajoči proces storitve ni zaznan. Morda boste morali znova naložiti stran oziroma preveriti, ali obseg procesa storitve za trenutno stran zajema obseg in začetni URL manifesta."
-  },
   "core/audits/installable-manifest.js | no-url-for-service-worker": {
     "message": "Procesa storitve ni mogoče preveriti brez polja »start_url« v manifestu"
   },
@@ -1111,9 +1108,6 @@
   },
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "Kumulativna sprememba postavitve meri premikanje vidnih elementov znotraj vidnega območja. [Preberite več o meritvi »Kumulativna sprememba postavitve«](https://web.dev/cls/)."
-  },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "Interakcija do naslednjega izrisa meri odzivnost strani, kako dolgo traja, da se stran vidno odzove na vnos uporabnika. [Preberite več o meritvi interakcije do naslednjega izrisa](https://web.dev/inp/)."
   },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "Prvi vsebinski izris označuje čas, ko je izrisano prvo besedilo oziroma je izrisana prva slika. [Preberite več o meritvi prvega vsebinskega izrisa](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
@@ -1411,27 +1405,6 @@
   },
   "core/audits/server-response-time.js | title": {
     "message": "Začetni odzivni čas strežnika je bil kratek"
-  },
-  "core/audits/service-worker.js | description": {
-    "message": "Proces storitve je tehnologija, ki aplikaciji omogoča uporabo številnih funkcij moderne spletne aplikacije, na primer delovanje brez povezave, dodajanje na začetni zaslon in potisna obvestila. [Preberite več o procesih storitve](https://developer.chrome.com/docs/lighthouse/pwa/service-worker/)."
-  },
-  "core/audits/service-worker.js | explanationBadManifest": {
-    "message": "To stran nadzira proces storitve, vendar ni bilo mogoče najti ničesar od tega: `start_url`, ker ni bilo mogoče razčleniti manifesta kot veljavne datoteke JSON"
-  },
-  "core/audits/service-worker.js | explanationBadStartUrl": {
-    "message": "To stran nadzira proces storitve, vendar `start_url` ({startUrl}) ni v obsegu procesa storitve ({scopeUrl})"
-  },
-  "core/audits/service-worker.js | explanationNoManifest": {
-    "message": "To stran nadzira proces storitve, vendar ni bilo mogoče najti ničesar od tega: `start_url`, ker niso bili preneseni manifesti."
-  },
-  "core/audits/service-worker.js | explanationOutOfScope": {
-    "message": "Ta izvor ima enega ali več procesov storitve, vendar stran ({pageUrl}) ni v obsegu."
-  },
-  "core/audits/service-worker.js | failureTitle": {
-    "message": "Ne registrira procesa storitve, ki nadzira stran in to: `start_url`"
-  },
-  "core/audits/service-worker.js | title": {
-    "message": "Registrira proces storitve, ki nadzira stran in to: `start_url`"
   },
   "core/audits/splash-screen.js | description": {
     "message": "S tematskim pozdravnim zaslonom zagotovite visokokakovostno izkušnjo, ko uporabniki zaženejo aplikacijo z začetnih zaslonov. [Preberite več o pozdravnih zaslonih](https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/)."
@@ -3286,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Vrednosti so ocenjene in lahko odstopajo. [Rezultat uspešnosti se izračuna](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) neposredno iz teh meritev."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Ogled izvirne sledi"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Ogled sledi"

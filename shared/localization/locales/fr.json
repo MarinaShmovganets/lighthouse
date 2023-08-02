@@ -938,9 +938,6 @@
   "core/audits/installable-manifest.js | no-manifest": {
     "message": "La page n'a aucune URL <lien> de fichier manifeste"
   },
-  "core/audits/installable-manifest.js | no-matching-service-worker": {
-    "message": "Aucun service worker correspondant n'a été détecté. Vous devrez peut-être recharger la page ou vérifier que le champ d'application du service worker pour la page actuelle inclut le champ d'application et l'URL de démarrage du fichier manifeste."
-  },
   "core/audits/installable-manifest.js | no-url-for-service-worker": {
     "message": "Impossible de contrôler le service worker sans un champ \"start_url\" dans le fichier manifeste"
   },
@@ -1111,9 +1108,6 @@
   },
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "Cumulative Layout Shift mesure le mouvement des éléments visibles dans la fenêtre d'affichage. [En savoir plus sur cette métrique](https://web.dev/cls/)"
-  },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "La métrique \"Interaction to Next Paint\" mesure la réactivité de la page, c'est-à-dire le temps que celle-ci met à répondre de manière visible à l'entrée utilisateur. [En savoir plus sur cette métrique](https://web.dev/inp/)"
   },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "La métrique \"First Contentful Paint\" indique le moment où le premier texte ou la première image sont affichés. [En savoir plus sur cette métrique](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)"
@@ -1411,27 +1405,6 @@
   },
   "core/audits/server-response-time.js | title": {
     "message": "Le temps de réponse initial du serveur était court"
-  },
-  "core/audits/service-worker.js | description": {
-    "message": "Un service worker est une technologie qui permet à votre appli d'exploiter de nombreuses fonctionnalités propres aux progressive web apps, comme le fonctionnement hors connexion, l'ajout à un écran d'accueil et les notifications push. [En savoir plus sur les service workers](https://developer.chrome.com/docs/lighthouse/pwa/service-worker/)"
-  },
-  "core/audits/service-worker.js | explanationBadManifest": {
-    "message": "Un service worker contrôle cette page. Toutefois, aucun attribut `start_url` n'a été trouvé en raison d'un échec lors de l'analyse du fichier manifeste (JSON non valide)"
-  },
-  "core/audits/service-worker.js | explanationBadStartUrl": {
-    "message": "Un service worker contrôle cette page. Toutefois, l'attribut `start_url` ({startUrl}) est situé en dehors du champ d'application du service worker ({scopeUrl})"
-  },
-  "core/audits/service-worker.js | explanationNoManifest": {
-    "message": "Un service worker contrôle cette page. Toutefois, aucun attribut `start_url` n'a été trouvé, car le fichier manifeste n'a pas pu être récupéré."
-  },
-  "core/audits/service-worker.js | explanationOutOfScope": {
-    "message": "Plusieurs service workers existent pour cette origine. Toutefois, la page ({pageUrl}) est située en dehors du champ d'application."
-  },
-  "core/audits/service-worker.js | failureTitle": {
-    "message": "Aucun service worker de contrôle de la page et de `start_url` n'est enregistré"
-  },
-  "core/audits/service-worker.js | title": {
-    "message": "Un service worker de contrôle de la page et de `start_url` est enregistré"
   },
   "core/audits/splash-screen.js | description": {
     "message": "Avec un écran de démarrage à thème, vous garantissez une expérience de haute qualité aux utilisateurs qui lancent votre appli depuis leur écran d'accueil. [En savoir plus sur les écrans de démarrage](https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/)"
@@ -3286,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Les valeurs sont estimées et peuvent varier. Le [calcul du score lié aux performances](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) repose directement sur ces statistiques."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Afficher la trace d'origine"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Afficher la trace"

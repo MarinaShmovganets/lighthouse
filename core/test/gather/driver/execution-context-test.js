@@ -230,6 +230,7 @@ const performance = globalThis.__nativePerformance || globalThis.performance;
 const fetch = globalThis.__nativeFetch || globalThis.fetch;
         globalThis.__lighthouseExecutionContextUniqueIdentifier =
           undefined;
+
         return new Promise(function (resolve) {
           return Promise.resolve()
             .then(_ => (() => {
@@ -338,7 +339,8 @@ const fetch = globalThis.__nativeFetch || globalThis.fetch;
 
     const code = mockFn.mock.calls[0][0];
     expect(trimTrailingWhitespace(code)).toEqual(`(() => {
-      function abs(val) {
+
+function abs(val) {
       return Math.abs(val);
     }
 function square(val) {

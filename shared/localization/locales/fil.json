@@ -938,9 +938,6 @@
   "core/audits/installable-manifest.js | no-manifest": {
     "message": "Walang URL ng manifest <link> ang page"
   },
-  "core/audits/installable-manifest.js | no-matching-service-worker": {
-    "message": "Walang na-detect na tumutugmang service worker. Posibleng kailanganin mong i-reload ang page, o tingnan kung nakapaloob sa saklaw ng service worker para sa kasalukuyang page ang saklaw at start URL mula sa manifest."
-  },
   "core/audits/installable-manifest.js | no-url-for-service-worker": {
     "message": "Hindi masusuri ang service worker kapag walang field na 'start_url' sa manifest"
   },
@@ -1111,9 +1108,6 @@
   },
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "Sinusukat ng Cumulative Layout Shift ang paggalaw ng mga nakikitang element sa loob ng viewport. [Matuto pa tungkol sa sukatang Cumulative Layout Shift](https://web.dev/cls/)."
-  },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "Sinusukat ng Interaction to Next Paint ang pagiging responsive ng page, kung gaano katagal bago makitang tumutugon ang page sa input ng user. [Matuto pa tungkol sa sukatang Interaction to Next Paint](https://web.dev/inp/)."
   },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "Minamarkahan ng First Contentful Paint ang tagal bago ma-paint ang unang text o larawan. [Matuto pa tungkol sa sukatang First Contentful Paint](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
@@ -1411,27 +1405,6 @@
   },
   "core/audits/server-response-time.js | title": {
     "message": "Mabilis ang unang pagtugon ng server"
-  },
-  "core/audits/service-worker.js | description": {
-    "message": "Ang service worker ang teknolohiyang nagbibigay-daan sa iyong app na gumamit ng maraming feature ng Progressive Web App, tulad ng offline, pagdaragdag sa homescreen, at mga push notification. [Matuto pa tungkol sa Mga Service Worker](https://developer.chrome.com/docs/lighthouse/pwa/service-worker/)."
-  },
-  "core/audits/service-worker.js | explanationBadManifest": {
-    "message": "Kinokontrol ng service worker ang page na ito, gayunpaman, walang nakitang `start_url` dahil hindi na-parse ang manifest bilang valid na JSON"
-  },
-  "core/audits/service-worker.js | explanationBadStartUrl": {
-    "message": "Kinokontrol ng service worker ang page na ito, gayunpaman, wala ang `start_url` ({startUrl}) sa saklaw ng service worker ({scopeUrl})"
-  },
-  "core/audits/service-worker.js | explanationNoManifest": {
-    "message": "Kinokontrol ng service worker ang page na ito, gayunpaman, walang nakitang `start_url` dahil walang nakuhang manifest."
-  },
-  "core/audits/service-worker.js | explanationOutOfScope": {
-    "message": "May isa o higit pang service worker ang pinagmulang ito, gayunpaman, wala sa saklaw ang page ({pageUrl})."
-  },
-  "core/audits/service-worker.js | failureTitle": {
-    "message": "Hindi nagrerehistro ng service worker na kumokontrol sa page at `start_url`"
-  },
-  "core/audits/service-worker.js | title": {
-    "message": "Nagrerehistro ng service worker na kumokontrol sa page at `start_url`"
   },
   "core/audits/splash-screen.js | description": {
     "message": "Tinitiyak ng splash screen na may tema na magkakaroon ng experience na may mataas na kalidad kapag inilulunsad ng mga user ang iyong app sa kanilang mga homescreen. [Matuto pa tungkol sa mga splash screen](https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/)."
@@ -3286,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Tinantya at puwedeng mag-iba ang mga value. [Kinakalkula ang score ng performance](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) nang direkta mula sa mga sukatang ito."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Tingnan ang Orihinal na Trace"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Tingnan ang Trace"

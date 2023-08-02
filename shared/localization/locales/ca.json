@@ -938,9 +938,6 @@
   "core/audits/installable-manifest.js | no-manifest": {
     "message": "La pàgina no té cap URL <link> del fitxer de manifest"
   },
-  "core/audits/installable-manifest.js | no-matching-service-worker": {
-    "message": "No s'ha detectat cap Service Worker coincident. Pot ser que hagis de tornar a carregar la pàgina o comprovar que l'abast del Service Worker per a la pàgina actual englobi l'abast i l'URL d'inici del fitxer de manifest."
-  },
   "core/audits/installable-manifest.js | no-url-for-service-worker": {
     "message": "No s'ha pogut comprovar el Service Worker perquè el fitxer de manifest no té cap camp \"start_url\""
   },
@@ -1111,9 +1108,6 @@
   },
   "core/audits/metrics/cumulative-layout-shift.js | description": {
     "message": "El canvi de disseny acumulatiu mesura el moviment d'elements visibles a la finestra gràfica. [Obtén més informació sobre la mètrica Canvi de disseny acumulatiu](https://web.dev/cls/)."
-  },
-  "core/audits/metrics/experimental-interaction-to-next-paint.js | description": {
-    "message": "La mètrica Interacció amb la renderització següent mesura la capacitat de resposta de la pàgina; és a dir, el temps que tarda la pàgina a respondre visiblement a l'entrada de l'usuari. [Obtén més informació sobre la mètrica Interacció amb la renderització següent](https://web.dev/inp/)."
   },
   "core/audits/metrics/first-contentful-paint.js | description": {
     "message": "La mètrica Primera renderització de contingut marca el moment en què es renderitza el primer text o la primera imatge. [Obtén més informació sobre la mètrica Primera renderització de contingut](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/)."
@@ -1411,27 +1405,6 @@
   },
   "core/audits/server-response-time.js | title": {
     "message": "El temps inicial de resposta del servidor ha estat breu"
-  },
-  "core/audits/service-worker.js | description": {
-    "message": "El Service Worker és la tecnologia que fa possible que la teva aplicació utilitzi moltes funcions d'aplicació web progressiva, com ara funcionar sense connexió, poder afegir-se a la pantalla d'inici i mostrar notificacions automàtiques. [Obtén més informació sobre els Service Workers](https://developer.chrome.com/docs/lighthouse/pwa/service-worker/)."
-  },
-  "core/audits/service-worker.js | explanationBadManifest": {
-    "message": "Tot i que un Service Worker controla aquesta pàgina, no s'ha trobat cap atribut `start_url` perquè el fitxer de manifest no s'ha pogut analitzar com a format JSON vàlid"
-  },
-  "core/audits/service-worker.js | explanationBadStartUrl": {
-    "message": "Tot i que un Service Worker controla aquesta pàgina, l'atribut `start_url` ({startUrl}) no és a l'abast del Service Worker ({scopeUrl})"
-  },
-  "core/audits/service-worker.js | explanationNoManifest": {
-    "message": "Tot i que un Service Worker controla aquesta pàgina, no s'ha trobat cap `start_url` perquè no s'ha obtingut cap fitxer de manifest."
-  },
-  "core/audits/service-worker.js | explanationOutOfScope": {
-    "message": "Aquest origen té un Service Worker o més, però la pàgina ({pageUrl}) està fora de l'abast."
-  },
-  "core/audits/service-worker.js | failureTitle": {
-    "message": "No registra cap Service Worker que controli la pàgina i l'atribut `start_url`"
-  },
-  "core/audits/service-worker.js | title": {
-    "message": "Registra un Service Worker que controla la pàgina i l'atribut `start_url`"
   },
   "core/audits/splash-screen.js | description": {
     "message": "Utilitzar una pantalla inicial temàtica garanteix una experiència d'alta qualitat quan els usuaris inicien l'aplicació des de la pantalla d'inici. [Obtén més informació sobre les pantalles inicials](https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/)."
@@ -3286,9 +3259,6 @@
   },
   "report/renderer/report-utils.js | varianceDisclaimer": {
     "message": "Els valors són estimacions i poden variar. El [resultat del rendiment es calcula](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) directament a partir d'aquestes mètriques."
-  },
-  "report/renderer/report-utils.js | viewOriginalTraceLabel": {
-    "message": "Mostra la traça original"
   },
   "report/renderer/report-utils.js | viewTraceLabel": {
     "message": "Mostra la traça"

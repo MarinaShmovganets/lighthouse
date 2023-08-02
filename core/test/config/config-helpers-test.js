@@ -21,7 +21,7 @@ import {
   mergeConfigFragmentArrayByKey,
 } from '../../config/config-helpers.js';
 import {Runner} from '../../runner.js';
-import Gatherer from '../../gather/base-gatherer.js';
+import BaseGatherer from '../../gather/base-gatherer.js';
 import ImageElementsGatherer from '../../gather/gatherers/image-elements.js';
 import UserTimingsAudit from '../../audits/user-timings.js';
 import {LH_ROOT} from '../../../root.js';
@@ -142,10 +142,9 @@ describe('.deepClone', () => {
 
 describe('.deepCloneConfigJson', () => {
   it('should clone a config deeply', () => {
-    const TimingGatherer = new Gatherer();
+    const TimingGatherer = new BaseGatherer();
     const input = {
       artifacts: [{id: 'Timing', gatherer: TimingGatherer}],
-      passes: [{passName: 'defaultPass', gatherers: []}],
       audits: [{path: 'user-timings'}],
       categories: {random: {auditRefs: [{id: 'user-timings'}]}},
     };
@@ -154,27 +153,15 @@ describe('.deepCloneConfigJson', () => {
     expect(output).not.toBe(input);
     expect(output).toEqual(input);
     output.artifacts[0].id = 'NewName';
-    output.passes[0].passName = 'newName';
     output.audits[0].path = 'new-audit';
     output.categories.random.auditRefs[0].id = 'new-audit';
     expect(input.artifacts[0].id).toEqual('Timing');
-    expect(input.passes[0].passName).toEqual('defaultPass');
     expect(input.audits[0].path).toEqual('user-timings');
     expect(input.categories.random.auditRefs[0].id).toEqual('user-timings');
   });
 
-  it('should preserve gatherer implementations in passes', () => {
-    const TimingGatherer = new Gatherer();
-    const input = {
-      passes: [{passName: 'defaultPass', gatherers: [TimingGatherer]}],
-    };
-
-    const output = deepCloneConfigJson(input);
-    expect(output.passes[0].gatherers[0]).toEqual(TimingGatherer);
-  });
-
   it('should preserve gatherer implementations in artifacts', () => {
-    const TimingGatherer = new Gatherer();
+    const TimingGatherer = new BaseGatherer();
     const input = {
       artifacts: [{id: 'Timing', gatherer: TimingGatherer}],
     };
@@ -437,7 +424,7 @@ describe('.resolveGathererToDefn', () => {
   it('throws but not for missing gatherer when it has a node dependency error', async () => {
     const resultPromise =
       resolveGathererToDefn('../fixtures/invalid-gatherers/require-error.js', [], moduleDir);
-    await expect(resultPromise).rejects.toThrow(/Cannot find module/);
+    await expect(resultPromise).rejects.toThrow(/no such file or directory/);
   });
 });
 
@@ -508,14 +495,14 @@ describe('.resolveAuditsToDefns', () => {
   });
 
   it('throws for invalid auditDefns', async () => {
-    await expect(resolveAuditsToDefns([new Gatherer()])).rejects.toThrow(/Invalid Audit type/);
+    await expect(resolveAuditsToDefns([new BaseGatherer()])).rejects.toThrow(/Invalid Audit type/);
   });
 
   it('throws but not for missing audit when it has a node dependency error', async () => {
     const resultPromise = resolveAuditsToDefns([
       '../fixtures/invalid-audits/require-error.js',
     ], moduleDir);
-    await expect(resultPromise).rejects.toThrow(/Cannot find module/);
+    await expect(resultPromise).rejects.toThrow(/no such file or directory/);
   });
 });
 

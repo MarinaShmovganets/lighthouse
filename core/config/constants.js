@@ -17,7 +17,7 @@ const throttling = {
   DEVTOOLS_RTT_ADJUSTMENT_FACTOR,
   DEVTOOLS_THROUGHPUT_ADJUSTMENT_FACTOR,
   // These values align with WebPageTest's definition of "Fast 3G"
-  // But offer similar charateristics to roughly the 75th percentile of 4G connections.
+  // But offer similar characteristics to roughly the 75th percentile of 4G connections.
   mobileSlow4G: {
     rttMs: 150,
     throughputKbps: 1.6 * 1024,
@@ -127,21 +127,6 @@ const defaultSettings = {
   skipAudits: null,
 };
 
-/** @type {LH.Config.Pass} */
-const defaultPassConfig = {
-  passName: 'defaultPass',
-  loadFailureMode: 'fatal',
-  recordTrace: false,
-  useThrottling: false,
-  pauseAfterFcpMs: 0,
-  pauseAfterLoadMs: 0,
-  networkQuietThresholdMs: 0,
-  cpuQuietThresholdMs: 0,
-  blockedUrlPatterns: [],
-  blankPage: 'about:blank',
-  gatherers: [],
-};
-
 /** @type {Required<LH.Config.NavigationJson>} */
 const defaultNavigationConfig = {
   id: 'default',
@@ -169,7 +154,6 @@ export {
   screenEmulationMetrics,
   userAgents,
   defaultSettings,
-  defaultPassConfig,
   defaultNavigationConfig,
   nonSimulatedPassConfigOverrides,
 };

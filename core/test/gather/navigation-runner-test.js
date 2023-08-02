@@ -51,14 +51,13 @@ describe('NavigationRunner', () => {
   let navigation;
   /** @type {Map<string, LH.ArbitraryEqualityMap>} */
   let computedCache;
-  /** @type {LH.FRBaseArtifacts} */
+  /** @type {LH.BaseArtifacts} */
   let baseArtifacts;
 
-  /** @return {LH.Config.AnyFRGathererDefn} */
+  /** @return {LH.Config.AnyGathererDefn} */
   function createGathererDefn() {
     return {
       instance: {
-        name: 'Accessibility',
         meta: {supportedModes: []},
         startInstrumentation: fnAny(),
         stopInstrumentation: fnAny(),

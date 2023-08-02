@@ -16,7 +16,7 @@ import defaultConfig from '../../config/default-config.js';
 
 const {nonSimulatedPassConfigOverrides} = constants;
 
-describe('Fraggle Rock Config', () => {
+describe('Config', () => {
   /** @type {LH.Gatherer.GatherMode} */
   let gatherMode = 'snapshot';
 
@@ -86,10 +86,10 @@ describe('Fraggle Rock Config', () => {
   });
 
   it('should throw on invalid artifact definitions', async () => {
-    const nonFRGatherer = new BaseGatherer();
-    nonFRGatherer.getArtifact = jestMock.fn();
-    const config = {artifacts: [{id: 'LegacyGather', gatherer: {instance: nonFRGatherer}}]};
-    await expect(initializeConfig(gatherMode, config)).rejects.toThrow(/FRGatherer gatherer/);
+    const badGatherer = new BaseGatherer();
+    badGatherer.getArtifact = jestMock.fn();
+    const config = {artifacts: [{id: 'BadGatherer', gatherer: {instance: badGatherer}}]};
+    await expect(initializeConfig(gatherMode, config)).rejects.toThrow(/Gatherer for BadGather/);
   });
 
   it('should filter configuration by gatherMode', async () => {
@@ -157,9 +157,9 @@ describe('Fraggle Rock Config', () => {
   });
 
   describe('resolveArtifactDependencies', () => {
-    /** @type {LH.Gatherer.FRGathererInstance} */
+    /** @type {LH.Gatherer.GathererInstance} */
     let dependencyGatherer;
-    /** @type {LH.Gatherer.FRGathererInstance<'ImageElements'>} */
+    /** @type {LH.Gatherer.GathererInstance<'ImageElements'>} */
     let dependentGatherer;
     /** @type {LH.Config} */
     let config;
