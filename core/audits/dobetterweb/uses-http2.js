@@ -68,7 +68,7 @@ class UsesHTTP2Audit extends Audit {
   }
 
   /**
-   * Computes the estimated effect of all the byte savings on the provided graph.
+   * Computes the estimated effect of all results being converted to http/2 on the provided graph.
    *
    * @param {Array<{url: string}>} results
    * @param {Node} graph
