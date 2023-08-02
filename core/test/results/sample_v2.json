@@ -6489,7 +6489,7 @@
         },
         {
           "id": "paste-preventing-inputs",
-          "weight": 1,
+          "weight": 3,
           "group": "best-practices-ux"
         },
         {
@@ -6549,7 +6549,7 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.2
+      "score": 0.18
     },
     "seo": {
       "title": "SEO",
