@@ -7,3 +7,4 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "deps"
+      include: "scope"
