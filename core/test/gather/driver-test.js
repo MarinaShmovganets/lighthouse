@@ -36,10 +36,8 @@ beforeEach(() => {
       .mockResponse('Target.setAutoAttach')
       .mockResponse('Runtime.runIfWaitingForDebugger');
 
-  const pageTarget = {createCDPSession: () => puppeteerSession};
-
   // @ts-expect-error - Individual mock functions are applied as necessary.
-  page = {target: () => pageTarget, url: fnAny()};
+  page = {createCDPSession: () => puppeteerSession, url: fnAny()};
   driver = new Driver(page);
 });
 
