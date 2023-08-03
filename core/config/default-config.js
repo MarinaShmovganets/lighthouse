@@ -38,8 +38,8 @@ const UIStrings = {
   diagnosticsGroupDescription: 'More information about the performance of your application. These numbers don\'t [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score.',
   /** Title of the Accessibility category of audits. This section contains audits focused on making web content accessible to all users. Also used as a label of a score gauge; try to limit to 20 characters. */
   a11yCategoryTitle: 'Accessibility',
-  /** Description of the Accessibility category. This is displayed at the top of a list of audits focused on making web content accessible to all users. No character length limits. 'improve the accessibility of your web app' becomes link text to additional documentation. */
-  a11yCategoryDescription: 'These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.',
+  /** Description of the Accessibility category. This is displayed at the top of a list of audits focused on making web content accessible to all users. No character length limits. 'improve the accessibility of your web app' and 'manual testing' become link texts to additional documentation. */
+  a11yCategoryDescription: 'These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/how-to-review/) is also encouraged.',
   /** Description of the Accessibility manual checks category. This description is displayed above a list of accessibility audits that currently have no automated test and so must be verified manually by the user. No character length limits. 'conducting an accessibility review' becomes link text to additional documentation. */
   a11yCategoryManualDescription: 'These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).',
   /** Title of the best practices section of the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices. */
@@ -186,7 +186,7 @@ const defaultConfig = {
     'metrics/total-blocking-time',
     'metrics/max-potential-fid',
     'metrics/cumulative-layout-shift',
-    'metrics/experimental-interaction-to-next-paint',
+    'metrics/interaction-to-next-paint',
     'errors-in-console',
     'server-response-time',
     'metrics/interactive',
@@ -435,7 +435,7 @@ const defaultConfig = {
         {id: 'total-blocking-time', weight: 30, group: 'metrics', acronym: 'TBT', relevantAudits: metricsToAudits.tbtRelevantAudits},
         {id: 'cumulative-layout-shift', weight: 25, group: 'metrics', acronym: 'CLS', relevantAudits: metricsToAudits.clsRelevantAudits},
         {id: 'speed-index', weight: 10, group: 'metrics', acronym: 'SI'},
-        {id: 'experimental-interaction-to-next-paint', weight: 0, group: 'metrics', acronym: 'INP', relevantAudits: metricsToAudits.inpRelevantAudits},
+        {id: 'interaction-to-next-paint', weight: 0, group: 'metrics', acronym: 'INP', relevantAudits: metricsToAudits.inpRelevantAudits},
 
         // These are our "invisible" metrics. Not displayed, but still in the LHR.
         {id: 'interactive', weight: 0, group: 'hidden', acronym: 'TTI'},
@@ -569,16 +569,16 @@ const defaultConfig = {
         {id: 'valid-lang', weight: 7, group: 'a11y-language'},
         {id: 'video-caption', weight: 10, group: 'a11y-audio-video'},
         // Manual audits
-        {id: 'logical-tab-order', weight: 0},
         {id: 'focusable-controls', weight: 0},
         {id: 'interactive-element-affordance', weight: 0},
-        {id: 'managed-focus', weight: 0},
+        {id: 'logical-tab-order', weight: 0},
+        {id: 'visual-order-follows-dom', weight: 0},
         {id: 'focus-traps', weight: 0},
+        {id: 'managed-focus', weight: 0},
+        {id: 'use-landmarks', weight: 0},
+        {id: 'offscreen-content-hidden', weight: 0},
         {id: 'custom-controls-labels', weight: 0},
         {id: 'custom-controls-roles', weight: 0},
-        {id: 'visual-order-follows-dom', weight: 0},
-        {id: 'offscreen-content-hidden', weight: 0},
-        {id: 'use-landmarks', weight: 0},
         // Hidden audits
         {id: 'empty-heading', weight: 0, group: 'hidden'},
         {id: 'identical-links-same-purpose', weight: 0, group: 'hidden'},
@@ -591,12 +591,12 @@ const defaultConfig = {
       supportedModes: ['navigation', 'timespan', 'snapshot'],
       auditRefs: [
         // Trust & Safety
-        {id: 'is-on-https', weight: 1, group: 'best-practices-trust-safety'},
+        {id: 'is-on-https', weight: 5, group: 'best-practices-trust-safety'},
         {id: 'geolocation-on-start', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'notification-on-start', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'csp-xss', weight: 0, group: 'best-practices-trust-safety'},
         // User Experience
-        {id: 'paste-preventing-inputs', weight: 1, group: 'best-practices-ux'},
+        {id: 'paste-preventing-inputs', weight: 3, group: 'best-practices-ux'},
         {id: 'image-aspect-ratio', weight: 1, group: 'best-practices-ux'},
         {id: 'image-size-responsive', weight: 1, group: 'best-practices-ux'},
         {id: 'preload-fonts', weight: 1, group: 'best-practices-ux'},
@@ -606,7 +606,7 @@ const defaultConfig = {
         // General Group
         {id: 'no-unload-listeners', weight: 1, group: 'best-practices-general'},
         {id: 'js-libraries', weight: 0, group: 'best-practices-general'},
-        {id: 'deprecations', weight: 1, group: 'best-practices-general'},
+        {id: 'deprecations', weight: 5, group: 'best-practices-general'},
         {id: 'errors-in-console', weight: 1, group: 'best-practices-general'},
         {id: 'valid-source-maps', weight: 0, group: 'best-practices-general'},
         {id: 'inspector-issues', weight: 1, group: 'best-practices-general'},

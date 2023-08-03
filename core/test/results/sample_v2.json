@@ -6015,7 +6015,7 @@
     },
     "accessibility": {
       "title": "Accessibility",
-      "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.",
+      "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/how-to-review/) is also encouraged.",
       "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).",
       "supportedModes": [
         "navigation",
@@ -6308,10 +6308,6 @@
           "group": "a11y-audio-video"
         },
         {
-          "id": "logical-tab-order",
-          "weight": 0
-        },
-        {
           "id": "focusable-controls",
           "weight": 0
         },
@@ -6320,11 +6316,27 @@
           "weight": 0
         },
         {
-          "id": "managed-focus",
+          "id": "logical-tab-order",
+          "weight": 0
+        },
+        {
+          "id": "visual-order-follows-dom",
           "weight": 0
         },
         {
           "id": "focus-traps",
+          "weight": 0
+        },
+        {
+          "id": "managed-focus",
+          "weight": 0
+        },
+        {
+          "id": "use-landmarks",
+          "weight": 0
+        },
+        {
+          "id": "offscreen-content-hidden",
           "weight": 0
         },
         {
@@ -6333,18 +6345,6 @@
         },
         {
           "id": "custom-controls-roles",
-          "weight": 0
-        },
-        {
-          "id": "visual-order-follows-dom",
-          "weight": 0
-        },
-        {
-          "id": "offscreen-content-hidden",
-          "weight": 0
-        },
-        {
-          "id": "use-landmarks",
           "weight": 0
         },
         {
@@ -6381,7 +6381,7 @@
       "auditRefs": [
         {
           "id": "is-on-https",
-          "weight": 1,
+          "weight": 5,
           "group": "best-practices-trust-safety"
         },
         {
@@ -6401,7 +6401,7 @@
         },
         {
           "id": "paste-preventing-inputs",
-          "weight": 1,
+          "weight": 3,
           "group": "best-practices-ux"
         },
         {
@@ -6441,7 +6441,7 @@
         },
         {
           "id": "deprecations",
-          "weight": 1,
+          "weight": 5,
           "group": "best-practices-general"
         },
         {
@@ -6461,7 +6461,7 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.33
+      "score": 0.18
     },
     "seo": {
       "title": "SEO",
@@ -9100,6 +9100,7 @@
       "dropdownSaveHTML": "Save as HTML",
       "dropdownSaveJSON": "Save as JSON",
       "dropdownViewer": "Open in Viewer",
+      "dropdownViewUnthrottledTrace": "View Unthrottled Trace",
       "errorLabel": "Error!",
       "errorMissingAuditInfo": "Report error: no audit information",
       "expandView": "Expand view",
@@ -9139,7 +9140,6 @@
       "toplevelWarningsMessage": "There were issues affecting this run of Lighthouse:",
       "unattributable": "Unattributable",
       "varianceDisclaimer": "Values are estimated and may vary. The [performance score is calculated](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) directly from these metrics.",
-      "viewOriginalTraceLabel": "View Original Trace",
       "viewTraceLabel": "View Trace",
       "viewTreemapLabel": "View Treemap",
       "warningAuditsGroupTitle": "Passed audits but with warnings",

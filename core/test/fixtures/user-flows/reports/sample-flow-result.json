@@ -3918,7 +3918,7 @@
           },
           "accessibility": {
             "title": "Accessibility",
-            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.",
+            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/how-to-review/) is also encouraged.",
             "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).",
             "supportedModes": [
               "navigation",
@@ -4211,10 +4211,6 @@
                 "group": "a11y-audio-video"
               },
               {
-                "id": "logical-tab-order",
-                "weight": 0
-              },
-              {
                 "id": "focusable-controls",
                 "weight": 0
               },
@@ -4223,11 +4219,27 @@
                 "weight": 0
               },
               {
-                "id": "managed-focus",
+                "id": "logical-tab-order",
+                "weight": 0
+              },
+              {
+                "id": "visual-order-follows-dom",
                 "weight": 0
               },
               {
                 "id": "focus-traps",
+                "weight": 0
+              },
+              {
+                "id": "managed-focus",
+                "weight": 0
+              },
+              {
+                "id": "use-landmarks",
+                "weight": 0
+              },
+              {
+                "id": "offscreen-content-hidden",
                 "weight": 0
               },
               {
@@ -4236,18 +4248,6 @@
               },
               {
                 "id": "custom-controls-roles",
-                "weight": 0
-              },
-              {
-                "id": "visual-order-follows-dom",
-                "weight": 0
-              },
-              {
-                "id": "offscreen-content-hidden",
-                "weight": 0
-              },
-              {
-                "id": "use-landmarks",
                 "weight": 0
               },
               {
@@ -4284,7 +4284,7 @@
             "auditRefs": [
               {
                 "id": "is-on-https",
-                "weight": 1,
+                "weight": 5,
                 "group": "best-practices-trust-safety"
               },
               {
@@ -4304,7 +4304,7 @@
               },
               {
                 "id": "paste-preventing-inputs",
-                "weight": 1,
+                "weight": 3,
                 "group": "best-practices-ux"
               },
               {
@@ -4344,7 +4344,7 @@
               },
               {
                 "id": "deprecations",
-                "weight": 1,
+                "weight": 5,
                 "group": "best-practices-general"
               },
               {
@@ -6817,6 +6817,7 @@
             "dropdownSaveHTML": "Save as HTML",
             "dropdownSaveJSON": "Save as JSON",
             "dropdownViewer": "Open in Viewer",
+            "dropdownViewUnthrottledTrace": "View Unthrottled Trace",
             "errorLabel": "Error!",
             "errorMissingAuditInfo": "Report error: no audit information",
             "expandView": "Expand view",
@@ -6856,7 +6857,6 @@
             "toplevelWarningsMessage": "There were issues affecting this run of Lighthouse:",
             "unattributable": "Unattributable",
             "varianceDisclaimer": "Values are estimated and may vary. The [performance score is calculated](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) directly from these metrics.",
-            "viewOriginalTraceLabel": "View Original Trace",
             "viewTraceLabel": "View Trace",
             "viewTreemapLabel": "View Treemap",
             "warningAuditsGroupTitle": "Passed audits but with warnings",
@@ -8378,8 +8378,8 @@
               ]
             }
           },
-          "experimental-interaction-to-next-paint": {
-            "id": "experimental-interaction-to-next-paint",
+          "interaction-to-next-paint": {
+            "id": "interaction-to-next-paint",
             "title": "Interaction to Next Paint",
             "description": "Interaction to Next Paint measures page responsiveness, how long it takes the page to visibly respond to user input. [Learn more about the Interaction to Next Paint metric](https://web.dev/inp/).",
             "score": 1,
@@ -10460,7 +10460,7 @@
                 ]
               },
               {
-                "id": "experimental-interaction-to-next-paint",
+                "id": "interaction-to-next-paint",
                 "weight": 0,
                 "group": "metrics",
                 "acronym": "INP",
@@ -10617,7 +10617,7 @@
             "auditRefs": [
               {
                 "id": "is-on-https",
-                "weight": 1,
+                "weight": 5,
                 "group": "best-practices-trust-safety"
               },
               {
@@ -10642,7 +10642,7 @@
               },
               {
                 "id": "deprecations",
-                "weight": 1,
+                "weight": 5,
                 "group": "best-practices-general"
               },
               {
@@ -10662,7 +10662,7 @@
               }
             ],
             "id": "best-practices",
-            "score": 0.86
+            "score": 0.93
           }
         },
         "categoryGroups": {
@@ -11212,7 +11212,7 @@
             },
             {
               "startTime": 48,
-              "name": "lh:audit:experimental-interaction-to-next-paint",
+              "name": "lh:audit:interaction-to-next-paint",
               "duration": 1,
               "entryType": "measure"
             },
@@ -11545,6 +11545,7 @@
             "dropdownSaveHTML": "Save as HTML",
             "dropdownSaveJSON": "Save as JSON",
             "dropdownViewer": "Open in Viewer",
+            "dropdownViewUnthrottledTrace": "View Unthrottled Trace",
             "errorLabel": "Error!",
             "errorMissingAuditInfo": "Report error: no audit information",
             "expandView": "Expand view",
@@ -11584,7 +11585,6 @@
             "toplevelWarningsMessage": "There were issues affecting this run of Lighthouse:",
             "unattributable": "Unattributable",
             "varianceDisclaimer": "Values are estimated and may vary. The [performance score is calculated](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) directly from these metrics.",
-            "viewOriginalTraceLabel": "View Original Trace",
             "viewTraceLabel": "View Trace",
             "viewTreemapLabel": "View Treemap",
             "warningAuditsGroupTitle": "Passed audits but with warnings",
@@ -11614,7 +11614,7 @@
                 "values": {
                   "timeInMs": 64
                 },
-                "path": "audits[experimental-interaction-to-next-paint].displayValue"
+                "path": "audits[interaction-to-next-paint].displayValue"
               },
               {
                 "values": {
@@ -11636,10 +11636,10 @@
               "audits[cumulative-layout-shift].description"
             ],
             "core/lib/i18n/i18n.js | interactionToNextPaint": [
-              "audits[experimental-interaction-to-next-paint].title"
+              "audits[interaction-to-next-paint].title"
             ],
-            "core/audits/metrics/experimental-interaction-to-next-paint.js | description": [
-              "audits[experimental-interaction-to-next-paint].description"
+            "core/audits/metrics/interaction-to-next-paint.js | description": [
+              "audits[interaction-to-next-paint].description"
             ],
             "core/audits/errors-in-console.js | title": [
               "audits[errors-in-console].title"
@@ -14563,7 +14563,7 @@
           },
           "accessibility": {
             "title": "Accessibility",
-            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.",
+            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/how-to-review/) is also encouraged.",
             "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).",
             "supportedModes": [
               "navigation",
@@ -14856,10 +14856,6 @@
                 "group": "a11y-audio-video"
               },
               {
-                "id": "logical-tab-order",
-                "weight": 0
-              },
-              {
                 "id": "focusable-controls",
                 "weight": 0
               },
@@ -14868,11 +14864,27 @@
                 "weight": 0
               },
               {
-                "id": "managed-focus",
+                "id": "logical-tab-order",
+                "weight": 0
+              },
+              {
+                "id": "visual-order-follows-dom",
                 "weight": 0
               },
               {
                 "id": "focus-traps",
+                "weight": 0
+              },
+              {
+                "id": "managed-focus",
+                "weight": 0
+              },
+              {
+                "id": "use-landmarks",
+                "weight": 0
+              },
+              {
+                "id": "offscreen-content-hidden",
                 "weight": 0
               },
               {
@@ -14881,18 +14893,6 @@
               },
               {
                 "id": "custom-controls-roles",
-                "weight": 0
-              },
-              {
-                "id": "visual-order-follows-dom",
-                "weight": 0
-              },
-              {
-                "id": "offscreen-content-hidden",
-                "weight": 0
-              },
-              {
-                "id": "use-landmarks",
                 "weight": 0
               },
               {
@@ -14929,7 +14929,7 @@
             "auditRefs": [
               {
                 "id": "paste-preventing-inputs",
-                "weight": 1,
+                "weight": 3,
                 "group": "best-practices-ux"
               },
               {
@@ -14954,7 +14954,7 @@
               }
             ],
             "id": "best-practices",
-            "score": 0.75
+            "score": 0.83
           },
           "seo": {
             "title": "SEO",
@@ -16527,6 +16527,7 @@
             "dropdownSaveHTML": "Save as HTML",
             "dropdownSaveJSON": "Save as JSON",
             "dropdownViewer": "Open in Viewer",
+            "dropdownViewUnthrottledTrace": "View Unthrottled Trace",
             "errorLabel": "Error!",
             "errorMissingAuditInfo": "Report error: no audit information",
             "expandView": "Expand view",
@@ -16566,7 +16567,6 @@
             "toplevelWarningsMessage": "There were issues affecting this run of Lighthouse:",
             "unattributable": "Unattributable",
             "varianceDisclaimer": "Values are estimated and may vary. The [performance score is calculated](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) directly from these metrics.",
-            "viewOriginalTraceLabel": "View Original Trace",
             "viewTraceLabel": "View Trace",
             "viewTreemapLabel": "View Treemap",
             "warningAuditsGroupTitle": "Passed audits but with warnings",
@@ -21254,7 +21254,7 @@
           },
           "accessibility": {
             "title": "Accessibility",
-            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.",
+            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/how-to-review/) is also encouraged.",
             "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).",
             "supportedModes": [
               "navigation",
@@ -21547,10 +21547,6 @@
                 "group": "a11y-audio-video"
               },
               {
-                "id": "logical-tab-order",
-                "weight": 0
-              },
-              {
                 "id": "focusable-controls",
                 "weight": 0
               },
@@ -21559,11 +21555,27 @@
                 "weight": 0
               },
               {
-                "id": "managed-focus",
+                "id": "logical-tab-order",
+                "weight": 0
+              },
+              {
+                "id": "visual-order-follows-dom",
                 "weight": 0
               },
               {
                 "id": "focus-traps",
+                "weight": 0
+              },
+              {
+                "id": "managed-focus",
+                "weight": 0
+              },
+              {
+                "id": "use-landmarks",
+                "weight": 0
+              },
+              {
+                "id": "offscreen-content-hidden",
                 "weight": 0
               },
               {
@@ -21572,18 +21584,6 @@
               },
               {
                 "id": "custom-controls-roles",
-                "weight": 0
-              },
-              {
-                "id": "visual-order-follows-dom",
-                "weight": 0
-              },
-              {
-                "id": "offscreen-content-hidden",
-                "weight": 0
-              },
-              {
-                "id": "use-landmarks",
                 "weight": 0
               },
               {
@@ -21620,7 +21620,7 @@
             "auditRefs": [
               {
                 "id": "is-on-https",
-                "weight": 1,
+                "weight": 5,
                 "group": "best-practices-trust-safety"
               },
               {
@@ -21640,7 +21640,7 @@
               },
               {
                 "id": "paste-preventing-inputs",
-                "weight": 1,
+                "weight": 3,
                 "group": "best-practices-ux"
               },
               {
@@ -21680,7 +21680,7 @@
               },
               {
                 "id": "deprecations",
-                "weight": 1,
+                "weight": 5,
                 "group": "best-practices-general"
               },
               {
@@ -24127,6 +24127,7 @@
             "dropdownSaveHTML": "Save as HTML",
             "dropdownSaveJSON": "Save as JSON",
             "dropdownViewer": "Open in Viewer",
+            "dropdownViewUnthrottledTrace": "View Unthrottled Trace",
             "errorLabel": "Error!",
             "errorMissingAuditInfo": "Report error: no audit information",
             "expandView": "Expand view",
@@ -24166,7 +24167,6 @@
             "toplevelWarningsMessage": "There were issues affecting this run of Lighthouse:",
             "unattributable": "Unattributable",
             "varianceDisclaimer": "Values are estimated and may vary. The [performance score is calculated](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) directly from these metrics.",
-            "viewOriginalTraceLabel": "View Original Trace",
             "viewTraceLabel": "View Trace",
             "viewTreemapLabel": "View Treemap",
             "warningAuditsGroupTitle": "Passed audits but with warnings",
