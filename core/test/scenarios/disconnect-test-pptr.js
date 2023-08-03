@@ -26,7 +26,7 @@ describe('Disconnect', function() {
     const pageUrl = `${state.serverBaseUrl}/onclick.html`;
     await state.page.goto(pageUrl, {waitUntil: ['networkidle0']});
 
-    const session = await state.page.target().createCDPSession();
+    const session = await state.page.createCDPSession();
     await session.send('Network.enable');
 
     const timespan = await api.startTimespan(state.page, {

@@ -225,7 +225,7 @@ describe('Lighthouse Viewer', () => {
     it('should support saving as html', async () => {
       const tmpDir = `${LH_ROOT}/.tmp/pptr-downloads`;
       fs.rmSync(tmpDir, {force: true, recursive: true});
-      const session = await viewerPage.target().createCDPSession();
+      const session = await viewerPage.createCDPSession();
       await session.send('Browser.setDownloadBehavior', {
         behavior: 'allow',
         downloadPath: tmpDir,
