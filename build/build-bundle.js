@@ -142,9 +142,7 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
 
   await esbuild.build({
     entryPoints: [entryPath],
-    // Hack to get source map files to be relative to our root directory, instead of the destination directory.
-    // See https://github.com/evanw/esbuild/issues/2218
-    outdir: LH_ROOT,
+    outfile: distPath,
     write: false,
     format: 'iife',
     charset: 'utf8',
@@ -254,9 +252,9 @@ async function buildBundle(entryPath, distPath, opts = {minify: true}) {
               return match;
             });
 
-            await fs.promises.writeFile(distPath, code);
+            await fs.promises.writeFile(codeFile.path, code);
             if (mapFile) {
-              await fs.promises.writeFile(`${distPath}.map`, mapFile.text);
+              await fs.promises.writeFile(mapFile.path, mapFile.text);
             }
           });
         },
