@@ -3,6 +3,11 @@
   "version": "100.0.0.3",
   "minimum_chrome_version": "88",
   "manifest_version": 3,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "0f58e14c-864a-4625-a032-3182a32b33de"
+    }
+  },
   "description": "Lighthouse is an open-source, automated tool for improving the performance, quality, and correctness of your web apps.",
   "icons": {
     "16": "images/lh_favicon_16x16.png",
