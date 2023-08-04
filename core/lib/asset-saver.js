@@ -266,7 +266,7 @@ function saveLhr(lhr, basePath) {
 }
 
 /**
- * Filter traces and extract screenshots to prepare for saving.
+ * Filter trace and extract screenshots to prepare for saving.
  * @param {LH.Trace} trace
  * @param {LH.Result['audits']} [audits]
  * @return {LH.Trace}
@@ -283,7 +283,6 @@ function prepareTraceAsset(trace, audits) {
 }
 
 /**
- * Filter traces and extract screenshots to prepare for saving.
  * @param {LH.Artifacts} artifacts
  * @param {LH.Result['audits']} [audits]
  * @return {Promise<Array<PreparedAssets>>}
