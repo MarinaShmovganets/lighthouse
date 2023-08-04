@@ -5,7 +5,7 @@
   "manifest_version": 3,
   "browser_specific_settings": {
     "gecko": {
-      "id": "0f58e14c-864a-4625-a032-3182a32b33de"
+      "id": "{cf3dba12-a848-4f68-8e2d-f9fadc0721de}"
     }
   },
   "description": "Lighthouse is an open-source, automated tool for improving the performance, quality, and correctness of your web apps.",
