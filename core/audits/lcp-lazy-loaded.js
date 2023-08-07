@@ -7,6 +7,7 @@
 import {Audit} from './audit.js';
 import * as i18n from '../lib/i18n/i18n.js';
 import {LCPBreakdown} from '../computed/metrics/lcp-breakdown.js';
+import {LargestContentfulPaint} from '../computed/metrics/largest-contentful-paint.js';
 
 const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on whether the largest above-the-fold image was loaded with sufficient priority. This descriptive title is shown to users when the image was loaded properly. */
@@ -18,6 +19,8 @@ const UIStrings = {
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
+
+const ESTIMATED_PERCENT_SAVINGS = 0.15;
 
 class LargestContentfulPaintLazyLoaded extends Audit {
   /**
@@ -83,12 +86,17 @@ class LargestContentfulPaintLazyLoaded extends Audit {
     const wasLazyLoaded = lcpElementImage.loading === 'lazy';
 
     const metricComputationData = Audit.makeMetricComputationDataInput(artifacts, context);
+    const {timing: metricLcp} =
+      await LargestContentfulPaint.request(metricComputationData, context);
     const lcpBreakdown = await LCPBreakdown.request(metricComputationData, context);
     let lcpSavings = 0;
     if (wasLazyLoaded && lcpBreakdown.loadStart !== undefined) {
-      // We don't know when the LCP resource was first "seen" before being lazy loaded.
-      // Our best estimate for LCP savings is the entire LCP load delay.
-      lcpSavings = lcpBreakdown.loadStart - lcpBreakdown.ttfb;
+      // Estimate the LCP savings using a statistical percentage.
+      // https://web.dev/lcp-lazy-loading/#causal-performance
+      //
+      // LCP savings will be at most the LCP load delay.
+      const lcpLoadDelay = lcpBreakdown.loadStart - lcpBreakdown.ttfb;
+      lcpSavings = Math.min(metricLcp * ESTIMATED_PERCENT_SAVINGS, lcpLoadDelay);
     }
 
     return {
