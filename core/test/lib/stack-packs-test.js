@@ -57,9 +57,11 @@ Array [
   "joomla",
   "magento",
   "next.js",
+  "nitropack",
   "nuxt",
   "octobercms",
   "react",
+  "wix",
   "wordpress",
   "wp-rocket",
 ]
@@ -201,6 +203,25 @@ Array [
     ],
   },
   Object {
+    "id": "nitropack",
+    "keys": Array [
+      "unused-css-rules",
+      "modern-image-formats",
+      "offscreen-images",
+      "render-blocking-resources",
+      "unminified-css",
+      "unminified-javascript",
+      "unused-javascript",
+      "uses-long-cache-ttl",
+      "uses-optimized-images",
+      "uses-text-compression",
+      "uses-responsive-images",
+      "server-response-time",
+      "dom-size",
+      "font-display",
+    ],
+  },
+  Object {
     "id": "nuxt",
     "keys": Array [
       "modern-image-formats",
@@ -240,6 +261,16 @@ Array [
       "redirects",
       "user-timings",
       "dom-size",
+    ],
+  },
+  Object {
+    "id": "wix",
+    "keys": Array [
+      "modern-image-formats",
+      "render-blocking-resources",
+      "efficient-animated-content",
+      "unused-javascript",
+      "server-response-time",
     ],
   },
   Object {

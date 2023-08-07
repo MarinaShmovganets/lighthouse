@@ -7,6 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import stream from 'stream';
+import url from 'url';
 
 import log from 'lighthouse-logger';
 
@@ -16,6 +17,7 @@ import {MetricTraceEvents} from './traces/metric-trace-events.js';
 import {NetworkAnalysis} from '../computed/network-analysis.js';
 import {LoadSimulator} from '../computed/load-simulator.js';
 import {LighthouseError} from '../lib/lh-error.js';
+import {LH_ROOT} from '../../root.js';
 
 const optionsFilename = 'options.json';
 const artifactsFilename = 'artifacts.json';
@@ -60,6 +62,9 @@ function loadArtifacts(basePath) {
     if (passName === 'defaultPass') {
       artifacts.DevtoolsLog = devtoolsLog;
     }
+    if (passName === 'pageLoadError-defaultPass') {
+      artifacts.DevtoolsLogError = devtoolsLog;
+    }
   });
 
   // load traces
@@ -71,6 +76,9 @@ function loadArtifacts(basePath) {
     artifacts.traces[passName] = Array.isArray(trace) ? {traceEvents: trace} : trace;
     if (passName === 'defaultPass') {
       artifacts.Trace = artifacts.traces[passName];
+    }
+    if (passName === 'pageLoadError-defaultPass') {
+      artifacts.TraceError = artifacts.traces[passName];
     }
   });
 
@@ -218,13 +226,17 @@ async function saveArtifacts(artifacts, basePath) {
   const {traces, devtoolsLogs, DevtoolsLog, Trace, ...restArtifacts} = artifacts;
 
   // save traces
-  for (const [passName, trace] of Object.entries(traces)) {
-    await saveTrace(trace, `${basePath}/${passName}${traceSuffix}`);
+  if (traces) {
+    for (const [passName, trace] of Object.entries(traces)) {
+      await saveTrace(trace, `${basePath}/${passName}${traceSuffix}`);
+    }
   }
 
   // save devtools log
-  for (const [passName, devtoolsLog] of Object.entries(devtoolsLogs)) {
-    await saveDevtoolsLog(devtoolsLog, `${basePath}/${passName}${devtoolsLogSuffix}`);
+  if (devtoolsLogs) {
+    for (const [passName, devtoolsLog] of Object.entries(devtoolsLogs)) {
+      await saveDevtoolsLog(devtoolsLog, `${basePath}/${passName}${devtoolsLogSuffix}`);
+    }
   }
 
   // save everything else, using a replacer to serialize LighthouseErrors in the artifacts.
@@ -425,6 +437,22 @@ function normalizeTimingEntries(timings) {
   }
 }
 
+/**
+ * @param {LH.Result} lhr
+ */
+function elideAuditErrorStacks(lhr) {
+  const baseCallFrameUrl = url.pathToFileURL(LH_ROOT);
+  for (const auditResult of Object.values(lhr.audits)) {
+    if (auditResult.errorStack) {
+      auditResult.errorStack = auditResult.errorStack
+        // Make paths relative to the repo root.
+        .replaceAll(baseCallFrameUrl.pathname, '')
+        // Remove line/col info.
+        .replaceAll(/:\d+:\d+/g, '');
+    }
+  }
+}
+
 export {
   saveArtifacts,
   saveFlowArtifacts,
@@ -438,4 +466,5 @@ export {
   saveLanternNetworkData,
   stringifyReplacer,
   normalizeTimingEntries,
+  elideAuditErrorStacks,
 };

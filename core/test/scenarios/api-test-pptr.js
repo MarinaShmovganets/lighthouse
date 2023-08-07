@@ -9,8 +9,9 @@ import jestMock from 'jest-mock';
 import * as api from '../../index.js';
 import {createTestState, getAuditsBreakdown} from './pptr-test-utils.js';
 import {LH_ROOT} from '../../../root.js';
+import {TargetManager} from '../../gather/driver/target-manager.js';
 
-describe('Fraggle Rock API', function() {
+describe('Individual modes API', function() {
   // eslint-disable-next-line no-invalid-this
   this.timeout(120_000);
 
@@ -30,7 +31,7 @@ describe('Fraggle Rock API', function() {
   describe('snapshot', () => {
     beforeEach(() => {
       const {server} = state;
-      server.baseDir = `${LH_ROOT}/core/test/fixtures/fraggle-rock/snapshot-basic`;
+      server.baseDir = `${LH_ROOT}/core/test/fixtures/user-flows/snapshot-basic`;
     });
 
     it('should compute accessibility results on the page as-is', async () => {
@@ -59,7 +60,7 @@ describe('Fraggle Rock API', function() {
   describe('startTimespan', () => {
     beforeEach(() => {
       const {server} = state;
-      server.baseDir = `${LH_ROOT}/core/test/fixtures/fraggle-rock/snapshot-basic`;
+      server.baseDir = `${LH_ROOT}/core/test/fixtures/user-flows/snapshot-basic`;
     });
 
     it('should compute ConsoleMessage results across a span of time', async () => {
@@ -147,6 +148,7 @@ describe('Fraggle Rock API', function() {
 
     // eslint-disable-next-line max-len
     it('should know target type of network requests from frames created before timespan', async () => {
+      const spy = jestMock.spyOn(TargetManager.prototype, '_onExecutionContextCreated');
       state.server.baseDir = `${LH_ROOT}/cli/test/fixtures`;
       const {page, serverBaseUrl} = state;
 
@@ -192,13 +194,25 @@ Array [
   },
 ]
 `);
+
+      // Check that TargetManager is getting execution context created events even if connecting
+      // to the page after they already exist.
+      // There are two execution contexts, one for the main frame and one for the iframe of
+      // the same origin.
+      const contextCreatedMainFrameCalls =
+        spy.mock.calls.filter(call => call[0].context.origin === 'http://localhost:10200');
+      // For some reason, puppeteer gives us two created events for every uniqueId,
+      // so using Set here to ignore that detail.
+      expect(new Set(contextCreatedMainFrameCalls.map(call => call[0].context.uniqueId)).size)
+        .toEqual(2);
+      spy.mockRestore();
     });
   });
 
   describe('navigation', () => {
     beforeEach(() => {
       const {server} = state;
-      server.baseDir = `${LH_ROOT}/core/test/fixtures/fraggle-rock/navigation-basic`;
+      server.baseDir = `${LH_ROOT}/core/test/fixtures/user-flows/navigation-basic`;
     });
 
     it('should compute both snapshot & timespan results', async () => {
