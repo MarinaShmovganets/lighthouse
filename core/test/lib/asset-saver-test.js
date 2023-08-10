@@ -75,6 +75,19 @@ describe('asset-saver helper', () => {
         assert.equal(afterCount, beforeCount + (2 * metricsMinusTimeOrigin));
       });
     });
+
+    it('adds fake events to error trace', () => {
+      const countEvents = trace => trace.traceEvents.length;
+      const mockArtifacts = {
+        TraceError: dbwTrace,
+      };
+      const beforeCount = countEvents(dbwTrace);
+      return assetSaver.prepareAssets(mockArtifacts, dbwResults.audits).then(preparedAssets => {
+        const afterCount = countEvents(preparedAssets[0].traceData);
+        const metricsMinusTimeOrigin = MetricTraceEvents.metricsDefinitions.length - 1;
+        assert.equal(afterCount, beforeCount + (2 * metricsMinusTimeOrigin));
+      });
+    });
   });
 
   describe('saveTrace', () => {
