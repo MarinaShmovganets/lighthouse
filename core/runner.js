@@ -367,15 +367,18 @@ class Runner {
 
     let auditResult;
     try {
+      if (artifacts.PageLoadError) throw artifacts.PageLoadError;
+
       // Return an early error if an artifact required for the audit is missing or an error.
       for (const artifactName of audit.meta.requiredArtifacts) {
         const noArtifact = artifacts[artifactName] === undefined;
 
         // If trace/devtoolsLog required, check that DEFAULT_PASS trace/devtoolsLog exists.
         // NOTE: for now, not a pass-specific check of traces or devtoolsLogs.
-        const noRequiredTrace = artifactName === 'traces' && !artifacts.traces[Audit.DEFAULT_PASS];
+        const noRequiredTrace = artifactName === 'traces' &&
+          !artifacts.traces?.[Audit.DEFAULT_PASS];
         const noRequiredDevtoolsLog = artifactName === 'devtoolsLogs' &&
-            !artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+          !artifacts.devtoolsLogs?.[Audit.DEFAULT_PASS];
 
         if (noArtifact || noRequiredTrace || noRequiredDevtoolsLog) {
           log.warn('Runner',
