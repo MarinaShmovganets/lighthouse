@@ -8,6 +8,7 @@ import {EventEmitter} from 'events';
 
 import log from 'lighthouse-logger';
 
+import * as LH from '../../types/lh.js';
 import {NetworkRequest} from './network-request.js';
 import {PageDependencyGraph} from '../computed/page-dependency-graph.js';
 
@@ -80,6 +81,7 @@ class NetworkRecorder extends RequestEventEmitter {
       const request = new NetworkRequest();
       request.onRequestWillBeSent(data);
       request.sessionId = event.sessionId;
+      request.sessionTargetType = event.targetType;
       this.onRequestStarted(request);
       log.verbose('network', `request will be sent to ${request.url}`);
       return;

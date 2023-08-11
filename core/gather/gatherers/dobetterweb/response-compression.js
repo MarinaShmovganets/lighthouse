@@ -13,9 +13,10 @@
 import {Buffer} from 'buffer';
 import {gzip} from 'zlib';
 
-import FRGatherer from '../../base-gatherer.js';
+import log from 'lighthouse-logger';
+
+import BaseGatherer from '../../base-gatherer.js';
 import UrlUtils from '../../../lib/url-utils.js';
-import {Sentry} from '../../../lib/sentry.js';
 import {NetworkRequest} from '../../../lib/network-request.js';
 import DevtoolsLog from '../devtools-log.js';
 import {fetchResponseBodyFromCache} from '../../driver/network.js';
@@ -39,7 +40,7 @@ const textResourceTypes = [
   NetworkRequest.TYPES.EventSource,
 ];
 
-class ResponseCompression extends FRGatherer {
+class ResponseCompression extends BaseGatherer {
   /** @type {LH.Gatherer.GathererMeta<'DevtoolsLog'>} */
   meta = {
     supportedModes: ['timespan', 'navigation'],
@@ -91,11 +92,11 @@ class ResponseCompression extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    * @param {LH.Artifacts.NetworkRequest[]} networkRecords
    * @return {Promise<LH.Artifacts['ResponseCompression']>}
    */
-  async _getArtifact(context, networkRecords) {
+  async getCompressibleRecords(context, networkRecords) {
     const session = context.driver.defaultSession;
     const textRecords = ResponseCompression.filterUnoptimizedResponses(networkRecords);
 
@@ -119,12 +120,13 @@ class ResponseCompression extends FRGatherer {
           });
         });
       }).catch(err => {
-        Sentry.captureException(err, {
-          tags: {gatherer: 'ResponseCompression'},
-          extra: {url: UrlUtils.elideDataURI(record.url)},
-          level: 'warning',
-        });
+        const isExpectedError = err?.message?.includes('No resource with given identifier found');
+        if (!isExpectedError) {
+          err.extra = {url: UrlUtils.elideDataURI(record.url)};
+          throw err;
+        }
 
+        log.error('ResponseCompression', err.message);
         record.gzipSize = undefined;
         return record;
       });
@@ -132,22 +134,13 @@ class ResponseCompression extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext<'DevtoolsLog'>} context
+   * @param {LH.Gatherer.Context<'DevtoolsLog'>} context
    * @return {Promise<LH.Artifacts['ResponseCompression']>}
    */
   async getArtifact(context) {
     const devtoolsLog = context.dependencies.DevtoolsLog;
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
-    return this._getArtifact(context, networkRecords);
-  }
-
-  /**
-   * @param {LH.Gatherer.PassContext} passContext
-   * @param {LH.Gatherer.LoadData} loadData
-   * @return {Promise<LH.Artifacts['ResponseCompression']>}
-   */
-  async afterPass(passContext, loadData) {
-    return this._getArtifact({...passContext, dependencies: {}}, loadData.networkRecords);
+    return this.getCompressibleRecords(context, networkRecords);
   }
 }
 

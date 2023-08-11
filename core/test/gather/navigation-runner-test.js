@@ -51,14 +51,13 @@ describe('NavigationRunner', () => {
   let navigation;
   /** @type {Map<string, LH.ArbitraryEqualityMap>} */
   let computedCache;
-  /** @type {LH.FRBaseArtifacts} */
+  /** @type {LH.BaseArtifacts} */
   let baseArtifacts;
 
-  /** @return {LH.Config.AnyFRGathererDefn} */
+  /** @return {LH.Config.AnyGathererDefn} */
   function createGathererDefn() {
     return {
       instance: {
-        name: 'Accessibility',
         meta: {supportedModes: []},
         startInstrumentation: fnAny(),
         stopInstrumentation: fnAny(),
@@ -473,8 +472,10 @@ describe('NavigationRunner', () => {
       const {artifacts, pageLoadError} = await run(navigation);
       expect(pageLoadError).toBeInstanceOf(LighthouseError);
       expect(artifacts).toEqual({
-        devtoolsLogs: {'pageLoadError-default': expect.any(Array)},
-        traces: {'pageLoadError-default': {traceEvents: []}},
+        DevtoolsLogError: expect.any(Array),
+        TraceError: {traceEvents: []},
+        devtoolsLogs: {'pageLoadError-defaultPass': expect.any(Array)},
+        traces: {'pageLoadError-defaultPass': {traceEvents: []}},
       });
     });
 
