@@ -26,8 +26,8 @@ _Some incomplete notes_
 * _Interacting with Chrome:_ The Chrome protocol connection maintained via [WebSocket](https://github.com/websockets/ws) for the CLI [`chrome.debuggger` API](https://developer.chrome.com/extensions/debugger) when in the Chrome extension.
 * _Event binding & domains_: Some domains must be `enable()`d so they issue events. Once enabled, they flush any events that represent state. As such, network events will only issue after the domain is enabled. All the protocol agents resolve their `Domain.enable()` callback _after_ they have flushed any pending events. See example:
 
-```js
-// will NOT work
+js
+ will NOT work
 driver.defaultSession.sendCommand('Security.enable').then(_ => {
   driver.defaultSession.on('Security.securityStateChanged', state => { /* ... */ });
 })
@@ -35,16 +35,16 @@ driver.defaultSession.sendCommand('Security.enable').then(_ => {
 // WILL work! happy happy. :)
 driver.defaultSession.on('Security.securityStateChanged', state => { /* ... */ }); // event binding is synchronous
 driver.defaultSession.sendCommand('Security.enable');
-```
+  
 
 * _Debugging the protocol_: Read [Better debugging of the Protocol](https://github.com/GoogleChrome/lighthouse/issues/184).
 
 ## Understanding a Trace
 
-`core/lib/tracehouse/trace-processor.js` provides the core transformation of a trace into more meaningful objects. Each raw trace event has a monotonically increasing timestamp in microseconds, a thread ID, a process ID, a duration in microseconds (potentially), and other applicable metadata properties such as the event type, the task name, the frame, etc. [Learn more about trace events](https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview).
+core/lib/tracehouse/trace-processor.js` provides the core transformation of a trace into more meaningful objects. Each raw trace event has a monotonically increasing timestamp in microseconds, a thread ID, a process ID, a duration in microseconds (potentially), and other applicable metadata properties such as the event type, the task name, the frame, etc. [Learn more about trace events](https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview).
 
 ### Example Trace Event
-```js
+js
 {
   'pid': 41904, // process ID
   'tid': 1295, // thread ID
@@ -55,13 +55,13 @@ driver.defaultSession.sendCommand('Security.enable');
   'dur': 64, // duration of the task in microseconds
   'args': {}, // contains additional data such as frame when applicable
 }
-```
+
 
 ### Processed trace
 
 The processed trace identifies trace events for key moments (navigation start, FCP, LCP, DOM content loaded, trace end, etc) and provides filtered views of just the main process and the main thread events. Because the timestamps are not necessarily interesting in isolation, the processed trace also calculates the times in milliseconds of key moments relative to navigation start, thus providing the typical interpretation of metrics in ms.
 
-```js
+js
 {
   processEvents: [/* all trace events in the main process */],
   mainThreadEvents: [/* all trace events on the main thread */],
@@ -78,7 +78,7 @@ The processed trace identifies trace events for key moments (navigation start, F
     traceEnd: 639420000, // traceEnd timestamp in microseconds
   },
 }
-```
+
 
 ## Audits
 
