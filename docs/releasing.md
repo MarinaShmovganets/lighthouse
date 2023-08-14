@@ -61,10 +61,6 @@ cd ../lighthouse-pristine
 yarn
 yarn build-all
 
-# Confirm DevTools integration will work: Do some manual testing on a number of sites.
-yarn test-devtools
-yarn open-devtools
-
 # Leave pristine folder.
 cd ../lighthouse
 ```
