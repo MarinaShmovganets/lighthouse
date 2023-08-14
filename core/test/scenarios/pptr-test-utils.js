@@ -4,11 +4,14 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+import fs from 'fs';
+
 import {before, beforeEach, after, afterEach} from 'mocha';
 import * as puppeteer from 'puppeteer-core';
 import {getChromePath} from 'chrome-launcher';
 
 import {Server} from '../../../cli/test/fixtures/static-server.js';
+import {LH_ROOT} from '../../../root.js';
 
 /** @typedef {InstanceType<typeof import('../../../cli/test/fixtures/static-server.js').Server>} StaticServer */
 
@@ -22,19 +25,32 @@ const FLAKY_AUDIT_IDS_APPLICABILITY = new Set([
   'layout-shift-elements', // Depends on if the JS takes too long after input to be ignored for layout shift.
 ]);
 
+const UNIT_OUTPUT_DIR = `${LH_ROOT}/.tmp/unit-failures`;
+
 function createTestState() {
   /** @param {string} name @return {any} */
   const any = name => new Proxy({}, {get: () => {
     throw new Error(`${name} used without invoking \`state.before\``);
   }});
 
+  /** @type {puppeteer.Browser} */
+  let browser = any('browser');
+  /** @type {puppeteer.Page} */
+  let page = any('page');
+  /** @type {StaticServer} */
+  let server = any('server');
+  /** @type {StaticServer} */
+  let secondaryServer = any('server');
+  let serverBaseUrl = '';
+  let secondaryServerBaseUrl = '';
+
   return {
-    browser: /** @type {puppeteer.Browser} */ (any('browser')),
-    page: /** @type {puppeteer.Page} */ (any('page')),
-    server: /** @type {StaticServer} */ (any('server')),
-    secondaryServer: /** @type {StaticServer} */ (any('server')),
-    serverBaseUrl: '',
-    secondaryServerBaseUrl: '',
+    browser,
+    page,
+    server,
+    secondaryServer,
+    serverBaseUrl,
+    secondaryServerBaseUrl,
 
     /**
      * @param {number=} port
@@ -42,17 +58,17 @@ function createTestState() {
      */
     installServerHooks(port = 10200, secondaryPort = 10503) {
       before(async () => {
-        this.server = new Server(port);
-        this.secondaryServer = new Server(secondaryPort);
-        await this.server.listen(port, '127.0.0.1');
-        await this.secondaryServer.listen(secondaryPort, '127.0.0.1');
-        this.serverBaseUrl = `http://localhost:${this.server.getPort()}`;
-        this.secondaryServerBaseUrl = `http://localhost:${this.secondaryServer.getPort()}`;
+        server = new Server(port);
+        secondaryServer = new Server(secondaryPort);
+        await server.listen(port, '127.0.0.1');
+        await secondaryServer.listen(secondaryPort, '127.0.0.1');
+        serverBaseUrl = `http://localhost:${this.server.getPort()}`;
+        secondaryServerBaseUrl = `http://localhost:${this.secondaryServer.getPort()}`;
       });
 
       after(async () => {
-        await this.server.close();
-        await this.secondaryServer.close();
+        await server.close();
+        await secondaryServer.close();
       });
     },
 
@@ -60,7 +76,7 @@ function createTestState() {
       this.installServerHooks();
 
       before(async () => {
-        this.browser = await puppeteer.launch({
+        browser = await puppeteer.launch({
           headless: true,
           executablePath: getChromePath(),
           ignoreDefaultArgs: ['--enable-automation'],
@@ -68,15 +84,24 @@ function createTestState() {
       });
 
       beforeEach(async () => {
-        this.page = await this.browser.newPage();
+        page = await browser.newPage();
+        await page.tracing.start();
       });
 
-      afterEach(async () => {
-        await this.page.close();
+      afterEach(async function() {
+        await page.close();
+        const traceData = await page.tracing.stop();
+        // eslint-disable-next-line no-invalid-this
+        const currentTest = this.currentTest;
+        if (currentTest?.state === 'failed' && traceData) {
+          const testOutputDir = `${UNIT_OUTPUT_DIR}/${currentTest.fullTitle()}`;
+          fs.mkdirSync(testOutputDir, {recursive: true});
+          fs.writeFileSync(`${testOutputDir}/trace.json`, traceData);
+        }
       });
 
       after(async () => {
-        await this.browser.close();
+        await browser.close();
       });
     },
   };
