@@ -54,17 +54,6 @@ In general, Lighthouse should be using the latest version of all of these depend
 Before starting, you should announce to the LH eng channel that you are releasing,
 and that no new PRs should be merged until you are done.
 
-```sh
-# Make pristine folder.
-bash ./core/scripts/release/prepare-pristine.sh
-cd ../lighthouse-pristine
-yarn
-yarn build-all
-
-# Leave pristine folder.
-cd ../lighthouse
-```
-
 ### Lightrider
 
 There is a cron that rolls the latest Lighthouse to the Lightrider canary feed.
