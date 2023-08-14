@@ -33,24 +33,16 @@ function createTestState() {
     throw new Error(`${name} used without invoking \`state.before\``);
   }});
 
-  /** @type {puppeteer.Browser} */
-  let browser = any('browser');
-  /** @type {puppeteer.Page} */
-  let page = any('page');
-  /** @type {StaticServer} */
-  let server = any('server');
-  /** @type {StaticServer} */
-  let secondaryServer = any('server');
-  let serverBaseUrl = '';
-  let secondaryServerBaseUrl = '';
+  /** @type {LH.Trace|undefined} */
+  let trace;
 
   return {
-    browser,
-    page,
-    server,
-    secondaryServer,
-    serverBaseUrl,
-    secondaryServerBaseUrl,
+    browser: /** @type {puppeteer.Browser} */ (any('browser')),
+    page: /** @type {puppeteer.Page} */ (any('page')),
+    server: /** @type {StaticServer} */ (any('server')),
+    secondaryServer: /** @type {StaticServer} */ (any('server')),
+    serverBaseUrl: '',
+    secondaryServerBaseUrl: '',
 
     /**
      * @param {number=} port
@@ -58,17 +50,17 @@ function createTestState() {
      */
     installServerHooks(port = 10200, secondaryPort = 10503) {
       before(async () => {
-        server = new Server(port);
-        secondaryServer = new Server(secondaryPort);
-        await server.listen(port, '127.0.0.1');
-        await secondaryServer.listen(secondaryPort, '127.0.0.1');
-        serverBaseUrl = `http://localhost:${this.server.getPort()}`;
-        secondaryServerBaseUrl = `http://localhost:${this.secondaryServer.getPort()}`;
+        this.server = new Server(port);
+        this.secondaryServer = new Server(secondaryPort);
+        await this.server.listen(port, '127.0.0.1');
+        await this.secondaryServer.listen(secondaryPort, '127.0.0.1');
+        this.serverBaseUrl = `http://localhost:${this.server.getPort()}`;
+        this.secondaryServerBaseUrl = `http://localhost:${this.secondaryServer.getPort()}`;
       });
 
       after(async () => {
-        await server.close();
-        await secondaryServer.close();
+        await this.server.close();
+        await this.secondaryServer.close();
       });
     },
 
@@ -76,7 +68,7 @@ function createTestState() {
       this.installServerHooks();
 
       before(async () => {
-        browser = await puppeteer.launch({
+        this.browser = await puppeteer.launch({
           headless: true,
           executablePath: getChromePath(),
           ignoreDefaultArgs: ['--enable-automation'],
@@ -84,25 +76,35 @@ function createTestState() {
       });
 
       beforeEach(async () => {
-        page = await browser.newPage();
-        await page.tracing.start();
+        trace = undefined;
+        this.page = await this.browser.newPage();
       });
 
-      afterEach(async function() {
-        await page.close();
-        const traceData = await page.tracing.stop();
+      afterEach(async () => {
+        await this.page.close();
+      });
+
+      afterEach(function() {
         // eslint-disable-next-line no-invalid-this
         const currentTest = this.currentTest;
-        if (currentTest?.state === 'failed' && traceData) {
-          const testOutputDir = `${UNIT_OUTPUT_DIR}/${currentTest.fullTitle()}`;
+        if (currentTest?.state === 'failed' && trace) {
+          const dirname = currentTest.fullTitle().replace(/[^a-z0-9]/gi, '_').toLowerCase();
+          const testOutputDir = `${UNIT_OUTPUT_DIR}/${dirname}`;
           fs.mkdirSync(testOutputDir, {recursive: true});
-          fs.writeFileSync(`${testOutputDir}/trace.json`, traceData);
+          fs.writeFileSync(`${testOutputDir}/trace.json`, JSON.stringify(trace, null, 2));
         }
       });
 
       after(async () => {
-        await browser.close();
+        await this.browser.close();
       });
+    },
+
+    /**
+     * @param {LH.Trace} testTrace
+     */
+    saveTrace(testTrace) {
+      trace = testTrace;
     },
   };
 }
