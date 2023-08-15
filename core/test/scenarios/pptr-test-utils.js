@@ -77,6 +77,7 @@ function createTestState() {
 
       beforeEach(async () => {
         trace = undefined;
+        console.log('########');
         this.page = await this.browser.newPage();
       });
 
