@@ -95,6 +95,12 @@ class DOMSize extends Audit {
     const metricComputationData = Audit.makeMetricComputationDataInput(artifacts, context);
 
     try {
+      // The TBT impact of style/layout tasks is correlated to the DOM size.
+      // Even in situations where the page forces a style recalc, the DOM size is partially to blame
+      // for any time spent blocking the main thread.
+      //
+      // `tbtImpact` should be exactly 0 for small DOMs since `selfTbtImpact` accounts for the blocking
+      // time and not the main thread time.
       const tbtImpactTasks = await TBTImpactTasks.request(metricComputationData, context);
       for (const task of tbtImpactTasks) {
         if (task.group.id !== 'styleLayout') continue;
