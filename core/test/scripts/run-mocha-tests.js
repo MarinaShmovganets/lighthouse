@@ -146,6 +146,9 @@ const rawArgv = y
     'require': {
       type: 'string',
     },
+    'retries': {
+      type: 'number',
+    },
   })
   .wrap(y.terminalWidth())
   .argv;
@@ -259,6 +262,7 @@ function exit({numberFailures, numberMochaInvocations}) {
  * @property {boolean} bail
  * @property {boolean} parallel
  * @property {string | undefined} require
+ * @property {number | undefined} retries
  */
 
 /**
@@ -281,6 +285,7 @@ async function runMocha(tests, mochaArgs, invocationNumber) {
       // TODO: not working
       // parallel: tests.length > 1 && mochaArgs.parallel,
       parallel: false,
+      retries: mochaArgs.retries,
     });
 
     // @ts-expect-error - not in types.
@@ -325,6 +330,7 @@ async function main() {
     bail: argv.bail,
     parallel: argv.parallel,
     require: argv.require,
+    retries: argv.retries,
   };
 
   mochaGlobalSetup();
