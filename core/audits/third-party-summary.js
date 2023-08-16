@@ -8,8 +8,8 @@ import {Audit} from './audit.js';
 import {EntityClassification} from '../computed/entity-classification.js';
 import * as i18n from '../lib/i18n/i18n.js';
 import {NetworkRecords} from '../computed/network-records.js';
-import {MainThreadTasks} from '../computed/main-thread-tasks.js';
 import {getJavaScriptURLs, getAttributableURLForTask} from '../lib/tracehouse/task-summary.js';
+import {TBTImpactTasks} from '../computed/tbt-impact-tasks.js';
 
 const UIStrings = {
   /** Title of a diagnostic audit that provides details about the code on a web page that the user doesn't control (referred to as "third-party code"). This descriptive title is shown to users when the amount is acceptable and no user action is required. */
@@ -38,6 +38,7 @@ const PASS_THRESHOLD_IN_MS = 250;
  * @property {number} mainThreadTime
  * @property {number} transferSize
  * @property {number} blockingTime
+ * @property {number} tbtImpact
  */
 
 /**
@@ -72,24 +73,24 @@ class ThirdPartySummary extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'URL'],
+      requiredArtifacts: ['traces', 'devtoolsLogs', 'URL', 'GatherContext'],
     };
   }
 
   /**
    *
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
-   * @param {Array<LH.Artifacts.TaskNode>} mainThreadTasks
+   * @param {Array<LH.Artifacts.TBTImpactTask>} tbtImpactTasks
    * @param {number} cpuMultiplier
    * @param {LH.Artifacts.EntityClassification} entityClassification
    * @return {SummaryMaps}
    */
-  static getSummaries(networkRecords, mainThreadTasks, cpuMultiplier, entityClassification) {
+  static getSummaries(networkRecords, tbtImpactTasks, cpuMultiplier, entityClassification) {
     /** @type {Map<string, Summary>} */
     const byURL = new Map();
     /** @type {Map<LH.Artifacts.Entity, Summary>} */
     const byEntity = new Map();
-    const defaultSummary = {mainThreadTime: 0, blockingTime: 0, transferSize: 0};
+    const defaultSummary = {mainThreadTime: 0, blockingTime: 0, transferSize: 0, tbtImpact: 0};
 
     for (const request of networkRecords) {
       const urlSummary = byURL.get(request.url) || {...defaultSummary};
@@ -99,7 +100,7 @@ class ThirdPartySummary extends Audit {
 
     const jsURLs = getJavaScriptURLs(networkRecords);
 
-    for (const task of mainThreadTasks) {
+    for (const task of tbtImpactTasks) {
       const attributableURL = getAttributableURLForTask(task, jsURLs);
 
       const urlSummary = byURL.get(attributableURL) || {...defaultSummary};
@@ -110,6 +111,7 @@ class ThirdPartySummary extends Audit {
       // Note that this is not totally equivalent to the TBT definition since it fails to account for FCP,
       // but a majority of third-party work occurs after FCP and should yield largely similar numbers.
       urlSummary.blockingTime += Math.max(taskDuration - 50, 0);
+      urlSummary.tbtImpact += task.selfTbtImpact;
       byURL.set(attributableURL, urlSummary);
     }
 
@@ -127,6 +129,7 @@ class ThirdPartySummary extends Audit {
       entitySummary.transferSize += urlSummary.transferSize;
       entitySummary.mainThreadTime += urlSummary.mainThreadTime;
       entitySummary.blockingTime += urlSummary.blockingTime;
+      entitySummary.tbtImpact += urlSummary.tbtImpact;
       byEntity.set(entity, entitySummary);
 
       const entityURLs = urls.get(entity) || [];
@@ -193,19 +196,21 @@ class ThirdPartySummary extends Audit {
    */
   static async audit(artifacts, context) {
     const settings = context.settings || {};
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
     const classifiedEntities = await EntityClassification.request(
       {URL: artifacts.URL, devtoolsLog}, context);
     const firstPartyEntity = classifiedEntities.firstParty;
-    const tasks = await MainThreadTasks.request(trace, context);
+
+    const metricComputationData = Audit.makeMetricComputationDataInput(artifacts, context);
+    const tbtImpactTasks = await TBTImpactTasks.request(metricComputationData, context);
+
     const multiplier = settings.throttlingMethod === 'simulate' ?
       settings.throttling.cpuSlowdownMultiplier : 1;
 
     const summaries = ThirdPartySummary.getSummaries(
-      networkRecords, tasks, multiplier, classifiedEntities);
-    const overallSummary = {wastedBytes: 0, wastedMs: 0};
+      networkRecords, tbtImpactTasks, multiplier, classifiedEntities);
+    const overallSummary = {wastedBytes: 0, wastedMs: 0, tbtImpact: 0};
 
     const results = Array.from(summaries.byEntity.entries())
       // Don't consider the page we're on to be third-party.
@@ -214,6 +219,7 @@ class ThirdPartySummary extends Audit {
       .map(([entity, stats]) => {
         overallSummary.wastedBytes += stats.transferSize;
         overallSummary.wastedMs += stats.blockingTime;
+        overallSummary.tbtImpact += stats.tbtImpact;
 
         return {
           ...stats,
@@ -240,6 +246,7 @@ class ThirdPartySummary extends Audit {
       return {
         score: 1,
         notApplicable: true,
+        metricSavings: {TBT: 0},
       };
     }
 
@@ -252,6 +259,9 @@ class ThirdPartySummary extends Audit {
         timeInMs: overallSummary.wastedMs,
       }),
       details,
+      metricSavings: {
+        TBT: overallSummary.tbtImpact,
+      },
     };
   }
 }
