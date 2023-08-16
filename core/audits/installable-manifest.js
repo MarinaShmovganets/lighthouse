@@ -87,7 +87,7 @@ const UIStrings = {
   /** Error message explaining that the web manifest's URL changed while the manifest was being downloaded by the browser. */
   'manifest-location-changed': `Manifest URL changed while the manifest was being fetched.`,
   /** Warning message explaining that the page does not work offline. */
-  // TODO: This error was removed in M118, we can remove this message when it hits stable.
+  // TODO(COMPAT): This error was removed in M118, we can remove this message when it hits stable.
   'warn-not-offline-capable': `Page does not work offline. The page will not be regarded as installable after Chrome 93, stable release August 2021.`,
   /** Error message explaining that Lighthouse failed while checking if the page is installable, and directing the user to try again in a new Chrome. */
   'protocol-timeout': `Lighthouse could not determine if the page is installable. Please try with a newer version of Chrome.`,
@@ -151,17 +151,6 @@ class InstallableManifest extends Audit {
 
       // @ts-expect-error errorIds from protocol should match up against the strings dict
       const matchingString = UIStrings[err.errorId];
-
-      if (err.errorId === 'scheme-not-supported-for-webapk') {
-        // If there was no manifest, then there will be at lest one other installability error.
-        // We can ignore this error if that's the case.
-        const manifestUrl = artifacts.WebAppManifest?.url;
-        if (!manifestUrl) continue;
-
-        const scheme = new URL(manifestUrl).protocol;
-        i18nErrors.push(str_(matchingString, {scheme}));
-        continue;
-      }
 
       // Handle an errorId we don't recognize.
       if (matchingString === undefined) {
