@@ -170,6 +170,7 @@ describe('Third party summary', () => {
     };
 
     const settings = JSON.parse(JSON.stringify(defaultSettings));
+    settings.throttlingMethod = 'devtools';
     const context = {computedCache: new Map(), settings};
 
     const resultsOnExternal = await ThirdPartySummary.audit(externalArtifacts, context);
@@ -179,7 +180,7 @@ describe('Third party summary', () => {
     const facebookEntities = resultsOnFacebook.details.items.map(item => item.entity);
 
     expect(externalEntities).toEqual([
-      'Google Tag Manager', 'Google Analytics', 'pwa.rocks', 'Facebook']);
-    expect(facebookEntities).toEqual(['Google Tag Manager', 'Google Analytics', 'pwa.rocks']);
+      'Google Tag Manager', 'Facebook', 'pwa.rocks', 'Google Analytics']);
+    expect(facebookEntities).toEqual(['Google Tag Manager', 'pwa.rocks', 'Google Analytics']);
   });
 });
