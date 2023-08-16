@@ -14,6 +14,8 @@ const pwaTrace = readJson('../fixtures/traces/progressive-app-m60.json', import.
 const pwaDevtoolsLog = readJson('../fixtures/traces/progressive-app-m60.devtools.log.json', import.meta);
 const videoEmbedsTrace = readJson('../fixtures/artifacts/video-embed/trace.json', import.meta);
 const videoEmbedsDevtolsLog = readJson('../fixtures/artifacts/video-embed/devtoolslog.json', import.meta);
+const blockingWidgetTrace = readJson('../fixtures/artifacts/intercom-widget/trace.json', import.meta);
+const blockingWidgetDevtoolsLog = readJson('../fixtures/artifacts/intercom-widget/devtoolslog.json', import.meta);
 const noThirdPartyTrace = readJson('../fixtures/traces/no-tracingstarted-m74.json', import.meta);
 
 function intercomProductUrl(id) {
@@ -430,6 +432,25 @@ Array [
   },
 ]
 `);
+  });
+
+  it('handles real trace that blocks the main thread', async () => {
+    const artifacts = {
+      devtoolsLogs: {defaultPass: blockingWidgetDevtoolsLog},
+      traces: {defaultPass: blockingWidgetTrace},
+      URL: getURLArtifactFromDevtoolsLog(blockingWidgetDevtoolsLog),
+      GatherContext: {gatherMode: 'navigation'},
+    };
+
+    const settings = JSON.parse(JSON.stringify(defaultSettings));
+    const results = await ThirdPartyFacades.audit(artifacts, {computedCache: new Map(), settings});
+
+    expect(results.score).toBe(0);
+    expect(results.metricSavings).toEqual({TBT: 224});
+    expect(results.displayValue).toBeDisplayString('1 facade alternative available');
+    expect(results.details.items[0].blockingTime).toEqual(234.984); // TBT impact is not equal to the blocking time
+    expect(results.details.items[0].product)
+      .toBeDisplayString('Intercom Widget (Customer Success)');
   });
 
   describe('.condenseItems', () => {
