@@ -25,7 +25,7 @@ function verify(artifacts) {
   const devtoolsLog = artifacts.DevtoolsLog;
 
   const facadeResourceEvents = devtoolsLog.filter(e =>
-    /widget.intercom.io/.test(e.params?.request?.url)
+    /widget\.intercom\.io/.test(e.params?.request?.url)
   );
 
   if (facadeResourceEvents.length === 0) {
