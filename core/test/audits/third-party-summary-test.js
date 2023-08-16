@@ -68,6 +68,7 @@ describe('Third party summary', () => {
             },
             {
               blockingTime: 0,
+              tbtImpact: 0,
               transferSize: 8007,
               url: expect.toBeDisplayString('Other resources'),
             },

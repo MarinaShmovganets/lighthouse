@@ -45,6 +45,7 @@ const PASS_THRESHOLD_IN_MS = 250;
  * @typedef URLSummary
  * @property {number} transferSize
  * @property {number} blockingTime
+ * @property {number} tbtImpact
  * @property {string | LH.IcuMessage} url
  */
 
@@ -155,7 +156,7 @@ class ThirdPartySummary extends Audit {
       // Sort by blocking time first, then transfer size to break ties.
       .sort((a, b) => (b.blockingTime - a.blockingTime) || (b.transferSize - a.transferSize));
 
-    const subitemSummary = {transferSize: 0, blockingTime: 0};
+    const subitemSummary = {transferSize: 0, blockingTime: 0, tbtImpact: 0};
     const minTransferSize = Math.max(MIN_TRANSFER_SIZE_FOR_SUBITEMS, stats.transferSize / 20);
     const maxSubItems = Math.min(MAX_SUBITEMS, items.length);
     let numSubItems = 0;
@@ -170,6 +171,7 @@ class ThirdPartySummary extends Audit {
       numSubItems++;
       subitemSummary.transferSize += nextSubItem.transferSize;
       subitemSummary.blockingTime += nextSubItem.blockingTime;
+      subitemSummary.tbtImpact += nextSubItem.tbtImpact;
     }
     if (!subitemSummary.blockingTime && !subitemSummary.transferSize) {
       // Don't bother breaking down if there are no large resources.
@@ -182,6 +184,7 @@ class ThirdPartySummary extends Audit {
       url: str_(i18n.UIStrings.otherResourcesLabel),
       transferSize: stats.transferSize - subitemSummary.transferSize,
       blockingTime: stats.blockingTime - subitemSummary.blockingTime,
+      tbtImpact: stats.tbtImpact - subitemSummary.tbtImpact,
     };
     if (remainder.transferSize > minTransferSize) {
       items.push(remainder);
