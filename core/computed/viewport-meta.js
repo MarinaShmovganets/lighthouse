@@ -35,17 +35,14 @@ class ViewportMeta {
     }
 
     const viewportProps = parsedProps.validProperties;
-    const initialScale = viewportProps['initial-scale'];
-    if (initialScale !== undefined) {
-      if (typeof initialScale === 'number') {
-        if (initialScale < 1) {
-          return {
-            hasViewportTag: true,
-            isMobileOptimized: false,
-            parserWarnings: warnings,
-          };
-        }
-      }
+    const initialScale = Number(viewportProps['initial-scale']);
+
+    if (!isNaN(initialScale) && initialScale < 1) {
+      return {
+        hasViewportTag: true,
+        isMobileOptimized: false,
+        parserWarnings: warnings,
+      };
     }
 
     const isMobileOptimized = Boolean(viewportProps.width || initialScale);
