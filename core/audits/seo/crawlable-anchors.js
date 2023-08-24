@@ -48,8 +48,6 @@ class CrawlableAnchors extends Audit {
     }) => {
       rawHref = rawHref.replace( /\s/g, '');
       name = name.trim();
-
-      if (role === ' ') return true;
       role = role.trim();
 
       if (role.length > 0) return;
