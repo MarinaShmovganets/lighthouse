@@ -44,9 +44,12 @@ class CrawlableAnchors extends Audit {
       name = '',
       role = '',
       id,
+      href,
     }) => {
       rawHref = rawHref.replace( /\s/g, '');
       name = name.trim();
+
+      if (role === ' ') return true;
       role = role.trim();
 
       if (role.length > 0) return;
@@ -61,7 +64,7 @@ class CrawlableAnchors extends Audit {
       if (rawHref.startsWith('file:')) return true;
       if (name.length > 0) return;
 
-      if (rawHref === '') return true;
+      if (rawHref === '' && href === '') return true;
       if (javaScriptVoidRegExp.test(rawHref)) return true;
 
       // checking if rawHref is a valid

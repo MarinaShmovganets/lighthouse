@@ -10,6 +10,7 @@ import CrawlableAnchorsAudit from '../../../audits/seo/crawlable-anchors.js';
 
 function runAudit({
   rawHref = '',
+  href = '',
   role = '',
   onclick = '',
   name = '',
@@ -26,6 +27,7 @@ function runAudit({
   const {score} = CrawlableAnchorsAudit.audit({
     AnchorElements: [{
       rawHref,
+      href,
       name,
       listeners,
       onclick,
@@ -59,6 +61,7 @@ describe('SEO: Crawlable anchors audit', () => {
     }), 1, 'relative link which specifies a query string');
 
     assert.equal(runAudit({rawHref: 'ftp://'}), 0, 'invalid FTP links fails');
+    assert.equal(runAudit({rawHref: '', href: 'https://example.com'}), 1, 'empty attribute that links to current page');
   });
 
   it('allows anchors acting as an ID anchor', () => {
