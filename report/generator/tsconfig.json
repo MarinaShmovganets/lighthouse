@@ -11,6 +11,6 @@
   ],
   "include": [
     "**/*.js",
-    "../../esm-utils.js",
+    "../../shared/esm-utils.js",
   ],
 }
