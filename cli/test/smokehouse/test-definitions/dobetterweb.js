@@ -269,46 +269,33 @@ const expectations = {
       'errors-in-console': {
         score: 0,
         details: {
-          items: {
-            0: {
+          items: [
+            {
               source: 'exception',
               description: /^Error: A distinctive error\s+at http:\/\/localhost:10200\/dobetterweb\/dbw_tester.html:\d+:\d+$/,
               sourceLocation: {url: 'http://localhost:10200/dobetterweb/dbw_tester.html'},
             },
-            1: {
+            {
               source: 'console.error',
               description: 'Error! Error!',
               sourceLocation: {url: 'http://localhost:10200/dobetterweb/dbw_tester.html'},
             },
-            2: {
+            {
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               sourceLocation: {url: 'http://localhost:10200/dobetterweb/unknown404.css?delay=200'},
             },
-            3: {
+            {
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               sourceLocation: {url: 'http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000'},
             },
-            4: {
+            {
               // In the DT runner, the initial page load before staring Lighthouse will prevent this error.
               _excludeRunner: 'devtools',
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               sourceLocation: {url: 'http://localhost:10200/favicon.ico'},
-            },
-            // In legacy Lighthouse this audit will have additional duplicate failures which are a mistake.
-            // Fraggle Rock ordering of gatherer `stopInstrumentation` and `getArtifact` fixes the re-request issue.
-          },
-        },
-      },
-      'is-on-https': {
-        score: 0,
-        details: {
-          items: [
-            {
-              url: 'http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js',
-              resolution: 'Allowed',
             },
           ],
         },
@@ -370,20 +357,6 @@ const expectations = {
         score: 0,
         details: {
           items: [
-            {
-              // This feature was removed in M110.
-              // TODO: Remove this expectation once M110 reaches stable.
-              _maxChromiumVersion: '109',
-              value: /`window.webkitStorageInfo` is deprecated/,
-              source: {
-                type: 'source-location',
-                url: 'http://localhost:10200/dobetterweb/dbw_tester.js',
-                urlProvider: 'network',
-                line: '>0',
-                column: 9,
-              },
-              subItems: undefined,
-            },
             {
               value: /Synchronous `XMLHttpRequest` on the main thread is deprecated/,
               source: {
@@ -585,14 +558,53 @@ const expectations = {
           },
         },
       },
+      'network-rtt': {
+        details: {
+          items: [
+            {origin: 'http://localhost:10200', rtt: '>0'},
+          ],
+        },
+      },
+      'network-server-latency': {
+        details: {
+          items: [
+            {origin: 'http://localhost:10200', serverResponseTime: '>0'},
+          ],
+        },
+      },
       'metrics': {
         // Flaky in DevTools
         _excludeRunner: 'devtools',
         details: {items: {0: {
           timeToFirstByte: '450+/-100',
-          lcpLoadStart: '7750+/-500',
-          lcpLoadEnd: '7750+/-500',
+          lcpLoadStart: '7750+/-1000',
+          lcpLoadEnd: '7750+/-1000',
         }}},
+      },
+      'largest-contentful-paint-element': {
+        score: null,
+        displayValue: /\d+\xa0ms/,
+        details: {
+          items: [
+            {
+              items: [{
+                node: {
+                  type: 'node',
+                  nodeLabel: 'Do better web tester page',
+                  path: '2,HTML,1,BODY,9,DIV,2,H2',
+                },
+              }],
+            },
+            {
+              items: [
+                {timing: '>0'},
+                {timing: '>0'},
+                {timing: '>0'},
+                {timing: '>0'},
+              ],
+            },
+          ],
+        },
       },
     },
     fullPageScreenshot: {

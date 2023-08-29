@@ -8,7 +8,7 @@ import {Driver} from '../../gather/driver.js';
 import {fnAny} from '../test-utils.js';
 import {createMockCdpSession} from './mock-driver.js';
 
-/** @type {Array<keyof LH.Gatherer.FRProtocolSession>} */
+/** @type {Array<keyof LH.Gatherer.ProtocolSession>} */
 const DELEGATED_FUNCTIONS = [
   'hasNextProtocolTimeout',
   'getNextProtocolTimeout',
@@ -27,6 +27,10 @@ beforeEach(() => {
   const puppeteerSession = createMockCdpSession();
   puppeteerSession.send
       .mockResponse('Page.enable')
+      .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: 'mainFrameId'}}})
+      .mockResponse('Runtime.enable')
+      .mockResponse('Page.disable')
+      .mockResponse('Runtime.disable')
       .mockResponse('Target.getTargetInfo', {targetInfo: {type: 'page', targetId: 'page'}})
       .mockResponse('Network.enable')
       .mockResponse('Target.setAutoAttach')

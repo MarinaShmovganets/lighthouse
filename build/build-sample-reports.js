@@ -23,7 +23,7 @@ const lhr = readJson(`${LH_ROOT}/core/test/results/sample_v2.json`);
 
 /** @type {LH.FlowResult} */
 const flowResult = readJson(
-  `${LH_ROOT}/core/test/fixtures/fraggle-rock/reports/sample-flow-result.json`
+  `${LH_ROOT}/core/test/fixtures/user-flows/reports/sample-flow-result.json`
 );
 
 const DIST = path.join(LH_ROOT, 'dist');
@@ -142,7 +142,7 @@ function tweakLhrForPsi(sampleLhr) {
  * @return {Promise<LH.Result>}
  */
 async function generateErrorLHR() {
-  /** @type {LH.BaseArtifacts} */
+  /** @type {Partial<LH.Artifacts>} */
   const artifacts = {
     fetchTime: '2019-06-26T23:56:58.381Z',
     LighthouseRunWarnings: [
@@ -165,11 +165,11 @@ async function generateErrorLHR() {
     traces: {},
   };
 
-  // Save artifacts to disk then run `lighthouse -G` with them.
+  // Save artifacts to disk then run `lighthouse -A` with them.
   const TMP = `${DIST}/.tmp/`;
   fs.mkdirSync(TMP, {recursive: true});
   fs.writeFileSync(`${TMP}/artifacts.json`, JSON.stringify(artifacts), 'utf-8');
-  const errorRunnerResult = await lighthouse(artifacts.URL.requestedUrl, {auditMode: TMP});
+  const errorRunnerResult = await lighthouse(undefined, {auditMode: TMP});
 
   if (!errorRunnerResult) throw new Error('Failed to run lighthouse on empty artifacts');
   const errorLhr = errorRunnerResult.lhr;

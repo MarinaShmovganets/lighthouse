@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Mock fraggle rock driver for testing.
+ * @fileoverview Mock driver for testing.
  */
 
 import jestMock from 'jest-mock';
@@ -18,6 +18,7 @@ import {
 } from './mock-commands.js';
 import * as constants from '../../config/constants.js';
 import {fnAny} from '../test-utils.js';
+import {NetworkMonitor} from '../../gather/driver/network-monitor.js';
 
 /** @typedef {import('../../gather/driver.js').Driver} Driver */
 /** @typedef {import('../../gather/driver/execution-context.js')} ExecutionContext */
@@ -25,8 +26,10 @@ import {fnAny} from '../test-utils.js';
 function createMockSession() {
   return {
     setTargetInfo: fnAny(),
-    sendCommand: createMockSendCommandFn({useSessionId: false}),
+    sendCommand: createMockSendCommandFn(),
     setNextProtocolTimeout: fnAny(),
+    hasNextProtocolTimeout: fnAny(),
+    getNextProtocolTimeout: fnAny(),
     once: createMockOnceFn(),
     on: createMockOnFn(),
     off: fnAny(),
@@ -34,9 +37,8 @@ function createMockSession() {
     removeProtocolMessageListener: fnAny(),
     dispose: fnAny(),
 
-    /** @return {LH.Gatherer.FRProtocolSession} */
+    /** @return {LH.Gatherer.ProtocolSession} */
     asSession() {
-      // @ts-expect-error - We'll rely on the tests passing to know this matches.
       return this;
     },
   };
@@ -50,7 +52,7 @@ function createMockCdpSession(sessionId = 'DEFAULT_ID') {
 
   return {
     id: () => sessionId,
-    send: createMockSendCommandFn({useSessionId: false}),
+    send: createMockSendCommandFn(),
     once: createMockOnceFn(),
     on: createMockOnFn(),
     off: fnAny(),
@@ -83,7 +85,7 @@ function createMockCdpConnection() {
 }
 
 /**
- * @param {LH.Gatherer.AnyFRGathererInstance['meta']} meta
+ * @param {LH.Gatherer.AnyGathererInstance['meta']} meta
  */
 function createMockGathererInstance(meta) {
   return {
@@ -94,9 +96,8 @@ function createMockGathererInstance(meta) {
     stopSensitiveInstrumentation: fnAny(),
     getArtifact: fnAny(),
 
-    /** @return {LH.Gatherer.AnyFRGathererInstance} */
+    /** @return {LH.Gatherer.AnyGathererInstance} */
     asGatherer() {
-      // @ts-expect-error - We'll rely on the tests passing to know this matches.
       return this;
     },
   };
@@ -135,12 +136,13 @@ function createMockExecutionContext() {
 function createMockTargetManager(session) {
   return {
     rootSession: () => session,
+    mainFrameExecutionContexts: () => [{uniqueId: 'EXECUTION_CTX_ID'}],
     enable: fnAny(),
     disable: fnAny(),
     on: createMockOnFn(),
     off: fnAny(),
 
-    /** @return {import('../../gather/driver/target-manager.js')} */
+    /** @return {LH.Gatherer.Driver['targetManager']} */
     asTargetManager() {
       // @ts-expect-error - We'll rely on the tests passing to know this matches.
       return this;
@@ -164,6 +166,10 @@ function createMockDriver() {
     disconnect: fnAny(),
     executionContext: context.asExecutionContext(),
     targetManager: targetManager.asTargetManager(),
+    fetcher: {
+      fetchResource: fnAny(),
+    },
+    networkMonitor: new NetworkMonitor(targetManager.asTargetManager()),
 
     /** @return {Driver} */
     asDriver() {
@@ -202,7 +208,7 @@ function mockDriverModule(driverProvider) {
 }
 
 /**
- * @returns {LH.FRBaseArtifacts}
+ * @returns {LH.BaseArtifacts}
  */
 function createMockBaseArtifacts() {
   return {
@@ -233,14 +239,8 @@ function createMockContext() {
     baseArtifacts: createMockBaseArtifacts(),
     settings: JSON.parse(JSON.stringify(constants.defaultSettings)),
 
-    /** @return {LH.Gatherer.FRTransitionalContext} */
+    /** @return {LH.Gatherer.Context} */
     asContext() {
-      // @ts-expect-error - We'll rely on the tests passing to know this matches.
-      return this;
-    },
-
-    /** @return {LH.Gatherer.PassContext} */
-    asLegacyContext() {
       // @ts-expect-error - We'll rely on the tests passing to know this matches.
       return this;
     },

@@ -348,12 +348,14 @@ class Audit {
   /**
    * @param {typeof Audit} audit
    * @param {string | LH.IcuMessage} errorMessage
+   * @param {string=} errorStack
    * @return {LH.RawIcu<LH.Audit.Result>}
    */
-  static generateErrorAuditResult(audit, errorMessage) {
+  static generateErrorAuditResult(audit, errorMessage, errorStack) {
     return Audit.generateAuditResult(audit, {
       score: null,
       errorMessage,
+      errorStack,
     });
   }
 
@@ -371,7 +373,7 @@ class Audit {
     let scoreDisplayMode = audit.meta.scoreDisplayMode || Audit.SCORING_MODES.BINARY;
 
     // But override if product contents require it.
-    if (product.errorMessage) {
+    if (product.errorMessage !== undefined) {
       // Error result.
       scoreDisplayMode = Audit.SCORING_MODES.ERROR;
     } else if (product.notApplicable) {
@@ -407,10 +409,23 @@ class Audit {
       displayValue: product.displayValue,
       explanation: product.explanation,
       errorMessage: product.errorMessage,
+      errorStack: product.errorStack,
       warnings: product.warnings,
 
       details: product.details,
     };
+  }
+
+  /**
+   * @param {LH.Artifacts} artifacts
+   * @param {LH.Audit.Context} context
+   * @returns {LH.Artifacts.MetricComputationDataInput}
+   */
+  static makeMetricComputationDataInput(artifacts, context) {
+    const trace = artifacts.traces[Audit.DEFAULT_PASS];
+    const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+    const gatherContext = artifacts.GatherContext;
+    return {trace, devtoolsLog, gatherContext, settings: context.settings, URL: artifacts.URL};
   }
 }
 

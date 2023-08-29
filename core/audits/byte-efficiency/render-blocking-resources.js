@@ -300,6 +300,7 @@ class RenderBlockingResources extends Audit {
       numericValue: wastedMs,
       numericUnit: 'millisecond',
       details,
+      metricSavings: {FCP: wastedMs, LCP: wastedMs},
     };
   }
 }

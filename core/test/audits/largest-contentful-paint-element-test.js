@@ -101,8 +101,9 @@ describe('Performance: largest-contentful-paint-element audit', () => {
     const auditResult = await LargestContentfulPaintElementAudit.audit(artifacts, context);
 
     expect(auditResult.score).toEqual(1);
-    expect(auditResult.notApplicable).toEqual(false);
-    expect(auditResult.displayValue).toBeDisplayString('1 element found');
+    expect(auditResult.notApplicable).toBeUndefined();
+    expect(auditResult.displayValue).toBeDisplayString('5,800\xa0ms');
+    expect(auditResult.metricSavings).toEqual({LCP: 3304}); // 5804 - 2500 (p10 mobile)
     expect(auditResult.details.items).toHaveLength(2);
     expect(auditResult.details.items[0].items).toHaveLength(1);
     expect(auditResult.details.items[0].items[0].node.path).toEqual('1,HTML,3,BODY,5,DIV,0,HEADER');
@@ -145,10 +146,53 @@ describe('Performance: largest-contentful-paint-element audit', () => {
     const context = {settings: artifacts.settings, computedCache: new Map()};
     const auditResult = await LargestContentfulPaintElementAudit.audit(artifacts, context);
 
-    expect(auditResult.score).toEqual(1);
+    expect(auditResult.score).toEqual(null);
     expect(auditResult.notApplicable).toEqual(true);
-    expect(auditResult.displayValue).toBeDisplayString('0 elements found');
+    expect(auditResult.displayValue).toBeUndefined();
+    expect(auditResult.metricSavings).toEqual({LCP: 0});
+    expect(auditResult.details).toBeUndefined();
+  });
+
+  it('doesn\'t throw an error when the phase table gets an error', async () => {
+    const artifacts = {
+      TraceElements: [{
+        traceEventType: 'largest-contentful-paint',
+        node: {
+          devtoolsNodePath: '1,HTML,3,BODY,5,DIV,0,HEADER',
+          selector: 'div.l-header > div.chorus-emc__content',
+          nodeLabel: 'My Test Label',
+          snippet: '<h1 class="test-class">',
+        },
+        type: 'text',
+      }],
+      settings: JSON.parse(JSON.stringify(defaultSettings)),
+      traces: {
+        defaultPass: createTestTrace({
+          traceEnd: 6000,
+          largestContentfulPaint: 8000,
+        }),
+      },
+      devtoolsLogs: {
+        defaultPass: [],
+      },
+      URL: {
+        requestedUrl,
+        mainDocumentUrl,
+        finalDisplayedUrl: mainDocumentUrl,
+      },
+      GatherContext: {gatherMode: 'navigation'},
+    };
+
+    const context = {settings: artifacts.settings, computedCache: new Map()};
+    const auditResult = await LargestContentfulPaintElementAudit.audit(artifacts, context);
+
+    expect(auditResult.score).toEqual(1);
+    expect(auditResult.notApplicable).toBeUndefined();
+    expect(auditResult.displayValue).toBeUndefined();
     expect(auditResult.details.items).toHaveLength(1);
-    expect(auditResult.details.items[0].items).toHaveLength(0);
+    expect(auditResult.details.items[0].items).toHaveLength(1);
+    expect(auditResult.details.items[0].items[0].node.path).toEqual('1,HTML,3,BODY,5,DIV,0,HEADER');
+    expect(auditResult.details.items[0].items[0].node.nodeLabel).toEqual('My Test Label');
+    expect(auditResult.details.items[0].items[0].node.snippet).toEqual('<h1 class="test-class">');
   });
 });

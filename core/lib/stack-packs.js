@@ -24,6 +24,10 @@ const stackPacksToInclude = [
     requiredStacks: ['js:wordpress'],
   },
   {
+    packId: 'wix',
+    requiredStacks: ['js:wix'],
+  },
+  {
     packId: 'wp-rocket',
     requiredStacks: ['js:wp-rocket'],
   },
@@ -34,6 +38,10 @@ const stackPacksToInclude = [
   {
     packId: 'drupal',
     requiredStacks: ['js:drupal'],
+  },
+  {
+    packId: 'nitropack',
+    requiredStacks: ['js:nitropack'],
   },
   {
     packId: 'amp',

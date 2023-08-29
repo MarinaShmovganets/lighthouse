@@ -89,7 +89,9 @@ export class CategoryRenderer {
         packElmImg.src = pack.iconDataURL;
         packElmImg.alt = pack.title;
 
-        const snippets = this.dom.convertMarkdownLinkSnippets(pack.description);
+        const snippets = this.dom.convertMarkdownLinkSnippets(pack.description, {
+          alwaysAppendUtmSource: true,
+        });
         const packElm = this.dom.createElement('div', 'lh-audit__stackpack');
         packElm.append(packElmImg, snippets);
 
@@ -258,6 +260,7 @@ export class CategoryRenderer {
 
     for (const auditRef of auditRefs) {
       const groupId = auditRef.group || notAGroup;
+      if (groupId === 'hidden') continue;
       const groupAuditRefs = grouped.get(groupId) || [];
       groupAuditRefs.push(auditRef);
       grouped.set(groupId, groupAuditRefs);
@@ -306,14 +309,14 @@ export class CategoryRenderer {
    * Take a set of audits and render in a top-level, expandable clump that starts
    * in a collapsed state.
    * @param {Exclude<TopLevelClumpId, 'failed'>} clumpId
-   * @param {{auditRefs: Array<LH.ReportResult.AuditRef>, description?: string}} clumpOpts
+   * @param {{auditRefs: Array<LH.ReportResult.AuditRef>, description?: string, openByDefault?: boolean}} clumpOpts
    * @return {!Element}
    */
-  renderClump(clumpId, {auditRefs, description}) {
+  renderClump(clumpId, {auditRefs, description, openByDefault}) {
     const clumpComponent = this.dom.createComponent('clump');
     const clumpElement = this.dom.find('.lh-clump', clumpComponent);
 
-    if (clumpId === 'warning') {
+    if (openByDefault) {
       clumpElement.setAttribute('open', '');
     }
 
@@ -393,7 +396,8 @@ export class CategoryRenderer {
     const percentageEl = this.dom.find('div.lh-gauge__percentage', tmpl);
     percentageEl.textContent = scoreOutOf100.toString();
     if (category.score === null) {
-      percentageEl.textContent = '?';
+      percentageEl.classList.add('lh-gauge--error');
+      percentageEl.textContent = '';
       percentageEl.title = Globals.strings.errorLabel;
     }
 
@@ -555,6 +559,7 @@ export class CategoryRenderer {
       });
     }
 
+    const numFailingAudits = clumps.get('failed')?.length;
     // Render each clump.
     for (const [clumpId, auditRefs] of clumps) {
       if (auditRefs.length === 0) continue;
@@ -567,7 +572,10 @@ export class CategoryRenderer {
       }
 
       const description = clumpId === 'manual' ? category.manualDescription : undefined;
-      const clumpElem = this.renderClump(clumpId, {auditRefs, description});
+      // Expand on warning, or manual audits when there are no failing audits.
+      const openByDefault =
+        clumpId === 'warning' || (clumpId === 'manual' && numFailingAudits === 0);
+      const clumpElem = this.renderClump(clumpId, {auditRefs, description, openByDefault});
       element.append(clumpElem);
     }
 

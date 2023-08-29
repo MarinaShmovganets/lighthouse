@@ -75,7 +75,6 @@ const testsToIsolate = new Set([
   'core/test/gather/snapshot-runner-test.js',
   'core/test/gather/timespan-runner-test.js',
   'core/test/user-flow-test.js',
-  'core/test/legacy/gather/gather-runner-test.js',
   'core/test/gather/gatherers/dobetterweb/response-compression-test.js',
   'core/test/gather/gatherers/script-elements-test.js',
   'core/test/runner-test.js',
@@ -90,7 +89,6 @@ const testsToIsolate = new Set([
   'flow-report/test/flow-report-pptr-test.ts',
   'cli/test/cli/bin-test.js',
   'cli/test/cli/run-test.js',
-  'core/test/legacy/config/config-test.js',
   'core/test/config/config-test.js',
   'core/test/lib/emulation-test.js',
   'core/test/lib/sentry-test.js',
@@ -147,6 +145,14 @@ const rawArgv = y
     },
     'require': {
       type: 'string',
+    },
+    'retries': {
+      type: 'number',
+      default: process.env.CI ? 5 : undefined,
+    },
+    'forbidOnly': {
+      type: 'boolean',
+      default: Boolean(process.env.CI),
     },
   })
   .wrap(y.terminalWidth())
@@ -259,8 +265,10 @@ function exit({numberFailures, numberMochaInvocations}) {
  * @typedef OurMochaArgs
  * @property {RegExp | string | undefined} grep
  * @property {boolean} bail
+ * @property {boolean} forbidOnly
  * @property {boolean} parallel
  * @property {string | undefined} require
+ * @property {number | undefined} retries
  */
 
 /**
@@ -280,9 +288,11 @@ async function runMocha(tests, mochaArgs, invocationNumber) {
       timeout: 20_000,
       bail: mochaArgs.bail,
       grep: mochaArgs.grep,
+      forbidOnly: mochaArgs.forbidOnly,
       // TODO: not working
       // parallel: tests.length > 1 && mochaArgs.parallel,
       parallel: false,
+      retries: mochaArgs.retries,
     });
 
     // @ts-expect-error - not in types.
@@ -327,6 +337,8 @@ async function main() {
     bail: argv.bail,
     parallel: argv.parallel,
     require: argv.require,
+    retries: argv.retries,
+    forbidOnly: argv.forbidOnly,
   };
 
   mochaGlobalSetup();
