@@ -230,11 +230,6 @@ function exit({numberFailures, numberMochaInvocations}) {
     process.exit(0);
   }
 
-  if (numberMochaInvocations === 1) {
-    console.log('Tests failed');
-    process.exit(1);
-  }
-
   // If running many instances of mocha, failed results can get lost in the output.
   // So keep track of failures and re-print them at the very end.
   // See mocha-setup.js afterAll.
@@ -277,33 +272,66 @@ function exit({numberFailures, numberMochaInvocations}) {
  * @param {number} invocationNumber
  */
 async function runMocha(tests, mochaArgs, invocationNumber) {
-  process.env.LH_FAILED_TESTS_FILE = `${failedTestsDir}/output-${invocationNumber}.json`;
+  const failedTestsFile = `${failedTestsDir}/output-${invocationNumber}.json`;
+  const notRunnableTestsFile = `${failedTestsDir}/output-${invocationNumber}-nr.json`;
+  process.env.LH_FAILED_TESTS_FILE = failedTestsFile;
 
   const rootHooksPath = mochaArgs.require || '../test-env/mocha-setup.js';
   const {rootHooks} = await import(rootHooksPath);
 
-  try {
-    const mocha = new Mocha({
-      rootHooks,
-      timeout: 20_000,
-      bail: mochaArgs.bail,
-      grep: mochaArgs.grep,
-      forbidOnly: mochaArgs.forbidOnly,
-      // TODO: not working
-      // parallel: tests.length > 1 && mochaArgs.parallel,
-      parallel: false,
-      retries: mochaArgs.retries,
-    });
+  const mocha = new Mocha({
+    rootHooks,
+    timeout: 20_000,
+    bail: mochaArgs.bail,
+    grep: mochaArgs.grep,
+    forbidOnly: mochaArgs.forbidOnly,
+    // TODO: not working
+    // parallel: parsableTests.length > 1 && mochaArgs.parallel,
+    parallel: false,
+    retries: mochaArgs.retries,
+  });
 
-    // @ts-expect-error - not in types.
-    mocha.lazyLoadFiles(true);
-    for (const test of tests) mocha.addFile(test);
-    await mocha.loadFilesAsync();
-    return await new Promise(resolve => mocha.run(resolve));
-  } catch (err) {
-    console.error(err);
-    return 1;
+  const notRunnableTests = [];
+  const parsableTests = [];
+  for (const test of tests) {
+    try {
+      mocha.files = [test];
+      await mocha.loadFilesAsync();
+      parsableTests.push(test);
+    } catch (e) {
+      notRunnableTests.push({
+        file: path.relative(LH_ROOT, test),
+        title: '',
+        error: `Failed to parse module: ${e}`,
+      });
+    }
   }
+  mocha.files = [];
+
+  let failingTests = 0;
+  if (parsableTests.length) {
+    try {
+      for (const test of parsableTests) mocha.addFile(test);
+      await mocha.loadFilesAsync();
+      failingTests = await new Promise(resolve => mocha.run(resolve));
+    } catch (err) {
+      // Something awful happened, and maybe no tests ran at all.
+      const errorMessage = `Mocha failed to run: ${err}`;
+      notRunnableTests.push(...parsableTests.map((test, i) => {
+        return {
+          file: path.relative(LH_ROOT, test),
+          title: '',
+          error: i === 0 ? errorMessage : '(see above failure)',
+        };
+      }));
+    }
+  }
+
+  if (notRunnableTests.length) {
+    fs.writeFileSync(notRunnableTestsFile, JSON.stringify(notRunnableTests, null, 2));
+  }
+
+  return failingTests + notRunnableTests.length;
 }
 
 async function main() {
