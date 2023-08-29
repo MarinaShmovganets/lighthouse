@@ -222,9 +222,9 @@ function getTestFiles() {
 }
 
 /**
- * @param {{numberFailures: number, numberMochaInvocations: number}} params
+ * @param {{numberFailures: number}} params
  */
-function exit({numberFailures, numberMochaInvocations}) {
+function exit({numberFailures}) {
   if (!numberFailures) {
     console.log('Tests passed');
     process.exit(0);
@@ -375,7 +375,7 @@ async function main() {
     if (testsToRunTogether.length) {
       numberFailures += await runMocha(testsToRunTogether, mochaArgs, numberMochaInvocations);
       numberMochaInvocations += 1;
-      if (numberFailures && argv.bail) exit({numberFailures, numberMochaInvocations});
+      if (numberFailures && argv.bail) exit({numberFailures});
     }
 
     for (const test of testsToRunIsolated) {
@@ -398,13 +398,13 @@ async function main() {
       }
 
       numberMochaInvocations += 1;
-      if (numberFailures && argv.bail) exit({numberFailures, numberMochaInvocations});
+      if (numberFailures && argv.bail) exit({numberFailures});
     }
   } finally {
     mochaGlobalTeardown();
   }
 
-  exit({numberFailures, numberMochaInvocations});
+  exit({numberFailures});
 }
 
 await main();
