@@ -273,7 +273,7 @@ function exit({numberFailures, numberMochaInvocations}) {
  */
 async function runMocha(tests, mochaArgs, invocationNumber) {
   const failedTestsFile = `${failedTestsDir}/output-${invocationNumber}.json`;
-  const notRunnableTestsFile = `${failedTestsDir}/output-${invocationNumber}-nr.json`;
+  const notRunnableTestsFile = `${failedTestsDir}/output-${invocationNumber}-not-runnable.json`;
   process.env.LH_FAILED_TESTS_FILE = failedTestsFile;
 
   const rootHooksPath = mochaArgs.require || '../test-env/mocha-setup.js';
@@ -291,6 +291,7 @@ async function runMocha(tests, mochaArgs, invocationNumber) {
     retries: mochaArgs.retries,
   });
 
+  // Load a single test module at a time, so we know which ones fail to even import.
   const notRunnableTests = [];
   const parsableTests = [];
   for (const test of tests) {
@@ -308,12 +309,10 @@ async function runMocha(tests, mochaArgs, invocationNumber) {
   }
   mocha.files = [];
 
-  let failingTests = 0;
+  let failingTestCount = 0;
   if (parsableTests.length) {
     try {
-      for (const test of parsableTests) mocha.addFile(test);
-      await mocha.loadFilesAsync();
-      failingTests = await new Promise(resolve => mocha.run(resolve));
+      failingTestCount = await new Promise(resolve => mocha.run(resolve));
     } catch (err) {
       // Something awful happened, and maybe no tests ran at all.
       const errorMessage = `Mocha failed to run: ${err}`;
@@ -331,7 +330,7 @@ async function runMocha(tests, mochaArgs, invocationNumber) {
     fs.writeFileSync(notRunnableTestsFile, JSON.stringify(notRunnableTests, null, 2));
   }
 
-  return failingTests + notRunnableTests.length;
+  return failingTestCount + notRunnableTests.length;
 }
 
 async function main() {
