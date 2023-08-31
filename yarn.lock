@@ -1935,10 +1935,10 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
   integrity sha512-ReZxvNHIOv88FlT7rxcXIIC0fPt4KZqZbOlivyWtXLt8ESx84zd3kMC6iK5jVeS2qt+g7ftS7ye4fi06X5rtRQ==
 
-axe-core@4.7.2:
-  version "4.7.2"
-  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.7.2.tgz#040a7342b20765cb18bb50b628394c21bccc17a0"
-  integrity sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==
+axe-core@4.7.2-canary.b78fba6:
+  version "4.7.2-canary.b78fba6"
+  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.7.2-canary.b78fba6.tgz#090ea4a35b1aaac4a18dc354530519f3dc89ce47"
+  integrity sha512-uIq19MfCd1+6zwXqfHcpVXu3K2quitE03DKSeu35/uvaDIKJtMq5T8hXiSkYHY54fewU0jVCx8jNOlTGNIfi4A==
 
 b4a@^1.6.4:
   version "1.6.4"
