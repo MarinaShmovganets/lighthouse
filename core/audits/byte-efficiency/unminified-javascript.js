@@ -8,6 +8,7 @@ import {ByteEfficiencyAudit} from './byte-efficiency-audit.js';
 import * as i18n from '../../lib/i18n/i18n.js';
 import {computeJSTokenLength as computeTokenLength} from '../../lib/minification-estimator.js';
 import {getRequestForScript, isInline} from '../../lib/script-helpers.js';
+import {Util} from '../../../shared/util.js';
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to minify the page’s JS code to reduce file size. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -42,6 +43,7 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
+      guidanceLevel: 3,
       requiredArtifacts: ['Scripts', 'devtoolsLogs', 'traces', 'GatherContext', 'URL'],
     };
   }
@@ -84,7 +86,7 @@ class UnminifiedJavaScript extends ByteEfficiencyAudit {
       const networkRecord = getRequestForScript(networkRecords, script);
 
       const displayUrl = isInline(script) ?
-        `inline: ${script.content.substring(0, 40)}...` :
+        `inline: ${Util.truncate(script.content, 40)}` :
         script.url;
       try {
         const result = UnminifiedJavaScript.computeWaste(script.content, displayUrl, networkRecord);

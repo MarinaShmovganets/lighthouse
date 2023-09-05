@@ -7,7 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import stream from 'stream';
-import util from 'util';
+import url from 'url';
 
 import log from 'lighthouse-logger';
 
@@ -17,25 +17,18 @@ import {MetricTraceEvents} from './traces/metric-trace-events.js';
 import {NetworkAnalysis} from '../computed/network-analysis.js';
 import {LoadSimulator} from '../computed/load-simulator.js';
 import {LighthouseError} from '../lib/lh-error.js';
-
-const {promisify} = util;
-
-// Rollup does not support `promisfy` or `stream.pipeline`. Bundled files
-// don't need anything in this file except for `stringifyReplacer`, so a check for
-// truthiness before using is enough.
-// TODO: Can remove promisify(pipeline) in Node 15.
-// https://nodejs.org/api/stream.html#streams-promises-api
-const pipeline = promisify && promisify(stream.pipeline);
+import {LH_ROOT} from '../../root.js';
 
 const optionsFilename = 'options.json';
 const artifactsFilename = 'artifacts.json';
 const traceSuffix = '.trace.json';
 const devtoolsLogSuffix = '.devtoolslog.json';
+const defaultPrefix = 'defaultPass';
+const errorPrefix = 'pageLoadError-defaultPass';
 const stepDirectoryRegex = /^step(\d+)$/;
 
 /**
  * @typedef {object} PreparedAssets
- * @property {string} passName
  * @property {LH.Trace} traceData
  * @property {LH.DevtoolsLog} devtoolsLog
  */
@@ -61,26 +54,30 @@ function loadArtifacts(basePath) {
 
   const filenames = fs.readdirSync(basePath);
 
-  // load devtoolsLogs
-  artifacts.devtoolsLogs = {};
   filenames.filter(f => f.endsWith(devtoolsLogSuffix)).forEach(filename => {
-    const passName = filename.replace(devtoolsLogSuffix, '');
+    if (!artifacts.devtoolsLogs) artifacts.devtoolsLogs = {};
+    const prefix = filename.replace(devtoolsLogSuffix, '');
     const devtoolsLog = JSON.parse(fs.readFileSync(path.join(basePath, filename), 'utf8'));
-    artifacts.devtoolsLogs[passName] = devtoolsLog;
-    if (passName === 'defaultPass') {
+    artifacts.devtoolsLogs[prefix] = devtoolsLog;
+    if (prefix === defaultPrefix) {
       artifacts.DevtoolsLog = devtoolsLog;
+    }
+    if (prefix === errorPrefix) {
+      artifacts.DevtoolsLogError = devtoolsLog;
     }
   });
 
-  // load traces
-  artifacts.traces = {};
   filenames.filter(f => f.endsWith(traceSuffix)).forEach(filename => {
+    if (!artifacts.traces) artifacts.traces = {};
     const file = fs.readFileSync(path.join(basePath, filename), {encoding: 'utf-8'});
     const trace = JSON.parse(file);
-    const passName = filename.replace(traceSuffix, '');
-    artifacts.traces[passName] = Array.isArray(trace) ? {traceEvents: trace} : trace;
-    if (passName === 'defaultPass') {
-      artifacts.Trace = artifacts.traces[passName];
+    const prefix = filename.replace(traceSuffix, '');
+    artifacts.traces[prefix] = Array.isArray(trace) ? {traceEvents: trace} : trace;
+    if (prefix === defaultPrefix) {
+      artifacts.Trace = artifacts.traces[prefix];
+    }
+    if (prefix === errorPrefix) {
+      artifacts.TraceError = artifacts.traces[prefix];
     }
   });
 
@@ -222,19 +219,34 @@ async function saveArtifacts(artifacts, basePath) {
     }
   }
 
-  // `DevtoolsLog` and `Trace` will always be the 'defaultPass' version.
+  // `devtoolsLogs` and `traces` are duplicate compat artifacts.
   // We don't need to save them twice, so extract them here.
-  // eslint-disable-next-line no-unused-vars
-  const {traces, devtoolsLogs, DevtoolsLog, Trace, ...restArtifacts} = artifacts;
+  const {
+    // eslint-disable-next-line no-unused-vars
+    traces,
+    // eslint-disable-next-line no-unused-vars
+    devtoolsLogs,
+    DevtoolsLog,
+    Trace,
+    DevtoolsLogError,
+    TraceError,
+    ...restArtifacts
+  } = artifacts;
 
-  // save traces
-  for (const [passName, trace] of Object.entries(traces)) {
-    await saveTrace(trace, `${basePath}/${passName}${traceSuffix}`);
+  if (Trace) {
+    await saveTrace(Trace, `${basePath}/${defaultPrefix}${traceSuffix}`);
   }
 
-  // save devtools log
-  for (const [passName, devtoolsLog] of Object.entries(devtoolsLogs)) {
-    await saveDevtoolsLog(devtoolsLog, `${basePath}/${passName}${devtoolsLogSuffix}`);
+  if (TraceError) {
+    await saveTrace(TraceError, `${basePath}/${errorPrefix}${traceSuffix}`);
+  }
+
+  if (DevtoolsLog) {
+    await saveDevtoolsLog(DevtoolsLog, `${basePath}/${defaultPrefix}${devtoolsLogSuffix}`);
+  }
+
+  if (DevtoolsLogError) {
+    await saveDevtoolsLog(DevtoolsLogError, `${basePath}/${errorPrefix}${devtoolsLogSuffix}`);
   }
 
   // save everything else, using a replacer to serialize LighthouseErrors in the artifacts.
@@ -254,30 +266,46 @@ function saveLhr(lhr, basePath) {
 }
 
 /**
- * Filter traces and extract screenshots to prepare for saving.
+ * Filter trace and extract screenshots to prepare for saving.
+ * @param {LH.Trace} trace
+ * @param {LH.Result['audits']} [audits]
+ * @return {LH.Trace}
+ */
+function prepareTraceAsset(trace, audits) {
+  if (!trace) return trace;
+
+  const traceData = Object.assign({}, trace);
+  if (audits) {
+    const evts = new MetricTraceEvents(traceData.traceEvents, audits).generateFakeEvents();
+    traceData.traceEvents = traceData.traceEvents.concat(evts);
+  }
+  return traceData;
+}
+
+/**
  * @param {LH.Artifacts} artifacts
  * @param {LH.Result['audits']} [audits]
  * @return {Promise<Array<PreparedAssets>>}
  */
 async function prepareAssets(artifacts, audits) {
-  const passNames = Object.keys(artifacts.traces);
   /** @type {Array<PreparedAssets>} */
   const assets = [];
 
-  for (const passName of passNames) {
-    const trace = artifacts.traces[passName];
-    const devtoolsLog = artifacts.devtoolsLogs[passName];
-
-    const traceData = Object.assign({}, trace);
-    if (audits) {
-      const evts = new MetricTraceEvents(traceData.traceEvents, audits).generateFakeEvents();
-      traceData.traceEvents = traceData.traceEvents.concat(evts);
-    }
-
+  const devtoolsLog = artifacts.DevtoolsLog;
+  const traceData = prepareTraceAsset(artifacts.Trace, audits);
+  if (traceData || devtoolsLog) {
     assets.push({
-      passName,
       traceData,
       devtoolsLog,
+    });
+  }
+
+  const devtoolsLogError = artifacts.DevtoolsLogError;
+  const traceErrorData = prepareTraceAsset(artifacts.TraceError, audits);
+  if (devtoolsLogError || traceErrorData) {
+    assets.push({
+      traceData: traceErrorData,
+      devtoolsLog: devtoolsLogError,
     });
   }
 
@@ -349,7 +377,7 @@ async function saveTrace(traceData, traceFilename) {
   const traceIter = traceJsonGenerator(traceData);
   const writeStream = fs.createWriteStream(traceFilename);
 
-  return pipeline(traceIter, writeStream);
+  return stream.promises.pipeline(traceIter, writeStream);
 }
 
 /**
@@ -361,7 +389,7 @@ async function saveTrace(traceData, traceFilename) {
 function saveDevtoolsLog(devtoolsLog, devtoolLogFilename) {
   const writeStream = fs.createWriteStream(devtoolLogFilename);
 
-  return pipeline(function* () {
+  return stream.promises.pipeline(function* () {
     yield* arrayOfObjectsJsonGenerator(devtoolsLog);
     yield '\n';
   }, writeStream);
@@ -435,6 +463,22 @@ function normalizeTimingEntries(timings) {
   }
 }
 
+/**
+ * @param {LH.Result} lhr
+ */
+function elideAuditErrorStacks(lhr) {
+  const baseCallFrameUrl = url.pathToFileURL(LH_ROOT);
+  for (const auditResult of Object.values(lhr.audits)) {
+    if (auditResult.errorStack) {
+      auditResult.errorStack = auditResult.errorStack
+        // Make paths relative to the repo root.
+        .replaceAll(baseCallFrameUrl.pathname, '')
+        // Remove line/col info.
+        .replaceAll(/:\d+:\d+/g, '');
+    }
+  }
+}
+
 export {
   saveArtifacts,
   saveFlowArtifacts,
@@ -448,4 +492,5 @@ export {
   saveLanternNetworkData,
   stringifyReplacer,
   normalizeTimingEntries,
+  elideAuditErrorStacks,
 };

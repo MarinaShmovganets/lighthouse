@@ -8,7 +8,6 @@ import InspectorIssues from '../../../gather/gatherers/inspector-issues.js';
 import {createMockContext} from '../mock-driver.js';
 import {flushAllTimersAndMicrotasks, timers} from '../../test-utils.js';
 import {networkRecordsToDevtoolsLog} from '../../network-records-to-devtools-log.js';
-import {NetworkRecorder} from '../../../lib/network-recorder.js';
 
 /**
  * @param {Partial<LH.Artifacts.NetworkRequest>=} partial
@@ -127,7 +126,7 @@ function mockCSP(details) {
 }
 
 /**
- * @param {LH.Crdp.Audits.DeprecationIssueType} type
+ * @param {string} type
  * @return {LH.Crdp.Audits.InspectorIssue}
  */
 function mockDeprecation(type) {
@@ -174,7 +173,7 @@ describe('instrumentation', () => {
   });
 });
 
-describe('_getArtifact', () => {
+describe('getArtifact', () => {
   it('handles multiple types of inspector issues', async () => {
     const gatherer = new InspectorIssues();
     gatherer._issues = [
@@ -190,9 +189,13 @@ describe('_getArtifact', () => {
       mockRequest({requestId: '2'}),
       mockRequest({requestId: '3'}),
     ]);
-    const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
+    const mockContext = createMockContext();
+    const context = {
+      ...mockContext.asContext(),
+      dependencies: {DevtoolsLog: devtoolsLog},
+    };
 
-    const artifact = await gatherer._getArtifact(networkRecords);
+    const artifact = await gatherer.getArtifact(context);
 
     expect(artifact).toEqual({
       mixedContentIssue: [{
@@ -212,6 +215,7 @@ describe('_getArtifact', () => {
         cookieExclusionReasons: [],
         operation: 'ReadCookie',
       }],
+      bounceTrackingIssue: [],
       blockedByResponseIssue: [{
         request: {requestId: '3'},
         reason: 'CorpNotSameOrigin',
@@ -244,8 +248,9 @@ describe('_getArtifact', () => {
       navigatorUserAgentIssue: [],
       quirksModeIssue: [],
       sharedArrayBufferIssue: [],
-      twaQualityEnforcement: [],
       federatedAuthRequestIssue: [],
+      stylesheetLoadingIssue: [],
+      federatedAuthUserInfoRequestIssue: [],
     });
   });
 
@@ -264,9 +269,13 @@ describe('_getArtifact', () => {
       mockRequest({requestId: '3'}),
       mockRequest({requestId: '5'}),
     ]);
-    const networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
+    const mockContext = createMockContext();
+    const context = {
+      ...mockContext.asContext(),
+      dependencies: {DevtoolsLog: devtoolsLog},
+    };
 
-    const artifact = await gatherer._getArtifact(networkRecords);
+    const artifact = await gatherer.getArtifact(context);
 
     expect(artifact).toEqual({
       mixedContentIssue: [{
@@ -286,6 +295,7 @@ describe('_getArtifact', () => {
         cookieExclusionReasons: [],
         operation: 'ReadCookie',
       }],
+      bounceTrackingIssue: [],
       blockedByResponseIssue: [{
         request: {requestId: '5'},
         reason: 'CorpNotSameOrigin',
@@ -301,108 +311,9 @@ describe('_getArtifact', () => {
       navigatorUserAgentIssue: [],
       quirksModeIssue: [],
       sharedArrayBufferIssue: [],
-      twaQualityEnforcement: [],
       federatedAuthRequestIssue: [],
-    });
-  });
-});
-
-describe('FR compat (inspector-issues)', () => {
-  before(() => timers.useFakeTimers());
-  after(() => timers.dispose());
-
-  let mockContext = createMockContext();
-  /** @type {InspectorIssues} */
-  let gatherer;
-  /** @type {LH.Artifacts.NetworkRequest[]} */
-  let networkRecords;
-  /** @type {LH.DevtoolsLog} */
-  let devtoolsLog;
-
-  beforeEach(() => {
-    gatherer = new InspectorIssues();
-    mockContext = createMockContext();
-    mockContext.driver.defaultSession.sendCommand
-      .mockResponse('Audits.enable')
-      .mockResponse('Audits.disable');
-    mockContext.driver.defaultSession.on
-      .mockEvent('Audits.issueAdded', {
-        issue: mockMixedContent({request: {requestId: '1'}}),
-      });
-    devtoolsLog = networkRecordsToDevtoolsLog([
-      mockRequest({requestId: '1'}),
-    ]);
-    networkRecords = NetworkRecorder.recordsFromLogs(devtoolsLog);
-  });
-
-  it('uses loadData in legacy mode', async () => {
-    const loadData = {
-      devtoolsLog,
-      networkRecords,
-    };
-    await gatherer.beforePass(mockContext.asLegacyContext());
-    await flushAllTimersAndMicrotasks();
-
-    const artifact = await gatherer.afterPass(mockContext.asLegacyContext(), loadData);
-
-    expect(artifact).toEqual({
-      mixedContentIssue: [{
-        request: {requestId: '1'},
-        resolutionStatus: 'MixedContentBlocked',
-        insecureURL: 'https://example.com',
-        mainResourceURL: 'https://example.com',
-      }],
-      cookieIssue: [],
-      blockedByResponseIssue: [],
-      heavyAdIssue: [],
-      clientHintIssue: [],
-      contentSecurityPolicyIssue: [],
-      deprecationIssue: [],
-      attributionReportingIssue: [],
-      corsIssue: [],
-      genericIssue: [],
-      lowTextContrastIssue: [],
-      navigatorUserAgentIssue: [],
-      quirksModeIssue: [],
-      sharedArrayBufferIssue: [],
-      twaQualityEnforcement: [],
-      federatedAuthRequestIssue: [],
-    });
-  });
-
-  it('uses dependencies in FR', async () => {
-    const context = {
-      ...mockContext.asContext(),
-      dependencies: {DevtoolsLog: devtoolsLog},
-    };
-    await gatherer.startInstrumentation(context);
-    await flushAllTimersAndMicrotasks();
-    await gatherer.stopInstrumentation(context);
-
-    const artifact = await gatherer.getArtifact(context);
-
-    expect(artifact).toEqual({
-      mixedContentIssue: [{
-        request: {requestId: '1'},
-        resolutionStatus: 'MixedContentBlocked',
-        insecureURL: 'https://example.com',
-        mainResourceURL: 'https://example.com',
-      }],
-      cookieIssue: [],
-      blockedByResponseIssue: [],
-      clientHintIssue: [],
-      heavyAdIssue: [],
-      contentSecurityPolicyIssue: [],
-      deprecationIssue: [],
-      attributionReportingIssue: [],
-      corsIssue: [],
-      genericIssue: [],
-      lowTextContrastIssue: [],
-      navigatorUserAgentIssue: [],
-      quirksModeIssue: [],
-      sharedArrayBufferIssue: [],
-      twaQualityEnforcement: [],
-      federatedAuthRequestIssue: [],
+      stylesheetLoadingIssue: [],
+      federatedAuthUserInfoRequestIssue: [],
     });
   });
 });

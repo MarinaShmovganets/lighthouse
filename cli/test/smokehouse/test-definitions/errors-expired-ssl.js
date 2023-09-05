@@ -33,27 +33,21 @@ const expectations = {
     requestedUrl: 'https://expired.badssl.com',
     finalDisplayedUrl: /(expired.badssl.com|chrome-error)/,
     runtimeError: {code: 'INSECURE_DOCUMENT_REQUEST'},
-    runWarnings: Object.defineProperty([
-      /expired.badssl.*redirected to chrome-error:/, // This warning was not provided in legacy reports.
+    runWarnings: [
+      /expired.badssl.*redirected to chrome-error:/,
       'The URL you have provided does not have a valid security certificate. net::ERR_CERT_DATE_INVALID',
-    ], '_fraggleRockOnly', {value: true, enumerable: true}),
+    ],
     audits: {
       'first-contentful-paint': {
         scoreDisplayMode: 'error',
-        errorMessage: 'Required traces gatherer did not run.',
+        errorMessage: 'The URL you have provided does not have a valid security certificate. net::ERR_CERT_DATE_INVALID',
       },
     },
   },
   artifacts: {
     PageLoadError: {code: 'INSECURE_DOCUMENT_REQUEST'},
-    devtoolsLogs: {
-      'pageLoadError-defaultPass': {...NONEMPTY_ARRAY, _legacyOnly: true},
-      'pageLoadError-default': {...NONEMPTY_ARRAY, _fraggleRockOnly: true},
-    },
-    traces: {
-      'pageLoadError-defaultPass': {traceEvents: NONEMPTY_ARRAY, _legacyOnly: true},
-      'pageLoadError-default': {traceEvents: NONEMPTY_ARRAY, _fraggleRockOnly: true},
-    },
+    DevtoolsLogError: NONEMPTY_ARRAY,
+    TraceError: {traceEvents: NONEMPTY_ARRAY},
   },
 };
 

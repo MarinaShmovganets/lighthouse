@@ -15,7 +15,7 @@ import log from 'lighthouse-logger';
 import {getAvailableLocales} from '../../../shared/localization/format.js';
 import {LH_ROOT} from '../../../root.js';
 import {isIcuMessage, formatMessage, DEFAULT_LOCALE} from '../../../shared/localization/format.js';
-import {getModulePath} from '../../../esm-utils.js';
+import {getModulePath} from '../../../shared/esm-utils.js';
 
 const UIStrings = {
   /** Used to show the duration in milliseconds that something lasted. The `{timeInMs}` placeholder will be replaced with the time duration, shown in milliseconds (e.g. 63 ms) */
@@ -123,7 +123,7 @@ const UIStrings = {
  * If `locale` isn't provided or one could not be found, DEFAULT_LOCALE is returned.
  *
  * By default any of the locales Lighthouse has strings for can be returned, but this
- * can be overriden with `possibleLocales`, useful e.g. when Lighthouse is bundled and
+ * can be overridden with `possibleLocales`, useful e.g. when Lighthouse is bundled and
  * only DEFAULT_LOCALE is available, but `possibleLocales` can be used to select a
  * locale available to be downloaded on demand.
  * @param {string|string[]=} locales

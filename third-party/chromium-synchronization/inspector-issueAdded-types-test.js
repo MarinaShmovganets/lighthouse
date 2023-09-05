@@ -34,12 +34,14 @@ describe('issueAdded types', () => {
 Array [
   "attributionReportingIssueDetails",
   "blockedByResponseIssueDetails",
+  "bounceTrackingIssueDetails",
   "clientHintIssueDetails",
   "contentSecurityPolicyIssueDetails",
   "cookieIssueDetails",
   "corsIssueDetails",
   "deprecationIssueDetails",
   "federatedAuthRequestIssueDetails",
+  "federatedAuthUserInfoRequestIssueDetails",
   "genericIssueDetails",
   "heavyAdIssueDetails",
   "lowTextContrastIssueDetails",
@@ -47,7 +49,7 @@ Array [
   "navigatorUserAgentIssueDetails",
   "quirksModeIssueDetails",
   "sharedArrayBufferIssueDetails",
-  "twaQualityEnforcementDetails",
+  "stylesheetLoadingIssueDetails",
 ]
 `);
   });

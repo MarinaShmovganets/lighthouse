@@ -5,13 +5,12 @@
  */
 
 import TraceElementsGatherer from '../../../gather/gatherers/trace-elements.js';
-import {Driver} from '../../../legacy/gather/driver.js';
-import {Connection} from '../../../legacy/gather/connections/connection.js';
 import {createTestTrace, rootFrame} from '../../create-test-trace.js';
-import {createMockSendCommandFn, createMockOnFn} from '../mock-commands.js';
-import {flushAllTimersAndMicrotasks, fnAny, readJson, timers} from '../../test-utils.js';
+import {flushAllTimersAndMicrotasks, readJson, timers} from '../../test-utils.js';
+import {ProcessedTrace} from '../../../computed/processed-trace.js';
+import {createMockDriver} from '../mock-driver.js';
 
-const animationTrace = readJson('../../fixtures/traces/animation.json', import.meta);
+const animationTrace = readJson('../../fixtures/artifacts/animation/trace.json', import.meta);
 
 function makeLayoutShiftTraceEvent(score, impactedNodes, had_recent_input = false) { // eslint-disable-line camelcase
   return {
@@ -23,11 +22,13 @@ function makeLayoutShiftTraceEvent(score, impactedNodes, had_recent_input = fals
     ts: 1200,
     args: {
       data: {
+        is_main_frame: true,
         had_recent_input, // eslint-disable-line camelcase
         impacted_nodes: impactedNodes,
         score: score,
+        weighted_score_delta: score,
       },
-      frame: '3C4CBF06AF1ED5B9EAA59BECA70111F4',
+      frame: 'ROOT_FRAME',
     },
   };
 }
@@ -87,8 +88,9 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     expect(diff).toBeLessThanOrEqual(Number.EPSILON);
   }
 
-  it('returns layout shift data sorted by impact area', () => {
-    const traceEvents = [
+  it('returns layout shift data sorted by impact area', async () => {
+    const trace = createTestTrace({});
+    trace.traceEvents.push(
       makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
@@ -100,10 +102,11 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
           node_id: 25,
           old_rect: [0, 100, 200, 100],
         },
-      ]),
-    ];
+      ])
+    );
+    const processedTrace = await ProcessedTrace.request(trace, {computedCache: new Map()});
 
-    const result = TraceElementsGatherer.getTopLayoutShiftElements(traceEvents);
+    const result = TraceElementsGatherer.getTopLayoutShiftElements(processedTrace);
     expect(result).toEqual([
       {nodeId: 25, score: 0.6},
       {nodeId: 60, score: 0.4},
@@ -112,8 +115,9 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     expectEqualFloat(total, 1.0);
   });
 
-  it('does not ignore initial trace events with input', () => {
-    const traceEvents = [
+  it('does not ignore initial trace events with input', async () => {
+    const trace = createTestTrace({});
+    trace.traceEvents.push(
       makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
@@ -127,18 +131,20 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
           node_id: 2,
           old_rect: [0, 0, 200, 100],
         },
-      ], true),
-    ];
+      ], true)
+    );
+    const processedTrace = await ProcessedTrace.request(trace, {computedCache: new Map()});
 
-    const result = TraceElementsGatherer.getTopLayoutShiftElements(traceEvents);
+    const result = TraceElementsGatherer.getTopLayoutShiftElements(processedTrace);
     expect(result).toEqual([
       {nodeId: 1, score: 1},
       {nodeId: 2, score: 1},
     ]);
   });
 
-  it('does ignore later trace events with input', () => {
-    const traceEvents = [
+  it('does ignore later trace events with input', async () => {
+    const trace = createTestTrace({});
+    trace.traceEvents.push(
       makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
@@ -152,17 +158,19 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
           node_id: 2,
           old_rect: [0, 0, 200, 100],
         },
-      ], true),
-    ];
+      ], true)
+    );
+    const processedTrace = await ProcessedTrace.request(trace, {computedCache: new Map()});
 
-    const result = TraceElementsGatherer.getTopLayoutShiftElements(traceEvents);
+    const result = TraceElementsGatherer.getTopLayoutShiftElements(processedTrace);
     expect(result).toEqual([
       {nodeId: 1, score: 1},
     ]);
   });
 
-  it('correctly ignores trace events with input (complex)', () => {
-    const traceEvents = [
+  it('correctly ignores trace events with input (complex)', async () => {
+    const trace = createTestTrace({});
+    trace.traceEvents.push(
       makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
@@ -211,10 +219,11 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
           node_id: 7,
           old_rect: [0, 0, 200, 100],
         },
-      ]),
-    ];
+      ])
+    );
+    const processedTrace = await ProcessedTrace.request(trace, {computedCache: new Map()});
 
-    const result = TraceElementsGatherer.getTopLayoutShiftElements(traceEvents);
+    const result = TraceElementsGatherer.getTopLayoutShiftElements(processedTrace);
     expect(result).toEqual([
       {nodeId: 1, score: 1},
       {nodeId: 2, score: 1},
@@ -224,8 +233,9 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     ]);
   });
 
-  it('combines scores for the same nodeId accross multiple shift events', () => {
-    const traceEvents = [
+  it('combines scores for the same nodeId accross multiple shift events', async () => {
+    const trace = createTestTrace({});
+    trace.traceEvents.push(
       makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 0, 200, 200],
@@ -244,10 +254,11 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
           node_id: 60,
           old_rect: [0, 0, 200, 200],
         },
-      ]),
-    ];
+      ])
+    );
+    const processedTrace = await ProcessedTrace.request(trace, {computedCache: new Map()});
 
-    const result = TraceElementsGatherer.getTopLayoutShiftElements(traceEvents);
+    const result = TraceElementsGatherer.getTopLayoutShiftElements(processedTrace);
     expect(result).toEqual([
       {nodeId: 60, score: 0.7},
       {nodeId: 25, score: 0.6},
@@ -256,8 +267,9 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     expectEqualFloat(total, 1.3);
   });
 
-  it('returns only the top five values', () => {
-    const traceEvents = [
+  it('returns only the top five values', async () => {
+    const trace = createTestTrace({});
+    trace.traceEvents.push(
       makeLayoutShiftTraceEvent(1, [
         {
           new_rect: [0, 100, 100, 100],
@@ -298,10 +310,11 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
           node_id: 7,
           old_rect: [0, 0, 100, 100],
         },
-      ]),
-    ];
+      ])
+    );
+    const processedTrace = await ProcessedTrace.request(trace, {computedCache: new Map()});
 
-    const result = TraceElementsGatherer.getTopLayoutShiftElements(traceEvents);
+    const result = TraceElementsGatherer.getTopLayoutShiftElements(processedTrace);
     expect(result).toEqual([
       {nodeId: 3, score: 1.0},
       {nodeId: 1, score: 0.5},
@@ -449,8 +462,9 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       },
       type: 'text',
     };
-    const connectionStub = new Connection();
-    connectionStub.sendCommand = createMockSendCommandFn()
+
+    const driver = createMockDriver();
+    driver._session.sendCommand
       // nodeId: 6
       .mockResponse('DOM.resolveNode', {object: {objectId: 1}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: LCPNodeData}})
@@ -464,7 +478,6 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       // nodeId: 5
       .mockResponse('DOM.resolveNode', {object: {objectId: 3}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: animationNodeData}});
-    const driver = new Driver(connectionStub);
 
     const trace = createTestTrace({timeOrigin: 0, traceEnd: 2000});
     trace.traceEvents.push(
@@ -491,7 +504,11 @@ describe('Trace Elements gatherer - Animated Elements', () => {
     const gatherer = new TraceElementsGatherer();
     gatherer.animationIdToName.set('1', 'example');
 
-    const result = await gatherer._getArtifact({driver, computedCache: new Map()}, trace);
+    const result = await gatherer.getArtifact({
+      driver,
+      dependencies: {Trace: trace},
+      computedCache: new Map()}
+    );
     const sorted = result.sort((a, b) => a.nodeId - b.nodeId);
 
     expect(sorted).toEqual([
@@ -561,8 +578,8 @@ describe('Trace Elements gatherer - Animated Elements', () => {
         height: 100,
       },
     };
-    const connectionStub = new Connection();
-    connectionStub.sendCommand = createMockSendCommandFn()
+    const driver = createMockDriver();
+    driver._session.sendCommand
       // LCP node
       .mockResponse('DOM.resolveNode', {object: {objectId: 1}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: LCPNodeData}})
@@ -573,35 +590,26 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       .mockResponse('DOM.resolveNode', {object: {objectId: 7}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: compositedNodeData}});
 
-    const driver = new Driver(connectionStub);
     const gatherer = new TraceElementsGatherer();
     gatherer.animationIdToName.set('2', 'alpha');
     gatherer.animationIdToName.set('3', 'beta');
     gatherer.animationIdToName.set('4', 'gamma');
 
-    const result = await gatherer._getArtifact({driver, computedCache: new Map()}, animationTrace);
+    const result = await gatherer.getArtifact({
+      driver,
+      dependencies: {Trace: animationTrace},
+      computedCache: new Map(),
+    });
 
-    expect(result).toEqual([
-      {
-        ...LCPNodeData,
-        nodeId: 7,
-      },
-      {
-        ...animationNodeData,
-        animations: [
-          {failureReasonsMask: 8224, unsupportedProperties: ['width']},
-          {name: 'alpha', failureReasonsMask: 8224, unsupportedProperties: ['height']},
-          {name: 'beta', failureReasonsMask: 8224, unsupportedProperties: ['background-color']},
-        ],
-        nodeId: 4,
-      },
-      {
-        ...compositedNodeData,
-        animations: [
-          {name: 'gamma', failureReasonsMask: 0},
-        ],
-        nodeId: 5,
-      },
+    const animationTraceElements = result.filter(el => el.traceEventType === 'animation');
+    expect(animationTraceElements).toHaveLength(2);
+    expect(animationTraceElements[0].animations).toEqual([
+      {failureReasonsMask: 8224, unsupportedProperties: ['width']},
+      {name: 'alpha', failureReasonsMask: 8224, unsupportedProperties: ['height']},
+      {name: 'beta', failureReasonsMask: 8224, unsupportedProperties: ['font-size']},
+    ]);
+    expect(animationTraceElements[1].animations).toEqual([
+      {name: 'gamma', failureReasonsMask: 0, unsupportedProperties: undefined},
     ]);
   });
 
@@ -637,8 +645,8 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       },
       type: 'text',
     };
-    const connectionStub = new Connection();
-    connectionStub.sendCommand = createMockSendCommandFn()
+    const driver = createMockDriver();
+    driver._session.sendCommand
       .mockResponse('DOM.resolveNode', {object: {objectId: 1}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: LCPNodeData}})
       // Animation 1
@@ -648,7 +656,6 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       // Animation 2
       .mockResponse('DOM.resolveNode', {object: {objectId: 5}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: animationNodeData}});
-    const driver = new Driver(connectionStub);
 
     const trace = createTestTrace({timeOrigin: 0, traceEnd: 2000});
     trace.traceEvents.push(makeAnimationTraceEvent('0x363db876c8', 'b', {id: '1', nodeId: 5}));
@@ -667,7 +674,11 @@ describe('Trace Elements gatherer - Animated Elements', () => {
     gatherer.animationIdToName.set('1', 'notgunnamatter');
     gatherer.animationIdToName.set('2', 'example');
 
-    const result = await gatherer._getArtifact({driver, computedCache: new Map()}, trace);
+    const result = await gatherer.getArtifact({
+      driver,
+      dependencies: {Trace: trace},
+      computedCache: new Map(),
+    });
 
     expect(result).toEqual([
       {
@@ -701,12 +712,11 @@ describe('Trace Elements gatherer - Animated Elements', () => {
         height: 140,
       },
     };
-    const connectionStub = new Connection();
-    connectionStub.sendCommand = createMockSendCommandFn()
+    const driver = createMockDriver();
+    driver._session.sendCommand
       // Animation 1
       .mockResponse('DOM.resolveNode', {object: {objectId: 5}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: animationNodeData}});
-    const driver = new Driver(connectionStub);
 
     const trace = createTestTrace({timeOrigin: 0, traceEnd: 2000});
     trace.traceEvents = trace.traceEvents.filter(event => event.name !== 'firstContentfulPaint');
@@ -719,11 +729,12 @@ describe('Trace Elements gatherer - Animated Elements', () => {
     const gatherer = new TraceElementsGatherer();
     gatherer.animationIdToName.set('1', 'example');
 
-    const result = await gatherer._getArtifact({
+    const result = await gatherer.getArtifact({
       driver,
       gatherMode: 'timespan',
+      dependencies: {Trace: trace},
       computedCache: new Map(),
-    }, trace);
+    });
 
     expect(result).toEqual([
       {
@@ -742,16 +753,12 @@ describe('instrumentation', () => {
   after(() => timers.dispose());
 
   it('resolves animation name', async () => {
-    const connectionStub = new Connection();
-    connectionStub.on = createMockOnFn()
-      .mockEvent('protocolevent', {
-        method: 'Animation.animationStarted',
-        params: {animation: {id: '1', name: 'example'}},
-      });
-    connectionStub.sendCommand = createMockSendCommandFn()
+    const driver = createMockDriver();
+    driver._session.on
+      .mockEvent('Animation.animationStarted', {animation: {id: '1', name: 'example'}});
+    driver._session.sendCommand
       .mockResponse('Animation.enable')
       .mockResponse('Animation.disable');
-    const driver = new Driver(connectionStub);
     const gatherer = new TraceElementsGatherer();
     await gatherer.startInstrumentation({driver, computedCache: new Map()});
 
@@ -764,16 +771,12 @@ describe('instrumentation', () => {
   });
 
   it('ignores empty name', async () => {
-    const connectionStub = new Connection();
-    connectionStub.on = createMockOnFn()
-      .mockEvent('protocolevent', {
-        method: 'Animation.animationStarted',
-        params: {animation: {id: '1', name: ''}},
-      });
-    connectionStub.sendCommand = createMockSendCommandFn()
+    const driver = createMockDriver();
+    driver._session.on
+      .mockEvent('Animation.animationStarted', {animation: {id: '1', name: ''}});
+    driver._session.sendCommand
       .mockResponse('Animation.enable')
       .mockResponse('Animation.disable');
-    const driver = new Driver(connectionStub);
     const gatherer = new TraceElementsGatherer();
     await gatherer.startInstrumentation({driver, computedCache: new Map()});
 
@@ -782,32 +785,5 @@ describe('instrumentation', () => {
     await gatherer.stopInstrumentation({driver, computedCache: new Map()});
 
     expect(gatherer.animationIdToName.size).toEqual(0);
-  });
-});
-
-describe('FR compat (trace-elements)', () => {
-  it('uses loadData in legacy mode', async () => {
-    const trace = ['1', '2'];
-    const gatherer = new TraceElementsGatherer();
-    gatherer._getArtifact = fnAny();
-    gatherer.stopInstrumentation = fnAny();
-
-    await gatherer.afterPass({}, {trace});
-
-    expect(gatherer._getArtifact).toHaveBeenCalledWith({dependencies: {}}, trace);
-    expect(gatherer.stopInstrumentation).toHaveBeenCalledWith({dependencies: {}});
-  });
-
-  it('uses dependency in legacy mode', async () => {
-    const trace = ['1', '2'];
-    const gatherer = new TraceElementsGatherer();
-    gatherer._getArtifact = fnAny();
-    gatherer.stopInstrumentation = fnAny();
-
-    const context = {dependencies: {Trace: trace}};
-    await gatherer.getArtifact(context);
-
-    expect(gatherer._getArtifact).toHaveBeenCalledWith(context, trace);
-    expect(gatherer.stopInstrumentation).not.toHaveBeenCalled();
   });
 });

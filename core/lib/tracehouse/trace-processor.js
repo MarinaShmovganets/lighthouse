@@ -506,14 +506,22 @@ class TraceProcessor {
     const pidToTid = new Map();
 
     for (const pid of new Set(mainFramePids)) {
-      // While renderer tids are generally predictable, we'll doublecheck it
-      const threadNameEvt = keyEvents.find(e =>
+      const threadEvents = keyEvents.filter(e =>
         e.cat === '__metadata' &&
         e.pid === pid &&
         e.ph === 'M' &&
-        e.name === 'thread_name' &&
-        e.args.name === 'CrRendererMain'
+        e.name === 'thread_name'
       );
+
+      // While renderer tids are generally predictable, we'll doublecheck it
+      let threadNameEvt = threadEvents.find(e => e.args.name === 'CrRendererMain');
+
+      // `CrRendererMain` can be missing if chrome is launched with the `--single-process` flag.
+      // In this case, page tasks will be run in the browser thread.
+      if (!threadNameEvt) {
+        threadNameEvt = threadEvents.find(e => e.args.name === 'CrBrowserMain');
+      }
+
       const tid = threadNameEvt?.tid;
 
       if (!tid) {
@@ -557,6 +565,19 @@ class TraceProcessor {
       evt.args.data &&
       evt.args.data.size !== undefined
     );
+  }
+
+  /**
+   * The associated frame ID is set in different locations for different trace events.
+   * This function checks all known locations for the frame ID and returns `undefined` if it's not found.
+   *
+   * @param {LH.TraceEvent} evt
+   * @return {string|undefined}
+   */
+  static getFrameId(evt) {
+    return evt.args?.data?.frame ||
+      evt.args.data?.frameID ||
+      evt.args.frame;
   }
 
   /**
@@ -684,7 +705,7 @@ class TraceProcessor {
         return Boolean(
           evt.name === 'FrameCommittedInBrowser' &&
           evt.args.data?.frame &&
-          evt.args.data.url
+          evt.args.data.url !== undefined
         );
       }).forEach(evt => {
         framesById.set(evt.args.data.frame, {
@@ -704,13 +725,13 @@ class TraceProcessor {
     // Filter to just events matching the main frame ID, just to make sure.
     /** @param {LH.TraceEvent} e */
     function associatedToMainFrame(e) {
-      const frameId = e.args?.data?.frame || e.args.frame;
+      const frameId = TraceProcessor.getFrameId(e);
       return frameId === mainFrameInfo.frameId;
     }
 
     /** @param {LH.TraceEvent} e */
     function associatedToAllFrames(e) {
-      const frameId = e.args?.data?.frame || e.args.frame;
+      const frameId = TraceProcessor.getFrameId(e);
       return frameId ? inspectedTreeFrameIds.includes(frameId) : false;
     }
     const frameEvents = keyEvents.filter(e => associatedToMainFrame(e));

@@ -158,7 +158,7 @@
   // Ensure long-task collection still works when performance.now is redefined
   window.performance.now = 'right now';
 
-  // Ensure bounding rectangles still work when getBoundingClientRect is overriden.
+  // Ensure bounding rectangles still work when getBoundingClientRect is overridden.
   window.HTMLElement.prototype.getBoundingClientRect = function() {
     return {top: '', left: ''};
   };
@@ -219,8 +219,7 @@
 <!-- FAIL(image-aspect-ratio): image is naturally 1024x680 -->
 <img src="lighthouse-1024x680.jpg?iar1" width="120" height="15">
 <!-- PASS(image-aspect-ratio) -->
-<!-- FAIL(lcp-lazy-loaded) -->
-<img loading="lazy" src="lighthouse-1024x680.jpg?iar2" width="120" height="80">
+<img loading="lazy" src="lighthouse-1024x680.jpg?iar2" width="120" height="80" fetchpriority="low">
 
 <!-- FAIL(image-size-responsive): image is naturally 480x318 -->
 <img src="lighthouse-480x318.jpg?isr1" width="400" height="360" style="position: absolute;">
@@ -468,8 +467,10 @@ if (location.search === '') {
 <!-- Including this validates that pages that override fetch don't crash our entire stacks gatherer. -->
 <script>window.fetch = () => new Promise(r => setTimeout(r, 90000));</script>
 
-<!-- FAIL(is-on-https): requires a non-localhost http file -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!-- Include a fake jquery, to test js-libraries -->
+<script>
+  window.$ = {fn: {jquery: '2.1.1'}};
+</script>
 
 <!-- Filesystem URL shouldn't be flagged is-on-https. -->
 <script>

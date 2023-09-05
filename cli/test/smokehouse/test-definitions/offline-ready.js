@@ -13,7 +13,6 @@ const config = {
     ],
     onlyAudits: [
       'is-on-https',
-      'service-worker',
       'viewport',
       'user-timings',
       'critical-request-chains',
@@ -53,14 +52,18 @@ const expectations = {
       },
     },
     InstallabilityErrors: {
-      errors: {
-        length: 1,
-        0: {
-          // For a few days in m89, the warn-not-offline-capable error also showed up here.
-          // https://github.com/GoogleChrome/lighthouse/issues/11800
-          errorId: /no-icon-available/,
+      errors: [
+        // Icon errors were consolidated in M118
+        // https://bugs.chromium.org/p/chromium/issues/detail?id=1476999
+        {
+          _minChromiumVersion: '118',
+          errorId: 'no-acceptable-icon',
         },
-      },
+        {
+          _maxChromiumVersion: '117',
+          errorId: 'no-icon-available',
+        },
+      ],
     },
   },
   lhr: {
@@ -69,13 +72,6 @@ const expectations = {
     audits: {
       'is-on-https': {
         score: 1,
-      },
-      'service-worker': {
-        score: 1,
-        details: {
-          scriptUrl: 'http://localhost:10503/offline-ready-sw.js',
-          scopeUrl: 'http://localhost:10503/',
-        },
       },
       'viewport': {
         score: 1,
@@ -88,7 +84,18 @@ const expectations = {
       },
       'installable-manifest': {
         score: 0,
-        details: {items: [{reason: 'Downloaded icon was empty or corrupted'}]},
+        details: {items: [
+          // Icon errors were consolidated in M118
+          // https://bugs.chromium.org/p/chromium/issues/detail?id=1476999
+          {
+            _minChromiumVersion: '118',
+            reason: 'No supplied icon is at least 144\xa0px square in PNG, SVG or WebP format, with the purpose attribute unset or set to "any"',
+          },
+          {
+            _maxChromiumVersion: '117',
+            reason: 'Downloaded icon was empty or corrupted',
+          },
+        ]},
       },
       'splash-screen': {
         score: 0,

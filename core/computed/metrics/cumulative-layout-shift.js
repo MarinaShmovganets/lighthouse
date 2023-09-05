@@ -7,7 +7,9 @@
 import {makeComputedArtifact} from '../computed-artifact.js';
 import {ProcessedTrace} from '../processed-trace.js';
 
-/** @typedef {{ts: number, isMainFrame: boolean, weightedScore: number}} LayoutShiftEvent */
+/** @typedef {{ts: number, isMainFrame: boolean, weightedScore: number, impactedNodes?: LH.Artifacts.TraceImpactedNode[]}} LayoutShiftEvent */
+
+const RECENT_INPUT_WINDOW = 500;
 
 class CumulativeLayoutShift {
   /**
@@ -15,10 +17,10 @@ class CumulativeLayoutShift {
    * Only a `weightedScore` per event is returned. For non-main-frame events, this is
    * the only score that matters. For main-frame events, `weighted_score_delta === score`.
    * @see https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/layout/layout_shift_tracker.cc;l=492-495;drc=de3b3a8a8839269c6b44403fa38a13a1ed12fed5
-   * @param {LH.TraceEvent[]} traceEvents
+   * @param {LH.Artifacts.ProcessedTrace} processedTrace
    * @return {Array<LayoutShiftEvent>}
    */
-  static getLayoutShiftEvents(traceEvents) {
+  static getLayoutShiftEvents(processedTrace) {
     const layoutShiftEvents = [];
 
     // Chromium will set `had_recent_input` if there was recent user input, which
@@ -26,9 +28,20 @@ class CumulativeLayoutShift {
     // Lighthouse changes the emulation size. This results in the first few shift
     // events having `had_recent_input` set, so ignore it for those events.
     // See https://bugs.chromium.org/p/chromium/issues/detail?id=1094974.
-    let ignoreHadRecentInput = true;
+    let mustRespectHadRecentInput = false;
 
-    for (const event of traceEvents) {
+    // Even if emulation was applied before navigating, Chrome will issue a viewport
+    // change event after a navigation starts which is treated as an interaction when
+    // deciding the `had_recent_input` flag. Anything within 500ms of this event should
+    // always be counted for CLS regardless of the `had_recent_input` flag.
+    // See https://bugs.chromium.org/p/chromium/issues/detail?id=1302667
+    let viewportChangeTs = processedTrace.timestamps.timeOrigin;
+    const firstViewportEvent = processedTrace.frameEvents.find(event => event.name === 'viewport');
+    if (firstViewportEvent) {
+      viewportChangeTs = firstViewportEvent.ts;
+    }
+
+    for (const event of processedTrace.frameTreeEvents) {
       if (event.name !== 'LayoutShift' ||
           !event.args.data ||
           event.args.data.is_main_frame === undefined) {
@@ -42,17 +55,17 @@ class CumulativeLayoutShift {
       }
 
       if (event.args.data.had_recent_input) {
-        // `had_recent_input` events aren't used unless currently ignoring.
-        if (!ignoreHadRecentInput) continue;
+        const timing = (event.ts - viewportChangeTs) / 1000;
+        if (timing > RECENT_INPUT_WINDOW || mustRespectHadRecentInput) continue;
       } else {
-        // After a false `had_recent_input`, stop ignoring property.
-        ignoreHadRecentInput = false;
+        mustRespectHadRecentInput = true;
       }
 
       layoutShiftEvents.push({
         ts: event.ts,
         isMainFrame: event.args.data.is_main_frame,
         weightedScore: event.args.data.weighted_score_delta,
+        impactedNodes: event.args.data.impacted_nodes,
       });
     }
 
@@ -89,34 +102,20 @@ class CumulativeLayoutShift {
   }
 
   /**
-   * Sum all layout shift events from the entire trace.
-   * @param {Array<LayoutShiftEvent>} layoutShiftEvents
-   * @return {number}
-   */
-  static calculateTotalCumulativeLayoutShift(layoutShiftEvents) {
-    return layoutShiftEvents.reduce((sum, e) => sum += e.weightedScore, 0);
-  }
-
-  /**
    * @param {LH.Trace} trace
    * @param {LH.Artifacts.ComputedContext} context
-   * @return {Promise<{cumulativeLayoutShift: number, cumulativeLayoutShiftMainFrame: number, totalCumulativeLayoutShift: number}>}
+   * @return {Promise<{cumulativeLayoutShift: number, cumulativeLayoutShiftMainFrame: number}>}
    */
   static async compute_(trace, context) {
     const processedTrace = await ProcessedTrace.request(trace, context);
 
     const allFrameShiftEvents =
-        CumulativeLayoutShift.getLayoutShiftEvents(processedTrace.frameTreeEvents);
+        CumulativeLayoutShift.getLayoutShiftEvents(processedTrace);
     const mainFrameShiftEvents = allFrameShiftEvents.filter(e => e.isMainFrame);
-
-    // The original Cumulative Layout Shift metric, the sum of all main-frame shift events.
-    const totalCumulativeLayoutShift =
-        CumulativeLayoutShift.calculateTotalCumulativeLayoutShift(mainFrameShiftEvents);
 
     return {
       cumulativeLayoutShift: CumulativeLayoutShift.calculate(allFrameShiftEvents),
       cumulativeLayoutShiftMainFrame: CumulativeLayoutShift.calculate(mainFrameShiftEvents),
-      totalCumulativeLayoutShift,
     };
   }
 }

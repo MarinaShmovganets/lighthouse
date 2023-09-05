@@ -4,6 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+import {NetworkRequest} from '../../../../lib/network-request.js';
 import {createMockContext, mockDriverSubmodules} from '../../../gather/mock-driver.js';
 
 const mocks = await mockDriverSubmodules();
@@ -55,7 +56,7 @@ const networkRecords = [
     finished: true,
   },
   {
-    url: 'http://google.com/index.json',
+    url: 'http://google.com/index-oopif.json',
     statusCode: 200,
     mimeType: 'application/json',
     requestId: 27,
@@ -65,7 +66,7 @@ const networkRecords = [
     responseHeaders: [],
     content: '1234567',
     finished: true,
-    sessionId: 'oopif', // ignore for being from oopif
+    sessionTargetType: 'iframe', // ignore for being from oopif
   },
   {
     url: 'http://google.com/index.json',
@@ -115,7 +116,7 @@ const networkRecords = [
     content: 'bbbbbbbb',
     finished: true,
   },
-];
+].map((record) => Object.assign(new NetworkRequest(), record));
 
 describe('Optimized responses', () => {
   let context;
@@ -131,25 +132,32 @@ describe('Optimized responses', () => {
   });
 
   it('returns only text and non encoded responses', async () => {
-    const artifact = await gatherer._getArtifact(context, networkRecords);
+    const artifact = await gatherer.getCompressibleRecords(context, networkRecords);
     expect(artifact).toHaveLength(2);
     expect(artifact[0].url).toMatch(/index\.css$/);
     expect(artifact[1].url).toMatch(/index\.json$/);
   });
 
   it('computes sizes', async () => {
-    const artifact = await gatherer._getArtifact(context, networkRecords);
+    const artifact = await gatherer.getCompressibleRecords(context, networkRecords);
     expect(artifact).toHaveLength(2);
     expect(artifact[0].resourceSize).toEqual(6);
     expect(artifact[0].gzipSize).toEqual(26);
   });
 
-  it('recovers from driver errors', async () => {
-    mocks.networkMock.fetchResponseBodyFromCache.mockRejectedValue(new Error('Failed'));
-    const artifact = await gatherer._getArtifact(context, networkRecords);
+  it('recovers from cache ejection errors', async () => {
+    mocks.networkMock.fetchResponseBodyFromCache.mockRejectedValue(
+      new Error('No resource with given identifier found'));
+    const artifact = await gatherer.getCompressibleRecords(context, networkRecords);
     expect(artifact).toHaveLength(2);
     expect(artifact[0].resourceSize).toEqual(6);
     expect(artifact[0].gzipSize).toBeUndefined();
+  });
+
+  it('does not suppress other errors', async () => {
+    mocks.networkMock.fetchResponseBodyFromCache.mockRejectedValue(new Error('Failed'));
+    await expect(gatherer.getCompressibleRecords(context, networkRecords))
+      .rejects.toThrow();
   });
 
   it('ignores responses from installed Chrome extensions', async () => {
@@ -178,7 +186,7 @@ describe('Optimized responses', () => {
       },
     ];
 
-    const artifact = await gatherer._getArtifact(context, networkRecords);
+    const artifact = await gatherer.getCompressibleRecords(context, networkRecords);
     expect(artifact).toHaveLength(1);
     expect(artifact[0].resourceSize).toEqual(123);
   });

@@ -27,14 +27,14 @@ describe('Metrics: LCP', () => {
     expect({
       timing: Math.round(result.timing),
       optimistic: Math.round(result.optimisticEstimate.timeInMs),
-      pessimistic: Math.round(result.pessimisticEstimate.timeInMs),
-    }).toMatchInlineSnapshot(`
-      Object {
-        "optimistic": 2289,
-        "pessimistic": 3228,
-        "timing": 2758,
-      }
-    `);
+      pessimistic: Math.round(result.pessimisticEstimate.timeInMs)}).
+toMatchInlineSnapshot(`
+Object {
+  "optimistic": 2294,
+  "pessimistic": 3233,
+  "timing": 2764,
+}
+`);
   });
 
   it('should compute an observed value', async () => {

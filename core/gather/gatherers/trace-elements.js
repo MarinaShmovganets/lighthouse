@@ -12,7 +12,7 @@
  * We take the backend nodeId from the trace and use it to find the corresponding element in the DOM.
  */
 
-import FRGatherer from '../base-gatherer.js';
+import BaseGatherer from '../base-gatherer.js';
 import {resolveNodeIdToObjectId} from '../driver/dom.js';
 import {pageFunctions} from '../../lib/page-functions.js';
 import * as RectHelpers from '../../lib/rect-helpers.js';
@@ -22,6 +22,8 @@ import {ProcessedTrace} from '../../computed/processed-trace.js';
 import {ProcessedNavigation} from '../../computed/processed-navigation.js';
 import {LighthouseError} from '../../lib/lh-error.js';
 import {Responsiveness} from '../../computed/metrics/responsiveness.js';
+import {CumulativeLayoutShift} from '../../computed/metrics/cumulative-layout-shift.js';
+import {ExecutionContext} from '../driver/execution-context.js';
 
 /** @typedef {{nodeId: number, score?: number, animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[], type?: string}} TraceElementData */
 
@@ -40,7 +42,7 @@ function getNodeDetailsData() {
 }
 /* c8 ignore stop */
 
-class TraceElements extends FRGatherer {
+class TraceElements extends BaseGatherer {
   /** @type {LH.Gatherer.GathererMeta<'Trace'>} */
   meta = {
     supportedModes: ['timespan', 'navigation'],
@@ -80,34 +82,24 @@ class TraceElements extends FRGatherer {
    * We calculate the score per element by taking the 'score' of each layout shift event and
    * distributing it between all the nodes that were shifted, proportianal to the impact region of
    * each shifted element.
-   * @param {Array<LH.TraceEvent>} mainThreadEvents
+   * @param {LH.Artifacts.ProcessedTrace} processedTrace
    * @return {Array<TraceElementData>}
    */
-  static getTopLayoutShiftElements(mainThreadEvents) {
+  static getTopLayoutShiftElements(processedTrace) {
     /** @type {Map<number, number>} */
     const clsPerNode = new Map();
-    const shiftEvents = mainThreadEvents
-      .filter(e => e.name === 'LayoutShift')
-      .map(e => e.args?.data);
-    const indexFirstEventWithoutInput =
-      shiftEvents.findIndex(event => event && !event.had_recent_input);
+    const shiftEvents = CumulativeLayoutShift.getLayoutShiftEvents(processedTrace);
 
-    shiftEvents.forEach((event, index) => {
-      if (!event || !event.impacted_nodes || !event.score) {
+    shiftEvents.forEach((event) => {
+      if (!event || !event.impactedNodes) {
         return;
-      }
-
-      // Ignore events with input, unless it's one of the initial events.
-      // See comment in computed/metrics/cumulative-layout-shift.js.
-      if (indexFirstEventWithoutInput !== -1 && index >= indexFirstEventWithoutInput) {
-        if (event.had_recent_input) return;
       }
 
       let totalAreaOfImpact = 0;
       /** @type {Map<number, number>} */
       const pixelsMovedPerNode = new Map();
 
-      event.impacted_nodes.forEach(node => {
+      event.impactedNodes.forEach(node => {
         if (!node.node_id || !node.old_rect || !node.new_rect) {
           return;
         }
@@ -124,7 +116,7 @@ class TraceElements extends FRGatherer {
 
       for (const [nodeId, pixelsMoved] of pixelsMovedPerNode.entries()) {
         let clsContribution = clsPerNode.get(nodeId) || 0;
-        clsContribution += (pixelsMoved / totalAreaOfImpact) * event.score;
+        clsContribution += (pixelsMoved / totalAreaOfImpact) * event.weightedScore;
         clsPerNode.set(nodeId, clsContribution);
       }
     });
@@ -144,7 +136,7 @@ class TraceElements extends FRGatherer {
 
   /**
    * @param {LH.Trace} trace
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    * @return {Promise<TraceElementData|undefined>}
    */
   static async getResponsivenessElement(trace, context) {
@@ -214,7 +206,7 @@ class TraceElements extends FRGatherer {
 
   /**
    * @param {LH.Trace} trace
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    * @return {Promise<{nodeId: number, type: string} | undefined>}
    */
   static async getLcpElement(trace, context) {
@@ -242,7 +234,7 @@ class TraceElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    */
   async startInstrumentation(context) {
     await context.driver.defaultSession.sendCommand('Animation.enable');
@@ -250,7 +242,7 @@ class TraceElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    */
   async stopInstrumentation(context) {
     context.driver.defaultSession.off('Animation.animationStarted', this._onAnimationStarted);
@@ -258,12 +250,13 @@ class TraceElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
-   * @param {LH.Trace|undefined} trace
-   * @return {Promise<LH.Artifacts['TraceElements']>}
+   * @param {LH.Gatherer.Context<'Trace'>} context
+   * @return {Promise<LH.Artifacts.TraceElement[]>}
    */
-  async _getArtifact(context, trace) {
+  async getArtifact(context) {
     const session = context.driver.defaultSession;
+
+    const trace = context.dependencies.Trace;
     if (!trace) {
       throw new Error('Trace is missing!');
     }
@@ -272,7 +265,7 @@ class TraceElements extends FRGatherer {
     const {mainThreadEvents} = processedTrace;
 
     const lcpNodeData = await TraceElements.getLcpElement(trace, context);
-    const clsNodeData = TraceElements.getTopLayoutShiftElements(mainThreadEvents);
+    const clsNodeData = TraceElements.getTopLayoutShiftElements(processedTrace);
     const animatedElementData = await this.getAnimatedElements(mainThreadEvents);
     const responsivenessElementData = await TraceElements.getResponsivenessElement(trace, context);
 
@@ -292,11 +285,15 @@ class TraceElements extends FRGatherer {
         try {
           const objectId = await resolveNodeIdToObjectId(session, backendNodeId);
           if (!objectId) continue;
+
+          const deps = ExecutionContext.serializeDeps([
+            pageFunctions.getNodeDetails,
+            getNodeDetailsData,
+          ]);
           response = await session.sendCommand('Runtime.callFunctionOn', {
             objectId,
             functionDeclaration: `function () {
-              ${getNodeDetailsData.toString()};
-              ${pageFunctions.getNodeDetails};
+              ${deps}
               return getNodeDetailsData.call(this);
             }`,
             returnByValue: true,
@@ -304,7 +301,7 @@ class TraceElements extends FRGatherer {
           });
         } catch (err) {
           Sentry.captureException(err, {
-            tags: {gatherer: this.name},
+            tags: {gatherer: 'TraceElements'},
             level: 'error',
           });
           continue;
@@ -324,25 +321,6 @@ class TraceElements extends FRGatherer {
     }
 
     return traceElements;
-  }
-
-  /**
-   * @param {LH.Gatherer.FRTransitionalContext<'Trace'>} context
-   * @return {Promise<LH.Artifacts.TraceElement[]>}
-   */
-  async getArtifact(context) {
-    return this._getArtifact(context, context.dependencies.Trace);
-  }
-
-  /**
-   * @param {LH.Gatherer.PassContext} passContext
-   * @param {LH.Gatherer.LoadData} loadData
-   * @return {Promise<LH.Artifacts.TraceElement[]>}
-   */
-  async afterPass(passContext, loadData) {
-    const context = {...passContext, dependencies: {}};
-    await this.stopInstrumentation(context);
-    return this._getArtifact(context, loadData.trace);
   }
 }
 

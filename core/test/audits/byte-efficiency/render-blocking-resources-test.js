@@ -41,6 +41,7 @@ describe('Render blocking resources audit', () => {
     const result = await RenderBlockingResourcesAudit.audit(artifacts, {settings, computedCache});
     assert.equal(result.score, 1);
     assert.equal(result.numericValue, 0);
+    assert.deepStrictEqual(result.metricSavings, {FCP: 0, LCP: 0});
   });
 
   it('evaluates amp page correctly', async () => {
@@ -76,7 +77,7 @@ describe('Render blocking resources audit', () => {
     const settings = {throttlingMethod: 'simulate', throttling: mobileSlow4G};
     const computedCache = new Map();
     const result = await RenderBlockingResourcesAudit.audit(artifacts, {settings, computedCache});
-    expect(result.numericValue).toMatchInlineSnapshot(`450`);
+    expect(result.numericValue).toMatchInlineSnapshot(`469`);
     expect(result.details.items).toMatchObject([
       {
         'totalBytes': 621,
@@ -87,6 +88,7 @@ describe('Render blocking resources audit', () => {
       // it look like Montserrat starts after Fira Sans finishes. It would be preferred
       // if eventual simulation improvements list Montserrat here as well.
     ]);
+    expect(result.metricSavings).toEqual({FCP: 469, LCP: 469});
   });
 
   describe('#estimateSavingsWithGraphs', () => {

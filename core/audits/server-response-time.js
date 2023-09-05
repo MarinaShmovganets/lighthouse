@@ -37,16 +37,22 @@ class ServerResponseTime extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
       supportedModes: ['navigation'],
+      guidanceLevel: 1,
       requiredArtifacts: ['devtoolsLogs', 'URL', 'GatherContext'],
     };
   }
 
   /**
    * @param {LH.Artifacts.NetworkRequest} record
+   * @return {number|null}
    */
   static calculateResponseTime(record) {
-    const timing = record.timing;
-    return timing ? timing.receiveHeadersEnd - timing.sendEnd : 0;
+    // Lightrider does not have timings for sendEnd, but we do have this timing which should be
+    // close to the response time.
+    if (global.isLightrider && record.lrStatistics) return record.lrStatistics.requestMs;
+
+    if (!record.timing) return null;
+    return record.timing.receiveHeadersStart - record.timing.sendEnd;
   }
 
   /**
@@ -61,6 +67,10 @@ class ServerResponseTime extends Audit {
     const mainResource = await MainResource.request({devtoolsLog, URL: artifacts.URL}, context);
 
     const responseTime = ServerResponseTime.calculateResponseTime(mainResource);
+    if (responseTime === null) {
+      throw new Error('no timing found for main resource');
+    }
+
     const passed = responseTime < TOO_SLOW_THRESHOLD_MS;
     const displayValue = str_(UIStrings.displayValue, {timeInMs: responseTime});
 
@@ -70,10 +80,11 @@ class ServerResponseTime extends Audit {
       {key: 'responseTime', valueType: 'timespanMs', label: str_(i18n.UIStrings.columnTimeSpent)},
     ];
 
+    const overallSavingsMs = Math.max(responseTime - TARGET_MS, 0);
     const details = Audit.makeOpportunityDetails(
       headings,
       [{url: mainResource.url, responseTime}],
-      {overallSavingsMs: responseTime - TARGET_MS}
+      {overallSavingsMs}
     );
 
     return {
@@ -82,6 +93,10 @@ class ServerResponseTime extends Audit {
       score: Number(passed),
       displayValue,
       details,
+      metricSavings: {
+        FCP: overallSavingsMs,
+        LCP: overallSavingsMs,
+      },
     };
   }
 }

@@ -186,164 +186,483 @@
   },
   "Timing": [
     {
-      "startTime": 0,
       "name": "lh:config",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 0,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 1,
       "name": "lh:config:resolveArtifactsToDefns",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 1,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 2,
       "name": "lh:config:resolveNavigationsToDefns",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 2,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 3,
       "name": "lh:runner:gather",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 3,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 4,
       "name": "lh:driver:connect",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 4,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
+      "name": "lh:driver:navigate",
+      "entryType": "measure",
       "startTime": 5,
-      "name": "lh:driver:navigate",
       "duration": 1,
-      "entryType": "measure",
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 6,
       "name": "lh:gather:getBenchmarkIndex",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 6,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
+      "name": "lh:gather:getVersion",
+      "entryType": "measure",
       "startTime": 7,
-      "name": "lh:gather:getVersion",
       "duration": 1,
-      "entryType": "measure",
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 8,
       "name": "lh:prepare:navigationMode",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 8,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
+      "name": "lh:driver:navigate",
+      "entryType": "measure",
       "startTime": 9,
-      "name": "lh:driver:navigate",
       "duration": 1,
-      "entryType": "measure",
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 10,
       "name": "lh:prepare:navigation",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 10,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 11,
       "name": "lh:storage:clearDataForOrigin",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 11,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 12,
       "name": "lh:storage:clearBrowserCaches",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 12,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 13,
       "name": "lh:gather:prepareThrottlingAndNetwork",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 13,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 14,
       "name": "lh:driver:navigate",
-      "duration": 1,
       "entryType": "measure",
+      "startTime": 14,
+      "duration": 1,
+      "detail": null,
       "gather": true
     },
     {
+      "name": "lh:gather:getArtifact:DevtoolsLog",
+      "entryType": "measure",
       "startTime": 15,
-      "name": "lh:computed:NetworkRecords",
       "duration": 1,
-      "entryType": "measure",
+      "detail": null,
       "gather": true
     },
     {
+      "name": "lh:gather:getArtifact:Trace",
+      "entryType": "measure",
       "startTime": 16,
-      "name": "lh:gather:getInstallabilityErrors",
       "duration": 1,
-      "entryType": "measure",
+      "detail": null,
       "gather": true
     },
     {
+      "name": "lh:computed:NetworkRecords",
+      "entryType": "measure",
       "startTime": 17,
-      "name": "lh:computed:MainResource",
       "duration": 1,
-      "entryType": "measure",
+      "detail": null,
       "gather": true
     },
     {
+      "name": "lh:gather:getArtifact:DevtoolsLog",
+      "entryType": "measure",
       "startTime": 18,
-      "name": "lh:gather:getVersion",
       "duration": 1,
-      "entryType": "measure",
+      "detail": null,
       "gather": true
     },
     {
+      "name": "lh:gather:getArtifact:Trace",
+      "entryType": "measure",
       "startTime": 19,
-      "name": "lh:gather:getVersion",
       "duration": 1,
-      "entryType": "measure",
+      "detail": null,
       "gather": true
     },
     {
+      "name": "lh:gather:getArtifact:Accessibility",
+      "entryType": "measure",
       "startTime": 20,
-      "name": "lh:gather:collectStacks",
       "duration": 1,
-      "entryType": "measure",
+      "detail": null,
       "gather": true
     },
     {
+      "name": "lh:gather:getArtifact:AnchorElements",
+      "entryType": "measure",
       "startTime": 21,
-      "name": "lh:computed:ProcessedTrace",
       "duration": 1,
-      "entryType": "measure",
+      "detail": null,
       "gather": true
     },
     {
-      "startTime": 22,
-      "name": "lh:computed:ProcessedNavigation",
-      "duration": 1,
+      "name": "lh:gather:getArtifact:ConsoleMessages",
       "entryType": "measure",
+      "startTime": 22,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:CSSUsage",
+      "entryType": "measure",
+      "startTime": 23,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:Doctype",
+      "entryType": "measure",
+      "startTime": 24,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:DOMStats",
+      "entryType": "measure",
+      "startTime": 25,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:EmbeddedContent",
+      "entryType": "measure",
+      "startTime": 26,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:FontSize",
+      "entryType": "measure",
+      "startTime": 27,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:Inputs",
+      "entryType": "measure",
+      "startTime": 28,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:GlobalListeners",
+      "entryType": "measure",
+      "startTime": 29,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:ImageElements",
+      "entryType": "measure",
+      "startTime": 30,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:InstallabilityErrors",
+      "entryType": "measure",
+      "startTime": 31,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getInstallabilityErrors",
+      "entryType": "measure",
+      "startTime": 32,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:InspectorIssues",
+      "entryType": "measure",
+      "startTime": 33,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:JsUsage",
+      "entryType": "measure",
+      "startTime": 34,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:LinkElements",
+      "entryType": "measure",
+      "startTime": 35,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:computed:MainResource",
+      "entryType": "measure",
+      "startTime": 36,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:MainDocumentContent",
+      "entryType": "measure",
+      "startTime": 37,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:MetaElements",
+      "entryType": "measure",
+      "startTime": 38,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:NetworkUserAgent",
+      "entryType": "measure",
+      "startTime": 39,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:OptimizedImages",
+      "entryType": "measure",
+      "startTime": 40,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:ResponseCompression",
+      "entryType": "measure",
+      "startTime": 41,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:RobotsTxt",
+      "entryType": "measure",
+      "startTime": 42,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:ServiceWorker",
+      "entryType": "measure",
+      "startTime": 43,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:Scripts",
+      "entryType": "measure",
+      "startTime": 44,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:SourceMaps",
+      "entryType": "measure",
+      "startTime": 45,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:Stacks",
+      "entryType": "measure",
+      "startTime": 46,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:collectStacks",
+      "entryType": "measure",
+      "startTime": 47,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:TagsBlockingFirstPaint",
+      "entryType": "measure",
+      "startTime": 48,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:TapTargets",
+      "entryType": "measure",
+      "startTime": 49,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:TraceElements",
+      "entryType": "measure",
+      "startTime": 50,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:computed:ProcessedTrace",
+      "entryType": "measure",
+      "startTime": 51,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:computed:ProcessedNavigation",
+      "entryType": "measure",
+      "startTime": 52,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:computed:Responsiveness",
+      "entryType": "measure",
+      "startTime": 53,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:ViewportDimensions",
+      "entryType": "measure",
+      "startTime": 54,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:WebAppManifest",
+      "entryType": "measure",
+      "startTime": 55,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:devtoolsLogs",
+      "entryType": "measure",
+      "startTime": 56,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:traces",
+      "entryType": "measure",
+      "startTime": 57,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:FullPageScreenshot",
+      "entryType": "measure",
+      "startTime": 58,
+      "duration": 1,
+      "detail": null,
+      "gather": true
+    },
+    {
+      "name": "lh:gather:getArtifact:BFCacheFailures",
+      "entryType": "measure",
+      "startTime": 59,
+      "duration": 1,
+      "detail": null,
       "gather": true
     }
   ],
@@ -9454,6 +9773,7 @@
         "snippet": "<img src=\"lighthouse-1024x680.jpg?iar1\" width=\"120\" height=\"15\">",
         "nodeLabel": "body > img"
       },
+      "fetchPriority": "auto",
       "cssEffectiveRules": {
         "width": "120px",
         "height": "15px",
@@ -9498,9 +9818,10 @@
           "width": 120,
           "height": 80
         },
-        "snippet": "<img loading=\"lazy\" src=\"lighthouse-1024x680.jpg?iar2\" width=\"120\" height=\"80\">",
+        "snippet": "<img loading=\"lazy\" src=\"lighthouse-1024x680.jpg?iar2\" width=\"120\" height=\"80\" fetchpriority=\"low\">",
         "nodeLabel": "body > img"
       },
+      "fetchPriority": "low",
       "cssEffectiveRules": {
         "width": "120px",
         "height": "80px",
@@ -9548,6 +9869,7 @@
         "snippet": "<img src=\"lighthouse-1024x680.jpg?isr2\" width=\"120\" height=\"80\" style=\"position: absolute;\">",
         "nodeLabel": "body > img"
       },
+      "fetchPriority": "auto",
       "cssEffectiveRules": {
         "width": "120px",
         "height": "80px",
@@ -9595,6 +9917,7 @@
         "snippet": "<img src=\"lighthouse-1024x680.jpg?isr3\" width=\"360\" height=\"240\" style=\"image-rendering: pixelated; position: absolute;\">",
         "nodeLabel": "body > img"
       },
+      "fetchPriority": "auto",
       "cssEffectiveRules": {
         "width": "360px",
         "height": "240px",
@@ -9642,6 +9965,7 @@
         "snippet": "<img src=\"lighthouse-rotating.gif\" width=\"811\" height=\"462\">",
         "nodeLabel": "body > img"
       },
+      "fetchPriority": "auto",
       "cssEffectiveRules": {
         "width": "811px",
         "height": "462px",
@@ -9689,6 +10013,7 @@
         "snippet": "<img src=\"lighthouse-480x318.jpg?isr1\" width=\"400\" height=\"360\" style=\"position: absolute;\">",
         "nodeLabel": "body > img"
       },
+      "fetchPriority": "auto",
       "cssEffectiveRules": {
         "width": "400px",
         "height": "360px",
@@ -9732,6 +10057,7 @@
         "snippet": "<img src=\"http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg\" srcset=\"lighthouse-1024x680.jpg 2x\" width=\"360\" height=\"240\" style=\"position: absolute;\">",
         "nodeLabel": "body > img"
       },
+      "fetchPriority": "auto",
       "cssEffectiveRules": {
         "width": "360px",
         "height": "240px",
@@ -9820,6 +10146,7 @@
         "snippet": "<img src=\"blob:http://localhost:10200/8081f274-a0c6-440f-a9cc-be826a0e01d5\">",
         "nodeLabel": "body > img"
       },
+      "fetchPriority": "auto",
       "cssEffectiveRules": {
         "width": null,
         "height": null,
@@ -9867,6 +10194,7 @@
         "snippet": "<img src=\"filesystem:http://localhost:10200/temporary/empty-0.30045073591260474.png\">",
         "nodeLabel": "body > img"
       },
+      "fetchPriority": "auto",
       "cssEffectiveRules": {
         "width": null,
         "height": null,
@@ -9883,6 +10211,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?delay=100",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-11-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,9,LINK",
@@ -9907,6 +10236,7 @@
       "crossOrigin": null,
       "hrefRaw": "./unknown404.css?delay=200",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-12-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,10,LINK",
@@ -9931,6 +10261,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?delay=2200",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-13-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,12,LINK",
@@ -9955,6 +10286,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_disabled.css?delay=200&isdisabled",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-14-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,14,LINK",
@@ -9979,6 +10311,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?delay=3000&capped",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-15-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,17,LINK",
@@ -10003,6 +10336,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?delay=2000&async=true",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-16-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,19,LINK",
@@ -10027,6 +10361,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?delay=3000&async=true",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-17-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,21,LINK",
@@ -10051,6 +10386,7 @@
       "crossOrigin": null,
       "hrefRaw": "./empty.css",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-18-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,23,LINK",
@@ -10075,6 +10411,7 @@
       "crossOrigin": null,
       "hrefRaw": "./dbw_tester.css?scriptActivated&delay=200",
       "source": "head",
+      "fetchPriority": "auto",
       "node": {
         "lhId": "5-19-LINK",
         "devtoolsNodePath": "3,HTML,0,HEAD,40,LINK",
@@ -11708,8 +12045,7 @@
     ],
     "quirksModeIssue": [],
     "cookieIssue": [],
-    "sharedArrayBufferIssue": [],
-    "twaQualityEnforcement": []
+    "sharedArrayBufferIssue": []
   },
   "SourceMaps": [],
   "FullPageScreenshot": {

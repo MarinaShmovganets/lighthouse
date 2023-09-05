@@ -13,6 +13,7 @@ import {EventEmitter} from 'events';
 
 import log from 'lighthouse-logger';
 
+import * as LH from '../../../types/lh.js';
 import {NetworkRecorder} from '../../lib/network-recorder.js';
 import {NetworkRequest} from '../../lib/network-request.js';
 import UrlUtils from '../../lib/url-utils.js';
@@ -30,15 +31,14 @@ class NetworkMonitor extends NetworkMonitorEventEmitter {
   /** @type {Array<LH.Crdp.Page.Frame>} */
   _frameNavigations = [];
 
-  // TODO(FR-COMPAT): switch to real TargetManager when legacy removed.
-  /** @param {LH.Gatherer.FRTransitionalDriver['targetManager']} targetManager */
+  /** @param {LH.Gatherer.Driver['targetManager']} targetManager */
   constructor(targetManager) {
     super();
 
-    /** @type {LH.Gatherer.FRTransitionalDriver['targetManager']} */
+    /** @type {LH.Gatherer.Driver['targetManager']} */
     this._targetManager = targetManager;
 
-    /** @type {LH.Gatherer.FRProtocolSession} */
+    /** @type {LH.Gatherer.ProtocolSession} */
     this._session = targetManager.rootSession();
 
     /** @param {LH.Crdp.Page.FrameNavigatedEvent} event */

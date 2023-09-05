@@ -13,6 +13,17 @@ describe('NetworkRequest', () => {
     global.isLightrider = undefined;
   });
 
+  it('backcompat for receiveHeadersStart', function() {
+    const req = {
+      timing: {receiveHeadersEnd: 123},
+    };
+    const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+    const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+    expect(record.timing.receiveHeadersStart).toEqual(123);
+    expect(record.timing.receiveHeadersEnd).toEqual(123);
+  });
+
   describe('update transfer size for Lightrider', () => {
     function getRequest() {
       return {
@@ -108,7 +119,7 @@ describe('NetworkRequest', () => {
     });
   });
 
-  describe('update fetch stats for Lightrider', () => {
+  describe('update timings for Lightrider', () => {
     function getRequest() {
       return {
         rendererStartTime: 0,
@@ -172,11 +183,25 @@ describe('NetworkRequest', () => {
       expect(record.lrStatistics).toStrictEqual(undefined);
     });
 
-    it('does nothing if header timings do not add up', () => {
+    it('accepts if header timings only kinda do not add up', () => {
       const req = getRequest();
       const tcpHeader = req.responseHeaders[1];
       expect(tcpHeader.name).toStrictEqual(NetworkRequest.HEADER_TCP);
       tcpHeader.value = '5001';
+
+      const devtoolsLog = networkRecordsToDevtoolsLog([req]);
+      global.isLightrider = true;
+      const record = NetworkRecorder.recordsFromLogs(devtoolsLog)[0];
+
+      expect(record).toMatchObject(req);
+      expect(record.lrStatistics).not.toStrictEqual(undefined);
+    });
+
+    it('does nothing if header timings _really_ do not add up', () => {
+      const req = getRequest();
+      const tcpHeader = req.responseHeaders[1];
+      expect(tcpHeader.name).toStrictEqual(NetworkRequest.HEADER_TCP);
+      tcpHeader.value = '8000';
 
       const devtoolsLog = networkRecordsToDevtoolsLog([req]);
       global.isLightrider = true;

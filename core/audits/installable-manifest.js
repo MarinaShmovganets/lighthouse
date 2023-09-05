@@ -44,10 +44,6 @@ const UIStrings = {
   'manifest-display-not-supported': `Manifest 'display' property must be one of 'standalone', 'fullscreen', or 'minimal-ui'`,
   /** Error message explaining that the manifest could not be fetched, might be empty, or could not be parsed. */
   'manifest-empty': `Manifest could not be fetched, is empty, or could not be parsed`,
-  /** Error message explaining that no matching service worker was detected,
-   * and provides a suggestion to reload the page or check whether the scope of the service worker
-   * for the current page encloses the scope and start URL from the manifest. */
-  'no-matching-service-worker': `No matching service worker detected. You may need to reload the page, or check that the scope of the service worker for the current page encloses the scope and start URL from the manifest.`,
   /**
    * @description Error message explaining that the manifest does not contain a suitable icon.
    * @example {192} value0
@@ -91,16 +87,12 @@ const UIStrings = {
   /** Error message explaining that the web manifest's URL changed while the manifest was being downloaded by the browser. */
   'manifest-location-changed': `Manifest URL changed while the manifest was being fetched.`,
   /** Warning message explaining that the page does not work offline. */
+  // TODO(COMPAT): This error was removed in M118, we can remove this message when it hits stable.
   'warn-not-offline-capable': `Page does not work offline. The page will not be regarded as installable after Chrome 93, stable release August 2021.`,
-  /** Error message explaining that Lighthouse failed while detecting a service worker, and directing the user to try again in a new Chrome. */
-  'protocol-timeout': `Lighthouse could not determine if there was a service worker. Please try with a newer version of Chrome.`,
+  /** Error message explaining that Lighthouse failed while checking if the page is installable, and directing the user to try again in a new Chrome. */
+  'protocol-timeout': `Lighthouse could not determine if the page is installable. Please try with a newer version of Chrome.`,
   /** Message logged when the web app has been uninstalled o desktop, signalling that the install banner state is being reset. */
   'pipeline-restarted': 'PWA has been uninstalled and installability checks resetting.',
-  /**
-   * @description Error message explaining that the URL of the manifest uses a scheme that is not supported on Android.
-   * @example {data:} scheme
-   */
-  'scheme-not-supported-for-webapk': 'The manifest URL scheme ({scheme}) is not supported on Android.',
 };
 /* eslint-enable max-len */
 
@@ -159,17 +151,6 @@ class InstallableManifest extends Audit {
 
       // @ts-expect-error errorIds from protocol should match up against the strings dict
       const matchingString = UIStrings[err.errorId];
-
-      if (err.errorId === 'scheme-not-supported-for-webapk') {
-        // If there was no manifest, then there will be at lest one other installability error.
-        // We can ignore this error if that's the case.
-        const manifestUrl = artifacts.WebAppManifest?.url;
-        if (!manifestUrl) continue;
-
-        const scheme = new URL(manifestUrl).protocol;
-        i18nErrors.push(str_(matchingString, {scheme}));
-        continue;
-      }
 
       // Handle an errorId we don't recognize.
       if (matchingString === undefined) {

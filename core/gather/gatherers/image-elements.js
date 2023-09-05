@@ -11,7 +11,7 @@
 
 import log from 'lighthouse-logger';
 
-import FRGatherer from '../base-gatherer.js';
+import BaseGatherer from '../base-gatherer.js';
 import {pageFunctions} from '../../lib/page-functions.js';
 import * as FontSize from './seo/font-size.js';
 
@@ -84,6 +84,7 @@ function getHTMLImages(allElements) {
       isPicture,
       loading: element.loading,
       isInShadowDOM: element.getRootNode() instanceof ShadowRoot,
+      fetchPriority: element.fetchPriority,
       // @ts-expect-error - getNodeDetails put into scope via stringification
       node: getNodeDetails(element),
     };
@@ -234,7 +235,7 @@ function getPixelArea(element) {
   return element.displayedHeight * element.displayedWidth;
 }
 
-class ImageElements extends FRGatherer {
+class ImageElements extends BaseGatherer {
   /** @type {LH.Gatherer.GathererMeta} */
   meta = {
     supportedModes: ['snapshot', 'timespan', 'navigation'],
@@ -247,7 +248,7 @@ class ImageElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalDriver} driver
+   * @param {LH.Gatherer.Driver} driver
    * @param {LH.Artifacts.ImageElement} element
    */
   async fetchElementWithSizeInformation(driver, element) {
@@ -275,7 +276,7 @@ class ImageElements extends FRGatherer {
    * Images might be sized via CSS. In order to compute unsized-images failures, we need to collect
    * matched CSS rules to see if this is the case.
    * @url http://go/dwoqq (googlers only)
-   * @param {LH.Gatherer.FRProtocolSession} session
+   * @param {LH.Gatherer.ProtocolSession} session
    * @param {string} devtoolsNodePath
    * @param {LH.Artifacts.ImageElement} element
    */
@@ -301,7 +302,7 @@ class ImageElements extends FRGatherer {
 
   /**
    *
-   * @param {LH.Gatherer.FRTransitionalDriver} driver
+   * @param {LH.Gatherer.Driver} driver
    * @param {LH.Artifacts.ImageElement[]} elements
    */
   async collectExtraDetails(driver, elements) {
@@ -333,7 +334,7 @@ class ImageElements extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    * @return {Promise<LH.Artifacts['ImageElements']>}
    */
   async getArtifact(context) {

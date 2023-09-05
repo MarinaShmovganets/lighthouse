@@ -43,6 +43,7 @@ class UsesResponsiveImagesSnapshot extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: UsesResponsiveImages.str_(UsesResponsiveImages.UIStrings.description),
       supportedModes: ['snapshot'],
+      guidanceLevel: 2,
       requiredArtifacts: ['ImageElements', 'ViewportDimensions'],
     };
   }
@@ -56,6 +57,10 @@ class UsesResponsiveImagesSnapshot extends Audit {
     /** @type {LH.Audit.Details.TableItem[]} */
     const items = [];
     for (const image of artifacts.ImageElements) {
+      // Ignore CSS images because it's difficult to determine what is a spritesheet,
+      // and the reward-to-effort ratio for responsive CSS images is quite low https://css-tricks.com/responsive-images-css/.
+      if (image.isCss) continue;
+
       if (!image.naturalDimensions) continue;
       const actual = image.naturalDimensions;
       const displayed = UsesResponsiveImages.default.getDisplayedDimensions(

@@ -6,13 +6,10 @@
 
 import {createMockDriver} from '../mock-driver.js';
 import {
-  mockCommands,
   makePromiseInspectable,
   flushAllTimersAndMicrotasks,
   timers,
 } from '../../test-utils.js';
-
-const {createMockOnceFn} = mockCommands;
 
 // Some imports needs to be done dynamically, so that their dependencies will be mocked.
 // https://github.com/GoogleChrome/lighthouse/blob/main/docs/hacking-tips.md#mocking-modules-with-testdouble
@@ -22,7 +19,7 @@ describe('.gotoURL', () => {
   before(() => timers.useFakeTimers());
   after(() => timers.dispose());
 
-  /** @type {LH.Gatherer.FRTransitionalDriver} */
+  /** @type {LH.Gatherer.Driver} */
   let driver;
   /** @type {ReturnType<typeof createMockDriver>} */
   let mockDriver;
@@ -41,7 +38,8 @@ describe('.gotoURL', () => {
   });
 
   it('will track redirects through gotoURL load with warning', async () => {
-    mockDriver.defaultSession.on = mockDriver.defaultSession.once = createMockOnceFn();
+    mockDriver.defaultSession.on = mockDriver.defaultSession.once;
+    await driver.networkMonitor.enable();
 
     const url = 'http://example.com';
 
@@ -93,7 +91,8 @@ describe('.gotoURL', () => {
   });
 
   it('backfills requestedUrl when using a callback requestor', async () => {
-    mockDriver.defaultSession.on = mockDriver.defaultSession.once = createMockOnceFn();
+    mockDriver.defaultSession.on = mockDriver.defaultSession.once;
+    await driver.networkMonitor.enable();
 
     const requestor = () => Promise.resolve();
 
@@ -112,7 +111,8 @@ describe('.gotoURL', () => {
   });
 
   it('throws if no navigations found using a callback requestor', async () => {
-    mockDriver.defaultSession.on = mockDriver.defaultSession.once = createMockOnceFn();
+    mockDriver.defaultSession.on = mockDriver.defaultSession.once;
+    await driver.networkMonitor.enable();
 
     const requestor = () => Promise.resolve();
 
@@ -131,7 +131,8 @@ describe('.gotoURL', () => {
   });
 
   it('does not add warnings when URLs are equal', async () => {
-    mockDriver.defaultSession.on = mockDriver.defaultSession.once = createMockOnceFn();
+    mockDriver.defaultSession.on = mockDriver.defaultSession.once;
+    await driver.networkMonitor.enable();
 
     const url = 'https://www.example.com';
 
@@ -147,7 +148,8 @@ describe('.gotoURL', () => {
   });
 
   it('waits for Page.frameNavigated', async () => {
-    mockDriver.defaultSession.on = mockDriver.defaultSession.once = createMockOnceFn();
+    mockDriver.defaultSession.on = mockDriver.defaultSession.once;
+    await driver.networkMonitor.enable();
 
     const url = 'https://www.example.com';
 
@@ -165,7 +167,8 @@ describe('.gotoURL', () => {
   });
 
   it('waits for page load', async () => {
-    mockDriver.defaultSession.on = mockDriver.defaultSession.once = createMockOnceFn();
+    mockDriver.defaultSession.on = mockDriver.defaultSession.once;
+    await driver.networkMonitor.enable();
 
     const url = 'https://www.example.com';
 
@@ -194,7 +197,8 @@ describe('.gotoURL', () => {
   });
 
   it('waits for page FCP', async () => {
-    mockDriver.defaultSession.on = mockDriver.defaultSession.once = createMockOnceFn();
+    mockDriver.defaultSession.on = mockDriver.defaultSession.once;
+    await driver.networkMonitor.enable();
 
     const url = 'https://www.example.com';
 
@@ -228,7 +232,8 @@ describe('.gotoURL', () => {
   });
 
   it('throws when asked to wait for FCP without waiting for load', async () => {
-    mockDriver.defaultSession.on = mockDriver.defaultSession.once = createMockOnceFn();
+    mockDriver.defaultSession.on = mockDriver.defaultSession.once;
+    await driver.networkMonitor.enable();
 
     const url = 'https://www.example.com';
 

@@ -41,7 +41,7 @@ function createMockBfCacheEvent() {
 }
 
 describe('BFCacheFailures', () => {
-  /** @type {LH.Gatherer.FRTransitionalContext<'DevtoolsLog'>} */
+  /** @type {LH.Gatherer.Context<'DevtoolsLog'>} */
   let context;
   let mockContext = createMockContext();
   /** @type {LH.Crdp.Page.BackForwardCacheNotUsedEvent|undefined} */
@@ -108,32 +108,6 @@ describe('BFCacheFailures', () => {
     });
   });
 
-  it('actively triggers bf cache in legacy navigation mode', async () => {
-    const gatherer = new BFCacheFailures();
-    const artifact = await gatherer.afterPass(mockContext.asLegacyContext(), {
-      devtoolsLog: context.dependencies.DevtoolsLog,
-      networkRecords: [],
-    });
-
-    expect(mockContext.driver.defaultSession.sendCommand)
-      .toHaveBeenCalledWith('Page.navigate', {url: 'chrome://terms'});
-    expect(mockContext.driver.defaultSession.sendCommand)
-      .toHaveBeenCalledWith('Page.navigateToHistoryEntry', {entryId: 1});
-
-    expect(artifact).toHaveLength(1);
-    expect(artifact[0].notRestoredReasonsTree).toEqual({
-      PageSupportNeeded: {
-        AppBanner: ['https://example.com', 'https://frame.com'],
-      },
-      Circumstantial: {
-        BackForwardCacheDisabled: ['https://example.com'],
-      },
-      SupportPending: {
-        CacheControlNoStore: ['https://frame.com'],
-      },
-    });
-  });
-
   it('passively collects bf cache events in navigation mode when passive flag set', async () => {
     context.gatherMode = 'navigation';
     context.dependencies.DevtoolsLog = [];
@@ -155,6 +129,7 @@ describe('BFCacheFailures', () => {
     context.dependencies.DevtoolsLog = [{
       method: 'Page.backForwardCacheNotUsed',
       params: createMockBfCacheEvent(),
+      targetType: 'page',
     }];
 
     const gatherer = new BFCacheFailures();

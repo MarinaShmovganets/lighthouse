@@ -19,7 +19,7 @@ describe('Start/End navigation', function() {
   state.installSetupAndTeardownHooks();
 
   before(() => {
-    state.server.baseDir = `${LH_ROOT}/core/test/fixtures/fraggle-rock/navigation-basic`;
+    state.server.baseDir = `${LH_ROOT}/core/test/fixtures/user-flows/navigation-basic`;
   });
 
   it('should capture a navigation via user interaction', async () => {
@@ -36,6 +36,8 @@ describe('Start/End navigation', function() {
     const flowArtifacts = flow.createArtifactsJson();
     const lhr = flowResult.steps[0].lhr;
     const artifacts = flowArtifacts.gatherSteps[0].artifacts;
+
+    state.saveTrace(artifacts.Trace);
 
     expect(artifacts.URL).toEqual({
       requestedUrl: `${state.serverBaseUrl}/?redirect=/index.html`,

@@ -26,7 +26,6 @@ describe('Metrics: CLS', () => {
       expect(result).toEqual({
         cumulativeLayoutShift: expect.toBeApproximately(2.268816, 6),
         cumulativeLayoutShiftMainFrame: expect.toBeApproximately(2.268816, 6),
-        totalCumulativeLayoutShift: expect.toBeApproximately(4.809794, 6),
       });
     });
 
@@ -40,7 +39,6 @@ describe('Metrics: CLS', () => {
       expect(result).toEqual({
         cumulativeLayoutShift: 0.026463014612806653,
         cumulativeLayoutShiftMainFrame: 0.0011656245471340055,
-        totalCumulativeLayoutShift: 0.0011656245471340055,
       });
     });
 
@@ -49,7 +47,6 @@ describe('Metrics: CLS', () => {
       expect(result).toEqual({
         cumulativeLayoutShift: 0,
         cumulativeLayoutShiftMainFrame: 0,
-        totalCumulativeLayoutShift: 0,
       });
     });
   });
@@ -123,7 +120,6 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 4,
           cumulativeLayoutShiftMainFrame: 4,
-          totalCumulativeLayoutShift: 4,
         });
       });
 
@@ -140,7 +136,6 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 3,
           cumulativeLayoutShiftMainFrame: 3,
-          totalCumulativeLayoutShift: 3,
         });
       });
 
@@ -158,7 +153,6 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 0.75,
           cumulativeLayoutShiftMainFrame: 0.75,
-          totalCumulativeLayoutShift: 3.75, // 30 * 0.125
         });
       });
 
@@ -183,7 +177,6 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 1.0625,
           cumulativeLayoutShiftMainFrame: 1.0625,
-          totalCumulativeLayoutShift: 1.375,
         });
       });
 
@@ -201,16 +194,15 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 3.75, // 30 * 0.125
           cumulativeLayoutShiftMainFrame: 3.75,
-          totalCumulativeLayoutShift: 3.75,
         });
       });
 
       it('includes events with recent input at start of trace, but ignores others', async () => {
         const shiftEvents = [
           {score: 1, ts: 250_000, had_recent_input: true},
-          {score: 1, ts: 500_000, had_recent_input: true},
+          {score: 1, ts: 500_000, had_recent_input: true}, // These first two events will still be counted because they are within the 500ms window.
           {score: 1, ts: 750_000, had_recent_input: true},
-          {score: 1, ts: 1_000_000, had_recent_input: true}, // These first four events will still be counted.
+          {score: 1, ts: 1_000_000, had_recent_input: true}, // These second two events will not be counted because they are outside the 500ms window.
 
           {score: 1, ts: 1_250_000, had_recent_input: false},
 
@@ -223,9 +215,8 @@ describe('Metrics: CLS', () => {
 
         const result = await CumulativeLayoutShift.request(trace, context);
         expect(result).toEqual({
-          cumulativeLayoutShift: 5,
-          cumulativeLayoutShiftMainFrame: 5,
-          totalCumulativeLayoutShift: 5,
+          cumulativeLayoutShift: 3,
+          cumulativeLayoutShiftMainFrame: 3,
         });
       });
     });
@@ -246,14 +237,13 @@ describe('Metrics: CLS', () => {
         expect(result).toEqual({
           cumulativeLayoutShift: 0.75, // Same value as single-frame uniformly distributed.
           cumulativeLayoutShiftMainFrame: 0.125, // All 1s gaps, so only one event per cluster.
-          totalCumulativeLayoutShift: 1.875, // 0.125 * 15
         });
       });
 
       it('includes events with recent input at start of trace, but ignores others', async () => {
         const shiftEvents = [
-          {score: 1, ts: 250_000, had_recent_input: true},
-          {score: 1, ts: 750_000, had_recent_input: true}, // These first two events will still be counted.
+          {score: 1, ts: 250_000, had_recent_input: true}, // This event will still be counted because it is within the 500ms window.
+          {score: 1, ts: 750_000, had_recent_input: true}, // This event will not be counted because it is outside the 500ms window.
 
           {score: 1, ts: 1_250_000, had_recent_input: false},
 
@@ -261,8 +251,8 @@ describe('Metrics: CLS', () => {
           {score: 1, ts: 2_000_000, had_recent_input: true},
 
           // Child frame
-          {score: 1, ts: 500_000, had_recent_input: true, is_main_frame: false},
-          {score: 1, ts: 1_000_000, had_recent_input: true, is_main_frame: false}, // These first two events will still be counted.
+          {score: 1, ts: 500_000, had_recent_input: true, is_main_frame: false}, // This event will still be counted because it is within the 500ms window.
+          {score: 1, ts: 1_000_000, had_recent_input: true, is_main_frame: false}, // This event will not be counted because it is outside the 500ms window.
 
           {score: 1, ts: 1_250_000, had_recent_input: false, is_main_frame: false},
 
@@ -273,9 +263,62 @@ describe('Metrics: CLS', () => {
 
         const result = await CumulativeLayoutShift.request(trace, context);
         expect(result).toMatchObject({
-          cumulativeLayoutShift: 6,
+          cumulativeLayoutShift: 4,
+          cumulativeLayoutShiftMainFrame: 2,
+        });
+      });
+
+      it('includes recent input events near first viewport event, but ignores others', async () => {
+        const shiftEvents = [
+          {score: 1, ts: 250_000, had_recent_input: true}, // This event will still be counted because it is within the 500ms window of the first viewport event.
+          // <<< Viewport event 1 is inserted here at ts 251_000 >>>
+          {score: 1, ts: 750_000, had_recent_input: true}, // This event will still be counted because it is within the 500ms window of the first viewport event.
+
+          {score: 1, ts: 1_250_000, had_recent_input: false},
+
+          {score: 1, ts: 1_750_000, had_recent_input: true}, // The last two will not be counted because only the first viewport event matters.
+          // <<< Viewport event 2 is inserted here at ts 1_751_000 >>>
+          {score: 1, ts: 2_000_000, had_recent_input: true},
+
+          // Child frame
+          {score: 1, ts: 500_000, had_recent_input: true, is_main_frame: false}, // This event will still be counted because it is within the 500ms window.
+          {score: 1, ts: 1_000_000, had_recent_input: true, is_main_frame: false}, // This event will not be counted because it is outside the 500ms window.
+
+          {score: 1, ts: 1_250_000, had_recent_input: false, is_main_frame: false},
+
+          {score: 1, ts: 1_500_000, had_recent_input: true, is_main_frame: false}, // The last two will not.
+          {score: 1, ts: 2_250_000, had_recent_input: true, is_main_frame: false},
+        ];
+        const trace = makeTrace(shiftEvents);
+
+        // Viewport event 1
+        trace.traceEvents.push({
+          name: 'viewport',
+          ts: 251_000,
+          cat: 'loading',
+          args: {
+            data: {
+              frameID: 'ROOT_FRAME',
+            },
+          },
+        });
+
+        // Viewport event 2
+        trace.traceEvents.push({
+          name: 'viewport',
+          ts: 1_751_000,
+          cat: 'loading',
+          args: {
+            data: {
+              frameID: 'ROOT_FRAME',
+            },
+          },
+        });
+
+        const result = await CumulativeLayoutShift.request(trace, context);
+        expect(result).toMatchObject({
+          cumulativeLayoutShift: 5,
           cumulativeLayoutShiftMainFrame: 3,
-          totalCumulativeLayoutShift: 3,
         });
       });
 
@@ -291,7 +334,6 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 4,
           cumulativeLayoutShiftMainFrame: 2,
-          totalCumulativeLayoutShift: 2,
         });
       });
 
@@ -320,7 +362,6 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 3,
           cumulativeLayoutShiftMainFrame: 1,
-          totalCumulativeLayoutShift: 1,
         });
       });
     });
@@ -340,7 +381,6 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 6,
           cumulativeLayoutShiftMainFrame: 6,
-          totalCumulativeLayoutShift: 6,
         });
       });
 
@@ -359,7 +399,6 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 6,
           cumulativeLayoutShiftMainFrame: 1,
-          totalCumulativeLayoutShift: 4,
         });
       });
 
@@ -373,7 +412,6 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 2,
           cumulativeLayoutShiftMainFrame: 2,
-          totalCumulativeLayoutShift: 2,
         });
       });
 
@@ -387,7 +425,6 @@ describe('Metrics: CLS', () => {
         expect(result).toMatchObject({
           cumulativeLayoutShift: 2,
           cumulativeLayoutShiftMainFrame: 1,
-          totalCumulativeLayoutShift: 1,
         });
       });
     });

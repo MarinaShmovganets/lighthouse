@@ -25,10 +25,10 @@ Map {
 `);
     expect(result.serverResponseTimeByOrigin).toMatchInlineSnapshot(`
 Map {
-  "https://pwa.rocks" => 159.42199996789026,
+  "https://pwa.rocks" => 159.70249997917608,
   "https://www.googletagmanager.com" => 153.03200000198592,
   "https://www.google-analytics.com" => 159.5549999910874,
-  "__SUMMARY__" => 159.42199996789026,
+  "__SUMMARY__" => 159.48849997948884,
 }
 `);
   });
@@ -46,6 +46,9 @@ Map {
     });
 
     const result = await NetworkAnalysis.request(mutatedLog, {computedCache: new Map()});
-    expect(result.additionalRttByOrigin.get('https://www.google-analytics.com')).toEqual(0);
+    // If the connection timings were not removed, this would be the 1.045 estimate as seen in
+    // the test above. However, without connection timings we fall back to a coarse estimate and
+    // get this instead.
+    expect(result.additionalRttByOrigin.get('https://www.google-analytics.com')).toBeCloseTo(2.86);
   });
 });

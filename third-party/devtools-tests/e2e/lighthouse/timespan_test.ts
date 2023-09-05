@@ -17,7 +17,6 @@ import {
   selectDevice,
   selectMode,
   setThrottlingMethod,
-  unregisterAllServiceWorkers,
   waitForResult,
   waitForTimespanStarted,
 } from '../helpers/lighthouse-helpers.js';
@@ -27,7 +26,9 @@ import {
 
 describe('Timespan', async function() {
   // The tests in this suite are particularly slow
-  this.timeout(60_000);
+  if (this.timeout() !== 0) {
+    this.timeout(60_000);
+  }
 
   beforeEach(() => {
     // https://github.com/GoogleChrome/lighthouse/issues/14572
@@ -39,10 +40,6 @@ describe('Timespan', async function() {
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
-  });
-
-  afterEach(async () => {
-    await unregisterAllServiceWorkers();
   });
 
   it('successfully returns a Lighthouse report for user interactions', async () => {
@@ -84,12 +81,12 @@ describe('Timespan', async function() {
     assert.strictEqual(devicePixelRatio, 1);
 
     const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-    assert.strictEqual(auditResults.length, 46);
+    assert.strictEqual(auditResults.length, 45);
     assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), []);
 
     // Ensure the timespan captured the user interaction.
-    const interactionAudit = lhr.audits['experimental-interaction-to-next-paint'];
+    const interactionAudit = lhr.audits['interaction-to-next-paint'];
     assert.ok(interactionAudit.score);
     assert.ok(interactionAudit.numericValue);
     assert.strictEqual(interactionAudit.scoreDisplayMode, 'numeric');

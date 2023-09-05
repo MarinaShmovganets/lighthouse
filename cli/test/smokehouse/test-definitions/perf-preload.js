@@ -57,6 +57,20 @@ const config = {
  * Expected Lighthouse audit values for preload tests.
  */
 const expectations = {
+  artifacts: {
+    LinkElements: {
+      _includes: [{
+        rel: 'preload',
+        href: 'http://localhost:10200/perf/level-2.js?warning&delay=500',
+        hrefRaw: '/perf/level-2.js?warning&delay=500',
+        hreflang: '',
+        as: 'script',
+        crossOrigin: 'use-credentials',
+        source: 'head',
+        fetchPriority: 'high',
+      }],
+    },
+  },
   networkRequests: {
     // DevTools loads the page three times, so this request count will not be accurate.
     _excludeRunner: 'devtools',
@@ -78,8 +92,8 @@ const expectations = {
         score: '>=0.90', // primarily just making sure it didn't fail/go crazy, specific value isn't that important
       },
       'server-response-time': {
-        // Can be flaky, so test float numericValue instead of binary score
-        numericValue: '<1000',
+        // Assert greater than 0 but not more than 1000.
+        numericValue: '500 +/- 499.99',
       },
       'network-requests': {
         details: {

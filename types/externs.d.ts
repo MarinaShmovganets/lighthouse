@@ -18,7 +18,7 @@ export interface Flags extends SharedFlagsSettings {
   /** The hostname to use for the debugging protocol, if manually connecting. */
   hostname?: string;
   /** The level of logging to enable. */
-  logLevel?: 'silent'|'error'|'info'|'verbose';
+  logLevel?: 'silent'|'error'|'warn'|'info'|'verbose';
   /** The path to the config JSON. */
   configPath?: string;
   /** Run the specified plugins. */
@@ -53,8 +53,6 @@ export interface CliFlags extends Flags {
   verbose: boolean;
   /** A flag to enable logLevel 'silent'. */
   quiet: boolean;
-  /** Use the legacy navigation runner to gather CLI results. */
-  legacyNavigation: boolean;
   /** Path to the file where precomputed lantern data should be read from. */
   precomputedLanternDataPath?: string;
   /** Path to the file where precomputed lantern data should be written to. */

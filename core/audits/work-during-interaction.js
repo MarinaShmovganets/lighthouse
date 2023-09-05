@@ -13,7 +13,7 @@ import {MainThreadTasks} from '../lib/tracehouse/main-thread-tasks.js';
 import {taskGroups} from '../lib/tracehouse/task-groups.js';
 import {TraceProcessor} from '../lib/tracehouse/trace-processor.js';
 import {getExecutionTimingsByURL} from '../lib/tracehouse/task-summary.js';
-import ExperimentalInteractionToNextPaint from './metrics/experimental-interaction-to-next-paint.js';
+import InteractionToNextPaint from './metrics/interaction-to-next-paint.js';
 import {LighthouseError} from '../lib/lh-error.js';
 
 /** @typedef {import('../computed/metrics/responsiveness.js').EventTimingEvent} EventTimingEvent */
@@ -60,6 +60,7 @@ class WorkDuringInteraction extends Audit {
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
       supportedModes: ['timespan'],
+      guidanceLevel: 1,
       requiredArtifacts: ['traces', 'devtoolsLogs', 'TraceElements'],
     };
   }
@@ -224,7 +225,11 @@ class WorkDuringInteraction extends Audit {
     const {settings} = context;
     // TODO: responsiveness isn't yet supported by lantern.
     if (settings.throttlingMethod === 'simulate') {
-      return {score: null, notApplicable: true};
+      return {
+        score: null,
+        notApplicable: true,
+        metricSavings: {INP: 0},
+      };
     }
 
     const trace = artifacts.traces[WorkDuringInteraction.DEFAULT_PASS];
@@ -232,7 +237,11 @@ class WorkDuringInteraction extends Audit {
     const interactionEvent = await Responsiveness.request(metricData, context);
     // If no interaction, diagnostic audit is n/a.
     if (interactionEvent === null) {
-      return {score: null, notApplicable: true};
+      return {
+        score: null,
+        notApplicable: true,
+        metricSavings: {INP: 0},
+      };
     }
     // TODO: remove workaround once 103.0.5052.0 is sufficiently released.
     if (interactionEvent.name === 'FallbackTiming') {
@@ -265,11 +274,14 @@ class WorkDuringInteraction extends Audit {
     const duration = interactionEvent.args.data.duration;
     const displayValue = str_(UIStrings.displayValue, {timeInMs: duration, interactionType});
     return {
-      score: duration < ExperimentalInteractionToNextPaint.defaultOptions.p10 ? 1 : 0,
+      score: duration < InteractionToNextPaint.defaultOptions.p10 ? 1 : 0,
       displayValue,
       details: {
         type: 'list',
         items: auditDetailsItems,
+      },
+      metricSavings: {
+        INP: duration,
       },
     };
   }
