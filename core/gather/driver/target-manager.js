@@ -29,8 +29,6 @@ import {ProtocolSession} from '../session.js';
 /** @typedef {LH.Protocol.StrictEventEmitterClass<ProtocolEventMap>} ProtocolEventMessageEmitter */
 const ProtocolEventEmitter = /** @type {ProtocolEventMessageEmitter} */ (EventEmitter);
 
-const VALID_TARGET_TYPES = ['page', 'iframe', 'worker'];
-
 /**
  * Tracks targets (the page itself, its iframes, their iframes, etc) as they
  * appear and allows listeners to the flattened protocol events from all targets.
@@ -97,6 +95,16 @@ class TargetManager extends ProtocolEventEmitter {
   }
 
   /**
+   * @param {string} targetType
+   * @return {targetType is LH.Protocol.TargetType}
+   */
+  _isAcceptedTargetType(targetType) {
+    return targetType === 'page' ||
+      targetType === 'iframe' ||
+      targetType === 'worker';
+  }
+
+  /**
    * Returns the root session.
    * @return {LH.Gatherer.ProtocolSession}
    */
@@ -119,10 +127,11 @@ class TargetManager extends ProtocolEventEmitter {
 
     try {
       const {targetInfo} = await newSession.sendCommand('Target.getTargetInfo');
+      const targetType = targetInfo.type;
 
       // TODO: should detach from target in this case?
       // See pptr: https://github.com/puppeteer/puppeteer/blob/733cbecf487c71483bee8350e37030edb24bc021/src/common/Page.ts#L495-L526
-      if (!VALID_TARGET_TYPES.includes(targetInfo.type)) return;
+      if (!this._isAcceptedTargetType(targetType)) return;
 
       // No need to continue if target has already been seen.
       const targetId = targetInfo.targetId;
