@@ -3160,13 +3160,8 @@
       "id": "duplicate-id-aria",
       "title": "ARIA IDs are unique",
       "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn how to fix duplicate ARIA IDs](https://dequeuniversity.com/rules/axe/4.7/duplicate-id-aria).",
-      "score": 1,
-      "scoreDisplayMode": "binary",
-      "details": {
-        "type": "table",
-        "headings": [],
-        "items": []
-      }
+      "score": null,
+      "scoreDisplayMode": "notApplicable"
     },
     "empty-heading": {
       "id": "empty-heading",
@@ -6161,7 +6156,7 @@
         },
         {
           "id": "duplicate-id-aria",
-          "weight": 10,
+          "weight": 0,
           "group": "a11y-aria"
         },
         {
@@ -6371,7 +6366,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 0.81
+      "score": 0.8
     },
     "best-practices": {
       "title": "Best Practices",
