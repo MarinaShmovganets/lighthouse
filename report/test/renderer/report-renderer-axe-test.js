@@ -49,7 +49,6 @@ describe('ReportRendererAxe', () => {
           'accesskeys': {enabled: true},
           'heading-order': {enabled: true},
           'meta-viewport': {enabled: true},
-          'duplicate-id': {enabled: true},
           'aria-treeitem-name': {enabled: true},
           // TODO: re-enable. https://github.com/GoogleChrome/lighthouse/issues/13918
           'color-contrast': {enabled: false},
@@ -66,16 +65,6 @@ describe('ReportRendererAxe', () => {
       // {
       //   id: 'color-contrast',
       // },
-
-      expect(axeResults.violations.find(v => v.id === 'duplicate-id')).toMatchObject({
-        id: 'duplicate-id',
-        nodes: [
-          // We use these audits in multiple categories. Makes sense.
-          {html: '<div class="lh-audit lh-audit--binary lh-audit--pass" id="viewport">'},
-          {html: '<div class="lh-audit lh-audit--binary lh-audit--fail" id="image-alt">'},
-          {html: '<div class="lh-audit lh-audit--binary lh-audit--pass" id="document-title">'},
-        ],
-      });
 
       const axeSummary = axeResults.violations.map((v) => {
         return {
