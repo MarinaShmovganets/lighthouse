@@ -32,7 +32,6 @@ const UIStrings = {
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
 const THRESHOLD_PX = 2;
-const THRESHOLD_RATIO = 0.01;
 
 /** @typedef {Required<LH.Artifacts.ImageElement>} WellDefinedImage */
 
@@ -60,9 +59,16 @@ class ImageAspectRatio extends Audit {
     const displayedAspectRatio = image.displayedWidth / image.displayedHeight;
 
     const targetDisplayHeight = image.displayedWidth / actualAspectRatio;
-    const doRatiosMatch =
-      Math.abs(targetDisplayHeight - image.displayedHeight) < THRESHOLD_PX ||
-      Math.abs(displayedAspectRatio - actualAspectRatio) < THRESHOLD_RATIO;
+    const targetDisplayWidth = image.displayedHeight * actualAspectRatio;
+
+    // Small rounding errors in aspect ratio can lead to large differences in target width/height
+    // if the aspect ratio is close to 0.
+    //
+    // In these cases, we should compare the smaller dimension because any rounding errors will
+    // affect that dimension less.
+    const doRatiosMatch = targetDisplayHeight < targetDisplayWidth
+      ? Math.abs(targetDisplayHeight - image.displayedHeight) < THRESHOLD_PX
+      : Math.abs(targetDisplayWidth - image.displayedWidth) < THRESHOLD_PX;
 
     return {
       url,

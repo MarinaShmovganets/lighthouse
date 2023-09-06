@@ -109,10 +109,19 @@ describe('Images: aspect-ratio audit', () => {
     },
   });
 
-  testImage('is almost the right aspect ratio', {
+  testImage('is a very small aspect ratio with a rounding error', {
     score: 1,
-    clientSize: [32, 128],
-    naturalSize: [63, 256],
+    clientSize: [1, 50],
+    naturalSize: [3, 100],
+    props: {
+      isCss: false,
+    },
+  });
+
+  testImage('is a very large aspect ratio with a rounding error', {
+    score: 1,
+    clientSize: [50, 1],
+    naturalSize: [100, 3],
     props: {
       isCss: false,
     },
