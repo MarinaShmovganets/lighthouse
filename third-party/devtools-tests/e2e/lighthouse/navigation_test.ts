@@ -95,7 +95,7 @@ describe('Navigation', async function() {
     // 1 navigation after auditing to reset state
     assert.strictEqual(numNavigations, 6);
 
-    assert.strictEqual(lhr.lighthouseVersion, '10.4.0');
+    assert.strictEqual(lhr.lighthouseVersion, '11.0.0');
     assert.match(lhr.finalUrl, /^https:\/\/localhost:[0-9]+\/test\/e2e\/resources\/lighthouse\/hello.html/);
 
     assert.strictEqual(lhr.configSettings.throttlingMethod, 'simulate');
@@ -114,8 +114,8 @@ describe('Navigation', async function() {
       devicePixelRatio: 1.75,
     });
 
-    const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-    assert.strictEqual(auditResults.length, 189);
+    const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, ['max-potential-fid']);
+    assert.strictEqual(auditResults.length, 188);
     assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
       'installable-manifest',
@@ -198,7 +198,7 @@ describe('Navigation', async function() {
     ];
 
     const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, flakyAudits);
-    assert.strictEqual(auditResults.length, 166);
+    assert.strictEqual(auditResults.length, 165);
     assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
       'installable-manifest',

@@ -10,7 +10,7 @@ assumes you've installed Lighthouse as a dependency (`yarn add --dev lighthouse`
 ```js
 import fs from 'fs';
 import lighthouse from 'lighthouse';
-import chromeLauncher from 'chrome-launcher';
+import * as chromeLauncher from 'chrome-launcher';
 
 const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
 const options = {logLevel: 'info', output: 'html', onlyCategories: ['performance'], port: chrome.port};
@@ -112,8 +112,6 @@ Alternatively, you can instruct Chrome to ignore the invalid certificate by addi
 Lighthouse can run against a real mobile device. You can follow the [Remote Debugging on Android (Legacy Workflow)](https://developer.chrome.com/devtools/docs/remote-debugging-legacy) up through step 3.3, but the TL;DR is install & run adb, enable USB debugging, then port forward 9222 from the device to the machine with Lighthouse.
 
 You'll likely want to use the CLI flags `--screenEmulation.disabled --throttling.cpuSlowdownMultiplier=1 --throttling-method=provided` to disable any additional emulation.
-
-> **Warning:** If you are running Lighthouse 10.x with any chrome version older than M112 (<=M111) you will need to add the `--legacy-navigation` to the `lighthouse` command. See https://github.com/GoogleChrome/lighthouse/issues/14746 for more info.
 
 ```sh
 $ adb kill-server

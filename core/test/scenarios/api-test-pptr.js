@@ -8,7 +8,7 @@ import jestMock from 'jest-mock';
 
 import * as api from '../../index.js';
 import {createTestState, getAuditsBreakdown} from './pptr-test-utils.js';
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT} from '../../../shared/root.js';
 import {TargetManager} from '../../gather/driver/target-manager.js';
 
 describe('Individual modes API', function() {
@@ -75,9 +75,14 @@ describe('Individual modes API', function() {
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
       const {lhr, artifacts} = result;
+      state.saveTrace(artifacts.Trace);
       expect(artifacts.URL).toEqual({
         finalDisplayedUrl: `${state.serverBaseUrl}/onclick.html#done`,
       });
+
+      expect(lhr.runWarnings).toHaveLength(1);
+      expect(lhr.runWarnings[0])
+        .toMatch(/A page navigation was detected during the run. Using timespan mode/);
 
       const bestPractices = lhr.categories['best-practices'];
       expect(bestPractices.score).toBeLessThan(1);
@@ -133,6 +138,8 @@ describe('Individual modes API', function() {
 
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
+      state.saveTrace(result.artifacts.Trace);
+
       expect(result.artifacts.URL).toEqual({
         finalDisplayedUrl: `${serverBaseUrl}/onclick.html#done`,
       });
@@ -164,6 +171,8 @@ describe('Individual modes API', function() {
       const result = await run.endTimespan();
 
       if (!result) throw new Error('Lighthouse failed to produce a result');
+
+      state.saveTrace(result.artifacts.Trace);
 
       const networkRequestsDetails = /** @type {LH.Audit.Details.Table} */ (
         result.lhr.audits['network-requests'].details);
@@ -222,6 +231,7 @@ Array [
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
       const {lhr, artifacts} = result;
+      state.saveTrace(artifacts.Trace);
       expect(artifacts.URL).toEqual({
         requestedUrl: url,
         mainDocumentUrl: url,
@@ -263,6 +273,7 @@ Array [
       expect(requestor).toHaveBeenCalled();
 
       const {lhr, artifacts} = result;
+      state.saveTrace(artifacts.Trace);
       expect(lhr.requestedUrl).toEqual(requestedUrl);
       expect(lhr.finalDisplayedUrl).toEqual(mainDocumentUrl);
       expect(artifacts.URL).toEqual({

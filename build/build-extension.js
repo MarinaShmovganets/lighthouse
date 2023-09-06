@@ -11,7 +11,7 @@ import cpy from 'cpy';
 import esbuild from 'esbuild';
 
 import * as plugins from './esbuild-plugins.js';
-import {LH_ROOT} from '../root.js';
+import {LH_ROOT} from '../shared/root.js';
 import {readJson} from '../core/test/test-utils.js';
 
 const argv = process.argv.slice(2);
@@ -32,7 +32,8 @@ async function buildEntryPoint() {
     outfile: `${distDir}/scripts/${distName}`,
     format: 'iife',
     bundle: true,
-    minify: !process.env.DEBUG,
+    // Minified extensions tend to be more difficult to get approved in managed extension stores.
+    minify: false,
     plugins: [
       plugins.bulkLoader([
         plugins.partialLoaders.replaceText({

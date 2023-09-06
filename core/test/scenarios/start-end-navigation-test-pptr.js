@@ -6,7 +6,7 @@
 
 import * as api from '../../index.js';
 import {createTestState, getAuditsBreakdown} from './pptr-test-utils.js';
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT} from '../../../shared/root.js';
 
 /* eslint-env browser */
 
@@ -36,6 +36,8 @@ describe('Start/End navigation', function() {
     const flowArtifacts = flow.createArtifactsJson();
     const lhr = flowResult.steps[0].lhr;
     const artifacts = flowArtifacts.gatherSteps[0].artifacts;
+
+    state.saveTrace(artifacts.Trace);
 
     expect(artifacts.URL).toEqual({
       requestedUrl: `${state.serverBaseUrl}/?redirect=/index.html`,

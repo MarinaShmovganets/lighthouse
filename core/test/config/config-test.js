@@ -10,7 +10,7 @@ import {Audit as BaseAudit} from '../../audits/audit.js';
 import * as constants from '../../config/constants.js';
 import BaseGatherer from '../../gather/base-gatherer.js';
 import {initializeConfig, getConfigDisplayString} from '../../config/config.js';
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT} from '../../../shared/root.js';
 import * as format from '../../../shared/localization/format.js';
 import defaultConfig from '../../config/default-config.js';
 
@@ -253,9 +253,10 @@ describe('Config', () => {
 
       expect(resolvedConfig).toMatchObject({
         artifacts: [{id: 'Accessibility', gatherer: {path: 'accessibility'}}],
-        navigations: [
-          {id: 'default', artifacts: [{id: 'Accessibility', gatherer: {path: 'accessibility'}}]},
-        ],
+        navigations: [{
+          id: 'defaultPass',
+          artifacts: [{id: 'Accessibility', gatherer: {path: 'accessibility'}}],
+        }],
       });
     });
 
@@ -269,7 +270,7 @@ describe('Config', () => {
       expect(resolvedConfig).toMatchObject({
         navigations: [
           {
-            id: 'default',
+            id: 'defaultPass',
             blankPage: 'about:blank',
             artifacts: [{id: 'Accessibility', gatherer: {path: 'accessibility'}}],
             loadFailureMode: 'fatal',
@@ -366,7 +367,7 @@ describe('Config', () => {
           {id: 'Accessibility'},
         ],
         navigations: [
-          {id: 'default', artifacts: [{id: 'Accessibility'}]},
+          {id: 'defaultPass', artifacts: [{id: 'Accessibility'}]},
         ],
       });
     });

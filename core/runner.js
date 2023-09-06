@@ -19,8 +19,8 @@ import * as assetSaver from './lib/asset-saver.js';
 import {Sentry} from './lib/sentry.js';
 import {ReportGenerator} from '../report/generator/report-generator.js';
 import {LighthouseError} from './lib/lh-error.js';
-import {lighthouseVersion} from '../root.js';
-import {getModuleDirectory} from '../esm-utils.js';
+import {lighthouseVersion} from '../shared/root.js';
+import {getModuleDirectory} from '../shared/esm-utils.js';
 import {EntityClassification} from './computed/entity-classification.js';
 import UrlUtils from './lib/url-utils.js';
 
@@ -367,15 +367,18 @@ class Runner {
 
     let auditResult;
     try {
+      if (artifacts.PageLoadError) throw artifacts.PageLoadError;
+
       // Return an early error if an artifact required for the audit is missing or an error.
       for (const artifactName of audit.meta.requiredArtifacts) {
         const noArtifact = artifacts[artifactName] === undefined;
 
         // If trace/devtoolsLog required, check that DEFAULT_PASS trace/devtoolsLog exists.
         // NOTE: for now, not a pass-specific check of traces or devtoolsLogs.
-        const noRequiredTrace = artifactName === 'traces' && !artifacts.traces[Audit.DEFAULT_PASS];
+        const noRequiredTrace = artifactName === 'traces' &&
+          !artifacts.traces?.[Audit.DEFAULT_PASS];
         const noRequiredDevtoolsLog = artifactName === 'devtoolsLogs' &&
-            !artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+          !artifacts.devtoolsLogs?.[Audit.DEFAULT_PASS];
 
         if (noArtifact || noRequiredTrace || noRequiredDevtoolsLog) {
           log.warn('Runner',
