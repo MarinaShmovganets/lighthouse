@@ -8,83 +8,109 @@ import {Audit} from '../audit.js';
 import UrlUtils from '../../lib/url-utils.js';
 import * as i18n from '../../lib/i18n/i18n.js';
 
-const BLOCKLIST = new Set([
+/** @type {Record<string, Set<string>>} */
+const nonDescriptiveLinkTexts = {
   // English
-  'click here',
-  'click this',
-  'go',
-  'here',
-  'information',
-  'learn more',
-  'more',
-  'more info',
-  'more information',
-  'right here',
-  'read more',
-  'see more',
-  'start',
-  'this',
+  'en': new Set([
+    'click here',
+    'click this',
+    'go',
+    'here',
+    'information',
+    'learn more',
+    'more',
+    'more info',
+    'more information',
+    'right here',
+    'read more',
+    'see more',
+    'start',
+    'this',
+  ]),
   // Japanese
-  'ここをクリック',
-  'こちらをクリック',
-  'リンク',
-  '続きを読む',
-  '続く',
-  '全文表示',
+  'ja': new Set([
+    'ここをクリック',
+    'こちらをクリック',
+    'リンク',
+    '続きを読む',
+    '続く',
+    '全文表示',
+  ]),
   // Spanish
-  'click aquí',
-  'click aqui',
-  'clicka aquí',
-  'clicka aqui',
-  'pincha aquí',
-  'pincha aqui',
-  'aquí',
-  'aqui',
-  'más',
-  'mas',
-  'más información',
-  'más informacion',
-  'mas información',
-  'mas informacion',
-  'este',
-  'enlace',
-  'este enlace',
-  'empezar',
+  'es': new Set([
+    'click aquí',
+    'click aqui',
+    'clicka aquí',
+    'clicka aqui',
+    'pincha aquí',
+    'pincha aqui',
+    'aquí',
+    'aqui',
+    'más',
+    'mas',
+    'más información',
+    'más informacion',
+    'mas información',
+    'mas informacion',
+    'este',
+    'enlace',
+    'este enlace',
+    'empezar',
+  ]),
   // Portuguese
-  'clique aqui',
-  'ir',
-  'mais informação',
-  'mais informações',
-  'mais',
-  'veja mais',
+  'pt': new Set([
+    'clique aqui',
+    'ir',
+    'mais informação',
+    'mais informações',
+    'mais',
+    'veja mais',
+  ]),
   // Korean
-  '여기',
-  '여기를 클릭',
-  '클릭',
-  '링크',
-  '자세히',
-  '자세히 보기',
-  '계속',
-  '이동',
-  '전체 보기',
+  'ko': new Set([
+    '여기',
+    '여기를 클릭',
+    '클릭',
+    '링크',
+    '자세히',
+    '자세히 보기',
+    '계속',
+    '이동',
+    '전체 보기',
+  ]),
   // Swedish
-  'här',
-  'klicka här',
-  'läs mer',
-  'mer',
-  'mer info',
-  'mer information',
+  'sv': new Set([
+    'här',
+    'klicka här',
+    'läs mer',
+    'mer',
+    'mer info',
+    'mer information',
+  ]),
+  // German
+  'de': new Set([
+    'klicke hier',
+    'hier klicken',
+    'hier',
+    'mehr',
+    'siehe',
+    'dies',
+    'das',
+    'weiterlesen',
+  ]),
   // Tamil
-  'அடுத்த பக்கம்',
-  'மறுபக்கம்',
-  'முந்தைய பக்கம்',
-  'முன்பக்கம்',
-  'மேலும் அறிக',
-  'மேலும் தகவலுக்கு',
-  'மேலும் தரவுகளுக்கு',
-  'தயவுசெய்து இங்கே அழுத்தவும்',
-  'இங்கே கிளிக் செய்யவும்',
-]);
+  'ta': new Set([
+    'அடுத்த பக்கம்',
+    'மறுபக்கம்',
+    'முந்தைய பக்கம்',
+    'முன்பக்கம்',
+    'மேலும் அறிக',
+    'மேலும் தகவலுக்கு',
+    'மேலும் தரவுகளுக்கு',
+    'தயவுசெய்து இங்கே அழுத்தவும்',
+    'இங்கே கிளிக் செய்யவும்',
+  ]),
+};
 
 const UIStrings = {
   /** Title of a Lighthouse audit that tests if each link on a page contains a sufficient description of what a user will find when they click it. Generic, non-descriptive text like "click here" doesn't give an indication of what the link leads to. This descriptive title is shown when all links on the page have sufficient textual descriptions. */
@@ -123,8 +149,9 @@ class LinkText extends Audit {
    */
   static audit(artifacts) {
     const failingLinks = artifacts.AnchorElements
-      .filter(link => link.href && !link.rel.includes('nofollow'))
       .filter(link => {
+        if (!link.href || link.rel.includes('nofollow')) return false;
+
         const href = link.href.toLowerCase();
         if (
           href.startsWith('javascript:') ||
@@ -136,12 +163,27 @@ class LinkText extends Audit {
           return false;
         }
 
-        return BLOCKLIST.has(link.text.trim().toLowerCase());
+        const searchTerm = link.text.trim().toLowerCase();
+
+        if (searchTerm) {
+          // walk through lang code, e. g. "en-US" or "zh-cmn-Hans-CN"
+          let lang = link.textLang;
+          while (lang) {
+            if (nonDescriptiveLinkTexts[lang] &&
+              nonDescriptiveLinkTexts[lang].has(searchTerm)) {
+              return true;
+            }
+            lang = lang.substring(0, lang.lastIndexOf('-'));
+          }
+        }
+
+        return false;
       })
       .map(link => {
         return {
           href: link.href,
           text: link.text.trim(),
+          textLang: link.textLang,
         };
       });
 

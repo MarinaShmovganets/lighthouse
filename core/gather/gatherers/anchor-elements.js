@@ -38,9 +38,74 @@ function collectAnchorElements() {
     return onclick.slice(0, 1024);
   }
 
+  /** @param {HTMLElement|SVGElement|Text|ChildNode} node */
+  function getTrimmedInnerText(node) {
+    return node instanceof HTMLElement
+      ? node.innerText.trim()
+      : (node.textContent ? node.textContent.trim() : '');
+  }
+
+  /**
+   * @param {HTMLElement|SVGElement} node
+   * @param {string|null} currentLang
+   * @return {string}
+   */
+  function getLangOfInnerText(node, currentLang = null) {
+    if (currentLang === null) {
+      const parentWithLang = node.closest('[lang]');
+
+      // TODO: fallback to pragma-set-default-language or HTTP header
+      currentLang = !parentWithLang ? '' : parentWithLang.getAttribute('lang');
+    }
+
+    const innerElsWithLang = node.querySelectorAll('[lang]');
+
+    if (!innerElsWithLang.length) return currentLang || '';
+
+    const innerText = getTrimmedInnerText(node);
+
+    let innerTextLang = currentLang;
+
+    for (const el of node.childNodes) {
+      if (innerText === getTrimmedInnerText(el)) {
+        if (!(el instanceof HTMLElement || el instanceof SVGElement)) {
+          return currentLang || '';
+        }
+
+        const elLang = el.getAttribute('lang');
+        const childrenWithLang = el.querySelectorAll('[lang]');
+
+        if (!childrenWithLang.length) {
+          return elLang || currentLang || '';
+        } else {
+          return getLangOfInnerText(el, elLang || currentLang || '');
+        }
+      } else {
+        innerTextLang = '';
+      }
+    }
+
+    return innerTextLang || '';
+  }
+
   /** @type {Array<HTMLAnchorElement|SVGAElement>} */
   // @ts-expect-error - put into scope via stringification
   const anchorElements = getElementsInDocument('a'); // eslint-disable-line no-undef
+
+  // Check, if document has only one lang attribute in opening html or in body tag. If so,
+  // there is no need to run the `getLangOfInnerText()` function with multiple
+  // possible DOM traversals
+  /** @type {Array<HTMLElement|SVGElement>} */
+  // @ts-expect-error - put into scope via stringification
+  const langElements = getElementsInDocument('body[lang], body [lang]'); // eslint-disable-line no-undef
+  const documentHasNoLang = !document.documentElement.lang && langElements.length === 0;
+  const canFallbackToBodyLang = (langElements.length === 1) &&
+    langElements[0].nodeName === 'BODY';
+  const canFallbackToHtmlLang = !canFallbackToBodyLang && (langElements.length === 0) &&
+    document.documentElement.lang;
+  const lang = documentHasNoLang ? '' :
+    (canFallbackToBodyLang ? langElements[0].getAttribute('lang') :
+    (canFallbackToHtmlLang ? document.documentElement.lang : null));
 
   return anchorElements.map(node => {
     if (node instanceof HTMLAnchorElement) {
@@ -51,6 +116,7 @@ function collectAnchorElements() {
         role: node.getAttribute('role') || '',
         name: node.name,
         text: node.innerText, // we don't want to return hidden text, so use innerText
+        textLang: lang !== null ? lang : getLangOfInnerText(node),
         rel: node.rel,
         target: node.target,
         id: node.getAttribute('id') || '',
@@ -65,6 +131,7 @@ function collectAnchorElements() {
       onclick: getTruncatedOnclick(node),
       role: node.getAttribute('role') || '',
       text: node.textContent || '',
+      textLang: lang !== null ? lang : getLangOfInnerText(node),
       rel: '',
       target: node.target.baseVal || '',
       id: node.getAttribute('id') || '',
