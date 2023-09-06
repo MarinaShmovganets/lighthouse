@@ -1085,9 +1085,6 @@
   "core/audits/installable-manifest.js | protocol-timeout": {
     "message": "Lighthouse could not determine if the page is installable. Please try with a newer version of Chrome."
   },
-  "core/audits/installable-manifest.js | scheme-not-supported-for-webapk": {
-    "message": "The manifest URL scheme ({scheme}) is not supported on Android."
-  },
   "core/audits/installable-manifest.js | start-url-not-valid": {
     "message": "Manifest start URL is not valid"
   },
@@ -1858,6 +1855,9 @@
   },
   "core/gather/gatherers/link-elements.js | headerParseWarning": {
     "message": "Error parsing `link` header ({error}): `{header}`"
+  },
+  "core/gather/timespan-runner.js | warningNavigationDetected": {
+    "message": "A page navigation was detected during the run. Using timespan mode to audit page navigations is not recommended. Use navigation mode to audit page navigations for better third-party attribution and main thread detection."
   },
   "core/lib/bf-cache-strings.js | appBanner": {
     "message": "Pages that requested an AppBanner are not currently eligible for back/forward cache."

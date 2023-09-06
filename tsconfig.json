@@ -11,8 +11,6 @@
     {"path": "./treemap/"},
   ],
   "include": [
-    "root.js",
-    "esm-utils.js",
     "cli/**/*.js",
     "core/**/*.js",
     "core/index.cjs",
