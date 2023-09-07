@@ -45,6 +45,10 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 * extension: update some properties for manifest v3 ([#15347](https://github.com/GoogleChrome/lighthouse/pull/15347))
 
+## I18n
+
+* import ([#15443](https://github.com/GoogleChrome/lighthouse/pull/15443))
+
 ## Docs
 
 * update explainer for devtools build ([#15414](https://github.com/GoogleChrome/lighthouse/pull/15414))
