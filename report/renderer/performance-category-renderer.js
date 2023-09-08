@@ -234,6 +234,14 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
     });
 
     auditImpacts.sort((a, b) => {
+      const scoreA = a.auditRef.result.scoreDisplayMode === 'informative'
+        ? 100
+        : Number(a.auditRef.result.score);
+      const scoreB = b.auditRef.result.scoreDisplayMode === 'informative'
+        ? 100
+        : Number(b.auditRef.result.score);
+      if (scoreA !== scoreB) return scoreA - scoreB;
+
       // Sort audits by impact, prioritizing those with a higher overallImpact first,
       // then falling back to linearImpact, guidance level and score.
       if (a.overallImpact !== b.overallImpact) return b.overallImpact - a.overallImpact;
@@ -245,15 +253,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
         return b.overallLinearImpact - a.overallLinearImpact;
       }
 
-      if (a.guidanceLevel !== b.guidanceLevel) return b.guidanceLevel - a.guidanceLevel;
-
-      const scoreA = a.auditRef.result.scoreDisplayMode === 'informative'
-        ? 100
-        : Number(a.auditRef.result.score);
-      const scoreB = b.auditRef.result.scoreDisplayMode === 'informative'
-        ? 100
-        : Number(b.auditRef.result.score);
-      return scoreA - scoreB;
+      return b.guidanceLevel - a.guidanceLevel;
     });
 
     if (auditImpacts.length) {
