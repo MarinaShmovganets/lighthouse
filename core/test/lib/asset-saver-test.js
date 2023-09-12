@@ -33,14 +33,18 @@ describe('asset-saver helper', () => {
   describe('saves files', function() {
     const tmpDir = `${LH_ROOT}/.tmp/asset-saver-test`;
 
-    before(() => {
+    before(async () => {
       fs.mkdirSync(tmpDir, {recursive: true});
       const artifacts = {
         DevtoolsLog: [{message: 'first'}, {message: 'second'}],
         Trace: {traceEvents},
       };
 
-      return assetSaver.saveAssets(artifacts, dbwResults.audits, `${tmpDir}/the_file`);
+      await assetSaver.saveAssets(artifacts, dbwResults.audits, `${tmpDir}/the_file`);
+
+      delete artifacts.Trace;
+
+      await assetSaver.saveAssets(artifacts, dbwResults.audits, `${tmpDir}/the_file_no_trace`);
     });
 
     it('trace file saved to disk with trace events and extra fakeEvents', () => {
@@ -57,8 +61,14 @@ describe('asset-saver helper', () => {
     it('devtools log file saved to disk with data', () => {
       const filename = tmpDir + '/the_file-0.devtoolslog.json';
       const fileContents = fs.readFileSync(filename, 'utf8');
-      assert.ok(fileContents.includes('"message": "first"'));
+      assert.ok(fileContents.includes('"message":"first"'));
       fs.unlinkSync(filename);
+    });
+
+    it('skips artifacts which are empty', () => {
+      assert.ok(fs.existsSync(tmpDir + '/the_file_no_trace-0.devtoolslog.json'));
+      assert.ok(!fs.existsSync(tmpDir + '/the_file_no_trace-0.trace.json'));
+      fs.unlinkSync(tmpDir + '/the_file_no_trace-0.devtoolslog.json');
     });
   });
 
