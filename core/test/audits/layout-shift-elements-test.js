@@ -1,5 +1,5 @@
 /**
- * @license Copyright 2020 Google LLC
+ * @license Copyright 2020 The Lighthouse Authors
  * SPDX-License-Identifier: Apache-2.0
  */
 
