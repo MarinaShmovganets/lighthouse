@@ -1,5 +1,5 @@
 /**
- * @license Copyright 2019 Google Inc. All Rights Reserved.
+ * @license Copyright 2019 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 

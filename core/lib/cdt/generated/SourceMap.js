@@ -10,7 +10,7 @@ const Platform = require('../Platform.js');
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SourceMap = exports.SourceMapEntry = exports.parseSourceMap = void 0;
 /*
- * Copyright (C) 2012 Google Inc. All rights reserved.
+ * Copyright (C) 2012 Google LLC
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
