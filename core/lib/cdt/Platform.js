@@ -1,7 +1,7 @@
 // @ts-nocheck
 /**
  * @license
- * Copyright 2021 The Lighthouse Authors
+ * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 

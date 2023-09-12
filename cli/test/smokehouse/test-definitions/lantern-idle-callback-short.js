@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 The Lighthouse Authors
+ * Copyright 2017 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 

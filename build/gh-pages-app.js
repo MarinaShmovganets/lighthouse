@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2020 The Lighthouse Authors
+ * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -21,7 +21,7 @@ const ghPagesDistDir = `${LH_ROOT}/dist/gh-pages`;
 const lighthousePackage = readJson(`${LH_ROOT}/package.json`);
 
 const license = `/*
-* @license Copyright 2020 The Lighthouse Authors
+* @license Copyright 2020 Google LLC
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.

@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 The Lighthouse Authors
+ * Copyright 2017 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  *
  * Dummy text for ensuring report robustness: </script> pre$`post %%LIGHTHOUSE_JSON%%

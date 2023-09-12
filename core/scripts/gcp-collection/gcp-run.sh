@@ -4,7 +4,7 @@ set -euxo pipefail
 
 ##
 # @license
-# Copyright 2020 The Lighthouse Authors
+# Copyright 2020 Google LLC
 # SPDX-License-Identifier: Apache-2.0
 ##
 

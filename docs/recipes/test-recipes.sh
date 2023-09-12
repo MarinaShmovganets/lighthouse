@@ -2,7 +2,7 @@
 
 ##
 # @license
-# Copyright 2022 The Lighthouse Authors
+# Copyright 2022 Google LLC
 # SPDX-License-Identifier: Apache-2.0
 ##
 
