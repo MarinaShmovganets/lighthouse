@@ -12,7 +12,6 @@ import {Runner} from '../runner.js';
 import defaultConfig from './default-config.js';
 import {defaultNavigationConfig, nonSimulatedPassConfigOverrides} from './constants.js'; // eslint-disable-line max-len
 import {
-  isFRGathererDefn,
   throwInvalidDependencyOrder,
   isValidArtifactDependency,
   throwInvalidArtifactDependency,
@@ -29,7 +28,7 @@ import {
   mergeConfigFragment,
   mergeConfigFragmentArrayByKey,
 } from './config-helpers.js';
-import {getModuleDirectory} from '../../esm-utils.js';
+import {getModuleDirectory} from '../../shared/esm-utils.js';
 import * as format from '../../shared/localization/format.js';
 
 const defaultConfigPath = path.join(
@@ -104,7 +103,7 @@ function resolveExtensions(config) {
  * Looks up the required artifact IDs for each dependency, throwing if no earlier artifact satisfies the dependency.
  *
  * @param {LH.Config.ArtifactJson} artifact
- * @param {LH.Config.AnyFRGathererDefn} gatherer
+ * @param {LH.Config.AnyGathererDefn} gatherer
  * @param {Map<Symbol, LH.Config.AnyArtifactDefn>} artifactDefnsBySymbol
  * @return {LH.Config.AnyArtifactDefn['dependencies']}
  */
@@ -154,14 +153,9 @@ async function resolveArtifactsToDefns(artifacts, configDir) {
   const coreGathererList = Runner.getGathererList();
   const artifactDefns = [];
   for (const artifactJson of sortedArtifacts) {
-    /** @type {LH.Config.GathererJson} */
-    // @ts-expect-error - remove when legacy runner path is removed.
     const gathererJson = artifactJson.gatherer;
 
     const gatherer = await resolveGathererToDefn(gathererJson, coreGathererList, configDir);
-    if (!isFRGathererDefn(gatherer)) {
-      throw new Error(`${gatherer.instance.name} gatherer does not have a Fraggle Rock meta obj`);
-    }
 
     /** @type {LH.Config.AnyArtifactDefn} */
     // @ts-expect-error - Typescript can't validate the gatherer and dependencies match

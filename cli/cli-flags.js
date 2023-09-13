@@ -12,7 +12,7 @@ import path from 'path';
 import yargs from 'yargs';
 import * as yargsHelpers from 'yargs/helpers';
 
-import {LH_ROOT} from '../root.js';
+import {LH_ROOT} from '../shared/root.js';
 import {isObjectOfUnknownValues} from '../shared/type-verifiers.js';
 
 /**
@@ -116,11 +116,6 @@ function getYargsParser(manualArgv) {
       'debug-navigation': {
         type: 'boolean',
         describe: 'Pause after page load to wait for permission to continue the run, evaluate `continueLighthouseRun` in the console to continue.',
-      },
-      'legacy-navigation': {
-        type: 'boolean',
-        default: false,
-        describe: '[DEPRECATED] Use the legacy navigation runner to gather results. Only use this if you are using a pre-10.0 custom Lighthouse config, or if Lighthouse unexpectedly fails after updating to 10.0. Please file a bug if you need this flag for Lighthouse to work.',
       },
       'additional-trace-categories': {
         type: 'string',

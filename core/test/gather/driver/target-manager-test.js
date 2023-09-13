@@ -108,8 +108,8 @@ describe('TargetManager', () => {
       expect(sendMock.findAllInvocations('Runtime.runIfWaitingForDebugger')).toHaveLength(4);
     });
 
-    it('should ignore non-frame targets', async () => {
-      targetInfo.type = 'worker';
+    it('should ignore targets that are not frames or web workers', async () => {
+      targetInfo.type = 'service_worker';
       sendMock
         .mockResponse('Target.getTargetInfo', {targetInfo})
         .mockResponse('Target.setAutoAttach');
@@ -179,7 +179,8 @@ describe('TargetManager', () => {
     });
 
     it('should resume the target when finished', async () => {
-      sendMock.mockResponse('Target.getTargetInfo', {});
+      targetInfo.type = 'service_worker';
+      sendMock.mockResponse('Target.getTargetInfo', {targetInfo});
       await targetManager.enable();
 
       const invocations = sendMock.findAllInvocations('Runtime.runIfWaitingForDebugger');
@@ -261,7 +262,7 @@ describe('TargetManager', () => {
 
       const rootTargetInfo = createTargetInfo();
       // Still mock command responses at session level.
-      rootSession.send = createMockSendCommandFn({useSessionId: false})
+      rootSession.send = createMockSendCommandFn()
         .mockResponse('Page.enable')
         .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: ''}}})
         .mockResponse('Runtime.enable')
@@ -277,7 +278,7 @@ describe('TargetManager', () => {
       const iframeSession = createCdpSession('iframe');
       const iframeTargetInfo = createTargetInfo({type: 'iframe', targetId: 'iframe'});
       // Still mock command responses at session level.
-      iframeSession.send = createMockSendCommandFn({useSessionId: false})
+      iframeSession.send = createMockSendCommandFn()
         .mockResponse('Target.getTargetInfo', {targetInfo: iframeTargetInfo})
         .mockResponse('Network.enable')
         .mockResponse('Target.setAutoAttach')
@@ -332,7 +333,7 @@ describe('TargetManager', () => {
     it('should stop listening for protocol events', async () => {
       const rootSession = createCdpSession('root');
       // Still mock command responses at session level.
-      rootSession.send = createMockSendCommandFn({useSessionId: false})
+      rootSession.send = createMockSendCommandFn()
         .mockResponse('Page.enable')
         .mockResponse('Page.getFrameTree', {frameTree: {frame: {id: ''}}})
         .mockResponse('Runtime.enable')

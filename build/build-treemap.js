@@ -7,7 +7,7 @@
 import {createRequire} from 'module';
 
 import {GhPagesApp} from './gh-pages-app.js';
-import {LH_ROOT} from '../root.js';
+import {LH_ROOT} from '../shared/root.js';
 import {getIcuMessageIdParts} from '../shared/localization/format.js';
 import {locales} from '../shared/localization/locales.js';
 import {UIStrings} from '../treemap/app/src/util.js';
@@ -61,7 +61,7 @@ async function main() {
       {path: require.resolve('tabulator-tables/dist/js/modules/format.js')},
       {path: require.resolve('tabulator-tables/dist/js/modules/resize_columns.js')},
       {path: require.resolve('pako/dist/pako_inflate.js')},
-      {path: 'src/main.js', rollup: true},
+      {path: 'src/main.js', esbuild: true},
     ],
     assets: [
       {path: 'images/**/*', destDir: 'images'},

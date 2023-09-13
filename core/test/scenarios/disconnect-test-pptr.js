@@ -8,7 +8,7 @@
 
 import * as api from '../../index.js';
 import {createTestState} from './pptr-test-utils.js';
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT} from '../../../shared/root.js';
 
 describe('Disconnect', function() {
   // eslint-disable-next-line no-invalid-this
@@ -19,7 +19,7 @@ describe('Disconnect', function() {
   state.installSetupAndTeardownHooks();
 
   before(() => {
-    state.server.baseDir = `${LH_ROOT}/core/test/fixtures/fraggle-rock/snapshot-basic`;
+    state.server.baseDir = `${LH_ROOT}/core/test/fixtures/user-flows/snapshot-basic`;
   });
 
   it('should reset the listeners/protocol when LH is done', async () => {

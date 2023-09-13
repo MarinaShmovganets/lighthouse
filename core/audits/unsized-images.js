@@ -34,6 +34,7 @@ class UnsizedImages extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
+      guidanceLevel: 3,
       requiredArtifacts: ['ImageElements'],
     };
   }
@@ -154,6 +155,9 @@ class UnsizedImages extends Audit {
       score: unsizedImages.length > 0 ? 0 : 1,
       notApplicable: images.length === 0,
       details: Audit.makeTableDetails(headings, unsizedImages),
+      metricSavings: {
+        CLS: 0,
+      },
     };
   }
 }

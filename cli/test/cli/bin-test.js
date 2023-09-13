@@ -10,7 +10,7 @@ import {pathToFileURL} from 'url';
 import * as td from 'testdouble';
 import jestMock from 'jest-mock';
 
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT} from '../../../shared/root.js';
 import {readJson} from '../../../core/test/test-utils.js';
 
 const mockRunLighthouse = jestMock.fn();
@@ -60,7 +60,6 @@ beforeEach(async () => {
     view: false,
     verbose: false,
     quiet: false,
-    legacyNavigation: false,
     port: 0,
     hostname: '',
     // Command modes

@@ -13,7 +13,7 @@ import {getChromePath} from 'chrome-launcher';
 
 import {Server} from '../../cli/test/fixtures/static-server.js';
 import defaultConfig from '../../core/config/default-config.js';
-import {LH_ROOT} from '../../root.js';
+import {LH_ROOT} from '../../shared/root.js';
 import {getCanonicalLocales} from '../../shared/localization/format.js';
 import {getProtoRoundTrip} from '../../core/test/test-utils.js';
 
@@ -23,7 +23,7 @@ const portNumber = 10200;
 const viewerUrl = `http://localhost:${portNumber}/dist/gh-pages/viewer/index.html`;
 const sampleLhr = LH_ROOT + '/core/test/results/sample_v2.json';
 // eslint-disable-next-line max-len
-const sampleFlowResult = LH_ROOT + '/core/test/fixtures/fraggle-rock/reports/sample-flow-result.json';
+const sampleFlowResult = LH_ROOT + '/core/test/fixtures/user-flows/reports/sample-flow-result.json';
 
 const lighthouseCategories = Object.keys(defaultConfig.categories);
 const getAuditsOfCategory = category => defaultConfig.categories[category].auditRefs;
@@ -146,7 +146,7 @@ describe('Lighthouse Viewer', () => {
 
     it('should contain audits of all categories', async () => {
       const nonNavigationAudits = [
-        'experimental-interaction-to-next-paint',
+        'interaction-to-next-paint',
         'uses-responsive-images-snapshot',
         'work-during-interaction',
       ];

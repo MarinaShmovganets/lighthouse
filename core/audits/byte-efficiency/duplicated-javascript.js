@@ -47,6 +47,7 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       scoreDisplayMode: ByteEfficiencyAudit.SCORING_MODES.NUMERIC,
+      guidanceLevel: 2,
       requiredArtifacts: ['devtoolsLogs', 'traces', 'SourceMaps', 'Scripts',
         'GatherContext', 'URL'],
     };
@@ -229,8 +230,8 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
     const headings = [
       /* eslint-disable max-len */
       {key: 'source', valueType: 'code', subItemsHeading: {key: 'url', valueType: 'url'}, label: str_(i18n.UIStrings.columnSource)},
-      {key: null, valueType: 'bytes', subItemsHeading: {key: 'sourceTransferBytes'}, granularity: 0.05, label: str_(i18n.UIStrings.columnTransferSize)},
-      {key: 'wastedBytes', valueType: 'bytes', granularity: 0.05, label: str_(i18n.UIStrings.columnWastedBytes)},
+      {key: null, valueType: 'bytes', subItemsHeading: {key: 'sourceTransferBytes'}, granularity: 10, label: str_(i18n.UIStrings.columnTransferSize)},
+      {key: 'wastedBytes', valueType: 'bytes', granularity: 10, label: str_(i18n.UIStrings.columnWastedBytes)},
       /* eslint-enable max-len */
     ];
 
