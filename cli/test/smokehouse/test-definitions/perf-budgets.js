@@ -74,12 +74,12 @@ const expectations = {
             {
               resourceType: 'total',
               countOverBudget: '2 requests',
-              sizeOverBudget: '66121±1000',
+              sizeOverBudget: '64121±1000',
             },
             {
               resourceType: 'script',
               countOverBudget: '2 requests',
-              sizeOverBudget: '24450±1000',
+              sizeOverBudget: '22450±1000',
             },
             {
               resourceType: 'font',
@@ -89,7 +89,7 @@ const expectations = {
             {
               resourceType: 'document',
               countOverBudget: '1 request',
-              sizeOverBudget: '1259±50',
+              sizeOverBudget: '759±50',
             },
             {
               resourceType: 'stylesheet',

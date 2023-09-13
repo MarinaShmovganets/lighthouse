@@ -187,7 +187,7 @@ const expectations = {
           items: [
             {
               url: 'http://localhost:10200/byte-efficiency/script.js',
-              wastedBytes: '46555 +/- 100',
+              wastedBytes: '46039 +/- 100',
               wastedPercent: '87 +/- 5',
             },
             {
