@@ -326,7 +326,15 @@ async function testUrlFromDevtools(url, options = {}) {
       await installCustomLighthouseConfig(inspectorSession, config);
     }
 
-    const result = await evaluateInSession(inspectorSession, runLighthouse, [addSniffer]);
+    const result = await evaluateInSession(inspectorSession, runLighthouse, [addSniffer])
+      .catch(async err => {
+        if (/protocolTimeout/.test(err)) {
+          console.log('Lighthouse timed out, inspector screenshot:');
+          const {data} = await inspectorSession.send('Page.captureScreenshot');
+          console.log(`data:image/png;base64,${data}`);
+        }
+        throw err;
+      });
 
     return {...result, logs};
   } finally {
