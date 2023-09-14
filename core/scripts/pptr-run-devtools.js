@@ -267,7 +267,7 @@ async function installCustomLighthouseConfig(inspectorSession, config) {
  */
 async function installConsoleListener(inspectorSession, logs) {
   inspectorSession.on('Log.entryAdded', ({entry}) => {
-    if (entry.level === 'verbose') return;
+    // if (entry.level === 'verbose') return;
     logs.push(`LOG[${entry.level}]: ${entry.text}\n`);
   });
   inspectorSession.on('Runtime.exceptionThrown', ({exceptionDetails}) => {
@@ -286,7 +286,7 @@ function dismissDialog(dialog) {
 
 /**
  * @param {string} url
- * @param {{config?: LH.Config, chromeFlags?: string[]}} [options]
+ * @param {{config?: LH.Config, chromeFlags?: string[], printConsole?: boolean}} [options]
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, logs: string[]}>}
  */
 async function testUrlFromDevtools(url, options = {}) {
@@ -299,6 +299,9 @@ async function testUrlFromDevtools(url, options = {}) {
     defaultViewport: null,
   });
 
+  /** @type {string[]} */
+  const logs = [];
+
   try {
     if ((await browser.version()).startsWith('Headless')) {
       throw new Error('You cannot use headless');
@@ -309,8 +312,6 @@ async function testUrlFromDevtools(url, options = {}) {
     const inspectorTarget = await browser.waitForTarget(t => t.url().includes('devtools'));
     const inspectorSession = await inspectorTarget.createCDPSession();
 
-    /** @type {string[]} */
-    const logs = [];
     await installConsoleListener(inspectorSession, logs);
 
     page.on('dialog', dismissDialog);
@@ -328,6 +329,12 @@ async function testUrlFromDevtools(url, options = {}) {
     const result = await evaluateInSession(inspectorSession, runLighthouse, [addSniffer]);
 
     return {...result, logs};
+  } catch (err) {
+    if (options.printConsole) {
+      console.log('Inspector Console:');
+      console.log(logs.join('') + '\n');
+    }
+    throw err;
   } finally {
     await browser.close();
   }

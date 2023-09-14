@@ -40,15 +40,17 @@ async function setup() {
  * CHROME_PATH determines which Chrome is used–otherwise the default is puppeteer's chrome binary.
  * @param {string} url
  * @param {LH.Config=} config
+ * @param {{isDebug?: boolean}=} options
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */
-async function runLighthouse(url, config) {
+async function runLighthouse(url, config, options) {
   const chromeFlags = [
     `--custom-devtools-frontend=file://${devtoolsDir}/out/LighthouseIntegration/gen/front_end`,
   ];
   const {lhr, artifacts, logs} = await testUrlFromDevtools(url, {
     config,
     chromeFlags,
+    printConsole: options?.isDebug,
   });
 
   const log = logs.join('') + '\n';
