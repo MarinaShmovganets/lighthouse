@@ -136,15 +136,15 @@ Object {
     const output = await PageExecutionTimings.audit(artifacts, context);
     expect(keyOutput(output)).toMatchInlineSnapshot(`
 Object {
-  "other": 267,
-  "paintCompositeRender": 130,
+  "other": 319,
+  "paintCompositeRender": 152,
   "parseHTML": 2,
-  "scriptEvaluation": 12,
+  "scriptEvaluation": 14,
   "scriptParseCompile": 2,
-  "styleLayout": 363,
+  "styleLayout": 470,
 }
 `);
-    expect(Math.round(output.numericValue)).toMatchInlineSnapshot(`775`);
+    expect(Math.round(output.numericValue)).toMatchInlineSnapshot(`958`);
     assert.equal(output.details.items.length, 6);
     assert.equal(output.score, 1);
   });
