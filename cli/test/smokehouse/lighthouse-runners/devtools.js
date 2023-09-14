@@ -50,7 +50,7 @@ async function runLighthouse(url, config, options) {
   const {lhr, artifacts, logs} = await testUrlFromDevtools(url, {
     config,
     chromeFlags,
-    printConsole: options?.isDebug,
+    printScreenshotOnTimeout: options?.isDebug,
   });
 
   const log = logs.join('') + '\n';

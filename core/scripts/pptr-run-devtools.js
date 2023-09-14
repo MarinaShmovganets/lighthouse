@@ -217,8 +217,16 @@ async function runLighthouse() {
     );
   });
 
-  const button = panel.contentElement.querySelector('button');
-  button.click();
+  const intervalHandle = setInterval(() => {
+    const button = panel.contentElement.querySelector('button');
+    button.click();
+  }, 100);
+
+  addSniffer(
+    panel.__proto__,
+    'handleCompleteRun',
+    () => clearInterval(intervalHandle),
+  );
 
   return resultPromise;
 }
@@ -267,7 +275,7 @@ async function installCustomLighthouseConfig(inspectorSession, config) {
  */
 async function installConsoleListener(inspectorSession, logs) {
   inspectorSession.on('Log.entryAdded', ({entry}) => {
-    // if (entry.level === 'verbose') return;
+    if (entry.level === 'verbose') return;
     logs.push(`LOG[${entry.level}]: ${entry.text}\n`);
   });
   inspectorSession.on('Runtime.exceptionThrown', ({exceptionDetails}) => {
@@ -286,7 +294,7 @@ function dismissDialog(dialog) {
 
 /**
  * @param {string} url
- * @param {{config?: LH.Config, chromeFlags?: string[], printConsole?: boolean}} [options]
+ * @param {{config?: LH.Config, chromeFlags?: string[], printScreenshotOnTimeout?: boolean}} [options]
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, logs: string[]}>}
  */
 async function testUrlFromDevtools(url, options = {}) {
@@ -299,9 +307,6 @@ async function testUrlFromDevtools(url, options = {}) {
     defaultViewport: null,
   });
 
-  /** @type {string[]} */
-  const logs = [];
-
   try {
     if ((await browser.version()).startsWith('Headless')) {
       throw new Error('You cannot use headless');
@@ -312,6 +317,8 @@ async function testUrlFromDevtools(url, options = {}) {
     const inspectorTarget = await browser.waitForTarget(t => t.url().includes('devtools'));
     const inspectorSession = await inspectorTarget.createCDPSession();
 
+    /** @type {string[]} */
+    const logs = [];
     await installConsoleListener(inspectorSession, logs);
 
     page.on('dialog', dismissDialog);
@@ -328,7 +335,7 @@ async function testUrlFromDevtools(url, options = {}) {
 
     const result = await evaluateInSession(inspectorSession, runLighthouse, [addSniffer])
       .catch(async err => {
-        if (/protocolTimeout/.test(err)) {
+        if (options.printScreenshotOnTimeout && /protocolTimeout/.test(err)) {
           console.log('Lighthouse timed out, inspector screenshot:');
           const {data} = await inspectorSession.send('Page.captureScreenshot');
           console.log(`data:image/png;base64,${data}`);
@@ -338,8 +345,6 @@ async function testUrlFromDevtools(url, options = {}) {
 
     return {...result, logs};
   } finally {
-    console.log(`Inspector Console of DT on ${url}:`);
-    console.log(logs.join('') + '\n');
     await browser.close();
   }
 }
