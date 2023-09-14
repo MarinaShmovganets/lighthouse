@@ -329,13 +329,9 @@ async function testUrlFromDevtools(url, options = {}) {
     const result = await evaluateInSession(inspectorSession, runLighthouse, [addSniffer]);
 
     return {...result, logs};
-  } catch (err) {
-    if (options.printConsole) {
-      console.log('Inspector Console:');
-      console.log(logs.join('') + '\n');
-    }
-    throw err;
   } finally {
+    console.log('Inspector Console:');
+    console.log(logs.join('') + '\n');
     await browser.close();
   }
 }
