@@ -330,7 +330,7 @@ async function testUrlFromDevtools(url, options = {}) {
 
     return {...result, logs};
   } finally {
-    console.log('Inspector Console:');
+    console.log(`Inspector Console of DT on ${url}:`);
     console.log(logs.join('') + '\n');
     await browser.close();
   }
