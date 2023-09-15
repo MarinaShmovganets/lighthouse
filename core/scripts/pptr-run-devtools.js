@@ -217,6 +217,9 @@ async function runLighthouse() {
     );
   });
 
+  // In CI there ins't a 100% guarantee that clicking the start button once
+  // will start the run.
+  // Therefore, keep clicking the button until we detect that the run started.
   const intervalHandle = setInterval(() => {
     const button = panel.contentElement.querySelector('button');
     button.click();
