@@ -297,7 +297,7 @@ function dismissDialog(dialog) {
 
 /**
  * @param {string} url
- * @param {{config?: LH.Config, chromeFlags?: string[], printScreenshotOnTimeout?: boolean}} [options]
+ * @param {{config?: LH.Config, chromeFlags?: string[], includedScreenshotInError?: boolean}} [options]
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, logs: string[]}>}
  */
 async function testUrlFromDevtools(url, options = {}) {
@@ -310,6 +310,9 @@ async function testUrlFromDevtools(url, options = {}) {
     defaultViewport: null,
   });
 
+  /** @type {puppeteer.CDPSession|undefined} */
+  let inspectorSession;
+
   try {
     if ((await browser.version()).startsWith('Headless')) {
       throw new Error('You cannot use headless');
@@ -318,7 +321,7 @@ async function testUrlFromDevtools(url, options = {}) {
     const page = (await browser.pages())[0];
 
     const inspectorTarget = await browser.waitForTarget(t => t.url().includes('devtools'));
-    const inspectorSession = await inspectorTarget.createCDPSession();
+    inspectorSession = await inspectorTarget.createCDPSession();
 
     /** @type {string[]} */
     const logs = [];
@@ -336,17 +339,19 @@ async function testUrlFromDevtools(url, options = {}) {
       await installCustomLighthouseConfig(inspectorSession, config);
     }
 
-    const result = await evaluateInSession(inspectorSession, runLighthouse, [addSniffer])
-      .catch(async err => {
-        if (options.printScreenshotOnTimeout && /protocolTimeout/.test(err)) {
-          console.log('Lighthouse timed out, inspector screenshot:');
-          const {data} = await inspectorSession.send('Page.captureScreenshot');
-          console.log(`data:image/png;base64,${data}`);
-        }
-        throw err;
-      });
+    const result = await evaluateInSession(inspectorSession, runLighthouse, [addSniffer]);
 
     return {...result, logs};
+  } catch (err) {
+    if (options.includedScreenshotInError && inspectorSession) {
+      const {data} = await inspectorSession.send('Page.captureScreenshot', {format: 'webp'});
+      const image = `data:image/webp;base64,${data}`;
+      throw new Error(
+        `Lighthouse in DevTool failed. DevTools screenshot:\n${image}`,
+        {cause: err}
+      );
+    }
+    throw err;
   } finally {
     await browser.close();
   }
