@@ -296,7 +296,7 @@ function dismissDialog(dialog) {
 
 /**
  * @param {string} url
- * @param {{config?: LH.Config, chromeFlags?: string[], detailedError?: boolean}} [options]
+ * @param {{config?: LH.Config, chromeFlags?: string[]}} [options]
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, logs: string[]}>}
  */
 async function testUrlFromDevtools(url, options = {}) {
@@ -342,7 +342,7 @@ async function testUrlFromDevtools(url, options = {}) {
 
     return {...result, logs};
   } catch (err) {
-    if (options.detailedError && inspectorSession) {
+    if (inspectorSession) {
       const {data} = await inspectorSession.send('Page.captureScreenshot', {format: 'webp'});
       const image = `data:image/webp;base64,${data}`;
       throw new Error(
