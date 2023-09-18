@@ -217,8 +217,7 @@ async function runLighthouse() {
     );
   });
 
-  // In CI there ins't a 100% guarantee that clicking the start button once
-  // will start the run.
+  // In CI clicking the start button just once is flaky and can cause a timeout.
   // Therefore, keep clicking the button until we detect that the run started.
   const intervalHandle = setInterval(() => {
     const button = panel.contentElement.querySelector('button');
@@ -297,7 +296,7 @@ function dismissDialog(dialog) {
 
 /**
  * @param {string} url
- * @param {{config?: LH.Config, chromeFlags?: string[], includedScreenshotInError?: boolean}} [options]
+ * @param {{config?: LH.Config, chromeFlags?: string[], detailedError?: boolean}} [options]
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, logs: string[]}>}
  */
 async function testUrlFromDevtools(url, options = {}) {
@@ -343,7 +342,7 @@ async function testUrlFromDevtools(url, options = {}) {
 
     return {...result, logs};
   } catch (err) {
-    if (options.includedScreenshotInError && inspectorSession) {
+    if (options.detailedError && inspectorSession) {
       const {data} = await inspectorSession.send('Page.captureScreenshot', {format: 'webp'});
       const image = `data:image/webp;base64,${data}`;
       throw new Error(
