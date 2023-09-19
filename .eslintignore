@@ -1,6 +1,6 @@
-**/node_modules/**
-**/third_party/**
-**/source-maps/**
+/node_modules/**
+/third_party/**
+/source-maps/**
 
 cli/test/fixtures/byte-efficiency/bundle.js
 
@@ -14,7 +14,7 @@ core/scripts/legacy-javascript/variants
 
 third-party/**
 
-# ignore d.ts files until we can properly lint them
+ ignore d.ts files until we can properly lint them
 **/*.d.ts
 **/*.d.cts
 
