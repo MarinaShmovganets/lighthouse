@@ -1,21 +1,21 @@
-/**
+
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */
+ 
 'use strict';
 
-/**
+
  * eslint does not support ESM rc files, so this must be a .cjs file.
  * @see https://eslint.org/docs/user-guide/configuring/configuration-files#configuration-file-formats
  * @see https://github.com/eslint/eslint/issues/13481
- */
+ 
 
 module.exports = {
-  // All subdirectory eslintrcs extend from this one.
+   All subdirectory eslintrcs extend from this one.
   root: true,
-  // start with google standard style
-  //     https://github.com/google/eslint-config-google/blob/master/index.js
+   start with google standard style
+       https://github.com/google/eslint-config-google/blob/master/index.js
   extends: ['eslint:recommended', 'google'],
   plugins: [
     'eslint-plugin-local-rules',
@@ -26,7 +26,7 @@ module.exports = {
     es6: true,
   },
   rules: {
-    // 2 == error, 1 == warning, 0 == off
+     2 == error, 1 == warning, 0 == off
     'import/order': [2, {
       'groups': [
         'builtin',
@@ -92,10 +92,10 @@ module.exports = {
     }],
     'operator-linebreak': ['error', 'after', {'overrides': {'?': 'ignore', ':': 'ignore'}}],
 
-    // Custom lighthouse rules
+     Custom lighthouse rules
     'local-rules/require-file-extension': 2,
 
-    // Disabled rules
+     Disabled rules
     'require-jsdoc': 0,
     'valid-jsdoc': 0,
     'arrow-parens': 0,
