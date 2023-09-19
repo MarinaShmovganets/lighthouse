@@ -1,26 +1,26 @@
-/**
+
  * @license
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */
+ 
 'use strict';
 
-/**
+
  * @fileoverview A collection of eslint rules written specifically for
  * Lighthouse. These are included by the eslint-plugin-local-rules plugin.
- */
+ 
 
 const path = require('path');
 
-/** @typedef {import('eslint').Rule.RuleModule} RuleModule */
+ @typedef {import('eslint').Rule.RuleModule} RuleModule */
 
-/**
+
  * Use `require.resolve()` to resolve the location of `path` from a location of
  * `baseDir` and return it. Returns null if unable to resolve a path.
  * @param {string} path
  * @param {string} baseDir
  * @return {string|null}
- */
+ 
 function requireResolveOrNull(path, baseDir) {
   try {
     return require.resolve(path, {
@@ -31,11 +31,11 @@ function requireResolveOrNull(path, baseDir) {
   }
 }
 
-/**
+
  * An eslint rule ensuring that any require() of a local path (aka not a core
  * module or a module dependency) includes a file extension (.js' or '.json').
  * @type {RuleModule}
- */
+ 
 const requireFileExtension = {
   meta: {
     docs: {
@@ -50,7 +50,7 @@ const requireFileExtension = {
   create(context) {
     return {
       CallExpression(node) {
-        // Only look at instances of `require(moduleName: string)`.
+         Only look at instances of `require(moduleName: string)`.
         if (node.type !== 'CallExpression') return;
         if (node.callee.type !== 'Identifier' || node.callee.name !== 'require') return;
         if (!node.arguments.length) return;
@@ -59,10 +59,10 @@ const requireFileExtension = {
 
         const requiredPath = arg0.value;
 
-        // If it's not a local file, we don't care.
+         If it's not a local file, we don't care.
         if (!requiredPath.startsWith('.')) return;
 
-        // Check that `requiredPath` is resolvable from the source file.
+         Check that `requiredPath` is resolvable from the source file.
         const contextDirname = path.dirname(context.getFilename());
         const resolvedRequiredPath = requireResolveOrNull(requiredPath, contextDirname);
         if (!resolvedRequiredPath) {
@@ -72,7 +72,7 @@ const requireFileExtension = {
           });
         }
 
-        // If it has a file extension, it's good to go.
+         If it has a file extension, it's good to go.
         if (requiredPath.endsWith('.js')) return;
         if (requiredPath.endsWith('.json')) return;
 
@@ -80,17 +80,17 @@ const requireFileExtension = {
           node: node,
           message: 'Local require path must have a file extension.',
           fix(fixer) {
-            // Find the correct file extension/filename ending of the requiredPath.
+             Find the correct file extension/filename ending of the requiredPath.
             let fixedPath = path.relative(contextDirname, resolvedRequiredPath);
             if (!fixedPath.startsWith('.')) fixedPath = `./${fixedPath}`;
 
-            // Usually `fixedPath.startsWith(requiredPath)` and this will just add
-            // a suffix to the existing path, but sometimes humans write confusing
-            // paths, e.g. './core/lib/../lib/lh-error.js'. To cover both
-            // cases, double check that the paths resolve to the same file.
+             Usually `fixedPath.startsWith(requiredPath)` and this will just add
+            a suffix to the existing path, but sometimes humans write confusing
+             paths, e.g. './core/lib/../lib/lh-error.js'. To cover both
+             cases, double check that the paths resolve to the same file.
             const resolvedFixedPath = requireResolveOrNull(fixedPath, contextDirname);
 
-            // If somehow they don't point to the same file, don't try to fix.
+             If somehow they don't point to the same file, don't try to fix.
             if (resolvedFixedPath !== resolvedRequiredPath) return null;
 
             return fixer.replaceText(arg0, `'${fixedPath}'`);
