@@ -1,4 +1,4 @@
-// Compilation entry point for all tsc projects within Lighthouse.
+ Compilation entry point for all tsc projects within Lighthouse.
 
 {
   "references": [
