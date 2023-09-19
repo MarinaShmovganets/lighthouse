@@ -1,6 +1,6 @@
-# use npm modules `pkgfiles` or `irish-pub` to validate which files are selected
+ use npm modules `pkgfiles` or `irish-pub` to validate which files are selected
 
-# folders
+ folders
 .vscode/
 .github/
 assets/
@@ -18,13 +18,13 @@ lighthouse-logger/
 **/test/**
 report/test-assets/
 
-# keep a few scripts useful for CI
+ keep a few scripts useful for CI
 !core/scripts/manual-chrome-launcher.js
 !core/scripts/download-chrome.sh
 !core/scripts/package.json
 
-# Exclude the CLI smoketests but keep the smoketest runner that is used
-# by downstream projects (e.g. publisher ads).
+ Exclude the CLI smoketests but keep the smoketest runner that is used
+ by downstream projects (e.g. publisher ads).
 !cli/test/smokehouse/**
 cli/test/smokehouse/test-definitions/
 
@@ -32,13 +32,13 @@ results/
 lantern-data/
 timings-data/
 
-# ignore all folders named as such
+ ignore all folders named as such
 node_modules
 latest-run
 devtools-tests
 .tmp
 
-# generated files
+ generated files
 *.report.html
 *.dom.html
 *.devtoolslog.json
@@ -51,16 +51,16 @@ yarn-error.log
 results.html
 *.lcov
 
-# generated files needed for publish
+ generated files needed for publish
 dist/**
 !dist/report/standalone.js
 !dist/report/flow.js
 !dist/report/bundle.esm.js
 
-# large files
+ large files
 changelog.md
 
-# dev files
+ dev files
 .codecov.yml
 .cz-config.js
 .DS_Store
