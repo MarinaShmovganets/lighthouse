@@ -1,4 +1,4 @@
-// https://buildtracker.dev/docs/installation/#upload-your-builds
+ https://buildtracker.dev/docs/installation/#upload-your-builds
 
 
 module.exports = {
