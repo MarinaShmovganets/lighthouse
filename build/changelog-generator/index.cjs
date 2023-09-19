@@ -1,8 +1,8 @@
-/**
+
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: Apache-2.0
- */
+ 
 'use strict';
 
 const readFileSync = require('fs').readFileSync;
@@ -11,7 +11,7 @@ const mainTemplate = readFileSync(resolve(__dirname, 'templates/template.hbs')).
 const headerPartial = readFileSync(resolve(__dirname, 'templates/header.hbs')).toString();
 const commitPartial = readFileSync(resolve(__dirname, 'templates/commit.hbs')).toString();
 
-/** @typedef {{type: string, header: string, hash?: string, message?: string, PR?: string}} Commit */
+ @typedef {{type: string, header: string, hash?: string, message?: string, PR?: string}} Commit */
 
 const pullRequestRegex = /\(#(\d+)\)$/;
 const parserOpts = {
@@ -68,7 +68,7 @@ const writerOpts = {
     }
 
     let pullRequestMatch = commit.header.match(pullRequestRegex);
-    // if header does not provide a PR we try the message
+     if header does not provide a PR we try the message
     if (!pullRequestMatch && commit.message) {
       pullRequestMatch = commit.message.match(pullRequestRegex);
     }
@@ -85,17 +85,17 @@ const writerOpts = {
     return commit;
   },
   groupBy: 'type',
-  /** @param {{title: string}} a @param {{title: string}} b */
+  / @param {{title: string}} a @param {{title: string}} b */
   commitGroupsSort: (a, b) => {
     const aIndex = titlePrecedence.indexOf(a.title);
     const bIndex = titlePrecedence.indexOf(b.title);
 
-    // If neither value has a title with a predefined order, use an alphabetical comparison.
+     If neither value has a title with a predefined order, use an alphabetical comparison.
     if (aIndex === -1 && bIndex === -1) {
       return a.title.localeCompare(b.title);
     }
 
-    // If just one value has a title with a predefined order, it is greater.
+    /If just one value has a title with a predefined order, it is greater.
     if (aIndex === -1 && bIndex >= 0) {
       return 1;
     }
@@ -103,7 +103,7 @@ const writerOpts = {
       return -1;
     }
 
-    // Both values have a title with a predefined order, so do a simple comparison.
+     Both values have a title with a predefined order, so do a simple comparison.
     return aIndex - bIndex;
   },
   commitsSort: ['type', 'scope'],
