@@ -5,6 +5,7 @@
  */
 
 import log from 'lighthouse-logger';
+import {initializeConfig} from '../config/config.js';
 
 /** @typedef {import('@sentry/node').Breadcrumb} Breadcrumb */
 /** @typedef {import('@sentry/node').NodeClient} NodeClient */
@@ -45,7 +46,7 @@ const sentryDelegate = {
 
 /**
  * When called, replaces noops with actual Sentry implementation.
- * @param {{url: string, flags: LH.CliFlags, environmentData: NodeOptions}} opts
+ * @param {{url: string, flags: LH.CliFlags, config?: LH.Config, environmentData: NodeOptions}} opts
  */
 async function init(opts) {
   // If error reporting is disabled, leave the functions as a noop
@@ -65,12 +66,28 @@ async function init(opts) {
       dsn: SENTRY_URL,
     });
 
+    /** @type {LH.Config.Settings | LH.CliFlags} */
+    let settings = opts.flags;
+    try {
+      const gatherMode = /** @type {LH.Gatherer.GatherMode} */ (
+        opts.flags.gatherMode || 'navigation');
+      const {resolvedConfig} = await initializeConfig(gatherMode, opts.config, opts.flags);
+      settings = resolvedConfig.settings;
+    } catch {
+      // The config failed validation (note - probably, we don't use a specific error type for that).
+      // The actual core lighthouse library will handle this error accordingly. As we are only using this
+      // for meta data, we can ignore here.
+    }
+    const baseTags = {
+      channel: settings.channel,
+      formFactor: settings.formFactor,
+      throttlingMethod: settings.throttlingMethod,
+    };
+    Sentry.setTags(baseTags);
+
     const extras = {
-      ...opts.flags.throttling,
-      channel: opts.flags.channel || 'cli',
+      ...settings.throttling,
       url: opts.url,
-      formFactor: opts.flags.formFactor,
-      throttlingMethod: opts.flags.throttlingMethod,
     };
     Sentry.setExtras(extras);
 
