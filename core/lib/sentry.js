@@ -69,9 +69,7 @@ async function init(opts) {
     /** @type {LH.Config.Settings | LH.CliFlags} */
     let settings = opts.flags;
     try {
-      const gatherMode = /** @type {LH.Gatherer.GatherMode} */ (
-        opts.flags.gatherMode || 'navigation');
-      const {resolvedConfig} = await initializeConfig(gatherMode, opts.config, opts.flags);
+      const {resolvedConfig} = await initializeConfig('navigation', opts.config, opts.flags);
       settings = resolvedConfig.settings;
     } catch {
       // The config failed validation (note - probably, we don't use a specific error type for that).
