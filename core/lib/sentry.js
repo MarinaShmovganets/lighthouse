@@ -5,6 +5,7 @@
  */
 
 import log from 'lighthouse-logger';
+
 import {initializeConfig} from '../config/config.js';
 
 /** @typedef {import('@sentry/node').Breadcrumb} Breadcrumb */
@@ -16,12 +17,6 @@ const SENTRY_URL = 'https://a6bb0da87ee048cc9ae2a345fc09ab2e:63a7029f46f74265981
 
 // Per-run chance of capturing errors (if enabled).
 const SAMPLE_RATE = 0.01;
-
-/** @type {Array<{pattern: RegExp, rate: number}>} */
-const SAMPLED_ERRORS = [
-  // Error code based sampling. Delete if still unused after 2019-01-01.
-  // e.g.: {pattern: /No.*node with given id/, rate: 0.01},
-];
 
 const noop = () => { };
 
@@ -117,10 +112,6 @@ async function init(opts) {
         if (sentryExceptionCache.has(key)) return;
         sentryExceptionCache.set(key, true);
       }
-
-      // Sample known errors that occur at a high frequency.
-      const sampledErrorMatch = SAMPLED_ERRORS.find(sample => sample.pattern.test(err.message));
-      if (sampledErrorMatch && sampledErrorMatch.rate <= Math.random()) return;
 
       // @ts-expect-error - properties added to protocol method LighthouseErrors.
       if (err.protocolMethod) {
