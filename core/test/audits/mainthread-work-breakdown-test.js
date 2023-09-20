@@ -16,6 +16,7 @@ const acceptableTrace = readJson('../fixtures/traces/progressive-app-m60.json', 
 const acceptableDevtoolsLog = readJson('../fixtures/traces/progressive-app-m60.devtools.log.json', import.meta);
 const siteWithRedirectTrace = readJson('../fixtures/artifacts/redirect/trace.json', import.meta);
 const siteWithRedirectDevtoolsLog = readJson('../fixtures/artifacts/redirect/devtoolslog.json', import.meta);
+const loadTraceOld = readJson('../fixtures/traces/load.json', import.meta);
 const loadTrace = readJson('../fixtures/artifacts/animation/trace.json', import.meta);
 const loadDevtoolsLog = readJson('../fixtures/artifacts/animation/devtoolslog.json', import.meta);
 
@@ -120,6 +121,37 @@ Object {
     assert.equal(output.details.items.length, 7);
     assert.equal(output.score, 1);
     expect(output.metricSavings.TBT).toBeCloseTo(353.5, 0.1);
+  });
+
+  it('should compute the correct values for the load trace (legacy)', async () => {
+    assert(loadTraceOld.find(e => e.name === 'TracingStartedInPage'));
+    const artifacts = {
+      traces: {defaultPass: {traceEvents: loadTraceOld}},
+      GatherContext: {gatherMode: 'navigation'},
+      // `loadTraceOld` doesn't have a DT log
+      // These are just standard values that cause an error.
+      devtoolsLogs: {defaultPass: []},
+      URL: {
+        requestedUrl: 'https://example.com/',
+        mainDocumentUrl: 'https://example.com/',
+        finalDisplayedUrl: 'https://example.com/',
+      },
+    };
+
+    const output = await PageExecutionTimings.audit(artifacts, context);
+    expect(keyOutput(output)).toMatchInlineSnapshot(`
+Object {
+  "garbageCollection": 3,
+  "other": 382,
+  "paintCompositeRender": 44,
+  "parseHTML": 25,
+  "scriptEvaluation": 347,
+  "styleLayout": 131,
+}
+`);
+    assert.equal(Math.round(output.numericValue), 933);
+    assert.equal(output.details.items.length, 6);
+    assert.equal(output.score, 1);
   });
 
   it('should compute the correct values for the load trace', async () => {

@@ -8,12 +8,14 @@
  * @fileoverview Audit a page to show a breakdown of execution timings on the main thread
  */
 
+import log from 'lighthouse-logger';
 
 import {Audit} from './audit.js';
 import {taskGroups} from '../lib/tracehouse/task-groups.js';
 import * as i18n from '../lib/i18n/i18n.js';
 import {MainThreadTasks} from '../computed/main-thread-tasks.js';
 import {TotalBlockingTime} from '../computed/metrics/total-blocking-time.js';
+import {Sentry} from '../lib/sentry.js';
 
 const UIStrings = {
   /** Title of a diagnostic audit that provides detail on the main thread work the browser did to load the page. This descriptive title is shown to users when the amount is acceptable and no user action is required. */
@@ -90,7 +92,11 @@ class MainThreadWorkBreakdown extends Audit {
       const tbtResult = await TotalBlockingTime.request(metricComputationData, context);
       tbtSavings = tbtResult.timing;
     } catch (err) {
-      if (!/Could not find any top level events/.test(err)) throw err;
+      Sentry.captureException(err, {
+        tags: {audit: this.meta.id},
+        level: 'error',
+      });
+      log.error(this.meta.id, err.message);
     }
 
     const tasks = await MainThreadTasks.request(trace, context);
