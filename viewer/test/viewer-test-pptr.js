@@ -86,6 +86,7 @@ describe('Lighthouse Viewer', () => {
   });
 
   async function ensureNoErrors() {
+    await viewerPage.bringToFront();
     await viewerPage.evaluate(() => new Promise(window.requestAnimationFrame));
     const theErrors = pageErrors;
     pageErrors = [];
