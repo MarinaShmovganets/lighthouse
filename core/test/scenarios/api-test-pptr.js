@@ -1,14 +1,14 @@
 /**
- * @license Copyright 2020 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import jestMock from 'jest-mock';
 
 import * as api from '../../index.js';
 import {createTestState, getAuditsBreakdown} from './pptr-test-utils.js';
-import {LH_ROOT} from '../../../root.js';
+import {LH_ROOT} from '../../../shared/root.js';
 import {TargetManager} from '../../gather/driver/target-manager.js';
 
 describe('Individual modes API', function() {
@@ -75,9 +75,14 @@ describe('Individual modes API', function() {
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
       const {lhr, artifacts} = result;
+      state.saveTrace(artifacts.Trace);
       expect(artifacts.URL).toEqual({
         finalDisplayedUrl: `${state.serverBaseUrl}/onclick.html#done`,
       });
+
+      expect(lhr.runWarnings).toHaveLength(1);
+      expect(lhr.runWarnings[0])
+        .toMatch(/A page navigation was detected during the run. Using timespan mode/);
 
       const bestPractices = lhr.categories['best-practices'];
       expect(bestPractices.score).toBeLessThan(1);
@@ -133,6 +138,8 @@ describe('Individual modes API', function() {
 
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
+      state.saveTrace(result.artifacts.Trace);
+
       expect(result.artifacts.URL).toEqual({
         finalDisplayedUrl: `${serverBaseUrl}/onclick.html#done`,
       });
@@ -165,15 +172,18 @@ describe('Individual modes API', function() {
 
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
+      state.saveTrace(result.artifacts.Trace);
+
       const networkRequestsDetails = /** @type {LH.Audit.Details.Table} */ (
         result.lhr.audits['network-requests'].details);
       const networkRequests = networkRequestsDetails?.items
         .map((r) => ({url: r.url, sessionTargetType: r.sessionTargetType}))
         // @ts-expect-error
         .sort((a, b) => a.url.localeCompare(b.url));
-      expect(networkRequests).toHaveLength(4);
+      expect(networkRequests).toHaveLength(10);
       expect(networkRequests.filter(r => r.sessionTargetType === 'page')).toHaveLength(2);
       expect(networkRequests.filter(r => r.sessionTargetType === 'iframe')).toHaveLength(2);
+      expect(networkRequests.filter(r => r.sessionTargetType === 'worker')).toHaveLength(6);
       expect(networkRequests).toMatchInlineSnapshot(`
 Array [
   Object {
@@ -181,16 +191,40 @@ Array [
     "url": "http://localhost:10200/simple-script.js",
   },
   Object {
+    "sessionTargetType": "worker",
+    "url": "http://localhost:10200/simple-script.js?esm",
+  },
+  Object {
+    "sessionTargetType": "worker",
+    "url": "http://localhost:10200/simple-script.js?importScripts",
+  },
+  Object {
     "sessionTargetType": "page",
     "url": "http://localhost:10200/simple-worker.js",
+  },
+  Object {
+    "sessionTargetType": "worker",
+    "url": "http://localhost:10200/simple-worker.mjs",
   },
   Object {
     "sessionTargetType": "iframe",
     "url": "http://localhost:10503/simple-script.js",
   },
   Object {
+    "sessionTargetType": "worker",
+    "url": "http://localhost:10503/simple-script.js?esm",
+  },
+  Object {
+    "sessionTargetType": "worker",
+    "url": "http://localhost:10503/simple-script.js?importScripts",
+  },
+  Object {
     "sessionTargetType": "iframe",
     "url": "http://localhost:10503/simple-worker.js",
+  },
+  Object {
+    "sessionTargetType": "worker",
+    "url": "http://localhost:10503/simple-worker.mjs",
   },
 ]
 `);
@@ -222,6 +256,7 @@ Array [
       if (!result) throw new Error('Lighthouse failed to produce a result');
 
       const {lhr, artifacts} = result;
+      state.saveTrace(artifacts.Trace);
       expect(artifacts.URL).toEqual({
         requestedUrl: url,
         mainDocumentUrl: url,
@@ -263,6 +298,7 @@ Array [
       expect(requestor).toHaveBeenCalled();
 
       const {lhr, artifacts} = result;
+      state.saveTrace(artifacts.Trace);
       expect(lhr.requestedUrl).toEqual(requestedUrl);
       expect(lhr.finalDisplayedUrl).toEqual(mainDocumentUrl);
       expect(artifacts.URL).toEqual({

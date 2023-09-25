@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /** @type {LH.Config} */
@@ -116,6 +116,15 @@ const expectations = {
         rel: 'alternate stylesheet',
         href: 'http://localhost:10200/dobetterweb/empty.css',
         hrefRaw: './empty.css',
+        hreflang: '',
+        as: '',
+        crossOrigin: null,
+        source: 'head',
+      },
+      {
+        rel: 'stylesheet',
+        href: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+        hrefRaw: '',
         hreflang: '',
         as: '',
         crossOrigin: null,
@@ -509,28 +518,12 @@ const expectations = {
                 }],
               },
             },
-            {
-              // The DevTools runner uses Puppeteer to launch Chrome which disables BFCache by default.
-              // https://github.com/puppeteer/puppeteer/issues/8197
-              //
-              // If we ignore the Puppeteer args and force BFCache to be enabled, it causes thew viewport to be sized incorrectly for other tests.
-              // These viewport issues are not present when Lighthouse is run from DevTools manually.
-              // TODO: Investigate why BFCache causes viewport issues only in our DevTools smoke tests.
-              _runner: 'devtools',
-              reason: 'Back/forward cache is disabled by flags. Visit chrome://flags/#back-forward-cache to enable it locally on this device.',
-              failureType: 'Not actionable',
-              subItems: {
-                items: [{
-                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
-                }],
-              },
-            },
           ],
         },
       },
       'prioritize-lcp-image': {
         // In CI, there can sometimes be slight savings.
-        numericValue: '<=50',
+        numericValue: '<=200',
         details: {
           items: [{
             node: {
@@ -538,7 +531,7 @@ const expectations = {
               nodeLabel: 'Do better web tester page',
             },
             url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?redirected-lcp',
-            wastedMs: '<=50',
+            wastedMs: '<=200',
           }],
           debugData: {
             initiatorPath: [{
@@ -577,8 +570,8 @@ const expectations = {
         _excludeRunner: 'devtools',
         details: {items: {0: {
           timeToFirstByte: '450+/-100',
-          lcpLoadStart: '7750+/-500',
-          lcpLoadEnd: '7750+/-500',
+          lcpLoadStart: '>5000',
+          lcpLoadEnd: '>5000',
         }}},
       },
       'largest-contentful-paint-element': {

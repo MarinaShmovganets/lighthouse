@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2023 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2023 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {makeComputedArtifact} from './computed-artifact.js';
@@ -11,8 +11,6 @@ import {Interactive} from './metrics/interactive.js';
 import {TotalBlockingTime} from './metrics/total-blocking-time.js';
 import {ProcessedTrace} from './processed-trace.js';
 import {calculateTbtImpactForEvent} from './metrics/tbt-utils.js';
-
-/** @typedef {LH.Artifacts.TaskNode & {tbtImpact: number, selfTbtImpact: number}} TBTImpactTask */
 
 class TBTImpactTasks {
   /**
@@ -66,7 +64,7 @@ class TBTImpactTasks {
    * @param {Map<LH.Artifacts.TaskNode, number>} taskToImpact
    */
   static createImpactTasks(tasks, taskToImpact) {
-    /** @type {TBTImpactTask[]} */
+    /** @type {LH.Artifacts.TBTImpactTask[]} */
     const tbtImpactTasks = [];
 
     for (const task of tasks) {
@@ -92,7 +90,7 @@ class TBTImpactTasks {
    * @param {LH.Artifacts.TaskNode[]} tasks
    * @param {number} startTimeMs
    * @param {number} endTimeMs
-   * @return {TBTImpactTask[]}
+   * @return {LH.Artifacts.TBTImpactTask[]}
    */
   static computeImpactsFromObservedTasks(tasks, startTimeMs, endTimeMs) {
     /** @type {Map<LH.Artifacts.TaskNode, number>} */
@@ -125,7 +123,7 @@ class TBTImpactTasks {
    * @param {LH.Gatherer.Simulation.Result['nodeTimings']} tbtNodeTimings
    * @param {number} startTimeMs
    * @param {number} endTimeMs
-   * @return {TBTImpactTask[]}
+   * @return {LH.Artifacts.TBTImpactTask[]}
    */
   static computeImpactsFromLantern(tasks, tbtNodeTimings, startTimeMs, endTimeMs) {
     /** @type {Map<LH.Artifacts.TaskNode, number>} */
@@ -193,7 +191,7 @@ class TBTImpactTasks {
   /**
    * @param {LH.Artifacts.MetricComputationDataInput} metricComputationData
    * @param {LH.Artifacts.ComputedContext} context
-   * @return {Promise<TBTImpactTask[]>}
+   * @return {Promise<LH.Artifacts.TBTImpactTask[]>}
    */
   static async compute_(metricComputationData, context) {
     const tbtResult = await TotalBlockingTime.request(metricComputationData, context);

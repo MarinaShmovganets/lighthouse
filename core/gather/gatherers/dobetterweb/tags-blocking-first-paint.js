@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 /**
  * @fileoverview
@@ -62,6 +62,11 @@ async function collectTagsThatBlockFirstPaint() {
     /** @type {Array<LinkTag>} */
     const linkTags = [...document.querySelectorAll('link')]
       .filter(linkTag => {
+        // Ignore malformed links with no href (e.g. `<link rel="stylesheet" href="">`)
+        // The resolved `linkTag.href` will be the main document, but the main document
+        // should never be render blocking.
+        if (!linkTag.getAttribute('href')) return false;
+
         // Filter stylesheet/HTML imports that block rendering.
         // https://www.igvita.com/2012/06/14/debunking-responsive-css-performance-myths/
         // https://www.w3.org/TR/html-imports/#dfn-import-async-attribute
