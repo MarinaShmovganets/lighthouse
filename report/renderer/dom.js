@@ -251,27 +251,26 @@ export class DOM {
   }
 
   /**
-   * Guaranteed context.querySelector. Always returns an element or throws if
+   * Typed and guaranteed context.querySelector. Always returns an element or throws if
    * nothing matches query.
+   *
    * @template {string} T
    * @param {T} query
    * @param {ParentNode} context
    * @return {ParseSelector<T>}
    */
   find(query, context) {
-    const result = context.querySelector(query);
+    const result = this.maybeFind(query, context);
     if (result === null) {
       throw new Error(`query ${query} not found`);
     }
 
-    // Because we control the report layout and templates, use the simpler
-    // `typed-query-selector` types that don't require differentiating between
-    // e.g. HTMLAnchorElement and SVGAElement. See https://github.com/GoogleChrome/lighthouse/issues/12011
-    return /** @type {ParseSelector<T>} */ (result);
+    return result;
   }
 
   /**
    * Typed context.querySelector.
+   *
    * @template {string} T
    * @param {T} query
    * @param {ParentNode} context
@@ -279,14 +278,11 @@ export class DOM {
    */
   maybeFind(query, context) {
     const result = context.querySelector(query);
-    if (result === null) {
-      return null;
-    }
 
     // Because we control the report layout and templates, use the simpler
     // `typed-query-selector` types that don't require differentiating between
     // e.g. HTMLAnchorElement and SVGAElement. See https://github.com/GoogleChrome/lighthouse/issues/12011
-    return /** @type {ParseSelector<T>} */ (result);
+    return /** @type {ParseSelector<T> | null} */ (result);
   }
 
   /**

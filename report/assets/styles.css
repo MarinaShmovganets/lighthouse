@@ -1977,7 +1977,6 @@ details[open] .lh-clump-toggletext--hide { display: block;}
 
 .lh-exp-gauge-component text {
   font-size: calc(var(--radius) * 0.2);
-  /* stroke-width: unset; */
 }
 
 .lh-exp-gauge-component .lh-exp-gauge {
@@ -2172,10 +2171,21 @@ details[open] .lh-clump-toggletext--hide { display: block;}
 
 @keyframes peek {
   /* biggest it should go is 0.92. smallest is 0.8 */
-   0% { transform: scale(0.8); opacity: 0.8; }
-   50% {  transform: scale(0.92); opacity: 1; }
-   100% { transform: scale(0.8); opacity: 0.8; }
- }
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(0.92);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+}
 
 .lh-exp-gauge-component .wrapper {
   width: 620px;
