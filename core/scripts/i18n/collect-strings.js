@@ -161,7 +161,7 @@ function parseExampleJsDoc(rawExample) {
  * @return {IncrementalCtc}
  */
 function convertMessageToCtc(lhlMessage, examples = {}) {
-  _lhlValidityChecks(lhlMessage);
+  _lhlValidityChecks(escapeIcuMessage(lhlMessage));
 
   /** @type {IncrementalCtc} */
   const ctc = {
@@ -517,7 +517,7 @@ function parseUIStrings(sourceStr, liveUIStrings) {
     const key = getIdentifier(property);
 
     // Use live message to avoid having to e.g. concat strings broken into parts.
-    const message = escapeIcuMessage(liveUIStrings[key]);
+    const message = (liveUIStrings[key]);
 
     // @ts-expect-error - Not part of the public tsc interface yet.
     const jsDocComments = tsc.getJSDocCommentsAndTags(property);

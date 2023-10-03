@@ -96,7 +96,7 @@ function getGoldenLocaleArgumentIds(goldenLhl) {
   const goldenLocaleArgumentIds = {};
 
   for (const [messageId, {message}] of Object.entries(goldenLhl)) {
-    const parsedMessageElements = MessageParser.parse(message);
+    const parsedMessageElements = MessageParser.parse(escapeIcuMessage(message));
     const goldenArgumentElements = collectAllCustomElementsFromICU(parsedMessageElements);
     const goldenArgumentIds = [...goldenArgumentElements.keys()].sort();
 

@@ -207,8 +207,6 @@ function formatMessage(message, values, locale) {
   // When using accented english, force the use of a different locale for number formatting.
   const localeForMessageFormat = (locale === 'en-XA' || locale === 'en-XL') ? 'de-DE' : locale;
 
-  // message = escapeIcuMessage(message);
-
   // TODO !: I think this is no longer the case, but my local mac is crashing on
   // yarn open-devtools so I can't really confirm yet...
   // This package is not correctly bundled.
@@ -250,7 +248,7 @@ function _localizeIcuMessage(icuMessage, locale) {
     return icuMessage.formattedDefault;
   }
 
-  return formatMessage(localeMessage.message, icuMessage.values, locale);
+  return formatMessage(escapeIcuMessage(localeMessage.message), icuMessage.values, locale);
 }
 
 /**
