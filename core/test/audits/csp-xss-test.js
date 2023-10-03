@@ -27,7 +27,7 @@ const STATIC_RESULTS = {
     description: {
       formattedDefault:
         'Missing `object-src` allows the injection of plugins that execute unsafe scripts. ' +
-        'Consider setting `object-src` to `none` if you can.',
+        'Consider setting `object-src` to `\'none\'` if you can.',
     },
     directive: 'object-src',
   },
@@ -37,7 +37,7 @@ const STATIC_RESULTS = {
       formattedDefault:
         'Missing `base-uri` allows injected `<base>` tags to set the base URL for all ' +
         'relative URLs (e.g. scripts) to an attacker controlled domain. ' +
-        'Consider setting `base-uri` to `none` or `self`.',
+        'Consider setting `base-uri` to `\'none\'` or `\'self\'`.',
     },
     directive: 'base-uri',
   },
@@ -45,7 +45,7 @@ const STATIC_RESULTS = {
     severity: SEVERITY.medium,
     description: {
       formattedDefault:
-        'The page contains a CSP defined in a <meta> tag. ' +
+        'The page contains a CSP defined in a `<meta>` tag. ' +
         'Consider moving the CSP to an HTTP header or ' +
         'defining another strict CSP in an HTTP header.',
     },
@@ -55,7 +55,7 @@ const STATIC_RESULTS = {
     severity: SEVERITY.medium,
     description: {
       formattedDefault:
-        'Consider adding `unsafe-inline` (ignored by browsers supporting ' +
+        'Consider adding `\'unsafe-inline\'` (ignored by browsers supporting ' +
         'nonces/hashes) to be backward compatible with older browsers.',
     },
     directive: 'script-src',
