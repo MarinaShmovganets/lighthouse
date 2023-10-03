@@ -1,40 +1,46 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
-'use strict';
 
-const rollup = require('rollup');
-const rollupPlugins = require('./rollup-plugins.js');
-const GhPagesApp = require('./gh-pages-app.js');
-const {LH_ROOT} = require('../root.js');
+import {createRequire} from 'module';
+
+import esbuild from 'esbuild';
+
+import * as plugins from './esbuild-plugins.js';
+import {GhPagesApp} from './gh-pages-app.js';
+import {LH_ROOT} from '../shared/root.js';
+
+const require = createRequire(import.meta.url);
 
 async function buildReportGenerator() {
-  const bundle = await rollup.rollup({
-    input: 'report/generator/report-generator.js',
+  const result = await esbuild.build({
+    entryPoints: ['report/generator/report-generator.js'],
+    write: false,
+    bundle: true,
+    minify: !process.env.DEBUG,
     plugins: [
-      rollupPlugins.shim({
-        [`${LH_ROOT}/report/generator/flow-report-assets.js`]: 'export default {}',
+      plugins.umd('ReportGenerator'),
+      plugins.replaceModules({
+        [`${LH_ROOT}/report/generator/flow-report-assets.js`]: 'export const flowReportAssets = {}',
       }),
-      rollupPlugins.commonjs(),
-      rollupPlugins.nodeResolve(),
-      rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
+      plugins.ignoreBuiltins(),
+      plugins.bulkLoader([
+        plugins.partialLoaders.inlineFs({verbose: Boolean(process.env.DEBUG)}),
+        plugins.partialLoaders.rmGetModuleDirectory,
+      ]),
     ],
   });
 
-  const result = await bundle.generate({
-    format: 'umd',
-    name: 'ReportGenerator',
-  });
-  await bundle.close();
-  return result.output[0].code;
+  // @ts-expect-error placed here by the umd plugin.
+  return result.outputFiles[0].textUmd;
 }
 
 /**
  * Build viewer, optionally deploying to gh-pages if `--deploy` flag was set.
  */
-async function run() {
+async function main() {
   const reportGeneratorJs = await buildReportGenerator();
 
   const app = new GhPagesApp({
@@ -46,30 +52,19 @@ async function run() {
       {path: '../../flow-report/assets/styles.css'},
     ],
     javascripts: [
+      // TODO: import report generator async
+      // https://github.com/GoogleChrome/lighthouse/pull/13429
       reportGeneratorJs,
       {path: require.resolve('pako/dist/pako_inflate.js')},
-      {path: 'src/main.js', rollup: true, rollupPlugins: [
-        rollupPlugins.shim({
-          './locales.js': 'export default {}',
+      {path: 'src/main.js', esbuild: true, esbuildPlugins: [
+        plugins.replaceModules({
+          [`${LH_ROOT}/shared/localization/locales.js`]: 'export const locales = {};',
         }),
-        rollupPlugins.typescript({
-          tsconfig: 'flow-report/tsconfig.json',
-          // Plugin struggles with custom outDir, so revert it from tsconfig value
-          // as well as any options that require an outDir is set.
-          outDir: null,
-          composite: false,
-          emitDeclarationOnly: false,
-          declarationMap: false,
-        }),
-        rollupPlugins.inlineFs({verbose: Boolean(process.env.DEBUG)}),
-        rollupPlugins.replace({
-          values: {
-            '__dirname': '""',
-          },
-        }),
-        rollupPlugins.commonjs(),
-        rollupPlugins.nodePolyfills(),
-        rollupPlugins.nodeResolve({preferBuiltins: true}),
+        plugins.ignoreBuiltins(),
+        plugins.bulkLoader([
+          plugins.partialLoaders.inlineFs({verbose: Boolean(process.env.DEBUG)}),
+          plugins.partialLoaders.rmGetModuleDirectory,
+        ]),
       ]},
     ],
     assets: [
@@ -87,7 +82,4 @@ async function run() {
   }
 }
 
-run().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+await main();

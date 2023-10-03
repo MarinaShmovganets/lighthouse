@@ -1,15 +1,14 @@
 /**
- * @license Copyright 2020 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
-'use strict';
 
 /* eslint-env browser */
 
 /** @typedef {HTMLElementTagNameMap & {[id: string]: HTMLElement}} HTMLElementByTagName */
 /** @template {string} T @typedef {import('typed-query-selector/parser').ParseSelector<T, Element>} ParseSelector */
-/** @template T @typedef {import('../../../report/renderer/i18n').I18n<T>} I18n */
+/** @typedef {import('../../../report/renderer/i18n-formatter').I18nFormatter} I18nFormatter */
 
 const UIStrings = {
   /** Label for a button that alternates between showing or hiding a table. */
@@ -31,15 +30,26 @@ const UIStrings = {
 };
 
 class TreemapUtil {
-  /** @type {I18n<typeof TreemapUtil['UIStrings']>} */
+  /** @type {I18nFormatter} */
   // @ts-expect-error: Is set in main.
   static i18n = null;
-
   static UIStrings = UIStrings;
+  static strings = {...UIStrings};
+
+  /**
+   * @param {Record<string, string>} providedStrings
+   */
+  static applyStrings(providedStrings) {
+    this.strings = {
+      // Set missing renderer strings to default (english) values.
+      ...UIStrings,
+      ...providedStrings,
+    };
+  }
 
   /**
    * @param {LH.Treemap.Node} node
-   * @param {(node: NodeWithElement, path: string[]) => void} fn
+   * @param {(node: import('./main.js').NodeWithElement, path: string[]) => void} fn
    * @param {string[]=} path
    */
   static walk(node, fn, path) {
@@ -119,7 +129,7 @@ class TreemapUtil {
    */
   static createChildOf(parentElem, elementName, className) {
     const element = this.createElement(elementName, className);
-    parentElem.appendChild(element);
+    parentElem.append(element);
     return element;
   }
 
@@ -140,16 +150,6 @@ class TreemapUtil {
     // `typed-query-selector` types that don't require differentiating between
     // e.g. HTMLAnchorElement and SVGAElement. See https://github.com/GoogleChrome/lighthouse/issues/12011
     return /** @type {ParseSelector<T>} */ (result);
-  }
-
-  /**
-   * @param {number} value
-   * @param {string} unit
-   */
-  static format(value, unit) {
-    if (unit === 'byte') return this.i18n.formatBytes(value);
-    if (unit === 'ms') return this.i18n.formatMilliseconds(value);
-    return `${this.i18n.formatNumber(value)}\xa0${unit}`;
   }
 
   /**

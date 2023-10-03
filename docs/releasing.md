@@ -6,17 +6,15 @@ This doc is only relevant to core members.
 
 ### Cadence
 
-We aim to release every 3 weeks. Our schedule is set as follows: Two days before the [expected Chromium branch point](https://www.chromium.org/developers/calendar) (which is every six weeks) and again exactly 3 weeks after that day. These are Tuesdays.
+We aim to release every 4 week, one day after the [expected Chromium branch point](https://www.chromium.org/developers/calendar). These are Wednesdays.
+
+Major version bumps will be the first release of April and October. The due date and progress of major milestones are tracked in https://github.com/GoogleChrome/lighthouse/milestones.
 
 For example, following this schedule, we will attempt a release on these dates:
 
-* _Sep 29 2020_ (M87)
-* Oct 20 2020
-* _Nov 10 2020_ (M88)
-* Dec 1 2020
+* _Sep 6 2023_ (Ships in M119, after M118 branch point)
+* _Oct 4 2023_ (Ships in M120, after M119 branch point)
 * ...
-
-Italicized dates are two days before the expected Chromium branch point.
 
 The planned ship dates are added to the internal Lighthouse calendar.
 
@@ -36,33 +34,23 @@ We follow [semver](https://semver.org/) versioning semantics (`vMajor.Minor.Patc
 
 ## Release Process
 
+### Update various dependencies
+
+In general, Lighthouse should be using the latest version of all of these dependencies:
+
+1. https://github.com/GoogleChrome/lighthouse-stack-packs
+1. `puppeteer` and `puppeteer-core`
+1. `third-party-web`
+1. `axe-core`
+1. `js-library-detector`
+1. `chrome-launcher`
+1. `chrome-devtools-frontend`
+1. `devtools-protocol`
+
 ### On the scheduled release date
 
 Before starting, you should announce to the LH eng channel that you are releasing,
 and that no new PRs should be merged until you are done.
-
-```sh
-# Make pristine folder.
-bash ./lighthouse-core/scripts/release/prepare-pristine.sh
-cd ../lighthouse-pristine
-yarn
-yarn build-all
-
-# Verify the viewer will work.
-yarn serve-viewer
-# Works with v4 report? http://localhost:8000/viewer?gist=7251f9eba409f385e4c0424515fe8009
-# Works with v5 report? http://localhost:8000/viewer?gist=6093e41b9b50c8d642a7e6bbc784e32f
-# Works with v6 report? http://localhost:8000/viewer?gist=94722e917a507feb5371ad51be6c3334
-# Works with v8 report? http://localhost:8000/viewer?gist=18d523b86779185ecfd376d58f891e1d
-# Current production viewer (https://googlechrome.github.io/lighthouse/viewer/) has forward compat with next major LHR?
-
-# Confirm DevTools integration will work: Do some manual testing on a number of sites.
-yarn test-devtools
-yarn open-devtools
-
-# Leave pristine folder.
-cd ../lighthouse
-```
 
 ### Lightrider
 
@@ -80,7 +68,7 @@ Now that the integrations are confirmed to work, go back to `lighthouse` folder.
 
 ```sh
 # Prepare the commit, replace x.x.x with the desired version
-bash ./lighthouse-core/scripts/release/prepare-commit.sh x.x.x
+bash ./core/scripts/release/prepare-commit.sh x.x.x
 ```
 
 1. Edit changelog.md before opening the PR
@@ -91,7 +79,7 @@ bash ./lighthouse-core/scripts/release/prepare-commit.sh x.x.x
 
 ```sh
 # Package everything for publishing.
-bash ./lighthouse-core/scripts/release/prepare-package.sh
+bash ./core/scripts/release/prepare-package.sh
 
 # Make sure you're in the Lighthouse pristine repo.
 cd ../lighthouse-pristine

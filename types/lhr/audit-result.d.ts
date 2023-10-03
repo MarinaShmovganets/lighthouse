@@ -1,11 +1,11 @@
 /**
- * @license Copyright 2021 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
-import {FormattedIcu} from './i18n';
-import AuditDetails from './audit-details';
+import {FormattedIcu} from './i18n.js';
+import AuditDetails from './audit-details.js';
 
 interface ScoreDisplayModes {
   /** Scores of 0-1 (map to displayed scores of 0-100). */
@@ -24,6 +24,14 @@ interface ScoreDisplayModes {
 
 type ScoreDisplayMode = ScoreDisplayModes[keyof ScoreDisplayModes];
 
+interface MetricSavings {
+  LCP?: number;
+  FCP?: number;
+  CLS?: number;
+  TBT?: number;
+  INP?: number;
+}
+
 /** Audit result returned in Lighthouse report. All audits offer a description and score of 0-1. */
 export interface Result {
   displayValue?: string;
@@ -31,6 +39,8 @@ export interface Result {
   explanation?: string;
   /** Error message from any exception thrown while running this audit. */
   errorMessage?: string;
+  /** Error stack from any exception thrown while running this audit. */
+  errorStack?: string;
   warnings?: string[];
   /** The scored value of the audit, provided in the range `0-1`, or null if `scoreDisplayMode` indicates not scored. */
   score: number|null;
@@ -56,4 +66,13 @@ export interface Result {
   numericUnit?: string;
   /** Extra information about the page provided by some types of audits, in one of several possible forms that can be rendered in the HTML report. */
   details?: FormattedIcu<AuditDetails>;
+  /** Estimates of how much this audit affects various performance metrics. Values will be in the unit of the respective metrics. */
+  metricSavings?: MetricSavings
+  /** Score details including p10 and median for calculating an audit's log-normal score. */
+  scoringOptions?: {
+    p10: number;
+    median: number;
+  };
+  /** A number indicating how much guidance Lighthouse provides to solve the problem in this audit on a 1-3 scale. Higher means more guidance. */
+  guidanceLevel?: number;
 }

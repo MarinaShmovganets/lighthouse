@@ -1,9 +1,8 @@
 /**
- * @license Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
-'use strict';
 
 import idbKeyval from 'idb-keyval';
 
@@ -92,14 +91,9 @@ export class LighthouseReportViewer {
       inputTarget.value = '';
     });
 
-    // A click on the visual placeholder will trigger the hidden file input.
-    const placeholderTarget = find('.viewer-placeholder-inner', document);
-    placeholderTarget.addEventListener('click', e => {
-      const target = /** @type {?Element} */ (e.target);
-
-      if (target && target.localName !== 'input' && target.localName !== 'a') {
-        fileInput.click();
-      }
+    const selectFileEl = find('.viewer-placeholder__file-button', document);
+    selectFileEl.addEventListener('click', _ => {
+      fileInput.click();
     });
   }
 
@@ -116,9 +110,10 @@ export class LighthouseReportViewer {
     const jsonurl = params.get('jsonurl');
     const gzip = params.get('gzip') === '1';
 
-    if (location.hash) {
+    const hash = window.__hash ?? location.hash;
+    if (hash) {
       try {
-        const hashParams = JSON.parse(TextEncoding.fromBase64(location.hash.substr(1), {gzip}));
+        const hashParams = JSON.parse(TextEncoding.fromBase64(hash.substr(1), {gzip}));
         if (hashParams.lhr) {
           this._replaceReportHtml(hashParams.lhr);
           return Promise.resolve();
@@ -280,7 +275,7 @@ export class LighthouseReportViewer {
     // Reset container content.
     container.innerHTML = '';
     const rootEl = document.createElement('div');
-    container.appendChild(rootEl);
+    container.append(rootEl);
 
     // Only give gist-saving callback if current report isn't from a gist.
     let saveGistCallback;
@@ -291,8 +286,10 @@ export class LighthouseReportViewer {
     try {
       if (this._isFlowReport(json)) {
         this._renderFlowResult(json, rootEl, saveGistCallback);
+        window.ga('send', 'event', 'report', 'flow-report');
       } else {
         this._renderLhr(json, rootEl, saveGistCallback);
+        window.ga('send', 'event', 'report', 'report');
       }
 
       // Only clear query string if current report isn't from a gist or PSI.
@@ -300,7 +297,7 @@ export class LighthouseReportViewer {
         history.pushState({}, '', LighthouseReportViewer.APP_URL);
       }
     } catch (e) {
-      logger.error(`Error rendering report: ${e.message}`);
+      logger.error(`Error rendering report: ${e.stack}`);
       container.innerHTML = '';
       throw e;
     } finally {
@@ -339,6 +336,8 @@ export class LighthouseReportViewer {
     } catch (err) {
       logger.error(err.message);
     }
+
+    document.dispatchEvent(new CustomEvent('lh-file-upload-test-ack'));
   }
 
   /**

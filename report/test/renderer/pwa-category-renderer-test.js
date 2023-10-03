@@ -1,37 +1,41 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
-'use strict';
 
-/* eslint-env jest */
-
-import {strict as assert} from 'assert';
+import assert from 'assert/strict';
 
 import jsdom from 'jsdom';
 
-import {Util} from '../../renderer/util.js';
-import {I18n} from '../../renderer/i18n.js';
+import {ReportUtils, UIStrings} from '../../renderer/report-utils.js';
+import {I18nFormatter} from '../../renderer/i18n-formatter.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {PwaCategoryRenderer} from '../../renderer/pwa-category-renderer.js';
-import sampleResultsOrig from '../../../lighthouse-core/test/results/sample_v2.json';
+import {readJson} from '../../../core/test/test-utils.js';
+import {Globals} from '../../renderer/report-globals.js';
+
+const sampleResultsOrig = readJson('../../../core/test/results/sample_v2.json', import.meta);
 
 describe('PwaCategoryRenderer', () => {
   let category;
   let pwaRenderer;
   let sampleResults;
 
-  beforeAll(() => {
-    Util.i18n = new I18n('en', {...Util.UIStrings});
+  before(() => {
+    Globals.apply({
+      providedStrings: {},
+      i18n: new I18nFormatter('en'),
+      reportJson: null,
+    });
 
     const {document} = new jsdom.JSDOM().window;
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
     pwaRenderer = new PwaCategoryRenderer(dom, detailsRenderer);
 
-    sampleResults = Util.prepareReportResult(sampleResultsOrig);
+    sampleResults = ReportUtils.prepareReportResult(sampleResultsOrig);
   });
 
   beforeEach(() => {
@@ -40,8 +44,8 @@ describe('PwaCategoryRenderer', () => {
     category = JSON.parse(JSON.stringify(pwaCategory));
   });
 
-  afterAll(() => {
-    Util.i18n = undefined;
+  after(() => {
+    Globals.i18n = undefined;
   });
 
   it('renders the regular audits', () => {
@@ -258,8 +262,8 @@ describe('PwaCategoryRenderer', () => {
       assert.strictEqual(badgeGauge.querySelector('.lh-gauge--pwa__wrapper'), null);
 
       const percentageElem = badgeGauge.querySelector('.lh-gauge__percentage');
-      assert.strictEqual(percentageElem.textContent, '?');
-      assert.strictEqual(percentageElem.title, Util.UIStrings.errorLabel);
+      assert.strictEqual(percentageElem.textContent, '');
+      assert.strictEqual(percentageElem.title, UIStrings.errorLabel);
     });
 
     it('renders score gauges with unique ids for items in <defs>', () => {

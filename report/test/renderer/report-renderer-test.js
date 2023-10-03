@@ -1,24 +1,22 @@
 /**
- * @license Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
-'use strict';
 
-/* eslint-env jest */
-
-import {strict as assert} from 'assert';
+import assert from 'assert/strict';
 
 import jsdom from 'jsdom';
-import {jest} from '@jest/globals';
+import jestMock from 'jest-mock';
 
-import {Util} from '../../renderer/util.js';
-import URL from '../../../lighthouse-core/lib/url-shim.js';
+import {ReportUtils} from '../../renderer/report-utils.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {CategoryRenderer} from '../../renderer/category-renderer.js';
 import {ReportRenderer} from '../../renderer/report-renderer.js';
-import sampleResultsOrig from '../../../lighthouse-core/test/results/sample_v2.json';
+import {readJson} from '../../../core/test/test-utils.js';
+
+const sampleResultsOrig = readJson('../../../core/test/results/sample_v2.json', import.meta);
 
 const TIMESTAMP_REGEX = /\d+, \d{4}.*\d+:\d+/;
 
@@ -26,8 +24,8 @@ describe('ReportRenderer', () => {
   let renderer;
   let sampleResults;
 
-  beforeAll(() => {
-    global.console.warn = jest.fn();
+  before(() => {
+    global.console.warn = jestMock.fn();
 
     // Stub out matchMedia for Node.
     global.matchMedia = function() {
@@ -43,10 +41,10 @@ describe('ReportRenderer', () => {
     const detailsRenderer = new DetailsRenderer(dom);
     const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
     renderer = new ReportRenderer(dom, categoryRenderer);
-    sampleResults = Util.prepareReportResult(sampleResultsOrig);
+    sampleResults = ReportUtils.prepareReportResult(sampleResultsOrig);
   });
 
-  afterAll(() => {
+  after(() => {
     global.self = undefined;
     global.matchMedia = undefined;
   });
@@ -58,7 +56,8 @@ describe('ReportRenderer', () => {
       assert.ok(output.querySelector('.lh-header-container'), 'has a header');
       assert.ok(output.querySelector('.lh-report'), 'has report body');
       // 3 sets of gauges - one in sticky header, one in scores header, and one in each section.
-      assert.equal(output.querySelectorAll('.lh-gauge__wrapper, .lh-gauge--pwa__wrapper').length,
+      // eslint-disable-next-line max-len
+      assert.equal(output.querySelectorAll('.lh-gauge__wrapper, .lh-gauge--pwa__wrapper, .lh-exp-gauge__wrapper').length,
           Object.keys(sampleResults.categories).length * 3, 'renders category gauges');
     });
 
@@ -73,7 +72,10 @@ describe('ReportRenderer', () => {
 
     it('renders a topbar', () => {
       const topbar = renderer._renderReportTopbar(sampleResults);
-      assert.equal(topbar.querySelector('.lh-topbar__url').textContent, sampleResults.finalUrl);
+      assert.equal(
+        topbar.querySelector('.lh-topbar__url').textContent,
+        sampleResults.finalDisplayedUrl
+      );
     });
 
     it('renders a header', () => {
@@ -216,10 +218,11 @@ describe('ReportRenderer', () => {
       expect(items.length).toBeGreaterThanOrEqual(6);
 
       const itemsTxt = items.map(el => `${el.textContent} ${el.title}`).join('\n');
-      expect(itemsTxt).toContain('Moto G4');
+      expect(itemsTxt).toContain('Moto G Power');
       expect(itemsTxt).toContain('RTT');
       expect(itemsTxt).toMatch(/\dx/);
       expect(itemsTxt).toContain(sampleResults.environment.networkUserAgent);
+      expect(itemsTxt).toMatch('412x823, DPR 1.75');
     });
   });
 
@@ -231,7 +234,7 @@ describe('ReportRenderer', () => {
     const container = renderer._dom.document().body;
     const output = renderer.renderReport(sampleResults, container);
 
-    const DOCS_ORIGINS = ['https://developers.google.com', 'https://web.dev'];
+    const DOCS_ORIGINS = ['https://developers.google.com', 'https://web.dev', 'https://developer.chrome.com'];
     const utmChannels = [...output.querySelectorAll('a[href*="utm_source=lighthouse"')]
       .map(a => new URL(a.href))
       .filter(url => DOCS_ORIGINS.includes(url.origin))

@@ -1,30 +1,29 @@
 /**
- * @license Copyright 2019 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2019 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
-'use strict';
 
-/* eslint-env jest */
 /* eslint-disable new-cap */
 
 /**
- * @fileoverview Example Jest tests for demonstrating how to run Lighthouse on an authenticated
+ * @fileoverview Example Mocha tests for demonstrating how to run Lighthouse on an authenticated
  * page as integration tests. See docs/recipes/auth/README.md for more.
  */
 
 /** @typedef {import('lighthouse/types/lhr')} LH */
 
-const puppeteer = require('puppeteer');
-const lighthouse = require('lighthouse');
-const server = require('../auth/server/server.js');
-const {login, logout} = require('../auth/example-lh-auth.js');
+import puppeteer from 'puppeteer';
+import lighthouse from 'lighthouse';
+import {expect} from 'expect';
+import {getChromePath} from 'chrome-launcher';
+
+import server from '../auth/server/server.js';
+import {login, logout} from '../auth/example-lh-auth.js';
 
 const CHROME_DEBUG_PORT = 8042;
 const SERVER_PORT = 10632;
 const ORIGIN = `http://localhost:${SERVER_PORT}`;
-
-jest.setTimeout(30000);
 
 // Provide a nice way to assert a score for a category.
 // Note, you could just use `expect(lhr.categories.seo.score).toBeGreaterThanOrEqual(0.9)`,
@@ -80,16 +79,17 @@ describe('my site', () => {
   /** @type {import('puppeteer').Page} */
   let page;
 
-  beforeAll(async () => {
+  before(async () => {
     await new Promise(resolve => server.listen(SERVER_PORT, resolve));
     browser = await puppeteer.launch({
       args: [`--remote-debugging-port=${CHROME_DEBUG_PORT}`],
       headless: !process.env.DEBUG,
       slowMo: process.env.DEBUG ? 50 : undefined,
+      executablePath: getChromePath(),
     });
   });
 
-  afterAll(async () => {
+  after(async () => {
     await browser.close();
     await new Promise(resolve => server.close(resolve));
   });
@@ -99,8 +99,8 @@ describe('my site', () => {
   });
 
   afterEach(async () => {
+    await logout(page, ORIGIN);
     await page.close();
-    await logout(browser, ORIGIN);
   });
 
   describe('/ logged out', () => {
@@ -121,14 +121,14 @@ describe('my site', () => {
 
   describe('/ logged in', () => {
     it('lighthouse', async () => {
-      await login(browser, ORIGIN);
+      await login(page, ORIGIN);
       await page.goto(ORIGIN);
       const lhr = await runLighthouse(page.url());
       expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
     });
 
     it('login form should not exist', async () => {
-      await login(browser, ORIGIN);
+      await login(page, ORIGIN);
       await page.goto(ORIGIN);
       const emailInput = await page.$('input[type="email"]');
       const passwordInput = await page.$('input[type="password"]');
@@ -146,14 +146,14 @@ describe('my site', () => {
 
   describe('/dashboard logged in', () => {
     it('lighthouse', async () => {
-      await login(browser, ORIGIN);
+      await login(page, ORIGIN);
       await page.goto(`${ORIGIN}/dashboard`);
       const lhr = await runLighthouse(page.url());
       expect(lhr).toHaveLighthouseScoreGreaterThanOrEqual('seo', 0.9);
     });
 
     it('has secrets', async () => {
-      await login(browser, ORIGIN);
+      await login(page, ORIGIN);
       await page.goto(`${ORIGIN}/dashboard`);
       expect(await page.content()).toContain('secrets');
     });
