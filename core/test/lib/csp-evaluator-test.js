@@ -56,7 +56,7 @@ describe('getTranslatedDescription', () => {
     expect(isIcuMessage(translated[0])).toBeTruthy();
     expect(translated[0]).toBeDisplayString(
       'Missing `object-src` allows the injection of plugins that execute unsafe scripts. ' +
-      'Consider setting `object-src` to `none` if you can.'
+      'Consider setting `object-src` to `\'none\'` if you can.'
     );
   });
 
@@ -70,7 +70,7 @@ describe('getTranslatedDescription', () => {
     expect(translated[0]).toBeDisplayString(
       'Missing `base-uri` allows injected `<base>` tags to set the base URL for all ' +
       'relative URLs (e.g. scripts) to an attacker controlled domain. ' +
-      'Consider setting `base-uri` to `none` or `self`.'
+      'Consider setting `base-uri` to `\'none\'` or `\'self\'`.'
     );
   });
 

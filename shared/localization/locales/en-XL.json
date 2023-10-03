@@ -2223,10 +2223,10 @@
     "message": "`reflected-xss` îś d̂ép̂ŕêćât́êd́ ŝín̂ćê ĆŜṔ2. P̂ĺêáŝé, ûśê t́ĥé X̂-X́ŜŚ-P̂ŕôt́êćt̂íôń ĥéâd́êŕ îńŝt́êád̂."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "M̂íŝśîńĝ `base-uri` ál̂ĺôẃŝ ín̂j́êćt̂éd̂ `<base>` t́âǵŝ t́ô śêt́ t̂h́ê b́âśê ÚR̂Ĺ f̂ór̂ ál̂ĺ r̂él̂át̂ív̂é ÛŔL̂ś (ê.ǵ. ŝćr̂íp̂t́ŝ) t́ô án̂ át̂t́âćk̂ér̂ ćôńt̂ŕôĺl̂éd̂ d́ôḿâín̂. Ćôńŝíd̂ér̂ śêt́t̂ín̂ǵ `base-uri` t̂ó `none` ôŕ `self`."
+    "message": "M̂íŝśîńĝ `base-uri` ál̂ĺôẃŝ ín̂j́êćt̂éd̂ `<base>` t́âǵŝ t́ô śêt́ t̂h́ê b́âśê ÚR̂Ĺ f̂ór̂ ál̂ĺ r̂él̂át̂ív̂é ÛŔL̂ś (ê.ǵ. ŝćr̂íp̂t́ŝ) t́ô án̂ át̂t́âćk̂ér̂ ćôńt̂ŕôĺl̂éd̂ d́ôḿâín̂. Ćôńŝíd̂ér̂ śêt́t̂ín̂ǵ `base-uri` t̂ó `'none'` ôŕ `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "M̂íŝśîńĝ `object-src` ál̂ĺôẃŝ t́ĥé îńĵéĉt́îón̂ óf̂ ṕl̂úĝín̂ś t̂h́ât́ êx́êćût́ê ún̂śâf́ê śĉŕîṕt̂ś. Ĉón̂śîd́êŕ ŝét̂t́îńĝ `object-src` t́ô `none` íf̂ ýôú ĉán̂."
+    "message": "M̂íŝśîńĝ `object-src` ál̂ĺôẃŝ t́ĥé îńĵéĉt́îón̂ óf̂ ṕl̂úĝín̂ś t̂h́ât́ êx́êćût́ê ún̂śâf́ê śĉŕîṕt̂ś. Ĉón̂śîd́êŕ ŝét̂t́îńĝ `object-src` t́ô `'none'` íf̂ ýôú ĉán̂."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
     "message": "`script-src` d̂ír̂éĉt́îv́ê íŝ ḿîśŝín̂ǵ. T̂h́îś ĉán̂ ál̂ĺôẃ t̂h́ê éx̂éĉút̂íôń ôf́ ûńŝáf̂é ŝćr̂íp̂t́ŝ."

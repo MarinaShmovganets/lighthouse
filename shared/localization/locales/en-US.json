@@ -2223,10 +2223,10 @@
     "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `none` or `self`."
+    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `none` if you can."
+    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
     "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
