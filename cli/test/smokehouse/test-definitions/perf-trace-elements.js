@@ -173,7 +173,7 @@ const expectations = {
         },
       },
       'layout-shift-elements': {
-        score: 1,
+        score: null,
         displayValue: '2 elements found',
         details: {
           items: {
