@@ -30,16 +30,16 @@ const UIStrings = {
     'that execute unsafe scripts. Consider setting `object-src` to `\'none\'` if you can.',
   /** Message shown when a CSP uses a domain allowlist to filter out malicious scripts. Shown in a table with a list of other CSP vulnerabilities and suggestions. "CSP" stands for "Content Security Policy". "CSP", "'strict-dynamic'", "nonces", and "hashes" do not need to be translated. "allowlists" can be interpreted as "whitelist". */
   strictDynamic: 'Host allowlists can frequently be bypassed. Consider using ' +
-    'CSP nonces or hashes instead, along with `strict-dynamic` if necessary.',
+    'CSP nonces or hashes instead, along with `\'strict-dynamic\'` if necessary.',
   /** Message shown when a CSP allows inline scripts to be run in the page. Shown in a table with a list of other CSP vulnerabilities and suggestions. "CSP" stands for "Content Security Policy". "CSP", "'unsafe-inline'", "nonces", and "hashes" do not need to be translated. */
-  unsafeInline: '`unsafe-inline` allows the execution of unsafe in-page scripts ' +
+  unsafeInline: '`\'unsafe-inline\'` allows the execution of unsafe in-page scripts ' +
     'and event handlers. Consider using CSP nonces or hashes to allow scripts individually.',
   /** Message shown when a CSP is not backwards compatible with browsers that do not support CSP nonces/hashes. Shown in a table with a list of other CSP vulnerabilities and suggestions. "CSP" stands for "Content Security Policy". "'unsafe-inline'", "nonces", and "hashes" do not need to be translated. */
-  unsafeInlineFallback: 'Consider adding `unsafe-inline` (ignored by browsers supporting ' +
+  unsafeInlineFallback: 'Consider adding `\'unsafe-inline\'` (ignored by browsers supporting ' +
     'nonces/hashes) to be backward compatible with older browsers.',
   /** Message shown when a CSP is not backwards compatible with browsers that do not support the 'strict-dynamic' keyword. Shown in a table with a list of other CSP vulnerabilities and suggestions. "CSP" stands for "Content Security Policy". "http:", "https:", and "'strict-dynamic'" do not need to be translated. */
   allowlistFallback: 'Consider adding https: and http: URL schemes (ignored by browsers ' +
-    'supporting `strict-dynamic`) to be backward compatible with older browsers.',
+    'supporting `\'strict-dynamic\'`) to be backward compatible with older browsers.',
   /** Message shown when a CSP only provides a reporting destination through the report-to directive. Shown in a table with a list of other CSP vulnerabilities and suggestions. "CSP" stands for "Content Security Policy". "report-to", "report-uri", and "Chromium" do not need to be translated. */
   reportToOnly: 'The reporting destination is only configured via the report-to directive. ' +
     'This directive is only supported in Chromium-based browsers so it is ' +

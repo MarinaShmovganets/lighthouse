@@ -55,7 +55,7 @@ const STATIC_RESULTS = {
     severity: SEVERITY.medium,
     description: {
       formattedDefault:
-        'Consider adding `unsafe-inline` (ignored by browsers supporting ' +
+        'Consider adding `\'unsafe-inline\'` (ignored by browsers supporting ' +
         'nonces/hashes) to be backward compatible with older browsers.',
     },
     directive: 'script-src',
