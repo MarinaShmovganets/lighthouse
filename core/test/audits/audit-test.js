@@ -104,7 +104,7 @@ describe('Audit', () => {
         assert.strictEqual(InformativeOnPass.meta.scoreDisplayMode, Audit.SCORING_MODES.NUMERIC);
         const auditResult = Audit.generateAuditResult(InformativeOnPass, {score: 1});
         assert.strictEqual(auditResult.scoreDisplayMode, Audit.SCORING_MODES.INFORMATIVE);
-        assert.strictEqual(auditResult.score, 1);
+        assert.strictEqual(auditResult.score, null);
       });
 
       it('switches to an ERROR and is not scored if an errorMessage is passed in', () => {

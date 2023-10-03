@@ -315,28 +315,16 @@ class Audit {
   }
 
   /**
-   * @param {LH.Audit.Product} product
+   * @param {number|null} score
    * @param {LH.Audit.ScoreDisplayMode} scoreDisplayMode
    * @param {string} auditId
    * @return {number|null}
    */
-  static _normalizeAuditScore(product, scoreDisplayMode, auditId) {
-    let score = product.score;
-
+  static _normalizeAuditScore(score, scoreDisplayMode, auditId) {
     if (scoreDisplayMode !== Audit.SCORING_MODES.BINARY &&
         scoreDisplayMode !== Audit.SCORING_MODES.NUMERIC &&
         scoreDisplayMode !== Audit.SCORING_MODES.METRIC_SAVINGS) {
       return null;
-    }
-
-    if (scoreDisplayMode === Audit.SCORING_MODES.METRIC_SAVINGS) {
-      if (score && score >= Util.PASS_THRESHOLD) {
-        score = 1;
-      } else if (Object.values(product.metricSavings || {}).some(v => v)) {
-        score = 0;
-      } else {
-        score = 0.5;
-      }
     }
 
     // Otherwise, score must be a number in [0, 1].
@@ -377,6 +365,7 @@ class Audit {
 
     // Default to binary scoring.
     let scoreDisplayMode = audit.meta.scoreDisplayMode || Audit.SCORING_MODES.BINARY;
+    let score = product.score;
 
     // But override if product contents require it.
     if (product.errorMessage !== undefined) {
@@ -385,12 +374,21 @@ class Audit {
     } else if (product.notApplicable) {
       // Audit was determined to not apply to the page.
       scoreDisplayMode = Audit.SCORING_MODES.NOT_APPLICABLE;
-    }
-
-    const score = Audit._normalizeAuditScore(product, scoreDisplayMode, audit.meta.id);
-    if (audit.meta.informativeOnPass && score && score >= Util.PASS_THRESHOLD) {
+    } else if (audit.meta.informativeOnPass && score && score >= Util.PASS_THRESHOLD) {
       scoreDisplayMode = Audit.SCORING_MODES.INFORMATIVE;
     }
+
+    if (scoreDisplayMode === Audit.SCORING_MODES.METRIC_SAVINGS) {
+      if (score && score >= Util.PASS_THRESHOLD) {
+        score = 1;
+      } else if (Object.values(product.metricSavings || {}).some(v => v)) {
+        score = 0;
+      } else {
+        score = 0.5;
+      }
+    }
+
+    score = Audit._normalizeAuditScore(score, scoreDisplayMode, audit.meta.id);
 
     let auditTitle = audit.meta.title;
     if (audit.meta.failureTitle) {
