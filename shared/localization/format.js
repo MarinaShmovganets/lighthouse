@@ -174,10 +174,8 @@ function _preformatValues(messageFormatter, values = {}, lhlMessage) {
 }
 
 /**
- * Escape ICU syntax: we use brackets when referencing HTML (<body>), but
- * ICU syntax now supports xml-like annotations. Until we actually want to
- * use those, and to avoid churn in our messages, auto-escape these characters
- * for now.
+ * Our strings were made when \ was the escape character, but now it is '. To avoid churn,
+ * let's convert to the new style in memory.
  * @param {string} message
  * @return {string}
  */
@@ -185,9 +183,7 @@ function escapeIcuMessage(message) {
   return message
     .replace(/'/g, `''`)
     .replace(/\\{/g, `'{`)
-    .replace(/\\}/g, `'}`)
-    .replace(/</g, `'<`)
-    .replace(/>/g, `'>`);
+    .replace(/\\}/g, `'}`);
 }
 
 /**
@@ -202,7 +198,6 @@ function escapeIcuMessage(message) {
 function formatMessage(message, values, locale) {
   // Parsing and formatting can be slow. Don't attempt if the string can't
   // contain ICU placeholders, in which case formatting is already complete.
-  // if (!message.includes('{') && values === undefined) return message;
 
   // When using accented english, force the use of a different locale for number formatting.
   const localeForMessageFormat = (locale === 'en-XA' || locale === 'en-XL') ? 'de-DE' : locale;
@@ -211,14 +206,16 @@ function formatMessage(message, values, locale) {
   /** @type {typeof IntlMessageFormat} */
   // @ts-expect-error bundler woes
   const IntlMessageFormatCtor = IntlMessageFormat.IntlMessageFormat || IntlMessageFormat;
-  const formatter = new IntlMessageFormatCtor(message, localeForMessageFormat, formats);
+  const formatter = new IntlMessageFormatCtor(message, localeForMessageFormat, formats, {
+    ignoreTag: true,
+  });
 
   // Preformat values for the message format like KB and milliseconds.
   const valuesForMessageFormat = _preformatValues(formatter, values, message);
 
   const formattedResult = formatter.format(valuesForMessageFormat);
   // We only format to strings.
-  if (Array.isArray(formattedResult) || typeof formattedResult === 'number') {
+  if (typeof formattedResult !== 'string') {
     throw new Error('unexpected formatted result');
   }
   return formattedResult;

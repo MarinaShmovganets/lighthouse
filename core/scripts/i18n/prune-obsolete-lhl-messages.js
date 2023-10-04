@@ -24,7 +24,9 @@ import {readJson} from '../../test/test-utils.js';
  * @return {boolean}
  */
 function equalArguments(goldenArgumentIds, lhlMessage) {
-  const parsedMessageElements = MessageParser.parse(escapeIcuMessage(lhlMessage));
+  const parsedMessageElements = MessageParser.parse(escapeIcuMessage(lhlMessage), {
+    ignoreTag: true,
+  });
   const lhlArgumentElements = collectAllCustomElementsFromICU(parsedMessageElements);
   const lhlArgumentIds = [...lhlArgumentElements.keys()];
 
@@ -96,7 +98,7 @@ function getGoldenLocaleArgumentIds(goldenLhl) {
   const goldenLocaleArgumentIds = {};
 
   for (const [messageId, {message}] of Object.entries(goldenLhl)) {
-    const parsedMessageElements = MessageParser.parse(escapeIcuMessage(message));
+    const parsedMessageElements = MessageParser.parse(escapeIcuMessage(message), {ignoreTag: true});
     const goldenArgumentElements = collectAllCustomElementsFromICU(parsedMessageElements);
     const goldenArgumentIds = [...goldenArgumentElements.keys()].sort();
 

@@ -192,7 +192,7 @@ function convertMessageToCtc(lhlMessage, examples = {}) {
 function _lhlValidityChecks(lhlMessage) {
   let parsedMessageElements;
   try {
-    parsedMessageElements = MessageParser.parse(lhlMessage);
+    parsedMessageElements = MessageParser.parse(lhlMessage, {ignoreTag: true});
   } catch (err) {
     if (err.name !== 'SyntaxError') throw err;
     throw new Error(`[${err.message}] Did not find the expected syntax in message: ${err.originalMessage}`);
