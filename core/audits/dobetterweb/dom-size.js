@@ -14,6 +14,7 @@
 import {Audit} from '../audit.js';
 import * as i18n from '../../lib/i18n/i18n.js';
 import {TBTImpactTasks} from '../../computed/tbt-impact-tasks.js';
+import {Util} from '../../../shared/util.js';
 
 const UIStrings = {
   /** Title of a diagnostic audit that provides detail on the size of the web page's DOM. The size of a DOM is characterized by the total number of DOM elements and greatest DOM depth. This descriptive title is shown to users when the amount is acceptable and no user action is required. */
@@ -57,7 +58,6 @@ class DOMSize extends Audit {
       guidanceLevel: 1,
       requiredArtifacts: ['DOMStats', 'URL', 'GatherContext'],
       __internalOptionalArtifacts: ['traces', 'devtoolsLogs'],
-      informativeOnPass: true,
     };
   }
 
@@ -168,6 +168,7 @@ class DOMSize extends Audit {
 
     return {
       score,
+      scoreDisplayMode: score >= Util.PASS_THRESHOLD ? Audit.SCORING_MODES.INFORMATIVE : undefined,
       numericValue: stats.totalBodyElements,
       numericUnit: 'element',
       displayValue: str_(UIStrings.displayValue, {itemCount: stats.totalBodyElements}),

@@ -16,6 +16,7 @@ import * as i18n from '../lib/i18n/i18n.js';
 import {MainThreadTasks} from '../computed/main-thread-tasks.js';
 import {TotalBlockingTime} from '../computed/metrics/total-blocking-time.js';
 import {Sentry} from '../lib/sentry.js';
+import {Util} from '../../shared/util.js';
 
 const UIStrings = {
   /** Title of a diagnostic audit that provides detail on the main thread work the browser did to load the page. This descriptive title is shown to users when the amount is acceptable and no user action is required. */
@@ -47,7 +48,6 @@ class MainThreadWorkBreakdown extends Audit {
       scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
       guidanceLevel: 1,
       requiredArtifacts: ['traces', 'devtoolsLogs', 'URL', 'GatherContext'],
-      informativeOnPass: true,
     };
   }
 
@@ -142,6 +142,7 @@ class MainThreadWorkBreakdown extends Audit {
 
     return {
       score,
+      scoreDisplayMode: score >= Util.PASS_THRESHOLD ? Audit.SCORING_MODES.INFORMATIVE : undefined,
       numericValue: totalExecutionTime,
       numericUnit: 'millisecond',
       displayValue: str_(i18n.UIStrings.seconds, {timeInMs: totalExecutionTime}),

@@ -374,8 +374,8 @@ class Audit {
     } else if (product.notApplicable) {
       // Audit was determined to not apply to the page.
       scoreDisplayMode = Audit.SCORING_MODES.NOT_APPLICABLE;
-    } else if (audit.meta.informativeOnPass && score && score >= Util.PASS_THRESHOLD) {
-      scoreDisplayMode = Audit.SCORING_MODES.INFORMATIVE;
+    } else if (product.scoreDisplayMode) {
+      scoreDisplayMode = product.scoreDisplayMode;
     }
 
     if (scoreDisplayMode === Audit.SCORING_MODES.METRIC_SAVINGS) {

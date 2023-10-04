@@ -40,7 +40,6 @@ class ServerResponseTime extends Audit {
       guidanceLevel: 1,
       requiredArtifacts: ['devtoolsLogs', 'URL', 'GatherContext'],
       scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
-      informativeOnPass: true,
     };
   }
 
@@ -93,6 +92,7 @@ class ServerResponseTime extends Audit {
       numericValue: responseTime,
       numericUnit: 'millisecond',
       score: Number(passed),
+      scoreDisplayMode: passed ? Audit.SCORING_MODES.INFORMATIVE : undefined,
       displayValue,
       details,
       metricSavings: {

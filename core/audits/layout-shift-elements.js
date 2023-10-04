@@ -5,7 +5,8 @@
 
 import {Audit} from './audit.js';
 import * as i18n from '../lib/i18n/i18n.js';
-import {CumulativeLayoutShift} from '../computed/metrics/cumulative-layout-shift.js';
+import {CumulativeLayoutShift as CumulativeLayoutShiftComputed} from '../computed/metrics/cumulative-layout-shift.js';
+import CumulativeLayoutShift from './metrics/cumulative-layout-shift.js';
 
 const UIStrings = {
   /** Descriptive title of a diagnostic audit that provides up to the top five elements contributing to Cumulative Layout Shift. */
@@ -30,7 +31,6 @@ class LayoutShiftElements extends Audit {
       scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
       guidanceLevel: 2,
       requiredArtifacts: ['traces', 'TraceElements'],
-      informativeOnPass: true,
     };
   }
 
@@ -65,10 +65,13 @@ class LayoutShiftElements extends Audit {
     }
 
     const {cumulativeLayoutShift: clsSavings} =
-      await CumulativeLayoutShift.request(artifacts.traces[Audit.DEFAULT_PASS], context);
+      await CumulativeLayoutShiftComputed.request(artifacts.traces[Audit.DEFAULT_PASS], context);
+
+    const passed = clsSavings <= CumulativeLayoutShift.defaultOptions.p10;
 
     return {
-      score: clsSavings > 0.1 ? 0 : 1,
+      score: passed ? 1 : 0,
+      scoreDisplayMode: passed ? Audit.SCORING_MODES.INFORMATIVE : undefined,
       metricSavings: {
         CLS: clsSavings,
       },

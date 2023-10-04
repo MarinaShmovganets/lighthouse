@@ -8,6 +8,7 @@ import {Audit} from '../audit.js';
 import * as i18n from '../../lib/i18n/i18n.js';
 import {NetworkRequest} from '../../lib/network-request.js';
 import {NetworkRecords} from '../../computed/network-records.js';
+import {Util} from '../../../shared/util.js';
 
 const UIStrings = {
   /** Title of a diagnostic audit that provides detail on large network resources required during page load. 'Payloads' is roughly equivalent to 'resources'. This descriptive title is shown to users when the amount is acceptable and no user action is required. */
@@ -37,7 +38,6 @@ class TotalByteWeight extends Audit {
       scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
       guidanceLevel: 1,
       requiredArtifacts: ['devtoolsLogs'],
-      informativeOnPass: true,
     };
   }
 
@@ -99,6 +99,7 @@ class TotalByteWeight extends Audit {
 
     return {
       score,
+      scoreDisplayMode: score >= Util.PASS_THRESHOLD ? Audit.SCORING_MODES.INFORMATIVE : undefined,
       numericValue: totalBytes,
       numericUnit: 'byte',
       displayValue: str_(UIStrings.displayValue, {totalBytes}),
