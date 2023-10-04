@@ -12,7 +12,7 @@ import url from 'url';
 import lookupClosestLocale from 'lookup-closest-locale';
 import log from 'lighthouse-logger';
 
-import {escapeIcuMessage, getAvailableLocales} from '../../../shared/localization/format.js';
+import {getAvailableLocales} from '../../../shared/localization/format.js';
 import {LH_ROOT} from '../../../shared/root.js';
 import {isIcuMessage, formatMessage, DEFAULT_LOCALE} from '../../../shared/localization/format.js';
 import {getModulePath} from '../../../shared/esm-utils.js';
