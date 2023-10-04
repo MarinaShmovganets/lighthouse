@@ -104,7 +104,8 @@ async function waitForFunction(session, fn, deps) {
   while (true) {
     try {
       return await evaluateInSession(session, fn, deps);
-    } catch {
+    } catch (e) {
+      console.error(e);
       await new Promise(r => setTimeout(r, 500));
     }
   }
@@ -146,13 +147,13 @@ function addSniffer(receiver, methodName, override) {
 
 async function waitForLighthouseReady() {
   // @ts-expect-error import
-  const {ViewManager, DockController} = await import('./devtools-frontend/front_end/ui/legacy/legacy.js');
+  const {ViewManager, DockController} = await import('./ui/legacy/legacy.js');
   // @ts-expect-error import
-  const {LighthousePanel} = await import('./devtools-frontend/front_end/panels/lighthouse/lighthouse.js');
+  const {LighthousePanel} = await import('./panels/lighthouse/lighthouse.js');
   // @ts-expect-error import
-  const {TargetManager} = await import('./devtools-frontend/front_end/core/sdk/sdk.js');
+  const {TargetManager} = await import('./core/sdk/sdk.js');
   // @ts-expect-error import
-  const {AdvancedApp} = await import('./devtools-frontend/front_end/panels/emulation/emulation.js');
+  const {AdvancedApp} = await import('./panels/emulation/emulation.js');
 
   // Undocking later in the function can cause hiccups when Lighthouse enables device emulation.
   DockController.DockController.instance().setDockSide('undocked');
@@ -187,7 +188,7 @@ async function waitForLighthouseReady() {
 
 async function runLighthouse() {
   // @ts-expect-error import
-  const {LighthousePanel} = await import('./devtools-frontend/front_end/panels/lighthouse/lighthouse.js');
+  const {LighthousePanel} = await import('./panels/lighthouse/lighthouse.js');
   const panel = LighthousePanel.LighthousePanel.instance();
 
   /** @type {Promise<{lhr: LH.Result, artifacts: LH.Artifacts}>} */
@@ -226,9 +227,9 @@ async function runLighthouse() {
   return resultPromise;
 }
 
-function enableDevToolsThrottling() {
+async function enableDevToolsThrottling() {
   // @ts-expect-error import
-  const {LighthousePanel} = await import('./devtools-frontend/front_end/panels/lighthouse/lighthouse.js');
+  const {LighthousePanel} = await import('./panels/lighthouse/lighthouse.js');
   const panel = LighthousePanel.LighthousePanel.instance();
 
   const toolbarRoot = panel.contentElement.querySelector('.lighthouse-settings-pane .toolbar').shadowRoot;
