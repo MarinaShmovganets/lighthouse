@@ -2,7 +2,7 @@
 [![GitHub Actions Status Badge](https://github.com/GoogleChrome/lighthouse/workflows/CI/badge.svg)
 ](https://github.com/GoogleChrome/lighthouse/actions/workflows/ci.yml) 
 [![GitHub Actions Status Badge](https://github.com/GoogleChrome/lighthouse/workflows/unit/badge.svg)](https://github.com/GoogleChrome/lighthouse/actions/workflows/unit.yml) 
-[![GitHub Actions Status](https://github.com/GoogleChrome/lighthouse/actions/workflows/smoke.yml) 
+[![GitHub Actions Status](https://github.com/GoogleChrome/lighthouse/actions/workflows/config_yaml.js) 
 [![Coverage Status](https://codecov.io/gh/GoogleChrome/lighthouse/branch/main/graph/badge.svg)](https://codecov.io/gh/GoogleChrome/lighthouse) 
 [![Build tracker for Lighthouse](https://img.shields.io/badge/buildtracker-ok-blue)](https://lh-build-tracker.herokuapp.com/) [![NPM lighthouse package](https://img.shields.io/npm/v/lighthouse.svg)](https://npmjs.org/package/lighthouse)
 
