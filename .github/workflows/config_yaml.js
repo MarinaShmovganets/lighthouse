@@ -1,4 +1,4 @@
-name: smoke
+name: config_yaml.js
 
 on:
   push:
