@@ -42,19 +42,6 @@ class NumericAudit extends Audit {
   }
 }
 
-class InformativeOnPass extends Audit {
-  static get meta() {
-    return {
-      id: 'informative-on-pass',
-      title: 'Passing',
-      description: 'Description',
-      requiredArtifacts: [],
-      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
-      informativeOnPass: true,
-    };
-  }
-}
-
 class MetricSavings extends Audit {
   static get meta() {
     return {
@@ -100,9 +87,12 @@ describe('Audit', () => {
         assert.strictEqual(auditResult.score, 1);
       });
 
-      it('override scoreDisplayMode if passing and `informativeOnPass` is true', () => {
-        assert.strictEqual(InformativeOnPass.meta.scoreDisplayMode, Audit.SCORING_MODES.NUMERIC);
-        const auditResult = Audit.generateAuditResult(InformativeOnPass, {score: 1});
+      it('override scoreDisplayMode if set on audit product', () => {
+        assert.strictEqual(NumericAudit.meta.scoreDisplayMode, Audit.SCORING_MODES.NUMERIC);
+        const auditResult = Audit.generateAuditResult(NumericAudit, {
+          score: 1,
+          scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
+        });
         assert.strictEqual(auditResult.scoreDisplayMode, Audit.SCORING_MODES.INFORMATIVE);
         assert.strictEqual(auditResult.score, null);
       });
