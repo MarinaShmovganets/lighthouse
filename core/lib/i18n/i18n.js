@@ -202,8 +202,6 @@ function createIcuMessageFn(filename, fileStrings) {
     const unixStyleFilename = filenameToLookup.replace(/\\/g, '/');
     const i18nId = `${unixStyleFilename} | ${keyname}`;
 
-    message = escapeIcuMessage(message);
-
     return {
       i18nId,
       values,

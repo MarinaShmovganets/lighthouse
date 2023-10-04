@@ -12,7 +12,7 @@ import {getModuleDirectory} from '../esm-utils.js';
 import {isObjectOfUnknownValues, isObjectOrArrayOfUnknownValues} from '../type-verifiers.js';
 import {locales} from './locales.js';
 
-// From @formatjs/icu-messageformat-parser
+// From @formatjs/icu-messageformat-parser - copy here so we don't need to bundle all that.
 const TYPE = /** @type {const} */ ({
   literal: 0,
   argument: 1,
@@ -196,6 +196,8 @@ function escapeIcuMessage(message) {
  * @return {string}
  */
 function formatMessage(message, values, locale) {
+  message = escapeIcuMessage(message);
+
   // Parsing and formatting can be slow. Don't attempt if the string can't
   // contain ICU placeholders, in which case formatting is already complete.
 
@@ -243,7 +245,7 @@ function _localizeIcuMessage(icuMessage, locale) {
     return icuMessage.formattedDefault;
   }
 
-  return formatMessage(escapeIcuMessage(localeMessage.message), icuMessage.values, locale);
+  return formatMessage(localeMessage.message, icuMessage.values, locale);
 }
 
 /**

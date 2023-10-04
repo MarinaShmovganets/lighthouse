@@ -161,7 +161,7 @@ function parseExampleJsDoc(rawExample) {
  * @return {IncrementalCtc}
  */
 function convertMessageToCtc(lhlMessage, examples = {}) {
-  _lhlValidityChecks(escapeIcuMessage(lhlMessage));
+  _lhlValidityChecks(lhlMessage);
 
   /** @type {IncrementalCtc} */
   const ctc = {
@@ -192,7 +192,7 @@ function convertMessageToCtc(lhlMessage, examples = {}) {
 function _lhlValidityChecks(lhlMessage) {
   let parsedMessageElements;
   try {
-    parsedMessageElements = MessageParser.parse(lhlMessage, {ignoreTag: true});
+    parsedMessageElements = MessageParser.parse(escapeIcuMessage(lhlMessage), {ignoreTag: true});
   } catch (err) {
     if (err.name !== 'SyntaxError') throw err;
     throw new Error(`[${err.message}] Did not find the expected syntax in message: ${err.originalMessage}`);
