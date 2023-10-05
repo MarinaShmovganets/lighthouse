@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {Util} from '../../shared/util.js';
@@ -22,6 +22,7 @@ const NON_NETWORK_SCHEMES = [
   'intent', // @see https://developer.chrome.com/docs/multidevice/android/intents/
   'file', // @see https://en.wikipedia.org/wiki/File_URI_scheme
   'filesystem', // @see https://developer.mozilla.org/en-US/docs/Web/API/FileSystem
+  'chrome-extension',
 ];
 
 /**
@@ -86,6 +87,10 @@ class UrlUtils {
   static getOrigin(url) {
     try {
       const urlInfo = new URL(url);
+      if (urlInfo.protocol === 'chrome-extension:') {
+        // Chrome extensions return string "null" as origin, so we reconstruct the extension origin.
+        return Util.getChromeExtensionOrigin(url);
+      }
       // check for both host and origin since some URLs schemes like data and file set origin to the
       // string "null" instead of the object
       return (urlInfo.host && urlInfo.origin) || null;
@@ -138,7 +143,7 @@ class UrlUtils {
   static elideDataURI(url) {
     try {
       const parsed = new URL(url);
-      return parsed.protocol === 'data:' ? url.slice(0, 100) : url;
+      return parsed.protocol === 'data:' ? Util.truncate(url, 100) : url;
     } catch (e) {
       return url;
     }

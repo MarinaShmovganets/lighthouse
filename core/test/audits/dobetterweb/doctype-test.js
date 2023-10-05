@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import assert from 'assert/strict';
@@ -21,6 +21,7 @@ describe('DOBETTERWEB: doctype audit', () => {
   it('fails when document does not contain a doctype', async () => {
     const auditResult = await runAudit({
       Doctype: null,
+      traces: {},
     });
     assert.equal(auditResult.score, 0);
     expect(auditResult.explanation).toBeDisplayString('Document must contain a doctype');
@@ -35,6 +36,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         systemId: '',
         documentCompatMode: 'BackCompat',
       },
+      traces: {},
     });
     assert.equal(auditResult.score, 0);
     expect(auditResult.explanation)
@@ -85,6 +87,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         systemId: '',
         documentCompatMode: 'BackCompat',
       },
+      traces: {},
     });
     assert.equal(auditResult.score, 0);
     expect(auditResult.explanation).toBeDisplayString(
@@ -99,6 +102,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         systemId: '',
         documentCompatMode: 'BackCompat',
       },
+      traces: {},
     });
     assert.equal(auditResult.score, 0);
     expect(auditResult.explanation).toBeDisplayString('Expected publicId to be an empty string');
@@ -112,6 +116,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         systemId: '189655',
         documentCompatMode: 'BackCompat',
       },
+      traces: {},
     });
     assert.equal(auditResult.score, 0);
     expect(auditResult.explanation).toBeDisplayString('Expected systemId to be an empty string');
@@ -125,6 +130,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         systemId: '',
         documentCompatMode: 'CSS1Compat',
       },
+      traces: {},
     });
     assert.equal(auditResult.score, 1);
   });
@@ -138,6 +144,7 @@ describe('DOBETTERWEB: doctype audit', () => {
         systemId: 'http://www.w3.org/TR/html4/loose.dtd',
         documentCompatMode: 'CSS1Compat',
       },
+      traces: {},
     });
     assert.equal(auditResult.score, 1);
   });

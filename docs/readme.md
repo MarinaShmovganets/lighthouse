@@ -10,7 +10,7 @@ assumes you've installed Lighthouse as a dependency (`yarn add --dev lighthouse`
 ```js
 import fs from 'fs';
 import lighthouse from 'lighthouse';
-import chromeLauncher from 'chrome-launcher';
+import * as chromeLauncher from 'chrome-launcher';
 
 const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
 const options = {logLevel: 'info', output: 'html', onlyCategories: ['performance'], port: chrome.port};
@@ -111,7 +111,7 @@ Alternatively, you can instruct Chrome to ignore the invalid certificate by addi
 
 Lighthouse can run against a real mobile device. You can follow the [Remote Debugging on Android (Legacy Workflow)](https://developer.chrome.com/devtools/docs/remote-debugging-legacy) up through step 3.3, but the TL;DR is install & run adb, enable USB debugging, then port forward 9222 from the device to the machine with Lighthouse.
 
-You'll likely want to use the CLI flags `--screenEmulation.disabled --throttling.cpuSlowdownMultiplier=1` to disable any additional emulation.
+You'll likely want to use the CLI flags `--screenEmulation.disabled --throttling.cpuSlowdownMultiplier=1 --throttling-method=provided` to disable any additional emulation.
 
 ```sh
 $ adb kill-server
@@ -123,12 +123,12 @@ $ adb devices -l
 
 $ adb forward tcp:9222 localabstract:chrome_devtools_remote
 
-$ lighthouse --port=9222 --screenEmulation.disabled --throttling.cpuSlowdownMultiplier=1 https://example.com
+$ lighthouse --port=9222 --screenEmulation.disabled --throttling.cpuSlowdownMultiplier=1 --throttling-method=provided https://example.com
 ```
 
 ## Lighthouse as trace processor
 
-Lighthouse can be used to analyze trace and performance data collected from other tools (like WebPageTest and ChromeDriver). The `traces` and `devtoolsLogs` artifact items can be provided using a string for the absolute path on disk if they're saved with `.trace.json` and `.devtoolslog.json` file extensions, respectively. The `devtoolsLogs` array is captured from the `Network` and `Page` domains (a la ChromeDriver's [enableNetwork and enablePage options](https://sites.google.com/a/chromium.org/chromedriver/capabilities#TOC-perfLoggingPrefs-object)).
+Lighthouse can be used to analyze trace and performance data collected from other tools (like WebPageTest and ChromeDriver). The `Trace` and `DevtoolsLog` artifact items can be provided using a string for the absolute path on disk if they're saved with `.trace.json` and `.devtoolslog.json` file extensions, respectively. The `DevtoolsLog` array is captured from the `Network` and `Page` domains (a la ChromeDriver's [enableNetwork and enablePage options](https://sites.google.com/a/chromium.org/chromedriver/capabilities#TOC-perfLoggingPrefs-object)).
 
 As an example, here's a trace-only run that reports on user timings and critical request chains:
 

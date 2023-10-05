@@ -6,8 +6,13 @@ import {assert} from 'chai';
 import * as path from 'path';
 
 import {expectError} from '../../conductor/events.js';
-import {getBrowserAndPages, waitFor, waitForAria, waitForElementWithTextContent} from '../../shared/helper.js';
-import {describe, it} from '../../shared/mocha-extensions.js';
+import {
+  getBrowserAndPages,
+  waitFor,
+  waitForAria,
+  waitForElementWithTextContent,
+} from '../../shared/helper.js';
+import {describe} from '../../shared/mocha-extensions.js';
 import {openDeviceToolbar, reloadDockableFrontEnd, selectDevice} from '../helpers/emulation-helpers.js';
 import {
   clickStartButton,
@@ -30,7 +35,9 @@ const IPAD_MINI_LANDSCAPE_VIEWPORT_DIMENSIONS = {
 
 describe('DevTools', function() {
   // The tests in this suite are particularly slow
-  this.timeout(60_000);
+  if (this.timeout() !== 0) {
+    this.timeout(60_000);
+  }
 
   beforeEach(async () => {
     // https://github.com/GoogleChrome/lighthouse/issues/14572
@@ -76,6 +83,9 @@ describe('DevTools', function() {
 
       await clickStartButton();
 
+      const {target} = getBrowserAndPages();
+      await target.bringToFront();
+
       const {lhr} = await waitForResult();
 
       const requests = lhr.audits['network-requests'].details.items;
@@ -115,6 +125,9 @@ describe('DevTools', function() {
       await navigateToLighthouseTab('lighthouse/hello.html');
       await selectCategories(['performance']);
       await clickStartButton();
+
+      const {target} = getBrowserAndPages();
+      await target.bringToFront();
 
       const {artifacts} = await waitForResult();
       assert.deepStrictEqual(artifacts.ViewportDimensions, {

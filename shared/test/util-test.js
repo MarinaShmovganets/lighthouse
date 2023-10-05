@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import assert from 'assert/strict';
@@ -209,6 +209,28 @@ describe('util helpers', () => {
         {isLink: true, text: 'second link', linkHref: 'https://second.com'},
         {isLink: false, text: ' and scene'},
       ]);
+    });
+  });
+
+  describe('truncate', () => {
+    it('truncates based on visual characters', () => {
+      expect(Util.truncate('aaa', 30)).toEqual('aaa');
+      expect(Util.truncate('aaa', 3)).toEqual('aaa');
+      expect(Util.truncate('aaa', 2)).toEqual('a…');
+      expect(Util.truncate('aaa🥳', 4)).toEqual('aaa🥳');
+      expect(Util.truncate('aaa🥳', 3)).toEqual('aa…');
+      expect(Util.truncate('aaa👨‍👨‍👦‍👦', 4)).toEqual('aaa👨‍👨‍👦‍👦');
+      expect(Util.truncate('aaa👨‍👨‍👦‍👦', 3)).toEqual('aa…');
+      expect(Util.truncate('देवनागरी', 5)).toEqual('देवनागरी');
+      expect(Util.truncate('देवनागरी', 4)).toEqual('देवना…');
+
+      expect(Util.truncate('aaa', 3, '')).toEqual('aaa');
+      expect(Util.truncate('aaa', 2, '')).toEqual('aa');
+
+      expect(Util.truncate('aaaaa', 5, '...')).toEqual('aaaaa');
+      expect(Util.truncate('aaaaa', 4, '...')).toEqual('a...');
+      expect(Util.truncate('aaaaa', 3, '...')).toEqual('...');
+      expect(Util.truncate('aaaaa', 1, '...')).toEqual('...');
     });
   });
 });
