@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
@@ -15,7 +15,6 @@
 import {Audit} from '../audit.js';
 import {EntityClassification} from '../../computed/entity-classification.js';
 import UrlUtils from '../../lib/url-utils.js';
-import {ByteEfficiencyAudit} from '../byte-efficiency/byte-efficiency-audit.js';
 import {LanternInteractive} from '../../computed/metrics/lantern-interactive.js';
 import {NetworkRequest} from '../../lib/network-request.js';
 import {NetworkRecords} from '../../computed/network-records.js';
@@ -61,7 +60,8 @@ class UsesHTTP2Audit extends Audit {
       id: 'uses-http2',
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
-      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
+      scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
+      guidanceLevel: 3,
       supportedModes: ['timespan', 'navigation'],
       requiredArtifacts: ['URL', 'devtoolsLogs', 'traces', 'GatherContext'],
     };
@@ -299,7 +299,7 @@ class UsesHTTP2Audit extends Audit {
       displayValue,
       numericValue: wastedMsTti,
       numericUnit: 'millisecond',
-      score: ByteEfficiencyAudit.scoreForWastedMs(wastedMsTti),
+      score: resources.length ? 0 : 1,
       details,
       metricSavings: {LCP: wasteLcp.savings, FCP: wasteFcp.savings},
     };

@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {ArbitraryEqualityMap} from '../core/lib/arbitrary-equality-map.js';
@@ -54,6 +54,8 @@ declare module Audit {
     scoreDisplayMode?: AuditResult.ScoreDisplayMode;
     /** A list of gather modes that this audit is applicable to. */
     supportedModes?: Gatherer.GatherMode[],
+    /** A number indicating how much guidance Lighthouse provides to solve the problem in this audit on a 1-3 scale. Higher means more guidance. */
+    guidanceLevel?: number;
   }
 
   interface ByteEfficiencyItem extends AuditDetails.OpportunityItem {
@@ -84,8 +86,12 @@ declare module Audit {
     details?: AuditDetails;
     /** If an audit encounters unusual execution circumstances, strings can be put in this optional array to add top-level warnings to the LHR. */
     runWarnings?: Array<IcuMessage>;
-    /** [EXPERIMENTAL] Estimates of how much this audit affects various performance metrics. Values will be in the unit of the respective metrics. */
+    /** Estimates of how much this audit affects various performance metrics. Values will be in the unit of the respective metrics. */
     metricSavings?: MetricSavings;
+    /** Score details including p10 and median for calculating an audit's log-normal score. */
+    scoringOptions?: ScoreOptions;
+    /** A string identifying how the score should be interpreted for display. Overrides audit meta `scoreDisplayMode` if defined. */
+    scoreDisplayMode?: AuditResult.ScoreDisplayMode;
   }
 
   /** The Audit.Product type for audits that do not return a `numericValue`. */

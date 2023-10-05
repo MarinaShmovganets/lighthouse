@@ -1,12 +1,11 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import * as LH from '../../types/lh.js';
 import {isUnderTest} from '../lib/lh-env.js';
-import * as statistics from '../lib/statistics.js';
 import {Util} from '../../shared/util.js';
 
 const DEFAULT_PASS = 'defaultPass';
@@ -50,6 +49,7 @@ class Audit {
   static get SCORING_MODES() {
     return {
       NUMERIC: 'numeric',
+      METRIC_SAVINGS: 'metricSavings',
       BINARY: 'binary',
       MANUAL: 'manual',
       INFORMATIVE: 'informative',
@@ -105,14 +105,7 @@ class Audit {
    * @return {number}
    */
   static computeLogNormalScore(controlPoints, value) {
-    let percentile = statistics.getLogNormalScore(controlPoints, value);
-    // Add a boost to scores of 90+, linearly ramping from 0 at 0.9 to half a
-    // point (0.005) at 1. Expands scores in (0.9, 1] to (0.9, 1.005], so more top
-    // scores will be a perfect 1 after the two-digit `Math.floor()` rounding below.
-    if (percentile > 0.9) { // getLogNormalScore ensures `percentile` can't exceed 1.
-      percentile += 0.05 * (percentile - 0.9);
-    }
-    return Math.floor(percentile * 100) / 100;
+    return Util.computeLogNormalScore(controlPoints, value);
   }
 
   /**
@@ -329,7 +322,8 @@ class Audit {
    */
   static _normalizeAuditScore(score, scoreDisplayMode, auditId) {
     if (scoreDisplayMode !== Audit.SCORING_MODES.BINARY &&
-        scoreDisplayMode !== Audit.SCORING_MODES.NUMERIC) {
+        scoreDisplayMode !== Audit.SCORING_MODES.NUMERIC &&
+        scoreDisplayMode !== Audit.SCORING_MODES.METRIC_SAVINGS) {
       return null;
     }
 
@@ -371,6 +365,7 @@ class Audit {
 
     // Default to binary scoring.
     let scoreDisplayMode = audit.meta.scoreDisplayMode || Audit.SCORING_MODES.BINARY;
+    let score = product.score;
 
     // But override if product contents require it.
     if (product.errorMessage !== undefined) {
@@ -379,9 +374,21 @@ class Audit {
     } else if (product.notApplicable) {
       // Audit was determined to not apply to the page.
       scoreDisplayMode = Audit.SCORING_MODES.NOT_APPLICABLE;
+    } else if (product.scoreDisplayMode) {
+      scoreDisplayMode = product.scoreDisplayMode;
     }
 
-    const score = Audit._normalizeAuditScore(product.score, scoreDisplayMode, audit.meta.id);
+    if (scoreDisplayMode === Audit.SCORING_MODES.METRIC_SAVINGS) {
+      if (score && score >= Util.PASS_THRESHOLD) {
+        score = 1;
+      } else if (Object.values(product.metricSavings || {}).some(v => v)) {
+        score = 0;
+      } else {
+        score = 0.5;
+      }
+    }
+
+    score = Audit._normalizeAuditScore(score, scoreDisplayMode, audit.meta.id);
 
     let auditTitle = audit.meta.title;
     if (audit.meta.failureTitle) {
@@ -411,8 +418,11 @@ class Audit {
       errorMessage: product.errorMessage,
       errorStack: product.errorStack,
       warnings: product.warnings,
+      scoringOptions: product.scoringOptions,
+      metricSavings: product.metricSavings,
 
       details: product.details,
+      guidanceLevel: audit.meta.guidanceLevel,
     };
   }
 

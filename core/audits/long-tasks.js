@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2020 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {Audit} from './audit.js';
@@ -11,6 +11,7 @@ import {MainThreadTasks} from '../computed/main-thread-tasks.js';
 import {PageDependencyGraph} from '../computed/page-dependency-graph.js';
 import {LoadSimulator} from '../computed/load-simulator.js';
 import {getJavaScriptURLs, getAttributableURLForTask} from '../lib/tracehouse/task-summary.js';
+import {TotalBlockingTime} from '../computed/metrics/total-blocking-time.js';
 
 /** We don't always have timing data for short tasks, if we're missing timing data. Treat it as though it were 0ms. */
 const DEFAULT_TIMING = {startTime: 0, endTime: 0, duration: 0};
@@ -66,7 +67,8 @@ class LongTasks extends Audit {
       scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'URL'],
+      requiredArtifacts: ['traces', 'devtoolsLogs', 'URL', 'GatherContext'],
+      guidanceLevel: 1,
     };
   }
 
@@ -179,6 +181,9 @@ class LongTasks extends Audit {
     const devtoolsLog = artifacts.devtoolsLogs[LongTasks.DEFAULT_PASS];
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
 
+    const metricComputationData = Audit.makeMetricComputationDataInput(artifacts, context);
+    const tbtResult = await TotalBlockingTime.request(metricComputationData, context);
+
     /** @type {Map<LH.TraceEvent, LH.Gatherer.Simulation.NodeTiming>|undefined} */
     let taskTimingsByEvent;
 
@@ -244,6 +249,9 @@ class LongTasks extends Audit {
       notApplicable: results.length === 0,
       details: tableDetails,
       displayValue,
+      metricSavings: {
+        TBT: tbtResult.timing,
+      },
     };
   }
 }

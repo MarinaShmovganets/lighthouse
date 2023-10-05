@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2019 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2019 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {Audit} from './audit.js';
@@ -74,6 +74,8 @@ class ThirdPartySummary extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
+      guidanceLevel: 1,
+      scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
       requiredArtifacts: ['traces', 'devtoolsLogs', 'URL', 'GatherContext'],
     };
   }
@@ -256,8 +258,11 @@ class ThirdPartySummary extends Audit {
     const details = Audit.makeTableDetails(headings, results,
       {...overallSummary, isEntityGrouped: true});
 
+    const passed = overallSummary.wastedMs <= PASS_THRESHOLD_IN_MS;
+
     return {
-      score: Number(overallSummary.wastedMs <= PASS_THRESHOLD_IN_MS),
+      score: Number(passed),
+      scoreDisplayMode: passed ? Audit.SCORING_MODES.INFORMATIVE : undefined,
       displayValue: str_(UIStrings.displayValue, {
         timeInMs: overallSummary.wastedMs,
       }),

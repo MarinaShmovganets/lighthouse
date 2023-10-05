@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {Audit} from './audit.js';
@@ -39,9 +39,9 @@ const UIStrings = {
   /** Error message explaining that the provided manifest URL is invalid. */
   'start-url-not-valid': `Manifest start URL is not valid`,
   /** Error message explaining that the provided manifest does not contain a name or short_name field. */
-  'manifest-missing-name-or-short-name': `Manifest does not contain a 'name' or 'short_name' field`,
+  'manifest-missing-name-or-short-name': 'Manifest does not contain a `name` or `short_name` field',
   /** Error message explaining that the manifest display property must be one of 'standalone', 'fullscreen', or 'minimal-ui'. */
-  'manifest-display-not-supported': `Manifest 'display' property must be one of 'standalone', 'fullscreen', or 'minimal-ui'`,
+  'manifest-display-not-supported': 'Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`',
   /** Error message explaining that the manifest could not be fetched, might be empty, or could not be parsed. */
   'manifest-empty': `Manifest could not be fetched, is empty, or could not be parsed`,
   /**

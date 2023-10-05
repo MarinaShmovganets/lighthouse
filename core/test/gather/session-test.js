@@ -1,12 +1,12 @@
 /**
- * @license Copyright 2020 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {EventEmitter} from 'events';
 
-import {CDPSessionImpl} from 'puppeteer-core/lib/cjs/puppeteer/common/Connection.js';
+import {CdpCDPSession} from 'puppeteer-core/lib/cjs/puppeteer/cdp/CDPSession.js';
 
 import {ProtocolSession} from '../../gather/session.js';
 import {
@@ -16,6 +16,27 @@ import {
   fnAny,
   timers,
 } from '../test-utils.js';
+
+/**
+ * @param {number} id
+ * @return {LH.Crdp.Page.FrameNavigatedEvent}
+ */
+function mockFrameNavigated(id) {
+  return {
+    frame: {
+      id: String(id),
+      loaderId: String(id),
+      url: `https://example.com/page${id}`,
+      domainAndRegistry: 'example.com',
+      securityOrigin: 'https://example.com',
+      mimeType: 'text/html',
+      secureContextType: 'Secure',
+      crossOriginIsolatedContextType: 'NotIsolated',
+      gatedAPIFeatures: [],
+    },
+    type: 'Navigation',
+  };
+}
 
 describe('ProtocolSession', () => {
   before(() => timers.useFakeTimers());
@@ -30,20 +51,23 @@ describe('ProtocolSession', () => {
 
   beforeEach(() => {
     // @ts-expect-error - Individual mock functions are applied as necessary.
-    puppeteerSession = new CDPSessionImpl({_rawSend: fnAny(), send: fnAny()}, '', 'root');
+    puppeteerSession = new CdpCDPSession({_rawSend: fnAny(), send: fnAny()}, '', 'root');
     session = new ProtocolSession(puppeteerSession);
   });
 
   describe('responds to events from the underlying CDPSession', () => {
+    const mockNavigated1 = mockFrameNavigated(1);
+    const mockNavigated2 = mockFrameNavigated(2);
+
     it('once', async () => {
       const callback = fnAny();
 
       session.once('Page.frameNavigated', callback);
-      puppeteerSession.emit('Page.frameNavigated', {id: 1});
+      puppeteerSession.emit('Page.frameNavigated', mockNavigated1);
       expect(callback).toHaveBeenCalledTimes(1);
-      expect(callback).toHaveBeenCalledWith({id: 1});
+      expect(callback).toHaveBeenCalledWith(mockNavigated1);
 
-      puppeteerSession.emit('Page.frameNavigated', {id: 2});
+      puppeteerSession.emit('Page.frameNavigated', mockNavigated2);
       expect(callback).toHaveBeenCalledTimes(1);
     });
 
@@ -51,25 +75,25 @@ describe('ProtocolSession', () => {
       const callback = fnAny();
 
       session.on('Page.frameNavigated', callback);
-      puppeteerSession.emit('Page.frameNavigated', {id: 1});
+      puppeteerSession.emit('Page.frameNavigated', mockNavigated1);
       expect(callback).toHaveBeenCalledTimes(1);
-      expect(callback).toHaveBeenCalledWith({id: 1});
+      expect(callback).toHaveBeenCalledWith(mockNavigated1);
 
-      puppeteerSession.emit('Page.frameNavigated', {id: 2});
+      puppeteerSession.emit('Page.frameNavigated', mockNavigated2);
       expect(callback).toHaveBeenCalledTimes(2);
-      expect(callback).toHaveBeenCalledWith({id: 2});
+      expect(callback).toHaveBeenCalledWith(mockNavigated2);
     });
 
     it('off', async () => {
       const callback = fnAny();
 
       session.on('Page.frameNavigated', callback);
-      puppeteerSession.emit('Page.frameNavigated', {id: 1});
+      puppeteerSession.emit('Page.frameNavigated', mockNavigated1);
       expect(callback).toHaveBeenCalledTimes(1);
-      expect(callback).toHaveBeenCalledWith({id: 1});
+      expect(callback).toHaveBeenCalledWith(mockNavigated1);
 
       session.off('Page.frameNavigated', callback);
-      puppeteerSession.emit('Page.frameNavigated', {id: 2});
+      puppeteerSession.emit('Page.frameNavigated', mockNavigated2);
       expect(callback).toHaveBeenCalledTimes(1);
     });
   });
