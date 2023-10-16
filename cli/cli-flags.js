@@ -206,7 +206,7 @@ function getYargsParser(manualArgv) {
       },
       'ignore-status-code': {
         type: 'boolean',
-        describe: 'Disables failing on 404 status code, and instead issues a warning.',
+        describe: 'Disables failing on all error status codes, and instead issues a warning.',
       },
     })
     .group([

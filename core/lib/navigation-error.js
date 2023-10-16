@@ -17,12 +17,12 @@ const UIStrings = {
   warningXhtml:
     'The page MIME type is XHTML: Lighthouse does not explicitly support this document type',
   /**
-   * Warning shown in report when the page under test responds with a 404, which Lighthouse is not able to reliably load
+   * Warning shown in report when the page under test returns an error code, which Lighthouse is not able to reliably load
    * so we display a warning.
    */
-  warning404: 'Lighthouse was unable to reliably load the page you requested. Make sure' +
+  warningStatusCode: 'Lighthouse was unable to reliably load the page you requested. Make sure' +
     ' you are testing the correct URL and that the server is properly responding' +
-    ' to all requests. (Status code: 404)',
+    ' to all requests.',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
@@ -56,7 +56,7 @@ function getNetworkError(mainRecord, context) {
     }
   } else if (mainRecord.hasErrorStatusCode()) {
     if ( context.ignoreStatusCode) {
-      context.warnings.push(str_(UIStrings.warning404));
+      context.warnings.push(str_(UIStrings.warningStatusCode));
     } else {
       return new LighthouseError(LighthouseError.errors.ERRORED_DOCUMENT_REQUEST, {
         statusCode: `${mainRecord.statusCode}`,
