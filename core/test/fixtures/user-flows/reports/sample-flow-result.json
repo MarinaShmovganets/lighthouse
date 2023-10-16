@@ -189,7 +189,7 @@
           "cumulative-layout-shift": {
             "id": "cumulative-layout-shift",
             "title": "Cumulative Layout Shift",
-            "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/cls/).",
+            "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/articles/cls).",
             "score": 1,
             "scoreDisplayMode": "numeric",
             "numericValue": 0.002631263732910156,
@@ -478,7 +478,7 @@
           "image-size-responsive": {
             "id": "image-size-responsive",
             "title": "Serves images with appropriate resolution",
-            "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/serve-responsive-images/).",
+            "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/articles/serve-responsive-images).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -490,7 +490,7 @@
           "preload-fonts": {
             "id": "preload-fonts",
             "title": "Fonts with `font-display: optional` are preloaded",
-            "description": "Preload `optional` fonts so first-time visitors may use them. [Learn more about preloading fonts](https://web.dev/preload-optional-fonts/)",
+            "description": "Preload `optional` fonts so first-time visitors may use them. [Learn more about preloading fonts](https://web.dev/articles/preload-optional-fonts)",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
@@ -1595,7 +1595,7 @@
           "lcp-lazy-loaded": {
             "id": "lcp-lazy-loaded",
             "title": "Largest Contentful Paint image was not lazily loaded",
-            "description": "Above-the-fold images that are lazily loaded render later in the page lifecycle, which can delay the largest contentful paint. [Learn more about optimal lazy loading](https://web.dev/lcp-lazy-loading/).",
+            "description": "Above-the-fold images that are lazily loaded render later in the page lifecycle, which can delay the largest contentful paint. [Learn more about optimal lazy loading](https://web.dev/articles/lcp-lazy-loading).",
             "score": 1,
             "scoreDisplayMode": "metricSavings",
             "metricSavings": {
@@ -1636,7 +1636,7 @@
           "layout-shift-elements": {
             "id": "layout-shift-elements",
             "title": "Avoid large layout shifts",
-            "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/optimize-cls/)",
+            "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
             "score": null,
             "scoreDisplayMode": "informative",
             "displayValue": "5 elements found",
@@ -1761,7 +1761,7 @@
           "long-tasks": {
             "id": "long-tasks",
             "title": "Avoid long main-thread tasks",
-            "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/long-tasks-devtools/)",
+            "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/articles/long-tasks-devtools)",
             "score": null,
             "scoreDisplayMode": "informative",
             "displayValue": "3 long tasks found",
@@ -1849,7 +1849,7 @@
           "no-unload-listeners": {
             "id": "no-unload-listeners",
             "title": "Avoids `unload` event listeners",
-            "description": "The `unload` event does not fire reliably and listening for it can prevent browser optimizations like the Back-Forward Cache. Use `pagehide` or `visibilitychange` events instead. [Learn more about unload event listeners](https://web.dev/bfcache/#never-use-the-unload-event)",
+            "description": "The `unload` event does not fire reliably and listening for it can prevent browser optimizations like the Back-Forward Cache. Use `pagehide` or `visibilitychange` events instead. [Learn more about unload event listeners](https://web.dev/articles/bfcache#never_use_the_unload_event)",
             "score": 1,
             "scoreDisplayMode": "binary"
           },
@@ -1872,7 +1872,7 @@
           "unsized-images": {
             "id": "unsized-images",
             "title": "Image elements do not have explicit `width` and `height`",
-            "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/optimize-cls/#images-without-dimensions)",
+            "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/articles/optimize-cls#images_without_dimensions)",
             "score": 0.5,
             "scoreDisplayMode": "metricSavings",
             "metricSavings": {
@@ -1931,7 +1931,7 @@
           "prioritize-lcp-image": {
             "id": "prioritize-lcp-image",
             "title": "Preload Largest Contentful Paint image",
-            "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/optimize-lcp/#optimize-when-the-resource-is-discovered).",
+            "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/articles/optimize-lcp#optimize_when_the_resource_is_discovered).",
             "score": 1,
             "scoreDisplayMode": "metricSavings",
             "numericValue": 0,
@@ -3240,7 +3240,7 @@
           "legacy-javascript": {
             "id": "legacy-javascript",
             "title": "Avoid serving legacy JavaScript to modern browsers",
-            "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/publish-modern-javascript/)",
+            "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/articles/publish-modern-javascript)",
             "score": 0.5,
             "scoreDisplayMode": "metricSavings",
             "numericValue": 0,
@@ -4083,8 +4083,8 @@
           },
           "accessibility": {
             "title": "Accessibility",
-            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/how-to-review/) is also encouraged.",
-            "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).",
+            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/articles/how-to-review) is also encouraged.",
+            "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/articles/how-to-review).",
             "supportedModes": [
               "navigation",
               "snapshot"
@@ -4533,7 +4533,7 @@
           },
           "seo": {
             "title": "SEO",
-            "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/learn-core-web-vitals/). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
+            "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/explore/vitals). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
             "manualDescription": "Run these additional validators on your site to check additional SEO best practices.",
             "supportedModes": [
               "navigation",
@@ -4620,8 +4620,8 @@
           },
           "pwa": {
             "title": "PWA",
-            "description": "These checks validate the aspects of a Progressive Web App. [Learn what makes a good Progressive Web App](https://web.dev/pwa-checklist/).",
-            "manualDescription": "These checks are required by the baseline [PWA Checklist](https://web.dev/pwa-checklist/) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
+            "description": "These checks validate the aspects of a Progressive Web App. [Learn what makes a good Progressive Web App](https://web.dev/articles/pwa-checklist).",
+            "manualDescription": "These checks are required by the baseline [PWA Checklist](https://web.dev/articles/pwa-checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
             "supportedModes": [
               "navigation"
             ],
@@ -8538,7 +8538,7 @@
           "cumulative-layout-shift": {
             "id": "cumulative-layout-shift",
             "title": "Cumulative Layout Shift",
-            "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/cls/).",
+            "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/articles/cls).",
             "score": 0.81,
             "scoreDisplayMode": "numeric",
             "numericValue": 0.13125,
@@ -8560,7 +8560,7 @@
           "interaction-to-next-paint": {
             "id": "interaction-to-next-paint",
             "title": "Interaction to Next Paint",
-            "description": "Interaction to Next Paint measures page responsiveness, how long it takes the page to visibly respond to user input. [Learn more about the Interaction to Next Paint metric](https://web.dev/inp/).",
+            "description": "Interaction to Next Paint measures page responsiveness, how long it takes the page to visibly respond to user input. [Learn more about the Interaction to Next Paint metric](https://web.dev/articles/inp).",
             "score": 1,
             "scoreDisplayMode": "numeric",
             "numericValue": 64,
@@ -8659,7 +8659,7 @@
           "image-size-responsive": {
             "id": "image-size-responsive",
             "title": "Serves images with low resolution",
-            "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/serve-responsive-images/).",
+            "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/articles/serve-responsive-images).",
             "score": 0,
             "scoreDisplayMode": "binary",
             "details": {
@@ -8794,7 +8794,7 @@
           "preload-fonts": {
             "id": "preload-fonts",
             "title": "Fonts with `font-display: optional` are preloaded",
-            "description": "Preload `optional` fonts so first-time visitors may use them. [Learn more about preloading fonts](https://web.dev/preload-optional-fonts/)",
+            "description": "Preload `optional` fonts so first-time visitors may use them. [Learn more about preloading fonts](https://web.dev/articles/preload-optional-fonts)",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
@@ -9610,7 +9610,7 @@
           "layout-shift-elements": {
             "id": "layout-shift-elements",
             "title": "Avoid large layout shifts",
-            "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/optimize-cls/)",
+            "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
             "score": 0,
             "scoreDisplayMode": "metricSavings",
             "displayValue": "1 element found",
@@ -9659,7 +9659,7 @@
           "long-tasks": {
             "id": "long-tasks",
             "title": "Avoid long main-thread tasks",
-            "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/long-tasks-devtools/)",
+            "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/articles/long-tasks-devtools)",
             "score": null,
             "scoreDisplayMode": "informative",
             "displayValue": "1 long task found",
@@ -9723,7 +9723,7 @@
           "no-unload-listeners": {
             "id": "no-unload-listeners",
             "title": "Avoids `unload` event listeners",
-            "description": "The `unload` event does not fire reliably and listening for it can prevent browser optimizations like the Back-Forward Cache. Use `pagehide` or `visibilitychange` events instead. [Learn more about unload event listeners](https://web.dev/bfcache/#never-use-the-unload-event)",
+            "description": "The `unload` event does not fire reliably and listening for it can prevent browser optimizations like the Back-Forward Cache. Use `pagehide` or `visibilitychange` events instead. [Learn more about unload event listeners](https://web.dev/articles/bfcache#never_use_the_unload_event)",
             "score": 1,
             "scoreDisplayMode": "binary"
           },
@@ -9746,7 +9746,7 @@
           "unsized-images": {
             "id": "unsized-images",
             "title": "Image elements do not have explicit `width` and `height`",
-            "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/optimize-cls/#images-without-dimensions)",
+            "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/articles/optimize-cls#images_without_dimensions)",
             "score": 0.5,
             "scoreDisplayMode": "metricSavings",
             "metricSavings": {
@@ -10379,7 +10379,7 @@
           "legacy-javascript": {
             "id": "legacy-javascript",
             "title": "Avoid serving legacy JavaScript to modern browsers",
-            "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/publish-modern-javascript/)",
+            "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/articles/publish-modern-javascript)",
             "score": 1,
             "scoreDisplayMode": "metricSavings",
             "numericValue": 0,
@@ -10449,7 +10449,7 @@
           "work-during-interaction": {
             "id": "work-during-interaction",
             "title": "Minimizes work during key interaction",
-            "description": "This is the thread-blocking work occurring during the Interaction to Next Paint measurement. [Learn more about the Interaction to Next Paint metric](https://web.dev/inp/).",
+            "description": "This is the thread-blocking work occurring during the Interaction to Next Paint measurement. [Learn more about the Interaction to Next Paint metric](https://web.dev/articles/inp).",
             "score": null,
             "scoreDisplayMode": "informative",
             "displayValue": "60 ms spent on event 'keypress'",
@@ -12445,7 +12445,7 @@
           "image-size-responsive": {
             "id": "image-size-responsive",
             "title": "Serves images with low resolution",
-            "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/serve-responsive-images/).",
+            "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/articles/serve-responsive-images).",
             "score": 0,
             "scoreDisplayMode": "binary",
             "details": {
@@ -12580,7 +12580,7 @@
           "unsized-images": {
             "id": "unsized-images",
             "title": "Image elements do not have explicit `width` and `height`",
-            "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/optimize-cls/#images-without-dimensions)",
+            "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/articles/optimize-cls#images_without_dimensions)",
             "score": 0.5,
             "scoreDisplayMode": "metricSavings",
             "metricSavings": {
@@ -14856,8 +14856,8 @@
           },
           "accessibility": {
             "title": "Accessibility",
-            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/how-to-review/) is also encouraged.",
-            "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).",
+            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/articles/how-to-review) is also encouraged.",
+            "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/articles/how-to-review).",
             "supportedModes": [
               "navigation",
               "snapshot"
@@ -15251,7 +15251,7 @@
           },
           "seo": {
             "title": "SEO",
-            "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/learn-core-web-vitals/). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
+            "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/explore/vitals). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
             "manualDescription": "Run these additional validators on your site to check additional SEO best practices.",
             "supportedModes": [
               "navigation",
@@ -17810,7 +17810,7 @@
           "cumulative-layout-shift": {
             "id": "cumulative-layout-shift",
             "title": "Cumulative Layout Shift",
-            "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/cls/).",
+            "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/articles/cls).",
             "score": 1,
             "scoreDisplayMode": "numeric",
             "numericValue": 0,
@@ -18099,7 +18099,7 @@
           "image-size-responsive": {
             "id": "image-size-responsive",
             "title": "Serves images with appropriate resolution",
-            "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/serve-responsive-images/).",
+            "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/articles/serve-responsive-images).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -18111,7 +18111,7 @@
           "preload-fonts": {
             "id": "preload-fonts",
             "title": "Fonts with `font-display: optional` are preloaded",
-            "description": "Preload `optional` fonts so first-time visitors may use them. [Learn more about preloading fonts](https://web.dev/preload-optional-fonts/)",
+            "description": "Preload `optional` fonts so first-time visitors may use them. [Learn more about preloading fonts](https://web.dev/articles/preload-optional-fonts)",
             "score": null,
             "scoreDisplayMode": "notApplicable"
           },
@@ -19161,7 +19161,7 @@
           "lcp-lazy-loaded": {
             "id": "lcp-lazy-loaded",
             "title": "Largest Contentful Paint image was not lazily loaded",
-            "description": "Above-the-fold images that are lazily loaded render later in the page lifecycle, which can delay the largest contentful paint. [Learn more about optimal lazy loading](https://web.dev/lcp-lazy-loading/).",
+            "description": "Above-the-fold images that are lazily loaded render later in the page lifecycle, which can delay the largest contentful paint. [Learn more about optimal lazy loading](https://web.dev/articles/lcp-lazy-loading).",
             "score": 1,
             "scoreDisplayMode": "metricSavings",
             "metricSavings": {
@@ -19202,7 +19202,7 @@
           "layout-shift-elements": {
             "id": "layout-shift-elements",
             "title": "Avoid large layout shifts",
-            "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/optimize-cls/)",
+            "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
             "score": null,
             "scoreDisplayMode": "notApplicable",
             "metricSavings": {
@@ -19218,7 +19218,7 @@
           "long-tasks": {
             "id": "long-tasks",
             "title": "Avoid long main-thread tasks",
-            "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/long-tasks-devtools/)",
+            "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/articles/long-tasks-devtools)",
             "score": null,
             "scoreDisplayMode": "informative",
             "displayValue": "2 long tasks found",
@@ -19293,7 +19293,7 @@
           "no-unload-listeners": {
             "id": "no-unload-listeners",
             "title": "Avoids `unload` event listeners",
-            "description": "The `unload` event does not fire reliably and listening for it can prevent browser optimizations like the Back-Forward Cache. Use `pagehide` or `visibilitychange` events instead. [Learn more about unload event listeners](https://web.dev/bfcache/#never-use-the-unload-event)",
+            "description": "The `unload` event does not fire reliably and listening for it can prevent browser optimizations like the Back-Forward Cache. Use `pagehide` or `visibilitychange` events instead. [Learn more about unload event listeners](https://web.dev/articles/bfcache#never_use_the_unload_event)",
             "score": 1,
             "scoreDisplayMode": "binary"
           },
@@ -19316,7 +19316,7 @@
           "unsized-images": {
             "id": "unsized-images",
             "title": "Image elements do not have explicit `width` and `height`",
-            "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/optimize-cls/#images-without-dimensions)",
+            "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/articles/optimize-cls#images_without_dimensions)",
             "score": 0.5,
             "scoreDisplayMode": "metricSavings",
             "metricSavings": {
@@ -19394,7 +19394,7 @@
           "prioritize-lcp-image": {
             "id": "prioritize-lcp-image",
             "title": "Preload Largest Contentful Paint image",
-            "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/optimize-lcp/#optimize-when-the-resource-is-discovered).",
+            "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/articles/optimize-lcp#optimize_when_the_resource_is_discovered).",
             "score": 1,
             "scoreDisplayMode": "metricSavings",
             "numericValue": 0,
@@ -20810,7 +20810,7 @@
           "legacy-javascript": {
             "id": "legacy-javascript",
             "title": "Avoid serving legacy JavaScript to modern browsers",
-            "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/publish-modern-javascript/)",
+            "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/articles/publish-modern-javascript)",
             "score": 0.5,
             "scoreDisplayMode": "metricSavings",
             "numericValue": 0,
@@ -21710,8 +21710,8 @@
           },
           "accessibility": {
             "title": "Accessibility",
-            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/how-to-review/) is also encouraged.",
-            "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).",
+            "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/articles/how-to-review) is also encouraged.",
+            "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/articles/how-to-review).",
             "supportedModes": [
               "navigation",
               "snapshot"
@@ -22160,7 +22160,7 @@
           },
           "seo": {
             "title": "SEO",
-            "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/learn-core-web-vitals/). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
+            "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/explore/vitals). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
             "manualDescription": "Run these additional validators on your site to check additional SEO best practices.",
             "supportedModes": [
               "navigation",
@@ -22247,8 +22247,8 @@
           },
           "pwa": {
             "title": "PWA",
-            "description": "These checks validate the aspects of a Progressive Web App. [Learn what makes a good Progressive Web App](https://web.dev/pwa-checklist/).",
-            "manualDescription": "These checks are required by the baseline [PWA Checklist](https://web.dev/pwa-checklist/) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
+            "description": "These checks validate the aspects of a Progressive Web App. [Learn what makes a good Progressive Web App](https://web.dev/articles/pwa-checklist).",
+            "manualDescription": "These checks are required by the baseline [PWA Checklist](https://web.dev/articles/pwa-checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
             "supportedModes": [
               "navigation"
             ],
