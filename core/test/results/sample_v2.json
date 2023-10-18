@@ -1,5 +1,5 @@
 {
-  "lighthouseVersion": "11.1.0",
+  "lighthouseVersion": "11.2.0",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "mainDocumentUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalDisplayedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -51,8 +51,12 @@
       "title": "Has a `<meta name=\"viewport\">` tag with `width` or `initial-scale`",
       "description": "A `<meta name=\"viewport\">` not only optimizes your app for mobile screen sizes, but also prevents [a 300 millisecond delay to user input](https://developer.chrome.com/blog/300ms-tap-delay-gone-away/). [Learn more about using the viewport meta tag](https://developer.chrome.com/docs/lighthouse/pwa/viewport/).",
       "score": 1,
-      "scoreDisplayMode": "binary",
-      "warnings": []
+      "scoreDisplayMode": "metricSavings",
+      "warnings": [],
+      "metricSavings": {
+        "INP": 0
+      },
+      "guidanceLevel": 3
     },
     "first-contentful-paint": {
       "id": "first-contentful-paint",
@@ -62,7 +66,11 @@
       "scoreDisplayMode": "numeric",
       "numericValue": 6843.95,
       "numericUnit": "millisecond",
-      "displayValue": "6.8 s"
+      "displayValue": "6.8 s",
+      "scoringOptions": {
+        "p10": 1800,
+        "median": 3000
+      }
     },
     "largest-contentful-paint": {
       "id": "largest-contentful-paint",
@@ -72,7 +80,11 @@
       "scoreDisplayMode": "numeric",
       "numericValue": 13319.961,
       "numericUnit": "millisecond",
-      "displayValue": "13.3 s"
+      "displayValue": "13.3 s",
+      "scoringOptions": {
+        "p10": 2500,
+        "median": 4000
+      }
     },
     "first-meaningful-paint": {
       "id": "first-meaningful-paint",
@@ -92,7 +104,11 @@
       "scoreDisplayMode": "numeric",
       "numericValue": 8114,
       "numericUnit": "millisecond",
-      "displayValue": "8.1 s"
+      "displayValue": "8.1 s",
+      "scoringOptions": {
+        "p10": 3387,
+        "median": 5800
+      }
     },
     "screenshot-thumbnails": {
       "id": "screenshot-thumbnails",
@@ -168,7 +184,11 @@
       "scoreDisplayMode": "numeric",
       "numericValue": 1220.691999999999,
       "numericUnit": "millisecond",
-      "displayValue": "1,220 ms"
+      "displayValue": "1,220 ms",
+      "scoringOptions": {
+        "p10": 200,
+        "median": 600
+      }
     },
     "max-potential-fid": {
       "id": "max-potential-fid",
@@ -183,12 +203,16 @@
     "cumulative-layout-shift": {
       "id": "cumulative-layout-shift",
       "title": "Cumulative Layout Shift",
-      "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/cls/).",
+      "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/articles/cls).",
       "score": 0.8,
       "scoreDisplayMode": "numeric",
       "numericValue": 0.13570762803819444,
       "numericUnit": "unitless",
       "displayValue": "0.136",
+      "scoringOptions": {
+        "p10": 0.1,
+        "median": 0.25
+      },
       "details": {
         "type": "debugdata",
         "items": [
@@ -303,11 +327,15 @@
       "id": "server-response-time",
       "title": "Initial server response time was short",
       "description": "Keep the server response time for the main document short because all other requests depend on it. [Learn more about the Time to First Byte metric](https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/).",
-      "score": 1,
-      "scoreDisplayMode": "binary",
+      "score": null,
+      "scoreDisplayMode": "informative",
       "numericValue": 568.468,
       "numericUnit": "millisecond",
       "displayValue": "Root document took 570 ms",
+      "metricSavings": {
+        "FCP": 468.46799999999996,
+        "LCP": 468.46799999999996
+      },
       "details": {
         "type": "opportunity",
         "headings": [
@@ -329,7 +357,8 @@
           }
         ],
         "overallSavingsMs": 468.46799999999996
-      }
+      },
+      "guidanceLevel": 1
     },
     "interactive": {
       "id": "interactive",
@@ -607,7 +636,8 @@
             "timingType": "Mark"
           }
         ]
-      }
+      },
+      "guidanceLevel": 2
     },
     "critical-request-chains": {
       "id": "critical-request-chains",
@@ -744,23 +774,29 @@
           "length": 2,
           "transferSize": 903
         }
-      }
+      },
+      "guidanceLevel": 1
     },
     "redirects": {
       "id": "redirects",
       "title": "Avoid multiple page redirects",
       "description": "Redirects introduce additional delays before the page can be loaded. [Learn how to avoid page redirects](https://developer.chrome.com/docs/lighthouse/performance/redirects/).",
       "score": 1,
-      "scoreDisplayMode": "numeric",
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
       "displayValue": "",
+      "metricSavings": {
+        "LCP": 0,
+        "FCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [],
         "items": [],
         "overallSavingsMs": 0
-      }
+      },
+      "guidanceLevel": 2
     },
     "installable-manifest": {
       "id": "installable-manifest",
@@ -930,7 +966,7 @@
     "image-size-responsive": {
       "id": "image-size-responsive",
       "title": "Serves images with appropriate resolution",
-      "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/serve-responsive-images/).",
+      "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/articles/serve-responsive-images).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -942,7 +978,7 @@
     "preload-fonts": {
       "id": "preload-fonts",
       "title": "Fonts with `font-display: optional` are preloaded",
-      "description": "Preload `optional` fonts so first-time visitors may use them. [Learn more about preloading fonts](https://web.dev/preload-optional-fonts/)",
+      "description": "Preload `optional` fonts so first-time visitors may use them. [Learn more about preloading fonts](https://web.dev/articles/preload-optional-fonts)",
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
@@ -995,11 +1031,14 @@
       "id": "mainthread-work-breakdown",
       "title": "Minimize main-thread work",
       "description": "Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this. [Learn how to minimize main-thread work](https://developer.chrome.com/docs/lighthouse/performance/mainthread-work-breakdown/)",
-      "score": 0.86,
-      "scoreDisplayMode": "numeric",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 2240.732999999998,
       "numericUnit": "millisecond",
       "displayValue": "2.2 s",
+      "metricSavings": {
+        "TBT": 1220.691999999999
+      },
       "details": {
         "type": "table",
         "headings": [
@@ -1050,17 +1089,21 @@
         "sortedBy": [
           "duration"
         ]
-      }
+      },
+      "guidanceLevel": 1
     },
     "bootup-time": {
       "id": "bootup-time",
       "title": "Reduce JavaScript execution time",
       "description": "Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. [Learn how to reduce Javascript execution time](https://developer.chrome.com/docs/lighthouse/performance/bootup-time/).",
-      "score": 0.89,
-      "scoreDisplayMode": "numeric",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 1324.3129999999999,
       "numericUnit": "millisecond",
       "displayValue": "1.3 s",
+      "metricSavings": {
+        "TBT": 1209.4020894768312
+      },
       "details": {
         "type": "table",
         "headings": [
@@ -1114,7 +1157,8 @@
         "sortedBy": [
           "total"
         ]
-      }
+      },
+      "guidanceLevel": 1
     },
     "uses-rel-preload": {
       "id": "uses-rel-preload",
@@ -1127,18 +1171,23 @@
         "headings": [],
         "items": [],
         "overallSavingsMs": 0
-      }
+      },
+      "guidanceLevel": 3
     },
     "uses-rel-preconnect": {
       "id": "uses-rel-preconnect",
       "title": "Preconnect to required origins",
       "description": "Consider adding `preconnect` or `dns-prefetch` resource hints to establish early connections to important third-party origins. [Learn how to preconnect to required origins](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/).",
       "score": 1,
-      "scoreDisplayMode": "numeric",
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
       "displayValue": "",
       "warnings": [],
+      "metricSavings": {
+        "LCP": 0,
+        "FCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [],
@@ -1147,20 +1196,22 @@
         "sortedBy": [
           "wastedMs"
         ]
-      }
+      },
+      "guidanceLevel": 3
     },
     "font-display": {
       "id": "font-display",
       "title": "All text remains visible during webfont loads",
       "description": "Leverage the `font-display` CSS feature to ensure text is user-visible while webfonts are loading. [Learn more about `font-display`](https://developer.chrome.com/docs/lighthouse/performance/font-display/).",
       "score": 1,
-      "scoreDisplayMode": "binary",
+      "scoreDisplayMode": "metricSavings",
       "warnings": [],
       "details": {
         "type": "table",
         "headings": [],
         "items": []
-      }
+      },
+      "guidanceLevel": 3
     },
     "diagnostics": {
       "id": "diagnostics",
@@ -2142,9 +2193,12 @@
       "id": "third-party-summary",
       "title": "Minimize third-party usage",
       "description": "Third-party code can significantly impact load performance. Limit the number of redundant third-party providers and try to load third-party code after your page has primarily finished loading. [Learn how to minimize third-party impact](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript/).",
-      "score": 1,
-      "scoreDisplayMode": "binary",
+      "score": null,
+      "scoreDisplayMode": "informative",
       "displayValue": "Third-party code blocked the main thread for 0 ms",
+      "metricSavings": {
+        "TBT": 23.424291876693196
+      },
       "details": {
         "type": "table",
         "headings": [
@@ -2202,22 +2256,30 @@
           "wastedMs": 0
         },
         "isEntityGrouped": true
-      }
+      },
+      "guidanceLevel": 1
     },
     "third-party-facades": {
       "id": "third-party-facades",
       "title": "Lazy load third-party resources with facades",
       "description": "Some third-party embeds can be lazy loaded. Consider replacing them with a facade until they are required. [Learn how to defer third-parties with a facade](https://developer.chrome.com/docs/lighthouse/performance/third-party-facades/).",
       "score": null,
-      "scoreDisplayMode": "notApplicable"
+      "scoreDisplayMode": "notApplicable",
+      "metricSavings": {
+        "TBT": 0
+      },
+      "guidanceLevel": 3
     },
     "largest-contentful-paint-element": {
       "id": "largest-contentful-paint-element",
       "title": "Largest Contentful Paint element",
       "description": "This is the largest contentful element painted within the viewport. [Learn more about the Largest Contentful Paint element](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/)",
-      "score": null,
-      "scoreDisplayMode": "informative",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
       "displayValue": "13,320 ms",
+      "metricSavings": {
+        "LCP": 10819.961
+      },
       "details": {
         "type": "list",
         "items": [
@@ -2294,22 +2356,30 @@
             ]
           }
         ]
-      }
+      },
+      "guidanceLevel": 1
     },
     "lcp-lazy-loaded": {
       "id": "lcp-lazy-loaded",
       "title": "Largest Contentful Paint image was not lazily loaded",
-      "description": "Above-the-fold images that are lazily loaded render later in the page lifecycle, which can delay the largest contentful paint. [Learn more about optimal lazy loading](https://web.dev/lcp-lazy-loading/).",
+      "description": "Above-the-fold images that are lazily loaded render later in the page lifecycle, which can delay the largest contentful paint. [Learn more about optimal lazy loading](https://web.dev/articles/lcp-lazy-loading).",
       "score": null,
-      "scoreDisplayMode": "notApplicable"
+      "scoreDisplayMode": "notApplicable",
+      "metricSavings": {
+        "LCP": 0
+      },
+      "guidanceLevel": 3
     },
     "layout-shift-elements": {
       "id": "layout-shift-elements",
       "title": "Avoid large layout shifts",
-      "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/optimize-cls/)",
-      "score": null,
-      "scoreDisplayMode": "informative",
+      "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
       "displayValue": "5 elements found",
+      "metricSavings": {
+        "CLS": 0.13570762803819444
+      },
       "details": {
         "type": "table",
         "headings": [
@@ -2422,15 +2492,19 @@
             "score": 0.004071364067636093
           }
         ]
-      }
+      },
+      "guidanceLevel": 2
     },
     "long-tasks": {
       "id": "long-tasks",
       "title": "Avoid long main-thread tasks",
-      "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/long-tasks-devtools/)",
+      "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/articles/long-tasks-devtools)",
       "score": null,
       "scoreDisplayMode": "informative",
       "displayValue": "2 long tasks found",
+      "metricSavings": {
+        "TBT": 1220.691999999999
+      },
       "details": {
         "type": "table",
         "headings": [
@@ -2499,12 +2573,13 @@
             }
           ]
         }
-      }
+      },
+      "guidanceLevel": 1
     },
     "no-unload-listeners": {
       "id": "no-unload-listeners",
       "title": "Registers an `unload` listener",
-      "description": "The `unload` event does not fire reliably and listening for it can prevent browser optimizations like the Back-Forward Cache. Use `pagehide` or `visibilitychange` events instead. [Learn more about unload event listeners](https://web.dev/bfcache/#never-use-the-unload-event)",
+      "description": "The `unload` event does not fire reliably and listening for it can prevent browser optimizations like the Back-Forward Cache. Use `pagehide` or `visibilitychange` events instead. [Learn more about unload event listeners](https://web.dev/articles/bfcache#never_use_the_unload_event)",
       "score": 0,
       "scoreDisplayMode": "binary",
       "details": {
@@ -2536,6 +2611,9 @@
       "score": null,
       "scoreDisplayMode": "informative",
       "displayValue": "1 animated element found",
+      "metricSavings": {
+        "CLS": 0
+      },
       "details": {
         "type": "table",
         "headings": [
@@ -2587,14 +2665,18 @@
             }
           }
         ]
-      }
+      },
+      "guidanceLevel": 2
     },
     "unsized-images": {
       "id": "unsized-images",
       "title": "Image elements do not have explicit `width` and `height`",
-      "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/optimize-cls/#images-without-dimensions)",
-      "score": 0,
-      "scoreDisplayMode": "binary",
+      "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/articles/optimize-cls#images_without_dimensions)",
+      "score": 0.5,
+      "scoreDisplayMode": "metricSavings",
+      "metricSavings": {
+        "CLS": 0
+      },
       "details": {
         "type": "table",
         "headings": [
@@ -2649,7 +2731,8 @@
             }
           }
         ]
-      }
+      },
+      "guidanceLevel": 3
     },
     "valid-source-maps": {
       "id": "valid-source-maps",
@@ -2666,12 +2749,15 @@
     "prioritize-lcp-image": {
       "id": "prioritize-lcp-image",
       "title": "Preload Largest Contentful Paint image",
-      "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/optimize-lcp/#optimize-when-the-resource-is-discovered).",
-      "score": 1,
-      "scoreDisplayMode": "numeric",
+      "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/articles/optimize-lcp#optimize_when_the_resource_is_discovered).",
+      "score": 0.5,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
       "displayValue": "",
+      "metricSavings": {
+        "LCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [
@@ -2739,7 +2825,8 @@
           ],
           "pathLength": 4
         }
-      }
+      },
+      "guidanceLevel": 3
     },
     "csp-xss": {
       "id": "csp-xss",
@@ -3980,8 +4067,8 @@
       "id": "uses-long-cache-ttl",
       "title": "Serve static assets with an efficient cache policy",
       "description": "A long cache lifetime can speed up repeat visits to your page. [Learn more about efficient cache policies](https://developer.chrome.com/docs/lighthouse/performance/uses-long-cache-ttl/).",
-      "score": 0.02,
-      "scoreDisplayMode": "numeric",
+      "score": 0.5,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 1370996,
       "numericUnit": "byte",
       "displayValue": "19 resources found",
@@ -4151,14 +4238,15 @@
         "skipSumming": [
           "cacheLifetimeMs"
         ]
-      }
+      },
+      "guidanceLevel": 3
     },
     "total-byte-weight": {
       "id": "total-byte-weight",
       "title": "Avoids enormous network payloads",
       "description": "Large network payloads cost users real money and are highly correlated with long load times. [Learn how to reduce payload sizes](https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/).",
-      "score": 1,
-      "scoreDisplayMode": "numeric",
+      "score": null,
+      "scoreDisplayMode": "informative",
       "numericValue": 1437431,
       "numericUnit": "byte",
       "displayValue": "Total size was 1,404 KiB",
@@ -4221,18 +4309,23 @@
         "sortedBy": [
           "totalBytes"
         ]
-      }
+      },
+      "guidanceLevel": 1
     },
     "offscreen-images": {
       "id": "offscreen-images",
       "title": "Defer offscreen images",
       "description": "Consider lazy-loading offscreen and hidden images after all critical resources have finished loading to lower time to interactive. [Learn how to defer offscreen images](https://developer.chrome.com/docs/lighthouse/performance/offscreen-images/).",
       "score": 1,
-      "scoreDisplayMode": "numeric",
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
       "displayValue": "",
       "warnings": [],
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [],
@@ -4249,17 +4342,22 @@
             "LCP": 0
           }
         }
-      }
+      },
+      "guidanceLevel": 2
     },
     "render-blocking-resources": {
       "id": "render-blocking-resources",
       "title": "Eliminate render-blocking resources",
       "description": "Resources are blocking the first paint of your page. Consider delivering critical JS/CSS inline and deferring all non-critical JS/styles. [Learn how to eliminate render-blocking resources](https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources/).",
-      "score": 1,
-      "scoreDisplayMode": "numeric",
+      "score": 0.5,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 0 ms",
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [
@@ -4312,17 +4410,22 @@
           }
         ],
         "overallSavingsMs": 0
-      }
+      },
+      "guidanceLevel": 2
     },
     "unminified-css": {
       "id": "unminified-css",
       "title": "Minify CSS",
       "description": "Minifying CSS files can reduce network payload sizes. [Learn how to minify CSS](https://developer.chrome.com/docs/lighthouse/performance/unminified-css/).",
       "score": 1,
-      "scoreDisplayMode": "numeric",
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
       "displayValue": "",
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [],
@@ -4339,18 +4442,23 @@
             "LCP": 0
           }
         }
-      }
+      },
+      "guidanceLevel": 3
     },
     "unminified-javascript": {
       "id": "unminified-javascript",
       "title": "Minify JavaScript",
       "description": "Minifying JavaScript files can reduce payload sizes and script parse time. [Learn how to minify JavaScript](https://developer.chrome.com/docs/lighthouse/performance/unminified-javascript/).",
-      "score": 0.43,
-      "scoreDisplayMode": "numeric",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 1200,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 82 KiB",
       "warnings": [],
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 300
+      },
       "details": {
         "type": "opportunity",
         "headings": [
@@ -4390,17 +4498,22 @@
             "LCP": 300
           }
         }
-      }
+      },
+      "guidanceLevel": 3
     },
     "unused-css-rules": {
       "id": "unused-css-rules",
       "title": "Reduce unused CSS",
       "description": "Reduce unused rules from stylesheets and defer CSS not used for above-the-fold content to decrease bytes consumed by network activity. [Learn how to reduce unused CSS](https://developer.chrome.com/docs/lighthouse/performance/unused-css-rules/).",
       "score": 1,
-      "scoreDisplayMode": "numeric",
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
       "displayValue": "",
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [],
@@ -4417,17 +4530,22 @@
             "LCP": 0
           }
         }
-      }
+      },
+      "guidanceLevel": 2
     },
     "unused-javascript": {
       "id": "unused-javascript",
       "title": "Reduce unused JavaScript",
       "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. [Learn how to reduce unused JavaScript](https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/).",
-      "score": 0.56,
-      "scoreDisplayMode": "numeric",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 750,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 64 KiB",
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 450
+      },
       "details": {
         "type": "opportunity",
         "headings": [
@@ -4483,18 +4601,23 @@
             "LCP": 450
           }
         }
-      }
+      },
+      "guidanceLevel": 2
     },
     "modern-image-formats": {
       "id": "modern-image-formats",
       "title": "Serve images in next-gen formats",
       "description": "Image formats like WebP and AVIF often provide better compression than PNG or JPEG, which means faster downloads and less data consumption. [Learn more about modern image formats](https://developer.chrome.com/docs/lighthouse/performance/uses-webp-images/).",
-      "score": 0.69,
-      "scoreDisplayMode": "numeric",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 450,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 76 KiB",
       "warnings": [],
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 450
+      },
       "details": {
         "type": "opportunity",
         "headings": [
@@ -4597,18 +4720,23 @@
             "LCP": 450
           }
         }
-      }
+      },
+      "guidanceLevel": 3
     },
     "uses-optimized-images": {
       "id": "uses-optimized-images",
       "title": "Efficiently encode images",
       "description": "Optimized images load faster and consume less cellular data. [Learn how to efficiently encode images](https://developer.chrome.com/docs/lighthouse/performance/uses-optimized-images/).",
       "score": 1,
-      "scoreDisplayMode": "numeric",
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
       "displayValue": "",
       "warnings": [],
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [],
@@ -4625,17 +4753,22 @@
             "LCP": 0
           }
         }
-      }
+      },
+      "guidanceLevel": 2
     },
     "uses-text-compression": {
       "id": "uses-text-compression",
       "title": "Enable text compression",
       "description": "Text-based resources should be served with compression (gzip, deflate or brotli) to minimize total network bytes. [Learn more about text compression](https://developer.chrome.com/docs/lighthouse/performance/uses-text-compression/).",
-      "score": 0.25,
-      "scoreDisplayMode": "numeric",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 2400,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 143 KiB",
+      "metricSavings": {
+        "FCP": 150,
+        "LCP": 750
+      },
       "details": {
         "type": "opportunity",
         "headings": [
@@ -4679,17 +4812,22 @@
             "LCP": 750
           }
         }
-      }
+      },
+      "guidanceLevel": 3
     },
     "uses-responsive-images": {
       "id": "uses-responsive-images",
       "title": "Properly size images",
       "description": "Serve images that are appropriately-sized to save cellular data and improve load time. [Learn how to size images](https://developer.chrome.com/docs/lighthouse/performance/uses-responsive-images/).",
       "score": 1,
-      "scoreDisplayMode": "numeric",
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
       "displayValue": "",
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [],
@@ -4706,17 +4844,22 @@
             "LCP": 0
           }
         }
-      }
+      },
+      "guidanceLevel": 2
     },
     "efficient-animated-content": {
       "id": "efficient-animated-content",
       "title": "Use video formats for animated content",
       "description": "Large GIFs are inefficient for delivering animated content. Consider using MPEG4/WebM videos for animations and PNG/WebP for static images instead of GIF to save network bytes. [Learn more about efficient video formats](https://developer.chrome.com/docs/lighthouse/performance/efficient-animated-content/)",
-      "score": 0.18,
-      "scoreDisplayMode": "numeric",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 3450,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 666 KiB",
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 3300
+      },
       "details": {
         "type": "opportunity",
         "headings": [
@@ -4755,17 +4898,22 @@
             "LCP": 3300
           }
         }
-      }
+      },
+      "guidanceLevel": 3
     },
     "duplicated-javascript": {
       "id": "duplicated-javascript",
       "title": "Remove duplicate modules in JavaScript bundles",
       "description": "Remove large, duplicate JavaScript modules from bundles to reduce unnecessary bytes consumed by network activity. ",
       "score": 1,
-      "scoreDisplayMode": "numeric",
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
       "displayValue": "",
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [],
@@ -4782,17 +4930,22 @@
             "LCP": 0
           }
         }
-      }
+      },
+      "guidanceLevel": 2
     },
     "legacy-javascript": {
       "id": "legacy-javascript",
       "title": "Avoid serving legacy JavaScript to modern browsers",
-      "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/publish-modern-javascript/)",
-      "score": 0.69,
-      "scoreDisplayMode": "numeric",
+      "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/articles/publish-modern-javascript)",
+      "score": 0.5,
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 450,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 26 KiB",
+      "metricSavings": {
+        "FCP": 0,
+        "LCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [
@@ -4863,7 +5016,8 @@
             "LCP": 0
           }
         }
-      }
+      },
+      "guidanceLevel": 2
     },
     "doctype": {
       "id": "doctype",
@@ -4883,11 +5037,14 @@
       "id": "dom-size",
       "title": "Avoids an excessive DOM size",
       "description": "A large DOM will increase memory usage, cause longer [style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn how to avoid an excessive DOM size](https://developer.chrome.com/docs/lighthouse/performance/dom-size/).",
-      "score": 1,
-      "scoreDisplayMode": "numeric",
+      "score": null,
+      "scoreDisplayMode": "informative",
       "numericValue": 153,
       "numericUnit": "element",
       "displayValue": "153 elements",
+      "metricSavings": {
+        "TBT": 1
+      },
       "details": {
         "type": "table",
         "headings": [
@@ -4965,7 +5122,8 @@
             }
           }
         ]
-      }
+      },
+      "guidanceLevel": 1
     },
     "geolocation-on-start": {
       "id": "geolocation-on-start",
@@ -5020,8 +5178,8 @@
       "id": "no-document-write",
       "title": "Avoid `document.write()`",
       "description": "For users on slow connections, external scripts dynamically injected via `document.write()` can delay page load by tens of seconds. [Learn how to avoid document.write()](https://developer.chrome.com/docs/lighthouse/best-practices/no-document-write/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
+      "score": 0.5,
+      "scoreDisplayMode": "metricSavings",
       "details": {
         "type": "table",
         "headings": [
@@ -5060,7 +5218,8 @@
             }
           }
         ]
-      }
+      },
+      "guidanceLevel": 2
     },
     "js-libraries": {
       "id": "js-libraries",
@@ -5199,22 +5358,27 @@
       "title": "Use HTTP/2",
       "description": "HTTP/2 offers many benefits over HTTP/1.1, including binary headers and multiplexing. [Learn more about HTTP/2](https://developer.chrome.com/docs/lighthouse/best-practices/uses-http2/).",
       "score": 1,
-      "scoreDisplayMode": "numeric",
+      "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
       "numericUnit": "millisecond",
+      "metricSavings": {
+        "LCP": 0,
+        "FCP": 0
+      },
       "details": {
         "type": "opportunity",
         "headings": [],
         "items": [],
         "overallSavingsMs": 0
-      }
+      },
+      "guidanceLevel": 3
     },
     "uses-passive-event-listeners": {
       "id": "uses-passive-event-listeners",
       "title": "Does not use passive listeners to improve scrolling performance",
       "description": "Consider marking your touch and wheel event listeners as `passive` to improve your page's scroll performance. [Learn more about adopting passive event listeners](https://developer.chrome.com/docs/lighthouse/best-practices/uses-passive-event-listeners/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
+      "score": 0.5,
+      "scoreDisplayMode": "metricSavings",
       "details": {
         "type": "table",
         "headings": [
@@ -5235,7 +5399,8 @@
             }
           }
         ]
-      }
+      },
+      "guidanceLevel": 3
     },
     "meta-description": {
       "id": "meta-description",
@@ -5494,8 +5659,8 @@
       "id": "bf-cache",
       "title": "Page prevented back/forward cache restoration",
       "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://developer.chrome.com/docs/lighthouse/performance/bf-cache/)",
-      "score": 0,
-      "scoreDisplayMode": "binary",
+      "score": 0.5,
+      "scoreDisplayMode": "metricSavings",
       "displayValue": "2 failure reasons",
       "details": {
         "type": "table",
@@ -5543,7 +5708,8 @@
             "protocolReason": "BrowsingInstanceNotSwapped"
           }
         ]
-      }
+      },
+      "guidanceLevel": 2
     }
   },
   "configSettings": {
@@ -6012,8 +6178,8 @@
     },
     "accessibility": {
       "title": "Accessibility",
-      "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/how-to-review/) is also encouraged.",
-      "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).",
+      "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/articles/how-to-review) is also encouraged.",
+      "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/articles/how-to-review).",
       "supportedModes": [
         "navigation",
         "snapshot"
@@ -6210,11 +6376,6 @@
           "group": "a11y-names-labels"
         },
         {
-          "id": "label-content-name-mismatch",
-          "weight": 7,
-          "group": "a11y-names-labels"
-        },
-        {
           "id": "label",
           "weight": 7,
           "group": "a11y-names-labels"
@@ -6272,16 +6433,6 @@
         {
           "id": "table-duplicate-name",
           "weight": 1,
-          "group": "a11y-tables-lists"
-        },
-        {
-          "id": "table-fake-caption",
-          "weight": 7,
-          "group": "a11y-tables-lists"
-        },
-        {
-          "id": "td-has-header",
-          "weight": 10,
           "group": "a11y-tables-lists"
         },
         {
@@ -6363,10 +6514,25 @@
           "id": "target-size",
           "weight": 0,
           "group": "hidden"
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "table-fake-caption",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "td-has-header",
+          "weight": 0,
+          "group": "hidden"
         }
       ],
       "id": "accessibility",
-      "score": 0.8
+      "score": 0.77
     },
     "best-practices": {
       "title": "Best Practices",
@@ -6462,7 +6628,7 @@
     },
     "seo": {
       "title": "SEO",
-      "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/learn-core-web-vitals/). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
+      "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/explore/vitals). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
       "manualDescription": "Run these additional validators on your site to check additional SEO best practices.",
       "supportedModes": [
         "navigation",
@@ -6549,8 +6715,8 @@
     },
     "pwa": {
       "title": "PWA",
-      "description": "These checks validate the aspects of a Progressive Web App. [Learn what makes a good Progressive Web App](https://web.dev/pwa-checklist/).",
-      "manualDescription": "These checks are required by the baseline [PWA Checklist](https://web.dev/pwa-checklist/) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
+      "description": "These checks validate the aspects of a Progressive Web App. [Learn what makes a good Progressive Web App](https://web.dev/articles/pwa-checklist).",
+      "manualDescription": "These checks are required by the baseline [PWA Checklist](https://web.dev/articles/pwa-checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
       "supportedModes": [
         "navigation"
       ],

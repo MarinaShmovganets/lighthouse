@@ -27,7 +27,7 @@ const UIStrings = {
   /** Title of a diagnostic audit that provides detail on the main thread work the browser did during a key user interaction. This imperative title is shown to users when there is a significant amount of execution time that could be reduced. */
   failureTitle: 'Minimize work during key interaction',
   /** Description of the work-during-interaction metric. This description is displayed within a tooltip when the user hovers on the metric name to see more. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
-  description: 'This is the thread-blocking work occurring during the Interaction to Next Paint measurement. [Learn more about the Interaction to Next Paint metric](https://web.dev/inp/).',
+  description: 'This is the thread-blocking work occurring during the Interaction to Next Paint measurement. [Learn more about the Interaction to Next Paint metric](https://web.dev/articles/inp).',
   /** Label for a column in a data table; entries will be information on the time that the browser is delayed before responding to user input. Ideally fits within a ~40 character limit. */
   inputDelay: 'Input delay',
   /** Label for a column in a data table; entries will be information on the time taken by code processing user input that delays a response to the user. Ideally fits within a ~40 character limit. */
@@ -58,7 +58,7 @@ class WorkDuringInteraction extends Audit {
       title: str_(UIStrings.title),
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
-      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
+      scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
       supportedModes: ['timespan'],
       guidanceLevel: 1,
       requiredArtifacts: ['traces', 'devtoolsLogs', 'TraceElements'],
@@ -273,8 +273,12 @@ class WorkDuringInteraction extends Audit {
 
     const duration = interactionEvent.args.data.duration;
     const displayValue = str_(UIStrings.displayValue, {timeInMs: duration, interactionType});
+
+    const passed = duration < InteractionToNextPaint.defaultOptions.p10;
+
     return {
-      score: duration < InteractionToNextPaint.defaultOptions.p10 ? 1 : 0,
+      score: passed ? 1 : 0,
+      scoreDisplayMode: passed ? Audit.SCORING_MODES.INFORMATIVE : undefined,
       displayValue,
       details: {
         type: 'list',

@@ -12,6 +12,13 @@ interface ScoreDisplayModes {
   NUMERIC: 'numeric';
   /** Pass/fail audit (0 and 1 are only possible scores). */
   BINARY: 'binary';
+  /**
+   * Audit result score is determined by the metric savings and product score:
+   * 1   - audit passed based on product score
+   * 0.5 - audit failed and had no metric savings
+   * 0   - audit failed and had metric savings
+   */
+  METRIC_SAVINGS: 'metricSavings';
   /** The audit exists only to tell you to review something yourself. Score is null and should be ignored. */
   MANUAL: 'manual';
   /** The audit is an FYI only, and can't be interpreted as pass/fail. Score is null and should be ignored. */
@@ -66,4 +73,13 @@ export interface Result {
   numericUnit?: string;
   /** Extra information about the page provided by some types of audits, in one of several possible forms that can be rendered in the HTML report. */
   details?: FormattedIcu<AuditDetails>;
+  /** Estimates of how much this audit affects various performance metrics. Values will be in the unit of the respective metrics. */
+  metricSavings?: MetricSavings
+  /** Score details including p10 and median for calculating an audit's log-normal score. */
+  scoringOptions?: {
+    p10: number;
+    median: number;
+  };
+  /** A number indicating how much guidance Lighthouse provides to solve the problem in this audit on a 1-3 scale. Higher means more guidance. */
+  guidanceLevel?: number;
 }

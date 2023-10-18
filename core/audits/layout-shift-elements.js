@@ -5,13 +5,14 @@
 
 import {Audit} from './audit.js';
 import * as i18n from '../lib/i18n/i18n.js';
-import {CumulativeLayoutShift} from '../computed/metrics/cumulative-layout-shift.js';
+import {CumulativeLayoutShift as CumulativeLayoutShiftComputed} from '../computed/metrics/cumulative-layout-shift.js';
+import CumulativeLayoutShift from './metrics/cumulative-layout-shift.js';
 
 const UIStrings = {
   /** Descriptive title of a diagnostic audit that provides up to the top five elements contributing to Cumulative Layout Shift. */
   title: 'Avoid large layout shifts',
   /** Description of a diagnostic audit that provides up to the top five elements contributing to Cumulative Layout Shift. The last sentence starting with 'Learn' becomes link text to additional documentation. */
-  description: 'These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/optimize-cls/)',
+  description: 'These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/articles/optimize-cls)',
   /**  Label for a column in a data table; entries in this column will be the amount that the corresponding element contributes to the total CLS metric score. */
   columnContribution: 'CLS Contribution',
 };
@@ -27,7 +28,7 @@ class LayoutShiftElements extends Audit {
       id: 'layout-shift-elements',
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
-      scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
+      scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
       guidanceLevel: 2,
       requiredArtifacts: ['traces', 'TraceElements'],
     };
@@ -64,10 +65,13 @@ class LayoutShiftElements extends Audit {
     }
 
     const {cumulativeLayoutShift: clsSavings} =
-      await CumulativeLayoutShift.request(artifacts.traces[Audit.DEFAULT_PASS], context);
+      await CumulativeLayoutShiftComputed.request(artifacts.traces[Audit.DEFAULT_PASS], context);
+
+    const passed = clsSavings <= CumulativeLayoutShift.defaultOptions.p10;
 
     return {
-      score: 1,
+      score: passed ? 1 : 0,
+      scoreDisplayMode: passed ? Audit.SCORING_MODES.INFORMATIVE : undefined,
       metricSavings: {
         CLS: clsSavings,
       },
