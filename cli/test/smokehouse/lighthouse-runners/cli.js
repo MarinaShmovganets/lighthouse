@@ -62,7 +62,7 @@ async function internalRun(url, tmpPath, config, options) {
     `--output-path=${outputPath}`,
     '--output=json',
     // native headless, as full headless has several behavior differences that break tests. http://go/rooxt
-    forceHeadful ? '' : '--chrome-flags="--headless=chrome"',
+    forceHeadful ? '' : '--chrome-flags="--headless=new"',
     `-G=${artifactsDirectory}`,
     `-A=${artifactsDirectory}`,
     '--port=0',

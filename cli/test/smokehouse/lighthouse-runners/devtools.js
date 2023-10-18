@@ -45,7 +45,7 @@ async function setup() {
  */
 async function runLighthouse(url, config, testRunnerOptions) {
   const chromeFlags = [
-    testRunnerOptions?.forceHeadful ? '' : '--headless=chrome',
+    testRunnerOptions?.forceHeadful ? '' : '--headless=new',
     `--custom-devtools-frontend=file://${devtoolsDir}/out/LighthouseIntegration/gen/front_end`,
   ];
   const {lhr, artifacts, logs} = await testUrlFromDevtools(url, {
