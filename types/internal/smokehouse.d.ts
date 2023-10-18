@@ -57,14 +57,14 @@ declare global {
 
     export interface SmokehouseOptions {
       /** Options to pass to the specific Lighthouse runner. */
-      testRunnerOptions: {
+      testRunnerOptions?: {
         /** If true, performs extra logging from the test runs. */
         isDebug?: boolean;
         /** Launch Chrome in typical desktop headful mode, rather than our default of `--headless-chrome`. */
         forceHeadful?: boolean;
       };
       /** Manually set the number of jobs to run at once. `1` runs all tests serially. */
-      jobs?: number;
+      jobs: number;
       /** The number of times to retry failing tests before accepting. Defaults to 0. */
       retries: number;
       /** A function that runs Lighthouse with the given options. Defaults to running Lighthouse via the CLI. */

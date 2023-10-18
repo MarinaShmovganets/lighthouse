@@ -83,7 +83,7 @@ async function runBundledLighthouse(url, config, testRunnerOptions) {
 
   // Run Lighthouse.
   try {
-    const logLevel = testRunnerOptions.isDebug ? 'verbose' : 'info';
+    const logLevel = testRunnerOptions?.isDebug ? 'verbose' : 'info';
 
     // Puppeteer is not included in the bundle, we must create the page here.
     const browser = await puppeteer.connect({browserURL: `http://127.0.0.1:${port}`});
