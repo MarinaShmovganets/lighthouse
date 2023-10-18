@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2021 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import log from 'lighthouse-logger';
@@ -13,7 +13,7 @@ import {pageFunctions} from '../../lib/page-functions.js';
 /**
  * Enables `Debugger` domain to receive async stacktrace information on network request initiators.
  * This is critical for tracking attribution of tasks and performance simulation accuracy.
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  */
 async function enableAsyncStacks(session) {
   const enable = async () => {
@@ -22,23 +22,39 @@ async function enableAsyncStacks(session) {
     await session.sendCommand('Debugger.setAsyncCallStackDepth', {maxDepth: 8});
   };
 
-  // Resume any pauses that make it through `setSkipAllPauses`
-  session.on('Debugger.paused', () => session.sendCommand('Debugger.resume'));
+  /**
+   * Resume any pauses that make it through `setSkipAllPauses`
+   */
+  function onDebuggerPaused() {
+    session.sendCommand('Debugger.resume');
+  }
 
-  // `Debugger.setSkipAllPauses` is reset after every navigation, so retrigger it on main frame navigations.
-  // See https://bugs.chromium.org/p/chromium/issues/detail?id=990945&q=setSkipAllPauses&can=2
-  session.on('Page.frameNavigated', event => {
+  /**
+   * `Debugger.setSkipAllPauses` is reset after every navigation, so retrigger it on main frame navigations.
+   * See https://bugs.chromium.org/p/chromium/issues/detail?id=990945&q=setSkipAllPauses&can=2
+   * @param {LH.Crdp.Page.FrameNavigatedEvent} event
+   */
+  function onFrameNavigated(event) {
     if (event.frame.parentId) return;
     enable().catch(err => log.error('Driver', err));
-  });
+  }
+
+  session.on('Debugger.paused', onDebuggerPaused);
+  session.on('Page.frameNavigated', onFrameNavigated);
 
   await enable();
+
+  return async () => {
+    await session.sendCommand('Debugger.disable');
+    session.off('Debugger.paused', onDebuggerPaused);
+    session.off('Page.frameNavigated', onFrameNavigated);
+  };
 }
 
 /**
  * Use a RequestIdleCallback shim for tests run with simulated throttling, so that the deadline can be used without
  * a penalty.
- * @param {LH.Gatherer.FRTransitionalDriver} driver
+ * @param {LH.Gatherer.Driver} driver
  * @param {LH.Config.Settings} settings
  * @return {Promise<void>}
  */
@@ -51,7 +67,7 @@ async function shimRequestIdleCallbackOnNewDocument(driver, settings) {
 /**
  * Dismiss JavaScript dialogs (alert, confirm, prompt), providing a
  * generic promptText in case the dialog is a prompt.
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @return {Promise<void>}
  */
 async function dismissJavaScriptDialogs(session) {
@@ -71,7 +87,7 @@ async function dismissJavaScriptDialogs(session) {
 
 /**
  * Reset the storage and warn if any stored data could be affecting the scores.
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @param {string} url
  * @return {Promise<{warnings: Array<LH.IcuMessage>}>}
  */
@@ -96,7 +112,7 @@ async function resetStorageForUrl(session, url) {
  *
  * This method assumes `prepareTargetForNavigationMode` or `prepareTargetForTimespanMode` has already been invoked.
  *
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @param {LH.Config.Settings} settings
  * @param {{disableThrottling: boolean, blockedUrlPatterns?: string[]}} options
  */
@@ -125,37 +141,47 @@ async function prepareThrottlingAndNetwork(session, settings, options) {
  * Prepares a target to be analyzed by setting up device emulation (screen/UA, not throttling) and
  * async stack traces for network initiators.
  *
- * @param {LH.Gatherer.FRTransitionalDriver} driver
+ * @param {LH.Gatherer.Driver} driver
  * @param {LH.Config.Settings} settings
  */
-async function prepareDeviceEmulationAndAsyncStacks(driver, settings) {
+async function prepareDeviceEmulation(driver, settings) {
   // Enable network domain here so future calls to `emulate()` don't clear cache (https://github.com/GoogleChrome/lighthouse/issues/12631)
   await driver.defaultSession.sendCommand('Network.enable');
 
   // Emulate our target device screen and user agent.
   await emulation.emulate(driver.defaultSession, settings);
-
-  // Enable better stacks on network requests.
-  await enableAsyncStacks(driver.defaultSession);
 }
 
 /**
  * Prepares a target to be analyzed in timespan mode by enabling protocol domains, emulation, and throttling.
  *
- * @param {LH.Gatherer.FRTransitionalDriver} driver
+ * @param {LH.Gatherer.Driver} driver
  * @param {LH.Config.Settings} settings
  */
 async function prepareTargetForTimespanMode(driver, settings) {
   const status = {msg: 'Preparing target for timespan mode', id: 'lh:prepare:timespanMode'};
   log.time(status);
 
-  await prepareDeviceEmulationAndAsyncStacks(driver, settings);
+  await prepareDeviceEmulation(driver, settings);
   await prepareThrottlingAndNetwork(driver.defaultSession, settings, {
     disableThrottling: false,
     blockedUrlPatterns: undefined,
   });
+  await warmUpIntlSegmenter(driver);
 
   log.timeEnd(status);
+}
+
+/**
+ * Ensure the `Intl.Segmenter` created in `pageFunctions.truncate` is cached by v8 before
+ * recording the trace begins.
+ *
+ * @param {LH.Gatherer.Driver} driver
+ */
+async function warmUpIntlSegmenter(driver) {
+  await driver.executionContext.evaluate(pageFunctions.truncate, {
+    args: ['aaa', 2],
+  });
 }
 
 /**
@@ -164,14 +190,14 @@ async function prepareTargetForTimespanMode(driver, settings) {
  *
  * This method should be used in combination with `prepareTargetForIndividualNavigation` before a specific navigation occurs.
  *
- * @param {LH.Gatherer.FRTransitionalDriver} driver
+ * @param {LH.Gatherer.Driver} driver
  * @param {LH.Config.Settings} settings
  */
 async function prepareTargetForNavigationMode(driver, settings) {
   const status = {msg: 'Preparing target for navigation mode', id: 'lh:prepare:navigationMode'};
   log.time(status);
 
-  await prepareDeviceEmulationAndAsyncStacks(driver, settings);
+  await prepareDeviceEmulation(driver, settings);
 
   // Automatically handle any JavaScript dialogs to prevent a hung renderer.
   await dismissJavaScriptDialogs(driver.defaultSession);
@@ -184,6 +210,8 @@ async function prepareTargetForNavigationMode(driver, settings) {
     await shimRequestIdleCallbackOnNewDocument(driver, settings);
   }
 
+  await warmUpIntlSegmenter(driver);
+
   log.timeEnd(status);
 }
 
@@ -192,7 +220,7 @@ async function prepareTargetForNavigationMode(driver, settings) {
  *
  * This method assumes `prepareTargetForNavigationMode` has already been invoked.
  *
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @param {LH.Config.Settings} settings
  * @param {Pick<LH.Config.NavigationDefn, 'disableThrottling'|'disableStorageReset'|'blockedUrlPatterns'> & {requestor: LH.NavigationRequestor}} navigation
  * @return {Promise<{warnings: Array<LH.IcuMessage>}>}
@@ -227,4 +255,5 @@ export {
   prepareTargetForTimespanMode,
   prepareTargetForNavigationMode,
   prepareTargetForIndividualNavigation,
+  enableAsyncStacks,
 };

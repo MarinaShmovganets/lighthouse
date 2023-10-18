@@ -1,10 +1,10 @@
 /**
- * @license Copyright 2021 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
-import Budget from './budget';
+import Budget from './budget.js';
 
 export type Locale = 'en-US'|'en'|'en-AU'|'en-GB'|'en-IE'|'en-SG'|'en-ZA'|'en-IN'|'ar-XB'|'ar'|'bg'|'ca'|'cs'|'da'|'de'|'el'|'en-XA'|'en-XL'|'es'|'es-419'|'es-AR'|'es-BO'|'es-BR'|'es-BZ'|'es-CL'|'es-CO'|'es-CR'|'es-CU'|'es-DO'|'es-EC'|'es-GT'|'es-HN'|'es-MX'|'es-NI'|'es-PA'|'es-PE'|'es-PR'|'es-PY'|'es-SV'|'es-US'|'es-UY'|'es-VE'|'fi'|'fil'|'fr'|'he'|'hi'|'hr'|'hu'|'gsw'|'id'|'in'|'it'|'iw'|'ja'|'ko'|'lt'|'lv'|'mo'|'nl'|'nb'|'no'|'pl'|'pt'|'pt-PT'|'ro'|'ru'|'sk'|'sl'|'sr'|'sr-Latn'|'sv'|'ta'|'te'|'th'|'tl'|'tr'|'uk'|'vi'|'zh'|'zh-HK'|'zh-TW';
 
@@ -71,7 +71,7 @@ export type ScreenEmulationSettings = {
   disableStorageReset?: boolean;
   /** Flag indicating that Lighthouse should pause after page load to wait for the user's permission to continue the audit. */
   debugNavigation?: boolean;
-  /** If set to true, will skip the initial navigation to about:blank. This option is ignored when using the legacy navigation runner. */
+  /** If set to true, will skip the initial navigation to about:blank. */
   skipAboutBlank?: boolean;
   /** If set to true, gatherers should avoid any behavior that may be destructive to the page state. (e.g. extra navigations, resizing the viewport) */
   usePassiveGathering?: boolean;
@@ -112,6 +112,8 @@ export type ScreenEmulationSettings = {
   cpuQuietThresholdMs?: number;
   /** The URL to use for the "blank" neutral page in between navigations. Defaults to `about:blank`. */
   blankPage?: string;
+  /** Disables collection of the full page screenshot, which can be rather large and possibly leave the page in an undesirable state. */
+  disableFullPageScreenshot?: boolean;
 }
 
 export interface ConfigSettings extends Required<SharedFlagsSettings> {

@@ -1,18 +1,7 @@
 /**
  * @license
- * Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /** @typedef {import('./dom.js').DOM} DOM */
@@ -20,7 +9,8 @@
 /** @typedef {import('./details-renderer.js').DetailsRenderer} DetailsRenderer */
 /** @typedef {'failed'|'warning'|'manual'|'passed'|'notApplicable'} TopLevelClumpId */
 
-import {Util} from './util.js';
+import {ReportUtils} from './report-utils.js';
+import {Globals} from './report-globals.js';
 
 export class CategoryRenderer {
   /**
@@ -39,10 +29,10 @@ export class CategoryRenderer {
    */
   get _clumpTitles() {
     return {
-      warning: Util.i18n.strings.warningAuditsGroupTitle,
-      manual: Util.i18n.strings.manualAuditsGroupTitle,
-      passed: Util.i18n.strings.passedAuditsGroupTitle,
-      notApplicable: Util.i18n.strings.notApplicableAuditsGroupTitle,
+      warning: Globals.strings.warningAuditsGroupTitle,
+      manual: Globals.strings.manualAuditsGroupTitle,
+      passed: Globals.strings.passedAuditsGroupTitle,
+      notApplicable: Globals.strings.notApplicableAuditsGroupTitle,
     };
   }
 
@@ -62,7 +52,7 @@ export class CategoryRenderer {
    * @return {!Element}
    */
   populateAuditValues(audit, component) {
-    const strings = Util.i18n.strings;
+    const strings = Globals.strings;
     const auditEl = this.dom.find('.lh-audit', component);
     auditEl.id = audit.result.id;
     const scoreDisplayMode = audit.result.scoreDisplayMode;
@@ -88,7 +78,9 @@ export class CategoryRenderer {
         packElmImg.src = pack.iconDataURL;
         packElmImg.alt = pack.title;
 
-        const snippets = this.dom.convertMarkdownLinkSnippets(pack.description);
+        const snippets = this.dom.convertMarkdownLinkSnippets(pack.description, {
+          alwaysAppendUtmSource: true,
+        });
         const packElm = this.dom.createElement('div', 'lh-audit__stackpack');
         packElm.append(packElmImg, snippets);
 
@@ -185,7 +177,7 @@ export class CategoryRenderer {
    * @return {!Element}
    */
   _setRatingClass(element, score, scoreDisplayMode) {
-    const rating = Util.calculateRating(score, scoreDisplayMode);
+    const rating = ReportUtils.calculateRating(score, scoreDisplayMode);
     element.classList.add(`lh-audit--${scoreDisplayMode.toLowerCase()}`);
     if (scoreDisplayMode !== 'informative') {
       element.classList.add(`lh-audit--${rating}`);
@@ -257,6 +249,7 @@ export class CategoryRenderer {
 
     for (const auditRef of auditRefs) {
       const groupId = auditRef.group || notAGroup;
+      if (groupId === 'hidden') continue;
       const groupAuditRefs = grouped.get(groupId) || [];
       groupAuditRefs.push(auditRef);
       grouped.set(groupId, groupAuditRefs);
@@ -305,14 +298,14 @@ export class CategoryRenderer {
    * Take a set of audits and render in a top-level, expandable clump that starts
    * in a collapsed state.
    * @param {Exclude<TopLevelClumpId, 'failed'>} clumpId
-   * @param {{auditRefs: Array<LH.ReportResult.AuditRef>, description?: string}} clumpOpts
+   * @param {{auditRefs: Array<LH.ReportResult.AuditRef>, description?: string, openByDefault?: boolean}} clumpOpts
    * @return {!Element}
    */
-  renderClump(clumpId, {auditRefs, description}) {
+  renderClump(clumpId, {auditRefs, description, openByDefault}) {
     const clumpComponent = this.dom.createComponent('clump');
     const clumpElement = this.dom.find('.lh-clump', clumpComponent);
 
-    if (clumpId === 'warning') {
+    if (openByDefault) {
       clumpElement.setAttribute('open', '');
     }
 
@@ -334,8 +327,8 @@ export class CategoryRenderer {
       el.append(descriptionEl);
     }
 
-    this.dom.find('.lh-clump-toggletext--show', el).textContent = Util.i18n.strings.show;
-    this.dom.find('.lh-clump-toggletext--hide', el).textContent = Util.i18n.strings.hide;
+    this.dom.find('.lh-clump-toggletext--show', el).textContent = Globals.strings.show;
+    this.dom.find('.lh-clump-toggletext--hide', el).textContent = Globals.strings.hide;
 
     clumpElement.classList.add(`lh-clump--${clumpId.toLowerCase()}`);
     return el;
@@ -349,7 +342,7 @@ export class CategoryRenderer {
    */
   renderCategoryScore(category, groupDefinitions, options) {
     let categoryScore;
-    if (options && Util.shouldDisplayAsFraction(options.gatherMode)) {
+    if (options && ReportUtils.shouldDisplayAsFraction(options.gatherMode)) {
       categoryScore = this.renderCategoryFraction(category);
     } else {
       categoryScore = this.renderScoreGauge(category, groupDefinitions);
@@ -377,7 +370,7 @@ export class CategoryRenderer {
     const tmpl = this.dom.createComponent('gauge');
     const wrapper = this.dom.find('a.lh-gauge__wrapper', tmpl);
 
-    if (Util.isPluginCategory(category.id)) {
+    if (ReportUtils.isPluginCategory(category.id)) {
       wrapper.classList.add('lh-gauge__wrapper--plugin');
     }
 
@@ -392,17 +385,18 @@ export class CategoryRenderer {
     const percentageEl = this.dom.find('div.lh-gauge__percentage', tmpl);
     percentageEl.textContent = scoreOutOf100.toString();
     if (category.score === null) {
-      percentageEl.textContent = '?';
-      percentageEl.title = Util.i18n.strings.errorLabel;
+      percentageEl.classList.add('lh-gauge--error');
+      percentageEl.textContent = '';
+      percentageEl.title = Globals.strings.errorLabel;
     }
 
     // Render a numerical score if the category has applicable audits, or no audits whatsoever.
     if (category.auditRefs.length === 0 || this.hasApplicableAudits(category)) {
-      wrapper.classList.add(`lh-gauge__wrapper--${Util.calculateRating(category.score)}`);
+      wrapper.classList.add(`lh-gauge__wrapper--${ReportUtils.calculateRating(category.score)}`);
     } else {
       wrapper.classList.add(`lh-gauge__wrapper--not-applicable`);
       percentageEl.textContent = '-';
-      percentageEl.title = Util.i18n.strings.notApplicableAuditsGroupTitle;
+      percentageEl.title = Globals.strings.notApplicableAuditsGroupTitle;
     }
 
     this.dom.find('.lh-gauge__label', tmpl).textContent = category.title;
@@ -417,7 +411,8 @@ export class CategoryRenderer {
     const tmpl = this.dom.createComponent('fraction');
     const wrapper = this.dom.find('a.lh-fraction__wrapper', tmpl);
 
-    const {numPassed, numPassableAudits, totalWeight} = Util.calculateCategoryFraction(category);
+    const {numPassed, numPassableAudits, totalWeight} =
+      ReportUtils.calculateCategoryFraction(category);
 
     const fraction = numPassed / numPassableAudits;
     const content = this.dom.find('.lh-fraction__content', tmpl);
@@ -425,7 +420,7 @@ export class CategoryRenderer {
     text.textContent = `${numPassed}/${numPassableAudits}`;
     content.append(text);
 
-    let rating = Util.calculateRating(fraction);
+    let rating = ReportUtils.calculateRating(fraction);
 
     // If none of the available audits can affect the score, a rating isn't useful.
     // The flow report should display the fraction with neutral icon and coloring in this case.
@@ -490,7 +485,7 @@ export class CategoryRenderer {
       return scoreDisplayMode;
     }
 
-    if (Util.showAsPassed(auditRef.result)) {
+    if (ReportUtils.showAsPassed(auditRef.result)) {
       if (this._auditHasWarning(auditRef)) {
         return 'warning';
       } else {
@@ -553,6 +548,7 @@ export class CategoryRenderer {
       });
     }
 
+    const numFailingAudits = clumps.get('failed')?.length;
     // Render each clump.
     for (const [clumpId, auditRefs] of clumps) {
       if (auditRefs.length === 0) continue;
@@ -565,7 +561,10 @@ export class CategoryRenderer {
       }
 
       const description = clumpId === 'manual' ? category.manualDescription : undefined;
-      const clumpElem = this.renderClump(clumpId, {auditRefs, description});
+      // Expand on warning, or manual audits when there are no failing audits.
+      const openByDefault =
+        clumpId === 'warning' || (clumpId === 'manual' && numFailingAudits === 0);
+      const clumpElem = this.renderClump(clumpId, {auditRefs, description, openByDefault});
       element.append(clumpElem);
     }
 

@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2020 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import path from 'path';
@@ -12,7 +12,6 @@ import {Runner} from '../runner.js';
 import defaultConfig from './default-config.js';
 import {defaultNavigationConfig, nonSimulatedPassConfigOverrides} from './constants.js'; // eslint-disable-line max-len
 import {
-  isFRGathererDefn,
   throwInvalidDependencyOrder,
   isValidArtifactDependency,
   throwInvalidArtifactDependency,
@@ -29,7 +28,7 @@ import {
   mergeConfigFragment,
   mergeConfigFragmentArrayByKey,
 } from './config-helpers.js';
-import {getModuleDirectory} from '../../esm-utils.js';
+import {getModuleDirectory} from '../../shared/esm-utils.js';
 import * as format from '../../shared/localization/format.js';
 
 const defaultConfigPath = path.join(
@@ -38,19 +37,31 @@ const defaultConfigPath = path.join(
 );
 
 /**
- * @param {LH.Config.Json|undefined} configJSON
- * @param {{configPath?: string}} context
- * @return {{configWorkingCopy: LH.Config.Json, configDir?: string, configPath?: string}}
+ * Certain gatherers are destructive to the page state.
+ * We should ensure that these gatherers run after any custom gatherers.
+ * The default priority should be 0.
+ * TODO: Make this an official part of the config or design a different solution.
+ * @type {Record<string, number|undefined>}
  */
-function resolveWorkingCopy(configJSON, context) {
+const internalArtifactPriorities = {
+  FullPageScreenshot: 1,
+  BFCacheFailures: 1,
+};
+
+/**
+ * @param {LH.Config|undefined} config
+ * @param {{configPath?: string}} context
+ * @return {{configWorkingCopy: LH.Config, configDir?: string, configPath?: string}}
+ */
+function resolveWorkingCopy(config, context) {
   let {configPath} = context;
 
   if (configPath && !path.isAbsolute(configPath)) {
     throw new Error('configPath must be an absolute path');
   }
 
-  if (!configJSON) {
-    configJSON = defaultConfig;
+  if (!config) {
+    config = defaultConfig;
     configPath = defaultConfigPath;
   }
 
@@ -58,24 +69,24 @@ function resolveWorkingCopy(configJSON, context) {
   const configDir = configPath ? path.dirname(configPath) : undefined;
 
   return {
-    configWorkingCopy: deepCloneConfigJson(configJSON),
+    configWorkingCopy: deepCloneConfigJson(config),
     configPath,
     configDir,
   };
 }
 
 /**
- * @param {LH.Config.Json} configJSON
- * @return {LH.Config.Json}
+ * @param {LH.Config} config
+ * @return {LH.Config}
  */
-function resolveExtensions(configJSON) {
-  if (!configJSON.extends) return configJSON;
+function resolveExtensions(config) {
+  if (!config.extends) return config;
 
-  if (configJSON.extends !== 'lighthouse:default') {
+  if (config.extends !== 'lighthouse:default') {
     throw new Error('`lighthouse:default` is the only valid extension method.');
   }
 
-  const {artifacts, ...extensionJSON} = configJSON;
+  const {artifacts, ...extensionJSON} = config;
   const defaultClone = deepCloneConfigJson(defaultConfig);
   const mergedConfig = mergeConfigFragment(defaultClone, extensionJSON);
 
@@ -92,7 +103,7 @@ function resolveExtensions(configJSON) {
  * Looks up the required artifact IDs for each dependency, throwing if no earlier artifact satisfies the dependency.
  *
  * @param {LH.Config.ArtifactJson} artifact
- * @param {LH.Config.AnyFRGathererDefn} gatherer
+ * @param {LH.Config.AnyGathererDefn} gatherer
  * @param {Map<Symbol, LH.Config.AnyArtifactDefn>} artifactDefnsBySymbol
  * @return {LH.Config.AnyArtifactDefn['dependencies']}
  */
@@ -129,20 +140,22 @@ async function resolveArtifactsToDefns(artifacts, configDir) {
   const status = {msg: 'Resolve artifact definitions', id: 'lh:config:resolveArtifactsToDefns'};
   log.time(status, 'verbose');
 
+  const sortedArtifacts = [...artifacts];
+  sortedArtifacts.sort((a, b) => {
+    const aPriority = internalArtifactPriorities[a.id] || 0;
+    const bPriority = internalArtifactPriorities[b.id] || 0;
+    return aPriority - bPriority;
+  });
+
   /** @type {Map<Symbol, LH.Config.AnyArtifactDefn>} */
   const artifactDefnsBySymbol = new Map();
 
   const coreGathererList = Runner.getGathererList();
   const artifactDefns = [];
-  for (const artifactJson of artifacts) {
-    /** @type {LH.Config.GathererJson} */
-    // @ts-expect-error - remove when legacy runner path is removed.
+  for (const artifactJson of sortedArtifacts) {
     const gathererJson = artifactJson.gatherer;
 
     const gatherer = await resolveGathererToDefn(gathererJson, coreGathererList, configDir);
-    if (!isFRGathererDefn(gatherer)) {
-      throw new Error(`${gatherer.instance.name} gatherer does not have a Fraggle Rock meta obj`);
-    }
 
     /** @type {LH.Config.AnyArtifactDefn} */
     // @ts-expect-error - Typescript can't validate the gatherer and dependencies match
@@ -236,15 +249,15 @@ function resolveFakeNavigations(artifactDefns, settings) {
 
 /**
  * @param {LH.Gatherer.GatherMode} gatherMode
- * @param {LH.Config.Json=} configJSON
+ * @param {LH.Config=} config
  * @param {LH.Flags=} flags
  * @return {Promise<{resolvedConfig: LH.Config.ResolvedConfig, warnings: string[]}>}
  */
-async function initializeConfig(gatherMode, configJSON, flags = {}) {
+async function initializeConfig(gatherMode, config, flags = {}) {
   const status = {msg: 'Initialize config', id: 'lh:config'};
   log.time(status, 'verbose');
 
-  let {configWorkingCopy, configDir} = resolveWorkingCopy(configJSON, flags);
+  let {configWorkingCopy, configDir} = resolveWorkingCopy(config, flags);
 
   configWorkingCopy = resolveExtensions(configWorkingCopy);
   configWorkingCopy = await mergePlugins(configWorkingCopy, configDir, flags);

@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 /**
  * @fileoverview
@@ -19,7 +19,7 @@
 
 import {NetworkRecords} from '../../../computed/network-records.js';
 import DevtoolsLog from '../devtools-log.js';
-import FRGatherer from '../../base-gatherer.js';
+import BaseGatherer from '../../base-gatherer.js';
 
 /* global document, window, HTMLLinkElement, SVGScriptElement */
 
@@ -62,6 +62,11 @@ async function collectTagsThatBlockFirstPaint() {
     /** @type {Array<LinkTag>} */
     const linkTags = [...document.querySelectorAll('link')]
       .filter(linkTag => {
+        // Ignore malformed links with no href (e.g. `<link rel="stylesheet" href="">`)
+        // The resolved `linkTag.href` will be the main document, but the main document
+        // should never be render blocking.
+        if (!linkTag.getAttribute('href')) return false;
+
         // Filter stylesheet/HTML imports that block rendering.
         // https://www.igvita.com/2012/06/14/debunking-responsive-css-performance-myths/
         // https://www.w3.org/TR/html-imports/#dfn-import-async-attribute
@@ -113,7 +118,7 @@ async function collectTagsThatBlockFirstPaint() {
 }
 /* c8 ignore stop */
 
-class TagsBlockingFirstPaint extends FRGatherer {
+class TagsBlockingFirstPaint extends BaseGatherer {
   /** @type {LH.Gatherer.GathererMeta<'DevtoolsLog'>} */
   meta = {
     supportedModes: ['navigation'],
@@ -149,13 +154,13 @@ class TagsBlockingFirstPaint extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalDriver} driver
+   * @param {LH.Gatherer.Driver} driver
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @return {Promise<Array<LH.Artifacts.TagBlockingFirstPaint>>}
    */
   static async findBlockingTags(driver, networkRecords) {
     const firstRequestEndTime = networkRecords.reduce(
-      (min, record) => Math.min(min, record.endTime),
+      (min, record) => Math.min(min, record.networkEndTime),
       Infinity
     );
     const tags = await driver.executionContext.evaluate(collectTagsThatBlockFirstPaint, {args: []});
@@ -167,7 +172,7 @@ class TagsBlockingFirstPaint extends FRGatherer {
       const request = requests.get(tag.url);
       if (!request || request.isLinkPreload) continue;
 
-      let endTime = request.endTime;
+      let endTime = request.networkEndTime;
       let mediaChanges;
 
       if (tag.tagName === 'LINK') {
@@ -180,7 +185,7 @@ class TagsBlockingFirstPaint extends FRGatherer {
         if (timesResourceBecameNonBlocking.length > 0) {
           const earliestNonBlockingTime = Math.min(...timesResourceBecameNonBlocking);
           const lastTimeResourceWasBlocking = Math.max(
-            request.startTime,
+            request.networkRequestTime,
             firstRequestEndTime + earliestNonBlockingTime / 1000
           );
           endTime = Math.min(endTime, lastTimeResourceWasBlocking);
@@ -194,7 +199,7 @@ class TagsBlockingFirstPaint extends FRGatherer {
       result.push({
         tag: {tagName, url, mediaChanges},
         transferSize: request.transferSize,
-        startTime: request.startTime,
+        startTime: request.networkRequestTime,
         endTime,
       });
 
@@ -206,7 +211,7 @@ class TagsBlockingFirstPaint extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    */
   async startSensitiveInstrumentation(context) {
     const {executionContext} = context.driver;
@@ -215,22 +220,13 @@ class TagsBlockingFirstPaint extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext<'DevtoolsLog'>} context
+   * @param {LH.Gatherer.Context<'DevtoolsLog'>} context
    * @return {Promise<LH.Artifacts['TagsBlockingFirstPaint']>}
    */
   async getArtifact(context) {
     const devtoolsLog = context.dependencies.DevtoolsLog;
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
     return TagsBlockingFirstPaint.findBlockingTags(context.driver, networkRecords);
-  }
-
-  /**
-   * @param {LH.Gatherer.PassContext} passContext
-   * @param {LH.Gatherer.LoadData} loadData
-   * @return {Promise<LH.Artifacts['TagsBlockingFirstPaint']>}
-   */
-  afterPass(passContext, loadData) {
-    return TagsBlockingFirstPaint.findBlockingTags(passContext.driver, loadData.networkRecords);
   }
 }
 

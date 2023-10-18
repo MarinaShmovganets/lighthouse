@@ -1,10 +1,10 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
-import {lighthouseVersion} from '../../root.js';
+import {lighthouseVersion} from '../../shared/root.js';
 
 const NO_THROTTLING_METRICS = {
   latency: 0,
@@ -32,11 +32,11 @@ function parseUseragentIntoMetadata(userAgent, formFactor) {
     {brand: 'Lighthouse', version: lighthouseVersion},
   ];
 
-  const motoG4Details = {
+  const motoGPowerDetails = {
     platform: 'Android',
-    platformVersion: '6.0',
+    platformVersion: '11.0',
     architecture: '',
-    model: 'Moto G4',
+    model: 'moto g power (2022)',
   };
   const macDesktopDetails = {
     platform: 'macOS',
@@ -50,15 +50,15 @@ function parseUseragentIntoMetadata(userAgent, formFactor) {
     brands,
     fullVersion,
     // Since config users can supply a custom useragent, they likely are emulating something
-    // other than Moto G4 and MacOS Desktop.
+    // other than Moto G Power and MacOS Desktop.
     // TODO: Determine how to thoughtfully expose this metadata/client-hints configurability.
-    ...(mobile ? motoG4Details : macDesktopDetails),
+    ...(mobile ? motoGPowerDetails : macDesktopDetails),
     mobile,
   };
 }
 
 /**
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @param {LH.Config.Settings} settings
  * @return {Promise<void>}
  */
@@ -85,7 +85,7 @@ async function emulate(session, settings) {
  * Sets the throttling options specified in config settings, clearing existing network throttling if
  * throttlingMethod is not `devtools` (but not CPU throttling, suspected requirement of WPT-compat).
  *
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @param {LH.Config.Settings} settings
  * @return {Promise<void>}
  */
@@ -99,7 +99,7 @@ async function throttle(session, settings) {
 }
 
 /**
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @return {Promise<void>}
  */
 async function clearThrottling(session) {
@@ -107,7 +107,7 @@ async function clearThrottling(session) {
 }
 
 /**
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @param {Required<LH.ThrottlingSettings>} throttlingSettings
  * @return {Promise<void>}
  */
@@ -127,7 +127,7 @@ function enableNetworkThrottling(session, throttlingSettings) {
 }
 
 /**
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @return {Promise<void>}
  */
 function clearNetworkThrottling(session) {
@@ -135,7 +135,7 @@ function clearNetworkThrottling(session) {
 }
 
 /**
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @param {Required<LH.ThrottlingSettings>} throttlingSettings
  * @return {Promise<void>}
  */
@@ -145,7 +145,7 @@ function enableCPUThrottling(session, throttlingSettings) {
 }
 
 /**
- * @param {LH.Gatherer.FRProtocolSession} session
+ * @param {LH.Gatherer.ProtocolSession} session
  * @return {Promise<void>}
  */
 function clearCPUThrottling(session) {

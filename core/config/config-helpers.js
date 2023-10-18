@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2019 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2019 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import path from 'path';
@@ -16,11 +16,11 @@ import ConfigPlugin from './config-plugin.js';
 import {Runner} from '../runner.js';
 import * as i18n from '../lib/i18n/i18n.js';
 import * as validation from './validation.js';
-import {getModuleDirectory} from '../../esm-utils.js';
+import {getModuleDirectory} from '../../shared/esm-utils.js';
 
 const require = createRequire(import.meta.url);
 
-/** @typedef {typeof import('../gather/gatherers/gatherer.js').Gatherer} GathererConstructor */
+/** @typedef {typeof import('../gather/base-gatherer.js').default} GathererConstructor */
 /** @typedef {typeof import('../audits/audit.js')['Audit']} Audit */
 /** @typedef {InstanceType<GathererConstructor>} Gatherer */
 
@@ -160,7 +160,7 @@ function mergeConfigFragmentArrayByKey(baseArray, extensionArray, keyFn) {
  *  - {instance: myGathererInstance}
  *
  * @param {LH.Config.GathererJson} gatherer
- * @return {{instance?: Gatherer, implementation?: GathererConstructor, path?: string}} passes
+ * @return {{instance?: Gatherer, implementation?: GathererConstructor, path?: string}}
  */
 function expandGathererShorthand(gatherer) {
   if (typeof gatherer === 'string') {
@@ -178,7 +178,7 @@ function expandGathererShorthand(gatherer) {
   } else if (typeof gatherer === 'function') {
     // just GathererConstructor
     return {implementation: gatherer};
-  } else if (gatherer && typeof gatherer.beforePass === 'function') {
+  } else if (gatherer && typeof gatherer.getArtifact === 'function') {
     // just GathererInstance
     return {instance: gatherer};
   } else {
@@ -254,7 +254,7 @@ async function requireWrapper(requirePath) {
  * @param {string} gathererPath
  * @param {Array<string>} coreGathererList
  * @param {string=} configDir
- * @return {Promise<LH.Config.GathererDefn>}
+ * @return {Promise<LH.Config.AnyGathererDefn>}
  */
 async function requireGatherer(gathererPath, coreGathererList, configDir) {
   const coreGatherer = coreGathererList.find(a => a === `${gathererPath}.js`);
@@ -364,18 +364,18 @@ function resolveSettings(settingsJson = {}, overrides = undefined) {
 }
 
 /**
- * @param {LH.Config.Json} configJSON
+ * @param {LH.Config} config
  * @param {string | undefined} configDir
  * @param {{plugins?: string[]} | undefined} flags
- * @return {Promise<LH.Config.Json>}
+ * @return {Promise<LH.Config>}
  */
-async function mergePlugins(configJSON, configDir, flags) {
-  const configPlugins = configJSON.plugins || [];
+async function mergePlugins(config, configDir, flags) {
+  const configPlugins = config.plugins || [];
   const flagPlugins = flags?.plugins || [];
   const pluginNames = new Set([...configPlugins, ...flagPlugins]);
 
   for (const pluginName of pluginNames) {
-    validation.assertValidPluginName(configJSON, pluginName);
+    validation.assertValidPluginName(config, pluginName);
 
     // In bundled contexts, `resolveModulePath` will fail, so use the raw pluginName directly.
     const pluginPath = isBundledEnvironment() ?
@@ -384,10 +384,10 @@ async function mergePlugins(configJSON, configDir, flags) {
     const rawPluginJson = await requireWrapper(pluginPath);
     const pluginJson = ConfigPlugin.parsePlugin(rawPluginJson, pluginName);
 
-    configJSON = mergeConfigFragment(configJSON, pluginJson);
+    config = mergeConfigFragment(config, pluginJson);
   }
 
-  return configJSON;
+  return config;
 }
 
 
@@ -399,7 +399,7 @@ async function mergePlugins(configJSON, configDir, flags) {
  * @param {LH.Config.GathererJson} gathererJson
  * @param {Array<string>} coreGathererList
  * @param {string=} configDir
- * @return {Promise<LH.Config.GathererDefn>}
+ * @return {Promise<LH.Config.AnyGathererDefn>}
  */
 async function resolveGathererToDefn(gathererJson, coreGathererList, configDir) {
   const gathererDefn = expandGathererShorthand(gathererJson);
@@ -428,7 +428,7 @@ async function resolveGathererToDefn(gathererJson, coreGathererList, configDir) 
  * Take an array of audits and audit paths and require any paths (possibly
  * relative to the optional `configDir`) using `resolveModule`,
  * leaving only an array of AuditDefns.
- * @param {LH.Config.Json['audits']} audits
+ * @param {LH.Config['audits']} audits
  * @param {string=} configDir
  * @return {Promise<Array<LH.Config.AuditDefn>|null>}
  */
@@ -585,23 +585,16 @@ function deepClone(json) {
 }
 
 /**
- * Deep clone a ConfigJson, copying over any "live" gatherer or audit that
+ * Deep clone a config, copying over any "live" gatherer or audit that
  * wouldn't make the JSON round trip.
- * @param {LH.Config.Json} json
- * @return {LH.Config.Json}
+ * @param {LH.Config} json
+ * @return {LH.Config}
  */
 function deepCloneConfigJson(json) {
   const cloned = deepClone(json);
 
   // Copy arrays that could contain non-serializable properties to allow for programmatic
   // injection of audit and gatherer implementations.
-  if (Array.isArray(cloned.passes) && Array.isArray(json.passes)) {
-    for (let i = 0; i < cloned.passes.length; i++) {
-      const pass = cloned.passes[i];
-      pass.gatherers = (json.passes[i].gatherers || []).map(gatherer => shallowClone(gatherer));
-    }
-  }
-
   if (Array.isArray(json.audits)) {
     cloned.audits = json.audits.map(audit => shallowClone(audit));
   }

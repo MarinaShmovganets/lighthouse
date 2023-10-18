@@ -1,14 +1,17 @@
 /**
- * @license Copyright 2022 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2022 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
-import FRGatherer from '../base-gatherer.js';
+import BaseGatherer from '../base-gatherer.js';
 import {waitForFrameNavigated, waitForLoadEvent} from '../driver/wait-for-condition.js';
 import DevtoolsLog from './devtools-log.js';
 
-class BFCacheFailures extends FRGatherer {
+const AFTER_RETURN_TIMEOUT = 100;
+const TEMP_PAGE_PAUSE_TIMEOUT = 100;
+
+class BFCacheFailures extends BaseGatherer {
   /** @type {LH.Gatherer.GathererMeta<'DevtoolsLog'>} */
   meta = {
     supportedModes: ['navigation', 'timespan'],
@@ -80,7 +83,7 @@ class BFCacheFailures extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} context
+   * @param {LH.Gatherer.Context} context
    * @return {Promise<LH.Crdp.Page.BackForwardCacheNotUsedEvent|undefined>}
    */
   async activelyCollectBFCacheEvent(context) {
@@ -101,15 +104,32 @@ class BFCacheFailures extends FRGatherer {
     const history = await session.sendCommand('Page.getNavigationHistory');
     const entry = history.entries[history.currentIndex];
 
+    // In theory, we should be able to use about:blank here
+    // but that sometimes produces BrowsingInstanceNotSwapped failures.
+    // DevTools uses chrome://terms as it's temporary page so we should stick with that.
+    // https://github.com/GoogleChrome/lighthouse/issues/14665
     await Promise.all([
-      session.sendCommand('Page.navigate', {url: 'about:blank'}),
-      waitForLoadEvent(session, 0).promise,
+      session.sendCommand('Page.navigate', {url: 'chrome://terms'}),
+      // DevTools e2e tests can sometimes fail on the next command if we progress too fast.
+      // The only reliable way to prevent this is to wait for an arbitrary period of time after load.
+      waitForLoadEvent(session, TEMP_PAGE_PAUSE_TIMEOUT).promise,
     ]);
 
-    await Promise.all([
+    const [, frameNavigatedEvent] = await Promise.all([
       session.sendCommand('Page.navigateToHistoryEntry', {entryId: entry.id}),
       waitForFrameNavigated(session).promise,
     ]);
+
+    // The bfcache failure event is not necessarily emitted by this point.
+    // If we are expecting a bfcache failure event but haven't seen one, we should wait for it.
+    // This timeout also allows the environment to "settle" before gathering enters it's cleanup phase.
+    await new Promise(resolve => setTimeout(resolve, AFTER_RETURN_TIMEOUT));
+
+    // If we still can't get the failure reasons after the timeout we should fail loudly,
+    // otherwise this gatherer will return no failures when there should be failures.
+    if (frameNavigatedEvent.type !== 'BackForwardCacheRestore' && !bfCacheEvent) {
+      throw new Error('bfcache failed but the failure reasons were not emitted in time');
+    }
 
     session.off('Page.backForwardCacheNotUsed', onBfCacheNotUsed);
 
@@ -117,7 +137,7 @@ class BFCacheFailures extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext<'DevtoolsLog'>} context
+   * @param {LH.Gatherer.Context<'DevtoolsLog'>} context
    * @return {LH.Crdp.Page.BackForwardCacheNotUsedEvent[]}
    */
   passivelyCollectBFCacheEvents(context) {
@@ -131,26 +151,17 @@ class BFCacheFailures extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext<'DevtoolsLog'>} context
+   * @param {LH.Gatherer.Context<'DevtoolsLog'>} context
    * @return {Promise<LH.Artifacts['BFCacheFailures']>}
    */
   async getArtifact(context) {
     const events = this.passivelyCollectBFCacheEvents(context);
-    if (context.gatherMode === 'navigation') {
+    if (context.gatherMode === 'navigation' && !context.settings.usePassiveGathering) {
       const activelyCollectedEvent = await this.activelyCollectBFCacheEvent(context);
       if (activelyCollectedEvent) events.push(activelyCollectedEvent);
     }
 
     return events.map(BFCacheFailures.processBFCacheEvent);
-  }
-
-  /**
-   * @param {LH.Gatherer.PassContext} passContext
-   * @param {LH.Gatherer.LoadData} loadData
-   * @return {Promise<LH.Artifacts['BFCacheFailures']>}
-   */
-  async afterPass(passContext, loadData) {
-    return this.getArtifact({...passContext, dependencies: {DevtoolsLog: loadData.devtoolsLog}});
   }
 }
 

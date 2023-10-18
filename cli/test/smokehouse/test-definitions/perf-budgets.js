@@ -1,10 +1,10 @@
 /**
- * @license Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const config = {
   extends: 'lighthouse:default',
   settings: {
@@ -12,6 +12,10 @@ const config = {
     // preload-fonts isn't a performance audit, but can easily leverage the font
     // webpages present here, hence the inclusion of 'best-practices'.
     onlyCategories: ['performance', 'best-practices'],
+
+    // BF cache will request the page again, initiating additional network requests.
+    // Disable the audit so we only detect requests from the normal page load.
+    skipAudits: ['bf-cache'],
 
     // A mixture of under, over, and meeting budget to exercise all paths.
     budgets: [{
@@ -62,23 +66,6 @@ const expectations = {
     requestedUrl: 'http://localhost:10200/perf/perf-budgets/load-things.html',
     finalDisplayedUrl: 'http://localhost:10200/perf/perf-budgets/load-things.html',
     audits: {
-      'resource-summary': {
-        score: null,
-        displayValue: '10 requests • 165 KiB',
-        details: {
-          items: [
-            {resourceType: 'total', requestCount: 10, transferSize: '168521±1000'},
-            {resourceType: 'font', requestCount: 2, transferSize: '81096±1000'},
-            {resourceType: 'script', requestCount: 3, transferSize: '55170±1000'},
-            {resourceType: 'image', requestCount: 2, transferSize: '28359±1000'},
-            {resourceType: 'document', requestCount: 1, transferSize: '2283±150'},
-            {resourceType: 'other', requestCount: 1, transferSize: '1085±100'},
-            {resourceType: 'stylesheet', requestCount: 1, transferSize: '528±100'},
-            {resourceType: 'media', requestCount: 0, transferSize: 0},
-            {resourceType: 'third-party', requestCount: 0, transferSize: 0},
-          ],
-        },
-      },
       'performance-budget': {
         score: null,
         details: {
@@ -87,12 +74,12 @@ const expectations = {
             {
               resourceType: 'total',
               countOverBudget: '2 requests',
-              sizeOverBudget: '66121±1000',
+              sizeOverBudget: '64121±1000',
             },
             {
               resourceType: 'script',
               countOverBudget: '2 requests',
-              sizeOverBudget: '24450±1000',
+              sizeOverBudget: '22450±1000',
             },
             {
               resourceType: 'font',
@@ -102,7 +89,7 @@ const expectations = {
             {
               resourceType: 'document',
               countOverBudget: '1 request',
-              sizeOverBudget: '1259±50',
+              sizeOverBudget: '759±50',
             },
             {
               resourceType: 'stylesheet',

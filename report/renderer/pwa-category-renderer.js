@@ -1,22 +1,12 @@
 /**
  * @license
- * Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Util} from './util.js';
 import {CategoryRenderer} from './category-renderer.js';
+import {ReportUtils} from './report-utils.js';
+import {Globals} from './report-globals.js';
 
 export class PwaCategoryRenderer extends CategoryRenderer {
   /**
@@ -40,7 +30,7 @@ export class PwaCategoryRenderer extends CategoryRenderer {
     // Manual audits are still in a manual clump.
     const manualAuditRefs = auditRefs.filter(ref => ref.result.scoreDisplayMode === 'manual');
     const manualElem = this.renderClump('manual',
-      {auditRefs: manualAuditRefs, description: category.manualDescription});
+      {auditRefs: manualAuditRefs, description: category.manualDescription, openByDefault: true});
     categoryElem.append(manualElem);
 
     return categoryElem;
@@ -101,7 +91,7 @@ export class PwaCategoryRenderer extends CategoryRenderer {
 
     // Remove any that have a failing audit.
     for (const auditRef of auditRefs) {
-      if (!Util.showAsPassed(auditRef.result) && auditRef.group) {
+      if (!ReportUtils.showAsPassed(auditRef.result) && auditRef.group) {
         uniqueGroupIds.delete(auditRef.group);
       }
     }
@@ -122,7 +112,7 @@ export class PwaCategoryRenderer extends CategoryRenderer {
     for (const groupId of groupIds) {
       const groupAuditRefs = auditRefs.filter(ref => ref.group === groupId);
       const auditCount = groupAuditRefs.length;
-      const passedCount = groupAuditRefs.filter(ref => Util.showAsPassed(ref.result)).length;
+      const passedCount = groupAuditRefs.filter(ref => ReportUtils.showAsPassed(ref.result)).length;
 
       const title = groupDefinitions[groupId].title;
       tips.push(`${title}: ${passedCount}/${auditCount}`);
@@ -162,7 +152,7 @@ export class PwaCategoryRenderer extends CategoryRenderer {
     const defsEl = svgRoot.querySelector('defs');
     if (!defsEl) return;
 
-    const idSuffix = Util.getUniqueSuffix();
+    const idSuffix = Globals.getUniqueSuffix();
     const elementsToUpdate = defsEl.querySelectorAll('[id]');
     for (const el of elementsToUpdate) {
       const oldId = el.id;

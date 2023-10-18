@@ -1,12 +1,12 @@
 /**
- * @license Copyright 2021 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {FunctionComponent} from 'preact';
 
-import {Util} from '../../../report/renderer/util';
+import {ReportUtils} from '../../../report/renderer/report-utils.js';
 import {Separator} from '../common';
 import {CategoryScore} from '../wrappers/category-score';
 import {useI18n, useStringFormatter, useLocalizedStrings} from '../i18n/i18n';
@@ -42,13 +42,12 @@ function getScoreToBeGained(audit: ScoredAuditRef): number {
 function getOverallSavings(audit: LH.ReportResult.AuditRef): number {
   return (
     audit.result.details &&
-    audit.result.details.type === 'opportunity' &&
     audit.result.details.overallSavingsMs
   ) || 0;
 }
 
 const SummaryTooltipAudit: FunctionComponent<{audit: LH.ReportResult.AuditRef}> = ({audit}) => {
-  const rating = Util.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
+  const rating = ReportUtils.calculateRating(audit.result.score, audit.result.scoreDisplayMode);
   return (
     <div className={`SummaryTooltipAudit SummaryTooltipAudit--${rating}`}>
       <Markdown text={audit.result.title}/>
@@ -69,7 +68,7 @@ const SummaryTooltipAudits: FunctionComponent<{category: LH.ReportResult.Categor
       // We don't want unweighted audits except for opportunities with potential savings.
       (audit.weight > 0 || getOverallSavings(audit) > 0) &&
       // Passing audits should never be high impact.
-      !Util.showAsPassed(audit.result);
+      !ReportUtils.showAsPassed(audit.result);
   }
 
   const audits = category.auditRefs
@@ -107,14 +106,14 @@ const SummaryTooltip: FunctionComponent<{
     numPassableAudits,
     numInformative,
     totalWeight,
-  } = Util.calculateCategoryFraction(category);
+  } = ReportUtils.calculateCategoryFraction(category);
 
   const i18n = useI18n();
-  const displayAsFraction = Util.shouldDisplayAsFraction(gatherMode);
+  const displayAsFraction = ReportUtils.shouldDisplayAsFraction(gatherMode);
   const score = displayAsFraction ?
     numPassed / numPassableAudits :
     category.score;
-  const rating = score === null ? 'error' : Util.calculateRating(score);
+  const rating = score === null ? 'error' : ReportUtils.calculateRating(score);
 
   return (
     <div className="SummaryTooltip">
@@ -132,7 +131,7 @@ const SummaryTooltip: FunctionComponent<{
               {
                 !displayAsFraction && category.score !== null && <>
                   <span> · </span>
-                  <span>{i18n.formatInteger(category.score * 100)}</span>
+                  <span>{i18n.formatter.formatInteger(category.score * 100)}</span>
                 </>
               }
             </div>

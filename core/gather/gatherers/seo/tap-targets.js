@@ -1,12 +1,12 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /* global document, window, getComputedStyle, getElementsInDocument, Node, getNodeDetails, getRectCenterPoint */
 
-import FRGatherer from '../../base-gatherer.js';
+import BaseGatherer from '../../base-gatherer.js';
 import {pageFunctions} from '../../../lib/page-functions.js';
 import * as RectHelpers from '../../../lib/rect-helpers.js';
 
@@ -281,9 +281,27 @@ function gatherTapTargets(tapTargetsSelector, className) {
 
   return targets;
 }
+
+/**
+ * @param {string} tapTargetsSelector
+ * @param {string} className
+ * @return {LH.Artifacts.TapTarget[]}
+ */
+function gatherTapTargetsAndResetScroll(tapTargetsSelector, className) {
+  const originalScrollPosition = {
+    x: window.scrollX,
+    y: window.scrollY,
+  };
+
+  try {
+    return gatherTapTargets(tapTargetsSelector, className);
+  } finally {
+    window.scrollTo(originalScrollPosition.x, originalScrollPosition.y);
+  }
+}
 /* c8 ignore stop */
 
-class TapTargets extends FRGatherer {
+class TapTargets extends BaseGatherer {
   constructor() {
     super();
     /**
@@ -297,7 +315,7 @@ class TapTargets extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRProtocolSession} session
+   * @param {LH.Gatherer.ProtocolSession} session
    * @param {string} className
    * @return {Promise<string>}
    */
@@ -315,7 +333,7 @@ class TapTargets extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRProtocolSession} session
+   * @param {LH.Gatherer.ProtocolSession} session
    * @param {string} styleSheetId
    */
   async removeStyleRule(session, styleSheetId) {
@@ -326,7 +344,7 @@ class TapTargets extends FRGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.FRTransitionalContext} passContext
+   * @param {LH.Gatherer.Context} passContext
    * @return {Promise<LH.Artifacts.TapTarget[]>} All visible tap targets with their positions and sizes
    */
   async getArtifact(passContext) {
@@ -337,25 +355,27 @@ class TapTargets extends FRGatherer {
     const className = 'lighthouse-disable-pointer-events';
     const styleSheetId = await this.addStyleRule(session, className);
 
-    const tapTargets = await passContext.driver.executionContext.evaluate(gatherTapTargets, {
-      args: [tapTargetsSelector, className],
-      useIsolation: true,
-      deps: [
-        pageFunctions.getNodeDetails,
-        pageFunctions.getElementsInDocument,
-        disableFixedAndStickyElementPointerEvents,
-        elementIsVisible,
-        elementHasAncestorTapTarget,
-        elementCenterIsAtZAxisTop,
-        getClientRects,
-        hasTextNodeSiblingsFormingTextBlock,
-        elementIsInTextBlock,
-        RectHelpers.getRectCenterPoint,
-        pageFunctions.getNodePath,
-        pageFunctions.getNodeSelector,
-        pageFunctions.getNodeLabel,
-      ],
-    });
+    const tapTargets =
+      await passContext.driver.executionContext.evaluate(gatherTapTargetsAndResetScroll, {
+        args: [tapTargetsSelector, className],
+        useIsolation: true,
+        deps: [
+          pageFunctions.getNodeDetails,
+          pageFunctions.getElementsInDocument,
+          disableFixedAndStickyElementPointerEvents,
+          elementIsVisible,
+          elementHasAncestorTapTarget,
+          elementCenterIsAtZAxisTop,
+          getClientRects,
+          hasTextNodeSiblingsFormingTextBlock,
+          elementIsInTextBlock,
+          RectHelpers.getRectCenterPoint,
+          pageFunctions.getNodePath,
+          pageFunctions.getNodeSelector,
+          pageFunctions.getNodeLabel,
+          gatherTapTargets,
+        ],
+      });
 
     await this.removeStyleRule(session, styleSheetId);
 

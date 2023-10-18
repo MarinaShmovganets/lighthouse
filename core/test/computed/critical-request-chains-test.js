@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import assert from 'assert/strict';
@@ -31,9 +31,9 @@ async function createChainsFromMockRecords(prioritiesList, edges, setExtrasFn, r
     priority,
     initiator: {type: 'parser'},
     statusCode: 200,
-    startTime: index,
-    responseReceivedTime: index + 0.5,
-    endTime: index + 1,
+    networkRequestTime: index,
+    responseHeadersEndTime: index + 0.5,
+    networkEndTime: index + 1,
   }));
 
   if (setExtrasFn) setExtrasFn(networkRecords);
@@ -284,7 +284,7 @@ describe('CriticalRequestChain computed artifact', () => {
         // Make a fake redirect. Network recorder *appends* `:redirect` on a redirected request.
         networkRecords[1].requestId = '1';
         networkRecords[1].resourceType = undefined;
-        networkRecords[1].responseReceivedTime = 2;
+        networkRecords[1].responseHeadersEndTime = 2;
 
         networkRecords[2].requestId = '1:redirect';
         networkRecords[2].url = 'https://example.com/redirected-stylesheet';
@@ -388,7 +388,7 @@ describe('CriticalRequestChain computed artifact', () => {
         networkRecords[3].url = 'https://example.com/redirect-iframe-src';
         networkRecords[3].resourceType = undefined;
         networkRecords[3].frameId = '4';
-        networkRecords[3].responseReceivedTime = 4;
+        networkRecords[3].responseHeadersEndTime = 4;
         // 5th record is an iframe in the page that was redirect destination.
         networkRecords[4].requestId = '3:redirect';
         networkRecords[4].url = 'https://example.com/redirect-iframe-dest';

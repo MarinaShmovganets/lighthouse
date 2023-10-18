@@ -6,7 +6,7 @@ import {assert} from 'chai';
 
 import {expectError} from '../../conductor/events.js';
 import {$textContent, getBrowserAndPages} from '../../shared/helper.js';
-import {describe, it} from '../../shared/mocha-extensions.js';
+import {describe} from '../../shared/mocha-extensions.js';
 import {
   clickStartButton,
   getAuditsBreakdown,
@@ -14,7 +14,6 @@ import {
   navigateToLighthouseTab,
   registerServiceWorker,
   selectMode,
-  unregisterAllServiceWorkers,
   waitForResult,
 } from '../helpers/lighthouse-helpers.js';
 
@@ -23,7 +22,9 @@ import {
 
 describe('Snapshot', async function() {
   // The tests in this suite are particularly slow
-  this.timeout(60_000);
+  if (this.timeout() !== 0) {
+    this.timeout(60_000);
+  }
 
   beforeEach(() => {
     // https://github.com/GoogleChrome/lighthouse/issues/14572
@@ -35,10 +36,6 @@ describe('Snapshot', async function() {
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
     expectError(/Protocol Error: the message with wrong session id/);
-  });
-
-  afterEach(async () => {
-    await unregisterAllServiceWorkers();
   });
 
   it('successfully returns a Lighthouse report for the page state', async () => {
@@ -62,6 +59,8 @@ describe('Snapshot', async function() {
     await selectMode('snapshot');
     await clickStartButton();
 
+    await target.bringToFront();
+
     const {lhr, artifacts, reportEl} = await waitForResult();
 
     assert.strictEqual(numNavigations, 0);
@@ -69,16 +68,16 @@ describe('Snapshot', async function() {
     assert.strictEqual(lhr.gatherMode, 'snapshot');
 
     assert.deepStrictEqual(artifacts.ViewportDimensions, {
-      innerHeight: 640,
-      innerWidth: 360,
-      outerHeight: 640,
-      outerWidth: 360,
-      devicePixelRatio: 3,
+      innerHeight: 823,
+      innerWidth: 412,
+      outerHeight: 823,
+      outerWidth: 412,
+      devicePixelRatio: 1.75,
     });
 
     const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-    assert.strictEqual(auditResults.length, 72);
-    assert.strictEqual(erroredAudits.length, 0);
+    assert.strictEqual(auditResults.length, 88);
+    assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
       'document-title',
       'html-has-lang',

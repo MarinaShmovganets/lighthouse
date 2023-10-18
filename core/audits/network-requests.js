@@ -1,13 +1,14 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {Audit} from './audit.js';
 import UrlUtils from '../lib/url-utils.js';
 import {NetworkRecords} from '../computed/network-records.js';
 import {MainResource} from '../computed/main-resource.js';
+import {EntityClassification} from '../computed/entity-classification.js';
 
 class NetworkRequests extends Audit {
   /**
@@ -31,8 +32,10 @@ class NetworkRequests extends Audit {
   static async audit(artifacts, context) {
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const records = await NetworkRecords.request(devtoolsLog, context);
-    const earliestStartTime = records.reduce(
-      (min, record) => Math.min(min, record.startTime),
+    const classifiedEntities = await EntityClassification.request(
+      {URL: artifacts.URL, devtoolsLog}, context);
+    const earliestRendererStartTime = records.reduce(
+      (min, record) => Math.min(min, record.rendererStartTime),
       Infinity
     );
 
@@ -47,8 +50,8 @@ class NetworkRequests extends Audit {
     }
 
     /** @param {number} time */
-    const normalizeTime = time => time < earliestStartTime || !Number.isFinite(time) ?
-      undefined : (time - earliestStartTime);
+    const normalizeTime = time => time < earliestRendererStartTime || !Number.isFinite(time) ?
+      undefined : (time - earliestRendererStartTime);
 
     const results = records.map(record => {
       const endTimeDeltaMs = record.lrStatistics?.endTimeDeltaMs;
@@ -61,11 +64,15 @@ class NetworkRequests extends Audit {
         ((record.frameId === mainFrameId) || undefined) :
         undefined;
 
+      const entity = classifiedEntities.entityByUrl.get(record.url);
+
       return {
         url: UrlUtils.elideDataURI(record.url),
+        sessionTargetType: record.sessionTargetType,
         protocol: record.protocol,
-        startTime: normalizeTime(record.startTime),
-        endTime: normalizeTime(record.endTime),
+        rendererStartTime: normalizeTime(record.rendererStartTime),
+        networkRequestTime: normalizeTime(record.networkRequestTime),
+        networkEndTime: normalizeTime(record.networkEndTime),
         finished: record.finished,
         transferSize: record.transferSize,
         resourceSize: record.resourceSize,
@@ -75,6 +82,7 @@ class NetworkRequests extends Audit {
         priority: record.priority,
         isLinkPreload,
         experimentalFromMainFrame,
+        entity: entity?.name,
         lrEndTimeDeltaMs: endTimeDeltaMs, // Only exists on Lightrider runs
         lrTCPMs: TCPMs, // Only exists on Lightrider runs
         lrRequestMs: requestMs, // Only exists on Lightrider runs
@@ -87,8 +95,8 @@ class NetworkRequests extends Audit {
     const headings = [
       {key: 'url', valueType: 'url', label: 'URL'},
       {key: 'protocol', valueType: 'text', label: 'Protocol'},
-      {key: 'startTime', valueType: 'ms', granularity: 1, label: 'Start Time'},
-      {key: 'endTime', valueType: 'ms', granularity: 1, label: 'End Time'},
+      {key: 'networkRequestTime', valueType: 'ms', granularity: 1, label: 'Network Request Time'},
+      {key: 'networkEndTime', valueType: 'ms', granularity: 1, label: 'Network End Time'},
       {
         key: 'transferSize',
         valueType: 'bytes',
@@ -111,8 +119,8 @@ class NetworkRequests extends Audit {
     const tableDetails = Audit.makeTableDetails(headings, results);
 
     // Include starting timestamp to allow syncing requests with navStart/metric timestamps.
-    const networkStartTimeTs = Number.isFinite(earliestStartTime) ?
-        earliestStartTime * 1000 : undefined;
+    const networkStartTimeTs = Number.isFinite(earliestRendererStartTime) ?
+        earliestRendererStartTime * 1000 : undefined;
     tableDetails.debugData = {
       type: 'debugdata',
       networkStartTimeTs,

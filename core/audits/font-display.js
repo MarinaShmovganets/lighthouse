@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {Audit} from './audit.js';
@@ -49,7 +49,9 @@ class FontDisplay extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
       supportedModes: ['navigation'],
+      guidanceLevel: 3,
       requiredArtifacts: ['devtoolsLogs', 'CSSUsage', 'URL'],
+      scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
     };
   }
 
@@ -165,7 +167,7 @@ class FontDisplay extends Audit {
       .map(record => {
         // In reality the end time should be calculated with paint time included
         // all browsers wait 3000ms to block text so we make sure 3000 is our max wasted time
-        const wastedMs = Math.min(record.endTime - record.startTime, 3000);
+        const wastedMs = Math.min(record.networkEndTime - record.networkRequestTime, 3000);
 
         return {
           url: record.url,

@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import assert from 'assert/strict';
@@ -11,8 +11,25 @@ import jestMock from 'jest-mock';
 import {runLighthouseInLR} from '../../lightrider/lightrider-entry.js';
 import {Runner} from '../../../core/runner.js';
 import {LighthouseError} from '../../../core/lib/lh-error.js';
+import {createMockPage} from '../../../core/test/gather/mock-driver.js';
 
 describe('lightrider-entry', () => {
+  let mockConnection;
+
+  beforeEach(() => {
+    mockConnection = {
+      connect: jestMock.fn(),
+      disconnect: jestMock.fn(),
+      sendCommand: jestMock.fn(),
+      on: jestMock.fn(),
+    };
+
+    runLighthouseInLR.getPageFromConnection = async (connection) => {
+      await connection.connect();
+      return createMockPage();
+    };
+  });
+
   describe('#runLighthouseInLR', () => {
     it('returns a runtimeError LHR when lighthouse throws a runtimeError', async () => {
       const connectionError = new LighthouseError(
@@ -20,35 +37,23 @@ describe('lightrider-entry', () => {
         {errorDetails: 'Bad connection req'}
       );
       assert.strictEqual(connectionError.lhrRuntimeError, true);
-      const mockConnection = {
-        async connect() {
-          throw connectionError;
-        },
-        async disconnect() {},
-        async sendCommand() {},
-        on() {},
-      };
+      mockConnection.connect.mockRejectedValue(connectionError);
       const url = 'https://example.com';
       const output = 'json';
 
       const result = await runLighthouseInLR(mockConnection, url, {output}, {});
       const parsedResult = JSON.parse(result);
-      assert.strictEqual(parsedResult.runtimeError.code, connectionError.code);
-      assert.ok(parsedResult.runtimeError.message.includes(connectionError.friendlyMessage));
+      expect(parsedResult.runtimeError).toMatchObject({
+        code: connectionError.code,
+        message: expect.stringContaining(connectionError.message),
+      });
     });
 
     it('returns an unknown-runtimeError LHR when lighthouse throws an unknown error', async () => {
       const errorMsg = 'Errors are the best!';
       const connectionError = new Error(errorMsg);
       assert.strictEqual(connectionError.lhrRuntimeError, undefined);
-      const mockConnection = {
-        async connect() {
-          throw connectionError;
-        },
-        async disconnect() {},
-        async sendCommand() {},
-        on() {},
-      };
+      mockConnection.connect.mockRejectedValue(connectionError);
       const url = 'https://example.com';
       const output = 'json';
 
@@ -61,7 +66,6 @@ describe('lightrider-entry', () => {
     it('specifies the channel as lr', async () => {
       const runStub = jestMock.spyOn(Runner, 'gather');
 
-      const mockConnection = {};
       const url = 'https://example.com';
 
       await runLighthouseInLR(mockConnection, url, {}, {});
@@ -74,7 +78,6 @@ describe('lightrider-entry', () => {
     it('uses the desktop config preset when device is desktop', async () => {
       const runStub = jestMock.spyOn(Runner, 'gather');
 
-      const mockConnection = {};
       const url = 'https://example.com';
 
       const lrDevice = 'desktop';
@@ -88,7 +91,6 @@ describe('lightrider-entry', () => {
     it('uses the mobile config preset when device is mobile', async () => {
       const runStub = jestMock.spyOn(Runner, 'gather');
 
-      const mockConnection = {};
       const url = 'https://example.com';
 
       const lrDevice = 'mobile';
@@ -102,7 +104,6 @@ describe('lightrider-entry', () => {
     it('overrides the default config when one is provided', async () => {
       const runStub = jestMock.spyOn(Runner, 'gather');
 
-      const mockConnection = {};
       const url = 'https://example.com';
 
       const configOverride = {
@@ -136,7 +137,6 @@ describe('lightrider-entry', () => {
         },
       }));
 
-      const mockConnection = {};
       const url = 'https://example.com';
       const lrFlags = {
         logAssets: true,

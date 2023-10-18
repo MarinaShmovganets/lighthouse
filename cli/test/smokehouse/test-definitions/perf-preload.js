@@ -1,10 +1,10 @@
 /**
- * @license Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const config = {
   extends: 'lighthouse:default',
   settings: {
@@ -12,6 +12,10 @@ const config = {
     // preload-fonts isn't a performance audit, but can easily leverage the font
     // webpages present here, hence the inclusion of 'best-practices'.
     onlyCategories: ['performance', 'best-practices'],
+
+    // BF cache will request the page again, initiating additional network requests.
+    // Disable the audit so we only detect requests from the normal page load.
+    skipAudits: ['bf-cache'],
 
     // A mixture of under, over, and meeting budget to exercise all paths.
     budgets: [{
@@ -53,6 +57,20 @@ const config = {
  * Expected Lighthouse audit values for preload tests.
  */
 const expectations = {
+  artifacts: {
+    LinkElements: {
+      _includes: [{
+        rel: 'preload',
+        href: 'http://localhost:10200/perf/level-2.js?warning&delay=500',
+        hrefRaw: '/perf/level-2.js?warning&delay=500',
+        hreflang: '',
+        as: 'script',
+        crossOrigin: 'use-credentials',
+        source: 'head',
+        fetchPriority: 'high',
+      }],
+    },
+  },
   networkRequests: {
     // DevTools loads the page three times, so this request count will not be accurate.
     _excludeRunner: 'devtools',
@@ -74,8 +92,8 @@ const expectations = {
         score: '>=0.90', // primarily just making sure it didn't fail/go crazy, specific value isn't that important
       },
       'server-response-time': {
-        // Can be flaky, so test float numericValue instead of binary score
-        numericValue: '<1000',
+        // Assert greater than 0 but not more than 1000.
+        numericValue: '500 +/- 499.99',
       },
       'network-requests': {
         details: {

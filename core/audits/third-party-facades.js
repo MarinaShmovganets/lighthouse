@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2020 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
@@ -21,11 +21,11 @@
 
 import {Audit} from './audit.js';
 import * as i18n from '../lib/i18n/i18n.js';
+import {EntityClassification} from '../computed/entity-classification.js';
 import thirdPartyWeb from '../lib/third-party-web.js';
 import {NetworkRecords} from '../computed/network-records.js';
-import {MainResource} from '../computed/main-resource.js';
-import {MainThreadTasks} from '../computed/main-thread-tasks.js';
 import ThirdPartySummary from './third-party-summary.js';
+import {TBTImpactTasks} from '../computed/tbt-impact-tasks.js';
 
 const UIStrings = {
   /** Title of a diagnostic audit that provides details about the third-party code on a web page that can be lazy loaded with a facade alternative. This descriptive title is shown to users when no resources have facade alternatives available. A facade is a lightweight component which looks like the desired resource. Lazy loading means resources are deferred until they are needed. Third-party code refers to resources that are not within the control of the site owner. */
@@ -86,7 +86,9 @@ class ThirdPartyFacades extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
       supportedModes: ['navigation'],
-      requiredArtifacts: ['traces', 'devtoolsLogs', 'URL'],
+      guidanceLevel: 3,
+      requiredArtifacts: ['traces', 'devtoolsLogs', 'URL', 'GatherContext'],
+      scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
     };
   }
 
@@ -121,15 +123,15 @@ class ThirdPartyFacades extends Audit {
 
   /**
    * @param {Map<string, import('./third-party-summary.js').Summary>} byURL
-   * @param {ThirdPartyEntity | undefined} mainEntity
+   * @param {LH.Artifacts.EntityClassification} classifiedEntities
    * @return {FacadableProduct[]}
    */
-  static getProductsWithFacade(byURL, mainEntity) {
+  static getProductsWithFacade(byURL, classifiedEntities) {
     /** @type {Map<string, FacadableProduct>} */
     const facadableProductMap = new Map();
     for (const url of byURL.keys()) {
-      const entity = thirdPartyWeb.getEntity(url);
-      if (!entity || thirdPartyWeb.isFirstParty(url, mainEntity)) continue;
+      const entity = classifiedEntities.entityByUrl.get(url);
+      if (!entity || classifiedEntities.isFirstParty(url)) continue;
 
       const product = thirdPartyWeb.getProduct(url);
       if (!product || !product.facades || !product.facades.length) continue;
@@ -148,17 +150,22 @@ class ThirdPartyFacades extends Audit {
    */
   static async audit(artifacts, context) {
     const settings = context.settings;
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
-    const mainResource = await MainResource.request({devtoolsLog, URL: artifacts.URL}, context);
-    const mainEntity = thirdPartyWeb.getEntity(mainResource.url);
-    const tasks = await MainThreadTasks.request(trace, context);
+    const classifiedEntities = await EntityClassification.request(
+      {URL: artifacts.URL, devtoolsLog}, context);
+
+    const metricComputationData = Audit.makeMetricComputationDataInput(artifacts, context);
+    const tbtImpactTasks = await TBTImpactTasks.request(metricComputationData, context);
+
     const multiplier = settings.throttlingMethod === 'simulate' ?
       settings.throttling.cpuSlowdownMultiplier : 1;
-    const summaries = ThirdPartySummary.getSummaries(networkRecords, tasks, multiplier);
+    const summaries = ThirdPartySummary.getSummaries(networkRecords, tbtImpactTasks, multiplier,
+      classifiedEntities);
     const facadableProducts =
-      ThirdPartyFacades.getProductsWithFacade(summaries.byURL, mainEntity);
+      ThirdPartyFacades.getProductsWithFacade(summaries.byURL, classifiedEntities);
+
+    let tbtImpact = 0;
 
     /** @type {LH.Audit.Details.TableItem[]} */
     const results = [];
@@ -178,6 +185,8 @@ class ThirdPartyFacades extends Audit {
       const entitySummary = summaries.byEntity.get(entity);
       if (!urls || !entitySummary) continue;
 
+      tbtImpact += entitySummary.tbtImpact;
+
       const items = Array.from(urls).map((url) => {
         const urlStats = summaries.byURL.get(url);
         return /** @type {import('./third-party-summary.js').URLSummary} */ ({url, ...urlStats});
@@ -188,6 +197,8 @@ class ThirdPartyFacades extends Audit {
         transferSize: entitySummary.transferSize,
         blockingTime: entitySummary.blockingTime,
         subItems: {type: 'subitems', items},
+        // Add entity manually since facades don't have a single `url`.
+        entity: entity.name,
       });
     }
 
@@ -195,6 +206,7 @@ class ThirdPartyFacades extends Audit {
       return {
         score: 1,
         notApplicable: true,
+        metricSavings: {TBT: 0},
       };
     }
 
@@ -213,6 +225,7 @@ class ThirdPartyFacades extends Audit {
         itemCount: results.length,
       }),
       details: Audit.makeTableDetails(headings, results),
+      metricSavings: {TBT: tbtImpact},
     };
   }
 }

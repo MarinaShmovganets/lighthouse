@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
@@ -52,11 +52,12 @@
       Trace: ResourceFinish.ts
  */
 
+import * as LH from '../../types/lh.js';
 import UrlUtils from './url-utils.js';
 
 // Lightrider X-Header names for timing information.
 // See: _updateTransferSizeForLightrider and _updateTimingsForLightrider.
-const HEADER_TCP = 'X-TCPMs';
+const HEADER_TCP = 'X-TCPMs'; // Note: this should have been called something like ConnectMs, as it includes SSL.
 const HEADER_SSL = 'X-SSLMs';
 const HEADER_REQ = 'X-RequestMs';
 const HEADER_RES = 'X-ResponseMs';
@@ -79,14 +80,10 @@ const HEADER_PROTOCOL_IS_H2 = 'X-ProtocolIsH2';
 
 /**
  * @typedef LightriderStatistics
- * The difference in endTime between the observed Lighthouse endTime and Lightrider's derived endTime.
- * @property {number} endTimeDeltaMs
- * The time spent making a TCP connection (connect + SSL).
- * @property {number} TCPMs
- * The time spent requesting a resource from a remote server, we use this to approx RTT.
- * @property {number} requestMs
- * The time spent transferring a resource from a remote server.
- * @property {number} responseMs
+ * @property {number} endTimeDeltaMs The difference in networkEndTime between the observed Lighthouse networkEndTime and Lightrider's derived networkEndTime.
+ * @property {number} TCPMs The time spent making a TCP connection (connect + SSL). Note: this is poorly named.
+ * @property {number} requestMs The time spent requesting a resource from a remote server, we use this to approx RTT. Note: this is poorly names, it really should be "server response time".
+ * @property {number} responseMs Time to receive the entire response payload starting the clock on receiving the first fragment (first non-header byte).
  */
 
 /** @type {LH.Util.SelfMap<LH.Crdp.Network.ResourceType>} */
@@ -124,15 +121,17 @@ class NetworkRequest {
     this.parsedURL = /** @type {ParsedURL} */ ({scheme: ''});
     this.documentURL = '';
 
+    /** When the renderer process initially discovers a network request, in milliseconds. */
+    this.rendererStartTime = -1;
     /**
      * When the network service is about to handle a request, ie. just before going to the
      * HTTP cache or going to the network for DNS/connection setup, in milliseconds.
      */
-    this.startTime = -1;
-    /** When the last byte of the response body is received, in milliseconds. */
-    this.endTime = -1;
+    this.networkRequestTime = -1;
     /** When the last byte of the response headers is received, in milliseconds. */
-    this.responseReceivedTime = -1;
+    this.responseHeadersEndTime = -1;
+    /** When the last byte of the response body is received, in milliseconds. */
+    this.networkEndTime = -1;
 
     // Go read the comment on _updateTransferSizeForLightrider.
     this.transferSize = 0;
@@ -175,12 +174,10 @@ class NetworkRequest {
     this.fetchedViaServiceWorker = false;
     /** @type {string|undefined} */
     this.frameId = '';
-    /**
-     * @type {string|undefined}
-     * Only set for child targets (OOPIFs). This is the sessionId of the protocol connection on
-     * which this request was discovered. `undefined` means it came from the root.
-     */
+    /** @type {string|undefined} */
     this.sessionId = undefined;
+    /** @type {LH.Protocol.TargetType|undefined} */
+    this.sessionTargetType = undefined;
     this.isLinkPreload = false;
   }
 
@@ -221,8 +218,9 @@ class NetworkRequest {
     };
     this.isSecure = UrlUtils.isSecureScheme(this.parsedURL.scheme);
 
-    // Expected to be overriden with better value in `_recomputeTimesWithResourceTiming`.
-    this.startTime = data.timestamp * 1000;
+    this.rendererStartTime = data.timestamp * 1000;
+    // Expected to be overridden with better value in `_recomputeTimesWithResourceTiming`.
+    this.networkRequestTime = this.rendererStartTime;
 
     this.requestMethod = data.request.method;
 
@@ -266,12 +264,13 @@ class NetworkRequest {
     if (this.finished) return;
 
     this.finished = true;
-    this.endTime = data.timestamp * 1000;
+    this.networkEndTime = data.timestamp * 1000;
     if (data.encodedDataLength >= 0) {
       this.transferSize = data.encodedDataLength;
     }
 
-    this._updateResponseReceivedTimeIfNecessary();
+    this._updateResponseHeadersEndTimeIfNecessary();
+    this._backfillReceiveHeaderStartTiming();
     this._updateTransferSizeForLightrider();
     this._updateTimingsForLightrider();
   }
@@ -284,13 +283,14 @@ class NetworkRequest {
     if (this.finished) return;
 
     this.finished = true;
-    this.endTime = data.timestamp * 1000;
+    this.networkEndTime = data.timestamp * 1000;
 
     this.failed = true;
     this.resourceType = data.type && RESOURCE_TYPES[data.type];
     this.localizedFailDescription = data.errorText;
 
-    this._updateResponseReceivedTimeIfNecessary();
+    this._updateResponseHeadersEndTimeIfNecessary();
+    this._backfillReceiveHeaderStartTiming();
     this._updateTransferSizeForLightrider();
     this._updateTimingsForLightrider();
   }
@@ -310,16 +310,21 @@ class NetworkRequest {
     this._onResponse(data.redirectResponse, data.timestamp, data.type);
     this.resourceType = undefined;
     this.finished = true;
-    this.endTime = data.timestamp * 1000;
+    this.networkEndTime = data.timestamp * 1000;
 
-    this._updateResponseReceivedTimeIfNecessary();
+    this._updateResponseHeadersEndTimeIfNecessary();
+    this._backfillReceiveHeaderStartTiming();
   }
 
   /**
-   * @param {string=} sessionId
+   * @param {string|undefined} sessionId
    */
   setSession(sessionId) {
     this.sessionId = sessionId;
+  }
+
+  get isOutOfProcessIframe() {
+    return this.sessionTargetType === 'iframe';
   }
 
   /**
@@ -335,7 +340,8 @@ class NetworkRequest {
 
     if (response.protocol) this.protocol = response.protocol;
 
-    this.responseReceivedTime = timestamp * 1000;
+    // This is updated in _recomputeTimesWithResourceTiming, if timings are present.
+    this.responseHeadersEndTime = timestamp * 1000;
 
     this.transferSize = response.encodedDataLength;
     if (typeof response.fromDiskCache === 'boolean') this.fromDiskCache = response.fromDiskCache;
@@ -366,28 +372,38 @@ class NetworkRequest {
     // Don't recompute times if the data is invalid. RequestTime should always be a thread timestamp.
     // If we don't have receiveHeadersEnd, we really don't have more accurate data.
     if (timing.requestTime === 0 || timing.receiveHeadersEnd === -1) return;
-    // Take startTime and responseReceivedTime from timing data for better accuracy.
-    // Timing's requestTime is a baseline in seconds, rest of the numbers there are ticks in millis.
-    // TODO: This skips the "queuing time" before the netstack has taken over ... is this a mistake?
-    this.startTime = timing.requestTime * 1000;
-    const headersReceivedTime = this.startTime + timing.receiveHeadersEnd;
-    if (!this.responseReceivedTime || this.responseReceivedTime < 0) {
-      this.responseReceivedTime = headersReceivedTime;
-    }
 
-    this.responseReceivedTime = Math.min(this.responseReceivedTime, headersReceivedTime);
-    this.responseReceivedTime = Math.max(this.responseReceivedTime, this.startTime);
+    // Take networkRequestTime and responseHeadersEndTime from timing data for better accuracy.
+    // Before this, networkRequestTime and responseHeadersEndTime were set to bogus values based on
+    // CDP event timestamps, though they should be somewhat close to the network timings.
+    // Note: requests served from cache never run this function, so they use the "bogus" values.
+
+    // Timing's requestTime is a baseline in seconds, rest of the numbers there are ticks in millis.
+    // See https://raw.githubusercontent.com/GoogleChrome/lighthouse/main/docs/Network-Timings.svg
+    this.networkRequestTime = timing.requestTime * 1000;
+    const headersReceivedTime = this.networkRequestTime + timing.receiveHeadersEnd;
+    // This was set in `_onResponse` as that event's timestamp.
+    const responseTimestamp = this.responseHeadersEndTime;
+
+    // Update this.responseHeadersEndTime. All timing values from the netstack (timing) are well-ordered, and
+    // so are the timestamps from CDP (which this.responseHeadersEndTime belongs to). It shouldn't be possible
+    // that this timing from the netstack is greater than the onResponse timestamp, but just to ensure proper order
+    // is maintained we bound the new timing by the network request time and the response timestamp.
+    this.responseHeadersEndTime = headersReceivedTime;
+    this.responseHeadersEndTime = Math.min(this.responseHeadersEndTime, responseTimestamp);
+    this.responseHeadersEndTime = Math.max(this.responseHeadersEndTime, this.networkRequestTime);
+
     // We're only at responseReceived (_onResponse) at this point.
-    // This endTime may be redefined again after onLoading is done.
-    this.endTime = Math.max(this.endTime, this.responseReceivedTime);
+    // This networkEndTime may be redefined again after onLoading is done.
+    this.networkEndTime = Math.max(this.networkEndTime, this.responseHeadersEndTime);
   }
 
   /**
-   * Update responseReceivedTime to the endTime if endTime is earlier.
+   * Update responseHeadersEndTime to the networkEndTime if networkEndTime is earlier.
    * A response can't be received after the entire request finished.
    */
-  _updateResponseReceivedTimeIfNecessary() {
-    this.responseReceivedTime = Math.min(this.endTime, this.responseReceivedTime);
+  _updateResponseHeadersEndTimeIfNecessary() {
+    this.responseHeadersEndTime = Math.min(this.networkEndTime, this.responseHeadersEndTime);
   }
 
   /**
@@ -433,6 +449,19 @@ class NetworkRequest {
   }
 
   /**
+   * TODO(compat): remove M116.
+   * `timing.receiveHeadersStart` was added recently, and will be in M116. Until then,
+   * set it to receiveHeadersEnd, which is close enough, to allow consumers of NetworkRequest
+   * to use the new field without accounting for this backcompat.
+   */
+  _backfillReceiveHeaderStartTiming() {
+    // Do nothing if a value is already present!
+    if (!this.timing || this.timing.receiveHeadersStart !== undefined) return;
+
+    this.timing.receiveHeadersStart = this.timing.receiveHeadersEnd;
+  }
+
+  /**
    * LR gets additional, accurate timing information from its underlying fetch infrastructure.  This
    * is passed in via X-Headers similar to 'X-TotalFetchedSize'.
    */
@@ -460,7 +489,7 @@ class NetworkRequest {
     // Bail if there was no totalTime.
     if (!totalHeader) return;
 
-    const totalMs = parseInt(totalHeader.value);
+    let totalMs = parseInt(totalHeader.value);
     const TCPMsHeader = this.responseHeaders.find(item => item.name === HEADER_TCP);
     const SSLMsHeader = this.responseHeaders.find(item => item.name === HEADER_SSL);
     const requestMsHeader = this.responseHeaders.find(item => item.name === HEADER_REQ);
@@ -468,13 +497,23 @@ class NetworkRequest {
 
     // Make sure all times are initialized and are non-negative.
     const TCPMs = TCPMsHeader ? Math.max(0, parseInt(TCPMsHeader.value)) : 0;
+    // This is missing for h2 requests, but present for h1. See b/283843975
     const SSLMs = SSLMsHeader ? Math.max(0, parseInt(SSLMsHeader.value)) : 0;
     const requestMs = requestMsHeader ? Math.max(0, parseInt(requestMsHeader.value)) : 0;
     const responseMs = responseMsHeader ? Math.max(0, parseInt(responseMsHeader.value)) : 0;
 
-    // Bail if the timings don't add up.
-    if (TCPMs + requestMs + responseMs !== totalMs) {
+    if (Number.isNaN(TCPMs + requestMs + responseMs + totalMs)) {
       return;
+    }
+
+    // If things don't add up, tweak the total a bit.
+    if (TCPMs + requestMs + responseMs !== totalMs) {
+      const delta = Math.abs(TCPMs + requestMs + responseMs - totalMs);
+      // We didn't see total being more than 5ms less than the total of the components.
+      // Allow some discrepancy in the timing, but not too much.
+      if (delta >= 25) return;
+
+      totalMs = TCPMs + requestMs + responseMs;
     }
 
     // Bail if SSL time is > TCP time.
@@ -483,7 +522,7 @@ class NetworkRequest {
     }
 
     this.lrStatistics = {
-      endTimeDeltaMs: this.endTime - (this.startTime + totalMs),
+      endTimeDeltaMs: this.networkEndTime - (this.networkRequestTime + totalMs),
       TCPMs: TCPMs,
       requestMs: requestMs,
       responseMs: responseMs,

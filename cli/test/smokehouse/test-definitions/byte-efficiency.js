@@ -1,11 +1,11 @@
 /**
- * @license Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
- * @type {LH.Config.Json}
+ * @type {LH.Config}
  * Config file for running byte efficiency smokehouse audits.
  */
 const config = {
@@ -187,17 +187,17 @@ const expectations = {
           items: [
             {
               url: 'http://localhost:10200/byte-efficiency/script.js',
-              wastedBytes: '46555 +/- 100',
+              wastedBytes: '46039 +/- 100',
               wastedPercent: '87 +/- 5',
             },
             {
               // /some-custom-url.js,
-              url: 'inline: \n  function unusedFunction() {\n    // Un...',
+              url: 'inline: \n  function unusedFunction() {\n    // U…',
               wastedBytes: '6690 +/- 100',
               wastedPercent: '99.6 +/- 0.1',
             },
             {
-              url: 'inline: \n  // Used block #1\n  // FILLER DATA JUS...',
+              url: 'inline: \n  // Used block #1\n  // FILLER DATA JU…',
               wastedBytes: '6569 +/- 100',
               wastedPercent: 100,
             },
@@ -303,13 +303,13 @@ const expectations = {
       // Check that images aren't TOO BIG.
       'uses-responsive-images': {
         details: {
-          overallSavingsBytes: '113000 +/- 5000',
+          overallSavingsBytes: '169000 +/- 5000',
           items: [
-            {wastedPercent: '56 +/- 5', url: /lighthouse-1024x680.jpg/},
-            {wastedPercent: '78 +/- 5', url: /lighthouse-2048x1356.webp\?size0/},
-            {wastedPercent: '56 +/- 5', url: /lighthouse-480x320.webp/},
-            {wastedPercent: '20 +/- 5', url: /lighthouse-480x320.jpg/},
-            {wastedPercent: '20 +/- 5', url: /lighthouse-480x320\.jpg\?attributesized/},
+            {wastedPercent: '81 +/- 5', url: /lighthouse-1024x680.jpg/},
+            {wastedPercent: '88 +/- 5', url: /lighthouse-2048x1356.webp\?size0/},
+            {wastedPercent: '65 +/- 5', url: /lighthouse-480x320.jpg/},
+            {wastedPercent: '65 +/- 5', url: /lighthouse-480x320\.jpg\?attributesized/},
+            {wastedPercent: '81 +/- 5', url: /lighthouse-480x320.webp/},
           ],
         },
       },

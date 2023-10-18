@@ -1,11 +1,12 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /* eslint-disable max-len */
 
+import * as LH from '../../types/lh.js';
 import * as constants from './constants.js';
 import * as i18n from '../lib/i18n/i18n.js';
 import {metricsToAudits} from './metrics-to-audits.js';
@@ -37,10 +38,10 @@ const UIStrings = {
   diagnosticsGroupDescription: 'More information about the performance of your application. These numbers don\'t [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score.',
   /** Title of the Accessibility category of audits. This section contains audits focused on making web content accessible to all users. Also used as a label of a score gauge; try to limit to 20 characters. */
   a11yCategoryTitle: 'Accessibility',
-  /** Description of the Accessibility category. This is displayed at the top of a list of audits focused on making web content accessible to all users. No character length limits. 'improve the accessibility of your web app' becomes link text to additional documentation. */
-  a11yCategoryDescription: 'These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.',
+  /** Description of the Accessibility category. This is displayed at the top of a list of audits focused on making web content accessible to all users. No character length limits. 'improve the accessibility of your web app' and 'manual testing' become link texts to additional documentation. */
+  a11yCategoryDescription: 'These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/articles/how-to-review) is also encouraged.',
   /** Description of the Accessibility manual checks category. This description is displayed above a list of accessibility audits that currently have no automated test and so must be verified manually by the user. No character length limits. 'conducting an accessibility review' becomes link text to additional documentation. */
-  a11yCategoryManualDescription: 'These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).',
+  a11yCategoryManualDescription: 'These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/articles/how-to-review).',
   /** Title of the best practices section of the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices. */
   a11yBestPracticesGroupTitle: 'Best practices',
   /** Description of the best practices section within the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices. */
@@ -78,7 +79,7 @@ const UIStrings = {
   /** Description of the Search Engine Optimization (SEO) category. This is displayed at the top of a list of audits focused on optimizing a website for indexing by search engines. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   seoCategoryDescription: 'These checks ensure that your page is following basic search engine optimization advice. ' +
   'There are many additional factors Lighthouse does not score here that may affect your search ranking, ' +
-  'including performance on [Core Web Vitals](https://web.dev/learn-core-web-vitals/). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).',
+  'including performance on [Core Web Vitals](https://web.dev/explore/vitals). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).',
   /** Description of the Search Engine Optimization (SEO) manual checks category, the additional validators must be run by hand in order to check all SEO best practices. This is displayed at the top of a list of manually run audits focused on optimizing a website for indexing by search engines. No character length limits. */
   seoCategoryManualDescription: 'Run these additional validators on your site to check additional SEO best practices.',
   /** Title of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
@@ -98,10 +99,10 @@ const UIStrings = {
   pwaCategoryTitle: 'PWA',
   /** Description of the Progressive Web Application (PWA) category. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   pwaCategoryDescription: 'These checks validate the aspects of a Progressive Web App. ' +
-  '[Learn what makes a good Progressive Web App](https://web.dev/pwa-checklist/).',
+  '[Learn what makes a good Progressive Web App](https://web.dev/articles/pwa-checklist).',
   /** Description of the Progressive Web Application (PWA) manual checks category, containing a list of additional validators must be run by hand in order to check all PWA best practices. This is displayed at the top of a list of manually run audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc.. No character length limits. */
   pwaCategoryManualDescription: 'These checks are required by the baseline ' +
-  '[PWA Checklist](https://web.dev/pwa-checklist/) but are ' +
+  '[PWA Checklist](https://web.dev/articles/pwa-checklist) but are ' +
   'not automatically checked by Lighthouse. They do not affect your score but it\'s important that you verify them manually.',
   /** Title of the Best Practices category of audits. This is displayed at the top of a list of audits focused on topics related to following web development best practices and accepted guidelines. Also used as a label of a score gauge; try to limit to 20 characters. */
   bestPracticesCategoryTitle: 'Best Practices',
@@ -121,108 +122,60 @@ const UIStrings = {
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
-// Ensure all artifact IDs match the typedefs.
-/** @type {Record<keyof LH.FRArtifacts, string>} */
-const artifacts = {
-  DevtoolsLog: '',
-  Trace: '',
-  Accessibility: '',
-  AnchorElements: '',
-  BFCacheFailures: '',
-  CacheContents: '',
-  ConsoleMessages: '',
-  CSSUsage: '',
-  Doctype: '',
-  DOMStats: '',
-  EmbeddedContent: '',
-  FontSize: '',
-  Inputs: '',
-  FullPageScreenshot: '',
-  GlobalListeners: '',
-  IFrameElements: '',
-  ImageElements: '',
-  InstallabilityErrors: '',
-  InspectorIssues: '',
-  JsUsage: '',
-  LinkElements: '',
-  MainDocumentContent: '',
-  MetaElements: '',
-  NetworkUserAgent: '',
-  OptimizedImages: '',
-  PasswordInputsWithPreventedPaste: '',
-  ResponseCompression: '',
-  RobotsTxt: '',
-  ServiceWorker: '',
-  ScriptElements: '',
-  Scripts: '',
-  SourceMaps: '',
-  Stacks: '',
-  TagsBlockingFirstPaint: '',
-  TapTargets: '',
-  TraceElements: '',
-  ViewportDimensions: '',
-  WebAppManifest: '',
-  devtoolsLogs: '',
-  traces: '',
-};
-
-for (const key of Object.keys(artifacts)) {
-  artifacts[/** @type {keyof typeof artifacts} */ (key)] = key;
-}
-
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const defaultConfig = {
   settings: constants.defaultSettings,
   artifacts: [
     // Artifacts which can be depended on come first.
-    {id: artifacts.DevtoolsLog, gatherer: 'devtools-log'},
-    {id: artifacts.Trace, gatherer: 'trace'},
+    {id: 'DevtoolsLog', gatherer: 'devtools-log'},
+    {id: 'Trace', gatherer: 'trace'},
 
-    {id: artifacts.Accessibility, gatherer: 'accessibility'},
-    {id: artifacts.AnchorElements, gatherer: 'anchor-elements'},
-    {id: artifacts.CacheContents, gatherer: 'cache-contents'},
-    {id: artifacts.ConsoleMessages, gatherer: 'console-messages'},
-    {id: artifacts.CSSUsage, gatherer: 'css-usage'},
-    {id: artifacts.Doctype, gatherer: 'dobetterweb/doctype'},
-    {id: artifacts.DOMStats, gatherer: 'dobetterweb/domstats'},
-    {id: artifacts.EmbeddedContent, gatherer: 'seo/embedded-content'},
-    {id: artifacts.FontSize, gatherer: 'seo/font-size'},
-    {id: artifacts.Inputs, gatherer: 'inputs'},
-    {id: artifacts.GlobalListeners, gatherer: 'global-listeners'},
-    {id: artifacts.IFrameElements, gatherer: 'iframe-elements'},
-    {id: artifacts.ImageElements, gatherer: 'image-elements'},
-    {id: artifacts.InstallabilityErrors, gatherer: 'installability-errors'},
-    {id: artifacts.InspectorIssues, gatherer: 'inspector-issues'},
-    {id: artifacts.JsUsage, gatherer: 'js-usage'},
-    {id: artifacts.LinkElements, gatherer: 'link-elements'},
-    {id: artifacts.MainDocumentContent, gatherer: 'main-document-content'},
-    {id: artifacts.MetaElements, gatherer: 'meta-elements'},
-    {id: artifacts.NetworkUserAgent, gatherer: 'network-user-agent'},
-    {id: artifacts.OptimizedImages, gatherer: 'dobetterweb/optimized-images'},
-    {id: artifacts.PasswordInputsWithPreventedPaste, gatherer: 'dobetterweb/password-inputs-with-prevented-paste'},
-    {id: artifacts.ResponseCompression, gatherer: 'dobetterweb/response-compression'},
-    {id: artifacts.RobotsTxt, gatherer: 'seo/robots-txt'},
-    {id: artifacts.ServiceWorker, gatherer: 'service-worker'},
-    {id: artifacts.ScriptElements, gatherer: 'script-elements'},
-    {id: artifacts.Scripts, gatherer: 'scripts'},
-    {id: artifacts.SourceMaps, gatherer: 'source-maps'},
-    {id: artifacts.Stacks, gatherer: 'stacks'},
-    {id: artifacts.TagsBlockingFirstPaint, gatherer: 'dobetterweb/tags-blocking-first-paint'},
-    {id: artifacts.TapTargets, gatherer: 'seo/tap-targets'},
-    {id: artifacts.TraceElements, gatherer: 'trace-elements'},
-    {id: artifacts.ViewportDimensions, gatherer: 'viewport-dimensions'},
-    {id: artifacts.WebAppManifest, gatherer: 'web-app-manifest'},
+    {id: 'Accessibility', gatherer: 'accessibility'},
+    {id: 'AnchorElements', gatherer: 'anchor-elements'},
+    {id: 'CacheContents', gatherer: 'cache-contents'},
+    {id: 'ConsoleMessages', gatherer: 'console-messages'},
+    {id: 'CSSUsage', gatherer: 'css-usage'},
+    {id: 'Doctype', gatherer: 'dobetterweb/doctype'},
+    {id: 'DOMStats', gatherer: 'dobetterweb/domstats'},
+    {id: 'EmbeddedContent', gatherer: 'seo/embedded-content'},
+    {id: 'FontSize', gatherer: 'seo/font-size'},
+    {id: 'Inputs', gatherer: 'inputs'},
+    {id: 'GlobalListeners', gatherer: 'global-listeners'},
+    {id: 'IFrameElements', gatherer: 'iframe-elements'},
+    {id: 'ImageElements', gatherer: 'image-elements'},
+    {id: 'InstallabilityErrors', gatherer: 'installability-errors'},
+    {id: 'InspectorIssues', gatherer: 'inspector-issues'},
+    {id: 'JsUsage', gatherer: 'js-usage'},
+    {id: 'LinkElements', gatherer: 'link-elements'},
+    {id: 'MainDocumentContent', gatherer: 'main-document-content'},
+    {id: 'MetaElements', gatherer: 'meta-elements'},
+    {id: 'NetworkUserAgent', gatherer: 'network-user-agent'},
+    {id: 'OptimizedImages', gatherer: 'dobetterweb/optimized-images'},
+    {id: 'ResponseCompression', gatherer: 'dobetterweb/response-compression'},
+    {id: 'RobotsTxt', gatherer: 'seo/robots-txt'},
+    {id: 'ServiceWorker', gatherer: 'service-worker'},
+    {id: 'ScriptElements', gatherer: 'script-elements'},
+    {id: 'Scripts', gatherer: 'scripts'},
+    {id: 'SourceMaps', gatherer: 'source-maps'},
+    {id: 'Stacks', gatherer: 'stacks'},
+    {id: 'TagsBlockingFirstPaint', gatherer: 'dobetterweb/tags-blocking-first-paint'},
+    {id: 'TapTargets', gatherer: 'seo/tap-targets'},
+    {id: 'TraceElements', gatherer: 'trace-elements'},
+    {id: 'ViewportDimensions', gatherer: 'viewport-dimensions'},
+    {id: 'WebAppManifest', gatherer: 'web-app-manifest'},
 
     // Artifact copies are renamed for compatibility with legacy artifacts.
-    {id: artifacts.devtoolsLogs, gatherer: 'devtools-log-compat'},
-    {id: artifacts.traces, gatherer: 'trace-compat'},
+    {id: 'devtoolsLogs', gatherer: 'devtools-log-compat'},
+    {id: 'traces', gatherer: 'trace-compat'},
 
-    // FullPageScreenshot comes at the very end so all other node analysis is captured.
-    {id: artifacts.FullPageScreenshot, gatherer: 'full-page-screenshot'},
+    // FullPageScreenshot comes at the end so all other node analysis is captured.
+    {id: 'FullPageScreenshot', gatherer: 'full-page-screenshot'},
+
+    // BFCacheFailures comes at the very end because it can perform a page navigation.
+    {id: 'BFCacheFailures', gatherer: 'bf-cache-failures'},
   ],
   audits: [
     'is-on-https',
-    'service-worker',
     'viewport',
     'metrics/first-contentful-paint',
     'metrics/largest-contentful-paint',
@@ -233,7 +186,7 @@ const defaultConfig = {
     'metrics/total-blocking-time',
     'metrics/max-potential-fid',
     'metrics/cumulative-layout-shift',
-    'metrics/experimental-interaction-to-next-paint',
+    'metrics/interaction-to-next-paint',
     'errors-in-console',
     'server-response-time',
     'metrics/interactive',
@@ -262,7 +215,6 @@ const defaultConfig = {
     'metrics',
     'performance-budget',
     'timing-budget',
-    'resource-summary',
     'third-party-summary',
     'third-party-facades',
     'largest-contentful-paint-element',
@@ -273,16 +225,17 @@ const defaultConfig = {
     'non-composited-animations',
     'unsized-images',
     'valid-source-maps',
-    'preload-lcp-image',
+    'prioritize-lcp-image',
     'csp-xss',
-    'full-page-screenshot',
     'script-treemap-data',
     'manual/pwa-cross-browser',
     'manual/pwa-page-transitions',
     'manual/pwa-each-page-has-url',
     'accessibility/accesskeys',
     'accessibility/aria-allowed-attr',
+    'accessibility/aria-allowed-role',
     'accessibility/aria-command-name',
+    'accessibility/aria-dialog-name',
     'accessibility/aria-hidden-body',
     'accessibility/aria-hidden-focus',
     'accessibility/aria-input-field-name',
@@ -292,6 +245,7 @@ const defaultConfig = {
     'accessibility/aria-required-children',
     'accessibility/aria-required-parent',
     'accessibility/aria-roles',
+    'accessibility/aria-text',
     'accessibility/aria-toggle-field-name',
     'accessibility/aria-tooltip-name',
     'accessibility/aria-treeitem-name',
@@ -305,21 +259,35 @@ const defaultConfig = {
     'accessibility/document-title',
     'accessibility/duplicate-id-active',
     'accessibility/duplicate-id-aria',
+    'accessibility/empty-heading',
     'accessibility/form-field-multiple-labels',
     'accessibility/frame-title',
     'accessibility/heading-order',
     'accessibility/html-has-lang',
     'accessibility/html-lang-valid',
+    'accessibility/html-xml-lang-mismatch',
+    'accessibility/identical-links-same-purpose',
     'accessibility/image-alt',
+    'accessibility/image-redundant-alt',
+    'accessibility/input-button-name',
     'accessibility/input-image-alt',
+    'accessibility/label-content-name-mismatch',
     'accessibility/label',
+    'accessibility/landmark-one-main',
     'accessibility/link-name',
+    'accessibility/link-in-text-block',
     'accessibility/list',
     'accessibility/listitem',
     'accessibility/meta-refresh',
     'accessibility/meta-viewport',
     'accessibility/object-alt',
+    'accessibility/select-name',
+    'accessibility/skip-link',
     'accessibility/tabindex',
+    'accessibility/table-duplicate-name',
+    'accessibility/table-fake-caption',
+    'accessibility/target-size',
+    'accessibility/td-has-header',
     'accessibility/td-headers-attr',
     'accessibility/th-has-data-cells',
     'accessibility/valid-lang',
@@ -358,7 +326,7 @@ const defaultConfig = {
     'dobetterweb/no-document-write',
     'dobetterweb/js-libraries',
     'dobetterweb/notification-on-start',
-    'dobetterweb/password-inputs-can-be-pasted-into',
+    'dobetterweb/paste-preventing-inputs',
     'dobetterweb/uses-http2',
     'dobetterweb/uses-passive-event-listeners',
     'seo/meta-description',
@@ -374,6 +342,7 @@ const defaultConfig = {
     'seo/canonical',
     'seo/manual/structured-data',
     'work-during-interaction',
+    'bf-cache',
   ],
   groups: {
     'metrics': {
@@ -462,14 +431,14 @@ const defaultConfig = {
       supportedModes: ['navigation', 'timespan', 'snapshot'],
       auditRefs: [
         {id: 'first-contentful-paint', weight: 10, group: 'metrics', acronym: 'FCP', relevantAudits: metricsToAudits.fcpRelevantAudits},
-        {id: 'interactive', weight: 10, group: 'metrics', acronym: 'TTI'},
-        {id: 'speed-index', weight: 10, group: 'metrics', acronym: 'SI'},
-        {id: 'total-blocking-time', weight: 30, group: 'metrics', acronym: 'TBT', relevantAudits: metricsToAudits.tbtRelevantAudits},
         {id: 'largest-contentful-paint', weight: 25, group: 'metrics', acronym: 'LCP', relevantAudits: metricsToAudits.lcpRelevantAudits},
-        {id: 'cumulative-layout-shift', weight: 15, group: 'metrics', acronym: 'CLS', relevantAudits: metricsToAudits.clsRelevantAudits},
-        {id: 'experimental-interaction-to-next-paint', weight: 0, group: 'metrics', acronym: 'INP', relevantAudits: metricsToAudits.inpRelevantAudits},
+        {id: 'total-blocking-time', weight: 30, group: 'metrics', acronym: 'TBT', relevantAudits: metricsToAudits.tbtRelevantAudits},
+        {id: 'cumulative-layout-shift', weight: 25, group: 'metrics', acronym: 'CLS', relevantAudits: metricsToAudits.clsRelevantAudits},
+        {id: 'speed-index', weight: 10, group: 'metrics', acronym: 'SI'},
+        {id: 'interaction-to-next-paint', weight: 0, group: 'metrics', acronym: 'INP', relevantAudits: metricsToAudits.inpRelevantAudits},
 
         // These are our "invisible" metrics. Not displayed, but still in the LHR.
+        {id: 'interactive', weight: 0, group: 'hidden', acronym: 'TTI'},
         {id: 'max-potential-fid', weight: 0, group: 'hidden'},
         {id: 'first-meaningful-paint', weight: 0, acronym: 'FMP', group: 'hidden'},
 
@@ -492,7 +461,7 @@ const defaultConfig = {
         {id: 'efficient-animated-content', weight: 0},
         {id: 'duplicated-javascript', weight: 0},
         {id: 'legacy-javascript', weight: 0},
-        {id: 'preload-lcp-image', weight: 0},
+        {id: 'prioritize-lcp-image', weight: 0},
         {id: 'total-byte-weight', weight: 0},
         {id: 'uses-long-cache-ttl', weight: 0},
         {id: 'dom-size', weight: 0},
@@ -501,7 +470,6 @@ const defaultConfig = {
         {id: 'bootup-time', weight: 0},
         {id: 'mainthread-work-breakdown', weight: 0},
         {id: 'font-display', weight: 0},
-        {id: 'resource-summary', weight: 0},
         {id: 'third-party-summary', weight: 0},
         {id: 'third-party-facades', weight: 0},
         {id: 'largest-contentful-paint-element', weight: 0},
@@ -513,9 +481,9 @@ const defaultConfig = {
         {id: 'non-composited-animations', weight: 0},
         {id: 'unsized-images', weight: 0},
         {id: 'viewport', weight: 0},
-        {id: 'no-unload-listeners', weight: 0},
         {id: 'uses-responsive-images-snapshot', weight: 0},
         {id: 'work-during-interaction', weight: 0},
+        {id: 'bf-cache', weight: 0},
 
         // Budget audits.
         {id: 'performance-budget', weight: 0, group: 'budgets'},
@@ -540,64 +508,82 @@ const defaultConfig = {
       supportedModes: ['navigation', 'snapshot'],
       // Audit weights are meant to match the aXe scoring system of
       // minor, moderate, serious, and critical.
-      // See the audits listed at dequeuniversity.com/rules/axe/4.1.
+      // See the audits listed at dequeuniversity.com/rules/axe/4.7.
       // Click on an audit and check the right hand column to see its severity.
       auditRefs: [
-        {id: 'accesskeys', weight: 3, group: 'a11y-navigation'},
+        {id: 'accesskeys', weight: 7, group: 'a11y-navigation'},
         {id: 'aria-allowed-attr', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-command-name', weight: 3, group: 'a11y-aria'},
+        {id: 'aria-allowed-role', weight: 1, group: 'a11y-aria'},
+        {id: 'aria-command-name', weight: 7, group: 'a11y-aria'},
+        {id: 'aria-dialog-name', weight: 7, group: 'a11y-aria'},
         {id: 'aria-hidden-body', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-hidden-focus', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-input-field-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-meter-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-progressbar-name', weight: 3, group: 'a11y-aria'},
+        {id: 'aria-hidden-focus', weight: 7, group: 'a11y-aria'},
+        {id: 'aria-input-field-name', weight: 7, group: 'a11y-aria'},
+        {id: 'aria-meter-name', weight: 7, group: 'a11y-aria'},
+        {id: 'aria-progressbar-name', weight: 7, group: 'a11y-aria'},
         {id: 'aria-required-attr', weight: 10, group: 'a11y-aria'},
         {id: 'aria-required-children', weight: 10, group: 'a11y-aria'},
         {id: 'aria-required-parent', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-roles', weight: 10, group: 'a11y-aria'},
-        {id: 'aria-toggle-field-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-tooltip-name', weight: 3, group: 'a11y-aria'},
-        {id: 'aria-treeitem-name', weight: 3, group: 'a11y-aria'},
+        {id: 'aria-roles', weight: 7, group: 'a11y-aria'},
+        {id: 'aria-text', weight: 7, group: 'a11y-aria'},
+        {id: 'aria-toggle-field-name', weight: 7, group: 'a11y-aria'},
+        {id: 'aria-tooltip-name', weight: 7, group: 'a11y-aria'},
+        {id: 'aria-treeitem-name', weight: 7, group: 'a11y-aria'},
         {id: 'aria-valid-attr-value', weight: 10, group: 'a11y-aria'},
         {id: 'aria-valid-attr', weight: 10, group: 'a11y-aria'},
         {id: 'button-name', weight: 10, group: 'a11y-names-labels'},
-        {id: 'bypass', weight: 3, group: 'a11y-navigation'},
-        {id: 'color-contrast', weight: 3, group: 'a11y-color-contrast'},
-        {id: 'definition-list', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'dlitem', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'document-title', weight: 3, group: 'a11y-names-labels'},
-        {id: 'duplicate-id-active', weight: 3, group: 'a11y-navigation'},
+        {id: 'bypass', weight: 7, group: 'a11y-navigation'},
+        {id: 'color-contrast', weight: 7, group: 'a11y-color-contrast'},
+        {id: 'definition-list', weight: 7, group: 'a11y-tables-lists'},
+        {id: 'dlitem', weight: 7, group: 'a11y-tables-lists'},
+        {id: 'document-title', weight: 7, group: 'a11y-names-labels'},
+        {id: 'duplicate-id-active', weight: 7, group: 'a11y-navigation'},
         {id: 'duplicate-id-aria', weight: 10, group: 'a11y-aria'},
-        {id: 'form-field-multiple-labels', weight: 2, group: 'a11y-names-labels'},
-        {id: 'frame-title', weight: 3, group: 'a11y-names-labels'},
-        {id: 'heading-order', weight: 2, group: 'a11y-navigation'},
-        {id: 'html-has-lang', weight: 3, group: 'a11y-language'},
-        {id: 'html-lang-valid', weight: 3, group: 'a11y-language'},
+        {id: 'form-field-multiple-labels', weight: 3, group: 'a11y-names-labels'},
+        {id: 'frame-title', weight: 7, group: 'a11y-names-labels'},
+        {id: 'heading-order', weight: 3, group: 'a11y-navigation'},
+        {id: 'html-has-lang', weight: 7, group: 'a11y-language'},
+        {id: 'html-lang-valid', weight: 7, group: 'a11y-language'},
+        {id: 'html-xml-lang-mismatch', weight: 3, group: 'a11y-language'},
         {id: 'image-alt', weight: 10, group: 'a11y-names-labels'},
+        {id: 'image-redundant-alt', weight: 1, group: 'a11y-names-labels'},
+        {id: 'input-button-name', weight: 10, group: 'a11y-names-labels'},
         {id: 'input-image-alt', weight: 10, group: 'a11y-names-labels'},
-        {id: 'label', weight: 10, group: 'a11y-names-labels'},
-        {id: 'link-name', weight: 3, group: 'a11y-names-labels'},
-        {id: 'list', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'listitem', weight: 3, group: 'a11y-tables-lists'},
+        {id: 'label', weight: 7, group: 'a11y-names-labels'},
+        {id: 'link-in-text-block', weight: 7, group: 'a11y-color-contrast'},
+        {id: 'link-name', weight: 7, group: 'a11y-names-labels'},
+        {id: 'list', weight: 7, group: 'a11y-tables-lists'},
+        {id: 'listitem', weight: 7, group: 'a11y-tables-lists'},
         {id: 'meta-refresh', weight: 10, group: 'a11y-best-practices'},
         {id: 'meta-viewport', weight: 10, group: 'a11y-best-practices'},
-        {id: 'object-alt', weight: 3, group: 'a11y-names-labels'},
-        {id: 'tabindex', weight: 3, group: 'a11y-navigation'},
-        {id: 'td-headers-attr', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'th-has-data-cells', weight: 3, group: 'a11y-tables-lists'},
-        {id: 'valid-lang', weight: 3, group: 'a11y-language'},
+        {id: 'object-alt', weight: 7, group: 'a11y-names-labels'},
+        {id: 'select-name', weight: 7, group: 'a11y-names-labels'},
+        {id: 'skip-link', weight: 3, group: 'a11y-names-labels'},
+        {id: 'tabindex', weight: 7, group: 'a11y-navigation'},
+        {id: 'table-duplicate-name', weight: 1, group: 'a11y-tables-lists'},
+        {id: 'td-headers-attr', weight: 7, group: 'a11y-tables-lists'},
+        {id: 'th-has-data-cells', weight: 7, group: 'a11y-tables-lists'},
+        {id: 'valid-lang', weight: 7, group: 'a11y-language'},
         {id: 'video-caption', weight: 10, group: 'a11y-audio-video'},
         // Manual audits
-        {id: 'logical-tab-order', weight: 0},
         {id: 'focusable-controls', weight: 0},
         {id: 'interactive-element-affordance', weight: 0},
-        {id: 'managed-focus', weight: 0},
+        {id: 'logical-tab-order', weight: 0},
+        {id: 'visual-order-follows-dom', weight: 0},
         {id: 'focus-traps', weight: 0},
+        {id: 'managed-focus', weight: 0},
+        {id: 'use-landmarks', weight: 0},
+        {id: 'offscreen-content-hidden', weight: 0},
         {id: 'custom-controls-labels', weight: 0},
         {id: 'custom-controls-roles', weight: 0},
-        {id: 'visual-order-follows-dom', weight: 0},
-        {id: 'offscreen-content-hidden', weight: 0},
-        {id: 'use-landmarks', weight: 0},
+        // Hidden audits
+        {id: 'empty-heading', weight: 0, group: 'hidden'},
+        {id: 'identical-links-same-purpose', weight: 0, group: 'hidden'},
+        {id: 'landmark-one-main', weight: 0, group: 'hidden'},
+        {id: 'target-size', weight: 0, group: 'hidden'},
+        {id: 'label-content-name-mismatch', weight: 0, group: 'hidden'},
+        {id: 'table-fake-caption', weight: 0, group: 'hidden'},
+        {id: 'td-has-header', weight: 0, group: 'hidden'},
       ],
     },
     'best-practices': {
@@ -605,12 +591,12 @@ const defaultConfig = {
       supportedModes: ['navigation', 'timespan', 'snapshot'],
       auditRefs: [
         // Trust & Safety
-        {id: 'is-on-https', weight: 1, group: 'best-practices-trust-safety'},
+        {id: 'is-on-https', weight: 5, group: 'best-practices-trust-safety'},
         {id: 'geolocation-on-start', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'notification-on-start', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'csp-xss', weight: 0, group: 'best-practices-trust-safety'},
         // User Experience
-        {id: 'password-inputs-can-be-pasted-into', weight: 1, group: 'best-practices-ux'},
+        {id: 'paste-preventing-inputs', weight: 3, group: 'best-practices-ux'},
         {id: 'image-aspect-ratio', weight: 1, group: 'best-practices-ux'},
         {id: 'image-size-responsive', weight: 1, group: 'best-practices-ux'},
         {id: 'preload-fonts', weight: 1, group: 'best-practices-ux'},
@@ -618,8 +604,9 @@ const defaultConfig = {
         {id: 'doctype', weight: 1, group: 'best-practices-browser-compat'},
         {id: 'charset', weight: 1, group: 'best-practices-browser-compat'},
         // General Group
+        {id: 'no-unload-listeners', weight: 1, group: 'best-practices-general'},
         {id: 'js-libraries', weight: 0, group: 'best-practices-general'},
-        {id: 'deprecations', weight: 1, group: 'best-practices-general'},
+        {id: 'deprecations', weight: 5, group: 'best-practices-general'},
         {id: 'errors-in-console', weight: 1, group: 'best-practices-general'},
         {id: 'valid-source-maps', weight: 0, group: 'best-practices-general'},
         {id: 'inspector-issues', weight: 1, group: 'best-practices-general'},
@@ -658,7 +645,6 @@ const defaultConfig = {
         // Installable
         {id: 'installable-manifest', weight: 2, group: 'pwa-installable'},
         // PWA Optimized
-        {id: 'service-worker', weight: 1, group: 'pwa-optimized'},
         {id: 'splash-screen', weight: 1, group: 'pwa-optimized'},
         {id: 'themed-omnibox', weight: 1, group: 'pwa-optimized'},
         {id: 'content-width', weight: 1, group: 'pwa-optimized'},

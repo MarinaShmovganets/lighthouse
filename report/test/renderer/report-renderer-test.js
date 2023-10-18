@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import assert from 'assert/strict';
@@ -9,7 +9,7 @@ import assert from 'assert/strict';
 import jsdom from 'jsdom';
 import jestMock from 'jest-mock';
 
-import {Util} from '../../renderer/util.js';
+import {ReportUtils} from '../../renderer/report-utils.js';
 import {DOM} from '../../renderer/dom.js';
 import {DetailsRenderer} from '../../renderer/details-renderer.js';
 import {CategoryRenderer} from '../../renderer/category-renderer.js';
@@ -41,7 +41,7 @@ describe('ReportRenderer', () => {
     const detailsRenderer = new DetailsRenderer(dom);
     const categoryRenderer = new CategoryRenderer(dom, detailsRenderer);
     renderer = new ReportRenderer(dom, categoryRenderer);
-    sampleResults = Util.prepareReportResult(sampleResultsOrig);
+    sampleResults = ReportUtils.prepareReportResult(sampleResultsOrig);
   });
 
   after(() => {
@@ -56,7 +56,8 @@ describe('ReportRenderer', () => {
       assert.ok(output.querySelector('.lh-header-container'), 'has a header');
       assert.ok(output.querySelector('.lh-report'), 'has report body');
       // 3 sets of gauges - one in sticky header, one in scores header, and one in each section.
-      assert.equal(output.querySelectorAll('.lh-gauge__wrapper, .lh-gauge--pwa__wrapper').length,
+      // eslint-disable-next-line max-len
+      assert.equal(output.querySelectorAll('.lh-gauge__wrapper, .lh-gauge--pwa__wrapper, .lh-exp-gauge__wrapper').length,
           Object.keys(sampleResults.categories).length * 3, 'renders category gauges');
     });
 
@@ -217,11 +218,11 @@ describe('ReportRenderer', () => {
       expect(items.length).toBeGreaterThanOrEqual(6);
 
       const itemsTxt = items.map(el => `${el.textContent} ${el.title}`).join('\n');
-      expect(itemsTxt).toContain('Moto G4');
+      expect(itemsTxt).toContain('Moto G Power');
       expect(itemsTxt).toContain('RTT');
       expect(itemsTxt).toMatch(/\dx/);
       expect(itemsTxt).toContain(sampleResults.environment.networkUserAgent);
-      expect(itemsTxt).toMatch('360x640, DPR 2.625');
+      expect(itemsTxt).toMatch('412x823, DPR 1.75');
     });
   });
 

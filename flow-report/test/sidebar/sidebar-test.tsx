@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2021 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {render} from '@testing-library/preact';
@@ -68,8 +68,8 @@ describe('SidebarRuntimeSettings', () => {
     } as any;
     const root = render(<SidebarRuntimeSettings settings={settings}/>, {wrapper});
 
-    expect(root.getByText('Emulated Moto G4 - 200x200, DPR 3')).toBeTruthy();
-    expect(root.queryByText('Emulated Moto G4 -')).toBeFalsy();
+    expect(root.getByText('Emulated Moto G Power - 200x200, DPR 3')).toBeTruthy();
+    expect(root.queryByText('Emulated Moto G Power -')).toBeFalsy();
     expect(root.getByText('Slow 4G throttling')).toBeTruthy();
     expect(root.getByText('4x slowdown'));
   });
@@ -110,7 +110,7 @@ describe('SidebarRuntimeSettings', () => {
     const root = render(<SidebarRuntimeSettings settings={settings}/>, {wrapper});
 
     expect(root.getByText('No emulation')).toBeTruthy();
-    expect(root.queryByText('Emulated Moto G4 -')).toBeFalsy();
+    expect(root.queryByText('Emulated Moto G Power -')).toBeFalsy();
     expect(root.getByText('Provided by environment')).toBeTruthy();
   });
 });

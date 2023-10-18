@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import assert from 'assert/strict';
@@ -13,13 +13,15 @@ import {createTestTrace} from '../create-test-trace.js';
 const mainResource = {
   url: 'https://www.example.com/',
   timing: {receiveHeadersEnd: 0.5},
-  endTime: 1000,
+  networkEndTime: 1000,
+  priority: 'High',
 };
 
-function buildArtifacts(networkRecords) {
+function buildArtifacts(networkRecords, fcpTs) {
   const trace = createTestTrace({
     timeOrigin: 0,
     largestContentfulPaint: 5000,
+    firstContentfulPaint: fcpTs ? fcpTs : 5000,
     topLevelTasks: [{ts: 1000, duration: 50}],
   });
   const devtoolsLog = networkRecordsToDevtoolsLog(networkRecords);
@@ -123,7 +125,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
       {
         url: 'https://cdn.example.com/request',
         initiator: {},
-        startTime: 1_600,
+        networkRequestTime: 1_600,
         timing: {receiveHeadersEnd: 20},
       },
     ];
@@ -142,7 +144,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
       {
         url: 'https://cdn.example.com/request',
         initiator: {},
-        startTime: 2000,
+        networkRequestTime: 2000,
         timing: {
           dnsStart: 100,
           connectStart: 150,
@@ -170,35 +172,39 @@ describe('Performance: uses-rel-preconnect audit', () => {
       {
         url: 'https://cdn.example.com/first',
         initiator: {},
-        startTime: 2000,
+        networkRequestTime: 2000,
         timing: {
           dnsStart: 100,
           connectStart: 150,
           connectEnd: 300,
           receiveHeadersEnd: 2.3,
         },
+        priority: 'High',
       },
       {
         url: 'https://cdn.example.com/second',
         initiator: {},
-        startTime: 3000,
+        networkRequestTime: 3000,
         timing: {
           dnsStart: 300,
           connectStart: 350,
           connectEnd: 400,
           receiveHeadersEnd: 3.4,
         },
+        priority: 'High',
       },
     ];
 
     const artifacts = buildArtifacts(networkRecords);
     const context = {settings: {}, computedCache: new Map()};
-    const {numericValue, details} = await UsesRelPreconnect.audit(artifacts, context);
+    const {numericValue, details, metricSavings} =
+      await UsesRelPreconnect.audit(artifacts, context);
     assert.equal(numericValue, 300);
     assert.equal(details.items.length, 1);
     assert.deepStrictEqual(details.items, [
       {url: 'https://cdn.example.com', wastedMs: 300},
     ]);
+    assert.deepStrictEqual(metricSavings, {LCP: 300, FCP: 300});
   });
 
   it(`should give a list of important preconnected origins`, async () => {
@@ -207,36 +213,39 @@ describe('Performance: uses-rel-preconnect audit', () => {
       {
         url: 'http://cdn.example.com/first',
         initiator: {},
-        startTime: 2000,
+        networkRequestTime: 2000,
         timing: {
           dnsStart: 100,
           connectStart: 250,
           connectEnd: 300,
           receiveHeadersEnd: 2.3,
         },
+        priority: 'High',
       },
       {
         url: 'https://othercdn.example.com/second',
         initiator: {},
-        startTime: 1_200,
+        networkRequestTime: 1_200,
         timing: {
           dnsStart: 100,
           connectStart: 200,
           connectEnd: 600,
           receiveHeadersEnd: 1.8,
         },
+        priority: 'High',
       },
       {
         url: 'https://unimportant.example.com/second',
         initiator: {},
-        startTime: 6000,
-        endTime: 8000, // ends *after* LCP
+        networkRequestTime: 6000,
+        networkEndTime: 8000, // ends *after* LCP
         timing: {
           dnsStart: 100,
           connectStart: 200,
           connectEnd: 600,
           receiveHeadersEnd: 1.8,
         },
+        priority: 'High',
       },
     ];
 
@@ -246,6 +255,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
       numericValue,
       details,
       warnings,
+      metricSavings,
     } = await UsesRelPreconnect.audit(artifacts, context);
     assert.equal(numericValue, 300);
     assert.equal(details.items.length, 2);
@@ -253,6 +263,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
       {url: 'https://othercdn.example.com', wastedMs: 300},
       {url: 'http://cdn.example.com', wastedMs: 150},
     ]);
+    assert.deepStrictEqual(metricSavings, {LCP: 300, FCP: 300});
     assert.equal(warnings.length, 0);
   });
 
@@ -262,7 +273,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
       {
         url: 'https://cdn1.example.com/first',
         initiator: {},
-        startTime: 2000,
+        networkRequestTime: 2000,
         timing: {
           dnsStart: 100,
           dnsEnd: 100,
@@ -274,7 +285,7 @@ describe('Performance: uses-rel-preconnect audit', () => {
       {
         url: 'https://cdn2.example.com/first',
         initiator: {},
-        startTime: 2000,
+        networkRequestTime: 2000,
         timing: {
           dnsStart: 100,
           dnsEnd: 100,
@@ -310,9 +321,9 @@ describe('Performance: uses-rel-preconnect audit', () => {
 
     const networkRecords = [
       mainResource,
-      {url: 'https://cdn1.example.com/first', initiator: {}, startTime: 2000, timing},
-      {url: 'https://cdn2.example.com/first', initiator: {}, startTime: 2000, timing},
-      {url: 'https://cdn3.example.com/first', initiator: {}, startTime: 2000, timing},
+      {url: 'https://cdn1.example.com/first', initiator: {}, networkRequestTime: 2000, timing},
+      {url: 'https://cdn2.example.com/first', initiator: {}, networkRequestTime: 2000, timing},
+      {url: 'https://cdn3.example.com/first', initiator: {}, networkRequestTime: 2000, timing},
     ];
 
     const artifacts = {
@@ -342,5 +353,34 @@ describe('Performance: uses-rel-preconnect audit', () => {
     const result = await UsesRelPreconnect.audit(artifacts, context);
     assert.equal(result.score, 1);
     assert.equal(result.warnings.length, 1);
+  });
+
+  it('should have LCP savings and not FCP savings', async () => {
+    const networkRecords = [
+      mainResource,
+      {
+        url: 'https://cdn.example.com/second',
+        initiator: {},
+        networkRequestTime: 4000, // starts *after* FCP
+        networkEndTime: 4500, // ends *before* LCP
+        timing: {
+          dnsStart: 100,
+          connectStart: 200,
+          connectEnd: 300,
+        },
+        priority: 'High',
+      },
+    ];
+
+    const artifacts = buildArtifacts(networkRecords, 4000);
+    const context = {settings: {}, computedCache: new Map()};
+    const {numericValue, details, metricSavings} =
+      await UsesRelPreconnect.audit(artifacts, context);
+    assert.equal(numericValue, 300);
+    assert.equal(details.items.length, 1);
+    assert.deepStrictEqual(details.items, [
+      {url: 'https://cdn.example.com', wastedMs: 300},
+    ]);
+    assert.deepStrictEqual(metricSavings, {LCP: 300, FCP: 0});
   });
 });

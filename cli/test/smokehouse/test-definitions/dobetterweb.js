@@ -1,10 +1,10 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
-/** @type {LH.Config.Json} */
+/** @type {LH.Config} */
 const config = {
   extends: 'lighthouse:default',
   audits: [
@@ -123,6 +123,15 @@ const expectations = {
       },
       {
         rel: 'stylesheet',
+        href: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+        hrefRaw: '',
+        hreflang: '',
+        as: '',
+        crossOrigin: null,
+        source: 'head',
+      },
+      {
+        rel: 'stylesheet',
         href: 'http://localhost:10200/dobetterweb/dbw_tester.css?scriptActivated&delay=200',
         hrefRaw: './dbw_tester.css?scriptActivated&delay=200',
         hreflang: '',
@@ -204,6 +213,63 @@ const expectations = {
       lineNumber: '>300',
       columnNumber: '>30',
     }],
+    DevtoolsLog: {
+      _includes: [
+        // Ensure we are getting async call stacks.
+        {
+          method: 'Network.requestWillBeSent',
+          params: {
+            type: 'Image',
+            request: {
+              url: 'http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?async',
+            },
+            initiator: {
+              type: 'script',
+              stack: {
+                callFrames: [],
+                parent: {
+                  description: 'Image',
+                  callFrames: [
+                    {
+                      'functionName': '',
+                      'url': 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                    },
+                  ],
+                  parent: {
+                    description: 'Promise.then',
+                    callFrames: [
+                      {
+                        'functionName': '',
+                        'url': 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+    ImageElements: {
+      _includes: [{
+        src: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?iar2',
+        srcset: '',
+        displayedWidth: 120,
+        displayedHeight: 80,
+        attributeWidth: '120',
+        attributeHeight: '80',
+        naturalDimensions: {
+          width: 1024,
+          height: 678,
+        },
+        isCss: false,
+        isPicture: false,
+        isInShadowDOM: false,
+        loading: 'lazy',
+        fetchPriority: 'low',
+      }],
+    },
   },
   lhr: {
     requestedUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
@@ -212,46 +278,33 @@ const expectations = {
       'errors-in-console': {
         score: 0,
         details: {
-          items: {
-            0: {
+          items: [
+            {
               source: 'exception',
               description: /^Error: A distinctive error\s+at http:\/\/localhost:10200\/dobetterweb\/dbw_tester.html:\d+:\d+$/,
               sourceLocation: {url: 'http://localhost:10200/dobetterweb/dbw_tester.html'},
             },
-            1: {
+            {
               source: 'console.error',
               description: 'Error! Error!',
               sourceLocation: {url: 'http://localhost:10200/dobetterweb/dbw_tester.html'},
             },
-            2: {
+            {
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               sourceLocation: {url: 'http://localhost:10200/dobetterweb/unknown404.css?delay=200'},
             },
-            3: {
+            {
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               sourceLocation: {url: 'http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000'},
             },
-            4: {
+            {
               // In the DT runner, the initial page load before staring Lighthouse will prevent this error.
               _excludeRunner: 'devtools',
               source: 'network',
               description: 'Failed to load resource: the server responded with a status of 404 (Not Found)',
               sourceLocation: {url: 'http://localhost:10200/favicon.ico'},
-            },
-            // In legacy Lighthouse this audit will have additional duplicate failures which are a mistake.
-            // Fraggle Rock ordering of gatherer `stopInstrumentation` and `getArtifact` fixes the re-request issue.
-          },
-        },
-      },
-      'is-on-https': {
-        score: 0,
-        details: {
-          items: [
-            {
-              url: 'http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js',
-              resolution: 'Allowed',
             },
           ],
         },
@@ -260,7 +313,7 @@ const expectations = {
         score: 0,
       },
       'no-document-write': {
-        score: 0,
+        score: 0.5,
         details: {
           items: {
             length: 3,
@@ -297,7 +350,7 @@ const expectations = {
         },
       },
       'uses-passive-event-listeners': {
-        score: 0,
+        score: 0.5,
         details: {
           items: {
           // Note: Originally this was 7 but M56 defaults document-level
@@ -314,20 +367,6 @@ const expectations = {
         details: {
           items: [
             {
-              // This feature was removed in M110.
-              // TODO: Remove this expectation once M110 reaches stable.
-              _maxChromiumVersion: '109',
-              value: /`window.webkitStorageInfo` is deprecated/,
-              source: {
-                type: 'source-location',
-                url: 'http://localhost:10200/dobetterweb/dbw_tester.js',
-                urlProvider: 'network',
-                line: '>0',
-                column: 9,
-              },
-              subItems: undefined,
-            },
-            {
               value: /Synchronous `XMLHttpRequest` on the main thread is deprecated/,
               source: {
                 type: 'source-location',
@@ -341,7 +380,7 @@ const expectations = {
           ],
         },
       },
-      'password-inputs-can-be-pasted-into': {
+      'paste-preventing-inputs': {
         score: 0,
         details: {
           items: {
@@ -355,9 +394,9 @@ const expectations = {
           items: {
             0: {
               displayedAspectRatio: /^120 x 15/,
-              url: 'http://localhost:10200/dobetterweb/lighthouse-480x318.jpg?iar1',
+              url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?iar1',
             },
-            length: 1,
+            length: 2,
           },
         },
       },
@@ -397,7 +436,7 @@ const expectations = {
         },
       },
       'dom-size': {
-        score: 1,
+        score: null,
         numericValue: 153,
         details: {
           items: [
@@ -443,30 +482,131 @@ const expectations = {
           }],
         },
       },
-      'full-page-screenshot': {
-        score: null,
+      'bf-cache': {
         details: {
-          type: 'full-page-screenshot',
-          screenshot: {
-            width: 360,
-            // Allow for differences in platforms.
-            height: '1350±100',
-            data: /^data:image\/webp;.{500,}/,
-          },
-          nodes: {
-            _includes: [
-              // Test that the numbers for individual elements are in the ballpark.
-              [/[0-9]-[0-9]+-IMG/, imgA],
-              [/[0-9]-[0-9]+-IMG/, imgB],
-              // And then many more nodes...
-            ],
-            _excludes: [
-              // Ensure that the nodes we found above are unique.
-              [/[0-9]-[0-9]+-IMG/, imgA],
-              [/[0-9]-[0-9]+-IMG/, imgB],
-            ],
+          items: [
+            {
+              reason: 'The page has an unload handler in the main frame.',
+              failureType: 'Actionable',
+              subItems: {
+                items: [{
+                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                }],
+              },
+            },
+            {
+              // This issue only appears in the DevTools runner for some reason.
+              // TODO: Investigate why this doesn't happen on the CLI runner.
+              _runner: 'devtools',
+              reason: 'There were permission requests upon navigating away.',
+              failureType: 'Pending browser support',
+              subItems: {
+                items: [{
+                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                }],
+              },
+            },
+          ],
+        },
+      },
+      'prioritize-lcp-image': {
+        // In CI, there can sometimes be slight savings.
+        numericValue: '<=200',
+        details: {
+          items: [{
+            node: {
+              snippet: '<h2 id="toppy" style="background-image:url(\'\');">',
+              nodeLabel: 'Do better web tester page',
+            },
+            url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?redirected-lcp',
+            wastedMs: '<=200',
+          }],
+          debugData: {
+            initiatorPath: [{
+              url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?redirected-lcp',
+              initiatorType: 'redirect',
+            }, {
+              url: 'http://localhost:10200/dobetterweb/lighthouse-1024x680.jpg?lcp&redirect=lighthouse-1024x680.jpg%3Fredirected-lcp',
+              initiatorType: 'parser',
+            }, {
+              url: 'http://localhost:10200/dobetterweb/dbw_tester.css?delay=2000&async=true',
+              initiatorType: 'parser',
+            }, {
+              url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+              initiatorType: 'other',
+            }],
+            pathLength: 4,
           },
         },
+      },
+      'network-rtt': {
+        details: {
+          items: [
+            {origin: 'http://localhost:10200', rtt: '>0'},
+          ],
+        },
+      },
+      'network-server-latency': {
+        details: {
+          items: [
+            {origin: 'http://localhost:10200', serverResponseTime: '>0'},
+          ],
+        },
+      },
+      'metrics': {
+        // Flaky in DevTools
+        _excludeRunner: 'devtools',
+        details: {items: {0: {
+          timeToFirstByte: '450+/-100',
+          lcpLoadStart: '>5000',
+          lcpLoadEnd: '>5000',
+        }}},
+      },
+      'largest-contentful-paint-element': {
+        score: 0,
+        displayValue: /\d+\xa0ms/,
+        details: {
+          items: [
+            {
+              items: [{
+                node: {
+                  type: 'node',
+                  nodeLabel: 'Do better web tester page',
+                  path: '2,HTML,1,BODY,9,DIV,2,H2',
+                },
+              }],
+            },
+            {
+              items: [
+                {timing: '>0'},
+                {timing: '>0'},
+                {timing: '>0'},
+                {timing: '>0'},
+              ],
+            },
+          ],
+        },
+      },
+    },
+    fullPageScreenshot: {
+      screenshot: {
+        width: 412,
+        // Allow for differences in platforms.
+        height: '1350±100',
+        data: /^data:image\/webp;.{500,}/,
+      },
+      nodes: {
+        _includes: [
+          // Test that the numbers for individual elements are in the ballpark.
+          [/[0-9]-[0-9]+-IMG/, imgA],
+          [/[0-9]-[0-9]+-IMG/, imgB],
+          // And then many more nodes...
+        ],
+        _excludes: [
+          // Ensure that the nodes we found above are unique.
+          [/[0-9]-[0-9]+-IMG/, imgA],
+          [/[0-9]-[0-9]+-IMG/, imgB],
+        ],
       },
     },
   },

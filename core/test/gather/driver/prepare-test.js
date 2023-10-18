@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2021 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import * as td from 'testdouble';
@@ -251,52 +251,6 @@ describe('.prepareTargetForNavigationMode()', () => {
     });
   });
 
-  it('enables async stacks', async () => {
-    await prepare.prepareTargetForNavigationMode(driverMock.asDriver(), {
-      ...constants.defaultSettings,
-    });
-
-    const invocations = sessionMock.sendCommand.mock.calls;
-    const debuggerInvocations = invocations.filter(call => call[0].startsWith('Debugger.'));
-    expect(debuggerInvocations.map(argList => argList[0])).toEqual([
-      'Debugger.enable',
-      'Debugger.setSkipAllPauses',
-      'Debugger.setAsyncCallStackDepth',
-    ]);
-  });
-
-  it('enables async stacks on every main frame navigation', async () => {
-    timers.useFakeTimers();
-    after(() => timers.dispose());
-
-    sessionMock.sendCommand
-      .mockResponse('Debugger.enable')
-      .mockResponse('Debugger.setSkipAllPauses')
-      .mockResponse('Debugger.setAsyncCallStackDepth');
-
-    sessionMock.on.mockEvent('Page.frameNavigated', {frame: {}});
-    sessionMock.on.mockEvent('Page.frameNavigated', {frame: {parentId: '1'}});
-    sessionMock.on.mockEvent('Page.frameNavigated', {frame: {parentId: '2'}});
-    sessionMock.on.mockEvent('Page.frameNavigated', {frame: {parentId: '3'}});
-
-    await prepare.prepareTargetForNavigationMode(driverMock.asDriver(), {
-      ...constants.defaultSettings,
-    });
-
-    await flushAllTimersAndMicrotasks();
-
-    const invocations = sessionMock.sendCommand.mock.calls;
-    const debuggerInvocations = invocations.filter(call => call[0].startsWith('Debugger.'));
-    expect(debuggerInvocations.map(argList => argList[0])).toEqual([
-      'Debugger.enable',
-      'Debugger.setSkipAllPauses',
-      'Debugger.setAsyncCallStackDepth',
-      'Debugger.enable',
-      'Debugger.setSkipAllPauses',
-      'Debugger.setAsyncCallStackDepth',
-    ]);
-  });
-
   it('cache natives on new document', async () => {
     await prepare.prepareTargetForNavigationMode(driverMock.asDriver(), {
       ...constants.defaultSettings,
@@ -393,20 +347,6 @@ describe('.prepareTargetForTimespanMode()', () => {
     });
   });
 
-  it('enables async stacks', async () => {
-    await prepare.prepareTargetForTimespanMode(driverMock.asDriver(), {
-      ...constants.defaultSettings,
-    });
-
-    const invocations = sessionMock.sendCommand.mock.calls;
-    const debuggerInvocations = invocations.filter(call => call[0].startsWith('Debugger.'));
-    expect(debuggerInvocations.map(argList => argList[0])).toEqual([
-      'Debugger.enable',
-      'Debugger.setSkipAllPauses',
-      'Debugger.setAsyncCallStackDepth',
-    ]);
-  });
-
   it('sets throttling', async () => {
     await prepare.prepareTargetForTimespanMode(driverMock.asDriver(), {
       ...constants.defaultSettings,
@@ -429,5 +369,64 @@ describe('.prepareTargetForTimespanMode()', () => {
 
     const headersInvocation = sessionMock.sendCommand.findInvocation('Network.setExtraHTTPHeaders');
     expect(headersInvocation).toEqual({headers: {Cookie: 'name=wolverine'}});
+  });
+});
+
+describe('.enableAsyncStacks()', () => {
+  let sessionMock = createMockSession();
+
+  beforeEach(() => {
+    sessionMock = createMockSession();
+
+    sessionMock.sendCommand
+      .mockResponse('Debugger.enable')
+      .mockResponse('Debugger.setSkipAllPauses')
+      .mockResponse('Debugger.setAsyncCallStackDepth');
+  });
+
+  it('enables async stacks', async () => {
+    await prepare.enableAsyncStacks(sessionMock.asSession());
+
+    const invocations = sessionMock.sendCommand.mock.calls;
+    const debuggerInvocations = invocations.filter(call => call[0].startsWith('Debugger.'));
+    expect(debuggerInvocations.map(argList => argList[0])).toEqual([
+      'Debugger.enable',
+      'Debugger.setSkipAllPauses',
+      'Debugger.setAsyncCallStackDepth',
+    ]);
+  });
+
+  it('enables async stacks on every main frame navigation', async () => {
+    timers.useFakeTimers();
+    after(() => timers.dispose());
+
+    sessionMock.sendCommand
+      .mockResponse('Debugger.enable')
+      .mockResponse('Debugger.setSkipAllPauses')
+      .mockResponse('Debugger.setAsyncCallStackDepth')
+      .mockResponse('Debugger.disable');
+
+    sessionMock.on.mockEvent('Page.frameNavigated', {frame: {}});
+    sessionMock.on.mockEvent('Page.frameNavigated', {frame: {parentId: '1'}});
+    sessionMock.on.mockEvent('Page.frameNavigated', {frame: {parentId: '2'}});
+    sessionMock.on.mockEvent('Page.frameNavigated', {frame: {parentId: '3'}});
+
+    const disableAsyncStacks = await prepare.enableAsyncStacks(sessionMock.asSession());
+
+    await flushAllTimersAndMicrotasks();
+
+    await disableAsyncStacks();
+
+    const invocations = sessionMock.sendCommand.mock.calls;
+    const debuggerInvocations = invocations.filter(call => call[0].startsWith('Debugger.'));
+    expect(debuggerInvocations.map(argList => argList[0])).toEqual([
+      'Debugger.enable',
+      'Debugger.setSkipAllPauses',
+      'Debugger.setAsyncCallStackDepth',
+      'Debugger.enable',
+      'Debugger.setSkipAllPauses',
+      'Debugger.setAsyncCallStackDepth',
+      'Debugger.disable',
+    ]);
   });
 });

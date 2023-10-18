@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2021 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {ReportGenerator} from '../report/generator/report-generator.js';
@@ -13,8 +13,9 @@ import {initializeConfig} from './config/config.js';
 import {getFormatted} from '../shared/localization/format.js';
 import {mergeConfigFragment, deepClone} from './config/config-helpers.js';
 import * as i18n from './lib/i18n/i18n.js';
+import * as LH from '../types/lh.js';
 
-/** @typedef {WeakMap<LH.UserFlow.GatherStep, LH.Gatherer.FRGatherResult['runnerOptions']>} GatherStepRunnerOptions */
+/** @typedef {WeakMap<LH.UserFlow.GatherStep, LH.Gatherer.GatherResult['runnerOptions']>} GatherStepRunnerOptions */
 
 const UIStrings = {
   /**
@@ -87,26 +88,26 @@ class UserFlow {
    * @return {LH.UserFlow.StepFlags}
    */
   _getNextNavigationFlags(flags) {
-    const nextFlags = this._getNextFlags(flags) || {};
+    const newStepFlags = this._getNextFlags(flags) || {};
 
-    if (nextFlags.skipAboutBlank === undefined) {
-      nextFlags.skipAboutBlank = true;
+    if (newStepFlags.skipAboutBlank === undefined) {
+      newStepFlags.skipAboutBlank = true;
     }
 
     // On repeat navigations, we want to disable storage reset by default (i.e. it's not a cold load).
     const isSubsequentNavigation = this._gatherSteps
       .some(step => step.artifacts.GatherContext.gatherMode === 'navigation');
     if (isSubsequentNavigation) {
-      if (nextFlags.disableStorageReset === undefined) {
-        nextFlags.disableStorageReset = true;
+      if (newStepFlags.disableStorageReset === undefined) {
+        newStepFlags.disableStorageReset = true;
       }
     }
 
-    return nextFlags;
+    return newStepFlags;
   }
 
   /**
-   * @param {LH.Gatherer.FRGatherResult} gatherResult
+   * @param {LH.Gatherer.GatherResult} gatherResult
    * @param {LH.UserFlow.StepFlags} [flags]
    */
   _addGatherStep(gatherResult, flags) {
@@ -308,7 +309,7 @@ function getFlowName(name, gatherSteps) {
 
 /**
  * @param {Array<LH.UserFlow.GatherStep>} gatherSteps
- * @param {{name?: string, config?: LH.Config.Json, gatherStepRunnerOptions?: GatherStepRunnerOptions}} options
+ * @param {{name?: string, config?: LH.Config, gatherStepRunnerOptions?: GatherStepRunnerOptions}} options
  */
 async function auditGatherSteps(gatherSteps, options) {
   if (!gatherSteps.length) {
@@ -326,9 +327,9 @@ async function auditGatherSteps(gatherSteps, options) {
     // If the gather step is not active, we must recreate the runner options.
     if (!runnerOptions) {
       // Step specific configs take precedence over a config for the entire flow.
-      const configJson = options.config;
+      const config = options.config;
       const {gatherMode} = artifacts.GatherContext;
-      const {resolvedConfig} = await initializeConfig(gatherMode, configJson, flags);
+      const {resolvedConfig} = await initializeConfig(gatherMode, config, flags);
       runnerOptions = {
         resolvedConfig,
         computedCache: new Map(),

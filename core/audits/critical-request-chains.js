@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {Audit} from './audit.js';
@@ -37,32 +37,33 @@ class CriticalRequestChains extends Audit {
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
       supportedModes: ['navigation'],
+      guidanceLevel: 1,
       requiredArtifacts: ['traces', 'devtoolsLogs', 'URL'],
     };
   }
 
-  /** @typedef {{depth: number, id: string, chainDuration: number, chainTransferSize: number, node: LH.Audit.Details.SimpleCriticalRequestNode[string]}} CrcNodeInfo */
+  /** @typedef {{depth: number, id: string, chainDuration: number, chainTransferSize: number, node: LH.Artifacts.CriticalRequestNode[string]}} CrcNodeInfo */
 
   /**
-   * @param {LH.Audit.Details.SimpleCriticalRequestNode} tree
+   * @param {LH.Artifacts.CriticalRequestNode} tree
    * @param {function(CrcNodeInfo): void} cb
    */
   static _traverse(tree, cb) {
     /**
-     * @param {LH.Audit.Details.SimpleCriticalRequestNode} node
+     * @param {LH.Artifacts.CriticalRequestNode} node
      * @param {number} depth
-     * @param {number=} startTime
+     * @param {number=} networkRequestTime
      * @param {number=} transferSize
      */
-    function walk(node, depth, startTime, transferSize = 0) {
+    function walk(node, depth, networkRequestTime, transferSize = 0) {
       const children = Object.keys(node);
       if (children.length === 0) {
         return;
       }
       children.forEach(id => {
         const child = node[id];
-        if (!startTime) {
-          startTime = child.request.startTime;
+        if (!networkRequestTime) {
+          networkRequestTime = child.request.networkRequestTime;
         }
 
         // Call the callback with the info for this child.
@@ -70,13 +71,13 @@ class CriticalRequestChains extends Audit {
           depth,
           id,
           node: child,
-          chainDuration: child.request.endTime - startTime,
+          chainDuration: child.request.networkEndTime - networkRequestTime,
           chainTransferSize: transferSize + child.request.transferSize,
         });
 
         // Carry on walking.
         if (child.children) {
-          walk(child.children, depth + 1, startTime);
+          walk(child.children, depth + 1, networkRequestTime);
         }
       }, '');
     }
@@ -86,7 +87,7 @@ class CriticalRequestChains extends Audit {
 
   /**
    * Get stats about the longest initiator chain (as determined by time duration)
-   * @param {LH.Audit.Details.SimpleCriticalRequestNode} tree
+   * @param {LH.Artifacts.CriticalRequestNode} tree
    * @return {{duration: number, length: number, transferSize: number}}
    */
   static _getLongestChain(tree) {
@@ -96,7 +97,7 @@ class CriticalRequestChains extends Audit {
       transferSize: 0,
     };
     CriticalRequestChains._traverse(tree, opts => {
-      const duration = opts.chainDuration * 1000;
+      const duration = opts.chainDuration;
       if (duration > longest.duration) {
         longest.duration = duration;
         longest.transferSize = opts.chainTransferSize;
@@ -123,9 +124,9 @@ class CriticalRequestChains extends Audit {
       const request = opts.node.request;
       const simpleRequest = {
         url: request.url,
-        startTime: request.startTime / 1000,
-        endTime: request.endTime / 1000,
-        responseReceivedTime: request.responseReceivedTime / 1000,
+        startTime: request.networkRequestTime / 1000,
+        endTime: request.networkEndTime / 1000,
+        responseReceivedTime: request.responseHeadersEndTime / 1000,
         transferSize: request.transferSize,
       };
 
@@ -199,7 +200,7 @@ class CriticalRequestChains extends Audit {
       walk(initialNavChildren, 0);
     }
 
-    const longestChain = CriticalRequestChains._getLongestChain(flattenedChains);
+    const longestChain = CriticalRequestChains._getLongestChain(chains);
 
     return {
       score: Number(chainCount === 0),

@@ -14,7 +14,7 @@ See [`SmokehouseOptions`](https://github.com/GoogleChrome/lighthouse/blob/main/c
 | -------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `id`           | `string`                           | The string identifier of the test.                                                                                               |
 | `expectations` | `{lhr: Object, artifacts: Object}` | See below.                                                                                                                       |
-| `config`       | `LH.Config.Json` (optional)        | An optional Lighthouse config. If not specified, the default config is used.                                                     |
+| `config`       | `LH.Config` (optional)        | An optional Lighthouse config. If not specified, the default config is used.                                                     |
 | `runSerially`  | `boolean` (optional)               | An optional flag. If set to true, the test won't be run in parallel to other tests. Useful if the test is performance sensitive. |
 
 ### Expectations
@@ -118,8 +118,6 @@ All pruning checks:
 
 - `_minChromiumVersion`
 - `_maxChromiumVersion`
-- `_legacyOnly`
-- `_fraggleRockOnly`
 - `_runner` (set to same value provided to CLI --runner flag, ex: `'devtools'`)
 - `_excludeRunner` (set to same value provided to CLI --runner flag, ex: `'devtools'`)
 
