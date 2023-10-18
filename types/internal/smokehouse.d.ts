@@ -60,7 +60,7 @@ declare global {
       testRunnerOptions?: {
         /** If true, performs extra logging from the test runs. */
         isDebug?: boolean;
-        /** Launch Chrome in typical desktop headful mode, rather than our default of `--headless-chrome`. */
+        /** Launch Chrome in typical desktop headful mode, rather than our default of `--headless=new`. */
         forceHeadful?: boolean;
       };
       /** Manually set the number of jobs to run at once. `1` runs all tests serially. */
