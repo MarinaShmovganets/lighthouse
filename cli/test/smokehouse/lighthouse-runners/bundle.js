@@ -74,7 +74,11 @@ async function runBundledLighthouse(url, config, testRunnerOptions) {
   const lighthouse = global.runBundledLighthouse;
 
   // Launch and connect to Chrome.
-  const launchedChrome = await ChromeLauncher.launch();
+  const launchedChrome = await ChromeLauncher.launch({
+    chromeFlags: [
+      testRunnerOptions?.forceHeadful ? '' : '--headless=chrome',
+    ],
+  });
   const port = launchedChrome.port;
 
   // Run Lighthouse.
