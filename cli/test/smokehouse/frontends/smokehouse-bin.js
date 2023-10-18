@@ -166,10 +166,13 @@ async function begin() {
         default: false,
         describe: 'Ignore any smoke test exclusions set.',
       },
-      'force-headful': {
+      'headless': {
         type: 'boolean',
-        default: false,
-        alias: 'force-headfull',
+        default: true,
+        hidden: true,
+      },
+      'no-headless': {
+        type: 'boolean',
         describe: 'Launch Chrome in typical desktop headful mode, rather than our default of `--headless=new` (https://developer.chrome.com/articles/new-headless/).', // eslint-disable-line max-len
       },
     })
@@ -219,7 +222,7 @@ async function begin() {
       retries: argv.retries,
       testRunnerOptions: {
         isDebug: argv.debug,
-        forceHeadful: argv.forceHeadful,
+        headless: argv.headless,
       },
       lighthouseRunner: runLighthouse,
       takeNetworkRequestUrls,

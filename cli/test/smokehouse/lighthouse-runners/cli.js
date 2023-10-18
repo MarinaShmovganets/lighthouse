@@ -50,7 +50,7 @@ async function runLighthouse(url, config, testRunnerOptions = {}) {
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */
 async function internalRun(url, tmpPath, config, options) {
-  const {isDebug, forceHeadful} = options || {};
+  const {isDebug, headless} = options || {};
   const localConsole = new LocalConsole();
 
   const outputPath = `${tmpPath}/smokehouse.report.json`;
@@ -61,12 +61,13 @@ async function internalRun(url, tmpPath, config, options) {
     `${url}`,
     `--output-path=${outputPath}`,
     '--output=json',
-    forceHeadful ? '' : '--chrome-flags="--headless=new"',
     `-G=${artifactsDirectory}`,
     `-A=${artifactsDirectory}`,
     '--port=0',
     '--quiet',
   ];
+
+  if (headless) args.push('--chrome-flags="--headless=new"');
 
   // Config can be optionally provided.
   if (config) {
