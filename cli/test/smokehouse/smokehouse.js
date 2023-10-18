@@ -311,4 +311,6 @@ function getShardedDefinitions(testDefns, shardArg) {
 export {
   runSmokehouse,
   getShardedDefinitions,
+  DEFAULT_RETRIES,
+  DEFAULT_CONCURRENT_RUNS,
 };

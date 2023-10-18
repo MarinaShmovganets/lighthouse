@@ -21,15 +21,12 @@ import yargs from 'yargs';
 import * as yargsHelpers from 'yargs/helpers';
 import log from 'lighthouse-logger';
 
-import {runSmokehouse, getShardedDefinitions} from '../smokehouse.js';
+import {runSmokehouse, getShardedDefinitions, DEFAULT_RETRIES, DEFAULT_CONCURRENT_RUNS} from '../smokehouse.js';
 import {updateTestDefnFormat} from './back-compat-util.js';
 import {LH_ROOT} from '../../../../shared/root.js';
 import exclusions from '../config/exclusions.js';
 import {saveArtifacts} from '../../../../core/lib/asset-saver.js';
 import {saveLhr} from '../../../../core/lib/asset-saver.js';
-
-const DEFAULT_CONCURRENT_RUNS = 5;
-const DEFAULT_RETRIES = 0;
 
 const coreTestDefnsPath =
   path.join(LH_ROOT, 'cli/test/smokehouse/core-tests.js');
