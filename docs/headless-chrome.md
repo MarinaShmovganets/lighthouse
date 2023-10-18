@@ -22,9 +22,9 @@ Kick off run of Lighthouse using headless Chrome:
 lighthouse --chrome-flags="--headless" https://github.com
 ```
 
-## (CLI headless=chrome)
+## (CLI headless=new)
 
-There is also the new `--headless=chrome` option, which includes functionality that
+There is also the new `--headless=new` option, which includes functionality that
 was explicitly omitted from the original headless browser.
 
 ## CLI (xvfb)

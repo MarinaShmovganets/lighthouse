@@ -173,7 +173,7 @@ async function begin() {
         type: 'boolean',
         default: false,
         alias: 'force-headfull',
-        describe: 'Launch Chrome in typical desktop headful mode, rather than our default of `--headless-chrome`.', // eslint-disable-line max-len
+        describe: 'Launch Chrome in typical desktop headful mode, rather than our default of `--headless=new`.', // eslint-disable-line max-len
       },
     })
     .wrap(y.terminalWidth())
