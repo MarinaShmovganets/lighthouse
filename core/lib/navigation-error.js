@@ -11,18 +11,18 @@ import * as i18n from '../lib/i18n/i18n.js';
 
 const UIStrings = {
   /**
-   * Warning shown in report when the page under test is an XHTML document, which Lighthouse does not directly support
-   * so we display a warning.
+   * @description Warning shown in report when the page under test is an XHTML document, which Lighthouse does not directly support so we display a warning.
    */
   warningXhtml:
     'The page MIME type is XHTML: Lighthouse does not explicitly support this document type',
   /**
-   * Warning shown in report when the page under test returns an error code, which Lighthouse is not able to reliably load
-   * so we display a warning.
+   * @description Warning shown in report when the page under test returns an error code, which Lighthouse is not able to reliably load so we display a warning.
+   * @example {404} errorCode
+   *
    */
   warningStatusCode: 'Lighthouse was unable to reliably load the page you requested. Make sure' +
     ' you are testing the correct URL and that the server is properly responding' +
-    ' to all requests.',
+    ' to all requests. (Status code: {errorCode})',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
@@ -55,8 +55,8 @@ function getNetworkError(mainRecord, context) {
         LighthouseError.errors.FAILED_DOCUMENT_REQUEST, {errorDetails: netErr});
     }
   } else if (mainRecord.hasErrorStatusCode()) {
-    if ( context.ignoreStatusCode) {
-      context.warnings.push(str_(UIStrings.warningStatusCode));
+    if (context.ignoreStatusCode) {
+      context.warnings.push(str_(UIStrings.warningStatusCode, {errorCode: mainRecord.statusCode}));
     } else {
       return new LighthouseError(LighthouseError.errors.ERRORED_DOCUMENT_REQUEST, {
         statusCode: `${mainRecord.statusCode}`,
