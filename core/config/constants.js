@@ -128,22 +128,7 @@ const defaultSettings = {
   skipAudits: null,
 };
 
-/** @type {Required<LH.Config.NavigationJson>} */
-const defaultNavigationConfig = {
-  id: 'defaultPass',
-  loadFailureMode: 'fatal',
-  disableThrottling: false,
-  disableStorageReset: false,
-  pauseAfterFcpMs: 0,
-  pauseAfterLoadMs: 0,
-  networkQuietThresholdMs: 0,
-  cpuQuietThresholdMs: 0,
-  blockedUrlPatterns: [],
-  blankPage: 'about:blank',
-  artifacts: [],
-};
-
-const nonSimulatedPassConfigOverrides = {
+const nonSimulatedSettingsOverrides = {
   pauseAfterFcpMs: 5250,
   pauseAfterLoadMs: 5250,
   networkQuietThresholdMs: 5250,
@@ -155,6 +140,5 @@ export {
   screenEmulationMetrics,
   userAgents,
   defaultSettings,
-  defaultNavigationConfig,
-  nonSimulatedPassConfigOverrides,
+  nonSimulatedSettingsOverrides,
 };

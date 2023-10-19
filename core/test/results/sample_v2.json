@@ -5718,10 +5718,10 @@
     ],
     "maxWaitForFcp": 30000,
     "maxWaitForLoad": 45000,
-    "pauseAfterFcpMs": 1000,
-    "pauseAfterLoadMs": 1000,
-    "networkQuietThresholdMs": 1000,
-    "cpuQuietThresholdMs": 1000,
+    "pauseAfterFcpMs": 5250,
+    "pauseAfterLoadMs": 5250,
+    "networkQuietThresholdMs": 5250,
+    "cpuQuietThresholdMs": 5250,
     "formFactor": "mobile",
     "throttling": {
       "rttMs": 150,
@@ -6377,11 +6377,6 @@
           "group": "a11y-names-labels"
         },
         {
-          "id": "label-content-name-mismatch",
-          "weight": 7,
-          "group": "a11y-names-labels"
-        },
-        {
           "id": "label",
           "weight": 7,
           "group": "a11y-names-labels"
@@ -6439,16 +6434,6 @@
         {
           "id": "table-duplicate-name",
           "weight": 1,
-          "group": "a11y-tables-lists"
-        },
-        {
-          "id": "table-fake-caption",
-          "weight": 7,
-          "group": "a11y-tables-lists"
-        },
-        {
-          "id": "td-has-header",
-          "weight": 10,
           "group": "a11y-tables-lists"
         },
         {
@@ -6530,10 +6515,25 @@
           "id": "target-size",
           "weight": 0,
           "group": "hidden"
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "table-fake-caption",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "td-has-header",
+          "weight": 0,
+          "group": "hidden"
         }
       ],
       "id": "accessibility",
-      "score": 0.8
+      "score": 0.77
     },
     "best-practices": {
       "title": "Best Practices",
@@ -7888,12 +7888,6 @@
       {
         "startTime": 0,
         "name": "lh:config:resolveArtifactsToDefns",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:config:resolveNavigationsToDefns",
         "duration": 100,
         "entryType": "measure"
       },
