@@ -101,7 +101,7 @@ describe('#getNetworkError', () => {
     expect(error).toBeDefined();
     expect(error.message).toEqual('ERRORED_DOCUMENT_REQUEST');
     expect(error.code).toEqual('ERRORED_DOCUMENT_REQUEST');
-    expect(error.friendlyMessage).toBeDisplayString(/^Lighthouse was unable to reliably load/);
+    expect(error.friendlyMessage).toBeDisplayString(/^Lighthouse was unable to reliably load.*404/);
   });
 
   it('fails when page returns with a 500 without flag', () => {
