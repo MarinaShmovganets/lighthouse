@@ -13,6 +13,7 @@ import esbuild from 'esbuild';
 import * as plugins from './esbuild-plugins.js';
 import {LH_ROOT} from '../shared/root.js';
 import {readJson} from '../core/test/test-utils.js';
+import {locales} from '../shared/localization/locales.js';
 
 const argv = process.argv.slice(2);
 const browserBrand = argv[0];
@@ -38,6 +39,7 @@ async function buildEntryPoint() {
       plugins.bulkLoader([
         plugins.partialLoaders.replaceText({
           '___BROWSER_BRAND___': browserBrand,
+          '__LOCALES__': JSON.stringify(Object.keys(locales)),
         }),
       ]),
     ],
