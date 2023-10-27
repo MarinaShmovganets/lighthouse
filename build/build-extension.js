@@ -13,7 +13,6 @@ import esbuild from 'esbuild';
 import * as plugins from './esbuild-plugins.js';
 import {LH_ROOT} from '../shared/root.js';
 import {readJson} from '../core/test/test-utils.js';
-import {locales} from '../shared/localization/locales.js';
 
 const argv = process.argv.slice(2);
 const browserBrand = argv[0];
@@ -28,6 +27,9 @@ const packagePath = `${distDir}/../extension-${browserBrand}-package`;
 const manifestVersion = readJson(`${sourceDir}/manifest.json`).version;
 
 async function buildEntryPoint() {
+  const locales = fs.readdirSync(`${LH_ROOT}/shared/localization/locales`)
+    .filter(f => !f.includes('.ctc.json'))
+    .map(f => f.replace('.json', ''));
   await esbuild.build({
     entryPoints: [`${sourceDir}/scripts/${sourceName}`],
     outfile: `${distDir}/scripts/${distName}`,
@@ -39,7 +41,7 @@ async function buildEntryPoint() {
       plugins.bulkLoader([
         plugins.partialLoaders.replaceText({
           '___BROWSER_BRAND___': browserBrand,
-          '__LOCALES__': JSON.stringify(Object.keys(locales)),
+          '__LOCALES__': JSON.stringify(locales),
         }),
       ]),
     ],
