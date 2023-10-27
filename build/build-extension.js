@@ -29,7 +29,8 @@ const manifestVersion = readJson(`${sourceDir}/manifest.json`).version;
 async function buildEntryPoint() {
   const locales = fs.readdirSync(`${LH_ROOT}/shared/localization/locales`)
     .filter(f => !f.includes('.ctc.json'))
-    .map(f => f.replace('.json', ''));
+    .map(f => f.replace('.json', ''))
+    .filter(locale => !['en-XA', 'en-XL', 'ar-XB'].includes(locale));
   await esbuild.build({
     entryPoints: [`${sourceDir}/scripts/${sourceName}`],
     outfile: `${distDir}/scripts/${distName}`,
