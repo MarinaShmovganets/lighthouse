@@ -188,8 +188,13 @@ function getLocalizedLanguageRegion(localeString, currentLocale) {
     wrappedRegionInTargetLocale = ` (${regionInTargetLocale})`;
   }
 
-  return `${languageInCurrentLocale}${wrappedRegionInCurrentLocale} - ${languageInTargetLocale}${
-    wrappedRegionInTargetLocale}`;
+  const lhs = languageInCurrentLocale + wrappedRegionInCurrentLocale;
+  const rhs = languageInTargetLocale + wrappedRegionInTargetLocale;
+  if (lhs === rhs) {
+    return lhs;
+  }
+
+  return `${lhs} - ${rhs}`;
 }
 
 /**
