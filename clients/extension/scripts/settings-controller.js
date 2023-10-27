@@ -6,10 +6,10 @@
 
 const BACKENDS = [{
   id: 'psi',
-  title: 'pagespeed.web.dev',
+  title: 'PSI Frontend (pagespeed.web.dev)',
 }, {
   id: 'viewer',
-  title: 'googlechrome.github.io',
+  title: 'Lighthouse Viewer (googlechrome.github.io)',
 }];
 
 // Manually define the default categories, instead of bundling a lot of i18n code.
