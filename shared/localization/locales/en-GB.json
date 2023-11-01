@@ -2214,10 +2214,10 @@
     "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "`disown-opener` is deprecated since CSP3. Please use the Cross-Origin-Opener-Policy header instead."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "`referrer` is deprecated since CSP2. Please use the Referrer-Policy header instead."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
     "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."

@@ -774,7 +774,7 @@
     "message": "Syntaxe"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Stránka obsahuje zásady CSP definované ve značce `<meta>`. Zvažte přesunutí zásad CSP do záhlaví protokolu HTTP nebo definování dalších striktních zásad CSP v záhlaví protokolu HTTP."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "V režimu vynucení nejsou žádné CSP"
@@ -1026,7 +1026,7 @@
     "message": "Stránka je načtena v anonymním okně"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Vlastnost `display` manifestu musí být jedna z těchto možností `standalone`, `fullscreen` nebo `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Manifest obsahuje pole „display_override“ a první podporovaný režim zobrazení musí být „standalone“, „fullscreen“ nebo „minimal-ui“"
@@ -1038,7 +1038,7 @@
     "message": "Adresa URL manifestu se během jeho načítání změnila."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Manifest neobsahuje pole `name` ani `short_name`"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Manifest neobsahuje vhodnou ikonu – je vyžadován formát PNG, SVG nebo WebP o velikosti alespoň {value0} px, musí být nastaven atribut velikostí a atribut účelu, pokud je nastaven, musí zahrnovat hodnoty „any“."
@@ -2211,25 +2211,25 @@
     "message": "Stránky, které používají WebXR, v současné době nemohou využívat mezipaměť pro přechod zpět nebo vpřed."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Zvažte přidání schémat URL https: a http: k zajištění zpětné kompatibility se staršími prohlížeči (prohlížeče podporující klíčové slovo `'strict-dynamic'` je ignorují)."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "Direktiva `disown-opener` již od verze CSP3 není podporována. Použijte místo ní záhlaví Cross-Origin-Opener-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "Direktiva `referrer` již od verze CSP2 není podporována. Použijte místo ní záhlaví Referrer-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "Direktiva `reflected-xss` již od verze CSP2 není podporována. Použijte místo ní záhlaví X-XSS-Protection."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "Pokud není zahrnuta direktiva `base-uri`, lze vložením značek `<base>` nastavit základní URL pro všechny relativní adresy URL (např. skripty) na doménu kontrolovanou útočníkem. Zvažte nastavení `base-uri` na `'none'` nebo `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Chybějící direktiva `object-src` umožňuje vložení pluginů, které mohou spouštět nebezpečné skripty. Zvažte nastavení `object-src` na `'none'`."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "Chybí direktiva `script-src`. To může umožnit spouštění skriptů, které nejsou bezpečné."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Nezapomněli jste středník? {keyword} vypadá jako direktiva, ne klíčové slovo."
@@ -2247,13 +2247,13 @@
     "message": "V této direktivě nepoužívejte prosté zástupné znaky ({keyword}). Prosté zástupné znaky povolují skripty pocházející z nebezpečných domén."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Cíl pro hlášení je nakonfigurován pouze pomocí direktivy report-to. Tato direktiva je podporovaná pouze v prohlížečích založených na projektu Chromium, proto doporučujeme použít direktivu `report-uri`."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Žádné zásady CSP neurčují cíl pro přehledy. To znesnadňuje dlouhodobou údržbu zásad CSP a monitorování případných prolomení."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Seznamy povolených hostitelských serverů lze často obejít. Použijte místo nich hodnoty CSP nonce nebo hash, případně v kombinaci s klíčovým slovem `'strict-dynamic'`."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Neznámá direktiva CSP."
@@ -2262,10 +2262,10 @@
     "message": "{keyword} je zřejmě neplatné klíčové slovo."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'` umožňuje spouštění potenciálně nebezpečných skriptů a obslužných rutin událostí vložených v kódu stránky. Zvažte použití hodnot CSP nonce nebo hash k povolení jednotlivých skriptů."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Zvažte přidání klíčového slova `'unsafe-inline'` (prohlížeče s podporou hodnot nonce/hash ho ignorují) k zajištění zpětné kompatibility se staršími prohlížeči."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Další podrobnosti najdete na stránce s informacemi o stavu funkcí."

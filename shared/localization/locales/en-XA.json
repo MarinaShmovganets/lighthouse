@@ -774,7 +774,7 @@
     "message": "[Šýñţåx one]"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "[Ţĥé þåĝé çöñţåîñš å ÇŠÞ ðéƒîñéð îñ å ᐅ`<meta>`ᐊ ţåĝ. Çöñšîðéŕ mövîñĝ ţĥé ÇŠÞ ţö åñ ĤŢŢÞ ĥéåðéŕ öŕ ðéƒîñîñĝ åñöţĥéŕ šţŕîçţ ÇŠÞ îñ åñ ĤŢŢÞ ĥéåðéŕ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone]"
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "[Ñö ÇŠÞ ƒöûñð îñ éñƒöŕçéméñţ möðé one two three four five six seven]"
@@ -1026,7 +1026,7 @@
     "message": "[Þåĝé îš ļöåðéð îñ åñ îñçöĝñîţö ŵîñðöŵ one two three four five six seven eight]"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "[Måñîƒéšţ ᐅ`display`ᐊ þŕöþéŕţý mûšţ бé öñé öƒ ᐅ`standalone`ᐊ, ᐅ`fullscreen`ᐊ, öŕ ᐅ`minimal-ui`ᐊ one two three four five six seven eight nine ten eleven]"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "[Måñîƒéšţ çöñţåîñš 'ðîšþļåý_övéŕŕîðé' ƒîéļð, åñð ţĥé ƒîŕšţ šûþþöŕţéð ðîšþļåý möðé mûšţ бé öñé öƒ 'šţåñðåļöñé', 'ƒûļļšçŕééñ', öŕ 'mîñîmåļ-ûî' one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone]"
@@ -1038,7 +1038,7 @@
     "message": "[Måñîƒéšţ ÛŔĻ çĥåñĝéð ŵĥîļé ţĥé måñîƒéšţ ŵåš бéîñĝ ƒéţçĥéð. one two three four five six seven eight nine ten eleven twelve]"
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "[Måñîƒéšţ ðöéš ñöţ çöñţåîñ å ᐅ`name`ᐊ öŕ ᐅ`short_name`ᐊ ƒîéļð one two three four five six seven eight nine]"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "[Måñîƒéšţ ðöéš ñöţ çöñţåîñ å šûîţåбļé îçöñ - ÞÑĜ, ŠVĜ öŕ ŴéбÞ ƒöŕmåţ öƒ åţ ļéåšţ ᐅ{value0}ᐊ þx îš ŕéqûîŕéð, ţĥé šîžéš åţţŕîбûţé mûšţ бé šéţ, åñð ţĥé þûŕþöšé åţţŕîбûţé, îƒ šéţ, mûšţ îñçļûðé \"åñý\". one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour twentyfive twentysix]"
@@ -2211,25 +2211,25 @@
     "message": "[Þåĝéš ţĥåţ ûšé ŴéбXŔ åŕé ñöţ çûŕŕéñţļý éļîĝîбļé ƒöŕ бåçķ/ƒöŕŵåŕð çåçĥé. one two three four five six seven eight nine ten eleven twelve thirteen]"
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "[Çöñšîðéŕ åððîñĝ ĥţţþš: åñð ĥţţþ: ÛŔĻ šçĥéméš (îĝñöŕéð бý бŕöŵšéŕš šûþþöŕţîñĝ ᐅ`'strict-dynamic'`ᐊ) ţö бé бåçķŵåŕð çömþåţîбļé ŵîţĥ öļðéŕ бŕöŵšéŕš. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty]"
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "[ᐅ`disown-opener`ᐊ îš ðéþŕéçåţéð šîñçé ÇŠÞ3. Þļéåšé, ûšé ţĥé Çŕöšš-Öŕîĝîñ-Öþéñéŕ-Þöļîçý ĥéåðéŕ îñšţéåð. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen]"
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "[ᐅ`referrer`ᐊ îš ðéþŕéçåţéð šîñçé ÇŠÞ2. Þļéåšé, ûšé ţĥé Ŕéƒéŕŕéŕ-Þöļîçý ĥéåðéŕ îñšţéåð. one two three four five six seven eight nine ten eleven twelve thirteen fourteen]"
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "[ᐅ`reflected-xss`ᐊ îš ðéþŕéçåţéð šîñçé ÇŠÞ2. Þļéåšé, ûšé ţĥé X-XŠŠ-Þŕöţéçţîöñ ĥéåðéŕ îñšţéåð. one two three four five six seven eight nine ten eleven twelve thirteen fourteen]"
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "[Mîššîñĝ ᐅ`base-uri`ᐊ åļļöŵš îñĵéçţéð ᐅ`<base>`ᐊ ţåĝš ţö šéţ ţĥé бåšé ÛŔĻ ƒöŕ åļļ ŕéļåţîvé ÛŔĻš (é.ĝ. šçŕîþţš) ţö åñ åţţåçķéŕ çöñţŕöļļéð ðömåîñ. Çöñšîðéŕ šéţţîñĝ ᐅ`base-uri`ᐊ ţö ᐅ`'none'`ᐊ öŕ ᐅ`'self'`ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree]"
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "[Mîššîñĝ ᐅ`object-src`ᐊ åļļöŵš ţĥé îñĵéçţîöñ öƒ þļûĝîñš ţĥåţ éxéçûţé ûñšåƒé šçŕîþţš. Çöñšîðéŕ šéţţîñĝ ᐅ`object-src`ᐊ ţö ᐅ`'none'`ᐊ îƒ ýöû çåñ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen]"
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "[ᐅ`script-src`ᐊ ðîŕéçţîvé îš mîššîñĝ. Ţĥîš çåñ åļļöŵ ţĥé éxéçûţîöñ öƒ ûñšåƒé šçŕîþţš. one two three four five six seven eight nine ten eleven twelve thirteen fourteen]"
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "[Ðîð ýöû ƒöŕĝéţ ţĥé šémîçöļöñ¿ ᐅ{keyword}ᐊ šéémš ţö бé å ðîŕéçţîvé, ñöţ å ķéýŵöŕð. one two three four five six seven eight nine ten eleven twelve thirteen fourteen]"
@@ -2247,13 +2247,13 @@
     "message": "[Åvöîð ûšîñĝ þļåîñ ŵîļðçåŕðš (ᐅ{keyword}ᐊ) îñ ţĥîš ðîŕéçţîvé. Þļåîñ ŵîļðçåŕðš åļļöŵ šçŕîþţš ţö бé šöûŕçéð ƒŕöm åñ ûñšåƒé ðömåîñ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen]"
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "[Ţĥé ŕéþöŕţîñĝ ðéšţîñåţîöñ îš öñļý çöñƒîĝûŕéð vîå ţĥé ŕéþöŕţ-ţö ðîŕéçţîvé. Ţĥîš ðîŕéçţîvé îš öñļý šûþþöŕţéð îñ Çĥŕömîûm-бåšéð бŕöŵšéŕš šö îţ îš ŕéçömméñðéð ţö åļšö ûšé å ᐅ`report-uri`ᐊ ðîŕéçţîvé. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour twentyfive]"
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "[Ñö ÇŠÞ çöñƒîĝûŕéš å ŕéþöŕţîñĝ ðéšţîñåţîöñ. Ţĥîš måķéš îţ ðîƒƒîçûļţ ţö måîñţåîñ ţĥé ÇŠÞ övéŕ ţîmé åñð möñîţöŕ ƒöŕ åñý бŕéåķåĝéš. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty]"
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "[Ĥöšţ åļļöŵļîšţš çåñ ƒŕéqûéñţļý бé бýþåššéð. Çöñšîðéŕ ûšîñĝ ÇŠÞ ñöñçéš öŕ ĥåšĥéš îñšţéåð, åļöñĝ ŵîţĥ ᐅ`'strict-dynamic'`ᐊ îƒ ñéçéššåŕý. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen]"
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "[Ûñķñöŵñ ÇŠÞ ðîŕéçţîvé. one two three]"
@@ -2262,10 +2262,10 @@
     "message": "[ᐅ{keyword}ᐊ šéémš ţö бé åñ îñvåļîð ķéýŵöŕð. one two three four five six seven eight]"
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "[ᐅ`'unsafe-inline'`ᐊ åļļöŵš ţĥé éxéçûţîöñ öƒ ûñšåƒé îñ-þåĝé šçŕîþţš åñð évéñţ ĥåñðļéŕš. Çöñšîðéŕ ûšîñĝ ÇŠÞ ñöñçéš öŕ ĥåšĥéš ţö åļļöŵ šçŕîþţš îñðîvîðûåļļý. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone]"
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "[Çöñšîðéŕ åððîñĝ ᐅ`'unsafe-inline'`ᐊ (îĝñöŕéð бý бŕöŵšéŕš šûþþöŕţîñĝ ñöñçéš/ĥåšĥéš) ţö бé бåçķŵåŕð çömþåţîбļé ŵîţĥ öļðéŕ бŕöŵšéŕš. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen]"
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "[Çĥéçķ ţĥé ƒéåţûŕé šţåţûš þåĝé ƒöŕ möŕé ðéţåîļš. one two three four five six seven eight nine ten]"

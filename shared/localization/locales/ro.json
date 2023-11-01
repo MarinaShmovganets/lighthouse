@@ -774,7 +774,7 @@
     "message": "Sintaxă"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Pagina conține o politică CSP definită într-o etichetă `<meta>`. Îți recomandăm să muți CSP într-un antet HTTP sau să definești alt CSP strict într-un antet HTTP."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "Nu s-a găsit nicio politică CSP în modul de aplicare"
@@ -1026,7 +1026,7 @@
     "message": "Pagina este încărcată într-o fereastră incognito"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Proprietatea manifestului `display` trebuie să fie `standalone`, `fullscreen` sau `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Manifestul conține câmpul „display_override” și primul mod de afișare acceptat trebuie să fie „standalone”, „fullscreen” sau „minimal-ui”"
@@ -1038,7 +1038,7 @@
     "message": "Adresa URL a manifestului s-a schimbat în timpul preluării manifestului."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Manifestul nu conține câmpul `name` sau `short_name`"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Manifestul nu conține o pictogramă potrivită. Este necesară o pictogramă în format PNG, SVG sau WebP, de minimum {value0} px, care să aibă atributul „dimensiuni” setat și, dacă are atributul „scop” setat, acesta trebuie să includă „oricare”."
@@ -2211,25 +2211,25 @@
     "message": "Paginile care folosesc WebXR nu sunt eligibile momentan pentru memoria cache înainte/înapoi."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Îți recomandăm să adaugi scheme de adrese URL https: și http: (ignorate de browserele care acceptă `'strict-dynamic'`) pentru retrocompatibilitatea cu browsere mai vechi."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "Directiva `disown-opener` este învechită începând cu versiunea CSP3. Folosește antetul Cross-Origin-Opener-Policy în locul acesteia."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "Directiva `referrer` este învechită începând cu versiunea CSP2. Folosește antetul Referrer-Policy în locul acesteia."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "Directiva `reflected-xss` este învechită începând cu versiunea CSP2. Folosește antetul X-XSS-Protection în locul acesteia."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "Lipsa directivei `base-uri` permite etichetelor `<base>` injectate să seteze adresa URL de bază pentru toate adresele URL relative (de ex., cu scripturi) ale unui domeniu controlat de atacatori. Îți recomandăm să setezi `base-uri` la `'none'` sau la `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Întrucât `object-src` lipsește, se permite injectarea de pluginuri care execută scripturi nesigure. Îți recomandăm să setezi `object-src` la `'none'`, dacă este posibil."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "Lipsește directiva `script-src`. Astfel, se pot executa scripturi nesigure."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Ai uitat să folosești punct și virgulă? {keyword} pare a fi o directivă, nu un cuvânt cheie."
@@ -2247,13 +2247,13 @@
     "message": "Evită să folosești metacaractere ({keyword}) în această directivă. Metacaracterele simple pentru adresa URL permit ca scripturile să provină dintr-un domeniu nesigur."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Destinația de raportare se configurează numai prin directiva report-to. Această directivă este acceptată doar în browserele bazate pe Chromium, prin urmare îți recomandăm să folosești și o directivă `report-uri`."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Nicio politică CSP nu configurează o destinație de raportare. De aceea, este dificilă menținerea CSP de-a lungul timpului și monitorizarea eventualelor încălcări."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Listele gazdă cu acces permis pot fi ocolite frecvent. Îți recomandăm să folosești codurile hash sau valorile nonce CSP, împreună cu `'strict-dynamic'`, dacă este necesar."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Directivă CSP necunoscută."
@@ -2262,10 +2262,10 @@
     "message": "{keyword} pare un cuvânt cheie nevalid."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'` permite executarea de scripturi în pagină și handlere pentru evenimente nesigure. Îți recomandăm să folosești valori nonce sau hash pentru CSP pentru a accepta scripturile individual."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Îți recomandăm să adaugi opțiunea `'unsafe-inline'` (ignorată de browserele care acceptă valori nonce / hash) pentru retrocompatibilitatea cu browsere mai vechi."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Pentru mai multe detalii accesează pagina cu starea funcțiilor."

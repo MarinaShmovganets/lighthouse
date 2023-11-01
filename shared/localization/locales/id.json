@@ -774,7 +774,7 @@
     "message": "Sintaksis"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Halaman ini memuat CSP yang ditentukan dalam tag `<meta>`. Sebaiknya pindahkan CSP ke header HTTP atau tentukan CSP ketat lainnya di header HTTP."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "CSP tidak ditemukan dalam mode penerapan"
@@ -1026,7 +1026,7 @@
     "message": "Halaman dimuat di jendela Samaran"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Properti `display` manifes harus berupa salah satu dari `standalone`, `fullscreen`, atau `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Manifes berisi kolom 'display_override', dan nilai pertama di kolom tersebut harus salah satu dari 'standalone', 'fullscreen', atau 'minimal-ui'"
@@ -1038,7 +1038,7 @@
     "message": "URL manifes berubah saat manifes sedang diambil."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Manifes tidak berisi kolom `name` atau `short_name`"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Manifes tidak berisi ikon yang cocok - perlu format PNG, SVG, atau WebP minimal {value0} px, atribut sizes harus disetel, dan atribut purpose harus menyertakan \"any\" jika disetel."
@@ -2211,25 +2211,25 @@
     "message": "Halaman yang menggunakan WebXR saat ini tidak dapat disimpan dengan benar dalam back-forward cache."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Sebaiknya tambahkan skema URL https: dan http: (diabaikan oleh browser yang mendukung `'strict-dynamic'`) agar kompatibel dengan browser lama."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "`disown-opener` tidak digunakan lagi sejak CSP3. Sebagai gantinya, gunakan header Cross-Origin-Opener-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "`referrer` tidak digunakan lagi sejak CSP2. Sebagai gantinya, gunakan header Referrer-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "`reflected-xss` tidak digunakan lagi sejak CSP2. Sebagai gantinya, gunakan header X-XSS-Protection."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "`base-uri` yang tidak ada memungkinkan tag `<base>` yang dimasukkan guna menyetel URL dasar untuk semua URL relatif (mis. skrip) ke domain yang dikontrol penyerang. Sebaiknya tetapkan `base-uri` ke `'none'` atau `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "`object-src` yang tidak ada memungkinkan injeksi plugin yang mengeksekusi skrip yang tidak aman. Sebaiknya tetapkan `object-src` ke `'none'` jika Anda bisa."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "Perintah `script-src` tidak ada. Hal ini dapat mengizinkan eksekusi skrip yang tidak aman."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Apakah Anda lupa tanda titik koma? Tampaknya {keyword} adalah perintah, bukan kata kunci."
@@ -2247,13 +2247,13 @@
     "message": "Hindari penggunaan karakter pengganti biasa ({keyword}) dalam perintah ini. Karakter pengganti biasa memungkinkan skrip berasal dari domain yang tidak aman."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Tujuan pelaporan hanya dikonfigurasi melalui perintah report-to. Perintah ini hanya didukung di browser berbasis Chromium. Jadi, sebaiknya gunakan juga perintah `report-uri`."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Tidak ada CSP yang mengonfigurasi tujuan pelaporan. Mempertahankan CSP dari waktu ke waktu dan memantau setiap kerusakan menjadi sulit dilakukan."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Daftar host yang diizinkan sering kali dapat diabaikan. Sebaiknya gunakan nonce atau hash CSP, beserta `'strict-dynamic'` jika perlu."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Perintah CSP tidak dikenal."
@@ -2262,10 +2262,10 @@
     "message": "Tampaknya {keyword} adalah kata kunci yang tidak valid."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'` memungkinkan eksekusi skrip dalam halaman dan pengendali peristiwa yang tidak aman. Sebaiknya gunakan nonce atau hash CSP untuk mengizinkan skrip satu per satu."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Sebaiknya tambahkan `'unsafe-inline'` (diabaikan oleh browser yang mendukung nonce/hash) agar kompatibel dengan browser lama."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Periksa halaman status fitur untuk mendapatkan detail selengkapnya."

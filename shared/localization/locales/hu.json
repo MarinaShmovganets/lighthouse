@@ -774,7 +774,7 @@
     "message": "Szintaxis"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Az oldal tartalmaz egy `<meta>` címkében definiált CSP-t. Fontolja meg a CSP áthelyezését HTTP-fejlécbe, vagy adjon meg másik szigorú CSP-t egy HTTP-fejlécben."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "Nem található CSP a kényszerítő módban"
@@ -1026,7 +1026,7 @@
     "message": "Az oldal inkognitó módban lett betöltve."
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "A manifest `display` tulajdonságának a következők egyikének kell lennie `standalone`, `fullscreen` vagy `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "A manifest tartalmazza a „display_override” mezőt, és az első támogatott megjelenítési módnak a következők egyikének kell lennie: „standalone”, „fullscreen” vagy „minimal-ui”."
@@ -1038,7 +1038,7 @@
     "message": "A manifest URL-je módosítva lett a manifest lekérése során."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "A manifest nem tartalmaz `name` vagy `short_name` mezőt"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "A manifest nem tartalmaz megfelelő ikont. PNG-, SVG- vagy WebP-formátumra van szükség legalább {value0} px méretben. Be kell állítani a méretek attribútumát. Ha be van állítva a cél attribútuma, tartalmaznia kell az „any” (bármilyen) értéket."
@@ -2211,25 +2211,25 @@
     "message": "A WebXR-t használó oldalak jelenleg nem alkalmasak az előre-vissza gyorsítótárazásra."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "A régebbi böngészőkkel való kompatibilitás érdekében fontolja meg https: és http: URL-sémák megadását (a `'strict-dynamic'` kulcsszót támogató böngészők figyelmen kívül hagyják ezeket)."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "A `disown-opener` a CSP3 bevezetése óta megszűnt. Használja helyette a Cross-Origin-Opener-Policy fejlécet."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "A `referrer` a CSP2 bevezetése óta megszűnt. Használja helyette a Referrer-Policy fejlécet."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "A `reflected-xss` a CSP2 bevezetése óta megszűnt. Használja helyette az X-XSS-Protection fejlécet."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "A hiányzó `base-uri` lehetővé teszi az injektált `<base>` címkéknek alap-URL-ek beállítását minden relatív URL-nél (pl. szkripttel) a támadó által irányított domainre. Fontolja meg a `base-uri` beállítását `'none'` vagy `'self'` értékre."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Az `object-src` hiánya olyan beépülő modulok beszúrását teszi lehetővé, amelyek nem biztonságos szkripteket futtatnak. Ha lehet, érdemes a(z) `object-src` értékét `'none'` értékre állítani."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "A `script-src` utasítás hiányzik. Ez lehetővé teheti nem biztonságos szkriptek futtatását."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Elfelejtette kitenni a pontosvesszőt? Úgy tűnik, hogy a(z) {keyword} utasítás, nem pedig kulcsszó."
@@ -2247,13 +2247,13 @@
     "message": "Kerülje az egyszerű helyettesítő karakterek ({keyword}) használatát ebben az utasításban. Az egyszerű helyettesítő karakterek nem biztonságos domainről származó szkriptek megjelenését idézhetik elő."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "A jelentés célhelye csak a report-to utasítással van beállítva. Ezt az utasítást csak a Chromium-alapú böngészők támogatják, ezért ajánlott a `report-uri` utasítás használata is."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "A jelentési célt nem állítja be CSP. Ez később megnehezíti a CSP karbantartását, illetve a sebezhetőségek figyelemmel kísérését."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "A gazdagépek engedélyezőlistái gyakran megkerülhetők. Fontolja meg CSP nonce-ok vagy hashek használatát, és a `'strict-dynamic'` kulcsszó beállítását, ha szükséges."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Ismeretlen CSP-utasítás."
@@ -2262,10 +2262,10 @@
     "message": "Úgy tűnik, hogy a(z) {keyword} érvénytelen kulcsszó."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "Az `'unsafe-inline'` lehetővé teszi nem biztonságos oldalon belüli szkriptek és eseménykezelők végrehajtását. A szkriptek egyenként történő engedélyezése érdekében fontolja meg CSP nonce-ok vagy hashek használatát."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "A régebbi böngészőkkel való kompatibilitás érdekében használhatja az `'unsafe-inline'` kulcsszót (a nonce-t/hasht támogató böngészők figyelmen kívül hagyják)."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "További részleteket a funkció állapotát jelző oldalon találhat."

@@ -774,7 +774,7 @@
     "message": "Syntaks"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Siden inneholder en CSP som er definert i en `<meta>`-tag. Vurder å flytte CSP-en til et HTTP-hode eller definere en annen streng CSP i et HTTP-hode."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "Fant ingen CSP i håndhevelsesmodus"
@@ -1026,7 +1026,7 @@
     "message": "Siden er lastet inn i et inkognitovindu"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Manifestets `display`-egenskap må være enten `standalone`, `fullscreen` eller `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Manifestet inneholder feltet «display_override», og den første støttede skjermmodusen må være enten «standalone», «fullscreen» eller «minimal-ui»"
@@ -1038,7 +1038,7 @@
     "message": "Manifestets nettadresse ble endret mens manifestet holdt på å bli lastet ned."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Manifestet inneholder ikke noe `name`- eller `short_name`-felt"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Manifestet inneholder ikke noe egnet ikon. Ikonet må være i PNG-, SVG- eller WebP-format og ha en størrelse på minst {value0} px, sizes-attributtet må være angitt, og hvis purpose-attributtet er angitt, må det inneholde «any»."
@@ -2211,25 +2211,25 @@
     "message": "Sider som bruker WebXR, kan for tiden ikke lagres i frem-og-tilbake-bufferen."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Vurder å legge til nettadresseprotokollene https: og http: (ignoreres av nettlesere som støtter `'strict-dynamic'`) for bakoverkompatibilitet med eldre nettlesere."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "`disown-opener` er avviklet siden CSP3. Bruk hodet Cross-Origin-Opener-Policy i stedet."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "`referrer` er avviklet siden CSP2. Bruk hodet Referrer-Policy i stedet."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "`reflected-xss` er avviklet siden CSP2. Bruk hodet X-XSS-Protection i stedet."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "Når `base-uri` mangler, kan injiserte `<base>`-tager sette grunn-nettadressen for alle relative nettadresser (f.eks. skript) til et domene som en angriper kontrollerer. Vurder å sette `base-uri` til `'none'` eller `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Manglende `object-src` muliggjør injisering av programtillegg som kjører utrygge skript. Vurder å sette `object-src` til `'none'` hvis du kan."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "`script-src`-direktivet mangler. Dette kan gjøre det mulig å kjøre utrygge skript."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Har du glemt et semikolon? {keyword} ser ut til å være et direktiv, ikke et nøkkelord."
@@ -2247,13 +2247,13 @@
     "message": "Unngå bruk av enkle jokertegn ({keyword}) i dette direktivet. Med enkle jokertegn kan skript ha utrygge domener som kilde."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Rapporteringsdestinasjonen er bare konfigurert via direktivet report-to. Dette direktivet støttes kun i Chromium-baserte nettlesere, så det anbefales at du også bruker et `report-uri`-direktiv."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Det er ingen CSP som konfigurerer en rapporteringsdestinasjon. Dette gjør det vanskelig å vedlikeholde CSP-en over tid og følge med på om noe slutter å virke."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Godkjenningslister for verter kan ofte forbigås. Vurder å bruke CSP-engangsverdier eller -hasher i stedet, samt `'strict-dynamic'` om nødvendig."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Ukjent CSP-direktiv."
@@ -2262,10 +2262,10 @@
     "message": "{keyword} ser ut til å være et ugyldig nøkkelord."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'` muliggjør kjøring av utrygge skript og hendelsesbehandlere på siden. Vurder å bruke CSP-engangsverdier eller -hasher for å tillate individuelle skript."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Vurder å legge til `'unsafe-inline'` (ignoreres av nettlesere som støtter engangsverdier eller hasher) for bakoverkompatibilitet med eldre nettlesere."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Se statussiden for funksjonen for å få mer informasjon."

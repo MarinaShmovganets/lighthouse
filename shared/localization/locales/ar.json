@@ -774,7 +774,7 @@
     "message": "البنية"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "تحتوي الصفحة على سياسة CSP تم تحديدها في علامة `<meta>`. يمكنك نقل سياسة CSP إلى عنوان HTTP أو تحديد سياسة CSP صارمة أخرى في عنوان HTTP."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "لم يتم العثور على سياسة CSP في وضع \"التنفيذ\"."
@@ -1026,7 +1026,7 @@
     "message": "تم تحميل الصفحة في نافذة تصفُّح متخفٍ."
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "يجب أن تكون الخاصية \"`display`\" في ملف البيان بوضع عرض متاح بالقيمة \"`standalone`\" أو \"`fullscreen`\" أو \"`minimal-ui`\"."
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "يتضمن ملف البيان حقل \"display_override\"، لذا يجب أن يكون وضع العرض الأول المتاح بالقيمة \"standalone\" أو \"fullscreen\" أو \"minimal-ui\"."
@@ -1038,7 +1038,7 @@
     "message": "تم تغيير عنوان URL لملف البيان أثناء استرجاع الملف."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "لا يتضمّن ملف البيان حقل \"`name`\" أو \"`short_name`\"."
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "لا يتضمّن ملف البيان رمزًا مناسبًا. يجب استخدام رمز بتنسيق PNG أو SVG أو WebP بحجم {value0} بكسل على الأقل، ويجب ضبط السمة \"sizes\"، وأن تتضمّن السمة \"purpose\" القيمة \"any\"."
@@ -2211,25 +2211,25 @@
     "message": "لا يمكن استخدام ميزة \"التخزين المؤقت للصفحات\" حاليًا لتخزين الصفحات التي تستخدم WebXR."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "ننصحك بإضافة مخطّطات عناوين تستخدم https: وhttp: (التي تتجاهلها المتصفّحات الداعمة لـ `'strict-dynamic'`) للتوافق مع الأنظمة القديمة مع المتصفّحات القديمة."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "تم ايقاف `disown-opener` نهائيًا منذ بدء استخدام سياسة CSP3. يُرجى استخدام عنوان السياسة Cross-Origin-Opener-Policy كبديل."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "تم ايقاف `referrer` نهائيًا منذ بدء استخدام سياسة CSP2. يُرجى استخدام العنوان Referrer-Policy كبديل."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "تم ايقاف `reflected-xss` نهائيًا منذ بدء استخدام سياسة CSP2. يُرجى استخدام العنوان X-XSS-Protection كبديل."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "يؤدي عدم توفّر `base-uri` إلى السماح لعلامات `<base>` التي تم إدخالها بضبط عنوان URL الأساسي لجميع عناوين URL النسبية (مثل النصوص البرمجية) على نطاق يتحكّم فيه مهاجم. ننصحك بضبط السمة `base-uri` على `'none'` أو `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "إنّ عدم توفّر `object-src` يسمح بإدخال مكونات إضافية تنفّذ نصوصًا برمجية غير آمنة. ننصحك بضبط `object-src` على `'none'` إن أمكن."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "التوجيه `script-src` غير متوفّر. يمكن أن يسمح ذلك بتنفيذ نصوص برمجية غير آمنة."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "هل نسيت إضافة الفاصلة المنقوطة؟ {keyword} هو أمر توجيهي، وليس كلمة رئيسية."
@@ -2247,13 +2247,13 @@
     "message": "تجنَّب استخدام أحرف البدل العادية ({keyword}) في هذا الأمر لأنّها تسمح بجلب النصوص البرمجية من نطاق غير آمن."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "يتم ضبط وجهة إعداد التقارير من خلال التوجيه report-to فقط. تدعم هذا التوجيه المتصفِّحات المستنِدة إلى Chromium فقط، ولذلك نقترح استخدام التوجيه `report-uri` أيضًا."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "لا توفّر سياسة CSP أي وجهة إعداد تقارير، ما يجعل من الصعب الحفاظ على هذه السياسة بمرور الوقت ورصد أي خلل فيها."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "قد يتم تجاوز قائمة المضيفين المسموح بها بشكل متكرّر. يمكنك استخدام nonces أو hashes في سياسة CSP بدلاً من ذلك، إلى جانب `'strict-dynamic'` إذا لزم الأمر."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "أمر CSP توجيهي غير معروف."
@@ -2262,10 +2262,10 @@
     "message": "الكلمة الرئيسية {keyword} غير صالحة."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "تسمح `'unsafe-inline'` بتنفيذ نصوص برمجية ومعالجات أحداث غير آمنة في الصفحة. ننصحك باستخدام nonces أو hashes في سياسة CSP للسماح بالنصوص البرمجية كل على حدة."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "ننصحك بإضافة `'unsafe-inline'` (التي تتجاهلها المتصفِّحات الداعمة للـ nonces/hashes) لتكون متوافقة مع الأنظمة القديمة في المتصفّحات القديمة."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "لمزيد من التفاصيل، يُرجى الاطّلاع على صفحة حالة الميزة."

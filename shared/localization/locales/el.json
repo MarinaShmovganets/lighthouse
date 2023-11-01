@@ -774,7 +774,7 @@
     "message": "Σύνταξη"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Η σελίδα περιέχει CSP που ορίζεται σε ετικέτα `<meta>`. Εξετάστε το ενδεχόμενο να μετακινήσετε το CSP σε μια κεφαλίδα HTTP ή να ορίσετε ένα άλλο αυστηρό CSP σε μια κεφαλίδα HTTP."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "Δεν βρέθηκε CSP στη λειτουργία επιβολής"
@@ -1026,7 +1026,7 @@
     "message": "Η σελίδα φορτώθηκε σε ένα παράθυρο ανώνυμης περιήγησης."
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Η ιδιότητα `display` του μανιφέστου πρέπει να είναι `standalone`, `fullscreen` ή `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Το μανιφέστο περιέχει το πεδίο \"display_override\" και η πρώτη υποστηριζόμενη μέθοδος εμφάνισης θα πρέπει να είναι μία από τις εξής \"standalone\", \"fullscreen\" ή \"minimal-ui\"."
@@ -1038,7 +1038,7 @@
     "message": "Το URL μανιφέστου άλλαξε κατά τη λήψη του μανιφέστου."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Το μανιφέστο δεν περιέχει πεδίο `name` ή `short_name`"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Το μανιφέστο δεν περιέχει κατάλληλο εικονίδιο. Απαιτείται μορφή PNG, SVG ή WebP, μεγέθους τουλάχιστον {value0} px. Το χαρακτηριστικό μεγέθους θα πρέπει να οριστεί και το χαρακτηριστικό σκοπού, εάν οριστεί, θα πρέπει να περιλαμβάνει την τιμή \"any\"."
@@ -2211,25 +2211,25 @@
     "message": "Οι σελίδες που χρησιμοποιούν το στοιχείο WebXR δεν είναι κατάλληλες προς το παρόν για την κρυφή μνήμη πίσω-εμπρός."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Εξετάστε το ενδεχόμενο προσθήκης συνδυασμών URL https: και http: (παραβλέπονται από προγράμματα περιήγησης που υποστηρίζουν `'strict-dynamic'`) για συμβατότητα με παλαιότερες εκδόσεις προγραμμάτων περιήγησης."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "Η οδηγία `disown-opener` καταργήθηκε από την έκδοση CSP3. Εναλλακτικά, χρησιμοποιήστε την κεφαλίδα Cross-Origin-Opener-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "Η οδηγία `referrer` καταργήθηκε από την έκδοση CSP2. Εναλλακτικά, χρησιμοποιήστε την κεφαλίδα Referrer-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "Η οδηγία `reflected-xss` καταργήθηκε από την έκδοση CSP2. Εναλλακτικά, χρησιμοποιήστε την κεφαλίδα X-XSS-Protection."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "Η απουσία της οδηγίας `base-uri` επιτρέπει στις εισαγόμενες ετικέτες `<base>` να ορίζουν το βασικό URL για όλα τα σχετικά URL (π.χ. σενάρια) σε έναν τομέα που ελέγχεται από έναν υπεύθυνο επίθεσης. Εξετάστε το ενδεχόμενο να ορίσετε την οδηγία `base-uri` σε `'none'` ή `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Η απουσία της οδηγίας `object-src` επιτρέπει την εισαγωγή προσθηκών που εκτελούν μη ασφαλή σενάρια. Εάν μπορείτε, σκεφτείτε το ενδεχόμενο να ορίσετε την οδηγία `object-src` σε `'none'`."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "Λείπει η οδηγία `script-src`. Η απουσία της οδηγίας μπορεί να επιτρέψει την εκτέλεση μη ασφαλών σεναρίων."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Μήπως ξεχάσατε το ερωτηματικό; Το {keyword} φαίνεται ότι είναι οδηγία, όχι λέξη-κλειδί."
@@ -2247,13 +2247,13 @@
     "message": "Αποφύγετε τη χρήση απλών χαρακτήρων μπαλαντέρ ({keyword}) σε αυτή την οδηγία. Οι απλοί χαρακτήρες μπαλαντέρ επιτρέπουν την άντληση σεναρίων από μη ασφαλή τομέα."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Ο προορισμός αναφοράς διαμορφώνεται μόνο μέσω της οδηγίας report-to. Αυτή η οδηγία υποστηρίζεται μόνο σε προγράμματα περιήγησης που βασίζονται στο Chromium και για αυτόν τον λόγο συνιστάται επίσης η χρήση μιας οδηγίας `report-uri`."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Δεν υπάρχει CSP που διαμορφώνει προορισμό αναφοράς. Αυτό δυσχεραίνει τη διατήρηση του CSP για μεγάλα διαστήματα και την παρακολούθηση για τυχόν προβλήματα."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Οι λίστες επιτρεπομένων κεντρικού υπολογιστή μπορούν συχνά να παρακαμφθούν. Εξετάστε το ενδεχόμενο να χρησιμοποιήσετε αριθμούς nonce ή κατακερματισμούς CSP, μαζί με την οδηγία `'strict-dynamic'`, εάν αυτό είναι απαραίτητο."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Άγνωστη οδηγία CSP."
@@ -2262,10 +2262,10 @@
     "message": "Το {keyword} φαίνεται ότι είναι μη έγκυρη λέξη-κλειδί."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "Η οδηγία `'unsafe-inline'` επιτρέπει την εκτέλεση μη ασφαλών σεναρίων στη σελίδα και δεικτών χειρισμού συμβάντων. Εξετάστε το ενδεχόμενο χρήσης αριθμών nonce ή κατακερματισμών CSP για να επιτρέπονται μεμονωμένα σενάρια."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Εξετάστε το ενδεχόμενο να προσθέσετε την οδηγία `'unsafe-inline'` (παραβλέπεται από προγράμματα περιήγησης που υποστηρίζουν αριθμούς nonce/κατακερματισμούς) για συμβατότητα με παλαιότερες εκδόσεις προγραμμάτων περιήγησης."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Ελέγξτε τη σελίδα κατάστασης λειτουργίας για περισσότερες λεπτομέρειες."

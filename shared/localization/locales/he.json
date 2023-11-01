@@ -774,7 +774,7 @@
     "message": "תחביר"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "הדף מכיל מדיניות CSP שהוגדרה בתג `<meta>`. כדאי להעביר את ה-CSP לכותרת HTTP או להגדיר מדיניות CSP מחמירה אחרת בכותרת HTTP."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "אין CSP במצב האכיפה"
@@ -1026,7 +1026,7 @@
     "message": "הדף נטען בחלון אנונימי"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "המאפיין `display` במניפסט חייב להיות אחד מהערכים `standalone`, `fullscreen` או `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "המניפסט מכיל את השדה 'display_override' ומצב התצוגה הראשון הנתמך צריך להיות 'standalone',‏ 'fullscreen' או 'minimal-ui'"
@@ -1038,7 +1038,7 @@
     "message": "כתובת ה-URL של המניפסט השתנתה במהלך אחזור המניפסט."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "קובץ המניפסט לא מכיל את השדות '`name`' או '`short_name`'"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "קובץ המניפסט אינו מכיל סמל מתאים. דרוש פורמט PNG‏, SVG או WebP ברזולוציה של ‎{value0}px לפחות, ויש להגדיר את מאפיין הגודל. אם הוגדר המאפיין 'שימוש', הוא חייב לציין \"הכול\"."
@@ -2211,25 +2211,25 @@
     "message": "בשלב זה, דפים שנעשה בהם שימוש ב-WebXR לא מתאימים לשמירה במטמון לדף הקודם/הבא."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "כדאי להוסיף סכימות של כתובות URL מסוג https:‎ ו-http:‎ (דפדפנים שתומכים ב-`'strict-dynamic'` יתעלמו מהן) לצורך תאימות לאחור עם דפדפנים ישנים."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "ההוראה `disown-opener` הוצאה משימוש החל מ-CSP3. במקום זאת, יש להשתמש בכותרת Cross-Origin-Opener-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "ההוראה `referrer` הוצאה משימוש החל מ-CSP2. במקום זאת, יש להשתמש בכותרת Referrer-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "ההוראה `reflected-xss` הוצאה משימוש החל מ-CSP2. במקום זאת, יש להשתמש בכותרת X-XSS-Protection."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "חסר `base-uri`, שמאפשר להחדיר תגי `<base>` כדי להגדיר את כתובת ה-URL הבסיסית לכל כתובות ה-URL היחסיות (למשל, סקריפטים) לדומיין שנשלט על ידי תוקף. כדאי להגדיר את `base-uri` לערך '`'none'`' או '`'self'`'."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "כשלא מוגדר `object-src`, מתאפשרת החדרת יישומי פלאגין שמפעילים סקריפטים לא בטוחים. אם אפשר, כדאי להגדיר את `object-src` לערך '`'none'`'."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "חסרה ההוראה `script-src`. מצב כזה מאפשר הפעלה של סקריפטים לא בטוחים."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "שכחת להוסיף נקודה-פסיק? נראה ש-{keyword} זו הוראה ולא מילת מפתח."
@@ -2247,13 +2247,13 @@
     "message": "עליך להימנע משימוש בתווים כלליים פשוטים לחיפוש ‏({keyword}) בהוראה הזו. בתווים כלליים פשוטים לחיפוש מאפשרים להעלות סקריפטים ממקור דומיין לא בטוח."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "אפשר להגדיר יעד לדיווח רק באמצעות הוראת report-to. ההוראה הזו נתמכת רק בדפדפנים המבוססים על Chromium, לכן מומלץ להשתמש גם בהוראת `report-uri`."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "אין CSP עם הגדרה של יעד לדיווח. במצב כזה קשה לתחזק את ה-CSP לאורך זמן ולעקוב אחר פריצות."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "ניתן לעקוף את רשימת ההיתרים של המארח לעיתים קרובות. כדאי להשתמש במקום זאת בגיבובים (hash) או בצפנים חד-פעמיים של CSP, יחד עם `'strict-dynamic'`, אם יש צורך."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "הוראת CSP לא ידועה."
@@ -2262,10 +2262,10 @@
     "message": "נראה שמילת המפתח {keyword} אינה תקנית."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "הרכיב `'unsafe-inline'` מאפשר להפעיל בדף סקריפטים וגורמים מטפלים באירועים שאינם בטוחים. רצוי להשתמש בגיבובים או בצפנים חד-פעמיים של CSP כדי להתיר הפעלה של כל סקריפט בנפרד."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "כדאי להוסיף רכיב `'unsafe-inline'` (דפדפנים שתומכים בגיבובים/צפנים חד-פעמיים יתעלמו ממנו) לצורך תאימות לאחור עם דפדפנים ישנים."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "פרטים נוספים זמינים בדף של סטטוס התכונה."

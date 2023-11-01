@@ -774,7 +774,7 @@
     "message": "தொடரியல்"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "`<meta>` குறியீட்டில் வரையறுக்கப்பட்டுள்ள CSP இந்தப் பக்கத்தில் உள்ளது. CSPயை HTTP தலைப்பிற்கு நகர்த்தவும் அல்லது ஒரு HTTP தலைப்பில் மற்றொரு strict CSPயை வரையறுக்கவும்."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "அமலாக்கப் பயன்முறையில் CSP எதுவும் கண்டறியப்படவில்லை"
@@ -1026,7 +1026,7 @@
     "message": "மறைநிலை சாளரத்தில் பக்கம் ஏற்றப்பட்டுள்ளது"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "`standalone`, `fullscreen`, `minimal-ui` ஆகியவற்றில் ஏதேனும் ஒன்றாக மெனிஃபெஸ்ட் `display` பிராப்பர்ட்டி இருக்க வேண்டும்"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "மெனிஃபெஸ்ட் 'display_override' புலத்தைக் கொண்டிருக்கும், மேலும் முதலில் ஆதரிக்கப்படும் காட்சிப் பயன்முறையானது 'standalone', 'fullscreen', 'minimal-ui' போன்றவற்றில் ஒன்றாக இருக்க வேண்டும்"
@@ -1038,7 +1038,7 @@
     "message": "மெனிஃபெஸ்ட் பெறப்படும்போது மெனிஃபெஸ்ட் URL மாறியது."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "மெனிஃபெஸ்ட்டில் `name` அல்லது `short_name` புலம் இல்லை"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "பொருத்தமான ஐகானை மெனிஃபெஸ்ட் கொண்டிருக்கவில்லை. PNG, SVG, WebP போன்ற வடிவமைப்பில் குறைந்தபட்சம் {value0} பிக்சல்களுடன் இருக்க வேண்டும், sizes பண்புக்கூறு அமைக்கப்பட்டிருக்க வேண்டும், purpose பண்புக்கூறு அமைக்கப்பட்டிருந்தால் \"any\" என்பதைக் கொண்டிருக்க வேண்டும்."
@@ -2211,25 +2211,25 @@
     "message": "WebXRரைப் பயன்படுத்தும் பக்கங்களை ‘முன் பின் பக்கங்களைத் தற்காலிகமாகச் சேமித்தல்’ அம்சத்தில் தற்போது சேமிக்க முடியாது."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "பழைய உலாவிகளுடன் இணங்கும் வகையில் https: மற்றும் http: URL ஸ்கீம்களை (`'strict-dynamic'` என்பதை ஆதரிக்கும் உலாவிகளால் புறக்கணிக்கப்பட்டது) சேர்க்கவும்."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "CSP3 முதல் `disown-opener` நிறுத்தப்பட்டது. இதற்குப் பதிலாக Cross-Origin-Opener-Policy தலைப்பைப் பயன்படுத்தவும்."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "CSP2 முதல் `referrer` நிறுத்தப்பட்டது. இதற்குப் பதிலாக Referrer-Policy தலைப்பைப் பயன்படுத்தவும்."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "CSP2 முதல் `reflected-xss` நிறுத்தப்பட்டது. இதற்குப் பதிலாக X-XSS-Protection தலைப்பைப் பயன்படுத்தவும்."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "`base-uri` இல்லாமல் இருந்தால், தீங்கிழைப்பவர் கட்டுப்படுத்தும் டொமைனிற்கான தொடர்புடைய URLகள் (எ.கா. ஸ்கிரிப்ட்டுகள்) அனைத்திற்கும் அடிப்படை URLலை அமைக்க, சேர்க்கப்பட்ட `<base>` குறியீடுகள் அனுமதிக்கப்படும். `base-uri` என்பதை `'none'` அல்லது `'self'` என்று அமைக்கவும்."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "`object-src` இல்லாததால் பாதுகாப்பற்ற ஸ்கிரிப்ட்டுகளை இயக்கும் செருகுநிரல்கள் சேர்க்கப்படலாம். முடிந்தால், `object-src` என்பதை `'none'` என்று அமைக்கவும்."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "`script-src` டைரெக்டிவ் விடுபட்டுள்ளது. பாதுகாப்பற்ற ஸ்கிரிப்ட்டுகளின் இயக்கத்தை இது அனுமதிக்கலாம்."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "அரைப்புள்ளியை மறந்துவிட்டீர்களா? {keyword} டைரெக்டிவ் போல் தெரிகிறது, தேடல் குறிப்பாக இல்லை."
@@ -2247,13 +2247,13 @@
     "message": "இந்த டைரெக்டிவில் பிளைன் வைல்டுகார்டுகளை ({keyword}) பயன்படுத்துவதைத் தவிர்க்கவும். பாதுகாப்பற்ற டொமைன்களில் இருந்து ஸ்கிரிப்ட்டுகளைப் பெற பிளைன் வைல்டுகார்டுகள் அனுமதிக்கின்றன."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "புகாரளிக்கும் இடத்தை report-to டைரெக்டிவ் மூலமாக மட்டுமே உள்ளமைக்க முடியும். இந்த டைரெக்டிவ் Chromium சார்ந்த உலாவிகளில் மட்டுமே ஆதரிக்கப்படும் என்பதால் `report-uri` டைரெக்டிவ்வையும் பயன்படுத்துமாறு பரிந்துரைக்கப்படுகிறது."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "புகாரளிக்கும் இடத்தை எந்த CSPயும் உள்ளமைக்கவில்லை. CSPயைக் காலப்போக்கில் நிர்வகிப்பதையும் சிதைவுகளுக்காகக் கண்காணிப்பதையும் இது கடினமாக்குகிறது."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "ஹோஸ்ட் ஏற்புப் பட்டியல்கள் அடிக்கடிப் புறக்கணிக்கப்படலாம். தேவையெனில், இதற்குப் பதிலாக `'strict-dynamic'` உடன் CSP nonces அல்லது hashes பயன்படுத்தவும்."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "அறியப்படாத CSP டைரெக்டிவ்."
@@ -2262,10 +2262,10 @@
     "message": "{keyword} தவறான தேடல் குறிப்பு போல் தெரிகிறது."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "பக்கத்தில் உள்ள பாதுகாப்பற்ற ஸ்கிரிப்ட்டுகள் மற்றும் ஈவண்ட் ஹேண்ட்லர்கள் இயக்கத்தை `'unsafe-inline'` அனுமதிக்கிறது. ஸ்கிரிப்ட்டுகளைத் தனித்தனியாக அனுமதிக்க, CSP nonces அல்லது hashes பயன்படுத்தவும்."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "பழைய உலாவிகளுடன் இணங்கும் வகையில் `'unsafe-inline'` (nonces அல்லது hashesஸை ஆதரிக்கும் உலாவிகளால் புறக்கணிக்கப்பட்டது) டைரெக்டிவ்வைச் சேர்க்கவும்."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "மேலும் விவரங்களுக்கு அம்சத்தின் நிலைப் பக்கத்தைப் பாருங்கள்."

@@ -774,7 +774,7 @@
     "message": "Sintaksė"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Puslapyje yra CSP, apibrėžta žymoje „`<meta>`“. Apsvarstykite galimybę perkelti CSP į HTTP antraštę arba apibrėžti kitą griežtą CSP HTTP antraštėje."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "Nerasta jokios vykdomos CSP"
@@ -1026,7 +1026,7 @@
     "message": "Puslapis įkeliamas inkognito lange"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Aprašo „`display`“ nuosavybė turi būti viena iš „`standalone`“, „`fullscreen`“ arba „`minimal-ui`“"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Apraše yra laukas „display_override“ ir pirmas palaikomas rodymo režimas turi būti „standalone“, „fullscreen“ arba „minimal-ui“"
@@ -1038,7 +1038,7 @@
     "message": "Gaunant aprašą pasikeitė jo URL."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Apraše nėra lauko „`name`“ arba „`short_name`“"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Apraše nėra tinkamos piktogramos – reikia PNG, SVG ar „WebP“ formato, ne mažiau kaip {value0} tšk., turi būti nustatytas atributas „sizes“, o jei nustatytas atributas „purpose“, jis turi apimti parinktį „any“."
@@ -2211,25 +2211,25 @@
     "message": "Puslapiams, kuriuose naudojama „WebXR“, šiuo metu negalima taikyti ilgalaikio viso puslapio saugojimo talpykloje funkcijos."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Apsvarstykite galimybę pridėti „https:“ ir „http:“ URL schemas (nepaisoma naršyklėse, palaikančiose „`'strict-dynamic'`“), kad būtų užtikrintas atgalinis suderinamumas su senesnėmis naršyklėmis."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "„`disown-opener`“ teikimas nutrauktas nuo CSP3. Vietoj jos naudokite antraštę „Cross-Origin-Opener-Policy“."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "„`referrer`“ teikimas nutrauktas nuo CSP2. Vietoj jos naudokite antraštę „Referrer-Policy“."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "„`reflected-xss`“ teikimas nutrauktas nuo CSP2. Vietoj jos naudokite antraštę „X-XSS-Protection“."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "Jei nėra „`base-uri`“, galima įterpti žymas „`<base>`“. Jas naudojant galima nustatyti visų susijusių URL (pvz., scenarijų) pagrindinį URL kaip atakos vykdytojo kontroliuojamą domeną. Apsvarstykite galimybę nustatyti „`base-uri`“ kaip „`'none'`“ arba „`'self'`“."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Kai nėra „`object-src`“, leidžiama įterpti papildinių, vykdančių nesaugius scenarijus. Jei galite, apsvarstykite galimybę nustatyti „`object-src`“ kaip „`'none'`“."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "Trūksta direktyvos „`script-src`“. Gali būti leidžiama vykdyti nesaugius scenarijus."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Gal pamiršote įvesti kabliataškį? Panašu, kad „{keyword}“ yra direktyva, o ne raktinis žodis."
@@ -2247,13 +2247,13 @@
     "message": "Venkite naudoti grynuosius pakaitos simbolius ({keyword}) šioje direktyvoje. Naudojant grynuosius pakaitos simbolius, scenarijai gali būti pateikiami iš nesaugaus domeno."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Ataskaitų teikimo paskirties vietą galima sukonfigūruoti tik naudojant direktyvą „report-to“. Ši direktyva palaikoma tik „Chromium“ pagrindo naršyklėse, todėl taip pat rekomenduojama naudoti direktyvą „`report-uri`“."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Jokioje CSP nesukonfigūruota ataskaitų teikimo paskirties vieta. Tai apsunkins tolesnę CSP priežiūrą ir problemų stebėjimo procesą."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Prieglobos leidžiamųjų sąrašus neretai galima apeiti. Apsvarstykite galimybę naudoti CSP vertes „nonce“ arba „hash“ su „`'strict-dynamic'`“, jei reikia."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Nežinoma CSP direktyva."
@@ -2262,10 +2262,10 @@
     "message": "Panašu, kad „{keyword}“ yra netinkamas raktinis žodis."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "Naudojant „`'unsafe-inline'`“ leidžiama vykdyti nesaugius puslapio scenarijus ir įvykių dorokles. Apsvarstykite galimybę naudoti CSP vertes „nonce“ arba „hash“, kad scenarijų vykdymas būtų leidžiamas atskirai."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Apsvarstykite galimybę pridėti „`'unsafe-inline'`“ (nepaisoma naršyklėse, palaikančiose vertes „nonce“ / „hash“), kad būtų užtikrintas atgalinis suderinamumas su senesnėmis naršyklėmis."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Jei reikia daugiau išsamios informacijos, žr. funkcijų būsenos puslapį."

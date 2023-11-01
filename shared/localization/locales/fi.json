@@ -774,7 +774,7 @@
     "message": "Syntaksi"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Sivu sisältää `<meta>`-tagissa määritetyn CSP:n. Harkitse CSP:n siirtämistä HTTP-otsikkoon tai toisen tiukan CSP:n määrittämistä HTTP-otsikkoon."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "Täytäntöönpanotilasta ei löytynyt CSP:tä"
@@ -1011,7 +1011,7 @@
     "message": "Epäonnistumisen syy"
   },
   "core/audits/installable-manifest.js | description": {
-    "message": "Service worker ‑teknologia tuo sovelluksen käyttöön monia progressiivisen web-sovelluksen ominaisuuksia, kuten offline-käytön, aloitusnäytölle lisäämisen ja ilmoitukset. Jos service worker ja manifesti on otettu käyttöön oikein, selaimet voivat aktiivisesti suositella käyttäjille sovelluksesi lisäämistä aloitusnäytölle, mikä voi lisätä aktivoitumisten määrää. [Lue lisää manifestin asennusvaatimuksista](https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest/)."
+    "message": "Service worker ‑teknologia tuo sovelluksen käyttöön monia progressiivisen web-sovelluksen ominaisuuksia, kuten offline-käytön, aloitusnäytölle lisäämisen ja push-ilmoitukset. Jos service worker ja manifesti on otettu käyttöön oikein, selaimet voivat aktiivisesti suositella käyttäjille sovelluksesi lisäämistä aloitusnäytölle, mikä voi lisätä aktivoitumisten määrää. [Lue lisää manifestin asennusvaatimuksista](https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest/)."
   },
   "core/audits/installable-manifest.js | displayValue": {
     "message": "{itemCount,plural, =1{1 syy}other{# syytä}}"
@@ -1026,7 +1026,7 @@
     "message": "Sivu ladataan incognito-ikkunassa"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Manifestin `display`-omaisuuden on oltava `standalone`, `fullscreen` tai `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Manifestissä on \"display_override\"-kenttä, ja ensimmäisen tuetun näyttötilan on oltava \"standalone\", \"fullscreen\" tai \"minimal-ui\""
@@ -1038,7 +1038,7 @@
     "message": "Manifestin URL muuttui manifestin noudon aikana"
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Manifestissä ei ole `name`- tai `short_name`-kenttää"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Manifestissa ei ole sopivaa kuvaketta, siinä on oltava vähintään {value0} pikselin kokoinen PNG-, SVG- tai WebP-tiedosto, kokomäärite on lisättävä ja mahdollisen tarkoitusmääritteen on oltava \"any\"."
@@ -2211,25 +2211,25 @@
     "message": "WebXR:ää käyttävät sivut eivät voi tällä hetkellä käyttää siirtymisvälimuistia."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Harkitse https:- ja http:-URL-mallien (jotka `'strict-dynamic'`-sääntöä tukevat selaimet ohittavat) lisäämistä, niin voit saavuttaa taaksepäinyhteensopivuuden vanhempien selainten kanssa."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "`disown-opener` on poistettu käytöstä CSP3:sta lähtien. Käytä sen sijaan Cross-Origin-Opener-Policy-otsikkoa."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "`referrer` on poistettu käytöstä CSP2:sta lähtien. Käytä sen sijaan Referrer-Policy-otsikkoa."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "`reflected-xss` on poistettu käytöstä CSP2:sta lähtien. Käytä sen sijaan X-XSS-Protection-otsikkoa."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "Puuttuva `base-uri` sallii injektoitujen `<base>`-tagien määrittää kaikkien suhteellisten URL-osoitteiden (esim. skriptien) perusosan hyökkääjän hallitsemaan verkkotunnukseen. `base-uri` kannattaa asettaa arvoon `'none'` tai `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Puuttuva `object-src` sallii riskialttiita skriptejä suorittavien liitännäisten injektoinnin. `object-src` kannattaa asettaa arvoon `'none'`, jos mahdollista."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "Sääntö (`script-src`) puuttuu. Tämä mahdollistaa vaarallisten skriptien suorittamisen."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Unohditko puolipisteen? Näyttää siltä, että {keyword} on sääntö eikä avainsana."
@@ -2247,13 +2247,13 @@
     "message": "Vältä tavallisten jokerimerkkien ({keyword}) käyttämistä tässä säännössä. Tavalliset jokerimerkit sallivat skriptit, jotka ovat peräisin riskialttiista verkkotunnuksista."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Raportointimääränpään voi määrittää vain report-to-säännön kautta. Vain Chromium-pohjaiset selaimet tukevat kyseistä sääntöä, joten on suositeltavaa käyttää myös `report-uri`-sääntöä."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Raportointimääränpäätä määrittävää CSP:tä ei ole. Tämän takia on hankala säilyttää CSP:tä ajan mittaa ja seurata vaurioita."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Isännän sallitut-listat ovat usein ohitettavissa. Jos tarpeen, harkitse sen sijaan kertakäyttöisten CSP-numeroiden tai -tiivisteiden käyttämistä ja lisää `'strict-dynamic'`."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Tuntematon CSP-sääntö."
@@ -2262,10 +2262,10 @@
     "message": "Näyttää siltä, että {keyword} on virheellinen avainsana."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'` mahdollistaa vaarallisten sivun sisäisten skriptien ja tapahtumakäsittelijöiden suorittamisen. Harkitse skriptien sallimista yksitellen käyttämällä kertakäyttöisiä CSP-numeroita tai -tiivisteitä."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Jos `'unsafe-inline'` on lisätty (kertakäyttöisiä numeroita/tiivisteitä tukevat selaimet ohittavat sen), voit saavuttaa taaksepäinyhteensopivuuden vanhempien selainten kanssa."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Lisätietoa löydät ominaisuuden tilasivulta."

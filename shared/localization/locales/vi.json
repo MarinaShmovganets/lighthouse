@@ -774,7 +774,7 @@
     "message": "Cú pháp"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Trang này chứa một CSP được xác định trong thẻ `<meta>`. Hãy cân nhắc di chuyển CSP đó sang tiêu đề HTTP hoặc xác định một CSP nghiêm ngặt khác trong tiêu đề HTTP."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "Không tìm thấy CSP nào ở chế độ thực thi"
@@ -1026,7 +1026,7 @@
     "message": "Trang được tải trong cửa sổ ẩn danh"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Thuộc tính `display` của tệp kê khai phải là `standalone`, `fullscreen` hoặc `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Tệp kê khai chứa trường \"display_override\" và chế độ hiển thị được hỗ trợ đầu tiên phải là một trong các chế độ \"standalone\", \"fullscreen\" hoặc \"minimal-ui\""
@@ -1038,7 +1038,7 @@
     "message": "URL của tệp kê khai đã thay đổi khi đang tìm nạp tệp kê khai đó."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Tệp kê khai không chứa trường `name` hoặc `short_name`"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Tệp kê khai chứa biểu tượng không phù hợp. Yêu cầu tệp phải ở định dạng PNG, SVG hoặc WebP có kích thước tối thiểu là {value0} px, thuộc tính \"sizes\" phải được đặt, còn thuộc tính \"purpose\" (nếu được đặt) phải bao gồm \"any\"."
@@ -2211,25 +2211,25 @@
     "message": "Những trang sử dụng WebXR hiện không đủ điều kiện dùng bộ nhớ đệm cho thao tác tiến/lùi."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Hãy cân nhắc thêm giao thức URL https: và http: (bị các trình duyệt hỗ trợ `'strict-dynamic'` bỏ qua) để đảm bảo khả năng tương thích ngược với những trình duyệt cũ."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "Kể từ CSP3, `disown-opener` sẽ không được dùng nữa. Vui lòng sử dụng tiêu đề Cross-Origin-Opener-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "Kể từ CSP2, `referrer` sẽ không được dùng nữa. Vui lòng sử dụng tiêu đề Referrer-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "Kể từ CSP2, `reflected-xss` sẽ không được dùng nữa. Vui lòng sử dụng tiêu đề X-XSS-Protection."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "Nếu thiếu `base-uri`, hệ thống sẽ cho phép các thẻ `<base>` được chèn đặt URL cơ sở cho mọi URL tương đối (ví dụ: tập lệnh) thành miền do kẻ tấn công kiểm soát. Hãy cân nhắc đặt `base-uri` thành `'none'` hoặc `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Khi thiếu `object-src`, hệ thống sẽ cho phép hành vi chèn các trình bổ trợ thực thi tập lệnh không an toàn. Hãy cân nhắc đặt `object-src` thành `'none'` nếu có thể."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "Thiếu lệnh `script-src`. Khi không có lệnh này, hệ thống có thể cho phép thực thi các tập lệnh không an toàn."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Bạn quên dấu chấm phẩy ư? {keyword} có vẻ giống lệnh hơn là từ khóa."
@@ -2247,13 +2247,13 @@
     "message": "Tránh dùng các ký tự đại diện thuần túy ({keyword}) trong lệnh này. Các ký tự đại diện thuần túy cho phép thực thi các tập lệnh từ miền không an toàn."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Đích báo cáo này chỉ được định cấu hình thông qua lệnh report-to. Chỉ các trình duyệt dựa trên Chromium mới hỗ trợ lệnh này. Do đó, bạn nên dùng cả lệnh `report-uri`."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Không có CSP nào định cấu hình đích báo cáo. Điều này sẽ gây khó khăn cho việc duy trì CSP theo thời gian và giám sát mọi sự cố."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Danh sách máy chủ lưu trữ được cho phép có thể thường xuyên bị bỏ qua. Thay vào đó, hãy cân nhắc dùng nonces hoặc hashes của CSP, cùng với `'strict-dynamic'` nếu cần."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Lệnh CSP không xác định."
@@ -2262,10 +2262,10 @@
     "message": "Có vẻ như {keyword} là một từ khóa không hợp lệ."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'` cho phép thực thi nhiều trình xử lý sự kiện và tập lệnh không an toàn trong trang. Hãy cân nhắc dùng nonces hoặc hashes của CSP để cho phép thực thi từng tập lệnh."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Hãy cân nhắc thêm `'unsafe-inline'` (bị các trình duyệt hỗ trợ nonces/hashes bỏ qua) để đảm bảo khả năng tương thích ngược với những trình duyệt cũ."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Kiểm tra trang trạng thái của tính năng để biết thêm thông tin."

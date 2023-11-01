@@ -774,7 +774,7 @@
     "message": "सिंटैक्स"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "इस पेज पर, `<meta>` टैग में सीएसपी की जानकारी दी गई है. सीएसपी को एचटीटीपी हेडर पर ले जाएं या एचटीटीपी हेडर में एक अन्य सख्त सीएसपी की जानकारी दें."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "एनफ़ोर्समेंट मोड में कोई CSP नहीं मिला"
@@ -1026,7 +1026,7 @@
     "message": "पेज को गुप्त विंडो में लोड किया गया है"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "मेनिफ़ेस्ट `display` प्रॉपर्टी, `standalone`, `fullscreen` या `minimal-ui` में से एक होनी चाहिए"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "मेनिफ़ेस्ट में 'display_override' फ़ील्ड है, जबकि इसमें 'standalone', 'fullscreen' या 'minimal-ui' में से कोई एक डिसप्ले मोड होना ज़रूरी है. यह पहले डिसप्ले मोड के तौर पर काम करता है"
@@ -1038,7 +1038,7 @@
     "message": "मेनिफ़ेस्ट को फ़ेच करते समय उसका यूआरएल बदल गया."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "मेनिफ़ेस्ट में `name` या `short_name` फ़ील्ड शामिल नहीं है"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "मेनिफ़ेस्ट में सही आइकॉन नहीं है. इसमें PNG, SVG या WebP फ़ॉर्मैट में ऐसा आइकॉन होना ज़रूरी है जो कम से कम {value0} पिक्सल का हो. साथ ही, sizes एट्रिब्यूट को सेट करना ज़रूरी है. अगर purpose एट्रिब्यूट को भी सेट किया जाता है, तो यह ज़रूरी है कि उसमें \"any\" शामिल हो."
@@ -2211,25 +2211,25 @@
     "message": "WebXR का इस्तेमाल करने वाले पेज, फ़िलहाल बैक-फ़ॉरवर्ड कैश मेमोरी की सुविधा का इस्तेमाल नहीं कर सकते."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "https: और http: यूआरएल स्कीम जोड़ें, ताकि सीएसपी पुराने ब्राउज़र के साथ काम कर सके. इसके लिए, `'strict-dynamic'` के साथ काम करने वाले ब्राउज़र पर इन स्कीम को अनदेखा किया जाता है."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "CSP3 के बाद से, `disown-opener` अब काम नहीं करता. इसके बजाय, कृपया Cross-Origin-Opener-Policy हेडर का इस्तेमाल करें."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "CSP2 के बाद से, `referrer` अब काम नहीं करता. इसके बजाय, कृपया Referrer-Policy हेडर का इस्तेमाल करें."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "CSP2 के बाद से, `reflected-xss` अब काम नहीं करता. इसके बजाय, कृपया X-XSS-Protection हेडर का इस्तेमाल करें."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "`base-uri` को शामिल न करने पर, इंजेक्ट किए गए `<base>` टैग की मदद से सभी मिलते-जुलते यूआरएल (जैसे कि स्क्रिप्ट) के लिए बेस यूआरएल सेट हो जाता है. ऐसा उस डोमेन में होता है जिसे कोई हमलावर कंट्रोल करता है. `base-uri` को `'none'` या `'self'` पर सेट करें."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "`object-src` डायरेक्टिव उपलब्ध न होने पर, ऐसे प्लगिन डाले जा सकते हैं जो असुरक्षित स्क्रिप्ट चलाते हैं. अगर हो सके, तो `object-src` को `'none'` पर सेट करें."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "`script-src` डायरेक्टिव उपलब्ध नहीं है. इस वजह से, असुरक्षित स्क्रिप्ट चल सकती हैं."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "क्या आप सेमीकोलन डालना भूल गए? {keyword} एक कीवर्ड नहीं, डायरेक्टिव लग रहा है."
@@ -2247,13 +2247,13 @@
     "message": "इस डायरेक्टिव में, प्लेन वाइल्डकार्ड ({keyword}) का इस्तेमाल करने से बचें. प्लेन वाइल्डकार्ड, स्क्रिप्ट को असुरक्षित डोमेन से पाने की अनुमति देते हैं."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "रिपोर्टिंग डेस्टिनेशन को सिर्फ़ report-to डायरेक्टिव की मदद से कॉन्फ़िगर किया जाता है. यह डायरेक्टिव सिर्फ़ Chromium कोड वाले ब्राउज़र में काम करता है, इसलिए `report-uri` डायरेक्टिव भी इस्तेमाल करने का सुझाव दिया जाता है."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "कोई भी CSP, रिपोर्टिंग डेस्टिनेशन को कॉन्फ़िगर नहीं करता. समय के साथ, इसकी वजह से CSP को मेंटेन करने और किसी भी तरह के ब्रेकेज को मॉनिटर करने में दिक्कत होती है."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "होस्ट की 'जिन लोगों या संगठनों को अनुमति मिली है उनकी सूची' को अक्सर बायपास किया जा सकता है. अगर ज़रूरी हो, तो `'strict-dynamic'` के साथ-साथ सीएसपी नॉन्स या हैश का इस्तेमाल करें."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "इस CSP डायरेक्टिव की जानकारी नहीं है."
@@ -2262,10 +2262,10 @@
     "message": "{keyword} एक गलत/अमान्य कीवर्ड लग रहा है."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'` से असुरक्षित इन-पेज स्क्रिप्ट और इवेंट हैंडलर चलाने की अनुमति मिलती है. एक-एक करके स्क्रिप्ट को अनुमति देने के लिए, सीएसपी नॉन्स या हैश का इस्तेमाल करें."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "`'unsafe-inline'` जोड़ें, ताकि सीएसपी पुराने ब्राउज़र के साथ काम कर सके. नॉन्स/हैश के साथ काम करने वाले ब्राउज़र पर इसे अनदेखा किया जाता है."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "ज़्यादा जानकारी के लिए, सुविधा की स्थिति वाला पेज देखें."

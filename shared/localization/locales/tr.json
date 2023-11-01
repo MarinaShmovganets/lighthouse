@@ -774,7 +774,7 @@
     "message": "Söz dizimi"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Bu sayfa, `<meta>` etikette tanımlanmış bir CSP içeriyor. CSP'yi HTTP başlığına taşımayı veya HTTP başlığında başka bir katı CSP tanımlamayı düşünebilirsiniz."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "Zorunlu modda hiç CSP bulunmadı"
@@ -1026,7 +1026,7 @@
     "message": "Sayfa, gizli pencerede yüklenmiş"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Manifest dosyasındaki `display` özelliği, `standalone`, `fullscreen` veya `minimal-ui` değerlerinden biri olmalıdır"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Manifest dosyası \"display_override\" alanını içeriyor ve desteklenen ilk görüntü modunun \"standalone\", \"fullscreen\" veya \"minimal-ui\"den biri olması gerekiyor"
@@ -1038,7 +1038,7 @@
     "message": "Manifest dosyası getirilirken manifest URL'si değiştirildi."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Manifest dosyası bir `name` veya `short_name` alanı içermiyor"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Manifest dosyası uygun bir simge içermiyor. En az {value0} piksel değerinde bir PNG, SVG veya WebP biçimi gerekli olup sizes özelliği ayarlanmalıdır. Ayrıca purpose özelliği ayarlanacaksa \"any\" ifadesini içermelidir."
@@ -2211,25 +2211,25 @@
     "message": "WebXR kullanan sayfalar şu an için geri-ileri önbelleğe alınmaya uygun değildir."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Eski tarayıcılarla geriye dönük uyumluluk sağlamak için https: ve http: URL şemaları (`'strict-dynamic'` yönergesini destekleyen tarayıcılar tarafından yoksayılır) eklemeyi düşünün."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "`disown-opener` desteği, CSP3'ten itibaren sonlandırılmıştır. Lütfen onun yerine Cross-Origin-Opener-Policy başlığını kullanın."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "`referrer` desteği, CSP2'den itibaren sonlandırılmıştır. Lütfen onun yerine Referrer-Policy başlığını kullanın."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "`reflected-xss` desteği, CSP2'den itibaren sonlandırılmıştır. Lütfen onun yerine X-XSS-Protection başlığını kullanın."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "`base-uri` yönergesinin olmaması, yerleştirilen `<base>` etiketlerinin tüm göreli URL'ler (örneğin, komut dosyaları) için temel URL'yi saldırgan kontrolündeki bir alana ayarlamaya olanak tanır. `base-uri` yönergesini, `'none'` veya `'self'` olarak ayarlayın."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "`object-src` yönergesinin olmaması, güvenli olmayan komut satırları yürüten eklentilerin yerleştirilmesine olanak tanır. Mümkünse `object-src` yönergesini `'none'` olarak ayarlayın."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "`script-src` yönergesi eksik. Bu durum, güvenli olmayan komut dosyalarının yürütülmesine izin verebilir."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Noktalı virgülü mü unuttunuz? {keyword}, anahtar kelimeden ziyade bir yönerge gibi görünüyor."
@@ -2247,13 +2247,13 @@
     "message": "Bu yönergede düz joker karakter ({keyword}) kullanmaktan kaçının. Düz joker karakterler, komut dosyalarının güvenli olmayan bir alan adından alınmasına izin verir."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Raporlama hedefi yalnızca report-to yönergesi üzerinden yapılandırılır. Bu yönerge yalnızca Chromium tabanlı tarayıcılarda desteklendiği için ayrıca bir `report-uri` yönergesi kullanılması önerilir."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Raporlama hedefi yapılandıran bir CSP yok. Bu durum, zaman içinde CSP'nin devamlılığının sağlanmasını ve hatalara karşı izlenmesini zorlaştırır."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Ana makine izin verilenler listeleri sıklıkla atlanabilir. Gerekirse bunun yerine `'strict-dynamic'` yönergesiyle birlikte CSP nonce veya hash değerleri kullanın."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Bilinmeyen CSP yönergesi."
@@ -2262,10 +2262,10 @@
     "message": "{keyword} geçersiz bir anahtar kelime gibi görünüyor."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'`, güvenli olmayan sayfa içi komut dosyalarının ve etkinlik işleyicilerin yürütülmesine olanak tanır. Komut dosyalarına ayrı ayrı izin vermek için CSP nonce veya hash değerleri kullanmayı düşünün."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Eski tarayıcılarla geriye dönük uyumluluk sağlamak için `'unsafe-inline'` (nonce/hash destekleyen tarayıcılar tarafından yoksayılır) eklemeyi düşünün."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Daha fazla bilgi için özellik durumu sayfasına göz atın."

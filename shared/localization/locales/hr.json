@@ -774,7 +774,7 @@
     "message": "Sintaksa"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Stranica sadrži CSP definiran u oznaci `<meta>`. Razmislite o tome da premjestite CSP u HTTP zaglavlje ili da definirate drugi strogi CSP u HTTP zaglavlju."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "U načinu provedbe nije pronađen CSP"
@@ -1026,7 +1026,7 @@
     "message": "Stranica je učitana u anonimnom prozoru"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Svojstvo manifesta `display` mora glasiti `standalone`, `fullscreen` ili `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Manifest sadrži polje \"display_override\", pa prvi podržani način prikaza mora biti \"standalone\", \"fullscreen\" ili \"minimal-ui\""
@@ -1038,7 +1038,7 @@
     "message": "URL manifesta promijenio se tijekom dohvaćanja manifesta."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Manifest ne sadrži polje `name` ili `short_name`"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Manifest ne sadrži odgovarajuću ikonu – potreban je PNG, SVG ili WebP format od najmanje {value0} px, mora biti postavljen atribut veličina, a atribut svrhe, ako je postavljen, mora sadržavati \"any\"."
@@ -2211,25 +2211,25 @@
     "message": "Stranice koje koriste WebXR trenutačno ne ispunjavaju kriterije za predmemoriranje cijele stranice."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Savjetujemo vam da dodate https: i http: URL sheme (koje ignoriraju preglednici koji podržavaju `'strict-dynamic'`) radi kompatibilnosti s prijašnjim verzijama preglednika."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "`disown-opener` je obustavljen od pravila CSP3. Upotrijebite zaglavlje Cross-Origin-Opener-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "`referrer` je obustavljen od pravila CSP2. Upotrijebite zaglavlje Referrer-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "`reflected-xss` je obustavljen od pravila CSP2. Upotrijebite zaglavlje X-XSS-Protection."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "Smjernica `base-uri` koja nedostaje dopušta ugrađenim oznakama `<base>` da postave osnovni URL za sve relativne URL-ove (npr. skripte) na domenu kojom upravljaju napadači. Savjetujemo vam da `base-uri` postavite na `'none'` ili `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Smjernica `object-src` koja nedostaje omogućuje ugradnju dodataka koji izvršavaju nesigurne skripte. Savjetujemo vam da `object-src` postavite na `'none'` ako možete."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "Nedostaje smjernica `script-src`. To može omogućiti izvršavanje nesigurnih skripti."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Jeste li zaboravili točku sa zarezom? Čini se da je {keyword} direktiva, a ne ključna riječ."
@@ -2247,13 +2247,13 @@
     "message": "Izbjegavajte upotrebu običnih zamjenskih znakova ({keyword}) u direktivi. Obični zamjenski znakovi omogućuju skripte s nesigurne domene."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Odredište izvješća konfigurira se samo putem smjernice report-to. Ta je smjernica podržana samo u preglednicima koji se temelje na Chromiumu, pa se preporučuje da se upotrijebi i smjernica `report-uri`."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Nijedan CSP ne konfigurira odredište izvješća. To otežava održavanje CSP-a tijekom vremena i nadzor mogućih prekida."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Popis dopuštenih hostova često se može zaobići. Savjetujemo vam da umjesto toga upotrijebite CSP jednokratne ključeve ili hasheve, kao i `'strict-dynamic'` ako je potrebno."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Nepoznata direktiva CSP-a."
@@ -2262,10 +2262,10 @@
     "message": "Čini se da {keyword} nije važeća ključna riječ."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'` omogućuje izvršavanje nesigurnih skripti i rukovatelja događajima unutar stranice. Savjetujemo vam da koristite CSP jednokratne ključeve ili hasheve kako biste omogućivali skripte pojedinačno."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Savjetujemo vam da dodate `'unsafe-inline'` (koji ignoriraju preglednici koji podržavaju jednokratne ključeve/hashove) radi kompatibilnosti s prijašnjim verzijama preglednika."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Više pojedinosti potražite na stranici statusa značajki."

@@ -774,7 +774,7 @@
     "message": "構文"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "このページでは CSP が `<meta>` タグで定義されています。CSP を HTTP ヘッダーに移動するか、HTTP ヘッダーで別の厳密な CSP を定義することを検討してください。"
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "適用されている CSP はありません"
@@ -1026,7 +1026,7 @@
     "message": "ページがシークレット ウィンドウで読み込まれます"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "マニフェストの `display` プロパティは、`standalone`、`fullscreen`、`minimal-ui` のいずれかにする必要があります。"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "マニフェストの「display_override」フィールドで、最初のサポート表示モードを「standalone」、「fullscreen」、「minimal-ui」のいずれかに設定する必要があります"
@@ -1038,7 +1038,7 @@
     "message": "マニフェストの取得中にマニフェストの URL が変更されました。"
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "マニフェストに `name` または `short_name` フィールドがありません"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "マニフェストに適切なアイコンが含まれていません。{value0} ピクセル以上の PNG、SVG、または WebP 形式のアイコンが必要です。また、そのアイコンには sizes 属性を設定し、purpose 属性が設定されている場合は「any」を含める必要があります。"
@@ -2211,25 +2211,25 @@
     "message": "WebXR を使用するページは、現時点ではバックフォワード キャッシュの対象になりません。"
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "古いブラウザとの下位互換性を保つため、https: と http: の URL スキームを追加することを検討してください（`'strict-dynamic'` をサポートしているブラウザでは無視されます）。"
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "`disown-opener` は CSP3 以降ではサポートされていません。代わりに、Cross-Origin-Opener-Policy ヘッダーを使用してください。"
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "`referrer` は CSP2 以降ではサポートされていません。代わりに、Referrer-Policy ヘッダーを使用してください。"
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "`reflected-xss` は CSP2 以降ではサポートされていません。代わりに、X-XSS-Protection ヘッダーを使用してください。"
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "`base-uri` を指定しないと、挿入された `<base>`　タグによって、すべての相対 URL（スクリプトなど）のベース URL が攻撃者の管理ドメインに設定される可能性があります。`base-uri` を `'none'` または `'self'` に設定することを検討してください。"
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "`object-src` が設定されていない場合、安全でないスクリプトを実行するプラグインを挿入される恐れがあります。可能であれば、`object-src` を `'none'` に設定することを検討してください。"
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "`script-src` ディレクティブがありません。このため、安全でないスクリプトを実行できる状態になっています。"
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "セミコロンが指定されていません。{keyword} はキーワードではなくディレクティブのようです。"
@@ -2247,13 +2247,13 @@
     "message": "このディレクティブでは、プレーンなワイルドカード（{keyword}）を使用しないでください。プレーンなワイルドカードを使用すると、安全でないドメインからスクリプトが挿入される恐れがあります。"
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "報告先が report-to ディレクティブ経由でのみ設定されています。このディレクティブは、Chromium ベースのブラウザでしかサポートされていないため、`report-uri` ディレクティブも使用することをおすすめします。"
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "CSP で報告先が設定されていません。CSP の動作状況や問題が発生した場合の確認が難しくなります。"
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "ホストの許可リストが頻繁に回避されています。必要な場合は、代わりに CSP nonce または hash と `'strict-dynamic'` を使用することを検討してください。"
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "不明な CSP ディレクティブです。"
@@ -2262,10 +2262,10 @@
     "message": "{keyword} は無効なキーワードのようです。"
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'` が指定されているため、安全でないページ内スクリプトやイベント ハンドラを実行できる状態になっています。CSP nonce または hash を使用して、スクリプトを個別に許可することを検討してください。"
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "古いブラウザとの下位互換性を保つため、`'unsafe-inline'` を追加することを検討してください（nonce / hash をサポートしているブラウザでは無視されます）。"
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "詳しくは、機能のステータス ページをご覧ください。"

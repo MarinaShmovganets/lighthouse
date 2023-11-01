@@ -774,7 +774,7 @@
     "message": "Syntaxis"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "De pagina bevat een CSP dat is gedefinieerd in een `<meta>`-tag. Overweeg het CSP te verplaatsen naar een HTTP-header, of een ander strikt CSP in een HTTP-header te definiëren."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "Geen CSP gevonden in de handhavingsmodus"
@@ -1026,7 +1026,7 @@
     "message": "Je laadt de pagina in een incognitovenster"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "De eigenschap `display` van het manifest moet `standalone`, `fullscreen` of `minimal-ui` zijn"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Het manifest bevat het veld 'display_override'. De eerste ondersteunde weergavemodus moet 'standalone', 'fullscreen' of 'minimal-ui' zijn."
@@ -1038,7 +1038,7 @@
     "message": "De manifest-URL is gewijzigd tijdens het ophalen van het manifest."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Manifest bevat geen veld `name` of `short_name`"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Het manifest bevat geen geschikt icoon. Een png-, svg- of webp-indeling van ten minste {value0} pixels is vereist, het formaatkenmerk moet zijn ingesteld en het doelkenmerk (indien ingesteld) moet 'any' bevatten."
@@ -2211,25 +2211,25 @@
     "message": "Pagina's die WebXR gebruiken, komen momenteel niet in aanmerking voor Back-Forward Cache."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Voor compatibiliteit met oudere browsers kun je overwegen https: en http: URL-schema's toe te voegen (deze worden genegeerd door browsers die `'strict-dynamic'` ondersteunen)."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "`disown-opener` is beëindigd sinds CSP3. Gebruik in plaats daarvan de header Cross-Origin-Opener-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "`referrer` is beëindigd sinds CSP2. Gebruik in plaats daarvan de header Referrer-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "`reflected-xss` is beëindigd sinds CSP2. Gebruik in plaats daarvan de header X-XSS-Protection."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "Zonder `base-uri` kunnen ingevoegde `<base>`-tags de basis-URL instellen voor alle relatieve URL's (bijv. scripts) naar een door de aanvaller beheerd domein. Overweeg `base-uri` in te stellen op `'none'` of `'self'`."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Als `object-src` ontbreekt, kunnen plug-ins worden geïnjecteerd die onveilige scripts uitvoeren. Overweeg `object-src` in te stellen op `'none'` als dat kan."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "De instructie `script-src` ontbreekt. Dit kan tot gevolg hebben dat onveilige scripts kunnen worden uitgevoerd."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Ben je de puntkomma vergeten? Zo te zien is {keyword} een instructie en geen zoekwoord."
@@ -2247,13 +2247,13 @@
     "message": "Vermijd het gebruik van plattetekst-jokertekens ({keyword}) in deze instructie. Bij plattetekst-jokertekens kunnen scripts afkomstig zijn van een onveilig domein."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "De rapportagebestemming is alleen ingesteld via de instructie report-to. Deze instructie wordt alleen ondersteund in op Chromium gebaseerde browsers, dus het wordt aanbevolen ook een instructie `report-uri` te gebruiken."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Er is geen CSP waarmee een rapportagebestemming wordt ingesteld. Hierdoor is het moeilijk om het CSP na verloop van tijd te onderhouden en te monitoren op kwetsbaarheden."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Toelatingslijsten van hosts kunnen vaak worden genegeerd. Overweeg CSP-nonces of -hashes te gebruiken, zo nodig samen met `'strict-dynamic'`."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Onbekende CSP-instructie."
@@ -2262,10 +2262,10 @@
     "message": "Zo te zien is {keyword} een ongeldig zoekwoord."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "Met `'unsafe-inline'` kunnen onveilige scripts en gebeurtenishandlers op de pagina worden uitgevoerd. Overweeg CSP-nonces of -hashes te gebruiken om scripts afzonderlijk toe te staan."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Voor compatibiliteit met oudere browsers kun je overwegen `'unsafe-inline'` toe te voegen (dit wordt genegeerd door browsers die nonces/hashes ondersteunen)."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Check de statuspagina van de functie voor meer informatie."

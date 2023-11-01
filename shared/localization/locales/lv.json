@@ -774,7 +774,7 @@
     "message": "Sintakse"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "Lapā ir SDP (CSP), kas definēta tagā “`<meta>`”. Ieteicams pārvietot SDP (CSP) uz HTTP galveni vai definēt citu stingru SDP (CSP) HTTP galvenē."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "Netika atrasta neviena SDP piemērošanas režīmā"
@@ -1026,7 +1026,7 @@
     "message": "Lapa ir ielādēta inkognito logā"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "Manifesta “`display`” rekvizīta vērtībai ir jābūt “`standalone`”, “`fullscreen`” vai “`minimal-ui`”."
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "Manifestā ir ietverts lauks “display_override”, un pirmajam atbalstītajam attēlošanas režīmam jābūt “standalone”, “fullscreen” vai “minimal-ui”"
@@ -1038,7 +1038,7 @@
     "message": "Manifesta ienešanas laikā mainījās manifesta URL."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "Manifestā nav lauka “`name`” vai “`short_name`”."
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "Manifestā nav piemērotas ikonas. Nepieciešams PNG, SVG vai WebP formāta fails, kura izmēriem jābūt vismaz {value0} piks. un atribūtam “sizes” jābūt iestatītam. Ja ir iestatīts atribūts “purpose”, tā vērtībai jāietver “any”."
@@ -2211,25 +2211,25 @@
     "message": "Lapas, kurās tiek izmantota saskarne WebXR, pašlaik nevar pilnīgi saglabāt kešatmiņā."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "Lai nodrošinātu atpakaļsaderību ar vecākām pārlūkprogrammām, varat pievienot URL shēmas “https:” un “http:” (pārlūkprogrammās, kas atbalsta atslēgvārdu “`'strict-dynamic'`”, šīs shēmas tiks ignorētas)."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "Direktīvai “`disown-opener`” ir pārtraukts atbalsts kopš politikas versijas CSP3. Tās vietā izmantojiet galveni Cross-Origin-Opener-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "Direktīvai “`referrer`” ir pārtraukts atbalsts kopš politikas versijas CSP2. Tās vietā izmantojiet galveni Referrer-Policy."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "Direktīvai “`reflected-xss`” ir pārtraukts atbalsts kopš politikas versijas CSP2. Tās vietā izmantojiet galveni X-XSS-Protection."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "Direktīvai “`base-uri`” nav iestatīta vērtība, tāpēc var iepludināt `<base>` tagus, lai visiem relatīvajiem vietrāžiem URL (piemēram, skriptiem) iestatītu pamata URL, kas atbilst uzbrucēju kontrolētam domēnam. Ieteicams iestatīt direktīvas “`base-uri`” vērtību “`'none'`” vai “`'self'`”."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "Ja nav norādīta direktīvas “`object-src`” vērtība, var tikt iepludināti spraudņi, kas izpilda nedrošus skriptus. Ja varat, ieteicams iestatīt direktīvas “`object-src`” vērtību “`'none'`”."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "Trūkst direktīvas “`script-src`”. Tāpēc var būt iespējams izpildīt nedrošus skriptus."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "Vai aizmirsāt semikolu? Šķiet, {keyword} ir direktīva, nevis atslēgvārds."
@@ -2247,13 +2247,13 @@
     "message": "Neizmantojiet neformatētas aizstājējzīmes ({keyword}) šajā direktīvā. Izmantojot neformatētas aizstājējzīmes, skripti var tikt iegūti no nedroša domēna."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "Ziņošanas galamērķa konfigurēšanai ir izmantota tikai direktīva “report-to”. Šo direktīvu atbalsta tikai uz Chromium pamata izstrādātas pārlūkprogrammas, tāpēc ieteicams izmantot arī direktīvu “`report-uri`”."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "Nevienā SDP nav konfigurēts ziņošanas galamērķis. Tāpēc ir grūti ilgtermiņā uzturēt SDP un uzraudzīt, vai nerodas darbības traucējumi."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "Saimniekdatoru atļaušanas sarakstus bieži var apiet. Ieteicams izmantot SDP (CSP) vienreizējos kodus (“nonces”) vai jaucējvērtības (“hashes”) kopā ar direktīvu “`'strict-dynamic'`”, ja nepieciešams."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "Nezināma SDP direktīva."
@@ -2262,10 +2262,10 @@
     "message": "{keyword} ir nederīgs atslēgvārds."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "Atslēgvārds “`'unsafe-inline'`” ļauj izpildīt nedrošus lapā ievietotus skriptus un notikumu apdarinātājus. Ieteicams atļaut skriptus pa vienam, izmantojot SDP (CSP) vienreizējos kodus (“nonces”) vai jaucējvērtības (“hashes”)."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "Lai nodrošinātu atpakaļsaderību ar vecākām pārlūkprogrammām, varat pievienot atslēgvārdu “`'unsafe-inline'`” (pārlūkprogrammās, kas atbalsta vienreizējos kodus (“nonces”) vai jaucējvērtības (“hashes”), šis atslēgvārds tiks ignorēts)."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "Plašāku informāciju skatiet funkcijas statusa lapā."

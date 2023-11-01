@@ -774,7 +774,7 @@
     "message": "సింటాక్స్"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "`<meta>` ట్యాగ్‌లో నిర్వచించిన CSPని పేజీ కలిగి ఉంది. CSPని HTTP హెడర్‌కు తరలించడాన్ని లేదా HTTP హెడర్‌లో మరొక ఖచ్చితమైన CSPని నిర్వచించడాన్ని పరిగణించండి."
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "ఆంక్ష మోడ్‌లో ఎలాంటి CSP కనుగొనబడలేదు"
@@ -1026,7 +1026,7 @@
     "message": "పేజీ అజ్ఞాత విండోలో లోడ్ అయింది"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "మ్యానిఫెస్ట్ `display` ప్రాపర్టీ `standalone`, `fullscreen`, లేదా `minimal-ui`‌లో ఒకటి అయి ఉండాలి"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "మ్యానిఫెస్ట్‌లో 'display_override' ఫీల్డ్ ఉంది, సపోర్ట్ ఉండే మొదటి ప్రదర్శన మోడ్ తప్పనిసరిగా 'standalone', 'fullscreen' లేదా 'minimal-ui'లో ఒకటి అయి ఉండాలి"
@@ -1038,7 +1038,7 @@
     "message": "మ్యానిఫెస్ట్‌ను డౌన్‌లోడ్ చేస్తున్న సమయంలో మ్యానిఫెస్ట్ URL మారింది."
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "మ్యానిఫెస్ట్ `name` లేదా `short_name` ఫీల్డ్‌ను కలిగి ఉండదు"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "మ్యానిఫెస్ట్‌లో తగిన చిహ్నం లేదు - కనీసం {value0} px ఉండే PNG, SVG లేదా WebP ఫార్మాట్ అవసరం, సైజ్‌ల లక్షణాన్ని తప్పనిసరిగా సెట్ చేయాలి, అలాగే ప్రయోజన లక్షణం, సెట్ చేసి ఉంటే, తప్పనిసరిగా \"ఏదైనా\" ఎంపికను కలిగి ఉండాలి."
@@ -2211,25 +2211,25 @@
     "message": "WebXRను ఉపయోగించే పేజీలకు వెనుకకు/ముందుకు కాష్‌ను యాక్సెస్ చేయడానికి ప్రస్తుతం అర్హత లేదు."
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "పాత బ్రౌజర్‌లతో అనుకూలంగా ఉండటానికి https:, http: URL స్కీమ్‌లను (`'strict-dynamic'`‌ను సపోర్ట్ చేసే బ్రౌజర్‌లు విస్మరించినది) జోడించడాన్ని పరిగణించండి."
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "CSP3 నుండి `disown-opener` విస్మరించబడుతోంది. దయచేసి, బదులుగా 'Cross-Origin-Opener-Policy' హెడర్‌ను ఉపయోగించండి."
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "CSP2 నుండి `referrer` విస్మరించబడుతోంది. దయచేసి, బదులుగా 'Referrer-Policy' హెడర్‌ను ఉపయోగించండి."
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "CSP2 నుండి `reflected-xss` విస్మరించబడుతోంది. దయచేసి, బదులుగా X-XSS-Protection హెడర్‌ను ఉపయోగించండి."
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "దాడి చేసే వారు కంట్రోల్ చేసే డొమైన్ యొక్క సంబంధిత URLలు అన్నింటికీ (ఉదా.స్క్రిప్ట్‌లు) ఒక బేస్ URLను సెట్ చేసే వీలును ఇంజెక్ట్ చేసిన `<base>` ట్యాగ్‌లకు, మిస్ అయిన `base-uri` కల్పిస్తుంది. `base-uri`‌ను `'none'`‌కు లేదా `'self'`‌కు సెట్ చేయడాన్ని పరిగణించండి."
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "మిస్ అయిన `object-src`, సురక్షితం కాని స్క్రిప్ట్‌లను ఎగ్జిక్యూట్ చేసే ప్లగ్ఇన్‌లను ఇంజక్ట్ చేసే వీలును కల్పిస్తుంది. మీకు సాధ్యమైతే `object-src`‌ను `'none'`‌కు సెట్ చేయడాన్ని పరిగణించండి."
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "`script-src` డైరెక్టివ్ మిస్ అయింది. ఇది సురక్షితం కాని స్క్రిప్ట్‌ల ఎగ్జిక్యూషన్‌ను అనుమతించవచ్చు."
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "మీరు సెమీకోలన్‌ను మర్చిపోయారా? {keyword} కీవర్డ్ కాదు, డైరెక్టివ్ అనిపిస్తుంది."
@@ -2247,13 +2247,13 @@
     "message": "ఈ డైరెక్టివ్‌లో సాధారణ వైల్డ్‌కార్డ్‌లను ({keyword}) ఉపయోగించడం మానేయండి. సాధారణ వైల్డ్‌కార్డ్‌లు, సురక్షితం కాని డొమైన్ నుండి సేకరించిన స్క్రిప్ట్‌లను అనుమతిస్తాయి."
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "రిపోర్ట్ చేసే గమ్యస్థానాన్ని report-to డైరెక్టివ్ ద్వారా మాత్రమే కాన్ఫిగర్ చేయగలరు. ఈ డైరెక్టివ్ Chromium-ఆధారిత బ్రౌజర్‌లలో మాత్రమే సపోర్ట్ చేస్తుంది, కాబట్టి `report-uri` డైరెక్టివ్‌ను కూడా ఉపయోగించమని సిఫార్సు చేస్తున్నాము."
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "ఎలాంటి CSP రిపోర్ట్ చేసే గమ్యస్థానాన్ని కాన్ఫిగర్ చేయలేదు. ఇది కాలానుగుణంగా CSPని నిర్వహించడం, అలాగే ఏదైనా విచ్ఛిన్నాల కోసం పర్యవేక్షించడం కష్టతరం చేస్తుంది."
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "హోస్ట్ వైట్‌లిస్ట్‌లు తరచుగా బైపాస్ చేయబడవచ్చు. అవసరమైతే, బదులుగా `'strict-dynamic'`‌తో పాటు CSP nonces లేదా hashesను ఉపయోగించడాన్ని పరిగణించండి."
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "తెలియని CSP డైరెక్టివ్."
@@ -2262,10 +2262,10 @@
     "message": "{keyword} చెల్లని కీవర్డ్‌లాగా అనిపిస్తుంది."
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "సురక్షితం కాని unsafe in-page స్క్రిప్ట్‌లు, ఈవెంట్ హ్యాండ్లర్‌లను ఎగ్జిక్యూట్ చేసే వీలును `'unsafe-inline'` కల్పిస్తుంది. ఒక్కొక్క స్క్రిప్ట్‌ను అనుమతించేందుకు CSP nonces లేదా hashesను ఉపయోగించడాన్ని పరిగణించండి."
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "పాత వెర్షన్‌లకు అనుకూలంగా ఉండటం కోసం `'unsafe-inline'`‌ను (nonces/hashesను సపోర్ట్ చేసే బ్రౌజర్‌లు విస్మరించినది) జోడించడాన్ని పరిగణించండి."
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "మరిన్ని వివరాల కోసం ఫీచర్ స్టేటస్ పేజీని చెక్ చేయండి."

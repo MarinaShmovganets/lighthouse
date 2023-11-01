@@ -774,7 +774,7 @@
     "message": "ไวยากรณ์"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "หน้าเว็บมีการกำหนด CSP ในแท็ก `<meta>` ลองย้าย CSP ไปยังส่วนหัว HTTP หรือกำหนด CSP ที่เข้มงวดอื่นๆ ในส่วนหัว HTTP"
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "ไม่พบ CSP ในโหมดบังคับใช้"
@@ -1026,7 +1026,7 @@
     "message": "หน้าโหลดในหน้าต่างที่ไม่ระบุตัวตน"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "พร็อพเพอร์ตี้ `display` ของไฟล์ Manifest ต้องเป็นอย่างใดอย่างหนึ่งระหว่าง `standalone`, `fullscreen` หรือ `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "ไฟล์ Manifest มีช่อง \"display_override\" และโหมดการแสดงผลโหมดแรกที่รองรับต้องเป็นอย่างใดอย่างหนึ่งระหว่าง \"standalone\", \"fullscreen\" หรือ \"minimal-ui\""
@@ -1038,7 +1038,7 @@
     "message": "URL ของไฟล์ Manifest เปลี่ยนไปขณะดึงข้อมูลไฟล์ Manifest"
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "ไฟล์ Manifest ไม่มีช่อง `name` หรือ `short_name`"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "ไฟล์ Manifest ไม่มีไอคอนที่เหมาะสม ซึ่งต้องอยู่ในรูปแบบ PNG, SVG หรือ WebP และมีขนาดอย่างน้อย {value0} พิกเซล ต้องตั้งค่าแอตทริบิวต์ขนาด และหากมีการตั้งค่าแอตทริบิวต์จุดประสงค์ แอตทริบิวต์นั้นต้องมี \"any\""
@@ -2211,25 +2211,25 @@
     "message": "หน้าที่ใช้ WebXR ยังไม่มีสิทธิ์ใช้ฟีเจอร์ Back-Forward Cache ในขณะนี้"
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "ลองเพิ่ม URL ในรูปแบบ https: และ http: (ซึ่งเบราว์เซอร์ที่รองรับ `'strict-dynamic'` จะไม่สนใจ) เพื่อให้เข้ากันได้กับเบราว์เซอร์เวอร์ชันเก่ากว่า"
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "`disown-opener` เลิกใช้งานแล้วตั้งแต่ CSP3 โปรดใช้ส่วนหัว Cross-Origin-Opener-Policy แทน"
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "`referrer` เลิกใช้งานแล้วตั้งแต่ CSP2 โปรดใช้ส่วนหัว Referrer-Policy แทน"
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "`reflected-xss` เลิกใช้งานแล้วตั้งแต่ CSP2 โปรดใช้ส่วนหัว X-XSS-Protection แทน"
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "เมื่อไม่มี `base-uri` แท็ก `<base>` ที่แทรกจะตั้งค่า URL ฐานสำหรับ URL (เช่น สคริปต์) ทั้งหมดที่เกี่ยวข้องกับโดเมนที่ผู้โจมตีควบคุมได้ ลองตั้งค่า `base-uri` เป็น `'none'` หรือ `'self'`"
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "เมื่อไม่มี `object-src` จะทำให้มีการแทรกปลั๊กอินซึ่งรันสคริปต์ที่ไม่ปลอดภัย ลองตั้งค่า `object-src` เป็น `'none'` หากทำได้"
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "ไม่มีคำสั่ง `script-src` ซึ่งอาจทำให้รันสคริปต์ที่ไม่ปลอดภัยได้"
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "คุณลืมเครื่องหมายเซมิโคลอนหรือเปล่า ดูเหมือนว่า {keyword} จะเป็นคำสั่ง ไม่ใช่คีย์เวิร์ด"
@@ -2247,13 +2247,13 @@
     "message": "หลีกเลี่ยงการใช้ไวลด์การ์ดธรรมดา ({keyword}) ในคำสั่งนี้ ไวลด์การ์ดธรรมดาอนุญาตให้รันสคริปต์ที่มาจากโดเมนที่ไม่ปลอดภัยได้"
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "มีการกำหนดค่าปลายทางการรายงานผ่านคำสั่ง report-to เท่านั้น คำสั่งนี้ใช้ได้เฉพาะในเบราว์เซอร์แบบ Chromium จึงขอแนะนำให้ใช้คำสั่ง `report-uri` ด้วย"
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "ไม่มี CSP ที่กำหนดค่าปลายทางการรายงาน ซึ่งทำให้ดูแลรักษา CSP เมื่อเวลาผ่านไปและตรวจสอบการหยุดทำงานได้ยาก"
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "รายการโฮสต์ที่อนุญาตอาจถูกข้ามได้บ่อยๆ ลองใช้ nonces หรือ hashes ของ CSP แทน รวมถึงใช้ `'strict-dynamic'` หากจำเป็น"
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "คำสั่ง CSP ที่ไม่รู้จัก"
@@ -2262,10 +2262,10 @@
     "message": "ดูเหมือนว่า {keyword} จะเป็นคีย์เวิร์ดที่ไม่ถูกต้อง"
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "`'unsafe-inline'` ทำให้รันสคริปต์ในหน้าเว็บและตัวจัดการเหตุการณ์ที่ไม่ปลอดภัยได้ ลองใช้ nonces หรือ hashes ของ CSP เพื่ออนุญาตสคริปต์แต่ละรายการ"
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "ลองเพิ่ม `'unsafe-inline'` (ซึ่งเบราว์เซอร์ที่รองรับ nonces/hashes จะไม่สนใจ) เพื่อให้เข้ากันได้กับเบราว์เซอร์เวอร์ชันเก่ากว่า"
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "ดูรายละเอียดเพิ่มเติมที่หน้าสถานะฟีเจอร์"

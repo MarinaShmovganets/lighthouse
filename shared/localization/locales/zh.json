@@ -774,7 +774,7 @@
     "message": "语法"
   },
   "core/audits/csp-xss.js | metaTagMessage": {
-    "message": "The page contains a CSP defined in a `<meta>` tag. Consider moving the CSP to an HTTP header or defining another strict CSP in an HTTP header."
+    "message": "该网页包含一个在 `<meta>` 标记中定义的 CSP。因此，我们建议您将 CSP 移至 HTTP 标头，或在 HTTP 标头中定义其他严格 CSP。"
   },
   "core/audits/csp-xss.js | noCsp": {
     "message": "找不到任何处于强制模式的 CSP"
@@ -1026,7 +1026,7 @@
     "message": "该网页是在无痕式窗口中加载的"
   },
   "core/audits/installable-manifest.js | manifest-display-not-supported": {
-    "message": "Manifest `display` property must be one of `standalone`, `fullscreen`, or `minimal-ui`"
+    "message": "清单 `display` 属性必须是 `standalone`、`fullscreen` 或 `minimal-ui`"
   },
   "core/audits/installable-manifest.js | manifest-display-override-not-supported": {
     "message": "清单包含“display_override”字段，因此第一个受支持的显示模式必须是“standalone”、“fullscreen”或“minimal-ui”之一"
@@ -1038,7 +1038,7 @@
     "message": "在提取清单期间，清单网址发生了更改。"
   },
   "core/audits/installable-manifest.js | manifest-missing-name-or-short-name": {
-    "message": "Manifest does not contain a `name` or `short_name` field"
+    "message": "清单未包含 `name` 或 `short_name` 字段"
   },
   "core/audits/installable-manifest.js | manifest-missing-suitable-icon": {
     "message": "清单未包含合适的图标 - 必须提供不小于 {value0} 像素的 PNG、SVG 或 WebP 格式图标；必须设置 sizes 属性；如果设置了 purpose 属性，其中必须包含“any”。"
@@ -2211,25 +2211,25 @@
     "message": "使用 WebXR 的网页目前无法储存至往返缓存。"
   },
   "core/lib/csp-evaluator.js | allowlistFallback": {
-    "message": "Consider adding https: and http: URL schemes (ignored by browsers supporting `'strict-dynamic'`) to be backward compatible with older browsers."
+    "message": "建议您添加 https: 和 http: 网址架构（会被支持 `'strict-dynamic'` 的浏览器忽略），以便向后兼容旧版浏览器。"
   },
   "core/lib/csp-evaluator.js | deprecatedDisownOpener": {
-    "message": "`disown-opener` is deprecated since CSP3. Please, use the Cross-Origin-Opener-Policy header instead."
+    "message": "从 CSP3 开始，`disown-opener` 已被弃用。因此，请改用 Cross-Origin-Opener-Policy 标头。"
   },
   "core/lib/csp-evaluator.js | deprecatedReferrer": {
-    "message": "`referrer` is deprecated since CSP2. Please, use the Referrer-Policy header instead."
+    "message": "从 CSP2 开始，`referrer` 已被弃用。因此，请改用 Referrer-Policy 标头。"
   },
   "core/lib/csp-evaluator.js | deprecatedReflectedXSS": {
-    "message": "`reflected-xss` is deprecated since CSP2. Please, use the X-XSS-Protection header instead."
+    "message": "从 CSP2 开始，`reflected-xss` 已被弃用。因此，请改用 X-XSS-Protection 标头。"
   },
   "core/lib/csp-evaluator.js | missingBaseUri": {
-    "message": "Missing `base-uri` allows injected `<base>` tags to set the base URL for all relative URLs (e.g. scripts) to an attacker controlled domain. Consider setting `base-uri` to `'none'` or `'self'`."
+    "message": "如果缺少 `base-uri`，将为注入的 `<base>` 标记提供可乘之机，让它们能够将所有相对网址（例如脚本）的基础网址设置为受攻击者控制的网域。因此，我们建议您将 `base-uri` 设置为 `'none'` 或 `'self'`。"
   },
   "core/lib/csp-evaluator.js | missingObjectSrc": {
-    "message": "Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can."
+    "message": "如果缺少 `object-src`，将为注入可执行不安全脚本的插件提供可乘之机。因此，我们建议您将 `object-src` 设置为 `'none'`（如果可以的话）。"
   },
   "core/lib/csp-evaluator.js | missingScriptSrc": {
-    "message": "`script-src` directive is missing. This can allow the execution of unsafe scripts."
+    "message": "缺少 `script-src` 指令。这可为执行不安全脚本提供可乘之机。"
   },
   "core/lib/csp-evaluator.js | missingSemicolon": {
     "message": "您忘了要使用英文分号吗？{keyword}似乎是一个指令，而非关键字。"
@@ -2247,13 +2247,13 @@
     "message": "请避免在这条指令中仅仅使用通配符 ({keyword})。如果仅仅使用通配符，便无法防止脚本来自不安全的网域。"
   },
   "core/lib/csp-evaluator.js | reportToOnly": {
-    "message": "The reporting destination is only configured via the report-to directive. This directive is only supported in Chromium-based browsers so it is recommended to also use a `report-uri` directive."
+    "message": "报告目的地只能通过 report-to 指令进行配置。此指令仅适用于基于 Chromium 的浏览器，因此我们建议您一并使用 `report-uri` 指令。"
   },
   "core/lib/csp-evaluator.js | reportingDestinationMissing": {
     "message": "任何 CSP 都未配置报告目的地。这会导致系统很难持续维护 CSP 以及监控故障。"
   },
   "core/lib/csp-evaluator.js | strictDynamic": {
-    "message": "Host allowlists can frequently be bypassed. Consider using CSP nonces or hashes instead, along with `'strict-dynamic'` if necessary."
+    "message": "主机许可名单经常可被绕过。因此，我们建议您改用 CSP nonces 或 hashes（以及 `'strict-dynamic'`，若有必要的话）。"
   },
   "core/lib/csp-evaluator.js | unknownDirective": {
     "message": "CSP 指令不明。"
@@ -2262,10 +2262,10 @@
     "message": "{keyword}似乎是无效关键字。"
   },
   "core/lib/csp-evaluator.js | unsafeInline": {
-    "message": "`'unsafe-inline'` allows the execution of unsafe in-page scripts and event handlers. Consider using CSP nonces or hashes to allow scripts individually."
+    "message": "如果使用 `'unsafe-inline'`，将为执行不安全的页内脚本和事件处理脚本提供可乘之机。因此，我们建议您使用 CSP nonces 或 hashes 来逐一允许各个脚本。"
   },
   "core/lib/csp-evaluator.js | unsafeInlineFallback": {
-    "message": "Consider adding `'unsafe-inline'` (ignored by browsers supporting nonces/hashes) to be backward compatible with older browsers."
+    "message": "建议您添加 `'unsafe-inline'`（会被支持 nonces/hashes 的浏览器忽略），以便向后兼容旧版浏览器。"
   },
   "core/lib/deprecation-description.js | feature": {
     "message": "如需了解详情，请参阅功能状态页面。"
