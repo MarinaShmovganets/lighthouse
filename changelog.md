@@ -1,21 +1,24 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Max Coplan @vegerot
-Barry Pollard @tunetheweb
- <a name="11.3.0"></a>
+<a name="11.3.0"></a>
 # 11.3.0 (2023-11-02)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.2.0...v11.3.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 121](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## New Contributors
+
+- Thanks to our new contributors 👽🐷🐰🐯🐻!
+- Max Coplan @vegerot
+- Barry Pollard @tunetheweb
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
+* core: add `clearStorageTypes` option ([#15508](https://github.com/GoogleChrome/lighthouse/pull/15508))
+* core: create flag to prevent fatal error on bad status code ([#15494](https://github.com/GoogleChrome/lighthouse/pull/15494))
+* clients(extension): add locale selector ([#15574](https://github.com/GoogleChrome/lighthouse/pull/15574))
+* clients(extension): always show settings, add psi frontend ([#15526](https://github.com/GoogleChrome/lighthouse/pull/15526))
 
 ## Core
 
-* add `clearStorageTypes` option ([#15508](https://github.com/GoogleChrome/lighthouse/pull/15508))
-* create flag to prevent fatal error on bad status code ([#15494](https://github.com/GoogleChrome/lighthouse/pull/15494))
 * remove config navigations ([#15397](https://github.com/GoogleChrome/lighthouse/pull/15397))
 * accessibility: hide experimental axe rules ([#15543](https://github.com/GoogleChrome/lighthouse/pull/15543))
 * inspector-issues: add cookie deprecation issue ([#15553](https://github.com/GoogleChrome/lighthouse/pull/15553))
@@ -33,8 +36,6 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 ## Clients
 
 * devtools: default to ignore fatal errors ([#15558](https://github.com/GoogleChrome/lighthouse/pull/15558))
-* extension: add locale selector ([#15574](https://github.com/GoogleChrome/lighthouse/pull/15574))
-* extension: always show settings, add psi frontend ([#15526](https://github.com/GoogleChrome/lighthouse/pull/15526))
 
 ## I18n
 
