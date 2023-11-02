@@ -6,7 +6,8 @@ We expect this release to ship in the DevTools of [Chrome 121](https://chromiumd
 
 ## New Contributors
 
-- Thanks to our new contributors 👽🐷🐰🐯🐻!
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
 - Max Coplan @vegerot
 - Barry Pollard @tunetheweb
 
