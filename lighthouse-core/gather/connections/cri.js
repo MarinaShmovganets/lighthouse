@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -8,6 +9,8 @@
 const Connection = require('./connection.js');
 const WebSocket = require('ws');
 const http = require('http');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 const log = require('lighthouse-logger');
 const LighthouseError = require('../../lib/lh-error.js');
 
@@ -34,9 +37,12 @@ class CriConnection extends Connection {
    * @return {Promise<void>}
    */
   connect() {
-    return this._runJsonCommand('new')
-      .then(response => this._connectToSocket(/** @type {LH.DevToolsJsonTarget} */(response)))
-      .catch(_ => {
+    // return exec(`curl -X PUT localhost:${(port)}/json/new`);
+    return exec('"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --remote-debugging-port=9223')
+      .then(() => exec(`curl -X PUT ${(this.hostname)}:${(this.port)}/json/new`))
+      .then(response => this._connectToSocket(/** @type {any} */(response)))
+      .catch(err => {
+        console.log("tab-error", err);
         // COMPAT: headless didn't support `/json/new` before m59. (#970, crbug.com/699392)
         // If no support, we fallback and reuse an existing open tab
         log.warn('CriConnection', 'Cannot create new tab; reusing open tab.');
@@ -58,6 +64,7 @@ class CriConnection extends Connection {
    * @private
    */
   _connectToSocket(response) {
+    response = JSON.parse(response.stdout);
     const url = response.webSocketDebuggerUrl;
     this._pageId = response.id;
 

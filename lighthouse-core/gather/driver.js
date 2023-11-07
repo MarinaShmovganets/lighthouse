@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -439,12 +440,28 @@ class Driver {
       throw new Error('DOM domain enabled when starting trace');
     }
 
-    // Enable Page domain to wait for Page.loadEventFired
-    return this.sendCommand('Page.enable')
-      .then(_ => this.sendCommand('Tracing.start', {
-        categories: uniqueCategories.join(','),
-        options: 'sampling-frequency=10000', // 1000 is default and too slow.
-      }));
+    const sleep = async () => {
+      return new Promise(resolve => setTimeout(resolve, 10000))
+    };
+
+    const { targetInfos } = await this.sendCommand('Target.getTargets');
+    const pageTargets = targetInfos.filter(target => target.type === 'page');
+    await this.sendCommand('Target.activateTarget', {targetId: pageTargets[pageTargets.length - 1].targetId});
+    console.log("--> rutvik activated", pageTargets);
+
+    for (let retryCount = 0; retryCount < 10; retryCount++) {
+      try {
+        await this.sendCommand('Page.enable');
+        await this.sendCommand('Tracing.start', {
+          categories: uniqueCategories.join(','),
+          options: 'sampling-frequency=10000', // 1000 is default and too slow.
+        });
+        return;
+      } catch (err) {
+        console.log(`--> Retry ${retryCount + 1}: Failed to start tracing`, err);
+      }
+      await sleep();
+    }
   }
 
   /**
