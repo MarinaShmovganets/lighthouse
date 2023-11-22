@@ -264,8 +264,8 @@ describe('minification estimator', () => {
     });
 
     it('should handle else keyword followed by a regex pattern in scripts', () => {
-      let script = '} else/^hello!/.test(n)?(d=element.parseFromString("Hi/Hello there!")';
-      let minified = '}else/^hello!/.test(n)?(d=element.parseFromString("Hi/Hello there!")';
+      const script = '} else/^hello!/.test(n)?(d=element.parseFromString("Hi/Hello there!")';
+      const minified = '}else/^hello!/.test(n)?(d=element.parseFromString("Hi/Hello there!")';
       expect(computeJSTokenLength(script)).toEqual(minified.length);
     });
   });
