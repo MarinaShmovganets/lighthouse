@@ -70,7 +70,7 @@ describe('Individual modes API', function() {
           audits: [
             {path: 'bootup-time', options: {thresholdInMs: 10}},
           ],
-        }
+        },
       });
 
       await setupTestPage();
