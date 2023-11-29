@@ -307,7 +307,7 @@ class Util {
 
   /**
    * Gets the tld of a domain
-   * This function is only while rendering pre-10.0 LHRs.
+   * This function is used only while rendering pre-10.0 LHRs.
    *
    * @param {string} hostname
    * @return {string} tld
@@ -324,7 +324,7 @@ class Util {
 
   /**
    * Returns a primary domain for provided hostname (e.g. www.example.com -> example.com).
-   * This function is only while rendering pre-10.0 LHRs.
+   * This function is used only while rendering pre-10.0 LHRs.
    * @param {string|URL} url hostname or URL object
    * @return {string}
    */
