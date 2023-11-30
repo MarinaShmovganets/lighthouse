@@ -15,6 +15,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT_DIR="$SCRIPT_DIR/../.."
 
 chrome_out=${1:-"$LH_ROOT_DIR/.tmp/chrome-tot"}
+mkdir -p "$LH_ROOT_DIR/.tmp"
 
 if [ -e "$chrome_out" ]; then
   echo "cached chrome found"
