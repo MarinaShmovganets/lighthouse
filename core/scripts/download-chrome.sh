@@ -34,7 +34,7 @@ esac
 should_hardcode_ci=true
 
 if [[ "${CI:-}" ]] && [ "$should_hardcode_ci" == true ]; then
-  rev=1228646
+  rev=1228630
   if [ "$machine" == "MinGw" ]; then
     url="http://commondatastorage.googleapis.com/chromium-browser-snapshots/Win_x64/$rev/chrome-win.zip"
   elif [ "$machine" == "Linux" ]; then
