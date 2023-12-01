@@ -414,9 +414,7 @@ class LegacyJavascript extends ByteEfficiencyAudit {
       compressionRatio = 1;
     } else {
       const networkRecord = getRequestForScript(networkRecords, script);
-      const contentLength = networkRecord?.resourceSize ?
-        networkRecord.resourceSize :
-        script.length || 0;
+      const contentLength = networkRecord?.resourceSize || script.length || 0;
       const compressedSize =
         ByteEfficiencyAudit.estimateCompressedContentSize(networkRecord, contentLength, 'Script');
       compressionRatio = compressedSize / contentLength;
