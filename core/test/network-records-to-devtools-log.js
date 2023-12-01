@@ -303,10 +303,9 @@ function getResponseReceivedEvent(networkRecord, index, normalizedTiming) {
 /**
  * @param {Partial<NetworkRequest>} networkRecord
  * @param {number} index
- * @param {NormalizedRequestTime} normalizedTiming
  * @return {LH.Protocol.RawEventMessage}
  */
-function getResponseReceivedExtraInfoEvent(networkRecord, index, normalizedTiming) {
+function getResponseReceivedExtraInfoEvent(networkRecord, index) {
   const headers = headersArrayToHeadersDict(networkRecord.responseHeaders);
 
   return {
@@ -463,7 +462,7 @@ function networkRecordsToDevtoolsLog(networkRecords, options = {}) {
 
     devtoolsLog.push(getResponseReceivedEvent(networkRecord, index, normalizedTiming));
     if (networkRecord.responseHeadersText) {
-      devtoolsLog.push(getResponseReceivedExtraInfoEvent(networkRecord, index, normalizedTiming));
+      devtoolsLog.push(getResponseReceivedExtraInfoEvent(networkRecord, index));
     }
     devtoolsLog.push(getDataReceivedEvent(networkRecord, index));
 
