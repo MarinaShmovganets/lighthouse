@@ -9,38 +9,38 @@ import assert from 'assert/strict';
 import {Util} from '../util.js';
 
 describe('util helpers', () => {
-  describe('getTld', () => {
+  describe('getPseudoTld', () => {
     it('returns the correct tld', () => {
-      assert.equal(Util.getTld('example.com'), '.com');
-      assert.equal(Util.getTld('example.co.uk'), '.co.uk');
-      assert.equal(Util.getTld('example.com.br'), '.com.br');
-      assert.equal(Util.getTld('example.tokyo.jp'), '.jp');
+      assert.equal(Util.getPseudoTld('example.com'), '.com');
+      assert.equal(Util.getPseudoTld('example.co.uk'), '.co.uk');
+      assert.equal(Util.getPseudoTld('example.com.br'), '.com.br');
+      assert.equal(Util.getPseudoTld('example.tokyo.jp'), '.jp');
     });
   });
 
-  describe('getLegacyRootDomain', () => {
+  describe('getPseudoRootDomain', () => {
     it('returns the correct rootDomain from a string', () => {
-      assert.equal(Util.getLegacyRootDomain('https://www.example.com/index.html'), 'example.com');
-      assert.equal(Util.getLegacyRootDomain('https://example.com'), 'example.com');
-      assert.equal(Util.getLegacyRootDomain('https://www.example.co.uk'), 'example.co.uk');
-      assert.equal(Util.getLegacyRootDomain('https://example.com.br/app/'), 'example.com.br');
-      assert.equal(Util.getLegacyRootDomain('https://example.tokyo.jp'), 'tokyo.jp');
-      assert.equal(Util.getLegacyRootDomain('https://sub.example.com'), 'example.com');
-      assert.equal(Util.getLegacyRootDomain('https://sub.example.tokyo.jp'), 'tokyo.jp');
-      assert.equal(Util.getLegacyRootDomain('http://localhost'), 'localhost');
-      assert.equal(Util.getLegacyRootDomain('http://localhost:8080'), 'localhost');
+      assert.equal(Util.getPseudoRootDomain('https://www.example.com/index.html'), 'example.com');
+      assert.equal(Util.getPseudoRootDomain('https://example.com'), 'example.com');
+      assert.equal(Util.getPseudoRootDomain('https://www.example.co.uk'), 'example.co.uk');
+      assert.equal(Util.getPseudoRootDomain('https://example.com.br/app/'), 'example.com.br');
+      assert.equal(Util.getPseudoRootDomain('https://example.tokyo.jp'), 'tokyo.jp');
+      assert.equal(Util.getPseudoRootDomain('https://sub.example.com'), 'example.com');
+      assert.equal(Util.getPseudoRootDomain('https://sub.example.tokyo.jp'), 'tokyo.jp');
+      assert.equal(Util.getPseudoRootDomain('http://localhost'), 'localhost');
+      assert.equal(Util.getPseudoRootDomain('http://localhost:8080'), 'localhost');
     });
 
     it('returns the correct rootDomain from an URL object', () => {
-      assert.equal(Util.getLegacyRootDomain(new URL('https://www.example.com/index.html')), 'example.com');
-      assert.equal(Util.getLegacyRootDomain(new URL('https://example.com')), 'example.com');
-      assert.equal(Util.getLegacyRootDomain(new URL('https://www.example.co.uk')), 'example.co.uk');
-      assert.equal(Util.getLegacyRootDomain(new URL('https://example.com.br/app/')), 'example.com.br');
-      assert.equal(Util.getLegacyRootDomain(new URL('https://example.tokyo.jp')), 'tokyo.jp');
-      assert.equal(Util.getLegacyRootDomain(new URL('https://sub.example.com')), 'example.com');
-      assert.equal(Util.getLegacyRootDomain(new URL('https://sub.example.tokyo.jp')), 'tokyo.jp');
-      assert.equal(Util.getLegacyRootDomain(new URL('http://localhost')), 'localhost');
-      assert.equal(Util.getLegacyRootDomain(new URL('http://localhost:8080')), 'localhost');
+      assert.equal(Util.getPseudoRootDomain(new URL('https://www.example.com/index.html')), 'example.com');
+      assert.equal(Util.getPseudoRootDomain(new URL('https://example.com')), 'example.com');
+      assert.equal(Util.getPseudoRootDomain(new URL('https://www.example.co.uk')), 'example.co.uk');
+      assert.equal(Util.getPseudoRootDomain(new URL('https://example.com.br/app/')), 'example.com.br');
+      assert.equal(Util.getPseudoRootDomain(new URL('https://example.tokyo.jp')), 'tokyo.jp');
+      assert.equal(Util.getPseudoRootDomain(new URL('https://sub.example.com')), 'example.com');
+      assert.equal(Util.getPseudoRootDomain(new URL('https://sub.example.tokyo.jp')), 'tokyo.jp');
+      assert.equal(Util.getPseudoRootDomain(new URL('http://localhost')), 'localhost');
+      assert.equal(Util.getPseudoRootDomain(new URL('http://localhost:8080')), 'localhost');
     });
   });
 
