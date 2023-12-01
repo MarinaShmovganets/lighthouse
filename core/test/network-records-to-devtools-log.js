@@ -288,7 +288,7 @@ function getResponseReceivedEvent(networkRecord, index, normalizedTiming) {
         connectionId: networkRecord.connectionId || 140,
         fromDiskCache: networkRecord.fromDiskCache || false,
         fromServiceWorker: networkRecord.fetchedViaServiceWorker || false,
-        encodedDataLength: networkRecord.responseHeadersTransferSize,
+        encodedDataLength: networkRecord.responseHeadersTransferSize || networkRecord.transferSize,
         timing: {...normalizedTiming.timing},
         protocol: networkRecord.protocol || 'http/1.1',
       },
