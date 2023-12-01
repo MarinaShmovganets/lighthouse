@@ -68,7 +68,11 @@ else
   fi
 fi
 
+echo "downloading $url"
+
 mkdir -p .tmp-download && cd .tmp-download
 curl "$url" -Lo chrome.zip && unzip -q chrome.zip && rm chrome.zip
 mv * "$chrome_out"
 cd - && rm -rf .tmp-download
+
+ls "$chrome_out"
