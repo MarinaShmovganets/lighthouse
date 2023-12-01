@@ -84,11 +84,13 @@ class Util {
    * @return {LH.Result.LhrEntity|string}
    */
   static getEntityFromUrl(url, entities) {
+    // If it's a pre-v10 LHR, we don't have entities, so match against the root-ish domain
     if (!entities) {
       return Util.getLegacyRootDomain(url);
     }
 
     const entity = entities.find(e => e.origins.find(origin => url.startsWith(origin)));
+    // This fallback case would be unexpected, but leaving for safety.   
     return entity || Util.getLegacyRootDomain(url);
   }
 
@@ -324,6 +326,8 @@ class Util {
 
   /**
    * Returns a primary domain for provided hostname (e.g. www.example.com -> example.com).
+   * As it doesn't consult the Public Suffix List, it can sometimes lose detail.
+   * See the `listOfTlds` comment above for more.
    * This function is used only while rendering pre-10.0 LHRs.
    * @param {string|URL} url hostname or URL object
    * @return {string}
