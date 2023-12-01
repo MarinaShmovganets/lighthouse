@@ -139,7 +139,8 @@ function getLegacyJavascriptResults(code, map, {sourceMaps}) {
   const scriptId = '10001';
   const responseHeaders = [{name: 'Content-Encoding', value: 'gzip'}];
   const networkRecords = [
-    {url: documentUrl, requestId: '1000.1', resourceType: /** @type {const} */ ('Document'), responseHeaders},
+    {url: documentUrl, requestId: '1000.1', resourceType: /** @type {const} */ ('Document'),
+      responseHeaders},
     {url: scriptUrl, requestId: '1000.2', responseHeaders},
   ];
   const devtoolsLogs = networkRecordsToDevtoolsLog(networkRecords);
