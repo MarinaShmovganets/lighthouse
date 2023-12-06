@@ -2,7 +2,7 @@
   "steps": [
     {
       "lhr": {
-        "lighthouseVersion": "11.2.0",
+        "lighthouseVersion": "11.3.0",
         "requestedUrl": "https://www.mikescerealshack.co/",
         "mainDocumentUrl": "https://www.mikescerealshack.co/",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/",
@@ -12,7 +12,7 @@
         "runWarnings": [],
         "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
         "environment": {
-          "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+          "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
           "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
           "benchmarkIndex": 1750.5,
           "credits": {
@@ -1479,6 +1479,13 @@
                         "blockingTime": 0,
                         "transferSize": 8273,
                         "tbtImpact": 0
+                      },
+                      {
+                        "url": "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap",
+                        "mainThreadTime": 4.868,
+                        "blockingTime": 0,
+                        "transferSize": 2506,
+                        "tbtImpact": 0
                       }
                     ]
                   }
@@ -2139,7 +2146,7 @@
           "aria-allowed-role": {
             "id": "aria-allowed-role",
             "title": "Values assigned to `role=\"\"` are valid ARIA roles.",
-            "description": "ARIA `role`s enable assistive technologies to know the role of each element on the web page. If the `role` values are misspelled, not existing ARIA `role` values, or abstract roles, then the purpose of the element will not be communicated to users of assistive technologies. [Learn more about ARIA roles](https://dequeuniversity.com/rules/axe/4.8/aria-allowed-roles).",
+            "description": "ARIA `role`s enable assistive technologies to know the role of each element on the web page. If the `role` values are misspelled, not existing ARIA `role` values, or abstract roles, then the purpose of the element will not be communicated to users of assistive technologies. [Learn more about ARIA roles](https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -3279,7 +3286,7 @@
               "items": [
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/commons.49455e4fa8cc3f51203f.js",
-                  "wastedBytes": 57,
+                  "wastedBytes": 167,
                   "subItems": {
                     "type": "subitems",
                     "items": [
@@ -3299,7 +3306,7 @@
                 }
               ],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 57,
+              "overallSavingsBytes": 167,
               "sortedBy": [
                 "wastedBytes"
               ],
@@ -3714,7 +3721,7 @@
             "title": "Page didn't prevent back/forward cache restoration",
             "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://developer.chrome.com/docs/lighthouse/performance/bf-cache/)",
             "score": 1,
-            "scoreDisplayMode": "metricSavings",
+            "scoreDisplayMode": "binary",
             "guidanceLevel": 2
           }
         },
@@ -3743,7 +3750,7 @@
             "deviceScaleFactor": 1.75,
             "disabled": false
           },
-          "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+          "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
           "auditMode": false,
           "gatherMode": false,
           "clearStorageTypes": [
@@ -7004,6 +7011,8 @@
             "opportunitySavingsColumnLabel": "Estimated Savings",
             "passedAuditsGroupTitle": "Passed audits",
             "runtimeAnalysisWindow": "Initial page load",
+            "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
+            "runtimeAnalysisWindowTimespan": "User interactions timespan",
             "runtimeCustom": "Custom throttling",
             "runtimeDesktopEmulation": "Emulated Desktop",
             "runtimeMobileEmulation": "Emulated Moto G Power",
@@ -7015,8 +7024,8 @@
             "runtimeSettingsNetworkThrottling": "Network throttling",
             "runtimeSettingsScreenEmulation": "Screen emulation",
             "runtimeSettingsUANetwork": "User agent (network)",
-            "runtimeSingleLoad": "Single page load",
-            "runtimeSingleLoadTooltip": "This data is taken from a single page load, as opposed to field data summarizing many sessions.",
+            "runtimeSingleLoad": "Single page session",
+            "runtimeSingleLoadTooltip": "This data is taken from a single page session, as opposed to field data summarizing many sessions.",
             "runtimeSlow4g": "Slow 4G throttling",
             "runtimeUnknown": "Unknown",
             "show": "Show",
@@ -8025,7 +8034,7 @@
             "core/lib/i18n/i18n.js | displayValueByteSavings": [
               {
                 "values": {
-                  "wastedBytes": 57
+                  "wastedBytes": 167
                 },
                 "path": "audits[legacy-javascript].displayValue"
               }
@@ -8430,14 +8439,14 @@
     },
     {
       "lhr": {
-        "lighthouseVersion": "11.2.0",
+        "lighthouseVersion": "11.3.0",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/search?q=call+of+duty",
         "fetchTime": "2023-01-13T23:27:51.982Z",
         "gatherMode": "timespan",
         "runWarnings": [],
         "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
         "environment": {
-          "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+          "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
           "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
           "benchmarkIndex": 1805,
           "credits": {}
@@ -10645,7 +10654,7 @@
             "title": "Page didn't prevent back/forward cache restoration",
             "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://developer.chrome.com/docs/lighthouse/performance/bf-cache/)",
             "score": 1,
-            "scoreDisplayMode": "metricSavings",
+            "scoreDisplayMode": "binary",
             "guidanceLevel": 2
           }
         },
@@ -10674,7 +10683,7 @@
             "deviceScaleFactor": 1.75,
             "disabled": false
           },
-          "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+          "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
           "auditMode": false,
           "gatherMode": false,
           "clearStorageTypes": [
@@ -11842,6 +11851,8 @@
             "opportunitySavingsColumnLabel": "Estimated Savings",
             "passedAuditsGroupTitle": "Passed audits",
             "runtimeAnalysisWindow": "Initial page load",
+            "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
+            "runtimeAnalysisWindowTimespan": "User interactions timespan",
             "runtimeCustom": "Custom throttling",
             "runtimeDesktopEmulation": "Emulated Desktop",
             "runtimeMobileEmulation": "Emulated Moto G Power",
@@ -11853,8 +11864,8 @@
             "runtimeSettingsNetworkThrottling": "Network throttling",
             "runtimeSettingsScreenEmulation": "Screen emulation",
             "runtimeSettingsUANetwork": "User agent (network)",
-            "runtimeSingleLoad": "Single page load",
-            "runtimeSingleLoadTooltip": "This data is taken from a single page load, as opposed to field data summarizing many sessions.",
+            "runtimeSingleLoad": "Single page session",
+            "runtimeSingleLoadTooltip": "This data is taken from a single page session, as opposed to field data summarizing many sessions.",
             "runtimeSlow4g": "Slow 4G throttling",
             "runtimeUnknown": "Unknown",
             "show": "Show",
@@ -12403,7 +12414,7 @@
     },
     {
       "lhr": {
-        "lighthouseVersion": "11.2.0",
+        "lighthouseVersion": "11.3.0",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/search?q=call+of+duty",
         "fetchTime": "2023-01-13T23:28:01.888Z",
         "gatherMode": "snapshot",
@@ -12646,7 +12657,7 @@
           "aria-allowed-role": {
             "id": "aria-allowed-role",
             "title": "Values assigned to `role=\"\"` are valid ARIA roles.",
-            "description": "ARIA `role`s enable assistive technologies to know the role of each element on the web page. If the `role` values are misspelled, not existing ARIA `role` values, or abstract roles, then the purpose of the element will not be communicated to users of assistive technologies. [Learn more about ARIA roles](https://dequeuniversity.com/rules/axe/4.8/aria-allowed-roles).",
+            "description": "ARIA `role`s enable assistive technologies to know the role of each element on the web page. If the `role` values are misspelled, not existing ARIA `role` values, or abstract roles, then the purpose of the element will not be communicated to users of assistive technologies. [Learn more about ARIA roles](https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -14802,7 +14813,7 @@
             "deviceScaleFactor": 1.75,
             "disabled": false
           },
-          "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+          "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
           "auditMode": false,
           "gatherMode": false,
           "clearStorageTypes": [
@@ -16836,6 +16847,8 @@
             "opportunitySavingsColumnLabel": "Estimated Savings",
             "passedAuditsGroupTitle": "Passed audits",
             "runtimeAnalysisWindow": "Initial page load",
+            "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
+            "runtimeAnalysisWindowTimespan": "User interactions timespan",
             "runtimeCustom": "Custom throttling",
             "runtimeDesktopEmulation": "Emulated Desktop",
             "runtimeMobileEmulation": "Emulated Moto G Power",
@@ -16847,8 +16860,8 @@
             "runtimeSettingsNetworkThrottling": "Network throttling",
             "runtimeSettingsScreenEmulation": "Screen emulation",
             "runtimeSettingsUANetwork": "User agent (network)",
-            "runtimeSingleLoad": "Single page load",
-            "runtimeSingleLoadTooltip": "This data is taken from a single page load, as opposed to field data summarizing many sessions.",
+            "runtimeSingleLoad": "Single page session",
+            "runtimeSingleLoadTooltip": "This data is taken from a single page session, as opposed to field data summarizing many sessions.",
             "runtimeSlow4g": "Slow 4G throttling",
             "runtimeUnknown": "Unknown",
             "show": "Show",
@@ -17623,7 +17636,7 @@
     },
     {
       "lhr": {
-        "lighthouseVersion": "11.2.0",
+        "lighthouseVersion": "11.3.0",
         "requestedUrl": "https://www.mikescerealshack.co/corrections",
         "mainDocumentUrl": "https://www.mikescerealshack.co/corrections",
         "finalDisplayedUrl": "https://www.mikescerealshack.co/corrections",
@@ -17633,7 +17646,7 @@
         "runWarnings": [],
         "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
         "environment": {
-          "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+          "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
           "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
           "benchmarkIndex": 1799.5,
           "credits": {
@@ -19050,7 +19063,29 @@
                   "entity": "Google Fonts",
                   "subItems": {
                     "type": "subitems",
-                    "items": []
+                    "items": [
+                      {
+                        "url": "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap",
+                        "mainThreadTime": 2.98,
+                        "blockingTime": 0,
+                        "transferSize": 0,
+                        "tbtImpact": 0
+                      },
+                      {
+                        "url": "https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z1xlFd2JQEk.woff2",
+                        "mainThreadTime": 0,
+                        "blockingTime": 0,
+                        "transferSize": 0,
+                        "tbtImpact": 0
+                      },
+                      {
+                        "url": "https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2",
+                        "mainThreadTime": 0,
+                        "blockingTime": 0,
+                        "transferSize": 0,
+                        "tbtImpact": 0
+                      }
+                    ]
                   }
                 }
               ],
@@ -19597,7 +19632,7 @@
           "aria-allowed-role": {
             "id": "aria-allowed-role",
             "title": "Values assigned to `role=\"\"` are valid ARIA roles.",
-            "description": "ARIA `role`s enable assistive technologies to know the role of each element on the web page. If the `role` values are misspelled, not existing ARIA `role` values, or abstract roles, then the purpose of the element will not be communicated to users of assistive technologies. [Learn more about ARIA roles](https://dequeuniversity.com/rules/axe/4.8/aria-allowed-roles).",
+            "description": "ARIA `role`s enable assistive technologies to know the role of each element on the web page. If the `role` values are misspelled, not existing ARIA `role` values, or abstract roles, then the purpose of the element will not be communicated to users of assistive technologies. [Learn more about ARIA roles](https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -20815,7 +20850,7 @@
             "scoreDisplayMode": "metricSavings",
             "numericValue": 0,
             "numericUnit": "millisecond",
-            "displayValue": "",
+            "displayValue": "Potential savings of 0 KiB",
             "metricSavings": {
               "FCP": 0,
               "LCP": 0
@@ -20849,7 +20884,7 @@
               "items": [
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/commons.49455e4fa8cc3f51203f.js",
-                  "wastedBytes": 0,
+                  "wastedBytes": 167,
                   "subItems": {
                     "type": "subitems",
                     "items": [
@@ -20869,7 +20904,7 @@
                 }
               ],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 0,
+              "overallSavingsBytes": 167,
               "sortedBy": [
                 "wastedBytes"
               ],
@@ -21341,7 +21376,7 @@
             "title": "Page didn't prevent back/forward cache restoration",
             "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://developer.chrome.com/docs/lighthouse/performance/bf-cache/)",
             "score": 1,
-            "scoreDisplayMode": "metricSavings",
+            "scoreDisplayMode": "binary",
             "guidanceLevel": 2
           }
         },
@@ -21370,7 +21405,7 @@
             "deviceScaleFactor": 1.75,
             "disabled": false
           },
-          "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+          "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
           "auditMode": false,
           "gatherMode": false,
           "clearStorageTypes": [
@@ -24605,6 +24640,8 @@
             "opportunitySavingsColumnLabel": "Estimated Savings",
             "passedAuditsGroupTitle": "Passed audits",
             "runtimeAnalysisWindow": "Initial page load",
+            "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
+            "runtimeAnalysisWindowTimespan": "User interactions timespan",
             "runtimeCustom": "Custom throttling",
             "runtimeDesktopEmulation": "Emulated Desktop",
             "runtimeMobileEmulation": "Emulated Moto G Power",
@@ -24616,8 +24653,8 @@
             "runtimeSettingsNetworkThrottling": "Network throttling",
             "runtimeSettingsScreenEmulation": "Screen emulation",
             "runtimeSettingsUANetwork": "User agent (network)",
-            "runtimeSingleLoad": "Single page load",
-            "runtimeSingleLoadTooltip": "This data is taken from a single page load, as opposed to field data summarizing many sessions.",
+            "runtimeSingleLoad": "Single page session",
+            "runtimeSingleLoadTooltip": "This data is taken from a single page session, as opposed to field data summarizing many sessions.",
             "runtimeSlow4g": "Slow 4G throttling",
             "runtimeUnknown": "Unknown",
             "show": "Show",
@@ -25592,6 +25629,12 @@
                   "wastedBytes": 52102
                 },
                 "path": "audits[uses-responsive-images].displayValue"
+              },
+              {
+                "values": {
+                  "wastedBytes": 167
+                },
+                "path": "audits[legacy-javascript].displayValue"
               }
             ],
             "core/lib/i18n/i18n.js | columnResourceSize": [

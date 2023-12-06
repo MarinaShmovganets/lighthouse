@@ -135,6 +135,7 @@ class NetworkRequest {
 
     // Go read the comment on _updateTransferSizeForLightrider.
     this.transferSize = 0;
+    this.responseHeadersTransferSize = 0;
     this.resourceSize = 0;
     this.fromDiskCache = false;
     this.fromMemoryCache = false;
@@ -247,6 +248,13 @@ class NetworkRequest {
   }
 
   /**
+   * @param {LH.Crdp.Network.ResponseReceivedExtraInfoEvent} data
+   */
+  onResponseReceivedExtraInfo(data) {
+    this.responseHeadersText = data.headersText || '';
+  }
+
+  /**
    * @param {LH.Crdp.Network.DataReceivedEvent} data
    */
   onDataReceived(data) {
@@ -344,6 +352,7 @@ class NetworkRequest {
     this.responseHeadersEndTime = timestamp * 1000;
 
     this.transferSize = response.encodedDataLength;
+    this.responseHeadersTransferSize = response.encodedDataLength;
     if (typeof response.fromDiskCache === 'boolean') this.fromDiskCache = response.fromDiskCache;
     if (typeof response.fromPrefetchCache === 'boolean') {
       this.fromPrefetchCache = response.fromPrefetchCache;
@@ -354,7 +363,6 @@ class NetworkRequest {
     this.timing = response.timing;
     if (resourceType) this.resourceType = RESOURCE_TYPES[resourceType];
     this.mimeType = response.mimeType;
-    this.responseHeadersText = response.headersText || '';
     this.responseHeaders = NetworkRequest._headersDictToHeadersArray(response.headers);
 
     this.fetchedViaServiceWorker = !!response.fromServiceWorker;
@@ -598,6 +606,15 @@ class NetworkRequest {
       .find(header => header.name === 'Non-Authoritative-Reason');
     const reason = reasonHeader?.value;
     return reason === 'HSTS' && NetworkRequest.isSecureRequest(destination);
+  }
+
+  /**
+   * Returns whether the network request was sent encoded.
+   * @param {NetworkRequest} record
+   * @return {boolean}
+   */
+  static isContentEncoded(record) {
+    return record.responseHeaders.some(item => item.name === 'Content-Encoding');
   }
 
   /**
