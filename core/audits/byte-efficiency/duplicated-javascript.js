@@ -131,16 +131,13 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
       await DuplicatedJavascript._getDuplicationGroupedByNodeModules(artifacts, context);
 
     /** @type {Map<string, number>} */
-    const transferRatioByUrl = new Map();
+    const compressionRatioByUrl = new Map();
 
     /** @type {Item[]} */
     const items = [];
 
     let overflowWastedBytes = 0;
     const overflowUrls = new Set();
-
-    /** @type {Map<string, number>} */
-    const compressionRatioByUrl = new Map();
 
     /** @type {Map<string, number>} */
     const wastedBytesByUrl = new Map();
