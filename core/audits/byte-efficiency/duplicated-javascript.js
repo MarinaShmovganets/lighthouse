@@ -11,7 +11,7 @@
 import {ByteEfficiencyAudit} from './byte-efficiency-audit.js';
 import {ModuleDuplication} from '../../computed/module-duplication.js';
 import * as i18n from '../../lib/i18n/i18n.js';
-import {estimateTransferSize, getRequestForScript} from '../../lib/script-helpers.js';
+import {estimateCompressionRatioForContent, estimateTransferSize} from '../../lib/script-helpers.js';
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to remove duplicate JavaScript from their code. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -140,14 +140,17 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
     const overflowUrls = new Set();
 
     /** @type {Map<string, number>} */
+    const compressionRatioByUrl = new Map();
+
+    /** @type {Map<string, number>} */
     const wastedBytesByUrl = new Map();
     for (const [source, sourceDatas] of duplication.entries()) {
       // One copy of this module is treated as the canonical version - the rest will have
       // non-zero `wastedBytes`. In the case of all copies being the same version, all sizes are
-      // equal and the selection doesn't matter. When the copies are different versions, it does
-      // matter. Ideally the newest version would be the canonical copy, but version information
-      // is not present. Instead, size is used as a heuristic for latest version. This makes the
-      // audit conserative in its estimation.
+      // equal and the selection doesn't matter (ignoring compression ratios). When the copies are
+      // different versions, it does matter. Ideally the newest version would be the canonical
+      // copy, but version information is not present. Instead, size is used as a heuristic for
+      // latest version. This makes the audit conserative in its estimation.
 
       /** @type {SubItem[]} */
       const subItems = [];
@@ -158,27 +161,9 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
         const scriptId = sourceData.scriptId;
         const script = artifacts.Scripts.find(script => script.scriptId === scriptId);
         const url = script?.url || '';
-
-        /** @type {number|undefined} */
-        let transferRatio = transferRatioByUrl.get(url);
-        if (transferRatio === undefined) {
-          if (!script || script.length === undefined) {
-            // This should never happen because we found the wasted bytes from bundles, which required contents in a Script.
-            continue;
-          }
-
-          const contentLength = script.length;
-          const networkRecord = getRequestForScript(networkRecords, script);
-          transferRatio = DuplicatedJavascript._estimateTransferRatio(networkRecord, contentLength);
-          transferRatioByUrl.set(url, transferRatio);
-        }
-
-        if (transferRatio === undefined) {
-          // Shouldn't happen for above reasons.
-          continue;
-        }
-
-        const transferSize = Math.round(sourceData.resourceSize * transferRatio);
+        const compressionRatio = await estimateCompressionRatioForContent(
+          compressionRatioByUrl, url, artifacts, networkRecords);
+        const transferSize = Math.round(sourceData.resourceSize * compressionRatio);
 
         subItems.push({
           url,
