@@ -324,6 +324,7 @@ class ByteEfficiencyAudit extends Audit {
         simulator,
         {providedWastedBytesByUrl: result.wastedBytesByUrl, label: 'fcp'}
       );
+      // Note: LCP's optimistic graph sometimes unexpectedly yields higher savings than the pessimistic graph.
       const {savings: lcpSavings} = this.computeWasteWithGraph(
         results,
         optimisticLCPGraph,
