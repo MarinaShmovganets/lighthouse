@@ -311,7 +311,6 @@ class ByteEfficiencyAudit extends Audit {
         optimisticGraph: optimisticFCPGraph,
       } = await LanternFirstContentfulPaint.request(metricComputationInput, context);
       const {
-        pessimisticGraph: pessimisticLCPGraph,
         optimisticGraph: optimisticLCPGraph,
       } = await LanternLargestContentfulPaint.request(metricComputationInput, context);
 
@@ -319,28 +318,19 @@ class ByteEfficiencyAudit extends Audit {
         providedWastedBytesByUrl: result.wastedBytesByUrl,
       });
 
-      const {savings: fcpOptimisticSavings} = this.computeWasteWithGraph(
+      const {savings: fcpSavings} = this.computeWasteWithGraph(
         results,
         optimisticFCPGraph,
         simulator,
         {providedWastedBytesByUrl: result.wastedBytesByUrl, label: 'fcp'}
       );
-      const {savings: lcpOptimisticGraphSavings} = this.computeWasteWithGraph(
+      const {savings: lcpSavings} = this.computeWasteWithGraph(
         results,
         optimisticLCPGraph,
         simulator,
         {providedWastedBytesByUrl: result.wastedBytesByUrl, label: 'lcp'}
       );
 
-      const {savings: lcpPessimisticGraphSavings} = this.computeWasteWithGraph(
-        results,
-        pessimisticLCPGraph,
-        simulator,
-        {providedWastedBytesByUrl: result.wastedBytesByUrl, label: 'lcp'}
-      );
-
-      // Use the min savings between the two graphs for LCP metricSavings.
-      const lcpMinGraphSavings = Math.min(lcpOptimisticGraphSavings, lcpPessimisticGraphSavings);
 
       // The LCP graph can underestimate the LCP savings if there is potential savings on the LCP record itself.
       let lcpRecordSavings = 0;
@@ -352,8 +342,8 @@ class ByteEfficiencyAudit extends Audit {
         }
       }
 
-      metricSavings.FCP = fcpOptimisticSavings;
-      metricSavings.LCP = Math.max(lcpMinGraphSavings, lcpRecordSavings);
+      metricSavings.FCP = fcpSavings;
+      metricSavings.LCP = Math.max(lcpSavings, lcpRecordSavings);
     } else {
       wastedMs = simulator.computeWastedMsFromWastedBytes(wastedBytes);
     }
