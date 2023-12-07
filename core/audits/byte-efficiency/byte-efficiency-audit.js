@@ -325,7 +325,7 @@ class ByteEfficiencyAudit extends Audit {
         {providedWastedBytesByUrl: result.wastedBytesByUrl, label: 'fcp'}
       );
       // Note: LCP's optimistic graph sometimes unexpectedly yields higher savings than the pessimistic graph.
-      const {savings: lcpSavings} = this.computeWasteWithGraph(
+      const {savings: lcpGraphSavings} = this.computeWasteWithGraph(
         results,
         optimisticLCPGraph,
         simulator,
@@ -344,7 +344,7 @@ class ByteEfficiencyAudit extends Audit {
       }
 
       metricSavings.FCP = fcpSavings;
-      metricSavings.LCP = Math.max(lcpSavings, lcpRecordSavings);
+      metricSavings.LCP = Math.max(lcpGraphSavings, lcpRecordSavings);
     } else {
       wastedMs = simulator.computeWastedMsFromWastedBytes(wastedBytes);
     }
