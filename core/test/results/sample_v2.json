@@ -4457,7 +4457,7 @@
       "warnings": [],
       "metricSavings": {
         "FCP": 0,
-        "LCP": 300
+        "LCP": 610
       },
       "details": {
         "type": "opportunity",
@@ -4495,7 +4495,7 @@
           "type": "debugdata",
           "metricSavings": {
             "FCP": 0,
-            "LCP": 300
+            "LCP": 610
           }
         }
       },
@@ -4767,7 +4767,7 @@
       "displayValue": "Potential savings of 143 KiB",
       "metricSavings": {
         "FCP": 150,
-        "LCP": 750
+        "LCP": 1060
       },
       "details": {
         "type": "opportunity",
@@ -4809,7 +4809,7 @@
           "type": "debugdata",
           "metricSavings": {
             "FCP": 150,
-            "LCP": 750
+            "LCP": 1060
           }
         }
       },
@@ -4937,14 +4937,14 @@
       "id": "legacy-javascript",
       "title": "Avoid serving legacy JavaScript to modern browsers",
       "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/articles/publish-modern-javascript)",
-      "score": 0.5,
+      "score": 0,
       "scoreDisplayMode": "metricSavings",
       "numericValue": 450,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 26 KiB",
       "metricSavings": {
         "FCP": 0,
-        "LCP": 0
+        "LCP": 150
       },
       "details": {
         "type": "opportunity",
@@ -5013,7 +5013,7 @@
           "type": "debugdata",
           "metricSavings": {
             "FCP": 0,
-            "LCP": 0
+            "LCP": 150
           }
         }
       },
