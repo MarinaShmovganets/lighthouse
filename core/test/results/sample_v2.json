@@ -9,7 +9,7 @@
   "runWarnings": [],
   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4635.0 Safari/537.36",
   "environment": {
-    "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+    "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
     "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4635.0 Safari/537.36",
     "benchmarkIndex": 1549,
     "credits": {
@@ -4453,7 +4453,7 @@
       "scoreDisplayMode": "metricSavings",
       "numericValue": 1200,
       "numericUnit": "millisecond",
-      "displayValue": "Potential savings of 82 KiB",
+      "displayValue": "Potential savings of 81 KiB",
       "warnings": [],
       "metricSavings": {
         "FCP": 0,
@@ -4481,13 +4481,13 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js",
-            "totalBytes": 166550,
-            "wastedBytes": 83568,
+            "totalBytes": 166320,
+            "wastedBytes": 83453,
             "wastedPercent": 50.176166426166425
           }
         ],
         "overallSavingsMs": 1200,
-        "overallSavingsBytes": 83568,
+        "overallSavingsBytes": 83453,
         "sortedBy": [
           "wastedBytes"
         ],
@@ -4975,7 +4975,7 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js",
-            "wastedBytes": 26622,
+            "wastedBytes": 26585,
             "subItems": {
               "type": "subitems",
               "items": [
@@ -5005,7 +5005,7 @@
           }
         ],
         "overallSavingsMs": 450,
-        "overallSavingsBytes": 26622,
+        "overallSavingsBytes": 26585,
         "sortedBy": [
           "wastedBytes"
         ],
@@ -5739,7 +5739,7 @@
       "deviceScaleFactor": 1.75,
       "disabled": false
     },
-    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
     "auditMode": true,
     "gatherMode": false,
     "clearStorageTypes": [
@@ -10443,7 +10443,7 @@
       "core/lib/i18n/i18n.js | displayValueByteSavings": [
         {
           "values": {
-            "wastedBytes": 83568
+            "wastedBytes": 83453
           },
           "path": "audits[unminified-javascript].displayValue"
         },
@@ -10473,7 +10473,7 @@
         },
         {
           "values": {
-            "wastedBytes": 26622
+            "wastedBytes": 26585
           },
           "path": "audits[legacy-javascript].displayValue"
         }
