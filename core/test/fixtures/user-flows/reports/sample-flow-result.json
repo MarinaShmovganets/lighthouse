@@ -3022,68 +3022,29 @@
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
             "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. [Learn how to reduce unused JavaScript](https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/).",
-            "score": 0,
+            "score": 1,
             "scoreDisplayMode": "metricSavings",
-            "numericValue": 780,
+            "numericValue": 0,
             "numericUnit": "millisecond",
-            "displayValue": "Potential savings of 78 KiB",
+            "displayValue": "",
             "metricSavings": {
-              "FCP": 160,
-              "LCP": 160
+              "FCP": 0,
+              "LCP": 0
             },
             "details": {
               "type": "opportunity",
-              "headings": [
-                {
-                  "key": "url",
-                  "valueType": "url",
-                  "subItemsHeading": {
-                    "key": "source",
-                    "valueType": "code"
-                  },
-                  "label": "URL"
-                },
-                {
-                  "key": "totalBytes",
-                  "valueType": "bytes",
-                  "subItemsHeading": {
-                    "key": "sourceBytes"
-                  },
-                  "label": "Transfer Size"
-                },
-                {
-                  "key": "wastedBytes",
-                  "valueType": "bytes",
-                  "subItemsHeading": {
-                    "key": "sourceWastedBytes"
-                  },
-                  "label": "Potential Savings"
-                }
-              ],
-              "items": [
-                {
-                  "url": "https://www.mikescerealshack.co/_next/static/chunks/framework.9d524150d48315f49e80.js",
-                  "totalBytes": 130277,
-                  "wastedBytes": 47701,
-                  "wastedPercent": 36.61505868265312
-                },
-                {
-                  "url": "https://www.mikescerealshack.co/_next/static/chunks/1aeab0175d4c4d823d7a78205bceb5dd9cd36d32.a629f28ec97ae6e480bf.js",
-                  "totalBytes": 67673,
-                  "wastedBytes": 31755,
-                  "wastedPercent": 46.92417951029214
-                }
-              ],
-              "overallSavingsMs": 780,
-              "overallSavingsBytes": 79456,
+              "headings": [],
+              "items": [],
+              "overallSavingsMs": 0,
+              "overallSavingsBytes": 0,
               "sortedBy": [
                 "wastedBytes"
               ],
               "debugData": {
                 "type": "debugdata",
                 "metricSavings": {
-                  "FCP": 160,
-                  "LCP": 160
+                  "FCP": 0,
+                  "LCP": 0
                 }
               }
             },
@@ -3291,7 +3252,7 @@
             "scoreDisplayMode": "metricSavings",
             "numericValue": 0,
             "numericUnit": "millisecond",
-            "displayValue": "Potential savings of 0 KiB",
+            "displayValue": "",
             "metricSavings": {
               "FCP": 0,
               "LCP": 0
@@ -3325,7 +3286,7 @@
               "items": [
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/commons.49455e4fa8cc3f51203f.js",
-                  "wastedBytes": 167,
+                  "wastedBytes": 0,
                   "subItems": {
                     "type": "subitems",
                     "items": [
@@ -3345,7 +3306,7 @@
                 }
               ],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 167,
+              "overallSavingsBytes": 0,
               "sortedBy": [
                 "wastedBytes"
               ],
@@ -7240,7 +7201,6 @@
               "audits[long-tasks].details.headings[0].label",
               "audits[unsized-images].details.headings[1].label",
               "audits[total-byte-weight].details.headings[0].label",
-              "audits[unused-javascript].details.headings[0].label",
               "audits[legacy-javascript].details.headings[0].label"
             ],
             "core/lib/i18n/i18n.js | columnTimeSpent": [
@@ -7449,8 +7409,7 @@
             ],
             "core/lib/i18n/i18n.js | columnTransferSize": [
               "audits[third-party-summary].details.headings[1].label",
-              "audits[total-byte-weight].details.headings[1].label",
-              "audits[unused-javascript].details.headings[1].label"
+              "audits[total-byte-weight].details.headings[1].label"
             ],
             "core/lib/i18n/i18n.js | columnBlockingTime": [
               "audits[third-party-summary].details.headings[2].label"
@@ -8030,24 +7989,6 @@
             "core/audits/byte-efficiency/unused-javascript.js | description": [
               "audits[unused-javascript].description"
             ],
-            "core/lib/i18n/i18n.js | displayValueByteSavings": [
-              {
-                "values": {
-                  "wastedBytes": 79456
-                },
-                "path": "audits[unused-javascript].displayValue"
-              },
-              {
-                "values": {
-                  "wastedBytes": 167
-                },
-                "path": "audits[legacy-javascript].displayValue"
-              }
-            ],
-            "core/lib/i18n/i18n.js | columnWastedBytes": [
-              "audits[unused-javascript].details.headings[2].label",
-              "audits[legacy-javascript].details.headings[2].label"
-            ],
             "core/audits/byte-efficiency/modern-image-formats.js | title": [
               "audits[modern-image-formats].title"
             ],
@@ -8089,6 +8030,9 @@
             ],
             "core/audits/byte-efficiency/legacy-javascript.js | description": [
               "audits[legacy-javascript].description"
+            ],
+            "core/lib/i18n/i18n.js | columnWastedBytes": [
+              "audits[legacy-javascript].details.headings[2].label"
             ],
             "core/audits/dobetterweb/doctype.js | title": [
               "audits.doctype.title"
@@ -20578,66 +20522,21 @@
             "id": "unused-javascript",
             "title": "Reduce unused JavaScript",
             "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. [Learn how to reduce unused JavaScript](https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/).",
-            "score": 0.5,
+            "score": 1,
             "scoreDisplayMode": "metricSavings",
             "numericValue": 0,
             "numericUnit": "millisecond",
-            "displayValue": "Potential savings of 98 KiB",
+            "displayValue": "",
             "metricSavings": {
               "FCP": 0,
               "LCP": 0
             },
             "details": {
               "type": "opportunity",
-              "headings": [
-                {
-                  "key": "url",
-                  "valueType": "url",
-                  "subItemsHeading": {
-                    "key": "source",
-                    "valueType": "code"
-                  },
-                  "label": "URL"
-                },
-                {
-                  "key": "totalBytes",
-                  "valueType": "bytes",
-                  "subItemsHeading": {
-                    "key": "sourceBytes"
-                  },
-                  "label": "Transfer Size"
-                },
-                {
-                  "key": "wastedBytes",
-                  "valueType": "bytes",
-                  "subItemsHeading": {
-                    "key": "sourceWastedBytes"
-                  },
-                  "label": "Potential Savings"
-                }
-              ],
-              "items": [
-                {
-                  "url": "https://www.mikescerealshack.co/_next/static/chunks/framework.9d524150d48315f49e80.js",
-                  "totalBytes": 130277,
-                  "wastedBytes": 47362,
-                  "wastedPercent": 36.35484390951588
-                },
-                {
-                  "url": "https://www.mikescerealshack.co/_next/static/chunks/1aeab0175d4c4d823d7a78205bceb5dd9cd36d32.a629f28ec97ae6e480bf.js",
-                  "totalBytes": 67673,
-                  "wastedBytes": 31794,
-                  "wastedPercent": 46.981809584324616
-                },
-                {
-                  "url": "https://www.mikescerealshack.co/_next/static/chunks/commons.49455e4fa8cc3f51203f.js",
-                  "totalBytes": 44060,
-                  "wastedBytes": 21377,
-                  "wastedPercent": 48.51793009532456
-                }
-              ],
+              "headings": [],
+              "items": [],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 100533,
+              "overallSavingsBytes": 0,
               "sortedBy": [
                 "wastedBytes"
               ],
@@ -20943,7 +20842,7 @@
             "scoreDisplayMode": "metricSavings",
             "numericValue": 0,
             "numericUnit": "millisecond",
-            "displayValue": "Potential savings of 0 KiB",
+            "displayValue": "",
             "metricSavings": {
               "FCP": 0,
               "LCP": 0
@@ -20977,7 +20876,7 @@
               "items": [
                 {
                   "url": "https://www.mikescerealshack.co/_next/static/chunks/commons.49455e4fa8cc3f51203f.js",
-                  "wastedBytes": 167,
+                  "wastedBytes": 0,
                   "subItems": {
                     "type": "subitems",
                     "items": [
@@ -20997,7 +20896,7 @@
                 }
               ],
               "overallSavingsMs": 0,
-              "overallSavingsBytes": 167,
+              "overallSavingsBytes": 0,
               "sortedBy": [
                 "wastedBytes"
               ],
@@ -24923,7 +24822,6 @@
               "audits[long-tasks].details.headings[0].label",
               "audits[unsized-images].details.headings[1].label",
               "audits[total-byte-weight].details.headings[0].label",
-              "audits[unused-javascript].details.headings[0].label",
               "audits[modern-image-formats].details.headings[1].label",
               "audits[uses-responsive-images].details.headings[1].label",
               "audits[legacy-javascript].details.headings[0].label"
@@ -25134,8 +25032,7 @@
             ],
             "core/lib/i18n/i18n.js | columnTransferSize": [
               "audits[third-party-summary].details.headings[1].label",
-              "audits[total-byte-weight].details.headings[1].label",
-              "audits[unused-javascript].details.headings[1].label"
+              "audits[total-byte-weight].details.headings[1].label"
             ],
             "core/lib/i18n/i18n.js | columnBlockingTime": [
               "audits[third-party-summary].details.headings[2].label"
@@ -25706,13 +25603,13 @@
             "core/audits/byte-efficiency/unused-javascript.js | description": [
               "audits[unused-javascript].description"
             ],
+            "core/audits/byte-efficiency/modern-image-formats.js | title": [
+              "audits[modern-image-formats].title"
+            ],
+            "core/audits/byte-efficiency/modern-image-formats.js | description": [
+              "audits[modern-image-formats].description"
+            ],
             "core/lib/i18n/i18n.js | displayValueByteSavings": [
-              {
-                "values": {
-                  "wastedBytes": 100533
-                },
-                "path": "audits[unused-javascript].displayValue"
-              },
               {
                 "values": {
                   "wastedBytes": 68889.75
@@ -25724,29 +25621,16 @@
                   "wastedBytes": 52102
                 },
                 "path": "audits[uses-responsive-images].displayValue"
-              },
-              {
-                "values": {
-                  "wastedBytes": 167
-                },
-                "path": "audits[legacy-javascript].displayValue"
               }
-            ],
-            "core/lib/i18n/i18n.js | columnWastedBytes": [
-              "audits[unused-javascript].details.headings[2].label",
-              "audits[modern-image-formats].details.headings[3].label",
-              "audits[uses-responsive-images].details.headings[3].label",
-              "audits[legacy-javascript].details.headings[2].label"
-            ],
-            "core/audits/byte-efficiency/modern-image-formats.js | title": [
-              "audits[modern-image-formats].title"
-            ],
-            "core/audits/byte-efficiency/modern-image-formats.js | description": [
-              "audits[modern-image-formats].description"
             ],
             "core/lib/i18n/i18n.js | columnResourceSize": [
               "audits[modern-image-formats].details.headings[2].label",
               "audits[uses-responsive-images].details.headings[2].label"
+            ],
+            "core/lib/i18n/i18n.js | columnWastedBytes": [
+              "audits[modern-image-formats].details.headings[3].label",
+              "audits[uses-responsive-images].details.headings[3].label",
+              "audits[legacy-javascript].details.headings[2].label"
             ],
             "core/audits/byte-efficiency/uses-optimized-images.js | title": [
               "audits[uses-optimized-images].title"
