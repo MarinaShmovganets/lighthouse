@@ -87,18 +87,14 @@ class CumulativeLayoutShift {
     const impactByNodeId = new Map();
 
     for (const event of layoutShiftEvents) {
-      if (!event || !event.impactedNodes) {
-        continue;
-      }
+      if (!event.impactedNodes) continue;
 
       let totalAreaOfImpact = 0;
       /** @type {Map<number, number>} */
       const pixelsMovedPerNode = new Map();
 
       for (const node of event.impactedNodes) {
-        if (!node.node_id || !node.old_rect || !node.new_rect) {
-          continue;
-        }
+        if (!node.node_id || !node.old_rect || !node.new_rect) continue;
 
         const oldRect = RectHelpers.traceRectToLHRect(node.old_rect);
         const newRect = RectHelpers.traceRectToLHRect(node.new_rect);

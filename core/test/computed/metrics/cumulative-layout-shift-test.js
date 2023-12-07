@@ -492,5 +492,79 @@ describe('Metrics: CLS', () => {
         [25, 0.6],
       ]);
     });
+
+    it('ignores events with no impacted nodes', () => {
+      const layoutShiftEvents = [
+        {
+          ts: 1_000_000,
+          isMainFrame: true,
+          weightedScore: 1,
+          impactedNodes: [
+            {
+              new_rect: [0, 0, 200, 200],
+              node_id: 60,
+              old_rect: [0, 0, 200, 100],
+            },
+            {
+              new_rect: [0, 300, 200, 200],
+              node_id: 25,
+              old_rect: [0, 100, 200, 100],
+            },
+          ],
+        },
+        {
+          ts: 2_000_000,
+          isMainFrame: true,
+          weightedScore: 0.3,
+        },
+      ];
+
+      const impactByNodeId = CumulativeLayoutShift.getImpactByNodeId(layoutShiftEvents);
+      expect(Array.from(impactByNodeId.entries())).toEqual([
+        [60, 0.4],
+        [25, 0.6],
+      ]);
+    });
+
+    it('ignores malformed impacted nodes', () => {
+      const layoutShiftEvents = [
+        {
+          ts: 1_000_000,
+          isMainFrame: true,
+          weightedScore: 1,
+          impactedNodes: [
+            {
+              // Malformed, no old_rect
+              // Entire weightedScore is therefore attributed to node_id 25
+              new_rect: [0, 0, 200, 200],
+              node_id: 60,
+            },
+            {
+              new_rect: [0, 300, 200, 200],
+              node_id: 25,
+              old_rect: [0, 100, 200, 100],
+            },
+          ],
+        },
+        {
+          ts: 2_000_000,
+          isMainFrame: true,
+          weightedScore: 0.3,
+          impactedNodes: [
+            {
+              new_rect: [0, 100, 200, 200],
+              node_id: 60,
+              old_rect: [0, 0, 200, 200],
+            },
+          ],
+        },
+      ];
+
+      const impactByNodeId = CumulativeLayoutShift.getImpactByNodeId(layoutShiftEvents);
+      expect(Array.from(impactByNodeId.entries())).toEqual([
+        [25, 1],
+        [60, 0.3],
+      ]);
+    });
   });
 });
