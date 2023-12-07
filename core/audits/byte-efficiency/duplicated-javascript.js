@@ -11,7 +11,7 @@
 import {ByteEfficiencyAudit} from './byte-efficiency-audit.js';
 import {ModuleDuplication} from '../../computed/module-duplication.js';
 import * as i18n from '../../lib/i18n/i18n.js';
-import {estimateCompressionRatioForContent, estimateTransferSize} from '../../lib/script-helpers.js';
+import {estimateCompressionRatioForContent} from '../../lib/script-helpers.js';
 
 const UIStrings = {
   /** Imperative title of a Lighthouse audit that tells the user to remove duplicate JavaScript from their code. This is displayed in a list of audit titles that Lighthouse generates. */
@@ -101,16 +101,6 @@ class DuplicatedJavascript extends ByteEfficiencyAudit {
     }
 
     return groupedDuplication;
-  }
-
-  /**
-   *
-   * @param {LH.Artifacts.NetworkRequest|undefined} networkRecord
-   * @param {number} contentLength
-   */
-  static _estimateTransferRatio(networkRecord, contentLength) {
-    const transferSize = estimateTransferSize(networkRecord, contentLength, 'Script');
-    return transferSize / contentLength;
   }
 
   /**
