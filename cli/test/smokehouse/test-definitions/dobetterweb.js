@@ -552,18 +552,24 @@ const expectations = {
       },
       'network-rtt': {
         details: {
-          items: [
-            {origin: 'http://[::1]:10503', rtt: '>0'},
-            {origin: 'http://localhost:10200', rtt: '>0'},
-          ],
+          items: {
+            _includes: [
+              {origin: 'http://localhost:10200', rtt: '>0'},
+              {origin: 'http://[::1]:10503', rtt: '>0'},
+            ],
+            _excludes: [{}],
+          },
         },
       },
       'network-server-latency': {
         details: {
-          items: [
-            {origin: 'http://localhost:10200', serverResponseTime: '>0'},
-            {origin: 'http://[::1]:10503', serverResponseTime: '>0'},
-          ],
+          items: {
+            _includes: [
+              {origin: 'http://localhost:10200', serverResponseTime: '>0'},
+              {origin: 'http://[::1]:10503', serverResponseTime: '>0'},
+            ],
+            _excludes: [{}],
+          },
         },
       },
       'metrics': {
