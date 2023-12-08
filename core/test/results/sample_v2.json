@@ -2201,6 +2201,89 @@
         ]
       }
     },
+    "resource-summary": {
+      "id": "resource-summary",
+      "title": "Resources Summary",
+      "description": "Aggregates all network requests and groups them by type",
+      "score": null,
+      "scoreDisplayMode": "informative",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "label",
+            "valueType": "text",
+            "label": "Resource Type"
+          },
+          {
+            "key": "requestCount",
+            "valueType": "numeric",
+            "label": "Requests"
+          },
+          {
+            "key": "transferSize",
+            "valueType": "bytes",
+            "label": "Transfer Size"
+          }
+        ],
+        "items": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 25,
+            "transferSize": 1437176
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 8,
+            "transferSize": 1196358
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 5,
+            "transferSize": 198392
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 17793
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 17609
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 9,
+            "transferSize": 7024
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 1,
+            "transferSize": 30346
+          }
+        ]
+      }
+    },
     "third-party-summary": {
       "id": "third-party-summary",
       "title": "Minimize third-party usage",
@@ -4465,7 +4548,7 @@
       "scoreDisplayMode": "metricSavings",
       "numericValue": 1200,
       "numericUnit": "millisecond",
-      "displayValue": "Potential savings of 82 KiB",
+      "displayValue": "Potential savings of 81 KiB",
       "warnings": [],
       "metricSavings": {
         "FCP": 0,
@@ -4493,13 +4576,13 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js",
-            "totalBytes": 166550,
-            "wastedBytes": 83568,
+            "totalBytes": 166320,
+            "wastedBytes": 83453,
             "wastedPercent": 50.176166426166425
           }
         ],
         "overallSavingsMs": 1200,
-        "overallSavingsBytes": 83568,
+        "overallSavingsBytes": 83453,
         "sortedBy": [
           "wastedBytes"
         ],
@@ -4553,7 +4636,7 @@
       "scoreDisplayMode": "metricSavings",
       "numericValue": 750,
       "numericUnit": "millisecond",
-      "displayValue": "Potential savings of 64 KiB",
+      "displayValue": "Potential savings of 63 KiB",
       "metricSavings": {
         "FCP": 0,
         "LCP": 450
@@ -4590,19 +4673,19 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js",
-            "totalBytes": 166550,
-            "wastedBytes": 43567,
+            "totalBytes": 166320,
+            "wastedBytes": 43507,
             "wastedPercent": 26.158609908609908
           },
           {
             "url": "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js",
-            "totalBytes": 30346,
-            "wastedBytes": 21544,
+            "totalBytes": 29671,
+            "wastedBytes": 21065,
             "wastedPercent": 70.99531129443884
           }
         ],
         "overallSavingsMs": 750,
-        "overallSavingsBytes": 65111,
+        "overallSavingsBytes": 64572,
         "sortedBy": [
           "wastedBytes"
         ],
@@ -6188,6 +6271,11 @@
         },
         {
           "id": "script-treemap-data",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "resource-summary",
           "weight": 0,
           "group": "hidden"
         }
@@ -8378,6 +8466,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:resource-summary",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:third-party-summary",
         "duration": 100,
         "entryType": "measure"
@@ -9759,13 +9853,16 @@
         "audits[performance-budget].description"
       ],
       "core/lib/i18n/i18n.js | columnResourceType": [
-        "audits[performance-budget].details.headings[0].label"
+        "audits[performance-budget].details.headings[0].label",
+        "audits[resource-summary].details.headings[0].label"
       ],
       "core/lib/i18n/i18n.js | columnRequests": [
-        "audits[performance-budget].details.headings[1].label"
+        "audits[performance-budget].details.headings[1].label",
+        "audits[resource-summary].details.headings[1].label"
       ],
       "core/lib/i18n/i18n.js | columnTransferSize": [
         "audits[performance-budget].details.headings[2].label",
+        "audits[resource-summary].details.headings[2].label",
         "audits[third-party-summary].details.headings[1].label",
         "audits[uses-long-cache-ttl].details.headings[2].label",
         "audits[total-byte-weight].details.headings[1].label",
@@ -9779,7 +9876,8 @@
         "audits[timing-budget].details.headings[2].label"
       ],
       "core/lib/i18n/i18n.js | totalResourceType": [
-        "audits[performance-budget].details.items[0].label"
+        "audits[performance-budget].details.items[0].label",
+        "audits[resource-summary].details.items[0].label"
       ],
       "core/audits/performance-budget.js | requestCountOverBudget": [
         {
@@ -9808,28 +9906,36 @@
         }
       ],
       "core/lib/i18n/i18n.js | imageResourceType": [
-        "audits[performance-budget].details.items[1].label"
+        "audits[performance-budget].details.items[1].label",
+        "audits[resource-summary].details.items[1].label"
       ],
       "core/lib/i18n/i18n.js | scriptResourceType": [
-        "audits[performance-budget].details.items[2].label"
+        "audits[performance-budget].details.items[2].label",
+        "audits[resource-summary].details.items[2].label"
       ],
       "core/lib/i18n/i18n.js | otherResourceType": [
-        "audits[performance-budget].details.items[3].label"
+        "audits[performance-budget].details.items[3].label",
+        "audits[resource-summary].details.items[3].label"
       ],
       "core/lib/i18n/i18n.js | thirdPartyResourceType": [
-        "audits[performance-budget].details.items[4].label"
+        "audits[performance-budget].details.items[4].label",
+        "audits[resource-summary].details.items[8].label"
       ],
       "core/lib/i18n/i18n.js | documentResourceType": [
-        "audits[performance-budget].details.items[5].label"
+        "audits[performance-budget].details.items[5].label",
+        "audits[resource-summary].details.items[4].label"
       ],
       "core/lib/i18n/i18n.js | stylesheetResourceType": [
-        "audits[performance-budget].details.items[6].label"
+        "audits[performance-budget].details.items[6].label",
+        "audits[resource-summary].details.items[5].label"
       ],
       "core/lib/i18n/i18n.js | mediaResourceType": [
-        "audits[performance-budget].details.items[7].label"
+        "audits[performance-budget].details.items[7].label",
+        "audits[resource-summary].details.items[6].label"
       ],
       "core/lib/i18n/i18n.js | fontResourceType": [
-        "audits[performance-budget].details.items[8].label"
+        "audits[performance-budget].details.items[8].label",
+        "audits[resource-summary].details.items[7].label"
       ],
       "core/audits/timing-budget.js | title": [
         "audits[timing-budget].title"
@@ -10472,13 +10578,13 @@
       "core/lib/i18n/i18n.js | displayValueByteSavings": [
         {
           "values": {
-            "wastedBytes": 83568
+            "wastedBytes": 83453
           },
           "path": "audits[unminified-javascript].displayValue"
         },
         {
           "values": {
-            "wastedBytes": 65111
+            "wastedBytes": 64572
           },
           "path": "audits[unused-javascript].displayValue"
         },
