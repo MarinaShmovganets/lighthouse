@@ -28,7 +28,7 @@ class LanternFirstContentfulPaint extends LanternMetric {
    * @typedef FirstPaintBasedGraphOpts
    * @property {number} cutoffTimestamp The timestamp used to filter out tasks that occured after
    *    our paint of interest. Typically this is First Contentful Paint or First Meaningful Paint.
-   * @property {function(NetworkNode):boolean} treatScriptAsBlocking The function that determines
+   * @property {function(NetworkNode):boolean} treatNodeAsBlocking The function that determines
    *    which resources should be considered *possibly* render-blocking.
    * @property {(function(CPUNode):boolean)=} additionalCpuNodesToTreatAsBlocking The function that
    *    determines which CPU nodes should also be included in our blocking node IDs set,
@@ -47,7 +47,7 @@ class LanternFirstContentfulPaint extends LanternMetric {
    */
   static getRenderBlockingNodeData(
       graph,
-      {cutoffTimestamp, treatScriptAsBlocking, additionalCpuNodesToTreatAsBlocking}
+      {cutoffTimestamp, treatNodeAsBlocking, additionalCpuNodesToTreatAsBlocking}
   ) {
     /** @type {Map<string, CPUNode>} A map of blocking script URLs to the earliest EvaluateScript task node that executed them. */
     const scriptUrlToNodeMap = new Map();
@@ -74,7 +74,7 @@ class LanternFirstContentfulPaint extends LanternMetric {
 
     // A script is *possibly* render blocking if it finished loading before cutoffTimestamp.
     const possiblyRenderBlockingScriptUrls = LanternMetric.getScriptUrls(graph, node => {
-      return node.endTime <= cutoffTimestamp && treatScriptAsBlocking(node);
+      return node.endTime <= cutoffTimestamp && treatNodeAsBlocking(node);
     });
 
     // A script is *definitely not* render blocking if its EvaluateScript task started after cutoffTimestamp.
@@ -131,12 +131,12 @@ class LanternFirstContentfulPaint extends LanternMetric {
    */
   static getFirstPaintBasedGraph(
       dependencyGraph,
-      {cutoffTimestamp, treatScriptAsBlocking, additionalCpuNodesToTreatAsBlocking}
+      {cutoffTimestamp, treatNodeAsBlocking, additionalCpuNodesToTreatAsBlocking}
   ) {
     const {definitelyNotRenderBlockingScriptUrls, blockingCpuNodeIds} =
       this.getRenderBlockingNodeData(dependencyGraph, {
         cutoffTimestamp,
-        treatScriptAsBlocking,
+        treatNodeAsBlocking,
         additionalCpuNodesToTreatAsBlocking,
       });
 
@@ -153,7 +153,7 @@ class LanternFirstContentfulPaint extends LanternMetric {
           return false;
         }
 
-        return treatScriptAsBlocking(node);
+        return treatNodeAsBlocking(node);
       } else {
         // If it's a CPU node, just check if it was blocking.
         return blockingCpuNodeIds.has(node.id);
@@ -172,7 +172,7 @@ class LanternFirstContentfulPaint extends LanternMetric {
       // In the optimistic graph we exclude resources that appeared to be render blocking but were
       // initiated by a script. While they typically have a very high importance and tend to have a
       // significant impact on the page's content, these resources don't technically block rendering.
-      treatScriptAsBlocking: node =>
+      treatNodeAsBlocking: node =>
         node.hasRenderBlockingPriority() && node.initiatorType !== 'script',
     });
   }
@@ -185,7 +185,7 @@ class LanternFirstContentfulPaint extends LanternMetric {
   static getPessimisticGraph(dependencyGraph, processedNavigation) {
     return this.getFirstPaintBasedGraph(dependencyGraph, {
       cutoffTimestamp: processedNavigation.timestamps.firstContentfulPaint,
-      treatScriptAsBlocking: node => node.hasRenderBlockingPriority(),
+      treatNodeAsBlocking: node => node.hasRenderBlockingPriority(),
     });
   }
 }
