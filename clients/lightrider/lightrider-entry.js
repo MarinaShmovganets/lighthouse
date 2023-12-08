@@ -50,38 +50,23 @@ async function getPageFromConnection(connection) {
     'chrome',
     pptrConnection,
     [] /* contextIds */,
-    false /* ignoreHTTPSErrors */,
-    undefined /* defaultViewport */,
-    undefined /* process */,
-    undefined /* closeCallback */,
-    // eslint-disable-next-line no-unused-vars
-    targetInfo => true
+    false /* ignoreHTTPSErrors */
   );
 
   // We should be able to find the relevant page instantly, but just in case
   // the relevant tab target comes a bit delayed, check every time a new
   // target is seen.
-  /** @type {(value: any) => void} */
-  let resolve;
-  /** @type {(value: Error) => void} */
-  let reject;
-  const promise = new Promise((resolve_, reject_) => {
-    resolve = resolve_;
-    reject = reject_;
-  });
-  browser.waitForTarget(async () => {
-    const pages = await browser.pages();
-    const page = pages.find(p => p.mainFrame()._id === frameTree.frame.id);
-    if (page) {
-      resolve(page);
-      return true;
-    }
+  const targetPromise = browser.waitForTarget(async (target) => {
+    const page = await target.page();
+    if (page && page.mainFrame()._id === frameTree.frame.id) return true;
     return false;
   });
-  const timeoutHandle = setTimeout(() =>
-    reject(new Error('Could not find relevant puppeteer page')), 5000);
-  const page = await promise;
-  clearTimeout(timeoutHandle);
+  const page = await Promise.race([
+    targetPromise.then(target => target.page()),
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Could not find relevant puppeteer page')), 5000);
+    }),
+  ]);
   return page;
 }
 
