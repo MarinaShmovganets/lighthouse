@@ -32,7 +32,6 @@ class LanternLargestContentfulPaint extends LanternMetric {
    */
   static isNotLowPriorityImageNode(node) {
     if (node.type !== 'network') return true;
-
     const isImage = node.record.resourceType === 'Image';
     const isLowPriority = node.record.priority === 'Low' || node.record.priority === 'VeryLow';
     return !isImage || !isLowPriority;
@@ -51,8 +50,8 @@ class LanternLargestContentfulPaint extends LanternMetric {
 
     return LanternFirstContentfulPaint.getFirstPaintBasedGraph(dependencyGraph, {
       cutoffTimestamp: lcp,
-      treatNodeAsBlocking: LanternLargestContentfulPaint.isNotLowPriorityImageNode,
-            additionalCpuNodesToTreatAsBlocking: node => node.didPerformLayout(),
+      treatNodeAsRenderBlocking: LanternLargestContentfulPaint.isNotLowPriorityImageNode,
+      additionalCpuNodesToTreatAsRenderBlocking: node => node.didPerformLayout(),
     });
   }
 
@@ -69,9 +68,9 @@ class LanternLargestContentfulPaint extends LanternMetric {
 
     return LanternFirstContentfulPaint.getFirstPaintBasedGraph(dependencyGraph, {
       cutoffTimestamp: lcp,
-      treatNodeAsBlocking: _ => true,
+      treatNodeAsRenderBlocking: _ => true,
       // For pessimistic LCP we'll include *all* layout nodes
-      additionalCpuNodesToTreatAsBlocking: node => node.didPerformLayout(),
+      additionalCpuNodesToTreatAsRenderBlocking: node => node.didPerformLayout(),
     });
   }
 

@@ -37,7 +37,7 @@ class LanternFirstMeaningfulPaint extends LanternMetric {
       cutoffTimestamp: fmp,
       // See LanternFirstContentfulPaint's getOptimisticGraph implementation for a longer description
       // of why we exclude script initiated resources here.
-      treatNodeAsBlocking: node =>
+      treatNodeAsRenderBlocking: node =>
         node.hasRenderBlockingPriority() && node.initiatorType !== 'script',
     });
   }
@@ -55,9 +55,9 @@ class LanternFirstMeaningfulPaint extends LanternMetric {
 
     return LanternFirstContentfulPaint.getFirstPaintBasedGraph(dependencyGraph, {
       cutoffTimestamp: fmp,
-      treatNodeAsBlocking: node => node.hasRenderBlockingPriority(),
+      treatNodeAsRenderBlocking: node => node.hasRenderBlockingPriority(),
       // For pessimistic FMP we'll include *all* layout nodes
-      additionalCpuNodesToTreatAsBlocking: node => node.didPerformLayout(),
+      additionalCpuNodesToTreatAsRenderBlocking: node => node.didPerformLayout(),
     });
   }
 
