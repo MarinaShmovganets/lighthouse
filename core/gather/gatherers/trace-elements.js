@@ -64,7 +64,7 @@ class TraceElements extends BaseGatherer {
   }
 
   /**
-   * This function finds the top (up to 5) elements that contribute to the CLS score of the page.
+   * This function finds the top (up to 15) elements that contribute to the CLS score of the page.
    *
    * @param {LH.Trace} trace
    * @param {LH.Gatherer.Context} context

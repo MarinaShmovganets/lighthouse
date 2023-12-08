@@ -109,7 +109,7 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     expect(total).toBeCloseTo(1.0);
   });
 
-  it('returns only the top five values', async () => {
+  it('returns only the top 15 values', async () => {
     const trace = createTestTrace({});
     trace.traceEvents.push(
       makeLayoutShiftTraceEvent(1, [
