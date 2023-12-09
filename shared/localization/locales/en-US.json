@@ -1158,10 +1158,10 @@
     "message": "Largest Contentful Paint element"
   },
   "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "CLS Contribution"
+    "message": "Layout shift impact"
   },
   "core/audits/layout-shift-elements.js | description": {
-    "message": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/articles/optimize-cls)"
+    "message": "These DOM elements were most affected by layout shifts. Not all layout shifts are included in the CLS metric value due to CLS normalization. [Learn how to improve CLS](https://web.dev/articles/optimize-cls)"
   },
   "core/audits/layout-shift-elements.js | title": {
     "message": "Avoid large layout shifts"
