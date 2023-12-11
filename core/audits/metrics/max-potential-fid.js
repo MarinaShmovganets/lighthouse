@@ -13,8 +13,8 @@ import * as i18n from '../../lib/i18n/i18n.js';
 /**
  * @typedef LoafDebugDetails
  * @property {'debugdata'} type
- * @property {LH.TraceEvent} observedMaxDurationLoaf
- * @property {LH.TraceEvent} observedMaxBlockingLoaf
+ * @property {LH.TraceEvent=} observedMaxDurationLoaf
+ * @property {LH.TraceEvent=} observedMaxBlockingLoaf
  * @property {Array<{startTime: number, duration: number, blockingDuration: number}>} observedLoafs
  */
 
@@ -71,6 +71,7 @@ class MaxPotentialFID extends Audit {
     const loafEvents = processedTrace.mainThreadEvents.filter(evt => {
       return evt.name === 'LongAnimationFrame' && evt.ph === 'b';
     });
+    if (loafEvents.length === 0) return;
 
     let currentMaxDuration = -Infinity;
     let currentMaxDurationLoaf;
@@ -101,8 +102,6 @@ class MaxPotentialFID extends Audit {
         currentMaxBlockingLoaf = loafEvent;
       }
     }
-
-    if (!currentMaxDurationLoaf || !currentMaxBlockingLoaf) return;
 
     return {
       type: 'debugdata',

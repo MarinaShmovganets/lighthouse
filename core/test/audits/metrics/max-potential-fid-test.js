@@ -112,4 +112,47 @@ describe('Max Potential FID', () => {
       },
     });
   });
+
+  it('includes LoAFs before FCP in observedLoafs', async () => {
+    const frameUrl = 'https://example.com/';
+    const topLevelTasks = [
+      {ts: 1000, duration: 1000, blockingDuration: 1000},
+      {ts: 2000, duration: 1000, blockingDuration: 1000},
+      {ts: 3000, duration: 1000, blockingDuration: 1000},
+    ];
+    const trace = createTestTrace({firstContentfulPaint: 5000, frameUrl, topLevelTasks});
+
+    // Add LoAF events (reusing long task timings).
+    const navStart = trace.traceEvents.find(evt => evt.name === 'navigationStart');
+    for (const task of topLevelTasks) {
+      trace.traceEvents.push(...createLoafEvents(navStart, task));
+    }
+
+    const artifacts = {
+      traces: {defaultPass: trace},
+      devtoolsLogs: {defaultPass: networkRecordsToDevtoolsLog([{url: frameUrl}])},
+      GatherContext: {gatherMode: 'navigation'},
+    };
+    const context = {
+      settings: {throttlingMethod: 'devtools'},
+      computedCache: new Map(),
+      options: MaxPotentialFid.defaultOptions,
+    };
+
+    const result = await MaxPotentialFid.audit(artifacts, context);
+    expect(result).toMatchObject({
+      score: 1,
+      numericValue: 16,
+      details: {
+        type: 'debugdata',
+        observedMaxDurationLoaf: undefined,
+        observedMaxBlockingLoaf: undefined,
+        observedLoafs: [
+          {startTime: 1000, duration: 1000, blockingDuration: 1000},
+          {startTime: 2000, duration: 1000, blockingDuration: 1000},
+          {startTime: 3000, duration: 1000, blockingDuration: 1000},
+        ],
+      },
+    });
+  });
 });
