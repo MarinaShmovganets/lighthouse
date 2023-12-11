@@ -12,7 +12,7 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## New Audits
 
-* third-party cookies ([#15632](https://github.com/GoogleChrome/lighthouse/pull/15632))
+Chrome plans to remove support for third-party cookies which can be detected using a new Lighthouse audit. [Learn more about phasing out third-party cookies](https://developer.chrome.com/en/docs/privacy-sandbox/third-party-cookie-phase-out/). ([#15632](https://github.com/GoogleChrome/lighthouse/pull/15632))
 
 ## Core
 
