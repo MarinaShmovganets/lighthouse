@@ -9,10 +9,10 @@ import {CumulativeLayoutShift as CumulativeLayoutShiftComputed} from '../compute
 import CumulativeLayoutShift from './metrics/cumulative-layout-shift.js';
 
 const UIStrings = {
-  /** Descriptive title of a diagnostic audit that provides up to the top elements affected by layout shifts. */
+  /** Descriptive title of a diagnostic audit that provides the top elements affected by layout shifts. */
   title: 'Avoid large layout shifts',
-  /** Description of a diagnostic audit that provides up to the top elements affected by layout shifts. The last sentence starting with 'Learn' becomes link text to additional documentation. */
-  description: 'These DOM elements were most affected by layout shifts. Not all layout shifts are included in the CLS metric value due to CLS normalization. [Learn how to improve CLS](https://web.dev/articles/optimize-cls)',
+  /** Description of a diagnostic audit that provides the top elements affected by layout shifts. "windowing" means the metric value is calculated using the subset of events in a small window of time during the run. "normalization" is a good substitute for "windowing". The last sentence starting with 'Learn' becomes link text to additional documentation. */
+  description: 'These DOM elements were most affected by layout shifts. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)',
   /**  Label for a column in a data table; entries in this column will be the amount that the corresponding element affected by layout shifts. */
   columnContribution: 'Layout shift impact',
 };
