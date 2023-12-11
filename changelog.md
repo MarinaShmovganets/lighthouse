@@ -1,15 +1,14 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-avinash-sd @avinash-sd
- <a name="11.4.0"></a>
+<a name="11.4.0"></a>
 # 11.4.0 (2023-12-11)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.3.0...v11.4.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 122](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
+## New Contributors
 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+- avinash-sd @avinash-sd
 
 ## New Audits
 
