@@ -20,6 +20,7 @@ const baseArtifactKeySource = {
   PageLoadError: '',
   HostFormFactor: '',
   HostUserAgent: '',
+  HostProduct: '',
   GatherContext: '',
 };
 
@@ -105,30 +106,6 @@ function filterArtifactsByGatherMode(artifacts, mode) {
   return artifacts.filter(artifact => {
     return artifact.gatherer.instance.meta.supportedModes.includes(mode);
   });
-}
-
-/**
- * Filters an array of navigations down to the set supported by the available artifacts.
- *
- * @param {LH.Config.ResolvedConfig['navigations']} navigations
- * @param {Array<LH.Config.AnyArtifactDefn>} availableArtifacts
- * @return {LH.Config.ResolvedConfig['navigations']}
- */
-function filterNavigationsByAvailableArtifacts(navigations, availableArtifacts) {
-  if (!navigations) return navigations;
-
-  const availableArtifactIds = new Set(
-    availableArtifacts.map(artifact => artifact.id).concat(baseArtifactKeys)
-  );
-
-  return navigations
-    .map(navigation => {
-      return {
-        ...navigation,
-        artifacts: navigation.artifacts.filter((artifact) => availableArtifactIds.has(artifact.id)),
-      };
-    })
-    .filter(navigation => navigation.artifacts.length);
 }
 
 /**
@@ -318,13 +295,10 @@ function filterConfigByExplicitFilters(resolvedConfig, filters) {
   if (artifacts && resolvedConfig.settings.disableFullPageScreenshot) {
     artifacts = artifacts.filter(({id}) => id !== 'FullPageScreenshot');
   }
-  const navigations =
-    filterNavigationsByAvailableArtifacts(resolvedConfig.navigations, artifacts || []);
 
   return {
     ...resolvedConfig,
     artifacts,
-    navigations,
     audits,
     categories,
   };
@@ -335,7 +309,6 @@ export {
   filterConfigByExplicitFilters,
   filterArtifactsByGatherMode,
   filterArtifactsByAvailableAudits,
-  filterNavigationsByAvailableArtifacts,
   filterAuditsByAvailableArtifacts,
   filterAuditsByGatherMode,
   filterCategoriesByAvailableAudits,

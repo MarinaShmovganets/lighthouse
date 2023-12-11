@@ -24,7 +24,7 @@ import {ByteEfficiencyAudit} from './byte-efficiency-audit.js';
 import {EntityClassification} from '../../computed/entity-classification.js';
 import {JSBundles} from '../../computed/js-bundles.js';
 import * as i18n from '../../lib/i18n/i18n.js';
-import {getRequestForScript} from '../../lib/script-helpers.js';
+import {estimateCompressionRatioForContent} from '../../lib/script-helpers.js';
 import {LH_ROOT} from '../../../shared/root.js';
 
 const graphJson = fs.readFileSync(
@@ -37,9 +37,9 @@ const UIStrings = {
   /** Title of a Lighthouse audit that tells the user about legacy polyfills and transforms used on the page. This is displayed in a list of audit titles that Lighthouse generates. */
   title: 'Avoid serving legacy JavaScript to modern browsers',
   // eslint-disable-next-line max-len
-  // TODO: developer.chrome.com article. this codelab is good starting place: https://web.dev/codelab-serve-modern-code/
+  // TODO: developer.chrome.com article. this codelab is good starting place: https://web.dev/articles/codelab-serve-modern-code
   /** Description of a Lighthouse audit that tells the user about old JavaScript that is no longer needed. This is displayed after a user expands the section to see more. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
-  description: 'Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren\'t necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/publish-modern-javascript/)',
+  description: 'Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren\'t necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/articles/publish-modern-javascript)',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
@@ -391,37 +391,6 @@ class LegacyJavascript extends ByteEfficiencyAudit {
   }
 
   /**
-   * Utility function to estimate transfer size and cache calculation.
-   *
-   * Note: duplicated-javascript does this exact thing. In the future, consider
-   * making a generic estimator on ByteEfficienyAudit.
-   * @param {Map<string, number>} transferRatioByUrl
-   * @param {string} url
-   * @param {LH.Artifacts} artifacts
-   * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
-   */
-  static async estimateTransferRatioForScript(transferRatioByUrl, url, artifacts, networkRecords) {
-    let transferRatio = transferRatioByUrl.get(url);
-    if (transferRatio !== undefined) return transferRatio;
-
-    const script = artifacts.Scripts.find(script => script.url === url);
-
-    if (!script || script.content === null) {
-      // Can't find content, so just use 1.
-      transferRatio = 1;
-    } else {
-      const networkRecord = getRequestForScript(networkRecords, script);
-      const contentLength = script.length || 0;
-      const transferSize =
-        ByteEfficiencyAudit.estimateTransferSize(networkRecord, contentLength, 'Script');
-      transferRatio = transferSize / contentLength;
-    }
-
-    transferRatioByUrl.set(url, transferRatio);
-    return transferRatio;
-  }
-
-  /**
    * @param {LH.Artifacts} artifacts
    * @param {Array<LH.Artifacts.NetworkRequest>} networkRecords
    * @param {LH.Audit.Context} context
@@ -443,14 +412,14 @@ class LegacyJavascript extends ByteEfficiencyAudit {
     ]);
 
     /** @type {Map<string, number>} */
-    const transferRatioByUrl = new Map();
+    const compressionRatioByUrl = new Map();
 
     const scriptToMatchResults =
       this.detectAcrossScripts(matcher, artifacts.Scripts, networkRecords, bundles);
     for (const [script, matches] of scriptToMatchResults.entries()) {
-      const transferRatio = await this.estimateTransferRatioForScript(
-        transferRatioByUrl, script.url, artifacts, networkRecords);
-      const wastedBytes = Math.round(this.estimateWastedBytes(matches) * transferRatio);
+      const compressionRatio = estimateCompressionRatioForContent(
+        compressionRatioByUrl, script.url, artifacts, networkRecords);
+      const wastedBytes = Math.round(this.estimateWastedBytes(matches) * compressionRatio);
       /** @type {typeof items[number]} */
       const item = {
         url: script.url,

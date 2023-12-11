@@ -265,14 +265,16 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
         }
 
         // Overall impact is the estimated improvement to the performance score
-        if (a.overallImpact !== b.overallImpact) return b.overallImpact - a.overallImpact;
+        if (a.overallImpact !== b.overallImpact) {
+          return b.overallImpact * b.guidanceLevel - a.overallImpact * a.guidanceLevel;
+        }
 
         // Fall back to the linear impact if the normal impact is rounded down to 0
         if (
           a.overallImpact === 0 && b.overallImpact === 0 &&
             a.overallLinearImpact !== b.overallLinearImpact
         ) {
-          return b.overallLinearImpact - a.overallLinearImpact;
+          return b.overallLinearImpact * b.guidanceLevel - a.overallLinearImpact * a.guidanceLevel;
         }
 
         // Audits that have no estimated savings should be prioritized by the guidance level
@@ -335,7 +337,8 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
       element.append(groupEl);
     }
 
-    if (!options || options?.gatherMode === 'navigation') {
+    const isNavigationMode = !options || options?.gatherMode === 'navigation';
+    if (isNavigationMode && category.score !== null) {
       const el = createGauge(this.dom);
       updateGauge(this.dom, el, category);
       this.dom.find('.lh-score__gauge', element).replaceWith(el);

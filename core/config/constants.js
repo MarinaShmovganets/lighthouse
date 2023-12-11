@@ -80,8 +80,8 @@ const screenEmulationMetrics = {
 };
 
 
-const MOTOG4_USERAGENT = 'Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36'; // eslint-disable-line max-len
-const DESKTOP_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'; // eslint-disable-line max-len
+const MOTOG4_USERAGENT = 'Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36'; // eslint-disable-line max-len
+const DESKTOP_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'; // eslint-disable-line max-len
 
 const userAgents = {
   mobile: MOTOG4_USERAGENT,
@@ -106,6 +106,7 @@ const defaultSettings = {
 
   auditMode: false,
   gatherMode: false,
+  clearStorageTypes: ['file_systems', 'shader_cache', 'service_workers', 'cache_storage'],
   disableStorageReset: false,
   debugNavigation: false,
   channel: 'node',
@@ -113,6 +114,7 @@ const defaultSettings = {
   disableFullPageScreenshot: false,
   skipAboutBlank: false,
   blankPage: 'about:blank',
+  ignoreStatusCode: false,
 
   // the following settings have no defaults but we still want ensure that `key in settings`
   // in config will work in a typechecked way
@@ -127,22 +129,7 @@ const defaultSettings = {
   skipAudits: null,
 };
 
-/** @type {Required<LH.Config.NavigationJson>} */
-const defaultNavigationConfig = {
-  id: 'defaultPass',
-  loadFailureMode: 'fatal',
-  disableThrottling: false,
-  disableStorageReset: false,
-  pauseAfterFcpMs: 0,
-  pauseAfterLoadMs: 0,
-  networkQuietThresholdMs: 0,
-  cpuQuietThresholdMs: 0,
-  blockedUrlPatterns: [],
-  blankPage: 'about:blank',
-  artifacts: [],
-};
-
-const nonSimulatedPassConfigOverrides = {
+const nonSimulatedSettingsOverrides = {
   pauseAfterFcpMs: 5250,
   pauseAfterLoadMs: 5250,
   networkQuietThresholdMs: 5250,
@@ -154,6 +141,5 @@ export {
   screenEmulationMetrics,
   userAgents,
   defaultSettings,
-  defaultNavigationConfig,
-  nonSimulatedPassConfigOverrides,
+  nonSimulatedSettingsOverrides,
 };

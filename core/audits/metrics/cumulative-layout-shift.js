@@ -12,7 +12,7 @@ const UIStrings = {
   /** Description of the Cumulative Layout Shift metric that indicates how much the page changes its layout while it loads. If big segments of the page shift their location during load, the Cumulative Layout Shift will be higher. This description is displayed within a tooltip when the user hovers on the metric name to see more. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   description: 'Cumulative Layout Shift measures the movement of visible ' +
                'elements within the viewport. ' +
-               '[Learn more about the Cumulative Layout Shift metric](https://web.dev/cls/).',
+               '[Learn more about the Cumulative Layout Shift metric](https://web.dev/articles/cls).',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
@@ -39,7 +39,7 @@ class CumulativeLayoutShift extends Audit {
    */
   static get defaultOptions() {
     return {
-      // https://web.dev/cls/#what-is-a-good-cls-score
+      // https://web.dev/articles/cls#what_is_a_good_cls_score
       // This 0.1 target score was determined through both manual evaluation and large-scale analysis.
       // see https://www.desmos.com/calculator/ksp7q91nop
       p10: 0.1,
@@ -54,7 +54,11 @@ class CumulativeLayoutShift extends Audit {
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const {cumulativeLayoutShift, ...rest} = await ComputedCLS.request(trace, context);
+
+    // impactByNodeId is unused but we don't want it on debug data
+    // eslint-disable-next-line no-unused-vars
+    const {cumulativeLayoutShift, impactByNodeId, ...rest} =
+      await ComputedCLS.request(trace, context);
 
     /** @type {LH.Audit.Details.DebugData} */
     const details = {

@@ -1,5 +1,5 @@
 {
-  "lighthouseVersion": "11.2.0",
+  "lighthouseVersion": "11.3.0",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "mainDocumentUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalDisplayedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -9,7 +9,7 @@
   "runWarnings": [],
   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4635.0 Safari/537.36",
   "environment": {
-    "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+    "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
     "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4635.0 Safari/537.36",
     "benchmarkIndex": 1549,
     "credits": {
@@ -203,7 +203,7 @@
     "cumulative-layout-shift": {
       "id": "cumulative-layout-shift",
       "title": "Cumulative Layout Shift",
-      "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/cls/).",
+      "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/articles/cls).",
       "score": 0.8,
       "scoreDisplayMode": "numeric",
       "numericValue": 0.13570762803819444,
@@ -966,7 +966,7 @@
     "image-size-responsive": {
       "id": "image-size-responsive",
       "title": "Serves images with appropriate resolution",
-      "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/serve-responsive-images/).",
+      "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/articles/serve-responsive-images).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -978,7 +978,7 @@
     "preload-fonts": {
       "id": "preload-fonts",
       "title": "Fonts with `font-display: optional` are preloaded",
-      "description": "Preload `optional` fonts so first-time visitors may use them. [Learn more about preloading fonts](https://web.dev/preload-optional-fonts/)",
+      "description": "Preload `optional` fonts so first-time visitors may use them. [Learn more about preloading fonts](https://web.dev/articles/preload-optional-fonts)",
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
@@ -1025,6 +1025,18 @@
             }
           }
         ]
+      }
+    },
+    "third-party-cookies": {
+      "id": "third-party-cookies",
+      "title": "Avoids third-party cookies",
+      "description": "Support for third-party cookies will be removed in a future version of Chrome. [Learn more about phasing out third-party cookies](https://developer.chrome.com/en/docs/privacy-sandbox/third-party-cookie-phase-out/).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
       }
     },
     "mainthread-work-breakdown": {
@@ -2189,6 +2201,89 @@
         ]
       }
     },
+    "resource-summary": {
+      "id": "resource-summary",
+      "title": "Resources Summary",
+      "description": "Aggregates all network requests and groups them by type",
+      "score": null,
+      "scoreDisplayMode": "informative",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "label",
+            "valueType": "text",
+            "label": "Resource Type"
+          },
+          {
+            "key": "requestCount",
+            "valueType": "numeric",
+            "label": "Requests"
+          },
+          {
+            "key": "transferSize",
+            "valueType": "bytes",
+            "label": "Transfer Size"
+          }
+        ],
+        "items": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 25,
+            "transferSize": 1437176
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 8,
+            "transferSize": 1196358
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 5,
+            "transferSize": 198392
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 2,
+            "transferSize": 17793
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 17609
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 9,
+            "transferSize": 7024
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 1,
+            "transferSize": 30346
+          }
+        ]
+      }
+    },
     "third-party-summary": {
       "id": "third-party-summary",
       "title": "Minimize third-party usage",
@@ -2362,7 +2457,7 @@
     "lcp-lazy-loaded": {
       "id": "lcp-lazy-loaded",
       "title": "Largest Contentful Paint image was not lazily loaded",
-      "description": "Above-the-fold images that are lazily loaded render later in the page lifecycle, which can delay the largest contentful paint. [Learn more about optimal lazy loading](https://web.dev/lcp-lazy-loading/).",
+      "description": "Above-the-fold images that are lazily loaded render later in the page lifecycle, which can delay the largest contentful paint. [Learn more about optimal lazy loading](https://web.dev/articles/lcp-lazy-loading).",
       "score": null,
       "scoreDisplayMode": "notApplicable",
       "metricSavings": {
@@ -2373,7 +2468,7 @@
     "layout-shift-elements": {
       "id": "layout-shift-elements",
       "title": "Avoid large layout shifts",
-      "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/optimize-cls/)",
+      "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
       "score": 0,
       "scoreDisplayMode": "metricSavings",
       "displayValue": "5 elements found",
@@ -2498,7 +2593,7 @@
     "long-tasks": {
       "id": "long-tasks",
       "title": "Avoid long main-thread tasks",
-      "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/long-tasks-devtools/)",
+      "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/articles/long-tasks-devtools)",
       "score": null,
       "scoreDisplayMode": "informative",
       "displayValue": "2 long tasks found",
@@ -2579,7 +2674,7 @@
     "no-unload-listeners": {
       "id": "no-unload-listeners",
       "title": "Registers an `unload` listener",
-      "description": "The `unload` event does not fire reliably and listening for it can prevent browser optimizations like the Back-Forward Cache. Use `pagehide` or `visibilitychange` events instead. [Learn more about unload event listeners](https://web.dev/bfcache/#never-use-the-unload-event)",
+      "description": "The `unload` event does not fire reliably and listening for it can prevent browser optimizations like the Back-Forward Cache. Use `pagehide` or `visibilitychange` events instead. [Learn more about unload event listeners](https://web.dev/articles/bfcache#never_use_the_unload_event)",
       "score": 0,
       "scoreDisplayMode": "binary",
       "details": {
@@ -2671,7 +2766,7 @@
     "unsized-images": {
       "id": "unsized-images",
       "title": "Image elements do not have explicit `width` and `height`",
-      "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/optimize-cls/#images-without-dimensions)",
+      "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/articles/optimize-cls#images_without_dimensions)",
       "score": 0.5,
       "scoreDisplayMode": "metricSavings",
       "metricSavings": {
@@ -2749,7 +2844,7 @@
     "prioritize-lcp-image": {
       "id": "prioritize-lcp-image",
       "title": "Preload Largest Contentful Paint image",
-      "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/optimize-lcp/#optimize-when-the-resource-is-discovered).",
+      "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/articles/optimize-lcp#optimize_when_the_resource_is_discovered).",
       "score": 0.5,
       "scoreDisplayMode": "metricSavings",
       "numericValue": 0,
@@ -3016,7 +3111,7 @@
     "aria-allowed-role": {
       "id": "aria-allowed-role",
       "title": "Values assigned to `role=\"\"` are valid ARIA roles.",
-      "description": "ARIA `role`s enable assistive technologies to know the role of each element on the web page. If the `role` values are misspelled, not existing ARIA `role` values, or abstract roles, then the purpose of the element will not be communicated to users of assistive technologies. [Learn more about ARIA roles](https://dequeuniversity.com/rules/axe/4.8/aria-allowed-roles).",
+      "description": "ARIA `role`s enable assistive technologies to know the role of each element on the web page. If the `role` values are misspelled, not existing ARIA `role` values, or abstract roles, then the purpose of the element will not be communicated to users of assistive technologies. [Learn more about ARIA roles](https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role).",
       "score": 1,
       "scoreDisplayMode": "binary",
       "details": {
@@ -4453,11 +4548,11 @@
       "scoreDisplayMode": "metricSavings",
       "numericValue": 1200,
       "numericUnit": "millisecond",
-      "displayValue": "Potential savings of 82 KiB",
+      "displayValue": "Potential savings of 81 KiB",
       "warnings": [],
       "metricSavings": {
         "FCP": 0,
-        "LCP": 300
+        "LCP": 610
       },
       "details": {
         "type": "opportunity",
@@ -4481,13 +4576,13 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js",
-            "totalBytes": 166550,
-            "wastedBytes": 83568,
+            "totalBytes": 166320,
+            "wastedBytes": 83453,
             "wastedPercent": 50.176166426166425
           }
         ],
         "overallSavingsMs": 1200,
-        "overallSavingsBytes": 83568,
+        "overallSavingsBytes": 83453,
         "sortedBy": [
           "wastedBytes"
         ],
@@ -4495,7 +4590,7 @@
           "type": "debugdata",
           "metricSavings": {
             "FCP": 0,
-            "LCP": 300
+            "LCP": 610
           }
         }
       },
@@ -4541,10 +4636,10 @@
       "scoreDisplayMode": "metricSavings",
       "numericValue": 750,
       "numericUnit": "millisecond",
-      "displayValue": "Potential savings of 64 KiB",
+      "displayValue": "Potential savings of 63 KiB",
       "metricSavings": {
         "FCP": 0,
-        "LCP": 450
+        "LCP": 300
       },
       "details": {
         "type": "opportunity",
@@ -4578,19 +4673,19 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js",
-            "totalBytes": 166550,
-            "wastedBytes": 43567,
+            "totalBytes": 166320,
+            "wastedBytes": 43507,
             "wastedPercent": 26.158609908609908
           },
           {
             "url": "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js",
-            "totalBytes": 30346,
-            "wastedBytes": 21544,
+            "totalBytes": 29671,
+            "wastedBytes": 21065,
             "wastedPercent": 70.99531129443884
           }
         ],
         "overallSavingsMs": 750,
-        "overallSavingsBytes": 65111,
+        "overallSavingsBytes": 64572,
         "sortedBy": [
           "wastedBytes"
         ],
@@ -4598,7 +4693,7 @@
           "type": "debugdata",
           "metricSavings": {
             "FCP": 0,
-            "LCP": 450
+            "LCP": 300
           }
         }
       },
@@ -4767,7 +4862,7 @@
       "displayValue": "Potential savings of 143 KiB",
       "metricSavings": {
         "FCP": 150,
-        "LCP": 750
+        "LCP": 1060
       },
       "details": {
         "type": "opportunity",
@@ -4809,7 +4904,7 @@
           "type": "debugdata",
           "metricSavings": {
             "FCP": 150,
-            "LCP": 750
+            "LCP": 1060
           }
         }
       },
@@ -4851,14 +4946,14 @@
       "id": "efficient-animated-content",
       "title": "Use video formats for animated content",
       "description": "Large GIFs are inefficient for delivering animated content. Consider using MPEG4/WebM videos for animations and PNG/WebP for static images instead of GIF to save network bytes. [Learn more about efficient video formats](https://developer.chrome.com/docs/lighthouse/performance/efficient-animated-content/)",
-      "score": 0,
+      "score": 0.5,
       "scoreDisplayMode": "metricSavings",
       "numericValue": 3450,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 666 KiB",
       "metricSavings": {
         "FCP": 0,
-        "LCP": 3300
+        "LCP": 0
       },
       "details": {
         "type": "opportunity",
@@ -4895,7 +4990,7 @@
           "type": "debugdata",
           "metricSavings": {
             "FCP": 0,
-            "LCP": 3300
+            "LCP": 0
           }
         }
       },
@@ -4936,15 +5031,15 @@
     "legacy-javascript": {
       "id": "legacy-javascript",
       "title": "Avoid serving legacy JavaScript to modern browsers",
-      "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/publish-modern-javascript/)",
-      "score": 0.5,
+      "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers. [Learn how to use modern JavaScript](https://web.dev/articles/publish-modern-javascript)",
+      "score": 0,
       "scoreDisplayMode": "metricSavings",
       "numericValue": 450,
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 26 KiB",
       "metricSavings": {
         "FCP": 0,
-        "LCP": 0
+        "LCP": 150
       },
       "details": {
         "type": "opportunity",
@@ -4975,7 +5070,7 @@
         "items": [
           {
             "url": "http://localhost:10200/dobetterweb/third_party/aggressive-promise-polyfill.js",
-            "wastedBytes": 26622,
+            "wastedBytes": 26585,
             "subItems": {
               "type": "subitems",
               "items": [
@@ -5005,7 +5100,7 @@
           }
         ],
         "overallSavingsMs": 450,
-        "overallSavingsBytes": 26622,
+        "overallSavingsBytes": 26585,
         "sortedBy": [
           "wastedBytes"
         ],
@@ -5013,7 +5108,7 @@
           "type": "debugdata",
           "metricSavings": {
             "FCP": 0,
-            "LCP": 0
+            "LCP": 150
           }
         }
       },
@@ -5659,8 +5754,8 @@
       "id": "bf-cache",
       "title": "Page prevented back/forward cache restoration",
       "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://developer.chrome.com/docs/lighthouse/performance/bf-cache/)",
-      "score": 0.5,
-      "scoreDisplayMode": "metricSavings",
+      "score": 0,
+      "scoreDisplayMode": "binary",
       "displayValue": "2 failure reasons",
       "details": {
         "type": "table",
@@ -5718,10 +5813,10 @@
     ],
     "maxWaitForFcp": 30000,
     "maxWaitForLoad": 45000,
-    "pauseAfterFcpMs": 1000,
-    "pauseAfterLoadMs": 1000,
-    "networkQuietThresholdMs": 1000,
-    "cpuQuietThresholdMs": 1000,
+    "pauseAfterFcpMs": 5250,
+    "pauseAfterLoadMs": 5250,
+    "networkQuietThresholdMs": 5250,
+    "cpuQuietThresholdMs": 5250,
     "formFactor": "mobile",
     "throttling": {
       "rttMs": 150,
@@ -5739,9 +5834,15 @@
       "deviceScaleFactor": 1.75,
       "disabled": false
     },
-    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
     "auditMode": true,
     "gatherMode": false,
+    "clearStorageTypes": [
+      "file_systems",
+      "shader_cache",
+      "service_workers",
+      "cache_storage"
+    ],
     "disableStorageReset": false,
     "debugNavigation": false,
     "channel": "cli",
@@ -5749,6 +5850,7 @@
     "disableFullPageScreenshot": false,
     "skipAboutBlank": false,
     "blankPage": "about:blank",
+    "ignoreStatusCode": false,
     "budgets": [
       {
         "path": "/",
@@ -6171,6 +6273,11 @@
           "id": "script-treemap-data",
           "weight": 0,
           "group": "hidden"
+        },
+        {
+          "id": "resource-summary",
+          "weight": 0,
+          "group": "hidden"
         }
       ],
       "id": "performance",
@@ -6178,8 +6285,8 @@
     },
     "accessibility": {
       "title": "Accessibility",
-      "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/how-to-review/) is also encouraged.",
-      "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).",
+      "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/articles/how-to-review) is also encouraged.",
+      "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/articles/how-to-review).",
       "supportedModes": [
         "navigation",
         "snapshot"
@@ -6376,11 +6483,6 @@
           "group": "a11y-names-labels"
         },
         {
-          "id": "label-content-name-mismatch",
-          "weight": 7,
-          "group": "a11y-names-labels"
-        },
-        {
           "id": "label",
           "weight": 7,
           "group": "a11y-names-labels"
@@ -6438,16 +6540,6 @@
         {
           "id": "table-duplicate-name",
           "weight": 1,
-          "group": "a11y-tables-lists"
-        },
-        {
-          "id": "table-fake-caption",
-          "weight": 7,
-          "group": "a11y-tables-lists"
-        },
-        {
-          "id": "td-has-header",
-          "weight": 10,
           "group": "a11y-tables-lists"
         },
         {
@@ -6529,10 +6621,25 @@
           "id": "target-size",
           "weight": 0,
           "group": "hidden"
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "table-fake-caption",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "td-has-header",
+          "weight": 0,
+          "group": "hidden"
         }
       ],
       "id": "accessibility",
-      "score": 0.8
+      "score": 0.77
     },
     "best-practices": {
       "title": "Best Practices",
@@ -6608,6 +6715,11 @@
           "group": "best-practices-general"
         },
         {
+          "id": "third-party-cookies",
+          "weight": 5,
+          "group": "best-practices-general"
+        },
+        {
           "id": "errors-in-console",
           "weight": 1,
           "group": "best-practices-general"
@@ -6624,11 +6736,11 @@
         }
       ],
       "id": "best-practices",
-      "score": 0.18
+      "score": 0.33
     },
     "seo": {
       "title": "SEO",
-      "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/learn-core-web-vitals/). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
+      "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/explore/vitals). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
       "manualDescription": "Run these additional validators on your site to check additional SEO best practices.",
       "supportedModes": [
         "navigation",
@@ -6715,8 +6827,8 @@
     },
     "pwa": {
       "title": "PWA",
-      "description": "These checks validate the aspects of a Progressive Web App. [Learn what makes a good Progressive Web App](https://web.dev/pwa-checklist/).",
-      "manualDescription": "These checks are required by the baseline [PWA Checklist](https://web.dev/pwa-checklist/) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
+      "description": "These checks validate the aspects of a Progressive Web App. [Learn what makes a good Progressive Web App](https://web.dev/articles/pwa-checklist).",
+      "manualDescription": "These checks are required by the baseline [PWA Checklist](https://web.dev/articles/pwa-checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
       "supportedModes": [
         "navigation"
       ],
@@ -7892,12 +8004,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:config:resolveNavigationsToDefns",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:runner:audit",
         "duration": 100,
         "entryType": "measure"
@@ -8216,6 +8322,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:third-party-cookies",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:mainthread-work-breakdown",
         "duration": 100,
         "entryType": "measure"
@@ -8349,6 +8461,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:timing-budget",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:resource-summary",
         "duration": 100,
         "entryType": "measure"
       },
@@ -9285,6 +9403,8 @@
       "opportunitySavingsColumnLabel": "Estimated Savings",
       "passedAuditsGroupTitle": "Passed audits",
       "runtimeAnalysisWindow": "Initial page load",
+      "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
+      "runtimeAnalysisWindowTimespan": "User interactions timespan",
       "runtimeCustom": "Custom throttling",
       "runtimeDesktopEmulation": "Emulated Desktop",
       "runtimeMobileEmulation": "Emulated Moto G Power",
@@ -9296,8 +9416,8 @@
       "runtimeSettingsNetworkThrottling": "Network throttling",
       "runtimeSettingsScreenEmulation": "Screen emulation",
       "runtimeSettingsUANetwork": "User agent (network)",
-      "runtimeSingleLoad": "Single page load",
-      "runtimeSingleLoadTooltip": "This data is taken from a single page load, as opposed to field data summarizing many sessions.",
+      "runtimeSingleLoad": "Single page session",
+      "runtimeSingleLoadTooltip": "This data is taken from a single page session, as opposed to field data summarizing many sessions.",
       "runtimeSlow4g": "Slow 4G throttling",
       "runtimeUnknown": "Unknown",
       "show": "Show",
@@ -9666,6 +9786,12 @@
       "core/audits/deprecations.js | columnDeprecate": [
         "audits.deprecations.details.headings[0].label"
       ],
+      "core/audits/third-party-cookies.js | title": [
+        "audits[third-party-cookies].title"
+      ],
+      "core/audits/third-party-cookies.js | description": [
+        "audits[third-party-cookies].description"
+      ],
       "core/audits/mainthread-work-breakdown.js | failureTitle": [
         "audits[mainthread-work-breakdown].title"
       ],
@@ -9727,13 +9853,16 @@
         "audits[performance-budget].description"
       ],
       "core/lib/i18n/i18n.js | columnResourceType": [
-        "audits[performance-budget].details.headings[0].label"
+        "audits[performance-budget].details.headings[0].label",
+        "audits[resource-summary].details.headings[0].label"
       ],
       "core/lib/i18n/i18n.js | columnRequests": [
-        "audits[performance-budget].details.headings[1].label"
+        "audits[performance-budget].details.headings[1].label",
+        "audits[resource-summary].details.headings[1].label"
       ],
       "core/lib/i18n/i18n.js | columnTransferSize": [
         "audits[performance-budget].details.headings[2].label",
+        "audits[resource-summary].details.headings[2].label",
         "audits[third-party-summary].details.headings[1].label",
         "audits[uses-long-cache-ttl].details.headings[2].label",
         "audits[total-byte-weight].details.headings[1].label",
@@ -9747,7 +9876,8 @@
         "audits[timing-budget].details.headings[2].label"
       ],
       "core/lib/i18n/i18n.js | totalResourceType": [
-        "audits[performance-budget].details.items[0].label"
+        "audits[performance-budget].details.items[0].label",
+        "audits[resource-summary].details.items[0].label"
       ],
       "core/audits/performance-budget.js | requestCountOverBudget": [
         {
@@ -9776,28 +9906,36 @@
         }
       ],
       "core/lib/i18n/i18n.js | imageResourceType": [
-        "audits[performance-budget].details.items[1].label"
+        "audits[performance-budget].details.items[1].label",
+        "audits[resource-summary].details.items[1].label"
       ],
       "core/lib/i18n/i18n.js | scriptResourceType": [
-        "audits[performance-budget].details.items[2].label"
+        "audits[performance-budget].details.items[2].label",
+        "audits[resource-summary].details.items[2].label"
       ],
       "core/lib/i18n/i18n.js | otherResourceType": [
-        "audits[performance-budget].details.items[3].label"
+        "audits[performance-budget].details.items[3].label",
+        "audits[resource-summary].details.items[3].label"
       ],
       "core/lib/i18n/i18n.js | thirdPartyResourceType": [
-        "audits[performance-budget].details.items[4].label"
+        "audits[performance-budget].details.items[4].label",
+        "audits[resource-summary].details.items[8].label"
       ],
       "core/lib/i18n/i18n.js | documentResourceType": [
-        "audits[performance-budget].details.items[5].label"
+        "audits[performance-budget].details.items[5].label",
+        "audits[resource-summary].details.items[4].label"
       ],
       "core/lib/i18n/i18n.js | stylesheetResourceType": [
-        "audits[performance-budget].details.items[6].label"
+        "audits[performance-budget].details.items[6].label",
+        "audits[resource-summary].details.items[5].label"
       ],
       "core/lib/i18n/i18n.js | mediaResourceType": [
-        "audits[performance-budget].details.items[7].label"
+        "audits[performance-budget].details.items[7].label",
+        "audits[resource-summary].details.items[6].label"
       ],
       "core/lib/i18n/i18n.js | fontResourceType": [
-        "audits[performance-budget].details.items[8].label"
+        "audits[performance-budget].details.items[8].label",
+        "audits[resource-summary].details.items[7].label"
       ],
       "core/audits/timing-budget.js | title": [
         "audits[timing-budget].title"
@@ -10440,13 +10578,13 @@
       "core/lib/i18n/i18n.js | displayValueByteSavings": [
         {
           "values": {
-            "wastedBytes": 83568
+            "wastedBytes": 83453
           },
           "path": "audits[unminified-javascript].displayValue"
         },
         {
           "values": {
-            "wastedBytes": 65111
+            "wastedBytes": 64572
           },
           "path": "audits[unused-javascript].displayValue"
         },
@@ -10470,7 +10608,7 @@
         },
         {
           "values": {
-            "wastedBytes": 26622
+            "wastedBytes": 26585
           },
           "path": "audits[legacy-javascript].displayValue"
         }

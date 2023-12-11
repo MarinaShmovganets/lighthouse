@@ -53,6 +53,8 @@ interface UniversalBaseArtifacts {
   HostFormFactor: 'desktop'|'mobile';
   /** The user agent string of the version of Chrome used. */
   HostUserAgent: string;
+  /** The product string of the version of Chrome used. Example: HeadlessChrome/123.2.2.0 would be from old headless. */
+  HostProduct: string;
   /** Information about how Lighthouse artifacts were gathered. */
   GatherContext: {gatherMode: Gatherer.GatherMode};
 }
@@ -558,9 +560,8 @@ declare module Artifacts {
 
   interface TraceElement {
     traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation'|'responsiveness';
-    score?: number;
     node: NodeDetails;
-    nodeId?: number;
+    nodeId: number;
     animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[];
     type?: string;
   }
@@ -579,6 +580,7 @@ declare module Artifacts {
     bounceTrackingIssue: Crdp.Audits.BounceTrackingIssueDetails[];
     clientHintIssue: Crdp.Audits.ClientHintIssueDetails[];
     contentSecurityPolicyIssue: Crdp.Audits.ContentSecurityPolicyIssueDetails[];
+    cookieDeprecationMetadataIssue: Crdp.Audits.CookieDeprecationMetadataIssueDetails[],
     corsIssue: Crdp.Audits.CorsIssueDetails[];
     deprecationIssue: Crdp.Audits.DeprecationIssueDetails[];
     federatedAuthRequestIssue: Crdp.Audits.FederatedAuthRequestIssueDetails[],
