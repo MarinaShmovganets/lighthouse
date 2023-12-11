@@ -243,7 +243,7 @@
           "tid": 259,
           "ts": 8703546175
         },
-        "loafs": [
+        "observedLoafs": [
           {
             "startTime": 6845.353,
             "duration": 1199.518,

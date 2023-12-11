@@ -104,7 +104,7 @@ describe('Max Potential FID', () => {
             },
           },
         },
-        loafs: [
+        observedLoafs: [
           {startTime: 2000, duration: 2999, blockingDuration: 1500},
           {startTime: 5500, duration: 1000, blockingDuration: 500},
           {startTime: 8000, duration: 2000, blockingDuration: 10},

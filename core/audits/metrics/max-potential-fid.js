@@ -15,7 +15,7 @@ import * as i18n from '../../lib/i18n/i18n.js';
  * @property {'debugdata'} type
  * @property {LH.TraceEvent} observedMaxDurationLoaf
  * @property {LH.TraceEvent} observedMaxBlockingLoaf
- * @property {Array<{startTime: number, duration: number, blockingDuration: number}>} loafs
+ * @property {Array<{startTime: number, duration: number, blockingDuration: number}>} observedLoafs
  */
 
 const UIStrings = {
@@ -76,14 +76,14 @@ class MaxPotentialFID extends Audit {
     let currentMaxDurationLoaf;
     let currentMaxBlocking = -Infinity;
     let currentMaxBlockingLoaf;
-    const loafs = [];
+    const observedLoafs = [];
     for (const loafEvent of loafEvents) {
       const loafDuration = loafEvent.args?.data?.duration;
       const loafBlocking = loafEvent.args?.data?.blockingDuration;
       // Should never happen, so mostly keeping the type checker happy.
       if (loafDuration === undefined || loafBlocking === undefined) continue;
 
-      loafs.push({
+      observedLoafs.push({
         startTime: (loafEvent.ts - timeOrigin) / 1000,
         duration: loafDuration,
         blockingDuration: loafBlocking,
@@ -108,7 +108,7 @@ class MaxPotentialFID extends Audit {
       type: 'debugdata',
       observedMaxDurationLoaf: currentMaxDurationLoaf,
       observedMaxBlockingLoaf: currentMaxBlockingLoaf,
-      loafs,
+      observedLoafs,
     };
   }
 
