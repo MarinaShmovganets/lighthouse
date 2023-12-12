@@ -246,8 +246,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
       }
 
       diagnosticAudits.sort((a, b) => {
-        // Performance diagnostics should only have score display modes of "informative" and "metricSavings"
-        // If the score display mode is "metricSavings", the `score` will be a coarse approximation of the overall impact.
+        // If the score display mode is "metricSavings", the `score` will be a coarse indicator of the overall impact.
         // Therefore, it makes sense to sort audits by score first to ensure visual clarity with the score icons.
         const scoreA = a.auditRef.result.scoreDisplayMode === 'informative'
           ? 100
@@ -272,7 +271,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
         // Fall back to the linear impact if the normal impact is rounded down to 0
         if (
           a.overallImpact === 0 && b.overallImpact === 0 &&
-            a.overallLinearImpact !== b.overallLinearImpact
+          a.overallLinearImpact !== b.overallLinearImpact
         ) {
           return b.overallLinearImpact * b.guidanceLevel - a.overallLinearImpact * a.guidanceLevel;
         }
