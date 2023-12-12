@@ -1,5 +1,5 @@
 {
-  "lighthouseVersion": "11.3.0",
+  "lighthouseVersion": "11.4.0",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "mainDocumentUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalDisplayedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -198,7 +198,59 @@
       "scoreDisplayMode": "numeric",
       "numericValue": 1174.877,
       "numericUnit": "millisecond",
-      "displayValue": "1,170 ms"
+      "displayValue": "1,170 ms",
+      "details": {
+        "type": "debugdata",
+        "observedMaxDurationLoaf": {
+          "args": {
+            "data": {
+              "blockingDuration": 1139.261,
+              "duration": 1199.518,
+              "numScripts": 1,
+              "renderDuration": 14.777,
+              "styleAndLayoutDuration": 13.034
+            }
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x13b00174d98"
+          },
+          "name": "LongAnimationFrame",
+          "ph": "b",
+          "pid": 31161,
+          "scope": "devtools.timeline",
+          "tid": 259,
+          "ts": 8703546175
+        },
+        "observedMaxBlockingLoaf": {
+          "args": {
+            "data": {
+              "blockingDuration": 1139.261,
+              "duration": 1199.518,
+              "numScripts": 1,
+              "renderDuration": 14.777,
+              "styleAndLayoutDuration": 13.034
+            }
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x13b00174d98"
+          },
+          "name": "LongAnimationFrame",
+          "ph": "b",
+          "pid": 31161,
+          "scope": "devtools.timeline",
+          "tid": 259,
+          "ts": 8703546175
+        },
+        "observedLoafs": [
+          {
+            "startTime": 6845.353,
+            "duration": 1199.518,
+            "blockingDuration": 1139.261
+          }
+        ]
+      }
     },
     "cumulative-layout-shift": {
       "id": "cumulative-layout-shift",
@@ -2468,7 +2520,7 @@
     "layout-shift-elements": {
       "id": "layout-shift-elements",
       "title": "Avoid large layout shifts",
-      "description": "These DOM elements contribute most to the CLS of the page. [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
+      "description": "These DOM elements were most affected by layout shifts. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
       "score": 0,
       "scoreDisplayMode": "metricSavings",
       "displayValue": "5 elements found",
@@ -2487,7 +2539,7 @@
             "key": "score",
             "valueType": "numeric",
             "granularity": 0.001,
-            "label": "CLS Contribution"
+            "label": "Layout shift impact"
           }
         ],
         "items": [
