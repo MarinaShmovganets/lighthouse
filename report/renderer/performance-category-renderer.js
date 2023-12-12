@@ -278,9 +278,11 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
 
         // Audits that have no estimated savings should be prioritized by the guidance level
         return b.guidanceLevel - a.guidanceLevel;
-      }).forEach(item => {
-        groupEl.insertBefore(item.auditEl, footerEl);
       });
+
+      for (const audit of diagnosticAudits) {
+        groupEl.insertBefore(audit.auditEl, footerEl);
+      }
     }
 
     /** @type {Set<string>} */
