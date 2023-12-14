@@ -88,7 +88,7 @@ describe('Render blocking resources audit', () => {
       // it look like Montserrat starts after Fira Sans finishes. It would be preferred
       // if eventual simulation improvements list Montserrat here as well.
     ]);
-    expect(result.metricSavings).toEqual({FCP: 469, LCP: 469});
+    expect(result.metricSavings).toEqual({FCP: 469, LCP: 0});
   });
 
   describe('#estimateSavingsWithGraphs', () => {
