@@ -1,7 +1,8 @@
 // @ts-expect-error missing types
 import * as TraceEngine from '@paulirish/trace_engine';
-// does polyfillDOMRect
-import '@paulirish/trace_engine/analyze-trace.mjs';
+import { polyfillDOMRect } from './polyfill-dom-rect.js';
+
+polyfillDOMRect();
 
 const TraceProcessor = TraceEngine.Processor.TraceProcessor;
 const TraceHandlers = TraceEngine.Handlers.ModelHandlers;
