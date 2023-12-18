@@ -1,6 +1,7 @@
 // @ts-expect-error missing types
 import * as TraceEngine from '@paulirish/trace_engine';
-import { polyfillDOMRect } from './polyfill-dom-rect.js';
+
+import {polyfillDOMRect} from './polyfill-dom-rect.js';
 
 polyfillDOMRect();
 
