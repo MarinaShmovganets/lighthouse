@@ -7,8 +7,9 @@
 import {makeComputedArtifact} from '../computed-artifact.js';
 import {ProcessedTrace} from '../processed-trace.js';
 import * as RectHelpers from '../../lib/rect-helpers.js';
+import * as TraceEngine from '../../lib/trace-engine.js';
 
-/** @typedef {{ts: number, isMainFrame: boolean, weightedScore: number, impactedNodes?: LH.Artifacts.TraceImpactedNode[]}} LayoutShiftEvent */
+/** @typedef {{ts: number, isMainFrame: boolean, weightedScore: number, impactedNodes?: LH.Artifacts.TraceImpactedNode[], event: LH.TraceEvent}} LayoutShiftEvent */
 
 const RECENT_INPUT_WINDOW = 500;
 
@@ -67,6 +68,7 @@ class CumulativeLayoutShift {
         isMainFrame: event.args.data.is_main_frame,
         weightedScore: event.args.data.weighted_score_delta,
         impactedNodes: event.args.data.impacted_nodes,
+        event,
       });
     }
 
@@ -158,9 +160,60 @@ class CumulativeLayoutShift {
     const impactByNodeId = CumulativeLayoutShift.getImpactByNodeId(allFrameShiftEvents);
     const mainFrameShiftEvents = allFrameShiftEvents.filter(e => e.isMainFrame);
 
+    let useNewTraceEngine = true;
+
+    // TODO: TraceEngine always drops `had_recent_input` events, but Lighthouse is more lenient.
+    // See comment in `getLayoutShiftEvents`.
+    if (allFrameShiftEvents.some(e => e.event.args.data?.had_recent_input)) {
+      useNewTraceEngine = false;
+    }
+
+    let cumulativeLayoutShift;
+    let cumulativeLayoutShiftMainFrame;
+    if (useNewTraceEngine) {
+      /** @param {LH.TraceEvent[]} events */
+      const run = async (events) => {
+        const processor = new TraceEngine.TraceProcessor({
+          LayoutShifts: TraceEngine.TraceHandlers.LayoutShifts,
+          Screenshots: TraceEngine.TraceHandlers.Screenshots,
+        });
+        await processor.parse(events);
+        return processor.data.LayoutShifts.sessionMaxScore;
+      };
+
+      try {
+        cumulativeLayoutShift = await run(processedTrace.frameTreeEvents.filter(event => {
+          if (event.name !== 'LayoutShift') {
+            return true;
+          }
+
+          return allFrameShiftEvents.some(lse => lse.event === event);
+        }));
+        cumulativeLayoutShiftMainFrame = await run(processedTrace.frameTreeEvents.filter(event => {
+          if (event.name !== 'LayoutShift') {
+            return true;
+          }
+
+          return mainFrameShiftEvents.some(lse => lse.event === event);
+        }));
+      } catch (e) {
+        console.error(e);
+        useNewTraceEngine = false;
+        // @ts-expect-error Checking for running from tests.
+        if (global.expect) {
+          throw new Error('Error when using new trace engine');
+        }
+      }
+    }
+
+    if (!useNewTraceEngine) {
+      cumulativeLayoutShift = CumulativeLayoutShift.calculate(allFrameShiftEvents);
+      cumulativeLayoutShiftMainFrame = CumulativeLayoutShift.calculate(mainFrameShiftEvents);
+    }
+
     return {
-      cumulativeLayoutShift: CumulativeLayoutShift.calculate(allFrameShiftEvents),
-      cumulativeLayoutShiftMainFrame: CumulativeLayoutShift.calculate(mainFrameShiftEvents),
+      cumulativeLayoutShift,
+      cumulativeLayoutShiftMainFrame,
       impactByNodeId,
     };
   }
