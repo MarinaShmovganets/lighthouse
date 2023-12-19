@@ -183,20 +183,8 @@ class CumulativeLayoutShift {
       };
 
       try {
-        cumulativeLayoutShift = await run(processedTrace.frameTreeEvents.filter(event => {
-          if (event.name !== 'LayoutShift') {
-            return false;
-          }
-
-          return allFrameShiftEvents.some(lse => lse.event === event);
-        }));
-        cumulativeLayoutShiftMainFrame = await run(processedTrace.frameTreeEvents.filter(event => {
-          if (event.name !== 'LayoutShift') {
-            return false;
-          }
-
-          return mainFrameShiftEvents.some(lse => lse.event === event);
-        }));
+        cumulativeLayoutShift = await run(allFrameShiftEvents.map(e => e.event));
+        cumulativeLayoutShiftMainFrame = await run(mainFrameShiftEvents.map(e => e.event));
       } catch (e) {
         console.error(e);
         useNewTraceEngine = false;
