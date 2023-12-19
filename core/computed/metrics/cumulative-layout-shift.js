@@ -196,10 +196,10 @@ class CumulativeLayoutShift {
       try {
         newEngineResult =
           await this.computeWithSharedTraceEngine(allFrameShiftEvents, mainFrameShiftEvents);
-        const differ =
+        newEngineResultDiffered =
           newEngineResult.cumulativeLayoutShift !== cumulativeLayoutShift ||
           newEngineResult.cumulativeLayoutShiftMainFrame !== cumulativeLayoutShiftMainFrame;
-        if (differ) {
+        if (newEngineResultDiffered) {
           newEngineResultDiffered = true;
           const expected = JSON.stringify({cumulativeLayoutShift, cumulativeLayoutShiftMainFrame});
           const got = JSON.stringify(newEngineResult);
