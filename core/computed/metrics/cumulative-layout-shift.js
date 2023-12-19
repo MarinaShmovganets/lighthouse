@@ -149,6 +149,25 @@ class CumulativeLayoutShift {
   }
 
   /**
+   * @param {LayoutShiftEvent[]} allFrameShiftEvents
+   * @param {LayoutShiftEvent[]} mainFrameShiftEvents
+   */
+  static async computeWithSharedTraceEngine(allFrameShiftEvents, mainFrameShiftEvents) {
+    /** @param {LH.TraceEvent[]} events */
+    const run = async (events) => {
+      const processor = new TraceEngine.TraceProcessor({
+        LayoutShifts: TraceEngine.TraceHandlers.LayoutShifts,
+        Screenshots: TraceEngine.TraceHandlers.Screenshots,
+      });
+      await processor.parse(events);
+      return processor.data.LayoutShifts.sessionMaxScore;
+    };
+    const cumulativeLayoutShift = await run(allFrameShiftEvents.map(e => e.event));
+    const cumulativeLayoutShiftMainFrame = await run(mainFrameShiftEvents.map(e => e.event));
+    return {cumulativeLayoutShift, cumulativeLayoutShiftMainFrame};
+  }
+
+  /**
    * @param {LH.Trace} trace
    * @param {LH.Artifacts.ComputedContext} context
    * @return {Promise<{cumulativeLayoutShift: number, cumulativeLayoutShiftMainFrame: number, impactByNodeId: Map<number, number>}>}
@@ -160,49 +179,47 @@ class CumulativeLayoutShift {
         CumulativeLayoutShift.getLayoutShiftEvents(processedTrace);
     const impactByNodeId = CumulativeLayoutShift.getImpactByNodeId(allFrameShiftEvents);
     const mainFrameShiftEvents = allFrameShiftEvents.filter(e => e.isMainFrame);
+    const cumulativeLayoutShift = CumulativeLayoutShift.calculate(allFrameShiftEvents);
+    const cumulativeLayoutShiftMainFrame = CumulativeLayoutShift.calculate(mainFrameShiftEvents);
 
-    let useNewTraceEngine = true;
-
+    // Run with the new trace engine, and only throw an error if we are running our unit tests.
+    // Otherwise, simply report any differences or errors to Sentry.
     // TODO: TraceEngine always drops `had_recent_input` events, but Lighthouse is more lenient.
-    // See comment in `getLayoutShiftEvents`.
+    //       See comment in `getLayoutShiftEvents`. We need to upstream this.
+    let tryNewTraceEngine = true;
     if (allFrameShiftEvents.some(e => e.event.args.data?.had_recent_input)) {
-      useNewTraceEngine = false;
+      tryNewTraceEngine = false;
     }
-
-    let cumulativeLayoutShift;
-    let cumulativeLayoutShiftMainFrame;
-    if (useNewTraceEngine) {
-      /** @param {LH.TraceEvent[]} events */
-      const run = async (events) => {
-        const processor = new TraceEngine.TraceProcessor({
-          LayoutShifts: TraceEngine.TraceHandlers.LayoutShifts,
-          Screenshots: TraceEngine.TraceHandlers.Screenshots,
-        });
-        await processor.parse(events);
-        return processor.data.LayoutShifts.sessionMaxScore;
-      };
-
+    if (tryNewTraceEngine) {
       try {
-        cumulativeLayoutShift = await run(allFrameShiftEvents.map(e => e.event));
-        cumulativeLayoutShiftMainFrame = await run(mainFrameShiftEvents.map(e => e.event));
-      } catch (e) {
-        console.error(e);
-        useNewTraceEngine = false;
-        // @ts-expect-error Checking for running from tests.
+        const newEngineResult =
+          await this.computeWithSharedTraceEngine(allFrameShiftEvents, mainFrameShiftEvents);
+        const differ =
+          newEngineResult.cumulativeLayoutShift !== cumulativeLayoutShift ||
+          newEngineResult.cumulativeLayoutShiftMainFrame !== cumulativeLayoutShiftMainFrame;
+        if (differ) {
+          const expected = JSON.stringify({cumulativeLayoutShift, cumulativeLayoutShiftMainFrame});
+          const got = JSON.stringify(newEngineResult);
+          throw new Error(`new trace engine differed. expected: ${expected}, got: ${got}`);
+        }
+      } catch (err) {
+        console.error(err);
+
+        const error = new Error('Error when using new trace engine', {cause: err});
+        // @ts-expect-error Check for running from tests.
         if (global.expect) {
-          throw new Error('Error when using new trace engine');
+          throw error;
         } else {
-          Sentry.captureException(e, {
+          Sentry.captureException(error, {
             tags: {computed: 'new-trace-engine'},
             level: 'error',
+            extra: {
+              // Not sure if Sentry handles `cause`, so just in case add the info in a second place.
+              errorMsg: err.toString(),
+            },
           });
         }
       }
-    }
-
-    if (!useNewTraceEngine) {
-      cumulativeLayoutShift = CumulativeLayoutShift.calculate(allFrameShiftEvents);
-      cumulativeLayoutShiftMainFrame = CumulativeLayoutShift.calculate(mainFrameShiftEvents);
     }
 
     return {
