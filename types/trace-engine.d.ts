@@ -4,9 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import {TraceEvent} from './artifacts';
+
 // This part is just the subset of types we need for the main API.
 
-type LayoutShiftTraceEvent = LH.TraceEvent & {
+type LayoutShiftTraceEvent = TraceEvent & {
     args: {data: {
         impacted_nodes: LH.Artifacts.TraceImpactedNode[],
         weighted_score_delta: number;
