@@ -1172,8 +1172,17 @@
   "core/audits/layout-shifts.js | description": {
     "message": "These are the largest layout shifts observed on the page. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)"
   },
+  "core/audits/layout-shifts.js | rootCauseFontChanges": {
+    "message": "A layout shift may have occurred because the font for some text changed"
+  },
+  "core/audits/layout-shifts.js | rootCauseInjectedIframe": {
+    "message": "A layout shift may have occurred because an iframe was added to the page without space being previously allocated for it"
+  },
+  "core/audits/layout-shifts.js | rootCauseRenderBlockingRequest": {
+    "message": "A layout shift may have occurred because of a render blocking request"
+  },
   "core/audits/layout-shifts.js | rootCauseUnsizedMedia": {
-    "message": "The size of an element changed when CSS was applied"
+    "message": "A layout shift may have occurred because of CSS defining the size of an otherwise unsized element"
   },
   "core/audits/layout-shifts.js | title": {
     "message": "Avoid large layout shifts"

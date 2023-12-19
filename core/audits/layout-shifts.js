@@ -10,7 +10,7 @@ import CumulativeLayoutShift from './metrics/cumulative-layout-shift.js';
 import TraceElements from '../gather/gatherers/trace-elements.js';
 
 /** @typedef {LH.Audit.Details.TableItem & {node?: LH.Audit.Details.NodeValue, score: number, subItems?: {type: 'subitems', items: SubItem[]}}} Item */
-/** @typedef {{node?: LH.Audit.Details.NodeValue, cause: LH.IcuMessage}} SubItem */
+/** @typedef {{node?: LH.Audit.Details.NodeValue, url?: string, cause: LH.IcuMessage}} SubItem */
 
 const UIStrings = {
   /** Descriptive title of a diagnostic audit that provides the top elements affected by layout shifts. */
@@ -20,7 +20,13 @@ const UIStrings = {
   /** Label for a column in a data table; entries in this column will be a number representing how large the layout shift was. */
   columnScore: 'Layout shift score',
   /** A possible reason why that the layout shift occured. */
-  rootCauseUnsizedMedia: 'The size of an element changed when CSS was applied',
+  rootCauseUnsizedMedia: 'A layout shift may have occurred because of CSS defining the size of an otherwise unsized element',
+  /** A possible reason why that the layout shift occured. */
+  rootCauseFontChanges: 'A layout shift may have occurred because the font for some text changed',
+  /** A possible reason why that the layout shift occured. */
+  rootCauseInjectedIframe: 'A layout shift may have occurred because an iframe was added to the page without space being previously allocated for it',
+  /** A possible reason why that the layout shift occured. */
+  rootCauseRenderBlockingRequest: 'A layout shift may have occurred because of a render blocking request',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
@@ -68,19 +74,32 @@ class LayoutShifts extends Audit {
       if (rootCauses) {
         // TODO ! finish these
         for (const cause of rootCauses.fontChanges) {
-          // subItems.push({cause: JSON.stringify(cause)});
+          const url = cause.request.args.data.url;
+          subItems.push({
+            url,
+            cause: str_(UIStrings.rootCauseFontChanges),
+          });
         }
         for (const cause of rootCauses.iframes) {
-          // subItems.push({cause: JSON.stringify(cause)});
+          const element = artifacts.TraceElements.find(
+            t => t.traceEventType === 'layout-shift' && t.nodeId === cause.iframe.backendNodeId);
+          subItems.push({
+            node: element ? Audit.makeNodeItem(element.node) : undefined,
+            cause: str_(UIStrings.rootCauseInjectedIframe),
+          });
         }
         for (const cause of rootCauses.renderBlockingRequests) {
-          // subItems.push({cause: JSON.stringify(cause)});
+          const url = cause.request.args.data.url;
+          subItems.push({
+            url,
+            cause: str_(UIStrings.rootCauseRenderBlockingRequest),
+          });
         }
         for (const cause of rootCauses.unsizedMedia) {
-          const unsizedMediaElement = artifacts.TraceElements.find(
+          const element = artifacts.TraceElements.find(
             t => t.traceEventType === 'layout-shift' && t.nodeId === cause.node.backendNodeId);
           subItems.push({
-            node: unsizedMediaElement ? Audit.makeNodeItem(unsizedMediaElement.node) : undefined,
+            node: element ? Audit.makeNodeItem(element.node) : undefined,
             cause: str_(UIStrings.rootCauseUnsizedMedia), 
           });
         }
@@ -95,8 +114,10 @@ class LayoutShifts extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
-      {key: 'node', valueType: 'node', label: str_(i18n.UIStrings.columnElement)},
+      {key: 'node', valueType: 'node', subItemsHeading: {key: 'node'}, label: str_(i18n.UIStrings.columnElement)},
       {key: 'score', valueType: 'numeric', granularity: 0.001, label: str_(UIStrings.columnScore)},
+      {key: null, valueType: 'url', subItemsHeading: {key: 'url'}, label: str_(i18n.UIStrings.columnURL)},
+      {key: null, valueType: 'text', subItemsHeading: {key: 'cause'}, label: str_(i18n.UIStrings.columnURL)},
     ];
 
     const details = Audit.makeTableDetails(headings, items);

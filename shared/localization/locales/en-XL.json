@@ -1172,8 +1172,17 @@
   "core/audits/layout-shifts.js | description": {
     "message": "T̂h́êśê ár̂é t̂h́ê ĺâŕĝéŝt́ l̂áŷóût́ ŝh́îf́t̂ś ôb́ŝér̂v́êd́ ôń t̂h́ê ṕâǵê. Śôḿê ĺâýôút̂ śĥíf̂t́ŝ ḿâý n̂ót̂ b́ê ín̂ćl̂úd̂éd̂ ín̂ t́ĥé ĈĹŜ ḿêt́r̂íĉ v́âĺûé d̂úê t́ô [ẃîńd̂óŵín̂ǵ](https://web.dev/articles/cls#what_is_cls). [L̂éâŕn̂ h́ôẃ t̂ó îḿp̂ŕôv́ê ĆL̂Ś](https://web.dev/articles/optimize-cls)"
   },
+  "core/audits/layout-shifts.js | rootCauseFontChanges": {
+    "message": "Â ĺâýôút̂ śĥíf̂t́ m̂áŷ h́âv́ê óĉćûŕr̂éd̂ b́êćâúŝé t̂h́ê f́ôńt̂ f́ôŕ ŝóm̂é t̂éx̂t́ ĉh́âńĝéd̂"
+  },
+  "core/audits/layout-shifts.js | rootCauseInjectedIframe": {
+    "message": "Â ĺâýôút̂ śĥíf̂t́ m̂áŷ h́âv́ê óĉćûŕr̂éd̂ b́êćâúŝé âń îf́r̂ám̂é ŵáŝ ád̂d́êd́ t̂ó t̂h́ê ṕâǵê ẃît́ĥóût́ ŝṕâćê b́êín̂ǵ p̂ŕêv́îóûśl̂ý âĺl̂óĉát̂éd̂ f́ôŕ ît́"
+  },
+  "core/audits/layout-shifts.js | rootCauseRenderBlockingRequest": {
+    "message": "Â ĺâýôút̂ śĥíf̂t́ m̂áŷ h́âv́ê óĉćûŕr̂éd̂ b́êćâúŝé ôf́ â ŕêńd̂ér̂ b́l̂óĉḱîńĝ ŕêq́ûéŝt́"
+  },
   "core/audits/layout-shifts.js | rootCauseUnsizedMedia": {
-    "message": "T̂h́ê śîźê óf̂ án̂ él̂ém̂én̂t́ ĉh́âńĝéd̂ ẃĥén̂ ĆŜŚ ŵáŝ áp̂ṕl̂íêd́"
+    "message": "Â ĺâýôút̂ śĥíf̂t́ m̂áŷ h́âv́ê óĉćûŕr̂éd̂ b́êćâúŝé ôf́ ĈŚŜ d́êf́îńîńĝ t́ĥé ŝíẑé ôf́ âń ôt́ĥér̂ẃîśê ún̂śîźêd́ êĺêḿêńt̂"
   },
   "core/audits/layout-shifts.js | title": {
     "message": "Âv́ôíd̂ ĺâŕĝé l̂áŷóût́ ŝh́îf́t̂ś"
