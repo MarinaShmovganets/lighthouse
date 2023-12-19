@@ -8,6 +8,7 @@ import {makeComputedArtifact} from '../computed-artifact.js';
 import {ProcessedTrace} from '../processed-trace.js';
 import * as RectHelpers from '../../lib/rect-helpers.js';
 import * as TraceEngine from '../../lib/trace-engine.js';
+import {Sentry} from '../../lib/sentry.js';
 
 /** @typedef {{ts: number, isMainFrame: boolean, weightedScore: number, impactedNodes?: LH.Artifacts.TraceImpactedNode[], event: LH.TraceEvent}} LayoutShiftEvent */
 
@@ -184,14 +185,14 @@ class CumulativeLayoutShift {
       try {
         cumulativeLayoutShift = await run(processedTrace.frameTreeEvents.filter(event => {
           if (event.name !== 'LayoutShift') {
-            return true;
+            return false;
           }
 
           return allFrameShiftEvents.some(lse => lse.event === event);
         }));
         cumulativeLayoutShiftMainFrame = await run(processedTrace.frameTreeEvents.filter(event => {
           if (event.name !== 'LayoutShift') {
-            return true;
+            return false;
           }
 
           return mainFrameShiftEvents.some(lse => lse.event === event);
@@ -202,6 +203,11 @@ class CumulativeLayoutShift {
         // @ts-expect-error Checking for running from tests.
         if (global.expect) {
           throw new Error('Error when using new trace engine');
+        } else {
+          Sentry.captureException(e, {
+            tags: {computed: 'new-trace-engine'},
+            level: 'error',
+          });
         }
       }
     }
