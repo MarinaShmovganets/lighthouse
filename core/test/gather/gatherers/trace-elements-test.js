@@ -93,8 +93,8 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     const result =
       await TraceElementsGatherer.getTopLayoutShiftElements(trace, {computedCache: new Map()});
     expect(result).toEqual([
-      {nodeId: 25}, // score: 0.6
-      {nodeId: 60}, // score: 0.4
+      25, // score: 0.6
+      60, // score: 0.4
     ]);
   });
 
@@ -156,21 +156,21 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     const result =
       await TraceElementsGatherer.getTopLayoutShiftElements(trace, {computedCache: new Map()});
     expect(result).toEqual([
-      {nodeId: 3}, // score: 1.0
-      {nodeId: 1}, // score: 0.5
-      {nodeId: 2}, // score: 0.5
-      {nodeId: 6}, // score: 0.25
-      {nodeId: 7}, // score: 0.25
-      {nodeId: 4}, // score: 0.125
-      {nodeId: 5}, // score: 0.125
-      {nodeId: 8}, // score: 0.1
-      {nodeId: 9}, // score: 0.1
-      {nodeId: 10}, // score: 0.1
-      {nodeId: 11}, // score: 0.1
-      {nodeId: 12}, // score: 0.1
-      {nodeId: 13}, // score: 0.1
-      {nodeId: 14}, // score: 0.1
-      {nodeId: 15}, // score: 0.1
+      3, // score: 1.0
+      1, // score: 0.5
+      2, // score: 0.5
+      6, // score: 0.25
+      7, // score: 0.25
+      4, // score: 0.125
+      5, // score: 0.125
+      8, // score: 0.1
+      9, // score: 0.1
+      10, // score: 0.1
+      11, // score: 0.1
+      12, // score: 0.1
+      13, // score: 0.1
+      14, // score: 0.1
+      15, // score: 0.1
     ]);
   });
 });

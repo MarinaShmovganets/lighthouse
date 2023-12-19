@@ -23,6 +23,7 @@ import LHResult from './lhr/lhr.js'
 import Protocol from './protocol.js';
 import Util from './utility-types.js';
 import Audit from './audit.js';
+import { TraceProcessor, RootCauses, LayoutShiftRootCauses } from './trace-engine.js';
 
 export type Artifacts = BaseArtifacts & GathererArtifacts;
 
@@ -932,10 +933,18 @@ declare module Artifacts {
   }
 }
 
+export interface TraceEngineRootCauses {
+  layoutShifts: Record<number, LayoutShiftRootCauses>;
+}
+
 export interface Trace {
   traceEvents: TraceEvent[];
   metadata?: {
     'cpu-family'?: number;
+  };
+  traceEngineResult?: {
+    data: TraceProcessor['data'];
+    rootCauses: TraceEngineRootCauses;
   };
   [futureProps: string]: any;
 }

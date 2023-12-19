@@ -2647,6 +2647,22 @@
       },
       "guidanceLevel": 2
     },
+    "layout-shifts": {
+      "id": "layout-shifts",
+      "title": "Avoid large layout shifts",
+      "description": "These are the largest layout shifts observed on the page. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
+      "score": null,
+      "scoreDisplayMode": "notApplicable",
+      "metricSavings": {
+        "CLS": 0.13570762803819444
+      },
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      },
+      "guidanceLevel": 2
+    },
     "long-tasks": {
       "id": "long-tasks",
       "title": "Avoid long main-thread tasks",
@@ -6093,6 +6109,7 @@
           "acronym": "CLS",
           "relevantAudits": [
             "layout-shift-elements",
+            "layout-shifts",
             "non-composited-animations",
             "unsized-images"
           ]
@@ -6246,6 +6263,10 @@
         },
         {
           "id": "layout-shift-elements",
+          "weight": 0
+        },
+        {
+          "id": "layout-shifts",
           "weight": 0
         },
         {
@@ -8559,6 +8580,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:layout-shifts",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:long-tasks",
         "duration": 100,
         "entryType": "measure"
@@ -10087,6 +10114,12 @@
       ],
       "core/audits/layout-shift-elements.js | columnContribution": [
         "audits[layout-shift-elements].details.headings[1].label"
+      ],
+      "core/audits/layout-shifts.js | title": [
+        "audits[layout-shifts].title"
+      ],
+      "core/audits/layout-shifts.js | description": [
+        "audits[layout-shifts].description"
       ],
       "core/audits/long-tasks.js | title": [
         "audits[long-tasks].title"

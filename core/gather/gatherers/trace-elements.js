@@ -27,6 +27,7 @@ import {ExecutionContext} from '../driver/execution-context.js';
 /** @typedef {{nodeId: number, animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[], type?: string}} TraceElementData */
 
 const MAX_LAYOUT_SHIFT_ELEMENTS = 15;
+const MAX_LAYOUT_SHIFTS = 15;
 
 /**
  * @this {HTMLElement}
@@ -64,11 +65,11 @@ class TraceElements extends BaseGatherer {
   }
 
   /**
-   * This function finds the top (up to 15) elements that contribute to the CLS score of the page.
+   * This function finds the top (up to 15) elements that shift on the page.
    *
    * @param {LH.Trace} trace
    * @param {LH.Gatherer.Context} context
-   * @return {Promise<Array<TraceElementData>>}
+   * @return {Promise<Array<number>>}
    */
   static async getTopLayoutShiftElements(trace, context) {
     const {impactByNodeId} = await CumulativeLayoutShift.request(trace, context);
@@ -76,7 +77,77 @@ class TraceElements extends BaseGatherer {
     return [...impactByNodeId.entries()]
       .sort((a, b) => b[1] - a[1])
       .slice(0, MAX_LAYOUT_SHIFT_ELEMENTS)
-      .map(([nodeId]) => ({nodeId}));
+      .map(([nodeId]) => nodeId);
+  }
+
+  /**
+   * We want to a single representative node to represent the shift, so let's pick
+   * the one with the largest impact (size x distance moved).
+   *
+   * @param {LH.Artifacts.TraceImpactedNode[]} impactedNodes
+   * @param {Map<number, number>} impactByNodeId
+   * @return {number|undefined}
+   */
+  static getBiggestImpactNodeForShiftEvent(impactedNodes, impactByNodeId) {
+    let biggestImpactNodeId;
+    let biggestImpactNodeScore = Number.NEGATIVE_INFINITY;
+    for (const node of impactedNodes) {
+      const impactScore = impactByNodeId.get(node.node_id);
+      if (impactScore !== undefined && impactScore > biggestImpactNodeScore) {
+        biggestImpactNodeId = node.node_id;
+        biggestImpactNodeScore = impactScore;
+      }
+    }
+    return biggestImpactNodeId;
+  }
+
+  /**
+   * This function finds the top (up to 15) layout shifts on the page, and returns
+   * the id of the largest impacted node of each shift, along with any related nodes
+   * that may have caused the shift.
+   *
+   * @param {LH.Trace} trace
+   * @param {LH.Gatherer.Context} context
+   * @return {Promise<Array<number>>}
+   */
+  static async getTopLayoutShifts(trace, context) {
+    const {impactByNodeId} = await CumulativeLayoutShift.request(trace, context);
+    const clusters = trace.traceEngineResult?.data.LayoutShifts.clusters ?? [];
+    const layoutShiftEvents = clusters.flatMap(c => c.events);
+
+    return layoutShiftEvents
+      .sort((a, b) => b.args.data.weighted_score_delta - a.args.data.weighted_score_delta)
+      .slice(0, MAX_LAYOUT_SHIFTS)
+      .flatMap(event => {
+        const nodeIds = [];
+        const biggestImpactedNodeId =
+          this.getBiggestImpactNodeForShiftEvent(event.args.data.impacted_nodes, impactByNodeId);
+        if (biggestImpactedNodeId !== undefined) {
+          nodeIds.push(biggestImpactedNodeId);
+        }
+
+        const index = layoutShiftEvents.indexOf(event);
+        const rootCauses = trace.traceEngineResult?.rootCauses.layoutShifts[index];
+        if (rootCauses) {
+          for (const cause of rootCauses.unsizedMedia) {
+            nodeIds.push(cause.node.backendNodeId);
+          }
+        }
+
+        return nodeIds;
+      });
+  }
+
+  /**
+   * @param {LH.Trace} trace
+   * @param {LH.Gatherer.Context} context
+   * @return {Promise<Array<TraceElementData>>}
+   */
+  static async getTopLayoutShiftsNodeIds(trace, context) {
+    const resultOne = await this.getTopLayoutShiftElements(trace, context);
+    const resultTwo = await this.getTopLayoutShifts(trace, context);
+    const unique = [...new Set([...resultOne, ...resultTwo])];
+    return unique.map(nodeId => ({nodeId}));
   }
 
   /**
@@ -210,7 +281,7 @@ class TraceElements extends BaseGatherer {
     const {mainThreadEvents} = processedTrace;
 
     const lcpNodeData = await TraceElements.getLcpElement(trace, context);
-    const clsNodeData = await TraceElements.getTopLayoutShiftElements(trace, context);
+    const clsNodeData = await TraceElements.getTopLayoutShiftsNodeIds(trace, context);
     const animatedElementData = await this.getAnimatedElements(mainThreadEvents);
     const responsivenessElementData = await TraceElements.getResponsivenessElement(trace, context);
 

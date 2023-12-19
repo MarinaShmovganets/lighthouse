@@ -12,10 +12,11 @@
 
 import BaseGatherer from '../base-gatherer.js';
 import {TraceProcessor} from '../../lib/tracehouse/trace-processor.js';
+import * as TraceEngine from '../../lib/trace-engine.js';
 
 class Trace extends BaseGatherer {
-  /** @type {LH.Trace} */
-  _trace = {traceEvents: []};
+  /** @type {LH.Trace|null} */
+  _trace = null;
 
   static getDefaultTraceCategories() {
     return [
@@ -56,6 +57,9 @@ class Trace extends BaseGatherer {
       'disabled-by-default-devtools.timeline.frame',
       'latencyInfo',
 
+      // For CLS root causes.
+      'disabled-by-default-devtools.timeline.invalidationTracking',
+
       // Not used by Lighthouse (yet) but included for users that want JS samples when looking at
       // a trace collected by Lighthouse (e.g. "View Trace" workflow in DevTools)
       'disabled-by-default-v8.cpu_profiler',
@@ -63,12 +67,13 @@ class Trace extends BaseGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.ProtocolSession} session
+   * @param {LH.Gatherer.Driver} driver
    * @return {Promise<LH.Trace>}
    */
-  static async endTraceAndCollectEvents(session) {
+  static async endTraceAndCollectEvents(driver) {
     /** @type {Array<LH.TraceEvent>} */
     const traceEvents = [];
+    const session = driver.defaultSession;
 
     /**
      * Listener for when dataCollected events fire for each trace chunk
@@ -79,14 +84,18 @@ class Trace extends BaseGatherer {
     };
     session.on('Tracing.dataCollected', dataListener);
 
-    return new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       session.once('Tracing.tracingComplete', _ => {
         session.off('Tracing.dataCollected', dataListener);
-        resolve({traceEvents});
+        resolve({});
       });
 
       session.sendCommand('Tracing.end').catch(reject);
     });
+
+    const traceEngineResult = await Trace.runTraceEngine(driver, traceEvents);
+
+    return {traceEvents, traceEngineResult};
   }
 
   static symbol = Symbol('Trace');
@@ -103,6 +112,8 @@ class Trace extends BaseGatherer {
   async startSensitiveInstrumentation({driver, gatherMode, settings}) {
     const traceCategories = Trace.getDefaultTraceCategories()
       .concat(settings.additionalTraceCategories || []);
+    await driver.defaultSession.sendCommand('DOM.enable');
+    await driver.defaultSession.sendCommand('CSS.enable');
     await driver.defaultSession.sendCommand('Page.enable');
     await driver.defaultSession.sendCommand('Tracing.start', {
       categories: traceCategories.join(','),
@@ -119,10 +130,87 @@ class Trace extends BaseGatherer {
    * @param {LH.Gatherer.Context} passContext
    */
   async stopSensitiveInstrumentation({driver}) {
-    this._trace = await Trace.endTraceAndCollectEvents(driver.defaultSession);
+    this._trace = await Trace.endTraceAndCollectEvents(driver);
+  }
+
+  /**
+   * @param {LH.Gatherer.Driver} driver
+   * @param {LH.TraceEvent[]} traceEvents
+   */
+  static async runTraceEngine(driver, traceEvents) {
+    const protocolInterface = {
+      /** @param {string} url */
+      // eslint-disable-next-line no-unused-vars
+      getInitiatorForRequest(url) {
+        return null;
+      },
+      /** @param {number[]} backendNodeIds */
+      async pushNodesByBackendIdsToFrontend(backendNodeIds) {
+        await driver.defaultSession.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
+        const response = await driver.defaultSession.sendCommand(
+          'DOM.pushNodesByBackendIdsToFrontend', {backendNodeIds});
+        return response.nodeIds;
+      },
+      /** @param {number} nodeId */
+      async getNode(nodeId) {
+        const response = await driver.defaultSession.sendCommand('DOM.describeNode', {nodeId});
+        // Why is this always zero? Uh, let's fix it here.
+        response.node.nodeId = nodeId;
+        return response.node;
+      },
+      /** @param {number} nodeId */
+      async getComputedStyleForNode(nodeId) {
+        try {
+          const response = await driver.defaultSession.sendCommand(
+            'CSS.getComputedStyleForNode', {nodeId});
+          return response.computedStyle;
+        } catch {
+          return [];
+        }
+      },
+      /** @param {number} nodeId */
+      async getMatchedStylesForNode(nodeId) {
+        try {
+          const response = await driver.defaultSession.sendCommand(
+            'CSS.getMatchedStylesForNode', {nodeId});
+          return response;
+        } catch {
+          return [];
+        }
+      },
+      /** @param {string} url */
+      // eslint-disable-next-line no-unused-vars
+      async fontFaceForSource(url) {
+        return null;
+      },
+    };
+
+    const engine = TraceEngine.TraceProcessor.createWithAllHandlers();
+    await engine.parse(traceEvents);
+    const data = engine.data;
+
+    /** @type {LH.TraceEngineRootCauses} */
+    const rootCauses = {
+      layoutShifts: {},
+    };
+    const rootCausesEngine = new TraceEngine.RootCauses(protocolInterface);
+    const layoutShiftEvents = data.LayoutShifts.clusters.flatMap(c => c.events);
+    for (const event of layoutShiftEvents) {
+      const r = await rootCausesEngine.layoutShifts.rootCausesForEvent(data, event);
+      rootCauses.layoutShifts[layoutShiftEvents.indexOf(event)] = r;
+    }
+
+    return {
+      data,
+      rootCauses,
+    };
   }
 
   getArtifact() {
+    if (!this._trace) {
+      throw new Error('unexpected null _trace');
+    }
+
     return this._trace;
   }
 }
