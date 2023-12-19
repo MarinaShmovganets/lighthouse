@@ -10909,5 +10909,10 @@
     }
   },
   "BFCacheFailures": [],
-  "HostProduct": "Chrome/121.0.6110.0"
+  "HostProduct": "Chrome/121.0.6110.0",
+  "TraceEngineResult": {
+    "sentinel": "__ErrorSentinel",
+    "message": "Protocol error (DOM.describeNode): Could not find node with given id",
+    "stack": "ProtocolError: Protocol error (DOM.describeNode): Could not find node with given id\n    at <instance_members_initializer> (file:///Users/cjamcl/src/lighthouse/node_modules/puppeteer-core/lib/esm/puppeteer/common/CallbackRegistry.js:92:14)\n    at new Callback (file:///Users/cjamcl/src/lighthouse/node_modules/puppeteer-core/lib/esm/puppeteer/common/CallbackRegistry.js:96:16)\n    at CallbackRegistry.create (file:///Users/cjamcl/src/lighthouse/node_modules/puppeteer-core/lib/esm/puppeteer/common/CallbackRegistry.js:29:26)\n    at Connection._rawSend (file:///Users/cjamcl/src/lighthouse/node_modules/puppeteer-core/lib/esm/puppeteer/cdp/Connection.js:88:26)\n    at CdpCDPSession.send (file:///Users/cjamcl/src/lighthouse/node_modules/puppeteer-core/lib/esm/puppeteer/cdp/CDPSession.js:75:33)\n    at ProtocolSession.sendCommand (file:///Users/cjamcl/src/lighthouse/core/gather/session.js:97:44)\n    at Object.getNode (file:///Users/cjamcl/src/lighthouse/core/gather/gatherers/trace-engine-result.js:49:54)\n    at LayoutShiftRootCauses.linkShiftsToLayoutInvalidations (file:///Users/cjamcl/src/lighthouse/node_modules/@paulirish/trace_engine/trace.mjs:6485:106)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async LayoutShiftRootCauses.blameShifts (file:///Users/cjamcl/src/lighthouse/node_modules/@paulirish/trace_engine/trace.mjs:6461:5)"
+  }
 }

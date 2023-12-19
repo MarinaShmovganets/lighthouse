@@ -12,6 +12,7 @@ import TraceElements from '../gather/gatherers/trace-elements.js';
 /** @typedef {LH.Audit.Details.TableItem & {node?: LH.Audit.Details.NodeValue, score: number, subItems?: {type: 'subitems', items: SubItem[]}}} Item */
 /** @typedef {{node?: LH.Audit.Details.NodeValue, url?: string, cause: LH.IcuMessage}} SubItem */
 
+/* eslint-disable max-len */
 const UIStrings = {
   /** Descriptive title of a diagnostic audit that provides the top elements affected by layout shifts. */
   title: 'Avoid large layout shifts',
@@ -28,6 +29,7 @@ const UIStrings = {
   /** A possible reason why that the layout shift occured. */
   rootCauseRenderBlockingRequest: 'A layout shift may have occurred because of a render blocking request',
 };
+/* eslint-enable max-len */
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
 
@@ -42,7 +44,7 @@ class LayoutShifts extends Audit {
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
       guidanceLevel: 2,
-      requiredArtifacts: ['traces', 'TraceElements'],
+      requiredArtifacts: ['traces', 'TraceEngineResult', 'TraceElements'],
     };
   }
 
@@ -53,7 +55,7 @@ class LayoutShifts extends Audit {
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const clusters = trace.traceEngineResult?.data.LayoutShifts.clusters ?? [];
+    const clusters = artifacts.TraceEngineResult.data.LayoutShifts.clusters ?? [];
     const {cumulativeLayoutShift: clsSavings, impactByNodeId} =
       await CumulativeLayoutShiftComputed.request(trace, context);
 
@@ -68,7 +70,7 @@ class LayoutShifts extends Audit {
 
       // Turn root causes into sub-items.
       const index = layoutShiftEvents.indexOf(event);
-      const rootCauses = trace.traceEngineResult?.rootCauses.layoutShifts[index];
+      const rootCauses = artifacts.TraceEngineResult.rootCauses.layoutShifts[index];
       /** @type {SubItem[]} */
       const subItems = [];
       if (rootCauses) {
@@ -99,7 +101,7 @@ class LayoutShifts extends Audit {
             t => t.traceEventType === 'layout-shift' && t.nodeId === cause.node.backendNodeId);
           subItems.push({
             node: element ? Audit.makeNodeItem(element.node) : undefined,
-            cause: str_(UIStrings.rootCauseUnsizedMedia), 
+            cause: str_(UIStrings.rootCauseUnsizedMedia),
           });
         }
       }
@@ -113,10 +115,12 @@ class LayoutShifts extends Audit {
 
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
+      /* eslint-disable max-len */
       {key: 'node', valueType: 'node', subItemsHeading: {key: 'node'}, label: str_(i18n.UIStrings.columnElement)},
       {key: 'score', valueType: 'numeric', granularity: 0.001, label: str_(UIStrings.columnScore)},
       {key: null, valueType: 'url', subItemsHeading: {key: 'url'}, label: str_(i18n.UIStrings.columnURL)},
       {key: null, valueType: 'text', subItemsHeading: {key: 'cause'}, label: str_(i18n.UIStrings.columnURL)},
+      /* eslint-enable max-len */
     ];
 
     const details = Audit.makeTableDetails(headings, items);

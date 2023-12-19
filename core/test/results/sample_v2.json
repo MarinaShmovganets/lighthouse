@@ -2651,15 +2651,86 @@
       "id": "layout-shifts",
       "title": "Avoid large layout shifts",
       "description": "These are the largest layout shifts observed on the page. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
-      "score": null,
-      "scoreDisplayMode": "notApplicable",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
+      "displayValue": "2 elements found",
       "metricSavings": {
         "CLS": 0.13570762803819444
       },
       "details": {
         "type": "table",
-        "headings": [],
-        "items": []
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "node"
+            },
+            "label": "Element"
+          },
+          {
+            "key": "score",
+            "valueType": "numeric",
+            "granularity": 0.001,
+            "label": "Layout shift score"
+          },
+          {
+            "key": null,
+            "valueType": "url",
+            "subItemsHeading": {
+              "key": "url"
+            },
+            "label": "URL"
+          },
+          {
+            "key": null,
+            "valueType": "text",
+            "subItemsHeading": {
+              "key": "cause"
+            },
+            "label": "URL"
+          }
+        ],
+        "items": [
+          {
+            "node": {
+              "type": "node",
+              "lhId": "page-15-SECTION",
+              "path": "3,HTML,1,BODY,10,SECTION",
+              "selector": "body > section#touchmove-section",
+              "boundingRect": {
+                "top": 556,
+                "bottom": 574,
+                "left": 8,
+                "right": 352,
+                "width": 344,
+                "height": 18
+              },
+              "snippet": "<section id=\"touchmove-section\">",
+              "nodeLabel": "touchmove section"
+            },
+            "score": 0.03942967040138687
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "page-15-SECTION",
+              "path": "3,HTML,1,BODY,10,SECTION",
+              "selector": "body > section#touchmove-section",
+              "boundingRect": {
+                "top": 556,
+                "bottom": 574,
+                "left": 8,
+                "right": 352,
+                "width": 344,
+                "height": 18
+              },
+              "snippet": "<section id=\"touchmove-section\">",
+              "nodeLabel": "touchmove section"
+            },
+            "score": 0.060146177116290604
+          }
+        ]
       },
       "guidanceLevel": 2
     },
@@ -9709,6 +9780,8 @@
         "audits[bootup-time].details.headings[0].label",
         "audits[network-rtt].details.headings[0].label",
         "audits[network-server-latency].details.headings[0].label",
+        "audits[layout-shifts].details.headings[2].label",
+        "audits[layout-shifts].details.headings[3].label",
         "audits[long-tasks].details.headings[0].label",
         "audits[unsized-images].details.headings[1].label",
         "audits[prioritize-lcp-image].details.headings[1].label",
@@ -10068,6 +10141,7 @@
       "core/lib/i18n/i18n.js | columnElement": [
         "audits[largest-contentful-paint-element].details.items[0].headings[0].label",
         "audits[layout-shift-elements].details.headings[0].label",
+        "audits[layout-shifts].details.headings[0].label",
         "audits[non-composited-animations].details.headings[0].label",
         "audits[dom-size].details.headings[1].label"
       ],
@@ -10110,6 +10184,12 @@
             "nodeCount": 5
           },
           "path": "audits[layout-shift-elements].displayValue"
+        },
+        {
+          "values": {
+            "nodeCount": 2
+          },
+          "path": "audits[layout-shifts].displayValue"
         }
       ],
       "core/audits/layout-shift-elements.js | columnContribution": [
@@ -10120,6 +10200,9 @@
       ],
       "core/audits/layout-shifts.js | description": [
         "audits[layout-shifts].description"
+      ],
+      "core/audits/layout-shifts.js | columnScore": [
+        "audits[layout-shifts].details.headings[1].label"
       ],
       "core/audits/long-tasks.js | title": [
         "audits[long-tasks].title"

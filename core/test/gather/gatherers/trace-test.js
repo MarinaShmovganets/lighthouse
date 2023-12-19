@@ -23,8 +23,6 @@ describe('TraceGatherer', () => {
   describe('startSensitiveInstrumentation', () => {
     beforeEach(() => {
       context.driver.defaultSession.sendCommand
-        .mockResponse('DOM.enable')
-        .mockResponse('CSS.enable')
         .mockResponse('Page.enable')
         .mockResponse('Tracing.start');
     });

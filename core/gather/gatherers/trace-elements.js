@@ -23,6 +23,7 @@ import {LighthouseError} from '../../lib/lh-error.js';
 import {Responsiveness} from '../../computed/metrics/responsiveness.js';
 import {CumulativeLayoutShift} from '../../computed/metrics/cumulative-layout-shift.js';
 import {ExecutionContext} from '../driver/execution-context.js';
+import TraceEngineResult from './trace-engine-result.js';
 
 /** @typedef {{nodeId: number, animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[], type?: string}} TraceElementData */
 
@@ -45,10 +46,10 @@ function getNodeDetailsData() {
 /* c8 ignore stop */
 
 class TraceElements extends BaseGatherer {
-  /** @type {LH.Gatherer.GathererMeta<'Trace'>} */
+  /** @type {LH.Gatherer.GathererMeta<'Trace'|'TraceEngineResult'>} */
   meta = {
     supportedModes: ['timespan', 'navigation'],
-    dependencies: {Trace: Trace.symbol},
+    dependencies: {Trace: Trace.symbol, TraceEngineResult: TraceEngineResult.symbol},
   };
 
   /** @type {Map<string, string>} */
@@ -107,12 +108,13 @@ class TraceElements extends BaseGatherer {
    * that may have caused the shift.
    *
    * @param {LH.Trace} trace
+   * @param {LH.Artifacts.TraceEngineResult} traceEngineResult
    * @param {LH.Gatherer.Context} context
    * @return {Promise<Array<number>>}
    */
-  static async getTopLayoutShifts(trace, context) {
+  static async getTopLayoutShifts(trace, traceEngineResult, context) {
     const {impactByNodeId} = await CumulativeLayoutShift.request(trace, context);
-    const clusters = trace.traceEngineResult?.data.LayoutShifts.clusters ?? [];
+    const clusters = traceEngineResult.data.LayoutShifts.clusters ?? [];
     const layoutShiftEvents = clusters.flatMap(c => c.events);
 
     return layoutShiftEvents
@@ -127,7 +129,7 @@ class TraceElements extends BaseGatherer {
         }
 
         const index = layoutShiftEvents.indexOf(event);
-        const rootCauses = trace.traceEngineResult?.rootCauses.layoutShifts[index];
+        const rootCauses = traceEngineResult.rootCauses.layoutShifts[index];
         if (rootCauses) {
           for (const cause of rootCauses.unsizedMedia) {
             nodeIds.push(cause.node.backendNodeId);
@@ -140,12 +142,13 @@ class TraceElements extends BaseGatherer {
 
   /**
    * @param {LH.Trace} trace
+   * @param {LH.Artifacts.TraceEngineResult} traceEngineResult
    * @param {LH.Gatherer.Context} context
    * @return {Promise<Array<TraceElementData>>}
    */
-  static async getTopLayoutShiftsNodeIds(trace, context) {
+  static async getTopLayoutShiftsNodeIds(trace, traceEngineResult, context) {
     const resultOne = await this.getTopLayoutShiftElements(trace, context);
-    const resultTwo = await this.getTopLayoutShifts(trace, context);
+    const resultTwo = await this.getTopLayoutShifts(trace, traceEngineResult, context);
     const unique = [...new Set([...resultOne, ...resultTwo])];
     return unique.map(nodeId => ({nodeId}));
   }
@@ -266,7 +269,7 @@ class TraceElements extends BaseGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.Context<'Trace'>} context
+   * @param {LH.Gatherer.Context<'Trace'|'TraceEngineResult'>} context
    * @return {Promise<LH.Artifacts.TraceElement[]>}
    */
   async getArtifact(context) {
@@ -277,11 +280,14 @@ class TraceElements extends BaseGatherer {
       throw new Error('Trace is missing!');
     }
 
+    const traceEngineResult = context.dependencies.TraceEngineResult;
+
     const processedTrace = await ProcessedTrace.request(trace, context);
     const {mainThreadEvents} = processedTrace;
 
     const lcpNodeData = await TraceElements.getLcpElement(trace, context);
-    const clsNodeData = await TraceElements.getTopLayoutShiftsNodeIds(trace, context);
+    const clsNodeData = await TraceElements.getTopLayoutShiftsNodeIds(
+      trace, traceEngineResult, context);
     const animatedElementData = await this.getAnimatedElements(mainThreadEvents);
     const responsivenessElementData = await TraceElements.getResponsivenessElement(trace, context);
 

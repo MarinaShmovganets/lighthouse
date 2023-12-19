@@ -23,7 +23,7 @@ import LHResult from './lhr/lhr.js'
 import Protocol from './protocol.js';
 import Util from './utility-types.js';
 import Audit from './audit.js';
-import { TraceProcessor, RootCauses, LayoutShiftRootCauses } from './trace-engine.js';
+import { TraceProcessor, LayoutShiftRootCauses } from './trace-engine.js';
 
 export type Artifacts = BaseArtifacts & GathererArtifacts;
 
@@ -157,6 +157,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   TapTargets: Artifacts.TapTarget[];
   /** The primary trace taken over the entire run. */
   Trace: Trace;
+  /** The result of calling the shared trace engine. */
+  TraceEngineResult: Artifacts.TraceEngineResult;
   /** The trace if there was a page load error and Chrome navigated to a `chrome-error://` page. */
   TraceError: Trace;
   /** Elements associated with metrics (ie: Largest Contentful Paint element). */
@@ -567,6 +569,11 @@ declare module Artifacts {
     type?: string;
   }
 
+  interface TraceEngineResult {
+    data: TraceProcessor['data'];
+    rootCauses: TraceEngineRootCauses;
+  }
+
   interface ViewportDimensions {
     innerWidth: number;
     innerHeight: number;
@@ -941,10 +948,6 @@ export interface Trace {
   traceEvents: TraceEvent[];
   metadata?: {
     'cpu-family'?: number;
-  };
-  traceEngineResult?: {
-    data: TraceProcessor['data'];
-    rootCauses: TraceEngineRootCauses;
   };
   [futureProps: string]: any;
 }
