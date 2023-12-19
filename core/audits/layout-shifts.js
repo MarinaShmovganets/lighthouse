@@ -72,7 +72,6 @@ class LayoutShifts extends Audit {
       /** @type {SubItem[]} */
       const subItems = [];
       if (rootCauses) {
-        // TODO ! finish these
         for (const cause of rootCauses.fontChanges) {
           const url = cause.request.args.data.url;
           subItems.push({
