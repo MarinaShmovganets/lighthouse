@@ -170,7 +170,7 @@ class CumulativeLayoutShift {
   /**
    * @param {LH.Trace} trace
    * @param {LH.Artifacts.ComputedContext} context
-   * @return {Promise<{cumulativeLayoutShift: number, cumulativeLayoutShiftMainFrame: number, impactByNodeId: Map<number, number>}>}
+   * @return {Promise<{cumulativeLayoutShift: number, cumulativeLayoutShiftMainFrame: number, impactByNodeId: Map<number, number>, newEngineResult?: {cumulativeLayoutShift: number, cumulativeLayoutShiftMainFrame: number}, newEngineResultDiffered: boolean}>}
    */
   static async compute_(trace, context) {
     const processedTrace = await ProcessedTrace.request(trace, context);
@@ -186,24 +186,28 @@ class CumulativeLayoutShift {
     // Otherwise, simply report any differences or errors to Sentry.
     // TODO: TraceEngine always drops `had_recent_input` events, but Lighthouse is more lenient.
     //       See comment in `getLayoutShiftEvents`. We need to upstream this.
+    let newEngineResult;
+    let newEngineResultDiffered = false;
     let tryNewTraceEngine = true;
     if (allFrameShiftEvents.some(e => e.event.args.data?.had_recent_input)) {
       tryNewTraceEngine = false;
     }
     if (tryNewTraceEngine) {
       try {
-        const newEngineResult =
+        newEngineResult =
           await this.computeWithSharedTraceEngine(allFrameShiftEvents, mainFrameShiftEvents);
         const differ =
           newEngineResult.cumulativeLayoutShift !== cumulativeLayoutShift ||
           newEngineResult.cumulativeLayoutShiftMainFrame !== cumulativeLayoutShiftMainFrame;
         if (differ) {
+          newEngineResultDiffered = true;
           const expected = JSON.stringify({cumulativeLayoutShift, cumulativeLayoutShiftMainFrame});
           const got = JSON.stringify(newEngineResult);
           throw new Error(`new trace engine differed. expected: ${expected}, got: ${got}`);
         }
       } catch (err) {
         console.error(err);
+        newEngineResultDiffered = true;
 
         const error = new Error('Error when using new trace engine', {cause: err});
         // @ts-expect-error Check for running from tests.
@@ -226,6 +230,8 @@ class CumulativeLayoutShift {
       cumulativeLayoutShift,
       cumulativeLayoutShiftMainFrame,
       impactByNodeId,
+      newEngineResult,
+      newEngineResultDiffered,
     };
   }
 }
