@@ -18,12 +18,11 @@ const expectations = {
           items: [
             {
               node: {selector: 'body > div#blue'},
-              // TODO ???
-              // subItems: {items: [{cause: /font/}]},
+              subItems: {items: [{cause: /iframe/}]},
             },
             {
               node: {selector: 'body > div#blue'},
-              subItems: {items: [{cause: /iframe/}]},
+              subItems: {items: [{cause: /font/}]},
             },
           ],
         },
