@@ -28,6 +28,8 @@ const UIStrings = {
   displayValueMsSavings: 'Potential savings of {wastedMs, number, milliseconds}\xa0ms',
   /** Label shown per-audit to show how many HTML elements did not pass the audit. The `{# elements found}` placeholder will be replaced with the number of failing HTML elements. */
   displayValueElementsFound: `{nodeCount, plural, =1 {1 element found} other {# elements found}}`,
+  /** Label shown per-audit to show how many layout shifts are present. The `{# shifts found}` placeholder will be replaced with the number of layout shifts. */
+  displayValueShiftsFound: `{shiftCount, plural, =1 {1 kayout shift found} other {# layout shifts found}}`,
   /** Label for a column in a data table; entries will be the URL of a web resource */
   columnURL: 'URL',
   /** Label for a column in a data table; entries will be the size or quantity of some resource, e.g. the width and height dimensions of an image or the number of images in a web page. */

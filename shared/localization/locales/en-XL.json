@@ -2561,6 +2561,9 @@
   "core/lib/i18n/i18n.js | displayValueMsSavings": {
     "message": "P̂ót̂én̂t́îál̂ śâv́îńĝś ôf́ {wastedMs, number, milliseconds} m̂ś"
   },
+  "core/lib/i18n/i18n.js | displayValueShiftsFound": {
+    "message": "{shiftCount, plural, =1 {1 k̂áŷóût́ ŝh́îf́t̂ f́ôún̂d́} other {# l̂áŷóût́ ŝh́îf́t̂ś f̂óûńd̂}}"
+  },
   "core/lib/i18n/i18n.js | documentResourceType": {
     "message": "D̂óĉúm̂én̂t́"
   },

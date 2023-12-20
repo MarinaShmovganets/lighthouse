@@ -11,7 +11,7 @@ import TraceElements from '../gather/gatherers/trace-elements.js';
 import {TraceEngineResult} from '../computed/trace-engine-result.js';
 
 /** @typedef {LH.Audit.Details.TableItem & {node?: LH.Audit.Details.NodeValue, score: number, subItems?: {type: 'subitems', items: SubItem[]}}} Item */
-/** @typedef {{node?: LH.Audit.Details.NodeValue, url?: string, cause: LH.IcuMessage}} SubItem */
+/** @typedef {{cause: LH.IcuMessage, extra?: LH.Audit.Details.NodeValue | LH.Audit.Details.UrlValue}} SubItem */
 
 /* eslint-disable max-len */
 const UIStrings = {
@@ -79,31 +79,31 @@ class LayoutShifts extends Audit {
         for (const cause of rootCauses.fontChanges) {
           const url = cause.request.args.data.url;
           subItems.push({
-            url,
             cause: str_(UIStrings.rootCauseFontChanges),
+            extra: {type: 'url', value: url},
           });
         }
         for (const cause of rootCauses.iframes) {
           const element = artifacts.TraceElements.find(
             t => t.traceEventType === 'layout-shift' && t.nodeId === cause.iframe.backendNodeId);
           subItems.push({
-            node: element ? Audit.makeNodeItem(element.node) : undefined,
             cause: str_(UIStrings.rootCauseInjectedIframe),
+            extra: element ? Audit.makeNodeItem(element.node) : undefined,
           });
         }
         for (const cause of rootCauses.renderBlockingRequests) {
           const url = cause.request.args.data.url;
           subItems.push({
-            url,
             cause: str_(UIStrings.rootCauseRenderBlockingRequest),
+            extra: {type: 'url', value: url},
           });
         }
         for (const cause of rootCauses.unsizedMedia) {
           const element = artifacts.TraceElements.find(
             t => t.traceEventType === 'layout-shift' && t.nodeId === cause.node.backendNodeId);
           subItems.push({
-            node: element ? Audit.makeNodeItem(element.node) : undefined,
             cause: str_(UIStrings.rootCauseUnsizedMedia),
+            extra: element ? Audit.makeNodeItem(element.node) : undefined,
           });
         }
       }
@@ -118,8 +118,8 @@ class LayoutShifts extends Audit {
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       /* eslint-disable max-len */
-      {key: 'node', valueType: 'node', subItemsHeading: {key: 'node'}, label: str_(i18n.UIStrings.columnElement)},
-      {key: 'score', valueType: 'numeric', subItemsHeading: {key: 'cause', valueType: 'text'}, granularity: 0.001, label: str_(UIStrings.columnScore)},
+      {key: 'node', valueType: 'node', subItemsHeading: {key: 'cause', valueType: 'text'}, label: str_(i18n.UIStrings.columnElement)},
+      {key: 'score', valueType: 'numeric', subItemsHeading: {key: 'extra'}, granularity: 0.001, label: str_(UIStrings.columnScore)},
       /* eslint-enable max-len */
     ];
 
@@ -127,8 +127,8 @@ class LayoutShifts extends Audit {
 
     let displayValue;
     if (items.length > 0) {
-      displayValue = str_(i18n.UIStrings.displayValueElementsFound,
-        {nodeCount: items.length});
+      displayValue = str_(i18n.UIStrings.displayValueShiftsFound,
+        {shiftCount: items.length});
     }
 
     const passed = clsSavings <= CumulativeLayoutShift.defaultOptions.p10;

@@ -2561,6 +2561,9 @@
   "core/lib/i18n/i18n.js | displayValueMsSavings": {
     "message": "Potential savings of {wastedMs, number, milliseconds} ms"
   },
+  "core/lib/i18n/i18n.js | displayValueShiftsFound": {
+    "message": "{shiftCount, plural, =1 {1 kayout shift found} other {# layout shifts found}}"
+  },
   "core/lib/i18n/i18n.js | documentResourceType": {
     "message": "Document"
   },

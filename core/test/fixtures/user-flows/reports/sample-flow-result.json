@@ -9960,7 +9960,7 @@
             "description": "These are the largest layout shifts observed on the page. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
             "score": 0,
             "scoreDisplayMode": "metricSavings",
-            "displayValue": "1 element found",
+            "displayValue": "1 kayout shift found",
             "metricSavings": {
               "CLS": 0.13125
             },
@@ -9971,7 +9971,8 @@
                   "key": "node",
                   "valueType": "node",
                   "subItemsHeading": {
-                    "key": "node"
+                    "key": "cause",
+                    "valueType": "text"
                   },
                   "label": "Element"
                 },
@@ -9979,8 +9980,7 @@
                   "key": "score",
                   "valueType": "numeric",
                   "subItemsHeading": {
-                    "key": "cause",
-                    "valueType": "text"
+                    "key": "extra"
                   },
                   "granularity": 0.001,
                   "label": "Layout shift score"
@@ -12532,12 +12532,6 @@
                   "nodeCount": 1
                 },
                 "path": "audits[layout-shift-elements].displayValue"
-              },
-              {
-                "values": {
-                  "nodeCount": 1
-                },
-                "path": "audits[layout-shifts].displayValue"
               }
             ],
             "core/lib/i18n/i18n.js | columnElement": [
@@ -12552,6 +12546,14 @@
             ],
             "core/audits/layout-shifts.js | description": [
               "audits[layout-shifts].description"
+            ],
+            "core/lib/i18n/i18n.js | displayValueShiftsFound": [
+              {
+                "values": {
+                  "shiftCount": 1
+                },
+                "path": "audits[layout-shifts].displayValue"
+              }
             ],
             "core/audits/layout-shifts.js | columnScore": [
               "audits[layout-shifts].details.headings[1].label"
