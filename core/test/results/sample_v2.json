@@ -2671,24 +2671,12 @@
           {
             "key": "score",
             "valueType": "numeric",
+            "subItemsHeading": {
+              "key": "cause",
+              "valueType": "text"
+            },
             "granularity": 0.001,
             "label": "Layout shift score"
-          },
-          {
-            "key": null,
-            "valueType": "url",
-            "subItemsHeading": {
-              "key": "url"
-            },
-            "label": "URL"
-          },
-          {
-            "key": null,
-            "valueType": "text",
-            "subItemsHeading": {
-              "key": "cause"
-            },
-            "label": "URL"
           }
         ],
         "items": [
@@ -9780,8 +9768,6 @@
         "audits[bootup-time].details.headings[0].label",
         "audits[network-rtt].details.headings[0].label",
         "audits[network-server-latency].details.headings[0].label",
-        "audits[layout-shifts].details.headings[2].label",
-        "audits[layout-shifts].details.headings[3].label",
         "audits[long-tasks].details.headings[0].label",
         "audits[unsized-images].details.headings[1].label",
         "audits[prioritize-lcp-image].details.headings[1].label",
