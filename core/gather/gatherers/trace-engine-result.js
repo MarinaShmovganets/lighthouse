@@ -95,7 +95,15 @@ class TraceEngineResult extends BaseGatherer {
       },
     };
 
-    const engine = TraceEngine.TraceProcessor.createWithAllHandlers();
+    const engine = new TraceEngine.TraceProcessor({
+      AuctionWorklets: TraceEngine.TraceHandlers.AuctionWorklets,
+      Initiators: TraceEngine.TraceHandlers.Initiators,
+      LayoutShifts: TraceEngine.TraceHandlers.LayoutShifts,
+      NetworkRequests: TraceEngine.TraceHandlers.NetworkRequests,
+      Renderer: TraceEngine.TraceHandlers.Renderer,
+      Samples: TraceEngine.TraceHandlers.Samples,
+      Screenshots: TraceEngine.TraceHandlers.Screenshots,
+    });
     await engine.parse(traceEvents);
     const data = engine.data;
 
