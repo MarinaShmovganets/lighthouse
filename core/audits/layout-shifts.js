@@ -20,17 +20,17 @@ const UIStrings = {
   /** Descriptive title of a diagnostic audit that provides the top elements affected by layout shifts. */
   title: 'Avoid large layout shifts',
   /** Description of a diagnostic audit that provides the top elements affected by layout shifts. "windowing" means the metric value is calculated using the subset of events in a small window of time during the run. "normalization" is a good substitute for "windowing". The last sentence starting with 'Learn' becomes link text to additional documentation. */
-  description: 'These are the largest layout shifts observed on the page. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)',
+  description: 'These are the largest layout shifts observed on the page. Below each are possible root causes that led to the layout shift. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)',
   /** Label for a column in a data table; entries in this column will be a number representing how large the layout shift was. */
   columnScore: 'Layout shift score',
   /** A possible reason why that the layout shift occured. */
-  rootCauseUnsizedMedia: 'A layout shift may have occurred because of CSS defining the size of an otherwise unsized element',
+  rootCauseUnsizedMedia: 'Media element lacking an explicit size',
   /** A possible reason why that the layout shift occured. */
-  rootCauseFontChanges: 'A layout shift may have occurred because the font for some text changed',
+  rootCauseFontChanges: 'Web font loaded',
   /** A possible reason why that the layout shift occured. */
-  rootCauseInjectedIframe: 'A layout shift may have occurred because an iframe was added to the page without space being previously allocated for it',
+  rootCauseInjectedIframe: 'Injected iframe',
   /** A possible reason why that the layout shift occured. */
-  rootCauseRenderBlockingRequest: 'A layout shift may have occurred because of a render blocking request',
+  rootCauseRenderBlockingRequest: 'Render blocking network request finished loading',
 };
 /* eslint-enable max-len */
 
