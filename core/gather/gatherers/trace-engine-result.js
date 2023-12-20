@@ -46,6 +46,12 @@ class TraceEngineResult extends BaseGatherer {
       },
       /** @param {number} nodeId */
       async getNode(nodeId) {
+        if (nodeId === 0) {
+          // TODO: why is this happening?
+          // node cli http://localhost:10503/shift-attribution.html --quiet --only-audits layout-shifts
+          return null;
+        }
+
         const response = await driver.defaultSession.sendCommand('DOM.describeNode', {nodeId});
         // Why is this always zero? Uh, let's fix it here.
         response.node.nodeId = nodeId;
