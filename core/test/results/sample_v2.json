@@ -2683,40 +2683,40 @@
           {
             "node": {
               "type": "node",
-              "lhId": "page-15-SECTION",
-              "path": "3,HTML,1,BODY,10,SECTION",
-              "selector": "body > section#touchmove-section",
+              "lhId": "page-14-DIV",
+              "path": "3,HTML,1,BODY,9,DIV",
+              "selector": "body > div",
               "boundingRect": {
-                "top": 556,
-                "bottom": 574,
+                "top": 336,
+                "bottom": 556,
                 "left": 8,
                 "right": 352,
                 "width": 344,
-                "height": 18
+                "height": 220
               },
-              "snippet": "<section id=\"touchmove-section\">",
-              "nodeLabel": "touchmove section"
+              "snippet": "<div>",
+              "nodeLabel": "Do better web tester page\nHi there! "
             },
-            "score": 0.03942967040138687
+            "score": 0.054581027560763884
           },
           {
             "node": {
               "type": "node",
-              "lhId": "page-15-SECTION",
-              "path": "3,HTML,1,BODY,10,SECTION",
-              "selector": "body > section#touchmove-section",
+              "lhId": "page-14-DIV",
+              "path": "3,HTML,1,BODY,9,DIV",
+              "selector": "body > div",
               "boundingRect": {
-                "top": 556,
-                "bottom": 574,
+                "top": 336,
+                "bottom": 556,
                 "left": 8,
                 "right": 352,
                 "width": 344,
-                "height": 18
+                "height": 220
               },
-              "snippet": "<section id=\"touchmove-section\">",
-              "nodeLabel": "touchmove section"
+              "snippet": "<div>",
+              "nodeLabel": "Do better web tester page\nHi there! "
             },
-            "score": 0.060146177116290604
+            "score": 0.08112660047743056
           }
         ]
       },
@@ -8640,6 +8640,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:layout-shifts",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:TraceEngineResult",
         "duration": 100,
         "entryType": "measure"
       },

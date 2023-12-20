@@ -38,7 +38,6 @@ export import BaseArtifacts = Artifacts_.BaseArtifacts;
 export import GathererArtifacts = Artifacts_.GathererArtifacts;
 export import DevtoolsLog = Artifacts_.DevtoolsLog;
 export import Trace = Artifacts_.Trace;
-export import TraceEngineRootCauses = Artifacts_.TraceEngineRootCauses;
 export import TraceCpuProfile = Artifacts_.TraceCpuProfile;
 export import TraceEvent = Artifacts_.TraceEvent;
 

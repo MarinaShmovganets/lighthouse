@@ -7,13 +7,14 @@
 import BaseGatherer from '../base-gatherer.js';
 import Trace from './trace.js';
 import * as TraceEngine from '../../lib/trace-engine.js';
+import {TraceEngineResult} from '../../computed/trace-engine-result.js';
 
-class TraceEngineResult extends BaseGatherer {
-  static symbol = Symbol('TraceEngineResult');
+class RootCauses extends BaseGatherer {
+  static symbol = Symbol('RootCauses');
 
   /** @type {LH.Gatherer.GathererMeta<'Trace'>} */
   meta = {
-    symbol: TraceEngineResult.symbol,
+    symbol: RootCauses.symbol,
     supportedModes: ['timespan', 'navigation'],
     dependencies: {Trace: Trace.symbol},
   };
@@ -28,9 +29,10 @@ class TraceEngineResult extends BaseGatherer {
 
   /**
    * @param {LH.Gatherer.Driver} driver
-   * @param {LH.TraceEvent[]} traceEvents
+   * @param {LH.Artifacts.TraceEngineResult} traceEngineResult
+   * @return {Promise<LH.Artifacts.TraceEngineRootCauses>}
    */
-  static async runTraceEngine(driver, traceEvents) {
+  static async runRootCauseAnalysis(driver, traceEngineResult) {
     const protocolInterface = {
       /** @param {string} url */
       // eslint-disable-next-line no-unused-vars
@@ -95,38 +97,23 @@ class TraceEngineResult extends BaseGatherer {
       },
     };
 
-    const engine = new TraceEngine.TraceProcessor({
-      AuctionWorklets: TraceEngine.TraceHandlers.AuctionWorklets,
-      Initiators: TraceEngine.TraceHandlers.Initiators,
-      LayoutShifts: TraceEngine.TraceHandlers.LayoutShifts,
-      NetworkRequests: TraceEngine.TraceHandlers.NetworkRequests,
-      Renderer: TraceEngine.TraceHandlers.Renderer,
-      Samples: TraceEngine.TraceHandlers.Samples,
-      Screenshots: TraceEngine.TraceHandlers.Screenshots,
-    });
-    await engine.parse(traceEvents);
-    const data = engine.data;
-
-    /** @type {LH.TraceEngineRootCauses} */
+    /** @type {LH.Artifacts.TraceEngineRootCauses} */
     const rootCauses = {
       layoutShifts: {},
     };
     const rootCausesEngine = new TraceEngine.RootCauses(protocolInterface);
-    const layoutShiftEvents = data.LayoutShifts.clusters.flatMap(c => c.events);
+    const layoutShiftEvents = traceEngineResult.LayoutShifts.clusters.flatMap(c => c.events);
     for (const event of layoutShiftEvents) {
-      const r = await rootCausesEngine.layoutShifts.rootCausesForEvent(data, event);
+      const r = await rootCausesEngine.layoutShifts.rootCausesForEvent(traceEngineResult, event);
       rootCauses.layoutShifts[layoutShiftEvents.indexOf(event)] = r;
     }
 
-    return {
-      data,
-      rootCauses,
-    };
+    return rootCauses;
   }
 
   /**
    * @param {LH.Gatherer.Context<'Trace'>} context
-   * @return {Promise<LH.Artifacts.TraceEngineResult>}
+   * @return {Promise<LH.Artifacts.TraceEngineRootCauses>}
    */
   async getArtifact(context) {
     const trace = context.dependencies.Trace;
@@ -134,8 +121,9 @@ class TraceEngineResult extends BaseGatherer {
       throw new Error('Trace is missing!');
     }
 
-    return TraceEngineResult.runTraceEngine(context.driver, trace.traceEvents);
+    const traceEngineResult = await TraceEngineResult.request({trace}, context);
+    return RootCauses.runRootCauseAnalysis(context.driver, traceEngineResult);
   }
 }
 
-export default TraceEngineResult;
+export default RootCauses;

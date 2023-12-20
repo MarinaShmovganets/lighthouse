@@ -8,6 +8,7 @@ import * as i18n from '../lib/i18n/i18n.js';
 import {CumulativeLayoutShift as CumulativeLayoutShiftComputed} from '../computed/metrics/cumulative-layout-shift.js';
 import CumulativeLayoutShift from './metrics/cumulative-layout-shift.js';
 import TraceElements from '../gather/gatherers/trace-elements.js';
+import {TraceEngineResult} from '../computed/trace-engine-result.js';
 
 /** @typedef {LH.Audit.Details.TableItem & {node?: LH.Audit.Details.NodeValue, score: number, subItems?: {type: 'subitems', items: SubItem[]}}} Item */
 /** @typedef {{node?: LH.Audit.Details.NodeValue, url?: string, cause: LH.IcuMessage}} SubItem */
@@ -44,7 +45,7 @@ class LayoutShifts extends Audit {
       description: str_(UIStrings.description),
       scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
       guidanceLevel: 2,
-      requiredArtifacts: ['traces', 'TraceEngineResult', 'TraceElements'],
+      requiredArtifacts: ['traces', 'RootCauses', 'TraceElements'],
     };
   }
 
@@ -55,7 +56,8 @@ class LayoutShifts extends Audit {
    */
   static async audit(artifacts, context) {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
-    const clusters = artifacts.TraceEngineResult.data.LayoutShifts.clusters ?? [];
+    const traceEngineResult = await TraceEngineResult.request({trace}, context);
+    const clusters = traceEngineResult.LayoutShifts.clusters ?? [];
     const {cumulativeLayoutShift: clsSavings, impactByNodeId} =
       await CumulativeLayoutShiftComputed.request(trace, context);
 
@@ -70,7 +72,7 @@ class LayoutShifts extends Audit {
 
       // Turn root causes into sub-items.
       const index = layoutShiftEvents.indexOf(event);
-      const rootCauses = artifacts.TraceEngineResult.rootCauses.layoutShifts[index];
+      const rootCauses = artifacts.RootCauses.layoutShifts[index];
       /** @type {SubItem[]} */
       const subItems = [];
       if (rootCauses) {

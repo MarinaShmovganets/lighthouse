@@ -143,6 +143,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   ResponseCompression: {requestId: string, url: string, mimeType: string, transferSize: number, resourceSize: number, gzipSize?: number}[];
   /** Information on fetching and the content of the /robots.txt file. */
   RobotsTxt: {status: number|null, content: string|null, errorMessage?: string};
+  /** The result of calling the shared trace engine root cause analysis. */
+  RootCauses: Artifacts.TraceEngineRootCauses;
   /** Information on all scripts in the page. */
   Scripts: Artifacts.Script[];
   /** Version information for all ServiceWorkers active after the first page load. */
@@ -157,8 +159,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   TapTargets: Artifacts.TapTarget[];
   /** The primary trace taken over the entire run. */
   Trace: Trace;
-  /** The result of calling the shared trace engine. */
-  TraceEngineResult: Artifacts.TraceEngineResult;
   /** The trace if there was a page load error and Chrome navigated to a `chrome-error://` page. */
   TraceError: Trace;
   /** Elements associated with metrics (ie: Largest Contentful Paint element). */
@@ -569,9 +569,10 @@ declare module Artifacts {
     type?: string;
   }
 
-  interface TraceEngineResult {
-    data: TraceProcessor['data'];
-    rootCauses: TraceEngineRootCauses;
+  type TraceEngineResult = TraceProcessor['data'];
+
+  interface TraceEngineRootCauses {
+    layoutShifts: Record<number, LayoutShiftRootCauses>;
   }
 
   interface ViewportDimensions {
@@ -938,10 +939,6 @@ declare module Artifacts {
     old_rect?: Array<number>;
     new_rect?: Array<number>;
   }
-}
-
-export interface TraceEngineRootCauses {
-  layoutShifts: Record<number, LayoutShiftRootCauses>;
 }
 
 export interface Trace {

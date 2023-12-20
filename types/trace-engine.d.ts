@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import Protocol from 'devtools-protocol';
 import {TraceEvent} from './artifacts';
 
 // This part is just the subset of types we need for the main API.
 
 type LayoutShiftTraceEvent = TraceEvent & {
     args: {data: {
-        impacted_nodes: LH.Artifacts.TraceImpactedNode[],
+        impacted_nodes: TraceImpactedNode[],
         weighted_score_delta: number;
     }},
 }
@@ -39,17 +40,17 @@ interface CSSDimensions {
 
 type RootCauseRequest = {
     request: TraceEventSyntheticNetworkRequest;
-    initiator?: LH.Crdp.Network.Initiator;
+    initiator?: Protocol.Network.Initiator;
 }
 
 export type LayoutShiftRootCauses = {
-    fontChanges: Array<RootCauseRequest & {fontFace: LH.Crdp.CSS.FontFace}>;
+    fontChanges: Array<RootCauseRequest & {fontFace: Protocol.CSS.FontFace}>;
     iframes: Array<{
-        iframe: LH.Crdp.DOM.Node;
+        iframe: Protocol.DOM.Node;
     }>;
     renderBlockingRequests: Array<RootCauseRequest>;
     unsizedMedia: Array<{
-        node: LH.Crdp.DOM.Node;
+        node: Protocol.DOM.Node;
         authoredDimensions?: CSSDimensions;
         computedDimensions: CSSDimensions;
     }>;
@@ -196,7 +197,7 @@ export interface SyntheticTraceEventCpuProfile extends TraceEventInstant {
   name: 'CpuProfile';
   args: TraceEventArgs&{
     data: TraceEventArgsData & {
-      cpuProfile: LH.Crdp.Profiler.Profile,
+      cpuProfile: Protocol.Profiler.Profile,
     },
   };
 }
@@ -595,7 +596,7 @@ export interface TraceEventLargestContentfulPaintCandidate extends TraceEventMar
       isOutermostMainFrame: boolean,
       isMainFrame: boolean,
       navigationId: string,
-      nodeId: LH.Crdp.DOM.BackendNodeId,
+      nodeId: Protocol.DOM.BackendNodeId,
       type?: string,
     },
   };
@@ -608,7 +609,7 @@ export interface TraceEventLargestImagePaintCandidate extends TraceEventMark {
       candidateIndex: number,
       imageUrl: string,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      DOMNodeId: LH.Crdp.DOM.BackendNodeId,
+      DOMNodeId: Protocol.DOM.BackendNodeId,
     },
   };
 }
@@ -619,7 +620,7 @@ export interface TraceEventLargestTextPaintCandidate extends TraceEventMark {
     data?: TraceEventArgsData&{
       candidateIndex: number,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      DOMNodeId: LH.Crdp.DOM.BackendNodeId,
+      DOMNodeId: Protocol.DOM.BackendNodeId,
     },
   };
 }
@@ -744,7 +745,7 @@ export type TraceImpactedNode = {
   // These keys come from the trace data, so we have to use underscores.
   /* eslint-disable @typescript-eslint/naming-convention */
   new_rect: TraceRect,
-  node_id: LH.Crdp.DOM.BackendNodeId,
+  node_id: Protocol.DOM.BackendNodeId,
   old_rect: TraceRect,
   /* eslint-enable @typescript-eslint/naming-convention */
 };
@@ -921,7 +922,7 @@ export interface TraceEventLayoutInvalidationTracking extends TraceEventInstant 
   args: TraceEventArgs&{
     data: TraceEventArgsData & {
       frame: string,
-      nodeId: LH.Crdp.DOM.BackendNodeId,
+      nodeId: Protocol.DOM.BackendNodeId,
       reason: LayoutInvalidationReason,
       nodeName?: string,
     },
@@ -933,7 +934,7 @@ export interface TraceEventScheduleStyleInvalidationTracking extends TraceEventI
   args: TraceEventArgs&{
     data: TraceEventArgsData & {
       frame: string,
-      nodeId: LH.Crdp.DOM.BackendNodeId,
+      nodeId: Protocol.DOM.BackendNodeId,
       invalidationSet?: string,
       invalidatedSelectorId?: string,
       reason?: LayoutInvalidationReason,
@@ -953,7 +954,7 @@ export interface TraceEventStyleRecalcInvalidation extends TraceEventInstant {
   args: TraceEventArgs&{
     data: TraceEventArgsData & {
       frame: string,
-      nodeId: LH.Crdp.DOM.BackendNodeId,
+      nodeId: Protocol.DOM.BackendNodeId,
       reason: StyleRecalcInvalidationReason,
       subtree: boolean,
       nodeName?: string,
@@ -1115,8 +1116,8 @@ export interface SyntheticEventWithSelfTime extends TraceEventData {
  * trace event.
  */
 export interface TraceEventSyntheticProfileCall extends SyntheticEventWithSelfTime {
-  callFrame: LH.Crdp.Runtime.CallFrame;
-  nodeId: LH.Crdp.integer;
+  callFrame: Protocol.Runtime.CallFrame;
+  nodeId: Protocol.integer;
 }
 
 /**
@@ -1252,7 +1253,7 @@ export interface TraceEventLayout extends TraceEventComplete {
     endData: {
       layoutRoots: Array<{
         depth: number,
-        nodeId: LH.Crdp.DOM.BackendNodeId,
+        nodeId: Protocol.DOM.BackendNodeId,
         quads: number[][],
       }>,
     },
