@@ -20,19 +20,14 @@ class RootCauses extends BaseGatherer {
   };
 
   /**
-   * @param {LH.Gatherer.Context} passContext
-   */
-  async startSensitiveInstrumentation({driver}) {
-    await driver.defaultSession.sendCommand('DOM.enable');
-    await driver.defaultSession.sendCommand('CSS.enable');
-  }
-
-  /**
    * @param {LH.Gatherer.Driver} driver
    * @param {LH.Artifacts.TraceEngineResult} traceEngineResult
    * @return {Promise<LH.Artifacts.TraceEngineRootCauses>}
    */
   static async runRootCauseAnalysis(driver, traceEngineResult) {
+    await driver.defaultSession.sendCommand('DOM.enable');
+    await driver.defaultSession.sendCommand('CSS.enable');
+
     const protocolInterface = {
       /** @param {string} url */
       // eslint-disable-next-line no-unused-vars
@@ -107,6 +102,9 @@ class RootCauses extends BaseGatherer {
       const r = await rootCausesEngine.layoutShifts.rootCausesForEvent(traceEngineResult, event);
       rootCauses.layoutShifts[layoutShiftEvents.indexOf(event)] = r;
     }
+
+    await driver.defaultSession.sendCommand('DOM.disable');
+    await driver.defaultSession.sendCommand('CSS.disable');
 
     return rootCauses;
   }
