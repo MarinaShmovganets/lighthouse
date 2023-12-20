@@ -1,5 +1,5 @@
 let i = 0;
-const handle = setInterval(function () {
+const handle = setInterval(function() {
   if (i === 0) {
     document.querySelector('#red').style.height = 500;
     document.querySelector('h1').classList.add('other-font');

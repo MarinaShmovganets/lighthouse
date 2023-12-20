@@ -117,9 +117,7 @@ class LayoutShifts extends Audit {
     const headings = [
       /* eslint-disable max-len */
       {key: 'node', valueType: 'node', subItemsHeading: {key: 'node'}, label: str_(i18n.UIStrings.columnElement)},
-      {key: 'score', valueType: 'numeric', granularity: 0.001, label: str_(UIStrings.columnScore)},
-      {key: null, valueType: 'url', subItemsHeading: {key: 'url'}, label: str_(i18n.UIStrings.columnURL)},
-      {key: null, valueType: 'text', subItemsHeading: {key: 'cause'}, label: str_(i18n.UIStrings.columnURL)},
+      {key: 'score', valueType: 'numeric', subItemsHeading: {key: 'cause', valueType: 'text'}, granularity: 0.001, label: str_(UIStrings.columnScore)},
       /* eslint-enable max-len */
     ];
 
