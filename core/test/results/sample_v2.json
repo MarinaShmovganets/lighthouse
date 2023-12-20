@@ -2550,98 +2550,10 @@
         "items": [
           {
             "node": {
-              "type": "node",
-              "lhId": "page-14-DIV",
-              "path": "3,HTML,1,BODY,9,DIV",
-              "selector": "body > div",
-              "boundingRect": {
-                "top": 336,
-                "bottom": 556,
-                "left": 8,
-                "right": 352,
-                "width": 344,
-                "height": 220
-              },
-              "snippet": "<div>",
-              "nodeLabel": "Do better web tester page\nHi there! "
+              "type": "code",
+              "value": "Other"
             },
-            "score": 0.05423896965635325
-          },
-          {
-            "node": {
-              "type": "node",
-              "lhId": "page-11-OBJECT",
-              "path": "3,HTML,1,BODY,4,OBJECT",
-              "selector": "body > object#5934a",
-              "boundingRect": {
-                "top": 8,
-                "bottom": 158,
-                "left": 8,
-                "right": 308,
-                "width": 300,
-                "height": 150
-              },
-              "snippet": "<object id=\"5934a\">",
-              "nodeLabel": "body > object#5934a"
-            },
-            "score": 0.035101374537739476
-          },
-          {
-            "node": {
-              "type": "node",
-              "lhId": "page-12-OBJECT",
-              "path": "3,HTML,1,BODY,5,OBJECT",
-              "selector": "body > object#5934b",
-              "boundingRect": {
-                "top": 162,
-                "bottom": 312,
-                "left": 8,
-                "right": 308,
-                "width": 300,
-                "height": 150
-              },
-              "snippet": "<object id=\"5934b\">",
-              "nodeLabel": "body > object#5934b"
-            },
-            "score": 0.035101374537739476
-          },
-          {
-            "node": {
-              "type": "node",
-              "lhId": "page-15-SECTION",
-              "path": "3,HTML,1,BODY,10,SECTION",
-              "selector": "body > section#touchmove-section",
-              "boundingRect": {
-                "top": 556,
-                "bottom": 574,
-                "left": 8,
-                "right": 352,
-                "width": 344,
-                "height": 18
-              },
-              "snippet": "<section id=\"touchmove-section\">",
-              "nodeLabel": "touchmove section"
-            },
-            "score": 0.007194545238726159
-          },
-          {
-            "node": {
-              "type": "node",
-              "lhId": "page-1-IMG",
-              "path": "3,HTML,1,BODY,17,IMG",
-              "selector": "body > img",
-              "boundingRect": {
-                "top": 574,
-                "bottom": 654,
-                "left": 132,
-                "right": 252,
-                "width": 120,
-                "height": 80
-              },
-              "snippet": "<img loading=\"lazy\" src=\"lighthouse-480x318.jpg?iar2\" width=\"120\" height=\"80\">",
-              "nodeLabel": "body > img"
-            },
-            "score": 0.004071364067636093
+            "score": 0.13570762803819444
           }
         ]
       },
@@ -2697,7 +2609,7 @@
               "snippet": "<div>",
               "nodeLabel": "Do better web tester page\nHi there! "
             },
-            "score": 0.054581027560763884
+            "score": 0.08112660047743056
           },
           {
             "node": {
@@ -2716,7 +2628,7 @@
               "snippet": "<div>",
               "nodeLabel": "Do better web tester page\nHi there! "
             },
-            "score": 0.08112660047743056
+            "score": 0.054581027560763884
           }
         ]
       },
@@ -10064,7 +9976,8 @@
       ],
       "core/lib/i18n/i18n.js | otherResourceType": [
         "audits[performance-budget].details.items[3].label",
-        "audits[resource-summary].details.items[3].label"
+        "audits[resource-summary].details.items[3].label",
+        "audits[layout-shift-elements].details.items[0].node.value"
       ],
       "core/lib/i18n/i18n.js | thirdPartyResourceType": [
         "audits[performance-budget].details.items[4].label",

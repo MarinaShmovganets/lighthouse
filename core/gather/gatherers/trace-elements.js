@@ -71,7 +71,7 @@ class TraceElements extends BaseGatherer {
    *
    * @param {LH.Trace} trace
    * @param {LH.Gatherer.Context} context
-   * @return {Promise<Array<number>>}
+   * @return {Promise<Array<{nodeId: number}>>}
    */
   static async getTopLayoutShiftElements(trace, context) {
     const {impactByNodeId} = await CumulativeLayoutShift.request(trace, context);
@@ -79,7 +79,7 @@ class TraceElements extends BaseGatherer {
     return [...impactByNodeId.entries()]
       .sort((a, b) => b[1] - a[1])
       .slice(0, MAX_LAYOUT_SHIFT_ELEMENTS)
-      .map(([nodeId]) => nodeId);
+      .map(([nodeId]) => ({nodeId}));
   }
 
   /**
@@ -112,7 +112,7 @@ class TraceElements extends BaseGatherer {
    * @param {LH.Artifacts.TraceEngineResult} traceEngineResult
    * @param {LH.Artifacts.TraceEngineRootCauses} rootCauses
    * @param {LH.Gatherer.Context} context
-   * @return {Promise<Array<number>>}
+   * @return {Promise<Array<{nodeId: number}>>}
    */
   static async getTopLayoutShifts(trace, traceEngineResult, rootCauses, context) {
     const {impactByNodeId} = await CumulativeLayoutShift.request(trace, context);
@@ -138,22 +138,8 @@ class TraceElements extends BaseGatherer {
           }
         }
 
-        return nodeIds;
+        return nodeIds.map(nodeId => ({nodeId}));
       });
-  }
-
-  /**
-   * @param {LH.Trace} trace
-   * @param {LH.Artifacts.TraceEngineResult} traceEngineResult
-   * @param {LH.Artifacts.TraceEngineRootCauses} rootCauses
-   * @param {LH.Gatherer.Context} context
-   * @return {Promise<Array<TraceElementData>>}
-   */
-  static async getTopLayoutShiftsNodeIds(trace, traceEngineResult, rootCauses, context) {
-    const resultOne = await this.getTopLayoutShiftElements(trace, context);
-    const resultTwo = await this.getTopLayoutShifts(trace, traceEngineResult, rootCauses, context);
-    const unique = [...new Set([...resultOne, ...resultTwo])];
-    return unique.map(nodeId => ({nodeId}));
   }
 
   /**
@@ -272,6 +258,38 @@ class TraceElements extends BaseGatherer {
   }
 
   /**
+   * @param {LH.Gatherer.ProtocolSession} session
+   * @param {number} backendNodeId
+   */
+  async getNodeDetails(session, backendNodeId) {
+    try {
+      const objectId = await resolveNodeIdToObjectId(session, backendNodeId);
+      if (!objectId) return null;
+
+      const deps = ExecutionContext.serializeDeps([
+        pageFunctions.getNodeDetails,
+        getNodeDetailsData,
+      ]);
+      return await session.sendCommand('Runtime.callFunctionOn', {
+        objectId,
+        functionDeclaration: `function () {
+          ${deps}
+          return getNodeDetailsData.call(this);
+        }`,
+        returnByValue: true,
+        awaitPromise: true,
+      });
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: {gatherer: 'TraceElements'},
+        level: 'error',
+      });
+    }
+
+    return null;
+  }
+
+  /**
    * @param {LH.Gatherer.Context<'Trace'|'RootCauses'>} context
    * @return {Promise<LH.Artifacts.TraceElement[]>}
    */
@@ -290,7 +308,8 @@ class TraceElements extends BaseGatherer {
     const {mainThreadEvents} = processedTrace;
 
     const lcpNodeData = await TraceElements.getLcpElement(trace, context);
-    const clsNodeData = await TraceElements.getTopLayoutShiftsNodeIds(
+    const shiftElementsNodeData = await TraceElements.getTopLayoutShiftElements(trace, context);
+    const shiftsData = await TraceElements.getTopLayoutShifts(
       trace, traceEngineResult, rootCauses, context);
     const animatedElementData = await this.getAnimatedElements(mainThreadEvents);
     const responsivenessElementData = await TraceElements.getResponsivenessElement(trace, context);
@@ -298,39 +317,22 @@ class TraceElements extends BaseGatherer {
     /** @type {Map<string, TraceElementData[]>} */
     const backendNodeDataMap = new Map([
       ['largest-contentful-paint', lcpNodeData ? [lcpNodeData] : []],
-      ['layout-shift', clsNodeData],
+      ['layout-shift-elements', shiftElementsNodeData],
+      ['layout-shift', shiftsData],
       ['animation', animatedElementData],
       ['responsiveness', responsivenessElementData ? [responsivenessElementData] : []],
     ]);
 
+    /** @type {Map<number, LH.Crdp.Runtime.CallFunctionOnResponse | null>} */
+    const callFunctionOnCache = new Map();
     const traceElements = [];
     for (const [traceEventType, backendNodeData] of backendNodeDataMap) {
       for (let i = 0; i < backendNodeData.length; i++) {
         const backendNodeId = backendNodeData[i].nodeId;
-        let response;
-        try {
-          const objectId = await resolveNodeIdToObjectId(session, backendNodeId);
-          if (!objectId) continue;
-
-          const deps = ExecutionContext.serializeDeps([
-            pageFunctions.getNodeDetails,
-            getNodeDetailsData,
-          ]);
-          response = await session.sendCommand('Runtime.callFunctionOn', {
-            objectId,
-            functionDeclaration: `function () {
-              ${deps}
-              return getNodeDetailsData.call(this);
-            }`,
-            returnByValue: true,
-            awaitPromise: true,
-          });
-        } catch (err) {
-          Sentry.captureException(err, {
-            tags: {gatherer: 'TraceElements'},
-            level: 'error',
-          });
-          continue;
+        let response = callFunctionOnCache.get(backendNodeId);
+        if (response === undefined) {
+          response = await this.getNodeDetails(session, backendNodeId);
+          callFunctionOnCache.set(backendNodeId, response);
         }
 
         if (response?.result?.value) {

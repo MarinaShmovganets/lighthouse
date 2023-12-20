@@ -10,6 +10,8 @@ import CumulativeLayoutShift from './metrics/cumulative-layout-shift.js';
 import TraceElements from '../gather/gatherers/trace-elements.js';
 import {TraceEngineResult} from '../computed/trace-engine-result.js';
 
+const MAX_LAYOUT_SHIFTS = 15;
+
 /** @typedef {LH.Audit.Details.TableItem & {node?: LH.Audit.Details.NodeValue, score: number, subItems?: {type: 'subitems', items: SubItem[]}}} Item */
 /** @typedef {{cause: LH.IcuMessage, extra?: LH.Audit.Details.NodeValue | LH.Audit.Details.UrlValue}} SubItem */
 
@@ -60,15 +62,19 @@ class LayoutShifts extends Audit {
     const clusters = traceEngineResult.LayoutShifts.clusters ?? [];
     const {cumulativeLayoutShift: clsSavings, impactByNodeId} =
       await CumulativeLayoutShiftComputed.request(trace, context);
+    const traceElements = artifacts.TraceElements
+      .filter(element => element.traceEventType === 'layout-shift');
 
     /** @type {Item[]} */
     const items = [];
     const layoutShiftEvents = clusters.flatMap(c => c.events);
-    for (const event of layoutShiftEvents) {
+    const topLayoutShiftEvents = layoutShiftEvents
+      .sort((a, b) => b.args.data.weighted_score_delta - a.args.data.weighted_score_delta)
+      .slice(0, MAX_LAYOUT_SHIFTS)
+    for (const event of topLayoutShiftEvents) {
       const biggestImpactNodeId = TraceElements.getBiggestImpactNodeForShiftEvent(
         event.args.data.impacted_nodes, impactByNodeId);
-      const biggestImpactElement = artifacts.TraceElements.find(
-        t => t.traceEventType === 'layout-shift' && t.nodeId === biggestImpactNodeId);
+      const biggestImpactElement = traceElements.find(t => t.nodeId === biggestImpactNodeId);
 
       // Turn root causes into sub-items.
       const index = layoutShiftEvents.indexOf(event);

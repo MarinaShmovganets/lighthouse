@@ -1764,98 +1764,10 @@
               "items": [
                 {
                   "node": {
-                    "type": "node",
-                    "lhId": "page-1-DIV",
-                    "path": "1,HTML,1,BODY,0,DIV,0,DIV,5,FORM,2,DIV",
-                    "selector": "div#__next > div.flex > form.flex > div.font-poppins",
-                    "boundingRect": {
-                      "top": 482,
-                      "bottom": 526,
-                      "left": 58,
-                      "right": 302,
-                      "width": 244,
-                      "height": 44
-                    },
-                    "snippet": "<div class=\"font-poppins text-xl\">",
-                    "nodeLabel": "SEARCHRANDOM"
+                    "type": "code",
+                    "value": "Other"
                   },
-                  "score": 0.0009115050072015688
-                },
-                {
-                  "node": {
-                    "type": "node",
-                    "lhId": "page-2-DIV",
-                    "path": "1,HTML,1,BODY,0,DIV,0,DIV,5,FORM,0,DIV",
-                    "selector": "div#__next > div.flex > form.flex > div.font-poppins",
-                    "boundingRect": {
-                      "top": 352,
-                      "bottom": 376,
-                      "left": 56,
-                      "right": 304,
-                      "width": 248,
-                      "height": 24
-                    },
-                    "snippet": "<div class=\"font-poppins text-white mb-4\">",
-                    "nodeLabel": "search any line from The Office"
-                  },
-                  "score": 0.0004952115948216315
-                },
-                {
-                  "node": {
-                    "type": "node",
-                    "lhId": "page-2-DIV",
-                    "path": "1,HTML,1,BODY,0,DIV,0,DIV,5,FORM,0,DIV",
-                    "selector": "div#__next > div.flex > form.flex > div.font-poppins",
-                    "boundingRect": {
-                      "top": 352,
-                      "bottom": 376,
-                      "left": 56,
-                      "right": 304,
-                      "width": 248,
-                      "height": 24
-                    },
-                    "snippet": "<div class=\"font-poppins text-white mb-4\">",
-                    "nodeLabel": "search any line from The Office"
-                  },
-                  "score": 0.0004892927311385045
-                },
-                {
-                  "node": {
-                    "type": "node",
-                    "lhId": "page-3-DIV",
-                    "path": "1,HTML,1,BODY,0,DIV,0,DIV,8,FOOTER,0,DIV,0,DIV",
-                    "selector": "div.flex > footer.w-full > div.w-full > div",
-                    "boundingRect": {
-                      "top": 588,
-                      "bottom": 600,
-                      "left": 8,
-                      "right": 352,
-                      "width": 344,
-                      "height": 12
-                    },
-                    "snippet": "<div>",
-                    "nodeLabel": "Code © 2020-2021 Mike's Cereal Shack Authors"
-                  },
-                  "score": 0.00036762719987422577
-                },
-                {
-                  "node": {
-                    "type": "node",
-                    "lhId": "page-4-DIV",
-                    "path": "1,HTML,1,BODY,0,DIV,0,DIV,8,FOOTER,0,DIV,1,DIV",
-                    "selector": "div.flex > footer.w-full > div.w-full > div",
-                    "boundingRect": {
-                      "top": 600,
-                      "bottom": 612,
-                      "left": 8,
-                      "right": 352,
-                      "width": 344,
-                      "height": 12
-                    },
-                    "snippet": "<div>",
-                    "nodeLabel": "Content © 2005-2013 NBCUniversal Media, LLC"
-                  },
-                  "score": 0.00036762719987422577
+                  "score": 0.002631263732910156
                 }
               ]
             },
@@ -7571,7 +7483,8 @@
               "audits[resource-summary].details.items[3].label"
             ],
             "core/lib/i18n/i18n.js | otherResourceType": [
-              "audits[resource-summary].details.items[4].label"
+              "audits[resource-summary].details.items[4].label",
+              "audits[layout-shift-elements].details.items[0].node.value"
             ],
             "core/lib/i18n/i18n.js | stylesheetResourceType": [
               "audits[resource-summary].details.items[5].label"
@@ -9933,20 +9846,8 @@
               "items": [
                 {
                   "node": {
-                    "type": "node",
-                    "lhId": "page-5-FOOTER",
-                    "path": "1,HTML,1,BODY,0,DIV,0,DIV,5,FOOTER",
-                    "selector": "body > div#__next > div.flex > footer.w-full",
-                    "boundingRect": {
-                      "top": 1584,
-                      "bottom": 1668,
-                      "left": 0,
-                      "right": 360,
-                      "width": 360,
-                      "height": 84
-                    },
-                    "snippet": "<footer class=\"w-full flex flex-row flex-wrap p-2 text-center text-gray-400 sm:text-left …\">",
-                    "nodeLabel": "Code © 2020-2021 Mike's Cereal Shack Authors\nContent © 2005-2013 NBCUniversal M…"
+                    "type": "code",
+                    "value": "Other"
                   },
                   "score": 0.13125
                 }
@@ -12480,7 +12381,8 @@
               "audits[resource-summary].details.items[1].label"
             ],
             "core/lib/i18n/i18n.js | otherResourceType": [
-              "audits[resource-summary].details.items[2].label"
+              "audits[resource-summary].details.items[2].label",
+              "audits[layout-shift-elements].details.items[0].node.value"
             ],
             "core/lib/i18n/i18n.js | scriptResourceType": [
               "audits[resource-summary].details.items[3].label"
