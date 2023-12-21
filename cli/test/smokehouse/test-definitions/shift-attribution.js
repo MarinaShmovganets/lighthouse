@@ -18,11 +18,16 @@ const expectations = {
           items: [
             {
               node: {selector: 'body > div#blue'},
-              subItems: {items: [{cause: /iframe/}]},
+              // TODO: We can't get nodes from non-main frame yet. See runRootCauseAnalysis.
+              subItems: {items: [{cause: /iframe/, extra: undefined}]},
             },
             {
               node: {selector: 'body > div#blue'},
-              subItems: {items: [{cause: /font/}]},
+              subItems: {items: [{cause: /font/, extra: {value: /Regular\.ttf/}}]},
+            },
+            {
+              node: {selector: 'body > div#blue'},
+              subItems: {items: [{cause: /Media/, extra: {selector: 'body > img'}}]},
             },
           ],
         },
