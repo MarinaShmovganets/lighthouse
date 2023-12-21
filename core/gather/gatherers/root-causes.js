@@ -28,6 +28,10 @@ class RootCauses extends BaseGatherer {
     await driver.defaultSession.sendCommand('DOM.enable');
     await driver.defaultSession.sendCommand('CSS.enable');
 
+    // DOM.getDocument is necessary for pushNodesByBackendIdsToFrontend to properly retrieve
+    // nodeIds if the DOM domain was enabled before this gatherer, invoke it to be safe.
+    await driver.defaultSession.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
+
     const protocolInterface = {
       /** @param {string} url */
       // eslint-disable-next-line no-unused-vars
@@ -36,7 +40,6 @@ class RootCauses extends BaseGatherer {
       },
       /** @param {number[]} backendNodeIds */
       async pushNodesByBackendIdsToFrontend(backendNodeIds) {
-        await driver.defaultSession.sendCommand('DOM.getDocument', {depth: -1, pierce: true});
         const response = await driver.defaultSession.sendCommand(
           'DOM.pushNodesByBackendIdsToFrontend', {backendNodeIds});
         return response.nodeIds;
