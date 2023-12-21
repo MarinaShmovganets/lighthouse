@@ -317,7 +317,7 @@ class TraceElements extends BaseGatherer {
     /** @type {Map<string, TraceElementData[]>} */
     const backendNodeDataMap = new Map([
       ['largest-contentful-paint', lcpNodeData ? [lcpNodeData] : []],
-      ['layout-shift-elements', shiftElementsNodeData],
+      ['layout-shift-element', shiftElementsNodeData],
       ['layout-shift', shiftsData],
       ['animation', animatedElementData],
       ['responsiveness', responsivenessElementData ? [responsivenessElementData] : []],

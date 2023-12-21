@@ -70,7 +70,7 @@ class LayoutShifts extends Audit {
     const layoutShiftEvents = clusters.flatMap(c => c.events);
     const topLayoutShiftEvents = layoutShiftEvents
       .sort((a, b) => b.args.data.weighted_score_delta - a.args.data.weighted_score_delta)
-      .slice(0, MAX_LAYOUT_SHIFTS)
+      .slice(0, MAX_LAYOUT_SHIFTS);
     for (const event of topLayoutShiftEvents) {
       const biggestImpactNodeId = TraceElements.getBiggestImpactNodeForShiftEvent(
         event.args.data.impacted_nodes, impactByNodeId);

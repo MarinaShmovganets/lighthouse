@@ -11,7 +11,7 @@ import {createMockDriver} from '../mock-driver.js';
 
 const animationTrace = readJson('../../fixtures/artifacts/animation/trace.json', import.meta);
 
-const TraceEngineResult = {data: {LayoutShifts: {}}};
+const RootCauses = {layoutShifts: {}};
 
 function makeLayoutShiftTraceEvent(score, impactedNodes, had_recent_input = false) { // eslint-disable-line camelcase
   return {
@@ -95,8 +95,8 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     const result =
       await TraceElementsGatherer.getTopLayoutShiftElements(trace, {computedCache: new Map()});
     expect(result).toEqual([
-      25, // score: 0.6
-      60, // score: 0.4
+      {nodeId: 25}, // score: 0.6
+      {nodeId: 60}, // score: 0.4
     ]);
   });
 
@@ -158,21 +158,21 @@ describe('Trace Elements gatherer - GetTopLayoutShiftElements', () => {
     const result =
       await TraceElementsGatherer.getTopLayoutShiftElements(trace, {computedCache: new Map()});
     expect(result).toEqual([
-      3, // score: 1.0
-      1, // score: 0.5
-      2, // score: 0.5
-      6, // score: 0.25
-      7, // score: 0.25
-      4, // score: 0.125
-      5, // score: 0.125
-      8, // score: 0.1
-      9, // score: 0.1
-      10, // score: 0.1
-      11, // score: 0.1
-      12, // score: 0.1
-      13, // score: 0.1
-      14, // score: 0.1
-      15, // score: 0.1
+      {nodeId: 3}, // score: 1.0
+      {nodeId: 1}, // score: 0.5
+      {nodeId: 2}, // score: 0.5
+      {nodeId: 6}, // score: 0.25
+      {nodeId: 7}, // score: 0.25
+      {nodeId: 4}, // score: 0.125
+      {nodeId: 5}, // score: 0.125
+      {nodeId: 8}, // score: 0.1
+      {nodeId: 9}, // score: 0.1
+      {nodeId: 10}, // score: 0.1
+      {nodeId: 11}, // score: 0.1
+      {nodeId: 12}, // score: 0.1
+      {nodeId: 13}, // score: 0.1
+      {nodeId: 14}, // score: 0.1
+      {nodeId: 15}, // score: 0.1
     ]);
   });
 });
@@ -267,7 +267,6 @@ describe('Trace Elements gatherer - Animated Elements', () => {
 
   it('properly resolves all node id types', async () => {
     const layoutShiftNodeData = { // nodeId: 4
-      traceEventType: 'layout-shift',
       devtoolsNodePath: '1,HTML,1,BODY,1,DIV',
       selector: 'body > div#shift',
       nodeLabel: 'div',
@@ -282,7 +281,6 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       },
     };
     const animationNodeData = { // nodeId: 5
-      traceEventType: 'animation',
       devtoolsNodePath: '1,HTML,1,BODY,1,DIV',
       selector: 'body > div#animated',
       nodeLabel: 'div',
@@ -297,7 +295,6 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       },
     };
     const LCPNodeData = { // nodeId: 6
-      traceEventType: 'largest-contentful-paint',
       devtoolsNodePath: '1,HTML,1,BODY,1,DIV',
       selector: 'body > div#lcp',
       nodeLabel: 'div',
@@ -356,21 +353,29 @@ describe('Trace Elements gatherer - Animated Elements', () => {
 
     const result = await gatherer.getArtifact({
       driver,
-      dependencies: {Trace: trace, TraceEngineResult},
+      dependencies: {Trace: trace, RootCauses},
       computedCache: new Map()}
     );
     const sorted = result.sort((a, b) => a.nodeId - b.nodeId);
 
     expect(sorted).toEqual([
       {
+        traceEventType: 'largest-contentful-paint',
         ...LCPNodeData,
         nodeId: 6,
       },
       {
+        traceEventType: 'layout-shift-element',
         ...layoutShiftNodeData,
         nodeId: 4,
       },
       {
+        traceEventType: 'layout-shift',
+        ...layoutShiftNodeData,
+        nodeId: 4,
+      },
+      {
+        traceEventType: 'animation',
         ...animationNodeData,
         animations: [
           {name: 'example', failureReasonsMask: 8192, unsupportedProperties: ['height']},
@@ -381,24 +386,7 @@ describe('Trace Elements gatherer - Animated Elements', () => {
   });
 
   it('properly resolves all animated elements in real trace', async () => {
-    const LCPNodeData = {
-      traceEventType: 'largest-contentful-paint',
-      devtoolsNodePath: '1,HTML,1,BODY,2,DIV',
-      selector: 'body > div',
-      nodeLabel: 'AAAAAAAAAAAAAAAAAAAAAAA',
-      snippet: '<div>',
-      boundingRect: {
-        top: 269,
-        bottom: 287,
-        left: 8,
-        right: 972,
-        width: 964,
-        height: 18,
-      },
-      type: 'text',
-    };
     const animationNodeData = {
-      traceEventType: 'animation',
       devtoolsNodePath: '1,HTML,1,BODY,0,DIV',
       selector: 'body > div#animated-boi',
       nodeLabel: 'div',
@@ -413,7 +401,6 @@ describe('Trace Elements gatherer - Animated Elements', () => {
       },
     };
     const compositedNodeData = {
-      traceEventType: 'animation',
       devtoolsNodePath: '1,HTML,1,BODY,1,DIV',
       selector: 'body > div#composited-boi',
       nodeLabel: 'div',
@@ -429,10 +416,7 @@ describe('Trace Elements gatherer - Animated Elements', () => {
     };
     const driver = createMockDriver();
     driver._session.sendCommand
-      // LCP node
-      .mockResponse('DOM.resolveNode', {object: {objectId: 1}})
-      .mockResponse('Runtime.callFunctionOn', {result: {value: LCPNodeData}})
-      // Animated node
+      // LCP node / animated node
       .mockResponse('DOM.resolveNode', {object: {objectId: 5}})
       .mockResponse('Runtime.callFunctionOn', {result: {value: animationNodeData}})
       // Composited node
@@ -446,7 +430,7 @@ describe('Trace Elements gatherer - Animated Elements', () => {
 
     const result = await gatherer.getArtifact({
       driver,
-      dependencies: {Trace: animationTrace, TraceEngineResult},
+      dependencies: {Trace: animationTrace, RootCauses},
       computedCache: new Map(),
     });
 
@@ -525,7 +509,7 @@ describe('Trace Elements gatherer - Animated Elements', () => {
 
     const result = await gatherer.getArtifact({
       driver,
-      dependencies: {Trace: trace, TraceEngineResult},
+      dependencies: {Trace: trace, RootCauses},
       computedCache: new Map(),
     });
 
@@ -581,7 +565,7 @@ describe('Trace Elements gatherer - Animated Elements', () => {
     const result = await gatherer.getArtifact({
       driver,
       gatherMode: 'timespan',
-      dependencies: {Trace: trace, TraceEngineResult},
+      dependencies: {Trace: trace, RootCauses},
       computedCache: new Map(),
     });
 
