@@ -13,7 +13,7 @@ import {TraceEngineResult} from '../computed/trace-engine-result.js';
 const MAX_LAYOUT_SHIFTS = 15;
 
 /** @typedef {LH.Audit.Details.TableItem & {node?: LH.Audit.Details.NodeValue, score: number, subItems?: {type: 'subitems', items: SubItem[]}}} Item */
-/** @typedef {{cause: LH.IcuMessage, extra?: LH.Audit.Details.NodeValue | LH.Audit.Details.UrlValue}} SubItem */
+/** @typedef {{extra?: LH.Audit.Details.NodeValue | LH.Audit.Details.UrlValue, cause: LH.IcuMessage}} SubItem */
 
 /* eslint-disable max-len */
 const UIStrings = {
@@ -85,31 +85,31 @@ class LayoutShifts extends Audit {
         for (const cause of rootCauses.fontChanges) {
           const url = cause.request.args.data.url;
           subItems.push({
-            cause: str_(UIStrings.rootCauseFontChanges),
             extra: {type: 'url', value: url},
+            cause: str_(UIStrings.rootCauseFontChanges),
           });
         }
         for (const cause of rootCauses.iframes) {
           const element = artifacts.TraceElements.find(
             t => t.traceEventType === 'layout-shift' && t.nodeId === cause.iframe.backendNodeId);
           subItems.push({
-            cause: str_(UIStrings.rootCauseInjectedIframe),
             extra: element ? Audit.makeNodeItem(element.node) : undefined,
+            cause: str_(UIStrings.rootCauseInjectedIframe),
           });
         }
         for (const cause of rootCauses.renderBlockingRequests) {
           const url = cause.request.args.data.url;
           subItems.push({
-            cause: str_(UIStrings.rootCauseRenderBlockingRequest),
             extra: {type: 'url', value: url},
+            cause: str_(UIStrings.rootCauseRenderBlockingRequest),
           });
         }
         for (const cause of rootCauses.unsizedMedia) {
           const element = artifacts.TraceElements.find(
             t => t.traceEventType === 'layout-shift' && t.nodeId === cause.node.backendNodeId);
           subItems.push({
-            cause: str_(UIStrings.rootCauseUnsizedMedia),
             extra: element ? Audit.makeNodeItem(element.node) : undefined,
+            cause: str_(UIStrings.rootCauseUnsizedMedia),
           });
         }
       }
