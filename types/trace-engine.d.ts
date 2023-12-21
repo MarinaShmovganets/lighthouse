@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import Protocol from 'devtools-protocol';
-import {TraceEvent} from './artifacts.ts';
+import {Protocol} from 'devtools-protocol';
+import {TraceEvent} from './artifacts.js';
 
 // This part is just the subset of types we need for the main API.
 
