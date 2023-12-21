@@ -106,7 +106,7 @@ class RootCauses extends BaseGatherer {
       rootCauses.layoutShifts[layoutShiftEvents.indexOf(event)] = r;
     }
 
-    await driver.defaultSession.sendCommand('DOM.disable');
+    // await driver.defaultSession.sendCommand('DOM.disable');
     await driver.defaultSession.sendCommand('CSS.disable');
 
     return rootCauses;
