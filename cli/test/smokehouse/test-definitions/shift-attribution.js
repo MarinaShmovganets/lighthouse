@@ -18,12 +18,12 @@ const expectations = {
           items: [
             {
               node: {selector: 'body > div#blue'},
-              // TODO: We can't get nodes from non-main frame yet. See runRootCauseAnalysis.
-              subItems: {items: [{cause: /iframe/, extra: undefined}]},
+              subItems: {items: [{cause: /font/, extra: {value: /Regular\.ttf/}}]},
             },
             {
               node: {selector: 'body > div#blue'},
-              subItems: {items: [{cause: /font/, extra: {value: /Regular\.ttf/}}]},
+              // TODO: We can't get nodes from non-main frame yet. See runRootCauseAnalysis.
+              subItems: {items: [{cause: /iframe/, extra: undefined}]},
             },
             {
               node: {selector: 'body > div#blue'},
