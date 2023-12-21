@@ -70,25 +70,14 @@ describe('TraceGatherer', () => {
         gatherer.stopSensitiveInstrumentation(context.asContext())
       );
 
-      /** @param {number} data */
-      const makeTraceEvent = (data) => ({name: 'fake', data});
-
       const dataListener = session.on.findListener('Tracing.dataCollected');
       const completeListener = session.once.findListener('Tracing.tracingComplete');
 
-      dataListener({value: [
-        makeTraceEvent(1),
-        makeTraceEvent(2),
-        makeTraceEvent(3),
-      ]});
+      dataListener({value: [1, 2, 3]});
       await flushAllTimersAndMicrotasks();
       expect(stopPromise).not.toBeDone();
 
-      dataListener({value: [
-        makeTraceEvent(4),
-        makeTraceEvent(5),
-        makeTraceEvent(6),
-      ]});
+      dataListener({value: [4, 5, 6]});
       await flushAllTimersAndMicrotasks();
       expect(stopPromise).not.toBeDone();
 
@@ -98,14 +87,7 @@ describe('TraceGatherer', () => {
       expect(session.off).toHaveBeenCalled();
 
       await stopPromise;
-      expect(await gatherer.getArtifact()).toMatchObject({traceEvents: [
-        makeTraceEvent(1),
-        makeTraceEvent(2),
-        makeTraceEvent(3),
-        makeTraceEvent(4),
-        makeTraceEvent(5),
-        makeTraceEvent(6),
-      ]});
+      expect(await gatherer.getArtifact()).toEqual({traceEvents: [1, 2, 3, 4, 5, 6]});
     });
   });
 });

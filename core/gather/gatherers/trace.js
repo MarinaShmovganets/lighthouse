@@ -14,8 +14,8 @@ import BaseGatherer from '../base-gatherer.js';
 import {TraceProcessor} from '../../lib/tracehouse/trace-processor.js';
 
 class Trace extends BaseGatherer {
-  /** @type {LH.Trace|null} */
-  _trace = null;
+  /** @type {LH.Trace} */
+  _trace = {traceEvents: []};
 
   static getDefaultTraceCategories() {
     return [
@@ -66,13 +66,12 @@ class Trace extends BaseGatherer {
   }
 
   /**
-   * @param {LH.Gatherer.Driver} driver
+   * @param {LH.Gatherer.ProtocolSession} session
    * @return {Promise<LH.Trace>}
    */
-  static async endTraceAndCollectEvents(driver) {
+  static async endTraceAndCollectEvents(session) {
     /** @type {Array<LH.TraceEvent>} */
     const traceEvents = [];
-    const session = driver.defaultSession;
 
     /**
      * Listener for when dataCollected events fire for each trace chunk
@@ -83,7 +82,7 @@ class Trace extends BaseGatherer {
     };
     session.on('Tracing.dataCollected', dataListener);
 
-    return await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       session.once('Tracing.tracingComplete', _ => {
         session.off('Tracing.dataCollected', dataListener);
         resolve({traceEvents});
@@ -123,14 +122,10 @@ class Trace extends BaseGatherer {
    * @param {LH.Gatherer.Context} passContext
    */
   async stopSensitiveInstrumentation({driver}) {
-    this._trace = await Trace.endTraceAndCollectEvents(driver);
+    this._trace = await Trace.endTraceAndCollectEvents(driver.defaultSession);
   }
 
   getArtifact() {
-    if (!this._trace) {
-      throw new Error('unexpected null _trace');
-    }
-
     return this._trace;
   }
 }
