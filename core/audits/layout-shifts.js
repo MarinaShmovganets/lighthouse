@@ -82,6 +82,14 @@ class LayoutShifts extends Audit {
       /** @type {SubItem[]} */
       const subItems = [];
       if (rootCauses) {
+        for (const cause of rootCauses.unsizedMedia) {
+          const element = artifacts.TraceElements.find(
+            t => t.traceEventType === 'layout-shift' && t.nodeId === cause.node.backendNodeId);
+          subItems.push({
+            extra: element ? Audit.makeNodeItem(element.node) : undefined,
+            cause: str_(UIStrings.rootCauseUnsizedMedia),
+          });
+        }
         for (const cause of rootCauses.fontChanges) {
           const url = cause.request.args.data.url;
           subItems.push({
@@ -102,14 +110,6 @@ class LayoutShifts extends Audit {
           subItems.push({
             extra: {type: 'url', value: url},
             cause: str_(UIStrings.rootCauseRenderBlockingRequest),
-          });
-        }
-        for (const cause of rootCauses.unsizedMedia) {
-          const element = artifacts.TraceElements.find(
-            t => t.traceEventType === 'layout-shift' && t.nodeId === cause.node.backendNodeId);
-          subItems.push({
-            extra: element ? Audit.makeNodeItem(element.node) : undefined,
-            cause: str_(UIStrings.rootCauseUnsizedMedia),
           });
         }
       }
