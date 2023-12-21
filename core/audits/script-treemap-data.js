@@ -167,8 +167,10 @@ class ScriptTreemapDataAudit extends Audit {
     const nodes = [];
     /** @type {Map<string, LH.Treemap.Node>} */
     const htmlNodesByFrameId = new Map();
-    const bundles = await JSBundles.request(artifacts, context);
-    const duplicationByPath = await ModuleDuplication.request(artifacts, context);
+    const [bundles, duplicationByPath] = await Promise.all([
+      JSBundles.request(artifacts, context),
+      ModuleDuplication.request(artifacts, context),
+    ]);
 
     for (const script of artifacts.Scripts) {
       if (script.scriptLanguage !== 'JavaScript') continue;

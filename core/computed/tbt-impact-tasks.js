@@ -39,8 +39,10 @@ class TBTImpactTasks {
       };
     }
 
-    const fcpResult = await FirstContentfulPaint.request(metricComputationData, context);
-    const ttiResult = await Interactive.request(metricComputationData, context);
+    const [fcpResult, ttiResult] = await Promise.all([
+      FirstContentfulPaint.request(metricComputationData, context),
+      Interactive.request(metricComputationData, context),
+    ]);
 
     let startTimeMs = fcpResult.timing;
     let endTimeMs = ttiResult.timing;
