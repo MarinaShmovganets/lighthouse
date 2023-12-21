@@ -20,7 +20,7 @@ const UIStrings = {
   /** Descriptive title of a diagnostic audit that provides the top elements affected by layout shifts. */
   title: 'Avoid large layout shifts',
   /** Description of a diagnostic audit that provides the top elements affected by layout shifts. "windowing" means the metric value is calculated using the subset of events in a small window of time during the run. "normalization" is a good substitute for "windowing". The last sentence starting with 'Learn' becomes link text to additional documentation. */
-  description: 'These are the largest layout shifts observed on the page. Below each are possible root causes that led to the layout shift. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)',
+  description: 'These are the largest layout shifts observed on the page. Each table item represents a single layout shift, and shows the element that shifted the most. Below each item are possible root causes that led to the layout shift. Some of these layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)',
   /** Label for a column in a data table; entries in this column will be a number representing how large the layout shift was. */
   columnScore: 'Layout shift score',
   /** A possible reason why that the layout shift occured. */
@@ -124,8 +124,8 @@ class LayoutShifts extends Audit {
     /** @type {LH.Audit.Details.Table['headings']} */
     const headings = [
       /* eslint-disable max-len */
-      {key: 'node', valueType: 'node', subItemsHeading: {key: 'cause', valueType: 'text'}, label: str_(i18n.UIStrings.columnElement)},
-      {key: 'score', valueType: 'numeric', subItemsHeading: {key: 'extra'}, granularity: 0.001, label: str_(UIStrings.columnScore)},
+      {key: 'node', valueType: 'node', subItemsHeading: {key: 'extra'}, label: str_(i18n.UIStrings.columnElement)},
+      {key: 'score', valueType: 'numeric', subItemsHeading: {key: 'cause', valueType: 'text'}, granularity: 0.001, label: str_(UIStrings.columnScore)},
       /* eslint-enable max-len */
     ];
 

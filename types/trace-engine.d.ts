@@ -5,7 +5,7 @@
  */
 
 import Protocol from 'devtools-protocol';
-import {TraceEvent} from './artifacts';
+import {TraceEvent} from './artifacts.ts';
 
 // This part is just the subset of types we need for the main API.
 

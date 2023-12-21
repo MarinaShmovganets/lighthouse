@@ -2562,7 +2562,7 @@
     "layout-shifts": {
       "id": "layout-shifts",
       "title": "Avoid large layout shifts",
-      "description": "These are the largest layout shifts observed on the page. Below each are possible root causes that led to the layout shift. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
+      "description": "These are the largest layout shifts observed on the page. Each table item represents a single layout shift, and shows the element that shifted the most. Below each item are possible root causes that led to the layout shift. Some of these layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
       "score": 0,
       "scoreDisplayMode": "metricSavings",
       "displayValue": "2 layout shifts found",
@@ -2576,8 +2576,7 @@
             "key": "node",
             "valueType": "node",
             "subItemsHeading": {
-              "key": "cause",
-              "valueType": "text"
+              "key": "extra"
             },
             "label": "Element"
           },
@@ -2585,7 +2584,8 @@
             "key": "score",
             "valueType": "numeric",
             "subItemsHeading": {
-              "key": "extra"
+              "key": "cause",
+              "valueType": "text"
             },
             "granularity": 0.001,
             "label": "Layout shift score"
