@@ -81,7 +81,7 @@ const expectations = {
         type: 'image',
       },
       {
-        traceEventType: 'layout-shift',
+        traceEventType: 'layout-shift-element',
         node: {
           selector: 'body > h1',
           nodeLabel: 'Please don\'t move me',
@@ -97,7 +97,7 @@ const expectations = {
         },
       },
       {
-        traceEventType: 'layout-shift',
+        traceEventType: 'layout-shift-element',
         node: {
           nodeLabel: 'Sorry!',
           snippet: '<div style="height: 18px;">',
@@ -110,6 +110,15 @@ const expectations = {
             height: 18,
           },
         },
+      },
+      {
+        traceEventType: 'layout-shift',
+      },
+      {
+        traceEventType: 'layout-shift',
+      },
+      {
+        traceEventType: 'layout-shift',
       },
       {
         traceEventType: 'animation',
