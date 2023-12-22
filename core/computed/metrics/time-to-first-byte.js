@@ -16,10 +16,8 @@ class TimeToFirstByte extends NavigationMetric {
    * @return {Promise<LH.Artifacts.Metric>}
    */
   static async computeSimulatedMetric(data, context) {
-    const [mainResource, networkAnalysis] = await Promise.all([
-      MainResource.request(data, context),
-      NetworkAnalysis.request(data.devtoolsLog, context),
-    ]);
+    const mainResource = await MainResource.request(data, context);
+    const networkAnalysis = await NetworkAnalysis.request(data.devtoolsLog, context);
 
     const observedTTFB = (await this.computeObservedMetric(data, context)).timing;
     const observedResponseTime =
