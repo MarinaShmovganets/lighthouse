@@ -103,6 +103,10 @@ class RootCauses extends BaseGatherer {
     const layoutShiftEvents = traceEngineResult.LayoutShifts.clusters.flatMap(c => c.events);
     for (const event of layoutShiftEvents) {
       const r = await rootCausesEngine.layoutShifts.rootCausesForEvent(traceEngineResult, event);
+      for (const cause of r.fontChanges) {
+        // TODO: why isn't trace engine unwrapping this promise ...
+        cause.fontFace = await cause.fontFace;
+      }
       rootCauses.layoutShifts[layoutShiftEvents.indexOf(event)] = r;
     }
 
