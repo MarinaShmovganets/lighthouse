@@ -178,6 +178,14 @@ describe('Audit', () => {
       assert.strictEqual(auditResult.score, 0.3);
     });
 
+    it('normalizes metric savings', () => {
+      const auditResult = Audit.generateAuditResult(PassOrFailAudit, {
+        score: 0,
+        metricSavings: {LCP: 0.1, FCP: 199},
+      });
+      assert.deepStrictEqual(auditResult.metricSavings, {LCP: 0, FCP: 100});
+    });
+
     it('chooses the title if score is passing', () => {
       const auditResult = Audit.generateAuditResult(PassOrFailAudit, {score: 1});
       assert.strictEqual(auditResult.score, 1);
