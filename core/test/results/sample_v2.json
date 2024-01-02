@@ -390,8 +390,8 @@
       "numericUnit": "millisecond",
       "displayValue": "Root document took 570 ms",
       "metricSavings": {
-        "FCP": 400,
-        "LCP": 400
+        "FCP": 450,
+        "LCP": 450
       },
       "details": {
         "type": "opportunity",
@@ -2530,7 +2530,7 @@
       "scoreDisplayMode": "metricSavings",
       "displayValue": "5 elements found",
       "metricSavings": {
-        "CLS": 0.135
+        "CLS": 0.136
       },
       "details": {
         "type": "table",
@@ -4768,7 +4768,7 @@
       "warnings": [],
       "metricSavings": {
         "FCP": 0,
-        "LCP": 400
+        "LCP": 450
       },
       "details": {
         "type": "opportunity",
@@ -4918,8 +4918,8 @@
       "numericUnit": "millisecond",
       "displayValue": "Potential savings of 143 KiB",
       "metricSavings": {
-        "FCP": 100,
-        "LCP": 1000
+        "FCP": 150,
+        "LCP": 1050
       },
       "details": {
         "type": "opportunity",
@@ -5096,7 +5096,7 @@
       "displayValue": "Potential savings of 26 KiB",
       "metricSavings": {
         "FCP": 0,
-        "LCP": 100
+        "LCP": 150
       },
       "details": {
         "type": "opportunity",

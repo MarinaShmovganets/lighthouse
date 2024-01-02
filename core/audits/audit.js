@@ -12,9 +12,9 @@ const DEFAULT_PASS = 'defaultPass';
 
 /** @type {LH.Audit.MetricSavings} */
 const METRIC_SAVINGS_PRECISION = {
-  FCP: 100,
-  LCP: 100,
-  TBT: 100,
+  FCP: 50,
+  LCP: 50,
+  TBT: 50,
   CLS: 0.001,
 };
 
@@ -365,7 +365,7 @@ class Audit {
       const precision = METRIC_SAVINGS_PRECISION[key];
       if (precision === undefined) continue;
 
-      normalizedMetricSavings[key] = Math.floor(value / precision) * precision;
+      normalizedMetricSavings[key] = Math.round(value / precision) * precision;
     }
 
     return normalizedMetricSavings;
