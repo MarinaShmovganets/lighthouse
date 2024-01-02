@@ -48,7 +48,8 @@ class RootCauses extends BaseGatherer {
       async getNode(nodeId) {
         try {
           const response = await driver.defaultSession.sendCommand('DOM.describeNode', {nodeId});
-          // Why is this always zero? Uh, let's fix it here.
+          // This always zero, so let's fix it here.
+          // https://bugs.chromium.org/p/chromium/issues/detail?id=1515175
           response.node.nodeId = nodeId;
           return response.node;
         } catch (err) {
