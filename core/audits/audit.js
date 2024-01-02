@@ -10,6 +10,14 @@ import {Util} from '../../shared/util.js';
 
 const DEFAULT_PASS = 'defaultPass';
 
+/** @type {LH.Audit.MetricSavings} */
+const METRIC_SAVINGS_PRECISION = {
+  FCP: 100,
+  LCP: 100,
+  TBT: 100,
+  CLS: 0.001,
+};
+
 /**
  * @typedef TableOptions
  * @property {number=} wastedMs
@@ -340,6 +348,30 @@ class Audit {
   }
 
   /**
+   * @param {LH.Audit.MetricSavings|undefined} metricSavings
+   * @return {LH.Audit.MetricSavings|undefined}
+   */
+  static _normalizeMetricSavings(metricSavings) {
+    if (!metricSavings) return;
+
+    /** @type {LH.Audit.MetricSavings} */
+    const normalizedMetricSavings = {...metricSavings};
+
+    // eslint-disable-next-line max-len
+    for (const key of /** @type {Array<keyof LH.Audit.MetricSavings>} */ (Object.keys(metricSavings))) {
+      const value = metricSavings[key];
+      if (value === undefined) continue;
+
+      const precision = METRIC_SAVINGS_PRECISION[key];
+      if (precision === undefined) continue;
+
+      normalizedMetricSavings[key] = Math.floor(value / precision) * precision;
+    }
+
+    return normalizedMetricSavings;
+  }
+
+  /**
    * @param {typeof Audit} audit
    * @param {string | LH.IcuMessage} errorMessage
    * @param {string=} errorStack
@@ -378,10 +410,12 @@ class Audit {
       scoreDisplayMode = product.scoreDisplayMode;
     }
 
+    const metricSavings = Audit._normalizeMetricSavings(product.metricSavings);
+
     if (scoreDisplayMode === Audit.SCORING_MODES.METRIC_SAVINGS) {
       if (score && score >= Util.PASS_THRESHOLD) {
         score = 1;
-      } else if (Object.values(product.metricSavings || {}).some(v => v)) {
+      } else if (Object.values(metricSavings || {}).some(v => v)) {
         score = 0;
       } else {
         score = 0.5;
@@ -419,7 +453,7 @@ class Audit {
       errorStack: product.errorStack,
       warnings: product.warnings,
       scoringOptions: product.scoringOptions,
-      metricSavings: product.metricSavings,
+      metricSavings,
 
       details: product.details,
       guidanceLevel: audit.meta.guidanceLevel,
