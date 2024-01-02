@@ -113,7 +113,7 @@ class RootCauses extends BaseGatherer {
     // Yeah this gatherer enabled it, and so you'd think it should disable it too...
     // ...but we don't give gatherers their own session so this stomps on others.
     // await driver.defaultSession.sendCommand('DOM.disable');
-    // await driver.defaultSession.sendCommand('CSS.disable');
+    await driver.defaultSession.sendCommand('CSS.disable');
 
     return rootCauses;
   }
