@@ -31,6 +31,8 @@ const UIStrings = {
   rootCauseInjectedIframe: 'Injected iframe',
   /** A possible reason why that the layout shift occured. */
   rootCauseRenderBlockingRequest: 'Render blocking network request finished loading',
+  /** Label shown per-audit to show how many layout shifts are present. The `{# shifts found}` placeholder will be replaced with the number of layout shifts. */
+  displayValueShiftsFound: `{shiftCount, plural, =1 {1 layout shift found} other {# layout shifts found}}`,
 };
 /* eslint-enable max-len */
 
@@ -133,7 +135,7 @@ class LayoutShifts extends Audit {
 
     let displayValue;
     if (items.length > 0) {
-      displayValue = str_(i18n.UIStrings.displayValueShiftsFound,
+      displayValue = str_(UIStrings.displayValueShiftsFound,
         {shiftCount: items.length});
     }
 

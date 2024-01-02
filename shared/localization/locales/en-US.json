@@ -1172,6 +1172,9 @@
   "core/audits/layout-shifts.js | description": {
     "message": "These are the largest layout shifts observed on the page. Each table item represents a single layout shift, and shows the element that shifted the most. Below each item are possible root causes that led to the layout shift. Some of these layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)"
   },
+  "core/audits/layout-shifts.js | displayValueShiftsFound": {
+    "message": "{shiftCount, plural, =1 {1 layout shift found} other {# layout shifts found}}"
+  },
   "core/audits/layout-shifts.js | rootCauseFontChanges": {
     "message": "Web font loaded"
   },
@@ -2560,9 +2563,6 @@
   },
   "core/lib/i18n/i18n.js | displayValueMsSavings": {
     "message": "Potential savings of {wastedMs, number, milliseconds} ms"
-  },
-  "core/lib/i18n/i18n.js | displayValueShiftsFound": {
-    "message": "{shiftCount, plural, =1 {1 layout shift found} other {# layout shifts found}}"
   },
   "core/lib/i18n/i18n.js | documentResourceType": {
     "message": "Document"

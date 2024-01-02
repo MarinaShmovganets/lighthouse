@@ -23,7 +23,7 @@ import LHResult from './lhr/lhr.js'
 import Protocol from './protocol.js';
 import Util from './utility-types.js';
 import Audit from './audit.js';
-import { TraceProcessor, LayoutShiftRootCauses } from './trace-engine.js';
+import {TraceProcessor, LayoutShiftRootCauses} from './trace-engine.js';
 
 export type Artifacts = BaseArtifacts & GathererArtifacts;
 

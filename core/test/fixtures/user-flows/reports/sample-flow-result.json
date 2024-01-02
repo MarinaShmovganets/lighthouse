@@ -7627,7 +7627,7 @@
             "core/audits/layout-shifts.js | description": [
               "audits[layout-shifts].description"
             ],
-            "core/lib/i18n/i18n.js | displayValueShiftsFound": [
+            "core/audits/layout-shifts.js | displayValueShiftsFound": [
               {
                 "values": {
                   "shiftCount": 1
@@ -12501,7 +12501,7 @@
             "core/audits/layout-shifts.js | description": [
               "audits[layout-shifts].description"
             ],
-            "core/lib/i18n/i18n.js | displayValueShiftsFound": [
+            "core/audits/layout-shifts.js | displayValueShiftsFound": [
               {
                 "values": {
                   "shiftCount": 1
