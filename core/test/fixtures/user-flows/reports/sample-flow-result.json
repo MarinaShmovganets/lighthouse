@@ -1778,14 +1778,54 @@
             "title": "Avoid large layout shifts",
             "description": "These are the largest layout shifts observed on the page. Each table item represents a single layout shift, and shows the element that shifted the most. Below each item are possible root causes that led to the layout shift. Some of these layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
             "score": null,
-            "scoreDisplayMode": "notApplicable",
+            "scoreDisplayMode": "informative",
+            "displayValue": "1 layout shift found",
             "metricSavings": {
               "CLS": 0.002631263732910156
             },
             "details": {
               "type": "table",
-              "headings": [],
-              "items": []
+              "headings": [
+                {
+                  "key": "node",
+                  "valueType": "node",
+                  "subItemsHeading": {
+                    "key": "extra"
+                  },
+                  "label": "Element"
+                },
+                {
+                  "key": "score",
+                  "valueType": "numeric",
+                  "subItemsHeading": {
+                    "key": "cause",
+                    "valueType": "text"
+                  },
+                  "granularity": 0.001,
+                  "label": "Layout shift score"
+                }
+              ],
+              "items": [
+                {
+                  "node": {
+                    "type": "node",
+                    "lhId": "page-1-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,0,DIV,5,FORM,2,DIV",
+                    "selector": "div#__next > div.flex > form.flex > div.font-poppins",
+                    "boundingRect": {
+                      "top": 482,
+                      "bottom": 526,
+                      "left": 58,
+                      "right": 302,
+                      "width": 244,
+                      "height": 44
+                    },
+                    "snippet": "<div class=\"font-poppins text-xl\">",
+                    "nodeLabel": "SEARCHRANDOM"
+                  },
+                  "score": 0.002631263732910156
+                }
+              ]
             },
             "guidanceLevel": 2
           },
@@ -7534,6 +7574,7 @@
               "audits[largest-contentful-paint-element].details.items[0].headings[0].label",
               "audits[lcp-lazy-loaded].details.headings[0].label",
               "audits[layout-shift-elements].details.headings[0].label",
+              "audits[layout-shifts].details.headings[0].label",
               "audits[dom-size].details.headings[1].label"
             ],
             "core/audits/largest-contentful-paint-element.js | columnPhase": [
@@ -7585,6 +7626,17 @@
             ],
             "core/audits/layout-shifts.js | description": [
               "audits[layout-shifts].description"
+            ],
+            "core/lib/i18n/i18n.js | displayValueShiftsFound": [
+              {
+                "values": {
+                  "shiftCount": 1
+                },
+                "path": "audits[layout-shifts].displayValue"
+              }
+            ],
+            "core/audits/layout-shifts.js | columnScore": [
+              "audits[layout-shifts].details.headings[1].label"
             ],
             "core/audits/long-tasks.js | title": [
               "audits[long-tasks].title"
