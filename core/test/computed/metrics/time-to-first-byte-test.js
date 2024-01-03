@@ -41,10 +41,11 @@ function mockNetworkRecords() {
     networkRequestTime: 0,
     networkEndTime: 300,
     timing: {sendEnd: 0},
+    responseHeadersTransferSize: 300,
     transferSize: 300,
     url: requestedUrl,
     frameId: 'ROOT_FRAME',
-    responseHeaders: [{name: 'Content-Encoding'}],
+    responseHeaders: [{name: 'Content-Encoding', value: 'gzip'}],
   },
   {
     requestId: '2:redirect',
@@ -58,7 +59,7 @@ function mockNetworkRecords() {
     transferSize: 16_000,
     url: mainDocumentUrl,
     frameId: 'ROOT_FRAME',
-    responseHeaders: [{name: 'Content-Encoding'}],
+    responseHeaders: [{name: 'Content-Encoding', value: 'gzip'}],
   }];
 }
 
