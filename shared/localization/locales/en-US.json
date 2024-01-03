@@ -1182,7 +1182,7 @@
     "message": "Injected iframe"
   },
   "core/audits/layout-shifts.js | rootCauseRenderBlockingRequest": {
-    "message": "Render blocking network request finished loading"
+    "message": "A late network request adjusted the page layout"
   },
   "core/audits/layout-shifts.js | rootCauseUnsizedMedia": {
     "message": "Media element lacking an explicit size"
