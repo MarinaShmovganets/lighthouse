@@ -113,12 +113,21 @@ const expectations = {
       },
       {
         traceEventType: 'layout-shift',
+        node: {
+          nodeLabel: `Please don't move me`,
+        },
       },
       {
         traceEventType: 'layout-shift',
+        node: {
+          nodeLabel: `Please don't move me`,
+        },
       },
       {
         traceEventType: 'layout-shift',
+        node: {
+          nodeLabel: 'section > img',
+        },
       },
       {
         traceEventType: 'animation',
