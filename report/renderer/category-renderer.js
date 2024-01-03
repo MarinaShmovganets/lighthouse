@@ -570,8 +570,11 @@ export class CategoryRenderer {
       // Expand on warning, or manual audits when there are no failing audits.
       const openByDefault =
         clumpId === 'warning' || (clumpId === 'manual' && numFailingAudits === 0);
-      const clumpOpts = {auditRefsOrEls: auditRefs, description, openByDefault};
-      const clumpElem = this.renderClump(clumpId, clumpOpts);
+      const clumpElem = this.renderClump(clumpId, {
+        auditRefsOrEls: auditRefs,
+        description,
+        openByDefault,
+      });
       element.append(clumpElem);
     }
 
