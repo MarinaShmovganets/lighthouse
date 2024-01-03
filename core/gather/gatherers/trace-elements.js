@@ -297,10 +297,6 @@ class TraceElements extends BaseGatherer {
     const session = context.driver.defaultSession;
 
     const trace = context.dependencies.Trace;
-    if (!trace) {
-      throw new Error('Trace is missing!');
-    }
-
     const traceEngineResult = await TraceEngineResult.request({trace}, context);
     const rootCauses = context.dependencies.RootCauses;
 

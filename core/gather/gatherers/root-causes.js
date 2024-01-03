@@ -125,10 +125,6 @@ class RootCauses extends BaseGatherer {
    */
   async getArtifact(context) {
     const trace = context.dependencies.Trace;
-    if (!trace) {
-      throw new Error('Trace is missing!');
-    }
-
     const traceEngineResult = await TraceEngineResult.request({trace}, context);
     return RootCauses.runRootCauseAnalysis(context.driver, traceEngineResult);
   }
