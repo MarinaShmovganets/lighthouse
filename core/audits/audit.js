@@ -358,16 +358,18 @@ class Audit {
     /** @type {LH.Audit.MetricSavings} */
     const normalizedMetricSavings = {...metricSavings};
 
-    // eslint-disable-next-line max-len
-    for (const key of /** @type {Array<keyof LH.Audit.MetricSavings>} */ (Object.keys(metricSavings))) {
-      const value = metricSavings[key];
+    for (const key of /** @type {Array<LH.Result.MetricAcronym>} */ (Object.keys(metricSavings))) {
+      let value = metricSavings[key];
       if (value === undefined) continue;
 
-      const precision = METRIC_SAVINGS_PRECISION[key];
-      if (precision === undefined) continue;
+      value = Math.max(value, 0);
 
-      const roundedValue = Math.round(value / precision) * precision;
-      normalizedMetricSavings[key] = Math.max(roundedValue, 0);
+      const precision = METRIC_SAVINGS_PRECISION[key];
+      if (precision !== undefined) {
+        value = Math.round(value / precision) * precision;
+      }
+
+      normalizedMetricSavings[key] = value;
     }
 
     return normalizedMetricSavings;
