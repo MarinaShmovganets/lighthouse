@@ -5,7 +5,6 @@
  */
 
 /** @typedef {import('./dom.js').DOM} DOM */
-/** @typedef {string} FilterType */
 
 import {CategoryRenderer} from './category-renderer.js';
 import {ReportUtils} from './report-utils.js';
@@ -233,7 +232,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
     groupEl.classList.add('lh-audit-group--diagnostics');
 
     /**
-     * @param {FilterType} acronym
+     * @param {string} acronym
      */
     function refreshFilteredAudits(acronym) {
       for (const audit of allInsights) {
@@ -352,7 +351,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
    * Render the control to filter the audits by metric. The filtering is done at runtime by CSS only
    * @param {LH.ReportResult.AuditRef[]} filterableMetrics
    * @param {HTMLDivElement} categoryEl
-   * @param {(acronym: FilterType) => void} onFilterChange
+   * @param {(acronym: string) => void} onFilterChange
    */
   renderMetricAuditFilter(filterableMetrics, categoryEl, onFilterChange) {
     const metricFilterEl = this.dom.createElement('div', 'lh-metricfilter');
