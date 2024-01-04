@@ -171,23 +171,16 @@ describe('ProtocolSession', () => {
       });
     });
 
-    it('respects a timeout of infinity', async () => {
-      const sendPromise = createDecomposedPromise();
-      puppeteerSession.send = fnAny().mockReturnValue(sendPromise.promise);
+    it('rejects on error from protocol', async () => {
+      rawSend.mockRejectedValue(new Error('Url is not valid'));
+      const resultPromise = session.sendCommand('Page.navigate', {url: ''});
+      await expect(resultPromise).rejects.toThrow('Url is not valid');
+    });
 
-      session.setNextProtocolTimeout(Infinity);
-      const resultPromise = makePromiseInspectable(session.sendCommand('Page.navigate', {url: ''}));
-
-      await timers.advanceTimersByTime(100_000);
-      await flushAllTimersAndMicrotasks();
-
-      expect(resultPromise).not.toBeDone();
-
-      sendPromise.resolve('result');
-      await flushAllTimersAndMicrotasks();
-
-      expect(resultPromise).toBeDone();
-      expect(await resultPromise).toBe('result');
+    it('ignores protocol timeouts from puppeteer', async () => {
+      rawSend.mockRejectedValue(new Error(`Increase 'protocolTimeout'`));
+      const resultPromise = session.sendCommand('Page.navigate', {url: ''});
+      await expect(resultPromise).resolves.toBeUndefined();
     });
   });
 
@@ -216,6 +209,12 @@ describe('ProtocolSession', () => {
 
       session.sendCommand('Page.navigate', {url: ''});
 
+      expect(session.hasNextProtocolTimeout()).toBe(false);
+      expect(session.getNextProtocolTimeout()).toBe(DEFAULT_TIMEOUT);
+    });
+
+    it('should handle infinite timeout', () => {
+      expect(() => session.setNextProtocolTimeout(Infinity)).toThrow(/must be finite/);
       expect(session.hasNextProtocolTimeout()).toBe(false);
       expect(session.getNextProtocolTimeout()).toBe(DEFAULT_TIMEOUT);
     });

@@ -70,6 +70,7 @@ class ProtocolSession extends CrdpEventEmitter {
    * @param {number} ms
    */
   setNextProtocolTimeout(ms) {
+    if (!Number.isFinite(ms)) throw new Error('Timeout must be finite');
     this._nextProtocolTimeout = ms;
   }
 

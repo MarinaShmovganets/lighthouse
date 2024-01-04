@@ -97,7 +97,8 @@ async function gotoURL(driver, requestor, options) {
   let waitForNavigationTriggered;
   if (typeof requestor === 'string') {
     // No timeout needed for Page.navigate. See https://github.com/GoogleChrome/lighthouse/pull/6413
-    session.setNextProtocolTimeout(Infinity);
+    // `Infinity` doesn't work with Puppeteer's timeout system so just use a very long 5 min timeout
+    session.setNextProtocolTimeout(300_000);
     waitForNavigationTriggered = session.sendCommand('Page.navigate', {url: requestor});
   } else {
     waitForNavigationTriggered = requestor();
