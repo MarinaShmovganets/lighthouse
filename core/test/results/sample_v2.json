@@ -2567,7 +2567,7 @@
       "scoreDisplayMode": "metricSavings",
       "displayValue": "2 layout shifts found",
       "metricSavings": {
-        "CLS": 0.13570762803819444
+        "CLS": 0.136
       },
       "details": {
         "type": "table",

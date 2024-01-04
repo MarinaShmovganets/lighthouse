@@ -1781,7 +1781,7 @@
             "scoreDisplayMode": "informative",
             "displayValue": "1 layout shift found",
             "metricSavings": {
-              "CLS": 0.002631263732910156
+              "CLS": 0.003
             },
             "details": {
               "type": "table",
@@ -9915,7 +9915,7 @@
             "scoreDisplayMode": "metricSavings",
             "displayValue": "1 layout shift found",
             "metricSavings": {
-              "CLS": 0.13125
+              "CLS": 0.131
             },
             "details": {
               "type": "table",
