@@ -94,7 +94,16 @@ class ProtocolSession extends CrdpEventEmitter {
       }));
     });
 
-    const resultPromise = this._cdpSession.send(method, ...params);
+    const resultPromise = this._cdpSession.send(method, ...params, {
+      // Add 50ms to the Puppeteer timeout to ensure the Lighthouse timeout finishes first.
+      timeout: timeoutMs + 50,
+    }).catch(err => {
+      // We set up our own protocol timeout system, so we should ignore protocol timeouts emitted by puppeteer.
+      // https://github.com/GoogleChrome/lighthouse/issues/15510
+      if (/'protocolTimeout'/.test(err)) return;
+
+      throw err;
+    });
     const resultWithTimeoutPromise = Promise.race([resultPromise, timeoutPromise]);
 
     return resultWithTimeoutPromise.finally(() => {

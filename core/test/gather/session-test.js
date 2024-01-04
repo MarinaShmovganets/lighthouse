@@ -48,10 +48,13 @@ describe('ProtocolSession', () => {
   let puppeteerSession;
   /** @type {ProtocolSession} */
   let session;
+  let rawSend = fnAny();
 
   beforeEach(() => {
+    rawSend = fnAny().mockResolvedValue(Promise.resolve());
+
     // @ts-expect-error - Individual mock functions are applied as necessary.
-    puppeteerSession = new CdpCDPSession({_rawSend: fnAny(), send: fnAny()}, '', 'root');
+    puppeteerSession = new CdpCDPSession({_rawSend: rawSend}, '', 'root');
     session = new ProtocolSession(puppeteerSession);
   });
 
@@ -127,7 +130,7 @@ describe('ProtocolSession', () => {
 
       const result = await session.sendCommand('Page.navigate', {url: 'foo'});
       expect(result).toEqual(123);
-      expect(send).toHaveBeenCalledWith('Page.navigate', {url: 'foo'});
+      expect(send).toHaveBeenCalledWith('Page.navigate', {url: 'foo'}, {timeout: 30050});
     });
 
     it('times out a request by default', async () => {
