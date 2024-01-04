@@ -10713,7 +10713,7 @@
             "scoreDisplayMode": "informative",
             "displayValue": "60 ms spent on event 'keypress'",
             "metricSavings": {
-              "INP": 64
+              "INP": 50
             },
             "details": {
               "type": "list",

@@ -14,6 +14,7 @@ const DEFAULT_PASS = 'defaultPass';
 const METRIC_SAVINGS_PRECISION = {
   FCP: 50,
   LCP: 50,
+  INP: 50,
   TBT: 50,
   CLS: 0.001,
 };
@@ -351,7 +352,7 @@ class Audit {
    * @param {LH.Audit.MetricSavings|undefined} metricSavings
    * @return {LH.Audit.MetricSavings|undefined}
    */
-  static _normalizeMetricSavings(metricSavings) {
+  static _quantizeMetricSavings(metricSavings) {
     if (!metricSavings) return;
 
     /** @type {LH.Audit.MetricSavings} */
@@ -410,7 +411,7 @@ class Audit {
       scoreDisplayMode = product.scoreDisplayMode;
     }
 
-    const metricSavings = Audit._normalizeMetricSavings(product.metricSavings);
+    const metricSavings = Audit._quantizeMetricSavings(product.metricSavings);
 
     if (scoreDisplayMode === Audit.SCORING_MODES.METRIC_SAVINGS) {
       if (score && score >= Util.PASS_THRESHOLD) {
