@@ -366,7 +366,8 @@ class Audit {
       const precision = METRIC_SAVINGS_PRECISION[key];
       if (precision === undefined) continue;
 
-      normalizedMetricSavings[key] = Math.round(value / precision) * precision;
+      const roundedValue = Math.round(value / precision) * precision;
+      normalizedMetricSavings[key] = Math.max(roundedValue, 0);
     }
 
     return normalizedMetricSavings;
@@ -412,11 +413,12 @@ class Audit {
     }
 
     const metricSavings = Audit._quantizeMetricSavings(product.metricSavings);
+    const hasSomeSavings = Object.values(metricSavings || {}).some(v => v);
 
     if (scoreDisplayMode === Audit.SCORING_MODES.METRIC_SAVINGS) {
       if (score && score >= Util.PASS_THRESHOLD) {
         score = 1;
-      } else if (Object.values(metricSavings || {}).some(v => v)) {
+      } else if (hasSomeSavings) {
         score = 0;
       } else {
         score = 0.5;
