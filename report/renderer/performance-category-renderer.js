@@ -5,7 +5,7 @@
  */
 
 /** @typedef {import('./dom.js').DOM} DOM */
-/** @typedef {LH.Result.MetricAcronym | 'All'} FilterType */
+/** @typedef {string} FilterType */
 
 import {CategoryRenderer} from './category-renderer.js';
 import {ReportUtils} from './report-utils.js';
@@ -360,7 +360,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
     textEl.textContent = Globals.strings.showRelevantAudits;
 
     const filterChoices = [
-      /** @type {const} */ ({acronym: 'All'}),
+      /** @type {const} */ ({acronym: 'All', id: 'All'}),
       ...filterableMetrics,
     ];
 
