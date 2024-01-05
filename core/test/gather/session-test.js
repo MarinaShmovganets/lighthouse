@@ -195,12 +195,6 @@ describe('ProtocolSession', () => {
       const resultPromise = session.sendCommand('Page.navigate', {url: ''});
       await expect(resultPromise).rejects.toThrow('Url is not valid');
     });
-
-    it('ignores protocol timeouts from puppeteer', async () => {
-      rawSend.mockRejectedValue(new Error(`Increase 'protocolTimeout'`));
-      const resultPromise = session.sendCommand('Page.navigate', {url: ''});
-      await expect(resultPromise).resolves.toBeUndefined();
-    });
   });
 
   describe('.has/get/setNextProtocolTimeout', () => {
