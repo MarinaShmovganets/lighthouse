@@ -171,6 +171,25 @@ describe('ProtocolSession', () => {
       });
     });
 
+    it('respects a timeout of infinity', async () => {
+      const sendPromise = createDecomposedPromise();
+      puppeteerSession.send = fnAny().mockReturnValue(sendPromise.promise);
+
+      session.setNextProtocolTimeout(Infinity);
+      const resultPromise = makePromiseInspectable(session.sendCommand('Page.navigate', {url: ''}));
+
+      await timers.advanceTimersByTime(100_000);
+      await flushAllTimersAndMicrotasks();
+
+      expect(resultPromise).not.toBeDone();
+
+      sendPromise.resolve('result');
+      await flushAllTimersAndMicrotasks();
+
+      expect(resultPromise).toBeDone();
+      expect(await resultPromise).toBe('result');
+    });
+
     it('rejects on error from protocol', async () => {
       rawSend.mockRejectedValue(new Error('Url is not valid'));
       const resultPromise = session.sendCommand('Page.navigate', {url: ''});
@@ -216,7 +235,13 @@ describe('ProtocolSession', () => {
     it('should handle infinite timeout', () => {
       session.setNextProtocolTimeout(Infinity);
       expect(session.hasNextProtocolTimeout()).toBe(true);
-      expect(session.getNextProtocolTimeout()).toBe(4294967245);
+      expect(session.getNextProtocolTimeout()).toBe(2147483597);
+    });
+
+    it('should handle extremely large (but not infinite) timeout', () => {
+      session.setNextProtocolTimeout(2 ** 40);
+      expect(session.hasNextProtocolTimeout()).toBe(true);
+      expect(session.getNextProtocolTimeout()).toBe(2147483597);
     });
   });
 });

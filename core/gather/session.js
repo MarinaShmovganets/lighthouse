@@ -13,11 +13,14 @@ const DEFAULT_PROTOCOL_TIMEOUT = 30000;
 const PPTR_BUFFER = 50;
 
 /**
- * Defined as the max int32 minus the buffer we use for Puppeteer timeouts.
+ * Puppeteer timeouts must fit into an int32 and the maximum timeout for `setTimeout` is a *signed*
+ * int32. However, this also needs to account for the puppeteer buffer we add to the timeout later.
  *
- * This is ~50 days which is as good as infinity for all practical purposes.
+ * So this is defined as the max *signed* int32 minus PPTR_BUFFER.
+ *
+ * In human terms, this timeout is ~25 days which is as good as infinity for all practical purposes.
  */
-const MAX_TIMEOUT = (2 ** 32 - 1) - PPTR_BUFFER;
+const MAX_TIMEOUT = 2147483647 - PPTR_BUFFER;
 
 /** @typedef {LH.Protocol.StrictEventEmitterClass<LH.CrdpEvents>} CrdpEventMessageEmitter */
 const CrdpEventEmitter = /** @type {CrdpEventMessageEmitter} */ (EventEmitter);
@@ -78,8 +81,7 @@ class ProtocolSession extends CrdpEventEmitter {
    * @param {number} ms
    */
   setNextProtocolTimeout(ms) {
-    // Infinity does not work with Puppeteer's timeout system so just use the max timeout instead.
-    if (!Number.isFinite(ms)) ms = MAX_TIMEOUT;
+    if (ms > MAX_TIMEOUT) ms = MAX_TIMEOUT;
     this._nextProtocolTimeout = ms;
   }
 
