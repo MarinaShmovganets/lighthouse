@@ -10,6 +10,14 @@ import {LighthouseError} from '../lib/lh-error.js';
 
 // Controls how long to wait for a response after sending a DevTools protocol command.
 const DEFAULT_PROTOCOL_TIMEOUT = 30000;
+const PPTR_BUFFER = 50;
+
+/**
+ * Defined as the max int32 minus the buffer we use for Puppeteer timeouts.
+ *
+ * This is ~50 days which is as good as infinity for all practical purposes.
+ */
+const MAX_TIMEOUT = (2 ** 32 - 1) - PPTR_BUFFER;
 
 /** @typedef {LH.Protocol.StrictEventEmitterClass<LH.CrdpEvents>} CrdpEventMessageEmitter */
 const CrdpEventEmitter = /** @type {CrdpEventMessageEmitter} */ (EventEmitter);
@@ -70,7 +78,8 @@ class ProtocolSession extends CrdpEventEmitter {
    * @param {number} ms
    */
   setNextProtocolTimeout(ms) {
-    if (!Number.isFinite(ms)) throw new Error('Timeout must be finite');
+    // Infinity does not work with Puppeteer's timeout system so just use the max timeout instead.
+    if (!Number.isFinite(ms)) ms = MAX_TIMEOUT;
     this._nextProtocolTimeout = ms;
   }
 
@@ -87,8 +96,6 @@ class ProtocolSession extends CrdpEventEmitter {
     /** @type {NodeJS.Timer|undefined} */
     let timeout;
     const timeoutPromise = new Promise((resolve, reject) => {
-      if (timeoutMs === Infinity) return;
-
       // eslint-disable-next-line max-len
       timeout = setTimeout(reject, timeoutMs, new LighthouseError(LighthouseError.errors.PROTOCOL_TIMEOUT, {
         protocolMethod: method,
@@ -97,7 +104,7 @@ class ProtocolSession extends CrdpEventEmitter {
 
     const resultPromise = this._cdpSession.send(method, ...params, {
       // Add 50ms to the Puppeteer timeout to ensure the Lighthouse timeout finishes first.
-      timeout: timeoutMs + 50,
+      timeout: timeoutMs + PPTR_BUFFER,
     }).catch(err => {
       // We set up our own protocol timeout system, so we should ignore protocol timeouts emitted by puppeteer.
       // https://github.com/GoogleChrome/lighthouse/issues/15510

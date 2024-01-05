@@ -214,9 +214,9 @@ describe('ProtocolSession', () => {
     });
 
     it('should handle infinite timeout', () => {
-      expect(() => session.setNextProtocolTimeout(Infinity)).toThrow(/must be finite/);
-      expect(session.hasNextProtocolTimeout()).toBe(false);
-      expect(session.getNextProtocolTimeout()).toBe(DEFAULT_TIMEOUT);
+      session.setNextProtocolTimeout(Infinity);
+      expect(session.hasNextProtocolTimeout()).toBe(true);
+      expect(session.getNextProtocolTimeout()).toBe(4294967245);
     });
   });
 });

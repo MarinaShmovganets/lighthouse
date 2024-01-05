@@ -540,8 +540,7 @@ function waitForUserToContinue(driver) {
   }
   /* c8 ignore stop */
 
-  // Do "- 51" instead of "- 1" because we always add 50ms for the Puppeteer timeout
-  driver.defaultSession.setNextProtocolTimeout(2 ** 31 - 51);
+  driver.defaultSession.setNextProtocolTimeout(Infinity);
   return driver.executionContext.evaluate(createInPagePromise, {args: []});
 }
 
