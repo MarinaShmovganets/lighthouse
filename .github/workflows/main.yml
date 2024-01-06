@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+    - main
+    - release/*
+    on:
+  pull_request:
+    branches:
+    - main
+    on:
+  schedule:
+  - cron: "0 2 * * 1-5"
+
+on:
+  workflow_dispatch:
+  
+  jobs:
+  my_job:
+    name: deploy to staging
+    runs-on: ubuntu-18.04
