@@ -8057,18 +8057,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:config",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:config:resolveArtifactsToDefns",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:runner:audit",
         "duration": 100,
         "entryType": "measure"
