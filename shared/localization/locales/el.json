@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Συνοπτική εκτύπωση"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Αποθήκευση ως Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Αποθήκευση ως HTML"
   },

@@ -17,14 +17,14 @@ import {SwapLocaleFeature} from '../../../report/renderer/swap-locale-feature.js
 export class ViewerUIFeatures extends ReportUIFeatures {
   /**
    * @param {DOM} dom
-   * @param {{saveGist?: function(LH.Result): void, refresh: function(LH.Result): void, getStandaloneReportHTML: function(): string}} callbacks
+   * @param {{uploadForPermalinkHandler?: function(LH.Result): void, refresh: function(LH.Result): void, getStandaloneReportHTML: function(): string}} callbacks
    */
   constructor(dom, callbacks) {
     super(dom, {
       getStandaloneReportHTML: callbacks.getStandaloneReportHTML,
     });
 
-    this._saveGistCallback = callbacks.saveGist;
+    this._uploadForPermalinkHandler = callbacks.uploadForPermalinkHandler;
     this._refreshCallback = callbacks.refresh;
     this._swapLocales = new SwapLocaleFeature(this, this._dom, {
       onLocaleSelected: this._swapLocale.bind(this),
@@ -38,11 +38,12 @@ export class ViewerUIFeatures extends ReportUIFeatures {
   initFeatures(report) {
     super.initFeatures(report);
 
-    // Disable option to save as gist if no callback for saving.
-    if (!this._saveGistCallback) {
-      const saveGistItem =
-        this._dom.find('.lh-tools__dropdown a[data-action="save-gist"]', this._dom.rootEl);
-      saveGistItem.setAttribute('disabled', 'true');
+    // Disable option to Upload for Shareable URL if no handler for saving.
+    if (!this._uploadForPermalinkHandler) {
+      const permalinkItem =
+        this._dom.find('.lh-tools__dropdown a[data-action="upload-for-permalink"]',
+        this._dom.rootEl);
+      permalinkItem.setAttribute('disabled', 'true');
     }
 
     this._getI18nModule().then(i18nModule => {
@@ -54,18 +55,18 @@ export class ViewerUIFeatures extends ReportUIFeatures {
   /**
    * @override
    */
-  saveAsGist() {
-    if (this._saveGistCallback) {
-      this._saveGistCallback(this.json);
+  uploadForPermalink() {
+    if (this._uploadForPermalinkHandler) {
+      this._uploadForPermalinkHandler(this.json);
     } else {
-      // UI should prevent this from being called with no callback, but throw to be sure.
-      throw new Error('Cannot save this report as a gist');
+      // UI should prevent this from being called with no handler, but throw to be sure.
+      throw new Error('Cannot upload this report for sharing');
     }
 
-    // Disable save-gist option after saving.
-    const saveGistItem =
-      this._dom.find('.lh-tools__dropdown a[data-action="save-gist"]', this._dom.rootEl);
-    saveGistItem.setAttribute('disabled', 'true');
+    // Disable upload-for-permalink option after saving.
+    const permalinkItem =
+      this._dom.find('.lh-tools__dropdown a[data-action="upload-for-permalink"]', this._dom.rootEl);
+    permalinkItem.setAttribute('disabled', 'true');
   }
 
   /**

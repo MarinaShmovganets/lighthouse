@@ -173,12 +173,12 @@ export class DropDownMenu {
         return false;
       }
 
-      // 'Save as Gist' option may be disabled.
+      // 'Upload for Shareable URL' option may be disabled.
       if (node.hasAttribute('disabled')) {
         return false;
       }
 
-      // 'Save as Gist' option may have display none.
+      // 'Upload for Shareable URL' option may have display none.
       if (window.getComputedStyle(node).display === 'none') {
         return false;
       }

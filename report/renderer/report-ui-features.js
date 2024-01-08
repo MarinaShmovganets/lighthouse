@@ -173,10 +173,11 @@ export class ReportUIFeatures {
 
   /**
    * Save json as a gist. Unimplemented in base UI features.
+   * TODO: i think it can be in base now..
    */
-  saveAsGist() {
+  uploadForPermalink() {
     // TODO ?
-    throw new Error('Cannot save as gist from base report');
+    throw new Error('Cannot Upload for Shareable URL from base report');
   }
 
   _enableFireworks() {

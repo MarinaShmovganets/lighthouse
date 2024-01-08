@@ -3341,14 +3341,14 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Print Summary"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Save as Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Save as HTML"
   },
   "report/renderer/report-utils.js | dropdownSaveJSON": {
     "message": "Save as JSON"
+  },
+  "report/renderer/report-utils.js | dropdownShareableURL": {
+    "message": "Upload for Shareable URL"
   },
   "report/renderer/report-utils.js | dropdownViewer": {
     "message": "Open in Viewer"

@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Печать сводных данных"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Сохранить как Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Сохранить как HTML-файл"
   },

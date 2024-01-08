@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "प्रिंट के बारे में खास जानकारी"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Gist के रूप में सेव करें"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "एचटीएमएल के रूप में सेव करें"
   },

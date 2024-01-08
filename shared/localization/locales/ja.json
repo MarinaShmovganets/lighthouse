@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "概要を印刷"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Gist 形式で保存"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "HTML 形式で保存"
   },

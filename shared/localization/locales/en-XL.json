@@ -3341,14 +3341,14 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "P̂ŕîńt̂ Śûḿm̂ár̂ý"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Ŝáv̂é âś Ĝíŝt́"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Ŝáv̂é âś ĤT́M̂Ĺ"
   },
   "report/renderer/report-utils.js | dropdownSaveJSON": {
     "message": "Ŝáv̂é âś ĴŚÔŃ"
+  },
+  "report/renderer/report-utils.js | dropdownShareableURL": {
+    "message": "Ûṕl̂óâd́ f̂ór̂ Śĥár̂éâb́l̂é ÛŔL̂"
   },
   "report/renderer/report-utils.js | dropdownViewer": {
     "message": "Ôṕêń îń V̂íêẃêŕ"

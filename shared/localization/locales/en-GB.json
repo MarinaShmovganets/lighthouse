@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Print summary"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Save as gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Save as HTML"
   },

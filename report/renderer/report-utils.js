@@ -411,8 +411,8 @@ const UIStrings = {
   dropdownSaveJSON: 'Save as JSON',
   /** Option in a dropdown menu that opens the current report in the Lighthouse Viewer Application. */
   dropdownViewer: 'Open in Viewer',
-  /** Option in a dropdown menu that saves the current report as a new GitHub Gist. */
-  dropdownSaveGist: 'Save as Gist',
+  /** Option in a dropdown menu that gets a shareable URL for the current report. */
+  dropdownShareableURL: 'Upload for Shareable URL',
   /** Option in a dropdown menu that toggles the themeing of the report between Light(default) and Dark themes. */
   dropdownDarkTheme: 'Toggle Dark Theme',
   /** Option in a dropdown menu that opens the trace of the page without throttling. "Unthrottled" can be replaced with "Original". */

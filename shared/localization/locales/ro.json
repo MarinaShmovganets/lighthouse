@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Rezumatul printării"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Salvează ca Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Salvează ca HTML"
   },

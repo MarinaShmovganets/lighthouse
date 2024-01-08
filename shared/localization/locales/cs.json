@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Vytisknout souhrn"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Uložit jako gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Uložit jako HTML"
   },

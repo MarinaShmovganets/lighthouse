@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "สรุปการพิมพ์"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "บันทึกเป็น Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "บันทึกเป็น HTML"
   },

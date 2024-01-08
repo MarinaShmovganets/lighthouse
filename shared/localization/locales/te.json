@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "ప్రింట్ సారాంశం"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Gist లాగా సేవ్ చేయండి"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "HTML లాగా సేవ్ చేయండి"
   },

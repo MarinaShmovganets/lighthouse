@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "[Þŕîñţ Šûmmåŕý one two]"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "[Šåvé åš Ĝîšţ one two]"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "[Šåvé åš ĤŢMĻ one two]"
   },

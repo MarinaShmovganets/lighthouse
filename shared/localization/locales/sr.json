@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Штампај резиме"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Сачувај као Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Сачувај као HTML"
   },

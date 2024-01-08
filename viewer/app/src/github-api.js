@@ -11,9 +11,6 @@
 import idbKeyval from 'idb-keyval';
 
 import {FirebaseAuth} from './firebase-auth.js';
-// eslint-disable-next-line max-len
-import {getLhrFilenamePrefix, getFlowResultFilenamePrefix} from '../../../report/generator/file-namer.js';
-import {Util} from '../../../shared/util.js';
 
 /**
  * Wrapper around the GitHub API for reading/writing gists.
@@ -30,58 +27,6 @@ export class GithubApi {
 
   getFirebaseAuth() {
     return this._auth;
-  }
-
-  /**
-   * Creates a gist under the users account.
-   * @param {LH.Result|LH.FlowResult} jsonFile The gist file body.
-   * @return {Promise<string>} id of the created gist.
-   */
-  async createGist(jsonFile) {
-    if (this._saving) {
-      throw new Error('Save already in progress');
-    }
-
-    logger.log('Saving report to GitHub...', false);
-    this._saving = true;
-
-    try {
-      const accessToken = await this._auth.getAccessToken();
-      let filename;
-      if ('steps' in jsonFile) {
-        filename = getFlowResultFilenamePrefix(jsonFile);
-      } else {
-        filename = getLhrFilenamePrefix({
-          finalDisplayedUrl: Util.getFinalDisplayedUrl(jsonFile),
-          fetchTime: jsonFile.fetchTime,
-        });
-      }
-      const body = {
-        description: 'Lighthouse json report',
-        public: false,
-        files: {
-          [`${filename}${GithubApi.LH_JSON_EXT}`]: {
-            content: JSON.stringify(jsonFile),
-          },
-        },
-      };
-      const request = new Request('https://api.github.com/gists', {
-        method: 'POST',
-        headers: new Headers({Authorization: `token ${accessToken}`}),
-        // Stringify twice so quotes are escaped for POST request to succeed.
-        body: JSON.stringify(body),
-      });
-      const response = await fetch(request);
-      const json = await response.json();
-      if (json.id) {
-        logger.log('Saved!');
-        return json.id;
-      } else {
-        throw new Error('Error: ' + JSON.stringify(json));
-      }
-    } finally {
-      this._saving = false;
-    }
   }
 
   /**

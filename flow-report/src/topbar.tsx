@@ -52,7 +52,7 @@ const Topbar: FunctionComponent<{onMenuClick: JSX.MouseEventHandler<HTMLButtonEl
   const flowResult = useFlowResult();
   const strings = useLocalizedStrings();
   const [showHelpDialog, setShowHelpDialog] = useState(false);
-  const {getReportHtml, saveAsGist} = useOptions();
+  const {getReportHtml, uploadForPermalink} = useOptions();
 
   return (
     <div className="Topbar">
@@ -74,11 +74,11 @@ const Topbar: FunctionComponent<{onMenuClick: JSX.MouseEventHandler<HTMLButtonEl
           >{strings.save}</TopbarButton>
       }
       {
-        saveAsGist &&
+        uploadForPermalink &&
           <TopbarButton
-            onClick={() => saveAsGist(flowResult)}
+            onClick={() => uploadForPermalink(flowResult)}
             label="Button that saves the report to a gist"
-          >{strings.dropdownSaveGist}</TopbarButton>
+          >{strings.dropdownShareableURL}</TopbarButton>
       }
       <div style={{flexGrow: 1}} />
       <TopbarButton

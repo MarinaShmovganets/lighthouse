@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "列印摘要"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "另存為 Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "另存為 HTML"
   },

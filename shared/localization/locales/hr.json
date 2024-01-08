@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Ispis sažetka"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Spremanje kao Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Spremanje kao HTML"
   },

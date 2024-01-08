@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Tulosta yhteenveto"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Tallenna Gistinä"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Tallenna HTML-muodossa"
   },

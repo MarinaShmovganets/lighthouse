@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Cetak Ringkasan"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Simpan sebagai Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Simpan sebagai HTML"
   },

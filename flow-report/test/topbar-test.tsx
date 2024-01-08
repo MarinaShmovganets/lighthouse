@@ -59,15 +59,15 @@ it('save button opens save dialog for HTML file', async () => {
   );
 });
 
-it('provides save as gist option if defined', async () => {
-  const saveAsGist = jestMock.fn();
-  options = {saveAsGist};
+it('provides permalink option if defined', async () => {
+  const uploadForPermalink = jestMock.fn();
+  options = {uploadForPermalink};
   const root = render(<Topbar onMenuClick={() => {}}/>, {wrapper});
 
-  const saveButton = root.getByText('Save as Gist');
+  const saveButton = root.getByText('Upload for Shareable URL');
   saveButton.click();
 
-  expect(saveAsGist).toHaveBeenCalledWith(flowResult);
+  expect(uploadForPermalink).toHaveBeenCalledWith(flowResult);
 });
 
 it('toggles help dialog', async () => {

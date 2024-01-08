@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Buod sa Pag-print"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "I-save bilang Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "I-save bilang HTML"
   },

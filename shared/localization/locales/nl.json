@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Afdrukoverzicht"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Opslaan als gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Opslaan als HTML"
   },

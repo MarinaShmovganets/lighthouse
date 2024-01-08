@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Báo cáo tóm tắt trong hộp thoại in"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Lưu dưới dạng Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Lưu dưới dạng HTML"
   },

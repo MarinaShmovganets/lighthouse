@@ -151,7 +151,7 @@ body {
   display: none;
 }
 
-/* save-gist option visible in Viewer */
-.lh-tools__dropdown a[data-action="save-gist"] {
+/* upload-for-permalink option visible in Viewer */
+.lh-tools__dropdown a[data-action="upload-for-permalink"] {
   display: flex !important;
 }

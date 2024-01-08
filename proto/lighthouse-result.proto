@@ -564,7 +564,7 @@ message I18n {
 
     // Option in a dropdown menu that saves the current report as a new GitHub
     // Gist.
-    string dropdown_save_gist = 38;
+    string dropdown_save_gist = 38 [deprecated = true];
 
     // Option in a dropdown menu that saves the Lighthouse report HTML locally
     // to the system as a '.html' file.
@@ -668,6 +668,9 @@ message I18n {
 
     // Descriptive label that this analysis considers a snapshot of the page at a single point in time
     string runtime_analysis_window_snapshot = 66;
+
+    // Option in a dropdown menu that gets a shareable URL for the current report.
+    string dropdown_shareable_URL = 67;
   }
 
   // The message holding all formatted strings used in the renderer.

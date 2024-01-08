@@ -106,8 +106,8 @@ export class TopbarFeatures {
         }
         break;
       }
-      case 'save-gist': {
-        this._reportUIFeatures.saveAsGist();
+      case 'upload-for-permalink': {
+        this._reportUIFeatures.uploadForPermalink();
         break;
       }
       case 'toggle-dark': {

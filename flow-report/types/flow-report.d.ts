@@ -23,7 +23,7 @@ declare global {
 
     export interface FlowReportOptions {
       getReportHtml?: (flowResult: FlowResult_) => string;
-      saveAsGist?: (flowResult: FlowResult_) => void;
+      uploadForPermalink?: (flowResult: FlowResult_) => void;
     }
 
     export interface HashState {

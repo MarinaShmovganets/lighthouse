@@ -3302,9 +3302,6 @@
   "report/renderer/report-utils.js | dropdownPrintSummary": {
     "message": "Resum d'impressió"
   },
-  "report/renderer/report-utils.js | dropdownSaveGist": {
-    "message": "Desa com a Gist"
-  },
   "report/renderer/report-utils.js | dropdownSaveHTML": {
     "message": "Desa com a HTML"
   },
