@@ -4678,7 +4678,7 @@
           }
         }
       },
-      "guidanceLevel": 2
+      "guidanceLevel": 1
     },
     "unused-javascript": {
       "id": "unused-javascript",
@@ -4749,7 +4749,7 @@
           }
         }
       },
-      "guidanceLevel": 2
+      "guidanceLevel": 1
     },
     "modern-image-formats": {
       "id": "modern-image-formats",
@@ -8039,6 +8039,18 @@
       {
         "startTime": 0,
         "name": "lh:gather:getArtifact:BFCacheFailures",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:config",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:config:resolveArtifactsToDefns",
         "duration": 100,
         "entryType": "measure"
       },

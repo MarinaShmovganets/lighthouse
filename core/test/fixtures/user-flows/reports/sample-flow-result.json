@@ -3111,7 +3111,7 @@
                 }
               }
             },
-            "guidanceLevel": 2
+            "guidanceLevel": 1
           },
           "unused-javascript": {
             "id": "unused-javascript",
@@ -3143,7 +3143,7 @@
                 }
               }
             },
-            "guidanceLevel": 2
+            "guidanceLevel": 1
           },
           "modern-image-formats": {
             "id": "modern-image-formats",
@@ -10401,7 +10401,7 @@
                 }
               }
             },
-            "guidanceLevel": 2
+            "guidanceLevel": 1
           },
           "unused-javascript": {
             "id": "unused-javascript",
@@ -10433,7 +10433,7 @@
                 }
               }
             },
-            "guidanceLevel": 2
+            "guidanceLevel": 1
           },
           "modern-image-formats": {
             "id": "modern-image-formats",
@@ -20931,7 +20931,7 @@
                 }
               }
             },
-            "guidanceLevel": 2
+            "guidanceLevel": 1
           },
           "unused-javascript": {
             "id": "unused-javascript",
@@ -20963,7 +20963,7 @@
                 }
               }
             },
-            "guidanceLevel": 2
+            "guidanceLevel": 1
           },
           "modern-image-formats": {
             "id": "modern-image-formats",
