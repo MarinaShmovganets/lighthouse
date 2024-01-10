@@ -408,19 +408,6 @@ function createMetricComponent(dom) {
 /**
  * @param {DOM} dom
  */
-function createPwaMessageToplevelComponent(dom) {
-  const el0 = dom.createFragment();
-  const el1 = dom.createElement("div", "lh-warnings lh-warnings--toplevel");
-  const el2 = dom.createElement("p", "lh-warnings__msg");
-  const el3 = dom.createElement("ul");
-  el1.append(" ",el2," ",el3," ");
-  el0.append(el1);
-  return el0;
-}
-
-/**
- * @param {DOM} dom
- */
 function createScorescaleComponent(dom) {
   const el0 = dom.createFragment();
   const el1 = dom.createElement("div", "lh-scorescale");
@@ -676,7 +663,7 @@ function createWarningsToplevelComponent(dom) {
 }
 
 
-/** @typedef {'3pFilter'|'audit'|'categoryHeader'|'chevron'|'clump'|'crc'|'crcChain'|'elementScreenshot'|'explodeyGauge'|'footer'|'fraction'|'gauge'|'gaugePwa'|'heading'|'metric'|'pwaMessageToplevel'|'scorescale'|'scoresWrapper'|'snippet'|'snippetContent'|'snippetHeader'|'snippetLine'|'styles'|'topbar'|'warningsToplevel'} ComponentName */
+/** @typedef {'3pFilter'|'audit'|'categoryHeader'|'chevron'|'clump'|'crc'|'crcChain'|'elementScreenshot'|'explodeyGauge'|'footer'|'fraction'|'gauge'|'gaugePwa'|'heading'|'metric'|'scorescale'|'scoresWrapper'|'snippet'|'snippetContent'|'snippetHeader'|'snippetLine'|'styles'|'topbar'|'warningsToplevel'} ComponentName */
 /**
  * @param {DOM} dom
  * @param {ComponentName} componentName
@@ -699,7 +686,6 @@ export function createComponent(dom, componentName) {
     case 'gaugePwa': return createGaugePwaComponent(dom);
     case 'heading': return createHeadingComponent(dom);
     case 'metric': return createMetricComponent(dom);
-    case 'pwaMessageToplevel': return createPwaMessageToplevelComponent(dom);
     case 'scorescale': return createScorescaleComponent(dom);
     case 'scoresWrapper': return createScoresWrapperComponent(dom);
     case 'snippet': return createSnippetComponent(dom);

@@ -285,12 +285,6 @@ export class ReportRenderer {
     const reportContainer = this._dom.createElement('div', 'lh-container');
     const reportSection = this._dom.createElement('div', 'lh-report');
 
-    // additional warning banner.
-    const pwaContainer = this._dom.createComponent('warningsToplevel');
-    const pwaMessageEl = this._dom.find('.lh-warnings__msg', pwaContainer);
-    pwaMessageEl.append(this._dom.convertMarkdownLinkSnippets(Globals.strings.pwaRemovalMessage));
-
-    reportSection.append(pwaContainer);
     reportSection.append(this._renderReportWarnings(report));
 
     let scoreHeader;
