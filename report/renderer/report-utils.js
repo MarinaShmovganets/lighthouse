@@ -478,7 +478,7 @@ const UIStrings = {
   unattributable: 'Unattributable',
 
   /** Message communicating the removal of the PWA category. */
-  pwaRemovalMessage: 'Lighthouse will be deprecating the PWA category with Lighthouse version 12.0. More information about its deprecation [here](https://developer.chrome.com/blog/update-install-criteria?hl=en). For recommended PWA testing, refer to the documentation [here](https://developer.chrome.com/docs/devtools/progressive-web-apps/).',
+  pwaRemovalMessage: 'Alongside [Chrome’s updated Installability Criteria](https://developer.chrome.com/blog/update-install-criteria?hl=en), Lighthouse will be deprecating the PWA category in Lighthouse version 12.0. For recommended PWA testing, refer to the following [documentation](https://developer.chrome.com/docs/devtools/progressive-web-apps/).',
 };
 
 export {
