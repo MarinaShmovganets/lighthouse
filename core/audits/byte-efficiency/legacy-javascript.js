@@ -155,7 +155,7 @@ class LegacyJavascript extends ByteEfficiencyAudit {
     // es-shims
     // no(Object,{entries:r},{entries:function
     if (object) {
-      expression += `|\\(${object},\s*{${property}:.*},\s*{${property}`;
+      expression += `|\\(${object},\\s*{${property}:.*},\\s*{${property}`;
     }
 
     // core-js
