@@ -1989,7 +1989,7 @@
                 }
               ]
             },
-            "guidanceLevel": 3
+            "guidanceLevel": 4
           },
           "valid-source-maps": {
             "id": "valid-source-maps",
@@ -2038,7 +2038,7 @@
                 "pathLength": 2
               }
             },
-            "guidanceLevel": 3
+            "guidanceLevel": 4
           },
           "csp-xss": {
             "id": "csp-xss",
@@ -3790,7 +3790,7 @@
             "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://developer.chrome.com/docs/lighthouse/performance/bf-cache/)",
             "score": 1,
             "scoreDisplayMode": "binary",
-            "guidanceLevel": 2
+            "guidanceLevel": 4
           }
         },
         "configSettings": {
@@ -7118,6 +7118,7 @@
             "opportunityResourceColumnLabel": "Opportunity",
             "opportunitySavingsColumnLabel": "Estimated Savings",
             "passedAuditsGroupTitle": "Passed audits",
+            "pwaRemovalMessage": "Alongside [Chrome’s updated Installability Criteria](https://developer.chrome.com/blog/update-install-criteria), Lighthouse will be deprecating the PWA category in a future release. Please refer to the [updated PWA documentation](https://developer.chrome.com/docs/devtools/progressive-web-apps/) for future PWA testing.",
             "runtimeAnalysisWindow": "Initial page load",
             "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
             "runtimeAnalysisWindowTimespan": "User interactions timespan",
@@ -10100,7 +10101,7 @@
                 }
               ]
             },
-            "guidanceLevel": 3
+            "guidanceLevel": 4
           },
           "valid-source-maps": {
             "id": "valid-source-maps",
@@ -10958,7 +10959,7 @@
             "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://developer.chrome.com/docs/lighthouse/performance/bf-cache/)",
             "score": 1,
             "scoreDisplayMode": "binary",
-            "guidanceLevel": 2
+            "guidanceLevel": 4
           }
         },
         "configSettings": {
@@ -12199,6 +12200,7 @@
             "opportunityResourceColumnLabel": "Opportunity",
             "opportunitySavingsColumnLabel": "Estimated Savings",
             "passedAuditsGroupTitle": "Passed audits",
+            "pwaRemovalMessage": "Alongside [Chrome’s updated Installability Criteria](https://developer.chrome.com/blog/update-install-criteria), Lighthouse will be deprecating the PWA category in a future release. Please refer to the [updated PWA documentation](https://developer.chrome.com/docs/devtools/progressive-web-apps/) for future PWA testing.",
             "runtimeAnalysisWindow": "Initial page load",
             "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
             "runtimeAnalysisWindowTimespan": "User interactions timespan",
@@ -13045,7 +13047,7 @@
                 }
               ]
             },
-            "guidanceLevel": 3
+            "guidanceLevel": 4
           },
           "accesskeys": {
             "id": "accesskeys",
@@ -17258,6 +17260,7 @@
             "opportunityResourceColumnLabel": "Opportunity",
             "opportunitySavingsColumnLabel": "Estimated Savings",
             "passedAuditsGroupTitle": "Passed audits",
+            "pwaRemovalMessage": "Alongside [Chrome’s updated Installability Criteria](https://developer.chrome.com/blog/update-install-criteria), Lighthouse will be deprecating the PWA category in a future release. Please refer to the [updated PWA documentation](https://developer.chrome.com/docs/devtools/progressive-web-apps/) for future PWA testing.",
             "runtimeAnalysisWindow": "Initial page load",
             "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
             "runtimeAnalysisWindowTimespan": "User interactions timespan",
@@ -19944,7 +19947,7 @@
                 }
               ]
             },
-            "guidanceLevel": 3
+            "guidanceLevel": 4
           },
           "valid-source-maps": {
             "id": "valid-source-maps",
@@ -19993,7 +19996,7 @@
                 "pathLength": 2
               }
             },
-            "guidanceLevel": 3
+            "guidanceLevel": 4
           },
           "csp-xss": {
             "id": "csp-xss",
@@ -21909,7 +21912,7 @@
             "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://developer.chrome.com/docs/lighthouse/performance/bf-cache/)",
             "score": 1,
             "scoreDisplayMode": "binary",
-            "guidanceLevel": 2
+            "guidanceLevel": 4
           }
         },
         "configSettings": {
@@ -25211,6 +25214,7 @@
             "opportunityResourceColumnLabel": "Opportunity",
             "opportunitySavingsColumnLabel": "Estimated Savings",
             "passedAuditsGroupTitle": "Passed audits",
+            "pwaRemovalMessage": "Alongside [Chrome’s updated Installability Criteria](https://developer.chrome.com/blog/update-install-criteria), Lighthouse will be deprecating the PWA category in a future release. Please refer to the [updated PWA documentation](https://developer.chrome.com/docs/devtools/progressive-web-apps/) for future PWA testing.",
             "runtimeAnalysisWindow": "Initial page load",
             "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
             "runtimeAnalysisWindowTimespan": "User interactions timespan",
