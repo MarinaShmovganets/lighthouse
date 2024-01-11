@@ -284,7 +284,6 @@ export class ReportRenderer {
 
     const reportContainer = this._dom.createElement('div', 'lh-container');
     const reportSection = this._dom.createElement('div', 'lh-report');
-
     reportSection.append(this._renderReportWarnings(report));
 
     let scoreHeader;
