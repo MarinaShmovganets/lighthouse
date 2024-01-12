@@ -83,7 +83,7 @@ echo "\nVerifying CHROME_PATH";
 if ! [ -f $CHROME_PATH ]; then
   echo "CHROME_PATH does not point to a valid file"
   exit 1
-else
+fi
 
 # TODO: Find a convenient way to check the version in windows
 if [ "$machine" != "MinGw" ]; then
