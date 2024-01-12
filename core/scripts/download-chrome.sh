@@ -75,4 +75,7 @@ curl "$url" -Lo chrome.zip && unzip -q chrome.zip && rm chrome.zip
 mv * "$chrome_out"
 cd - && rm -rf .tmp-download
 
+echo "OUTPUT DIR: $chrome_out"
 ls "$chrome_out"
+
+echo "CHROME VERSION: ${$CHROME_PATH --version}"
