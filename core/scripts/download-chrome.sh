@@ -78,4 +78,5 @@ cd - && rm -rf .tmp-download
 echo "OUTPUT DIR: $chrome_out"
 ls "$chrome_out"
 
-echo "CHROME VERSION: $($CHROME_PATH --version)"
+echo "CHROME_PATH version:"
+$CHROME_PATH --version
