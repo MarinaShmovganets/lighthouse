@@ -78,11 +78,14 @@ cd - && rm -rf .tmp-download
 echo "OUTPUT DIR: $chrome_out"
 ls "$chrome_out"
 
-echo "\nVerifying CHROME_PATH";
+echo "";
+echo "Verifying CHROME_PATH...";
 
 if ! [ -f $CHROME_PATH ]; then
   echo "CHROME_PATH does not point to a valid file"
   exit 1
+else
+  echo "CHROME_PATH is good!"
 fi
 
 # TODO: Find a convenient way to check the version in windows
