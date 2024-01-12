@@ -25,7 +25,7 @@ jobs:
         fetch-depth: 100
     - run: bash core/scripts/github-actions-commit-range.sh
       env:
-        CHROME_PATH: ${{ github.workspace }}/lighthouse/.tmp/chrome-tot/chrome
+        CHROME_PATH: ${{ github.workspace }}/.tmp/chrome-tot/chrome
         GITHUB_CONTEXT_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         GITHUB_CONTEXT_BASE_SHA: ${{ github.event.before }}
 
