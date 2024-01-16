@@ -101,7 +101,7 @@ describe('lightrider-entry', () => {
       runStub.mockRestore();
     });
 
-    it.only('disables 404 with flag', async () => {
+    it('disables 404 with flag', async () => {
       const runStub = jestMock.spyOn(Runner, 'gather');
 
       const url = 'https://example.com';
