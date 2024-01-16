@@ -13,6 +13,9 @@ const budgetedConfig = {
   extends: 'lighthouse:default',
   settings: {
     throttlingMethod: 'devtools',
+    extraHeaders: {
+      'Cookie': 'monster=blue',
+    },
     budgets: [{
       path: '/',
       resourceCounts: [

@@ -24,31 +24,6 @@ function processForProto(lhr) {
   /** @type {LH.Result} */
   const reportJson = JSON.parse(JSON.stringify(lhr));
 
-  // Clean up the configSettings
-  // Note: This is not strictly required for conversion if protobuf parsing is set to
-  // 'ignore unknown fields' in the language of conversion.
-  if (reportJson.configSettings) {
-    // The settings that are in both proto and LHR
-    const {
-      formFactor,
-      locale,
-      onlyCategories,
-      channel,
-      throttling,
-      screenEmulation,
-      throttlingMethod} = reportJson.configSettings;
-
-    // @ts-expect-error - intentionally only a subset of settings.
-    reportJson.configSettings = {
-      formFactor,
-      locale,
-      onlyCategories,
-      channel,
-      throttling,
-      screenEmulation,
-      throttlingMethod};
-  }
-
   // Remove runtimeError if it is NO_ERROR
   if (reportJson.runtimeError && reportJson.runtimeError.code === 'NO_ERROR') {
     delete reportJson.runtimeError;

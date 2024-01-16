@@ -128,7 +128,7 @@ message LighthouseResult {
   map<string, CategoryGroup> category_groups = 11;
 
   // Message containing the configuration settings for the LH run
-  // Next ID: 10
+  // Next ID: 35
   message ConfigSettings {
     // The possible form factors an audit can be run in.
     // This enum served the emulated_form_factor field, but in v7, that field
@@ -189,20 +189,109 @@ message LighthouseResult {
     string throttling_method = 8;
 
     message ScreenEmulation {
-      // Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override.
+      // Overriding width value in pixels (minimum 0, maximum 10000000).
+      // 0 disables the override.
       double width = 1;
-      // Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
+      // Overriding height value in pixels (minimum 0, maximum 10000000).
+      // 0 disables the override.
       double height = 2;
       // Overriding device scale factor value. 0 disables the override.
       double deviceScaleFactor = 3;
-      // Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
+      // Whether to emulate mobile device. This includes viewport meta tag,
+      // overlay scrollbars, text autosizing and more.
       bool mobile = 4;
-      // Whether screen emulation is disabled. If true, the other emulation settings are ignored.
+      // Whether screen emulation is disabled. If true, the other emulation
+      // settings are ignored.
       bool disabled = 5;
     }
 
-    // Screen emulation properties (width, height, dpr, mobile viewport) to apply or an object of `{disabled: true}` if Lighthouse should avoid applying screen emulation. If either emulation is applied outside of Lighthouse, or it's being run on a mobile device, it typically should be set to disabled. For desktop, we recommend applying consistent desktop screen emulation.
+    // Screen emulation properties (width, height, dpr, mobile viewport) to
+    // apply or an object of `{disabled: true}` if Lighthouse should avoid
+    // applying screen emulation. If either emulation is applied outside of
+    // Lighthouse, or it's being run on a mobile device, it typically should be
+    // set to disabled. For desktop, we recommend applying consistent desktop
+    // screen emulation.
     ScreenEmulation screen_emulation = 9;
+
+    // The type(s) of report output to be produced.
+    // Can be a string of 'json' | 'html' | 'csv'
+    // Or an array of those strings
+    google.protobuf.Value output = 10;
+
+    // The maximum amount of time to wait for a page content render, in ms. If
+    // no content is rendered within this limit, the run is aborted with an
+    // error.
+    int32 max_wait_for_fcp = 11;
+    // The maximum amount of time to wait for a page to load, in ms.
+    int32 max_wait_for_load = 12;
+    // The number of milliseconds to wait after FCP until the page should be
+    // considered loaded.
+    int32 pause_after_fcp_ms = 13;
+    // The number of milliseconds to wait after the load event until the page
+    // should be considered loaded.
+    int32 pause_after_load_ms = 14;
+    // The number of milliseconds to wait between high priority network requests
+    // or 3 simultaneous requests before the page should be considered loaded.
+    int32 network_quiet_threshold_ms = 15;
+    // The number of milliseconds to wait between long tasks until the page
+    // should be considered loaded.
+    int32 cpu_quiet_threshold_ms = 16;
+
+    // User Agent string to apply, `false` to not change the host's UA string,
+    // or `true` to use Lighthouse's default UA string.
+    string emulated_user_agent = 17;
+    // Flag indicating the run should only audit.
+    bool audit_mode = 18;
+    // Flag indicating the run should only gather.
+    bool gather_mode = 19;
+    // Flag indicating that the browser storage should not be reset for the
+    // audit.
+    bool disable_storage_reset = 20;
+    // Flag indicating that Lighthouse should pause after page load to wait for
+    // the user's permission to continue the audit.
+    bool debug_navigation = 21;
+    // If set to true, gatherers should avoid any behavior that may be
+    // destructive to the page state. (e.g. extra navigations, resizing the
+    // viewport)
+    bool use_passive_gathering = 22;
+    // Disables collection of the full page screenshot, which can be rather
+    // large and possibly leave the page in an undesirable state.
+    bool disable_full_page_screenshot = 23;
+    // If set to true, will skip the initial navigation to about:blank.
+    bool skip_about_blank = 24;
+    // The URL to use for the "blank" neutral page in between navigations.
+    // Defaults to `about:blank`.
+    string blank_page = 25;
+
+    // List of URL patterns to block.
+    repeated string blocked_url_patterns = 26;
+
+    // Comma-delimited list of trace categories to include.
+    string additional_trace_categories = 27;
+
+    // If present, the run should only conduct this list of audits.
+    repeated string only_audits = 28;
+    // If present, the run should skip this list of audits.
+    repeated string skip_audits = 29;
+
+    // Flag indicating which kinds of browser storage should be reset for the audit.
+    // Cookies are not cleared by default, so the user isn't logged out.
+    // indexeddb, websql, and localstorage are not cleared by default to prevent
+    // loss of potentially important data.
+    // https://chromedevtools.github.io/debugger-protocol-viewer/tot/Storage/#type-StorageType
+    repeated string clear_storage_types = 30;
+
+    // Disables failing on 404 status code, and instead issues a warning
+    bool ignoreStatusCode = 31;
+
+    // List of extra HTTP Headers to include
+    map<string, string> extra_headers = 32;
+
+    // The budget.json object for LightWallet
+    repeated google.protobuf.Struct budgets = 33 [deprecated = true];
+
+    // Precomputed lantern estimates to use instead of observed analysis.
+    google.protobuf.Struct precomputed_lantern_data = 34;
   }
 
   // The settings that were used to run this audit
@@ -248,7 +337,8 @@ message LighthouseResult {
   // URL displayed on the page after Lighthouse finishes.
   string final_displayed_url = 18;
 
-  // Screenshot data of the full page, along with node rects relevant to the audit results.
+  // Screenshot data of the full page, along with node rects relevant to the
+  // audit results.
   google.protobuf.Value full_page_screenshot = 19;
 
   // Entity classification data.
@@ -281,7 +371,7 @@ message LhrCategory {
   // This value is nullable, so is a `Value` type
   google.protobuf.Value score = 4;
 
-  // An description for manual audits within this category.
+  // A description for manual audits within this category.
   string manual_description = 5;
 
   // A Category's reference to an AuditResult, with a weight for category
@@ -390,19 +480,24 @@ message AuditResult {
 
   // Message containing the audit's MetricSavings.
   message MetricSavings {
-    // Optional numeric value representing the audit's savings for the LCP metric.
+    // Optional numeric value representing the audit's savings for the LCP
+    // metric.
     optional google.protobuf.DoubleValue LCP = 1;
 
-    // Optional numeric value representing the audit's savings for the FCP metric.
+    // Optional numeric value representing the audit's savings for the FCP
+    // metric.
     optional google.protobuf.DoubleValue FCP = 2;
 
-    // Optional numeric value representing the audit's savings for the CLS metric.
+    // Optional numeric value representing the audit's savings for the CLS
+    // metric.
     optional google.protobuf.DoubleValue CLS = 3;
 
-    // Optional numeric value representing the audit's savings for the TBT metric.
+    // Optional numeric value representing the audit's savings for the TBT
+    // metric.
     optional google.protobuf.DoubleValue TBT = 4;
 
-    // Optional numeric value representing the audit's savings for the INP metric.
+    // Optional numeric value representing the audit's savings for the INP
+    // metric.
     optional google.protobuf.DoubleValue INP = 5;
   }
 
@@ -616,30 +711,34 @@ message I18n {
     // of a browser, whereas field data often summarizes hundreds+ of page loads
     string runtime_single_load_tooltip = 50;
 
-    // Descriptive label that this analysis only considers the initial load of the page,
-    // and no interaction beyond when the page had "fully loaded"
+    // Descriptive label that this analysis only considers the initial load of
+    // the page, and no interaction beyond when the page had "fully loaded"
     string runtime_analysis_window = 51;
 
-    // Label for an interactive control that will reveal or hide a group of content.
-    // This control toggles between the text 'Show' and 'Hide'.
+    // Label for an interactive control that will reveal or hide a group of
+    // content. This control toggles between the text 'Show' and 'Hide'.
     string show = 52;
 
-    // Label for an interactive control that will reveal or hide a group of content.
-    // This control toggles between the text 'Show' and 'Hide'.
+    // Label for an interactive control that will reveal or hide a group of
+    // content. This control toggles between the text 'Show' and 'Hide'.
     string hide = 53;
 
-    // Label for an interactive control that will reveal or hide a group of content.
-    // This control toggles between the text 'Expand view' and 'Collapse view'.
+    // Label for an interactive control that will reveal or hide a group of
+    // content. This control toggles between the text 'Expand view' and
+    // 'Collapse view'.
     string expand_view = 54;
 
-    // Label for an interactive control that will reveal or hide a group of content.
-    // This control toggles between the text 'Expand view' and 'Collapse view'.
+    // Label for an interactive control that will reveal or hide a group of
+    // content. This control toggles between the text 'Expand view' and
+    // 'Collapse view'.
     string collapse_view = 55;
 
-    // Label indicating that Lighthouse throttled the page to emulate a slow 4G network connection.
+    // Label indicating that Lighthouse throttled the page to emulate a slow 4G
+    // network connection.
     string runtime_slow_4g = 56;
 
-    // Label indicating that Lighthouse throttled the page using custom throttling settings.
+    // Label indicating that Lighthouse throttled the page using custom
+    // throttling settings.
     string runtime_custom = 57;
 
     // This label is for a button that will show the user a trace of the page.
@@ -654,19 +753,23 @@ message I18n {
     // Label for a row decorative chip indiciating entity is first-party.
     string first_party_chip_label = 61;
 
-    // Label for a link tooltip indicating that it will be opened in a new tab of the browser.
+    // Label for a link tooltip indicating that it will be opened in a new tab
+    // of the browser.
     string open_in_a_new_tab_tooltip = 62;
 
-    // Label for a generic category for all resources that could not be attributed against a 1st or 3rd party entity.
+    // Label for a generic category for all resources that could not be
+    // attributed against a 1st or 3rd party entity.
     string unattributable = 63;
 
     // This label is for a button that will show the user a trace of the page.
     string dropdown_view_unthrottled_trace = 64;
 
-    // Descriptive label that this analysis considers some arbitrary period of time containing user interactions
+    // Descriptive label that this analysis considers some arbitrary period of
+    // time containing user interactions
     string runtime_analysis_window_timespan = 65;
 
-    // Descriptive label that this analysis considers a snapshot of the page at a single point in time
+    // Descriptive label that this analysis considers a snapshot of the page at
+    // a single point in time
     string runtime_analysis_window_snapshot = 66;
 
     // Message for PWA deprecation.
@@ -676,9 +779,9 @@ message I18n {
   // The message holding all formatted strings used in the renderer.
   RendererFormattedStrings renderer_formatted_strings = 1;
 
-  // Holds all message paths used. The locale of the report has already be used to translated
-  // the strings in this LighthouseResult, but this field can be used to translate into another
-  // language.
+  // Holds all message paths used. The locale of the report has already be used
+  // to translated the strings in this LighthouseResult, but this field can be
+  // used to translate into another language.
   map<string, google.protobuf.ListValue> icu_message_paths = 2;
 }
 
