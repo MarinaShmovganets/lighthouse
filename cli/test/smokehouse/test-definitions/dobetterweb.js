@@ -522,6 +522,8 @@ const expectations = {
               },
             },
             {
+              // Unload handlers create a permission request in M122
+              _minChromiumVersion: '122',
               reason: 'There were permission requests upon navigating away.',
               failureType: 'Pending browser support',
               subItems: {
