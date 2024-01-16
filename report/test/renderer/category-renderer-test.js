@@ -29,7 +29,10 @@ describe('CategoryRenderer', () => {
       reportJson: null,
     });
 
-    const {document} = new jsdom.JSDOM().window;
+    const window = new jsdom.JSDOM().window;
+    const document = window.document;
+    global.HTMLElement = window.HTMLElement;
+
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
     renderer = new CategoryRenderer(dom, detailsRenderer);
@@ -301,7 +304,7 @@ describe('CategoryRenderer', () => {
       );
 
       const gauge = categoryDOM.querySelector('.lh-fraction__content');
-      assert.equal(gauge.textContent.trim(), '22/27', 'fraction is included');
+      assert.equal(gauge.textContent.trim(), '19/24', 'fraction is included');
 
       const score = categoryDOM.querySelector('.lh-category-header');
       const title = score.querySelector('.lh-fraction__label');

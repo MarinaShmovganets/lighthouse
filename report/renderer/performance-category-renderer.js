@@ -211,67 +211,106 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
       filmstripEl && timelineEl.append(filmstripEl);
     }
 
-    const filterableMetrics = metricAudits.filter(a => !!a.relevantAudits);
-    // TODO: only add if there are opportunities & diagnostics rendered.
-    if (filterableMetrics.length) {
-      this.renderMetricAuditFilter(filterableMetrics, element);
-    }
+    const allInsights = category.auditRefs
+      .filter(audit => this._isPerformanceInsight(audit))
+      .map(auditRef => {
+        const {overallImpact, overallLinearImpact} = this.overallImpact(auditRef, metricAudits);
+        const guidanceLevel = auditRef.result.guidanceLevel || 1;
+        const auditEl = this.renderAudit(auditRef);
+
+        return {auditRef, auditEl, overallImpact, overallLinearImpact, guidanceLevel};
+      });
 
     // Diagnostics
-    const diagnosticAudits = category.auditRefs
-        .filter(audit => this._isPerformanceInsight(audit))
-        .filter(audit => !ReportUtils.showAsPassed(audit.result));
+    const diagnosticAudits = allInsights
+      .filter(audit => !ReportUtils.showAsPassed(audit.auditRef.result));
 
-    /** @type {Array<{auditRef:LH.ReportResult.AuditRef, overallImpact: number, overallLinearImpact: number, guidanceLevel: number}>} */
-    const auditImpacts = [];
-    diagnosticAudits.forEach(audit => {
-      const {
-        overallImpact: overallImpact,
-        overallLinearImpact: overallLinearImpact,
-      } = this.overallImpact(audit, metricAudits);
-      const guidanceLevel = audit.result.guidanceLevel ?? 1;
-      auditImpacts.push({auditRef: audit, overallImpact, overallLinearImpact, guidanceLevel});
-    });
+    const passedAudits = allInsights
+      .filter(audit => ReportUtils.showAsPassed(audit.auditRef.result));
 
-    auditImpacts.sort((a, b) => {
-      // Sort audits by impact, prioritizing those with a higher overallImpact first,
-      // then falling back to linearImpact, guidance level and score.
-      if (a.overallImpact !== b.overallImpact) return b.overallImpact - a.overallImpact;
+    const [groupEl, footerEl] = this.renderAuditGroup(groups['diagnostics']);
+    groupEl.classList.add('lh-audit-group--diagnostics');
 
-      if (
-        a.overallImpact === 0 && b.overallImpact === 0 &&
-        a.overallLinearImpact !== b.overallLinearImpact
-      ) {
-        return b.overallLinearImpact - a.overallLinearImpact;
+    /**
+     * @param {string} acronym
+     */
+    function refreshFilteredAudits(acronym) {
+      for (const audit of allInsights) {
+        if (acronym === 'All') {
+          audit.auditEl.hidden = false;
+        } else {
+          const shouldHide = audit.auditRef.result.metricSavings?.[acronym] === undefined;
+          audit.auditEl.hidden = shouldHide;
+        }
       }
 
-      if (a.guidanceLevel !== b.guidanceLevel) return b.guidanceLevel - a.guidanceLevel;
+      diagnosticAudits.sort((a, b) => {
+        // If the score display mode is "metricSavings", the `score` will be a coarse indicator of the overall impact.
+        // Therefore, it makes sense to sort audits by score first to ensure visual clarity with the score icons.
+        const scoreA = a.auditRef.result.scoreDisplayMode === 'informative'
+          ? 100
+          : Number(a.auditRef.result.score);
+        const scoreB = b.auditRef.result.scoreDisplayMode === 'informative'
+          ? 100
+          : Number(b.auditRef.result.score);
+        if (scoreA !== scoreB) return scoreA - scoreB;
 
-      const scoreA = a.auditRef.result.scoreDisplayMode === 'informative'
-        ? 100
-        : Number(a.auditRef.result.score);
-      const scoreB = b.auditRef.result.scoreDisplayMode === 'informative'
-        ? 100
-        : Number(b.auditRef.result.score);
-      return scoreA - scoreB;
-    });
+        // If there is a metric filter applied, we should sort by the impact to that specific metric.
+        if (acronym !== 'All') {
+          const aSavings = a.auditRef.result.metricSavings?.[acronym] ?? -1;
+          const bSavings = b.auditRef.result.metricSavings?.[acronym] ?? -1;
+          if (aSavings !== bSavings) return bSavings - aSavings;
+        }
 
-    if (auditImpacts.length) {
-      const [groupEl, footerEl] = this.renderAuditGroup(groups['diagnostics']);
-      auditImpacts.forEach(item => groupEl.insertBefore(this.renderAudit(item.auditRef), footerEl));
-      groupEl.classList.add('lh-audit-group--diagnostics');
-      element.append(groupEl);
+        // Overall impact is the estimated improvement to the performance score
+        if (a.overallImpact !== b.overallImpact) {
+          return b.overallImpact * b.guidanceLevel - a.overallImpact * a.guidanceLevel;
+        }
+
+        // Fall back to the linear impact if the normal impact is rounded down to 0
+        if (
+          a.overallImpact === 0 && b.overallImpact === 0 &&
+          a.overallLinearImpact !== b.overallLinearImpact
+        ) {
+          return b.overallLinearImpact * b.guidanceLevel - a.overallLinearImpact * a.guidanceLevel;
+        }
+
+        // Audits that have no estimated savings should be prioritized by the guidance level
+        return b.guidanceLevel - a.guidanceLevel;
+      });
+
+      for (const audit of diagnosticAudits) {
+        groupEl.insertBefore(audit.auditEl, footerEl);
+      }
     }
 
-    // Passed audits
-    const passedAudits = category.auditRefs
-        .filter(audit =>
-          this._isPerformanceInsight(audit) && ReportUtils.showAsPassed(audit.result));
+    /** @type {Set<string>} */
+    const filterableMetricAcronyms = new Set();
+    for (const audit of diagnosticAudits) {
+      const metricSavings = audit.auditRef.result.metricSavings || {};
+      for (const [key, value] of Object.entries(metricSavings)) {
+        if (typeof value === 'number') filterableMetricAcronyms.add(key);
+      }
+    }
+
+    const filterableMetrics =
+      metricAudits.filter(a => a.acronym && filterableMetricAcronyms.has(a.acronym));
+
+    // TODO: only add if there are opportunities & diagnostics rendered.
+    if (filterableMetrics.length) {
+      this.renderMetricAuditFilter(filterableMetrics, element, refreshFilteredAudits);
+    }
+
+    refreshFilteredAudits('All');
+
+    if (diagnosticAudits.length) {
+      element.append(groupEl);
+    }
 
     if (!passedAudits.length) return element;
 
     const clumpOpts = {
-      auditRefs: passedAudits,
+      auditRefsOrEls: passedAudits.map(audit => audit.auditEl),
       groupDefinitions: groups,
     };
     const passedElem = this.renderClump('passed', clumpOpts);
@@ -298,7 +337,8 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
       element.append(groupEl);
     }
 
-    if (!options || options?.gatherMode === 'navigation') {
+    const isNavigationMode = !options || options?.gatherMode === 'navigation';
+    if (isNavigationMode && category.score !== null) {
       const el = createGauge(this.dom);
       updateGauge(this.dom, el, category);
       this.dom.find('.lh-score__gauge', element).replaceWith(el);
@@ -311,16 +351,17 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
    * Render the control to filter the audits by metric. The filtering is done at runtime by CSS only
    * @param {LH.ReportResult.AuditRef[]} filterableMetrics
    * @param {HTMLDivElement} categoryEl
+   * @param {(acronym: string) => void} onFilterChange
    */
-  renderMetricAuditFilter(filterableMetrics, categoryEl) {
+  renderMetricAuditFilter(filterableMetrics, categoryEl, onFilterChange) {
     const metricFilterEl = this.dom.createElement('div', 'lh-metricfilter');
     const textEl = this.dom.createChildOf(metricFilterEl, 'span', 'lh-metricfilter__text');
     textEl.textContent = Globals.strings.showRelevantAudits;
 
-    const filterChoices = /** @type {LH.ReportResult.AuditRef[]} */ ([
-      ({acronym: 'All'}),
+    const filterChoices = [
+      /** @type {const} */ ({acronym: 'All', id: 'All'}),
       ...filterableMetrics,
-    ]);
+    ];
 
     // Form labels need to reference unique IDs, but multiple reports rendered in the same DOM (eg PSI)
     // would mean ID conflict.  To address this, we 'scope' these radio inputs with a unique suffix.
@@ -334,7 +375,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
 
       const labelEl = this.dom.createChildOf(metricFilterEl, 'label', 'lh-metricfilter__label');
       labelEl.htmlFor = elemId;
-      labelEl.title = metric.result?.title;
+      labelEl.title = 'result' in metric ? metric.result.title : '';
       labelEl.textContent = metric.acronym || metric.id;
 
       if (metric.acronym === 'All') {
@@ -350,17 +391,7 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
         }
         categoryEl.classList.toggle('lh-category--filtered', metric.acronym !== 'All');
 
-        for (const perfAuditEl of categoryEl.querySelectorAll('div.lh-audit')) {
-          if (metric.acronym === 'All') {
-            perfAuditEl.hidden = false;
-            continue;
-          }
-
-          perfAuditEl.hidden = true;
-          if (metric.relevantAudits && metric.relevantAudits.includes(perfAuditEl.id)) {
-            perfAuditEl.hidden = false;
-          }
-        }
+        onFilterChange(metric.acronym || 'All');
 
         // Hide groups/clumps if all child audits are also hidden.
         const groupEls = categoryEl.querySelectorAll('div.lh-audit-group, details.lh-audit-group');

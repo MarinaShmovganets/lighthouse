@@ -6,224 +6,256 @@
       "entryType": "measure",
       "startTime": 0,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:config:resolveArtifactsToDefns",
       "entryType": "measure",
       "startTime": 1,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:config:resolveNavigationsToDefns",
       "entryType": "measure",
       "startTime": 2,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:driver:connect",
       "entryType": "measure",
       "startTime": 3,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getBenchmarkIndex",
       "entryType": "measure",
       "startTime": 4,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getVersion",
       "entryType": "measure",
       "startTime": 5,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:prepare:timespanMode",
       "entryType": "measure",
       "startTime": 6,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:prepareThrottlingAndNetwork",
       "entryType": "measure",
       "startTime": 7,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:runner:gather",
       "entryType": "measure",
       "startTime": 8,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:DevtoolsLog",
       "entryType": "measure",
       "startTime": 9,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:Trace",
       "entryType": "measure",
       "startTime": 10,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:ConsoleMessages",
       "entryType": "measure",
       "startTime": 11,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:CSSUsage",
       "entryType": "measure",
       "startTime": 12,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:GlobalListeners",
       "entryType": "measure",
       "startTime": 13,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:ImageElements",
       "entryType": "measure",
       "startTime": 14,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:InspectorIssues",
       "entryType": "measure",
       "startTime": 15,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:computed:NetworkRecords",
       "entryType": "measure",
       "startTime": 16,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:JsUsage",
       "entryType": "measure",
       "startTime": 17,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:NetworkUserAgent",
       "entryType": "measure",
       "startTime": 18,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:OptimizedImages",
       "entryType": "measure",
       "startTime": 19,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:ResponseCompression",
       "entryType": "measure",
       "startTime": 20,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:Scripts",
       "entryType": "measure",
       "startTime": 21,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:SourceMaps",
       "entryType": "measure",
       "startTime": 22,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:TraceElements",
       "entryType": "measure",
       "startTime": 23,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:computed:ProcessedTrace",
       "entryType": "measure",
       "startTime": 24,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:computed:ProcessedNavigation",
       "entryType": "measure",
       "startTime": 25,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:computed:Responsiveness",
       "entryType": "measure",
       "startTime": 26,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:ViewportDimensions",
       "entryType": "measure",
       "startTime": 27,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:devtoolsLogs",
       "entryType": "measure",
       "startTime": 28,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:traces",
       "entryType": "measure",
       "startTime": 29,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:FullPageScreenshot",
       "entryType": "measure",
       "startTime": 30,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:BFCacheFailures",
       "entryType": "measure",
       "startTime": 31,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     }
   ],
   "LighthouseRunWarnings": [],
@@ -231,10 +263,10 @@
     "output": "json",
     "maxWaitForFcp": 30000,
     "maxWaitForLoad": 45000,
-    "pauseAfterFcpMs": 1000,
-    "pauseAfterLoadMs": 1000,
-    "networkQuietThresholdMs": 1000,
-    "cpuQuietThresholdMs": 1000,
+    "pauseAfterFcpMs": 5250,
+    "pauseAfterLoadMs": 5250,
+    "networkQuietThresholdMs": 5250,
+    "cpuQuietThresholdMs": 5250,
     "formFactor": "mobile",
     "throttling": {
       "rttMs": 150,
@@ -252,9 +284,15 @@
       "deviceScaleFactor": 1.75,
       "disabled": false
     },
-    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
     "auditMode": false,
     "gatherMode": false,
+    "clearStorageTypes": [
+      "file_systems",
+      "shader_cache",
+      "service_workers",
+      "cache_storage"
+    ],
     "disableStorageReset": false,
     "debugNavigation": false,
     "channel": "node",
@@ -262,6 +300,7 @@
     "disableFullPageScreenshot": false,
     "skipAboutBlank": false,
     "blankPage": "about:blank",
+    "ignoreStatusCode": false,
     "budgets": null,
     "locale": "en-US",
     "blockedUrlPatterns": null,
@@ -285,7 +324,7 @@
     "gatherMode": "timespan"
   },
   "Stacks": [],
-  "NetworkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+  "NetworkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
   "WebAppManifest": null,
   "InstallabilityErrors": {
     "errors": []
@@ -1024,26 +1063,6 @@
           "endColumn": 0
         },
         "content": "/* devanagari */\n@font-face {\n  font-family: 'Poppins';\n  font-style: normal;\n  font-weight: 400;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJbecnFHGPezSQ.woff2) format('woff2');\n  unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;\n}\n/* latin-ext */\n@font-face {\n  font-family: 'Poppins';\n  font-style: normal;\n  font-weight: 400;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJnecnFHGPezSQ.woff2) format('woff2');\n  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n}\n/* latin */\n@font-face {\n  font-family: 'Poppins';\n  font-style: normal;\n  font-weight: 400;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2) format('woff2');\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n}\n/* devanagari */\n@font-face {\n  font-family: 'Poppins';\n  font-style: normal;\n  font-weight: 500;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLGT9Z11lFd2JQEl8qw.woff2) format('woff2');\n  unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;\n}\n/* latin-ext */\n@font-face {\n  font-family: 'Poppins';\n  font-style: normal;\n  font-weight: 500;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLGT9Z1JlFd2JQEl8qw.woff2) format('woff2');\n  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n}\n/* latin */\n@font-face {\n  font-family: 'Poppins';\n  font-style: normal;\n  font-weight: 500;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLGT9Z1xlFd2JQEk.woff2) format('woff2');\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n}\n/* devanagari */\n@font-face {\n  font-family: 'Poppins';\n  font-style: normal;\n  font-weight: 700;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z11lFd2JQEl8qw.woff2) format('woff2');\n  unicode-range: U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;\n}\n/* latin-ext */\n@font-face {\n  font-family: 'Poppins';\n  font-style: normal;\n  font-weight: 700;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z1JlFd2JQEl8qw.woff2) format('woff2');\n  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n}\n/* latin */\n@font-face {\n  font-family: 'Poppins';\n  font-style: normal;\n  font-weight: 700;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z1xlFd2JQEk.woff2) format('woff2');\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n}\n"
-      },
-      {
-        "header": {
-          "styleSheetId": "32033.19",
-          "frameId": "6B7B62084170FF8A201077D06215638B",
-          "sourceURL": "",
-          "origin": "inspector",
-          "title": "",
-          "ownerNode": 3,
-          "disabled": false,
-          "isInline": false,
-          "isMutable": true,
-          "isConstructed": false,
-          "startLine": 0,
-          "startColumn": 0,
-          "length": 0,
-          "endLine": 0,
-          "endColumn": 0
-        },
-        "content": ""
       }
     ]
   },
@@ -10889,5 +10908,25 @@
       }
     }
   },
-  "BFCacheFailures": []
+  "BFCacheFailures": [],
+  "HostProduct": "Chrome/121.0.6110.0",
+  "RootCauses": {
+    "layoutShifts": {
+      "0": {
+        "unsizedMedia": [],
+        "iframes": [],
+        "fontChanges": [],
+        "renderBlockingRequests": [],
+        "scriptStackTrace": [
+          {
+            "columnNumber": 101697,
+            "functionName": "Su",
+            "lineNumber": 1,
+            "scriptId": "21",
+            "url": "https://www.mikescerealshack.co/_next/static/chunks/framework.9d524150d48315f49e80.js"
+          }
+        ]
+      }
+    }
+  }
 }

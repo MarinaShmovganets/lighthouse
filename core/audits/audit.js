@@ -10,6 +10,15 @@ import {Util} from '../../shared/util.js';
 
 const DEFAULT_PASS = 'defaultPass';
 
+/** @type {Record<keyof LH.Audit.ProductMetricSavings, number>} */
+const METRIC_SAVINGS_PRECISION = {
+  FCP: 50,
+  LCP: 50,
+  INP: 50,
+  TBT: 50,
+  CLS: 0.001,
+};
+
 /**
  * @typedef TableOptions
  * @property {number=} wastedMs
@@ -49,6 +58,7 @@ class Audit {
   static get SCORING_MODES() {
     return {
       NUMERIC: 'numeric',
+      METRIC_SAVINGS: 'metricSavings',
       BINARY: 'binary',
       MANUAL: 'manual',
       INFORMATIVE: 'informative',
@@ -321,7 +331,8 @@ class Audit {
    */
   static _normalizeAuditScore(score, scoreDisplayMode, auditId) {
     if (scoreDisplayMode !== Audit.SCORING_MODES.BINARY &&
-        scoreDisplayMode !== Audit.SCORING_MODES.NUMERIC) {
+        scoreDisplayMode !== Audit.SCORING_MODES.NUMERIC &&
+        scoreDisplayMode !== Audit.SCORING_MODES.METRIC_SAVINGS) {
       return null;
     }
 
@@ -335,6 +346,34 @@ class Audit {
     score = clampTo2Decimals(score);
 
     return score;
+  }
+
+  /**
+   * @param {LH.Audit.ProductMetricSavings|undefined} metricSavings
+   * @return {LH.Audit.ProductMetricSavings|undefined}
+   */
+  static _quantizeMetricSavings(metricSavings) {
+    if (!metricSavings) return;
+
+    /** @type {LH.Audit.ProductMetricSavings} */
+    const normalizedMetricSavings = {...metricSavings};
+
+    // eslint-disable-next-line max-len
+    for (const key of /** @type {Array<keyof LH.Audit.ProductMetricSavings>} */ (Object.keys(metricSavings))) {
+      let value = metricSavings[key];
+      if (value === undefined) continue;
+
+      value = Math.max(value, 0);
+
+      const precision = METRIC_SAVINGS_PRECISION[key];
+      if (precision !== undefined) {
+        value = Math.round(value / precision) * precision;
+      }
+
+      normalizedMetricSavings[key] = value;
+    }
+
+    return normalizedMetricSavings;
   }
 
   /**
@@ -363,6 +402,7 @@ class Audit {
 
     // Default to binary scoring.
     let scoreDisplayMode = audit.meta.scoreDisplayMode || Audit.SCORING_MODES.BINARY;
+    let score = product.score;
 
     // But override if product contents require it.
     if (product.errorMessage !== undefined) {
@@ -371,9 +411,24 @@ class Audit {
     } else if (product.notApplicable) {
       // Audit was determined to not apply to the page.
       scoreDisplayMode = Audit.SCORING_MODES.NOT_APPLICABLE;
+    } else if (product.scoreDisplayMode) {
+      scoreDisplayMode = product.scoreDisplayMode;
     }
 
-    const score = Audit._normalizeAuditScore(product.score, scoreDisplayMode, audit.meta.id);
+    const metricSavings = Audit._quantizeMetricSavings(product.metricSavings);
+    const hasSomeSavings = Object.values(metricSavings || {}).some(v => v);
+
+    if (scoreDisplayMode === Audit.SCORING_MODES.METRIC_SAVINGS) {
+      if (score && score >= Util.PASS_THRESHOLD) {
+        score = 1;
+      } else if (hasSomeSavings) {
+        score = 0;
+      } else {
+        score = 0.5;
+      }
+    }
+
+    score = Audit._normalizeAuditScore(score, scoreDisplayMode, audit.meta.id);
 
     let auditTitle = audit.meta.title;
     if (audit.meta.failureTitle) {
@@ -404,7 +459,7 @@ class Audit {
       errorStack: product.errorStack,
       warnings: product.warnings,
       scoringOptions: product.scoringOptions,
-      metricSavings: product.metricSavings,
+      metricSavings,
 
       details: product.details,
       guidanceLevel: audit.meta.guidanceLevel,

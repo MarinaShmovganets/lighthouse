@@ -23,6 +23,7 @@ function mockNetworkRecords() {
     networkRequestTime: 0,
     networkEndTime: 500,
     timing: {sendEnd: 0, receiveHeadersEnd: 500},
+    responseHeadersTransferSize: 400,
     transferSize: 400,
     url: requestedUrl,
     frameId: 'ROOT_FRAME',
@@ -100,7 +101,7 @@ describe('Performance: largest-contentful-paint-element audit', () => {
     const context = {settings: artifacts.settings, computedCache: new Map()};
     const auditResult = await LargestContentfulPaintElementAudit.audit(artifacts, context);
 
-    expect(auditResult.score).toEqual(1);
+    expect(auditResult.score).toEqual(0);
     expect(auditResult.notApplicable).toBeUndefined();
     expect(auditResult.displayValue).toBeDisplayString('5,800\xa0ms');
     expect(auditResult.metricSavings).toEqual({LCP: 3304}); // 5804 - 2500 (p10 mobile)

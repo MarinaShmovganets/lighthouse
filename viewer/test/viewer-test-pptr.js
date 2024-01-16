@@ -109,7 +109,9 @@ describe('Lighthouse Viewer', () => {
     await viewerPage.bringToFront();
     await viewerPage.evaluate(() => new Promise(window.requestAnimationFrame));
     const errors = await claimErrors();
-    expect(errors).toHaveLength(0);
+    if (errors.length) {
+      assert.fail('errors from page:\n\n' + errors.map(e => e.toString()).join('\n\n'));
+    }
   }
 
   afterEach(async function() {
@@ -281,12 +283,14 @@ describe('Lighthouse Viewer', () => {
 
       const savedPage = await browser.newPage();
       const savedPageErrors = [];
-      savedPage.on('pageerror', e => savedPageErrors.push(`${e.message} ${e.stack}`));
+      savedPage.on('pageerror', e => savedPageErrors.push(e));
       const firstLogPromise =
         new Promise(resolve => savedPage.once('console', e => resolve(e.text())));
       await savedPage.goto(`file://${tmpDir}/${filename}`);
       expect(await firstLogPromise).toEqual('window.__LIGHTHOUSE_JSON__ JSHandle@object');
-      expect(savedPageErrors).toHaveLength(0);
+      if (savedPageErrors.length) {
+        assert.fail('errors from page:\n\n' + savedPageErrors.map(e => e.toString()).join('\n\n'));
+      }
     });
   });
 
@@ -489,10 +493,9 @@ describe('Lighthouse Viewer', () => {
 
       // Expected errors.
       const errors = await claimErrors();
-      expect(errors).toHaveLength(3);
+      expect(errors).toHaveLength(2);
       expect(errors[0]).toContain('500 (Internal Server Error)');
       expect(errors[1]).toContain('badPsiResponse error');
-      expect(errors[2]).toContain('badPsiResponse error');
     });
   });
 });

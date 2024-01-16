@@ -313,7 +313,7 @@ const expectations = {
         score: 0,
       },
       'no-document-write': {
-        score: 0,
+        score: 0.5,
         details: {
           items: {
             length: 3,
@@ -350,7 +350,7 @@ const expectations = {
         },
       },
       'uses-passive-event-listeners': {
-        score: 0,
+        score: 0.5,
         details: {
           items: {
           // Note: Originally this was 7 but M56 defaults document-level
@@ -376,6 +376,17 @@ const expectations = {
                 column: 6,
               },
               subItems: undefined,
+            },
+            {
+              _minChromiumVersion: '121',
+              value: 'UnloadHandler',
+              source: {
+                type: 'source-location',
+                url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
+                urlProvider: 'network',
+                line: '>0',
+                column: 9,
+              },
             },
           ],
         },
@@ -436,8 +447,8 @@ const expectations = {
         },
       },
       'dom-size': {
-        score: 1,
-        numericValue: 153,
+        score: null,
+        numericValue: 154,
         details: {
           items: [
             {
@@ -445,7 +456,7 @@ const expectations = {
               value: {
                 type: 'numeric',
                 granularity: 1,
-                value: 153,
+                value: 154,
               },
             },
             {
@@ -488,18 +499,6 @@ const expectations = {
             {
               reason: 'The page has an unload handler in the main frame.',
               failureType: 'Actionable',
-              subItems: {
-                items: [{
-                  frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
-                }],
-              },
-            },
-            {
-              // Support for this was added in M109
-              // https://crbug.com/1350944
-              _maxChromiumVersion: '108',
-              reason: 'Pages that have requested notifications permissions are not currently eligible for back/forward cache.',
-              failureType: 'Pending browser support',
               subItems: {
                 items: [{
                   frameUrl: 'http://localhost:10200/dobetterweb/dbw_tester.html',
@@ -553,16 +552,27 @@ const expectations = {
       },
       'network-rtt': {
         details: {
-          items: [
-            {origin: 'http://localhost:10200', rtt: '>0'},
-          ],
+          items: {
+            _includes: [
+              {origin: 'http://localhost:10200', rtt: '>0'},
+              {origin: 'http://[::1]:10503', rtt: '>0'},
+            ],
+            _excludes: [{}],
+          },
         },
       },
       'network-server-latency': {
         details: {
-          items: [
-            {origin: 'http://localhost:10200', serverResponseTime: '>0'},
-          ],
+          items: {
+            _includes: [
+              {origin: 'http://localhost:10200', serverResponseTime: '>0'},
+              // The response time estimate is based on just 1 request which can force Lighthouse
+              // to report a response time of 0 sometimes.
+              // https://github.com/GoogleChrome/lighthouse/pull/15729#issuecomment-1877869991
+              {origin: 'http://[::1]:10503', serverResponseTime: '>=0'},
+            ],
+            _excludes: [{}],
+          },
         },
       },
       'metrics': {
@@ -575,7 +585,7 @@ const expectations = {
         }}},
       },
       'largest-contentful-paint-element': {
-        score: null,
+        score: 0,
         displayValue: /\d+\xa0ms/,
         details: {
           items: [
@@ -597,6 +607,21 @@ const expectations = {
               ],
             },
           ],
+        },
+      },
+      'third-party-cookies': {
+        score: 0,
+        displayValue: '1 cookie found',
+        details: {
+          items: [
+            {name: 'Foo', url: /^http:\/\/\[::1\]:10503\/dobetterweb\/empty_module\.js/},
+          ],
+        },
+      },
+      'viewport': {
+        score: 1,
+        details: {
+          viewportContent: 'width=device-width, initial-scale=1, minimum-scale=1',
         },
       },
     },

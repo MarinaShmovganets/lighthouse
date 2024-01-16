@@ -82,27 +82,22 @@ describe('Navigation', async function() {
     ]);
 
     let numNavigations = 0;
-    const {target, frontend} = getBrowserAndPages();
+    const {target} = getBrowserAndPages();
     target.on('framenavigated', () => {
       ++numNavigations;
-      if (numNavigations === 6) {
-        void frontend.bringToFront();
-      }
     });
 
     await clickStartButton();
 
-    await target.bringToFront();
-
     const {lhr, artifacts, reportEl} = await waitForResult();
 
     // 1 initial about:blank jump
-    // 1 about:blank jump + 1 navigation for the default pass
+    // 1 navigation for the actual page load
     // 2 navigations to go to chrome://terms and back testing bfcache
-    // 1 navigation after auditing to reset state
-    assert.strictEqual(numNavigations, 6);
+    // 1 refresh after auditing to reset state
+    assert.strictEqual(numNavigations, 5);
 
-    assert.strictEqual(lhr.lighthouseVersion, '11.1.0');
+    assert.strictEqual(lhr.lighthouseVersion, '11.4.0');
     assert.match(lhr.finalUrl, /^https:\/\/localhost:[0-9]+\/test\/e2e\/resources\/lighthouse\/hello.html/);
 
     assert.strictEqual(lhr.configSettings.throttlingMethod, 'simulate');
@@ -122,7 +117,7 @@ describe('Navigation', async function() {
     });
 
     const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, ['max-potential-fid']);
-    assert.strictEqual(auditResults.length, 188);
+    assert.strictEqual(auditResults.length, 191);
     assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
       'installable-manifest',
@@ -131,6 +126,7 @@ describe('Navigation', async function() {
       'maskable-icon',
       'document-title',
       'html-has-lang',
+      'render-blocking-resources',
       'meta-description',
     ]);
 
@@ -193,9 +189,6 @@ describe('Navigation', async function() {
 
     await clickStartButton();
 
-    const {target} = getBrowserAndPages();
-    await target.bringToFront();
-
     const {lhr, reportEl} = await waitForResult();
 
     assert.strictEqual(lhr.configSettings.throttlingMethod, 'devtools');
@@ -204,10 +197,11 @@ describe('Navigation', async function() {
     const flakyAudits = [
       'server-response-time',
       'render-blocking-resources',
+      'max-potential-fid',
     ];
 
     const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, flakyAudits);
-    assert.strictEqual(auditResults.length, 165);
+    assert.strictEqual(auditResults.length, 168);
     assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
       'installable-manifest',
@@ -233,9 +227,6 @@ describe('Navigation', async function() {
     await selectDevice('desktop');
 
     await clickStartButton();
-
-    const {target} = getBrowserAndPages();
-    await target.bringToFront();
 
     const {reportEl, lhr, artifacts} = await waitForResult();
 

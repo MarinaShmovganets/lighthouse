@@ -15,7 +15,6 @@
 import {Audit} from '../audit.js';
 import {EntityClassification} from '../../computed/entity-classification.js';
 import UrlUtils from '../../lib/url-utils.js';
-import {ByteEfficiencyAudit} from '../byte-efficiency/byte-efficiency-audit.js';
 import {LanternInteractive} from '../../computed/metrics/lantern-interactive.js';
 import {NetworkRequest} from '../../lib/network-request.js';
 import {NetworkRecords} from '../../computed/network-records.js';
@@ -61,7 +60,7 @@ class UsesHTTP2Audit extends Audit {
       id: 'uses-http2',
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
-      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
+      scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
       guidanceLevel: 3,
       supportedModes: ['timespan', 'navigation'],
       requiredArtifacts: ['URL', 'devtoolsLogs', 'traces', 'GatherContext'],
@@ -153,16 +152,19 @@ class UsesHTTP2Audit extends Audit {
    * @param {LH.Artifacts.EntityClassification} classifiedEntities
    * @return {boolean}
    */
-  static isStaticAsset(networkRequest, classifiedEntities) {
+  static isMultiplexableStaticAsset(networkRequest, classifiedEntities) {
     if (!STATIC_RESOURCE_TYPES.has(networkRequest.resourceType)) return false;
 
     // Resources from third-parties that are less than 100 bytes are usually tracking pixels, not actual resources.
     // They can masquerade as static types though (gifs, documents, etc)
     if (networkRequest.resourceSize < 100) {
-      // This logic needs to be revisited.
-      // See https://github.com/GoogleChrome/lighthouse/issues/14661
       const entity = classifiedEntities.entityByUrl.get(networkRequest.url);
-      if (entity && !entity.isUnrecognized) return false;
+      if (entity) {
+        // Third-party assets are multiplexable in their first-party context.
+        if (classifiedEntities.firstParty?.name === entity.name) return true;
+        // Skip recognizable third-parties' requests.
+        if (!entity.isUnrecognized) return false;
+      }
     }
 
     return true;
@@ -200,7 +202,7 @@ class UsesHTTP2Audit extends Audit {
     /** @type {Map<string, Array<LH.Artifacts.NetworkRequest>>} */
     const groupedByOrigin = new Map();
     for (const record of networkRecords) {
-      if (!UsesHTTP2Audit.isStaticAsset(record, classifiedEntities)) continue;
+      if (!UsesHTTP2Audit.isMultiplexableStaticAsset(record, classifiedEntities)) continue;
       if (UrlUtils.isLikeLocalhost(record.parsedURL.host)) continue;
       const existing = groupedByOrigin.get(record.parsedURL.securityOrigin) || [];
       existing.push(record);
@@ -300,7 +302,7 @@ class UsesHTTP2Audit extends Audit {
       displayValue,
       numericValue: wastedMsTti,
       numericUnit: 'millisecond',
-      score: ByteEfficiencyAudit.scoreForWastedMs(wastedMsTti),
+      score: resources.length ? 0 : 1,
       details,
       metricSavings: {LCP: wasteLcp.savings, FCP: wasteFcp.savings},
     };

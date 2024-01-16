@@ -12,6 +12,13 @@ interface ScoreDisplayModes {
   NUMERIC: 'numeric';
   /** Pass/fail audit (0 and 1 are only possible scores). */
   BINARY: 'binary';
+  /**
+   * Audit result score is determined by the metric savings and product score:
+   * 1   - audit passed based on product score
+   * 0.5 - audit failed and had no metric savings
+   * 0   - audit failed and had metric savings
+   */
+  METRIC_SAVINGS: 'metricSavings';
   /** The audit exists only to tell you to review something yourself. Score is null and should be ignored. */
   MANUAL: 'manual';
   /** The audit is an FYI only, and can't be interpreted as pass/fail. Score is null and should be ignored. */
@@ -24,13 +31,7 @@ interface ScoreDisplayModes {
 
 type ScoreDisplayMode = ScoreDisplayModes[keyof ScoreDisplayModes];
 
-interface MetricSavings {
-  LCP?: number;
-  FCP?: number;
-  CLS?: number;
-  TBT?: number;
-  INP?: number;
-}
+export type MetricSavings = Partial<Record<string, number>>;
 
 /** Audit result returned in Lighthouse report. All audits offer a description and score of 0-1. */
 export interface Result {

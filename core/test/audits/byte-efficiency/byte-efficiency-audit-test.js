@@ -88,41 +88,6 @@ describe('Byte efficiency base audit', () => {
     {key: 'wastedBytes', itemType: 'bytes', displayUnit: 'kb', granularity: 1, text: ''},
   ];
 
-  describe('#estimateTransferSize', () => {
-    const estimate = ByteEfficiencyAudit.estimateTransferSize;
-
-    it('should estimate by resource type compression ratio when no network info available', () => {
-      assert.equal(estimate(undefined, 1000, 'Stylesheet'), 200);
-      assert.equal(estimate(undefined, 1000, 'Script'), 330);
-      assert.equal(estimate(undefined, 1000, 'Document'), 330);
-      assert.equal(estimate(undefined, 1000, ''), 500);
-    });
-
-    it('should return transferSize when asset matches', () => {
-      const resourceType = 'Stylesheet';
-      const result = estimate({transferSize: 1234, resourceType}, 10000, 'Stylesheet');
-      assert.equal(result, 1234);
-    });
-
-    it('should estimate by network compression ratio when asset does not match', () => {
-      const resourceType = 'Other';
-      const result = estimate({resourceSize: 2000, transferSize: 1000, resourceType}, 100);
-      assert.equal(result, 50);
-    });
-
-    it('should not error when missing resource size', () => {
-      const resourceType = 'Other';
-      const result = estimate({transferSize: 1000, resourceType}, 100);
-      assert.equal(result, 100);
-    });
-
-    it('should not error when resource size is 0', () => {
-      const resourceType = 'Other';
-      const result = estimate({transferSize: 1000, resourceSize: 0, resourceType}, 100);
-      assert.equal(result, 100);
-    });
-  });
-
   it('should format details', async () => {
     const result = await ByteEfficiencyAudit.createAuditProduct({
       headings: baseHeadings,
@@ -175,7 +140,7 @@ describe('Byte efficiency base audit', () => {
     assert.equal(result.metricSavings.LCP, 2380);
   });
 
-  it('should score the wastedMs', async () => {
+  it('should fail if there are any results regardless of wastedMs', async () => {
     const perfectResult = await ByteEfficiencyAudit.createAuditProduct({
       headings: baseHeadings,
       items: [{url: 'http://example.com/', wastedBytes: 1 * 1000}],
@@ -196,22 +161,10 @@ describe('Byte efficiency base audit', () => {
       items: [{url: 'http://example.com/', wastedBytes: 400 * 1000}],
     }, simulator, metricComputationInput, {computedCache: new Map()});
 
-    assert.equal(perfectResult.score, 1, 'scores perfect wastedMs');
-    assert.ok(goodResult.score > 0.75 && goodResult.score < 1, 'scores good wastedMs');
-    assert.ok(averageResult.score > 0.5 && averageResult.score < 0.75, 'scores average wastedMs');
-    assert.ok(failingResult.score < 0.5, 'scores failing wastedMs');
-  });
-
-  it('should score negative wastedMs as perfect', async () => {
-    metricComputationInput.gatherContext.gatherMode = 'timespan';
-    const negativeResult = await ByteEfficiencyAudit.createAuditProduct({
-      headings: baseHeadings,
-      items: [{url: 'http://example.com/', wastedBytes: -1 * 10000}],
-    }, simulator, metricComputationInput, {computedCache: new Map()});
-
-    assert.equal(negativeResult.score, 1);
-    assert.ok(negativeResult.numericValue < 0);
-    assert.equal(negativeResult.numericValue, negativeResult.details.overallSavingsMs);
+    assert.equal(perfectResult.score, 0, 'scores perfect wastedMs');
+    assert.equal(goodResult.score, 0, 'scores good wastedMs');
+    assert.equal(averageResult.score, 0, 'scores average wastedMs');
+    assert.equal(failingResult.score, 0, 'scores failing wastedMs');
   });
 
   it('should populate KiB', async () => {

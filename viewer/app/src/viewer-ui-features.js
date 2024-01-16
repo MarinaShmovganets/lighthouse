@@ -45,11 +45,10 @@ export class ViewerUIFeatures extends ReportUIFeatures {
       saveGistItem.setAttribute('disabled', 'true');
     }
 
-    this._getI18nModule().then(async (i18nModule) => {
+    this._getI18nModule().then(i18nModule => {
       if (!report.i18n?.icuMessagePaths) return;
 
-      const locales = /** @type {LH.Locale[]} */ (
-        await i18nModule.format.getCanonicalLocales());
+      const locales = /** @type {LH.Locale[]} */ (i18nModule.format.getCanonicalLocales());
       this._swapLocales.enable(locales);
     }).catch(err => console.error(err));
   }

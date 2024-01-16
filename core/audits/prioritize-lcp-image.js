@@ -10,7 +10,6 @@ import {NetworkRequest} from '../lib/network-request.js';
 import {MainResource} from '../computed/main-resource.js';
 import {LanternLargestContentfulPaint} from '../computed/metrics/lantern-largest-contentful-paint.js';
 import {LoadSimulator} from '../computed/load-simulator.js';
-import {ByteEfficiencyAudit} from './byte-efficiency/byte-efficiency-audit.js';
 import {LCPImageRecord} from '../computed/lcp-image-record.js';
 
 const UIStrings = {
@@ -18,7 +17,7 @@ const UIStrings = {
   title: 'Preload Largest Contentful Paint image',
   /** Description of a lighthouse audit that tells a user to preload an image in order to improve their LCP time.  */
   description: 'If the LCP element is dynamically added to the page, you should preload the ' +
-    'image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/optimize-lcp/#optimize-when-the-resource-is-discovered).',
+    'image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/articles/optimize-lcp#optimize_when_the_resource_is_discovered).',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
@@ -38,9 +37,9 @@ class PrioritizeLcpImage extends Audit {
       title: str_(UIStrings.title),
       description: str_(UIStrings.description),
       supportedModes: ['navigation'],
-      guidanceLevel: 3,
+      guidanceLevel: 4,
       requiredArtifacts: ['traces', 'devtoolsLogs', 'GatherContext', 'URL', 'TraceElements'],
-      scoreDisplayMode: Audit.SCORING_MODES.NUMERIC,
+      scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
     };
   }
 
@@ -282,7 +281,7 @@ class PrioritizeLcpImage extends Audit {
     }
 
     return {
-      score: ByteEfficiencyAudit.scoreForWastedMs(wastedMs),
+      score: results.length ? 0 : 1,
       numericValue: wastedMs,
       numericUnit: 'millisecond',
       displayValue: wastedMs ? str_(i18n.UIStrings.displayValueMsSavings, {wastedMs}) : '',

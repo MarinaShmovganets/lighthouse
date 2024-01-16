@@ -23,6 +23,7 @@ import LHResult from './lhr/lhr.js'
 import Protocol from './protocol.js';
 import Util from './utility-types.js';
 import Audit from './audit.js';
+import {TraceProcessor, LayoutShiftRootCauses} from './trace-engine.js';
 
 export type Artifacts = BaseArtifacts & GathererArtifacts;
 
@@ -53,6 +54,8 @@ interface UniversalBaseArtifacts {
   HostFormFactor: 'desktop'|'mobile';
   /** The user agent string of the version of Chrome used. */
   HostUserAgent: string;
+  /** The product string of the version of Chrome used. Example: HeadlessChrome/123.2.2.0 would be from old headless. */
+  HostProduct: string;
   /** Information about how Lighthouse artifacts were gathered. */
   GatherContext: {gatherMode: Gatherer.GatherMode};
 }
@@ -140,6 +143,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   ResponseCompression: {requestId: string, url: string, mimeType: string, transferSize: number, resourceSize: number, gzipSize?: number}[];
   /** Information on fetching and the content of the /robots.txt file. */
   RobotsTxt: {status: number|null, content: string|null, errorMessage?: string};
+  /** The result of calling the shared trace engine root cause analysis. */
+  RootCauses: Artifacts.TraceEngineRootCauses;
   /** Information on all scripts in the page. */
   Scripts: Artifacts.Script[];
   /** Version information for all ServiceWorkers active after the first page load. */
@@ -557,12 +562,17 @@ declare module Artifacts {
   }
 
   interface TraceElement {
-    traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation'|'responsiveness';
-    score?: number;
+    traceEventType: 'largest-contentful-paint'|'layout-shift'|'layout-shift-element'|'animation'|'responsiveness';
     node: NodeDetails;
-    nodeId?: number;
+    nodeId: number;
     animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[];
     type?: string;
+  }
+
+  type TraceEngineResult = TraceProcessor['data'];
+
+  interface TraceEngineRootCauses {
+    layoutShifts: Record<number, LayoutShiftRootCauses>;
   }
 
   interface ViewportDimensions {
@@ -579,6 +589,7 @@ declare module Artifacts {
     bounceTrackingIssue: Crdp.Audits.BounceTrackingIssueDetails[];
     clientHintIssue: Crdp.Audits.ClientHintIssueDetails[];
     contentSecurityPolicyIssue: Crdp.Audits.ContentSecurityPolicyIssueDetails[];
+    cookieDeprecationMetadataIssue: Crdp.Audits.CookieDeprecationMetadataIssueDetails[],
     corsIssue: Crdp.Audits.CorsIssueDetails[];
     deprecationIssue: Crdp.Audits.DeprecationIssueDetails[];
     federatedAuthRequestIssue: Crdp.Audits.FederatedAuthRequestIssueDetails[],
@@ -1015,6 +1026,8 @@ export interface TraceEvent {
       type?: string;
       functionName?: string;
       name?: string;
+      duration?: number;
+      blockingDuration?: number;
     };
     frame?: string;
     name?: string;

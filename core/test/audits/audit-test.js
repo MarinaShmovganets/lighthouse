@@ -42,6 +42,18 @@ class NumericAudit extends Audit {
   }
 }
 
+class MetricSavings extends Audit {
+  static get meta() {
+    return {
+      id: 'metric-savings',
+      title: 'Passing',
+      description: 'Description',
+      requiredArtifacts: [],
+      scoreDisplayMode: Audit.SCORING_MODES.METRIC_SAVINGS,
+    };
+  }
+}
+
 describe('Audit', () => {
   it('throws if an audit does not override the meta', () => {
     assert.throws(_ => A.meta);
@@ -75,6 +87,16 @@ describe('Audit', () => {
         assert.strictEqual(auditResult.score, 1);
       });
 
+      it('override scoreDisplayMode if set on audit product', () => {
+        assert.strictEqual(NumericAudit.meta.scoreDisplayMode, Audit.SCORING_MODES.NUMERIC);
+        const auditResult = Audit.generateAuditResult(NumericAudit, {
+          score: 1,
+          scoreDisplayMode: Audit.SCORING_MODES.INFORMATIVE,
+        });
+        assert.strictEqual(auditResult.scoreDisplayMode, Audit.SCORING_MODES.INFORMATIVE);
+        assert.strictEqual(auditResult.score, null);
+      });
+
       it('switches to an ERROR and is not scored if an errorMessage is passed in', () => {
         const errorMessage = 'ERRRRR';
         const auditResult = Audit.generateAuditResult(NumericAudit, {score: 1, errorMessage});
@@ -102,6 +124,35 @@ describe('Audit', () => {
       });
     });
 
+    describe('METRIC_SAVINGS scoring mode', () => {
+      it('passes if audit product is passing', () => {
+        const auditResult = Audit.generateAuditResult(
+          MetricSavings,
+          {score: 1, metricSavings: {TBT: 100}}
+        );
+        assert.strictEqual(auditResult.scoreDisplayMode, Audit.SCORING_MODES.METRIC_SAVINGS);
+        assert.strictEqual(auditResult.score, 1);
+      });
+
+      it('fails if audit product is not passing and there was metric savings', () => {
+        const auditResult = Audit.generateAuditResult(
+          MetricSavings,
+          {score: 0, metricSavings: {TBT: 100}}
+        );
+        assert.strictEqual(auditResult.scoreDisplayMode, Audit.SCORING_MODES.METRIC_SAVINGS);
+        assert.strictEqual(auditResult.score, 0);
+      });
+
+      it('average if audit product is not passing and there was no metric savings', () => {
+        const auditResult = Audit.generateAuditResult(
+          MetricSavings,
+          {score: 0, metricSavings: {TBT: 0}}
+        );
+        assert.strictEqual(auditResult.scoreDisplayMode, Audit.SCORING_MODES.METRIC_SAVINGS);
+        assert.strictEqual(auditResult.score, 0.5);
+      });
+    });
+
     it('throws if an audit returns a score > 1', () => {
       assert.throws(_ => Audit.generateAuditResult(PassOrFailAudit, {score: 100}), /is > 1/);
       assert.throws(_ => Audit.generateAuditResult(PassOrFailAudit, {score: 2}), /is > 1/);
@@ -125,6 +176,14 @@ describe('Audit', () => {
     it('clamps the score to two decimals', () => {
       const auditResult = Audit.generateAuditResult(PassOrFailAudit, {score: 0.29666666666666663});
       assert.strictEqual(auditResult.score, 0.3);
+    });
+
+    it('quantizes metric savings', () => {
+      const auditResult = Audit.generateAuditResult(PassOrFailAudit, {
+        score: 0,
+        metricSavings: {LCP: 0.1, FCP: 149, CLS: 0.0015, TBT: -100},
+      });
+      assert.deepStrictEqual(auditResult.metricSavings, {LCP: 0, FCP: 150, CLS: 0.002, TBT: 0});
     });
 
     it('chooses the title if score is passing', () => {

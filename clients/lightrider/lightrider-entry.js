@@ -9,8 +9,8 @@
 import {Buffer} from 'buffer';
 
 import log from 'lighthouse-logger';
-import {CDPBrowser} from 'puppeteer-core/lib/esm/puppeteer/common/Browser.js';
-import {Connection as PptrConnection} from 'puppeteer-core/lib/esm/puppeteer/common/Connection.js';
+import {CdpBrowser} from 'puppeteer-core/lib/esm/puppeteer/cdp/Browser.js';
+import {Connection as PptrConnection} from 'puppeteer-core/lib/esm/puppeteer/cdp/Connection.js';
 
 import lighthouse, * as api from '../../core/index.js';
 import {LighthouseError} from '../../core/lib/lh-error.js';
@@ -46,23 +46,27 @@ async function getPageFromConnection(connection) {
 
   const pptrConnection = new PptrConnection(mainTargetInfo.url, transport);
 
-  const browser = await CDPBrowser._create(
+  const browser = await CdpBrowser._create(
     'chrome',
     pptrConnection,
     [] /* contextIds */,
-    false /* ignoreHTTPSErrors */,
-    undefined /* defaultViewport */,
-    undefined /* process */,
-    undefined /* closeCallback */,
-    // @ts-expect-error internal property
-    targetInfo => targetInfo._targetId === mainTargetInfo.targetId
+    false /* ignoreHTTPSErrors */
   );
 
-  const pages = await browser.pages();
-  const page = pages.find(p => p.mainFrame()._id === frameTree.frame.id);
-  if (!page) throw new Error('Could not find relevant puppeteer page');
-
-  // @ts-expect-error Page has a slightly different type when importing the browser module directly.
+  // We should be able to find the relevant page instantly, but just in case
+  // the relevant tab target comes a bit delayed, check every time a new
+  // target is seen.
+  const targetPromise = browser.waitForTarget(async (target) => {
+    const page = await target.page();
+    if (page && page.mainFrame()._id === frameTree.frame.id) return true;
+    return false;
+  });
+  const page = await Promise.race([
+    targetPromise.then(target => target.page()),
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Could not find relevant puppeteer page')), 5000);
+    }),
+  ]);
   return page;
 }
 
