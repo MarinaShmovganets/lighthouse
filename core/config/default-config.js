@@ -129,6 +129,7 @@ const defaultConfig = {
     // Artifacts which can be depended on come first.
     {id: 'DevtoolsLog', gatherer: 'devtools-log'},
     {id: 'Trace', gatherer: 'trace'},
+    {id: 'RootCauses', gatherer: 'root-causes'},
 
     {id: 'Accessibility', gatherer: 'accessibility'},
     {id: 'AnchorElements', gatherer: 'anchor-elements'},
@@ -222,6 +223,7 @@ const defaultConfig = {
     'largest-contentful-paint-element',
     'lcp-lazy-loaded',
     'layout-shift-elements',
+    'layout-shifts',
     'long-tasks',
     'no-unload-listeners',
     'non-composited-animations',
@@ -476,7 +478,7 @@ const defaultConfig = {
         {id: 'third-party-facades', weight: 0},
         {id: 'largest-contentful-paint-element', weight: 0},
         {id: 'lcp-lazy-loaded', weight: 0},
-        {id: 'layout-shift-elements', weight: 0},
+        {id: 'layout-shifts', weight: 0},
         {id: 'uses-passive-event-listeners', weight: 0},
         {id: 'no-document-write', weight: 0},
         {id: 'long-tasks', weight: 0},
@@ -502,6 +504,7 @@ const defaultConfig = {
         {id: 'final-screenshot', weight: 0, group: 'hidden'},
         {id: 'script-treemap-data', weight: 0, group: 'hidden'},
         {id: 'resource-summary', weight: 0, group: 'hidden'},
+        {id: 'layout-shift-elements', weight: 0, group: 'hidden'},
       ],
     },
     'accessibility': {
