@@ -1,3 +1,73 @@
+Thanks to our new contributors 👽🐷🐰🐯🐻! 
+EvilKarter @EvilKarter
+ <a name="11.5.0"></a>
+# 11.5.0 (2024-01-23)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.4.0...v11.5.0)
+
+~~ TODO: https://chromiumdash.appspot.com/schedule ~~
+We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## Notable Changes
+~~ TODO: Move notable changes here ~~
+
+
+## New Audits
+
+* layout-shifts with estimated root causes ([#15703](https://github.com/GoogleChrome/lighthouse/pull/15703))
+
+## Core
+
+* score of 1 for informative audits ([#15689](https://github.com/GoogleChrome/lighthouse/pull/15689))
+* warning banner for PWA category deprecation ([#15741](https://github.com/GoogleChrome/lighthouse/pull/15741))
+* bump guidance level of top CWV recommendations ([#15695](https://github.com/GoogleChrome/lighthouse/pull/15695))
+* lower guidance level of unused- audits ([#15718](https://github.com/GoogleChrome/lighthouse/pull/15718))
+* create separate product savings type ([#15726](https://github.com/GoogleChrome/lighthouse/pull/15726))
+* round metric savings to remove false precision ([#15721](https://github.com/GoogleChrome/lighthouse/pull/15721))
+* fix mistake preventing gather/audit phases from sharing cache ([#15710](https://github.com/GoogleChrome/lighthouse/pull/15710))
+* cumulative-layout-shift: experiment with new shared trace engine ([#15702](https://github.com/GoogleChrome/lighthouse/pull/15702))
+* layout-shift-elements: hide audit ([#15730](https://github.com/GoogleChrome/lighthouse/pull/15730))
+* legacy-javascript: detect es-shims polyfills ([#15738](https://github.com/GoogleChrome/lighthouse/pull/15738))
+* network-request: consider secondary headers for content encoded check ([#15708](https://github.com/GoogleChrome/lighthouse/pull/15708))
+* render-blocking-resources: reduce metric savings if LCP is an image ([#15694](https://github.com/GoogleChrome/lighthouse/pull/15694))
+* target-manager: warn on errors while attaching to workers ([#15740](https://github.com/GoogleChrome/lighthouse/pull/15740))
+* trace: enable JS samples for advanced workflows ([#15542](https://github.com/GoogleChrome/lighthouse/pull/15542))
+* unused-css: exclude header size for estimating wasted bytes ([#15671](https://github.com/GoogleChrome/lighthouse/pull/15671))
+* viewport: include meta viewport string in debugDetails ([#15727](https://github.com/GoogleChrome/lighthouse/pull/15727))
+
+## Report
+
+* small renderAudit simplification ([#15725](https://github.com/GoogleChrome/lighthouse/pull/15725))
+* fix filmstrip wrap ([#15693](https://github.com/GoogleChrome/lighthouse/pull/15693))
+* performance: use metric savings for metric filter ([#15540](https://github.com/GoogleChrome/lighthouse/pull/15540))
+
+## Deps
+
+* upgrade puppeteer to 21.7.0 ([#15724](https://github.com/GoogleChrome/lighthouse/pull/15724))
+* upgrade esbuild to 0.19.11 ([#15731](https://github.com/GoogleChrome/lighthouse/pull/15731))
+
+## Clients
+
+* lr: include flag for ignoring bad page status code ([#15764](https://github.com/GoogleChrome/lighthouse/pull/15764))
+
+## Docs
+
+* update deprecated link to shared flags ([#15722](https://github.com/GoogleChrome/lighthouse/pull/15722))
+* user-flows: update complete flow example ([#15690](https://github.com/GoogleChrome/lighthouse/pull/15690))
+
+## Tests
+
+* check for console errors and warnings in pptr tests ([#15516](https://github.com/GoogleChrome/lighthouse/pull/15516))
+* fix ToT chrome install path ([#15753](https://github.com/GoogleChrome/lighthouse/pull/15753))
+* ci: stop using xvfb ([#15707](https://github.com/GoogleChrome/lighthouse/pull/15707))
+* dbw: update expectations for unload handler removal ([#15765](https://github.com/GoogleChrome/lighthouse/pull/15765))
+* dbw: fix server latency flake ([#15729](https://github.com/GoogleChrome/lighthouse/pull/15729))
+* mocha: fix snapshot expectations in retries ([#15735](https://github.com/GoogleChrome/lighthouse/pull/15735))
+
+## Misc
+
+* build: set line limit to 1000 ([#15733](https://github.com/GoogleChrome/lighthouse/pull/15733))
+* lighthouse-logger: add repo to package.json ([#15768](https://github.com/GoogleChrome/lighthouse/pull/15768))
+
 <a name="11.4.0"></a>
 # 11.4.0 (2023-12-11)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.3.0...v11.4.0)
