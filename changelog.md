@@ -1,31 +1,29 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-EvilKarter @EvilKarter
- <a name="11.5.0"></a>
+<a name="11.5.0"></a>
 # 11.5.0 (2024-01-23)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.4.0...v11.5.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 123](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## New Contributors
+
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+- EvilKarter @EvilKarter
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
-
-## New Audits
-
-* layout-shifts with estimated root causes ([#15703](https://github.com/GoogleChrome/lighthouse/pull/15703))
+* New layout-shifts audit shows estimated root causes for layout shifts. This replaces the layout-shift-elements audit which only shows elements impacted by layout shifts. ([#15703](https://github.com/GoogleChrome/lighthouse/pull/15703), [#15730](https://github.com/GoogleChrome/lighthouse/pull/15730))
+* Informative audits now have a score of 1 instead of null ([#15689](https://github.com/GoogleChrome/lighthouse/pull/15689))
+* Added a warning for [PWA deprecation](https://developer.chrome.com/blog/update-install-criteria?hl=en) ([#15741](https://github.com/GoogleChrome/lighthouse/pull/15741))
 
 ## Core
 
-* score of 1 for informative audits ([#15689](https://github.com/GoogleChrome/lighthouse/pull/15689))
-* warning banner for PWA category deprecation ([#15741](https://github.com/GoogleChrome/lighthouse/pull/15741))
 * bump guidance level of top CWV recommendations ([#15695](https://github.com/GoogleChrome/lighthouse/pull/15695))
 * lower guidance level of unused- audits ([#15718](https://github.com/GoogleChrome/lighthouse/pull/15718))
 * create separate product savings type ([#15726](https://github.com/GoogleChrome/lighthouse/pull/15726))
 * round metric savings to remove false precision ([#15721](https://github.com/GoogleChrome/lighthouse/pull/15721))
 * fix mistake preventing gather/audit phases from sharing cache ([#15710](https://github.com/GoogleChrome/lighthouse/pull/15710))
 * cumulative-layout-shift: experiment with new shared trace engine ([#15702](https://github.com/GoogleChrome/lighthouse/pull/15702))
-* layout-shift-elements: hide audit ([#15730](https://github.com/GoogleChrome/lighthouse/pull/15730))
 * legacy-javascript: detect es-shims polyfills ([#15738](https://github.com/GoogleChrome/lighthouse/pull/15738))
 * network-request: consider secondary headers for content encoded check ([#15708](https://github.com/GoogleChrome/lighthouse/pull/15708))
 * render-blocking-resources: reduce metric savings if LCP is an image ([#15694](https://github.com/GoogleChrome/lighthouse/pull/15694))
