@@ -1,5 +1,5 @@
 {
-  "lighthouseVersion": "11.4.0",
+  "lighthouseVersion": "11.5.0",
   "requestedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "mainDocumentUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
   "finalDisplayedUrl": "http://localhost:10200/dobetterweb/dbw_tester.html",
@@ -55,6 +55,10 @@
       "warnings": [],
       "metricSavings": {
         "INP": 0
+      },
+      "details": {
+        "type": "debugdata",
+        "viewportContent": "width=device-width, initial-scale=1, minimum-scale=1"
       },
       "guidanceLevel": 3
     },
@@ -114,7 +118,7 @@
       "id": "screenshot-thumbnails",
       "title": "Screenshot Thumbnails",
       "description": "This is what the load of your site looked like.",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "filmstrip",
@@ -167,7 +171,7 @@
       "id": "final-screenshot",
       "title": "Final Screenshot",
       "description": "The last screenshot captured of the pageload.",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "screenshot",
@@ -384,14 +388,14 @@
       "id": "server-response-time",
       "title": "Initial server response time was short",
       "description": "Keep the server response time for the main document short because all other requests depend on it. [Learn more about the Time to First Byte metric](https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "numericValue": 568.468,
       "numericUnit": "millisecond",
       "displayValue": "Root document took 570 ms",
       "metricSavings": {
-        "FCP": 468.46799999999996,
-        "LCP": 468.46799999999996
+        "FCP": 450,
+        "LCP": 450
       },
       "details": {
         "type": "opportunity",
@@ -431,7 +435,7 @@
       "id": "user-timings",
       "title": "User Timing marks and measures",
       "description": "Consider instrumenting your app with the User Timing API to measure your app's real-world performance during key user experiences. [Learn more about User Timing marks](https://developer.chrome.com/docs/lighthouse/performance/user-timings/).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "displayValue": "42 user timings",
       "details": {
@@ -700,7 +704,7 @@
       "id": "critical-request-chains",
       "title": "Avoid chaining critical requests",
       "description": "The Critical Request Chains below show you what resources are loaded with a high priority. Consider reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load. [Learn how to avoid chaining critical requests](https://developer.chrome.com/docs/lighthouse/performance/critical-request-chains/).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "displayValue": "12 chains found",
       "details": {
@@ -1106,7 +1110,7 @@
       "numericUnit": "millisecond",
       "displayValue": "2.2 s",
       "metricSavings": {
-        "TBT": 1220.691999999999
+        "TBT": 1200
       },
       "details": {
         "type": "table",
@@ -1171,7 +1175,7 @@
       "numericUnit": "millisecond",
       "displayValue": "1.3 s",
       "metricSavings": {
-        "TBT": 1209.4020894768312
+        "TBT": 1200
       },
       "details": {
         "type": "table",
@@ -1286,7 +1290,7 @@
       "id": "diagnostics",
       "title": "Diagnostics",
       "description": "Collection of useful page vitals.",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "debugdata",
@@ -1317,7 +1321,7 @@
       "id": "network-requests",
       "title": "Network Requests",
       "description": "Lists the network requests that were made during page load.",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "table",
@@ -1860,7 +1864,7 @@
       "id": "network-rtt",
       "title": "Network Round Trip Times",
       "description": "Network round trip times (RTT) have a large impact on performance. If the RTT to an origin is high, it's an indication that servers closer to the user could improve performance. [Learn more about the Round Trip Time](https://hpbn.co/primer-on-latency-and-bandwidth/).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "numericValue": 12.662,
       "numericUnit": "millisecond",
@@ -1899,7 +1903,7 @@
       "id": "network-server-latency",
       "title": "Server Backend Latencies",
       "description": "Server latencies can impact web performance. If the server latency of an origin is high, it's an indication the server is overloaded or has poor backend performance. [Learn more about server response time](https://hpbn.co/primer-on-web-performance/#analyzing-the-resource-waterfall).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "numericValue": 582.2760000000001,
       "numericUnit": "millisecond",
@@ -1938,7 +1942,7 @@
       "id": "main-thread-tasks",
       "title": "Tasks",
       "description": "Lists the toplevel main thread tasks that executed during page load.",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "table",
@@ -2028,7 +2032,7 @@
       "id": "metrics",
       "title": "Metrics",
       "description": "Collects all available metrics.",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "numericValue": 8191,
       "numericUnit": "millisecond",
@@ -2099,7 +2103,7 @@
       "id": "performance-budget",
       "title": "Performance budget",
       "description": "Keep the quantity and size of network requests under the targets set by the provided performance budget. [Learn more about performance budgets](https://developers.google.com/web/tools/lighthouse/audits/budgets).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "table",
@@ -2206,7 +2210,7 @@
       "id": "timing-budget",
       "title": "Timing budget",
       "description": "Set a timing budget to help you keep an eye on the performance of your site. Performant sites load fast and respond to user input events quickly. [Learn more about performance budgets](https://developers.google.com/web/tools/lighthouse/audits/budgets).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "table",
@@ -2262,7 +2266,7 @@
       "id": "resource-summary",
       "title": "Resources Summary",
       "description": "Aggregates all network requests and groups them by type",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "table",
@@ -2345,11 +2349,11 @@
       "id": "third-party-summary",
       "title": "Minimize third-party usage",
       "description": "Third-party code can significantly impact load performance. Limit the number of redundant third-party providers and try to load third-party code after your page has primarily finished loading. [Learn how to minimize third-party impact](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript/).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "displayValue": "Third-party code blocked the main thread for 0 ms",
       "metricSavings": {
-        "TBT": 23.424291876693196
+        "TBT": 0
       },
       "details": {
         "type": "table",
@@ -2430,7 +2434,7 @@
       "scoreDisplayMode": "metricSavings",
       "displayValue": "13,320 ms",
       "metricSavings": {
-        "LCP": 10819.961
+        "LCP": 10800
       },
       "details": {
         "type": "list",
@@ -2530,7 +2534,7 @@
       "scoreDisplayMode": "metricSavings",
       "displayValue": "5 elements found",
       "metricSavings": {
-        "CLS": 0.13570762803819444
+        "CLS": 0.136
       },
       "details": {
         "type": "table",
@@ -2545,6 +2549,50 @@
             "valueType": "numeric",
             "granularity": 0.001,
             "label": "Layout shift impact"
+          }
+        ],
+        "items": [
+          {
+            "node": {
+              "type": "code",
+              "value": "Other"
+            },
+            "score": 0.13570762803819444
+          }
+        ]
+      },
+      "guidanceLevel": 2
+    },
+    "layout-shifts": {
+      "id": "layout-shifts",
+      "title": "Avoid large layout shifts",
+      "description": "These are the largest layout shifts observed on the page. Each table item represents a single layout shift, and shows the element that shifted the most. Below each item are possible root causes that led to the layout shift. Some of these layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
+      "score": 0,
+      "scoreDisplayMode": "metricSavings",
+      "displayValue": "2 layout shifts found",
+      "metricSavings": {
+        "CLS": 0.136
+      },
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "extra"
+            },
+            "label": "Element"
+          },
+          {
+            "key": "score",
+            "valueType": "numeric",
+            "subItemsHeading": {
+              "key": "cause",
+              "valueType": "text"
+            },
+            "granularity": 0.001,
+            "label": "Layout shift score"
           }
         ],
         "items": [
@@ -2565,83 +2613,26 @@
               "snippet": "<div>",
               "nodeLabel": "Do better web tester page\nHi there! "
             },
-            "score": 0.05423896965635325
+            "score": 0.08112660047743056
           },
           {
             "node": {
               "type": "node",
-              "lhId": "page-11-OBJECT",
-              "path": "3,HTML,1,BODY,4,OBJECT",
-              "selector": "body > object#5934a",
+              "lhId": "page-14-DIV",
+              "path": "3,HTML,1,BODY,9,DIV",
+              "selector": "body > div",
               "boundingRect": {
-                "top": 8,
-                "bottom": 158,
-                "left": 8,
-                "right": 308,
-                "width": 300,
-                "height": 150
-              },
-              "snippet": "<object id=\"5934a\">",
-              "nodeLabel": "body > object#5934a"
-            },
-            "score": 0.035101374537739476
-          },
-          {
-            "node": {
-              "type": "node",
-              "lhId": "page-12-OBJECT",
-              "path": "3,HTML,1,BODY,5,OBJECT",
-              "selector": "body > object#5934b",
-              "boundingRect": {
-                "top": 162,
-                "bottom": 312,
-                "left": 8,
-                "right": 308,
-                "width": 300,
-                "height": 150
-              },
-              "snippet": "<object id=\"5934b\">",
-              "nodeLabel": "body > object#5934b"
-            },
-            "score": 0.035101374537739476
-          },
-          {
-            "node": {
-              "type": "node",
-              "lhId": "page-15-SECTION",
-              "path": "3,HTML,1,BODY,10,SECTION",
-              "selector": "body > section#touchmove-section",
-              "boundingRect": {
-                "top": 556,
-                "bottom": 574,
+                "top": 336,
+                "bottom": 556,
                 "left": 8,
                 "right": 352,
                 "width": 344,
-                "height": 18
+                "height": 220
               },
-              "snippet": "<section id=\"touchmove-section\">",
-              "nodeLabel": "touchmove section"
+              "snippet": "<div>",
+              "nodeLabel": "Do better web tester page\nHi there! "
             },
-            "score": 0.007194545238726159
-          },
-          {
-            "node": {
-              "type": "node",
-              "lhId": "page-1-IMG",
-              "path": "3,HTML,1,BODY,17,IMG",
-              "selector": "body > img",
-              "boundingRect": {
-                "top": 574,
-                "bottom": 654,
-                "left": 132,
-                "right": 252,
-                "width": 120,
-                "height": 80
-              },
-              "snippet": "<img loading=\"lazy\" src=\"lighthouse-480x318.jpg?iar2\" width=\"120\" height=\"80\">",
-              "nodeLabel": "body > img"
-            },
-            "score": 0.004071364067636093
+            "score": 0.054581027560763884
           }
         ]
       },
@@ -2651,11 +2642,11 @@
       "id": "long-tasks",
       "title": "Avoid long main-thread tasks",
       "description": "Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. [Learn how to avoid long main-thread tasks](https://web.dev/articles/long-tasks-devtools)",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "displayValue": "2 long tasks found",
       "metricSavings": {
-        "TBT": 1220.691999999999
+        "TBT": 1200
       },
       "details": {
         "type": "table",
@@ -2760,7 +2751,7 @@
       "id": "non-composited-animations",
       "title": "Avoid non-composited animations",
       "description": "Animations which are not composited can be janky and increase CLS. [Learn how to avoid non-composited animations](https://developer.chrome.com/docs/lighthouse/performance/non-composited-animations/)",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "displayValue": "1 animated element found",
       "metricSavings": {
@@ -2884,7 +2875,7 @@
           }
         ]
       },
-      "guidanceLevel": 3
+      "guidanceLevel": 4
     },
     "valid-source-maps": {
       "id": "valid-source-maps",
@@ -2978,13 +2969,13 @@
           "pathLength": 4
         }
       },
-      "guidanceLevel": 3
+      "guidanceLevel": 4
     },
     "csp-xss": {
       "id": "csp-xss",
       "title": "Ensure CSP is effective against XSS attacks",
       "description": "A strong Content Security Policy (CSP) significantly reduces the risk of cross-site scripting (XSS) attacks. [Learn how to use a CSP to prevent XSS](https://developer.chrome.com/docs/lighthouse/best-practices/csp-xss/)",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "table",
@@ -3026,7 +3017,7 @@
       "id": "script-treemap-data",
       "title": "Script Treemap Data",
       "description": "Used for treemap app",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "treemap-data",
@@ -4397,7 +4388,7 @@
       "id": "total-byte-weight",
       "title": "Avoids enormous network payloads",
       "description": "Large network payloads cost users real money and are highly correlated with long load times. [Learn how to reduce payload sizes](https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "numericValue": 1437431,
       "numericUnit": "byte",
@@ -4609,7 +4600,7 @@
       "warnings": [],
       "metricSavings": {
         "FCP": 0,
-        "LCP": 610
+        "LCP": 600
       },
       "details": {
         "type": "opportunity",
@@ -4683,7 +4674,7 @@
           }
         }
       },
-      "guidanceLevel": 2
+      "guidanceLevel": 1
     },
     "unused-javascript": {
       "id": "unused-javascript",
@@ -4754,7 +4745,7 @@
           }
         }
       },
-      "guidanceLevel": 2
+      "guidanceLevel": 1
     },
     "modern-image-formats": {
       "id": "modern-image-formats",
@@ -4919,7 +4910,7 @@
       "displayValue": "Potential savings of 143 KiB",
       "metricSavings": {
         "FCP": 150,
-        "LCP": 1060
+        "LCP": 1050
       },
       "details": {
         "type": "opportunity",
@@ -5189,13 +5180,13 @@
       "id": "dom-size",
       "title": "Avoids an excessive DOM size",
       "description": "A large DOM will increase memory usage, cause longer [style calculations](https://developers.google.com/web/fundamentals/performance/rendering/reduce-the-scope-and-complexity-of-style-calculations), and produce costly [layout reflows](https://developers.google.com/speed/articles/reflow). [Learn how to avoid an excessive DOM size](https://developer.chrome.com/docs/lighthouse/performance/dom-size/).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "numericValue": 153,
       "numericUnit": "element",
       "displayValue": "153 elements",
       "metricSavings": {
-        "TBT": 1
+        "TBT": 0
       },
       "details": {
         "type": "table",
@@ -5377,7 +5368,7 @@
       "id": "js-libraries",
       "title": "Detected JavaScript libraries",
       "description": "All front-end JavaScript libraries detected on the page. [Learn more about this JavaScript library detection diagnostic audit](https://developer.chrome.com/docs/lighthouse/best-practices/js-libraries/).",
-      "score": null,
+      "score": 1,
       "scoreDisplayMode": "informative",
       "details": {
         "type": "table",
@@ -5861,7 +5852,7 @@
           }
         ]
       },
-      "guidanceLevel": 2
+      "guidanceLevel": 4
     }
   },
   "configSettings": {
@@ -6093,6 +6084,7 @@
           "acronym": "CLS",
           "relevantAudits": [
             "layout-shift-elements",
+            "layout-shifts",
             "non-composited-animations",
             "unsized-images"
           ]
@@ -6245,7 +6237,7 @@
           "weight": 0
         },
         {
-          "id": "layout-shift-elements",
+          "id": "layout-shifts",
           "weight": 0
         },
         {
@@ -6333,6 +6325,11 @@
         },
         {
           "id": "resource-summary",
+          "weight": 0,
+          "group": "hidden"
+        },
+        {
+          "id": "layout-shift-elements",
           "weight": 0,
           "group": "hidden"
         }
@@ -8559,6 +8556,18 @@
       },
       {
         "startTime": 0,
+        "name": "lh:audit:layout-shifts",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:computed:TraceEngineResult",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:audit:long-tasks",
         "duration": 100,
         "entryType": "measure"
@@ -9459,6 +9468,7 @@
       "opportunityResourceColumnLabel": "Opportunity",
       "opportunitySavingsColumnLabel": "Estimated Savings",
       "passedAuditsGroupTitle": "Passed audits",
+      "pwaRemovalMessage": "Alongside [Chrome’s updated Installability Criteria](https://developer.chrome.com/blog/update-install-criteria), Lighthouse will be deprecating the PWA category in a future release. Please refer to the [updated PWA documentation](https://developer.chrome.com/docs/devtools/progressive-web-apps/) for future PWA testing.",
       "runtimeAnalysisWindow": "Initial page load",
       "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
       "runtimeAnalysisWindowTimespan": "User interactions timespan",
@@ -9972,7 +9982,8 @@
       ],
       "core/lib/i18n/i18n.js | otherResourceType": [
         "audits[performance-budget].details.items[3].label",
-        "audits[resource-summary].details.items[3].label"
+        "audits[resource-summary].details.items[3].label",
+        "audits[layout-shift-elements].details.items[0].node.value"
       ],
       "core/lib/i18n/i18n.js | thirdPartyResourceType": [
         "audits[performance-budget].details.items[4].label",
@@ -10041,6 +10052,7 @@
       "core/lib/i18n/i18n.js | columnElement": [
         "audits[largest-contentful-paint-element].details.items[0].headings[0].label",
         "audits[layout-shift-elements].details.headings[0].label",
+        "audits[layout-shifts].details.headings[0].label",
         "audits[non-composited-animations].details.headings[0].label",
         "audits[dom-size].details.headings[1].label"
       ],
@@ -10087,6 +10099,23 @@
       ],
       "core/audits/layout-shift-elements.js | columnContribution": [
         "audits[layout-shift-elements].details.headings[1].label"
+      ],
+      "core/audits/layout-shifts.js | title": [
+        "audits[layout-shifts].title"
+      ],
+      "core/audits/layout-shifts.js | description": [
+        "audits[layout-shifts].description"
+      ],
+      "core/audits/layout-shifts.js | displayValueShiftsFound": [
+        {
+          "values": {
+            "shiftCount": 2
+          },
+          "path": "audits[layout-shifts].displayValue"
+        }
+      ],
+      "core/audits/layout-shifts.js | columnScore": [
+        "audits[layout-shifts].details.headings[1].label"
       ],
       "core/audits/long-tasks.js | title": [
         "audits[long-tasks].title"

@@ -17,6 +17,12 @@ export class PwaCategoryRenderer extends CategoryRenderer {
   render(category, groupDefinitions = {}) {
     const categoryElem = this.dom.createElement('div', 'lh-category');
     categoryElem.id = category.id;
+    // Deprecation warning banner.
+    const pwaMessageContainer = this.dom.createComponent('warningsToplevel');
+    const pwaMessageEl = this.dom.find('.lh-warnings__msg', pwaMessageContainer);
+    pwaMessageEl.append(this.dom.convertMarkdownLinkSnippets(Globals.strings.pwaRemovalMessage));
+
+    categoryElem.append(pwaMessageContainer);
     categoryElem.append(this.renderCategoryHeader(category, groupDefinitions));
 
     const auditRefs = category.auditRefs;
@@ -29,8 +35,11 @@ export class PwaCategoryRenderer extends CategoryRenderer {
 
     // Manual audits are still in a manual clump.
     const manualAuditRefs = auditRefs.filter(ref => ref.result.scoreDisplayMode === 'manual');
-    const manualElem = this.renderClump('manual',
-      {auditRefs: manualAuditRefs, description: category.manualDescription, openByDefault: true});
+    const manualElem = this.renderClump('manual', {
+      auditRefsOrEls: manualAuditRefs,
+      description: category.manualDescription,
+      openByDefault: true,
+    });
     categoryElem.append(manualElem);
 
     return categoryElem;
