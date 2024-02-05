@@ -76,7 +76,7 @@ describe('Individual modes API', function() {
       await setupTestPage();
 
       // Wait long enough to ensure a paint after button interaction.
-      await state.page.waitForTimeout(200);
+      await new Promise(r => setTimeout(r, 200));
 
       const result = await run.endTimespan();
       if (!result) throw new Error('Lighthouse failed to produce a result');
@@ -139,7 +139,7 @@ describe('Individual modes API', function() {
       await page.waitForSelector('input');
 
       // Wait long enough to ensure a paint after button interaction.
-      await page.waitForTimeout(200);
+      await new Promise(r => setTimeout(r, 200));
 
       const result = await run.endTimespan();
 
