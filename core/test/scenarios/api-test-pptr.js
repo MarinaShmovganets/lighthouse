@@ -138,7 +138,7 @@ describe('Individual modes API', function() {
       const run = await api.startTimespan(state.page);
 
       await page.click('button');
-      await page.waitForSelector('input', {});
+      await page.waitForSelector('input');
 
       // Wait long enough to ensure a paint after button interaction.
       await page.evaluate(doubleRaf);
