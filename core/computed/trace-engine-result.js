@@ -26,7 +26,9 @@ class TraceEngineResult {
       Samples: TraceEngine.TraceHandlers.Samples,
       Screenshots: TraceEngine.TraceHandlers.Screenshots,
     });
-    await engine.parse(traceEvents);
+    await engine.parse(/** @type {import('/Users/cjamcl/src/devtools/devtools-frontend/out/Default/gen/trace_engine/models/trace/trace.js').Types.TraceEvents.TraceEventData[]} */ (
+      traceEvents
+    ));
     return engine.data;
   }
 
@@ -61,7 +63,11 @@ class TraceEngineResult {
       }
     }
 
-    return TraceEngineResult.runTraceEngine(traceEvents);
+    const result = await TraceEngineResult.runTraceEngine(traceEvents);
+    if (!result) {
+      throw new Error('null trace engine result');
+    }
+    return result;
   }
 }
 
