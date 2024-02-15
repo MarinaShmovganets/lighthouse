@@ -100,7 +100,7 @@ class RootCauses extends BaseGatherer {
         }
       },
       /** @param {string} url */
-      // @ts-expect-error
+      // @ts-expect-error not using, dont care about type error.
       // eslint-disable-next-line no-unused-vars
       async fontFaceForSource(url) {
         return null;
