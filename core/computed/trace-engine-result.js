@@ -26,10 +26,13 @@ class TraceEngineResult {
       Samples: TraceEngine.TraceHandlers.Samples,
       Screenshots: TraceEngine.TraceHandlers.Screenshots,
     });
+    // eslint-disable-next-line max-len
     await engine.parse(/** @type {import('@paulirish/trace_engine').Types.TraceEvents.TraceEventData[]} */ (
       traceEvents
     ));
-    return engine.data;
+    // TODO: use TraceEngine.TraceProcessor.createWithAllHandlers above.
+    return /** @type {import('@paulirish/trace_engine').Handlers.Types.TraceParseData} */(
+      engine.data);
   }
 
   /**

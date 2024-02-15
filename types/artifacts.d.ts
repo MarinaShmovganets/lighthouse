@@ -570,12 +570,7 @@ declare module Artifacts {
     type?: string;
   }
 
-  type TraceEngineResult = Pick<
-    NonNullable<
-      ReturnType<typeof TraceEngine.Processor.TraceProcessor.createWithAllHandlers>['data']
-    >,
-    'AuctionWorklets'|'Initiators'|'LayoutShifts'|'NetworkRequests'|'Renderer'|'Samples'|'Screenshots'
-  >;
+  type TraceEngineResult = TraceEngine.Handlers.Types.TraceParseData;
 
   interface TraceEngineRootCauses {
     layoutShifts: Record<number, LayoutShiftRootCausesData>;

@@ -43,8 +43,9 @@ class RootCauses extends BaseGatherer {
       async pushNodesByBackendIdsToFrontend(backendNodeIds) {
         const response = await driver.defaultSession.sendCommand(
           'DOM.pushNodesByBackendIdsToFrontend', {backendNodeIds});
-        const nodeIds = /** @type {import('@paulirish/trace_engine/generated/protocol.js').DOM.NodeId[]} */(
-          response.nodeIds);
+        const nodeIds =
+          /** @type {import('@paulirish/trace_engine/generated/protocol.js').DOM.NodeId[]} */(
+            response.nodeIds);
         return nodeIds;
       },
       /** @param {import('@paulirish/trace_engine/generated/protocol.js').DOM.NodeId} nodeId */
@@ -54,8 +55,9 @@ class RootCauses extends BaseGatherer {
           // This always zero, so let's fix it here.
           // https://bugs.chromium.org/p/chromium/issues/detail?id=1515175
           response.node.nodeId = nodeId;
-          const node = /** @type {import('@paulirish/trace_engine/generated/protocol.js').DOM.Node} */(
-            response.node);
+          const node =
+            /** @type {import('@paulirish/trace_engine/generated/protocol.js').DOM.Node} */(
+              response.node);
           return node;
         } catch (err) {
           if (err.message.includes('Could not find node with given id')) {
@@ -90,9 +92,11 @@ class RootCauses extends BaseGatherer {
         try {
           const response = await driver.defaultSession.sendCommand(
             'CSS.getMatchedStylesForNode', {nodeId});
-          return {...response, getError(){}};
+          return {...response, getError() {}};
         } catch (err) {
-          return /** @type {any} */({getError(){return err.toString()}});
+          return /** @type {any} */({getError() {
+            return err.toString();
+          }});
         }
       },
       /** @param {string} url */
@@ -111,6 +115,8 @@ class RootCauses extends BaseGatherer {
     const layoutShiftEvents = traceEngineResult.LayoutShifts.clusters.flatMap(c => c.events);
     for (const event of layoutShiftEvents) {
       const r = await rootCausesEngine.layoutShifts.rootCausesForEvent(traceEngineResult, event);
+      if (!r) continue;
+
       for (const cause of r.fontChanges) {
         // TODO: why isn't trace engine unwrapping this promise ...
         cause.fontFace = await cause.fontFace;
