@@ -26,7 +26,7 @@ class TraceEngineResult {
       Samples: TraceEngine.TraceHandlers.Samples,
       Screenshots: TraceEngine.TraceHandlers.Screenshots,
     });
-    await engine.parse(/** @type {import('/Users/cjamcl/src/devtools/devtools-frontend/out/Default/gen/trace_engine/models/trace/trace.js').Types.TraceEvents.TraceEventData[]} */ (
+    await engine.parse(/** @type {import('@paulirish/trace_engine').Types.TraceEvents.TraceEventData[]} */ (
       traceEvents
     ));
     return engine.data;

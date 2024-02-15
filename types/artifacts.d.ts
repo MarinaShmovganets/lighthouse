@@ -5,8 +5,8 @@
  */
 
 import {Protocol as Crdp} from 'devtools-protocol/types/protocol.js';
-import * as TraceEngine from '../../devtools/devtools-frontend/out/Default/gen/trace_engine/models/trace/trace.js';
-import {LayoutShiftRootCausesData} from '../../devtools/devtools-frontend/out/Default/gen/trace_engine/models/trace/root-causes/LayoutShift.js';
+import * as TraceEngine from '@paulirish/trace_engine';
+import {LayoutShiftRootCausesData} from '@paulirish/trace_engine/models/trace/root-causes/LayoutShift.js';
 
 import {parseManifest} from '../core/lib/manifest-parser.js';
 import {Simulator} from '../core/lib/dependency-graph/simulator/simulator.js';

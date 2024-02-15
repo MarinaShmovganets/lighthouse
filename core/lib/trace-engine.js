@@ -1,4 +1,4 @@
-import * as TraceEngine from '/Users/cjamcl/src/devtools/devtools-frontend/out/Default/gen/trace_engine/models/trace/trace.js';
+import * as TraceEngine from '@paulirish/trace_engine';
 
 import {polyfillDOMRect} from './polyfill-dom-rect.js';
 
