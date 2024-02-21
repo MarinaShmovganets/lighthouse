@@ -1,20 +1,16 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-
- <a name="11.6.0"></a>
+<a name="11.6.0"></a>
 # 11.6.0 (2024-02-21)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.5.0...v11.6.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 124](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
+* trace: disable JS samples ([#15819](https://github.com/GoogleChrome/lighthouse/pull/15819))
 
 ## Core
 
 * driver: add verbose logs for wait-for page load components ([#15818](https://github.com/GoogleChrome/lighthouse/pull/15818))
-* trace: disable JS samples ([#15819](https://github.com/GoogleChrome/lighthouse/pull/15819))
 
 ## Deps
 
