@@ -33,7 +33,7 @@ const DevtoolsLogGatherer = (await import('../../gather/gatherers/devtools-log.j
 const TraceGatherer = (await import('../../gather/gatherers/trace.js')).default;
 const {initializeConfig} = await import('../../config/config.js');
 
-/** @typedef {{meta: LH.Gatherer.GathererMeta<'Accessibility'>, getArtifact: Mock<any, any>, startInstrumentation: Mock<any, any>, stopInstrumentation: Mock<any, any>, startSensitiveInstrumentation: Mock<any, any>, stopSensitiveInstrumentation:  Mock<any, any>, getDebugData?: Mock<any, any>}} MockGatherer */
+/** @typedef {{meta: LH.Gatherer.GathererMeta<'Accessibility'>, getArtifact: Mock<any, any>, startInstrumentation: Mock<any, any>, stopInstrumentation: Mock<any, any>, startSensitiveInstrumentation: Mock<any, any>, stopSensitiveInstrumentation:  Mock<any, any>}} MockGatherer */
 
 describe('NavigationRunner', () => {
   let requestedUrl = '';
