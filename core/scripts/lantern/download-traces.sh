@@ -4,7 +4,7 @@
 
 set -e
 
-VERSION="2019-12-17-v2"
+VERSION="2023-wip"
 
 DIRNAME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 LH_ROOT_PATH="$DIRNAME/../../.."
@@ -28,7 +28,7 @@ fi
 rm -rf lantern-data/
 mkdir -p lantern-data/ && cd lantern-data
 
-curl -o golden-lantern-traces.zip -L https://storage.googleapis.com/lh-lantern-data/golden-lantern-traces-$VERSION.zip
+curl -o golden-lantern-traces.zip -L https://storage.googleapis.com/lh-lantern-data/lantern-traces-$VERSION.zip
 
 unzip -q golden-lantern-traces.zip
 rm golden-lantern-traces.zip
