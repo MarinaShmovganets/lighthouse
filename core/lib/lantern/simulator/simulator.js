@@ -6,10 +6,10 @@
 
 // This could be replaced by jsdoc namespace import, when ready.
 // https://github.com/microsoft/TypeScript/issues/41825
-/** @typedef {import('../../../../types/internal/lantern').Lantern.NetworkRequest} NetworkRequest */
-/** @typedef {import('../../../../types/internal/lantern').Lantern.Simulation.Options} SimulationOptions */
-/** @typedef {import('../../../../types/internal/lantern').Lantern.Simulation.NodeTiming} SimulationNodeTiming */
-/** @typedef {import('../../../../types/internal/lantern').Lantern.Simulation.Result} SimulationResult */
+/** @typedef {import('../../../../types/internal/lantern.js').Lantern.NetworkRequest} NetworkRequest */
+/** @typedef {import('../../../../types/internal/lantern.js').Lantern.Simulation.Options} SimulationOptions */
+/** @typedef {import('../../../../types/internal/lantern.js').Lantern.Simulation.NodeTiming} SimulationNodeTiming */
+/** @typedef {import('../../../../types/internal/lantern.js').Lantern.Simulation.Result} SimulationResult */
 
 import {BaseNode} from '../base-node.js';
 import {TcpConnection} from './tcp-connection.js';

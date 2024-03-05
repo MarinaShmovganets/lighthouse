@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/** @template T @typedef {import('../../../types/internal/lantern').Lantern.NetworkRequest<T>} NetworkRequest */
+/** @template T @typedef {import('../../../types/internal/lantern.js').Lantern.NetworkRequest<T>} NetworkRequest */
 
 import {NetworkRequestTypes} from './lantern.js';
 import {BaseNode} from './base-node.js';

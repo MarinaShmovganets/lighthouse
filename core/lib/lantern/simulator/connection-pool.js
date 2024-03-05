@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/** @typedef {import('../../../../types/internal/lantern').Lantern.NetworkRequest} NetworkRequest */
-/** @typedef {import('../../../../types/internal/lantern').Lantern.Simulation.Options} SimulationOptions */
+/** @typedef {import('../../../../types/internal/lantern.js').Lantern.NetworkRequest} NetworkRequest */
+/** @typedef {import('../../../../types/internal/lantern.js').Lantern.Simulation.Options} SimulationOptions */
 
 import {NetworkAnalyzer} from './network-analyzer.js';
 import {TcpConnection} from './tcp-connection.js';

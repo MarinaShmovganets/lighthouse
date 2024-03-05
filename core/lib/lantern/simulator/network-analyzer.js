@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/** @typedef {import('../../../../types/internal/lantern').Lantern.NetworkRequest} NetworkRequest */
+/** @typedef {import('../../../../types/internal/lantern.js').Lantern.NetworkRequest} NetworkRequest */
 
 import UrlUtils from '../../url-utils.js';
 
