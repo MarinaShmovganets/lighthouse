@@ -36,7 +36,12 @@ export type LightriderStatistics = {
     responseMs: number;
 };
 export class NetworkRequest<T=any> {
-    /** The canonical network record. */
+    /**
+     * The canonical network record.
+     * Users of Lantern must create NetworkRequests matching this interface,
+     * but can store the source-of-truth for their network model in this `record`
+     * property. This is then accessible as a read-only property on NetworkNode.
+     */
     record?: T;
 
     requestId: string;
