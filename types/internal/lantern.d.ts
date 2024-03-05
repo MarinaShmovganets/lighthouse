@@ -39,8 +39,6 @@ export class NetworkRequest<T=any> {
     /** The canonical network record. */
     record?: T;
 
-    static get TYPES(): LH.Util.SelfMap<LH.Crdp.Network.ResourceType>;
-
     requestId: string;
     connectionId: string;
     connectionReused: boolean;
