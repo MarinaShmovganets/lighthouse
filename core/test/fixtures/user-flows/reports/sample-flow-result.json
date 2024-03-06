@@ -2732,6 +2732,13 @@
               "items": []
             }
           },
+          "target-size": {
+            "id": "target-size",
+            "title": "Touch targets have sufficient size and spacing.",
+            "description": "Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. [Learn more about touch targets](https://dequeuniversity.com/rules/axe/4.8/target-size).",
+            "score": null,
+            "scoreDisplayMode": "notApplicable"
+          },
           "td-has-header": {
             "id": "td-has-header",
             "title": "`<td>` elements in a large `<table>` have one or more table headers.",
@@ -4497,6 +4504,11 @@
               },
               {
                 "id": "landmark-one-main",
+                "weight": 0,
+                "group": "hidden"
+              },
+              {
+                "id": "target-size",
                 "weight": 0,
                 "group": "hidden"
               },
@@ -6728,348 +6740,354 @@
             },
             {
               "startTime": 230,
-              "name": "lh:audit:td-has-header",
+              "name": "lh:audit:target-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 231,
-              "name": "lh:audit:td-headers-attr",
+              "name": "lh:audit:td-has-header",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 232,
-              "name": "lh:audit:th-has-data-cells",
+              "name": "lh:audit:td-headers-attr",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 233,
-              "name": "lh:audit:valid-lang",
+              "name": "lh:audit:th-has-data-cells",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 234,
-              "name": "lh:audit:video-caption",
+              "name": "lh:audit:valid-lang",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 235,
-              "name": "lh:audit:custom-controls-labels",
+              "name": "lh:audit:video-caption",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 236,
-              "name": "lh:audit:custom-controls-roles",
+              "name": "lh:audit:custom-controls-labels",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 237,
-              "name": "lh:audit:focus-traps",
+              "name": "lh:audit:custom-controls-roles",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 238,
-              "name": "lh:audit:focusable-controls",
+              "name": "lh:audit:focus-traps",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 239,
-              "name": "lh:audit:interactive-element-affordance",
+              "name": "lh:audit:focusable-controls",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 240,
-              "name": "lh:audit:logical-tab-order",
+              "name": "lh:audit:interactive-element-affordance",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 241,
-              "name": "lh:audit:managed-focus",
+              "name": "lh:audit:logical-tab-order",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 242,
-              "name": "lh:audit:offscreen-content-hidden",
+              "name": "lh:audit:managed-focus",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 243,
-              "name": "lh:audit:use-landmarks",
+              "name": "lh:audit:offscreen-content-hidden",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 244,
-              "name": "lh:audit:visual-order-follows-dom",
+              "name": "lh:audit:use-landmarks",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 245,
-              "name": "lh:audit:uses-long-cache-ttl",
+              "name": "lh:audit:visual-order-follows-dom",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 246,
-              "name": "lh:audit:total-byte-weight",
+              "name": "lh:audit:uses-long-cache-ttl",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 247,
-              "name": "lh:audit:offscreen-images",
+              "name": "lh:audit:total-byte-weight",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 248,
-              "name": "lh:audit:render-blocking-resources",
+              "name": "lh:audit:offscreen-images",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 249,
-              "name": "lh:computed:UnusedCSS",
+              "name": "lh:audit:render-blocking-resources",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 250,
-              "name": "lh:computed:FirstContentfulPaint",
+              "name": "lh:computed:UnusedCSS",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 251,
-              "name": "lh:audit:unminified-css",
+              "name": "lh:computed:FirstContentfulPaint",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 252,
-              "name": "lh:audit:unminified-javascript",
+              "name": "lh:audit:unminified-css",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 253,
-              "name": "lh:audit:unused-css-rules",
+              "name": "lh:audit:unminified-javascript",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 254,
-              "name": "lh:audit:unused-javascript",
+              "name": "lh:audit:unused-css-rules",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 255,
-              "name": "lh:audit:modern-image-formats",
+              "name": "lh:audit:unused-javascript",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 256,
-              "name": "lh:audit:uses-optimized-images",
+              "name": "lh:audit:modern-image-formats",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 257,
-              "name": "lh:audit:uses-text-compression",
+              "name": "lh:audit:uses-optimized-images",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 258,
-              "name": "lh:audit:uses-responsive-images",
+              "name": "lh:audit:uses-text-compression",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 259,
-              "name": "lh:computed:ImageRecords",
+              "name": "lh:audit:uses-responsive-images",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 260,
-              "name": "lh:audit:efficient-animated-content",
+              "name": "lh:computed:ImageRecords",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 261,
-              "name": "lh:audit:duplicated-javascript",
+              "name": "lh:audit:efficient-animated-content",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 262,
-              "name": "lh:audit:legacy-javascript",
+              "name": "lh:audit:duplicated-javascript",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 263,
-              "name": "lh:audit:doctype",
+              "name": "lh:audit:legacy-javascript",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 264,
-              "name": "lh:audit:charset",
+              "name": "lh:audit:doctype",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 265,
-              "name": "lh:audit:dom-size",
+              "name": "lh:audit:charset",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 266,
-              "name": "lh:audit:geolocation-on-start",
+              "name": "lh:audit:dom-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 267,
-              "name": "lh:audit:inspector-issues",
+              "name": "lh:audit:geolocation-on-start",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 268,
-              "name": "lh:audit:no-document-write",
+              "name": "lh:audit:inspector-issues",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 269,
-              "name": "lh:audit:js-libraries",
+              "name": "lh:audit:no-document-write",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 270,
-              "name": "lh:audit:notification-on-start",
+              "name": "lh:audit:js-libraries",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 271,
-              "name": "lh:audit:paste-preventing-inputs",
+              "name": "lh:audit:notification-on-start",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 272,
-              "name": "lh:audit:uses-passive-event-listeners",
+              "name": "lh:audit:paste-preventing-inputs",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 273,
-              "name": "lh:audit:meta-description",
+              "name": "lh:audit:uses-passive-event-listeners",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 274,
-              "name": "lh:audit:http-status-code",
+              "name": "lh:audit:meta-description",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 275,
-              "name": "lh:audit:font-size",
+              "name": "lh:audit:http-status-code",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 276,
-              "name": "lh:audit:link-text",
+              "name": "lh:audit:font-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 277,
-              "name": "lh:audit:crawlable-anchors",
+              "name": "lh:audit:link-text",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 278,
-              "name": "lh:audit:is-crawlable",
+              "name": "lh:audit:crawlable-anchors",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 279,
-              "name": "lh:audit:robots-txt",
+              "name": "lh:audit:is-crawlable",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 280,
-              "name": "lh:audit:tap-targets",
+              "name": "lh:audit:robots-txt",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 281,
-              "name": "lh:audit:hreflang",
+              "name": "lh:audit:tap-targets",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 282,
-              "name": "lh:audit:plugins",
+              "name": "lh:audit:hreflang",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 283,
-              "name": "lh:audit:canonical",
+              "name": "lh:audit:plugins",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 284,
-              "name": "lh:audit:structured-data",
+              "name": "lh:audit:canonical",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 285,
-              "name": "lh:audit:bf-cache",
+              "name": "lh:audit:structured-data",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 286,
+              "name": "lh:audit:bf-cache",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 287,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 287
+          "total": 288
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -8038,6 +8056,12 @@
             ],
             "core/audits/accessibility/table-fake-caption.js | description": [
               "audits[table-fake-caption].description"
+            ],
+            "core/audits/accessibility/target-size.js | title": [
+              "audits[target-size].title"
+            ],
+            "core/audits/accessibility/target-size.js | description": [
+              "audits[target-size].description"
             ],
             "core/audits/accessibility/td-has-header.js | title": [
               "audits[td-has-header].title"
@@ -14661,6 +14685,13 @@
               "items": []
             }
           },
+          "target-size": {
+            "id": "target-size",
+            "title": "Touch targets have sufficient size and spacing.",
+            "description": "Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. [Learn more about touch targets](https://dequeuniversity.com/rules/axe/4.8/target-size).",
+            "score": null,
+            "scoreDisplayMode": "notApplicable"
+          },
           "td-has-header": {
             "id": "td-has-header",
             "title": "`<td>` elements in a large `<table>` have one or more table headers.",
@@ -15585,6 +15616,11 @@
               },
               {
                 "id": "landmark-one-main",
+                "weight": 0,
+                "group": "hidden"
+              },
+              {
+                "id": "target-size",
                 "weight": 0,
                 "group": "hidden"
               },
@@ -17014,180 +17050,186 @@
             },
             {
               "startTime": 86,
-              "name": "lh:audit:td-has-header",
+              "name": "lh:audit:target-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 87,
-              "name": "lh:audit:td-headers-attr",
+              "name": "lh:audit:td-has-header",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 88,
-              "name": "lh:audit:th-has-data-cells",
+              "name": "lh:audit:td-headers-attr",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 89,
-              "name": "lh:audit:valid-lang",
+              "name": "lh:audit:th-has-data-cells",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 90,
-              "name": "lh:audit:video-caption",
+              "name": "lh:audit:valid-lang",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 91,
-              "name": "lh:audit:custom-controls-labels",
+              "name": "lh:audit:video-caption",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 92,
-              "name": "lh:audit:custom-controls-roles",
+              "name": "lh:audit:custom-controls-labels",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 93,
-              "name": "lh:audit:focus-traps",
+              "name": "lh:audit:custom-controls-roles",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 94,
-              "name": "lh:audit:focusable-controls",
+              "name": "lh:audit:focus-traps",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 95,
-              "name": "lh:audit:interactive-element-affordance",
+              "name": "lh:audit:focusable-controls",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 96,
-              "name": "lh:audit:logical-tab-order",
+              "name": "lh:audit:interactive-element-affordance",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 97,
-              "name": "lh:audit:managed-focus",
+              "name": "lh:audit:logical-tab-order",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 98,
-              "name": "lh:audit:offscreen-content-hidden",
+              "name": "lh:audit:managed-focus",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 99,
-              "name": "lh:audit:use-landmarks",
+              "name": "lh:audit:offscreen-content-hidden",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 100,
-              "name": "lh:audit:visual-order-follows-dom",
+              "name": "lh:audit:use-landmarks",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 101,
-              "name": "lh:audit:uses-responsive-images-snapshot",
+              "name": "lh:audit:visual-order-follows-dom",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 102,
-              "name": "lh:audit:doctype",
+              "name": "lh:audit:uses-responsive-images-snapshot",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 103,
-              "name": "lh:audit:dom-size",
+              "name": "lh:audit:doctype",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 104,
-              "name": "lh:audit:js-libraries",
+              "name": "lh:audit:dom-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 105,
-              "name": "lh:audit:paste-preventing-inputs",
+              "name": "lh:audit:js-libraries",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 106,
-              "name": "lh:audit:meta-description",
+              "name": "lh:audit:paste-preventing-inputs",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 107,
-              "name": "lh:audit:font-size",
+              "name": "lh:audit:meta-description",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 108,
-              "name": "lh:audit:link-text",
+              "name": "lh:audit:font-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 109,
-              "name": "lh:audit:crawlable-anchors",
+              "name": "lh:audit:link-text",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 110,
-              "name": "lh:audit:robots-txt",
+              "name": "lh:audit:crawlable-anchors",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 111,
-              "name": "lh:audit:tap-targets",
+              "name": "lh:audit:robots-txt",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 112,
-              "name": "lh:audit:plugins",
+              "name": "lh:audit:tap-targets",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 113,
-              "name": "lh:audit:structured-data",
+              "name": "lh:audit:plugins",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 114,
+              "name": "lh:audit:structured-data",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 115,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 115
+          "total": 116
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -17623,6 +17665,12 @@
             ],
             "core/audits/accessibility/table-fake-caption.js | description": [
               "audits[table-fake-caption].description"
+            ],
+            "core/audits/accessibility/target-size.js | title": [
+              "audits[target-size].title"
+            ],
+            "core/audits/accessibility/target-size.js | description": [
+              "audits[target-size].description"
             ],
             "core/audits/accessibility/td-has-header.js | title": [
               "audits[td-has-header].title"
@@ -20679,6 +20727,13 @@
               "items": []
             }
           },
+          "target-size": {
+            "id": "target-size",
+            "title": "Touch targets have sufficient size and spacing.",
+            "description": "Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. [Learn more about touch targets](https://dequeuniversity.com/rules/axe/4.8/target-size).",
+            "score": null,
+            "scoreDisplayMode": "notApplicable"
+          },
           "td-has-header": {
             "id": "td-has-header",
             "title": "`<td>` elements in a large `<table>` have one or more table headers.",
@@ -22571,6 +22626,11 @@
               },
               {
                 "id": "landmark-one-main",
+                "weight": 0,
+                "group": "hidden"
+              },
+              {
+                "id": "target-size",
                 "weight": 0,
                 "group": "hidden"
               },
@@ -24776,348 +24836,354 @@
             },
             {
               "startTime": 227,
-              "name": "lh:audit:td-has-header",
+              "name": "lh:audit:target-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 228,
-              "name": "lh:audit:td-headers-attr",
+              "name": "lh:audit:td-has-header",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 229,
-              "name": "lh:audit:th-has-data-cells",
+              "name": "lh:audit:td-headers-attr",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 230,
-              "name": "lh:audit:valid-lang",
+              "name": "lh:audit:th-has-data-cells",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 231,
-              "name": "lh:audit:video-caption",
+              "name": "lh:audit:valid-lang",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 232,
-              "name": "lh:audit:custom-controls-labels",
+              "name": "lh:audit:video-caption",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 233,
-              "name": "lh:audit:custom-controls-roles",
+              "name": "lh:audit:custom-controls-labels",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 234,
-              "name": "lh:audit:focus-traps",
+              "name": "lh:audit:custom-controls-roles",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 235,
-              "name": "lh:audit:focusable-controls",
+              "name": "lh:audit:focus-traps",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 236,
-              "name": "lh:audit:interactive-element-affordance",
+              "name": "lh:audit:focusable-controls",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 237,
-              "name": "lh:audit:logical-tab-order",
+              "name": "lh:audit:interactive-element-affordance",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 238,
-              "name": "lh:audit:managed-focus",
+              "name": "lh:audit:logical-tab-order",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 239,
-              "name": "lh:audit:offscreen-content-hidden",
+              "name": "lh:audit:managed-focus",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 240,
-              "name": "lh:audit:use-landmarks",
+              "name": "lh:audit:offscreen-content-hidden",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 241,
-              "name": "lh:audit:visual-order-follows-dom",
+              "name": "lh:audit:use-landmarks",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 242,
-              "name": "lh:audit:uses-long-cache-ttl",
+              "name": "lh:audit:visual-order-follows-dom",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 243,
-              "name": "lh:audit:total-byte-weight",
+              "name": "lh:audit:uses-long-cache-ttl",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 244,
-              "name": "lh:audit:offscreen-images",
+              "name": "lh:audit:total-byte-weight",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 245,
-              "name": "lh:audit:render-blocking-resources",
+              "name": "lh:audit:offscreen-images",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 246,
-              "name": "lh:computed:UnusedCSS",
+              "name": "lh:audit:render-blocking-resources",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 247,
-              "name": "lh:computed:FirstContentfulPaint",
+              "name": "lh:computed:UnusedCSS",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 248,
-              "name": "lh:audit:unminified-css",
+              "name": "lh:computed:FirstContentfulPaint",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 249,
-              "name": "lh:audit:unminified-javascript",
+              "name": "lh:audit:unminified-css",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 250,
-              "name": "lh:audit:unused-css-rules",
+              "name": "lh:audit:unminified-javascript",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 251,
-              "name": "lh:audit:unused-javascript",
+              "name": "lh:audit:unused-css-rules",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 252,
-              "name": "lh:audit:modern-image-formats",
+              "name": "lh:audit:unused-javascript",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 253,
-              "name": "lh:audit:uses-optimized-images",
+              "name": "lh:audit:modern-image-formats",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 254,
-              "name": "lh:audit:uses-text-compression",
+              "name": "lh:audit:uses-optimized-images",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 255,
-              "name": "lh:audit:uses-responsive-images",
+              "name": "lh:audit:uses-text-compression",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 256,
-              "name": "lh:computed:ImageRecords",
+              "name": "lh:audit:uses-responsive-images",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 257,
-              "name": "lh:audit:efficient-animated-content",
+              "name": "lh:computed:ImageRecords",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 258,
-              "name": "lh:audit:duplicated-javascript",
+              "name": "lh:audit:efficient-animated-content",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 259,
-              "name": "lh:audit:legacy-javascript",
+              "name": "lh:audit:duplicated-javascript",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 260,
-              "name": "lh:audit:doctype",
+              "name": "lh:audit:legacy-javascript",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 261,
-              "name": "lh:audit:charset",
+              "name": "lh:audit:doctype",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 262,
-              "name": "lh:audit:dom-size",
+              "name": "lh:audit:charset",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 263,
-              "name": "lh:audit:geolocation-on-start",
+              "name": "lh:audit:dom-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 264,
-              "name": "lh:audit:inspector-issues",
+              "name": "lh:audit:geolocation-on-start",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 265,
-              "name": "lh:audit:no-document-write",
+              "name": "lh:audit:inspector-issues",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 266,
-              "name": "lh:audit:js-libraries",
+              "name": "lh:audit:no-document-write",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 267,
-              "name": "lh:audit:notification-on-start",
+              "name": "lh:audit:js-libraries",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 268,
-              "name": "lh:audit:paste-preventing-inputs",
+              "name": "lh:audit:notification-on-start",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 269,
-              "name": "lh:audit:uses-passive-event-listeners",
+              "name": "lh:audit:paste-preventing-inputs",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 270,
-              "name": "lh:audit:meta-description",
+              "name": "lh:audit:uses-passive-event-listeners",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 271,
-              "name": "lh:audit:http-status-code",
+              "name": "lh:audit:meta-description",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 272,
-              "name": "lh:audit:font-size",
+              "name": "lh:audit:http-status-code",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 273,
-              "name": "lh:audit:link-text",
+              "name": "lh:audit:font-size",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 274,
-              "name": "lh:audit:crawlable-anchors",
+              "name": "lh:audit:link-text",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 275,
-              "name": "lh:audit:is-crawlable",
+              "name": "lh:audit:crawlable-anchors",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 276,
-              "name": "lh:audit:robots-txt",
+              "name": "lh:audit:is-crawlable",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 277,
-              "name": "lh:audit:tap-targets",
+              "name": "lh:audit:robots-txt",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 278,
-              "name": "lh:audit:hreflang",
+              "name": "lh:audit:tap-targets",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 279,
-              "name": "lh:audit:plugins",
+              "name": "lh:audit:hreflang",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 280,
-              "name": "lh:audit:canonical",
+              "name": "lh:audit:plugins",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 281,
-              "name": "lh:audit:structured-data",
+              "name": "lh:audit:canonical",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 282,
-              "name": "lh:audit:bf-cache",
+              "name": "lh:audit:structured-data",
               "duration": 1,
               "entryType": "measure"
             },
             {
               "startTime": 283,
+              "name": "lh:audit:bf-cache",
+              "duration": 1,
+              "entryType": "measure"
+            },
+            {
+              "startTime": 284,
               "name": "lh:runner:generate",
               "duration": 1,
               "entryType": "measure"
             }
           ],
-          "total": 284
+          "total": 285
         },
         "i18n": {
           "rendererFormattedStrings": {
@@ -26066,6 +26132,12 @@
             ],
             "core/audits/accessibility/table-fake-caption.js | description": [
               "audits[table-fake-caption].description"
+            ],
+            "core/audits/accessibility/target-size.js | title": [
+              "audits[target-size].title"
+            ],
+            "core/audits/accessibility/target-size.js | description": [
+              "audits[target-size].description"
             ],
             "core/audits/accessibility/td-has-header.js | title": [
               "audits[td-has-header].title"

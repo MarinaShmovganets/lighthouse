@@ -290,8 +290,7 @@ const defaultConfig = {
     'accessibility/tabindex',
     'accessibility/table-duplicate-name',
     'accessibility/table-fake-caption',
-    // TODO: https://github.com/GoogleChrome/lighthouse/issues/15824
-    // 'accessibility/target-size',
+    'accessibility/target-size',
     'accessibility/td-has-header',
     'accessibility/td-headers-attr',
     'accessibility/th-has-data-cells',
@@ -587,8 +586,7 @@ const defaultConfig = {
         {id: 'empty-heading', weight: 0, group: 'hidden'},
         {id: 'identical-links-same-purpose', weight: 0, group: 'hidden'},
         {id: 'landmark-one-main', weight: 0, group: 'hidden'},
-        // TODO: https://github.com/GoogleChrome/lighthouse/issues/15824
-        // {id: 'target-size', weight: 0, group: 'hidden'},
+        {id: 'target-size', weight: 0, group: 'hidden'},
         {id: 'label-content-name-mismatch', weight: 0, group: 'hidden'},
         {id: 'table-fake-caption', weight: 0, group: 'hidden'},
         {id: 'td-has-header', weight: 0, group: 'hidden'},
