@@ -4089,13 +4089,6 @@
         "items": []
       }
     },
-    "target-size": {
-      "id": "target-size",
-      "title": "Touch targets have sufficient size and spacing.",
-      "description": "Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. [Learn more about touch targets](https://dequeuniversity.com/rules/axe/4.8/target-size).",
-      "score": null,
-      "scoreDisplayMode": "notApplicable"
-    },
     "td-has-header": {
       "id": "td-has-header",
       "title": "`<td>` elements in a large `<table>` have one or more table headers.",
@@ -6672,11 +6665,6 @@
           "group": "hidden"
         },
         {
-          "id": "target-size",
-          "weight": 0,
-          "group": "hidden"
-        },
-        {
           "id": "label-content-name-mismatch",
           "weight": 0,
           "group": "hidden"
@@ -9072,12 +9060,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:target-size",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:td-has-header",
         "duration": 100,
         "entryType": "measure"
@@ -10575,12 +10557,6 @@
       ],
       "core/audits/accessibility/table-fake-caption.js | description": [
         "audits[table-fake-caption].description"
-      ],
-      "core/audits/accessibility/target-size.js | title": [
-        "audits[target-size].title"
-      ],
-      "core/audits/accessibility/target-size.js | description": [
-        "audits[target-size].description"
       ],
       "core/audits/accessibility/td-has-header.js | title": [
         "audits[td-has-header].title"
