@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {lighthouseVersion} from '../../shared/root.js';
-
 const NO_THROTTLING_METRICS = {
   latency: 0,
   downloadThroughput: 0,
