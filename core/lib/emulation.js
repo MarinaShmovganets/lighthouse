@@ -29,7 +29,6 @@ function parseUseragentIntoMetadata(userAgent, formFactor) {
   const brands = [
     {brand: 'Chromium', version},
     {brand: 'Google Chrome', version},
-    {brand: 'Lighthouse', version: lighthouseVersion},
   ];
 
   const motoGPowerDetails = {
