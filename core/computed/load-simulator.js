@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as Lantern from '../lib/lantern/types/lantern.js';
 import {makeComputedArtifact} from './computed-artifact.js';
 import * as constants from '../config/constants.js';
 import {Simulator} from '../lib/lantern/simulator/simulator.js';

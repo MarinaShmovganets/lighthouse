@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as Lantern from './types/lantern.js';
 import {BaseNode} from '../../lib/lantern/base-node.js';
 import {NetworkRequest} from '../../lib/network-request.js';
 
