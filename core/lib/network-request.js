@@ -53,6 +53,7 @@
  */
 
 import * as LH from '../../types/lh.js';
+import * as Lantern from './lantern/types/lantern.js';
 import UrlUtils from './url-utils.js';
 
 // Lightrider X-Header names for timing information.

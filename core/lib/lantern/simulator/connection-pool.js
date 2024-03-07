@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as Lantern from '../types/lantern.js';
 import {NetworkAnalyzer} from './network-analyzer.js';
 import {TcpConnection} from './tcp-connection.js';
 
