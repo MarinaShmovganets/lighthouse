@@ -10,7 +10,6 @@ import {CPUNode} from './cpu-node.js';
 import {TraceProcessor} from '../tracehouse/trace-processor.js';
 import {NetworkAnalyzer} from './simulator/network-analyzer.js';
 
-/** @typedef {import('../../../types/internal/lantern.js').Lantern.NetworkRequest} NetworkRequest */
 /** @typedef {import('./base-node.js').Node} Node */
 /** @typedef {Omit<LH.Artifacts['URL'], 'finalDisplayedUrl'>} URLArtifact */
 
@@ -31,7 +30,7 @@ const IGNORED_MIME_TYPES_REGEX = /^video/;
 
 class PageDependencyGraph {
   /**
-   * @param {NetworkRequest} record
+   * @param {Lantern.NetworkRequest} record
    * @return {Array<string>}
    */
   static getNetworkInitiators(record) {
@@ -60,7 +59,7 @@ class PageDependencyGraph {
   }
 
   /**
-   * @param {Array<NetworkRequest>} networkRecords
+   * @param {Array<Lantern.NetworkRequest>} networkRecords
    * @return {NetworkNodeOutput}
    */
   static getNetworkNodeOutput(networkRecords) {
@@ -394,7 +393,7 @@ class PageDependencyGraph {
 
   /**
    * @param {LH.Artifacts.ProcessedTrace} processedTrace
-   * @param {Array<NetworkRequest>} networkRecords
+   * @param {Array<Lantern.NetworkRequest>} networkRecords
    * @param {URLArtifact} URL
    * @return {Node}
    */

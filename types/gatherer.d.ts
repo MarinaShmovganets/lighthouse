@@ -17,7 +17,6 @@ import Config from './config.js';
 import Result from './lhr/lhr.js';
 import Protocol from './protocol.js';
 import Puppeteer from './puppeteer.js';
-import {Lantern} from '../types/internal/lantern.js';
 
 type CrdpEvents = CrdpMappings.Events;
 type CrdpCommands = CrdpMappings.Commands;

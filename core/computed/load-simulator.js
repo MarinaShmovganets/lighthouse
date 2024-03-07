@@ -9,8 +9,6 @@ import * as constants from '../config/constants.js';
 import {Simulator} from '../lib/lantern/simulator/simulator.js';
 import {NetworkAnalysis} from './network-analysis.js';
 
-/** @typedef {import('../../types/internal/lantern.js').Lantern.Simulation.Options} SimulationOptions */
-
 class LoadSimulator {
   /**
    * @param {{devtoolsLog: LH.DevtoolsLog, settings: LH.Audit.Context['settings']}} data
@@ -21,7 +19,7 @@ class LoadSimulator {
     const {throttlingMethod, throttling, precomputedLanternData} = data.settings;
     const networkAnalysis = await NetworkAnalysis.request(data.devtoolsLog, context);
 
-    /** @type {SimulationOptions} */
+    /** @type {Lantern.Simulation.Options} */
     const options = {
       additionalRttByOrigin: networkAnalysis.additionalRttByOrigin,
       serverResponseTimeByOrigin: networkAnalysis.serverResponseTimeByOrigin,

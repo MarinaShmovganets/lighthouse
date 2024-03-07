@@ -10,7 +10,6 @@ import {NetworkRequest} from '../../lib/network-request.js';
 /** @typedef {import('./base-node.js').Node} Node */
 /** @typedef {import('./network-node.js').NetworkNode} NetworkNode */
 /** @typedef {import('./simulator/simulator.js').Simulator} Simulator */
-/** @typedef {import('../../../types/internal/lantern.js').Lantern.Simulation.MetricComputationDataInput} MetricComputationDataInput */
 
 /**
  * @typedef Extras
@@ -43,7 +42,7 @@ class Metric {
   }
 
   /**
-   * @return {LH.Gatherer.Simulation.MetricCoefficients}
+   * @return {Lantern.Simulation.MetricCoefficients}
    */
   static get COEFFICIENTS() {
     throw new Error('COEFFICIENTS unimplemented!');
@@ -56,7 +55,7 @@ class Metric {
    * settings change.
    *
    * @param {number} rttMs
-   * @return {LH.Gatherer.Simulation.MetricCoefficients}
+   * @return {Lantern.Simulation.MetricCoefficients}
    */
   static getScaledCoefficients(rttMs) { // eslint-disable-line no-unused-vars
     return this.COEFFICIENTS;
@@ -81,16 +80,16 @@ class Metric {
   }
 
   /**
-   * @param {LH.Gatherer.Simulation.Result} simulationResult
+   * @param {Lantern.Simulation.Result} simulationResult
    * @param {Extras} extras
-   * @return {LH.Gatherer.Simulation.Result}
+   * @return {Lantern.Simulation.Result}
    */
   static getEstimateFromSimulation(simulationResult, extras) { // eslint-disable-line no-unused-vars
     return simulationResult;
   }
 
   /**
-   * @param {MetricComputationDataInput} data
+   * @param {Lantern.Simulation.MetricComputationDataInput} data
    * @param {Omit<Extras, 'optimistic'>=} extras
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */

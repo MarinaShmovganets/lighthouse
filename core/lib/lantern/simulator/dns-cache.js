@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/** @typedef {import('../../../../types/internal/lantern.js').Lantern.NetworkRequest} NetworkRequest */
-
 // A DNS lookup will usually take ~1-2 roundtrips of connection latency plus the extra DNS routing time.
 // Example: https://www.webpagetest.org/result/180703_3A_e33ec79747c002ed4d7bcbfc81462203/1/details/#waterfall_view_step1
 // Example: https://www.webpagetest.org/result/180707_1M_89673eb633b5d98386de95dfcf9b33d5/1/details/#waterfall_view_step1
@@ -25,7 +23,7 @@ class DNSCache {
   }
 
   /**
-   * @param {NetworkRequest} request
+   * @param {Lantern.NetworkRequest} request
    * @param {{requestedAt: number, shouldUpdateCache: boolean}=} options
    * @return {number}
    */
@@ -47,7 +45,7 @@ class DNSCache {
   }
 
   /**
-   * @param {NetworkRequest} request
+   * @param {Lantern.NetworkRequest} request
    * @param {number} resolvedAt
    */
   _updateCacheResolvedAtIfNeeded(request, resolvedAt) {

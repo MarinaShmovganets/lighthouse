@@ -55,8 +55,6 @@
 import * as LH from '../../types/lh.js';
 import UrlUtils from './url-utils.js';
 
-/** @template T @typedef {import('../../types/internal/lantern.js').Lantern.NetworkRequest<T>} LanternNetworkRequest */
-
 // Lightrider X-Header names for timing information.
 // See: _updateTransferSizeForLightrider and _updateTimingsForLightrider.
 const HEADER_TCP = 'X-TCPMs'; // Note: this should have been called something like ConnectMs, as it includes SSL.
@@ -572,7 +570,7 @@ class NetworkRequest {
 
   /**
    * @param {NetworkRequest} record
-   * @return {LanternNetworkRequest<NetworkRequest>}
+   * @return {Lantern.NetworkRequest<NetworkRequest>}
    */
   static asLanternNetworkRequest(record) {
     return {
