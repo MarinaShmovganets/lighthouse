@@ -10,6 +10,8 @@ import FullPageScreenshotGatherer from '../../../gather/gatherers/full-page-scre
 let contentSize;
 /** @type {{width?: number, height?: number, dpr: number}} */
 let screenSize;
+/** @type {{width?: number, height?: number}} */
+let screenshotSize;
 /** @type {string[]} */
 let screenshotData;
 let mockContext = createMockContext();
@@ -17,6 +19,7 @@ let mockContext = createMockContext();
 beforeEach(() => {
   contentSize = {width: 100, height: 100};
   screenSize = {width: 100, height: 100, dpr: 1};
+  screenshotSize = contentSize;
   screenshotData = [];
   mockContext = createMockContext();
   mockContext.driver.defaultSession.sendCommand.mockImplementation((method) => {
@@ -27,11 +30,8 @@ beforeEach(() => {
         // At that time the width and height should match the screen size.
         cssLayoutViewport: {clientWidth: screenSize.width, clientHeight: screenSize.height},
         // This is only accessed on the second call to Page.getLayoutMetrics
-        // At that time the width should be the same as the layout width but the height will
-        // have been resized to reach the content height.
-        // This will represent the final screenshot area size.
-        // See comment within _takeScreenshot() implementation
-        cssVisualViewport: {clientWidth: screenSize.width, clientHeight: contentSize.height},
+        // At that time the width and height should match the screenshot size.
+        cssVisualViewport: {clientWidth: screenshotSize.width, clientHeight: screenshotSize.height},
       };
     }
     if (method === 'Page.captureScreenshot') {
@@ -53,6 +53,11 @@ beforeEach(() => {
         },
         deviceScaleFactor: screenSize.dpr,
       };
+    } else if (fn.name === 'getScreenshotAreaSize') {
+      return {
+        width: screenshotSize.width,
+        height: screenshotSize.height,
+      };
     } else if (fn.name === 'waitForDoubleRaf') {
       return {};
     } else {
@@ -66,6 +71,7 @@ describe('FullPageScreenshot gatherer', () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 412, height: 2000};
     screenSize = {width: 412, height: 412};
+    screenshotSize = contentSize;
 
     mockContext.settings = {
       ...mockContext.settings,
@@ -94,6 +100,7 @@ describe('FullPageScreenshot gatherer', () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 412, height: 2000};
     screenSize = {width: 412, height: 412};
+    screenshotSize = contentSize;
 
     mockContext.settings = {
       ...mockContext.settings,
@@ -127,6 +134,7 @@ describe('FullPageScreenshot gatherer', () => {
     const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 500, height: 1500};
     screenSize = {width: 500, height: 500, dpr: 2};
+    screenshotSize = contentSize;
     mockContext.settings = {
       ...mockContext.settings,
       screenEmulation: {
@@ -173,6 +181,7 @@ describe('FullPageScreenshot gatherer', () => {
 
     contentSize = {width: 412, height: 100000};
     screenSize = {width: 412, height: 412, dpr: 1};
+    screenshotSize = contentSize;
     mockContext.settings = {
       ...mockContext.settings,
       formFactor: 'mobile',
