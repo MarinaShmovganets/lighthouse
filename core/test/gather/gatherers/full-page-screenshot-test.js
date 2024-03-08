@@ -53,11 +53,6 @@ beforeEach(() => {
         },
         deviceScaleFactor: screenSize.dpr,
       };
-    } else if (fn.name === 'getScreenshotAreaSize') {
-      return {
-        width: screenshotSize.width,
-        height: screenshotSize.height,
-      };
     } else if (fn.name === 'waitForDoubleRaf') {
       return {};
     } else {
