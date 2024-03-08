@@ -5,15 +5,15 @@
  */
 
 // To open result in chrome:
-//   node core/scripts/full-page-screenshot-debug.js latest-run/lhr.report.json  | xargs "$CHROME_PATH"
-// But, it might be too large for xargs:
-//   node core/scripts/full-page-screenshot-debug.js latest-run/lhr.report.json | code -
+//   node core/scripts/full-page-screenshot-debug.js latest-run/lhr.report.json | xargs "$CHROME_PATH"
 
 import * as fs from 'fs';
 
 import esMain from 'es-main';
 import * as puppeteer from 'puppeteer-core';
 import {getChromePath} from 'chrome-launcher';
+
+import {LH_ROOT} from '../../shared/root.js';
 
 /**
  * @param {LH.Result} lhr
@@ -75,14 +75,21 @@ async function getDebugImage(lhr) {
 
   await browser.close();
 
+  if (!debugDataUrl.startsWith('data:image/')) {
+    throw new Error('invalid data url');
+  }
+
   return debugDataUrl;
 }
 
 if (esMain(import.meta)) {
   const lhr = JSON.parse(fs.readFileSync(process.argv[2], 'utf-8'));
-  const result = await getDebugImage(lhr);
-
-  console.log(result);
+  const imageUrl = await getDebugImage(lhr);
+  const [type, base64Data] = imageUrl.split(',');
+  const ext = type.replace('data:image/', '');
+  const dest = `${LH_ROOT}/.tmp/fps-debug.${ext}`;
+  fs.writeFileSync(dest, base64Data, 'base64');
+  console.log(dest);
 }
 
 export {getDebugImage};
