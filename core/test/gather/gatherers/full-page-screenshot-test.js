@@ -56,7 +56,6 @@ beforeEach(() => {
     } else if (fn.name === 'waitForDoubleRaf') {
       return {};
     } else {
-
       throw new Error(`unexpected fn ${fn.name}`);
     }
   });
