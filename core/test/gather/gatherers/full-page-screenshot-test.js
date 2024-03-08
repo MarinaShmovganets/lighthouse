@@ -5,6 +5,7 @@
 
 import {createMockContext} from '../../gather/mock-driver.js';
 import FullPageScreenshotGatherer from '../../../gather/gatherers/full-page-screenshot.js';
+import {fnAny} from '../../test-utils.js';
 
 /** @type {{width: number, height: number}} */
 let contentSize;
@@ -15,8 +16,17 @@ let screenshotSize;
 /** @type {string[]} */
 let screenshotData;
 let mockContext = createMockContext();
+let fpsGatherer = new FullPageScreenshotGatherer();
 
 beforeEach(() => {
+  fpsGatherer = new FullPageScreenshotGatherer();
+
+  // Prevent `waitForNetworkIdle` from stalling the tests
+  fpsGatherer.waitForNetworkIdle = fnAny().mockImplementation(() => ({
+    promise: Promise.resolve(),
+    cancel: fnAny(),
+  }));
+
   contentSize = {width: 100, height: 100};
   screenSize = {width: 100, height: 100, dpr: 1};
   screenshotSize = contentSize;
@@ -63,7 +73,6 @@ beforeEach(() => {
 
 describe('FullPageScreenshot gatherer', () => {
   it('captures a full-page screenshot', async () => {
-    const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 412, height: 2000};
     screenSize = {width: 412, height: 412};
     screenshotSize = contentSize;
@@ -92,7 +101,6 @@ describe('FullPageScreenshot gatherer', () => {
   });
 
   it('resets the emulation correctly when Lighthouse controls it', async () => {
-    const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 412, height: 2000};
     screenSize = {width: 412, height: 412};
     screenshotSize = contentSize;
@@ -126,7 +134,6 @@ describe('FullPageScreenshot gatherer', () => {
   });
 
   it('resets the emulation correctly when Lighthouse does not control it', async () => {
-    const fpsGatherer = new FullPageScreenshotGatherer();
     contentSize = {width: 500, height: 1500};
     screenSize = {width: 500, height: 500, dpr: 2};
     screenshotSize = contentSize;
@@ -172,8 +179,6 @@ describe('FullPageScreenshot gatherer', () => {
   });
 
   it('limits the screenshot height to the max Chrome can capture', async () => {
-    const fpsGatherer = new FullPageScreenshotGatherer();
-
     contentSize = {width: 412, height: 100000};
     screenSize = {width: 412, height: 412, dpr: 1};
     screenshotSize = contentSize;

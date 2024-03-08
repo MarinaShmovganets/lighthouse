@@ -60,6 +60,21 @@ class FullPageScreenshot extends BaseGatherer {
 
   /**
    * @param {LH.Gatherer.Context} context
+   */
+  waitForNetworkIdle(context) {
+    const session = context.driver.defaultSession;
+    const networkMonitor = context.driver.networkMonitor;
+    return waitForNetworkIdle(session, networkMonitor, {
+      pretendDCLAlreadyFired: true,
+      networkQuietThresholdMs: 1000,
+      busyEvent: 'network-critical-busy',
+      idleEvent: 'network-critical-idle',
+      isIdle: recorder => recorder.isCriticalIdle(),
+    });
+  }
+
+  /**
+   * @param {LH.Gatherer.Context} context
    * @param {{height: number, width: number, mobile: boolean}} deviceMetrics
    */
   async _resizeViewport(context, deviceMetrics) {
@@ -75,15 +90,7 @@ class FullPageScreenshot extends BaseGatherer {
     );
     const height = Math.min(fullHeight, MAX_WEBP_SIZE);
 
-    // Setup network monitor before we change the viewport.
-    const networkMonitor = context.driver.networkMonitor;
-    const waitForNetworkIdleResult = waitForNetworkIdle(session, networkMonitor, {
-      pretendDCLAlreadyFired: true,
-      networkQuietThresholdMs: 1000,
-      busyEvent: 'network-critical-busy',
-      idleEvent: 'network-critical-idle',
-      isIdle: recorder => recorder.isCriticalIdle(),
-    });
+    const waitForNetworkIdleResult = this.waitForNetworkIdle(context);
 
     await session.sendCommand('Emulation.setDeviceMetricsOverride', {
       mobile: deviceMetrics.mobile,
