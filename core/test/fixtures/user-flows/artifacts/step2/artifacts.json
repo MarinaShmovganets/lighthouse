@@ -6,154 +6,176 @@
       "entryType": "measure",
       "startTime": 0,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:config:resolveArtifactsToDefns",
       "entryType": "measure",
       "startTime": 1,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:config:resolveNavigationsToDefns",
       "entryType": "measure",
       "startTime": 2,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:driver:connect",
       "entryType": "measure",
       "startTime": 3,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:runner:gather",
       "entryType": "measure",
       "startTime": 4,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getBenchmarkIndex",
       "entryType": "measure",
       "startTime": 5,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getVersion",
       "entryType": "measure",
       "startTime": 6,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:Accessibility",
       "entryType": "measure",
       "startTime": 7,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:AnchorElements",
       "entryType": "measure",
       "startTime": 8,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:Doctype",
       "entryType": "measure",
       "startTime": 9,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:DOMStats",
       "entryType": "measure",
       "startTime": 10,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:EmbeddedContent",
       "entryType": "measure",
       "startTime": 11,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:FontSize",
       "entryType": "measure",
       "startTime": 12,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:Inputs",
       "entryType": "measure",
       "startTime": 13,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:ImageElements",
       "entryType": "measure",
       "startTime": 14,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:MetaElements",
       "entryType": "measure",
       "startTime": 15,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:RobotsTxt",
       "entryType": "measure",
       "startTime": 16,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:Stacks",
       "entryType": "measure",
       "startTime": 17,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:collectStacks",
       "entryType": "measure",
       "startTime": 18,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:TapTargets",
       "entryType": "measure",
       "startTime": 19,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:ViewportDimensions",
       "entryType": "measure",
       "startTime": 20,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     },
     {
       "name": "lh:gather:getArtifact:FullPageScreenshot",
       "entryType": "measure",
       "startTime": 21,
       "duration": 1,
-      "detail": null
+      "detail": null,
+      "gather": true
     }
   ],
   "LighthouseRunWarnings": [],
@@ -182,9 +204,15 @@
       "deviceScaleFactor": 1.75,
       "disabled": false
     },
-    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36",
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Mobile Safari/537.36",
     "auditMode": false,
     "gatherMode": false,
+    "clearStorageTypes": [
+      "file_systems",
+      "shader_cache",
+      "service_workers",
+      "cache_storage"
+    ],
     "disableStorageReset": false,
     "debugNavigation": false,
     "channel": "node",
@@ -192,6 +220,7 @@
     "disableFullPageScreenshot": false,
     "skipAboutBlank": false,
     "blankPage": "about:blank",
+    "ignoreStatusCode": false,
     "budgets": null,
     "locale": "en-US",
     "blockedUrlPatterns": null,
@@ -5692,5 +5721,6 @@
       }
     ],
     "labels": []
-  }
+  },
+  "HostProduct": "Chrome/121.0.6110.0"
 }

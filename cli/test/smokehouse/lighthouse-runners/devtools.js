@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2021 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
@@ -10,7 +10,7 @@
 
 import {execFileSync} from 'child_process';
 
-import {LH_ROOT} from '../../../../root.js';
+import {LH_ROOT} from '../../../../shared/root.js';
 import {testUrlFromDevtools} from '../../../../core/scripts/pptr-run-devtools.js';
 
 const devtoolsDir =
@@ -40,10 +40,12 @@ async function setup() {
  * CHROME_PATH determines which Chrome is used–otherwise the default is puppeteer's chrome binary.
  * @param {string} url
  * @param {LH.Config=} config
+ * @param {Smokehouse.SmokehouseOptions['testRunnerOptions']=} testRunnerOptions
  * @return {Promise<{lhr: LH.Result, artifacts: LH.Artifacts, log: string}>}
  */
-async function runLighthouse(url, config) {
+async function runLighthouse(url, config, testRunnerOptions) {
   const chromeFlags = [
+    testRunnerOptions?.headless ? '--headless=new' : '',
     `--custom-devtools-frontend=file://${devtoolsDir}/out/LighthouseIntegration/gen/front_end`,
   ];
   const {lhr, artifacts, logs} = await testUrlFromDevtools(url, {

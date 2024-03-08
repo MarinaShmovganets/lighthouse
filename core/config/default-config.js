@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /* eslint-disable max-len */
@@ -38,10 +38,10 @@ const UIStrings = {
   diagnosticsGroupDescription: 'More information about the performance of your application. These numbers don\'t [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score.',
   /** Title of the Accessibility category of audits. This section contains audits focused on making web content accessible to all users. Also used as a label of a score gauge; try to limit to 20 characters. */
   a11yCategoryTitle: 'Accessibility',
-  /** Description of the Accessibility category. This is displayed at the top of a list of audits focused on making web content accessible to all users. No character length limits. 'improve the accessibility of your web app' becomes link text to additional documentation. */
-  a11yCategoryDescription: 'These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Only a subset of accessibility issues can be automatically detected so manual testing is also encouraged.',
+  /** Description of the Accessibility category. This is displayed at the top of a list of audits focused on making web content accessible to all users. No character length limits. 'improve the accessibility of your web app' and 'manual testing' become link texts to additional documentation. */
+  a11yCategoryDescription: 'These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/articles/how-to-review) is also encouraged.',
   /** Description of the Accessibility manual checks category. This description is displayed above a list of accessibility audits that currently have no automated test and so must be verified manually by the user. No character length limits. 'conducting an accessibility review' becomes link text to additional documentation. */
-  a11yCategoryManualDescription: 'These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/how-to-review/).',
+  a11yCategoryManualDescription: 'These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/articles/how-to-review).',
   /** Title of the best practices section of the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices. */
   a11yBestPracticesGroupTitle: 'Best practices',
   /** Description of the best practices section within the Accessibility category. Within this section are audits with descriptive titles that highlight common accessibility best practices. */
@@ -79,7 +79,7 @@ const UIStrings = {
   /** Description of the Search Engine Optimization (SEO) category. This is displayed at the top of a list of audits focused on optimizing a website for indexing by search engines. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   seoCategoryDescription: 'These checks ensure that your page is following basic search engine optimization advice. ' +
   'There are many additional factors Lighthouse does not score here that may affect your search ranking, ' +
-  'including performance on [Core Web Vitals](https://web.dev/learn-core-web-vitals/). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).',
+  'including performance on [Core Web Vitals](https://web.dev/explore/vitals). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).',
   /** Description of the Search Engine Optimization (SEO) manual checks category, the additional validators must be run by hand in order to check all SEO best practices. This is displayed at the top of a list of manually run audits focused on optimizing a website for indexing by search engines. No character length limits. */
   seoCategoryManualDescription: 'Run these additional validators on your site to check additional SEO best practices.',
   /** Title of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight opportunities to make a page more usable on mobile devices. */
@@ -99,10 +99,10 @@ const UIStrings = {
   pwaCategoryTitle: 'PWA',
   /** Description of the Progressive Web Application (PWA) category. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
   pwaCategoryDescription: 'These checks validate the aspects of a Progressive Web App. ' +
-  '[Learn what makes a good Progressive Web App](https://web.dev/pwa-checklist/).',
+  '[Learn what makes a good Progressive Web App](https://web.dev/articles/pwa-checklist).',
   /** Description of the Progressive Web Application (PWA) manual checks category, containing a list of additional validators must be run by hand in order to check all PWA best practices. This is displayed at the top of a list of manually run audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc.. No character length limits. */
   pwaCategoryManualDescription: 'These checks are required by the baseline ' +
-  '[PWA Checklist](https://web.dev/pwa-checklist/) but are ' +
+  '[PWA Checklist](https://web.dev/articles/pwa-checklist) but are ' +
   'not automatically checked by Lighthouse. They do not affect your score but it\'s important that you verify them manually.',
   /** Title of the Best Practices category of audits. This is displayed at the top of a list of audits focused on topics related to following web development best practices and accepted guidelines. Also used as a label of a score gauge; try to limit to 20 characters. */
   bestPracticesCategoryTitle: 'Best Practices',
@@ -129,6 +129,7 @@ const defaultConfig = {
     // Artifacts which can be depended on come first.
     {id: 'DevtoolsLog', gatherer: 'devtools-log'},
     {id: 'Trace', gatherer: 'trace'},
+    {id: 'RootCauses', gatherer: 'root-causes'},
 
     {id: 'Accessibility', gatherer: 'accessibility'},
     {id: 'AnchorElements', gatherer: 'anchor-elements'},
@@ -186,7 +187,7 @@ const defaultConfig = {
     'metrics/total-blocking-time',
     'metrics/max-potential-fid',
     'metrics/cumulative-layout-shift',
-    'metrics/experimental-interaction-to-next-paint',
+    'metrics/interaction-to-next-paint',
     'errors-in-console',
     'server-response-time',
     'metrics/interactive',
@@ -202,6 +203,7 @@ const defaultConfig = {
     'image-size-responsive',
     'preload-fonts',
     'deprecations',
+    'third-party-cookies',
     'mainthread-work-breakdown',
     'bootup-time',
     'uses-rel-preload',
@@ -221,6 +223,7 @@ const defaultConfig = {
     'largest-contentful-paint-element',
     'lcp-lazy-loaded',
     'layout-shift-elements',
+    'layout-shifts',
     'long-tasks',
     'no-unload-listeners',
     'non-composited-animations',
@@ -436,7 +439,7 @@ const defaultConfig = {
         {id: 'total-blocking-time', weight: 30, group: 'metrics', acronym: 'TBT', relevantAudits: metricsToAudits.tbtRelevantAudits},
         {id: 'cumulative-layout-shift', weight: 25, group: 'metrics', acronym: 'CLS', relevantAudits: metricsToAudits.clsRelevantAudits},
         {id: 'speed-index', weight: 10, group: 'metrics', acronym: 'SI'},
-        {id: 'experimental-interaction-to-next-paint', weight: 0, group: 'metrics', acronym: 'INP', relevantAudits: metricsToAudits.inpRelevantAudits},
+        {id: 'interaction-to-next-paint', weight: 0, group: 'metrics', acronym: 'INP', relevantAudits: metricsToAudits.inpRelevantAudits},
 
         // These are our "invisible" metrics. Not displayed, but still in the LHR.
         {id: 'interactive', weight: 0, group: 'hidden', acronym: 'TTI'},
@@ -471,12 +474,11 @@ const defaultConfig = {
         {id: 'bootup-time', weight: 0},
         {id: 'mainthread-work-breakdown', weight: 0},
         {id: 'font-display', weight: 0},
-        {id: 'resource-summary', weight: 0},
         {id: 'third-party-summary', weight: 0},
         {id: 'third-party-facades', weight: 0},
         {id: 'largest-contentful-paint-element', weight: 0},
         {id: 'lcp-lazy-loaded', weight: 0},
-        {id: 'layout-shift-elements', weight: 0},
+        {id: 'layout-shifts', weight: 0},
         {id: 'uses-passive-event-listeners', weight: 0},
         {id: 'no-document-write', weight: 0},
         {id: 'long-tasks', weight: 0},
@@ -501,6 +503,8 @@ const defaultConfig = {
         {id: 'screenshot-thumbnails', weight: 0, group: 'hidden'},
         {id: 'final-screenshot', weight: 0, group: 'hidden'},
         {id: 'script-treemap-data', weight: 0, group: 'hidden'},
+        {id: 'resource-summary', weight: 0, group: 'hidden'},
+        {id: 'layout-shift-elements', weight: 0, group: 'hidden'},
       ],
     },
     'accessibility': {
@@ -551,7 +555,6 @@ const defaultConfig = {
         {id: 'image-redundant-alt', weight: 1, group: 'a11y-names-labels'},
         {id: 'input-button-name', weight: 10, group: 'a11y-names-labels'},
         {id: 'input-image-alt', weight: 10, group: 'a11y-names-labels'},
-        {id: 'label-content-name-mismatch', weight: 7, group: 'a11y-names-labels'},
         {id: 'label', weight: 7, group: 'a11y-names-labels'},
         {id: 'link-in-text-block', weight: 7, group: 'a11y-color-contrast'},
         {id: 'link-name', weight: 7, group: 'a11y-names-labels'},
@@ -564,28 +567,29 @@ const defaultConfig = {
         {id: 'skip-link', weight: 3, group: 'a11y-names-labels'},
         {id: 'tabindex', weight: 7, group: 'a11y-navigation'},
         {id: 'table-duplicate-name', weight: 1, group: 'a11y-tables-lists'},
-        {id: 'table-fake-caption', weight: 7, group: 'a11y-tables-lists'},
-        {id: 'td-has-header', weight: 10, group: 'a11y-tables-lists'},
         {id: 'td-headers-attr', weight: 7, group: 'a11y-tables-lists'},
         {id: 'th-has-data-cells', weight: 7, group: 'a11y-tables-lists'},
         {id: 'valid-lang', weight: 7, group: 'a11y-language'},
         {id: 'video-caption', weight: 10, group: 'a11y-audio-video'},
         // Manual audits
-        {id: 'logical-tab-order', weight: 0},
         {id: 'focusable-controls', weight: 0},
         {id: 'interactive-element-affordance', weight: 0},
-        {id: 'managed-focus', weight: 0},
+        {id: 'logical-tab-order', weight: 0},
+        {id: 'visual-order-follows-dom', weight: 0},
         {id: 'focus-traps', weight: 0},
+        {id: 'managed-focus', weight: 0},
+        {id: 'use-landmarks', weight: 0},
+        {id: 'offscreen-content-hidden', weight: 0},
         {id: 'custom-controls-labels', weight: 0},
         {id: 'custom-controls-roles', weight: 0},
-        {id: 'visual-order-follows-dom', weight: 0},
-        {id: 'offscreen-content-hidden', weight: 0},
-        {id: 'use-landmarks', weight: 0},
         // Hidden audits
         {id: 'empty-heading', weight: 0, group: 'hidden'},
         {id: 'identical-links-same-purpose', weight: 0, group: 'hidden'},
         {id: 'landmark-one-main', weight: 0, group: 'hidden'},
         {id: 'target-size', weight: 0, group: 'hidden'},
+        {id: 'label-content-name-mismatch', weight: 0, group: 'hidden'},
+        {id: 'table-fake-caption', weight: 0, group: 'hidden'},
+        {id: 'td-has-header', weight: 0, group: 'hidden'},
       ],
     },
     'best-practices': {
@@ -593,12 +597,12 @@ const defaultConfig = {
       supportedModes: ['navigation', 'timespan', 'snapshot'],
       auditRefs: [
         // Trust & Safety
-        {id: 'is-on-https', weight: 1, group: 'best-practices-trust-safety'},
+        {id: 'is-on-https', weight: 5, group: 'best-practices-trust-safety'},
         {id: 'geolocation-on-start', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'notification-on-start', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'csp-xss', weight: 0, group: 'best-practices-trust-safety'},
         // User Experience
-        {id: 'paste-preventing-inputs', weight: 1, group: 'best-practices-ux'},
+        {id: 'paste-preventing-inputs', weight: 3, group: 'best-practices-ux'},
         {id: 'image-aspect-ratio', weight: 1, group: 'best-practices-ux'},
         {id: 'image-size-responsive', weight: 1, group: 'best-practices-ux'},
         {id: 'preload-fonts', weight: 1, group: 'best-practices-ux'},
@@ -608,7 +612,8 @@ const defaultConfig = {
         // General Group
         {id: 'no-unload-listeners', weight: 1, group: 'best-practices-general'},
         {id: 'js-libraries', weight: 0, group: 'best-practices-general'},
-        {id: 'deprecations', weight: 1, group: 'best-practices-general'},
+        {id: 'deprecations', weight: 5, group: 'best-practices-general'},
+        {id: 'third-party-cookies', weight: 5, group: 'best-practices-general'},
         {id: 'errors-in-console', weight: 1, group: 'best-practices-general'},
         {id: 'valid-source-maps', weight: 0, group: 'best-practices-general'},
         {id: 'inspector-issues', weight: 1, group: 'best-practices-general'},

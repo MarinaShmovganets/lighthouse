@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import assert from 'assert/strict';
@@ -162,7 +162,7 @@ describe('Performance: Redirects audit', () => {
 
     const output = await RedirectsAudit.audit(artifacts, context);
     expect(output.details.items).toHaveLength(3);
-    expect(Math.round(output.score * 100) / 100).toMatchInlineSnapshot(`0.29`);
+    expect(Math.round(output.score * 100) / 100).toMatchInlineSnapshot(`0`);
     expect(output.numericValue).toMatchInlineSnapshot(`2000`);
     expect(output.metricSavings).toEqual({LCP: 2000, FCP: 2000});
   });
@@ -201,7 +201,7 @@ describe('Performance: Redirects audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     return RedirectsAudit.audit(artifacts, context).then(output => {
       expect(output.details.items).toHaveLength(4);
-      expect(Math.round(output.score * 100) / 100).toMatchInlineSnapshot(`0.2`);
+      expect(Math.round(output.score * 100) / 100).toMatchInlineSnapshot(`0`);
       expect(output.numericValue).toMatchInlineSnapshot(`3000`);
       expect(output.metricSavings).toEqual({LCP: 3000, FCP: 3000});
     });
@@ -212,20 +212,18 @@ describe('Performance: Redirects audit', () => {
     const context = {settings: {}, computedCache: new Map()};
     return RedirectsAudit.audit(artifacts, context).then(output => {
       expect(output.details.items).toHaveLength(3);
-      expect(Math.round(output.score * 100) / 100).toMatchInlineSnapshot(`0.29`);
+      expect(Math.round(output.score * 100) / 100).toMatchInlineSnapshot(`0`);
       expect(output.numericValue).toMatchInlineSnapshot(`2000`);
       expect(output.metricSavings).toEqual({LCP: 2000, FCP: 2000});
     });
   });
 
-  it('passes when one redirect detected', () => {
+  it('fails when 1 redirect detected', () => {
     const artifacts = mockArtifacts(SUCCESS_ONE_REDIRECT, 'https://www.lisairish.com/');
     const context = {settings: {}, computedCache: new Map()};
     return RedirectsAudit.audit(artifacts, context).then(output => {
-      // If === 1 redirect, perfect score is expected, regardless of latency
-      // We will still generate a table and show wasted time
       expect(output.details.items).toHaveLength(2);
-      expect(output.score).toEqual(1);
+      expect(output.score).toEqual(0);
       expect(output.numericValue).toMatchInlineSnapshot(`1000`);
       expect(output.metricSavings).toEqual({LCP: 1000, FCP: 1000});
     });
@@ -259,7 +257,7 @@ describe('Performance: Redirects audit', () => {
 
     const output = await RedirectsAudit.audit(artifacts, context);
     expect(output).toMatchObject({
-      score: expect.toBeApproximately(0.2),
+      score: 0,
       numericValue: 3000,
       details: {
         items: [

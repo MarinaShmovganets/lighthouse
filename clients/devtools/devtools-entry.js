@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /* global globalThis */
@@ -23,8 +23,6 @@ globalThis.Buffer = Buffer;
 /**
  * Returns a config, which runs only certain categories.
  * Varies the config to use based on device.
- * If `lighthouse-plugin-publisher-ads` is in the list of
- * `categoryIDs` the plugin will also be run.
  * Counterpart to the CDT code that sets flags.
  * @see https://source.chromium.org/chromium/chromium/src/+/main:third_party/devtools-frontend/src/front_end/panels/lighthouse/LighthouseController.ts;l=280
  * @param {Array<string>} categoryIDs
@@ -38,6 +36,7 @@ function createConfig(categoryIDs, device) {
     // In DevTools, emulation is applied _before_ Lighthouse starts (to deal with viewport emulation bugs). go/xcnjf
     // As a result, we don't double-apply viewport emulation.
     screenEmulation: {disabled: true},
+    ignoreStatusCode: true,
   };
   if (device === 'desktop') {
     settings.throttling = constants.throttling.desktopDense4G;
@@ -48,7 +47,6 @@ function createConfig(categoryIDs, device) {
 
   return {
     extends: 'lighthouse:default',
-    plugins: ['lighthouse-plugin-publisher-ads'],
     settings,
   };
 }

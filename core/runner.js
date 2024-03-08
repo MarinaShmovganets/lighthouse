@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2016 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import fs from 'fs';
@@ -19,8 +19,8 @@ import * as assetSaver from './lib/asset-saver.js';
 import {Sentry} from './lib/sentry.js';
 import {ReportGenerator} from '../report/generator/report-generator.js';
 import {LighthouseError} from './lib/lh-error.js';
-import {lighthouseVersion} from '../root.js';
-import {getModuleDirectory} from '../esm-utils.js';
+import {lighthouseVersion} from '../shared/root.js';
+import {getModuleDirectory} from '../shared/esm-utils.js';
 import {EntityClassification} from './computed/entity-classification.js';
 import UrlUtils from './lib/url-utils.js';
 
@@ -317,7 +317,11 @@ class Runner {
       for (const k of keys) {
         if (!isDeepEqual(normalizedGatherSettings[k], normalizedAuditSettings[k])) {
           throw new Error(
-            `Cannot change settings between gathering and auditing. Difference found at: ${k}`);
+            `Cannot change settings between gathering and auditing…
+Difference found at: \`${k}\`
+    ${normalizedGatherSettings[k]}
+vs
+    ${normalizedAuditSettings[k]}`);
         }
       }
 
@@ -367,15 +371,18 @@ class Runner {
 
     let auditResult;
     try {
+      if (artifacts.PageLoadError) throw artifacts.PageLoadError;
+
       // Return an early error if an artifact required for the audit is missing or an error.
       for (const artifactName of audit.meta.requiredArtifacts) {
         const noArtifact = artifacts[artifactName] === undefined;
 
         // If trace/devtoolsLog required, check that DEFAULT_PASS trace/devtoolsLog exists.
         // NOTE: for now, not a pass-specific check of traces or devtoolsLogs.
-        const noRequiredTrace = artifactName === 'traces' && !artifacts.traces[Audit.DEFAULT_PASS];
+        const noRequiredTrace = artifactName === 'traces' &&
+          !artifacts.traces?.[Audit.DEFAULT_PASS];
         const noRequiredDevtoolsLog = artifactName === 'devtoolsLogs' &&
-            !artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
+          !artifacts.devtoolsLogs?.[Audit.DEFAULT_PASS];
 
         if (noArtifact || noRequiredTrace || noRequiredDevtoolsLog) {
           log.warn('Runner',

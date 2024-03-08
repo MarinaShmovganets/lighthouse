@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
@@ -53,6 +53,7 @@
  */
 
 import * as LH from '../../types/lh.js';
+import * as Lantern from './lantern/types/lantern.js';
 import UrlUtils from './url-utils.js';
 
 // Lightrider X-Header names for timing information.
@@ -135,6 +136,7 @@ class NetworkRequest {
 
     // Go read the comment on _updateTransferSizeForLightrider.
     this.transferSize = 0;
+    this.responseHeadersTransferSize = 0;
     this.resourceSize = 0;
     this.fromDiskCache = false;
     this.fromMemoryCache = false;
@@ -247,6 +249,13 @@ class NetworkRequest {
   }
 
   /**
+   * @param {LH.Crdp.Network.ResponseReceivedExtraInfoEvent} data
+   */
+  onResponseReceivedExtraInfo(data) {
+    this.responseHeadersText = data.headersText || '';
+  }
+
+  /**
    * @param {LH.Crdp.Network.DataReceivedEvent} data
    */
   onDataReceived(data) {
@@ -344,6 +353,7 @@ class NetworkRequest {
     this.responseHeadersEndTime = timestamp * 1000;
 
     this.transferSize = response.encodedDataLength;
+    this.responseHeadersTransferSize = response.encodedDataLength;
     if (typeof response.fromDiskCache === 'boolean') this.fromDiskCache = response.fromDiskCache;
     if (typeof response.fromPrefetchCache === 'boolean') {
       this.fromPrefetchCache = response.fromPrefetchCache;
@@ -354,7 +364,6 @@ class NetworkRequest {
     this.timing = response.timing;
     if (resourceType) this.resourceType = RESOURCE_TYPES[resourceType];
     this.mimeType = response.mimeType;
-    this.responseHeadersText = response.headersText || '';
     this.responseHeaders = NetworkRequest._headersDictToHeadersArray(response.headers);
 
     this.fetchedViaServiceWorker = !!response.fromServiceWorker;
@@ -489,7 +498,7 @@ class NetworkRequest {
     // Bail if there was no totalTime.
     if (!totalHeader) return;
 
-    const totalMs = parseInt(totalHeader.value);
+    let totalMs = parseInt(totalHeader.value);
     const TCPMsHeader = this.responseHeaders.find(item => item.name === HEADER_TCP);
     const SSLMsHeader = this.responseHeaders.find(item => item.name === HEADER_SSL);
     const requestMsHeader = this.responseHeaders.find(item => item.name === HEADER_REQ);
@@ -502,9 +511,18 @@ class NetworkRequest {
     const requestMs = requestMsHeader ? Math.max(0, parseInt(requestMsHeader.value)) : 0;
     const responseMs = responseMsHeader ? Math.max(0, parseInt(responseMsHeader.value)) : 0;
 
-    // Bail if the timings don't add up.
-    if (TCPMs + requestMs + responseMs !== totalMs) {
+    if (Number.isNaN(TCPMs + requestMs + responseMs + totalMs)) {
       return;
+    }
+
+    // If things don't add up, tweak the total a bit.
+    if (TCPMs + requestMs + responseMs !== totalMs) {
+      const delta = Math.abs(TCPMs + requestMs + responseMs - totalMs);
+      // We didn't see total being more than 5ms less than the total of the components.
+      // Allow some discrepancy in the timing, but not too much.
+      if (delta >= 25) return;
+
+      totalMs = TCPMs + requestMs + responseMs;
     }
 
     // Bail if SSL time is > TCP time.
@@ -553,6 +571,17 @@ class NetworkRequest {
 
   /**
    * @param {NetworkRequest} record
+   * @return {Lantern.NetworkRequest<NetworkRequest>}
+   */
+  static asLanternNetworkRequest(record) {
+    return {
+      ...record,
+      record,
+    };
+  }
+
+  /**
+   * @param {NetworkRequest} record
    * @return {boolean}
    */
   static isNonNetworkRequest(record) {
@@ -589,6 +618,26 @@ class NetworkRequest {
       .find(header => header.name === 'Non-Authoritative-Reason');
     const reason = reasonHeader?.value;
     return reason === 'HSTS' && NetworkRequest.isSecureRequest(destination);
+  }
+
+  /**
+   * Returns whether the network request was sent encoded.
+   * @param {NetworkRequest} record
+   * @return {boolean}
+   */
+  static isContentEncoded(record) {
+    // FYI: older devtools logs (like our test fixtures) seems to be lower case, while modern logs
+    // are Cased-Like-This.
+    const patterns = global.isLightrider ? [
+      /^x-original-content-encoding$/i,
+    ] : [
+      /^content-encoding$/i,
+      /^x-content-encoding-over-network$/i,
+    ];
+    const compressionTypes = ['gzip', 'br', 'deflate'];
+    return record.responseHeaders.some(header =>
+      patterns.some(p => header.name.match(p)) && compressionTypes.includes(header.value)
+    );
   }
 
   /**

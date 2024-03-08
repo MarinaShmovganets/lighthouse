@@ -1,7 +1,7 @@
 /**
- * @license Copyright 2017 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import assert from 'assert/strict';
@@ -29,7 +29,10 @@ describe('CategoryRenderer', () => {
       reportJson: null,
     });
 
-    const {document} = new jsdom.JSDOM().window;
+    const window = new jsdom.JSDOM().window;
+    const document = window.document;
+    global.HTMLElement = window.HTMLElement;
+
     const dom = new DOM(document);
     const detailsRenderer = new DetailsRenderer(dom);
     renderer = new CategoryRenderer(dom, detailsRenderer);
@@ -301,7 +304,7 @@ describe('CategoryRenderer', () => {
       );
 
       const gauge = categoryDOM.querySelector('.lh-fraction__content');
-      assert.equal(gauge.textContent.trim(), '23/28', 'fraction is included');
+      assert.equal(gauge.textContent.trim(), '19/24', 'fraction is included');
 
       const score = categoryDOM.querySelector('.lh-category-header');
       const title = score.querySelector('.lh-fraction__label');
@@ -462,6 +465,18 @@ describe('CategoryRenderer', () => {
       const warningClumpEl = auditDOM.querySelector('.lh-clump--warning');
       const isExpanded = warningClumpEl.hasAttribute('open');
       assert.ok(isExpanded, 'Warning audit group should be expanded by default');
+    });
+
+    it('expands the manual audit group if there are 0 failing audits', () => {
+      const category = sampleResults.categories.accessibility;
+      const categoryClone = JSON.parse(JSON.stringify(category));
+      categoryClone.auditRefs.filter(audit => audit.result.scoreDisplayMode === 'binary')
+        .forEach(audit => audit.result.score = 1);
+
+      const auditDOM = renderer.render(categoryClone, sampleResults.categoryGroups);
+      const manualClumpEl = auditDOM.querySelector('.lh-clump--manual');
+      const isExpanded = manualClumpEl.hasAttribute('open');
+      assert.ok(isExpanded, 'Manual audit group should be expanded if there are 0 failing audits');
     });
 
     it('only passing audits with warnings show in warnings section', () => {

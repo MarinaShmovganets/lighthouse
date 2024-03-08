@@ -1,13 +1,15 @@
 /**
- * @license Copyright 2018 The Lighthouse Authors. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import {Protocol as Crdp} from 'devtools-protocol/types/protocol.js';
+import * as TraceEngine from '@paulirish/trace_engine';
+import {LayoutShiftRootCausesData} from '@paulirish/trace_engine/models/trace/root-causes/LayoutShift.js';
 
 import {parseManifest} from '../core/lib/manifest-parser.js';
-import {Simulator} from '../core/lib/dependency-graph/simulator/simulator.js';
+import {Simulator} from '../core/lib/lantern/simulator/simulator.js';
 import {LighthouseError} from '../core/lib/lh-error.js';
 import {NetworkRequest as _NetworkRequest} from '../core/lib/network-request.js';
 import speedline from 'speedline-core';
@@ -53,6 +55,8 @@ interface UniversalBaseArtifacts {
   HostFormFactor: 'desktop'|'mobile';
   /** The user agent string of the version of Chrome used. */
   HostUserAgent: string;
+  /** The product string of the version of Chrome used. Example: HeadlessChrome/123.2.2.0 would be from old headless. */
+  HostProduct: string;
   /** Information about how Lighthouse artifacts were gathered. */
   GatherContext: {gatherMode: Gatherer.GatherMode};
 }
@@ -108,6 +112,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   CSSUsage: {rules: Crdp.CSS.RuleUsage[], stylesheets: Artifacts.CSSStyleSheetInfo[]};
   /** The primary log of devtools protocol activity. */
   DevtoolsLog: DevtoolsLog;
+  /** The log of devtools protocol activity if there was a page load error and Chrome navigated to a `chrome-error://` page. */
+  DevtoolsLogError: DevtoolsLog;
   /** Information on the document's doctype(or null if not present), specifically the name, publicId, and systemId.
       All properties default to an empty string if not present */
   Doctype: Artifacts.Doctype | null;
@@ -138,6 +144,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   ResponseCompression: {requestId: string, url: string, mimeType: string, transferSize: number, resourceSize: number, gzipSize?: number}[];
   /** Information on fetching and the content of the /robots.txt file. */
   RobotsTxt: {status: number|null, content: string|null, errorMessage?: string};
+  /** The result of calling the shared trace engine root cause analysis. */
+  RootCauses: Artifacts.TraceEngineRootCauses;
   /** Information on all scripts in the page. */
   Scripts: Artifacts.Script[];
   /** Version information for all ServiceWorkers active after the first page load. */
@@ -152,6 +160,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   TapTargets: Artifacts.TapTarget[];
   /** The primary trace taken over the entire run. */
   Trace: Trace;
+  /** The trace if there was a page load error and Chrome navigated to a `chrome-error://` page. */
+  TraceError: Trace;
   /** Elements associated with metrics (ie: Largest Contentful Paint element). */
   TraceElements: Artifacts.TraceElement[];
   /** Parsed version of the page's Web App Manifest, or null if none found. */
@@ -169,6 +179,7 @@ declare module Artifacts {
 
   type NetworkRequest = _NetworkRequest;
   type TaskNode = _TaskNode;
+  type TBTImpactTask = TaskNode & {tbtImpact: number, selfTbtImpact: number};
   type MetaElement = Artifacts['MetaElements'][0];
 
   interface URL {
@@ -205,7 +216,7 @@ declare module Artifacts {
     impact?: string;
     tags: Array<string>;
     nodes: Array<{
-      target: Array<string>;
+      target: Array<string|string[]>;
       failureSummary?: string;
       node: NodeDetails;
       relatedNodes: NodeDetails[];
@@ -552,12 +563,17 @@ declare module Artifacts {
   }
 
   interface TraceElement {
-    traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation'|'responsiveness';
-    score?: number;
+    traceEventType: 'largest-contentful-paint'|'layout-shift'|'layout-shift-element'|'animation'|'responsiveness';
     node: NodeDetails;
-    nodeId?: number;
+    nodeId: number;
     animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[];
     type?: string;
+  }
+
+  type TraceEngineResult = TraceEngine.Handlers.Types.TraceParseData;
+
+  interface TraceEngineRootCauses {
+    layoutShifts: Record<number, LayoutShiftRootCausesData>;
   }
 
   interface ViewportDimensions {
@@ -574,6 +590,7 @@ declare module Artifacts {
     bounceTrackingIssue: Crdp.Audits.BounceTrackingIssueDetails[];
     clientHintIssue: Crdp.Audits.ClientHintIssueDetails[];
     contentSecurityPolicyIssue: Crdp.Audits.ContentSecurityPolicyIssueDetails[];
+    cookieDeprecationMetadataIssue: Crdp.Audits.CookieDeprecationMetadataIssueDetails[],
     corsIssue: Crdp.Audits.CorsIssueDetails[];
     deprecationIssue: Crdp.Audits.DeprecationIssueDetails[];
     federatedAuthRequestIssue: Crdp.Audits.FederatedAuthRequestIssueDetails[],
@@ -582,6 +599,7 @@ declare module Artifacts {
     lowTextContrastIssue: Crdp.Audits.LowTextContrastIssueDetails[];
     mixedContentIssue: Crdp.Audits.MixedContentIssueDetails[];
     navigatorUserAgentIssue: Crdp.Audits.NavigatorUserAgentIssueDetails[];
+    propertyRuleIssue: Crdp.Audits.PropertyRuleIssueDetails[],
     quirksModeIssue: Crdp.Audits.QuirksModeIssueDetails[];
     cookieIssue: Crdp.Audits.CookieIssueDetails[];
     sharedArrayBufferIssue: Crdp.Audits.SharedArrayBufferIssueDetails[];
@@ -1009,6 +1027,8 @@ export interface TraceEvent {
       type?: string;
       functionName?: string;
       name?: string;
+      duration?: number;
+      blockingDuration?: number;
     };
     frame?: string;
     name?: string;
