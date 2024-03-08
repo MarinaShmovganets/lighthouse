@@ -11,6 +11,7 @@
 
 import * as fs from 'fs';
 
+import esMain from 'es-main';
 import * as puppeteer from 'puppeteer-core';
 import {getChromePath} from 'chrome-launcher';
 
@@ -77,7 +78,11 @@ async function getDebugImage(lhr) {
   return debugDataUrl;
 }
 
-const lhr = JSON.parse(fs.readFileSync(process.argv[2], 'utf-8'));
-const result = await getDebugImage(lhr);
+if (esMain(import.meta)) {
+  const lhr = JSON.parse(fs.readFileSync(process.argv[2], 'utf-8'));
+  const result = await getDebugImage(lhr);
 
-console.log(result);
+  console.log(result);
+}
+
+export {getDebugImage};

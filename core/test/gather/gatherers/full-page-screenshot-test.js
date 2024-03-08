@@ -90,7 +90,7 @@ describe('FullPageScreenshot gatherer', () => {
 
     expect(artifact).toEqual({
       screenshot: {
-        data: 'data:image/webp;base64,abc',
+        data: 'data:image/png;base64,abc',
         height: 2000,
         width: 412,
       },
@@ -263,12 +263,6 @@ describe('FullPageScreenshot gatherer', () => {
     function analyzeScreenshotNodes(page, lhr, debugFormat) {
       const options = {
         fullPageScreenshot: lhr.fullPageScreenshot,
-        // We currently can't get lossless encodings here, so we must allow for some difference.
-        // I found 2.4 is what I get with the test data for regions that match, and 100+ for regions that are clearly not matching.
-        // So using 5 seems a good bet.
-        // If we could get lossless webp/png here, this should go away.
-        // TODO https://bugs.chromium.org/p/chromium/issues/detail?id=1469183
-        individualPixelColorThreshold: 5,
         debugFormat,
       };
 
@@ -322,10 +316,7 @@ describe('FullPageScreenshot gatherer', () => {
 
           const right = Math.min(node.right, canvasEl.width - 1);
           const bottom = Math.min(node.bottom, canvasEl.height - 1);
-          const width = right - node.left;
-          const height = bottom - node.top;
 
-          let pixelDifferCount = 0;
           const debugData = [];
           for (let y = node.top; y <= bottom; y++) {
             const row = [];
@@ -334,29 +325,17 @@ describe('FullPageScreenshot gatherer', () => {
             for (let x = node.left; x <= right; x++) {
               const [r, g, b] = ctx.getImageData(x, y, 1, 1).data;
               const delta = colorDistance(expectedColor, {r, g, b});
-              const passesThreshold = delta < options.individualPixelColorThreshold;
-              if (!passesThreshold) pixelDifferCount += 1;
+              const pass = delta > 0;
 
               if (options.debugFormat === 'color') {
                 row.push((r << 16) | (g << 8) | b);
               } else if (options.debugFormat === 'delta') {
                 row.push(delta);
-              } else if (options.debugFormat === 'threshold') {
-                row.push(passesThreshold);
+              } else if (options.debugFormat === 'pass') {
+                row.push(pass);
               }
             }
           }
-
-          // Some amount of pixels along the borders will differ, either because of compression artifacts or good old-fashioned
-          // off-by-one issues. Looking at the 'threshold' debug visualization, it seems we can count on these pixels differing:
-          //   * first two rows
-          //   * last three rows
-          //   * first column
-          //   * last two columns
-          // The following value takes this into account. Much more pixels than this differing, and we've likely got a visual mismatch.
-          // It's an overcount, but the math is simpler and we want some additional leeway anyhow.
-          const differingPixelCountThreshold = width * 5 + height * 3;
-          result.success = pixelDifferCount < differingPixelCountThreshold;
 
           if (options.debugFormat) result.debugData = debugData;
         }
@@ -381,7 +360,7 @@ describe('FullPageScreenshot gatherer', () => {
               line += columns[y][x].toString(16).padStart(6, '0') + ' ';
             } else if (debugFormat === 'delta') {
               line += columns[y][x].toFixed(1) + ' ';
-            } else if (debugFormat === 'threshold') {
+            } else if (debugFormat === 'pass') {
               line += columns[y][x] ? 'O' : 'X';
             }
           }
