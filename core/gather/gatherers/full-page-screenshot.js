@@ -10,8 +10,6 @@ import * as emulation from '../../lib/emulation.js';
 import {pageFunctions} from '../../lib/page-functions.js';
 import {waitForNetworkIdle} from '../driver/wait-for-condition.js';
 
-/** @typedef {{width: number, height: number, deviceScaleFactor: number, mobile: boolean}} DeviceMetrics */
-
 // JPEG quality setting
 // Exploration and examples of reports using different quality settings: https://docs.google.com/document/d/1ZSffucIca9XDW2eEwfoevrk-OTl7WQFeMf0CgeJAA8M/edit#
 // Note: this analysis was done for JPEG, but now we use WEBP.
@@ -38,8 +36,6 @@ function getObservedDeviceMetrics() {
   return {
     width: window.outerWidth,
     height: window.outerHeight,
-    innerWidth: window.innerWidth,
-    innerHeight: window.innerHeight,
     screenOrientation: {
       type: screenOrientationType,
       angle: window.screen.orientation.angle,
@@ -64,19 +60,19 @@ class FullPageScreenshot extends BaseGatherer {
 
   /**
    * @param {LH.Gatherer.Context} context
-   * @param {DeviceMetrics} deviceMetrics
+   * @param {{height: number, width: number, mobile: boolean}} deviceMetrics
    */
   async _resizeViewport(context, deviceMetrics) {
     const session = context.driver.defaultSession;
     const metrics = await session.sendCommand('Page.getLayoutMetrics');
 
-    // To obtain a full page screenshot, we resize the emulated viewport height to
-    // the maximum between visual-viewport height and the scaled document height.
-    // Final height is capped to the maximum size allowance of WebP format.
-    // Height needs to be rounded to an integer for Emulation.setDeviceMetricOverrides.
-    const fullHeight = Math.round(Math.max(
-      deviceMetrics.height, metrics.cssContentSize.height * metrics.cssVisualViewport.scale
-    ));
+    // Height should be as tall as the content.
+    // Scale the emulated height to reach the content height.
+    const fullHeight = Math.round(
+      deviceMetrics.height *
+      metrics.cssContentSize.height /
+      metrics.cssLayoutViewport.clientHeight
+    );
     const height = Math.min(fullHeight, MAX_WEBP_SIZE);
 
     // Setup network monitor before we change the viewport.
@@ -110,23 +106,20 @@ class FullPageScreenshot extends BaseGatherer {
 
   /**
    * @param {LH.Gatherer.Context} context
-   * @param {DeviceMetrics} deviceMetrics
    * @return {Promise<LH.Result.FullPageScreenshot['screenshot']>}
    */
-  async _takeScreenshot(context, deviceMetrics) {
+  async _takeScreenshot(context) {
+    const metrics = await context.driver.defaultSession.sendCommand('Page.getLayoutMetrics');
     const result = await context.driver.defaultSession.sendCommand('Page.captureScreenshot', {
       format: 'webp',
       quality: FULL_PAGE_SCREENSHOT_QUALITY,
     });
-    const metrics = await context.driver.defaultSession.sendCommand('Page.getLayoutMetrics');
     const data = 'data:image/webp;base64,' + result.data;
+
     return {
       data,
-      // Rely on device metrics width that is already in scaled units to account for scrollbar on macOS.
-      width: deviceMetrics.width,
-      // Since we resized emulated viewport to match the desired screenshot size,
-      // it is safe to rely on scaled visual viewport css dimensions.
-      height: Math.round(metrics.cssVisualViewport.clientHeight * metrics.cssVisualViewport.scale),
+      width: metrics.cssVisualViewport.clientWidth,
+      height: metrics.cssVisualViewport.clientHeight,
     };
   }
 
@@ -212,10 +205,7 @@ class FullPageScreenshot extends BaseGatherer {
       // Issue both commands at once, to reduce the chance that the page changes between capturing
       // a screenshot and resolving the nodes. https://github.com/GoogleChrome/lighthouse/pull/14763
       const [screenshot, nodes] =
-        await Promise.all([
-          this._takeScreenshot(context, deviceMetrics),
-          this._resolveNodes(context),
-        ]);
+        await Promise.all([this._takeScreenshot(context), this._resolveNodes(context)]);
       return {
         screenshot,
         nodes,
