@@ -23,9 +23,15 @@ beforeEach(() => {
     if (method === 'Page.getLayoutMetrics') {
       return {
         cssContentSize: contentSize,
+        // This is only accessed on the first call to Page.getLayoutMetrics
+        // At that time the width and height should match the screen size.
+        cssLayoutViewport: {clientWidth: screenSize.width, clientHeight: screenSize.height},
+        // This is only accessed on the second call to Page.getLayoutMetrics
+        // At that time the width should be the same as the layout width but the height will
+        // have been resized to reach the content height.
+        // This will represent the final screenshot area size.
         // See comment within _takeScreenshot() implementation
-        cssVisualViewport: {clientWidth: contentSize.width, clientHeight: contentSize.height,
-          scale: 1.0},
+        cssVisualViewport: {clientWidth: screenSize.width, clientHeight: contentSize.height},
       };
     }
     if (method === 'Page.captureScreenshot') {
