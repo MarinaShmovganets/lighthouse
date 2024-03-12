@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2022 Google LLC
+ * Copyright 2024 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -10,7 +10,7 @@ import {LH_ROOT} from '../../../shared/root.js';
 
 /* eslint-env browser */
 
-describe('CSS usage over a flow navigation', function() {
+describe('User flow stylesheet tracking', function() {
   // eslint-disable-next-line no-invalid-this
   this.timeout(120_000);
 
@@ -22,7 +22,7 @@ describe('CSS usage over a flow navigation', function() {
     state.server.baseDir = `${LH_ROOT}/core/test/fixtures/user-flows/css-change`;
   });
 
-  it('should correctly scope CSS usage information', async () => {
+  it('should correctly scope stylesheets based on mode', async () => {
     const pageUrl = `${state.serverBaseUrl}/start.html`;
     await state.page.goto(pageUrl, {waitUntil: ['networkidle0']});
 
@@ -67,7 +67,7 @@ describe('CSS usage over a flow navigation', function() {
       'h1 {color: red}',
     ]);
 
-    // Some stylesheets are pre-existing and they are out in scope for timespan mode
+    // Some stylesheets are pre-existing and they are in in scope for timespan mode
     expect(stylesheets2).toEqual([
       'body {\n  border: 5px solid red;\n}',
       'h1 {color: red}',
