@@ -36,7 +36,7 @@ class CSSUsage extends BaseGatherer {
   /**
    * @param {LH.Crdp.CSS.StyleSheetAddedEvent} event
    */
-  async _onStylesheetAdded(event) {
+  _onStylesheetAdded(event) {
     if (!this._session) throw new Error('Session not initialized');
     const styleSheetId = event.header.styleSheetId;
     const sheetPromise = this._session.sendCommand('CSS.getStyleSheetText', {styleSheetId})
@@ -97,6 +97,9 @@ class CSSUsage extends BaseGatherer {
     const coverageResponse = await session.sendCommand('CSS.stopRuleUsageTracking');
     this._ruleUsage = coverageResponse.ruleUsage;
     session.off('CSS.styleSheetAdded', this._onStylesheetAdded);
+
+    // Ensure we finish fetching all stylesheet contents before disabling the CSS domain
+    await Promise.all(this._sheetPromises.values());
 
     await session.sendCommand('CSS.disable');
     await session.sendCommand('DOM.disable');
