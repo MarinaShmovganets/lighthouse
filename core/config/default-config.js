@@ -141,7 +141,6 @@ const defaultConfig = {
     {id: 'EmbeddedContent', gatherer: 'seo/embedded-content'},
     {id: 'FontSize', gatherer: 'seo/font-size'},
     {id: 'Inputs', gatherer: 'inputs'},
-    {id: 'GlobalListeners', gatherer: 'global-listeners'},
     {id: 'IFrameElements', gatherer: 'iframe-elements'},
     {id: 'ImageElements', gatherer: 'image-elements'},
     {id: 'InstallabilityErrors', gatherer: 'installability-errors'},

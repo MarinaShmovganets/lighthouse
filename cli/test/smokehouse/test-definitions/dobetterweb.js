@@ -207,12 +207,6 @@ const expectations = {
         },
       },
     ],
-    GlobalListeners: [{
-      type: 'unload',
-      scriptId: /^\d+$/,
-      lineNumber: '>300',
-      columnNumber: '>30',
-    }],
     DevtoolsLog: {
       _includes: [
         // Ensure we are getting async call stacks.
