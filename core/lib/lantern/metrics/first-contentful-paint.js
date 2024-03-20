@@ -9,7 +9,7 @@ import {Metric} from '../metric.js';
 import {BaseNode} from '../base-node.js';
 
 /** @typedef {import('../base-node.js').Node} Node */
-/** @typedef {import('../network-node.js').NetworkNode} NetworkNode */
+/** @template T @typedef {import('../network-node.js').NetworkNode<T>} NetworkNode */
 /** @typedef {import('../cpu-node.js').CPUNode} CpuNode */
 
 class FirstContentfulPaint extends Metric {
@@ -25,10 +25,11 @@ class FirstContentfulPaint extends Metric {
   }
 
   /**
+   * @template T
    * @typedef FirstPaintBasedGraphOpts
    * @property {number} cutoffTimestamp The timestamp used to filter out tasks that occured after
    *    our paint of interest. Typically this is First Contentful Paint or First Meaningful Paint.
-   * @property {function(NetworkNode):boolean} treatNodeAsRenderBlocking The function that determines
+   * @property {function(NetworkNode<T>):boolean} treatNodeAsRenderBlocking The function that determines
    *    which resources should be considered *possibly* render-blocking.
    * @property {(function(CpuNode):boolean)=} additionalCpuNodesToTreatAsRenderBlocking The function that
    *    determines which CPU nodes should also be included in our blocking node IDs set,
@@ -41,8 +42,9 @@ class FirstContentfulPaint extends Metric {
    * It also computes the set of corresponding CPU node ids that were needed for the paint at the
    * given timestamp.
    *
+   * @template [T=unknown]
    * @param {Node} graph
-   * @param {FirstPaintBasedGraphOpts} opts
+   * @param {FirstPaintBasedGraphOpts<T>} opts
    * @return {{definitelyNotRenderBlockingScriptUrls: Set<string>, renderBlockingCpuNodeIds: Set<string>}}
    */
   static getRenderBlockingNodeData(
@@ -128,8 +130,9 @@ class FirstContentfulPaint extends Metric {
   /**
    * This function computes the graph required for the first paint of interest.
    *
+   * @template [T=unknown]
    * @param {Node} dependencyGraph
-   * @param {FirstPaintBasedGraphOpts} opts
+   * @param {FirstPaintBasedGraphOpts<T>} opts
    * @return {Node}
    */
   static getFirstPaintBasedGraph(
