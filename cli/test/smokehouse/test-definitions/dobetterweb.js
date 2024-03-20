@@ -479,20 +479,6 @@ const expectations = {
           ],
         },
       },
-      'no-unload-listeners': {
-        score: 0,
-        details: {
-          items: [{
-            source: {
-              type: 'source-location',
-              url: 'http://localhost:10200/dobetterweb/dbw_tester.html',
-              urlProvider: 'network',
-              line: '>300',
-              column: '>30',
-            },
-          }],
-        },
-      },
       'bf-cache': {
         details: {
           items: [

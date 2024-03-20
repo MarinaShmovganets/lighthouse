@@ -225,7 +225,6 @@ const defaultConfig = {
     'layout-shift-elements',
     'layout-shifts',
     'long-tasks',
-    'no-unload-listeners',
     'non-composited-animations',
     'unsized-images',
     'valid-source-maps',
@@ -610,7 +609,6 @@ const defaultConfig = {
         {id: 'doctype', weight: 1, group: 'best-practices-browser-compat'},
         {id: 'charset', weight: 1, group: 'best-practices-browser-compat'},
         // General Group
-        {id: 'no-unload-listeners', weight: 1, group: 'best-practices-general'},
         {id: 'js-libraries', weight: 0, group: 'best-practices-general'},
         {id: 'deprecations', weight: 5, group: 'best-practices-general'},
         {id: 'third-party-cookies', weight: 5, group: 'best-practices-general'},
