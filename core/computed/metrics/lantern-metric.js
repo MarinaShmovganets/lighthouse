@@ -11,6 +11,24 @@ import {ProcessedNavigation} from '../processed-navigation.js';
 
 /** @typedef {import('../../lib/lantern/metric.js').Extras} Extras */
 
+/**
+ * @param {LH.Artifacts.MetricComputationDataInput} data
+ * @param {LH.Artifacts.ComputedContext} context
+ */
+async function getComputationDataParams(data, context) {
+  // TODO: remove this fallback when lighthouse-pub-ads plugin can update.
+  const gatherContext = data.gatherContext || {gatherMode: 'navigation'};
+  if (gatherContext.gatherMode !== 'navigation') {
+    throw new Error(`Lantern metrics can only be computed on navigations`);
+  }
+
+  const graph = await PageDependencyGraph.request(data, context);
+  const processedNavigation = await ProcessedNavigation.request(data.trace, context);
+  const simulator = data.simulator || (await LoadSimulator.request(data, context));
+
+  return {simulator, graph, processedNavigation};
+}
+
 class LanternMetric extends Metric {
   /**
    * @param {LH.Artifacts.MetricComputationDataInput} data
@@ -19,17 +37,7 @@ class LanternMetric extends Metric {
    * @return {Promise<LH.Artifacts.LanternMetric>}
    */
   static async computeMetricWithGraphs(data, context, extras) {
-    // TODO: remove this fallback when lighthouse-pub-ads plugin can update.
-    const gatherContext = data.gatherContext || {gatherMode: 'navigation'};
-    if (gatherContext.gatherMode !== 'navigation') {
-      throw new Error(`Lantern metrics can only be computed on navigations`);
-    }
-
-    const graph = await PageDependencyGraph.request(data, context);
-    const processedNavigation = await ProcessedNavigation.request(data.trace, context);
-    const simulator = data.simulator || (await LoadSimulator.request(data, context));
-
-    return this.compute({simulator, graph, processedNavigation}, extras);
+    return this.compute(await getComputationDataParams(data, context), extras);
   }
 
   /**
@@ -42,4 +50,4 @@ class LanternMetric extends Metric {
   }
 }
 
-export {LanternMetric};
+export {LanternMetric, getComputationDataParams};
