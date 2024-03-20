@@ -1,20 +1,16 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-
- <a name="11.7.0"></a>
+<a name="11.7.0"></a>
 # 11.7.0 (2024-03-20)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.6.0...v11.7.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 125](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
+* The publisher ads plugin is out of date and will not be supported in Chrome DevTools M125 ([#15843](https://github.com/GoogleChrome/lighthouse/pull/15843))
 
 ## Core
 
 * fix regression in internal chrome error messages ([#15853](https://github.com/GoogleChrome/lighthouse/pull/15853))
-* remove pubads plugin ([#15843](https://github.com/GoogleChrome/lighthouse/pull/15843))
 * a11y: disable target-size hidden audit ([#15854](https://github.com/GoogleChrome/lighthouse/pull/15854))
 * css-usage: prevent late stylesheet additions ([#15865](https://github.com/GoogleChrome/lighthouse/pull/15865))
 * driver: don't await cleanup in PAGE_HUNG case ([#15833](https://github.com/GoogleChrome/lighthouse/pull/15833))
