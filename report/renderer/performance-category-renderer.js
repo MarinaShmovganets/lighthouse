@@ -239,7 +239,9 @@ export class PerformanceCategoryRenderer extends CategoryRenderer {
         if (acronym === 'All') {
           audit.auditEl.hidden = false;
         } else {
-          const shouldHide = audit.auditRef.result.metricSavings?.[acronym] === undefined;
+          // Use `relevantMetrics` instead of `metricSavings` here because the backport for
+          // `relevantMetrics` works with all old versions of Lighthouse.
+          const shouldHide = !audit.auditRef.relevantMetrics?.find(m => m.acronym === acronym);
           audit.auditEl.hidden = shouldHide;
         }
       }
