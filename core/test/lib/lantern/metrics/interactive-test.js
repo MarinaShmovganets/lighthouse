@@ -18,7 +18,7 @@ const iframeDevtoolsLog = readJson('../../../fixtures/traces/iframe-m79.devtools
 
 describe('Metrics: Lantern TTI', () => {
   it('should compute predicted value', async () => {
-    const data = await getComputationDataFromFixture(trace, devtoolsLog);
+    const data = await getComputationDataFromFixture({trace, devtoolsLog});
     const result = await Interactive.compute(data, {
       fmpResult: await FirstMeaningfulPaint.compute(data),
     });
@@ -35,7 +35,10 @@ describe('Metrics: Lantern TTI', () => {
   });
 
   it('should compute predicted value on iframes with substantial layout', async () => {
-    const data = await getComputationDataFromFixture(iframeTrace, iframeDevtoolsLog);
+    const data = await getComputationDataFromFixture({
+      trace: iframeTrace,
+      devtoolsLog: iframeDevtoolsLog,
+    });
     const result = await Interactive.compute(data, {
       fmpResult: await FirstMeaningfulPaint.compute(data),
     });

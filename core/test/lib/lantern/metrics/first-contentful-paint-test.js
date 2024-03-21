@@ -17,7 +17,7 @@ const devtoolsLog = readJson('../../../fixtures/traces/progressive-app-m60.devto
 
 describe('Metrics: Lantern FCP', () => {
   it('should compute predicted value', async () => {
-    const data = await getComputationDataFromFixture(trace, devtoolsLog);
+    const data = await getComputationDataFromFixture({trace, devtoolsLog});
     const result = await FirstContentfulPaint.compute(data);
 
     expect({
@@ -58,7 +58,7 @@ describe('Metrics: Lantern FCP', () => {
       mainDocumentUrl: 'https://example.com/',
       finalDisplayedUrl: 'https://example.com/',
     };
-    const data = await getComputationDataFromFixture(trace, devtoolsLog, URL);
+    const data = await getComputationDataFromFixture({trace, devtoolsLog, URL});
     const result = await FirstContentfulPaint.compute(data);
 
     const optimisticNodes = [];

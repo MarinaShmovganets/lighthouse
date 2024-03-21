@@ -10,15 +10,13 @@ import {getURLArtifactFromDevtoolsLog} from '../../../test-utils.js';
 // TODO(15841): remove usage of Lighthouse code to create test data
 
 /**
- * @param {LH.Trace} trace
- * @param {LH.DevtoolsLog} devtoolsLog
- * @param {LH.Artifacts.URL=} URL
+ * @param {{trace: LH.Trace, devtoolsLog: LH.DevtoolsLog, settings?: LH.Audit.Context['settings'], URL?: LH.Artifacts.URL}} opts
  */
-function getComputationDataFromFixture(trace, devtoolsLog, URL = null) {
-  const gatherContext = {gatherMode: 'navigation'};
-  const settings = {};
-  const context = {settings, computedCache: new Map()};
+function getComputationDataFromFixture({trace, devtoolsLog, settings, URL}) {
+  settings = settings || {};
   URL = URL || getURLArtifactFromDevtoolsLog(devtoolsLog);
+  const gatherContext = {gatherMode: 'navigation'};
+  const context = {settings, computedCache: new Map()};
   return getComputationDataParams({trace, devtoolsLog, gatherContext, settings, URL}, context);
 }
 

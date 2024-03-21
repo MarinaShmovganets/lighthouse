@@ -15,7 +15,7 @@ const devtoolsLog = readJson('../../../fixtures/traces/progressive-app-m60.devto
 
 describe('Metrics: Lantern FMP', () => {
   it('should compute predicted value', async () => {
-    const data = await getComputationDataFromFixture(trace, devtoolsLog);
+    const data = await getComputationDataFromFixture({trace, devtoolsLog});
     const result = await FirstMeaningfulPaint.compute(data);
 
     expect({

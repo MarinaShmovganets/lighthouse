@@ -10,7 +10,7 @@ import {Metric} from '../metric.js';
 import {LighthouseError} from '../../lh-error.js';
 import {FirstContentfulPaint} from './first-contentful-paint.js';
 
-/** @typedef {import('../base-node.js').Node<LH.Artifacts.NetworkRequest>} Node */
+/** @typedef {import('../base-node.js').Node} Node */
 
 class FirstMeaningfulPaint extends Metric {
   /**

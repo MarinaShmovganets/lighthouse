@@ -89,7 +89,7 @@ class Interactive extends Metric {
       throw new Error('FMP is required to calculate the Interactive metric');
     }
 
-    const metricResult = await super.compute(data, {fmpResult});
+    const metricResult = await super.compute(data, extras);
     metricResult.timing = Math.max(metricResult.timing, fmpResult.timing);
     return metricResult;
   }
