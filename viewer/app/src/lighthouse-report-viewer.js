@@ -275,7 +275,7 @@ export class LighthouseReportViewer {
     const container = find('main', document);
 
     // Reset container content.
-    container.innerHTML = '';
+    container.innerText = '';
     const rootEl = document.createElement('div');
     container.append(rootEl);
 
