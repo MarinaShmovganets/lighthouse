@@ -394,7 +394,7 @@ describe('NetworkRequest', () => {
     const isContentEncoded = NetworkRequest.isContentEncoded;
 
     it('correctly identifies no compression', () => {
-      expect(isContentEncoded({responseHeaders: {}})).toBe(false);
+      expect(isContentEncoded({responseHeaders: []})).toBe(false);
     });
     it('correctly identifies brotli', () => {
       expect(isContentEncoded({
