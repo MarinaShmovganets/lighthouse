@@ -10700,10 +10700,194 @@
             "id": "work-during-interaction",
             "title": "Minimizes work during key interaction",
             "description": "This is the thread-blocking work occurring during the Interaction to Next Paint measurement. [Learn more about the Interaction to Next Paint metric](https://web.dev/articles/inp).",
-            "score": null,
-            "scoreDisplayMode": "error",
-            "errorMessage": "Could not locate: undefined",
-            "errorStack": "Error: Could not locate: undefined\n    at getIcuMessageFn (file:///core/lib/i18n/i18n.js)\n    at WorkDuringInteraction.getThreadBreakdownTable (file:///core/audits/work-during-interaction.js)\n    at WorkDuringInteraction.audit (file:///core/audits/work-during-interaction.js)\n    at async Runner._runAudit (file:///core/runner.js)\n    at async Runner._runAudits (file:///core/runner.js)\n    at async Runner.audit (file:///core/runner.js)\n    at async auditGatherSteps (file:///core/user-flow.js)\n    at async Module.auditFlowArtifacts (file:///core/index.js)\n    at async generateFlowResult (file:///core/scripts/update-flow-fixtures.js)\n    at async file:///core/scripts/update-flow-fixtures.js",
+            "score": 1,
+            "scoreDisplayMode": "informative",
+            "displayValue": "60 ms spent on event 'keypress'",
+            "metricSavings": {
+              "INP": 50
+            },
+            "details": {
+              "type": "list",
+              "items": [
+                {
+                  "type": "table",
+                  "headings": [
+                    {
+                      "key": "node",
+                      "valueType": "node",
+                      "label": "Event target"
+                    }
+                  ],
+                  "items": [
+                    {
+                      "node": {
+                        "type": "node",
+                        "lhId": "page-7-INPUT",
+                        "path": "5,FORM,1,INPUT",
+                        "selector": "div.flex > form.flex > input.font-daniel",
+                        "boundingRect": {
+                          "top": 0,
+                          "bottom": 0,
+                          "left": 0,
+                          "right": 0,
+                          "width": 0,
+                          "height": 0
+                        },
+                        "snippet": "<input type=\"text\" autofocus=\"\" name=\"q\" class=\"font-daniel font-bold block w-64 p-4 pb-3 mb-8 w-80 sm:w-128 lg:w-192 roun…\" placeholder=\"That's what she said\" required=\"\" value=\"call of duty\">",
+                        "nodeLabel": "div.flex > form.flex > input.font-daniel"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "table",
+                  "headings": [
+                    {
+                      "key": "phase",
+                      "valueType": "text",
+                      "subItemsHeading": {
+                        "key": "url",
+                        "valueType": "url"
+                      },
+                      "label": "Phase"
+                    },
+                    {
+                      "key": "total",
+                      "valueType": "ms",
+                      "subItemsHeading": {
+                        "key": "total",
+                        "granularity": 1,
+                        "valueType": "ms"
+                      },
+                      "granularity": 1,
+                      "label": "Total time"
+                    },
+                    {
+                      "key": null,
+                      "valueType": "ms",
+                      "subItemsHeading": {
+                        "key": "scripting",
+                        "granularity": 1,
+                        "valueType": "ms"
+                      },
+                      "label": "Script evaluation"
+                    },
+                    {
+                      "key": null,
+                      "valueType": "ms",
+                      "subItemsHeading": {
+                        "key": "layout",
+                        "granularity": 1,
+                        "valueType": "ms"
+                      },
+                      "label": "Style & Layout"
+                    },
+                    {
+                      "key": null,
+                      "valueType": "ms",
+                      "subItemsHeading": {
+                        "key": "render",
+                        "granularity": 1,
+                        "valueType": "ms"
+                      },
+                      "label": "Rendering"
+                    }
+                  ],
+                  "items": [
+                    {
+                      "phase": "Input delay",
+                      "total": 16,
+                      "subItems": {
+                        "type": "subitems",
+                        "items": [
+                          {
+                            "url": "https://www.mikescerealshack.co/",
+                            "total": 12.325999945402145,
+                            "scripting": 7.314999967813492,
+                            "layout": 0.3009999692440033,
+                            "render": 0
+                          },
+                          {
+                            "url": "https://www.mikescerealshack.co/_next/static/chunks/framework.9d524150d48315f49e80.js",
+                            "total": 1.7870000302791595,
+                            "scripting": 1.7870000302791595,
+                            "layout": 0,
+                            "render": 0
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "phase": "Processing duration",
+                      "total": 33,
+                      "subItems": {
+                        "type": "subitems",
+                        "items": [
+                          {
+                            "url": "https://www.mikescerealshack.co/",
+                            "total": 23.35999995470047,
+                            "scripting": 21.951999992132187,
+                            "layout": 0.8269999623298645,
+                            "render": 0
+                          },
+                          {
+                            "url": "https://www.mikescerealshack.co/_next/static/chunks/framework.9d524150d48315f49e80.js",
+                            "total": 9.64000004529953,
+                            "scripting": 9.64000004529953,
+                            "layout": 0,
+                            "render": 0
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "phase": "Presentation delay",
+                      "total": 15,
+                      "subItems": {
+                        "type": "subitems",
+                        "items": [
+                          {
+                            "url": "https://www.mikescerealshack.co/_next/static/chunks/framework.9d524150d48315f49e80.js",
+                            "total": 11.393999963998795,
+                            "scripting": 7.709999978542328,
+                            "layout": 0,
+                            "render": 0.8639999628067017
+                          },
+                          {
+                            "url": "https://www.mikescerealshack.co/",
+                            "total": 3.5730000138282776,
+                            "scripting": 0.10000002384185791,
+                            "layout": 0.4270000159740448,
+                            "render": 1.421999990940094
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "sortedBy": [
+                    "total"
+                  ]
+                },
+                {
+                  "type": "debugdata",
+                  "interactionType": "keypress",
+                  "phases": {
+                    "inputDelay": {
+                      "startTs": 183718309017,
+                      "endTs": 183718325017
+                    },
+                    "processingDuration": {
+                      "startTs": 183718325017,
+                      "endTs": 183718358017
+                    },
+                    "presentationDelay": {
+                      "startTs": 183718358017,
+                      "endTs": 183718373017
+                    }
+                  }
+                }
+              ]
+            },
             "guidanceLevel": 1
           },
           "bf-cache": {
@@ -12414,6 +12598,27 @@
             ],
             "core/audits/work-during-interaction.js | description": [
               "audits[work-during-interaction].description"
+            ],
+            "core/audits/work-during-interaction.js | displayValue": [
+              {
+                "values": {
+                  "timeInMs": 64,
+                  "interactionType": "keypress"
+                },
+                "path": "audits[work-during-interaction].displayValue"
+              }
+            ],
+            "core/audits/work-during-interaction.js | eventTarget": [
+              "audits[work-during-interaction].details.items[0].headings[0].label"
+            ],
+            "core/audits/work-during-interaction.js | inputDelay": [
+              "audits[work-during-interaction].details.items[1].items[0].phase"
+            ],
+            "core/audits/work-during-interaction.js | processingDuration": [
+              "audits[work-during-interaction].details.items[1].items[1].phase"
+            ],
+            "core/audits/work-during-interaction.js | presentationDelay": [
+              "audits[work-during-interaction].details.items[1].items[2].phase"
             ],
             "core/audits/bf-cache.js | title": [
               "audits[bf-cache].title"

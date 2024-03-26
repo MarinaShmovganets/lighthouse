@@ -237,7 +237,7 @@ Object {
             "endTs": 633282934296,
             "startTs": 633282649296,
           },
-          "processingTime": Object {
+          "processingDuration": Object {
             "endTs": 633282649296,
             "startTs": 633282608296,
           },

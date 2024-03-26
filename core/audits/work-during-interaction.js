@@ -115,7 +115,7 @@ class WorkDuringInteraction extends Audit {
     const endTs = startTs + interactionData.duration * 1000;
     return {
       inputDelay: {startTs, endTs: processingStartTs},
-      processingTime: {startTs: processingStartTs, endTs: processingEndTs},
+      processingDuration: {startTs: processingStartTs, endTs: processingEndTs},
       presentationDelay: {startTs: processingEndTs, endTs},
     };
   }
