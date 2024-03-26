@@ -1718,7 +1718,7 @@
   "core/audits/work-during-interaction.js | presentationDelay": {
     "message": "Độ trễ khi trình bày"
   },
-  "core/audits/work-during-interaction.js | processingTime": {
+  "core/audits/work-during-interaction.js | processingDuration": {
     "message": "Thời gian xử lý"
   },
   "core/audits/work-during-interaction.js | title": {

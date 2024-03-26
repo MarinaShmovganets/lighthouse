@@ -1718,7 +1718,7 @@
   "core/audits/work-during-interaction.js | presentationDelay": {
     "message": "展示延迟时间"
   },
-  "core/audits/work-during-interaction.js | processingTime": {
+  "core/audits/work-during-interaction.js | processingDuration": {
     "message": "处理时间"
   },
   "core/audits/work-during-interaction.js | title": {

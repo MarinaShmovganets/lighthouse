@@ -1718,7 +1718,7 @@
   "core/audits/work-during-interaction.js | presentationDelay": {
     "message": "Задержка вывода ответа на экран"
   },
-  "core/audits/work-during-interaction.js | processingTime": {
+  "core/audits/work-during-interaction.js | processingDuration": {
     "message": "Время обработки"
   },
   "core/audits/work-during-interaction.js | title": {

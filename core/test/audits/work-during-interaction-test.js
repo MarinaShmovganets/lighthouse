@@ -173,8 +173,8 @@ Object {
           },
           Object {
             "phase": Object {
-              "formattedDefault": "Processing time",
-              "i18nId": "core/audits/work-during-interaction.js | processingTime",
+              "formattedDefault": "Processing duration",
+              "i18nId": "core/audits/work-during-interaction.js | processingDuration",
               "values": undefined,
             },
             "subItems": Object {

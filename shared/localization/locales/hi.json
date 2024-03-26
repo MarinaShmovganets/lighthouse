@@ -1718,7 +1718,7 @@
   "core/audits/work-during-interaction.js | presentationDelay": {
     "message": "प्रज़ेंटेशन में देरी"
   },
-  "core/audits/work-during-interaction.js | processingTime": {
+  "core/audits/work-during-interaction.js | processingDuration": {
     "message": "प्रोसेस करने में लगा समय"
   },
   "core/audits/work-during-interaction.js | title": {
