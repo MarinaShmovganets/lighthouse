@@ -89,12 +89,12 @@ class TotalBlockingTime extends Metric {
   static async compute(data, extras) {
     const fcpResult = extras?.fcpResult;
     if (!fcpResult) {
-      throw new Error('FCP is required to calculate the SpeedIndex metric');
+      throw new Error('FCP is required to calculate the TBT metric');
     }
 
     const interactiveResult = extras?.fcpResult;
     if (!interactiveResult) {
-      throw new Error('Interactive is required to calculate the SpeedIndex metric');
+      throw new Error('Interactive is required to calculate the TBT metric');
     }
 
     return super.compute(data, extras);
