@@ -139,8 +139,8 @@ describe('backward compatibility', () => {
     for (const auditRef of clonedSampleResult.categories['performance'].auditRefs) {
       if (auditRef.group === 'hidden') {
         delete auditRef.group;
-      } else if (!auditRef.group) {
-        auditRef.group = 'diagnostics';
+      } else if (auditRef.id === 'render-blocking-resources') {
+        auditRef.group = 'load-opportunities';
       }
     }
     assert.notDeepStrictEqual(clonedSampleResult.categories, sampleResult.categories);
