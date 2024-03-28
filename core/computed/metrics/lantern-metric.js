@@ -13,9 +13,7 @@ import {ProcessedNavigation} from '../processed-navigation.js';
  * @param {LH.Artifacts.ComputedContext} context
  */
 async function getComputationDataParams(data, context) {
-  // TODO: remove this fallback when lighthouse-pub-ads plugin can update.
-  const gatherContext = data.gatherContext || {gatherMode: 'navigation'};
-  if (gatherContext.gatherMode !== 'navigation') {
+  if (data.gatherContext.gatherMode !== 'navigation') {
     throw new Error(`Lantern metrics can only be computed on navigations`);
   }
 

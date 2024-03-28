@@ -9,7 +9,6 @@
 import * as LH from '../../types/lh.js';
 import * as constants from './constants.js';
 import * as i18n from '../lib/i18n/i18n.js';
-import {metricsToAudits} from './metrics-to-audits.js';
 
 const UIStrings = {
   /** Title of the Performance category of audits. Equivalent to 'Web performance', this term is inclusive of all web page speed and loading optimization topics. Also used as a label of a score gauge; try to limit to 20 characters. */
@@ -141,7 +140,6 @@ const defaultConfig = {
     {id: 'EmbeddedContent', gatherer: 'seo/embedded-content'},
     {id: 'FontSize', gatherer: 'seo/font-size'},
     {id: 'Inputs', gatherer: 'inputs'},
-    {id: 'GlobalListeners', gatherer: 'global-listeners'},
     {id: 'IFrameElements', gatherer: 'iframe-elements'},
     {id: 'ImageElements', gatherer: 'image-elements'},
     {id: 'InstallabilityErrors', gatherer: 'installability-errors'},
@@ -222,7 +220,6 @@ const defaultConfig = {
     'layout-shift-elements',
     'layout-shifts',
     'long-tasks',
-    'no-unload-listeners',
     'non-composited-animations',
     'unsized-images',
     'valid-source-maps',
@@ -431,12 +428,12 @@ const defaultConfig = {
       title: str_(UIStrings.performanceCategoryTitle),
       supportedModes: ['navigation', 'timespan', 'snapshot'],
       auditRefs: [
-        {id: 'first-contentful-paint', weight: 10, group: 'metrics', acronym: 'FCP', relevantAudits: metricsToAudits.fcpRelevantAudits},
-        {id: 'largest-contentful-paint', weight: 25, group: 'metrics', acronym: 'LCP', relevantAudits: metricsToAudits.lcpRelevantAudits},
-        {id: 'total-blocking-time', weight: 30, group: 'metrics', acronym: 'TBT', relevantAudits: metricsToAudits.tbtRelevantAudits},
-        {id: 'cumulative-layout-shift', weight: 25, group: 'metrics', acronym: 'CLS', relevantAudits: metricsToAudits.clsRelevantAudits},
+        {id: 'first-contentful-paint', weight: 10, group: 'metrics', acronym: 'FCP'},
+        {id: 'largest-contentful-paint', weight: 25, group: 'metrics', acronym: 'LCP'},
+        {id: 'total-blocking-time', weight: 30, group: 'metrics', acronym: 'TBT'},
+        {id: 'cumulative-layout-shift', weight: 25, group: 'metrics', acronym: 'CLS'},
         {id: 'speed-index', weight: 10, group: 'metrics', acronym: 'SI'},
-        {id: 'interaction-to-next-paint', weight: 0, group: 'metrics', acronym: 'INP', relevantAudits: metricsToAudits.inpRelevantAudits},
+        {id: 'interaction-to-next-paint', weight: 0, group: 'metrics', acronym: 'INP'},
 
         // These are our "invisible" metrics. Not displayed, but still in the LHR.
         {id: 'interactive', weight: 0, group: 'hidden', acronym: 'TTI'},
@@ -605,7 +602,6 @@ const defaultConfig = {
         {id: 'doctype', weight: 1, group: 'best-practices-browser-compat'},
         {id: 'charset', weight: 1, group: 'best-practices-browser-compat'},
         // General Group
-        {id: 'no-unload-listeners', weight: 1, group: 'best-practices-general'},
         {id: 'js-libraries', weight: 0, group: 'best-practices-general'},
         {id: 'deprecations', weight: 5, group: 'best-practices-general'},
         {id: 'third-party-cookies', weight: 5, group: 'best-practices-general'},
