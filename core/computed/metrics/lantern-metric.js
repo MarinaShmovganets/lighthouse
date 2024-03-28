@@ -4,12 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Metric} from '../../lib/lantern/metric.js';
 import {LoadSimulator} from '../load-simulator.js';
 import {PageDependencyGraph} from '../page-dependency-graph.js';
 import {ProcessedNavigation} from '../processed-navigation.js';
-
-/** @typedef {import('../../lib/lantern/metric.js').Extras} Extras */
 
 /**
  * @param {LH.Artifacts.MetricComputationDataInput} data
@@ -29,25 +26,4 @@ async function getComputationDataParams(data, context) {
   return {simulator, graph, processedNavigation};
 }
 
-class LanternMetric extends Metric {
-  /**
-   * @param {LH.Artifacts.MetricComputationDataInput} data
-   * @param {LH.Artifacts.ComputedContext} context
-   * @param {Omit<Extras, 'optimistic'>=} extras
-   * @return {Promise<LH.Artifacts.LanternMetric>}
-   */
-  static async computeMetricWithGraphs(data, context, extras) {
-    return this.compute(await getComputationDataParams(data, context), extras);
-  }
-
-  /**
-   * @param {LH.Artifacts.MetricComputationDataInput} data
-   * @param {LH.Artifacts.ComputedContext} context
-   * @return {Promise<LH.Artifacts.LanternMetric>}
-   */
-  static async compute_(data, context) {
-    return this.computeMetricWithGraphs(data, context);
-  }
-}
-
-export {LanternMetric, getComputationDataParams};
+export {getComputationDataParams};
