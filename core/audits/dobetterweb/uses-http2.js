@@ -19,7 +19,6 @@ import {LanternInteractive} from '../../computed/metrics/lantern-interactive.js'
 import {NetworkRequest} from '../../lib/network-request.js';
 import {NetworkRecords} from '../../computed/network-records.js';
 import {LoadSimulator} from '../../computed/load-simulator.js';
-import {PageDependencyGraph} from '../../computed/page-dependency-graph.js';
 import {LanternLargestContentfulPaint} from '../../computed/metrics/lantern-largest-contentful-paint.js';
 import {LanternFirstContentfulPaint} from '../../computed/metrics/lantern-first-contentful-paint.js';
 import * as i18n from '../../lib/i18n/i18n.js';
@@ -235,7 +234,6 @@ class UsesHTTP2Audit extends Audit {
    * @return {Promise<LH.Audit.Product>}
    */
   static async audit(artifacts, context) {
-    const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const URL = artifacts.URL;
     const networkRecords = await NetworkRecords.request(devtoolsLog, context);
@@ -269,7 +267,6 @@ class UsesHTTP2Audit extends Audit {
       devtoolsLog,
       settings,
     };
-    const pageGraph = await PageDependencyGraph.request({trace, devtoolsLog, URL}, context);
     const simulator = await LoadSimulator.request(simulatorOptions, context);
     const metricComputationInput = Audit.makeMetricComputationDataInput(artifacts, context);
 
@@ -280,8 +277,6 @@ class UsesHTTP2Audit extends Audit {
       pessimisticGraph: lcpGraph,
     } = await LanternLargestContentfulPaint.request(metricComputationInput, context);
 
-    const wastedMsTti = UsesHTTP2Audit.computeWasteWithTTIGraph(
-      resources, pageGraph, simulator);
     const wasteFcp =
       UsesHTTP2Audit.computeWasteWithGraph(resources,
         fcpGraph, simulator, {label: 'fcp'});
@@ -296,11 +291,11 @@ class UsesHTTP2Audit extends Audit {
     ];
 
     const details = Audit.makeOpportunityDetails(headings, resources,
-      {overallSavingsMs: wastedMsTti});
+      {overallSavingsMs: wasteLcp.savings});
 
     return {
       displayValue,
-      numericValue: wastedMsTti,
+      numericValue: wasteLcp.savings,
       numericUnit: 'millisecond',
       score: resources.length ? 0 : 1,
       details,
