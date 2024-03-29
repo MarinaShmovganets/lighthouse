@@ -110,7 +110,7 @@ class Server {
       };
 
       // This enables an important test in Smokerider - to check if the universal fetcher
-      // used for robots.txt (and other resources) is able to get around CORS.
+      // used for robots.txt (and source maps) is able to fetch freely while ignoring CORS constraints.
       if (filePath === '/robots.txt') {
         delete headers['Access-Control-Allow-Origin'];
       }
