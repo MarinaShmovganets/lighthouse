@@ -5,7 +5,6 @@
  */
 
 import {Audit} from '../audit.js';
-import {LanternInteractive} from '../../computed/metrics/lantern-interactive.js';
 import * as i18n from '../../lib/i18n/i18n.js';
 import {NetworkRecords} from '../../computed/network-records.js';
 import {LoadSimulator} from '../../computed/load-simulator.js';
@@ -148,37 +147,6 @@ class ByteEfficiencyAudit extends Audit {
       simulationBeforeChanges,
       simulationAfterChanges,
     };
-  }
-
-  /**
-   * Computes the estimated effect of all the byte savings on the maximum of the following:
-   *
-   * - end time of the last long task in the provided graph
-   * - (if includeLoad is true or not provided) end time of the last node in the graph
-   *
-   * @param {Array<LH.Audit.ByteEfficiencyItem>} results The array of byte savings results per resource
-   * @param {Node} graph
-   * @param {Simulator} simulator
-   * @param {{includeLoad?: boolean, providedWastedBytesByUrl?: Map<string, number>}=} options
-   * @return {number}
-   */
-  static computeWasteWithTTIGraph(results, graph, simulator, options) {
-    options = Object.assign({includeLoad: true}, options);
-    const {savings: savingsOnOverallLoad, simulationBeforeChanges, simulationAfterChanges} =
-      this.computeWasteWithGraph(results, graph, simulator, {
-        ...options,
-        label: 'overallLoad',
-      });
-
-    const savingsOnTTI =
-      LanternInteractive.getLastLongTaskEndTime(simulationBeforeChanges.nodeTimings) -
-      LanternInteractive.getLastLongTaskEndTime(simulationAfterChanges.nodeTimings);
-
-    let savings = savingsOnTTI;
-    if (options.includeLoad) savings = Math.max(savings, savingsOnOverallLoad);
-
-    // Round waste to nearest 10ms
-    return Math.round(Math.max(savings, 0) / 10) * 10;
   }
 
   /**
