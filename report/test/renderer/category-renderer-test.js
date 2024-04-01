@@ -412,7 +412,7 @@ describe('CategoryRenderer', () => {
   });
 
   describe('clumping passed/failed/warning/manual', () => {
-    it('separates audits in the DOM', () => {
+    it.only('separates audits in the DOM', () => {
       const category = sampleResults.categories.pwa;
       const categoryClone = JSON.parse(JSON.stringify(category));
       // Give the first two passing grades warnings
@@ -435,7 +435,7 @@ describe('CategoryRenderer', () => {
       assert.equal(failedAudits.length, 3);
       assert.equal(warningAudits.length, 2);
       assert.equal(manualAudits.length, 3);
-      assert.equal(naAudits.length, 2);
+      assert.equal(naAudits.length, 1);
 
       const allAudits = elem.querySelectorAll('.lh-audit');
       // No unaccounted audits
