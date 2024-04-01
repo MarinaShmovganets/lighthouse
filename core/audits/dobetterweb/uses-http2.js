@@ -15,7 +15,6 @@
 import {Audit} from '../audit.js';
 import {EntityClassification} from '../../computed/entity-classification.js';
 import UrlUtils from '../../lib/url-utils.js';
-import {LanternInteractive} from '../../computed/metrics/lantern-interactive.js';
 import {NetworkRequest} from '../../lib/network-request.js';
 import {NetworkRecords} from '../../computed/network-records.js';
 import {LoadSimulator} from '../../computed/load-simulator.js';
@@ -114,32 +113,6 @@ class UsesHTTP2Audit extends Audit {
       simulationBefore,
       simulationAfter,
     };
-  }
-
-  /**
-   * Computes the estimated effect all results being converted to use http/2, the max of:
-   *
-   * - end time of the last long task in the provided graph
-   * - end time of the last node in the graph
-   * @param {Array<{url: string}>} results
-   * @param {Node} graph
-   * @param {Simulator} simulator
-   * @return {number}
-   */
-  static computeWasteWithTTIGraph(results, graph, simulator) {
-    const {savings: savingsOnOverallLoad, simulationBefore, simulationAfter} =
-      this.computeWasteWithGraph(results, graph, simulator, {
-        label: 'tti',
-      });
-
-    const savingsOnTTI =
-      LanternInteractive.getLastLongTaskEndTime(simulationBefore.nodeTimings) -
-      LanternInteractive.getLastLongTaskEndTime(simulationAfter.nodeTimings);
-
-    const savings = Math.max(savingsOnTTI, savingsOnOverallLoad);
-
-    // Round waste to nearest 10ms
-    return Math.round(Math.max(savings, 0) / 10) * 10;
   }
 
   /**
