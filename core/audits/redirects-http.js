@@ -1,5 +1,5 @@
 /**
- * @license Copyright 2016 The Lighthouse Authors. All Rights Reserved.
+ * @license Copyright 2024 The Lighthouse Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
@@ -14,8 +14,8 @@ const UIStrings = {
   /** Title of a Lighthouse audit that provides detail on HTTP to HTTPS redirects. This descriptive title is shown to users when HTTP traffic is not redirected to HTTPS. */
   failureTitle: 'Does not redirect HTTP traffic to HTTPS',
   /** Description of a Lighthouse audit that tells the user why they should direct HTTP traffic to HTTPS. This is displayed after a user expands the section to see more. No character length limits. 'Learn More' becomes link text to additional documentation. */
-  description: 'If you\'ve already set up HTTPS, make sure that you redirect all HTTP ' +
-    'traffic to HTTPS in order to enable secure web features for all your users. [Learn more](https://web.dev/redirects-http/).',
+  description: 'Make sure that you redirect all HTTP ' +
+    'traffic to HTTPS in order to enable secure web features for all your users. [Learn more](https://developer.chrome.com/docs/lighthouse/pwa/redirects-http/).',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
@@ -35,6 +35,7 @@ class RedirectsHTTP extends Audit {
       failureTitle: str_(UIStrings.failureTitle),
       description: str_(UIStrings.description),
       requiredArtifacts: ['URL'],
+      supportedModes: ['navigation'],
     };
   }
 
@@ -44,10 +45,7 @@ class RedirectsHTTP extends Audit {
    */
   static audit(artifacts) {
     if (!artifacts.URL.requestedUrl) {
-      return {
-        score: null,
-        notApplicable: true,
-      };
+      throw new Error('Missing requestedUrl');
     }
 
     const requestedUrl = new URL(artifacts.URL.requestedUrl);
