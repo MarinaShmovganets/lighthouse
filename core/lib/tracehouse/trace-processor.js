@@ -416,7 +416,8 @@ class TraceProcessor {
 
       // Temporary fix for a Chrome bug where some RunTask events can be overlapping.
       // We correct that here be ensuring each RunTask ends at least 1 microsecond before the next
-      // https://crbug.com/40825479
+      // https://github.com/GoogleChrome/lighthouse/issues/15896
+      // https://issues.chromium.org/issues/329678173
       if (prevToplevel && start < prevToplevel.end) {
         prevToplevel.end = start - 0.001;
       }
