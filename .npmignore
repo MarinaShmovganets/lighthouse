@@ -28,7 +28,7 @@
 !/cli/test/smokehouse/**
 /cli/test/smokehouse/test-definitions/
 
-/results/
+results/
 /lantern-data/
 /timings-data/
 
