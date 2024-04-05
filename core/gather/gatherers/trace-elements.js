@@ -108,10 +108,25 @@ class TraceElements extends BaseGatherer {
       // `impactedNodes` should always be an array here, but it can randomly be something else for
       // currently unknown reasons. This exception handling will help us identify what
       // `impactedNodes` really is and also prevent the error from being fatal.
+
+      // It's possible `impactedNodes` is not JSON serializable, so let's add more supplemental
+      // fields just in case.
+      const impactedNodesType = typeof impactedNodes;
+      const impactedNodesClassName = impactedNodes?.constructor?.name;
+
+      let impactedNodesJson;
+      let eventJson;
+      try {
+        impactedNodesJson = JSON.parse(JSON.stringify(impactedNodes));
+        eventJson = JSON.parse(JSON.stringify(event));
+      } catch {}
+
       Sentry.captureException(err, {
         extra: {
-          impactedNodes,
-          event,
+          impactedNodes: impactedNodesJson,
+          event: eventJson,
+          impactedNodesType,
+          impactedNodesClassName,
         },
       });
       return;
