@@ -1,15 +1,14 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-lauren n. liberda @selfisekai
- <a name="11.7.1"></a>
+<a name="11.7.1"></a>
 # 11.7.1 (2024-04-08)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.7.0...v11.7.1)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 125](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
-## Notable Changes
-~~ TODO: Move notable changes here ~~
+## New Contributors
 
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+- lauren n. liberda @selfisekai
 
 ## Core
 
