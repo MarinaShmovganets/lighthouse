@@ -442,7 +442,7 @@ const expectations = {
       },
       'dom-size': {
         score: 1,
-        numericValue: 149,
+        numericValue: 151,
         details: {
           items: [
             {
@@ -450,7 +450,7 @@ const expectations = {
               value: {
                 type: 'numeric',
                 granularity: 1,
-                value: 149,
+                value: 151,
               },
             },
             {
