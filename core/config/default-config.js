@@ -328,7 +328,6 @@ const defaultConfig = {
     'seo/is-crawlable',
     'seo/robots-txt',
     'seo/hreflang',
-    'seo/plugins',
     'seo/canonical',
     'seo/manual/structured-data',
     'work-during-interaction',
