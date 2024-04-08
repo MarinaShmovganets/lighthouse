@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "Документ містить елемент `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Усі фокусовані елементи мають містити унікальний `id`, щоб їх могли розпізнавати технології для людей з обмеженими можливостями. [Дізнайтесь, як виправити повторювані `id`.](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "Атрибути `[id]` в активних інтерактивних елементах неунікальні"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "Атрибути `[id]` в активних інтерактивних елементах унікальні"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "Значення ідентифікатора ARIA має бути унікальним, щоб технології для людей з обмеженими можливостями не пропускали інші копії. [Дізнайтесь, як виправити повторювані ідентифікатори ARIA.](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)"
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Документ містить метаопис"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Пошукові системи не можуть індексувати вміст плагінів. Багато пристроїв обмежують або не підтримують плагіни. [Докладніше про те, як уникати плагінів.](https://developer.chrome.com/docs/lighthouse/seo/plugins/)"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Документ використовує плагіни"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Документ уникає плагінів"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Якщо файл robots.txt недійсний, веб-сканери можуть не зрозуміти, як потрібно індексувати або сканувати ваш веб-сайт. [Докладніше про файл robots.txt.](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"

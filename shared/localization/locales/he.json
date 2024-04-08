@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "המסמך מכיל רכיב `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "כל הרכיבים הניתנים למיקוד חייבים לכלול `id` ייחודי כדי לוודא שטכנולוגיות מסייעות יוכלו לזהות אותם. [כך פותרים בעיות בכפילויות של `id`](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)."
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "נעשה שימוש במאפייני `[id]` לא ייחודיים ברכיבים פעילים שיכולים לקבל פוקוס"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "נעשה שימוש במאפייני `[id]` ייחודיים ברכיבים פעילים שיכולים לקבל פוקוס"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "הערך של מזהה ARIA חייב להיות ייחודי כדי למנוע מצבים שבהם טכנולוגיות מסייעות מתעלמות ממופעים אחרים. [כאן מוסבר איך לתקן מצבים של מזהי ARIA כפולים](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)."
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "יש למסמך מטא תיאור"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "מנועי חיפוש לא יכולים להוסיף לאינדקס תוכן של פלאגין, ומכשירים רבים מגבילים יישומי פלאגין או לא תומכים בהם. [למה כדאי להימנע משימוש ביישומי פלאגין](https://developer.chrome.com/docs/lighthouse/seo/plugins/)?"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "במסמך נעשה שימוש ביישומי פלאגין"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "אין במסמך שימוש ביישומי פלאגין"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "אם קובץ robots.txt אינו תקין, ייתכן שסורקים לא יוכלו להבין איך ברצונך שהאתר ייסרק או יתווסף לאינדקס. [למידע נוסף על robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"

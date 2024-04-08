@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "Doküman geçerli bir `<title>` öğesi içeriyor"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Odaklanabilir tüm öğelerde yardımcı teknolojilere görünür olmalarını sağlamak için benzersiz bir `id` olmalıdır. [Yinelenen `id` öğelerini nasıl düzelteceğinizi öğrenin](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)."
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "Etkin, odaklanabilir öğelerdeki `[id]` özellikleri benzersiz değil"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "Etkin, odaklanabilir öğelerdeki `[id]` özellikleri benzersiz"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "ARIA kimliğinin değeri benzersiz olmalıdır. Bunun nedeni, yardımcı teknolojilerin farkına varmadan diğer örnekleri atlamasını önlemektir. [Yinelenen ARIA kimliklerini nasıl düzelteceğinizi öğrenin](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)."
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Doküman meta tanım içeriyor"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Arama motorları eklenti içeriğini dizine ekleyemez. Ayrıca birçok cihaz eklentileri kısıtlar veya desteklemez. [Eklentilerden kaçınma hakkında daha fazla bilgi edinin](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Doküman, eklenti kullanıyor"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Doküman eklenti içermiyor"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "robots.txt dosyanız yanlış biçimlendirilmişse, tarayıcılar web sitenizin nasıl taranmasını veya dizine eklenmesini istediğinizi anlayamayabilir. [Robots.txt hakkında daha fazla bilgi edinin](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

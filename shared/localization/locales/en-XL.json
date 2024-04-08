@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "D̂óĉúm̂én̂t́ ĥáŝ á `<title>` êĺêḿêńt̂"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Âĺl̂ f́ôćûśâb́l̂é êĺêḿêńt̂ś m̂úŝt́ ĥáv̂é â ún̂íq̂úê `id` t́ô én̂śûŕê t́ĥát̂ t́ĥéŷ'ŕê v́îśîb́l̂é t̂ó âśŝíŝt́îv́ê t́êćĥńôĺôǵîéŝ. [Ĺêár̂ń ĥóŵ t́ô f́îx́ d̂úp̂ĺîćât́ê `id`ś](https://dequeuniversity.com/rules/axe/4.9/duplicate-id-active)."
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "`[id]` ât́t̂ŕîb́ût́êś ôń âćt̂ív̂é, f̂óĉúŝáb̂ĺê él̂ém̂én̂t́ŝ ár̂é n̂ót̂ ún̂íq̂úê"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "`[id]` ât́t̂ŕîb́ût́êś ôń âćt̂ív̂é, f̂óĉúŝáb̂ĺê él̂ém̂én̂t́ŝ ár̂é ûńîq́ûé"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "T̂h́ê v́âĺûé ôf́ âń ÂŔÎÁ ÎD́ m̂úŝt́ b̂é ûńîq́ûé t̂ó p̂ŕêv́êńt̂ ót̂h́êŕ îńŝt́âńĉéŝ f́r̂óm̂ b́êín̂ǵ ôv́êŕl̂óôḱêd́ b̂ý âśŝíŝt́îv́ê t́êćĥńôĺôǵîéŝ. [Ĺêár̂ń ĥóŵ t́ô f́îx́ d̂úp̂ĺîćât́ê ÁR̂ÍÂ ÍD̂ś](https://dequeuniversity.com/rules/axe/4.9/duplicate-id-aria)."
   },
@@ -1341,7 +1332,7 @@
     "message": "P̂ŕêĺôád̂ Ĺâŕĝéŝt́ Ĉón̂t́êńt̂f́ûĺ P̂áîńt̂ ím̂áĝé"
   },
   "core/audits/redirects-http.js | description": {
-    "message": "Îf́ ŷóû'v́ê ál̂ŕêád̂ý ŝét̂ úp̂ H́T̂T́P̂Ś, m̂ák̂é ŝúr̂é t̂h́ât́ ŷóû ŕêd́îŕêćt̂ ál̂ĺ ĤT́T̂Ṕ t̂ŕâf́f̂íĉ t́ô H́T̂T́P̂Ś îń ôŕd̂ér̂ t́ô én̂áb̂ĺê śêćûŕê ẃêb́ f̂éât́ûŕêś f̂ór̂ ál̂ĺ ŷóûŕ ûśêŕŝ. [Ĺêár̂ń m̂ór̂é](https://web.dev/redirects-http/)."
+    "message": "M̂ák̂é ŝúr̂é t̂h́ât́ ŷóû ŕêd́îŕêćt̂ ál̂ĺ ĤT́T̂Ṕ t̂ŕâf́f̂íĉ t́ô H́T̂T́P̂Ś îń ôŕd̂ér̂ t́ô én̂áb̂ĺê śêćûŕê ẃêb́ f̂éât́ûŕêś f̂ór̂ ál̂ĺ ŷóûŕ ûśêŕŝ. [Ĺêár̂ń m̂ór̂é](https://developer.chrome.com/docs/lighthouse/pwa/redirects-http/)."
   },
   "core/audits/redirects-http.js | failureTitle": {
     "message": "D̂óêś n̂ót̂ ŕêd́îŕêćt̂ H́T̂T́P̂ t́r̂áf̂f́îć t̂ó ĤT́T̂ṔŜ"
@@ -1483,15 +1474,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "D̂óĉúm̂én̂t́ ĥáŝ á m̂ét̂á d̂éŝćr̂íp̂t́îón̂"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Ŝéâŕĉh́ êńĝín̂éŝ ćâń't̂ ín̂d́êx́ p̂ĺûǵîń ĉón̂t́êńt̂, án̂d́ m̂án̂ý d̂év̂íĉéŝ ŕêśt̂ŕîćt̂ ṕl̂úĝín̂ś ôŕ d̂ón̂'t́ ŝúp̂ṕôŕt̂ t́ĥém̂. [Ĺêár̂ń m̂ór̂é âb́ôút̂ áv̂óîd́îńĝ ṕl̂úĝín̂ś](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "D̂óĉúm̂én̂t́ ûśêś p̂ĺûǵîńŝ"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "D̂óĉúm̂én̂t́ âv́ôíd̂ś p̂ĺûǵîńŝ"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Îf́ ŷóûŕ r̂ób̂ót̂ś.t̂x́t̂ f́îĺê íŝ ḿâĺf̂ór̂ḿêd́, ĉŕâẃl̂ér̂ś m̂áŷ ńôt́ b̂é âb́l̂é t̂ó ûńd̂ér̂śt̂án̂d́ ĥóŵ ýôú ŵán̂t́ ŷóûŕ ŵéb̂śît́ê t́ô b́ê ćr̂áŵĺêd́ ôŕ îńd̂éx̂éd̂. [Ĺêár̂ń m̂ór̂é âb́ôút̂ ŕôb́ôt́ŝ.t́x̂t́](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

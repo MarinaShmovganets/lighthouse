@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "O documento tem um elemento `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Todos os elementos focalizáveis têm de ter um `id` exclusivo para garantir que são visíveis para as tecnologias de assistência. [Saiba como corrigir `id`s duplicados](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)."
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "Os atributos `[id]` nos elementos ativos e focáveis não são exclusivos"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "Os atributos `[id]` nos elementos ativos e focáveis são exclusivos"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "O valor de um ID ARIA tem de ser exclusivo para evitar que outras instâncias sejam ignoradas pelas tecnologias de assistência. [Saiba como corrigir IDs ARIA duplicados](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)."
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "O documento tem uma meta descrição"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Não é possível aos motores de pesquisa indexar o conteúdo de plug-ins, e muitos dispositivos restringem plug-ins ou não os suportam. [Saiba como evitar plug-ins](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "O documento utiliza plug-ins"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "O documento evita plug-ins"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Se o ficheiro robots.txt estiver mal formado, os motores de rastreio podem não conseguir compreender como quer que o seu Website seja rastreado ou indexado. [Saiba mais acerca do ficheiro robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "Le document contient un élément `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Tous les éléments sélectionnables doivent être associés à un `id` unique pour qu'ils soient visibles par les technologies d'assistance. [Découvrez comment résoudre les problèmes d'`id` en double.](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "Les attributs `[id]` sur des éléments sélectionnables actifs ne sont pas uniques"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "Les attributs `[id]` sur des éléments sélectionnables actifs sont uniques"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "La valeur d'un ID ARIA doit être unique afin que les différentes instances soient toutes prises en compte par les technologies d'assistance. [Découvrez comment résoudre les problèmes d'ID ARIA en double.](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)"
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Le document contient un attribut \"meta description\""
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Les moteurs de recherche ne peuvent pas indexer le contenu des plug-ins, et de nombreux appareils limitent l'utilisation de ces derniers, voire ne les acceptent pas. [Découvrez comment éviter les plug-ins.](https://developer.chrome.com/docs/lighthouse/seo/plugins/)"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Le document utilise des plug-ins"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Le document évite les plug-ins"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Si votre fichier robots.txt n'est pas créé correctement, il se peut que les robots d'exploration ne puissent pas comprendre comment votre site Web doit être exploré ou indexé. [En savoir plus sur les fichiers robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"

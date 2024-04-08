@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "A dokumentum tartalmaz `<title>` elemet"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Egyéni `id` meglétére van szükség az összes fókuszálható elemnél, hogy biztosan láthatók legyenek a segítő technológiák számára. [További információ az ismétlődő `id` elemek kijavításáról](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)."
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "Egyes aktív, fókuszálható elemek `[id]` attribútumai nem egyediek"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "Az aktív, fókuszálható elemek `[id]` attribútumai egyediek"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "Az ARIA-azonosító értékének egyedinek kell lennie, hogy a kisegítő technológiák ne hagyják figyelmen kívül a többi előfordulást. [További információ az ismétlődő ARIA-azonosítók kijavításáról](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)."
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "A dokumentum rendelkezik metaleírással"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Sok eszköz korlátozza vagy nem támogatja a beépülő modulokat, a keresőmotorok pedig nem tudják indexelni a modulok által megjelenített tartalmakat. [További információ a beépülő modulok elkerüléséről](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "A dokumentum beépülő modulokat használ"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "A dokumentum nem használ beépülő modulokat"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Ha a robots.txt fájl formázása rossz, előfordulhat, hogy a feltérképező robotok nem tudják értelmezni, hogy Ön hogyan szeretné feltérképeztetni vagy indexeltetni a webhelyét. [További információ a robots.txt fájlról](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

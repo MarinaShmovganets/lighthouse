@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "El document té un element `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Tots els elements enfocables han de tenir un `id` únic per garantir que les tecnologies assistencials els puguin veure. [Obtén informació sobre com pots corregir els `id` duplicats](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)."
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "Els atributs `[id]` en elements actius en què es pot posar el focus no són únics"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "Els atributs `[id]` en elements actius en què es pot posar el focus són únics"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "El valor d'un identificador ARIA ha de ser únic per impedir que les tecnologies assistencials passin per alt altres instàncies. [Obtén informació sobre com pots corregir els identificadors ARIA duplicats](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)."
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "El document té una metadescripció"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Els motors de cerca no poden indexar el contingut dels connectors. A més, molts dispositius restringeixen o no admeten connectors. [Obtén més informació sobre com pots evitar els connectors](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "El document utilitza connectors"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "El document evita els connectors"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Si el format del fitxer robots.txt no és correcte, és possible que els rastrejadors no puguin entendre com vols que rastregin o indexin el lloc web. [Obtén més informació sobre robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

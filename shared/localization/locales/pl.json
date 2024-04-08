@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "Dokument zawiera element `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Wszystkie elementy, które można zaznaczyć, muszą mieć unikalny atrybut `id`, aby były widoczne dla technologii wspomagających. [Jak naprawić duplikaty elementów `id`](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "Atrybuty `[id]` aktywnych elementów, które można zaznaczyć, nie są unikalne"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "Atrybuty `[id]` aktywnych elementów, które można zaznaczyć, są unikalne"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "Wartość identyfikatora ARIA musi być unikalna, aby technologie wspomagające nie pominęły innych wystąpień. [Jak naprawić zduplikowane identyfikatory ARIA](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)"
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Dokument ma metaopis"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Wyszukiwarki nie potrafią indeksować treści z wtyczek, a wiele urządzeń nie obsługuje wtyczek lub ogranicza ich działanie. [Więcej informacji o unikaniu wtyczek](https://developer.chrome.com/docs/lighthouse/seo/plugins/)"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Dokument używa wtyczek"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Dokument nie wymaga wtyczek"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Jeśli plik robots.txt ma nieprawidłowy format, roboty indeksujące mogą nie wiedzieć, jak mają indeksować witrynę. [Więcej informacji o plikach robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"

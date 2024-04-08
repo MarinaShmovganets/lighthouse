@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "ドキュメントに `<title>` 要素が指定されています"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "支援技術で認識できるように、フォーカス可能な要素にはすべて一意の `id` を設定する必要があります。[重複する `id` を修正する方法の詳細](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "`[id]` 属性が有効でフォーカス可能な要素の ID が一意ではありません"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "`[id]` 属性が有効でフォーカス可能な要素の ID はすべて一意です"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "他のインスタンスが支援技術によって見落とされることのないように、ARIA ID の値は一意にする必要があります。[重複する ARIA ID の修正方法の詳細](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)"
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "ドキュメントにメタ ディスクリプションが指定されています"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "検索エンジンはプラグイン コンテンツをインデックスに登録できません。多くのデバイスで、プラグインが制限され、プラグインがサポートされていないこともあります。[プラグインの回避についての詳細](https://developer.chrome.com/docs/lighthouse/seo/plugins/)"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "ドキュメントでプラグインを使用しています"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "ドキュメントではプラグインを使用できません"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "robots.txt ファイルの形式が間違っていると、ウェブサイトのクロールやインデックス登録について指定した設定をクローラが認識できない可能性があります。[robots.txt についての詳細](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"

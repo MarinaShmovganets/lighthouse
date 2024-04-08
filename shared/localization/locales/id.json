@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "Dokumen memiliki elemen `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Semua elemen yang dapat difokuskan harus memiliki `id` unik agar dapat dilihat oleh teknologi pendukung. [Pelajari cara memperbaiki `id` duplikat](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)."
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "Atribut `[id]` pada elemen aktif yang dapat difokuskan tidak unik"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "Atribut `[id]` pada elemen aktif yang dapat difokuskan unik"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "Nilai ID ARIA harus unik untuk mencegah instance lain terabaikan oleh teknologi pendukung. [Pelajari cara memperbaiki ID ARIA duplikat](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)."
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Dokumen memiliki deskripsi meta"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Mesin telusur tidak dapat mengindeks konten plugin, dan banyak perangkat yang membatasi plugin atau tidak mendukungnya. [Pelajari lebih lanjut cara menghindari plugin](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Dokumen menggunakan plugin"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Dokumen menghindari plugin"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Jika file robots.txt Anda salah format, crawler mungkin tidak dapat memahami cara crawling atau pengindeksan situs yang Anda inginkan. [Pelajari lebih lanjut robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

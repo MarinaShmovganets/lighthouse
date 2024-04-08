@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "Документ содержит элемент `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Чтобы технологии специальных возможностей могли считывать все фокусируемые элементы, их атрибуты `id` должны быть уникальными. Подробнее о том, [как убрать копии атрибутов `id`](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)…"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "У активных элементов есть неуникальные атрибуты `[id]`"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "Атрибуты `[id]` у активных элементов уникальны"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "Значение идентификатора ARIA должно быть уникальным, поскольку технологии специальных возможностей могут игнорировать повторяющиеся идентификаторы. Подробнее о том, [как убрать копии идентификаторов ARIA](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)…"
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "В документе есть метаописание"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Поисковые системы не могут индексировать содержимое плагинов. К тому же на многих устройствах использование плагинов ограничено или не поддерживается. Подробнее о том, [как отказаться от использования плагинов](https://developer.chrome.com/docs/lighthouse/seo/plugins/)…"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "В документе используются плагины"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "В документе нет плагинов"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Если файл robots.txt поврежден, поисковые роботы могут не распознать ваши инструкции по сканированию или индексации сайта. Подробнее [о файле robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)…"

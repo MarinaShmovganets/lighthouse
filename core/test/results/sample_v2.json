@@ -49,7 +49,7 @@
     "redirects-http": {
       "id": "redirects-http",
       "title": "Redirects HTTP traffic to HTTPS",
-      "description": "If you've already set up HTTPS, make sure that you redirect all HTTP traffic to HTTPS in order to enable secure web features for all your users. [Learn more](https://web.dev/redirects-http/).",
+      "description": "Make sure that you redirect all HTTP traffic to HTTPS in order to enable secure web features for all your users. [Learn more](https://developer.chrome.com/docs/lighthouse/pwa/redirects-http/).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
     },
@@ -3337,13 +3337,6 @@
         "items": []
       }
     },
-    "duplicate-id-active": {
-      "id": "duplicate-id-active",
-      "title": "`[id]` attributes on active, focusable elements are unique",
-      "description": "All focusable elements must have a unique `id` to ensure that they're visible to assistive technologies. [Learn how to fix duplicate `id`s](https://dequeuniversity.com/rules/axe/4.9/duplicate-id-active).",
-      "score": null,
-      "scoreDisplayMode": "notApplicable"
-    },
     "duplicate-id-aria": {
       "id": "duplicate-id-aria",
       "title": "ARIA IDs are unique",
@@ -4051,8 +4044,13 @@
       "id": "target-size",
       "title": "Touch targets have sufficient size and spacing.",
       "description": "Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. [Learn more about touch targets](https://dequeuniversity.com/rules/axe/4.9/target-size).",
-      "score": null,
-      "scoreDisplayMode": "notApplicable"
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
     },
     "td-has-header": {
       "id": "td-has-header",
@@ -5660,18 +5658,6 @@
         "items": []
       }
     },
-    "plugins": {
-      "id": "plugins",
-      "title": "Document avoids plugins",
-      "description": "Search engines can't index plugin content, and many devices restrict plugins or don't support them. [Learn more about avoiding plugins](https://developer.chrome.com/docs/lighthouse/seo/plugins/).",
-      "score": 1,
-      "scoreDisplayMode": "binary",
-      "details": {
-        "type": "table",
-        "headings": [],
-        "items": []
-      }
-    },
     "canonical": {
       "id": "canonical",
       "title": "Document has a valid `rel=canonical`",
@@ -6350,11 +6336,6 @@
           "group": "a11y-names-labels"
         },
         {
-          "id": "duplicate-id-active",
-          "weight": 0,
-          "group": "a11y-navigation"
-        },
-        {
           "id": "duplicate-id-aria",
           "weight": 0,
           "group": "a11y-aria"
@@ -6471,7 +6452,7 @@
         },
         {
           "id": "target-size",
-          "weight": 0,
+          "weight": 7,
           "group": "a11y-best-practices"
         },
         {
@@ -6566,7 +6547,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 0.77
+      "score": 0.78
     },
     "best-practices": {
       "title": "Best Practices",
@@ -6730,17 +6711,12 @@
           "group": "seo-mobile"
         },
         {
-          "id": "plugins",
-          "weight": 1,
-          "group": "seo-content"
-        },
-        {
           "id": "structured-data",
           "weight": 0
         }
       ],
       "id": "seo",
-      "score": 0.73
+      "score": 0.7
     },
     "pwa": {
       "title": "PWA",
@@ -8745,12 +8721,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:duplicate-id-active",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:duplicate-id-aria",
         "duration": 100,
         "entryType": "measure"
@@ -9244,12 +9214,6 @@
       {
         "startTime": 0,
         "name": "lh:audit:hreflang",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:plugins",
         "duration": 100,
         "entryType": "measure"
       },
@@ -10222,12 +10186,6 @@
       "core/audits/accessibility/document-title.js | description": [
         "audits[document-title].description"
       ],
-      "core/audits/accessibility/duplicate-id-active.js | title": [
-        "audits[duplicate-id-active].title"
-      ],
-      "core/audits/accessibility/duplicate-id-active.js | description": [
-        "audits[duplicate-id-active].description"
-      ],
       "core/audits/accessibility/duplicate-id-aria.js | title": [
         "audits[duplicate-id-aria].title"
       ],
@@ -10753,12 +10711,6 @@
       ],
       "core/audits/seo/hreflang.js | description": [
         "audits.hreflang.description"
-      ],
-      "core/audits/seo/plugins.js | title": [
-        "audits.plugins.title"
-      ],
-      "core/audits/seo/plugins.js | description": [
-        "audits.plugins.description"
       ],
       "core/audits/seo/canonical.js | title": [
         "audits.canonical.title"

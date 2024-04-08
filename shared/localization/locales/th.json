@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "เอกสารมีองค์ประกอบ `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "เอลิเมนต์ที่โฟกัสได้ทั้งหมดต้องมี `id` ที่ไม่ซ้ำกันเพื่อให้เทคโนโลยีความช่วยเหลือพิเศษมองเห็นได้ [ดูวิธีแก้ไข `id` ที่ซ้ำกัน](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "แอตทริบิวต์ `[id]` ของเอลิเมนต์ที่โฟกัสได้และทำงานอยู่มีรหัสที่ซ้ำกัน"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "แอตทริบิวต์ `[id]` ของเอลิเมนต์ที่โฟกัสได้และทำงานอยู่ไม่มีรหัสที่ซ้ำกัน"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "ค่าของรหัส ARIA ต้องไม่ซ้ำกันเพื่อป้องกันไม่ให้เทคโนโลยีความช่วยเหลือพิเศษมองข้ามอินสแตนซ์อื่นๆ [ดูวิธีแก้ไขรหัส ARIA ที่ซ้ำกัน](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)"
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "เอกสารมีคำอธิบายเมตา"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "เครื่องมือค้นหาจัดทำดัชนีเนื้อหาปลั๊กอินไม่ได้ และอุปกรณ์จำนวนมากจำกัดการใช้หรือไม่รองรับปลั๊กอิน [ดูข้อมูลเพิ่มเติมเกี่ยวกับการหลีกเลี่ยงปลั๊กอิน](https://developer.chrome.com/docs/lighthouse/seo/plugins/)"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "เอกสารใช้ปลั๊กอิน"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "เอกสารหลีกเลี่ยงการใช้ปลั๊กอิน"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "หากไฟล์ robots.txt มีรูปแบบไม่ถูกต้อง Crawler อาจไม่เข้าใจวิธีที่คุณต้องการให้ Crawl หรือจัดทำดัชนีเว็บไซต์ [ดูข้อมูลเพิ่มเติมเกี่ยวกับ robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"

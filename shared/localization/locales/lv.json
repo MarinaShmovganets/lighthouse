@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "Dokumentā ir ietverts elements `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Visiem fokusējamiem elementiem ir jābūt unikālam `id`, lai tie būtu redzami atbalsta tehnoloģijām. [Uzziniet, kā novērst ar `id` dublikātiem saistītas problēmas](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)."
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "`[id]` atribūti aktīvos, fokusējamos elementos nav unikāli"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "`[id]` atribūti aktīvos, fokusējamos elementos ir unikāli"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "ARIA ID vērtībai ir jābūt unikālai, lai atbalsta tehnoloģijas neizlaistu citas instances. [Uzziniet, kā novērst ARIA identifikatoru dublikātus](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)."
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Dokumentā ir metaapraksts"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Meklētājprogrammas nevar indeksēt spraudņu saturu, un daudzās ierīcēs spraudņi ir ierobežoti vai netiek atbalstīti. [Uzziniet vairāk par izvairīšanos no spraudņiem](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Dokumentā tiek izmantoti spraudņi"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Dokumentā netiek pieļauti spraudņi"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Ja jūsu fails “robots.txt” ir nepareizi veidots, rāpuļprogrammas, iespējams, nevarēs saprast, kā vajadzētu pārmeklēt vai indeksēt vietni atbilstoši jūsu vēlmēm. [Uzziniet vairāk par failu “robots.txt”](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

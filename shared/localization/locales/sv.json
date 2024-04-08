@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "Dokumentet har ett `<title>`-element"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Alla fokuserbara element måste ha unika `id` så att de kan identifieras av hjälpmedelsteknik. [Läs om hur du åtgärdar dubbletter av `id`](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)."
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "Alla `[id]`-attribut för aktiva fokuserbara element är inte unika"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "Alla `[id]`-attribut för aktiva, fokuserbara element är unika"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "Alla ARIA-id:n måste ha unika värden. Hjälpmedelstekniken skulle annars hoppa över dubblettförekomsterna av ett värde. [Läs mer om hur du åtgärdar dubbletter av ARIA-id:n](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)."
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Dokumentet har en metabeskrivning"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Sökmotorer kan inte indexera plugin-innehåll och många enheter begränsar plugin-program eller stöder dem inte. [Läs mer om hur du undviker plugin-program](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Dokumentet använder plugin-program"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Dokumentet undviker plugin-program"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Om robots.txt-filen har felaktigt format kan sökrobotarna inte förstå hur du vill att din webbplats ska genomsökas eller indexeras. [Läs mer om robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

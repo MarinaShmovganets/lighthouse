@@ -236,15 +236,6 @@
   "core/audits/accessibility/document-title.js | title": {
     "message": "Το έγγραφο έχει ένα στοιχείο `<title>`"
   },
-  "core/audits/accessibility/duplicate-id-active.js | description": {
-    "message": "Όλα τα στοιχεία με δυνατότητα εστίασης πρέπει να διαθέτουν ένα μοναδικό `id`, για να διασφαλιστεί ότι είναι ορατά σε τεχνολογίες υποβοήθησης. [Μάθετε πώς μπορείτε να διορθώσετε διπλότυπα `id`](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-active)."
-  },
-  "core/audits/accessibility/duplicate-id-active.js | failureTitle": {
-    "message": "`[id]` χαρακτηριστικά σε ενεργά στοιχεία με δυνατότητα εστίασης, δεν είναι μοναδικά"
-  },
-  "core/audits/accessibility/duplicate-id-active.js | title": {
-    "message": "`[id]` χαρακτηριστικά σε ενεργά στοιχεία με δυνατότητα εστίασης, είναι μοναδικά"
-  },
   "core/audits/accessibility/duplicate-id-aria.js | description": {
     "message": "Η τιμή ενός αναγνωριστικού ARIA πρέπει να είναι μοναδική, προκειμένου να μην παραβλέπονται άλλες παρουσίες κατά τη χρήση τεχνολογιών υποβοήθησης. [Μάθετε πώς μπορείτε να διορθώσετε διπλότυπα αναγνωριστικά ARIA](https://dequeuniversity.com/rules/axe/4.8/duplicate-id-aria)."
   },
@@ -1471,15 +1462,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Το έγγραφο έχει περιγραφή μεταδεδομένων"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Οι μηχανές αναζήτησης δεν μπορούν να καταλογοποιήσουν το περιεχόμενο των προσθηκών, ενώ πολλές συσκευές περιορίζουν ή δεν υποστηρίζουν τις προσθήκες. [Μάθετε περισσότερα σχετικά με την αποφυγή προσθηκών](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Το έγγραφο χρησιμοποιεί προσθήκες"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Το έγγραφο αποφεύγει τις προσθήκες"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Εάν το αρχείο σας robots.txt έχει εσφαλμένη μορφή, οι ανιχνευτές ενδεχομένως να μην μπορούν να κατανοήσουν με ποιον τρόπο θέλετε να γίνεται η ανίχνευση ή η καταλογοποίηση του ιστοτόπου σας. [Μάθετε περισσότερα σχετικά με το robots.txt.](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"
