@@ -188,7 +188,7 @@ const expectations = {
           ],
         },
       },
-      'layout-shift-elements': {
+      'layout-shifts': {
         score: 1,
         displayValue: '2 elements found',
         details: {
