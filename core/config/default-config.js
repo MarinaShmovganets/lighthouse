@@ -583,6 +583,9 @@ const defaultConfig = {
         {id: 'paste-preventing-inputs', weight: 3, group: 'best-practices-ux'},
         {id: 'image-aspect-ratio', weight: 1, group: 'best-practices-ux'},
         {id: 'image-size-responsive', weight: 1, group: 'best-practices-ux'},
+        {id: 'viewport', weight: 1, group: 'best-practices-ux'},
+        {id: 'link-text', weight: 1, group: 'best-practices-ux'},
+        {id: 'font-size', weight: 1, group: 'best-practices-ux'},
         // Browser Compatibility
         {id: 'doctype', weight: 1, group: 'best-practices-browser-compat'},
         {id: 'charset', weight: 1, group: 'best-practices-browser-compat'},
@@ -601,18 +604,15 @@ const defaultConfig = {
       manualDescription: str_(UIStrings.seoCategoryManualDescription),
       supportedModes: ['navigation', 'snapshot'],
       auditRefs: [
-        {id: 'viewport', weight: 1, group: 'seo-mobile'},
         {id: 'document-title', weight: 1, group: 'seo-content'},
         {id: 'meta-description', weight: 1, group: 'seo-content'},
         {id: 'http-status-code', weight: 1, group: 'seo-crawl'},
-        {id: 'link-text', weight: 1, group: 'seo-content'},
         {id: 'crawlable-anchors', weight: 1, group: 'seo-crawl'},
         {id: 'is-crawlable', weight: 1, group: 'seo-crawl'},
         {id: 'robots-txt', weight: 1, group: 'seo-crawl'},
         {id: 'image-alt', weight: 1, group: 'seo-content'},
         {id: 'hreflang', weight: 1, group: 'seo-content'},
         {id: 'canonical', weight: 1, group: 'seo-content'},
-        {id: 'font-size', weight: 1, group: 'seo-mobile'},
         // Manual audits
         {id: 'structured-data', weight: 0},
       ],
