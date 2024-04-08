@@ -44,13 +44,6 @@ const expectations = {
     requestedUrl: BASE_URL + 'seo-failure-cases.html?' + failureHeaders,
     finalDisplayedUrl: BASE_URL + 'seo-failure-cases.html?' + failureHeaders,
     audits: {
-      'viewport': {
-        score: 0,
-        details: {
-          type: 'debugdata',
-          viewportContent: 'invalid-content=should_have_looked_it_up',
-        },
-      },
       'document-title': {
         score: 0,
       },
@@ -60,22 +53,8 @@ const expectations = {
       'http-status-code': {
         score: 1,
       },
-      'font-size': {
-        score: 0,
-        explanation:
-        'Text is illegible because there\'s no viewport meta tag optimized for mobile screens.',
-      },
       'crawlable-anchors': {
         score: 0,
-        details: {
-          items: {
-            length: 4,
-          },
-        },
-      },
-      'link-text': {
-        score: 0,
-        displayValue: '4 links found',
         details: {
           items: {
             length: 4,

@@ -225,6 +225,19 @@
 
 </template>
 
+<template id="link-text">
+  <h2>Anchor text</h2>
+  <a href='https://example.com'>click this</a>
+  <a href='/test.html'> click this </a>
+  <a href='/test.html'>CLICK THIS</a>
+  <svg>
+    <a href='https://example.com/svg-link'>
+      <circle cx="50" cy="50" r="50"/>
+      <text x="0" y="0" >click this</text>
+    </a>
+  </svg>
+</template>
+
 <!-- FAIL(image-aspect-ratio): image is naturally 1024x680 -->
 <img src="lighthouse-1024x680.jpg?iar1" width="120" height="15">
 <!-- PASS(image-aspect-ratio) -->
@@ -375,6 +388,9 @@ function inputsCanBePastedIntoTest() {
   stampTemplate('paste-preventing-inputs', document.body);
 }
 
+function linkTextTest() {
+  stampTemplate('link-text', document.body);
+}
 
 function deprecationsTest() {
   // TODO: some deprecated API messages are not currently being logged correctly.
@@ -437,6 +453,7 @@ if (location.search === '') {
   isOnHttps();
   noUnloadListenersTest();
   thirdPartyCookieTest();
+  linkTextTest();
 } else {
   if (params.has('documentWrite')) {
     documentWriteTest();
@@ -476,6 +493,9 @@ if (location.search === '') {
   }
   if (params.has('3pcookie')) {
     thirdPartyCookieTest();
+  }
+  if (params.has('linktext')) {
+    linkTextTest();
   }
 }
 </script>

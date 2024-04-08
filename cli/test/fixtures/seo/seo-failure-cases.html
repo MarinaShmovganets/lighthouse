@@ -9,8 +9,6 @@
 <head>
   <!-- no <title>SEO audit failures page</title> -->
   <meta charset="utf-8">
-  <!-- FAIL(font-size): missing viewport -->
-  <meta name="viewport" content="invalid-content=should_have_looked_it_up">
   <!-- no <meta name="description" content=""> -->
   <!-- FAIL(is-crawlable): noindex on root page, vary the case to make sure we are case insensitive -->
   <meta name="RoBots" content="nofollow, NOINDEX, all">
@@ -27,17 +25,6 @@
 </head>
 <body>
   <h1>SEO</h1>
-
-  <h2>Anchor text</h2>
-  <a href='https://example.com'>click this</a>
-  <a href='/test.html'> click this </a>
-  <a href='/test.html'>CLICK THIS</a>
-  <svg>
-    <a href='https://example.com/svg-link'>
-      <circle cx="50" cy="50" r="50"/>
-      <text x="0" y="0" >click this</text>
-    </a>
-  </svg>
 
   <!-- FAIL(crawlable-anchors): Link using window.open() -->
   <a onclick="window.open(`http://example.com`)">Some link</a>
