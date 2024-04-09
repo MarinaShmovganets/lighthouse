@@ -4520,6 +4520,11 @@
             ],
             "auditRefs": [
               {
+                "id": "is-crawlable",
+                "weight": 4.043478260869565,
+                "group": "seo-crawl"
+              },
+              {
                 "id": "document-title",
                 "weight": 1,
                 "group": "seo-content"
@@ -4541,11 +4546,6 @@
               },
               {
                 "id": "crawlable-anchors",
-                "weight": 1,
-                "group": "seo-crawl"
-              },
-              {
-                "id": "is-crawlable",
                 "weight": 1,
                 "group": "seo-crawl"
               },
@@ -22075,6 +22075,11 @@
             ],
             "auditRefs": [
               {
+                "id": "is-crawlable",
+                "weight": 4.043478260869565,
+                "group": "seo-crawl"
+              },
+              {
                 "id": "document-title",
                 "weight": 1,
                 "group": "seo-content"
@@ -22096,11 +22101,6 @@
               },
               {
                 "id": "crawlable-anchors",
-                "weight": 1,
-                "group": "seo-crawl"
-              },
-              {
-                "id": "is-crawlable",
                 "weight": 1,
                 "group": "seo-crawl"
               },
@@ -22130,7 +22130,7 @@
               }
             ],
             "id": "seo",
-            "score": 0.88
+            "score": 0.91
           },
           "pwa": {
             "title": "PWA",
