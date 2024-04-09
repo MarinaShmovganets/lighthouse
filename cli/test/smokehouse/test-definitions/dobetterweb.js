@@ -442,7 +442,7 @@ const expectations = {
       },
       'dom-size': {
         score: 1,
-        numericValue: 160,
+        numericValue: 151,
         details: {
           items: [
             {
@@ -450,7 +450,7 @@ const expectations = {
               value: {
                 type: 'numeric',
                 granularity: 1,
-                value: 160,
+                value: 151,
               },
             },
             {
@@ -604,21 +604,12 @@ const expectations = {
           viewportContent: 'width=device-width, initial-scale=1, minimum-scale=1',
         },
       },
-      'link-text': {
-        score: 0,
-        displayValue: '4 links found',
-        details: {
-          items: {
-            length: 4,
-          },
-        },
-      },
     },
     fullPageScreenshot: {
       screenshot: {
         width: 412,
         // Allow for differences in platforms.
-        height: '1527±100',
+        height: '1350±100',
         data: /^data:image\/webp;.{500,}/,
       },
       nodes: {

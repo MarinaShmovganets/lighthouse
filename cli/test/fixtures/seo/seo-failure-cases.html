@@ -26,6 +26,17 @@
 <body>
   <h1>SEO</h1>
 
+  <h2>Anchor text</h2>
+  <a href='https://example.com'>click this</a>
+  <a href='/test.html'> click this </a>
+  <a href='/test.html'>CLICK THIS</a>
+  <svg>
+    <a href='https://example.com/svg-link'>
+      <circle cx="50" cy="50" r="50"/>
+      <text x="0" y="0" >click this</text>
+    </a>
+  </svg>
+
   <!-- FAIL(crawlable-anchors): Link using window.open() -->
   <a onclick="window.open(`http://example.com`)">Some link</a>
 

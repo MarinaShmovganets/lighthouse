@@ -54,6 +54,9 @@ const expectations = {
           },
         },
       },
+      'link-text': {
+        score: 1,
+      },
       'is-crawlable': {
         score: 1,
       },

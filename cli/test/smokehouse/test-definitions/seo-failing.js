@@ -61,6 +61,15 @@ const expectations = {
           },
         },
       },
+      'link-text': {
+        score: 0,
+        displayValue: '4 links found',
+        details: {
+          items: {
+            length: 4,
+          },
+        },
+      },
       'is-crawlable': {
         score: 0,
         details: {
