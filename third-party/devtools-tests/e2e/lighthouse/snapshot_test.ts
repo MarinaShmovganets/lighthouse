@@ -74,12 +74,13 @@ describe('Snapshot', function() {
     });
 
     const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-    assert.strictEqual(auditResults.length, 86);
+    assert.strictEqual(auditResults.length, 85);
     assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
       'document-title',
       'html-has-lang',
       'label',
+      'target-size',
       'meta-description',
     ]);
 

@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "Largest contentful paint element"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "Layout shift impact"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "These DOM elements were most affected by layout shifts. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "Avoid large layout shifts"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "Layout shift score"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Document has a meta description"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Search engines can't index plug-in content and many devices restrict plug-ins or don't support them. [Learn more about avoiding plugins](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Document uses plugins"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Document avoids plugins"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "If your robots.txt file is malformed, crawlers may not be able to understand how you want your website to be crawled or indexed. [Learn more about robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

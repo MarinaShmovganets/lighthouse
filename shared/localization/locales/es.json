@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "Renderizado del mayor elemento con contenido"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "Impacto de los cambios de diseño"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "Estos elementos DOM son los que se han visto más afectados por los cambios de diseño. Es posible que algunos cambios de diseño no se incluyan en el valor de la métrica CLS debido a la [normalización](https://web.dev/articles/cls#what_is_cls). [Descubre cómo mejorar el CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "Evitar cambios de diseño importantes"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "Puntuación del cambio de diseño"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "El documento tiene una metadescripción"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Los buscadores no pueden indexar el contenido de los complementos, y muchos dispositivos limitan el uso de complementos o no los admiten. [Más información sobre cómo evitar complementos](https://developer.chrome.com/docs/lighthouse/seo/plugins/)"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "El documento usa complementos"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "El documento no usa complementos"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Si el formato del archivo robots.txt no es correcto, es posible que los rastreadores no puedan interpretar cómo quieres que se rastree o indexe tu sitio web. [Más información sobre robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"

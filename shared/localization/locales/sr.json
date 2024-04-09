@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "Елемент са највећим приказивањем садржаја"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "Утицај промене распореда"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "Промене распореда су највише утицале на ове DOM елементе. Неке промене распореда можда нису уврштене у вредност CLS показатеља због [прозорског приказа](https://web.dev/articles/cls#what_is_cls). [Сазнајте како да побољшате CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "Избегавајте велике промене распореда"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "Резултат промене распореда"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Документ има метаопис"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Претраживачи не могу да индексирају садржај додатних компонената, а многи уређаји ограничавају додатне компоненте или их не подржавају. [Сазнајте више о избегавању додатних компоненти](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Документ користи додатне компоненте"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Документ избегава додатне компоненте"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Ако фајл robots.txt није правилно направљен, пописивачи можда неће моћи да разумеју како желите да се веб-сајт попише или индексира. [Сазнајте више о фајлу robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

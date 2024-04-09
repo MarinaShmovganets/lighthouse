@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "Στοιχείο Μεγαλύτερης σχεδίασης με περιεχόμενο"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "Αντίκτυπος αλλαγής διάταξης"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "Αυτά τα στοιχεία DOM επηρεάστηκαν περισσότερο από τις αλλαγές διάταξης. Ορισμένες αλλαγές στη διάταξη ενδέχεται να μην περιλαμβάνονται στην τιμή της μέτρησης CLS λόγω της [προσαρμογής σε παράθυρο](https://web.dev/articles/cls#what_is_cls). [Μάθετε πώς μπορείτε να βελτιώσετε το CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "Αποφύγετε τις μεγάλες μετατοπίσεις διάταξης"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "Βαθμολογία αλλαγής διάταξης"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Το έγγραφο έχει περιγραφή μεταδεδομένων"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Οι μηχανές αναζήτησης δεν μπορούν να καταλογοποιήσουν το περιεχόμενο των προσθηκών, ενώ πολλές συσκευές περιορίζουν ή δεν υποστηρίζουν τις προσθήκες. [Μάθετε περισσότερα σχετικά με την αποφυγή προσθηκών](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Το έγγραφο χρησιμοποιεί προσθήκες"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Το έγγραφο αποφεύγει τις προσθήκες"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Εάν το αρχείο σας robots.txt έχει εσφαλμένη μορφή, οι ανιχνευτές ενδεχομένως να μην μπορούν να κατανοήσουν με ποιον τρόπο θέλετε να γίνεται η ανίχνευση ή η καταλογοποίηση του ιστοτόπου σας. [Μάθετε περισσότερα σχετικά με το robots.txt.](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"

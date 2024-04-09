@@ -2505,43 +2505,6 @@
       },
       "guidanceLevel": 3
     },
-    "layout-shift-elements": {
-      "id": "layout-shift-elements",
-      "title": "Avoid large layout shifts",
-      "description": "These DOM elements were most affected by layout shifts. Some layout shifts may not be included in the CLS metric value due to [windowing](https://web.dev/articles/cls#what_is_cls). [Learn how to improve CLS](https://web.dev/articles/optimize-cls)",
-      "score": 0,
-      "scoreDisplayMode": "metricSavings",
-      "displayValue": "5 elements found",
-      "metricSavings": {
-        "CLS": 0.136
-      },
-      "details": {
-        "type": "table",
-        "headings": [
-          {
-            "key": "node",
-            "valueType": "node",
-            "label": "Element"
-          },
-          {
-            "key": "score",
-            "valueType": "numeric",
-            "granularity": 0.001,
-            "label": "Layout shift impact"
-          }
-        ],
-        "items": [
-          {
-            "node": {
-              "type": "code",
-              "value": "Other"
-            },
-            "score": 0.13570762803819444
-          }
-        ]
-      },
-      "guidanceLevel": 2
-    },
     "layout-shifts": {
       "id": "layout-shifts",
       "title": "Avoid large layout shifts",
@@ -4037,8 +4000,13 @@
       "id": "target-size",
       "title": "Touch targets have sufficient size and spacing.",
       "description": "Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. [Learn more about touch targets](https://dequeuniversity.com/rules/axe/4.9/target-size).",
-      "score": null,
-      "scoreDisplayMode": "notApplicable"
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
     },
     "td-has-header": {
       "id": "td-has-header",
@@ -5646,18 +5614,6 @@
         "items": []
       }
     },
-    "plugins": {
-      "id": "plugins",
-      "title": "Document avoids plugins",
-      "description": "Search engines can't index plugin content, and many devices restrict plugins or don't support them. [Learn more about avoiding plugins](https://developer.chrome.com/docs/lighthouse/seo/plugins/).",
-      "score": 1,
-      "scoreDisplayMode": "binary",
-      "details": {
-        "type": "table",
-        "headings": [],
-        "items": []
-      }
-    },
     "canonical": {
       "id": "canonical",
       "title": "Document has a valid `rel=canonical`",
@@ -6186,11 +6142,6 @@
           "id": "resource-summary",
           "weight": 0,
           "group": "hidden"
-        },
-        {
-          "id": "layout-shift-elements",
-          "weight": 0,
-          "group": "hidden"
         }
       ],
       "id": "performance",
@@ -6452,7 +6403,7 @@
         },
         {
           "id": "target-size",
-          "weight": 0,
+          "weight": 7,
           "group": "a11y-best-practices"
         },
         {
@@ -6547,7 +6498,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 0.77
+      "score": 0.78
     },
     "best-practices": {
       "title": "Best Practices",
@@ -6706,17 +6657,12 @@
           "group": "seo-mobile"
         },
         {
-          "id": "plugins",
-          "weight": 1,
-          "group": "seo-content"
-        },
-        {
           "id": "structured-data",
           "weight": 0
         }
       ],
       "id": "seo",
-      "score": 0.73
+      "score": 0.7
     },
     "pwa": {
       "title": "PWA",
@@ -8373,12 +8319,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:layout-shift-elements",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:layout-shifts",
         "duration": 100,
         "entryType": "measure"
@@ -9213,12 +9153,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:plugins",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:canonical",
         "duration": 100,
         "entryType": "measure"
@@ -9774,8 +9708,7 @@
       ],
       "core/lib/i18n/i18n.js | otherResourceType": [
         "audits[performance-budget].details.items[3].label",
-        "audits[resource-summary].details.items[3].label",
-        "audits[layout-shift-elements].details.items[0].node.value"
+        "audits[resource-summary].details.items[3].label"
       ],
       "core/lib/i18n/i18n.js | thirdPartyResourceType": [
         "audits[performance-budget].details.items[4].label",
@@ -9843,7 +9776,6 @@
       ],
       "core/lib/i18n/i18n.js | columnElement": [
         "audits[largest-contentful-paint-element].details.items[0].headings[0].label",
-        "audits[layout-shift-elements].details.headings[0].label",
         "audits[layout-shifts].details.headings[0].label",
         "audits[non-composited-animations].details.headings[0].label",
         "audits[dom-size].details.headings[1].label"
@@ -9874,23 +9806,6 @@
       ],
       "core/audits/lcp-lazy-loaded.js | description": [
         "audits[lcp-lazy-loaded].description"
-      ],
-      "core/audits/layout-shift-elements.js | title": [
-        "audits[layout-shift-elements].title"
-      ],
-      "core/audits/layout-shift-elements.js | description": [
-        "audits[layout-shift-elements].description"
-      ],
-      "core/lib/i18n/i18n.js | displayValueElementsFound": [
-        {
-          "values": {
-            "nodeCount": 5
-          },
-          "path": "audits[layout-shift-elements].displayValue"
-        }
-      ],
-      "core/audits/layout-shift-elements.js | columnContribution": [
-        "audits[layout-shift-elements].details.headings[1].label"
       ],
       "core/audits/layout-shifts.js | title": [
         "audits[layout-shifts].title"
@@ -10705,12 +10620,6 @@
       ],
       "core/audits/seo/hreflang.js | description": [
         "audits.hreflang.description"
-      ],
-      "core/audits/seo/plugins.js | title": [
-        "audits.plugins.title"
-      ],
-      "core/audits/seo/plugins.js | description": [
-        "audits.plugins.description"
       ],
       "core/audits/seo/canonical.js | title": [
         "audits.canonical.title"

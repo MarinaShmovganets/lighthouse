@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "最大内容渲染时间元素"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "布局偏移的影响"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "这些 DOM 元素受布局偏移的影响最大。由于[窗口化](https://web.dev/articles/cls#what_is_cls)的原因，某些布局偏移可能未包含在 CLS 指标值中。[了解如何改善 CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "请避免出现大幅度的布局偏移"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "布局偏移分数"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "文档有 meta 描述"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "搜索引擎无法将插件内容编入索引，而且许多设备都限制或不支持使用插件。[详细了解如何避免使用插件](https://developer.chrome.com/docs/lighthouse/seo/plugins/)。"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "文档使用了插件"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "文档中没有插件"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "如果 robots.txt 文件的格式不正确，抓取工具可能无法理解您希望以何种方式抓取网站内容或将其编入索引。[详细了解 robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)。"

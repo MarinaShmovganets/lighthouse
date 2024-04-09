@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "[Ļåŕĝéšţ Çöñţéñţƒûļ Þåîñţ éļéméñţ one two three four five six seven]"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "[Ļåýöûţ šĥîƒţ îmþåçţ one two three]"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "[Ţĥéšé ÐÖM éļéméñţš ŵéŕé möšţ åƒƒéçţéð бý ļåýöûţ šĥîƒţš. Šömé ļåýöûţ šĥîƒţš måý ñöţ бé îñçļûðéð îñ ţĥé ÇĻŠ méţŕîç våļûé ðûé ţö ᐅ[ᐊŵîñðöŵîñĝᐅ](https://web.dev/articles/cls#what_is_cls)ᐊ. ᐅ[ᐊĻéåŕñ ĥöŵ ţö îmþŕövé ÇĻŠᐅ](https://web.dev/articles/optimize-cls)ᐊ one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour]"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "[Åvöîð ļåŕĝé ļåýöûţ šĥîƒţš one two three four five six]"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "[Ļåýöûţ šĥîƒţ šçöŕé one two three]"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "[Ðöçûméñţ ĥåš å méţå ðéšçŕîþţîöñ one two three four five six seven]"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "[Šéåŕçĥ éñĝîñéš çåñ'ţ îñðéx þļûĝîñ çöñţéñţ, åñð måñý ðévîçéš ŕéšţŕîçţ þļûĝîñš öŕ ðöñ'ţ šûþþöŕţ ţĥém. ᐅ[ᐊĻéåŕñ möŕé åбöûţ åvöîðîñĝ þļûĝîñšᐅ](https://developer.chrome.com/docs/lighthouse/seo/plugins/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone]"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "[Ðöçûméñţ ûšéš þļûĝîñš one two three]"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "[Ðöçûméñţ åvöîðš þļûĝîñš one two three]"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "[Îƒ ýöûŕ ŕöбöţš.ţxţ ƒîļé îš måļƒöŕméð, çŕåŵļéŕš måý ñöţ бé åбļé ţö ûñðéŕšţåñð ĥöŵ ýöû ŵåñţ ýöûŕ ŵéбšîţé ţö бé çŕåŵļéð öŕ îñðéxéð. ᐅ[ᐊĻéåŕñ möŕé åбöûţ ŕöбöţš.ţxţᐅ](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree]"
