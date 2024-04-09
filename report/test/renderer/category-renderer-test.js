@@ -412,7 +412,7 @@ describe('CategoryRenderer', () => {
   });
 
   describe('clumping passed/failed/warning/manual', () => {
-    it.only('separates audits in the DOM', () => {
+    it('separates audits in the DOM', () => {
       const category = sampleResults.categories.pwa;
       const categoryClone = JSON.parse(JSON.stringify(category));
       // Give the first two passing grades warnings
