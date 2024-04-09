@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "Elemento de Maior preenchimento com conteúdo"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "Impacto da mudança de esquema"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "Estes elementos DOM foram os mais afetados por mudanças de esquema. Algumas mudanças de esquema podem não ser incluídas no valor da métrica CLS devido à [normalização](https://web.dev/articles/cls#what_is_cls). [Saiba como melhorar a CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "Evite mudanças de esquemas grandes"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "Pontuação da mudança de esquema"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "O documento tem uma meta descrição"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Não é possível aos motores de pesquisa indexar o conteúdo de plug-ins, e muitos dispositivos restringem plug-ins ou não os suportam. [Saiba como evitar plug-ins](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "O documento utiliza plug-ins"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "O documento evita plug-ins"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Se o ficheiro robots.txt estiver mal formado, os motores de rastreio podem não conseguir compreender como quer que o seu Website seja rastreado ou indexado. [Saiba mais acerca do ficheiro robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "Prvek Largest Contentful Paint"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "Dopad změny rozvržení"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "Tyto prvky DOM byly změnami rozvržení ovlivněny nejvíce. Některé změny rozvržení do hodnoty metriky CLS vzhledem k [normalizaci ](https://web.dev/articles/cls#what_is_cls) nemusí zahrnuty. [Jak zlepšit CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "Zajistěte, aby nedocházelo k velkým změnám rozvržení"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "Skóre změny rozvržení"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Dokument má metaznačku „description“"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Vyhledávače obsah pluginů nedokážou indexovat a na mnoha zařízeních jsou pluginy zakázány nebo nejsou podporovány. [Jak se vyhnout použití pluginů](https://developer.chrome.com/docs/lighthouse/seo/plugins/)"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Dokument používá pluginy"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "V dokumentu nejsou použity pluginy"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Pokud soubor robots.txt nemá správný formát, prohledávače nemusejí být schopné zjistit, jak váš web mají procházet nebo indexovat. [Další informace o souboru robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"

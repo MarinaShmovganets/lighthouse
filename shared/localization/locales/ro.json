@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "Elementul cu cea mai mare redare de conținut"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "Impactul schimbării aspectului"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "Aceste elemente DOM au fost afectate cel mai mult de schimbările aspectului. Este posibil ca unele schimbări ale aspectului să nu fie incluse în valoarea CLS din cauza practicii de [windowing](https://web.dev/articles/cls#what_is_cls). [Află cum să îmbunătățești CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "Evită schimbările majore ale aspectului"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "Scorul pentru schimbarea aspectului"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Documentul are o metadescriere"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Motoarele de căutare nu pot indexa conținutul pluginurilor și multe dispozitive restricționează pluginurile sau nu le acceptă. [Află mai multe despre evitarea pluginurilor](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Documentul folosește pluginuri"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Documentul evită pluginurile"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Dacă fișierul robots.txt este deteriorat, este posibil ca aplicațiile crawler să nu poată înțelege cum vrei să fie site-ul tău accesat cu crawlere sau indexat. [Află mai multe despre robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

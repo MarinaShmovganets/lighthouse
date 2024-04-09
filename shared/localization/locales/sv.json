@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "Element som största uppritningen av innehåll gjordes för"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "Effekt av layoutförskjutning"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "Dessa DOM-element påverkades mest av layoutförskjutningar. Vissa layoutförskjutningar kanske inte tas med i CLS-mätvärdet på grund av [windowing](https://web.dev/articles/cls#what_is_cls). [Läs mer om hur du kan förbättra CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "Undvik större layoutförskjutningar"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "Resultat för layoutförskjutning"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Dokumentet har en metabeskrivning"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Sökmotorer kan inte indexera plugin-innehåll och många enheter begränsar plugin-program eller stöder dem inte. [Läs mer om hur du undviker plugin-program](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Dokumentet använder plugin-program"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Dokumentet undviker plugin-program"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Om robots.txt-filen har felaktigt format kan sökrobotarna inte förstå hur du vill att din webbplats ska genomsökas eller indexeras. [Läs mer om robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

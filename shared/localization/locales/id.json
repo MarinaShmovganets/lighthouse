@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "Elemen Largest Contentful Paint (LCP)"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "Dampak pergeseran tata letak"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "Elemen DOM ini paling dipengaruhi oleh pergeseran tata letak. Beberapa pergeseran tata letak mungkin tidak disertakan dalam nilai metrik CLS karena adanya [windowing](https://web.dev/articles/cls#what_is_cls). [Pelajari cara meningkatkan CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "Hindari peralihan tata letak berukuran besar"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "Skor pergeseran tata letak"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "Dokumen memiliki deskripsi meta"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "Mesin telusur tidak dapat mengindeks konten plugin, dan banyak perangkat yang membatasi plugin atau tidak mendukungnya. [Pelajari lebih lanjut cara menghindari plugin](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "Dokumen menggunakan plugin"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "Dokumen menghindari plugin"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "Jika file robots.txt Anda salah format, crawler mungkin tidak dapat memahami cara crawling atau pengindeksan situs yang Anda inginkan. [Pelajari lebih lanjut robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."
