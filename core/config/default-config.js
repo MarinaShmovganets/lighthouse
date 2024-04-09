@@ -606,7 +606,7 @@ const defaultConfig = {
         // Solve for w:
         //    w / (w + T) >= 0.31
         // where T is the sum of all the other weights.
-        {id: 'is-crawlable', weight: 93/23, group: 'seo-crawl'},
+        {id: 'is-crawlable', weight: 93 / 23, group: 'seo-crawl'},
         {id: 'document-title', weight: 1, group: 'seo-content'},
         {id: 'meta-description', weight: 1, group: 'seo-content'},
         {id: 'http-status-code', weight: 1, group: 'seo-crawl'},
