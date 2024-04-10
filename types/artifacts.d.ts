@@ -90,8 +90,8 @@ interface PublicGathererArtifacts {
   LinkElements: Artifacts.LinkElement[];
   /** The values of the <meta> elements in the head. */
   MetaElements: Array<{name?: string, content?: string, property?: string, httpEquiv?: string, charset?: string, node: Artifacts.NodeDetails}>;
-  /** Information on all script elements in the page. Also contains the content of all requested scripts and the networkRecord requestId that contained their content. Note, HTML documents will have one entry per script tag, all with the same requestId. */
-  ScriptElements: Array<Artifacts.ScriptElement>;
+  /** Information on all scripts in the page. */
+  Scripts: Artifacts.Script[];
   /** The dimensions and devicePixelRatio of the loaded viewport. */
   ViewportDimensions: Artifacts.ViewportDimensions;
 }
@@ -120,8 +120,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   Doctype: Artifacts.Doctype | null;
   /** Information on the size of all DOM nodes in the page and the most extreme members. */
   DOMStats: Artifacts.DOMStats;
-  /** Relevant attributes and child properties of all <object>s, <embed>s and <applet>s in the page. */
-  EmbeddedContent: Artifacts.EmbeddedContentInfo[];
   /** Information on poorly sized font usage and the text affected by it. */
   FontSize: Artifacts.FontSize;
   /** All the input elements, including associated form and label elements. */
@@ -147,8 +145,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   RobotsTxt: {status: number|null, content: string|null, errorMessage?: string};
   /** The result of calling the shared trace engine root cause analysis. */
   RootCauses: Artifacts.TraceEngineRootCauses;
-  /** Information on all scripts in the page. */
-  Scripts: Artifacts.Script[];
   /** Version information for all ServiceWorkers active after the first page load. */
   ServiceWorker: {versions: Crdp.ServiceWorker.ServiceWorkerVersion[], registrations: Crdp.ServiceWorker.ServiceWorkerRegistration[]};
   /** Source maps of scripts executed in the page. */
@@ -250,16 +246,6 @@ declare module Artifacts {
     totalBodyElements: number;
     width: NodeDetails & {max: number;};
     depth: NodeDetails & {max: number;};
-  }
-
-  interface EmbeddedContentInfo {
-    tagName: string;
-    type: string | null;
-    src: string | null;
-    data: string | null;
-    code: string | null;
-    params: Array<{name: string; value: string}>;
-    node: Artifacts.NodeDetails;
   }
 
   interface IFrameElement {
@@ -564,7 +550,7 @@ declare module Artifacts {
   }
 
   interface TraceElement {
-    traceEventType: 'largest-contentful-paint'|'layout-shift'|'layout-shift-element'|'animation'|'responsiveness';
+    traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation'|'responsiveness';
     node: NodeDetails;
     nodeId: number;
     animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[];

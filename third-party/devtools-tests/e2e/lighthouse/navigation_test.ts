@@ -96,7 +96,7 @@ describe('Navigation', function() {
     // 1 refresh after auditing to reset state
     assert.strictEqual(numNavigations, 5);
 
-    assert.strictEqual(lhr.lighthouseVersion, '11.6.0');
+    assert.strictEqual(lhr.lighthouseVersion, '11.7.0');
     assert.match(lhr.finalUrl, /^https:\/\/localhost:[0-9]+\/test\/e2e\/resources\/lighthouse\/hello.html/);
 
     assert.strictEqual(lhr.configSettings.throttlingMethod, 'simulate');
@@ -122,7 +122,7 @@ describe('Navigation', function() {
     });
 
     const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, ['max-potential-fid']);
-    assert.strictEqual(auditResults.length, 168);
+    assert.strictEqual(auditResults.length, 162);
     assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
       'installable-manifest',
@@ -204,7 +204,7 @@ describe('Navigation', function() {
     ];
 
     const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr, flakyAudits);
-    assert.strictEqual(auditResults.length, 168);
+    assert.strictEqual(auditResults.length, 162);
     assert.deepStrictEqual(erroredAudits, []);
     assert.deepStrictEqual(failedAudits.map(audit => audit.id), [
       'installable-manifest',
@@ -225,7 +225,7 @@ describe('Navigation', function() {
     await navigateToLighthouseTab('lighthouse/hello.html');
     await registerServiceWorker();
 
-    await setToolbarCheckboxWithText(true, 'Enable JS sampling');  // TODO: Use translated string once it's added
+    await setToolbarCheckboxWithText(true, 'Habilitar muestreo de JS');
     await setToolbarCheckboxWithText(false, 'Borrar almacenamiento');
     await selectCategories(['performance', 'best-practices']);
     await selectDevice('desktop');

@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as Lantern from './types/lantern.js';
 import {NetworkRequestTypes} from './lantern.js';
 import {NetworkNode} from './network-node.js';
 import {CPUNode} from './cpu-node.js';
 import {TraceProcessor} from '../tracehouse/trace-processor.js';
 import {NetworkAnalyzer} from './simulator/network-analyzer.js';
 
-/** @typedef {import('../../../types/internal/lantern.js').Lantern.NetworkRequest} NetworkRequest */
 /** @typedef {import('./base-node.js').Node} Node */
 /** @typedef {Omit<LH.Artifacts['URL'], 'finalDisplayedUrl'>} URLArtifact */
 
@@ -31,7 +31,7 @@ const IGNORED_MIME_TYPES_REGEX = /^video/;
 
 class PageDependencyGraph {
   /**
-   * @param {NetworkRequest} record
+   * @param {Lantern.NetworkRequest} record
    * @return {Array<string>}
    */
   static getNetworkInitiators(record) {
@@ -60,7 +60,7 @@ class PageDependencyGraph {
   }
 
   /**
-   * @param {Array<NetworkRequest>} networkRecords
+   * @param {Array<Lantern.NetworkRequest>} networkRecords
    * @return {NetworkNodeOutput}
    */
   static getNetworkNodeOutput(networkRecords) {
@@ -109,10 +109,10 @@ class PageDependencyGraph {
   }
 
   /**
-   * @param {LH.Artifacts.ProcessedTrace} processedTrace
+   * @param {LH.TraceEvent[]} mainThreadEvents
    * @return {Array<CPUNode>}
    */
-  static getCPUNodes({mainThreadEvents}) {
+  static getCPUNodes(mainThreadEvents) {
     /** @type {Array<CPUNode>} */
     const nodes = [];
     let i = 0;
@@ -393,14 +393,14 @@ class PageDependencyGraph {
   }
 
   /**
-   * @param {LH.Artifacts.ProcessedTrace} processedTrace
-   * @param {Array<NetworkRequest>} networkRecords
+   * @param {LH.TraceEvent[]} mainThreadEvents
+   * @param {Array<Lantern.NetworkRequest>} networkRecords
    * @param {URLArtifact} URL
    * @return {Node}
    */
-  static createGraph(processedTrace, networkRecords, URL) {
+  static createGraph(mainThreadEvents, networkRecords, URL) {
     const networkNodeOutput = PageDependencyGraph.getNetworkNodeOutput(networkRecords);
-    const cpuNodes = PageDependencyGraph.getCPUNodes(processedTrace);
+    const cpuNodes = PageDependencyGraph.getCPUNodes(mainThreadEvents);
     const {requestedUrl, mainDocumentUrl} = URL;
     if (!requestedUrl) throw new Error('requestedUrl is required to get the root request');
     if (!mainDocumentUrl) throw new Error('mainDocumentUrl is required to get the main resource');
