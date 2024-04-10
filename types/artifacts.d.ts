@@ -158,8 +158,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   TraceError: Trace;
   /** Elements associated with metrics (ie: Largest Contentful Paint element). */
   TraceElements: Artifacts.TraceElement[];
-  /** Parsed version of the page's Web App Manifest, or null if none found. */
-  WebAppManifest: Artifacts.Manifest | null;
   /** COMPAT: A set of traces, keyed by passName. */
   traces: {[passName: string]: Trace};
   /** COMPAT: A set of DevTools debugger protocol records, keyed by passName. */
@@ -593,25 +591,6 @@ declare module Artifacts {
       request: Artifacts.NetworkRequest;
       children: CriticalRequestNode;
     }
-  }
-
-  type ManifestValueCheckID = 'hasStartUrl'|'hasIconsAtLeast144px'|'hasIconsAtLeast512px'|'fetchesIcon'|'hasPWADisplayValue'|'hasBackgroundColor'|'hasThemeColor'|'hasShortName'|'hasName'|'shortNameLength'|'hasMaskableIcon';
-
-  type ManifestValues = {
-    isParseFailure: false;
-    allChecks: {
-      id: ManifestValueCheckID;
-      failureText: string;
-      passing: boolean;
-    }[];
-  } | {
-    isParseFailure: true;
-    parseFailureReason: string;
-    allChecks: {
-      id: ManifestValueCheckID;
-      failureText: string;
-      passing: boolean;
-    }[];
   }
 
   type MeasureEntry = LHResult.MeasureEntry;
