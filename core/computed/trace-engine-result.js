@@ -8,6 +8,7 @@ import * as TraceEngine from '../lib/trace-engine.js';
 import {makeComputedArtifact} from './computed-artifact.js';
 import {CumulativeLayoutShift} from './metrics/cumulative-layout-shift.js';
 import {ProcessedTrace} from './processed-trace.js';
+import * as LH from '../../types/lh.js';
 
 /** @typedef {typeof ENABLED_HANDLERS} EnabledHandlers */
 
