@@ -49,7 +49,7 @@ Object {
   });
 
   ['provided', 'simulate'].forEach(throttlingMethod => {
-    it(`should fail to compute an observed value for old trace (${throttlingMethod})`, async () => {
+    it(`should fail to compute a value for old trace (${throttlingMethod})`, async () => {
       const settings = {throttlingMethod};
       const context = {settings, computedCache: new Map()};
       const URL = getURLArtifactFromDevtoolsLog(invalidDevtoolsLog);
