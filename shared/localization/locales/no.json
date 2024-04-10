@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Resultater"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Disse kontrollene validerer ulike aspekter av progressive nettprogrammer. [Finn ut hva som gjør et progressivt nettprogram bra](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Disse kontrollene kreves av den grunnleggende [sjekklisten for progressive nettprogrammer](https://web.dev/articles/pwa-checklist), men kontrolleres ikke automatisk av Lighthouse. De påvirker ikke poengsummen din, men det er viktig at du verifiserer dem manuelt."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA (progressive web app – progressivt nettprogram)"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Kan installeres"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "PWA-optimalisert"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Disse kontrollene sørger for at siden din følger grunnleggende råd for søkemotoroptimalisering. Det finnes mange tilleggsfaktorer som Lighthouse ikke evaluerer her, men som kan påvirke søkerangeringen din, inkludert ytelse på [Kjernestatistikk for nett](https://web.dev/explore/vitals). [Finn ut mer om Google Search Essentials](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Resultater"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progressivt nettprogram"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Beståtte revisjoner"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "I henhold til de [oppdaterte kriteriene for installasjon i Chrome](https://developer.chrome.com/blog/update-install-criteria) kommer Lighthouse til å avvikle kategorien for PWA-er (progressive web apps – progressive nettprogrammer) i en fremtidig utgave. Se den [oppdaterte PWA-dokumentasjonen](https://developer.chrome.com/docs/devtools/progressive-web-apps/) for fremtidig PWA-testing."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Første sideinnlasting"

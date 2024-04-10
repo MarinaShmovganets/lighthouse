@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Desempenho"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Estas verificações validam os aspetos de uma app Web progressiva. [Saiba o que contribui para uma boa app Web progressiva](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "A [Lista de verificação de PWA](https://web.dev/articles/pwa-checklist) de referência requer estas verificações, mas as mesmas não são verificadas automaticamente pelo Lighthouse. Não afetam a sua pontuação, mas é importante que as valide manualmente."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Instalável"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "PWA otimizada"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Estas verificações asseguram que a página está a seguir os conselhos básicos de otimização do motor de pesquisa. Existem vários fatores adicionais que o Lighthouse não contabiliza aqui e que podem afetar a classificação de pesquisa, incluindo o desempenho nas [Métricas essenciais da Web](https://web.dev/explore/vitals). [Saiba mais acerca do Google Search Essentials](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Desempenho"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progressive web app"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Auditorias aprovadas"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "De acordo com os [Critérios de capacidade de instalação atualizados do Chrome](https://developer.chrome.com/blog/update-install-criteria), o Lighthouse vai descontinuar a categoria PWA numa versão futura. Consulte a [documentação de PWA atualizada](https://developer.chrome.com/docs/devtools/progressive-web-apps/) para futuros testes de PWA."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Carregamento de página inicial"

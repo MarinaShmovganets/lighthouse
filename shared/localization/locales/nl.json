@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Prestaties"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Deze checks valideren de aspecten van een progressive web-app. [Meer informatie over wat een goede progressive web-app is](https://web.dev/articles/pwa-checklist)"
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Deze controles worden vereist door de baseline [PWA-checklist](https://web.dev/articles/pwa-checklist) maar worden niet automatisch gecontroleerd door Lighthouse. Ze zijn niet van invloed op je score, maar het is wel belangrijk dat je ze handmatig verifieert."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Installeerbaar"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Geoptimaliseerd voor PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Deze checks zorgen ervoor dat je pagina het algemene advies voor zoekmachineoptimalisatie volgt. Er zijn veel aanvullende factoren waarvoor Lighthouse hier geen score geeft, maar die wel van invloed kunnen zijn op je zoekpositie, waaronder de prestaties voor [Site-vitaliteit](https://web.dev/explore/vitals). [Meer informatie over Google Search Essentials](https://support.google.com/webmasters/answer/35769)"
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Prestaties"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progressive web-app"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Geslaagde controles"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Volgens de [geüpdatete Installeerbaarheidscriteria van Chrome](https://developer.chrome.com/blog/update-install-criteria) beëindigt Lighthouse de categorie PWA in een toekomstige release. Raadpleeg de [geüpdatete PWA-documentatie](https://developer.chrome.com/docs/devtools/progressive-web-apps/) voor toekomstige PWA-tests."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Eerste keer laden van de pagina"

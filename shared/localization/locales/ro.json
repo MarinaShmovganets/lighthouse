@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Performanță"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Aceste verificări validează aspectele unei aplicații web progresive. [Află ce înseamnă o aplicație web progresivă bună](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Aceste verificări sunt impuse de [Lista de verificare PWA](https://web.dev/articles/pwa-checklist) de referință, dar nu sunt verificate automat de Lighthouse. Ele nu-ți afectează scorul, dar e important să fie făcute manual."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Poate fi instalat"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Optimizat pentru PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Aceste verificări asigură faptul că pagina urmează recomandările de bază privind optimizarea pentru motoarele de căutare. Există mulți alți factori de care Lighthouse nu ține cont care îți pot afecta poziționarea în rețeaua de căutare, inclusiv performanța în [Detaliile de funcționare de bază pentru web](https://web.dev/explore/vitals). [Află mai multe despre Noțiuni de bază despre Căutarea Google](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Performanță"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Aplicație web progresivă"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Auditări trecute"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Conform [Criteriilor de instalare actualizate pentru Chrome](https://developer.chrome.com/blog/update-install-criteria), Lighthouse va renunța la dezvoltarea categoriei PWA într-o versiune viitoare. Consultă [documentația actualizată pentru PWA](https://developer.chrome.com/docs/devtools/progressive-web-apps/) pentru testările viitoare ale aplicațiilor web progresive."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Încărcarea inițială a paginii"

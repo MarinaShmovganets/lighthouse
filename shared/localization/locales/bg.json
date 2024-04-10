@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Ефективност"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Тези проверки са свързани с аспектите на прогресивните уеб приложения. [Научете с какво се отличават добрите такива приложения](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Тези проверки са задължителни според отправния [контролен списък за PWA](https://web.dev/articles/pwa-checklist), но не се извършват автоматично от Lighthouse. Те не се отразяват на резултата ви, но е важно да ги потвърдите ръчно."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Възможност за инсталиране"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Оптимизиране за PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Тези проверки показват дали страницата ви следва съвета за основно оптимизиране за търсещи машини. Има много допълнителни фактори, които тук не са взети под внимание от Lighthouse. Те може да повлияят на класирането на резултатите от търсенето, включително на ефективността според [основните показатели за мрежата](https://web.dev/explore/vitals). [Научете повече за основните елементи на Google Търсене](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Ефективност"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Прогресивно уеб приложение (PWA)"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Успешно преминати проверки"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "В съответствие с [актуализираните критерии на Chrome за инсталиране](https://developer.chrome.com/blog/update-install-criteria) Lighthouse ще оттегли категорията PWA в бъдеща версия. Моля, разгледайте [актуализираната документация за PWA](https://developer.chrome.com/docs/devtools/progressive-web-apps/) за бъдещо тестване на PWA."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Първоначално зареждане на страницата"

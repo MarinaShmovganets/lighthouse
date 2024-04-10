@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Výkon"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Tyto kontroly prověřují různé aspekty progresivní webové aplikace. [Jak vytvořit dobrou progresivní webovou aplikaci](https://web.dev/articles/pwa-checklist)"
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Tyto kontroly vyžaduje základní [kontrolní seznam aplikace PWA](https://web.dev/articles/pwa-checklist), ale nástroj Lighthouse je automaticky neprovádí. Na vaše skóre vliv nemají, ale je důležité, abyste je ověřili ručně."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Instalovatelné"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Optimalizováno pro PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Tyto kontroly zajišťují, aby vaše stránka dodržovala základní radu ohledně optimalizace pro vyhledávače. Mnoho dalších faktorů, které ovlivňují umístění ve výsledcích vyhledávání, Lighthouse nehodnotí, např. výkon metrik [Core Web Vitals](https://web.dev/explore/vitals). [Další informace o základních požadavcích Vyhledávání Google](https://support.google.com/webmasters/answer/35769)"
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Výkon"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progresivní webová aplikace"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Úspěšné audity"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "V souladu s [aktualizovanými kritérii prohlížeče Chrome pro instalaci](https://developer.chrome.com/blog/update-install-criteria) bude v budoucí verzi nástroje Lighthouse ukončena podpora kategorie aplikací PWA. Pokyny k budoucímu testování aplikací PWA najdete v [aktualizované dokumentaci aplikací PWA](https://developer.chrome.com/docs/devtools/progressive-web-apps/)."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "První načtení stránky"

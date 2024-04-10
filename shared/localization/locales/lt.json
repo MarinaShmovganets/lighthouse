@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Našumas"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Per šias patikras vertinamos laipsniškosios žiniatinklio programos aspekto paprogramės. [Sužinokite, kaip sukurti gerą laipsniškąją žiniatinklio programą](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Šios patikros būtinos pagal pradinį [LŽP kontrolinį sąrašą](https://web.dev/articles/pwa-checklist), tačiau „Lighthouse“ jų neatlieka automatiškai. Jos neturi įtakos jūsų rezultatui, tačiau svarbu, kad patvirtintumėte patys."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "LŽP"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Galima įdiegti"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Optimizuota PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Šios patikros užtikrina, kad puslapyje laikomasi pagrindinių paieškos variklio optimizavimo rekomendacijų. Yra daugybė veiksnių, į kuriuos „Lighthouse“ neatsižvelgia ir kurie gali turėti įtakos paieškos reitingavimui, įskaitant našumą pagal [svarbiausią žiniatinklio „Vitals“ metriką](https://web.dev/explore/vitals). [Sužinokite daugiau apie „Google“ paieškos pagrindus](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Našumas"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Laipsniškoji žiniatinklio programa"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "PVO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Sėkmingos patikros"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Kad būtų laikomasi [atnaujintų „Chrome“ diegiamumo kriterijų](https://developer.chrome.com/blog/update-install-criteria), „Lighthouse“ būsimame leidime nebebus naudojama LŽP kategorija. Peržiūrėkite [atnaujintus LŽP dokumentus](https://developer.chrome.com/docs/devtools/progressive-web-apps/), skirtus būsimiems LŽP bandymams."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Pirminis puslapio įkėlimas"

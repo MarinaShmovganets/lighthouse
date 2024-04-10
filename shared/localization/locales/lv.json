@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Veiktspēja"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Veicot šīs pārbaudes, varat validēt progresīvo tīmekļa lietotņu aspektus. [Uzziniet, kas veido labu progresīvo tīmekļa lietotni](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Šīs pārbaudes ir vajadzīgas saskaņā ar standarta [PWA kontrolsarakstu](https://web.dev/articles/pwa-checklist), taču Lighthouse neveic tās automātiski. Tās neietekmē jūsu rezultātu, taču ir svarīgi pārbaudīt šos lietotnes aspektus manuāli."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PTL"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Instalēšana"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "PTL optimizācija"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Šīs pārbaudes nodrošina, ka jūsu lapa atbilst meklētājprogrammu optimizācijas pamatnostādnēm. Ir daudz papildu faktoru, kurus Lighthouse neņem vērā, taču kuri var ietekmēt jūsu meklēšanas rezultātu ranžēšanu, tostarp [Core Web Vitals](https://web.dev/explore/vitals) veiktspēju. [Uzziniet vairāk par Google meklēšanas pamatiem](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Veiktspēja"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progresīvā tīmekļa lietotne"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "MPO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Izpildītās pārbaudes"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Saskaņā ar [Chrome atjauninātajiem instalējamības kritērijiem](https://developer.chrome.com/blog/update-install-criteria) turpmākajā laidienā vairs netiks atbalstīta PTL kategorija rīkā Lighthouse. Lūdzu, skatiet [atjaunināto PTL dokumentāciju](https://developer.chrome.com/docs/devtools/progressive-web-apps/), lai turpmāk veiktu PTL testēšanu."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Sākotnējā lapas ielāde"

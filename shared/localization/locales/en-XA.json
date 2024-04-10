@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "[Þéŕƒöŕmåñçé one two]"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "[Ţĥéšé çĥéçķš våļîðåţé ţĥé åšþéçţš öƒ å Þŕöĝŕéššîvé Ŵéб Åþþ. ᐅ[ᐊĻéåŕñ ŵĥåţ måķéš å ĝööð Þŕöĝŕéššîvé Ŵéб Åþþᐅ](https://web.dev/articles/pwa-checklist)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen]"
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "[Ţĥéšé çĥéçķš åŕé ŕéqûîŕéð бý ţĥé бåšéļîñé ᐅ[ᐊÞŴÅ Çĥéçķļîšţᐅ](https://web.dev/articles/pwa-checklist)ᐊ бûţ åŕé ñöţ åûţömåţîçåļļý çĥéçķéð бý Ļîĝĥţĥöûšé. Ţĥéý ðö ñöţ åƒƒéçţ ýöûŕ šçöŕé бûţ îţ'š îmþöŕţåñţ ţĥåţ ýöû véŕîƒý ţĥém måñûåļļý. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour twentyfive twentysix]"
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "[ÞŴÅ one]"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "[Îñšţåļļåбļé one two]"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "[ÞŴÅ Öþţîmîžéð one two]"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "[Ţĥéšé çĥéçķš éñšûŕé ţĥåţ ýöûŕ þåĝé îš ƒöļļöŵîñĝ бåšîç šéåŕçĥ éñĝîñé öþţîmîžåţîöñ åðvîçé. Ţĥéŕé åŕé måñý åððîţîöñåļ ƒåçţöŕš Ļîĝĥţĥöûšé ðöéš ñöţ šçöŕé ĥéŕé ţĥåţ måý åƒƒéçţ ýöûŕ šéåŕçĥ ŕåñķîñĝ, îñçļûðîñĝ þéŕƒöŕmåñçé öñ ᐅ[ᐊÇöŕé Ŵéб Vîţåļšᐅ](https://web.dev/explore/vitals)ᐊ. ᐅ[ᐊĻéåŕñ möŕé åбöûţ Ĝööĝļé Šéåŕçĥ Éššéñţîåļšᐅ](https://support.google.com/webmasters/answer/35769)ᐊ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour twentyfive twentysix twentyseven twentyeight twentynine thirty thirtyone thirtytwo thirtythree thirtyfour thirtyfive]"
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "[Þéŕƒöŕmåñçé one two]"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "[Þŕöĝŕéššîvé Ŵéб Åþþ one two three]"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "[ŠÉÖ one]"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "[Þåššéð åûðîţš one two]"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "[Åš þéŕ ᐅ[ᐊÇĥŕömé’š ûþðåţéð Îñšţåļļåбîļîţý Çŕîţéŕîåᐅ](https://developer.chrome.com/blog/update-install-criteria)ᐊ, Ļîĝĥţĥöûšé ŵîļļ бé ðéþŕéçåţîñĝ ţĥé ÞŴÅ çåţéĝöŕý îñ å ƒûţûŕé ŕéļéåšé. Þļéåšé ŕéƒéŕ ţö ţĥé ᐅ[ᐊûþðåţéð ÞŴÅ ðöçûméñţåţîöñᐅ](https://developer.chrome.com/docs/devtools/progressive-web-apps/)ᐊ ƒöŕ ƒûţûŕé ÞŴÅ ţéšţîñĝ. one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone twentytwo twentythree twentyfour twentyfive twentysix twentyseven]"
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "[Îñîţîåļ þåĝé ļöåð one two three]"

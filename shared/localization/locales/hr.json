@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Izvedba"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Ove provjere potvrđuju aspekte progresivne web-aplikacije. [Saznajte što čini dobru progresivnu web-aplikaciju](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Te su provjere potrebne za osnovni [PWA kontrolni popis](https://web.dev/articles/pwa-checklist), no Lighthouse ih ne izvodi automatski. One ne utječu na vaš rezultat, no važno je da ih ručno izvršite."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Može se instalirati"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "PWA je optimiziran"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Ove provjere osiguravaju da vaša stranica slijedi osnovne preporuke u vezi s optimizacijom za tražilice. Mnogo je dodatnih čimbenika koje Lighthouse ne ocjenjuje, a koji mogu utjecati na položaj u pretraživanju, uključujući izvedbu povezanu s [ključnim pokazateljima web-stranice](https://web.dev/explore/vitals). [Saznajte više o smjernicama Google Search Essentials](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Izvedba"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progresivna web-aplikacija"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Uspješni pregledi"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "U skladu s [Chromeovim ažuriranim kriterijima prikladnosti za instalaciju](https://developer.chrome.com/blog/update-install-criteria), Lighthouse će u budućem izdanju obustaviti PWA kategoriju. Pogledajte [ažuriranu dokumentaciju o PWA-u](https://developer.chrome.com/docs/devtools/progressive-web-apps/) za buduće testiranje PWA-a."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Početno učitavanje stranice"

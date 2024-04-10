@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Performans"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Bu denetimler, progresif web uygulamasının (pwa) özelliklerini doğrular. [İyi bir progresif web uygulaması (pwa) için nelere dikkat etmeniz gerektiğini öğrenin](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Temel [Progresif Web Uygulaması Yapılacaklar Listesi](https://web.dev/articles/pwa-checklist) tarafından zorunlu tutulan bu denetimler, Lighthouse tarafından otomatik olarak kontrol edilmez. Bunlar skorunuzu etkilemez ancak manuel olarak doğrulamanız önemlidir."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA (Progresif Web Uygulaması)"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Yüklenebilir"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Optimize Edilmiş PWA (Progresif Web Uygulaması)"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Bu kontroller, sayfanızın temel arama motoru optimizasyonu tavsiyesine uymasını sağlar. Burada Lighthouse'un puan vermediği ve [Önemli Web Verileri](https://web.dev/explore/vitals)'ndeki performansınız da dahil arama sıralamanızı etkileyebilecek birçok ek faktör vardır. [Google Arama'nın Temel Özellikleri hakkında daha fazla bilgi edinin](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Performans"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progresif Web Uygulaması"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Başarılı denetimler"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Lighthouse, [Chrome'un güncellenen yüklenebilirlik ölçütleri](https://developer.chrome.com/blog/update-install-criteria) uyarınca gelecekteki sürümlerden birinde PWA (progresif web uygulaması) kategorisi desteğini sonlandıracaktır. Gelecekteki PWA testleri için lütfen [güncellenmiş PWA dokümanlarına](https://developer.chrome.com/docs/devtools/progressive-web-apps/) göz atın."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "İlk sayfa yükleme"

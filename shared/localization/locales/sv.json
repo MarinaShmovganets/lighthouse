@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Prestanda"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Med dessa kontroller verifieras att webbplatsen är en progressiv webbapp. [Läs mer om vad som gör en progressiv webbapp bra](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Dessa kontroller krävs enligt [checklistan för progressiva webbappar](https://web.dev/articles/pwa-checklist) som används som baslinje, men de kontrolleras inte automatiskt av Lighthouse. De påverkar inte resultatet, men det är viktigt att du verifierar dem manuellt."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Kan installeras"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Optimerad för progressiv webbapp"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Dessa kontroller ser till att din sida följer de grundläggande råden för sökmotoroptimering. Det finns fler faktorer som Lighthouse inte bedömer här som kan påverka rankningen i sökresultat, däribland prestandan för [Viktiga webbvärden](https://web.dev/explore/vitals). [Läs mer om Google Search Essentials](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Prestanda"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progressiv webbapp"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Godkända granskningar"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "I enlighet med [Chromes uppdaterade installationskriterier](https://developer.chrome.com/blog/update-install-criteria) fasar Lighthouse ut PWA-kategorin i en framtida version. Läs den [uppdaterade dokumentationen om PWA](https://developer.chrome.com/docs/devtools/progressive-web-apps/) för framtida PWA-testning."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Första sidhämtningen"

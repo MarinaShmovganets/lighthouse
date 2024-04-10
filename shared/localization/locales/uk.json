@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Ефективність"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Ці категорії підтверджують аспекти прогресивного веб-додатка. [Дізнайтесь, як створити якісний прогресивний веб-додаток.](https://web.dev/articles/pwa-checklist)"
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Ці категорії обов'язкові відповідно до основного [контрольного списку для прогресивних веб-додатків](https://web.dev/articles/pwa-checklist), але Lighthouse не перевіряє їх автоматично. Вони не впливають на ваш показник, проте їх потрібно підтвердити вручну."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "Прогресивний веб-додаток"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Можна встановити"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Оптимізовано для прогресивного веб-додатка"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Ці перевірки допоможуть подбати про те, щоб ваша сторінка відповідала основним рекомендаціям щодо пошукової оптимізації. Є чимало інших факторів, які не враховує Lighthouse і які можуть вплинути на рейтинг сторінки в результатах пошуку (наприклад, продуктивність відповідно до [Основних веб-показників](https://web.dev/explore/vitals)). [Докладніше про основи Google Пошуку.](https://support.google.com/webmasters/answer/35769)"
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Ефективність"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Прогресивний веб-додаток"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "Оптим. пошук. систем"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Виконані перевірки"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "У майбутньому випуску Lighthouse більше не підтримуватиме категорію прогресивних вебдодатків відповідно до [оновлених умов встановлення додатків у Chrome](https://developer.chrome.com/blog/update-install-criteria). Щоб підготуватися до тестування прогресивних вебдодатків, перегляньте [оновлену документацію](https://developer.chrome.com/docs/devtools/progressive-web-apps/)."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Перше завантаження сторінки"

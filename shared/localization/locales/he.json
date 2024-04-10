@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "ביצועים"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "הבדיקות האלה מאמתות את ההיבטים של Progressive Web App. [איך יוצרים אפליקציה מוצלחת מסוג Progressive Web App](https://web.dev/articles/pwa-checklist)"
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "בדיקות אלה נדרשות עבור שורת הבסיס [רשימת משימות של PWA](https://web.dev/articles/pwa-checklist), אך הן לא נבדקות באופן אוטומטי על ידי Lighthouse. הן לא משפיעות על הניקוד שלך, אך חשוב לאמת אותן באופן ידני."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "ניתן להתקנה"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "מותאם ל-PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "הבדיקות האלה עוזרות לוודא שהתוכן בדף שלך מותאם לעצות הבסיסיות בנוגע לאופטימיזציה למנועי חיפוש. יש הרבה גורמים אחרים שלא משוקללים על ידי Lighthouse בבדיקות האלה, ועשויים להשפיע על דירוג החיפוש, לרבות הביצועים ב[דוח ה-Web Vitals הבסיסיים](https://web.dev/explore/vitals). [מידע נוסף על היסודות של חיפוש Google](https://support.google.com/webmasters/answer/35769)"
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "ביצועים"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progressive Web App"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "אופטימיזציה למנועי חיפוש"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "בדיקות עם ציון 'עובר'"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "בהתאם [לקריטריונים המעודכנים של Chrome לגבי אפשרות ההתקנה](https://developer.chrome.com/blog/update-install-criteria), הקטגוריה PWA תצא משימוש בגרסה עתידית במסגרת Lighthouse. אפשר לעיין ב[מסמכי התיעוד המעודכנים בנושא PWA](https://developer.chrome.com/docs/devtools/progressive-web-apps/) לצורך בדיקות עתידיות של PWA."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "טעינת הדף הראשונית"

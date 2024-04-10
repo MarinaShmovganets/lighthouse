@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Rendimiento"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Estas comprobaciones validan los aspectos de una app web progresiva. [Descubre qué es lo que hace buena a una app web progresiva](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Estas comprobaciones son necesarias según el modelo de referencia [Lista de tareas para AWP](https://web.dev/articles/pwa-checklist), pero Lighthouse no las realiza automáticamente. Es importante que las verifiques a mano (aunque no afectan a la puntuación)."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "AWP"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Instalable"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Optimizado para PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Estas comprobaciones aseguran que tu página esté siguiendo la sugerencia básica de optimización por motores de búsqueda. Existen muchos factores adicionales que Lighthouse no registra y que pueden afectar su clasificación en la búsqueda, como el rendimiento en las [Métricas web esenciales](https://web.dev/explore/vitals). [Obtén más información sobre los conceptos básicos de la Búsqueda de Google](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Rendimiento"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "App web progresiva"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Auditorías aprobadas"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Según los [criterios actualizados de instalación de Chrome](https://developer.chrome.com/blog/update-install-criteria), Lighthouse dará de baja la categoría AWP en una versión futura. Consulta la [documentación actualizada de las AWP](https://developer.chrome.com/docs/devtools/progressive-web-apps/) para futuras pruebas de AWP."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Carga inicial de la página"

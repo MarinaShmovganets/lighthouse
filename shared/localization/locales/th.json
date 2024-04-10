@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "ประสิทธิภาพ"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "การตรวจสอบเหล่านี้จะตรวจสอบลักษณะต่างๆ ของ Progressive Web App [ดูสิ่งที่จะช่วยทำให้เป็น Progressive Web App ที่ดี](https://web.dev/articles/pwa-checklist)"
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "การตรวจสอบเหล่านี้เป็นสิ่งที่ต้องทำใน[รายการตรวจสอบ PWA](https://web.dev/articles/pwa-checklist) ซึ่งเป็นเกณฑ์พื้นฐาน แต่ Lighthouse ไม่ได้ทำการตรวจสอบดังกล่าวโดยอัตโนมัติ การตรวจสอบจะไม่ส่งผลต่อคะแนนของคุณ แต่คุณควรตรวจสอบด้วยตนเอง"
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "ติดตั้งได้"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "เพิ่มประสิทธิภาพ PWA แล้ว"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "การตรวจสอบเหล่านี้ช่วยให้มั่นใจว่าหน้าเว็บของคุณทำตามคำแนะนำพื้นฐานในการปรับแต่งเว็บไซต์ให้ติดอันดับบนเครื่องมือค้นหา มีปัจจัยอื่นๆ มากมายที่ Lighthouse ไม่ให้คะแนนไว้ที่นี่ซึ่งอาจส่งผลต่อการจัดอันดับการค้นหา รวมถึงประสิทธิภาพใน [Core Web Vitals](https://web.dev/explore/vitals) [ดูข้อมูลเพิ่มเติมเกี่ยวกับ Google Search Essentials](https://support.google.com/webmasters/answer/35769)"
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "ประสิทธิภาพ"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progressive Web App"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "การตรวจสอบที่ผ่านแล้ว"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Lighthouse จะเลิกใช้งานหมวดหมู่ PWA ในรุ่นถัดไปตาม[เกณฑ์ความสามารถในการติดตั้งฉบับปรับปรุงของ Chrome](https://developer.chrome.com/blog/update-install-criteria) โปรดดู[เอกสารประกอบของ PWA ฉบับปรับปรุง](https://developer.chrome.com/docs/devtools/progressive-web-apps/)สำหรับการทดสอบ PWA ในอนาคต"
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "การโหลดหน้าเว็บเริ่มต้น"

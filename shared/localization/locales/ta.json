@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "இணையச் செயல்திறன்"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "இந்தச் சரிபார்ப்புகள் மேம்பட்ட இணைய ஆப்ஸின் அம்சங்களை மதிப்பிடும்.[ஒரு நல்ல மேம்பட்ட இணைய ஆப்ஸின் தன்மைகள் குறித்து அறிக](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "பேஸ்லைன் [PWA சரிபார்ப்புப் பட்டியலுக்கு ](https://web.dev/articles/pwa-checklist) இந்தச் சரிபார்ப்புகள் தேவை, இருப்பினும் இவற்றை Lighthouse தானாகச் சரிபார்ப்பதில்லை. அவை உங்களின் ஸ்கோரில் பாதிப்பை ஏற்படுத்தாது, இருப்பினும் நீங்களாகவே அவற்றைச் சரிபார்ப்பது முக்கியமாகும்."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "நிறுவக்கூடியவை"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "PWA மேம்படுத்தப்பட்டுள்ளது"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "தேடலில் மேம்படுத்துதல் செயல்முறையின் அடிப்படை வழிமுறையை உங்கள் பக்கம் பின்பற்றுகிறது என்பதை இந்தச் சரிபார்ப்புகள் உறுதிசெய்கின்றன. Lighthouse கணக்கில் எடுத்துக்கொள்ளாத பல கூடுதல் காரணிகள் உங்கள் தேடல் தரவரிசையைப் பாதிக்கக்கூடும். அவற்றில் [வலைதளத்தின் முக்கிய அடிப்படை விவரங்கள்](https://web.dev/explore/vitals) மீதான செயல்திறனும் அடங்கும். [Google Search Essentials குறித்து மேலும் அறிக](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "இணையச் செயல்திறன்"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "நவீன இணைய ஆப்ஸ்"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "தேர்ச்சி பெற்ற தணிக்கைகள்"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "[நிறுவலுக்கான Chromeமின் புதுப்பிக்கப்பட்ட நிபந்தனைகளின்படி](https://developer.chrome.com/blog/update-install-criteria), எதிர்கால வெளியீட்டில் இருந்து PWA வகையை Lighthouse நிறுத்தும். எதிர்கால PWA சோதனைக்கு, [புதுப்பிக்கப்பட்ட PWA ஆவணத்தைப்](https://developer.chrome.com/docs/devtools/progressive-web-apps/) பார்க்கவும்."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "பக்கத்தின் முதற்கட்ட ஏற்றம்"

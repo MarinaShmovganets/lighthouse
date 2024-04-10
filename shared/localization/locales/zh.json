@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "性能"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "此类检查会验证渐进式 Web 应用的各个方面。[了解如何构建优秀的渐进式 Web 应用](https://web.dev/articles/pwa-checklist)。"
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "基准 [PWA 核对清单](https://web.dev/articles/pwa-checklist)要求必须进行此类检查，但 Lighthouse 不会自动进行此类检查。它们不会影响您的得分，但您必须手动对其进行验证。"
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "可安装"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "优化 PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "此类检查可确保您的网页遵循了基本的搜索引擎优化建议。还有很多其他因素可能会影响您的网页在搜索引擎结果中的排名，但未被 Lighthouse 纳入此处的评估范围，其中包括[核心网页指标](https://web.dev/explore/vitals)衡量结果。[详细了解 Google Search Essentials](https://support.google.com/webmasters/answer/35769)。"
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "性能"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "渐进式 Web 应用"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "已通过的审核"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "根据 [Chrome 更新后的可安装性标准](https://developer.chrome.com/blog/update-install-criteria)，Lighthouse 将在未来的版本中弃用 PWA 类别。请参阅[更新后的 PWA 文档](https://developer.chrome.com/docs/devtools/progressive-web-apps/)，了解今后的 PWA 测试。"
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "初始网页加载"

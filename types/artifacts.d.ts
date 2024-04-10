@@ -129,8 +129,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   GlobalListeners: Array<Artifacts.GlobalListener>;
   /** The issues surfaced in the devtools Issues panel */
   InspectorIssues: Artifacts.InspectorIssues;
-  /** Errors preventing page being installable as PWA. */
-  InstallabilityErrors: Artifacts.InstallabilityErrors;
   /** JS coverage information for code used during audit. Keyed by script id. */
   // 'url' is excluded because it can be overridden by a magic sourceURL= comment, which makes keeping it a dangerous footgun!
   JsUsage: Record<string, Omit<Crdp.Profiler.ScriptCoverage, 'url'>>;
@@ -435,10 +433,6 @@ declare module Artifacts {
 
   // TODO(bckenny): real type for parsed manifest.
   type Manifest = ReturnType<typeof parseManifest>;
-
-  interface InstallabilityErrors {
-    errors: Crdp.Page.InstallabilityError[];
-  }
 
   interface ImageElement {
     /** The resolved source URL of the image. Similar to `currentSrc`, but resolved for CSS images as well. */

@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Teljesítmény"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Ezek az ellenőrzések különböző szempontokból érvényesítik a progresszív webes alkalmazásokat. [További információ arról, mitől lesz jó egy progresszív webes alkalmazás](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Ezek az ellenőrzések kötelezők a [progresszív webes alkalmazások alapvető ellenőrzőlistáján](https://web.dev/articles/pwa-checklist), de a Lighthouse nem végzi el őket automatikusan. Az ellenőrzések a kapott pontszámot nem befolyásolják, de fontos a manuális végrehajtásuk."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Telepíthető"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "PWA-optimalizálás"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Ezekkel az ellenőrzésekkel győződhet meg arról, hogy oldala követi a keresőoptimalizálásra vonatkozó alapvető tanácsokat. Számos olyan, a Lighthouse által itt nem értékelt tényező van még, amely hatással lehet a keresésbeli rangsorolásra, beleértve az [Alapvető webes vitals-mutatók](https://web.dev/explore/vitals) teljesítményét is. [További információ a Google Kereső Essentials szolgáltatásról](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Teljesítmény"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Progresszív webes alkalmazás"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "Keresőoptimalizálás"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Sikeresen teljesített ellenőrzések"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "A [Chrome frissített telepíthetőségi feltételeinek](https://developer.chrome.com/blog/update-install-criteria) megfelelően a Lighthouse egy későbbi kiadásban megszünteti a PWA kategóriát. A PWA jövőbeli tesztelésével kapcsolatban tekintse át a [frissített PWA-dokumentációt](https://developer.chrome.com/docs/devtools/progressive-web-apps/)."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Első oldalbetöltés"

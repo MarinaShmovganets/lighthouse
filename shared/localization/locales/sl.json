@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Delovanje"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Ta preverjanja potrjujejo vidike moderne spletne aplikacije. [Preberite, kaj odlikuje dobro moderno spletno aplikacijo](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Ta preverjanja zahteva osnovni [kontrolni seznam za MSA](https://web.dev/articles/pwa-checklist), vendar jih Lighthouse ne opravi samodejno. Preverjanja vplivajo na vaš rezultat, vendar je pomembno, da jih opravite ročno."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "MSA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Namestljivo"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Optimizirano za PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "S temi preverjanji se zagotovi, da stran upošteva osnovna priporočila glede optimizacije iskalnikov. Lighthouse pri tem ne upošteva številnih dodatnih dejavnikov, ki lahko vplivajo na uvrstitev v rezultatih iskanja, vključno z učinkovitostjo delovanja v [osnovnih podatkih za splet](https://web.dev/explore/vitals). [Preberite več o osnovah Iskanja Google](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Delovanje"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Moderna spletna aplikacija"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Uspešni pregledi"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Skladno s [posodobljenimi merili za izvedljivost namestitve v Chromu](https://developer.chrome.com/blog/update-install-criteria) bo Lighthouse v prihodnji izdaji opustil kategorijo MSA. Za prihodnje preizkušanje MSA-ja glejte [posodobljeno dokumentacijo za MSA](https://developer.chrome.com/docs/devtools/progressive-web-apps/)."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Začetno nalaganje st rani"

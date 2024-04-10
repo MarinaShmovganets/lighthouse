@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "パフォーマンス"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "これらのチェックではプログレッシブ ウェブアプリのさまざまな側面が検証されます。[優れたプログレッシブ ウェブアプリを作成する方法の詳細](https://web.dev/articles/pwa-checklist)"
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "これらのチェック項目は基本の [PWA チェックリスト](https://web.dev/articles/pwa-checklist)で必須とされていますが、Lighthouse では自動的にチェックされません。スコアには影響しませんが、手動で確認することが重要です。"
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "インストール対応"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "PWA の最適化"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "これらのチェックを行うことで、ページが検索エンジン最適化の基本的な推奨事項に沿っていることを確認できます。検索ランキングに影響する可能性のある要素には、Lighthouse で考慮されている要素以外に、[ウェブに関する主な指標](https://web.dev/explore/vitals)のスコアなどもあります。[Google 検索の基本事項の詳細](https://support.google.com/webmasters/answer/35769)"
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "パフォーマンス"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "プログレッシブ ウェブアプリ"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "合格した監査"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "[Chrome の更新されたインストール要件](https://developer.chrome.com/blog/update-install-criteria)に基づき、Lighthouse では今後のリリースで PWA カテゴリが廃止される予定です。今後の PWA テストについては、[最新の PWA のドキュメント](https://developer.chrome.com/docs/devtools/progressive-web-apps/)をご覧ください。"
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "最初のページ読み込み"

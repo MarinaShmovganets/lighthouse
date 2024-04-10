@@ -420,7 +420,8 @@ describe('CategoryRenderer', () => {
       passingRefs[0].result.warnings = ['Some warning'];
       passingRefs[1].result.warnings = ['Some warning'];
       // Make one audit n/a
-      const audit = categoryClone.auditRefs.find(ref => ref.id === 'viewport');
+      const audit = categoryClone.auditRefs.find(ref => ref.id === 'is-crawlable');
+      console.log('audit', audit);
       audit.result.scoreDisplayMode = 'notApplicable';
       audit.result.score = null;
 
@@ -431,9 +432,9 @@ describe('CategoryRenderer', () => {
       const manualAudits = elem.querySelectorAll('.lh-clump--manual .lh-audit');
       const naAudits = elem.querySelectorAll('.lh-clump--notapplicable .lh-audit');
 
-      assert.equal(passedAudits.length, 6);
+      assert.equal(passedAudits.length, 2);
       assert.equal(failedAudits.length, 3);
-      assert.equal(warningAudits.length, 1);
+      assert.equal(warningAudits.length, 2);
       assert.equal(manualAudits.length, 1);
       assert.equal(naAudits.length, 3);
 
@@ -452,13 +453,13 @@ describe('CategoryRenderer', () => {
       const failedAudits = elem.querySelectorAll('.lh-clump--failed .lh-audit');
 
       assert.equal(passedAudits.length, 0);
-      assert.equal(failedAudits.length, 11);
+      assert.equal(failedAudits.length, 8);
     });
 
     it('expands warning audit group', () => {
       const category = sampleResults.categories.seo;
       const categoryClone = JSON.parse(JSON.stringify(category));
-      const failingAudit = categoryClone.auditRefs.find(ref => ref.id === 'viewport');
+      const failingAudit = categoryClone.auditRefs.find(ref => ref.id === 'is-crawlable');
       failingAudit.result.warnings = ['Some warning'];
 
       const auditDOM = renderer.render(categoryClone, sampleResults.categoryGroups);

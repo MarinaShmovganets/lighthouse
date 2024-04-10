@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Απόδοση"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Αυτοί οι έλεγχοι επαληθεύουν τα στοιχεία μιας προηγμένης εφαρμογή ιστού. [Μάθετε τι κάνει καλή μια Προηγμένη εφαρμογή ιστού](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Αυτοί οι έλεγχοι απαιτούνται από τη [Λίστα ελέγχου PWA](https://web.dev/articles/pwa-checklist) σημείου αναφοράς αλλά δεν ελέγχονται αυτόματα από το Lighthouse. Δεν επηρεάζουν τη βαθμολογία σας αλλά είναι σημαντικό να τους επαληθεύσετε με μη αυτόματο τρόπο."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Δυνατότητα εγκατάστασης"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "Με βελτιστοποίηση PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Αυτοί οι έλεγχοι διασφαλίζουν ότι η σελίδα σας ακολουθεί τις βασικές συμβουλές βελτιστοποίησης μηχανών αναζήτησης. Υπάρχουν πολλοί επιπλέον παράγοντες τους οποίους το Lighthouse δεν βαθμολογεί εδώ και οι οποίοι ενδέχεται να επηρεάζουν την κατάταξη στην αναζήτηση, συμπεριλαμβανομένης της απόδοσης στο [Core Web Vitals](https://web.dev/explore/vitals). [Μάθετε περισσότερα σχετικά με τα Βασικά στοιχεία της Αναζήτησης Google](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Απόδοση"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Προηγμένη εφαρμογή ιστού"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Έλεγχοι που ολοκληρώθηκαν επιτυχώς"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Σύμφωνα με τα [ενημερωμένα κριτήρια για τη δυνατότητα εγκατάστασης του Chrome](https://developer.chrome.com/blog/update-install-criteria), το Lighthouse θα καταργήσει την κατηγορία PWA σε μια μελλοντική έκδοση. Ανατρέξτε στην [ενημερωμένη τεκμηρίωση PWA](https://developer.chrome.com/docs/devtools/progressive-web-apps/) για μελλοντικές δοκιμές PWA."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Αρχική φόρτωση σελίδας"

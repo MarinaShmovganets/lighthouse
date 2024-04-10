@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "परफ़ॉर्मेंस"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "इन जांचों से, किसी प्रोग्रेसिव वेब ऐप्लिकेशन के पहलुओं की पुष्टि की जाती है. [जानें कि एक अच्छे प्रोग्रेसिव वेब ऐप्लिकेशन के लिए क्या-क्या ज़रूरी है.](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "इस तरह की जांच, बेसलाइन [PWA चेकलिस्ट](https://web.dev/articles/pwa-checklist) के लिए ज़रूरी हैं, लेकिन Lighthouse इनकी जांच अपने आप नहीं करता है. वे आपके स्कोर पर असर नहीं डालते हैं, लेकिन इनकी मैन्युअल तरीके से पुष्टि करना ज़रूरी है."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "इंस्टॉल किया जा सकता है"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "PWA ऑप्टिमाइज़ किया गया"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "इन जांचों से यह पक्का होता है कि आपका पेज, सर्च इंजन ऑप्टिमाइज़ेशन से जुड़ी बुनियादी सलाह का पालन कर रहा है. ऐसी कई चीज़ें हैं जिनकी वजह से लाइटहाउस आपके पेज की जांच नहीं करता. इससे, खोज नतीजों में आपके पेज की रैंकिंग और [वेबसाइट की परफ़ॉर्मेंस से जुड़ी जानकारी](https://web.dev/explore/vitals) की रिपोर्ट पर असर पड़ सकता है. [Google Search Essentials के बारे में ज़्यादा जानें](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "परफ़ॉर्मेंस"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "प्रगतिशील वेब ऐप्लिकेशन"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "पास हुए ऑडिट"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "[इंस्टॉल करने से जुड़ी Chrome की नई ज़रूरी शर्तों](https://developer.chrome.com/blog/update-install-criteria) के मुताबिक, अगली रिलीज़ में लाइटहाउस में पीडब्ल्यूए कैटगरी बंद कर दी जाएगी. आने वाले समय में पीडब्ल्यूए की टेस्टिंग के लिए, कृपया [पीडब्ल्यूए का अपडेट किया गया दस्तावेज़](https://developer.chrome.com/docs/devtools/progressive-web-apps/) देखें."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "शुरुआती पेज लोड"

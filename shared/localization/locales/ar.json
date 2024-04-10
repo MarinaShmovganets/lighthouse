@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "الأداء"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "تتحقَّق عمليات التحقُّق هذه من جوانب تطبيق الويب التقدّمي. [تعرَّف على العوامل التي تساهم في إنشاء تطبيق ويب تقدّمي جيد](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "يُطلب إجراء عمليات التحقّق هذه من خلال المرجع [قائمة التحقق PWA](https://web.dev/articles/pwa-checklist)، ولكن لم يتم التحقُّق منها تلقائيًا من خلال Lighthouse. لا تؤثر عمليات التحقق هذه في نتيجتك، ولكن من المهم أنك تتحقق منها يدويًا."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "القسم القابل للتثبيت"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "تحسين PWA"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "تضمن عمليات التحقّق هذه اتّباع صفحتك للنصائح الأساسية الخاصة بتحسين محركات البحث. هناك العديد من العوامل الإضافية التي تتسبب في عدم تحقيق أداة Lighthouse لأي نقاط هنا والتي قد تؤثّر في ترتيب نتائج البحث، بما في ذلك الأداء في ما يخص [مؤشرات أداء الويب الأساسية](https://web.dev/explore/vitals). [مزيد من المعلومات حول \"أساسيات بحث Google\"](https://support.google.com/webmasters/answer/35769)"
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "الأداء"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "تطبيق الويب التقدّمي"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "تحسين محركات البحث"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "اجتياز عمليات التدقيق بنجاح"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "وفق [معايير قابلية التثبيت المُعدَّلة في Chrome](https://developer.chrome.com/blog/update-install-criteria)، ستوقف أداة Lighthouse فئة تطبيقات الويب التقدّمية (PWA) نهائيًا في أي إصدار مستقبلي. يُرجى الرجوع إلى [مستندات تطبيقات الويب التقدّمية (PWA) المعدَّلة](https://developer.chrome.com/docs/devtools/progressive-web-apps/) لاختبار هذه التطبيقات في المستقبل."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "التحميل الأولي للصفحة"

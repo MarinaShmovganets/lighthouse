@@ -1625,21 +1625,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "P̂ér̂f́ôŕm̂án̂ćê"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "T̂h́êśê ćĥéĉḱŝ v́âĺîd́ât́ê t́ĥé âśp̂éĉt́ŝ óf̂ á P̂ŕôǵr̂éŝśîv́ê Ẃêb́ Âṕp̂. [Ĺêár̂ń ŵh́ât́ m̂ák̂éŝ á ĝóôd́ P̂ŕôǵr̂éŝśîv́ê Ẃêb́ Âṕp̂](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "T̂h́êśê ćĥéĉḱŝ ár̂é r̂éq̂úîŕêd́ b̂ý t̂h́ê b́âśêĺîńê [ṔŴÁ Ĉh́êćk̂ĺîśt̂](https://web.dev/articles/pwa-checklist) b́ût́ âŕê ńôt́ âút̂óm̂át̂íĉál̂ĺŷ ćĥéĉḱêd́ b̂ý L̂íĝh́t̂h́ôúŝé. T̂h́êý d̂ó n̂ót̂ áf̂f́êćt̂ ýôúr̂ śĉór̂é b̂út̂ ít̂'ś îḿp̂ór̂t́âńt̂ t́ĥát̂ ýôú v̂ér̂íf̂ý t̂h́êḿ m̂án̂úâĺl̂ý."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "P̂ẂÂ"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Îńŝt́âĺl̂áb̂ĺê"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "P̂ẂÂ Óp̂t́îḿîźêd́"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "T̂h́êśê ćĥéĉḱŝ én̂śûŕê t́ĥát̂ ýôúr̂ ṕâǵê íŝ f́ôĺl̂óŵín̂ǵ b̂áŝíĉ śêár̂ćĥ én̂ǵîńê óp̂t́îḿîźât́îón̂ ád̂v́îćê. T́ĥér̂é âŕê ḿâńŷ ád̂d́ît́îón̂ál̂ f́âćt̂ór̂ś L̂íĝh́t̂h́ôúŝé d̂óêś n̂ót̂ śĉór̂é ĥér̂é t̂h́ât́ m̂áŷ áf̂f́êćt̂ ýôúr̂ śêár̂ćĥ ŕâńk̂ín̂ǵ, îńĉĺûd́îńĝ ṕêŕf̂ór̂ḿâńĉé ôń [Ĉór̂é Ŵéb̂ V́ît́âĺŝ](https://web.dev/explore/vitals). [Ĺêár̂ń m̂ór̂é âb́ôút̂ Ǵôóĝĺê Śêár̂ćĥ Éŝśêńt̂íâĺŝ](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2522,9 +2507,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "P̂ér̂f́ôŕm̂án̂ćê"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "P̂ŕôǵr̂éŝśîv́ê Ẃêb́ Âṕp̂"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "ŜÉÔ"
   },
@@ -3190,9 +3172,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "P̂áŝśêd́ âúd̂ít̂ś"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Âś p̂ér̂ [Ćĥŕôḿê’ś ûṕd̂át̂éd̂ Ín̂śt̂ál̂ĺâb́îĺît́ŷ Ćr̂ít̂ér̂íâ](https://developer.chrome.com/blog/update-install-criteria), Ĺîǵĥt́ĥóûśê ẃîĺl̂ b́ê d́êṕr̂éĉát̂ín̂ǵ t̂h́ê ṔŴÁ ĉát̂éĝór̂ý îń â f́ût́ûŕê ŕêĺêáŝé. P̂ĺêáŝé r̂éf̂ér̂ t́ô t́ĥé [ûṕd̂át̂éd̂ ṔŴÁ d̂óĉúm̂én̂t́ât́îón̂](https://developer.chrome.com/docs/devtools/progressive-web-apps/) f́ôŕ f̂út̂úr̂é P̂ẂÂ t́êśt̂ín̂ǵ."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Îńît́îál̂ ṕâǵê ĺôád̂"

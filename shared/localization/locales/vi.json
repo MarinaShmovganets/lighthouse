@@ -1616,21 +1616,6 @@
   "core/config/default-config.js | performanceCategoryTitle": {
     "message": "Hiệu suất"
   },
-  "core/config/default-config.js | pwaCategoryDescription": {
-    "message": "Những hoạt động kiểm tra này sẽ xác thực các chương trình thành phần của Ứng dụng web tiến bộ. [Tìm hiểu những tiêu chí của Ứng dụng web tiến bộ hiệu quả](https://web.dev/articles/pwa-checklist)."
-  },
-  "core/config/default-config.js | pwaCategoryManualDescription": {
-    "message": "Đây là những hoạt động kiểm tra được chỉ định trong [Danh sách kiểm tra ứng dụng web tiến bộ (PWA)](https://web.dev/articles/pwa-checklist) cơ bản, nhưng Lighthouse không tự động kiểm tra các mục này. Các hoạt động kiểm tra này không ảnh hưởng đến điểm số của bạn, nhưng bạn nên xác minh theo cách thủ công."
-  },
-  "core/config/default-config.js | pwaCategoryTitle": {
-    "message": "PWA"
-  },
-  "core/config/default-config.js | pwaInstallableGroupTitle": {
-    "message": "Có thể cài đặt"
-  },
-  "core/config/default-config.js | pwaOptimizedGroupTitle": {
-    "message": "PWA đã tối ưu hóa"
-  },
   "core/config/default-config.js | seoCategoryDescription": {
     "message": "Các hoạt động kiểm tra này đảm bảo rằng trang của bạn tuân theo lời khuyên cơ bản về cách tối ưu hoá cho công cụ tìm kiếm. Có nhiều yếu tố bổ sung mà Lighthouse không xếp hạng ở đây có thể ảnh hưởng đến thứ hạng của bạn trong kết quả tìm kiếm, kể cả hiệu suất của [Các chỉ số quan trọng về trang web](https://web.dev/explore/vitals). [Tìm hiểu thêm Kiến thức thiết yếu về Google Tìm kiếm](https://support.google.com/webmasters/answer/35769)."
   },
@@ -2513,9 +2498,6 @@
   "flow-report/src/i18n/ui-strings.js | categoryPerformance": {
     "message": "Hiệu suất"
   },
-  "flow-report/src/i18n/ui-strings.js | categoryProgressiveWebApp": {
-    "message": "Ứng dụng web tiến bộ"
-  },
   "flow-report/src/i18n/ui-strings.js | categorySeo": {
     "message": "SEO"
   },
@@ -3181,9 +3163,6 @@
   },
   "report/renderer/report-utils.js | passedAuditsGroupTitle": {
     "message": "Số lần kiểm tra đạt yêu cầu"
-  },
-  "report/renderer/report-utils.js | pwaRemovalMessage": {
-    "message": "Theo [điểm mới trong Tiêu chí về khả năng cài đặt của Chrome](https://developer.chrome.com/blog/update-install-criteria), Lighthouse sẽ ngừng sử dụng danh mục PWA trong bản phát hành sau này. Vui lòng tham khảo [tài liệu mới nhất về PWA](https://developer.chrome.com/docs/devtools/progressive-web-apps/) để biết quy trình kiểm thử PWA trong tương lai."
   },
   "report/renderer/report-utils.js | runtimeAnalysisWindow": {
     "message": "Lượt tải trang đầu tiên"
