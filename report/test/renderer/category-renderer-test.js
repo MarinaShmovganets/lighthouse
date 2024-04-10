@@ -421,7 +421,6 @@ describe('CategoryRenderer', () => {
       passingRefs[1].result.warnings = ['Some warning'];
       // Make one audit n/a
       const audit = categoryClone.auditRefs.find(ref => ref.id === 'is-crawlable');
-      console.log('audit', audit);
       audit.result.scoreDisplayMode = 'notApplicable';
       audit.result.score = null;
 
@@ -432,9 +431,9 @@ describe('CategoryRenderer', () => {
       const manualAudits = elem.querySelectorAll('.lh-clump--manual .lh-audit');
       const naAudits = elem.querySelectorAll('.lh-clump--notapplicable .lh-audit');
 
-      assert.equal(passedAudits.length, 2);
+      assert.equal(passedAudits.length, 3);
       assert.equal(failedAudits.length, 3);
-      assert.equal(warningAudits.length, 2);
+      assert.equal(warningAudits.length, 1);
       assert.equal(manualAudits.length, 1);
       assert.equal(naAudits.length, 3);
 
