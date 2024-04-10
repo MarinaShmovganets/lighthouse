@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "பெரிய பகுதியைக் காண்பிக்கும் நேரத்திற்கான உறுப்பு"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "லே-அவுட் ஷிஃப்ட்டின் பாதிப்பு"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "லே-அவுட் ஷிஃப்ட்களால் இந்த DOM உறுப்புகள் அதிகம் பாதிக்கப்பட்டன. [விண்டோவிங்](https://web.dev/articles/cls#what_is_cls) காரணமாகச் சில லே-அவுட் ஷிஃப்ட்கள் CLS அளவீட்டு மதிப்பில் சேர்க்கப்படாமல் போகலாம். [CLSஸை எப்படி மேம்படுத்துவது என்று தெரிந்துகொள்ளுங்கள்](https://web.dev/articles/optimize-cls)."
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "பெரிய தளவமைப்பு ஷிஃப்ட்களைத் தவிர்த்தல்"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "லே-அவுட் ஷிஃப்ட் ஸ்கோர்"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "ஆவணத்தில் மீவிளக்கம் உள்ளது"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "தேடல் இன்ஜின்களால் செருகுநிரல் உள்ளடக்கத்தை இன்டெக்ஸ் செய்ய முடியவில்லை. மேலும் பல சாதனங்கள் அவற்றைக் கட்டுப்படுத்தும் அல்லது ஆதரிக்காது. [செருகுநிரல்களைத் தவிர்ப்பது குறித்து மேலும் அறிக](https://developer.chrome.com/docs/lighthouse/seo/plugins/)."
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "ஆவணத்தில் செருகுநிரல்கள் உள்ளன"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "ஆவணத்தில் செருகுநிரல்கள் தவிர்க்கப்பட்டுள்ளன"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "உங்கள் robots.txt ஃபைல் தவறான வடிவமைப்பில் இருந்தால் உங்கள் இணையதளத்தை எப்படி உலாவ அல்லது இன்டெக்ஸ் செய்ய விரும்புகிறீர்கள் என்பதை கிராலர் மென்பொருட்களால் புரிந்துகொள்ள முடியாமல் போகக்கூடும். [robots.txt குறித்து மேலும் அறிக](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)."

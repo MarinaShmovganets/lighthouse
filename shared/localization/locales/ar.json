@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "عنصر \"سرعة عرض أكبر جزء من المحتوى على الصفحة\""
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "تأثير متغيّرات التصميم"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "عناصر DOM هذه كانت الأكثر تأثّرًا بمتغيّرات التصميم. قد لا يتم تضمين بعض متغيّرات التصميم في قيمة مقياس متغيّرات التصميم التراكمية (CLS) بسبب [عملية الاستقطاع](https://web.dev/articles/cls#what_is_cls). [التعرُّف على كيفية تحسين متغيّرات التصميم التراكمية](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "تجنُّب متغيّرات التصميم الكبيرة"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "نتيجة متغيّرات التصميم"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "يحتوي المستند على وصف تعريفي"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "لا يمكن لمحركات البحث فهرسة محتوى مكوِّن إضافي، وتحظر العديد من الأجهزة استخدام المكوِّنات الإضافية أو لا تتوافق معها. [مزيد من المعلومات حول تجنُّب استخدام المكوِّنات الإضافية](https://developer.chrome.com/docs/lighthouse/seo/plugins/)"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "يستخدم المستند مكونات إضافية"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "يتجنّب المستند المكونات الإضافية"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "في حال كان ملف robots.txt مكتوبًا بصيغة غير صحيحة، يمكن أن يتعذّر على برامج الزحف فهم الطريقة المطلوبة للزحف إلى موقعك الإلكتروني أو فهرسته. [مزيد من المعلومات حول ملف robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"

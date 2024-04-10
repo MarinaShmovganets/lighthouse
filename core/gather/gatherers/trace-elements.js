@@ -28,7 +28,6 @@ import {TraceEngineResult} from '../../computed/trace-engine-result.js';
 
 /** @typedef {{nodeId: number, animations?: {name?: string, failureReasonsMask?: number, unsupportedProperties?: string[]}[], type?: string}} TraceElementData */
 
-const MAX_LAYOUT_SHIFT_ELEMENTS = 15;
 const MAX_LAYOUT_SHIFTS = 15;
 
 /**
@@ -67,40 +66,54 @@ class TraceElements extends BaseGatherer {
   }
 
   /**
-   * This function finds the top (up to 15) elements that shift on the page.
-   *
-   * @param {LH.Trace} trace
-   * @param {LH.Gatherer.Context} context
-   * @return {Promise<Array<{nodeId: number}>>}
-   */
-  static async getTopLayoutShiftElements(trace, context) {
-    const {impactByNodeId} = await CumulativeLayoutShift.request(trace, context);
-
-    return [...impactByNodeId.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, MAX_LAYOUT_SHIFT_ELEMENTS)
-      .map(([nodeId]) => ({nodeId}));
-  }
-
-  /**
    * We want to a single representative node to represent the shift, so let's pick
    * the one with the largest impact (size x distance moved).
    *
    * @param {LH.Artifacts.TraceImpactedNode[]} impactedNodes
    * @param {Map<number, number>} impactByNodeId
+   * @param {import('../../lib/trace-engine.js').SaneSyntheticLayoutShift} event Only for debugging
    * @return {number|undefined}
    */
-  static getBiggestImpactNodeForShiftEvent(impactedNodes, impactByNodeId) {
-    let biggestImpactNodeId;
-    let biggestImpactNodeScore = Number.NEGATIVE_INFINITY;
-    for (const node of impactedNodes) {
-      const impactScore = impactByNodeId.get(node.node_id);
-      if (impactScore !== undefined && impactScore > biggestImpactNodeScore) {
-        biggestImpactNodeId = node.node_id;
-        biggestImpactNodeScore = impactScore;
+  static getBiggestImpactNodeForShiftEvent(impactedNodes, impactByNodeId, event) {
+    try {
+      let biggestImpactNodeId;
+      let biggestImpactNodeScore = Number.NEGATIVE_INFINITY;
+      for (const node of impactedNodes) {
+        const impactScore = impactByNodeId.get(node.node_id);
+        if (impactScore !== undefined && impactScore > biggestImpactNodeScore) {
+          biggestImpactNodeId = node.node_id;
+          biggestImpactNodeScore = impactScore;
+        }
       }
+      return biggestImpactNodeId;
+    } catch (err) {
+      // See https://github.com/GoogleChrome/lighthouse/issues/15870
+      // `impactedNodes` should always be an array here, but it can randomly be something else for
+      // currently unknown reasons. This exception handling will help us identify what
+      // `impactedNodes` really is and also prevent the error from being fatal.
+
+      // It's possible `impactedNodes` is not JSON serializable, so let's add more supplemental
+      // fields just in case.
+      const impactedNodesType = typeof impactedNodes;
+      const impactedNodesClassName = impactedNodes?.constructor?.name;
+
+      let impactedNodesJson;
+      let eventJson;
+      try {
+        impactedNodesJson = JSON.parse(JSON.stringify(impactedNodes));
+        eventJson = JSON.parse(JSON.stringify(event));
+      } catch {}
+
+      Sentry.captureException(err, {
+        extra: {
+          impactedNodes: impactedNodesJson,
+          event: eventJson,
+          impactedNodesType,
+          impactedNodesClassName,
+        },
+      });
+      return;
     }
-    return biggestImpactNodeId;
   }
 
   /**
@@ -129,7 +142,7 @@ class TraceElements extends BaseGatherer {
         const nodeIds = [];
         const impactedNodes = event.args.data.impacted_nodes || [];
         const biggestImpactedNodeId =
-          this.getBiggestImpactNodeForShiftEvent(impactedNodes, impactByNodeId);
+          this.getBiggestImpactNodeForShiftEvent(impactedNodes, impactByNodeId, event);
         if (biggestImpactedNodeId !== undefined) {
           nodeIds.push(biggestImpactedNodeId);
         }
@@ -308,7 +321,6 @@ class TraceElements extends BaseGatherer {
     const {mainThreadEvents} = processedTrace;
 
     const lcpNodeData = await TraceElements.getLcpElement(trace, context);
-    const shiftElementsNodeData = await TraceElements.getTopLayoutShiftElements(trace, context);
     const shiftsData = await TraceElements.getTopLayoutShifts(
       trace, traceEngineResult, rootCauses, context);
     const animatedElementData = await this.getAnimatedElements(mainThreadEvents);
@@ -317,7 +329,6 @@ class TraceElements extends BaseGatherer {
     /** @type {Map<string, TraceElementData[]>} */
     const backendNodeDataMap = new Map([
       ['largest-contentful-paint', lcpNodeData ? [lcpNodeData] : []],
-      ['layout-shift-element', shiftElementsNodeData],
       ['layout-shift', shiftsData],
       ['animation', animatedElementData],
       ['responsiveness', responsivenessElementData ? [responsivenessElementData] : []],

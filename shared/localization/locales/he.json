@@ -1148,15 +1148,6 @@
   "core/audits/largest-contentful-paint-element.js | title": {
     "message": "רכיב ה-Largest Contentful Paint (‏LCP)"
   },
-  "core/audits/layout-shift-elements.js | columnContribution": {
-    "message": "ההשפעה של שינוי הפריסה"
-  },
-  "core/audits/layout-shift-elements.js | description": {
-    "message": "רכיבי ה-DOM האלה הושפעו הכי הרבה משינויים בפריסה. יכול להיות ששינויי פריסה מסוימים לא ייכללו בערך של מדד CLS בגלל [עיבוד החלק הנצפה בלבד](https://web.dev/articles/cls#what_is_cls). [איך לשפר את ה-CLS](https://web.dev/articles/optimize-cls)"
-  },
-  "core/audits/layout-shift-elements.js | title": {
-    "message": "יש להימנע משינויים משמעותיים בפריסה"
-  },
   "core/audits/layout-shifts.js | columnScore": {
     "message": "הציון של שינוי הפריסה"
   },
@@ -1462,15 +1453,6 @@
   },
   "core/audits/seo/meta-description.js | title": {
     "message": "יש למסמך מטא תיאור"
-  },
-  "core/audits/seo/plugins.js | description": {
-    "message": "מנועי חיפוש לא יכולים להוסיף לאינדקס תוכן של פלאגין, ומכשירים רבים מגבילים יישומי פלאגין או לא תומכים בהם. [למה כדאי להימנע משימוש ביישומי פלאגין](https://developer.chrome.com/docs/lighthouse/seo/plugins/)?"
-  },
-  "core/audits/seo/plugins.js | failureTitle": {
-    "message": "במסמך נעשה שימוש ביישומי פלאגין"
-  },
-  "core/audits/seo/plugins.js | title": {
-    "message": "אין במסמך שימוש ביישומי פלאגין"
   },
   "core/audits/seo/robots-txt.js | description": {
     "message": "אם קובץ robots.txt אינו תקין, ייתכן שסורקים לא יוכלו להבין איך ברצונך שהאתר ייסרק או יתווסף לאינדקס. [למידע נוסף על robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/)"
