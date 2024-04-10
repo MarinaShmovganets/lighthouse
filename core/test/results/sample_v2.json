@@ -6511,6 +6511,11 @@
       ],
       "auditRefs": [
         {
+          "id": "is-crawlable",
+          "weight": 4.043478260869565,
+          "group": "seo-crawl"
+        },
+        {
           "id": "document-title",
           "weight": 1,
           "group": "seo-content"
@@ -6532,11 +6537,6 @@
         },
         {
           "id": "crawlable-anchors",
-          "weight": 1,
-          "group": "seo-crawl"
-        },
-        {
-          "id": "is-crawlable",
           "weight": 1,
           "group": "seo-crawl"
         },
@@ -6566,7 +6566,7 @@
         }
       ],
       "id": "seo",
-      "score": 0.63
+      "score": 0.73
     }
   },
   "categoryGroups": {
