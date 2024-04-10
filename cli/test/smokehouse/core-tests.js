@@ -13,6 +13,7 @@ import dbw from './test-definitions/dobetterweb.js';
 import errorsExpiredSsl from './test-definitions/errors-expired-ssl.js';
 import errorsIframeExpiredSsl from './test-definitions/errors-iframe-expired-ssl.js';
 import errorsInfiniteLoop from './test-definitions/errors-infinite-loop.js';
+import fontSize from './test-definitions/font-size.js';
 import formsAutoComplete from './test-definitions/forms-autocomplete.js';
 import fpsMax from './test-definitions/fps-max.js';
 import fpsMaxPassive from './test-definitions/fps-max-passive.js';
@@ -44,6 +45,7 @@ import perfPreload from './test-definitions/perf-preload.js';
 import perfTraceElements from './test-definitions/perf-trace-elements.js';
 import redirectsClientPaintServer from './test-definitions/redirects-client-paint-server.js';
 import redirectsHistoryPushState from './test-definitions/redirects-history-push-state.js';
+import redirectsHttp from './test-definitions/redirects-http.js';
 import redirectsMultipleServer from './test-definitions/redirects-multiple-server.js';
 import redirectsScripts from './test-definitions/redirects-scripts.js';
 import redirectsSelf from './test-definitions/redirects-self.js';
@@ -69,6 +71,7 @@ const smokeTests = [
   errorsExpiredSsl,
   errorsIframeExpiredSsl,
   errorsInfiniteLoop,
+  fontSize,
   formsAutoComplete,
   fpsMax,
   fpsMaxPassive,
@@ -100,6 +103,7 @@ const smokeTests = [
   perfTraceElements,
   redirectsClientPaintServer,
   redirectsHistoryPushState,
+  redirectsHttp,
   redirectsMultipleServer,
   redirectsScripts,
   redirectsSelf,

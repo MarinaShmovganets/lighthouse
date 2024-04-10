@@ -133,7 +133,6 @@ const defaultConfig = {
     {id: 'CSSUsage', gatherer: 'css-usage'},
     {id: 'Doctype', gatherer: 'dobetterweb/doctype'},
     {id: 'DOMStats', gatherer: 'dobetterweb/domstats'},
-    {id: 'EmbeddedContent', gatherer: 'seo/embedded-content'},
     {id: 'FontSize', gatherer: 'seo/font-size'},
     {id: 'Inputs', gatherer: 'inputs'},
     {id: 'IFrameElements', gatherer: 'iframe-elements'},
@@ -167,6 +166,7 @@ const defaultConfig = {
   ],
   audits: [
     'is-on-https',
+    'redirects-http',
     'viewport',
     'metrics/first-contentful-paint',
     'metrics/largest-contentful-paint',
@@ -205,7 +205,6 @@ const defaultConfig = {
     'third-party-facades',
     'largest-contentful-paint-element',
     'lcp-lazy-loaded',
-    'layout-shift-elements',
     'layout-shifts',
     'long-tasks',
     'non-composited-animations',
@@ -319,7 +318,6 @@ const defaultConfig = {
     'seo/is-crawlable',
     'seo/robots-txt',
     'seo/hreflang',
-    'seo/plugins',
     'seo/canonical',
     'seo/manual/structured-data',
     'work-during-interaction',
@@ -469,7 +467,6 @@ const defaultConfig = {
         {id: 'final-screenshot', weight: 0, group: 'hidden'},
         {id: 'script-treemap-data', weight: 0, group: 'hidden'},
         {id: 'resource-summary', weight: 0, group: 'hidden'},
-        {id: 'layout-shift-elements', weight: 0, group: 'hidden'},
       ],
     },
     'accessibility': {
@@ -562,6 +559,7 @@ const defaultConfig = {
       auditRefs: [
         // Trust & Safety
         {id: 'is-on-https', weight: 5, group: 'best-practices-trust-safety'},
+        {id: 'redirects-http', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'geolocation-on-start', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'notification-on-start', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'csp-xss', weight: 0, group: 'best-practices-trust-safety'},
@@ -569,6 +567,8 @@ const defaultConfig = {
         {id: 'paste-preventing-inputs', weight: 3, group: 'best-practices-ux'},
         {id: 'image-aspect-ratio', weight: 1, group: 'best-practices-ux'},
         {id: 'image-size-responsive', weight: 1, group: 'best-practices-ux'},
+        {id: 'viewport', weight: 1, group: 'best-practices-ux'},
+        {id: 'font-size', weight: 1, group: 'best-practices-ux'},
         // Browser Compatibility
         {id: 'doctype', weight: 1, group: 'best-practices-browser-compat'},
         {id: 'charset', weight: 1, group: 'best-practices-browser-compat'},
@@ -587,7 +587,6 @@ const defaultConfig = {
       manualDescription: str_(UIStrings.seoCategoryManualDescription),
       supportedModes: ['navigation', 'snapshot'],
       auditRefs: [
-        {id: 'viewport', weight: 1, group: 'seo-mobile'},
         {id: 'document-title', weight: 1, group: 'seo-content'},
         {id: 'meta-description', weight: 1, group: 'seo-content'},
         {id: 'http-status-code', weight: 1, group: 'seo-crawl'},
@@ -598,8 +597,6 @@ const defaultConfig = {
         {id: 'image-alt', weight: 1, group: 'seo-content'},
         {id: 'hreflang', weight: 1, group: 'seo-content'},
         {id: 'canonical', weight: 1, group: 'seo-content'},
-        {id: 'font-size', weight: 1, group: 'seo-mobile'},
-        {id: 'plugins', weight: 1, group: 'seo-content'},
         // Manual audits
         {id: 'structured-data', weight: 0},
       ],
