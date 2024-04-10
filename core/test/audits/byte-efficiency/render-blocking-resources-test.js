@@ -16,8 +16,6 @@ import {getURLArtifactFromDevtoolsLog, readJson} from '../../test-utils.js';
 
 const trace = readJson('../../fixtures/artifacts/render-blocking/trace.json', import.meta);
 const devtoolsLog = readJson('../../fixtures/artifacts/render-blocking/devtoolslog.json', import.meta);
-const ampTrace = readJson('../../fixtures/traces/amp-m86.trace.json', import.meta);
-const ampDevtoolsLog = readJson('../../fixtures/traces/amp-m86.devtoolslog.json', import.meta);
 
 const mobileSlow4G = constants.throttling.mobileSlow4G;
 
@@ -35,8 +33,8 @@ describe('Render blocking resources audit', () => {
     const computedCache = new Map();
     const result = await RenderBlockingResourcesAudit.audit(artifacts, {settings, computedCache});
     assert.equal(result.score, 0);
-    assert.equal(result.numericValue, 232);
-    assert.deepStrictEqual(result.metricSavings, {FCP: 232, LCP: 0});
+    assert.equal(result.numericValue, 316);
+    assert.deepStrictEqual(result.metricSavings, {FCP: 316, LCP: 0});
   });
 
   it('evaluates correct wastedMs when LCP is text', async () => {
@@ -61,15 +59,15 @@ describe('Render blocking resources audit', () => {
     const settings = {throttlingMethod: 'simulate', throttling: mobileSlow4G};
     const computedCache = new Map();
     const result = await RenderBlockingResourcesAudit.audit(artifacts, {settings, computedCache});
-    assert.deepStrictEqual(result.metricSavings, {FCP: 232, LCP: 232});
+    assert.deepStrictEqual(result.metricSavings, {FCP: 316, LCP: 316});
   });
 
   it('evaluates amp page correctly', async () => {
     const artifacts = {
-      URL: getURLArtifactFromDevtoolsLog(ampDevtoolsLog),
+      URL: getURLArtifactFromDevtoolsLog(devtoolsLog),
       GatherContext: {gatherMode: 'navigation'},
-      traces: {defaultPass: ampTrace},
-      devtoolsLogs: {defaultPass: ampDevtoolsLog},
+      traces: {defaultPass: trace},
+      devtoolsLogs: {defaultPass: devtoolsLog},
       Stacks: [
         {
           detector: 'js',
@@ -84,18 +82,21 @@ describe('Render blocking resources audit', () => {
     const settings = {throttlingMethod: 'simulate', throttling: mobileSlow4G};
     const computedCache = new Map();
     const result = await RenderBlockingResourcesAudit.audit(artifacts, {settings, computedCache});
-    expect(result.numericValue).toMatchInlineSnapshot(`469`);
-    expect(result.details.items).toMatchObject([
+    expect(result.numericValue).toEqual(316);
+    expect(result.details.items).toEqual([
       {
-        'totalBytes': 621,
-        'url': 'https://fonts.googleapis.com/css?family=Fira+Sans+Condensed%3A400%2C400i%2C600%2C600i&subset=latin%2Clatin-ext&display=swap',
-        'wastedMs': 440,
+        totalBytes: 389629,
+        url: 'http://localhost:57822/style.css',
+        // This value would be higher if we didn't have a special case for AMP stylesheets
+        wastedMs: 1489,
       },
-      // Due to internal H2 simulation details, parallel HTTP/2 requests are pipelined which makes
-      // it look like Montserrat starts after Fira Sans finishes. It would be preferred
-      // if eventual simulation improvements list Montserrat here as well.
+      {
+        totalBytes: 291,
+        url: 'http://localhost:57822/script.js',
+        wastedMs: 311,
+      },
     ]);
-    expect(result.metricSavings).toEqual({FCP: 469, LCP: 0});
+    expect(result.metricSavings).toEqual({FCP: 316, LCP: 0});
   });
 
   describe('#estimateSavingsWithGraphs', () => {
