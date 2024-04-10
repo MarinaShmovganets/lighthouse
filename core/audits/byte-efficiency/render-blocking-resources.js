@@ -14,11 +14,10 @@ import * as i18n from '../../lib/i18n/i18n.js';
 import {BaseNode} from '../../lib/lantern/base-node.js';
 import {UnusedCSS} from '../../computed/unused-css.js';
 import {NetworkRequest} from '../../lib/network-request.js';
-import {ProcessedNavigation} from '../../computed/processed-navigation.js';
 import {LoadSimulator} from '../../computed/load-simulator.js';
 import {FirstContentfulPaint} from '../../computed/metrics/first-contentful-paint.js';
 import {LCPImageRecord} from '../../computed/lcp-image-record.js';
-import {TraceEngineResult} from '../../computed/trace-engine-result.js';
+import {NavigationInsights} from '../../computed/navigation-insights.js';
 
 
 /** @typedef {import('../../lib/lantern/simulator/simulator.js').Simulator} Simulator */
@@ -132,13 +131,9 @@ class RenderBlockingResources extends Audit {
     const trace = artifacts.traces[Audit.DEFAULT_PASS];
     const devtoolsLog = artifacts.devtoolsLogs[Audit.DEFAULT_PASS];
     const simulatorData = {devtoolsLog, settings: context.settings};
-    const processedNavigation = await ProcessedNavigation.request(trace, context);
     const simulator = await LoadSimulator.request(simulatorData, context);
     const wastedCssBytes = await RenderBlockingResources.computeWastedCSSBytes(artifacts, context);
-    const traceEngineResult = await TraceEngineResult.request({trace}, context);
-
-    const navInsights = traceEngineResult.insights.get(processedNavigation.navigationId);
-    if (!navInsights) throw new Error('No insights for navigation');
+    const navInsights = await NavigationInsights.request(trace, context);
 
     const renderBlocking = navInsights.RenderBlocking;
     if (renderBlocking instanceof Error) throw renderBlocking;
