@@ -291,19 +291,6 @@ declare module Artifacts {
     content?: string;
   }
 
-  interface ScriptElement {
-    type: string | null
-    src: string | null
-    /** The `id` property of the script element; null if it had no `id` or if `source` is 'network'. */
-    id: string | null
-    async: boolean
-    defer: boolean
-    /** Details for node in DOM for the script element */
-    node: NodeDetails | null
-    /** Where the script was discovered, either in the head, the body, or network records. */
-    source: 'head'|'body'|'network'
-  }
-
   /** @see https://sourcemaps.info/spec.html#h.qz3o9nc69um5 */
   type RawSourceMap = {
     /** File version and must be a positive integer. */
