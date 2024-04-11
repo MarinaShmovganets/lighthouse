@@ -80,8 +80,6 @@ interface ContextualBaseArtifacts {
 interface PublicGathererArtifacts {
   /** ConsoleMessages deprecation and intervention warnings, console API calls, and exceptions logged by Chrome during page load. */
   ConsoleMessages: Artifacts.ConsoleMessage[];
-  /** All the iframe elements in the page. */
-  IFrameElements: Artifacts.IFrameElement[];
   /** The contents of the main HTML document network resource. */
   MainDocumentContent: string;
   /** Information on size and loading for all the images in the page. Natural size information for `picture` and CSS images is only available if the image was one of the largest 50 images. */
@@ -122,6 +120,8 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   DOMStats: Artifacts.DOMStats;
   /** Information on poorly sized font usage and the text affected by it. */
   FontSize: Artifacts.FontSize;
+  /** All the iframe elements in the page. */
+  IFrameElements: Artifacts.IFrameElement[];
   /** All the input elements, including associated form and label elements. */
   Inputs: {inputs: Artifacts.InputElement[]; forms: Artifacts.FormElement[]; labels: Artifacts.LabelElement[]};
   /** Screenshot of the entire page (rather than just the above the fold content). */
