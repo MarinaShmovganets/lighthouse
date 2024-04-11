@@ -149,8 +149,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   SourceMaps: Array<Artifacts.SourceMap>;
   /** Information on detected tech stacks (e.g. JS libraries) used by the page. */
   Stacks: Artifacts.DetectedStack[];
-  /** Information on <script> and <link> tags blocking first paint. */
-  TagsBlockingFirstPaint: Artifacts.TagBlockingFirstPaint[];
   /** Information about tap targets including their position and size. */
   TapTargets: Artifacts.TapTarget[];
   /** The primary trace taken over the entire run. */
@@ -518,19 +516,6 @@ declare module Artifacts {
     url: string;
     mimeType: string;
     resourceSize: number;
-  }
-
-  interface TagBlockingFirstPaint {
-    startTime: number;
-    endTime: number;
-    transferSize: number;
-    tag: {
-      tagName: 'LINK'|'SCRIPT';
-      /** The value of `HTMLLinkElement.href` or `HTMLScriptElement.src`. */
-      url: string;
-      /** A record of when changes to the `HTMLLinkElement.media` attribute occurred and if the new media type matched the page. */
-      mediaChanges?: Array<{href: string, media: string, msSinceHTMLEnd: number, matches: boolean}>;
-    };
   }
 
   type Rect = AuditDetails.Rect;
