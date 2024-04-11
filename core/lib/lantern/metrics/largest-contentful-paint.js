@@ -62,7 +62,7 @@ class LargestContentfulPaint extends Metric {
   static getPessimisticGraph(dependencyGraph, processedNavigation) {
     const lcp = processedNavigation.timestamps.largestContentfulPaint;
     if (!lcp) {
-      throw new Error('NO_LCP');
+      throw new LanternError('NO_LCP');
     }
 
     return FirstContentfulPaint.getFirstPaintBasedGraph(dependencyGraph, {
