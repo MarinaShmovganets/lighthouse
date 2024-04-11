@@ -190,7 +190,7 @@ declare module Artifacts {
     lhId: string,
     devtoolsNodePath: string,
     selector: string,
-    boundingRect: AuditDetails.Rect,
+    boundingRect: Rect,
     snippet: string,
     nodeLabel: string,
   }
