@@ -209,7 +209,7 @@ The primary objective of the audit function is to return a `score` from `0` to `
 
 #### Available Artifacts
 
-The following artifacts are available for use in the audits of Lighthouse plugins. For more detailed information on their usage and purpose, see the [type information](https://github.com/GoogleChrome/lighthouse/blob/591988e87b6243e81fdf987399986cc5a2625887/types/artifacts.d.ts#L42-L99).
+The following artifacts are available for use in the audits of Lighthouse plugins. For more detailed information on their usage and purpose, see the [type information](https://github.com/GoogleChrome/lighthouse/blob/main/types/artifacts.d.ts#L42-L99).
 
 - `fetchTime`
 - `BenchmarkIndex`
