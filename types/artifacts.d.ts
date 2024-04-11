@@ -80,16 +80,20 @@ interface ContextualBaseArtifacts {
 interface PublicGathererArtifacts {
   /** ConsoleMessages deprecation and intervention warnings, console API calls, and exceptions logged by Chrome during page load. */
   ConsoleMessages: Artifacts.ConsoleMessage[];
-  /** The contents of the main HTML document network resource. */
-  MainDocumentContent: string;
+  /** The primary log of devtools protocol activity. */
+  DevtoolsLog: DevtoolsLog;
   /** Information on size and loading for all the images in the page. Natural size information for `picture` and CSS images is only available if the image was one of the largest 50 images. */
   ImageElements: Artifacts.ImageElement[];
   /** All the link elements on the page or equivalently declared in `Link` headers. @see https://html.spec.whatwg.org/multipage/links.html */
   LinkElements: Artifacts.LinkElement[];
+  /** The contents of the main HTML document network resource. */
+  MainDocumentContent: string;
   /** The values of the <meta> elements in the head. */
   MetaElements: Array<{name?: string, content?: string, property?: string, httpEquiv?: string, charset?: string, node: Artifacts.NodeDetails}>;
   /** Information on all scripts in the page. */
   Scripts: Artifacts.Script[];
+  /** The primary trace taken over the entire run. */
+  Trace: Trace;
   /** The dimensions and devicePixelRatio of the loaded viewport. */
   ViewportDimensions: Artifacts.ViewportDimensions;
 }
@@ -109,8 +113,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   CacheContents: string[];
   /** CSS coverage information for styles used by page's final state. */
   CSSUsage: {rules: Crdp.CSS.RuleUsage[], stylesheets: Artifacts.CSSStyleSheetInfo[]};
-  /** The primary log of devtools protocol activity. */
-  DevtoolsLog: DevtoolsLog;
   /** The log of devtools protocol activity if there was a page load error and Chrome navigated to a `chrome-error://` page. */
   DevtoolsLogError: DevtoolsLog;
   /** Information on the document's doctype(or null if not present), specifically the name, publicId, and systemId.
@@ -147,8 +149,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   SourceMaps: Array<Artifacts.SourceMap>;
   /** Information on detected tech stacks (e.g. JS libraries) used by the page. */
   Stacks: Artifacts.DetectedStack[];
-  /** The primary trace taken over the entire run. */
-  Trace: Trace;
   /** The trace if there was a page load error and Chrome navigated to a `chrome-error://` page. */
   TraceError: Trace;
   /** Elements associated with metrics (ie: Largest Contentful Paint element). */
