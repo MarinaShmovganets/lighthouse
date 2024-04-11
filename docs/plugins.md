@@ -223,12 +223,11 @@ The following artifacts are available for use in the audits of Lighthouse plugin
 - `MetaElements`
 - `NetworkUserAgent`
 - `RuntimeExceptions`
-- `ScriptElements`
+- `Scripts`
 - `Stacks`
 - `Timing`
 - `URL`
 - `ViewportDimensions`
-- `WebAppManifest`
 
 While Lighthouse has more artifacts with information about the page than are in this list, those artifacts are considered experimental and their structure or existence could change at any time. Only use artifacts not on the list above if you are comfortable living on the bleeding edge and can tolerate unannounced breaking changes.
 

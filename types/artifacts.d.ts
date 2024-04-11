@@ -125,8 +125,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   Inputs: {inputs: Artifacts.InputElement[]; forms: Artifacts.FormElement[]; labels: Artifacts.LabelElement[]};
   /** Screenshot of the entire page (rather than just the above the fold content). */
   FullPageScreenshot: LHResult.FullPageScreenshot | null;
-  /** Information about event listeners registered on the global object. */
-  GlobalListeners: Array<Artifacts.GlobalListener>;
   /** The issues surfaced in the devtools Issues panel */
   InspectorIssues: Artifacts.InspectorIssues;
   /** JS coverage information for code used during audit. Keyed by script id. */
@@ -150,8 +148,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   Stacks: Artifacts.DetectedStack[];
   /** Information on <script> and <link> tags blocking first paint. */
   TagsBlockingFirstPaint: Artifacts.TagBlockingFirstPaint[];
-  /** Information about tap targets including their position and size. */
-  TapTargets: Artifacts.TapTarget[];
   /** The primary trace taken over the entire run. */
   Trace: Trace;
   /** The trace if there was a page load error and Chrome navigated to a `chrome-error://` page. */
@@ -189,11 +185,13 @@ declare module Artifacts {
     finalDisplayedUrl: string;
   }
 
+  type Rect = AuditDetails.Rect;
+
   interface NodeDetails {
     lhId: string,
     devtoolsNodePath: string,
     selector: string,
-    boundingRect: Rect,
+    boundingRect: AuditDetails.Rect,
     snippet: string,
     nodeLabel: string,
   }
@@ -532,14 +530,6 @@ declare module Artifacts {
     };
   }
 
-  type Rect = AuditDetails.Rect;
-
-  interface TapTarget {
-    node: NodeDetails;
-    href: string;
-    clientRects: Rect[];
-  }
-
   interface TraceElement {
     traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation'|'responsiveness';
     node: NodeDetails;
@@ -809,18 +799,6 @@ declare module Artifacts {
   interface LabelElement {
     for: string;
     node: NodeDetails;
-  }
-
-  /** Information about an event listener registered on the global object. */
-  interface GlobalListener {
-    /** Event listener type, limited to those events currently of interest. */
-    type: 'pagehide'|'unload'|'visibilitychange';
-    /** The DevTools protocol script identifier. */
-    scriptId: string;
-    /** Line number in the script (0-based). */
-    lineNumber: number;
-    /** Column number in the script (0-based). */
-    columnNumber: number;
   }
 
   /** Describes a generic console message. */
