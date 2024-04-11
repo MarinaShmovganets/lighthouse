@@ -16,6 +16,7 @@ import speedline from 'speedline-core';
 import * as CDTSourceMap from '../core/lib/cdt/generated/SourceMap.js';
 import {ArbitraryEqualityMap} from '../core/lib/arbitrary-equality-map.js';
 import type { TaskNode as _TaskNode } from '../core/lib/tracehouse/main-thread-tasks.js';
+import type {EnabledHandlers} from '../core/computed/trace-engine-result.js';
 import AuditDetails from './lhr/audit-details.js'
 import Config from './config.js';
 import Gatherer from './gatherer.js';
@@ -146,8 +147,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   SourceMaps: Array<Artifacts.SourceMap>;
   /** Information on detected tech stacks (e.g. JS libraries) used by the page. */
   Stacks: Artifacts.DetectedStack[];
-  /** Information on <script> and <link> tags blocking first paint. */
-  TagsBlockingFirstPaint: Artifacts.TagBlockingFirstPaint[];
   /** The primary trace taken over the entire run. */
   Trace: Trace;
   /** The trace if there was a page load error and Chrome navigated to a `chrome-error://` page. */
@@ -517,19 +516,6 @@ declare module Artifacts {
     resourceSize: number;
   }
 
-  interface TagBlockingFirstPaint {
-    startTime: number;
-    endTime: number;
-    transferSize: number;
-    tag: {
-      tagName: 'LINK'|'SCRIPT';
-      /** The value of `HTMLLinkElement.href` or `HTMLScriptElement.src`. */
-      url: string;
-      /** A record of when changes to the `HTMLLinkElement.media` attribute occurred and if the new media type matched the page. */
-      mediaChanges?: Array<{href: string, media: string, msSinceHTMLEnd: number, matches: boolean}>;
-    };
-  }
-
   interface TraceElement {
     traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation'|'responsiveness';
     node: NodeDetails;
@@ -538,7 +524,10 @@ declare module Artifacts {
     type?: string;
   }
 
-  type TraceEngineResult = TraceEngine.Handlers.Types.TraceParseData;
+  interface TraceEngineResult {
+    data: TraceEngine.Handlers.Types.EnabledHandlerDataWithMeta<EnabledHandlers>;
+    insights: TraceEngine.Insights.Types.TraceInsightData<EnabledHandlers>;
+  }
 
   interface TraceEngineRootCauses {
     layoutShifts: Record<number, LayoutShiftRootCausesData>;
