@@ -136,6 +136,7 @@ const defaultConfig = {
     {id: 'Scripts', gatherer: 'scripts'},
     {id: 'SourceMaps', gatherer: 'source-maps'},
     {id: 'Stacks', gatherer: 'stacks'},
+    {id: 'Stylesheets', gatherer: 'stylesheets'},
     {id: 'TraceElements', gatherer: 'trace-elements'},
     {id: 'ViewportDimensions', gatherer: 'viewport-dimensions'},
 
