@@ -16,6 +16,7 @@ import speedline from 'speedline-core';
 import * as CDTSourceMap from '../core/lib/cdt/generated/SourceMap.js';
 import {ArbitraryEqualityMap} from '../core/lib/arbitrary-equality-map.js';
 import type { TaskNode as _TaskNode } from '../core/lib/tracehouse/main-thread-tasks.js';
+import type {EnabledHandlers} from '../core/computed/trace-engine-result.js';
 import AuditDetails from './lhr/audit-details.js'
 import Config from './config.js';
 import Gatherer from './gatherer.js';
@@ -45,8 +46,6 @@ interface UniversalBaseArtifacts {
   LighthouseRunWarnings: Array<string | IcuMessage>;
   /** The benchmark index that indicates rough device class. */
   BenchmarkIndex: number;
-  /** Many benchmark indexes. Many. */
-  BenchmarkIndexes?: number[];
   /** An object containing information about the testing configuration used by Lighthouse. */
   settings: Config.Settings;
   /** The timing instrumentation of the gather portion of a run. */
@@ -79,18 +78,20 @@ interface ContextualBaseArtifacts {
 interface PublicGathererArtifacts {
   /** ConsoleMessages deprecation and intervention warnings, console API calls, and exceptions logged by Chrome during page load. */
   ConsoleMessages: Artifacts.ConsoleMessage[];
-  /** All the iframe elements in the page. */
-  IFrameElements: Artifacts.IFrameElement[];
-  /** The contents of the main HTML document network resource. */
-  MainDocumentContent: string;
+  /** The primary log of devtools protocol activity. */
+  DevtoolsLog: DevtoolsLog;
   /** Information on size and loading for all the images in the page. Natural size information for `picture` and CSS images is only available if the image was one of the largest 50 images. */
   ImageElements: Artifacts.ImageElement[];
   /** All the link elements on the page or equivalently declared in `Link` headers. @see https://html.spec.whatwg.org/multipage/links.html */
   LinkElements: Artifacts.LinkElement[];
+  /** The contents of the main HTML document network resource. */
+  MainDocumentContent: string;
   /** The values of the <meta> elements in the head. */
   MetaElements: Array<{name?: string, content?: string, property?: string, httpEquiv?: string, charset?: string, node: Artifacts.NodeDetails}>;
   /** Information on all scripts in the page. */
   Scripts: Artifacts.Script[];
+  /** The primary trace taken over the entire run. */
+  Trace: Trace;
   /** The dimensions and devicePixelRatio of the loaded viewport. */
   ViewportDimensions: Artifacts.ViewportDimensions;
 }
@@ -110,8 +111,6 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   CacheContents: string[];
   /** CSS coverage information for styles used by page's final state. */
   CSSUsage: {rules: Crdp.CSS.RuleUsage[], stylesheets: Artifacts.CSSStyleSheetInfo[]};
-  /** The primary log of devtools protocol activity. */
-  DevtoolsLog: DevtoolsLog;
   /** The log of devtools protocol activity if there was a page load error and Chrome navigated to a `chrome-error://` page. */
   DevtoolsLogError: DevtoolsLog;
   /** Information on the document's doctype(or null if not present), specifically the name, publicId, and systemId.
@@ -121,16 +120,14 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   DOMStats: Artifacts.DOMStats;
   /** Information on poorly sized font usage and the text affected by it. */
   FontSize: Artifacts.FontSize;
+  /** All the iframe elements in the page. */
+  IFrameElements: Artifacts.IFrameElement[];
   /** All the input elements, including associated form and label elements. */
   Inputs: {inputs: Artifacts.InputElement[]; forms: Artifacts.FormElement[]; labels: Artifacts.LabelElement[]};
   /** Screenshot of the entire page (rather than just the above the fold content). */
   FullPageScreenshot: LHResult.FullPageScreenshot | null;
-  /** Information about event listeners registered on the global object. */
-  GlobalListeners: Array<Artifacts.GlobalListener>;
   /** The issues surfaced in the devtools Issues panel */
   InspectorIssues: Artifacts.InspectorIssues;
-  /** Errors preventing page being installable as PWA. */
-  InstallabilityErrors: Artifacts.InstallabilityErrors;
   /** JS coverage information for code used during audit. Keyed by script id. */
   // 'url' is excluded because it can be overridden by a magic sourceURL= comment, which makes keeping it a dangerous footgun!
   JsUsage: Record<string, Omit<Crdp.Profiler.ScriptCoverage, 'url'>>;
@@ -144,24 +141,14 @@ export interface GathererArtifacts extends PublicGathererArtifacts {
   RobotsTxt: {status: number|null, content: string|null, errorMessage?: string};
   /** The result of calling the shared trace engine root cause analysis. */
   RootCauses: Artifacts.TraceEngineRootCauses;
-  /** Version information for all ServiceWorkers active after the first page load. */
-  ServiceWorker: {versions: Crdp.ServiceWorker.ServiceWorkerVersion[], registrations: Crdp.ServiceWorker.ServiceWorkerRegistration[]};
   /** Source maps of scripts executed in the page. */
   SourceMaps: Array<Artifacts.SourceMap>;
   /** Information on detected tech stacks (e.g. JS libraries) used by the page. */
   Stacks: Artifacts.DetectedStack[];
-  /** Information on <script> and <link> tags blocking first paint. */
-  TagsBlockingFirstPaint: Artifacts.TagBlockingFirstPaint[];
-  /** Information about tap targets including their position and size. */
-  TapTargets: Artifacts.TapTarget[];
-  /** The primary trace taken over the entire run. */
-  Trace: Trace;
   /** The trace if there was a page load error and Chrome navigated to a `chrome-error://` page. */
   TraceError: Trace;
   /** Elements associated with metrics (ie: Largest Contentful Paint element). */
   TraceElements: Artifacts.TraceElement[];
-  /** Parsed version of the page's Web App Manifest, or null if none found. */
-  WebAppManifest: Artifacts.Manifest | null;
   /** COMPAT: A set of traces, keyed by passName. */
   traces: {[passName: string]: Trace};
   /** COMPAT: A set of DevTools debugger protocol records, keyed by passName. */
@@ -192,6 +179,8 @@ declare module Artifacts {
     /** URL displayed on the page after Lighthouse finishes. */
     finalDisplayedUrl: string;
   }
+
+  type Rect = AuditDetails.Rect;
 
   interface NodeDetails {
     lhId: string,
@@ -296,19 +285,6 @@ declare module Artifacts {
     name: string;
     url: string;
     content?: string;
-  }
-
-  interface ScriptElement {
-    type: string | null
-    src: string | null
-    /** The `id` property of the script element; null if it had no `id` or if `source` is 'network'. */
-    id: string | null
-    async: boolean
-    defer: boolean
-    /** Details for node in DOM for the script element */
-    node: NodeDetails | null
-    /** Where the script was discovered, either in the head, the body, or network records. */
-    source: 'head'|'body'|'network'
   }
 
   /** @see https://sourcemaps.info/spec.html#h.qz3o9nc69um5 */
@@ -436,10 +412,6 @@ declare module Artifacts {
   // TODO(bckenny): real type for parsed manifest.
   type Manifest = ReturnType<typeof parseManifest>;
 
-  interface InstallabilityErrors {
-    errors: Crdp.Page.InstallabilityError[];
-  }
-
   interface ImageElement {
     /** The resolved source URL of the image. Similar to `currentSrc`, but resolved for CSS images as well. */
     src: string;
@@ -527,27 +499,6 @@ declare module Artifacts {
     resourceSize: number;
   }
 
-  interface TagBlockingFirstPaint {
-    startTime: number;
-    endTime: number;
-    transferSize: number;
-    tag: {
-      tagName: 'LINK'|'SCRIPT';
-      /** The value of `HTMLLinkElement.href` or `HTMLScriptElement.src`. */
-      url: string;
-      /** A record of when changes to the `HTMLLinkElement.media` attribute occurred and if the new media type matched the page. */
-      mediaChanges?: Array<{href: string, media: string, msSinceHTMLEnd: number, matches: boolean}>;
-    };
-  }
-
-  type Rect = AuditDetails.Rect;
-
-  interface TapTarget {
-    node: NodeDetails;
-    href: string;
-    clientRects: Rect[];
-  }
-
   interface TraceElement {
     traceEventType: 'largest-contentful-paint'|'layout-shift'|'animation'|'responsiveness';
     node: NodeDetails;
@@ -556,7 +507,10 @@ declare module Artifacts {
     type?: string;
   }
 
-  type TraceEngineResult = TraceEngine.Handlers.Types.TraceParseData;
+  interface TraceEngineResult {
+    data: TraceEngine.Handlers.Types.EnabledHandlerDataWithMeta<EnabledHandlers>;
+    insights: TraceEngine.Insights.Types.TraceInsightData<EnabledHandlers>;
+  }
 
   interface TraceEngineRootCauses {
     layoutShifts: Record<number, LayoutShiftRootCausesData>;
@@ -599,25 +553,6 @@ declare module Artifacts {
       request: Artifacts.NetworkRequest;
       children: CriticalRequestNode;
     }
-  }
-
-  type ManifestValueCheckID = 'hasStartUrl'|'hasIconsAtLeast144px'|'hasIconsAtLeast512px'|'fetchesIcon'|'hasPWADisplayValue'|'hasBackgroundColor'|'hasThemeColor'|'hasShortName'|'hasName'|'shortNameLength'|'hasMaskableIcon';
-
-  type ManifestValues = {
-    isParseFailure: false;
-    allChecks: {
-      id: ManifestValueCheckID;
-      failureText: string;
-      passing: boolean;
-    }[];
-  } | {
-    isParseFailure: true;
-    parseFailureReason: string;
-    allChecks: {
-      id: ManifestValueCheckID;
-      failureText: string;
-      passing: boolean;
-    }[];
   }
 
   type MeasureEntry = LHResult.MeasureEntry;
@@ -836,18 +771,6 @@ declare module Artifacts {
   interface LabelElement {
     for: string;
     node: NodeDetails;
-  }
-
-  /** Information about an event listener registered on the global object. */
-  interface GlobalListener {
-    /** Event listener type, limited to those events currently of interest. */
-    type: 'pagehide'|'unload'|'visibilitychange';
-    /** The DevTools protocol script identifier. */
-    scriptId: string;
-    /** Line number in the script (0-based). */
-    lineNumber: number;
-    /** Column number in the script (0-based). */
-    columnNumber: number;
   }
 
   /** Describes a generic console message. */

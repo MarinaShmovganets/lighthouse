@@ -14,6 +14,7 @@ import dbw from './test-definitions/dobetterweb.js';
 import errorsExpiredSsl from './test-definitions/errors-expired-ssl.js';
 import errorsIframeExpiredSsl from './test-definitions/errors-iframe-expired-ssl.js';
 import errorsInfiniteLoop from './test-definitions/errors-infinite-loop.js';
+import fontSize from './test-definitions/font-size.js';
 import formsAutoComplete from './test-definitions/forms-autocomplete.js';
 import fpsMax from './test-definitions/fps-max.js';
 import fpsMaxPassive from './test-definitions/fps-max-passive.js';
@@ -32,9 +33,6 @@ import metricsDelayedFcp from './test-definitions/metrics-delayed-fcp.js';
 import metricsDelayedLcp from './test-definitions/metrics-delayed-lcp.js';
 import metricsTrickyTti from './test-definitions/metrics-tricky-tti.js';
 import metricsTrickyTtiLateFcp from './test-definitions/metrics-tricky-tti-late-fcp.js';
-import offlineOnlineOnly from './test-definitions/offline-online-only.js';
-import offlineReady from './test-definitions/offline-ready.js';
-import offlineSwBroken from './test-definitions/offline-sw-broken.js';
 import oopifRequests from './test-definitions/oopif-requests.js';
 import oopifScripts from './test-definitions/oopif-scripts.js';
 import perfBudgets from './test-definitions/perf-budgets.js';
@@ -46,13 +44,9 @@ import perfFonts from './test-definitions/perf-fonts.js';
 import perfFrameMetrics from './test-definitions/perf-frame-metrics.js';
 import perfPreload from './test-definitions/perf-preload.js';
 import perfTraceElements from './test-definitions/perf-trace-elements.js';
-import pwaAirhorner from './test-definitions/pwa-airhorner.js';
-import pwaCaltrain from './test-definitions/pwa-caltrain.js';
-import pwaChromestatus from './test-definitions/pwa-chromestatus.js';
-import pwaRocks from './test-definitions/pwa-rocks.js';
-import pwaSvgomg from './test-definitions/pwa-svgomg.js';
 import redirectsClientPaintServer from './test-definitions/redirects-client-paint-server.js';
 import redirectsHistoryPushState from './test-definitions/redirects-history-push-state.js';
+import redirectsHttp from './test-definitions/redirects-http.js';
 import redirectsMultipleServer from './test-definitions/redirects-multiple-server.js';
 import redirectsScripts from './test-definitions/redirects-scripts.js';
 import redirectsSelf from './test-definitions/redirects-self.js';
@@ -79,6 +73,7 @@ const smokeTests = [
   errorsExpiredSsl,
   errorsIframeExpiredSsl,
   errorsInfiniteLoop,
+  fontSize,
   formsAutoComplete,
   fpsMax,
   fpsMaxPassive,
@@ -97,9 +92,6 @@ const smokeTests = [
   metricsDelayedLcp,
   metricsTrickyTti,
   metricsTrickyTtiLateFcp,
-  offlineOnlineOnly,
-  offlineReady,
-  offlineSwBroken,
   oopifRequests,
   oopifScripts,
   perfBudgets,
@@ -111,13 +103,9 @@ const smokeTests = [
   perfFrameMetrics,
   perfPreload,
   perfTraceElements,
-  pwaAirhorner,
-  pwaCaltrain,
-  pwaChromestatus,
-  pwaRocks,
-  pwaSvgomg,
   redirectsClientPaintServer,
   redirectsHistoryPushState,
+  redirectsHttp,
   redirectsMultipleServer,
   redirectsScripts,
   redirectsSelf,

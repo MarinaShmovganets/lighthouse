@@ -90,15 +90,6 @@ const UIStrings = {
   seoCrawlingGroupTitle: 'Crawling and Indexing',
   /** Description of the navigation section within the Search Engine Optimization (SEO) category. Within this section are audits with descriptive titles that highlight ways to make a website accessible to search engine crawlers. */
   seoCrawlingGroupDescription: 'To appear in search results, crawlers need access to your app.',
-  /** Title of the Progressive Web Application (PWA) category of audits. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. Also used as a label of a score gauge. */
-  pwaCategoryTitle: 'PWA',
-  /** Description of the Progressive Web Application (PWA) category. This is displayed at the top of a list of audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
-  pwaCategoryDescription: 'These checks validate the aspects of a Progressive Web App. ' +
-  '[Learn what makes a good Progressive Web App](https://web.dev/articles/pwa-checklist).',
-  /** Description of the Progressive Web Application (PWA) manual checks category, containing a list of additional validators must be run by hand in order to check all PWA best practices. This is displayed at the top of a list of manually run audits focused on topics related to whether or not a site is a progressive web app, e.g. responds offline, uses a service worker, is on https, etc.. No character length limits. */
-  pwaCategoryManualDescription: 'These checks are required by the baseline ' +
-  '[PWA Checklist](https://web.dev/articles/pwa-checklist) but are ' +
-  'not automatically checked by Lighthouse. They do not affect your score but it\'s important that you verify them manually.',
   /** Title of the Best Practices category of audits. This is displayed at the top of a list of audits focused on topics related to following web development best practices and accepted guidelines. Also used as a label of a score gauge; try to limit to 20 characters. */
   bestPracticesCategoryTitle: 'Best Practices',
   /** Title of the Trust & Safety group of audits. This is displayed at the top of a list of audits focused on maintaining user trust and protecting security in web development. */
@@ -109,10 +100,6 @@ const UIStrings = {
   bestPracticesBrowserCompatGroupTitle: 'Browser Compatibility',
   /** Title of the General group of the Best Practices category. Within this section are the audits that don't belong to a specific group but are of general interest. */
   bestPracticesGeneralGroupTitle: 'General',
-  /** Title of the Installable section of the web app category. Within this section are audits that check if Chrome supports installing the web site as an app on their device. */
-  pwaInstallableGroupTitle: 'Installable',
-  /** Title of the "PWA Optimized" section of the web app category. Within this section are audits that check if the developer has taken advantage of features to make their web page more enjoyable and engaging for the user. */
-  pwaOptimizedGroupTitle: 'PWA Optimized',
 };
 
 const str_ = i18n.createIcuMessageFn(import.meta.url, UIStrings);
@@ -137,7 +124,6 @@ const defaultConfig = {
     {id: 'Inputs', gatherer: 'inputs'},
     {id: 'IFrameElements', gatherer: 'iframe-elements'},
     {id: 'ImageElements', gatherer: 'image-elements'},
-    {id: 'InstallabilityErrors', gatherer: 'installability-errors'},
     {id: 'InspectorIssues', gatherer: 'inspector-issues'},
     {id: 'JsUsage', gatherer: 'js-usage'},
     {id: 'LinkElements', gatherer: 'link-elements'},
@@ -147,14 +133,11 @@ const defaultConfig = {
     {id: 'OptimizedImages', gatherer: 'dobetterweb/optimized-images'},
     {id: 'ResponseCompression', gatherer: 'dobetterweb/response-compression'},
     {id: 'RobotsTxt', gatherer: 'seo/robots-txt'},
-    {id: 'ServiceWorker', gatherer: 'service-worker'},
     {id: 'Scripts', gatherer: 'scripts'},
     {id: 'SourceMaps', gatherer: 'source-maps'},
     {id: 'Stacks', gatherer: 'stacks'},
-    {id: 'TagsBlockingFirstPaint', gatherer: 'dobetterweb/tags-blocking-first-paint'},
     {id: 'TraceElements', gatherer: 'trace-elements'},
     {id: 'ViewportDimensions', gatherer: 'viewport-dimensions'},
-    {id: 'WebAppManifest', gatherer: 'web-app-manifest'},
 
     // Artifact copies are renamed for compatibility with legacy artifacts.
     {id: 'devtoolsLogs', gatherer: 'devtools-log-compat'},
@@ -168,6 +151,7 @@ const defaultConfig = {
   ],
   audits: [
     'is-on-https',
+    'redirects-http',
     'viewport',
     'metrics/first-contentful-paint',
     'metrics/largest-contentful-paint',
@@ -185,11 +169,6 @@ const defaultConfig = {
     'user-timings',
     'critical-request-chains',
     'redirects',
-    'installable-manifest',
-    'splash-screen',
-    'themed-omnibox',
-    'maskable-icon',
-    'content-width',
     'image-aspect-ratio',
     'image-size-responsive',
     'deprecations',
@@ -219,9 +198,6 @@ const defaultConfig = {
     'prioritize-lcp-image',
     'csp-xss',
     'script-treemap-data',
-    'manual/pwa-cross-browser',
-    'manual/pwa-page-transitions',
-    'manual/pwa-each-page-has-url',
     'accessibility/accesskeys',
     'accessibility/aria-allowed-attr',
     'accessibility/aria-allowed-role',
@@ -343,12 +319,6 @@ const defaultConfig = {
     'diagnostics': {
       title: str_(UIStrings.diagnosticsGroupTitle),
       description: str_(UIStrings.diagnosticsGroupDescription),
-    },
-    'pwa-installable': {
-      title: str_(UIStrings.pwaInstallableGroupTitle),
-    },
-    'pwa-optimized': {
-      title: str_(UIStrings.pwaOptimizedGroupTitle),
     },
     'a11y-best-practices': {
       title: str_(UIStrings.a11yBestPracticesGroupTitle),
@@ -574,6 +544,7 @@ const defaultConfig = {
       auditRefs: [
         // Trust & Safety
         {id: 'is-on-https', weight: 5, group: 'best-practices-trust-safety'},
+        {id: 'redirects-http', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'geolocation-on-start', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'notification-on-start', weight: 1, group: 'best-practices-trust-safety'},
         {id: 'csp-xss', weight: 0, group: 'best-practices-trust-safety'},
@@ -581,6 +552,8 @@ const defaultConfig = {
         {id: 'paste-preventing-inputs', weight: 3, group: 'best-practices-ux'},
         {id: 'image-aspect-ratio', weight: 1, group: 'best-practices-ux'},
         {id: 'image-size-responsive', weight: 1, group: 'best-practices-ux'},
+        {id: 'viewport', weight: 1, group: 'best-practices-ux'},
+        {id: 'font-size', weight: 1, group: 'best-practices-ux'},
         // Browser Compatibility
         {id: 'doctype', weight: 1, group: 'best-practices-browser-compat'},
         {id: 'charset', weight: 1, group: 'best-practices-browser-compat'},
@@ -599,40 +572,23 @@ const defaultConfig = {
       manualDescription: str_(UIStrings.seoCategoryManualDescription),
       supportedModes: ['navigation', 'snapshot'],
       auditRefs: [
-        {id: 'viewport', weight: 1, group: 'seo-mobile'},
+        // Should be at least 31% of the score, such that this audit failing
+        // results in the SEO category failing.
+        // Solve for w:
+        //    w / (w + T) >= 0.31
+        // where T is the sum of all the other weights.
+        {id: 'is-crawlable', weight: 93 / 23, group: 'seo-crawl'},
         {id: 'document-title', weight: 1, group: 'seo-content'},
         {id: 'meta-description', weight: 1, group: 'seo-content'},
         {id: 'http-status-code', weight: 1, group: 'seo-crawl'},
         {id: 'link-text', weight: 1, group: 'seo-content'},
         {id: 'crawlable-anchors', weight: 1, group: 'seo-crawl'},
-        {id: 'is-crawlable', weight: 1, group: 'seo-crawl'},
         {id: 'robots-txt', weight: 1, group: 'seo-crawl'},
         {id: 'image-alt', weight: 1, group: 'seo-content'},
         {id: 'hreflang', weight: 1, group: 'seo-content'},
         {id: 'canonical', weight: 1, group: 'seo-content'},
-        {id: 'font-size', weight: 1, group: 'seo-mobile'},
         // Manual audits
         {id: 'structured-data', weight: 0},
-      ],
-    },
-    'pwa': {
-      title: str_(UIStrings.pwaCategoryTitle),
-      description: str_(UIStrings.pwaCategoryDescription),
-      manualDescription: str_(UIStrings.pwaCategoryManualDescription),
-      supportedModes: ['navigation'],
-      auditRefs: [
-        // Installable
-        {id: 'installable-manifest', weight: 2, group: 'pwa-installable'},
-        // PWA Optimized
-        {id: 'splash-screen', weight: 1, group: 'pwa-optimized'},
-        {id: 'themed-omnibox', weight: 1, group: 'pwa-optimized'},
-        {id: 'content-width', weight: 1, group: 'pwa-optimized'},
-        {id: 'viewport', weight: 2, group: 'pwa-optimized'},
-        {id: 'maskable-icon', weight: 1, group: 'pwa-optimized'},
-        // Manual audits
-        {id: 'pwa-cross-browser', weight: 0},
-        {id: 'pwa-page-transitions', weight: 0},
-        {id: 'pwa-each-page-has-url', weight: 0},
       ],
     },
   },
