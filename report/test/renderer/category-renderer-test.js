@@ -223,12 +223,14 @@ describe('CategoryRenderer', () => {
       assert.ok(categoryDOM.querySelector(
         '.lh-clump--notapplicable .lh-audit-group__summary'));
 
-      const notApplicableCount = a11yCategory.auditRefs.reduce((sum, audit) =>
-        sum += audit.result.scoreDisplayMode === 'notApplicable' ? 1 : 0, 0);
+      const notApplicableCount = a11yCategory.auditRefs.reduce((sum, audit) => {
+        return sum += audit.result.scoreDisplayMode === 'notApplicable' && audit.group !== 'hidden'
+          ? 1
+          : 0;
+      }, 0);
       assert.equal(
         categoryDOM.querySelectorAll('.lh-clump--notapplicable .lh-audit').length,
-        notApplicableCount,
-        'score shows informative and dash icon'
+        notApplicableCount
       );
     });
 
@@ -304,7 +306,7 @@ describe('CategoryRenderer', () => {
       );
 
       const gauge = categoryDOM.querySelector('.lh-fraction__content');
-      assert.equal(gauge.textContent.trim(), '20/25', 'fraction is included');
+      assert.equal(gauge.textContent.trim(), '13/18', 'fraction is included');
 
       const score = categoryDOM.querySelector('.lh-category-header');
       const title = score.querySelector('.lh-fraction__label');
@@ -351,7 +353,9 @@ describe('CategoryRenderer', () => {
     it('renders the passed audits ungrouped', () => {
       const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
       const passedAudits = category.auditRefs.filter(audit =>
-          audit.result.scoreDisplayMode !== 'notApplicable' && audit.result.score === 1);
+          audit.result.scoreDisplayMode !== 'notApplicable' &&
+          audit.group !== 'hidden' &&
+          audit.result.score === 1);
 
       const passedAuditGroups = categoryDOM.querySelectorAll('.lh-clump--passed .lh-audit-group');
       const passedAuditsElems = categoryDOM.querySelectorAll('.lh-clump--passed .lh-audit');
@@ -363,7 +367,8 @@ describe('CategoryRenderer', () => {
     it('renders all the audits', () => {
       const categoryDOM = renderer.render(category, sampleResults.categoryGroups);
       const auditsElements = categoryDOM.querySelectorAll('.lh-audit');
-      assert.equal(auditsElements.length, category.auditRefs.length);
+      const visibleAudits = category.auditRefs.filter(a => a.group !== 'hidden');
+      assert.equal(auditsElements.length, visibleAudits.length);
     });
 
     it('renders audits without a group before grouped ones', () => {
@@ -431,11 +436,11 @@ describe('CategoryRenderer', () => {
       const manualAudits = elem.querySelectorAll('.lh-clump--manual .lh-audit');
       const naAudits = elem.querySelectorAll('.lh-clump--notapplicable .lh-audit');
 
-      assert.equal(passedAudits.length, 3);
+      assert.equal(passedAudits.length, 4);
       assert.equal(failedAudits.length, 3);
       assert.equal(warningAudits.length, 1);
       assert.equal(manualAudits.length, 1);
-      assert.equal(naAudits.length, 3);
+      assert.equal(naAudits.length, 2);
 
       const allAudits = elem.querySelectorAll('.lh-audit');
       // No unaccounted audits
@@ -452,7 +457,7 @@ describe('CategoryRenderer', () => {
       const failedAudits = elem.querySelectorAll('.lh-clump--failed .lh-audit');
 
       assert.equal(passedAudits.length, 0);
-      assert.equal(failedAudits.length, 8);
+      assert.equal(failedAudits.length, 9);
     });
 
     it('expands warning audit group', () => {
