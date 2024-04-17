@@ -9,11 +9,11 @@
  */
 
 /** @type {LH.Config} */
-const budgetedConfig = {
+const sampleConfig = {
   extends: 'lighthouse:default',
   settings: {
     throttlingMethod: 'devtools',
   },
 };
 
-export default budgetedConfig;
+export default sampleConfig;
