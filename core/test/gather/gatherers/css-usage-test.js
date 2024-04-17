@@ -6,18 +6,13 @@
 
 import CSSUsage from '../../../gather/gatherers/css-usage.js';
 import {createMockContext} from '../mock-driver.js';
-import {flushAllTimersAndMicrotasks, timers} from '../../test-utils.js';
 
 describe('CSSUsage gatherer', () => {
-  before(() => timers.useFakeTimers());
-  after(() => timers.dispose());
-
   it('gets CSS usage', async () => {
     const context = createMockContext();
     context.driver.defaultSession.sendCommand
       .mockResponse('DOM.enable')
-      // @ts-expect-error - Force events to emit.
-      .mockResponse('CSS.enable', flushAllTimersAndMicrotasks)
+      .mockResponse('CSS.enable')
       .mockResponse('CSS.startRuleUsageTracking')
       .mockResponse('CSS.stopRuleUsageTracking', {
         ruleUsage: [
