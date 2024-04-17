@@ -41,12 +41,12 @@ class Stylesheets extends BaseGatherer {
       }))
       .catch(err => {
         log.warn(
-          'CSSUsage',
+          'Stylesheets',
           `Error fetching content of stylesheet with URL "${event.header.sourceURL}"`
         );
         Sentry.captureException(err, {
           tags: {
-            gatherer: 'CSSUsage',
+            gatherer: 'Stylesheets',
           },
           extra: {
             url: event.header.sourceURL,
