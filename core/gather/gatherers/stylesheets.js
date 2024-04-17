@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Tracks unused CSS rules.
+ * @fileoverview Collects all stylesheets and their contents.
  */
 
 import log from 'lighthouse-logger';
