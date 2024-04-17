@@ -258,7 +258,7 @@ export class LighthouseReportViewer {
   // TODO: Really, `json` should really have type `unknown` and
   // we can have _validateReportJson verify that it's an LH.Result
   _replaceReportHtml(json) {
-    const container = dom.find('main');
+    const container = dom.find('main', document);
 
     // Reset container content.
     container.textContent = '';
