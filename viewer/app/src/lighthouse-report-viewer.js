@@ -15,8 +15,7 @@ import {ReportRenderer} from '../../../report/renderer/report-renderer.js';
 import {TextEncoding} from '../../../report/renderer/text-encoding.js';
 import {renderFlowReport} from '../../../flow-report/api';
 
-// @ts-expect-error Legacy use of report renderer
-const dom = new DOM(document);
+const dom = new DOM(document, document.documentElement);
 
 /* global logger ReportGenerator */
 
@@ -224,7 +223,6 @@ export class LighthouseReportViewer {
 
     const features = new ViewerUIFeatures(dom, {
       saveGist: saveGistCallback,
-      /** @param {LH.Result} newLhr */
       refresh: newLhr => {
         this._replaceReportHtml(newLhr);
       },
@@ -258,11 +256,11 @@ export class LighthouseReportViewer {
   // TODO: Really, `json` should really have type `unknown` and
   // we can have _validateReportJson verify that it's an LH.Result
   _replaceReportHtml(json) {
-    const container = dom.find('main', document);
+    const container = dom.find('main');
 
     // Reset container content.
     container.textContent = '';
-    const rootEl = document.createElement('div');
+    const rootEl = dom.createElement('div', 'lh-root lh-vars');
     container.append(rootEl);
 
     // Only give gist-saving callback if current report isn't from a gist.
