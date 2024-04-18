@@ -2052,8 +2052,8 @@
           },
           "aria-conditional-attr": {
             "id": "aria-conditional-attr",
-            "title": "ARIA attributes are used as specified for element roles",
-            "description": "Using ARIA attributes on elements where they are not expected can result in unpredictable behavior for assistive technologies. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr).",
+            "title": "ARIA attributes are used as specified for the element's role",
+            "description": "Some ARIA attributes are only allowed on an element under certain conditions. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2065,7 +2065,7 @@
           "aria-deprecated-role": {
             "id": "aria-deprecated-role",
             "title": "Deprecated ARIA roles were not used",
-            "description": "Deprecated ARIA roles will not be processed correctly by screen readers. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role).",
+            "description": "Deprecated ARIA roles may not be processed correctly by assistive technology. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -2133,8 +2133,8 @@
           },
           "aria-prohibited-attr": {
             "id": "aria-prohibited-attr",
-            "title": "Elements only use permitted ARIA attributes",
-            "description": "Element roles can prohibit certain ARIA attributes from being used on that element. Using one of these prohibited roles can lead to undefined behavior by assistive technology. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr).",
+            "title": "Elements use only permitted ARIA attributes",
+            "description": "Using ARIA attributes in roles where they are prohibited can mean that important information is not communicated to users of assistive technologies. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -12395,8 +12395,8 @@
           },
           "aria-conditional-attr": {
             "id": "aria-conditional-attr",
-            "title": "ARIA attributes are used as specified for element roles",
-            "description": "Using ARIA attributes on elements where they are not expected can result in unpredictable behavior for assistive technologies. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr).",
+            "title": "ARIA attributes are used as specified for the element's role",
+            "description": "Some ARIA attributes are only allowed on an element under certain conditions. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -12408,7 +12408,7 @@
           "aria-deprecated-role": {
             "id": "aria-deprecated-role",
             "title": "Deprecated ARIA roles were not used",
-            "description": "Deprecated ARIA roles will not be processed correctly by screen readers. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role).",
+            "description": "Deprecated ARIA roles may not be processed correctly by assistive technology. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -12476,8 +12476,8 @@
           },
           "aria-prohibited-attr": {
             "id": "aria-prohibited-attr",
-            "title": "Elements only use permitted ARIA attributes",
-            "description": "Element roles can prohibit certain ARIA attributes from being used on that element. Using one of these prohibited roles can lead to undefined behavior by assistive technology. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr).",
+            "title": "Elements use only permitted ARIA attributes",
+            "description": "Using ARIA attributes in roles where they are prohibited can mean that important information is not communicated to users of assistive technologies. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -19237,8 +19237,8 @@
           },
           "aria-conditional-attr": {
             "id": "aria-conditional-attr",
-            "title": "ARIA attributes are used as specified for element roles",
-            "description": "Using ARIA attributes on elements where they are not expected can result in unpredictable behavior for assistive technologies. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr).",
+            "title": "ARIA attributes are used as specified for the element's role",
+            "description": "Some ARIA attributes are only allowed on an element under certain conditions. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -19250,7 +19250,7 @@
           "aria-deprecated-role": {
             "id": "aria-deprecated-role",
             "title": "Deprecated ARIA roles were not used",
-            "description": "Deprecated ARIA roles will not be processed correctly by screen readers. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role).",
+            "description": "Deprecated ARIA roles may not be processed correctly by assistive technology. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {
@@ -19318,8 +19318,8 @@
           },
           "aria-prohibited-attr": {
             "id": "aria-prohibited-attr",
-            "title": "Elements only use permitted ARIA attributes",
-            "description": "Element roles can prohibit certain ARIA attributes from being used on that element. Using one of these prohibited roles can lead to undefined behavior by assistive technology. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr).",
+            "title": "Elements use only permitted ARIA attributes",
+            "description": "Using ARIA attributes in roles where they are prohibited can mean that important information is not communicated to users of assistive technologies. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr).",
             "score": 1,
             "scoreDisplayMode": "binary",
             "details": {

@@ -14,12 +14,11 @@ import * as i18n from '../../lib/i18n/i18n.js';
 
 const UIStrings = {
   /** Title of an accessibility audit that checks if ARIA attributes are used as specified for element roles. This title is descriptive of the successful state and is shown to users when no user action is required. */
-  title: 'ARIA attributes are used as specified for element roles',
+  title: 'ARIA attributes are used as specified for the element\'s role',
   /** Title of an accessibility audit that checks if ARIA attributes are used as specified for element roles. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
-  failureTitle: 'ARIA attributes are not used as specified for element roles',
+  failureTitle: 'ARIA attributes are not used as specified for the element\'s role',
   /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
-  description: 'Using ARIA attributes on elements where they are not expected can result in ' +
-      'unpredictable behavior for assistive technologies. ' +
+  description: 'Some ARIA attributes are only allowed on an element under certain conditions. ' +
       '[Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr).',
 };
 

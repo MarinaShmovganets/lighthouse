@@ -18,7 +18,7 @@ const UIStrings = {
   /** Title of an accessibility audit that checks if deprecated ARIA roles are used. This title is descriptive of the failing state and is shown to users when there is a failure that needs to be addressed. */
   failureTitle: 'Deprecated ARIA roles were used',
   /** Description of a Lighthouse audit that tells the user *why* they should try to pass. This is displayed after a user expands the section to see more. No character length limits. The last sentence starting with 'Learn' becomes link text to additional documentation. */
-  description: 'Deprecated ARIA roles will not be processed correctly by screen readers. ' +
+  description: 'Deprecated ARIA roles may not be processed correctly by assistive technology. ' +
       '[Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role).',
 };
 

@@ -36,16 +36,16 @@
     "message": "`button`, `link`, and `menuitem` elements have accessible names"
   },
   "core/audits/accessibility/aria-conditional-attr.js | description": {
-    "message": "Using ARIA attributes on elements where they are not expected can result in unpredictable behavior for assistive technologies. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr)."
+    "message": "Some ARIA attributes are only allowed on an element under certain conditions. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr)."
   },
   "core/audits/accessibility/aria-conditional-attr.js | failureTitle": {
-    "message": "ARIA attributes are not used as specified for element roles"
+    "message": "ARIA attributes are not used as specified for the element's role"
   },
   "core/audits/accessibility/aria-conditional-attr.js | title": {
-    "message": "ARIA attributes are used as specified for element roles"
+    "message": "ARIA attributes are used as specified for the element's role"
   },
   "core/audits/accessibility/aria-deprecated-role.js | description": {
-    "message": "Deprecated ARIA roles will not be processed correctly by screen readers. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role)."
+    "message": "Deprecated ARIA roles may not be processed correctly by assistive technology. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role)."
   },
   "core/audits/accessibility/aria-deprecated-role.js | failureTitle": {
     "message": "Deprecated ARIA roles were used"
@@ -108,13 +108,13 @@
     "message": "ARIA `progressbar` elements have accessible names"
   },
   "core/audits/accessibility/aria-prohibited-attr.js | description": {
-    "message": "Element roles can prohibit certain ARIA attributes from being used on that element. Using one of these prohibited roles can lead to undefined behavior by assistive technology. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr)."
+    "message": "Using ARIA attributes in roles where they are prohibited can mean that important information is not communicated to users of assistive technologies. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr)."
   },
   "core/audits/accessibility/aria-prohibited-attr.js | failureTitle": {
     "message": "Elements use prohibited ARIA attributes"
   },
   "core/audits/accessibility/aria-prohibited-attr.js | title": {
-    "message": "Elements only use permitted ARIA attributes"
+    "message": "Elements use only permitted ARIA attributes"
   },
   "core/audits/accessibility/aria-required-attr.js | description": {
     "message": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more about roles and required attributes](https://dequeuniversity.com/rules/axe/4.9/aria-required-attr)."
