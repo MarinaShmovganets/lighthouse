@@ -106,7 +106,6 @@ class Runner {
           networkUserAgent: artifacts.NetworkUserAgent,
           hostUserAgent: artifacts.HostUserAgent,
           benchmarkIndex: artifacts.BenchmarkIndex,
-          benchmarkIndexes: artifacts.BenchmarkIndexes,
           credits,
         },
         audits: auditResultsById,
@@ -299,7 +298,6 @@ class Runner {
         auditMode: undefined,
         output: undefined,
         channel: undefined,
-        budgets: undefined,
       };
       const normalizedGatherSettings = Object.assign({}, artifacts.settings, overrides);
       const normalizedAuditSettings = Object.assign({}, settings, overrides);

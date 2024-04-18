@@ -103,9 +103,8 @@ Configuration:
   --gather-mode, -G              Collect artifacts from a connected browser and save to disk. (Artifacts folder path may optionally be provided). If audit-mode is not also enabled, the run will quit early.
   --audit-mode, -A               Process saved artifacts from disk. (Artifacts folder path may be provided, otherwise defaults to ./latest-run/)
   --only-audits                  Only run the specified audits  [array]
-  --only-categories              Only run the specified categories. Available categories: accessibility, best-practices, performance, pwa, seo  [array]
+  --only-categories              Only run the specified categories. Available categories: accessibility, best-practices, performance, seo  [array]
   --skip-audits                  Run everything except these audits  [array]
-  --budget-path                  The path to the budget.json file for LightWallet.  [string]
   --disable-full-page-screenshot Disables collection of the full page screenshot, which can be quite large  [boolean]
 
 Output:
@@ -148,7 +147,7 @@ Examples:
   lighthouse <url> --quiet --chrome-flags="--headless"                                             Launch Headless Chrome, turn off logging
   lighthouse <url> --extra-headers "{\"Cookie\":\"monster=blue\", \"x-men\":\"wolverine\"}"        Stringify'd JSON HTTP Header key/value pairs to send in requests
   lighthouse <url> --extra-headers=./path/to/file.json                                             Path to JSON file of HTTP Header key/value pairs to send in requests
-  lighthouse <url> --only-categories=performance,pwa                                               Only run the specified categories. Available categories: accessibility, best-practices, performance, pwa, seo
+  lighthouse <url> --only-categories=performance,seo                                               Only run the specified categories. Available categories: accessibility, best-practices, performance, seo
 
 For more information on Lighthouse, see https://developers.google.com/web/tools/lighthouse/.
 ```
@@ -242,7 +241,6 @@ Useful documentation, examples, and recipes to get you started.
 - [Developing Plugins](./docs/plugins.md)
 - [Making a New Audit](./docs/new-audits.md)
 - [Testing on a mobile device](./docs/readme.md#testing-on-a-mobile-device)
-- [Setting a performance budget](./docs/performance-budgets.md)
 - [Lighthouse Architecture](./docs/architecture.md)
 
 **Recipes**
@@ -363,6 +361,8 @@ This section details services that have integrated Lighthouse data. If you're wo
 * **[Auditzy](https://auditzy.com)** - Auditzy™ is a robust website auditing & monitoring tool which lets you analyze your web page(s) pre-user journey. Analyze the Competitor Health Metric, Core Web Vitals, and Technology. Compare your web pages with your competitors to understand where you are leading or lagging. Real-time notification with Slack. Have Seamless Collaboration with Multiple Teams. Automate your Audits hourly, daily, weekly, and so on. It has a free trial with pay as you go plans.
 
 * **[Lighthouse Metrics China](http://lighthousemetricschina.com)** - The first Lighthouse metrics tool specifically designed for China. Experience unparalleled website monitoring capabilities with Lighthouse. Gain insights into the fluctuations of your scores and metrics within the realm of the [Great Firewall of China](https://www.chinafirewalltest.co), enabling a comprehensive understanding of the factors influencing each change. Lighthouse Metrics China offers both free and paid plans.
+
+* **[DeploymentHawk](https://deploymenthawk.com)** - DeploymentHawk is an automated site auditing tool powered by Lighthouse. Effortlessly catch performance, accessibility, and SEO issues before they impact your users. DeploymentHawk is a paid product with a free 7-day trial.
 
 ## Lighthouse Integrations in non-Web Perf services
 

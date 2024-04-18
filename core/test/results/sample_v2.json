@@ -866,93 +866,6 @@
       },
       "guidanceLevel": 2
     },
-    "installable-manifest": {
-      "id": "installable-manifest",
-      "title": "Web app manifest or service worker do not meet the installability requirements",
-      "description": "Service worker is the technology that enables your app to use many Progressive Web App features, such as offline, add to homescreen, and push notifications. With proper service worker and manifest implementations, browsers can proactively prompt users to add your app to their homescreen, which can lead to higher engagement. [Learn more about manifest installability requirements](https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "numericValue": 1,
-      "numericUnit": "element",
-      "displayValue": "1 reason",
-      "warnings": [],
-      "details": {
-        "type": "table",
-        "headings": [
-          {
-            "key": "reason",
-            "valueType": "text",
-            "label": "Failure reason"
-          }
-        ],
-        "items": [
-          {
-            "reason": "Page has no manifest <link> URL"
-          }
-        ],
-        "debugData": {
-          "type": "debugdata",
-          "manifestUrl": null
-        }
-      }
-    },
-    "splash-screen": {
-      "id": "splash-screen",
-      "title": "Is not configured for a custom splash screen",
-      "description": "A themed splash screen ensures a high-quality experience when users launch your app from their homescreens. [Learn more about splash screens](https://developer.chrome.com/docs/lighthouse/pwa/splash-screen/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "explanation": "Failures: No manifest was fetched.",
-      "details": {
-        "type": "debugdata",
-        "items": [
-          {
-            "failures": [
-              "No manifest was fetched"
-            ],
-            "isParseFailure": true,
-            "parseFailureReason": "No manifest was fetched"
-          }
-        ]
-      }
-    },
-    "themed-omnibox": {
-      "id": "themed-omnibox",
-      "title": "Does not set a theme color for the address bar.",
-      "description": "The browser address bar can be themed to match your site. [Learn more about theming the address bar](https://developer.chrome.com/docs/lighthouse/pwa/themed-omnibox/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "explanation": "Failures: No manifest was fetched,\nNo `<meta name=\"theme-color\">` tag found.",
-      "details": {
-        "type": "debugdata",
-        "items": [
-          {
-            "failures": [
-              "No manifest was fetched",
-              "No `<meta name=\"theme-color\">` tag found"
-            ],
-            "themeColor": null,
-            "isParseFailure": true,
-            "parseFailureReason": "No manifest was fetched"
-          }
-        ]
-      }
-    },
-    "maskable-icon": {
-      "id": "maskable-icon",
-      "title": "Manifest doesn't have a maskable icon",
-      "description": "A maskable icon ensures that the image fills the entire shape without being letterboxed when installing the app on a device. [Learn about maskable manifest icons](https://developer.chrome.com/docs/lighthouse/pwa/maskable-icon-audit/).",
-      "score": 0,
-      "scoreDisplayMode": "binary",
-      "explanation": "No manifest was fetched"
-    },
-    "content-width": {
-      "id": "content-width",
-      "title": "Content is sized correctly for the viewport",
-      "description": "If the width of your app's content doesn't match the width of the viewport, your app might not be optimized for mobile screens. [Learn how to size content for the viewport](https://developer.chrome.com/docs/lighthouse/pwa/content-width/).",
-      "score": 1,
-      "scoreDisplayMode": "binary"
-    },
     "image-aspect-ratio": {
       "id": "image-aspect-ratio",
       "title": "Displays images with incorrect aspect ratio",
@@ -2085,169 +1998,6 @@
         ]
       }
     },
-    "performance-budget": {
-      "id": "performance-budget",
-      "title": "Performance budget",
-      "description": "Keep the quantity and size of network requests under the targets set by the provided performance budget. [Learn more about performance budgets](https://developers.google.com/web/tools/lighthouse/audits/budgets).",
-      "score": 1,
-      "scoreDisplayMode": "informative",
-      "details": {
-        "type": "table",
-        "headings": [
-          {
-            "key": "label",
-            "valueType": "text",
-            "label": "Resource Type"
-          },
-          {
-            "key": "requestCount",
-            "valueType": "numeric",
-            "label": "Requests"
-          },
-          {
-            "key": "transferSize",
-            "valueType": "bytes",
-            "label": "Transfer Size"
-          },
-          {
-            "key": "countOverBudget",
-            "valueType": "text",
-            "label": ""
-          },
-          {
-            "key": "sizeOverBudget",
-            "valueType": "bytes",
-            "label": "Over Budget"
-          }
-        ],
-        "items": [
-          {
-            "resourceType": "total",
-            "label": "Total",
-            "requestCount": 25,
-            "transferSize": 1437176,
-            "countOverBudget": "15 requests",
-            "sizeOverBudget": 1334776
-          },
-          {
-            "resourceType": "image",
-            "label": "Image",
-            "requestCount": 8,
-            "transferSize": 1196358,
-            "countOverBudget": "6 requests",
-            "sizeOverBudget": 1165638
-          },
-          {
-            "resourceType": "script",
-            "label": "Script",
-            "requestCount": 5,
-            "transferSize": 198392,
-            "countOverBudget": "3 requests",
-            "sizeOverBudget": 167672
-          },
-          {
-            "resourceType": "other",
-            "label": "Other",
-            "requestCount": 2,
-            "transferSize": 17793,
-            "sizeOverBudget": 12673
-          },
-          {
-            "resourceType": "third-party",
-            "label": "Third-party",
-            "requestCount": 1,
-            "transferSize": 30346,
-            "sizeOverBudget": 4746
-          },
-          {
-            "resourceType": "document",
-            "label": "Document",
-            "requestCount": 1,
-            "transferSize": 17609,
-            "sizeOverBudget": 2249
-          },
-          {
-            "resourceType": "stylesheet",
-            "label": "Stylesheet",
-            "requestCount": 9,
-            "transferSize": 7024,
-            "countOverBudget": "7 requests",
-            "sizeOverBudget": 1904
-          },
-          {
-            "resourceType": "media",
-            "label": "Media",
-            "requestCount": 0,
-            "transferSize": 0
-          },
-          {
-            "resourceType": "font",
-            "label": "Font",
-            "requestCount": 0,
-            "transferSize": 0
-          }
-        ],
-        "sortedBy": [
-          "sizeOverBudget"
-        ]
-      }
-    },
-    "timing-budget": {
-      "id": "timing-budget",
-      "title": "Timing budget",
-      "description": "Set a timing budget to help you keep an eye on the performance of your site. Performant sites load fast and respond to user input events quickly. [Learn more about performance budgets](https://developers.google.com/web/tools/lighthouse/audits/budgets).",
-      "score": 1,
-      "scoreDisplayMode": "informative",
-      "details": {
-        "type": "table",
-        "headings": [
-          {
-            "key": "label",
-            "valueType": "text",
-            "label": "Metric"
-          },
-          {
-            "key": "measurement",
-            "valueType": "ms",
-            "label": "Measurement"
-          },
-          {
-            "key": "overBudget",
-            "valueType": "ms",
-            "label": "Over Budget"
-          }
-        ],
-        "items": [
-          {
-            "metric": "interactive",
-            "label": "Time to Interactive",
-            "measurement": 8191,
-            "overBudget": 5291
-          },
-          {
-            "metric": "first-meaningful-paint",
-            "label": "First Meaningful Paint",
-            "measurement": 6844,
-            "overBudget": 4844
-          },
-          {
-            "metric": "first-contentful-paint",
-            "label": "First Contentful Paint",
-            "measurement": 6844,
-            "overBudget": 3844
-          },
-          {
-            "metric": "max-potential-fid",
-            "label": "Max Potential First Input Delay",
-            "measurement": 1175,
-            "overBudget": 1075
-          }
-        ],
-        "sortedBy": [
-          "overBudget"
-        ]
-      }
-    },
     "resource-summary": {
       "id": "resource-summary",
       "title": "Resources Summary",
@@ -3037,27 +2787,6 @@
         ]
       }
     },
-    "pwa-cross-browser": {
-      "id": "pwa-cross-browser",
-      "title": "Site works cross-browser",
-      "description": "To reach the most number of users, sites should work across every major browser. [Learn about cross-browser compatibility](https://developer.chrome.com/docs/lighthouse/pwa/pwa-cross-browser/).",
-      "score": null,
-      "scoreDisplayMode": "manual"
-    },
-    "pwa-page-transitions": {
-      "id": "pwa-page-transitions",
-      "title": "Page transitions don't feel like they block on the network",
-      "description": "Transitions should feel snappy as you tap around, even on a slow network. This experience is key to a user's perception of performance. [Learn more about page transitions](https://developer.chrome.com/docs/lighthouse/pwa/pwa-page-transitions/).",
-      "score": null,
-      "scoreDisplayMode": "manual"
-    },
-    "pwa-each-page-has-url": {
-      "id": "pwa-each-page-has-url",
-      "title": "Each page has a URL",
-      "description": "Ensure individual pages are deep linkable via URL and that URLs are unique for the purpose of shareability on social media. [Learn more about providing deep links](https://developer.chrome.com/docs/lighthouse/pwa/pwa-each-page-has-url/).",
-      "score": null,
-      "scoreDisplayMode": "manual"
-    },
     "accesskeys": {
       "id": "accesskeys",
       "title": "`[accesskey]` values are unique",
@@ -3095,6 +2824,30 @@
       "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to make command elements more accessible](https://dequeuniversity.com/rules/axe/4.9/aria-command-name).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
+    },
+    "aria-conditional-attr": {
+      "id": "aria-conditional-attr",
+      "title": "ARIA attributes are used as specified for the element's role",
+      "description": "Some ARIA attributes are only allowed on an element under certain conditions. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
+    },
+    "aria-deprecated-role": {
+      "id": "aria-deprecated-role",
+      "title": "Deprecated ARIA roles were not used",
+      "description": "Deprecated ARIA roles may not be processed correctly by assistive technology. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
     },
     "aria-dialog-name": {
       "id": "aria-dialog-name",
@@ -3147,6 +2900,18 @@
       "description": "When a `progressbar` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to label `progressbar` elements](https://dequeuniversity.com/rules/axe/4.9/aria-progressbar-name).",
       "score": null,
       "scoreDisplayMode": "notApplicable"
+    },
+    "aria-prohibited-attr": {
+      "id": "aria-prohibited-attr",
+      "title": "Elements use only permitted ARIA attributes",
+      "description": "Using ARIA attributes in roles where they are prohibited can mean that important information is not communicated to users of assistive technologies. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr).",
+      "score": 1,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [],
+        "items": []
+      }
     },
     "aria-required-attr": {
       "id": "aria-required-attr",
@@ -4447,7 +4212,7 @@
           },
           {
             "url": "http://localhost:10200/dobetterweb/unknown404.css?delay=200",
-            "totalBytes": 209,
+            "totalBytes": 0,
             "wastedMs": 882
           },
           {
@@ -4456,7 +4221,17 @@
             "wastedMs": 882
           },
           {
+            "url": "http://localhost:10200/dobetterweb/dbw_disabled.css?delay=200&isdisabled",
+            "totalBytes": 1190,
+            "wastedMs": 882
+          },
+          {
             "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&capped",
+            "totalBytes": 903,
+            "wastedMs": 882
+          },
+          {
+            "url": "http://localhost:10200/dobetterweb/dbw_tester.css?delay=3000&async=true",
             "totalBytes": 903,
             "wastedMs": 882
           },
@@ -4467,7 +4242,7 @@
           },
           {
             "url": "http://localhost:10200/dobetterweb/fcp-delayer.js?delay=5000",
-            "totalBytes": 223,
+            "totalBytes": 0,
             "wastedMs": 882
           }
         ],
@@ -5736,105 +5511,6 @@
     "skipAboutBlank": false,
     "blankPage": "about:blank",
     "ignoreStatusCode": false,
-    "budgets": [
-      {
-        "path": "/",
-        "resourceSizes": [
-          {
-            "resourceType": "total",
-            "budget": 100
-          },
-          {
-            "resourceType": "stylesheet",
-            "budget": 5
-          },
-          {
-            "resourceType": "image",
-            "budget": 30
-          },
-          {
-            "resourceType": "media",
-            "budget": 0
-          },
-          {
-            "resourceType": "font",
-            "budget": 20
-          },
-          {
-            "resourceType": "script",
-            "budget": 30
-          },
-          {
-            "resourceType": "document",
-            "budget": 15
-          },
-          {
-            "resourceType": "other",
-            "budget": 5
-          },
-          {
-            "resourceType": "third-party",
-            "budget": 25
-          }
-        ],
-        "resourceCounts": [
-          {
-            "resourceType": "total",
-            "budget": 10
-          },
-          {
-            "resourceType": "stylesheet",
-            "budget": 2
-          },
-          {
-            "resourceType": "image",
-            "budget": 2
-          },
-          {
-            "resourceType": "media",
-            "budget": 0
-          },
-          {
-            "resourceType": "font",
-            "budget": 1
-          },
-          {
-            "resourceType": "script",
-            "budget": 2
-          },
-          {
-            "resourceType": "document",
-            "budget": 1
-          },
-          {
-            "resourceType": "other",
-            "budget": 2
-          },
-          {
-            "resourceType": "third-party",
-            "budget": 1
-          }
-        ],
-        "timings": [
-          {
-            "metric": "first-contentful-paint",
-            "budget": 3000
-          },
-          {
-            "metric": "interactive",
-            "budget": 2900
-          },
-          {
-            "metric": "first-meaningful-paint",
-            "budget": 2000
-          },
-          {
-            "metric": "max-potential-fid",
-            "budget": 100
-          }
-        ]
-      }
-    ],
     "locale": "en-US",
     "blockedUrlPatterns": null,
     "additionalTraceCategories": null,
@@ -6091,16 +5767,6 @@
           "group": "diagnostics"
         },
         {
-          "id": "performance-budget",
-          "weight": 0,
-          "group": "budgets"
-        },
-        {
-          "id": "timing-budget",
-          "weight": 0,
-          "group": "budgets"
-        },
-        {
           "id": "network-requests",
           "weight": 0,
           "group": "hidden"
@@ -6184,6 +5850,16 @@
           "group": "a11y-aria"
         },
         {
+          "id": "aria-conditional-attr",
+          "weight": 7,
+          "group": "a11y-aria"
+        },
+        {
+          "id": "aria-deprecated-role",
+          "weight": 1,
+          "group": "a11y-aria"
+        },
+        {
           "id": "aria-dialog-name",
           "weight": 7,
           "group": "a11y-aria"
@@ -6211,6 +5887,11 @@
         {
           "id": "aria-progressbar-name",
           "weight": 0,
+          "group": "a11y-aria"
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "weight": 7,
           "group": "a11y-aria"
         },
         {
@@ -6505,7 +6186,7 @@
         }
       ],
       "id": "accessibility",
-      "score": 0.78
+      "score": 0.79
     },
     "best-practices": {
       "title": "Best Practices",
@@ -6619,6 +6300,11 @@
       ],
       "auditRefs": [
         {
+          "id": "is-crawlable",
+          "weight": 4.043478260869565,
+          "group": "seo-crawl"
+        },
+        {
           "id": "document-title",
           "weight": 1,
           "group": "seo-content"
@@ -6640,11 +6326,6 @@
         },
         {
           "id": "crawlable-anchors",
-          "weight": 1,
-          "group": "seo-crawl"
-        },
-        {
-          "id": "is-crawlable",
           "weight": 1,
           "group": "seo-crawl"
         },
@@ -6674,80 +6355,16 @@
         }
       ],
       "id": "seo",
-      "score": 0.63
-    },
-    "pwa": {
-      "title": "PWA",
-      "description": "These checks validate the aspects of a Progressive Web App. [Learn what makes a good Progressive Web App](https://web.dev/articles/pwa-checklist).",
-      "manualDescription": "These checks are required by the baseline [PWA Checklist](https://web.dev/articles/pwa-checklist) but are not automatically checked by Lighthouse. They do not affect your score but it's important that you verify them manually.",
-      "supportedModes": [
-        "navigation"
-      ],
-      "auditRefs": [
-        {
-          "id": "installable-manifest",
-          "weight": 2,
-          "group": "pwa-installable"
-        },
-        {
-          "id": "splash-screen",
-          "weight": 1,
-          "group": "pwa-optimized"
-        },
-        {
-          "id": "themed-omnibox",
-          "weight": 1,
-          "group": "pwa-optimized"
-        },
-        {
-          "id": "content-width",
-          "weight": 1,
-          "group": "pwa-optimized"
-        },
-        {
-          "id": "viewport",
-          "weight": 2,
-          "group": "pwa-optimized"
-        },
-        {
-          "id": "maskable-icon",
-          "weight": 1,
-          "group": "pwa-optimized"
-        },
-        {
-          "id": "pwa-cross-browser",
-          "weight": 0
-        },
-        {
-          "id": "pwa-page-transitions",
-          "weight": 0
-        },
-        {
-          "id": "pwa-each-page-has-url",
-          "weight": 0
-        }
-      ],
-      "id": "pwa",
-      "score": 0.38
+      "score": 0.73
     }
   },
   "categoryGroups": {
     "metrics": {
       "title": "Metrics"
     },
-    "budgets": {
-      "title": "Budgets",
-      "description": "Performance budgets set standards for the performance of your site."
-    },
     "diagnostics": {
       "title": "Diagnostics",
       "description": "More information about the performance of your application. These numbers don't [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score."
-    },
-    "pwa-installable": {
-      "title": "Installable"
-    },
-    "pwa-optimized": {
-      "title": "PWA Optimized"
     },
     "a11y-best-practices": {
       "title": "Best practices",
@@ -8115,42 +7732,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:installable-manifest",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:splash-screen",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:computed:ManifestValues",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:themed-omnibox",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:maskable-icon",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:content-width",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:image-aspect-ratio",
         "duration": 100,
         "entryType": "measure"
@@ -8289,25 +7870,13 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:performance-budget",
+        "name": "lh:audit:resource-summary",
         "duration": 100,
         "entryType": "measure"
       },
       {
         "startTime": 0,
         "name": "lh:computed:ResourceSummary",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:timing-budget",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:resource-summary",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8499,24 +8068,6 @@
       },
       {
         "startTime": 0,
-        "name": "lh:audit:pwa-cross-browser",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:pwa-page-transitions",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
-        "name": "lh:audit:pwa-each-page-has-url",
-        "duration": 100,
-        "entryType": "measure"
-      },
-      {
-        "startTime": 0,
         "name": "lh:audit:accesskeys",
         "duration": 100,
         "entryType": "measure"
@@ -8536,6 +8087,18 @@
       {
         "startTime": 0,
         "name": "lh:audit:aria-command-name",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:aria-conditional-attr",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:aria-deprecated-role",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8572,6 +8135,12 @@
       {
         "startTime": 0,
         "name": "lh:audit:aria-progressbar-name",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
+        "name": "lh:audit:aria-prohibited-attr",
         "duration": 100,
         "entryType": "measure"
       },
@@ -8967,6 +8536,12 @@
       },
       {
         "startTime": 0,
+        "name": "lh:computed:NavigationInsights",
+        "duration": 100,
+        "entryType": "measure"
+      },
+      {
+        "startTime": 0,
         "name": "lh:computed:FirstContentfulPaint",
         "duration": 100,
         "entryType": "measure"
@@ -9225,7 +8800,6 @@
       "opportunityResourceColumnLabel": "Opportunity",
       "opportunitySavingsColumnLabel": "Estimated Savings",
       "passedAuditsGroupTitle": "Passed audits",
-      "pwaRemovalMessage": "As per [Chrome’s updated Installability Criteria](https://developer.chrome.com/blog/update-install-criteria), Lighthouse will be deprecating the PWA category in a future release. Please refer to the [updated PWA documentation](https://developer.chrome.com/docs/devtools/progressive-web-apps/) for future PWA testing.",
       "runtimeAnalysisWindow": "Initial page load",
       "runtimeAnalysisWindowSnapshot": "Point-in-time snapshot",
       "runtimeAnalysisWindowTimespan": "User interactions timespan",
@@ -9295,8 +8869,7 @@
         "audits.viewport.description"
       ],
       "core/lib/i18n/i18n.js | firstContentfulPaintMetric": [
-        "audits[first-contentful-paint].title",
-        "audits[timing-budget].details.items[2].label"
+        "audits[first-contentful-paint].title"
       ],
       "core/audits/metrics/first-contentful-paint.js | description": [
         "audits[first-contentful-paint].description"
@@ -9352,8 +8925,7 @@
         "audits[largest-contentful-paint].description"
       ],
       "core/lib/i18n/i18n.js | firstMeaningfulPaintMetric": [
-        "audits[first-meaningful-paint].title",
-        "audits[timing-budget].details.items[1].label"
+        "audits[first-meaningful-paint].title"
       ],
       "core/audits/metrics/first-meaningful-paint.js | description": [
         "audits[first-meaningful-paint].description"
@@ -9403,8 +8975,7 @@
         }
       ],
       "core/lib/i18n/i18n.js | maxPotentialFIDMetric": [
-        "audits[max-potential-fid].title",
-        "audits[timing-budget].details.items[3].label"
+        "audits[max-potential-fid].title"
       ],
       "core/audits/metrics/max-potential-fid.js | description": [
         "audits[max-potential-fid].description"
@@ -9474,8 +9045,7 @@
         "audits[network-server-latency].details.headings[1].label"
       ],
       "core/lib/i18n/i18n.js | interactiveMetric": [
-        "audits.interactive.title",
-        "audits[timing-budget].details.items[0].label"
+        "audits.interactive.title"
       ],
       "core/audits/metrics/interactive.js | description": [
         "audits.interactive.description"
@@ -9529,50 +9099,6 @@
       ],
       "core/audits/redirects.js | description": [
         "audits.redirects.description"
-      ],
-      "core/audits/installable-manifest.js | failureTitle": [
-        "audits[installable-manifest].title"
-      ],
-      "core/audits/installable-manifest.js | description": [
-        "audits[installable-manifest].description"
-      ],
-      "core/audits/installable-manifest.js | displayValue": [
-        {
-          "values": {
-            "itemCount": 1
-          },
-          "path": "audits[installable-manifest].displayValue"
-        }
-      ],
-      "core/audits/installable-manifest.js | columnValue": [
-        "audits[installable-manifest].details.headings[0].label"
-      ],
-      "core/audits/installable-manifest.js | no-manifest": [
-        "audits[installable-manifest].details.items[0].reason"
-      ],
-      "core/audits/splash-screen.js | failureTitle": [
-        "audits[splash-screen].title"
-      ],
-      "core/audits/splash-screen.js | description": [
-        "audits[splash-screen].description"
-      ],
-      "core/audits/themed-omnibox.js | failureTitle": [
-        "audits[themed-omnibox].title"
-      ],
-      "core/audits/themed-omnibox.js | description": [
-        "audits[themed-omnibox].description"
-      ],
-      "core/audits/maskable-icon.js | failureTitle": [
-        "audits[maskable-icon].title"
-      ],
-      "core/audits/maskable-icon.js | description": [
-        "audits[maskable-icon].description"
-      ],
-      "core/audits/content-width.js | title": [
-        "audits[content-width].title"
-      ],
-      "core/audits/content-width.js | description": [
-        "audits[content-width].description"
       ],
       "core/audits/image-aspect-ratio.js | failureTitle": [
         "audits[image-aspect-ratio].title"
@@ -9663,22 +9189,13 @@
       "core/audits/network-server-latency.js | description": [
         "audits[network-server-latency].description"
       ],
-      "core/audits/performance-budget.js | title": [
-        "audits[performance-budget].title"
-      ],
-      "core/audits/performance-budget.js | description": [
-        "audits[performance-budget].description"
-      ],
       "core/lib/i18n/i18n.js | columnResourceType": [
-        "audits[performance-budget].details.headings[0].label",
         "audits[resource-summary].details.headings[0].label"
       ],
       "core/lib/i18n/i18n.js | columnRequests": [
-        "audits[performance-budget].details.headings[1].label",
         "audits[resource-summary].details.headings[1].label"
       ],
       "core/lib/i18n/i18n.js | columnTransferSize": [
-        "audits[performance-budget].details.headings[2].label",
         "audits[resource-summary].details.headings[2].label",
         "audits[third-party-summary].details.headings[1].label",
         "audits[uses-long-cache-ttl].details.headings[2].label",
@@ -9688,83 +9205,32 @@
         "audits[unused-javascript].details.headings[1].label",
         "audits[uses-text-compression].details.headings[1].label"
       ],
-      "core/lib/i18n/i18n.js | columnOverBudget": [
-        "audits[performance-budget].details.headings[4].label",
-        "audits[timing-budget].details.headings[2].label"
-      ],
       "core/lib/i18n/i18n.js | totalResourceType": [
-        "audits[performance-budget].details.items[0].label",
         "audits[resource-summary].details.items[0].label"
       ],
-      "core/audits/performance-budget.js | requestCountOverBudget": [
-        {
-          "values": {
-            "count": 15
-          },
-          "path": "audits[performance-budget].details.items[0].countOverBudget"
-        },
-        {
-          "values": {
-            "count": 6
-          },
-          "path": "audits[performance-budget].details.items[1].countOverBudget"
-        },
-        {
-          "values": {
-            "count": 3
-          },
-          "path": "audits[performance-budget].details.items[2].countOverBudget"
-        },
-        {
-          "values": {
-            "count": 7
-          },
-          "path": "audits[performance-budget].details.items[6].countOverBudget"
-        }
-      ],
       "core/lib/i18n/i18n.js | imageResourceType": [
-        "audits[performance-budget].details.items[1].label",
         "audits[resource-summary].details.items[1].label"
       ],
       "core/lib/i18n/i18n.js | scriptResourceType": [
-        "audits[performance-budget].details.items[2].label",
         "audits[resource-summary].details.items[2].label"
       ],
       "core/lib/i18n/i18n.js | otherResourceType": [
-        "audits[performance-budget].details.items[3].label",
         "audits[resource-summary].details.items[3].label"
       ],
-      "core/lib/i18n/i18n.js | thirdPartyResourceType": [
-        "audits[performance-budget].details.items[4].label",
-        "audits[resource-summary].details.items[8].label"
-      ],
       "core/lib/i18n/i18n.js | documentResourceType": [
-        "audits[performance-budget].details.items[5].label",
         "audits[resource-summary].details.items[4].label"
       ],
       "core/lib/i18n/i18n.js | stylesheetResourceType": [
-        "audits[performance-budget].details.items[6].label",
         "audits[resource-summary].details.items[5].label"
       ],
       "core/lib/i18n/i18n.js | mediaResourceType": [
-        "audits[performance-budget].details.items[7].label",
         "audits[resource-summary].details.items[6].label"
       ],
       "core/lib/i18n/i18n.js | fontResourceType": [
-        "audits[performance-budget].details.items[8].label",
         "audits[resource-summary].details.items[7].label"
       ],
-      "core/audits/timing-budget.js | title": [
-        "audits[timing-budget].title"
-      ],
-      "core/audits/timing-budget.js | description": [
-        "audits[timing-budget].description"
-      ],
-      "core/audits/timing-budget.js | columnTimingMetric": [
-        "audits[timing-budget].details.headings[0].label"
-      ],
-      "core/audits/timing-budget.js | columnMeasurement": [
-        "audits[timing-budget].details.headings[1].label"
+      "core/lib/i18n/i18n.js | thirdPartyResourceType": [
+        "audits[resource-summary].details.items[8].label"
       ],
       "core/audits/third-party-summary.js | title": [
         "audits[third-party-summary].title"
@@ -9945,24 +9411,6 @@
       "core/audits/csp-xss.js | noCsp": [
         "audits[csp-xss].details.items[0].description"
       ],
-      "core/audits/manual/pwa-cross-browser.js | title": [
-        "audits[pwa-cross-browser].title"
-      ],
-      "core/audits/manual/pwa-cross-browser.js | description": [
-        "audits[pwa-cross-browser].description"
-      ],
-      "core/audits/manual/pwa-page-transitions.js | title": [
-        "audits[pwa-page-transitions].title"
-      ],
-      "core/audits/manual/pwa-page-transitions.js | description": [
-        "audits[pwa-page-transitions].description"
-      ],
-      "core/audits/manual/pwa-each-page-has-url.js | title": [
-        "audits[pwa-each-page-has-url].title"
-      ],
-      "core/audits/manual/pwa-each-page-has-url.js | description": [
-        "audits[pwa-each-page-has-url].description"
-      ],
       "core/audits/accessibility/accesskeys.js | title": [
         "audits.accesskeys.title"
       ],
@@ -9986,6 +9434,18 @@
       ],
       "core/audits/accessibility/aria-command-name.js | description": [
         "audits[aria-command-name].description"
+      ],
+      "core/audits/accessibility/aria-conditional-attr.js | title": [
+        "audits[aria-conditional-attr].title"
+      ],
+      "core/audits/accessibility/aria-conditional-attr.js | description": [
+        "audits[aria-conditional-attr].description"
+      ],
+      "core/audits/accessibility/aria-deprecated-role.js | title": [
+        "audits[aria-deprecated-role].title"
+      ],
+      "core/audits/accessibility/aria-deprecated-role.js | description": [
+        "audits[aria-deprecated-role].description"
       ],
       "core/audits/accessibility/aria-dialog-name.js | title": [
         "audits[aria-dialog-name].title"
@@ -10022,6 +9482,12 @@
       ],
       "core/audits/accessibility/aria-progressbar-name.js | description": [
         "audits[aria-progressbar-name].description"
+      ],
+      "core/audits/accessibility/aria-prohibited-attr.js | title": [
+        "audits[aria-prohibited-attr].title"
+      ],
+      "core/audits/accessibility/aria-prohibited-attr.js | description": [
+        "audits[aria-prohibited-attr].description"
       ],
       "core/audits/accessibility/aria-required-attr.js | title": [
         "audits[aria-required-attr].title"
@@ -10713,35 +10179,14 @@
       "core/config/default-config.js | seoCategoryManualDescription": [
         "categories.seo.manualDescription"
       ],
-      "core/config/default-config.js | pwaCategoryTitle": [
-        "categories.pwa.title"
-      ],
-      "core/config/default-config.js | pwaCategoryDescription": [
-        "categories.pwa.description"
-      ],
-      "core/config/default-config.js | pwaCategoryManualDescription": [
-        "categories.pwa.manualDescription"
-      ],
       "core/config/default-config.js | metricGroupTitle": [
         "categoryGroups.metrics.title"
-      ],
-      "core/config/default-config.js | budgetsGroupTitle": [
-        "categoryGroups.budgets.title"
-      ],
-      "core/config/default-config.js | budgetsGroupDescription": [
-        "categoryGroups.budgets.description"
       ],
       "core/config/default-config.js | diagnosticsGroupTitle": [
         "categoryGroups.diagnostics.title"
       ],
       "core/config/default-config.js | diagnosticsGroupDescription": [
         "categoryGroups.diagnostics.description"
-      ],
-      "core/config/default-config.js | pwaInstallableGroupTitle": [
-        "categoryGroups[pwa-installable].title"
-      ],
-      "core/config/default-config.js | pwaOptimizedGroupTitle": [
-        "categoryGroups[pwa-optimized].title"
       ],
       "core/config/default-config.js | a11yBestPracticesGroupTitle": [
         "categoryGroups[a11y-best-practices].title"

@@ -7,6 +7,7 @@
 import a11y from './test-definitions/a11y.js';
 import byteEfficiency from './test-definitions/byte-efficiency.js';
 import byteGzip from './test-definitions/byte-gzip.js';
+import crash from './test-definitions/crash.js';
 import cspAllowAll from './test-definitions/csp-allow-all.js';
 import cspBlockAll from './test-definitions/csp-block-all.js';
 import dbw from './test-definitions/dobetterweb.js';
@@ -32,12 +33,8 @@ import metricsDelayedFcp from './test-definitions/metrics-delayed-fcp.js';
 import metricsDelayedLcp from './test-definitions/metrics-delayed-lcp.js';
 import metricsTrickyTti from './test-definitions/metrics-tricky-tti.js';
 import metricsTrickyTtiLateFcp from './test-definitions/metrics-tricky-tti-late-fcp.js';
-import offlineOnlineOnly from './test-definitions/offline-online-only.js';
-import offlineReady from './test-definitions/offline-ready.js';
-import offlineSwBroken from './test-definitions/offline-sw-broken.js';
 import oopifRequests from './test-definitions/oopif-requests.js';
 import oopifScripts from './test-definitions/oopif-scripts.js';
-import perfBudgets from './test-definitions/perf-budgets.js';
 import perfDebug from './test-definitions/perf-debug.js';
 import perfDiagnosticsAnimations from './test-definitions/perf-diagnostics-animations.js';
 import perfDiagnosticsThirdParty from './test-definitions/perf-diagnostics-third-party.js';
@@ -46,11 +43,6 @@ import perfFonts from './test-definitions/perf-fonts.js';
 import perfFrameMetrics from './test-definitions/perf-frame-metrics.js';
 import perfPreload from './test-definitions/perf-preload.js';
 import perfTraceElements from './test-definitions/perf-trace-elements.js';
-import pwaAirhorner from './test-definitions/pwa-airhorner.js';
-import pwaCaltrain from './test-definitions/pwa-caltrain.js';
-import pwaChromestatus from './test-definitions/pwa-chromestatus.js';
-import pwaRocks from './test-definitions/pwa-rocks.js';
-import pwaSvgomg from './test-definitions/pwa-svgomg.js';
 import redirectsClientPaintServer from './test-definitions/redirects-client-paint-server.js';
 import redirectsHistoryPushState from './test-definitions/redirects-history-push-state.js';
 import redirectsHttp from './test-definitions/redirects-http.js';
@@ -73,6 +65,7 @@ const smokeTests = [
   a11y,
   byteEfficiency,
   byteGzip,
+  crash,
   cspAllowAll,
   cspBlockAll,
   dbw,
@@ -98,12 +91,8 @@ const smokeTests = [
   metricsDelayedLcp,
   metricsTrickyTti,
   metricsTrickyTtiLateFcp,
-  offlineOnlineOnly,
-  offlineReady,
-  offlineSwBroken,
   oopifRequests,
   oopifScripts,
-  perfBudgets,
   perfDebug,
   perfDiagnosticsAnimations,
   perfDiagnosticsThirdParty,
@@ -112,11 +101,6 @@ const smokeTests = [
   perfFrameMetrics,
   perfPreload,
   perfTraceElements,
-  pwaAirhorner,
-  pwaCaltrain,
-  pwaChromestatus,
-  pwaRocks,
-  pwaSvgomg,
   redirectsClientPaintServer,
   redirectsHistoryPushState,
   redirectsHttp,
