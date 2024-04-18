@@ -215,6 +215,7 @@ export class LighthouseReportViewer {
       return;
     }
 
+    const dom = new DOM(document, rootEl);
     const renderer = new ReportRenderer(dom);
 
     renderer.renderReport(json, rootEl, {
