@@ -104,16 +104,12 @@ class Metric {
     let simulateOptions = {label: `optimistic${metricName}`};
     const optimisticSimulation = simulator.simulate(optimisticGraph, simulateOptions);
 
-    // TODO ! remove this.
-    simulateOptions = {label: `optimisticFlex${metricName}`};
-    const optimisticFlexSimulation = simulator.simulate(optimisticGraph, simulateOptions);
-
     simulateOptions = {label: `pessimistic${metricName}`};
     const pessimisticSimulation = simulator.simulate(pessimisticGraph, simulateOptions);
 
     const optimisticEstimate = this.getEstimateFromSimulation(
-      optimisticSimulation.timeInMs < optimisticFlexSimulation.timeInMs ?
-        optimisticSimulation : optimisticFlexSimulation, {...extras, optimistic: true}
+      optimisticSimulation,
+      {...extras, optimistic: true}
     );
 
     const pessimisticEstimate = this.getEstimateFromSimulation(
