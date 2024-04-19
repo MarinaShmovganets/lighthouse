@@ -215,14 +215,15 @@ export class LighthouseReportViewer {
       return;
     }
 
-    const dom = new DOM(document, rootEl);
-    const renderer = new ReportRenderer(dom);
+    rootEl.classList.add('lh-root', 'lh-vars');
+    const reportDom = new DOM(document, rootEl);
+    const renderer = new ReportRenderer(reportDom);
 
     renderer.renderReport(json, rootEl, {
       occupyEntireViewport: true,
     });
 
-    const features = new ViewerUIFeatures(dom, {
+    const features = new ViewerUIFeatures(reportDom, {
       saveGist: saveGistCallback,
       refresh: newLhr => {
         this._replaceReportHtml(newLhr);
@@ -261,7 +262,7 @@ export class LighthouseReportViewer {
 
     // Reset container content.
     container.textContent = '';
-    const rootEl = dom.createElement('div', 'lh-root lh-vars');
+    const rootEl = dom.createElement('div');
     container.append(rootEl);
 
     // Only give gist-saving callback if current report isn't from a gist.
