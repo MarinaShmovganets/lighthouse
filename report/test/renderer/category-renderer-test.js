@@ -223,14 +223,12 @@ describe('CategoryRenderer', () => {
       assert.ok(categoryDOM.querySelector(
         '.lh-clump--notapplicable .lh-audit-group__summary'));
 
-      const notApplicableCount = a11yCategory.auditRefs.reduce((sum, audit) => {
-        return sum += audit.result.scoreDisplayMode === 'notApplicable' && audit.group !== 'hidden'
-          ? 1
-          : 0;
-      }, 0);
+      const notApplicableAudits = a11yCategory.auditRefs.filter(audit => {
+        return audit.result.scoreDisplayMode === 'notApplicable' && audit.group !== 'hidden';
+      });
       assert.equal(
         categoryDOM.querySelectorAll('.lh-clump--notapplicable .lh-audit').length,
-        notApplicableCount
+        notApplicableAudits.length
       );
     });
 
