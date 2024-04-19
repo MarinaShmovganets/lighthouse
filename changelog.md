@@ -24,7 +24,7 @@ The SEO category has been updated to reflect the priorities of Google search in 
 * The `is-crawlable` audit is now weighted high enough to fail the SEO category on its own. ([#15933](https://github.com/GoogleChrome/lighthouse/pull/15933))
 * The `viewport` and `font-size` audits are no longer priorities for SEO, but are still important for UX in general so they have been moved to the best practices category. ([#15930](https://github.com/GoogleChrome/lighthouse/pull/15930))
 * The `plugins` audit is no longer a priority for SEO and has been removed. ([#15928](https://github.com/GoogleChrome/lighthouse/pull/15928))
-* The `tap-targets` audit is no longer a priority is no longer a priority for SEO, and has been replaced with the `target-size` audit in accessibility. ([#15906](https://github.com/GoogleChrome/lighthouse/pull/15906))
+* The `tap-targets` audit is no longer a priority for SEO and has been replaced with the `target-size` audit in accessibility. ([#15906](https://github.com/GoogleChrome/lighthouse/pull/15906))
 
 ### Other Audit Changes
 
