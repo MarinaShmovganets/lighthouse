@@ -1,40 +1,57 @@
-Thanks to our new contributors 👽🐷🐰🐯🐻! 
-Ashley Rich @A5hleyRich
-MrAdib @JohnAdib
-lauren n. liberda @selfisekai
- <a name="12.0.0"></a>
+<a name="12.0.0"></a>
 # 12.0.0 (2024-04-19)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.7.0...v12.0.0)
 
-~~ TODO: https://chromiumdash.appspot.com/schedule ~~
-We expect this release to ship in the DevTools of [Chrome XX](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+We expect this release to ship in the DevTools of [Chrome 126](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
+
+## New Contributors
+
+Thanks to our new contributors 👽🐷🐰🐯🐻!
+
+- Ashley Rich @A5hleyRich
+- MrAdib @JohnAdib
 
 ## Notable Changes
-~~ TODO: Move notable changes here ~~
 
+### PWA Category Removal
 
-## New Audits
+As per [Chrome’s updated Installability Criteria](https://developer.chrome.com/blog/update-install-criteria), Lighthouse [has removed the PWA category](https://github.com/GoogleChrome/lighthouse/pull/15455). For future PWA testing, users will be directed to use the [updated PWA documentation](https://developer.chrome.com/docs/devtools/progressive-web-apps/).
 
-* add new checks from axe-core 4.8 ([#15963](https://github.com/GoogleChrome/lighthouse/pull/15963))
-* bring back redirects-http with passive https check ([#13548](https://github.com/GoogleChrome/lighthouse/pull/13548))
+### SEO Category Reorganization
 
-## Core
+The SEO category has been updated to reflect the priorities of Google search in 2024. As such, several audits have been removed or moved to other categories:
+
+* The `is-crawlable` audit is now weighted high enough to fail the SEO category on its own. ([#15933](https://github.com/GoogleChrome/lighthouse/pull/15933))
+* The `viewport` and `font-size` audits are no longer priorities for SEO, but are still important for UX in general so they have been moved to the best practices category. ([#15930](https://github.com/GoogleChrome/lighthouse/pull/15930))
+* The `plugins` audit is no longer a priority for SEO and has been removed. ([#15928](https://github.com/GoogleChrome/lighthouse/pull/15928))
+* The `tap-targets` audit is no longer a priority is no longer a priority for SEO, and has been replaced with the `target-size` audit in accessibility. ([#15906](https://github.com/GoogleChrome/lighthouse/pull/15906))
+
+### Other Audit Changes
+
+* The `layout-shifts-elements` audit is removed. Improved layout shift information can be found in the `layout-shifts` audit. ([#15931](https://github.com/GoogleChrome/lighthouse/pull/15931))
+* The `no-unload-listeners` audit is removed. Unload listeners are deprecated and are still flagged in the `deprecations` and `bf-cache` audits. ([#15874](https://github.com/GoogleChrome/lighthouse/pull/15874))
+* The `duplicate-id-active` audit is removed because it's corresponding Axe check is deprecated. ([#15900](https://github.com/GoogleChrome/lighthouse/pull/15900))
+* The `uses-rel-preload` and `preload-fonts` audits have been moved to the experimental config. Preload advice is still on hold and these audits were already in a disabled state. ([#15876](https://github.com/GoogleChrome/lighthouse/pull/15876))
+
+## 🆕 New Audits
+
+* The [`aria-conditional-attr`](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr), [`aria-deprecated-role`](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role) and [`aria-prohibited-attr`](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr) Axe checks have been made into Lighthouse audits. ([#15963](https://github.com/GoogleChrome/lighthouse/pull/15963))
+* The `redirects-http` audit has been brought back, but will only passively check for a http -> https redirect if the provided URL happens to be http ([#13548](https://github.com/GoogleChrome/lighthouse/pull/13548))
+
+## 💥 Breaking Changes
 
 * split up `CSSUsage` artifact ([#15952](https://github.com/GoogleChrome/lighthouse/pull/15952))
 * remove budgets ([#15950](https://github.com/GoogleChrome/lighthouse/pull/15950))
-* remove pre-v10 compat for page graph construction ([#15948](https://github.com/GoogleChrome/lighthouse/pull/15948))
-* remove PWA category ([#15455](https://github.com/GoogleChrome/lighthouse/pull/15455))
-* remove layout-shift-elements audit ([#15931](https://github.com/GoogleChrome/lighthouse/pull/15931))
-* remove `plugins` audit ([#15928](https://github.com/GoogleChrome/lighthouse/pull/15928))
-* remove `duplicate-id-active` ([#15900](https://github.com/GoogleChrome/lighthouse/pull/15900))
-* remove `tap-targets` and show `target-size` in a11y ([#15906](https://github.com/GoogleChrome/lighthouse/pull/15906))
-* deprecate `overallSavingsMs` ([#15902](https://github.com/GoogleChrome/lighthouse/pull/15902))
 * remove relevant audits lists from config ([#15878](https://github.com/GoogleChrome/lighthouse/pull/15878))
-* remove `no-unload-listeners` audit ([#15874](https://github.com/GoogleChrome/lighthouse/pull/15874))
 * remove `ScriptElements` artifact ([#15879](https://github.com/GoogleChrome/lighthouse/pull/15879))
-* move preload audits to experimental config ([#15876](https://github.com/GoogleChrome/lighthouse/pull/15876))
-* a11y: re-enable target-size hidden audit ([#15888](https://github.com/GoogleChrome/lighthouse/pull/15888))
 * config: use explicit diagnostic group ([#15901](https://github.com/GoogleChrome/lighthouse/pull/15901))
+* service-worker: remove `service-worker` gatherer ([#15942](https://github.com/GoogleChrome/lighthouse/pull/15942))
+
+## Core
+
+* remove pre-v10 compat for page graph construction ([#15948](https://github.com/GoogleChrome/lighthouse/pull/15948))
+* deprecate `overallSavingsMs` ([#15902](https://github.com/GoogleChrome/lighthouse/pull/15902))
+* a11y: re-enable target-size hidden audit ([#15888](https://github.com/GoogleChrome/lighthouse/pull/15888))
 * driver: add sendCommandAndIgnore ([#15913](https://github.com/GoogleChrome/lighthouse/pull/15913))
 * gather: handle crash if CDP target crashes ([#11840](https://github.com/GoogleChrome/lighthouse/pull/11840))
 * lantern: always use flexible network ordering ([#14612](https://github.com/GoogleChrome/lighthouse/pull/14612))
@@ -46,29 +63,20 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 * lantern: replace usage of LH.Artifacts.ProcessedTrace ([#15905](https://github.com/GoogleChrome/lighthouse/pull/15905))
 * lantern: move lantern metrics to lib/lantern ([#15875](https://github.com/GoogleChrome/lighthouse/pull/15875))
 * metric: remove gatherContext mode check ([#15899](https://github.com/GoogleChrome/lighthouse/pull/15899))
-* network-request: recognize zstd compression algorithm ([#15883](https://github.com/GoogleChrome/lighthouse/pull/15883))
 * render-blocking: use trace engine as the source of truth ([#15839](https://github.com/GoogleChrome/lighthouse/pull/15839))
 * runner: use early return for readability ([#15914](https://github.com/GoogleChrome/lighthouse/pull/15914))
-* scoring: set is-crawlable weight high enough to fail SEO category ([#15933](https://github.com/GoogleChrome/lighthouse/pull/15933))
 * seo: support Persian in link-text audit ([#15949](https://github.com/GoogleChrome/lighthouse/pull/15949))
-* seo: move non-search audits to best practices ([#15930](https://github.com/GoogleChrome/lighthouse/pull/15930))
-* service-worker: remove `service-worker` gatherer ([#15942](https://github.com/GoogleChrome/lighthouse/pull/15942))
 * target-size: use binary display mode ([#15910](https://github.com/GoogleChrome/lighthouse/pull/15910))
-* trace-elements: add sentry debugging for `impactedNodes` ([#15915](https://github.com/GoogleChrome/lighthouse/pull/15915))
-* trace-processor: correct overlapping tasks ([#15921](https://github.com/GoogleChrome/lighthouse/pull/15921))
 
 ## Report
 
 * fix hidden audit handling for non-perf categories ([#15968](https://github.com/GoogleChrome/lighthouse/pull/15968))
-* remove use of innerHTML to empty elements ([#15911](https://github.com/GoogleChrome/lighthouse/pull/15911))
 
 ## Deps
 
 * upgrade `tldts-icann` to 6.1.16 ([#15967](https://github.com/GoogleChrome/lighthouse/pull/15967))
 * upgrade `third-party-web` to 0.24.2 ([#15966](https://github.com/GoogleChrome/lighthouse/pull/15966))
 * upgrade puppeteer to 22.6.5 ([#15951](https://github.com/GoogleChrome/lighthouse/pull/15951))
-* upgrade `trace_engine` to 0.0.19 ([#15926](https://github.com/GoogleChrome/lighthouse/pull/15926))
-* upgrade axe-core to 4.9.0 ([#15887](https://github.com/GoogleChrome/lighthouse/pull/15887))
 
 ## Clients
 
@@ -88,8 +96,6 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 * refresh sample artifacts ([#15962](https://github.com/GoogleChrome/lighthouse/pull/15962))
 * invalidate devtools build cache ([#15947](https://github.com/GoogleChrome/lighthouse/pull/15947))
 * update network target type expectations ([#15916](https://github.com/GoogleChrome/lighthouse/pull/15916))
-* remove Access-Control-Allow-Origin for robots.txt ([#15895](https://github.com/GoogleChrome/lighthouse/pull/15895))
-* devtools: sync e2e ([#15917](https://github.com/GoogleChrome/lighthouse/pull/15917))
 
 ## Misc
 
@@ -98,9 +104,7 @@ We expect this release to ship in the DevTools of [Chrome XX](https://chromiumda
 * remove `BenchmarkIndexes` base artifact ([#15941](https://github.com/GoogleChrome/lighthouse/pull/15941))
 * update public gatherer list ([#15940](https://github.com/GoogleChrome/lighthouse/pull/15940))
 * remove residual `lighthouse-cli` file ([#15935](https://github.com/GoogleChrome/lighthouse/pull/15935))
-* correct .npmignore for node >=18.20 ([#15924](https://github.com/GoogleChrome/lighthouse/pull/15924))
 * use "processing duration" instead of "processing time" for INP ([#15893](https://github.com/GoogleChrome/lighthouse/pull/15893))
-* proto: ensure all strings are well-formed ([#15909](https://github.com/GoogleChrome/lighthouse/pull/15909))
 * treemap: fix column sorting when some values are blank ([#15959](https://github.com/GoogleChrome/lighthouse/pull/15959))
 
 <a name="11.7.1"></a>
