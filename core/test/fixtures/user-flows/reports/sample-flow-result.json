@@ -333,7 +333,7 @@
             "description": "Time to Interactive is the amount of time it takes for the page to become fully interactive. [Learn more about the Time to Interactive metric](https://developer.chrome.com/docs/lighthouse/performance/interactive/).",
             "score": 0.95,
             "scoreDisplayMode": "numeric",
-            "numericValue": 3092.194,
+            "numericValue": 3092.1940000000004,
             "numericUnit": "millisecond",
             "displayValue": "3.1 s"
           },
@@ -7060,7 +7060,7 @@
               },
               {
                 "values": {
-                  "timeInMs": 3092.194
+                  "timeInMs": 3092.1940000000004
                 },
                 "path": "audits.interactive.displayValue"
               },
@@ -18006,9 +18006,9 @@
             "description": "Time to Interactive is the amount of time it takes for the page to become fully interactive. [Learn more about the Time to Interactive metric](https://developer.chrome.com/docs/lighthouse/performance/interactive/).",
             "score": 1,
             "scoreDisplayMode": "numeric",
-            "numericValue": 1634.4999335754396,
+            "numericValue": 1688.5037302178957,
             "numericUnit": "millisecond",
-            "displayValue": "1.6 s"
+            "displayValue": "1.7 s"
           },
           "user-timings": {
             "id": "user-timings",
@@ -19085,7 +19085,7 @@
             "description": "Collects all available metrics.",
             "score": 1,
             "scoreDisplayMode": "informative",
-            "numericValue": 1634,
+            "numericValue": 1689,
             "numericUnit": "millisecond",
             "details": {
               "type": "debugdata",
@@ -19094,7 +19094,7 @@
                   "firstContentfulPaint": 933,
                   "firstMeaningfulPaint": 933,
                   "largestContentfulPaint": 2024,
-                  "interactive": 1634,
+                  "interactive": 1689,
                   "speedIndex": 933,
                   "totalBlockingTime": 57,
                   "maxPotentialFID": 87,
@@ -25000,7 +25000,7 @@
               },
               {
                 "values": {
-                  "timeInMs": 1634.4999335754396
+                  "timeInMs": 1688.5037302178957
                 },
                 "path": "audits.interactive.displayValue"
               },
