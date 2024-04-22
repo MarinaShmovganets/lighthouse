@@ -13,11 +13,6 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## Notable Changes
 
-### 🆕 New Audits
-
-* The [`aria-conditional-attr`](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr), [`aria-deprecated-role`](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role) and [`aria-prohibited-attr`](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr) Axe checks have added to Lighthouse as accessibility audits. ([#15963](https://github.com/GoogleChrome/lighthouse/pull/15963))
-* The `redirects-http` audit has been brought back, but will only passively check for a http -> https redirect if the provided URL happens to be on http ([#13548](https://github.com/GoogleChrome/lighthouse/pull/13548))
-
 ### PWA Category Removal
 
 As per [Chrome’s updated Installability Criteria](https://developer.chrome.com/blog/update-install-criteria), Lighthouse [has removed the PWA category](https://github.com/GoogleChrome/lighthouse/pull/15455). For future PWA testing, users will be directed to use the [updated PWA documentation](https://developer.chrome.com/docs/devtools/progressive-web-apps/).
@@ -34,6 +29,11 @@ The SEO category has been updated to reflect the priorities of Google search in 
 ### Overall Savings Deprecation
 
 The `overallSavingsMs` value on performance diagnostic audits has been deprecated ([#15902](https://github.com/GoogleChrome/lighthouse/pull/15902)). We recommend using `metricSavings.LCP` or `metricSavings.FCP` to understand the estimated impact of performance diagnostics.
+
+### 🆕 New Audits
+
+* The [`aria-conditional-attr`](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr), [`aria-deprecated-role`](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role) and [`aria-prohibited-attr`](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr) Axe checks have been added to the Lighthouse accessibility category. ([#15963](https://github.com/GoogleChrome/lighthouse/pull/15963))
+* The `redirects-http` audit has been brought back, but will only passively check for a http -> https redirect if the provided URL happens to be on http ([#13548](https://github.com/GoogleChrome/lighthouse/pull/13548))
 
 ### Other Audit Changes
 
