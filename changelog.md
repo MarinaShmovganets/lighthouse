@@ -1,5 +1,5 @@
 <a name="12.0.0"></a>
-# 12.0.0 (2024-04-19)
+# 12.0.0 (2024-04-22)
 [Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.7.0...v12.0.0)
 
 We expect this release to ship in the DevTools of [Chrome 126](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
@@ -28,7 +28,7 @@ The SEO category has been updated to reflect the priorities of Google search in 
 
 ### Overall Savings Deprecation
 
-The `overallSavingsMs` value on performance diagnostic audits has been deprecated ([#15902](https://github.com/GoogleChrome/lighthouse/pull/15902)). We recommend using `metricSavings.LCP` or `metricSavings.FCP` to understand the estimated impact of performance diagnostics.
+The `overallSavingsMs` value on performance diagnostic audits has been deprecated ([#15902](https://github.com/GoogleChrome/lighthouse/pull/15902)). We recommend using `metricSavings.LCP` or `metricSavings.FCP` to understand the estimated metric savings of performance diagnostics.
 
 ### 🆕 New Audits
 
