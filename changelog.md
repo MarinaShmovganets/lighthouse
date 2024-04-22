@@ -1,6 +1,6 @@
 <a name="12.0.0"></a>
 # 12.0.0 (2024-04-22)
-[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.7.0...v12.0.0)
+[Full Changelog](https://github.com/GoogleChrome/lighthouse/compare/v11.7.1...v12.0.0)
 
 We expect this release to ship in the DevTools of [Chrome 126](https://chromiumdash.appspot.com/schedule), and to PageSpeed Insights within 2 weeks.
 
