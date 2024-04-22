@@ -13,6 +13,11 @@ Thanks to our new contributors 👽🐷🐰🐯🐻!
 
 ## Notable Changes
 
+### 🆕 New Audits
+
+* The [`aria-conditional-attr`](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr), [`aria-deprecated-role`](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role) and [`aria-prohibited-attr`](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr) Axe checks have added to Lighthouse as accessibility audits. ([#15963](https://github.com/GoogleChrome/lighthouse/pull/15963))
+* The `redirects-http` audit has been brought back, but will only passively check for a http -> https redirect if the provided URL happens to be on http ([#13548](https://github.com/GoogleChrome/lighthouse/pull/13548))
+
 ### PWA Category Removal
 
 As per [Chrome’s updated Installability Criteria](https://developer.chrome.com/blog/update-install-criteria), Lighthouse [has removed the PWA category](https://github.com/GoogleChrome/lighthouse/pull/15455). For future PWA testing, users will be directed to use the [updated PWA documentation](https://developer.chrome.com/docs/devtools/progressive-web-apps/).
@@ -26,17 +31,16 @@ The SEO category has been updated to reflect the priorities of Google search in 
 * The `plugins` audit is no longer a priority for SEO and has been removed. ([#15928](https://github.com/GoogleChrome/lighthouse/pull/15928))
 * The `tap-targets` audit is no longer a priority for SEO and has been replaced with the `target-size` audit in accessibility. ([#15906](https://github.com/GoogleChrome/lighthouse/pull/15906))
 
+### Overall Savings Deprecation
+
+The `overallSavingsMs` value on performance diagnostic audits has been deprecated ([#15902](https://github.com/GoogleChrome/lighthouse/pull/15902)). We recommend using `metricSavings.LCP` or `metricSavings.FCP` to understand the estimated impact of performance diagnostics.
+
 ### Other Audit Changes
 
 * The `layout-shifts-elements` audit is removed. Improved layout shift information can be found in the `layout-shifts` audit. ([#15931](https://github.com/GoogleChrome/lighthouse/pull/15931))
 * The `no-unload-listeners` audit is removed. Unload listeners are deprecated and are still flagged in the `deprecations` and `bf-cache` audits. ([#15874](https://github.com/GoogleChrome/lighthouse/pull/15874))
 * The `duplicate-id-active` audit is removed because it's corresponding Axe check is deprecated. ([#15900](https://github.com/GoogleChrome/lighthouse/pull/15900))
 * The `uses-rel-preload` and `preload-fonts` audits have been moved to the experimental config. Preload advice is still on hold and these audits were already in a disabled state. ([#15876](https://github.com/GoogleChrome/lighthouse/pull/15876))
-
-## 🆕 New Audits
-
-* The [`aria-conditional-attr`](https://dequeuniversity.com/rules/axe/4.9/aria-conditional-attr), [`aria-deprecated-role`](https://dequeuniversity.com/rules/axe/4.9/aria-deprecated-role) and [`aria-prohibited-attr`](https://dequeuniversity.com/rules/axe/4.9/aria-prohibited-attr) Axe checks have been made into Lighthouse audits. ([#15963](https://github.com/GoogleChrome/lighthouse/pull/15963))
-* The `redirects-http` audit has been brought back, but will only passively check for a http -> https redirect if the provided URL happens to be http ([#13548](https://github.com/GoogleChrome/lighthouse/pull/13548))
 
 ## 💥 Breaking Changes
 
@@ -50,7 +54,6 @@ The SEO category has been updated to reflect the priorities of Google search in 
 ## Core
 
 * remove pre-v10 compat for page graph construction ([#15948](https://github.com/GoogleChrome/lighthouse/pull/15948))
-* deprecate `overallSavingsMs` ([#15902](https://github.com/GoogleChrome/lighthouse/pull/15902))
 * a11y: re-enable target-size hidden audit ([#15888](https://github.com/GoogleChrome/lighthouse/pull/15888))
 * driver: add sendCommandAndIgnore ([#15913](https://github.com/GoogleChrome/lighthouse/pull/15913))
 * gather: handle crash if CDP target crashes ([#11840](https://github.com/GoogleChrome/lighthouse/pull/11840))
